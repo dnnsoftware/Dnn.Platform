@@ -19,17 +19,17 @@ namespace DotNetNuke.Web.Client.Controls
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            var loader = Page.FindControl("ClientResourceIncludes");
-            Name = Name.ToLowerInvariant();
+            var loader = this.Page.FindControl("ClientResourceIncludes");
+            this.Name = this.Name.ToLowerInvariant();
 
             if (loader != null)
             {
                 ClientDependencyInclude ctlToRemove = null;
-                if (!String.IsNullOrEmpty(Name))
+                if (!String.IsNullOrEmpty(this.Name))
                 {
                     foreach (ClientDependencyInclude ctl in loader.Controls)
                     {
-                        if (ctl.Name.ToLowerInvariant() == Name && ctl.DependencyType == DependencyType)
+                        if (ctl.Name.ToLowerInvariant() == this.Name && ctl.DependencyType == this.DependencyType)
                         {
                             ctlToRemove = ctl;
                             break;

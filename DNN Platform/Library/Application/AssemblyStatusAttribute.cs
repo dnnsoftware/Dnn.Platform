@@ -67,7 +67,7 @@ namespace DotNetNuke.Application
         /// <param name="releaseMode">The release mode.</param>
         public AssemblyStatusAttribute(ReleaseMode releaseMode)
         {
-            _releaseMode = releaseMode;
+            this._releaseMode = releaseMode;
         }
 
 
@@ -78,7 +78,7 @@ namespace DotNetNuke.Application
         {
             get
             {
-                return _releaseMode;
+                return this._releaseMode;
             }
         }
     }

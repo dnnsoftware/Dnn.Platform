@@ -35,7 +35,7 @@ namespace DotNetNuke.Web.UI.WebControls
         protected INavigationManager NavigationManager { get; }
         public DnnRibbonBarTool()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Properties
@@ -48,15 +48,15 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if ((ViewState["ToolInfo"] == null))
+                if ((this.ViewState["ToolInfo"] == null))
                 {
-                    ViewState.Add("ToolInfo", new RibbonBarToolInfo());
+                    this.ViewState.Add("ToolInfo", new RibbonBarToolInfo());
                 }
-                return (RibbonBarToolInfo) ViewState["ToolInfo"];
+                return (RibbonBarToolInfo) this.ViewState["ToolInfo"];
             }
             set
             {
-                ViewState["ToolInfo"] = value;
+                this.ViewState["ToolInfo"] = value;
             }
         }
 
@@ -64,11 +64,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return Utilities.GetViewStateAsString(ViewState["NavigateUrl"], Null.NullString);
+                return Utilities.GetViewStateAsString(this.ViewState["NavigateUrl"], Null.NullString);
             }
             set
             {
-                ViewState["NavigateUrl"] = value;
+                this.ViewState["NavigateUrl"] = value;
             }
         }
 
@@ -76,11 +76,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return Utilities.GetViewStateAsString(ViewState["ToolCssClass"], Null.NullString);
+                return Utilities.GetViewStateAsString(this.ViewState["ToolCssClass"], Null.NullString);
             }
             set
             {
-                ViewState["ToolCssClass"] = value;
+                this.ViewState["ToolCssClass"] = value;
             }
         }
 
@@ -88,11 +88,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return Utilities.GetViewStateAsString(ViewState["Text"], Null.NullString);
+                return Utilities.GetViewStateAsString(this.ViewState["Text"], Null.NullString);
             }
             set
             {
-                ViewState["Text"] = value;
+                this.ViewState["Text"] = value;
             }
         }
 
@@ -100,11 +100,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return Utilities.GetViewStateAsString(ViewState["ToolTip"], Null.NullString);
+                return Utilities.GetViewStateAsString(this.ViewState["ToolTip"], Null.NullString);
             }
             set
             {
-                ViewState["ToolTip"] = value;
+                this.ViewState["ToolTip"] = value;
             }
         }
 
@@ -112,12 +112,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if ((_dnnLinkButton == null))
+                if ((this._dnnLinkButton == null))
                 {
                     // Appending _CPCommandBtn is also assumed in the RibbonBar.ascx. If changed, one would need to change in both places.
-                    _dnnLinkButton = new DnnTextButton {ID = ID + "_CPCommandBtn"};
+                    this._dnnLinkButton = new DnnTextButton {ID = this.ID + "_CPCommandBtn"};
                 }
-                return _dnnLinkButton;
+                return this._dnnLinkButton;
             }
         }
 
@@ -125,11 +125,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if ((_dnnLink == null))
+                if ((this._dnnLink == null))
                 {
-                    _dnnLink = new DnnTextLink();
+                    this._dnnLink = new DnnTextLink();
                 }
-                return _dnnLink;
+                return this._dnnLink;
             }
         }
 
@@ -137,9 +137,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (_allTools == null)
+                if (this._allTools == null)
                 {
-                    _allTools = new Dictionary<string, RibbonBarToolInfo>
+                    this._allTools = new Dictionary<string, RibbonBarToolInfo>
                                     {
 										//Framework
                                         {"PageSettings", new RibbonBarToolInfo("PageSettings", false, false, "", "", "", true)},
@@ -162,7 +162,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                     };
                 }
 
-                return _allTools;
+                return this._allTools;
             }
         }
 
@@ -178,13 +178,13 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ToolInfo.ToolName;
+                return this.ToolInfo.ToolName;
             }
             set
             {
-                if ((AllTools.ContainsKey(value)))
+                if ((this.AllTools.ContainsKey(value)))
                 {
-                    ToolInfo = AllTools[value];
+                    this.ToolInfo = this.AllTools[value];
                 }
                 else
                 {
@@ -199,62 +199,62 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void CreateChildControls()
         {
-            Controls.Clear();
-            Controls.Add(DnnLinkButton);
-            Controls.Add(DnnLink);
+            this.Controls.Clear();
+            this.Controls.Add(this.DnnLinkButton);
+            this.Controls.Add(this.DnnLink);
         }
 
         protected override void OnInit(EventArgs e)
         {
-            EnsureChildControls();
-            DnnLinkButton.Click += ControlPanelTool_OnClick;
+            this.EnsureChildControls();
+            this.DnnLinkButton.Click += this.ControlPanelTool_OnClick;
         }
 
         protected override void OnPreRender(EventArgs e)
         {
-            ProcessTool();
-            Visible = (DnnLink.Visible || DnnLinkButton.Visible);
+            this.ProcessTool();
+            this.Visible = (this.DnnLink.Visible || this.DnnLinkButton.Visible);
             base.OnPreRender(e);
         }
 
         public virtual void ControlPanelTool_OnClick(object sender, EventArgs e)
         {
-            switch (ToolInfo.ToolName)
+            switch (this.ToolInfo.ToolName)
             {
                 case "DeletePage":
-                    if ((HasToolPermissions("DeletePage")))
+                    if ((this.HasToolPermissions("DeletePage")))
                     {
                         string url = TestableGlobals.Instance.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=delete");
-                        Page.Response.Redirect(url, true);
+                        this.Page.Response.Redirect(url, true);
                     }
                     break;
                 case "CopyPermissionsToChildren":
-                    if ((HasToolPermissions("CopyPermissionsToChildren")))
+                    if ((this.HasToolPermissions("CopyPermissionsToChildren")))
                     {
                         TabController.CopyPermissionsToChildren(PortalSettings.ActiveTab, PortalSettings.ActiveTab.TabPermissions);
-                        Page.Response.Redirect(Page.Request.RawUrl);
+                        this.Page.Response.Redirect(this.Page.Request.RawUrl);
                     }
                     break;
                 case "CopyDesignToChildren":
-                    if ((HasToolPermissions("CopyDesignToChildren")))
+                    if ((this.HasToolPermissions("CopyDesignToChildren")))
                     {
                         TabController.CopyDesignToChildren(PortalSettings.ActiveTab, PortalSettings.ActiveTab.SkinSrc, PortalSettings.ActiveTab.ContainerSrc);
-                        Page.Response.Redirect(Page.Request.RawUrl);
+                        this.Page.Response.Redirect(this.Page.Request.RawUrl);
                     }
                     break;
                 case "ClearCache":
-                    if ((HasToolPermissions("ClearCache")))
+                    if ((this.HasToolPermissions("ClearCache")))
                     {
-                        ClearCache();
+                        this.ClearCache();
 						ClientResourceManager.ClearCache();
-                        Page.Response.Redirect(Page.Request.RawUrl);
+                        this.Page.Response.Redirect(this.Page.Request.RawUrl);
                     }
                     break;
                 case "RecycleApp":
-                    if ((HasToolPermissions("RecycleApp")))
+                    if ((this.HasToolPermissions("RecycleApp")))
                     {
-                        RestartApplication();
-                        Page.Response.Redirect(Page.Request.RawUrl);
+                        this.RestartApplication();
+                        this.Page.Response.Redirect(this.Page.Request.RawUrl);
                     }
                     break;
             }
@@ -266,62 +266,62 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected virtual void ProcessTool()
         {
-            DnnLink.Visible = false;
-            DnnLinkButton.Visible = false;
+            this.DnnLink.Visible = false;
+            this.DnnLinkButton.Visible = false;
 
-            if ((!string.IsNullOrEmpty(ToolInfo.ToolName)))
+            if ((!string.IsNullOrEmpty(this.ToolInfo.ToolName)))
             {
-                if ((ToolInfo.UseButton))
+                if ((this.ToolInfo.UseButton))
                 {
-                    DnnLinkButton.Visible = HasToolPermissions(ToolInfo.ToolName);
-                    DnnLinkButton.Enabled = EnableTool();
-                    DnnLinkButton.Localize = false;
+                    this.DnnLinkButton.Visible = this.HasToolPermissions(this.ToolInfo.ToolName);
+                    this.DnnLinkButton.Enabled = this.EnableTool();
+                    this.DnnLinkButton.Localize = false;
 
-                    DnnLinkButton.CssClass = ToolCssClass;
-                    DnnLinkButton.DisabledCssClass = ToolCssClass + " dnnDisabled";
+                    this.DnnLinkButton.CssClass = this.ToolCssClass;
+                    this.DnnLinkButton.DisabledCssClass = this.ToolCssClass + " dnnDisabled";
 
-                    DnnLinkButton.Text = GetText();
-                    DnnLinkButton.ToolTip = GetToolTip();
+                    this.DnnLinkButton.Text = this.GetText();
+                    this.DnnLinkButton.ToolTip = this.GetToolTip();
                 }
                 else
                 {
-                    DnnLink.Visible = HasToolPermissions(ToolInfo.ToolName);
-                    DnnLink.Enabled = EnableTool();
-                    DnnLink.Localize = false;
+                    this.DnnLink.Visible = this.HasToolPermissions(this.ToolInfo.ToolName);
+                    this.DnnLink.Enabled = this.EnableTool();
+                    this.DnnLink.Localize = false;
 
-                    if ((DnnLink.Enabled))
+                    if ((this.DnnLink.Enabled))
                     {
-                        DnnLink.NavigateUrl = BuildToolUrl();
+                        this.DnnLink.NavigateUrl = this.BuildToolUrl();
 
                         //can't find the page, disable it?
-                        if ((string.IsNullOrEmpty(DnnLink.NavigateUrl)))
+                        if ((string.IsNullOrEmpty(this.DnnLink.NavigateUrl)))
                         {
-                            DnnLink.Enabled = false;
+                            this.DnnLink.Enabled = false;
                         }
                         //create popup event
-                        else if (ToolInfo.ShowAsPopUp && PortalSettings.EnablePopUps)
+                        else if (this.ToolInfo.ShowAsPopUp && PortalSettings.EnablePopUps)
                         {
                             // Prevent PageSettings in a popup if SSL is enabled and enforced, which causes redirection/javascript broswer security issues.
-                            if (ToolInfo.ToolName == "PageSettings" || ToolInfo.ToolName == "CopyPage" || ToolInfo.ToolName == "NewPage")
+                            if (this.ToolInfo.ToolName == "PageSettings" || this.ToolInfo.ToolName == "CopyPage" || this.ToolInfo.ToolName == "NewPage")
                             {
                                 if (!(PortalSettings.SSLEnabled && PortalSettings.SSLEnforced))
                                 {
-                                    DnnLink.Attributes.Add("onclick", "return " + UrlUtils.PopUpUrl(DnnLink.NavigateUrl, this, PortalSettings, true, false));
+                                    this.DnnLink.Attributes.Add("onclick", "return " + UrlUtils.PopUpUrl(this.DnnLink.NavigateUrl, this, PortalSettings, true, false));
                                 }
                             }
                             else
                             {
-                                DnnLink.Attributes.Add("onclick", "return " + UrlUtils.PopUpUrl(DnnLink.NavigateUrl, this, PortalSettings, true, false));
+                                this.DnnLink.Attributes.Add("onclick", "return " + UrlUtils.PopUpUrl(this.DnnLink.NavigateUrl, this, PortalSettings, true, false));
                             }
                         }
                     }
 
-                    DnnLink.CssClass = ToolCssClass;
-                    DnnLink.DisabledCssClass = ToolCssClass + " dnnDisabled";
+                    this.DnnLink.CssClass = this.ToolCssClass;
+                    this.DnnLink.DisabledCssClass = this.ToolCssClass + " dnnDisabled";
 
-                    DnnLink.Text = GetText();
-                    DnnLink.ToolTip = GetToolTip();
-                    DnnLink.Target = ToolInfo.LinkWindowTarget;
+                    this.DnnLink.Text = this.GetText();
+                    this.DnnLink.ToolTip = this.GetToolTip();
+                    this.DnnLink.Target = this.ToolInfo.LinkWindowTarget;
                 }
             }
         }
@@ -330,7 +330,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             bool returnValue = true;
 
-            switch (ToolInfo.ToolName)
+            switch (this.ToolInfo.ToolName)
             {
                 case "DeletePage":
                     if ((TabController.IsSpecialTab(TabController.CurrentPage.TabID, PortalSettings.PortalId)))
@@ -340,8 +340,8 @@ namespace DotNetNuke.Web.UI.WebControls
                     break;
                 case "CopyDesignToChildren":
                 case "CopyPermissionsToChildren":
-                    returnValue = ActiveTabHasChildren();
-                    if ((returnValue && ToolInfo.ToolName == "CopyPermissionsToChildren"))
+                    returnValue = this.ActiveTabHasChildren();
+                    if ((returnValue && this.ToolInfo.ToolName == "CopyPermissionsToChildren"))
                     {
                         if ((PortalSettings.ActiveTab.IsSuperTab))
                         {
@@ -357,13 +357,13 @@ namespace DotNetNuke.Web.UI.WebControls
         protected virtual bool HasToolPermissions(string toolName)
         {
             bool isHostTool = false;
-            if ((ToolInfo.ToolName == toolName))
+            if ((this.ToolInfo.ToolName == toolName))
             {
-                isHostTool = ToolInfo.IsHostTool;
+                isHostTool = this.ToolInfo.IsHostTool;
             }
-            else if ((AllTools.ContainsKey(toolName)))
+            else if ((this.AllTools.ContainsKey(toolName)))
             {
-                isHostTool = AllTools[toolName].IsHostTool;
+                isHostTool = this.AllTools[toolName].IsHostTool;
             }
 
             if ((isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
@@ -409,13 +409,13 @@ namespace DotNetNuke.Web.UI.WebControls
                     //if it has a module definition, look it up and check permissions
                     //if it doesn't exist, assume no permission
                     string friendlyName = "";
-                    if ((ToolInfo.ToolName == toolName))
+                    if ((this.ToolInfo.ToolName == toolName))
                     {
-                        friendlyName = ToolInfo.ModuleFriendlyName;
+                        friendlyName = this.ToolInfo.ModuleFriendlyName;
                     }
-                    else if ((AllTools.ContainsKey(toolName)))
+                    else if ((this.AllTools.ContainsKey(toolName)))
                     {
-                        friendlyName = AllTools[toolName].ModuleFriendlyName;
+                        friendlyName = this.AllTools[toolName].ModuleFriendlyName;
                     }
 
                     if ((!string.IsNullOrEmpty(friendlyName)))
@@ -445,18 +445,18 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected virtual string BuildToolUrl()
         {
-            if ((ToolInfo.IsHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
+            if ((this.ToolInfo.IsHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser))
             {
                 return "javascript:void(0);";
             }
 
-            if ((!string.IsNullOrEmpty(NavigateUrl)))
+            if ((!string.IsNullOrEmpty(this.NavigateUrl)))
             {
-                return NavigateUrl;
+                return this.NavigateUrl;
             }
 
             string returnValue = "javascript:void(0);";
-            switch (ToolInfo.ToolName)
+            switch (this.ToolInfo.ToolName)
             {
                 case "PageSettings":
                     returnValue = TestableGlobals.Instance.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=edit");
@@ -475,7 +475,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     break;
 
                 case "ExportPage":
-                    returnValue = NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "ExportTab");
+                    returnValue = this.NavigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "ExportTab");
                     break;
 
                 case "NewPage":
@@ -493,10 +493,10 @@ namespace DotNetNuke.Web.UI.WebControls
                     returnValue = TestableGlobals.Instance.NavigateURL(PortalSettings.ActiveTab.TabID, "WebUpload");
                     break;
                 default:
-                    if ((!string.IsNullOrEmpty(ToolInfo.ModuleFriendlyName)))
+                    if ((!string.IsNullOrEmpty(this.ToolInfo.ModuleFriendlyName)))
                     {
                         var additionalParams = new List<string>();
-                        returnValue = GetTabURL(additionalParams);
+                        returnValue = this.GetTabURL(additionalParams);
                     }
                     break;
             }
@@ -505,40 +505,40 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected virtual string GetText()
         {
-            if ((string.IsNullOrEmpty(Text)))
+            if ((string.IsNullOrEmpty(this.Text)))
             {
-                return GetString(string.Format("Tool.{0}.Text", ToolInfo.ToolName));
+                return this.GetString(string.Format("Tool.{0}.Text", this.ToolInfo.ToolName));
             }
 
-            return Text;
+            return this.Text;
         }
 
         protected virtual string GetToolTip()
         {
-            if ((ToolInfo.ToolName == "DeletePage"))
+            if ((this.ToolInfo.ToolName == "DeletePage"))
             {
                 if ((TabController.IsSpecialTab(TabController.CurrentPage.TabID, PortalSettings.PortalId)))
                 {
-                    return GetString("Tool.DeletePage.Special.ToolTip");
+                    return this.GetString("Tool.DeletePage.Special.ToolTip");
                 }
             }
 
-            if ((string.IsNullOrEmpty(Text)))
+            if ((string.IsNullOrEmpty(this.Text)))
             {
-                string tip = GetString(string.Format("Tool.{0}.ToolTip", ToolInfo.ToolName));
+                string tip = this.GetString(string.Format("Tool.{0}.ToolTip", this.ToolInfo.ToolName));
                 if ((string.IsNullOrEmpty(tip)))
                 {
-                    tip = GetString(string.Format("Tool.{0}.Text", ToolInfo.ToolName));
+                    tip = this.GetString(string.Format("Tool.{0}.Text", this.ToolInfo.ToolName));
                 }
                 return tip;
             }
 
-            return ToolTip;
+            return this.ToolTip;
         }
 
         protected virtual string GetTabURL(List<string> additionalParams)
         {
-            int portalId = (ToolInfo.IsHostTool) ? Null.NullInteger : PortalSettings.PortalId;
+            int portalId = (this.ToolInfo.IsHostTool) ? Null.NullInteger : PortalSettings.PortalId;
 
             string strURL = string.Empty;
 
@@ -547,22 +547,22 @@ namespace DotNetNuke.Web.UI.WebControls
                 additionalParams = new List<string>();
             }
 
-            var moduleInfo = ModuleController.Instance.GetModuleByDefinition(portalId, ToolInfo.ModuleFriendlyName);
+            var moduleInfo = ModuleController.Instance.GetModuleByDefinition(portalId, this.ToolInfo.ModuleFriendlyName);
 
             if (((moduleInfo != null)))
             {
                 bool isHostPage = (portalId == Null.NullInteger);
-                if ((!string.IsNullOrEmpty(ToolInfo.ControlKey)))
+                if ((!string.IsNullOrEmpty(this.ToolInfo.ControlKey)))
                 {
                     additionalParams.Insert(0, "mid=" + moduleInfo.ModuleID);
-                    if (ToolInfo.ShowAsPopUp && PortalSettings.EnablePopUps)
+                    if (this.ToolInfo.ShowAsPopUp && PortalSettings.EnablePopUps)
                     {
                         additionalParams.Add("popUp=true");
                     }
                 }
 
                 string currentCulture = Thread.CurrentThread.CurrentCulture.Name;
-                strURL = NavigationManager.NavigateURL(moduleInfo.TabID, isHostPage, PortalSettings, ToolInfo.ControlKey, currentCulture, additionalParams.ToArray());
+                strURL = this.NavigationManager.NavigateURL(moduleInfo.TabID, isHostPage, PortalSettings, this.ToolInfo.ControlKey, currentCulture, additionalParams.ToArray());
             }
 
             return strURL;
@@ -598,7 +598,7 @@ namespace DotNetNuke.Web.UI.WebControls
         protected virtual void RestartApplication()
         {
             var log = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
-            log.AddProperty("Message", GetString("UserRestart"));
+            log.AddProperty("Message", this.GetString("UserRestart"));
             LogController.Instance.AddLog(log);
             Config.Touch();
         }

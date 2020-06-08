@@ -26,7 +26,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return m_strProviderName;
+                return this.m_strProviderName;
             }
             set
             {
@@ -37,24 +37,24 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return m_objControl;
+                return this.m_objControl;
             }
         }
 
         private void Page_Load(Object sender, EventArgs e)
         {
-            cmdGo.Attributes.Add("onclick", "if (cmdGo_OnClick(dnn.dom.getById('" + Control.NavigationControl.ClientID + "')) == false) return false;");
+            this.cmdGo.Attributes.Add("onclick", "if (cmdGo_OnClick(dnn.dom.getById('" + this.Control.NavigationControl.ClientID + "')) == false) return false;");
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            cmdGo.Click += cmdGo_Click;
+            this.cmdGo.Click += this.cmdGo_Click;
 
             try
             {
-                BindDropDown();
+                this.BindDropDown();
             }
             catch (Exception exc) //Module failed to load
             {
@@ -66,10 +66,10 @@ namespace DotNetNuke.UI.Containers
         {
             try
             {
-                var cboActions = (DropDownList) Control.NavigationControl;
+                var cboActions = (DropDownList) this.Control.NavigationControl;
                 if (cboActions.SelectedIndex != -1)
                 {
-                    ProcessAction(cboActions.SelectedItem.Value);
+                    this.ProcessAction(cboActions.SelectedItem.Value);
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -81,37 +81,37 @@ namespace DotNetNuke.UI.Containers
         public void BindDropDown()
         {
             DNNNodeCollection objNodes;
-            objNodes = Navigation.GetActionNodes(ActionRoot, this);
+            objNodes = Navigation.GetActionNodes(this.ActionRoot, this);
             foreach (DNNNode objNode in objNodes)
             {
-                ProcessNodes(objNode);
+                this.ProcessNodes(objNode);
             }
-            Control.Bind(objNodes);
+            this.Control.Bind(objNodes);
 
-            Visible = DisplayControl(objNodes);
+            this.Visible = this.DisplayControl(objNodes);
         }
 
         private void ProcessNodes(DNNNode objParent)
         {
             if (!String.IsNullOrEmpty(objParent.JSFunction))
             {
-                ClientAPI.RegisterClientVariable(Page, "__dnn_CSAction_" + Control.NavigationControl.ClientID + "_" + objParent.ID, objParent.JSFunction, true);
+                ClientAPI.RegisterClientVariable(this.Page, "__dnn_CSAction_" + this.Control.NavigationControl.ClientID + "_" + objParent.ID, objParent.JSFunction, true);
             }
             objParent.ClickAction = eClickAction.None; //since GO button is handling actions dont allow selected index change fire postback
 
             foreach (DNNNode objNode in objParent.DNNNodes)
             {
-                ProcessNodes(objNode);
+                this.ProcessNodes(objNode);
             }
         }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            m_objControl = NavigationProvider.Instance(ProviderName);
-            Control.ControlID = "ctl" + ID;
-            Control.Initialize();
-            spActions.Controls.Add(Control.NavigationControl);
+            this.m_objControl = NavigationProvider.Instance(this.ProviderName);
+            this.Control.ControlID = "ctl" + this.ID;
+            this.Control.Initialize();
+            this.spActions.Controls.Add(this.Control.NavigationControl);
         }
     }
 }

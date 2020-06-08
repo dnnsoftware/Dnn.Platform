@@ -49,14 +49,14 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return _CustomAttributes;
+                return this._CustomAttributes;
             }
             set
             {
-                _CustomAttributes = value;
-                if ((_CustomAttributes != null) && _CustomAttributes.Length > 0)
+                this._CustomAttributes = value;
+                if ((this._CustomAttributes != null) && this._CustomAttributes.Length > 0)
                 {
-                    OnAttributesChanged();
+                    this.OnAttributesChanged();
                 }
             }
         }
@@ -158,7 +158,7 @@ namespace DotNetNuke.UI.WebControls
 	    {
 		    get
 		    {
-			    return ClientID;
+			    return this.ClientID;
 		    }
 	    }
 
@@ -176,11 +176,11 @@ namespace DotNetNuke.UI.WebControls
         public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             bool dataChanged = false;
-            string presentValue = StringValue;
+            string presentValue = this.StringValue;
             string postedValue = postCollection[postDataKey];
             if (!presentValue.Equals(postedValue))
             {
-                Value = postedValue;
+                this.Value = postedValue;
                 dataChanged = true;
             }
             return dataChanged;
@@ -194,7 +194,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public void RaisePostDataChangedEvent()
         {
-            OnDataChanged(EventArgs.Empty);
+            this.OnDataChanged(EventArgs.Empty);
         }
 
         #endregion
@@ -237,9 +237,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected virtual void OnItemAdded(PropertyEditorEventArgs e)
         {
-            if (ItemAdded != null)
+            if (this.ItemAdded != null)
             {
-                ItemAdded(this, e);
+                this.ItemAdded(this, e);
             }
         }
 
@@ -250,9 +250,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected virtual void OnItemDeleted(PropertyEditorEventArgs e)
         {
-            if (ItemDeleted != null)
+            if (this.ItemDeleted != null)
             {
-                ItemDeleted(this, e);
+                this.ItemDeleted(this, e);
             }
         }
 
@@ -264,9 +264,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected virtual void OnValueChanged(PropertyEditorEventArgs e)
         {
-            if (ValueChanged != null)
+            if (this.ValueChanged != null)
             {
-                ValueChanged(this, e);
+                this.ValueChanged(this, e);
             }
         }
 
@@ -278,9 +278,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected virtual void RenderViewMode(HtmlTextWriter writer)
         {
-            string propValue = Page.Server.HtmlDecode(Convert.ToString(Value));
+            string propValue = this.Page.Server.HtmlDecode(Convert.ToString(this.Value));
 
-            ControlStyle.AddAttributesToRender(writer);
+            this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
             var security = PortalSecurity.Instance;
             writer.Write(security.InputFilter(propValue, PortalSecurity.FilterFlag.NoScripting));
@@ -295,13 +295,13 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected virtual void RenderEditMode(HtmlTextWriter writer)
         {
-            string propValue = Convert.ToString(Value);
+            string propValue = Convert.ToString(this.Value);
 
-            ControlStyle.AddAttributesToRender(writer);
+            this.ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
             writer.AddAttribute(HtmlTextWriterAttribute.Value, propValue);
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
-            writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();
         }
@@ -314,14 +314,14 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void Render(HtmlTextWriter writer)
         {
-            var strOldValue = OldValue as string;
-            if (EditMode == PropertyEditorMode.Edit || (Required && string.IsNullOrEmpty(strOldValue)))
+            var strOldValue = this.OldValue as string;
+            if (this.EditMode == PropertyEditorMode.Edit || (this.Required && string.IsNullOrEmpty(strOldValue)))
             {
-                RenderEditMode(writer);
+                this.RenderEditMode(writer);
             }
             else
             {
-                RenderViewMode(writer);
+                this.RenderViewMode(writer);
             }
         }
 		

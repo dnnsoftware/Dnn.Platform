@@ -33,20 +33,20 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
         }
         public UserModelBase(UserInfo userInfo)
         {
-            Email = userInfo.Email;
-            LastLogin = userInfo.Membership.LastLoginDate.ToPromptShortDateString();
-            UserId = userInfo.UserID;
-            Username = userInfo.Username;
-            IsDeleted = userInfo.IsDeleted;
-            IsAuthorized = userInfo.Membership.Approved;
-            IsLockedOut = userInfo.Membership.LockedOut;
+            this.Email = userInfo.Email;
+            this.LastLogin = userInfo.Membership.LastLoginDate.ToPromptShortDateString();
+            this.UserId = userInfo.UserID;
+            this.Username = userInfo.Username;
+            this.IsDeleted = userInfo.IsDeleted;
+            this.IsAuthorized = userInfo.Membership.Approved;
+            this.IsLockedOut = userInfo.Membership.LockedOut;
         }
         #endregion
 
         #region Command Links
-        public string __Email => $"get-user '{Email}'";
-        public string __UserId => $"get-user {UserId}";
-        public string __Username => $"get-user '{Username}'";
+        public string __Email => $"get-user '{this.Email}'";
+        public string __UserId => $"get-user {this.UserId}";
+        public string __Username => $"get-user '{this.Username}'";
 
         #endregion
 

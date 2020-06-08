@@ -41,16 +41,16 @@ namespace DotNetNuke.UI.UserControls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            cmdCancel.Click += cmdCancel_Click;
+            this.cmdCancel.Click += this.cmdCancel_Click;
             int moduleControlId = Null.NullInteger;
 
-            if (Request.QueryString["ctlid"] != null)
+            if (this.Request.QueryString["ctlid"] != null)
             {
-                moduleControlId = Int32.Parse(Request.QueryString["ctlid"]);
+                moduleControlId = Int32.Parse(this.Request.QueryString["ctlid"]);
             }
             else if (Host.EnableModuleOnLineHelp)
             {
-                helpFrame.Text = string.Format("<iframe src='{0}' id='helpFrame' width='100%' height='500'></iframe>", Host.HelpURL);
+                this.helpFrame.Text = string.Format("<iframe src='{0}' id='helpFrame' width='100%' height='500'></iframe>", Host.HelpURL);
             }
 
             ModuleControlInfo objModuleControl = ModuleControlController.GetModuleControl(moduleControlId);
@@ -58,7 +58,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (!string.IsNullOrEmpty(objModuleControl.HelpURL) && Host.EnableModuleOnLineHelp)
                 {
-                    helpFrame.Text = string.Format("<iframe src='{0}' id='helpFrame' width='100%' height='500'></iframe>", objModuleControl.HelpURL); ;
+                    this.helpFrame.Text = string.Format("<iframe src='{0}' id='helpFrame' width='100%' height='500'></iframe>", objModuleControl.HelpURL); ;
                 }
                 else
                 {
@@ -66,26 +66,26 @@ namespace DotNetNuke.UI.UserControls
                     string localResourceFile = objModuleControl.ControlSrc.Replace(fileName, Localization.LocalResourceDirectory + "/" + fileName);
                     if (!String.IsNullOrEmpty(Localization.GetString(ModuleActionType.HelpText, localResourceFile)))
                     {
-                        lblHelp.Text = Localization.GetString(ModuleActionType.HelpText, localResourceFile);
+                        this.lblHelp.Text = Localization.GetString(ModuleActionType.HelpText, localResourceFile);
                     }
                     else
                     {
-                        lblHelp.Text = Localization.GetString("lblHelp.Text", Localization.GetResourceFile(this, MyFileName));
+                        this.lblHelp.Text = Localization.GetString("lblHelp.Text", Localization.GetResourceFile(this, this.MyFileName));
                     }
                 }
 
-                _key = objModuleControl.ControlKey;
+                this._key = objModuleControl.ControlKey;
                 //display module info to Host users
-                if (UserInfo.IsSuperUser)
+                if (this.UserInfo.IsSuperUser)
                 {
-                    string strInfo = Localization.GetString("lblInfo.Text", Localization.GetResourceFile(this, MyFileName));
+                    string strInfo = Localization.GetString("lblInfo.Text", Localization.GetResourceFile(this, this.MyFileName));
                     strInfo = strInfo.Replace("[CONTROL]", objModuleControl.ControlKey);
                     strInfo = strInfo.Replace("[SRC]", objModuleControl.ControlSrc);
                     ModuleDefinitionInfo objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
                     if (objModuleDefinition != null)
                     {
                         strInfo = strInfo.Replace("[DEFINITION]", objModuleDefinition.FriendlyName);
-                        DesktopModuleInfo objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, PortalId);
+                        DesktopModuleInfo objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, this.PortalId);
                         if (objDesktopModule != null)
                         {
                             PackageInfo objPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == objDesktopModule.PackageID);
@@ -100,20 +100,20 @@ namespace DotNetNuke.UI.UserControls
                             }
                         }
                     }
-                    lblInfo.Text = Server.HtmlDecode(strInfo);
+                    this.lblInfo.Text = this.Server.HtmlDecode(strInfo);
                 }
 
-                cmdHelp.Visible = !string.IsNullOrEmpty(objModuleControl.HelpURL);
+                this.cmdHelp.Visible = !string.IsNullOrEmpty(objModuleControl.HelpURL);
             }
-            if (Page.IsPostBack == false)
+            if (this.Page.IsPostBack == false)
             {
-                if (Request.UrlReferrer != null)
+                if (this.Request.UrlReferrer != null)
                 {
-                    ViewState["UrlReferrer"] = Convert.ToString(Request.UrlReferrer);
+                    this.ViewState["UrlReferrer"] = Convert.ToString(this.Request.UrlReferrer);
                 }
                 else
                 {
-                    ViewState["UrlReferrer"] = "";
+                    this.ViewState["UrlReferrer"] = "";
                 }
             }
         }
@@ -128,7 +128,7 @@ namespace DotNetNuke.UI.UserControls
         {
             try
             {
-                Response.Redirect(Convert.ToString(ViewState["UrlReferrer"]), true);
+                this.Response.Redirect(Convert.ToString(this.ViewState["UrlReferrer"]), true);
             }
             catch (Exception exc) //Module failed to load
             {

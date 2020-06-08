@@ -32,7 +32,7 @@ namespace DotNetNuke.Services.Search.Entities
         
         public SearchResults()
         {
-            Results = new List<SearchResult>();
+            this.Results = new List<SearchResult>();
         }
     }
 }

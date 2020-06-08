@@ -22,7 +22,7 @@ namespace Dnn.AuthServices.Jwt.Services
         [HttpGet]
         public IHttpActionResult Logout()
         {
-            return JwtController.Instance.LogoutUser(Request) ? (IHttpActionResult)Ok(new { success = true}) : Unauthorized();
+            return JwtController.Instance.LogoutUser(this.Request) ? (IHttpActionResult)this.Ok(new { success = true}) : this.Unauthorized();
         }
 
         /// <summary>
@@ -36,8 +36,8 @@ namespace Dnn.AuthServices.Jwt.Services
         [AllowAnonymous]
         public IHttpActionResult Login(LoginData loginData)
         {
-            var result = JwtController.Instance.LoginUser(Request, loginData);
-            return ReplyWith(result);
+            var result = JwtController.Instance.LoginUser(this.Request, loginData);
+            return this.ReplyWith(result);
         }
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace Dnn.AuthServices.Jwt.Services
         [AllowAnonymous]
         public IHttpActionResult ExtendToken(RenewalDto rtoken)
         {
-            var result = JwtController.Instance.RenewToken(Request, rtoken.RenewalToken);
-            return ReplyWith(result);
+            var result = JwtController.Instance.RenewToken(this.Request, rtoken.RenewalToken);
+            return this.ReplyWith(result);
         }
 
         #endregion
@@ -65,16 +65,16 @@ namespace Dnn.AuthServices.Jwt.Services
         {
             if (result == null)
             {
-                return Unauthorized();
+                return this.Unauthorized();
             }
 
             if (!string.IsNullOrEmpty(result.Error))
             {
                 //HACK: this will return the scheme with the error message as a challenge; non-standard method
-                return Unauthorized(new AuthenticationHeaderValue(JwtController.AuthScheme, result.Error));
+                return this.Unauthorized(new AuthenticationHeaderValue(JwtController.AuthScheme, result.Error));
             }
 
-            return Ok(result);
+            return this.Ok(result);
         }
 
         #endregion
@@ -87,7 +87,7 @@ namespace Dnn.AuthServices.Jwt.Services
         {
             var identity = System.Threading.Thread.CurrentPrincipal.Identity;
             var reply = $"Hello {identity.Name}! You are authenticated through {identity.AuthenticationType}.";
-            return Ok(new { reply });
+            return this.Ok(new { reply });
         }
 
         // Test API Method 2
@@ -98,7 +98,7 @@ namespace Dnn.AuthServices.Jwt.Services
             var identity = System.Threading.Thread.CurrentPrincipal.Identity;
             var reply = $"Hello {identity.Name}! You are authenticated through {identity.AuthenticationType}." +
                         $" You said: ({something.Text})";
-            return Ok(new { reply });
+            return this.Ok(new { reply });
         }
 
         [JsonObject]

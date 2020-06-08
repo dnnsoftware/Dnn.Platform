@@ -30,8 +30,8 @@ namespace DotNetNuke.Web.InternalServices
         [HttpGet]
         public HttpResponseMessage Search(string q)
         {
-            var results = RegistrationProfileController.Instance.Search(PortalController.GetEffectivePortalId(PortalSettings.PortalId), q);
-            return Request.CreateResponse(HttpStatusCode.OK,
+            var results = RegistrationProfileController.Instance.Search(PortalController.GetEffectivePortalId(this.PortalSettings.PortalId), q);
+            return this.Request.CreateResponse(HttpStatusCode.OK,
                         results.OrderBy(sr => sr)
                         .Select(field => new { id = field, name = field })
                     );
@@ -44,13 +44,13 @@ namespace DotNetNuke.Web.InternalServices
             bool modified;
 
             //Clean Url
-            var options = UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(PortalSettings.PortalId));
+            var options = UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(this.PortalSettings.PortalId));
             var cleanUrl = FriendlyUrlController.CleanNameForUrl(vanityUrl.Url, options, out modified);
 
 
             if (modified)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, 
+                return this.Request.CreateResponse(HttpStatusCode.OK, 
                     new {
                             Result = "warning",
                             Title = Localization.GetString("CleanWarningTitle", Localization.SharedResourceFile),
@@ -60,12 +60,12 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             //Validate for uniqueness
-            var uniqueUrl = FriendlyUrlController.ValidateUrl(cleanUrl, -1, PortalSettings, out modified);
+            var uniqueUrl = FriendlyUrlController.ValidateUrl(cleanUrl, -1, this.PortalSettings, out modified);
 
 
             if (modified)
             {
-                return Request.CreateResponse(HttpStatusCode.OK,
+                return this.Request.CreateResponse(HttpStatusCode.OK,
                                               new
                                                   {
                                                       Result = "warning",
@@ -75,14 +75,14 @@ namespace DotNetNuke.Web.InternalServices
                                                   });
             }
 
-            var user = PortalSettings.UserInfo;
+            var user = this.PortalSettings.UserInfo;
             user.VanityUrl = uniqueUrl;
-            UserController.UpdateUser(PortalSettings.PortalId, user);
+            UserController.UpdateUser(this.PortalSettings.PortalId, user);
 
-            DataCache.RemoveCache(string.Format(CacheController.VanityUrlLookupKey, PortalSettings.PortalId));
+            DataCache.RemoveCache(string.Format(CacheController.VanityUrlLookupKey, this.PortalSettings.PortalId));
 
             //Url is clean and validated so we can update the User
-            return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
         
         public class VanityUrlDTO
@@ -97,7 +97,7 @@ namespace DotNetNuke.Web.InternalServices
             string searchString = HttpContext.Current.Request.Params["SearchString"].NormalizeString();
             string propertyName = HttpContext.Current.Request.Params["PropName"].NormalizeString();
             int portalId = int.Parse(HttpContext.Current.Request.Params["PortalId"]);
-            return Request.CreateResponse(HttpStatusCode.OK, Entities.Profile.ProfileController.SearchProfilePropertyValues(portalId, propertyName, searchString));
+            return this.Request.CreateResponse(HttpStatusCode.OK, Entities.Profile.ProfileController.SearchProfilePropertyValues(portalId, propertyName, searchString));
         }
 
     }

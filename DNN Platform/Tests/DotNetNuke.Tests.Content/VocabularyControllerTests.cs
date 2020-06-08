@@ -33,7 +33,7 @@ namespace DotNetNuke.Tests.Content
         public void SetUp()
         {
             //Register MockCachingProvider
-            mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
             MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(String.Empty);
         }
 
@@ -149,7 +149,7 @@ namespace DotNetNuke.Tests.Content
             vocabularyController.AddVocabulary(vocabulary);
 
             //Assert
-            mockCache.Verify(cache => cache.Remove(Constants.VOCABULARY_CacheKey));
+            this.mockCache.Verify(cache => cache.Remove(Constants.VOCABULARY_CacheKey));
         }
 
         #endregion
@@ -212,7 +212,7 @@ namespace DotNetNuke.Tests.Content
             vocabularyController.DeleteVocabulary(vocabulary);
 
             //Assert
-            mockCache.Verify(cache => cache.Remove(Constants.VOCABULARY_CacheKey));
+            this.mockCache.Verify(cache => cache.Remove(Constants.VOCABULARY_CacheKey));
         }
 
         #endregion
@@ -337,7 +337,7 @@ namespace DotNetNuke.Tests.Content
             vocabularyController.UpdateVocabulary(vocabulary);
 
             //Assert
-            mockCache.Verify(cache => cache.Remove(Constants.VOCABULARY_CacheKey));
+            this.mockCache.Verify(cache => cache.Remove(Constants.VOCABULARY_CacheKey));
         }
 
         #endregion

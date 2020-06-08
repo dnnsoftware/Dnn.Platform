@@ -64,23 +64,23 @@ namespace DotNetNuke.Web.UI.WebControls
         public DnnPaswordStrengthOptions()
         {
             // all the PasswordStrength related resources are located under the Website\App_GlobalResources\WebControls.resx
-            MinLengthText = Utilities.GetLocalizedString("PasswordStrengthMinLength");
-            WeakText = Utilities.GetLocalizedString("PasswordStrengthWeak");
-            FairText = Utilities.GetLocalizedString("PasswordStrengthFair"); ;
-            StrongText = Utilities.GetLocalizedString("PasswordStrengthStrong"); ;
+            this.MinLengthText = Utilities.GetLocalizedString("PasswordStrengthMinLength");
+            this.WeakText = Utilities.GetLocalizedString("PasswordStrengthWeak");
+            this.FairText = Utilities.GetLocalizedString("PasswordStrengthFair"); ;
+            this.StrongText = Utilities.GetLocalizedString("PasswordStrengthStrong"); ;
 
-            CriteriaAtLeastNCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNChars");
-            CriteriaAtLeastNSpecialCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNSpecialChars");
-            CriteriaValidationExpressionText = Utilities.GetLocalizedString("CriteriaValidationExpression");
+            this.CriteriaAtLeastNCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNChars");
+            this.CriteriaAtLeastNSpecialCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNSpecialChars");
+            this.CriteriaValidationExpressionText = Utilities.GetLocalizedString("CriteriaValidationExpression");
             
-			PasswordRulesHeadText = Utilities.GetLocalizedString("PasswordRulesHeadText");
+			this.PasswordRulesHeadText = Utilities.GetLocalizedString("PasswordRulesHeadText");
 
-            WeakColor = "#ed1e24";
-            FairColor = "#f6d50a";
-            StrongColor = "#69bd44";
+            this.WeakColor = "#ed1e24";
+            this.FairColor = "#f6d50a";
+            this.StrongColor = "#69bd44";
 
-            LabelCss = "min-length-text";
-            MeterCss = "meter";
+            this.LabelCss = "min-length-text";
+            this.MeterCss = "meter";
         }
 
         /// <summary>
@@ -93,14 +93,14 @@ namespace DotNetNuke.Web.UI.WebControls
             int portalId = (PortalController.Instance.GetCurrentPortalSettings()) != null ? (PortalController.Instance.GetCurrentPortalSettings().PortalId) : -1;
             var settings = new MembershipPasswordSettings(portalId);
 
-            MinLength = settings.MinPasswordLength;
-            CriteriaAtLeastNCharsText = string.Format(CriteriaAtLeastNCharsText, MinLength);
+            this.MinLength = settings.MinPasswordLength;
+            this.CriteriaAtLeastNCharsText = string.Format(this.CriteriaAtLeastNCharsText, this.MinLength);
 
-            MinNumberOfSpecialChars = settings.MinNonAlphanumericCharacters;
-            CriteriaAtLeastNSpecialCharsText = string.Format(CriteriaAtLeastNSpecialCharsText, MinNumberOfSpecialChars);
+            this.MinNumberOfSpecialChars = settings.MinNonAlphanumericCharacters;
+            this.CriteriaAtLeastNSpecialCharsText = string.Format(this.CriteriaAtLeastNSpecialCharsText, this.MinNumberOfSpecialChars);
 
-            ValidationExpression = settings.ValidationExpression;
-            CriteriaValidationExpressionText = string.Format(CriteriaValidationExpressionText, ValidationExpression);
+            this.ValidationExpression = settings.ValidationExpression;
+            this.CriteriaValidationExpressionText = string.Format(this.CriteriaValidationExpressionText, this.ValidationExpression);
         }
     }
 }

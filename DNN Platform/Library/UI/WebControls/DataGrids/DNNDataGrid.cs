@@ -40,9 +40,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         private void OnItemCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
         {
-            if (ItemCheckedChanged != null)
+            if (this.ItemCheckedChanged != null)
             {
-                ItemCheckedChanged(sender, e);
+                this.ItemCheckedChanged(sender, e);
             }
         }
 
@@ -57,13 +57,13 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void OnDataBinding(EventArgs e)
         {
-            foreach (DataGridColumn column in Columns)
+            foreach (DataGridColumn column in this.Columns)
             {
                 if (ReferenceEquals(column.GetType(), typeof (CheckBoxColumn)))
                 {
 					//Manage CheckBox column events
                     var cbColumn = (CheckBoxColumn) column;
-                    cbColumn.CheckedChanged += OnItemCheckedChanged;
+                    cbColumn.CheckedChanged += this.OnItemCheckedChanged;
                 }
             }
         }

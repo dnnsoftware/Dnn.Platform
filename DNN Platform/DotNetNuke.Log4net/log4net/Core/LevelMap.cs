@@ -75,7 +75,7 @@ namespace log4net.Core
 		public void Clear()
 		{
 			// Clear all current levels
-			m_mapName2Level.Clear();
+			this.m_mapName2Level.Clear();
 		}
 
 		/// <summary>
@@ -101,7 +101,7 @@ namespace log4net.Core
 
 				lock(this)
 				{
-					return (Level)m_mapName2Level[name];
+					return (Level)this.m_mapName2Level[name];
 				}
 			}
 		}
@@ -119,7 +119,7 @@ namespace log4net.Core
 		/// <seealso cref="M:Add(string,int,string)"/>
 		public void Add(string name, int value)
 		{
-			Add(name, value, null);
+			this.Add(name, value, null);
 		}
 
 		/// <summary>
@@ -149,7 +149,7 @@ namespace log4net.Core
 				displayName = name;
 			}
 
-			Add(new Level(value, name, displayName));
+			this.Add(new Level(value, name, displayName));
 		}
 
 		/// <summary>
@@ -169,7 +169,7 @@ namespace log4net.Core
 			}
 			lock(this)
 			{
-				m_mapName2Level[level.Name] = level;
+				this.m_mapName2Level[level.Name] = level;
 			}
 		}
 
@@ -188,7 +188,7 @@ namespace log4net.Core
 			{
 				lock(this)
 				{
-					return new LevelCollection(m_mapName2Level.Values);
+					return new LevelCollection(this.m_mapName2Level.Values);
 				}
 			}
 		}
@@ -220,10 +220,10 @@ namespace log4net.Core
 
 			lock(this)
 			{
-				Level level = (Level)m_mapName2Level[defaultLevel.Name];
+				Level level = (Level)this.m_mapName2Level[defaultLevel.Name];
 				if (level == null)
 				{
-					m_mapName2Level[defaultLevel.Name] = defaultLevel;
+					this.m_mapName2Level[defaultLevel.Name] = defaultLevel;
 					return defaultLevel;
 				}
 				return level;

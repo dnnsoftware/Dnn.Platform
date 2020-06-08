@@ -17,16 +17,16 @@ namespace DotNetNuke.Web.Api
 
         public SupportedModulesAttribute(string supportedModules)
         {
-            _supportedModules = supportedModules.Split(new[] { ',' });
+            this._supportedModules = supportedModules.Split(new[] { ',' });
         }
 
         public override bool IsAuthorized(AuthFilterContext context)
         {
-            var module = FindModuleInfo(context.ActionContext.Request);
+            var module = this.FindModuleInfo(context.ActionContext.Request);
 
             if (module != null)
             {
-                return ModuleIsSupported(module);
+                return this.ModuleIsSupported(module);
             }
 
             return false;
@@ -34,7 +34,7 @@ namespace DotNetNuke.Web.Api
 
         private bool ModuleIsSupported(ModuleInfo module)
         {
-            return _supportedModules.Contains(module.DesktopModule.ModuleName);
+            return this._supportedModules.Contains(module.DesktopModule.ModuleName);
         }
 
         protected virtual ModuleInfo FindModuleInfo(HttpRequestMessage request)

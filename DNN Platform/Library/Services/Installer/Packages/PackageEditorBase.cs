@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Installer.Packages
         private PackageInfo _Package;
         private int _PackageID = Null.NullInteger;
 
-        protected string DisplayMode => (Request.QueryString["Display"] ?? "").ToLowerInvariant();
+        protected string DisplayMode => (this.Request.QueryString["Display"] ?? "").ToLowerInvariant();
 
         protected virtual string EditorID
         {
@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             get
             {
-                return ModuleContext.PortalSettings.ActiveTab.IsSuperTab;
+                return this.ModuleContext.PortalSettings.ActiveTab.IsSuperTab;
             }
         }
 
@@ -46,11 +46,11 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             get
             {
-                if (_Package == null)
+                if (this._Package == null)
                 {
-                    _Package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.PackageID == PackageID); ;
+                    this._Package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.PackageID == this.PackageID); ;
                 }
-                return _Package;
+                return this._Package;
             }
         }
 
@@ -66,11 +66,11 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             get
             {
-                return _PackageID;
+                return this._PackageID;
             }
             set
             {
-                _PackageID = value;
+                this._PackageID = value;
             }
         }
 
@@ -84,11 +84,11 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             get
             {
-                return _IsWizard;
+                return this._IsWizard;
             }
             set
             {
-                _IsWizard = value;
+                this._IsWizard = value;
             }
         }
 
@@ -114,7 +114,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         protected override void OnInit(EventArgs e)
         {
-            ID = EditorID;
+            this.ID = this.EditorID;
             base.OnInit(e);
         }
 

@@ -11,10 +11,10 @@ namespace DotNetNuke.Entities.Urls
     {
         public DupKeyCheck(string tabKey, string tabIdOriginal, string tabPath, bool isDeleted)
         {
-            TabKey = tabKey;
-            TabIdOriginal = tabIdOriginal;
-            TabPath = tabPath;
-            IsDeleted = isDeleted;
+            this.TabKey = tabKey;
+            this.TabIdOriginal = tabIdOriginal;
+            this.TabPath = tabPath;
+            this.IsDeleted = isDeleted;
         }
 
         public string TabKey { get; set; }

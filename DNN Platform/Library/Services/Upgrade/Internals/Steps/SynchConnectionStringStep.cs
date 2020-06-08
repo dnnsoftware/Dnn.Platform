@@ -30,27 +30,27 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
         /// </summary>        
         public override void Execute()
         {
-            Percentage = 0;
-            Status = StepStatus.Running;
+            this.Percentage = 0;
+            this.Status = StepStatus.Running;
 
             var installConfig = InstallController.Instance.GetInstallConfig();
             if(installConfig == null)
             {
-                Status = StepStatus.Done;
+                this.Status = StepStatus.Done;
                 return;
             }
 
             var connectionConfig = installConfig.Connection;
             if (connectionConfig == null)
             {
-                Status = StepStatus.Done;
+                this.Status = StepStatus.Done;
                 return;
             }
 
             if (string.IsNullOrEmpty(connectionConfig.File) && string.IsNullOrEmpty(connectionConfig.Database))
             {                    
-                Errors.Add(Localization.Localization.GetString("RequiresFileOrDatabase", LocalInstallResourceFile));
-                Status = StepStatus.Abort;
+                this.Errors.Add(Localization.Localization.GetString("RequiresFileOrDatabase", this.LocalInstallResourceFile));
+                this.Status = StepStatus.Abort;
                 return;
             }
 
@@ -83,9 +83,9 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             }
             else
             {
-                dbowner = (string.IsNullOrEmpty(GetUpgradeConnectionStringUserID()))
+                dbowner = (string.IsNullOrEmpty(this.GetUpgradeConnectionStringUserID()))
                                            ? connectionConfig.User + "."
-                                           : GetUpgradeConnectionStringUserID();
+                                           : this.GetUpgradeConnectionStringUserID();
             }
                 
             var connectionString = builder.ToString();
@@ -116,7 +116,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 modified = true;
             }
 
-            Status = modified ? StepStatus.AppRestart : StepStatus.Done;
+            this.Status = modified ? StepStatus.AppRestart : StepStatus.Done;
         }
 
         #endregion

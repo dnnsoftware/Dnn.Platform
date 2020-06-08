@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             get
             {
-                return fileItem.ItemName;
+                return this.fileItem.ItemName;
             }
         }
 
@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             get
             {
-                return UserInfo.IsSuperUser || FolderPermissionController.CanManageFolder((FolderInfo)folder);
+                return this.UserInfo.IsSuperUser || FolderPermissionController.CanManageFolder((FolderInfo)this.folder);
             }
         }
 
@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             get
             {
-                var activeTab = Request.QueryString["activeTab"];
+                var activeTab = this.Request.QueryString["activeTab"];
                 return string.IsNullOrEmpty(activeTab) ? "" : System.Text.RegularExpressions.Regex.Replace(activeTab, "[^\\w]", "");
             }
         }
@@ -71,55 +71,55 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
-                var fileId = Convert.ToInt32(Request.Params["FileId"]);
-                file = FileManager.Instance.GetFile(fileId, true);
-                fileItem = controller.GetFile(fileId);
-                folder = FolderManager.Instance.GetFolder(file.FolderId);
+                var fileId = Convert.ToInt32(this.Request.Params["FileId"]);
+                this.file = FileManager.Instance.GetFile(fileId, true);
+                this.fileItem = this.controller.GetFile(fileId);
+                this.folder = FolderManager.Instance.GetFolder(this.file.FolderId);
 
-                SaveButton.Click += OnSaveClick;
-                CancelButton.Click += OnCancelClick;
+                this.SaveButton.Click += this.OnSaveClick;
+                this.CancelButton.Click += this.OnCancelClick;
 
-                if (FolderPermissionController.CanViewFolder((FolderInfo)folder))
+                if (FolderPermissionController.CanViewFolder((FolderInfo)this.folder))
                 {
                     var mef = new ExtensionPointManager();
                     var preViewPanelExtension = mef.GetUserControlExtensionPointFirstByPriority("DigitalAssets", "PreviewInfoPanelExtensionPoint");
-                    previewPanelControl = Page.LoadControl(preViewPanelExtension.UserControlSrc);
-                    PreviewPanelContainer.Controls.Add(previewPanelControl);
+                    this.previewPanelControl = this.Page.LoadControl(preViewPanelExtension.UserControlSrc);
+                    this.PreviewPanelContainer.Controls.Add(this.previewPanelControl);
 
                     var fileFieldsExtension = mef.GetUserControlExtensionPointFirstByPriority("DigitalAssets", "FileFieldsControlExtensionPoint");
-                    fileFieldsControl = Page.LoadControl(fileFieldsExtension.UserControlSrc);
-                    fileFieldsControl.ID = fileFieldsControl.GetType().BaseType.Name;
-                    FileFieldsContainer.Controls.Add(fileFieldsControl);
+                    this.fileFieldsControl = this.Page.LoadControl(fileFieldsExtension.UserControlSrc);
+                    this.fileFieldsControl.ID = this.fileFieldsControl.GetType().BaseType.Name;
+                    this.FileFieldsContainer.Controls.Add(this.fileFieldsControl);
 
-                    PrepareFilePreviewInfoControl();
-                    PrepareFileFieldsControl();
+                    this.PrepareFilePreviewInfoControl();
+                    this.PrepareFileFieldsControl();
 
                     // Tab Extension Point
                     var tabContentControlsInstances = new List<PropertiesTabContentControl>();
                     foreach (var extension in mef.GetEditPageTabExtensionPoints("DigitalAssets", "FilePropertiesTab"))
                     {
-                        if (FolderPermissionController.HasFolderPermission(folder.FolderPermissions, extension.Permission))
+                        if (FolderPermissionController.HasFolderPermission(this.folder.FolderPermissions, extension.Permission))
                         {
                             var liElement = new HtmlGenericControl("li") { InnerHtml = "<a href=\"#" + extension.EditPageTabId + "\">" + extension.Text + "</a>", };
                             liElement.Attributes.Add("class", extension.CssClass);
                             liElement.Attributes.Add("id", extension.EditPageTabId + "_tab");
-                            Tabs.Controls.Add(liElement);
+                            this.Tabs.Controls.Add(liElement);
 
                             var container = new PanelTabExtensionControl { PanelId = extension.EditPageTabId };
-                            var control = (PortalModuleBase)Page.LoadControl(extension.UserControlSrc);
+                            var control = (PortalModuleBase)this.Page.LoadControl(extension.UserControlSrc);
                             control.ID = Path.GetFileNameWithoutExtension(extension.UserControlSrc);
-                            control.ModuleConfiguration = ModuleConfiguration;
+                            control.ModuleConfiguration = this.ModuleConfiguration;
                             var contentControl = control as PropertiesTabContentControl;
                             if (contentControl != null)
                             {
-                                contentControl.OnItemUpdated += OnItemUpdated;
+                                contentControl.OnItemUpdated += this.OnItemUpdated;
                                 tabContentControlsInstances.Add(contentControl);
                             }
                             container.Controls.Add(control);
-                            TabsPanel.Controls.Add(container);
+                            this.TabsPanel.Controls.Add(container);
                         }
                     }
-                    tabContentControls = tabContentControlsInstances.ToList();
+                    this.tabContentControls = tabContentControlsInstances.ToList();
                 }
             }
             catch (Exception ex)
@@ -132,21 +132,21 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             try
             {
-                if (!Page.IsPostBack)
+                if (!this.Page.IsPostBack)
                 {
-                    SetPropertiesAvailability(CanManageFolder);
+                    this.SetPropertiesAvailability(this.CanManageFolder);
                 }
 
-                if (!FolderPermissionController.CanViewFolder((FolderInfo)folder))
+                if (!FolderPermissionController.CanViewFolder((FolderInfo)this.folder))
                 {
-                    SaveButton.Visible = false;
-                    SetPropertiesVisibility(false);
-                    UI.Skins.Skin.AddModuleMessage(this, LocalizeString("UserCannotReadFileError"), ModuleMessage.ModuleMessageType.RedError);
+                    this.SaveButton.Visible = false;
+                    this.SetPropertiesVisibility(false);
+                    UI.Skins.Skin.AddModuleMessage(this, this.LocalizeString("UserCannotReadFileError"), ModuleMessage.ModuleMessageType.RedError);
                 }
                 else
                 {
-                    SetFilePreviewInfo();
-                    SaveButton.Visible = FolderPermissionController.CanViewFolder((FolderInfo)folder) && FolderPermissionController.CanManageFolder((FolderInfo)folder);
+                    this.SetFilePreviewInfo();
+                    this.SaveButton.Visible = FolderPermissionController.CanViewFolder((FolderInfo)this.folder) && FolderPermissionController.CanManageFolder((FolderInfo)this.folder);
                 }
             }
             catch (DotNetNukeException dnnex)
@@ -161,8 +161,8 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private void OnItemUpdated()
         {
-            SetFilePreviewInfo();
-            foreach (var propertiesTabContentControl in tabContentControls)
+            this.SetFilePreviewInfo();
+            foreach (var propertiesTabContentControl in this.tabContentControls)
             {
                 propertiesTabContentControl.DataBindItem();
             }
@@ -170,15 +170,15 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private void OnSaveClick(object sender, EventArgs e)
         {
-            if (!Page.IsValid)
+            if (!this.Page.IsValid)
             {
                 return;
             }
 
             try
             {
-                SaveFileProperties();
-                Page.CloseClientDialog(true);
+                this.SaveFileProperties();
+                this.Page.CloseClientDialog(true);
             }
             catch (ThreadAbortException) { }
             catch (DotNetNukeException dnnex)
@@ -194,44 +194,44 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private void OnCancelClick(object sender, EventArgs e)
         {
-            Page.CloseClientDialog(false);
+            this.Page.CloseClientDialog(false);
         }
 
         private void SaveFileProperties()
         {
-            file = (IFileInfo)((FileFieldsControl)fileFieldsControl).SaveProperties();
+            this.file = (IFileInfo)((FileFieldsControl)this.fileFieldsControl).SaveProperties();
         }
 
         private void SetPropertiesVisibility(bool visibility)
         {
-            ((FileFieldsControl)fileFieldsControl).SetPropertiesVisibility(visibility);
+            ((FileFieldsControl)this.fileFieldsControl).SetPropertiesVisibility(visibility);
         }
 
         private void SetPropertiesAvailability(bool availability)
         {
-            ((FileFieldsControl)fileFieldsControl).SetPropertiesAvailability(availability);
+            ((FileFieldsControl)this.fileFieldsControl).SetPropertiesAvailability(availability);
         }
 
         private void SetFilePreviewInfo()
         {
-            var previewPanelInstance = (PreviewPanelControl)previewPanelControl;
-            previewPanelInstance.SetPreviewInfo(controller.GetFilePreviewInfo(file, fileItem));
+            var previewPanelInstance = (PreviewPanelControl)this.previewPanelControl;
+            previewPanelInstance.SetPreviewInfo(this.controller.GetFilePreviewInfo(this.file, this.fileItem));
         }
 
         private void PrepareFilePreviewInfoControl()
         {
-            var previewPanelInstance = (PreviewPanelControl)previewPanelControl;
-            previewPanelInstance.SetController(controller);
-            previewPanelInstance.SetModuleConfiguration(ModuleConfiguration);
+            var previewPanelInstance = (PreviewPanelControl)this.previewPanelControl;
+            previewPanelInstance.SetController(this.controller);
+            previewPanelInstance.SetModuleConfiguration(this.ModuleConfiguration);
         }
 
         private void PrepareFileFieldsControl()
         {
-            var fileFieldsIntance = (FileFieldsControl)fileFieldsControl;
-            fileFieldsIntance.SetController(controller);
-            fileFieldsIntance.SetItemViewModel(fileItem);
-            fileFieldsIntance.SetFileInfo(file);
-            fileFieldsIntance.SetModuleConfiguration(ModuleConfiguration);
+            var fileFieldsIntance = (FileFieldsControl)this.fileFieldsControl;
+            fileFieldsIntance.SetController(this.controller);
+            fileFieldsIntance.SetItemViewModel(this.fileItem);
+            fileFieldsIntance.SetFileInfo(this.file);
+            fileFieldsIntance.SetModuleConfiguration(this.ModuleConfiguration);
         }
     }
 }

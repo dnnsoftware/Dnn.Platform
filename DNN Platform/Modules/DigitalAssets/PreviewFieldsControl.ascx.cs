@@ -14,13 +14,13 @@ namespace DotNetNuke.Modules.DigitalAssets
     {
         public void GenerateFieldsTable()
         {
-            FieldsTable.Rows.Clear();
-            foreach (var field in Fields)
+            this.FieldsTable.Rows.Clear();
+            foreach (var field in this.Fields)
             {
                 var cellLabel = new TableCell { Text = field.DisplayName + ":", CssClass = "dnnModuleDigitalAssetsPreviewInfoFieldLabel" };
                 var cellValue = new TableCell { Text = field.StringValue, CssClass = "dnnModuleDigitalAssetsPreviewInfoFieldValue" };
                 var rowField = new TableRow { Cells = { cellLabel, cellValue }, CssClass = "dnnModuleDigitalAssetsPreviewInfoFieldsRow" };
-                FieldsTable.Rows.Add(rowField);
+                this.FieldsTable.Rows.Add(rowField);
             }
         }
 

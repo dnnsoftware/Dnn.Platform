@@ -28,14 +28,14 @@ namespace DotNetNuke.Web.Api
         {
             Requires.NotNull("actionContext", actionContext);
 
-            if (SkipAuthorization(actionContext))
+            if (this.SkipAuthorization(actionContext))
             {
                 return;
             }
 
             const string failureMessage = "Authorization has been denied for this request.";
             var authFilterContext = new AuthFilterContext(actionContext, failureMessage);
-            if (!IsAuthorized(authFilterContext))
+            if (!this.IsAuthorized(authFilterContext))
             {
                 authFilterContext.HandleUnauthorizedRequest();
             }

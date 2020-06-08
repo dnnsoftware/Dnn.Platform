@@ -19,17 +19,17 @@ namespace DotNetNuke.Services.DependencyInjection
 
         public ScopeAccessor()
         {
-            _getContextItems = fallbackGetContextItems;
+            this._getContextItems = fallbackGetContextItems;
         }
 
         public IServiceScope GetScope()
         {
-            return HttpContextDependencyInjectionExtensions.GetScope(_getContextItems());
+            return HttpContextDependencyInjectionExtensions.GetScope(this._getContextItems());
         }
 
         internal void SetContextItemsFunc(Func<IDictionary> getContextItems)
         {
-            _getContextItems = getContextItems ?? fallbackGetContextItems;
+            this._getContextItems = getContextItems ?? fallbackGetContextItems;
         }
     }
 }

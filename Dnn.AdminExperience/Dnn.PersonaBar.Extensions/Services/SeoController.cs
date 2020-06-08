@@ -44,7 +44,7 @@ namespace Dnn.PersonaBar.Seo.Services
 
         public SeoController(INavigationManager navigationManager)
         {
-            NavigationManager = navigationManager;
+            this.NavigationManager = navigationManager;
         }
 
         /// GET: api/SEO/GetGeneralSettings
@@ -57,7 +57,7 @@ namespace Dnn.PersonaBar.Seo.Services
         {
             try
             {
-                var urlSettings = new FriendlyUrlSettings(PortalId);
+                var urlSettings = new FriendlyUrlSettings(this.PortalId);
 
                 var replacementCharacterList = new List<KeyValuePair<string, string>>();
                 replacementCharacterList.Add(new KeyValuePair<string, string>(Localization.GetString("minusCharacter", LocalResourcesFile), "-"));
@@ -85,12 +85,12 @@ namespace Dnn.PersonaBar.Seo.Services
                     DeletedPageHandlingTypes = deletedPageHandlingTypes
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -111,23 +111,23 @@ namespace Dnn.PersonaBar.Seo.Services
                 {
                     characterSub = request.ReplaceSpaceWith;
                 }
-                PortalController.UpdatePortalSetting(PortalId, FriendlyUrlSettings.ReplaceSpaceWithSetting, characterSub, false);
-                PortalController.UpdatePortalSetting(PortalId, FriendlyUrlSettings.DeletedTabHandlingTypeSetting, request.DeletedTabHandlingType, false);
-                PortalController.UpdatePortalSetting(PortalId, FriendlyUrlSettings.ForceLowerCaseSetting, request.ForceLowerCase ? "Y" : "N", false);
-                PortalController.UpdatePortalSetting(PortalId, FriendlyUrlSettings.RedirectUnfriendlySetting, request.RedirectUnfriendly ? "Y" : "N", false);
-                PortalController.UpdatePortalSetting(PortalId, FriendlyUrlSettings.RedirectMixedCaseSetting, request.RedirectWrongCase.ToString(), false);
-                PortalController.UpdatePortalSetting(PortalId, FriendlyUrlSettings.UsePortalDefaultLanguageSetting, request.ForcePortalDefaultLanguage.ToString(), false);
-                PortalController.UpdatePortalSetting(PortalId, FriendlyUrlSettings.AutoAsciiConvertSetting, request.AutoAsciiConvert.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, FriendlyUrlSettings.ReplaceSpaceWithSetting, characterSub, false);
+                PortalController.UpdatePortalSetting(this.PortalId, FriendlyUrlSettings.DeletedTabHandlingTypeSetting, request.DeletedTabHandlingType, false);
+                PortalController.UpdatePortalSetting(this.PortalId, FriendlyUrlSettings.ForceLowerCaseSetting, request.ForceLowerCase ? "Y" : "N", false);
+                PortalController.UpdatePortalSetting(this.PortalId, FriendlyUrlSettings.RedirectUnfriendlySetting, request.RedirectUnfriendly ? "Y" : "N", false);
+                PortalController.UpdatePortalSetting(this.PortalId, FriendlyUrlSettings.RedirectMixedCaseSetting, request.RedirectWrongCase.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, FriendlyUrlSettings.UsePortalDefaultLanguageSetting, request.ForcePortalDefaultLanguage.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, FriendlyUrlSettings.AutoAsciiConvertSetting, request.AutoAsciiConvert.ToString(), false);
 
-                DataCache.ClearPortalCache(PortalId, false);
-                DataCache.ClearTabsCache(PortalId);
+                DataCache.ClearPortalCache(this.PortalId, false);
+                DataCache.ClearTabsCache(this.PortalId);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -142,7 +142,7 @@ namespace Dnn.PersonaBar.Seo.Services
         {
             try
             {
-                var urlSettings = new FriendlyUrlSettings(PortalId);
+                var urlSettings = new FriendlyUrlSettings(this.PortalId);
 
                 var response = new
                 {
@@ -162,12 +162,12 @@ namespace Dnn.PersonaBar.Seo.Services
                     }
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -228,22 +228,22 @@ namespace Dnn.PersonaBar.Seo.Services
 
                 if (validationErrors.Count > 0)
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = false, Errors = validationErrors });
+                    return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = false, Errors = validationErrors });
                 }
                 else
                 {
                     // if no errors, update settings in db
-                    UpdateRegexSettingsInternal(request);
+                    this.UpdateRegexSettingsInternal(request);
                     // clear cache
-                    ClearCache();
+                    this.ClearCache();
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                 }
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -263,26 +263,26 @@ namespace Dnn.PersonaBar.Seo.Services
 
             settings.ToList().ForEach((value) =>
             {
-                if (PortalId == Null.NullInteger)
+                if (this.PortalId == Null.NullInteger)
                 {
                     HostController.Instance.Update(value.Key, value.Value, false);
                 }
                 else
                 {
-                    PortalController.Instance.UpdatePortalSetting(PortalId, value.Key, value.Value, false, Null.NullString, false);
+                    PortalController.Instance.UpdatePortalSetting(this.PortalId, value.Key, value.Value, false, Null.NullString, false);
                 }
             });
         }
 
         private void ClearCache()
         {
-            if (PortalId == Null.NullInteger)
+            if (this.PortalId == Null.NullInteger)
             {
                 DataCache.ClearHostCache(false);
             }
             else
             {
-                DataCache.ClearPortalCache(PortalId, false);
+                DataCache.ClearPortalCache(this.PortalId, false);
             }
             CacheController.FlushPageIndexFromCache();
             CacheController.FlushFriendlyUrlSettingsFromCache();
@@ -316,18 +316,18 @@ namespace Dnn.PersonaBar.Seo.Services
         {
             try
             {
-                var portalAlias = !string.IsNullOrEmpty(PortalSettings.DefaultPortalAlias)
-                                ? PortalSettings.DefaultPortalAlias
-                                : PortalSettings.PortalAlias.HTTPAlias;
+                var portalAlias = !string.IsNullOrEmpty(this.PortalSettings.DefaultPortalAlias)
+                                ? this.PortalSettings.DefaultPortalAlias
+                                : this.PortalSettings.PortalAlias.HTTPAlias;
 
-                var str = PortalController.GetPortalSetting("SitemapMinPriority", PortalId, "0.1");
+                var str = PortalController.GetPortalSetting("SitemapMinPriority", this.PortalId, "0.1");
                 float sitemapMinPriority;
                 if (!float.TryParse(str, out sitemapMinPriority))
                 {
                     sitemapMinPriority = 0.1f;
                 }
 
-                str = PortalController.GetPortalSetting("SitemapExcludePriority", PortalId, "0.1");
+                str = PortalController.GetPortalSetting("SitemapExcludePriority", this.PortalId, "0.1");
                 float sitemapExcludePriority;
                 if (!float.TryParse(str, out sitemapExcludePriority))
                 {
@@ -338,21 +338,21 @@ namespace Dnn.PersonaBar.Seo.Services
                 var settings = new
                 {
                     SitemapUrl = Globals.AddHTTP(portalAlias) + @"/SiteMap.aspx",
-                    SitemapLevelMode = PortalController.GetPortalSettingAsBoolean("SitemapLevelMode", PortalId, false),
+                    SitemapLevelMode = PortalController.GetPortalSettingAsBoolean("SitemapLevelMode", this.PortalId, false),
                     SitemapMinPriority = sitemapMinPriority,
-                    SitemapIncludeHidden = PortalController.GetPortalSettingAsBoolean("SitemapIncludeHidden", PortalId, false),
+                    SitemapIncludeHidden = PortalController.GetPortalSettingAsBoolean("SitemapIncludeHidden", this.PortalId, false),
                     SitemapExcludePriority = sitemapExcludePriority,
-                    SitemapCacheDays = PortalController.GetPortalSettingAsInteger("SitemapCacheDays", PortalId, 1)
+                    SitemapCacheDays = PortalController.GetPortalSettingAsInteger("SitemapCacheDays", this.PortalId, 1)
                 };
 
                 var searchEngineUrls = new List<KeyValuePair<string, string>>
                 {
-                    new KeyValuePair<string, string>("Google", _controller.GetSearchEngineSubmissionUrl("google")),
-                    new KeyValuePair<string, string>("Bing", _controller.GetSearchEngineSubmissionUrl("bing")),
-                    new KeyValuePair<string, string>("Yahoo!", _controller.GetSearchEngineSubmissionUrl("yahoo!"))
+                    new KeyValuePair<string, string>("Google", this._controller.GetSearchEngineSubmissionUrl("google")),
+                    new KeyValuePair<string, string>("Bing", this._controller.GetSearchEngineSubmissionUrl("bing")),
+                    new KeyValuePair<string, string>("Yahoo!", this._controller.GetSearchEngineSubmissionUrl("yahoo!"))
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, new
+                return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Success = true,
                     Settings = settings,
@@ -362,7 +362,7 @@ namespace Dnn.PersonaBar.Seo.Services
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -378,13 +378,13 @@ namespace Dnn.PersonaBar.Seo.Services
         {
             try
             {
-                _controller.CreateVerification(verification);
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                this._controller.CreateVerification(verification);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -400,34 +400,34 @@ namespace Dnn.PersonaBar.Seo.Services
         {
             try
             {
-                PortalController.UpdatePortalSetting(PortalId, "SitemapLevelMode", request.SitemapLevelMode.ToString());
+                PortalController.UpdatePortalSetting(this.PortalId, "SitemapLevelMode", request.SitemapLevelMode.ToString());
 
                 if (request.SitemapMinPriority < 0)
                 {
                     request.SitemapMinPriority = 0;
                 }
-                PortalController.UpdatePortalSetting(PortalId, "SitemapMinPriority", request.SitemapMinPriority.ToString(NumberFormatInfo.InvariantInfo));
+                PortalController.UpdatePortalSetting(this.PortalId, "SitemapMinPriority", request.SitemapMinPriority.ToString(NumberFormatInfo.InvariantInfo));
 
-                PortalController.UpdatePortalSetting(PortalId, "SitemapIncludeHidden", request.SitemapIncludeHidden.ToString());
+                PortalController.UpdatePortalSetting(this.PortalId, "SitemapIncludeHidden", request.SitemapIncludeHidden.ToString());
 
                 if (request.SitemapExcludePriority < 0)
                 {
                     request.SitemapExcludePriority = 0;
                 }
-                PortalController.UpdatePortalSetting(PortalId, "SitemapExcludePriority", request.SitemapExcludePriority.ToString(NumberFormatInfo.InvariantInfo));
+                PortalController.UpdatePortalSetting(this.PortalId, "SitemapExcludePriority", request.SitemapExcludePriority.ToString(NumberFormatInfo.InvariantInfo));
 
                 if (request.SitemapCacheDays == 0)
                 {
-                    _controller.ResetCache();
+                    this._controller.ResetCache();
                 }
 
-                PortalController.UpdatePortalSetting(PortalId, "SitemapCacheDays", request.SitemapCacheDays.ToString());
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                PortalController.UpdatePortalSetting(this.PortalId, "SitemapCacheDays", request.SitemapCacheDays.ToString());
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -443,13 +443,13 @@ namespace Dnn.PersonaBar.Seo.Services
         {
             try
             {
-                _controller.ResetCache();
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                this._controller.ResetCache();
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -464,7 +464,7 @@ namespace Dnn.PersonaBar.Seo.Services
         {
             try
             {
-                var providers = _controller.GetSitemapProviders().Select(p => new
+                var providers = this._controller.GetSitemapProviders().Select(p => new
                 {
                     p.Name,
                     p.Enabled,
@@ -477,12 +477,12 @@ namespace Dnn.PersonaBar.Seo.Services
                     Success = true,
                     Providers = providers
                 };
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -499,7 +499,7 @@ namespace Dnn.PersonaBar.Seo.Services
             try
             {
                 SitemapProvider editedProvider =
-                    _controller.GetSitemapProviders()
+                    this._controller.GetSitemapProviders()
                         .FirstOrDefault(p => p.Name.Equals(request.Name, StringComparison.OrdinalIgnoreCase));
 
                 if (editedProvider != null)
@@ -512,12 +512,12 @@ namespace Dnn.PersonaBar.Seo.Services
                     }
                 }
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -532,12 +532,12 @@ namespace Dnn.PersonaBar.Seo.Services
         {
             try
             {
-                var providers = ExtensionUrlProviderController.GetProviders(PortalId).Select(p => new
+                var providers = ExtensionUrlProviderController.GetProviders(this.PortalId).Select(p => new
                 {
                     p.ExtensionUrlProviderId,
                     p.ProviderName,
                     p.IsActive,
-                    SettingUrl = NavigationManager.NavigateURL(PortalSettings.AdminTabId, "UrlProviderSettings", "Display=settings&popUp=true&ProviderId=" + p.ExtensionUrlProviderId)
+                    SettingUrl = this.NavigationManager.NavigateURL(this.PortalSettings.AdminTabId, "UrlProviderSettings", "Display=settings&popUp=true&ProviderId=" + p.ExtensionUrlProviderId)
                 }).ToList();
 
                 var response = new
@@ -545,12 +545,12 @@ namespace Dnn.PersonaBar.Seo.Services
                     Success = true,
                     Providers = providers
                 };
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -568,18 +568,18 @@ namespace Dnn.PersonaBar.Seo.Services
             {
                 if (request.IsActive)
                 {
-                    ExtensionUrlProviderController.EnableProvider(request.ProviderId, PortalId);
+                    ExtensionUrlProviderController.EnableProvider(request.ProviderId, this.PortalId);
                 }
                 else
                 {
-                    ExtensionUrlProviderController.DisableProvider(request.ProviderId, PortalId);
+                    ExtensionUrlProviderController.DisableProvider(request.ProviderId, this.PortalId);
                 }
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -598,23 +598,23 @@ namespace Dnn.PersonaBar.Seo.Services
                 var response = new
                 {
                     Success = true,
-                    Urls = TestUrlInternal(pageId, queryString, customPageName)
+                    Urls = this.TestUrlInternal(pageId, queryString, customPageName)
                 };
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
         private IEnumerable<string> TestUrlInternal(int pageId, string queryString, string customPageName)
         {
             var provider = new DNNFriendlyUrlProvider();
-            var tab = TabController.Instance.GetTab(pageId, PortalId, false);
+            var tab = TabController.Instance.GetTab(pageId, this.PortalId, false);
             var pageName = string.IsNullOrEmpty(customPageName) ? Globals.glbDefaultPage : customPageName;
-            return PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId).
+            return PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalId).
                 Select(alias => provider.FriendlyUrl(
                     tab, "~/Default.aspx?tabId=" + pageId + "&" + queryString, pageName, alias.HTTPAlias));
         }
@@ -635,14 +635,14 @@ namespace Dnn.PersonaBar.Seo.Services
                 var response = new
                 {
                     Success = true,
-                    RewritingResult = TestUrlRewritingInternal(uri)
+                    RewritingResult = this.TestUrlRewritingInternal(uri)
                 };
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -659,7 +659,7 @@ namespace Dnn.PersonaBar.Seo.Services
                     RawUrl = uriString
                 };
                 var httpContext = new HttpContext(HttpContext.Current.Request, new HttpResponse(new StringWriter()));
-                provider.ProcessTestRequestWithContext(httpContext, uri, true, result, new FriendlyUrlSettings(PortalId));
+                provider.ProcessTestRequestWithContext(httpContext, uri, true, result, new FriendlyUrlSettings(this.PortalId));
                 rewritingResult.RewritingResult = string.IsNullOrEmpty(result.RewritePath) ? noneText : result.RewritePath;
                 rewritingResult.Culture = string.IsNullOrEmpty(result.CultureCode) ? noneText : result.CultureCode;
                 var tab = TabController.Instance.GetTab(result.TabId, result.PortalId, false);

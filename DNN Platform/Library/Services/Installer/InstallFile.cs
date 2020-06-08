@@ -45,9 +45,9 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public InstallFile(ZipInputStream zip, ZipEntry entry, InstallerInfo info)
         {
-            Encoding = TextEncoding.UTF8;
-            InstallerInfo = info;
-            ReadZip(zip, entry);
+            this.Encoding = TextEncoding.UTF8;
+            this.InstallerInfo = info;
+            this.ReadZip(zip, entry);
         }
 
         /// -----------------------------------------------------------------------------
@@ -58,8 +58,8 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public InstallFile(string fileName)
         {
-            Encoding = TextEncoding.UTF8;
-            ParseFileName(fileName);
+            this.Encoding = TextEncoding.UTF8;
+            this.ParseFileName(fileName);
         }
 
         /// -----------------------------------------------------------------------------
@@ -71,9 +71,9 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public InstallFile(string fileName, InstallerInfo info)
         {
-            Encoding = TextEncoding.UTF8;
-            ParseFileName(fileName);
-            InstallerInfo = info;
+            this.Encoding = TextEncoding.UTF8;
+            this.ParseFileName(fileName);
+            this.InstallerInfo = info;
         }
 
         /// -----------------------------------------------------------------------------
@@ -86,10 +86,10 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public InstallFile(string fileName, string sourceFileName, InstallerInfo info)
         {
-            Encoding = TextEncoding.UTF8;
-            ParseFileName(fileName);
-            SourceFileName = sourceFileName;
-            InstallerInfo = info;
+            this.Encoding = TextEncoding.UTF8;
+            this.ParseFileName(fileName);
+            this.SourceFileName = sourceFileName;
+            this.InstallerInfo = info;
         }
 
         /// -----------------------------------------------------------------------------
@@ -101,9 +101,9 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public InstallFile(string fileName, string filePath)
         {
-            Encoding = TextEncoding.UTF8;
-            Name = fileName;
-            Path = filePath;
+            this.Encoding = TextEncoding.UTF8;
+            this.Name = fileName;
+            this.Path = filePath;
         }
 		
 		#endregion
@@ -128,7 +128,7 @@ namespace DotNetNuke.Services.Installer
         {
             get
             {
-                return System.IO.Path.Combine(BackupPath, Name + ".config");
+                return System.IO.Path.Combine(this.BackupPath, this.Name + ".config");
             }
         }
 
@@ -142,7 +142,7 @@ namespace DotNetNuke.Services.Installer
         {
             get
             {
-                return System.IO.Path.Combine(InstallerInfo.TempInstallFolder, System.IO.Path.Combine("Backup", Path));
+                return System.IO.Path.Combine(this.InstallerInfo.TempInstallFolder, System.IO.Path.Combine("Backup", this.Path));
             }
         }
 
@@ -158,7 +158,7 @@ namespace DotNetNuke.Services.Installer
         {
             get
             {
-                string ext = System.IO.Path.GetExtension(Name);
+                string ext = System.IO.Path.GetExtension(this.Name);
                 if (String.IsNullOrEmpty(ext))
                 {
                     return "";
@@ -177,7 +177,7 @@ namespace DotNetNuke.Services.Installer
         {
             get
             {
-                return System.IO.Path.Combine(Path, Name);
+                return System.IO.Path.Combine(this.Path, this.Name);
             }
         }
 
@@ -224,12 +224,12 @@ namespace DotNetNuke.Services.Installer
         {
             get
             {
-                string fileName = SourceFileName;
+                string fileName = this.SourceFileName;
                 if (string.IsNullOrEmpty(fileName))
                 {
-                    fileName = FullName;
+                    fileName = this.FullName;
                 }
-                return System.IO.Path.Combine(InstallerInfo.TempInstallFolder, fileName);
+                return System.IO.Path.Combine(this.InstallerInfo.TempInstallFolder, fileName);
             }
         }
 
@@ -264,70 +264,70 @@ namespace DotNetNuke.Services.Installer
             int i = fileName.Replace("\\", "/").LastIndexOf("/", StringComparison.Ordinal);
             if (i < 0)
             {
-                Name = fileName.Substring(0, fileName.Length);
-                Path = "";
+                this.Name = fileName.Substring(0, fileName.Length);
+                this.Path = "";
             }
             else
             {
-                Name = fileName.Substring(i + 1, fileName.Length - (i + 1));
-                Path = fileName.Substring(0, i);
+                this.Name = fileName.Substring(i + 1, fileName.Length - (i + 1));
+                this.Path = fileName.Substring(0, i);
             }
-            if (string.IsNullOrEmpty(Path) && fileName.StartsWith("[app_code]"))
+            if (string.IsNullOrEmpty(this.Path) && fileName.StartsWith("[app_code]"))
             {
-                Name = fileName.Substring(10, fileName.Length - 10);
-                Path = fileName.Substring(0, 10);
+                this.Name = fileName.Substring(10, fileName.Length - 10);
+                this.Path = fileName.Substring(0, 10);
             }
-            if (Name.Equals("manifest.xml", StringComparison.InvariantCultureIgnoreCase))
+            if (this.Name.Equals("manifest.xml", StringComparison.InvariantCultureIgnoreCase))
             {
-                Type = InstallFileType.Manifest;
+                this.Type = InstallFileType.Manifest;
             }
             else
             {
-                switch (Extension.ToLowerInvariant())
+                switch (this.Extension.ToLowerInvariant())
                 {
                     case "ascx":
-                        Type = InstallFileType.Ascx;
+                        this.Type = InstallFileType.Ascx;
                         break;
                     case "dll":
-                        Type = InstallFileType.Assembly;
+                        this.Type = InstallFileType.Assembly;
                         break;
                     case "dnn":
                     case "dnn5":
                     case "dnn6":
                     case "dnn7":
-                        Type = InstallFileType.Manifest;
+                        this.Type = InstallFileType.Manifest;
                         break;
                     case "resx":
-                        Type = InstallFileType.Language;
+                        this.Type = InstallFileType.Language;
                         break;
                     case "resources":
                     case "zip":
-                        Type = InstallFileType.Resources;
+                        this.Type = InstallFileType.Resources;
                         break;
                     default:
-                        if (Extension.EndsWith("dataprovider", StringComparison.InvariantCultureIgnoreCase) || Extension.Equals("sql", StringComparison.InvariantCultureIgnoreCase))
+                        if (this.Extension.EndsWith("dataprovider", StringComparison.InvariantCultureIgnoreCase) || this.Extension.Equals("sql", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            Type = InstallFileType.Script;
+                            this.Type = InstallFileType.Script;
                         }
-                        else if (Path.StartsWith("[app_code]"))
+                        else if (this.Path.StartsWith("[app_code]"))
                         {
-                            Type = InstallFileType.AppCode;
+                            this.Type = InstallFileType.AppCode;
                         }
                         else
                         {
-                            Type = FileTypeMatchRegex.IsMatch(Name) ? InstallFileType.CleanUp : InstallFileType.Other;
+                            this.Type = FileTypeMatchRegex.IsMatch(this.Name) ? InstallFileType.CleanUp : InstallFileType.Other;
                         }
                         break;
                 }
             }
 			
             //remove [app_code] token
-            Path = Path.Replace("[app_code]", "");
+            this.Path = this.Path.Replace("[app_code]", "");
 
             //remove starting "\"
-            if (Path.StartsWith("\\"))
+            if (this.Path.StartsWith("\\"))
             {
-                Path = Path.Substring(1);
+                this.Path = this.Path.Substring(1);
             }
         }
 
@@ -340,9 +340,9 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         private void ReadZip(ZipInputStream unzip, ZipEntry entry)
         {
-            ParseFileName(entry.Name);
-            Util.WriteStream(unzip, TempFileName);
-            File.SetLastWriteTime(TempFileName, entry.DateTime);
+            this.ParseFileName(entry.Name);
+            Util.WriteStream(unzip, this.TempFileName);
+            File.SetLastWriteTime(this.TempFileName, entry.DateTime);
         }
 		
 		#endregion
@@ -357,7 +357,7 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public void SetVersion(Version version)
         {
-            Version = version;
+            this.Version = version;
         }
 		
 		#endregion

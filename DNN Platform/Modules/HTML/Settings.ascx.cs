@@ -29,7 +29,7 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                return _moduleSettings ?? (_moduleSettings = new HtmlModuleSettingsRepository().GetSettings(this.ModuleConfiguration));
+                return this._moduleSettings ?? (this._moduleSettings = new HtmlModuleSettingsRepository().GetSettings(this.ModuleConfiguration));
             }
         }
 
@@ -39,12 +39,12 @@ namespace DotNetNuke.Modules.Html
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            cboWorkflow.SelectedIndexChanged += OnWorkflowSelectedIndexChanged;
+            this.cboWorkflow.SelectedIndexChanged += this.OnWorkflowSelectedIndexChanged;
         }
 
         protected void OnWorkflowSelectedIndexChanged(object sender, EventArgs e)
         {
-            DisplayWorkflowDetails();
+            this.DisplayWorkflowDetails();
         }
 
         #endregion
@@ -53,11 +53,11 @@ namespace DotNetNuke.Modules.Html
 
         private void DisplayWorkflowDetails()
         {
-            if ((cboWorkflow.SelectedValue != null))
+            if ((this.cboWorkflow.SelectedValue != null))
             {
                 var objWorkflow = new WorkflowStateController();
                 var strDescription = "";
-                var arrStates = objWorkflow.GetWorkflowStates(int.Parse(cboWorkflow.SelectedValue));
+                var arrStates = objWorkflow.GetWorkflowStates(int.Parse(this.cboWorkflow.SelectedValue));
                 if (arrStates.Count > 0)
                 {
                     foreach (WorkflowStateInfo objState in arrStates)
@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.Html
                     }
                     strDescription = strDescription + "<br />" + ((WorkflowStateInfo)arrStates[0]).Description;
                 }
-                lblDescription.Text = strDescription;
+                this.lblDescription.Text = strDescription;
             }
         }
 
@@ -83,39 +83,39 @@ namespace DotNetNuke.Modules.Html
         {
             try
             {
-                if (!Page.IsPostBack)
+                if (!this.Page.IsPostBack)
                 {
                     var htmlTextController = new HtmlTextController();
                     var workflowStateController = new WorkflowStateController();
 
-                    chkReplaceTokens.Checked = ModuleSettings.ReplaceTokens;
-                    cbDecorate.Checked = ModuleSettings.UseDecorate;
+                    this.chkReplaceTokens.Checked = this.ModuleSettings.ReplaceTokens;
+                    this.cbDecorate.Checked = this.ModuleSettings.UseDecorate;
 
                     // get workflow/version settings
                     var workflows = new ArrayList();
-                    foreach (WorkflowStateInfo state in workflowStateController.GetWorkflows(PortalId))
+                    foreach (WorkflowStateInfo state in workflowStateController.GetWorkflows(this.PortalId))
                     {
                         if (!state.IsDeleted)
                         {
                             workflows.Add(state);
                         }
                     }
-                    cboWorkflow.DataSource = workflows;
-                    cboWorkflow.DataBind();
-                    var workflow = htmlTextController.GetWorkflow(ModuleId, TabId, PortalId);
-                    if ((cboWorkflow.FindItemByValue(workflow.Value.ToString()) != null))
+                    this.cboWorkflow.DataSource = workflows;
+                    this.cboWorkflow.DataBind();
+                    var workflow = htmlTextController.GetWorkflow(this.ModuleId, this.TabId, this.PortalId);
+                    if ((this.cboWorkflow.FindItemByValue(workflow.Value.ToString()) != null))
                     {
-                        cboWorkflow.FindItemByValue(workflow.Value.ToString()).Selected = true;
+                        this.cboWorkflow.FindItemByValue(workflow.Value.ToString()).Selected = true;
                     }
-                    DisplayWorkflowDetails();
+                    this.DisplayWorkflowDetails();
 
 
-                    if (rblApplyTo.Items.FindByValue(workflow.Key) != null)
+                    if (this.rblApplyTo.Items.FindByValue(workflow.Key) != null)
                     {
-                        rblApplyTo.Items.FindByValue(workflow.Key).Selected = true;
+                        this.rblApplyTo.Items.FindByValue(workflow.Key).Selected = true;
                     }
 
-                    txtSearchDescLength.Text = ModuleSettings.SearchDescLength.ToString();
+                    this.txtSearchDescLength.Text = this.ModuleSettings.SearchDescLength.ToString();
                 }
                 //Module failed to load
             }
@@ -135,16 +135,16 @@ namespace DotNetNuke.Modules.Html
                 var htmlTextController = new HtmlTextController();
 
                 // update replace token setting
-                ModuleSettings.ReplaceTokens = chkReplaceTokens.Checked;
-                ModuleSettings.UseDecorate = cbDecorate.Checked;
-                ModuleSettings.SearchDescLength = int.Parse(txtSearchDescLength.Text);
+                this.ModuleSettings.ReplaceTokens = this.chkReplaceTokens.Checked;
+                this.ModuleSettings.UseDecorate = this.cbDecorate.Checked;
+                this.ModuleSettings.SearchDescLength = int.Parse(this.txtSearchDescLength.Text);
                 var repo = new HtmlModuleSettingsRepository();
-                repo.SaveSettings(this.ModuleConfiguration, ModuleSettings);
+                repo.SaveSettings(this.ModuleConfiguration, this.ModuleSettings);
 
                 // disable module caching if token replace is enabled
-                if (chkReplaceTokens.Checked)
+                if (this.chkReplaceTokens.Checked)
                 {
-                    ModuleInfo module = ModuleController.Instance.GetModule(ModuleId, TabId, false);
+                    ModuleInfo module = ModuleController.Instance.GetModule(this.ModuleId, this.TabId, false);
                     if (module.CacheTime > 0)
                     {
                         module.CacheTime = 0;
@@ -153,16 +153,16 @@ namespace DotNetNuke.Modules.Html
                 }
 
                 // update workflow/version settings
-                switch (rblApplyTo.SelectedValue)
+                switch (this.rblApplyTo.SelectedValue)
                 {
                     case "Module":
-                        htmlTextController.UpdateWorkflow(ModuleId, rblApplyTo.SelectedValue, Int32.Parse(cboWorkflow.SelectedValue), chkReplace.Checked);
+                        htmlTextController.UpdateWorkflow(this.ModuleId, this.rblApplyTo.SelectedValue, Int32.Parse(this.cboWorkflow.SelectedValue), this.chkReplace.Checked);
                         break;
                     case "Page":
-                        htmlTextController.UpdateWorkflow(TabId, rblApplyTo.SelectedValue, Int32.Parse(cboWorkflow.SelectedValue), chkReplace.Checked);
+                        htmlTextController.UpdateWorkflow(this.TabId, this.rblApplyTo.SelectedValue, Int32.Parse(this.cboWorkflow.SelectedValue), this.chkReplace.Checked);
                         break;
                     case "Site":
-                        htmlTextController.UpdateWorkflow(PortalId, rblApplyTo.SelectedValue, Int32.Parse(cboWorkflow.SelectedValue), chkReplace.Checked);
+                        htmlTextController.UpdateWorkflow(this.PortalId, this.rblApplyTo.SelectedValue, Int32.Parse(this.cboWorkflow.SelectedValue), this.chkReplace.Checked);
                         break;
                 }
 

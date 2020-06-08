@@ -14,7 +14,7 @@ namespace Dnn.PersonaBar.Servers.Components.DatabaseServer
 
         public long Size { get; set; }
 
-        public decimal Megabytes => Convert.ToDecimal(Size/1024);
+        public decimal Megabytes => Convert.ToDecimal(this.Size/1024);
 
         public string FileName { get; set; }
 
@@ -22,12 +22,12 @@ namespace Dnn.PersonaBar.Servers.Components.DatabaseServer
         {
             get
             {
-                if(FileName.IndexOf('\\') == FileName.LastIndexOf('\\'))
+                if(this.FileName.IndexOf('\\') == this.FileName.LastIndexOf('\\'))
                 {
-                    return FileName;
+                    return this.FileName;
                 }
 
-                return string.Format("{0}...{1}", FileName.Substring(0, FileName.IndexOf('\\') + 1), FileName.Substring(FileName.LastIndexOf('\\', FileName.LastIndexOf('\\') - 1)));
+                return string.Format("{0}...{1}", this.FileName.Substring(0, this.FileName.IndexOf('\\') + 1), this.FileName.Substring(this.FileName.LastIndexOf('\\', this.FileName.LastIndexOf('\\') - 1)));
             }
         }
     }

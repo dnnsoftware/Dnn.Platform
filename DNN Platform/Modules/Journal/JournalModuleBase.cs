@@ -26,13 +26,13 @@ namespace DotNetNuke.Modules.Journal {
         }
         public JournalMode FilterMode {
             get {
-                if (!Settings.ContainsKey(Constants.JournalFilterMode)) {
+                if (!this.Settings.ContainsKey(Constants.JournalFilterMode)) {
                     return JournalMode.Auto;
                 } else {
-                    if (String.IsNullOrEmpty(Settings[Constants.JournalFilterMode].ToString())) {
+                    if (String.IsNullOrEmpty(this.Settings[Constants.JournalFilterMode].ToString())) {
                         return JournalMode.Auto;
                     } else {
-                        return (JournalMode)Convert.ToInt16(Settings[Constants.JournalFilterMode].ToString());
+                        return (JournalMode)Convert.ToInt16(this.Settings[Constants.JournalFilterMode].ToString());
                     }
                 }
 
@@ -41,8 +41,8 @@ namespace DotNetNuke.Modules.Journal {
         public int GroupId {
             get {
                 int groupId = -1;
-                if (!String.IsNullOrEmpty(Request.QueryString["groupid"])) {
-                    if (Int32.TryParse(Request.QueryString["groupid"], out groupId)) {
+                if (!String.IsNullOrEmpty(this.Request.QueryString["groupid"])) {
+                    if (Int32.TryParse(this.Request.QueryString["groupid"], out groupId)) {
                         return groupId;
                     } else {
                         return -1;
@@ -56,17 +56,17 @@ namespace DotNetNuke.Modules.Journal {
         {
             get
             {
-                if (!Settings.ContainsKey(Constants.JournalEditorEnabled))
+                if (!this.Settings.ContainsKey(Constants.JournalEditorEnabled))
                 {
                     return true;
                 } else
                 {
-                    if (String.IsNullOrEmpty(Settings[Constants.JournalEditorEnabled].ToString()))
+                    if (String.IsNullOrEmpty(this.Settings[Constants.JournalEditorEnabled].ToString()))
                     {
                         return true;
                     } else
                     {
-                        return (bool)Convert.ToBoolean(Settings[Constants.JournalEditorEnabled].ToString());
+                        return (bool)Convert.ToBoolean(this.Settings[Constants.JournalEditorEnabled].ToString());
                     }
                 }
             }

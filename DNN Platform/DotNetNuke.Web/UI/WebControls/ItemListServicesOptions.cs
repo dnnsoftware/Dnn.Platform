@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _parameters ?? (_parameters = new Dictionary<string, string>());
+                return this._parameters ?? (this._parameters = new Dictionary<string, string>());
             }
         }
 

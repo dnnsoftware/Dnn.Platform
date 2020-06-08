@@ -32,8 +32,8 @@ namespace DotNetNuke.UI.Skins.Controls
         public LanguageTokenReplace()
             : base(Scope.NoSettings)
         {
-            UseObjectLessExpression = true;
-            PropertySource[ObjectLessToken] = new LanguagePropertyAccess(this, Globals.GetPortalSettings());
+            this.UseObjectLessExpression = true;
+            this.PropertySource[ObjectLessToken] = new LanguagePropertyAccess(this, Globals.GetPortalSettings());
         }
 
         public string resourceFile { get; set; }
@@ -48,8 +48,8 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public LanguagePropertyAccess(LanguageTokenReplace parent, PortalSettings settings)
         {
-            objPortal = settings;
-            objParent = parent;
+            this.objPortal = settings;
+            this.objParent = parent;
         }
 
         #region IPropertyAccess Members
@@ -59,20 +59,20 @@ namespace DotNetNuke.UI.Skins.Controls
             switch (propertyName.ToLowerInvariant())
             {
                 case "url":
-                    return NewUrl(objParent.Language);
+                    return this.NewUrl(this.objParent.Language);
                 case "flagsrc":
-                    var mappedGifFile = PathUtils.Instance.MapPath($@"{FlagIconPhysicalLocation}\{objParent.Language}.gif");
-                    return File.Exists(mappedGifFile) ? $"/{objParent.Language}.gif" : $@"/{NonExistingFlagIconFileName}";
+                    var mappedGifFile = PathUtils.Instance.MapPath($@"{FlagIconPhysicalLocation}\{this.objParent.Language}.gif");
+                    return File.Exists(mappedGifFile) ? $"/{this.objParent.Language}.gif" : $@"/{NonExistingFlagIconFileName}";
                 case "selected":
-                    return (objParent.Language == CultureInfo.CurrentCulture.Name).ToString();
+                    return (this.objParent.Language == CultureInfo.CurrentCulture.Name).ToString();
                 case "label":
-                    return Localization.GetString("Label", objParent.resourceFile);
+                    return Localization.GetString("Label", this.objParent.resourceFile);
                 case "i":
                     return Globals.ResolveUrl("~/images/Flags");
                 case "p":
-                    return Globals.ResolveUrl(PathUtils.Instance.RemoveTrailingSlash(objPortal.HomeDirectory));
+                    return Globals.ResolveUrl(PathUtils.Instance.RemoveTrailingSlash(this.objPortal.HomeDirectory));
                 case "s":
-                    return Globals.ResolveUrl(PathUtils.Instance.RemoveTrailingSlash(objPortal.ActiveTab.SkinPath));
+                    return Globals.ResolveUrl(PathUtils.Instance.RemoveTrailingSlash(this.objPortal.ActiveTab.SkinPath));
                 case "g":
                     return Globals.ResolveUrl("~/portals/" + Globals.glbHostSkinFolder);
                 default:
@@ -146,7 +146,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             }
                             break;
                         default:
-                            if ((arrKeys[i].ToLowerInvariant() == "portalid") && objPortal.ActiveTab.IsSuperTab)
+                            if ((arrKeys[i].ToLowerInvariant() == "portalid") && this.objPortal.ActiveTab.IsSuperTab)
                             {
                                 //skip parameter
                                 //navigateURL adds portalid to querystring if tab is superTab
@@ -220,16 +220,16 @@ namespace DotNetNuke.UI.Skins.Controls
             var newLocale = LocaleController.Instance.GetLocale(newLanguage);
 
             //Ensure that the current ActiveTab is the culture of the new language
-            var tabId = objPortal.ActiveTab.TabID;
+            var tabId = this.objPortal.ActiveTab.TabID;
             var islocalized = false;
 
-            var localizedTab = TabController.Instance.GetTabByCulture(tabId, objPortal.PortalId, newLocale);
+            var localizedTab = TabController.Instance.GetTabByCulture(tabId, this.objPortal.PortalId, newLocale);
             if (localizedTab != null)
             {
                 islocalized = true;
                 if (localizedTab.IsDeleted || !TabPermissionController.CanViewPage(localizedTab))
                 {
-                    var localizedPortal = PortalController.Instance.GetPortal(objPortal.PortalId, newLocale.Code);
+                    var localizedPortal = PortalController.Instance.GetPortal(this.objPortal.PortalId, newLocale.Code);
                     tabId = localizedPortal.HomeTabId;
                 }
                 else
@@ -256,7 +256,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     }
                     if (!string.IsNullOrEmpty(fullurl))
                     {
-                        return GetCleanUrl(fullurl);
+                        return this.GetCleanUrl(fullurl);
                     }
                 }
             }
@@ -275,11 +275,11 @@ namespace DotNetNuke.UI.Skins.Controls
             }
 
             var controlKey = HttpContext.Current.Request.QueryString["ctl"];
-            var queryStrings = GetQsParams(newLocale.Code, islocalized);
-            var isSuperTab = objPortal.ActiveTab.IsSuperTab;
-            var url = $"{TestableGlobals.Instance.NavigateURL(tabId, isSuperTab, objPortal, controlKey, newLanguage, queryStrings)}{rawQueryString}";
+            var queryStrings = this.GetQsParams(newLocale.Code, islocalized);
+            var isSuperTab = this.objPortal.ActiveTab.IsSuperTab;
+            var url = $"{TestableGlobals.Instance.NavigateURL(tabId, isSuperTab, this.objPortal, controlKey, newLanguage, queryStrings)}{rawQueryString}";
 
-            return GetCleanUrl(url);
+            return this.GetCleanUrl(url);
         }
 
         private string GetCleanUrl(string url)

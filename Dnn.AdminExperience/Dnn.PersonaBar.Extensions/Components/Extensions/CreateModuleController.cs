@@ -28,7 +28,7 @@ namespace Dnn.PersonaBar.Extensions.Components
         protected INavigationManager NavigationManager { get; }
         public CreateModuleController()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         protected override Func<ICreateModuleController> GetFactory()
@@ -51,13 +51,13 @@ namespace Dnn.PersonaBar.Extensions.Components
             switch (createModuleDto.Type)
             {
                 case CreateModuleType.New:
-                    packageId = CreateNewModule(createModuleDto, out newPageUrl, out errorMessage);
+                    packageId = this.CreateNewModule(createModuleDto, out newPageUrl, out errorMessage);
                     break;
                 case CreateModuleType.Control:
-                    packageId = CreateModuleFromControl(createModuleDto, out newPageUrl, out errorMessage);
+                    packageId = this.CreateModuleFromControl(createModuleDto, out newPageUrl, out errorMessage);
                     break;
                 case CreateModuleType.Manifest:
-                    packageId = CreateModuleFromManifest(createModuleDto, out newPageUrl, out errorMessage);
+                    packageId = this.CreateModuleFromManifest(createModuleDto, out newPageUrl, out errorMessage);
                     break;
             }
 
@@ -121,11 +121,11 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
             //First create the control
             createModuleDto.FileName = controlSrc;
-            var message = CreateControl(createModuleDto);
+            var message = this.CreateControl(createModuleDto);
             if (string.IsNullOrEmpty(message))
             {
                 //Next import the control
-                return CreateModuleFromControl(createModuleDto, out newPageUrl, out errorMessage);
+                return this.CreateModuleFromControl(createModuleDto, out newPageUrl, out errorMessage);
             }
 
             return Null.NullInteger;
@@ -143,7 +143,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
             try
             {
-                var folder = PathUtils.Instance.RemoveTrailingSlash(GetSourceFolder(createModuleDto));
+                var folder = PathUtils.Instance.RemoveTrailingSlash(this.GetSourceFolder(createModuleDto));
                 var friendlyName = createModuleDto.ModuleName;
                 var name = createModuleDto.ModuleName;
                 var moduleControl = "DesktopModules/" + folder + "/" + createModuleDto.FileName;
@@ -220,7 +220,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
                 if (createModuleDto.AddPage)
                 {
-                    newPageUrl = CreateNewPage(moduleDefinition);
+                    newPageUrl = this.CreateNewPage(moduleDefinition);
                 }
 
                 return package.PackageID;
@@ -245,7 +245,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
             try
             {
-                var folder = PathUtils.Instance.RemoveTrailingSlash(GetSourceFolder(createModuleDto));
+                var folder = PathUtils.Instance.RemoveTrailingSlash(this.GetSourceFolder(createModuleDto));
                 var manifest = Path.Combine(Globals.ApplicationMapPath, "DesktopModules", folder, createModuleDto.Manifest);
                 var installer = new Installer(manifest, Globals.ApplicationMapPath, true);
 
@@ -266,7 +266,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                                 {
                                     var moduleDefinition = kvp.Value;
 
-                                    newPageUrl = CreateNewPage(moduleDefinition);
+                                    newPageUrl = this.CreateNewPage(moduleDefinition);
                                     break;
                                 }
                             }
@@ -326,7 +326,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 objModule.AllTabs = false;
                 ModuleController.Instance.AddModule(objModule);
 
-                return NavigationManager.NavigateURL(newTab.TabID);
+                return this.NavigationManager.NavigateURL(newTab.TabID);
             }
 
             return string.Empty;
@@ -340,12 +340,12 @@ namespace Dnn.PersonaBar.Extensions.Components
 
         private string CreateControl(CreateModuleDto createModuleDto)
         {
-            var folder = PathUtils.Instance.RemoveTrailingSlash(GetSourceFolder(createModuleDto));
-            var className = GetClassName(createModuleDto);
+            var folder = PathUtils.Instance.RemoveTrailingSlash(this.GetSourceFolder(createModuleDto));
+            var className = this.GetClassName(createModuleDto);
             var moduleControlPath = Path.Combine(Globals.ApplicationMapPath, "DesktopModules/" + folder + "/" + createModuleDto.FileName);
             var message = Null.NullString;
 
-            var source = string.Format(LoadControlTemplate(), createModuleDto.Language, className);
+            var source = string.Format(this.LoadControlTemplate(), createModuleDto.Language, className);
 
             //reset attributes
             if (File.Exists(moduleControlPath))

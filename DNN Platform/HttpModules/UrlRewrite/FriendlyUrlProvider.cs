@@ -32,71 +32,71 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
         public DNNFriendlyUrlProvider()
         {
             //Read the configuration specific information for this provider
-            var objProvider = (Provider)_providerConfiguration.Providers[ProviderName];
+            var objProvider = (Provider)this._providerConfiguration.Providers[ProviderName];
 
             if (!String.IsNullOrEmpty(objProvider.Attributes["urlFormat"]))
             {
                 switch (objProvider.Attributes["urlFormat"].ToLowerInvariant())
                 {
                     case "searchfriendly":
-                        _urlFormat = UrlFormatType.SearchFriendly;
+                        this._urlFormat = UrlFormatType.SearchFriendly;
                         break;
                     case "humanfriendly":
-                        _urlFormat = UrlFormatType.HumanFriendly;
+                        this._urlFormat = UrlFormatType.HumanFriendly;
                         break;
                     case "advanced":
                     case "customonly":
-                        _urlFormat = UrlFormatType.Advanced;
+                        this._urlFormat = UrlFormatType.Advanced;
                         break;
                     default:
-                        _urlFormat = UrlFormatType.SearchFriendly;
+                        this._urlFormat = UrlFormatType.SearchFriendly;
                         break;
                 }
             }
             //instance the correct provider implementation
-            switch (_urlFormat)
+            switch (this._urlFormat)
             {
                 case UrlFormatType.Advanced:
-                    _providerInstance = new AdvancedFriendlyUrlProvider(objProvider.Attributes);
+                    this._providerInstance = new AdvancedFriendlyUrlProvider(objProvider.Attributes);
                     break;
                 case UrlFormatType.HumanFriendly:
                 case UrlFormatType.SearchFriendly:
-                    _providerInstance = new BasicFriendlyUrlProvider(objProvider.Attributes);
+                    this._providerInstance = new BasicFriendlyUrlProvider(objProvider.Attributes);
                     break;
             }
 
             string extensions = !String.IsNullOrEmpty(objProvider.Attributes["validExtensions"]) ? objProvider.Attributes["validExtensions"] : ".aspx";
-            _validExtensions = extensions.Split(',');
+            this._validExtensions = extensions.Split(',');
         }
 
         public string[] ValidExtensions
         {
-            get { return _validExtensions; }
+            get { return this._validExtensions; }
         }
 
         public UrlFormatType UrlFormat
         {
-            get { return _urlFormat; }
+            get { return this._urlFormat; }
         }
 
         public override string FriendlyUrl(TabInfo tab, string path)
         {
-            return _providerInstance.FriendlyUrl(tab, path);
+            return this._providerInstance.FriendlyUrl(tab, path);
         }
 
         public override string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
-            return _providerInstance.FriendlyUrl(tab, path, pageName);
+            return this._providerInstance.FriendlyUrl(tab, path, pageName);
         }
 
         public override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings)
         {
-            return _providerInstance.FriendlyUrl(tab, path, pageName, settings);
+            return this._providerInstance.FriendlyUrl(tab, path, pageName, settings);
         }
 
         public override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
         {
-            return _providerInstance.FriendlyUrl(tab, path, pageName, portalAlias);
+            return this._providerInstance.FriendlyUrl(tab, path, pageName, portalAlias);
         }
     }
 }

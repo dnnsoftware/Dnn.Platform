@@ -21,15 +21,15 @@ namespace DotNetNuke.UI.WebControls
         {
             if (String.IsNullOrEmpty(viewPath))
             {
-                m_sKey = "";
+                this.m_sKey = "";
             }
             else if (viewPath.IndexOf("\\") > -1)
             {
-                m_sKey = viewPath.Substring(viewPath.LastIndexOf("\\") + 1);
+                this.m_sKey = viewPath.Substring(viewPath.LastIndexOf("\\") + 1);
             }
             else
             {
-                m_sKey = viewPath;
+                this.m_sKey = viewPath;
             }
         }
 
@@ -37,11 +37,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return m_sNamespace;
+                return this.m_sNamespace;
             }
             set
             {
-                m_sNamespace = value;
+                this.m_sNamespace = value;
             }
         }
 
@@ -57,10 +57,10 @@ namespace DotNetNuke.UI.WebControls
         {
             var objPages = new NavDataPageHierarchicalEnumerable();
             DNNNodeCollection objNodes;
-            objNodes = Navigation.GetNavigationNodes(m_sNamespace);
-            if (!String.IsNullOrEmpty(m_sKey))
+            objNodes = Navigation.GetNavigationNodes(this.m_sNamespace);
+            if (!String.IsNullOrEmpty(this.m_sKey))
             {
-                objNodes = objNodes.FindNodeByKey(m_sKey).DNNNodes;
+                objNodes = objNodes.FindNodeByKey(this.m_sKey).DNNNodes;
             }
             foreach (DNNNode objNode in objNodes)
             {

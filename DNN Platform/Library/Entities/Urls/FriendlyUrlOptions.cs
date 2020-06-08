@@ -41,15 +41,15 @@ namespace DotNetNuke.Entities.Urls
             get
             {
                 bool result = false;
-                if (string.IsNullOrEmpty(PunctuationReplacement) == false)
+                if (string.IsNullOrEmpty(this.PunctuationReplacement) == false)
                 {
                     result = true;
                 }
-                else if (ReplaceCharWithChar != null && ReplaceCharWithChar.Count > 0)
+                else if (this.ReplaceCharWithChar != null && this.ReplaceCharWithChar.Count > 0)
                 {
                     result = true;
                 }
-                else if (ConvertDiacriticChars)
+                else if (this.ConvertDiacriticChars)
                 {
                     result = true;
                 }
@@ -86,15 +86,15 @@ namespace DotNetNuke.Entities.Urls
         {
             var cloned = new FriendlyUrlOptions
                 {
-                    PunctuationReplacement = PunctuationReplacement,
-                    SpaceEncoding = SpaceEncoding,
-                    MaxUrlPathLength = MaxUrlPathLength,
-                    ConvertDiacriticChars = ConvertDiacriticChars,
-                    PageExtension = PageExtension,
-                    RegexMatch = RegexMatch,
-                    ReplaceCharWithChar = ReplaceCharWithChar,
-                    IllegalChars = IllegalChars,
-                    ReplaceChars = ReplaceChars
+                    PunctuationReplacement = this.PunctuationReplacement,
+                    SpaceEncoding = this.SpaceEncoding,
+                    MaxUrlPathLength = this.MaxUrlPathLength,
+                    ConvertDiacriticChars = this.ConvertDiacriticChars,
+                    PageExtension = this.PageExtension,
+                    RegexMatch = this.RegexMatch,
+                    ReplaceCharWithChar = this.ReplaceCharWithChar,
+                    IllegalChars = this.IllegalChars,
+                    ReplaceChars = this.ReplaceChars
                 };
             return cloned;
         }

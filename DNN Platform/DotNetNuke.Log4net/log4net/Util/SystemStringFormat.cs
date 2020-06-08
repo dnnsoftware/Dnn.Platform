@@ -53,9 +53,9 @@ namespace log4net.Util
 		/// <param name="args">An <see cref="System.Object"/> array containing zero or more objects to format.</param>
 		public SystemStringFormat(IFormatProvider provider, string format, params object[] args)
 		{
-			m_provider = provider;
-			m_format = format;
-			m_args = args;
+			this.m_provider = provider;
+			this.m_format = format;
+			this.m_args = args;
 		}
 
 		#endregion Constructor
@@ -66,7 +66,7 @@ namespace log4net.Util
 		/// <returns>the formatted string</returns>
 		public override string ToString()
 		{
-			return StringFormat(m_provider, m_format, m_args);
+			return StringFormat(this.m_provider, this.m_format, this.m_args);
 		}
 
 		#region StringFormat

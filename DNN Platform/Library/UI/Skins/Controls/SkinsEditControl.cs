@@ -55,7 +55,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// -----------------------------------------------------------------------------
         public SkinsEditControl(string type)
         {
-            SystemType = type;
+            this.SystemType = type;
         }
 		
 		#endregion
@@ -72,11 +72,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return Value as Dictionary<int, string>;
+                return this.Value as Dictionary<int, string>;
             }
             set
             {
-                Value = value;
+                this.Value = value;
             }
         }
 
@@ -90,11 +90,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return OldValue as Dictionary<int, string>;
+                return this.OldValue as Dictionary<int, string>;
             }
             set
             {
-                OldValue = value;
+                this.OldValue = value;
             }
         }
 
@@ -109,9 +109,9 @@ namespace DotNetNuke.UI.Skins.Controls
             get
             {
                 string strValue = Null.NullString;
-                if (OldDictionaryValue != null)
+                if (this.OldDictionaryValue != null)
                 {
-                    foreach (string Skin in OldDictionaryValue.Values)
+                    foreach (string Skin in this.OldDictionaryValue.Values)
                     {
                         strValue += Skin + ",";
                     }
@@ -131,9 +131,9 @@ namespace DotNetNuke.UI.Skins.Controls
             get
             {
                 string strValue = Null.NullString;
-                if (DictionaryValue != null)
+                if (this.DictionaryValue != null)
                 {
-                    foreach (string Skin in DictionaryValue.Values)
+                    foreach (string Skin in this.DictionaryValue.Values)
                     {
                         strValue += Skin + ",";
                     }
@@ -142,7 +142,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
             set
             {
-                Value = value;
+                this.Value = value;
             }
         }
 
@@ -150,11 +150,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _AddedItem;
+                return this._AddedItem;
             }
             set
             {
-                _AddedItem = value;
+                this._AddedItem = value;
             }
         }
 
@@ -166,17 +166,17 @@ namespace DotNetNuke.UI.Skins.Controls
             switch (eventArgument.Substring(0, 3))
             {
                 case "Del":
-                    args = new PropertyEditorEventArgs(Name);
-                    args.Value = DictionaryValue;
-                    args.OldValue = OldDictionaryValue;
+                    args = new PropertyEditorEventArgs(this.Name);
+                    args.Value = this.DictionaryValue;
+                    args.OldValue = this.OldDictionaryValue;
                     args.Key = int.Parse(eventArgument.Substring(7));
                     args.Changed = true;
                     base.OnItemDeleted(args);
                     break;
                 case "Add":
-                    args = new PropertyEditorEventArgs(Name);
-                    args.Value = AddedItem;
-                    args.StringValue = AddedItem;
+                    args = new PropertyEditorEventArgs(this.Name);
+                    args.Value = this.AddedItem;
+                    args.StringValue = this.AddedItem;
                     args.Changed = true;
                     base.OnItemAdded(args);
                     break;
@@ -197,9 +197,9 @@ namespace DotNetNuke.UI.Skins.Controls
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
-            var args = new PropertyEditorEventArgs(Name);
-            args.Value = DictionaryValue;
-            args.OldValue = OldDictionaryValue;
+            var args = new PropertyEditorEventArgs(this.Name);
+            args.Value = this.DictionaryValue;
+            args.OldValue = this.OldDictionaryValue;
             args.StringValue = "";
             args.Changed = true;
             base.OnValueChanged(args);
@@ -215,7 +215,7 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnPreRender(e);
 
             //Register control for PostBack
-            Page.RegisterRequiresPostBack(this);
+            this.Page.RegisterRequiresPostBack(this);
         }
 
         /// -----------------------------------------------------------------------------
@@ -227,9 +227,9 @@ namespace DotNetNuke.UI.Skins.Controls
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             int length = Null.NullInteger;
-            if ((CustomAttributes != null))
+            if ((this.CustomAttributes != null))
             {
-                foreach (Attribute attribute in CustomAttributes)
+                foreach (Attribute attribute in this.CustomAttributes)
                 {
                     if (attribute is MaxLengthAttribute)
                     {
@@ -239,14 +239,14 @@ namespace DotNetNuke.UI.Skins.Controls
                     }
                 }
             }
-            if (DictionaryValue != null)
+            if (this.DictionaryValue != null)
             {
-                foreach (KeyValuePair<int, string> kvp in DictionaryValue)
+                foreach (KeyValuePair<int, string> kvp in this.DictionaryValue)
                 {
 					//Render Hyperlink
-                    writer.AddAttribute(HtmlTextWriterAttribute.Href, Page.ClientScript.GetPostBackClientHyperlink(this, "Delete_" + kvp.Key, false));
+                    writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackClientHyperlink(this, "Delete_" + kvp.Key, false));
                     writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "javascript:return confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteItem")) + "');");
-                    writer.AddAttribute(HtmlTextWriterAttribute.Title, Localization.GetString("cmdDelete", LocalResourceFile));
+                    writer.AddAttribute(HtmlTextWriterAttribute.Title, Localization.GetString("cmdDelete", this.LocalResourceFile));
                     writer.RenderBeginTag(HtmlTextWriterTag.A);
 
                     //Render Image
@@ -260,14 +260,14 @@ namespace DotNetNuke.UI.Skins.Controls
                     //Render end of Hyperlink
                     writer.RenderEndTag();
 
-                    ControlStyle.AddAttributesToRender(writer);
+                    this.ControlStyle.AddAttributesToRender(writer);
                     writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
                     writer.AddAttribute(HtmlTextWriterAttribute.Value, kvp.Value);
                     if (length > Null.NullInteger)
                     {
                         writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString());
                     }
-                    writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID + "_skin" + kvp.Key);
+                    writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_skin" + kvp.Key);
                     writer.RenderBeginTag(HtmlTextWriterTag.Input);
                     writer.RenderEndTag();
 
@@ -277,8 +277,8 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 //Create Add Row
                 //Render Hyperlink
-                writer.AddAttribute(HtmlTextWriterAttribute.Href, Page.ClientScript.GetPostBackClientHyperlink(this, "Add", false));
-                writer.AddAttribute(HtmlTextWriterAttribute.Title, Localization.GetString("cmdAdd", LocalResourceFile));
+                writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackClientHyperlink(this, "Add", false));
+                writer.AddAttribute(HtmlTextWriterAttribute.Title, Localization.GetString("cmdAdd", this.LocalResourceFile));
                 writer.RenderBeginTag(HtmlTextWriterTag.A);
 
                 //Render Image
@@ -292,14 +292,14 @@ namespace DotNetNuke.UI.Skins.Controls
                 //Render end of Hyperlink
                 writer.RenderEndTag();
 
-                ControlStyle.AddAttributesToRender(writer);
+                this.ControlStyle.AddAttributesToRender(writer);
                 writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, Null.NullString);
                 if (length > Null.NullInteger)
                 {
                     writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString());
                 }
-                writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID + "_skinnew");
+                writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_skinnew");
                 writer.RenderBeginTag(HtmlTextWriterTag.Input);
                 writer.RenderEndTag();
                 writer.WriteBreak();
@@ -314,11 +314,11 @@ namespace DotNetNuke.UI.Skins.Controls
         /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
-            if (DictionaryValue != null)
+            if (this.DictionaryValue != null)
             {
-                foreach (KeyValuePair<int, string> kvp in DictionaryValue)
+                foreach (KeyValuePair<int, string> kvp in this.DictionaryValue)
                 {
-                    ControlStyle.AddAttributesToRender(writer);
+                    this.ControlStyle.AddAttributesToRender(writer);
                     writer.RenderBeginTag(HtmlTextWriterTag.Span);
                     writer.Write(kvp.Value);
                     writer.RenderEndTag();
@@ -334,9 +334,9 @@ namespace DotNetNuke.UI.Skins.Controls
             bool dataChanged = false;
             string postedValue;
             var newDictionaryValue = new Dictionary<int, string>();
-            foreach (KeyValuePair<int, string> kvp in DictionaryValue)
+            foreach (KeyValuePair<int, string> kvp in this.DictionaryValue)
             {
-                postedValue = postCollection[UniqueID + "_skin" + kvp.Key];
+                postedValue = postCollection[this.UniqueID + "_skin" + kvp.Key];
                 if (kvp.Value.Equals(postedValue))
                 {
                     newDictionaryValue[kvp.Key] = kvp.Value;
@@ -347,12 +347,12 @@ namespace DotNetNuke.UI.Skins.Controls
                     dataChanged = true;
                 }
             }
-            postedValue = postCollection[UniqueID + "_skinnew"];
+            postedValue = postCollection[this.UniqueID + "_skinnew"];
             if (!string.IsNullOrEmpty(postedValue))
             {
-                AddedItem = postedValue;
+                this.AddedItem = postedValue;
             }
-            DictionaryValue = newDictionaryValue;
+            this.DictionaryValue = newDictionaryValue;
             return dataChanged;
         }
     }

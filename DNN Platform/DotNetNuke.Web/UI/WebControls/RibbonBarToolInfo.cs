@@ -15,21 +15,21 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         public RibbonBarToolInfo()
         {
-            ControlKey = "";
-            ModuleFriendlyName = "";
-            LinkWindowTarget = "";
-            ToolName = "";
+            this.ControlKey = "";
+            this.ModuleFriendlyName = "";
+            this.LinkWindowTarget = "";
+            this.ToolName = "";
         }
 
         public RibbonBarToolInfo(string toolName, bool isHostTool, bool useButton, string linkWindowTarget, string moduleFriendlyName, string controlKey, bool showAsPopUp)
         {
-            ToolName = toolName;
-            IsHostTool = isHostTool;
-            UseButton = useButton;
-            LinkWindowTarget = linkWindowTarget;
-            ModuleFriendlyName = moduleFriendlyName;
-            ControlKey = controlKey;
-            ShowAsPopUp = showAsPopUp;
+            this.ToolName = toolName;
+            this.IsHostTool = isHostTool;
+            this.UseButton = useButton;
+            this.LinkWindowTarget = linkWindowTarget;
+            this.ModuleFriendlyName = moduleFriendlyName;
+            this.ControlKey = controlKey;
+            this.ShowAsPopUp = showAsPopUp;
         }
 
         public string ControlKey { get; set; }

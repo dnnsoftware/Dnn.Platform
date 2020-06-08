@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [SetUp]
         public void Init()
         {
-            usersContract = new GetUsersContract
+            this.usersContract = new GetUsersContract
             {
                 SearchText = null,
                 PageIndex = 0,
@@ -33,7 +33,7 @@ namespace Dnn.PersonaBar.Users.Tests
                 Filter = UserFilters.All
             };
 
-            usersCtrl = new UsersControllerTestable();
+            this.usersCtrl = new UsersControllerTestable();
         }
 
         [Test]
@@ -56,10 +56,10 @@ namespace Dnn.PersonaBar.Users.Tests
         public void FilteredSearchTest(string searchText, string expectedFilteredText)
         {
             int totalRecords;
-            usersContract.SearchText = searchText;
-            usersCtrl.GetUsers(usersContract, true, out totalRecords);
+            this.usersContract.SearchText = searchText;
+            this.usersCtrl.GetUsers(this.usersContract, true, out totalRecords);
 
-            Assert.AreEqual(expectedFilteredText, usersCtrl.LastSearch);
+            Assert.AreEqual(expectedFilteredText, this.usersCtrl.LastSearch);
 
         }
 
@@ -77,9 +77,9 @@ namespace Dnn.PersonaBar.Users.Tests
                 bool? hasAgreedToTerms, 
                 bool? requestsRemoval)
             {
-                LastSearch = SearchTextFilter.CleanWildcards(usersContract.SearchText);
-                dataReader = new Mock<IDataReader>();
-                return dataReader.Object;
+                this.LastSearch = SearchTextFilter.CleanWildcards(usersContract.SearchText);
+                this.dataReader = new Mock<IDataReader>();
+                return this.dataReader.Object;
             }
         }
     }

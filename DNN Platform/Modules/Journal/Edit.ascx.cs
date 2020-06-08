@@ -29,7 +29,7 @@ namespace DotNetNuke.Modules.Journal {
         #region Event Handlers
 
         override protected void OnInit(EventArgs e) {
-            InitializeComponent();
+            this.InitializeComponent();
             base.OnInit(e);
         }
 

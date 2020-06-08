@@ -20,12 +20,12 @@ namespace DotNetNuke.Web.Mvc
 
         public DnnMvcRouteHandler(IControllerFactory controllerFactory)
         {
-            _controllerFactory = controllerFactory;
+            this._controllerFactory = controllerFactory;
         }
 
         protected virtual IHttpHandler GetHttpHandler(RequestContext requestContext)
         {
-            requestContext.HttpContext.SetSessionStateBehavior(GetSessionStateBehavior(requestContext));
+            requestContext.HttpContext.SetSessionStateBehavior(this.GetSessionStateBehavior(requestContext));
             return new DnnMvcHandler(requestContext);
         }
 
@@ -37,7 +37,7 @@ namespace DotNetNuke.Web.Mvc
                 throw new InvalidOperationException("No Controller");
             }
 
-            IControllerFactory controllerFactory = _controllerFactory ?? ControllerBuilder.Current.GetControllerFactory();
+            IControllerFactory controllerFactory = this._controllerFactory ?? ControllerBuilder.Current.GetControllerFactory();
             return controllerFactory.GetControllerSessionBehavior(requestContext, controllerName);
         }
 
@@ -45,7 +45,7 @@ namespace DotNetNuke.Web.Mvc
 
         IHttpHandler IRouteHandler.GetHttpHandler(RequestContext requestContext)
         {
-            return GetHttpHandler(requestContext);
+            return this.GetHttpHandler(requestContext);
         }
 
         #endregion

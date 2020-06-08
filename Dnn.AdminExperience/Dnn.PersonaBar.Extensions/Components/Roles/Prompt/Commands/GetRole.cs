@@ -27,22 +27,22 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             
-            RoleId = GetFlagValue(FlagId, "Role Id", -1, true, true);
+            this.RoleId = this.GetFlagValue(FlagId, "Role Id", -1, true, true);
 
-            if (RoleId < 0)
+            if (this.RoleId < 0)
             {
-                AddMessage(LocalizeString("Prompt_RoleIdNegative"));
+                this.AddMessage(this.LocalizeString("Prompt_RoleIdNegative"));
             }
         }
 
         public override ConsoleResultModel Run()
         {
             var lst = new List<RoleModel>();
-            var role = RolesController.Instance.GetRole(PortalSettings, RoleId);
+            var role = RolesController.Instance.GetRole(this.PortalSettings, this.RoleId);
             if (role == null)
-                return new ConsoleErrorResultModel(string.Format(LocalizeString("Prompt_NoRoleWithId"), RoleId));
+                return new ConsoleErrorResultModel(string.Format(this.LocalizeString("Prompt_NoRoleWithId"), this.RoleId));
             lst.Add(new RoleModel(role));
-            return new ConsoleResultModel { Data = lst, Records = lst.Count, Output = string.Format(LocalizeString("Prompt_RoleFound"),RoleId) };
+            return new ConsoleResultModel { Data = lst, Records = lst.Count, Output = string.Format(this.LocalizeString("Prompt_RoleFound"),this.RoleId) };
         }
     }
 }

@@ -38,7 +38,7 @@ namespace DotNetNuke.Web.Api
         {
             if (!BypassTokenCheck())
             {
-                var result = IsAuthorized(actionContext);
+                var result = this.IsAuthorized(actionContext);
                 if (!result.Item1)
                 {
                     throw new UnauthorizedAccessException(result.Item2);

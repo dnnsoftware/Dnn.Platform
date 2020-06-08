@@ -65,16 +65,16 @@ namespace Dnn.PersonaBar.Sites.Services
                 }
                 var response = new
                 {
-                    Results = portals.Select(GetPortalDto).ToList(),
+                    Results = portals.Select(this.GetPortalDto).ToList(),
                     TotalResults = totalRecords
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -92,7 +92,7 @@ namespace Dnn.PersonaBar.Sites.Services
             try
             {
                 var errors = new List<string>();
-                var portalId = _controller.CreatePortal(errors, GetDomainName(), GetAbsoluteServerPath(),
+                var portalId = this._controller.CreatePortal(errors, this.GetDomainName(), this.GetAbsoluteServerPath(),
                     request.SiteTemplate, request.SiteName,
                     request.SiteAlias, request.SiteDescription, request.SiteKeywords,
                     request.IsChildSite, request.HomeDirectory, request.SiteGroupId, request.UseCurrentUserAsAdmin,
@@ -100,19 +100,19 @@ namespace Dnn.PersonaBar.Sites.Services
                     request.PasswordConfirm, request.Question, request.Answer);
                 if (portalId < 0)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Join("<br/>", errors));
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Join("<br/>", errors));
                 }
                 var portal = PortalController.Instance.GetPortal(portalId);
-                return Request.CreateResponse(HttpStatusCode.OK, new
+                return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
-                    Portal = GetPortalDto(portal),
+                    Portal = this.GetPortalDto(portal),
                     ErrorMessage = errors
                 });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -131,26 +131,26 @@ namespace Dnn.PersonaBar.Sites.Services
                 var portal = PortalController.Instance.GetPortal(portalId);
                 if (portal != null)
                 {
-                    if (portal.PortalID != PortalSettings.PortalId &&
+                    if (portal.PortalID != this.PortalSettings.PortalId &&
                         !PortalController.IsMemberOfPortalGroup(portal.PortalID))
                     {
-                        var strMessage = PortalController.DeletePortal(portal, GetAbsoluteServerPath());
+                        var strMessage = PortalController.DeletePortal(portal, this.GetAbsoluteServerPath());
                         if (string.IsNullOrEmpty(strMessage))
                         {
-                            return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                            return this.Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
                         }
-                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, strMessage);
+                        return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, strMessage);
                     }
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
+                    return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized,
                         Localization.GetString("PortalDeletionDenied", Components.Constants.LocalResourcesFile));
                 }
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound,
+                return this.Request.CreateErrorResponse(HttpStatusCode.NotFound,
                     Localization.GetString("PortalNotFound", Components.Constants.LocalResourcesFile));
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -167,15 +167,15 @@ namespace Dnn.PersonaBar.Sites.Services
             try
             {
                 bool success;
-                var message = _controller.ExportPortalTemplate(request, UserInfo, out success);
+                var message = this._controller.ExportPortalTemplate(request, this.UserInfo, out success);
 
                 if (!success)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
                 }
-                var template = _controller.GetPortalTemplates().First(x => x.Name == request.FileName);
-                var templateItem = _controller.CreateListItem(template);
-                return Request.CreateResponse(HttpStatusCode.OK, new
+                var template = this._controller.GetPortalTemplates().First(x => x.Name == request.FileName);
+                var templateItem = this._controller.CreateListItem(template);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Message = message,
                     Template = new
@@ -188,7 +188,7 @@ namespace Dnn.PersonaBar.Sites.Services
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -216,12 +216,12 @@ namespace Dnn.PersonaBar.Sites.Services
                     TotalResults = locales.Count
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -237,13 +237,13 @@ namespace Dnn.PersonaBar.Sites.Services
         {
             try
             {
-                PortalController.DeleteExpiredPortals(GetAbsoluteServerPath());
-                return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                PortalController.DeleteExpiredPortals(this.GetAbsoluteServerPath());
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -258,12 +258,12 @@ namespace Dnn.PersonaBar.Sites.Services
         {
             try
             {
-                var defaultTemplate = _controller.GetDefaultTemplate();
+                var defaultTemplate = this._controller.GetDefaultTemplate();
                 var temps = new List<Tuple<string, string>>();
-                var templates = _controller.GetPortalTemplates();
+                var templates = this._controller.GetPortalTemplates();
                 foreach (var template in templates)
                 {
-                    var item = _controller.CreateListItem(template);
+                    var item = this._controller.CreateListItem(template);
                     temps.Add(new Tuple<string, string>(item.Text, item.Value));
                     if (item.Value.StartsWith(defaultTemplate))
                         defaultTemplate = item.Value;
@@ -284,12 +284,12 @@ namespace Dnn.PersonaBar.Sites.Services
                     TotalResults = temps.Count
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -304,7 +304,7 @@ namespace Dnn.PersonaBar.Sites.Services
         {
             try
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new
+                return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     MembershipProviderConfig.RequiresQuestionAndAnswer
                 });
@@ -312,13 +312,13 @@ namespace Dnn.PersonaBar.Sites.Services
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
         private string GetAbsoluteServerPath()
         {
-            var httpContext = Request.Properties["MS_HttpContext"] as HttpContextWrapper;
+            var httpContext = this.Request.Properties["MS_HttpContext"] as HttpContextWrapper;
             var strServerPath = string.Empty;
             if (httpContext != null)
                 strServerPath = httpContext.Request.MapPath(httpContext.Request.ApplicationPath);
@@ -331,7 +331,7 @@ namespace Dnn.PersonaBar.Sites.Services
 
         private string GetDomainName()
         {
-            var httpContext = Request.Properties["MS_HttpContext"] as HttpContextWrapper;
+            var httpContext = this.Request.Properties["MS_HttpContext"] as HttpContextWrapper;
             return httpContext != null ? Globals.GetDomainName(httpContext.Request, true) : string.Empty;
         }
 
@@ -342,20 +342,20 @@ namespace Dnn.PersonaBar.Sites.Services
             {
                 portal.PortalID,
                 portal.PortalName,
-                PortalAliases = _controller.FormatPortalAliases(portal.PortalID),
+                PortalAliases = this._controller.FormatPortalAliases(portal.PortalID),
                 portal.Users,
                 portal.Pages,
                 portal.HostSpace,
                 portal.HostFee,
                 portal.DefaultLanguage,
-                ExpiryDate = _controller.FormatExpiryDate(portal.ExpiryDate),
+                ExpiryDate = this._controller.FormatExpiryDate(portal.ExpiryDate),
                 portal.LastModifiedOnDate,
                 contentLocalizable =
                     PortalController.Instance.GetPortalSettings(portal.PortalID)
                         .TryGetValue("ContentLocalizationEnabled", out contentLocalizable) &&
                     Convert.ToBoolean(contentLocalizable),
                 allowDelete =
-                    (portal.PortalID != PortalSettings.PortalId &&
+                    (portal.PortalID != this.PortalSettings.PortalId &&
                      !PortalController.IsMemberOfPortalGroup(portal.PortalID))
             };
             return portalDto;

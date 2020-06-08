@@ -90,37 +90,37 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
 
         public PackageInfoDto(int portalId, PackageInfo package)
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
 
-            PackageType = package.PackageType;
-            FriendlyName = package.FriendlyName;
-            Name = package.Name;
-            PackageId = package.PackageID;
-            Description = package.Description;
-            IsInUse = ExtensionsController.IsPackageInUse(package, portalId);
-            Version = package.Version.ToString(3);
-            UpgradeUrl = ExtensionsController.UpgradeRedirect(package.Version, package.PackageType, package.Name);
-            UpgradeIndicator = ExtensionsController.UpgradeIndicator(package.Version, package.PackageType, package.Name);
-            PackageIcon = ExtensionsController.GetPackageIcon(package);
-            License = package.License;
-            ReleaseNotes = package.ReleaseNotes;
-            Owner = package.Owner;
-            Organization = package.Organization;
-            Url = package.Url;
-            Email = package.Email;
-            CanDelete = !package.IsSystemPackage &&
+            this.PackageType = package.PackageType;
+            this.FriendlyName = package.FriendlyName;
+            this.Name = package.Name;
+            this.PackageId = package.PackageID;
+            this.Description = package.Description;
+            this.IsInUse = ExtensionsController.IsPackageInUse(package, portalId);
+            this.Version = package.Version.ToString(3);
+            this.UpgradeUrl = ExtensionsController.UpgradeRedirect(package.Version, package.PackageType, package.Name);
+            this.UpgradeIndicator = ExtensionsController.UpgradeIndicator(package.Version, package.PackageType, package.Name);
+            this.PackageIcon = ExtensionsController.GetPackageIcon(package);
+            this.License = package.License;
+            this.ReleaseNotes = package.ReleaseNotes;
+            this.Owner = package.Owner;
+            this.Organization = package.Organization;
+            this.Url = package.Url;
+            this.Email = package.Email;
+            this.CanDelete = !package.IsSystemPackage &&
                 package.PackageID > 0 &&
                 PackageController.CanDeletePackage(package, PortalSettings.Current);
 
-            var authService = AuthenticationController.GetAuthenticationServiceByPackageID(PackageId);
-            ReadOnly = authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName;
+            var authService = AuthenticationController.GetAuthenticationServiceByPackageID(this.PackageId);
+            this.ReadOnly = authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName;
 
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var tabId = portalSettings.ActiveTab.TabID;
-            SiteSettingsLink = NavigationManager.NavigateURL(tabId, "EditExtension",
+            this.SiteSettingsLink = this.NavigationManager.NavigateURL(tabId, "EditExtension",
                     new[]
                     {
-                        $"packageid={PackageId}",
+                        $"packageid={this.PackageId}",
                         "Display=editor",
                         "popUp=true",
                     });
@@ -129,23 +129,23 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         public PackageInfo ToPackageInfo()
         {
             System.Version ver;
-            System.Version.TryParse(Version, out ver);
+            System.Version.TryParse(this.Version, out ver);
 
             return new PackageInfo
             {
-                PackageType = PackageType,
-                FriendlyName = FriendlyName,
-                Name = Name,
-                PackageID = PackageId,
-                Description = Description,
+                PackageType = this.PackageType,
+                FriendlyName = this.FriendlyName,
+                Name = this.Name,
+                PackageID = this.PackageId,
+                Description = this.Description,
                 Version = ver,
-                License = License,
-                ReleaseNotes = ReleaseNotes,
-                Owner = Owner,
-                Organization = Organization,
-                Url = Url,
-                Email = Email,
-                IconFile = PackageIcon,
+                License = this.License,
+                ReleaseNotes = this.ReleaseNotes,
+                Owner = this.Owner,
+                Organization = this.Organization,
+                Url = this.Url,
+                Email = this.Email,
+                IconFile = this.PackageIcon,
             };
         }
     }

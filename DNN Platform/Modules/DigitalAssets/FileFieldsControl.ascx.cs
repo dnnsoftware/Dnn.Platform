@@ -20,25 +20,25 @@ namespace DotNetNuke.Modules.DigitalAssets
     {
         public virtual void PrepareProperties()
         {
-            FileNameInput.Text = Item.ItemName;
-            FileNameInvalidCharactersValidator.ValidationExpression = "^([^" + Regex.Escape(Controller.GetInvalidChars()) + "]+)$";
-            FileNameInvalidCharactersValidator.ErrorMessage = Controller.GetInvalidCharsErrorText();
+            this.FileNameInput.Text = this.Item.ItemName;
+            this.FileNameInvalidCharactersValidator.ValidationExpression = "^([^" + Regex.Escape(this.Controller.GetInvalidChars()) + "]+)$";
+            this.FileNameInvalidCharactersValidator.ErrorMessage = this.Controller.GetInvalidCharsErrorText();
         }
 
         private void PrepareFileAttributes()
         {
-            FileAttributeArchiveCheckBox.Checked = (File.FileAttributes & FileAttributes.Archive) == FileAttributes.Archive;
-            FileAttributeHiddenCheckBox.Checked = (File.FileAttributes & FileAttributes.Hidden) == FileAttributes.Hidden;
-            FileAttributeReadonlyCheckBox.Checked = (File.FileAttributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
-            FileAttributeSystemCheckBox.Checked = (File.FileAttributes & FileAttributes.System) == FileAttributes.System;
+            this.FileAttributeArchiveCheckBox.Checked = (this.File.FileAttributes & FileAttributes.Archive) == FileAttributes.Archive;
+            this.FileAttributeHiddenCheckBox.Checked = (this.File.FileAttributes & FileAttributes.Hidden) == FileAttributes.Hidden;
+            this.FileAttributeReadonlyCheckBox.Checked = (this.File.FileAttributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
+            this.FileAttributeSystemCheckBox.Checked = (this.File.FileAttributes & FileAttributes.System) == FileAttributes.System;
         }
 
         private FileAttributes GetFileAttributesUpdated(FileAttributes? attributes)
         {
-            var result = FileAttributeArchiveCheckBox.Checked ? (attributes | FileAttributes.Archive) : (attributes & ~FileAttributes.Archive);
-            result = FileAttributeHiddenCheckBox.Checked ? (result | FileAttributes.Hidden) : (result & ~FileAttributes.Hidden);
-            result = FileAttributeReadonlyCheckBox.Checked ? (result | FileAttributes.ReadOnly) : (result & ~FileAttributes.ReadOnly);
-            result = FileAttributeSystemCheckBox.Checked ? (result | FileAttributes.System) : (result & ~FileAttributes.System);
+            var result = this.FileAttributeArchiveCheckBox.Checked ? (attributes | FileAttributes.Archive) : (attributes & ~FileAttributes.Archive);
+            result = this.FileAttributeHiddenCheckBox.Checked ? (result | FileAttributes.Hidden) : (result & ~FileAttributes.Hidden);
+            result = this.FileAttributeReadonlyCheckBox.Checked ? (result | FileAttributes.ReadOnly) : (result & ~FileAttributes.ReadOnly);
+            result = this.FileAttributeSystemCheckBox.Checked ? (result | FileAttributes.System) : (result & ~FileAttributes.System);
 
             return result.Value;
         }
@@ -59,13 +59,13 @@ namespace DotNetNuke.Modules.DigitalAssets
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (!Page.IsPostBack)
+            if (!this.Page.IsPostBack)
             {                
-                PrepareProperties();
-                FileAttributesContainer.Visible = File.SupportsFileAttributes;
-                if (File.SupportsFileAttributes)
+                this.PrepareProperties();
+                this.FileAttributesContainer.Visible = this.File.SupportsFileAttributes;
+                if (this.File.SupportsFileAttributes)
                 {
-                    PrepareFileAttributes();
+                    this.PrepareFileAttributes();
                 }                
             }
         }
@@ -87,34 +87,34 @@ namespace DotNetNuke.Modules.DigitalAssets
         
         public virtual void SetPropertiesAvailability(bool availability)
         {
-            FileNameInput.Enabled = availability;
-            FileAttributeArchiveCheckBox.Enabled = availability;
-            FileAttributeHiddenCheckBox.Enabled = availability;
-            FileAttributeReadonlyCheckBox.Enabled = availability;
-            FileAttributeSystemCheckBox.Enabled = availability;
+            this.FileNameInput.Enabled = availability;
+            this.FileAttributeArchiveCheckBox.Enabled = availability;
+            this.FileAttributeHiddenCheckBox.Enabled = availability;
+            this.FileAttributeReadonlyCheckBox.Enabled = availability;
+            this.FileAttributeSystemCheckBox.Enabled = availability;
         }
 
         public virtual void SetPropertiesVisibility(bool visibility)
         {
-            FileNameInput.Visible = visibility;
-            FileAttributesContainer.Visible = visibility;
+            this.FileNameInput.Visible = visibility;
+            this.FileAttributesContainer.Visible = visibility;
         }
 
         public void SetFileInfo(IFileInfo fileInfo)
         {
-            File = fileInfo;
+            this.File = fileInfo;
         }
 
         public virtual object SaveProperties()
         {
-            Controller.RenameFile(Item.ItemID, FileNameInput.Text);
-            if (File.SupportsFileAttributes)
+            this.Controller.RenameFile(this.Item.ItemID, this.FileNameInput.Text);
+            if (this.File.SupportsFileAttributes)
             {
-                File = FileManager.Instance.GetFile(Item.ItemID, true);
-                FileManager.Instance.SetAttributes(File, GetFileAttributesUpdated(File.FileAttributes));
+                this.File = FileManager.Instance.GetFile(this.Item.ItemID, true);
+                FileManager.Instance.SetAttributes(this.File, this.GetFileAttributesUpdated(this.File.FileAttributes));
             }
 
-            return File;
+            return this.File;
         }
     }
 }

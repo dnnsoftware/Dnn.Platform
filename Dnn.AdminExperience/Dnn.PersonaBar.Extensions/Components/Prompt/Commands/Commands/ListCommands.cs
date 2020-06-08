@@ -24,7 +24,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
             try
             {
                 var lstOut = CommandRepository.Instance.GetCommands().Values.OrderBy(c => c.Name + '.' + c.Name).ToList();
-                return new ConsoleResultModel(string.Format(LocalizeString("Prompt_ListCommands_Found"), lstOut.Count))
+                return new ConsoleResultModel(string.Format(this.LocalizeString("Prompt_ListCommands_Found"), lstOut.Count))
                 {
                     Records = lstOut.Count,
                     Data = lstOut,
@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return new ConsoleErrorResultModel(LocalizeString("Prompt_ListCommands_Error"));
+                return new ConsoleErrorResultModel(this.LocalizeString("Prompt_ListCommands_Error"));
             }
         }
     }

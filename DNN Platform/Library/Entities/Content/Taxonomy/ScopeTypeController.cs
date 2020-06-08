@@ -33,7 +33,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public ScopeTypeController(IDataService dataService)
         {
-            _DataService = dataService;
+            this._DataService = dataService;
         }
 
         #endregion
@@ -42,7 +42,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         private object GetScopeTypesCallBack(CacheItemArgs cacheItemArgs)
         {
-            return CBO.FillQueryable<ScopeType>(_DataService.GetScopeTypes()).ToList();
+            return CBO.FillQueryable<ScopeType>(this._DataService.GetScopeTypes()).ToList();
         }
 
         #endregion
@@ -55,7 +55,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.NotNull("scopeType", scopeType);
             Requires.PropertyNotNullOrEmpty("scopeType", "ScopeType", scopeType.ScopeType);
 
-            scopeType.ScopeTypeId = _DataService.AddScopeType(scopeType);
+            scopeType.ScopeTypeId = this._DataService.AddScopeType(scopeType);
 
             //Refresh cached collection of types
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
@@ -74,7 +74,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.NotNull("scopeType", scopeType);
             Requires.PropertyNotNegative("scopeType", "ScopeTypeId", scopeType.ScopeTypeId);
 
-            _DataService.DeleteScopeType(scopeType);
+            this._DataService.DeleteScopeType(scopeType);
 
             //Refresh cached collection of types
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
@@ -82,7 +82,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public IQueryable<ScopeType> GetScopeTypes()
         {
-            return CBO.GetCachedObject<List<ScopeType>>(new CacheItemArgs(DataCache.ScopeTypesCacheKey, _CacheTimeOut), GetScopeTypesCallBack).AsQueryable();
+            return CBO.GetCachedObject<List<ScopeType>>(new CacheItemArgs(DataCache.ScopeTypesCacheKey, _CacheTimeOut), this.GetScopeTypesCallBack).AsQueryable();
         }
 
         public void UpdateScopeType(ScopeType scopeType)
@@ -92,7 +92,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.PropertyNotNegative("scopeType", "ScopeTypeId", scopeType.ScopeTypeId);
             Requires.PropertyNotNullOrEmpty("scopeType", "ScopeType", scopeType.ScopeType);
 
-            _DataService.UpdateScopeType(scopeType);
+            this._DataService.UpdateScopeType(scopeType);
 
             //Refresh cached collection of types
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);

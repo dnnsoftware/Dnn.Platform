@@ -147,8 +147,8 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 			}
 			current.AppendChild(xml.CreateTextNode(templateText.Substring(index)));
 
-			xsl = new XslCompiledTransform();
-			xsl.Load(xml);
+			this.xsl = new XslCompiledTransform();
+			this.xsl.Load(xml);
 			return true;
 		}
 
@@ -173,7 +173,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 			{
 				Utilities.SerialiserFor(source.GetType()).Serialize(xmlStream, source);
 				xmlStream.Seek(0, SeekOrigin.Begin);
-				xsl.Transform(XmlReader.Create(xmlStream), args, outputWriter);
+				this.xsl.Transform(XmlReader.Create(xmlStream), args, outputWriter);
 			}
 
 			htmlWriter.Write(HttpUtility.HtmlDecode(sb.ToString()));

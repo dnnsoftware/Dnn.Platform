@@ -26,7 +26,7 @@ namespace DotNetNuke.Modules.Html
         private readonly INavigationManager _navigationManager;
         public MyWork()
         {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Protected Methods
@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.Html
         public string FormatURL(object dataItem)
         {
             var objHtmlTextUser = (HtmlTextUserInfo) dataItem;
-            return "<a href=\"" + _navigationManager.NavigateURL(objHtmlTextUser.TabID) + "#" + objHtmlTextUser.ModuleID + "\">" + objHtmlTextUser.ModuleTitle + " ( " + objHtmlTextUser.StateName + " )</a>";
+            return "<a href=\"" + this._navigationManager.NavigateURL(objHtmlTextUser.TabID) + "#" + objHtmlTextUser.ModuleID + "\">" + objHtmlTextUser.ModuleTitle + " ( " + objHtmlTextUser.StateName + " )</a>";
         }
 
         #endregion
@@ -49,15 +49,15 @@ namespace DotNetNuke.Modules.Html
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            hlCancel.NavigateUrl = _navigationManager.NavigateURL();
+            this.hlCancel.NavigateUrl = this._navigationManager.NavigateURL();
 
             try
             {
-                if (!Page.IsPostBack)
+                if (!this.Page.IsPostBack)
                 {
                     var objHtmlTextUsers = new HtmlTextUserController();
-                    dgTabs.DataSource = objHtmlTextUsers.GetHtmlTextUser(UserInfo.UserID);
-                    dgTabs.DataBind();
+                    this.dgTabs.DataSource = objHtmlTextUsers.GetHtmlTextUser(this.UserInfo.UserID);
+                    this.dgTabs.DataBind();
                 }
             }
             catch (Exception exc)

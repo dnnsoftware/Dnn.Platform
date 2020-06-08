@@ -31,13 +31,13 @@ namespace DotNetNuke.Entities.Modules.Settings
 
         protected SettingsRepository()
         {
-            Mapping = LoadMapping();
-            _moduleController = ModuleController.Instance;
+            this.Mapping = this.LoadMapping();
+            this._moduleController = ModuleController.Instance;
         }
 
         public T GetSettings(ModuleInfo moduleContext)
         {
-            return CBO.GetCachedObject<T>(new CacheItemArgs(CacheKey(moduleContext.TabModuleID), 20, CacheItemPriority.AboveNormal, moduleContext), Load, false);
+            return CBO.GetCachedObject<T>(new CacheItemArgs(this.CacheKey(moduleContext.TabModuleID), 20, CacheItemPriority.AboveNormal, moduleContext), this.Load, false);
         }
 
         #region Serialization
@@ -46,7 +46,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             Requires.NotNull("settings", settings);
             Requires.NotNull("ctlModule", moduleContext);
 
-            Mapping.ForEach(mapping =>
+            this.Mapping.ForEach(mapping =>
             {
                 var attribute = mapping.Attribute;
                 var property = mapping.Property;
@@ -67,12 +67,12 @@ namespace DotNetNuke.Entities.Modules.Settings
 
                     if (attribute is ModuleSettingAttribute)
                     {
-                        _moduleController.UpdateModuleSetting(moduleContext.ModuleID, mapping.FullParameterName, settingValueAsString);
+                        this._moduleController.UpdateModuleSetting(moduleContext.ModuleID, mapping.FullParameterName, settingValueAsString);
                         moduleContext.ModuleSettings[mapping.FullParameterName] = settingValueAsString; // temporary fix for issue 3692
                     }
                     else if (attribute is TabModuleSettingAttribute)
                     {
-                        _moduleController.UpdateTabModuleSetting(moduleContext.TabModuleID, mapping.FullParameterName, settingValueAsString);
+                        this._moduleController.UpdateTabModuleSetting(moduleContext.TabModuleID, mapping.FullParameterName, settingValueAsString);
                         moduleContext.TabModuleSettings[mapping.FullParameterName] = settingValueAsString; // temporary fix for issue 3692
                     }
                     else if (attribute is PortalSettingAttribute)
@@ -81,7 +81,7 @@ namespace DotNetNuke.Entities.Modules.Settings
                     }
                 }
             });
-            DataCache.SetCache(CacheKey(moduleContext.TabModuleID), settings);
+            DataCache.SetCache(this.CacheKey(moduleContext.TabModuleID), settings);
         }
 
         private static string GetSettingValueAsString(object settingValue)
@@ -151,7 +151,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             var ctlModule = (ModuleInfo)args.ParamList[0];
             var settings = new T();
 
-            Mapping.ForEach(mapping =>
+            this.Mapping.ForEach(mapping =>
             {
                 string settingValue = null;
 
@@ -174,7 +174,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
                 if (settingValue != null && property.CanWrite)
                 {
-                    DeserializeProperty(settings, property, attribute, settingValue);
+                    this.DeserializeProperty(settings, property, attribute, settingValue);
                 }
             });
 
@@ -264,7 +264,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
                 if (propertyType.GetInterface(typeof(IConvertible).FullName) != null)
                 {
-                    propertyValue = ChangeFormatForBooleansIfNeeded(propertyType, propertyValue);
+                    propertyValue = this.ChangeFormatForBooleansIfNeeded(propertyType, propertyValue);
                     property.SetValue(settings, Convert.ChangeType(propertyValue, propertyType, CultureInfo.InvariantCulture), null);
                     return;
                 }

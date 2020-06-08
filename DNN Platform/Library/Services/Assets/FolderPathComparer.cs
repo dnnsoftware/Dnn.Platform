@@ -28,13 +28,13 @@ namespace DotNetNuke.Services.Assets
 
         private string GetFolderPath(int folderId)
         {
-            if (!cache.ContainsKey(folderId))
+            if (!this.cache.ContainsKey(folderId))
             {
                 var folder = FolderManager.Instance.GetFolder(folderId);
-                cache.Add(folderId, folder.FolderPath);
+                this.cache.Add(folderId, folder.FolderPath);
             }
 
-            return cache[folderId];
+            return this.cache[folderId];
         }
     }
 }

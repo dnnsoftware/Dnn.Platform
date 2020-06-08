@@ -59,19 +59,19 @@ namespace DotNetNuke.Web.InternalServices
         [HttpPost]
         public HttpResponseMessage LoadFiles(FolderItemDTO folderItem)
         {
-            int effectivePortalId = PortalSettings.PortalId;
+            int effectivePortalId = this.PortalSettings.PortalId;
 
 
             if (folderItem.FolderId <= 0)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
             }
 
             var folder = FolderManager.Instance.GetFolder(folderItem.FolderId);
 
             if (folder == null)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
             }
 
             int userId;
@@ -91,7 +91,7 @@ namespace DotNetNuke.Web.InternalServices
             var list = Globals.GetFileList(effectivePortalId, folderItem.FileFilter, !folderItem.Required, folder.FolderPath);
             var fileItems = list.OfType<FileItem>().ToList();
 
-            return Request.CreateResponse(HttpStatusCode.OK, fileItems);
+            return this.Request.CreateResponse(HttpStatusCode.OK, fileItems);
         }
 
         [HttpGet]
@@ -103,18 +103,18 @@ namespace DotNetNuke.Web.InternalServices
                 if (int.TryParse(fileId, out file))
                 {
                     var imageUrl = ShowImage(file);
-                    return Request.CreateResponse(HttpStatusCode.OK, imageUrl);
+                    return this.Request.CreateResponse(HttpStatusCode.OK, imageUrl);
                 }
             }
 
-            return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
         public Task<HttpResponseMessage> PostFile()
         {
-            HttpRequestMessage request = Request;
+            HttpRequestMessage request = this.Request;
 
             if (!request.Content.IsMimeMultipartContent())
             {
@@ -124,9 +124,9 @@ namespace DotNetNuke.Web.InternalServices
             var provider = new MultipartMemoryStreamProvider();
 
             // local references for use in closure
-            var portalSettings = PortalSettings;
+            var portalSettings = this.PortalSettings;
             var currentSynchronizationContext = SynchronizationContext.Current;
-            var userInfo = UserInfo;
+            var userInfo = this.UserInfo;
             var task = request.Content.ReadAsMultipartAsync(provider)
                 .ContinueWith(o =>
                     {
@@ -200,7 +200,7 @@ namespace DotNetNuke.Web.InternalServices
 
                         if (!string.IsNullOrEmpty(errorMessage))
                         {
-                            return Request.CreateResponse(
+                            return this.Request.CreateResponse(
                                 HttpStatusCode.BadRequest,
                                 new
                                 {
@@ -209,7 +209,7 @@ namespace DotNetNuke.Web.InternalServices
                                 }, mediaTypeFormatter, "text/plain");
                         }
 
-                        return Request.CreateResponse(HttpStatusCode.OK, returnFileDto, mediaTypeFormatter, "text/plain");
+                        return this.Request.CreateResponse(HttpStatusCode.OK, returnFileDto, mediaTypeFormatter, "text/plain");
                     });
 
             return task;
@@ -536,7 +536,7 @@ namespace DotNetNuke.Web.InternalServices
         [AllowAnonymous]
         public Task<HttpResponseMessage> UploadFromLocal()
         {
-            return UploadFromLocal(PortalSettings.PortalId);
+            return this.UploadFromLocal(this.PortalSettings.PortalId);
         }
 
         [HttpPost]
@@ -544,7 +544,7 @@ namespace DotNetNuke.Web.InternalServices
         [AllowAnonymous]
         public Task<HttpResponseMessage> UploadFromLocal(int portalId)
         {
-            var request = Request;
+            var request = this.Request;
             FileUploadDto result = null;
             if (!request.Content.IsMimeMultipartContent())
             {
@@ -552,18 +552,18 @@ namespace DotNetNuke.Web.InternalServices
             }
             if (portalId > -1)
             {
-                if (!IsPortalIdValid(portalId)) throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                if (!this.IsPortalIdValid(portalId)) throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
             else
             {
-                portalId = PortalSettings.PortalId;
+                portalId = this.PortalSettings.PortalId;
             }
 
             var provider = new MultipartMemoryStreamProvider();
 
             // local references for use in closure
             var currentSynchronizationContext = SynchronizationContext.Current;
-            var userInfo = UserInfo;
+            var userInfo = this.UserInfo;
             var task = request.Content.ReadAsMultipartAsync(provider)
                 .ContinueWith(o =>
                 {
@@ -643,7 +643,7 @@ namespace DotNetNuke.Web.InternalServices
                      * because IE9 with iframe-transport manages the response 
                      * as a file download 
                      */
-                    return Request.CreateResponse(
+                    return this.Request.CreateResponse(
                         HttpStatusCode.OK,
                         result,
                         mediaTypeFormatter,
@@ -664,9 +664,9 @@ namespace DotNetNuke.Web.InternalServices
             var mediaTypeFormatter = new JsonMediaTypeFormatter();
             mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
 
-            if (VerifySafeUrl(dto.Url) == false)
+            if (this.VerifySafeUrl(dto.Url) == false)
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
             }
 
             try
@@ -680,7 +680,7 @@ namespace DotNetNuke.Web.InternalServices
                     throw new Exception("No server response");
                 }
 
-                var fileName = GetFileName(response);
+                var fileName = this.GetFileName(response);
                 if (string.IsNullOrEmpty(fileName))
                 {
                     fileName = HttpUtility.UrlDecode(new Uri(dto.Url).Segments.Last());
@@ -689,21 +689,21 @@ namespace DotNetNuke.Web.InternalServices
                 var portalId = dto.PortalId;
                 if (portalId > -1)
                 {
-                    if (!IsPortalIdValid(portalId)) throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                    if (!this.IsPortalIdValid(portalId)) throw new HttpResponseException(HttpStatusCode.Unauthorized);
                 }
                 else
                 {
-                    portalId = PortalSettings.PortalId;
+                    portalId = this.PortalSettings.PortalId;
                 }
 
-                result = UploadFile(responseStream, portalId, UserInfo, dto.Folder.ValueOrEmpty(), dto.Filter.ValueOrEmpty(),
+                result = UploadFile(responseStream, portalId, this.UserInfo, dto.Folder.ValueOrEmpty(), dto.Filter.ValueOrEmpty(),
                     fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip, dto.ValidationCode);
 
                 /* Response Content Type cannot be application/json 
                     * because IE9 with iframe-transport manages the response 
                     * as a file download 
                     */
-                return Request.CreateResponse(
+                return this.Request.CreateResponse(
                     HttpStatusCode.OK,
                     result,
                     mediaTypeFormatter,
@@ -715,7 +715,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     Message = ex.Message
                 };
-                return Request.CreateResponse(
+                return this.Request.CreateResponse(
                     HttpStatusCode.OK,
                     result,
                     mediaTypeFormatter,
@@ -793,10 +793,10 @@ namespace DotNetNuke.Web.InternalServices
 
         private bool IsPortalIdValid(int portalId)
         {
-            if (UserInfo.IsSuperUser) return true;
-            if (PortalSettings.PortalId == portalId) return true;
+            if (this.UserInfo.IsSuperUser) return true;
+            if (this.PortalSettings.PortalId == portalId) return true;
 
-            var isAdminUser = PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName);
+            var isAdminUser = PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
             if (!isAdminUser) return false;
 
             var mygroup = GetMyPortalGroup();

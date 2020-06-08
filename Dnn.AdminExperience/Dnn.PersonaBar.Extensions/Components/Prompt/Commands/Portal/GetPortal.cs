@@ -28,19 +28,19 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             // default usage: return current portal if nothing else specified
             if (args.Length == 1)
             {
-                PortalIdFlagValue = PortalId;
+                this.PortalIdFlagValue = this.PortalId;
             }
             else
             {
                 // allow hosts to get info on other portals
-                if (User.IsSuperUser && args.Length >= 2)
+                if (this.User.IsSuperUser && args.Length >= 2)
                 {
-                    PortalIdFlagValue = GetFlagValue(FlagId, "Portal Id", PortalId, true, true);
+                    this.PortalIdFlagValue = this.GetFlagValue(FlagId, "Portal Id", this.PortalId, true, true);
                 }
                 else
                 {
                     // admins cannot access info on other portals.
-                    AddMessage(LocalizeString("Prompt_GetPortal_NoArgs"));
+                    this.AddMessage(this.LocalizeString("Prompt_GetPortal_NoArgs"));
                 }
             }
         }
@@ -50,13 +50,13 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             var pc = new PortalController();
             var lst = new List<PortalModel>();
 
-            var portal = pc.GetPortal((int)PortalIdFlagValue);
+            var portal = pc.GetPortal((int)this.PortalIdFlagValue);
             if (portal == null)
             {
-                return new ConsoleErrorResultModel(string.Format(LocalizeString("Prompt_GetPortal_NotFound"), PortalIdFlagValue));
+                return new ConsoleErrorResultModel(string.Format(this.LocalizeString("Prompt_GetPortal_NotFound"), this.PortalIdFlagValue));
             }
             lst.Add(new PortalModel(portal));
-            return new ConsoleResultModel(string.Empty) { Data = lst, Records = lst.Count, Output = string.Format(LocalizeString("Prompt_GetPortal_Found"), PortalIdFlagValue) };
+            return new ConsoleResultModel(string.Empty) { Data = lst, Records = lst.Count, Output = string.Format(this.LocalizeString("Prompt_GetPortal_Found"), this.PortalIdFlagValue) };
         }
 
 

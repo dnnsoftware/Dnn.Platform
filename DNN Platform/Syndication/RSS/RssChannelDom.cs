@@ -23,17 +23,17 @@ namespace DotNetNuke.Services.Syndication
 
         internal RssChannelDom(Dictionary<string, string> channel, Dictionary<string, string> image, List<Dictionary<string, string>> items)
         {
-            _channel = channel;
-            _image = image;
-            _items = items;
-            _utcExpiry = DateTime.MaxValue;
+            this._channel = channel;
+            this._image = image;
+            this._items = items;
+            this._utcExpiry = DateTime.MaxValue;
         }
 
         internal Dictionary<string, string> Channel
         {
             get
             {
-                return _channel;
+                return this._channel;
             }
         }
 
@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _image;
+                return this._image;
             }
         }
 
@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _items;
+                return this._items;
             }
         }
 
@@ -57,13 +57,13 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _utcExpiry;
+                return this._utcExpiry;
             }
         }
 
         internal void SetExpiry(DateTime utcExpiry)
         {
-            _utcExpiry = utcExpiry;
+            this._utcExpiry = utcExpiry;
         }
     }
 }

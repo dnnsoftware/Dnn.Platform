@@ -36,6 +36,6 @@ namespace Dnn.PersonaBar.Themes.Components.DTO
         public bool CanDelete { get; set; } = true;
 
         [DataMember(Name = "level")]
-        public ThemeLevel Level => ThemesController.GetThemeLevel(Path);
+        public ThemeLevel Level => ThemesController.GetThemeLevel(this.Path);
     }
 }

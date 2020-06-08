@@ -946,33 +946,33 @@ namespace DotNetNuke.Modules.NavigationProvider
 
         protected void RaiseEvent_NodeClick(DNNNode objNode)
         {
-            if (NodeClick != null)
+            if (this.NodeClick != null)
             {
-                NodeClick(new NavigationEventArgs(objNode.ID, objNode));
+                this.NodeClick(new NavigationEventArgs(objNode.ID, objNode));
             }
         }
 
         protected void RaiseEvent_NodeClick(string strID)
         {
-            if (NodeClick != null)
+            if (this.NodeClick != null)
             {
-                NodeClick(new NavigationEventArgs(strID, null));
+                this.NodeClick(new NavigationEventArgs(strID, null));
             }
         }
 
         protected void RaiseEvent_PopulateOnDemand(DNNNode objNode)
         {
-            if (PopulateOnDemand != null)
+            if (this.PopulateOnDemand != null)
             {
-                PopulateOnDemand(new NavigationEventArgs(objNode.ID, objNode));
+                this.PopulateOnDemand(new NavigationEventArgs(objNode.ID, objNode));
             }
         }
 
         protected void RaiseEvent_PopulateOnDemand(string strID)
         {
-            if (PopulateOnDemand != null)
+            if (this.PopulateOnDemand != null)
             {
-                PopulateOnDemand(new NavigationEventArgs(strID, null));
+                this.PopulateOnDemand(new NavigationEventArgs(strID, null));
             }
         }
 		
@@ -986,8 +986,8 @@ namespace DotNetNuke.Modules.NavigationProvider
 
         public NavigationEventArgs(string strID, DNNNode objNode)
         {
-            ID = strID;
-            Node = objNode;
+            this.ID = strID;
+            this.Node = objNode;
         }
     }
 }

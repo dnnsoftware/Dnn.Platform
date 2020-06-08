@@ -51,9 +51,9 @@ namespace DotNetNuke.UI.UserControls
 
         public TextEditor()
         {
-            HtmlEncode = true;
-            ChooseRender = true;
-            ChooseMode = true;
+            this.HtmlEncode = true;
+            this.ChooseRender = true;
+            this.ChooseMode = true;
         }
 
         #endregion
@@ -71,17 +71,17 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return ViewState["DefaultMode"] == null || String.IsNullOrEmpty(ViewState["DefaultMode"].ToString()) ? "RICH" : ViewState["DefaultMode"].ToString();
+                return this.ViewState["DefaultMode"] == null || String.IsNullOrEmpty(this.ViewState["DefaultMode"].ToString()) ? "RICH" : this.ViewState["DefaultMode"].ToString();
             }
             set
             {
                 if (!value.Equals("BASIC", StringComparison.OrdinalIgnoreCase))
                 {
-                    ViewState["DefaultMode"] = "RICH";
+                    this.ViewState["DefaultMode"] = "RICH";
                 }
                 else
                 {
-                    ViewState["DefaultMode"] = "BASIC";
+                    this.ViewState["DefaultMode"] = "BASIC";
                 }
             }
         }
@@ -112,19 +112,19 @@ namespace DotNetNuke.UI.UserControls
 				//If no Preference Check if Viewstate has been saved
                 if (String.IsNullOrEmpty(strMode))
                 {
-                    if (ViewState["DesktopMode"] != null && !String.IsNullOrEmpty(ViewState["DesktopMode"].ToString()))
+                    if (this.ViewState["DesktopMode"] != null && !String.IsNullOrEmpty(this.ViewState["DesktopMode"].ToString()))
                     {
-                        strMode = Convert.ToString(ViewState["DesktopMode"]);
+                        strMode = Convert.ToString(this.ViewState["DesktopMode"]);
                     }
                 }
 				
 				//Finally if still no value Use default
                 if (String.IsNullOrEmpty(strMode))
                 {
-                    strMode = DefaultMode;
+                    strMode = this.DefaultMode;
                 }
 
-                if (strMode == "RICH" && !IsRichEditorAvailable)
+                if (strMode == "RICH" && !this.IsRichEditorAvailable)
                 {
                     strMode = "BASIC";
                 }
@@ -136,7 +136,7 @@ namespace DotNetNuke.UI.UserControls
 
                 if (!value.Equals("BASIC", StringComparison.OrdinalIgnoreCase))
                 {
-                    ViewState["DesktopMode"] = "RICH";
+                    this.ViewState["DesktopMode"] = "RICH";
 
                     if (objUserInfo.UserID >= 0)
                     {
@@ -145,7 +145,7 @@ namespace DotNetNuke.UI.UserControls
                 }
                 else
                 {
-                    ViewState["DesktopMode"] = "BASIC";
+                    this.ViewState["DesktopMode"] = "BASIC";
 
                     if (objUserInfo.UserID >= 0)
                     {
@@ -160,31 +160,31 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                switch (OptView.SelectedItem.Value)
+                switch (this.OptView.SelectedItem.Value)
                 {
                     case "BASIC":
-                        switch (OptRender.SelectedItem.Value)
+                        switch (this.OptRender.SelectedItem.Value)
                         {
                             case "T":
-                                return Encode(HtmlUtils.ConvertToHtml(RemoveBaseTags(TxtDesktopHTML.Text)));
+                                return this.Encode(HtmlUtils.ConvertToHtml(RemoveBaseTags(this.TxtDesktopHTML.Text)));
                                 //break;
                             case "R":
-                                return RemoveBaseTags(TxtDesktopHTML.Text);
+                                return RemoveBaseTags(this.TxtDesktopHTML.Text);
                                 //break;
                             default:
-                                return Encode(RemoveBaseTags(TxtDesktopHTML.Text));
+                                return this.Encode(RemoveBaseTags(this.TxtDesktopHTML.Text));
                                 //break;
                         }
                     default:
-                        return IsRichEditorAvailable ? Encode(RemoveBaseTags(_richTextEditor.Text)) : Encode(RemoveBaseTags(TxtDesktopHTML.Text));
+                        return this.IsRichEditorAvailable ? this.Encode(RemoveBaseTags(this._richTextEditor.Text)) : this.Encode(RemoveBaseTags(this.TxtDesktopHTML.Text));
                 }
             }
             set
             {
-				TxtDesktopHTML.Text = HtmlUtils.ConvertToText(Decode(value));
-                if (IsRichEditorAvailable)
+				this.TxtDesktopHTML.Text = HtmlUtils.ConvertToText(this.Decode(value));
+                if (this.IsRichEditorAvailable)
                 {
-                    _richTextEditor.Text = Decode(value);
+                    this._richTextEditor.Text = this.Decode(value);
                 }
             }
         }
@@ -194,7 +194,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return Convert.ToString(ViewState["textrender"]);
+                return Convert.ToString(this.ViewState["textrender"]);
             }
             set
             {
@@ -203,7 +203,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     strMode = "H";
                 }
-                ViewState["textrender"] = strMode;
+                this.ViewState["textrender"] = strMode;
             }
         }
 
@@ -214,7 +214,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return _richTextEditor != null;
+                return this._richTextEditor != null;
             }
         }
 
@@ -223,7 +223,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return _richTextEditor;
+                return this._richTextEditor;
             }
         }
 
@@ -232,7 +232,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return TxtDesktopHTML;
+                return this.TxtDesktopHTML;
             }
         }
 
@@ -247,7 +247,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" + MyFileName;
+                return this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" + MyFileName;
             }
         }
 		
@@ -266,7 +266,7 @@ namespace DotNetNuke.UI.UserControls
         /// -----------------------------------------------------------------------------
         private string Decode(string strHtml)
         {
-            return HtmlEncode ? Server.HtmlDecode(strHtml) : strHtml;
+            return this.HtmlEncode ? this.Server.HtmlDecode(strHtml) : strHtml;
         }
 
         /// -----------------------------------------------------------------------------
@@ -280,7 +280,7 @@ namespace DotNetNuke.UI.UserControls
         /// -----------------------------------------------------------------------------
         private string Encode(string strHtml)
         {
-            return HtmlEncode ? Server.HtmlEncode(strHtml) : strHtml;
+            return this.HtmlEncode ? this.Server.HtmlEncode(strHtml) : strHtml;
         }
 
         /// -----------------------------------------------------------------------------
@@ -292,18 +292,18 @@ namespace DotNetNuke.UI.UserControls
         /// -----------------------------------------------------------------------------
         private void PopulateLists()
         {
-            if (OptRender.Items.Count == 0)
+            if (this.OptRender.Items.Count == 0)
             {
-                OptRender.Items.Add(new ListItem(Localization.GetString("Text", Localization.GetResourceFile(this, MyFileName)), "T"));
-                OptRender.Items.Add(new ListItem(Localization.GetString("Html", Localization.GetResourceFile(this, MyFileName)), "H"));
-                OptRender.Items.Add(new ListItem(Localization.GetString("Raw", Localization.GetResourceFile(this, MyFileName)), "R"));
+                this.OptRender.Items.Add(new ListItem(Localization.GetString("Text", Localization.GetResourceFile(this, MyFileName)), "T"));
+                this.OptRender.Items.Add(new ListItem(Localization.GetString("Html", Localization.GetResourceFile(this, MyFileName)), "H"));
+                this.OptRender.Items.Add(new ListItem(Localization.GetString("Raw", Localization.GetResourceFile(this, MyFileName)), "R"));
             }
-            if (OptView.Items.Count == 0)
+            if (this.OptView.Items.Count == 0)
             {
-                OptView.Items.Add(new ListItem(Localization.GetString("BasicTextBox", Localization.GetResourceFile(this, MyFileName)), "BASIC"));
-                if (IsRichEditorAvailable)
+                this.OptView.Items.Add(new ListItem(Localization.GetString("BasicTextBox", Localization.GetResourceFile(this, MyFileName)), "BASIC"));
+                if (this.IsRichEditorAvailable)
                 {
-                    OptView.Items.Add(new ListItem(Localization.GetString("RichTextBox", Localization.GetResourceFile(this, MyFileName)), "RICH"));
+                    this.OptView.Items.Add(new ListItem(Localization.GetString("RichTextBox", Localization.GetResourceFile(this, MyFileName)), "RICH"));
                 }
             }
         }
@@ -317,43 +317,43 @@ namespace DotNetNuke.UI.UserControls
         /// -----------------------------------------------------------------------------
         private void SetPanels()
         {
-            if (OptView.SelectedIndex != -1)
+            if (this.OptView.SelectedIndex != -1)
             {
-                Mode = OptView.SelectedItem.Value;
+                this.Mode = this.OptView.SelectedItem.Value;
             }
-            if (!String.IsNullOrEmpty(Mode))
+            if (!String.IsNullOrEmpty(this.Mode))
             {
-                OptView.Items.FindByValue(Mode).Selected = true;
+                this.OptView.Items.FindByValue(this.Mode).Selected = true;
             }
             else
             {
-                OptView.SelectedIndex = 0;
+                this.OptView.SelectedIndex = 0;
             }
 			
 			//Set the text render mode for basic mode
-            if (OptRender.SelectedIndex != -1)
+            if (this.OptRender.SelectedIndex != -1)
             {
-                TextRenderMode = OptRender.SelectedItem.Value;
+                this.TextRenderMode = this.OptRender.SelectedItem.Value;
             }
-            if (!String.IsNullOrEmpty(TextRenderMode))
+            if (!String.IsNullOrEmpty(this.TextRenderMode))
             {
-                OptRender.Items.FindByValue(TextRenderMode).Selected = true;
-            }
-            else
-            {
-                OptRender.SelectedIndex = 0;
-            }
-            if (OptView.SelectedItem.Value == "BASIC")
-            {
-                DivBasicTextBox.Visible = true;
-                DivRichTextBox.Visible = false;
-                PanelView.CssClass = "dnnTextPanelView dnnTextPanelView-basic";
+                this.OptRender.Items.FindByValue(this.TextRenderMode).Selected = true;
             }
             else
             {
-                DivBasicTextBox.Visible = false;
-                DivRichTextBox.Visible = true;
-                PanelView.CssClass = "dnnTextPanelView";
+                this.OptRender.SelectedIndex = 0;
+            }
+            if (this.OptView.SelectedItem.Value == "BASIC")
+            {
+                this.DivBasicTextBox.Visible = true;
+                this.DivRichTextBox.Visible = false;
+                this.PanelView.CssClass = "dnnTextPanelView dnnTextPanelView-basic";
+            }
+            else
+            {
+                this.DivBasicTextBox.Visible = false;
+                this.DivRichTextBox.Visible = true;
+                this.PanelView.CssClass = "dnnTextPanelView";
             }
         }
 
@@ -367,13 +367,13 @@ namespace DotNetNuke.UI.UserControls
 
         public void ChangeMode(string mode)
         {
-            OptView.SelectedItem.Value = mode;
-            OptViewSelectedIndexChanged(OptView, EventArgs.Empty);
+            this.OptView.SelectedItem.Value = mode;
+            this.OptViewSelectedIndexChanged(this.OptView, EventArgs.Empty);
         }
         public void ChangeTextRenderMode(string textRenderMode)
         {
-            OptRender.SelectedItem.Value = textRenderMode;
-            OptRenderSelectedIndexChanged(OptRender, EventArgs.Empty);
+            this.OptRender.SelectedItem.Value = textRenderMode;
+            this.OptRenderSelectedIndexChanged(this.OptRender, EventArgs.Empty);
         }
 
         #endregion
@@ -384,12 +384,12 @@ namespace DotNetNuke.UI.UserControls
         {
             base.OnInit(e);
 
-            _richTextEditor = HtmlEditorProvider.Instance();
+            this._richTextEditor = HtmlEditorProvider.Instance();
 
-            if (IsRichEditorAvailable)
+            if (this.IsRichEditorAvailable)
             {
-                _richTextEditor.ControlID = ID;
-                _richTextEditor.Initialize();
+                this._richTextEditor.ControlID = this.ID;
+                this._richTextEditor.Initialize();
             }
         }
 
@@ -404,46 +404,46 @@ namespace DotNetNuke.UI.UserControls
         {
             base.OnLoad(e);
 
-            OptRender.SelectedIndexChanged += OptRenderSelectedIndexChanged;
-            OptView.SelectedIndexChanged += OptViewSelectedIndexChanged;
+            this.OptRender.SelectedIndexChanged += this.OptRenderSelectedIndexChanged;
+            this.OptView.SelectedIndexChanged += this.OptViewSelectedIndexChanged;
             
             try
             {
 				//Populate Radio Button Lists
-                PopulateLists();
+                this.PopulateLists();
 
                 //Get the current user
                 //UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
                 //Set the width and height of the controls
-                if (IsRichEditorAvailable)
+                if (this.IsRichEditorAvailable)
                 {
-                    _richTextEditor.Width = Width;
-                    _richTextEditor.Height = Height;
+                    this._richTextEditor.Width = this.Width;
+                    this._richTextEditor.Height = this.Height;
                 }
 
-                TxtDesktopHTML.Height = Height;
-                TxtDesktopHTML.Width = Width;
-                PanelView.Width = Width;
-                PanelTextEditor.Width = Width;
+                this.TxtDesktopHTML.Height = this.Height;
+                this.TxtDesktopHTML.Width = this.Width;
+                this.PanelView.Width = this.Width;
+                this.PanelTextEditor.Width = this.Width;
 
                 //Optionally display the radio button lists
-                if (!ChooseMode)
+                if (!this.ChooseMode)
                 {
-                    PanelView.Visible = false;
+                    this.PanelView.Visible = false;
                 }
-                if (!ChooseRender)
+                if (!this.ChooseRender)
                 {
-                    DivBasicRender.Visible = false;
+                    this.DivBasicRender.Visible = false;
                 }
 
                 //Load the editor
-                if (IsRichEditorAvailable)
+                if (this.IsRichEditorAvailable)
                 {
-                    PlcEditor.Controls.Add(_richTextEditor.HtmlEditorControl);
+                    this.PlcEditor.Controls.Add(this._richTextEditor.HtmlEditorControl);
                 }
 
-                SetPanels();
+                this.SetPanels();
             }
             catch (Exception exc) //Module failed to load
             {
@@ -460,15 +460,15 @@ namespace DotNetNuke.UI.UserControls
         /// -----------------------------------------------------------------------------
         protected void OptRenderSelectedIndexChanged(Object sender, EventArgs e)
         {
-            if (OptRender.SelectedIndex != -1)
+            if (this.OptRender.SelectedIndex != -1)
             {
-                TextRenderMode = OptRender.SelectedItem.Value;
+                this.TextRenderMode = this.OptRender.SelectedItem.Value;
             }
-            if (Mode == "BASIC")
+            if (this.Mode == "BASIC")
             {
-                TxtDesktopHTML.Text = TextRenderMode == "H" ? HtmlUtils.ConvertToHtml(TxtDesktopHTML.Text) : HtmlUtils.ConvertToText(TxtDesktopHTML.Text);
+                this.TxtDesktopHTML.Text = this.TextRenderMode == "H" ? HtmlUtils.ConvertToHtml(this.TxtDesktopHTML.Text) : HtmlUtils.ConvertToText(this.TxtDesktopHTML.Text);
             }
-            SetPanels();
+            this.SetPanels();
         }
 
         /// -----------------------------------------------------------------------------
@@ -480,35 +480,35 @@ namespace DotNetNuke.UI.UserControls
         /// -----------------------------------------------------------------------------
         protected void OptViewSelectedIndexChanged(Object sender, EventArgs e)
         {
-            if (OptView.SelectedIndex != -1)
+            if (this.OptView.SelectedIndex != -1)
             {
-                Mode = OptView.SelectedItem.Value;
+                this.Mode = this.OptView.SelectedItem.Value;
             }
-            if (Mode == "BASIC")
+            if (this.Mode == "BASIC")
             {
-                switch (TextRenderMode)
+                switch (this.TextRenderMode)
                 {
                     case "T":
-                        TxtDesktopHTML.Text = HtmlUtils.ConvertToText(_richTextEditor.Text);
+                        this.TxtDesktopHTML.Text = HtmlUtils.ConvertToText(this._richTextEditor.Text);
                         break;
                     default:
-                        TxtDesktopHTML.Text = _richTextEditor.Text;
+                        this.TxtDesktopHTML.Text = this._richTextEditor.Text;
                         break;
                 }
             }
             else
             {
-                switch (TextRenderMode)
+                switch (this.TextRenderMode)
                 {
                     case "T":
-                        _richTextEditor.Text = HtmlUtils.ConvertToHtml(TxtDesktopHTML.Text);
+                        this._richTextEditor.Text = HtmlUtils.ConvertToHtml(this.TxtDesktopHTML.Text);
                         break;
                     default:
-                        _richTextEditor.Text = TxtDesktopHTML.Text;
+                        this._richTextEditor.Text = this.TxtDesktopHTML.Text;
                         break;
                 }
             }
-            SetPanels();
+            this.SetPanels();
         }
 		
 		#endregion

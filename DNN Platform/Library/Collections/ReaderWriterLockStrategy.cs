@@ -20,7 +20,7 @@ namespace DotNetNuke.Collections.Internal
         {
             get
             {
-                return _lock ?? (_lock = new ReaderWriterLockSlim(_lockRecursionPolicy));
+                return this._lock ?? (this._lock = new ReaderWriterLockSlim(this._lockRecursionPolicy));
             }
         }
 
@@ -29,7 +29,7 @@ namespace DotNetNuke.Collections.Internal
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             // Use the AddValue method to specify serialized values.
-            info.AddValue("_lockRecursionPolicy", _lockRecursionPolicy, typeof(LockRecursionPolicy));
+            info.AddValue("_lockRecursionPolicy", this._lockRecursionPolicy, typeof(LockRecursionPolicy));
         }
 
         public ReaderWriterLockStrategy()
@@ -39,31 +39,31 @@ namespace DotNetNuke.Collections.Internal
 
         public ReaderWriterLockStrategy(LockRecursionPolicy recursionPolicy)
         {
-            _lockRecursionPolicy = recursionPolicy;
-            _lock = new ReaderWriterLockSlim(recursionPolicy);
+            this._lockRecursionPolicy = recursionPolicy;
+            this._lock = new ReaderWriterLockSlim(recursionPolicy);
         }
 
         // The special constructor is used to deserialize values.
         public ReaderWriterLockStrategy(SerializationInfo info, StreamingContext context)
         {
-            _lockRecursionPolicy = (LockRecursionPolicy)info.GetValue("_lockRecursionPolicy", typeof(LockRecursionPolicy));
-            _lock = new ReaderWriterLockSlim(_lockRecursionPolicy);
+            this._lockRecursionPolicy = (LockRecursionPolicy)info.GetValue("_lockRecursionPolicy", typeof(LockRecursionPolicy));
+            this._lock = new ReaderWriterLockSlim(this._lockRecursionPolicy);
         }
 
         #region ILockStrategy Members
 
         public ISharedCollectionLock GetReadLock()
         {
-            return GetReadLock(TimeSpan.FromMilliseconds(-1));
+            return this.GetReadLock(TimeSpan.FromMilliseconds(-1));
         }
 
         public ISharedCollectionLock GetReadLock(TimeSpan timeout)
         {
-            EnsureNotDisposed();
-            if (Lock.RecursionPolicy == LockRecursionPolicy.NoRecursion && Lock.IsReadLockHeld || 
-                Lock.TryEnterReadLock(timeout))
+            this.EnsureNotDisposed();
+            if (this.Lock.RecursionPolicy == LockRecursionPolicy.NoRecursion && this.Lock.IsReadLockHeld || 
+                this.Lock.TryEnterReadLock(timeout))
             {
-                return new ReaderWriterSlimLock(Lock);
+                return new ReaderWriterSlimLock(this.Lock);
             }
             else
             {
@@ -73,16 +73,16 @@ namespace DotNetNuke.Collections.Internal
 
         public ISharedCollectionLock GetWriteLock()
         {
-            return GetWriteLock(TimeSpan.FromMilliseconds(-1));
+            return this.GetWriteLock(TimeSpan.FromMilliseconds(-1));
         }
 
         public ISharedCollectionLock GetWriteLock(TimeSpan timeout)
         {
-            EnsureNotDisposed();
-            if (Lock.RecursionPolicy == LockRecursionPolicy.NoRecursion && Lock.IsWriteLockHeld || 
-                Lock.TryEnterWriteLock(timeout))
+            this.EnsureNotDisposed();
+            if (this.Lock.RecursionPolicy == LockRecursionPolicy.NoRecursion && this.Lock.IsWriteLockHeld || 
+                this.Lock.TryEnterWriteLock(timeout))
             {
-                return new ReaderWriterSlimLock(Lock);
+                return new ReaderWriterSlimLock(this.Lock);
             }
             else
             {
@@ -94,8 +94,8 @@ namespace DotNetNuke.Collections.Internal
         {
             get
             {
-                EnsureNotDisposed();
-                return Lock.IsReadLockHeld || Lock.IsWriteLockHeld;
+                this.EnsureNotDisposed();
+                return this.Lock.IsReadLockHeld || this.Lock.IsWriteLockHeld;
             }
         }
 
@@ -103,8 +103,8 @@ namespace DotNetNuke.Collections.Internal
         {
             get
             {
-                EnsureNotDisposed();
-                return Lock.IsWriteLockHeld;
+                this.EnsureNotDisposed();
+                return this.Lock.IsWriteLockHeld;
             }
         }
 
@@ -125,13 +125,13 @@ namespace DotNetNuke.Collections.Internal
         public void Dispose()
         {
             // Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
         private void EnsureNotDisposed()
         {
-            if (_isDisposed)
+            if (this._isDisposed)
             {
                 throw new ObjectDisposedException("ReaderWriterLockStrategy");
             }
@@ -142,26 +142,26 @@ namespace DotNetNuke.Collections.Internal
         // IDisposable
         protected virtual void Dispose(bool disposing)
         {
-            if (!_isDisposed)
+            if (!this._isDisposed)
             {
                 if (disposing)
                 {
                     //dispose managed state (managed objects).
                 }
 
-                if (_lock != null)
+                if (this._lock != null)
                 {
-                    _lock.Dispose();
-                    _lock = null;
+                    this._lock.Dispose();
+                    this._lock = null;
                 }
             }
-            _isDisposed = true;
+            this._isDisposed = true;
         }
 
         ~ReaderWriterLockStrategy()
         {
             // Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-            Dispose(false);
+            this.Dispose(false);
         }
 
         // This code added by Visual Basic to correctly implement the disposable pattern.

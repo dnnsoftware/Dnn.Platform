@@ -19,8 +19,8 @@ namespace DotNetNuke.HttpModules.DependencyInjection
 
         public void Init(HttpApplication context)
         {
-            context.BeginRequest += Context_BeginRequest;
-            context.EndRequest += Context_EndRequest;
+            context.BeginRequest += this.Context_BeginRequest;
+            context.EndRequest += this.Context_EndRequest;
         }
 
         public static void SetServiceProvider(IServiceProvider serviceProvider)
@@ -47,7 +47,7 @@ namespace DotNetNuke.HttpModules.DependencyInjection
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
         }
 
         /// <summary>

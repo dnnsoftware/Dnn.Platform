@@ -43,20 +43,20 @@ namespace DotNetNuke.Services.Connections
             {
                 if (dictionary == null)
                     throw new ArgumentNullException("dictionary");
-                _dictionary = dictionary;
+                this._dictionary = dictionary;
             }
 
             public override string ToString()
             {
                 var sb = new StringBuilder("{");
-                ToString(sb);
+                this.ToString(sb);
                 return sb.ToString();
             }
 
             private void ToString(StringBuilder sb)
             {
                 var firstInDictionary = true;
-                foreach (var pair in _dictionary)
+                foreach (var pair in this._dictionary)
                 {
                     if (!firstInDictionary)
                     {
@@ -112,7 +112,7 @@ namespace DotNetNuke.Services.Connections
 
             public override bool TryGetMember(GetMemberBinder binder, out object result)
             {
-                if (!_dictionary.TryGetValue(binder.Name, out result))
+                if (!this._dictionary.TryGetValue(binder.Name, out result))
                 {
                     // return null to avoid exception.  caller can check for null this way...
                     result = null;
@@ -127,7 +127,7 @@ namespace DotNetNuke.Services.Connections
             {
                 if (indexes.Length == 1 && indexes[0] != null)
                 {
-                    if (!_dictionary.TryGetValue(indexes[0].ToString(), out result))
+                    if (!this._dictionary.TryGetValue(indexes[0].ToString(), out result))
                     {
                         // return null to avoid exception.  caller can check for null this way...
                         result = null;

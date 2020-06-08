@@ -55,17 +55,17 @@ namespace DotNetNuke.Services.Search
 
 		public ModuleIndexer(bool needSearchModules)
 		{
-			_searchModules = new Dictionary<int, IEnumerable<ModuleIndexInfo>>();
+			this._searchModules = new Dictionary<int, IEnumerable<ModuleIndexInfo>>();
 
 			if (needSearchModules)
 			{
 				var portals = PortalController.Instance.GetPortals();
 				foreach (var portal in portals.Cast<PortalInfo>())
 				{
-					_searchModules.Add(portal.PortalID, GetModulesForIndex(portal.PortalID));
+					this._searchModules.Add(portal.PortalID, this.GetModulesForIndex(portal.PortalID));
 				}
 
-				_searchModules.Add(Null.NullInteger, GetModulesForIndex(Null.NullInteger));
+				this._searchModules.Add(Null.NullInteger, this.GetModulesForIndex(Null.NullInteger));
 			}
 		}
 
@@ -86,11 +86,11 @@ namespace DotNetNuke.Services.Search
             Requires.NotNull("indexer", indexer);
             const int saveThreshold = 1024 * 2;
             var totalIndexed = 0;
-            startDateLocal = GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
+            startDateLocal = this.GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
             var searchDocuments = new List<SearchDocument>();
-			var searchModuleCollection = _searchModules.ContainsKey(portalId)
-                ? _searchModules[portalId].Where(m => m.SupportSearch).Select(m => m.ModuleInfo)
-                : GetSearchModules(portalId);
+			var searchModuleCollection = this._searchModules.ContainsKey(portalId)
+                ? this._searchModules[portalId].Where(m => m.SupportSearch).Select(m => m.ModuleInfo)
+                : this.GetSearchModules(portalId);
 
             //Some modules update LastContentModifiedOnDate (e.g. Html module) when their content changes.
             //We won't be calling into such modules if LastContentModifiedOnDate is prior to startDate.
@@ -122,7 +122,7 @@ namespace DotNetNuke.Services.Search
 
                             if (searchDocuments.Count >= saveThreshold)
                             {
-                                totalIndexed += IndexCollectedDocs(indexer, searchDocuments, portalId, schedule);
+                                totalIndexed += this.IndexCollectedDocs(indexer, searchDocuments, portalId, schedule);
                                 searchDocuments.Clear();
                             }
                         }
@@ -135,7 +135,7 @@ namespace DotNetNuke.Services.Search
 
                 if (searchDocuments.Count > 0)
                 {
-                    totalIndexed += IndexCollectedDocs(indexer, searchDocuments, portalId, schedule);
+                    totalIndexed += this.IndexCollectedDocs(indexer, searchDocuments, portalId, schedule);
                 }
             }
 
@@ -165,7 +165,7 @@ namespace DotNetNuke.Services.Search
         {
             indexer.Invoke(searchDocuments);
             var total = searchDocuments.Count;
-            SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, schedule.StartDate);
+            this.SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, schedule.StartDate);
             return total;
         }
 
@@ -180,8 +180,8 @@ namespace DotNetNuke.Services.Search
         public List<SearchDocument> GetModuleMetaData(int portalId, DateTime startDate)
         {
             var searchDocuments = new List<SearchDocument>();
-			var searchModuleCollection = _searchModules.ContainsKey(portalId) ? 
-											_searchModules[portalId].Select(m => m.ModuleInfo) : GetSearchModules(portalId, true);
+			var searchModuleCollection = this._searchModules.ContainsKey(portalId) ? 
+											this._searchModules[portalId].Select(m => m.ModuleInfo) : this.GetSearchModules(portalId, true);
             foreach (ModuleInfo module in searchModuleCollection)
             {
                 try
@@ -271,12 +271,12 @@ namespace DotNetNuke.Services.Search
         /// -----------------------------------------------------------------------------
         protected IEnumerable<ModuleInfo> GetSearchModules(int portalId)
         {
-            return GetSearchModules(portalId, false);
+            return this.GetSearchModules(portalId, false);
         }
 
 		protected IEnumerable<ModuleInfo> GetSearchModules(int portalId, bool allModules)
 		{
-			return from mii in GetModulesForIndex(portalId)
+			return from mii in this.GetModulesForIndex(portalId)
 				where allModules || mii.SupportSearch
 				select mii.ModuleInfo;
 		}

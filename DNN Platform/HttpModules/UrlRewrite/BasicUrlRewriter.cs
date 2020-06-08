@@ -84,7 +84,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
 
             String domainName;
-            RewriteUrl(app, out domainName);
+            this.RewriteUrl(app, out domainName);
 
             //blank DomainName indicates RewriteUrl couldn't locate a current portal
             //reprocess url for portal alias if auto add is an option
@@ -306,7 +306,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         {
                             //switch to secure connection
                             strURL = requestedPath.Replace("http://", "https://");
-                            strURL = FormatDomain(strURL, portalSettings.STDURL, portalSettings.SSLURL);
+                            strURL = this.FormatDomain(strURL, portalSettings.STDURL, portalSettings.SSLURL);
                         }
                     }
                     //if SSL is enforced
@@ -319,7 +319,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             if (request.QueryString["ssl"] == null)
                             {
                                 strURL = requestedPath.Replace("https://", "http://");
-                                strURL = FormatDomain(strURL, portalSettings.SSLURL, portalSettings.STDURL);
+                                strURL = this.FormatDomain(strURL, portalSettings.SSLURL, portalSettings.STDURL);
                             }
                         }
                     }

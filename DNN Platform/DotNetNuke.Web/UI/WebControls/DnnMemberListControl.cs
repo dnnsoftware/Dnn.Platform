@@ -137,31 +137,31 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnInit(e);
             
-            _currentUser = UserController.Instance.GetCurrentUserInfo();
-            _relationshipController = new RelationshipController();
+            this._currentUser = UserController.Instance.GetCurrentUserInfo();
+            this._relationshipController = new RelationshipController();
         }
 
         protected override void Render(HtmlTextWriter writer)
         {
-            if (ItemTemplate == "") return;
+            if (this.ItemTemplate == "") return;
 
-            writer.Write(HeaderTemplate);
+            writer.Write(this.HeaderTemplate);
 
             // Filters
-            if (Filters == null) Filters = new Dictionary<string, string>();
+            if (this.Filters == null) this.Filters = new Dictionary<string, string>();
             var additionalFilters = new Dictionary<string, string>();
-            additionalFilters.Add("Records", PageSize.ToString());
-            additionalFilters.Add("PageIndex", PageIndex.ToString());
-            additionalFilters.Add("Rowsize", RowSize.ToString());
-            additionalFilters.Add("SortBy", SortBy);
-            additionalFilters.Add("SortAscending", SortAscending.ToString());
+            additionalFilters.Add("Records", this.PageSize.ToString());
+            additionalFilters.Add("PageIndex", this.PageIndex.ToString());
+            additionalFilters.Add("Rowsize", this.RowSize.ToString());
+            additionalFilters.Add("SortBy", this.SortBy);
+            additionalFilters.Add("SortAscending", this.SortAscending.ToString());
 
             // Currently Not Used by the SPROC
-            var filterUser = Filters.ContainsKey("UserId") && Filters["UserId"] != null ? new UserInfo() { UserID = int.Parse(Filters["UserId"]) } : new UserInfo() { PortalID = _currentUser.PortalID };
-            var role = Filters.ContainsKey("RoleId") && Filters["RoleId"] != null ? new UserRoleInfo() { RoleID = int.Parse(Filters["RoleId"]) } : null;
-            var relationship = Filters.ContainsKey("RelationshipTypeId") && Filters["RelationshipTypeId"] != null ? new RelationshipType() { RelationshipTypeId = int.Parse(Filters["RelationshipTypeId"]) } : null;
+            var filterUser = this.Filters.ContainsKey("UserId") && this.Filters["UserId"] != null ? new UserInfo() { UserID = int.Parse(this.Filters["UserId"]) } : new UserInfo() { PortalID = this._currentUser.PortalID };
+            var role = this.Filters.ContainsKey("RoleId") && this.Filters["RoleId"] != null ? new UserRoleInfo() { RoleID = int.Parse(this.Filters["RoleId"]) } : null;
+            var relationship = this.Filters.ContainsKey("RelationshipTypeId") && this.Filters["RelationshipTypeId"] != null ? new RelationshipType() { RelationshipTypeId = int.Parse(this.Filters["RelationshipTypeId"]) } : null;
             
-            foreach (var filter in Filters.Where(filter => !additionalFilters.ContainsKey(filter.Key)))
+            foreach (var filter in this.Filters.Where(filter => !additionalFilters.ContainsKey(filter.Key)))
             {
                 additionalFilters.Add(filter.Key, filter.Value);
             }
@@ -176,7 +176,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 foreach (DataRow user in users.Rows)
                 {
                     //Row Header
-                    writer.Write(string.IsNullOrEmpty(AlternatingRowHeaderTemplate) || row%2 == 0 ? RowHeaderTemplate : AlternatingRowHeaderTemplate);
+                    writer.Write(string.IsNullOrEmpty(this.AlternatingRowHeaderTemplate) || row%2 == 0 ? this.RowHeaderTemplate : this.AlternatingRowHeaderTemplate);
 
                     var tokenReplace = new TokenReplace();
                     var tokenKeyValues = new Dictionary<string, string>();
@@ -186,18 +186,18 @@ namespace DotNetNuke.Web.UI.WebControls
                         tokenKeyValues.Add(col.ColumnName, user[col.ColumnName].ToString());
                     }
 
-                    var listItem = string.IsNullOrEmpty(AlternatingItemTemplate) || row%2 == 0 ? ItemTemplate : AlternatingItemTemplate;
+                    var listItem = string.IsNullOrEmpty(this.AlternatingItemTemplate) || row%2 == 0 ? this.ItemTemplate : this.AlternatingItemTemplate;
                     listItem = tokenReplace.ReplaceEnvironmentTokens(listItem, tokenKeyValues, "Member");
                     writer.Write(listItem);
 
                     //Row Footer
-                    writer.Write(string.IsNullOrEmpty(AlternatingRowFooterTemplate) || row%2 == 0 ? RowFooterTemplate : AlternatingRowFooterTemplate);
+                    writer.Write(string.IsNullOrEmpty(this.AlternatingRowFooterTemplate) || row%2 == 0 ? this.RowFooterTemplate : this.AlternatingRowFooterTemplate);
 
                     row++;
                 }
             }
 
-            writer.Write(FooterTemplate);
+            writer.Write(this.FooterTemplate);
         }
 
         #endregion

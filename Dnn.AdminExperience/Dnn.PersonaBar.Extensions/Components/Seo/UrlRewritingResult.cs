@@ -34,11 +34,11 @@ namespace Dnn.PersonaBar.Seo.Components
         public UrlRewritingResult()
         {
             var noneText = Localization.GetString("None", Localization.GlobalResourceFile);
-            RewritingResult = noneText;
-            Culture = noneText;
-            IdentifiedPage = noneText;
-            RedirectionResult = noneText;
-            OperationMessages = noneText;
+            this.RewritingResult = noneText;
+            this.Culture = noneText;
+            this.IdentifiedPage = noneText;
+            this.RedirectionResult = noneText;
+            this.OperationMessages = noneText;
         }
     }
 }

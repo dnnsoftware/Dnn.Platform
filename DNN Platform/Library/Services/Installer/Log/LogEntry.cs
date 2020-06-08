@@ -33,8 +33,8 @@ namespace DotNetNuke.Services.Installer.Log
         /// -----------------------------------------------------------------------------
         public LogEntry(LogType type, string description)
         {
-            Type = type;
-            _description = description;
+            this.Type = type;
+            this._description = description;
         }
 
         /// -----------------------------------------------------------------------------
@@ -55,18 +55,18 @@ namespace DotNetNuke.Services.Installer.Log
         {
             get
             {
-                if (_description == null)
+                if (this._description == null)
                 {
                     return "...";
                 }
                 
-                return _description;
+                return this._description;
             }
         }
 
         public override string ToString()
         {
-            return string.Format("{0}:  {1}", Type, Description);
+            return string.Format("{0}:  {1}", this.Type, this.Description);
         }
     }
 }

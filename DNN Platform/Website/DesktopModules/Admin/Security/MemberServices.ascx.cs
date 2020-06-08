@@ -77,42 +77,42 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private void Subscribe(int roleID, bool cancel)
         {
-            RoleInfo objRole = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == roleID);
+            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
 
             if (objRole.IsPublic && objRole.ServiceFee == 0.0)
             {
-                RoleController.Instance.UpdateUserRole(PortalId, UserInfo.UserID, roleID, RoleStatus.Approved, false, cancel);
+                RoleController.Instance.UpdateUserRole(this.PortalId, this.UserInfo.UserID, roleID, RoleStatus.Approved, false, cancel);
 
                 //Raise SubscriptionUpdated Event
-                OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(cancel, objRole.RoleName));
+                this.OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(cancel, objRole.RoleName));
             }
             else
             {
                 if (!cancel)
                 {
-                    Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + TabId + "&RoleID=" + roleID, true);
+                    this.Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + this.TabId + "&RoleID=" + roleID, true);
                 }
                 else
                 {
-                    Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + TabId + "&RoleID=" + roleID + "&cancel=1", true);
+                    this.Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + this.TabId + "&RoleID=" + roleID + "&cancel=1", true);
                 }
             }
         }
 
         private void UseTrial(int roleID)
         {
-            RoleInfo objRole = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == roleID); ;
+            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID); ;
 
             if (objRole.IsPublic && objRole.TrialFee == 0.0)
             {
-                RoleController.Instance.UpdateUserRole(PortalId, UserInfo.UserID, roleID, RoleStatus.Approved, false, false);
+                RoleController.Instance.UpdateUserRole(this.PortalId, this.UserInfo.UserID, roleID, RoleStatus.Approved, false, false);
 
                 //Raise SubscriptionUpdated Event
-                OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(false, objRole.RoleName));
+                this.OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(false, objRole.RoleName));
             }
             else
             {
-                Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + TabId + "&RoleID=" + roleID, true);
+                this.Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + this.TabId + "&RoleID=" + roleID, true);
             }
         }
 
@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                     else
                     {
-                        formatExpiryDate = Localization.GetString("Expired", LocalResourceFile);
+                        formatExpiryDate = Localization.GetString("Expired", this.LocalResourceFile);
                     }
                 }
             }
@@ -173,13 +173,13 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     case "N":
                     case "":
-                        formatPrice = Localization.GetString("NoFee", LocalResourceFile);
+                        formatPrice = Localization.GetString("NoFee", this.LocalResourceFile);
                         break;
                     case "O":
-                        formatPrice = FormatPrice(price);
+                        formatPrice = this.FormatPrice(price);
                         break;
                     default:
-                        formatPrice = string.Format(Localization.GetString("Fee", LocalResourceFile), FormatPrice(price), period, Localization.GetString("Frequency_" + frequency, LocalResourceFile));
+                        formatPrice = string.Format(Localization.GetString("Fee", this.LocalResourceFile), this.FormatPrice(price), period, Localization.GetString("Frequency_" + frequency, this.LocalResourceFile));
                         break;
                 }
             }
@@ -210,16 +210,16 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     case "N":
                     case "":
-                        formatTrial = Localization.GetString("NoFee", LocalResourceFile);
+                        formatTrial = Localization.GetString("NoFee", this.LocalResourceFile);
                         break;
                     case "O":
-                        formatTrial = FormatPrice(price);
+                        formatTrial = this.FormatPrice(price);
                         break;
                     default:
-                        formatTrial = string.Format(Localization.GetString("TrialFee", LocalResourceFile),
-                                                     FormatPrice(price),
+                        formatTrial = string.Format(Localization.GetString("TrialFee", this.LocalResourceFile),
+                                                     this.FormatPrice(price),
                                                      period,
-                                                     Localization.GetString("Frequency_" + frequency, LocalResourceFile));
+                                                     Localization.GetString("Frequency_" + frequency, this.LocalResourceFile));
                         break;
                 }
             }
@@ -243,12 +243,12 @@ namespace DotNetNuke.Modules.Admin.Security
             string formatURL = Null.NullString;
             try
             {
-                string serverPath = Request.ApplicationPath;
+                string serverPath = this.Request.ApplicationPath;
                 if (!serverPath.EndsWith("/"))
                 {
                     serverPath += "/";
                 }
-                formatURL = serverPath + "Register.aspx?tabid=" + TabId;
+                formatURL = serverPath + "Register.aspx?tabid=" + this.TabId;
             }
             catch (Exception exc) //Module failed to load
             {
@@ -274,16 +274,16 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 if (!subscribed)
                 {
-                    serviceText = Localization.GetString("Subscribe", LocalResourceFile);
+                    serviceText = Localization.GetString("Subscribe", this.LocalResourceFile);
                 }
                 else
                 {
-                    serviceText = Localization.GetString("Unsubscribe", LocalResourceFile);
+                    serviceText = Localization.GetString("Unsubscribe", this.LocalResourceFile);
                     if (!Null.IsNull(expiryDate))
                     {
                         if (expiryDate < DateTime.Today)
                         {
-                            serviceText = Localization.GetString("Renew", LocalResourceFile);
+                            serviceText = Localization.GetString("Renew", this.LocalResourceFile);
                         }
                     }
                 }
@@ -298,10 +298,10 @@ namespace DotNetNuke.Modules.Admin.Security
         protected bool ShowSubscribe(int roleID)
         {
             bool showSubscribe = Null.NullBoolean;
-            RoleInfo objRole = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == roleID); ;
+            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID); ;
             if (objRole.IsPublic)
             {
-                PortalInfo objPortal = PortalController.Instance.GetPortal(PortalSettings.PortalId);
+                PortalInfo objPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
                 if (objRole.ServiceFee == 0.0)
                 {
                     showSubscribe = true;
@@ -317,7 +317,7 @@ namespace DotNetNuke.Modules.Admin.Security
         protected bool ShowTrial(int roleID)
         {
             bool showTrial = Null.NullBoolean;
-            RoleInfo objRole = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == roleID); ;
+            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID); ;
             if (string.IsNullOrEmpty(objRole.TrialFrequency) || objRole.TrialFrequency == "N" || (objRole.IsPublic && objRole.ServiceFee == 0.0))
             {
                 showTrial = Null.NullBoolean;
@@ -325,7 +325,7 @@ namespace DotNetNuke.Modules.Admin.Security
             else if (objRole.IsPublic && objRole.TrialFee == 0.0)
             {
 				//Use Trial?
-                UserRoleInfo objUserRole = RoleController.Instance.GetUserRole(PortalId, UserInfo.UserID, roleID);
+                UserRoleInfo objUserRole = RoleController.Instance.GetUserRole(this.PortalId, this.UserInfo.UserID, roleID);
                 if ((objUserRole == null) || (!objUserRole.IsTrialUsed))
                 {
                     showTrial = true;
@@ -345,14 +345,14 @@ namespace DotNetNuke.Modules.Admin.Security
         /// -----------------------------------------------------------------------------
         public override void DataBind()
         {
-            if (Request.IsAuthenticated)
+            if (this.Request.IsAuthenticated)
             {
-                Localization.LocalizeDataGrid(ref grdServices, LocalResourceFile);
-                grdServices.DataSource = RoleController.Instance.GetUserRoles(UserInfo, false);
-                grdServices.DataBind();
+                Localization.LocalizeDataGrid(ref this.grdServices, this.LocalResourceFile);
+                this.grdServices.DataSource = RoleController.Instance.GetUserRoles(this.UserInfo, false);
+                this.grdServices.DataBind();
 
                 //if no service available then hide options
-                ServicesRow.Visible = (grdServices.Items.Count > 0);
+                this.ServicesRow.Visible = (this.grdServices.Items.Count > 0);
             }
         }
 
@@ -367,13 +367,13 @@ namespace DotNetNuke.Modules.Admin.Security
         /// -----------------------------------------------------------------------------
         public void OnSubscriptionUpdated(SubscriptionUpdatedEventArgs e)
         {
-            if (IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin == false)
             {
                 return;
             }
-            if (SubscriptionUpdated != null)
+            if (this.SubscriptionUpdated != null)
             {
-                SubscriptionUpdated(this, e);
+                this.SubscriptionUpdated(this, e);
             }
         }
 
@@ -392,9 +392,9 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             base.OnLoad(e);
 
-            cmdRSVP.Click += cmdRSVP_Click;
-            grdServices.ItemCommand += grdServices_ItemCommand;
-            lblRSVP.Text = "";
+            this.cmdRSVP.Click += this.cmdRSVP_Click;
+            this.grdServices.ItemCommand += this.grdServices_ItemCommand;
+            this.lblRSVP.Text = "";
         }
 
         /// -----------------------------------------------------------------------------
@@ -406,63 +406,63 @@ namespace DotNetNuke.Modules.Admin.Security
         /// -----------------------------------------------------------------------------
         private void cmdRSVP_Click(object sender, EventArgs e)
         {
-            if (IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin == false)
             {
                 return;
             }
             //Get the RSVP code
-            string code = txtRSVPCode.Text;
+            string code = this.txtRSVPCode.Text;
             bool rsvpCodeExists = false;
             if (!String.IsNullOrEmpty(code))
             {
                 //Parse the roles
-                foreach (RoleInfo objRole in RoleController.Instance.GetRoles(PortalSettings.PortalId))
+                foreach (RoleInfo objRole in RoleController.Instance.GetRoles(this.PortalSettings.PortalId))
                 {
                     if (objRole.RSVPCode == code)
                     {
-                        RoleController.Instance.UpdateUserRole(PortalId, UserInfo.UserID, objRole.RoleID, RoleStatus.Approved, false, false);
+                        RoleController.Instance.UpdateUserRole(this.PortalId, this.UserInfo.UserID, objRole.RoleID, RoleStatus.Approved, false, false);
                         rsvpCodeExists = true;
 
                         //Raise SubscriptionUpdated Event
-                        OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(false, objRole.RoleName));
+                        this.OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(false, objRole.RoleName));
                     }
                 }
                 if (rsvpCodeExists)
                 {
-                    lblRSVP.Text = Localization.GetString("RSVPSuccess", LocalResourceFile);
+                    this.lblRSVP.Text = Localization.GetString("RSVPSuccess", this.LocalResourceFile);
                     //Reset RSVP Code field
-                    txtRSVPCode.Text = "";
+                    this.txtRSVPCode.Text = "";
                 }
                 else
                 {
-                    lblRSVP.Text = Localization.GetString("RSVPFailure", LocalResourceFile);
+                    this.lblRSVP.Text = Localization.GetString("RSVPFailure", this.LocalResourceFile);
                 }
             }
-            DataBind();
+            this.DataBind();
         }
 
         protected void grdServices_ItemCommand(object source, DataGridCommandEventArgs e)
         {
             string commandName = e.CommandName;
             int roleID = Convert.ToInt32(e.CommandArgument);
-            if (commandName == Localization.GetString("Subscribe", LocalResourceFile) || commandName == Localization.GetString("Renew", LocalResourceFile))
+            if (commandName == Localization.GetString("Subscribe", this.LocalResourceFile) || commandName == Localization.GetString("Renew", this.LocalResourceFile))
             {
 				//Subscribe
-                Subscribe(roleID, false);
+                this.Subscribe(roleID, false);
             }
-            else if (commandName == Localization.GetString("Unsubscribe", LocalResourceFile))
+            else if (commandName == Localization.GetString("Unsubscribe", this.LocalResourceFile))
             {
 				//Unsubscribe
-                Subscribe(roleID, true);
+                this.Subscribe(roleID, true);
             }
             else if (commandName == "UseTrial")
             {
 				//Use Trial
-                UseTrial(roleID);
+                this.UseTrial(roleID);
             }
 			
 			//Rebind Grid
-            DataBind();
+            this.DataBind();
         }
 		
 		#endregion
@@ -486,8 +486,8 @@ namespace DotNetNuke.Modules.Admin.Security
             /// -----------------------------------------------------------------------------
             public SubscriptionUpdatedEventArgs(bool cancel, string roleName)
             {
-                Cancel = cancel;
-                RoleName = roleName;
+                this.Cancel = cancel;
+                this.RoleName = roleName;
             }
 
             /// -----------------------------------------------------------------------------

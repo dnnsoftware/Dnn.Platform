@@ -22,22 +22,22 @@ namespace DotNetNuke.Security.Cookies
 
         public int KeyID
         {
-            get { return CookieId; }
-            set { CookieId = value; }
+            get { return this.CookieId; }
+            set { this.CookieId = value; }
         }
 
         public void Fill(IDataReader dr)
         {
-            CookieId = Null.SetNullInteger(dr[nameof(CookieId)]);
-            CookieValue = Null.SetNullString(dr[nameof(CookieValue)]);
-            ExpiresOn = Null.SetNullDateTime(dr[nameof(ExpiresOn)]);
+            this.CookieId = Null.SetNullInteger(dr[nameof(this.CookieId)]);
+            this.CookieValue = Null.SetNullString(dr[nameof(this.CookieValue)]);
+            this.ExpiresOn = Null.SetNullDateTime(dr[nameof(this.ExpiresOn)]);
 
-            if (ExpiresOn.Kind != DateTimeKind.Utc)
+            if (this.ExpiresOn.Kind != DateTimeKind.Utc)
             {
-                ExpiresOn = new DateTime(
-                    ExpiresOn.Year, ExpiresOn.Month, ExpiresOn.Day,
-                    ExpiresOn.Hour, ExpiresOn.Minute, ExpiresOn.Second,
-                    ExpiresOn.Millisecond, DateTimeKind.Utc);
+                this.ExpiresOn = new DateTime(
+                    this.ExpiresOn.Year, this.ExpiresOn.Month, this.ExpiresOn.Day,
+                    this.ExpiresOn.Hour, this.ExpiresOn.Minute, this.ExpiresOn.Second,
+                    this.ExpiresOn.Millisecond, DateTimeKind.Utc);
             }
         }
     }

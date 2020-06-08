@@ -32,8 +32,8 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
         /// </summary>        
         public override void Execute()
         {
-            Percentage = 0;
-            Status = StepStatus.Running;
+            this.Percentage = 0;
+            this.Status = StepStatus.Running;
 
             var verifiers = new List<FileSystemPermissionVerifier>
                                 {
@@ -41,18 +41,18 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                                     new FileSystemPermissionVerifier(HttpContext.Current.Server.MapPath("~/App_Data"))
                                 };
 
-            Details = Localization.Localization.GetString("FolderCreateCheck", LocalInstallResourceFile)
-                    + Localization.Localization.GetString("FileCreateCheck", LocalInstallResourceFile)
-                    + Localization.Localization.GetString("FileDeleteCheck", LocalInstallResourceFile)
-                    + Localization.Localization.GetString("FolderDeleteCheck", LocalInstallResourceFile);
-            Logger.TraceFormat("FilePermissionCheck - {0}", Details);
+            this.Details = Localization.Localization.GetString("FolderCreateCheck", this.LocalInstallResourceFile)
+                    + Localization.Localization.GetString("FileCreateCheck", this.LocalInstallResourceFile)
+                    + Localization.Localization.GetString("FileDeleteCheck", this.LocalInstallResourceFile)
+                    + Localization.Localization.GetString("FolderDeleteCheck", this.LocalInstallResourceFile);
+            Logger.TraceFormat("FilePermissionCheck - {0}", this.Details);
 
             if (!verifiers.All(v => v.VerifyAll()))
-                Errors.Add(string.Format(Localization.Localization.GetString("StepFailed", LocalInstallResourceFile), Details));
-            Percentage = 100;
+                this.Errors.Add(string.Format(Localization.Localization.GetString("StepFailed", this.LocalInstallResourceFile), this.Details));
+            this.Percentage = 100;
 
-            Status = Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
-            Logger.TraceFormat("FilePermissionCheck Status - {0}", Status);
+            this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
+            Logger.TraceFormat("FilePermissionCheck Status - {0}", this.Status);
         }
 
         #endregion

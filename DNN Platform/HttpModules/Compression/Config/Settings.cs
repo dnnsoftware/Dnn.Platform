@@ -29,8 +29,8 @@ namespace DotNetNuke.HttpModules.Compression
 
         private Settings()
         {
-            _preferredAlgorithm = Algorithms.None;
-            _excludedPaths = new StringCollection();
+            this._preferredAlgorithm = Algorithms.None;
+            this._excludedPaths = new StringCollection();
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace DotNetNuke.HttpModules.Compression
         {
             get
             {
-                return _preferredAlgorithm;
+                return this._preferredAlgorithm;
             }
         }
 
@@ -102,7 +102,7 @@ namespace DotNetNuke.HttpModules.Compression
         public bool IsExcludedPath(string relUrl)
         {
             bool match = false;
-            foreach (string path in _excludedPaths)
+            foreach (string path in this._excludedPaths)
             {
                 if (relUrl.ToLowerInvariant().Contains(path))
                 {

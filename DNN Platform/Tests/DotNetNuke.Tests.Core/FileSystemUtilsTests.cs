@@ -29,7 +29,7 @@ namespace DotNetNuke.Tests.Core
             field.SetValue(null, null);
 
             var rootPath = Path.Combine(Globals.ApplicationMapPath, "FileSystemUtilsTest");
-            PrepareRootPath(rootPath);
+            this.PrepareRootPath(rootPath);
 
             field.SetValue(null, rootPath);
         }
@@ -60,7 +60,7 @@ namespace DotNetNuke.Tests.Core
         public void AddToZip_Should_Able_To_Add_Multiple_Files()
         {
             //Action
-            DeleteZippedFiles();
+            this.DeleteZippedFiles();
             var zipFilePath = Path.Combine(Globals.ApplicationMapPath, $"Test{Guid.NewGuid().ToString().Substring(0, 8)}.zip");
             var files = Directory.GetFiles(Globals.ApplicationMapPath, "*.*", SearchOption.TopDirectoryOnly);
             using (var stream = File.Create(zipFilePath))
@@ -98,8 +98,8 @@ namespace DotNetNuke.Tests.Core
             }
             finally
             {
-                DeleteZippedFiles();
-                DeleteUnzippedFolder(destPath);
+                this.DeleteZippedFiles();
+                this.DeleteUnzippedFolder(destPath);
             }
         }
 

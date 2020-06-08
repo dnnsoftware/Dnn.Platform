@@ -22,14 +22,14 @@ namespace DotNetNuke.UI.Skins.EventListeners
 
         public SkinEventArgs(Skin skin)
         {
-            _Skin = skin;
+            this._Skin = skin;
         }
 
         public Skin Skin
         {
             get
             {
-                return _Skin;
+                return this._Skin;
             }
         }
     }

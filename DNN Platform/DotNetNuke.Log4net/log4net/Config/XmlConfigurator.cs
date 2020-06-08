@@ -979,29 +979,29 @@ namespace log4net.Config
 #endif
             public ConfigureAndWatchHandler(ILoggerRepository repository, FileInfo configFile)
 			{
-				m_repository = repository;
-				m_configFile = configFile;
+				this.m_repository = repository;
+				this.m_configFile = configFile;
 
 				// Create a new FileSystemWatcher and set its properties.
-				m_watcher = new FileSystemWatcher();
+				this.m_watcher = new FileSystemWatcher();
 
-				m_watcher.Path = m_configFile.DirectoryName;
-				m_watcher.Filter = m_configFile.Name;
+				this.m_watcher.Path = this.m_configFile.DirectoryName;
+				this.m_watcher.Filter = this.m_configFile.Name;
 
 				// Set the notification filters
-				m_watcher.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.LastWrite | NotifyFilters.FileName;
+				this.m_watcher.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.LastWrite | NotifyFilters.FileName;
 
 				// Add event handlers. OnChanged will do for all event handlers that fire a FileSystemEventArgs
-				m_watcher.Changed += new FileSystemEventHandler(ConfigureAndWatchHandler_OnChanged);
-				m_watcher.Created += new FileSystemEventHandler(ConfigureAndWatchHandler_OnChanged);
-				m_watcher.Deleted += new FileSystemEventHandler(ConfigureAndWatchHandler_OnChanged);
-				m_watcher.Renamed += new RenamedEventHandler(ConfigureAndWatchHandler_OnRenamed);
+				this.m_watcher.Changed += new FileSystemEventHandler(this.ConfigureAndWatchHandler_OnChanged);
+				this.m_watcher.Created += new FileSystemEventHandler(this.ConfigureAndWatchHandler_OnChanged);
+				this.m_watcher.Deleted += new FileSystemEventHandler(this.ConfigureAndWatchHandler_OnChanged);
+				this.m_watcher.Renamed += new RenamedEventHandler(this.ConfigureAndWatchHandler_OnRenamed);
 
 				// Begin watching.
-				m_watcher.EnableRaisingEvents = true;
+				this.m_watcher.EnableRaisingEvents = true;
 
 				// Create the timer that will be used to deliver events. Set as disabled
-                m_timer = new Timer(new TimerCallback(OnWatchedFileChange), null, Timeout.Infinite, Timeout.Infinite);
+                this.m_timer = new Timer(new TimerCallback(this.OnWatchedFileChange), null, Timeout.Infinite, Timeout.Infinite);
 			}
 
 			/// <summary>
@@ -1016,11 +1016,11 @@ namespace log4net.Config
 			/// </remarks>
 			private void ConfigureAndWatchHandler_OnChanged(object source, FileSystemEventArgs e)
 			{
-				LogLog.Debug(declaringType, "ConfigureAndWatchHandler: "+e.ChangeType+" [" + m_configFile.FullName + "]");
+				LogLog.Debug(declaringType, "ConfigureAndWatchHandler: "+e.ChangeType+" [" + this.m_configFile.FullName + "]");
 
 				// Deliver the event in TimeoutMillis time
 				// timer will fire only once
-				m_timer.Change(TimeoutMillis, Timeout.Infinite);
+				this.m_timer.Change(TimeoutMillis, Timeout.Infinite);
 			}
 
 			/// <summary>
@@ -1035,11 +1035,11 @@ namespace log4net.Config
 			/// </remarks>
 			private void ConfigureAndWatchHandler_OnRenamed(object source, RenamedEventArgs e)
 			{
-				LogLog.Debug(declaringType, "ConfigureAndWatchHandler: " + e.ChangeType + " [" + m_configFile.FullName + "]");
+				LogLog.Debug(declaringType, "ConfigureAndWatchHandler: " + e.ChangeType + " [" + this.m_configFile.FullName + "]");
 
 				// Deliver the event in TimeoutMillis time
 				// timer will fire only once
-				m_timer.Change(TimeoutMillis, Timeout.Infinite);
+				this.m_timer.Change(TimeoutMillis, Timeout.Infinite);
 			}
 
 			/// <summary>
@@ -1048,7 +1048,7 @@ namespace log4net.Config
 			/// <param name="state">null</param>
 			private void OnWatchedFileChange(object state)
 			{
-				XmlConfigurator.InternalConfigure(m_repository, m_configFile);
+				XmlConfigurator.InternalConfigure(this.m_repository, this.m_configFile);
 			}
 
             /// <summary>
@@ -1059,9 +1059,9 @@ namespace log4net.Config
 #endif
             public void Dispose()
             {
-                m_watcher.EnableRaisingEvents = false;
-                m_watcher.Dispose();
-                m_timer.Dispose();
+                this.m_watcher.EnableRaisingEvents = false;
+                this.m_watcher.Dispose();
+                this.m_timer.Dispose();
             }
 		}
 #endif

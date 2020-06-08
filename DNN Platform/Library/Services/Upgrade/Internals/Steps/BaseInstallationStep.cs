@@ -33,8 +33,8 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
         protected BaseInstallationStep()
         {
-            Percentage = 0;
-            Errors = new List<string>();
+            this.Percentage = 0;
+            this.Errors = new List<string>();
         }        
 
         #region Implementation of IInstallationStep
@@ -46,14 +46,14 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         {
             get
             {
-                return _details;
+                return this._details;
             }
             set
             {
-                _details = value;
-				DnnInstallLogger.InstallLogInfo(_details);
-                if (Activity != null)
-                    Activity(_details);
+                this._details = value;
+				DnnInstallLogger.InstallLogInfo(this._details);
+                if (this.Activity != null)
+                    this.Activity(this._details);
             }
         }
 

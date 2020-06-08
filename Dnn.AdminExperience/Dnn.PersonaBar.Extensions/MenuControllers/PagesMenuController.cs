@@ -18,7 +18,7 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
         private readonly ISecurityService _securityService;
         public PagesMenuController()
         {
-            _securityService = SecurityService.Instance;
+            this._securityService = SecurityService.Instance;
         }
 
         public void UpdateParameters(MenuItem menuItem)
@@ -28,21 +28,21 @@ namespace Dnn.PersonaBar.Pages.MenuControllers
 
         public bool Visible(MenuItem menuItem)
         {
-            return _securityService.IsVisible(menuItem);
+            return this._securityService.IsVisible(menuItem);
         }
 
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             var settings = new Dictionary<string, object>
             {
-                {"canSeePagesList", _securityService.CanViewPageList(menuItem.MenuId)},
+                {"canSeePagesList", this._securityService.CanViewPageList(menuItem.MenuId)},
                 {"portalName", PortalSettings.Current.PortalName},
-                {"currentPagePermissions", _securityService.GetCurrentPagePermissions()},
+                {"currentPagePermissions", this._securityService.GetCurrentPagePermissions()},
                 {"currentPageName", PortalSettings.Current?.ActiveTab?.TabName},
                 {"productSKU", DotNetNukeContext.Current.Application.SKU},
-                {"isAdmin", _securityService.IsPageAdminUser()},
+                {"isAdmin", this._securityService.IsPageAdminUser()},
                 {"currentParentHasChildren", PortalSettings.Current?.ActiveTab?.HasChildren},
-                {"isAdminHostSystemPage", _securityService.IsAdminHostSystemPage() }
+                {"isAdminHostSystemPage", this._securityService.IsAdminHostSystemPage() }
             };
 
             return settings;

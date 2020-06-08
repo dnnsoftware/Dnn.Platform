@@ -33,39 +33,39 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             
-            PageId = GetFlagValue(FlagId, "Page Id", -1, false, true);
-            PageName = GetFlagValue(FlagName, "Page Name", string.Empty);
-            ParentId = GetFlagValue(FlagParentId, "Parent Id", -1);
+            this.PageId = this.GetFlagValue(FlagId, "Page Id", -1, false, true);
+            this.PageName = this.GetFlagValue(FlagName, "Page Name", string.Empty);
+            this.ParentId = this.GetFlagValue(FlagParentId, "Parent Id", -1);
 
-            if (PageId == -1 && string.IsNullOrEmpty(PageName))
+            if (this.PageId == -1 && string.IsNullOrEmpty(this.PageName))
             {
-                AddMessage(LocalizeString("Prompt_ParameterRequired"));
+                this.AddMessage(this.LocalizeString("Prompt_ParameterRequired"));
             }
         }
 
         public override ConsoleResultModel Run()
         {
-            PageId = PageId != -1
-                ? PageId
-                : (ParentId > 0 ? TabController.Instance.GetTabByName(PageName, PortalId, ParentId) : TabController.Instance.GetTabByName(PageName, PortalId))?.TabID ?? -1;
+            this.PageId = this.PageId != -1
+                ? this.PageId
+                : (this.ParentId > 0 ? TabController.Instance.GetTabByName(this.PageName, this.PortalId, this.ParentId) : TabController.Instance.GetTabByName(this.PageName, this.PortalId))?.TabID ?? -1;
 
-            if (PageId == -1)
+            if (this.PageId == -1)
             {
-                return new ConsoleErrorResultModel(LocalizeString("Prompt_PageNotFound"));
+                return new ConsoleErrorResultModel(this.LocalizeString("Prompt_PageNotFound"));
             }
-            if (!SecurityService.Instance.CanDeletePage(PageId))
+            if (!SecurityService.Instance.CanDeletePage(this.PageId))
             {
-                return new ConsoleErrorResultModel(LocalizeString("MethodPermissionDenied"));
+                return new ConsoleErrorResultModel(this.LocalizeString("MethodPermissionDenied"));
             }
             try
             {
-                PagesController.Instance.DeletePage(new PageItem { Id = PageId }, PortalSettings);
+                PagesController.Instance.DeletePage(new PageItem { Id = this.PageId }, this.PortalSettings);
             }
             catch (PageNotFoundException)
             {
-                return new ConsoleErrorResultModel(LocalizeString("Prompt_PageNotFound"));
+                return new ConsoleErrorResultModel(this.LocalizeString("Prompt_PageNotFound"));
             }
-            return new ConsoleResultModel(LocalizeString("PageDeletedMessage")) { Records = 1 };
+            return new ConsoleResultModel(this.LocalizeString("PageDeletedMessage")) { Records = 1 };
         }
     }
 }

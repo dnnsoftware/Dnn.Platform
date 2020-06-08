@@ -16,10 +16,10 @@ namespace DotNetNuke.Tests.Utilities
             var uri = new System.Uri(Assembly.GetExecutingAssembly().CodeBase);
             string path = HttpUtility.UrlDecode(Path.GetFullPath(uri.AbsolutePath));
 
-            WebsiteAppPath = "http://localhost/DNN_Platform";
+            this.WebsiteAppPath = "http://localhost/DNN_Platform";
             var websiteRootPath = path.Substring(0, path.IndexOf("DNN Platform", System.StringComparison.Ordinal));
-            WebsitePhysicalAppPath = Path.Combine(websiteRootPath, "Website");
-            HighlightDataPath = Path.Combine(websiteRootPath, "DNN Platform//Modules//PreviewProfileManagement//Resources//highlightDevices.xml");
+            this.WebsitePhysicalAppPath = Path.Combine(websiteRootPath, "Website");
+            this.HighlightDataPath = Path.Combine(websiteRootPath, "DNN Platform//Modules//PreviewProfileManagement//Resources//highlightDevices.xml");
         }
 
         public string HighlightDataPath { get; set; }

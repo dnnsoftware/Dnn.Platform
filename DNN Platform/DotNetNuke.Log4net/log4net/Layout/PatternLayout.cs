@@ -986,15 +986,15 @@ namespace log4net.Layout
 		public PatternLayout(string pattern) 
 		{
 			// By default we do not process the exception
-			IgnoresException = true;
+			this.IgnoresException = true;
 
-			m_pattern = pattern;
-			if (m_pattern == null)
+			this.m_pattern = pattern;
+			if (this.m_pattern == null)
 			{
-				m_pattern = DefaultConversionPattern;
+				this.m_pattern = DefaultConversionPattern;
 			}
 
-			ActivateOptions();
+			this.ActivateOptions();
 		}
 
 		#endregion
@@ -1011,8 +1011,8 @@ namespace log4net.Layout
 		/// </remarks>
 		public string ConversionPattern
 		{
-			get { return m_pattern;	}
-			set { m_pattern = value; }
+			get { return this.m_pattern;	}
+			set { this.m_pattern = value; }
 		}
 
 		/// <summary>
@@ -1039,7 +1039,7 @@ namespace log4net.Layout
                 patternParser.PatternConverters[entry.Key] = converterInfo;
 			}
 			// Add the instance patterns
-			foreach(DictionaryEntry entry in m_instanceRulesRegistry)
+			foreach(DictionaryEntry entry in this.m_instanceRulesRegistry)
 			{
 				patternParser.PatternConverters[entry.Key] = entry.Value;
 			}
@@ -1067,9 +1067,9 @@ namespace log4net.Layout
 		/// </remarks>
 		override public void ActivateOptions() 
 		{
-			m_head = CreatePatternParser(m_pattern).Parse();
+			this.m_head = this.CreatePatternParser(this.m_pattern).Parse();
 
-			PatternConverter curConverter = m_head;
+			PatternConverter curConverter = this.m_head;
 			while(curConverter != null)
 			{
 				PatternLayoutConverter layoutConverter = curConverter as PatternLayoutConverter;
@@ -1113,7 +1113,7 @@ namespace log4net.Layout
 				throw new ArgumentNullException("loggingEvent");
 			}
 
-			PatternConverter c = m_head;
+			PatternConverter c = this.m_head;
 
 			// loop through the chain of pattern converters
 			while(c != null) 
@@ -1143,7 +1143,7 @@ namespace log4net.Layout
             {
                 throw new ArgumentException("The converter type specified [" + converterInfo.Type + "] must be a subclass of log4net.Util.PatternConverter", "converterInfo");
             }
-            m_instanceRulesRegistry[converterInfo.Name] = converterInfo;
+            this.m_instanceRulesRegistry[converterInfo.Name] = converterInfo;
 		}
 
 		/// <summary>
@@ -1171,7 +1171,7 @@ namespace log4net.Layout
             converterInfo.Name = name;
             converterInfo.Type = type;
 
-            AddConverter(converterInfo);
+            this.AddConverter(converterInfo);
 		}
 	}
 }

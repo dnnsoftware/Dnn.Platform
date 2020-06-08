@@ -23,7 +23,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return Utilities.GetLocalResourceFile(Owner.OwnerGrid.Parent);
+                return Utilities.GetLocalResourceFile(this.Owner.OwnerGrid.Parent);
             }
         }
 
@@ -44,11 +44,11 @@ namespace DotNetNuke.Web.UI.WebControls
         public override void InitializeCell(TableCell cell, int columnIndex, GridItem inItem)
         {
             base.InitializeCell(cell, columnIndex, inItem);
-            if (inItem is GridHeaderItem && !String.IsNullOrEmpty(HeaderText))
+            if (inItem is GridHeaderItem && !String.IsNullOrEmpty(this.HeaderText))
             {
                 if (! inItem.OwnerTableView.OwnerGrid.AllowMultiRowSelection)
                 {
-                    cell.Text = Localization.GetString(string.Format("{0}.Header", HeaderText), LocalResourceFile);
+                    cell.Text = Localization.GetString(string.Format("{0}.Header", this.HeaderText), this.LocalResourceFile);
                 }
             }
         }

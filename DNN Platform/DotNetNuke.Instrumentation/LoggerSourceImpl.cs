@@ -48,7 +48,7 @@ namespace DotNetNuke.Instrumentation
 
             internal Logger(ILogger logger, Type type) : base(logger)
             {
-                _stackBoundary = type ?? typeof(Logger);
+                this._stackBoundary = type ?? typeof(Logger);
                 EnsureConfig();
                 ReloadLevels(logger.Repository);
             }
@@ -129,131 +129,131 @@ namespace DotNetNuke.Instrumentation
                 }
             }
 
-            public bool IsDebugEnabled { get { return Logger.IsEnabledFor(_levelDebug); } }
-            public bool IsInfoEnabled { get { return Logger.IsEnabledFor(_levelInfo); } }
-            public bool IsTraceEnabled { get { return Logger.IsEnabledFor(_levelTrace); } }
-            public bool IsWarnEnabled { get { return Logger.IsEnabledFor(_levelWarn); } }
-            public bool IsErrorEnabled { get { return Logger.IsEnabledFor(_levelError); } }
-            public bool IsFatalEnabled { get { return Logger.IsEnabledFor(_levelFatal); } }
+            public bool IsDebugEnabled { get { return this.Logger.IsEnabledFor(_levelDebug); } }
+            public bool IsInfoEnabled { get { return this.Logger.IsEnabledFor(_levelInfo); } }
+            public bool IsTraceEnabled { get { return this.Logger.IsEnabledFor(_levelTrace); } }
+            public bool IsWarnEnabled { get { return this.Logger.IsEnabledFor(_levelWarn); } }
+            public bool IsErrorEnabled { get { return this.Logger.IsEnabledFor(_levelError); } }
+            public bool IsFatalEnabled { get { return this.Logger.IsEnabledFor(_levelFatal); } }
 
             public void Debug(object message)
             {
-                Debug(message, null);
+                this.Debug(message, null);
             }
 
             public void Debug(object message, Exception exception)
             {
-                Logger.Log(_stackBoundary, _levelDebug, message, exception);
+                this.Logger.Log(this._stackBoundary, _levelDebug, message, exception);
             }
 
             public void DebugFormat(string format, params object[] args)
             {
-                DebugFormat(CultureInfo.InvariantCulture, format, args);
+                this.DebugFormat(CultureInfo.InvariantCulture, format, args);
             }
 
             public void DebugFormat(IFormatProvider provider, string format, params object[] args)
             {
-                Logger.Log(_stackBoundary, _levelDebug, new SystemStringFormat(provider, format, args), null);
+                this.Logger.Log(this._stackBoundary, _levelDebug, new SystemStringFormat(provider, format, args), null);
             }
 
             public void Info(object message)
             {
-                Info(message, null);
+                this.Info(message, null);
             }
 
             public void Info(object message, Exception exception)
             {
-                Logger.Log(_stackBoundary, _levelInfo, message, exception);
+                this.Logger.Log(this._stackBoundary, _levelInfo, message, exception);
             }
 
             public void InfoFormat(string format, params object[] args)
             {
-                InfoFormat(CultureInfo.InvariantCulture, format, args);
+                this.InfoFormat(CultureInfo.InvariantCulture, format, args);
             }
 
             public void InfoFormat(IFormatProvider provider, string format, params object[] args)
             {
-                Logger.Log(_stackBoundary, _levelInfo, new SystemStringFormat(provider, format, args), null);
+                this.Logger.Log(this._stackBoundary, _levelInfo, new SystemStringFormat(provider, format, args), null);
             }
 
             public void Trace(object message)
             {
-                Trace(message, null);
+                this.Trace(message, null);
             }
 
             public void Trace(object message, Exception exception)
             {
-                Logger.Log(_stackBoundary, _levelTrace, message, exception);
+                this.Logger.Log(this._stackBoundary, _levelTrace, message, exception);
             }
 
             public void TraceFormat(string format, params object[] args)
             {
-                TraceFormat(CultureInfo.InvariantCulture, format, args);
+                this.TraceFormat(CultureInfo.InvariantCulture, format, args);
             }
 
             public void TraceFormat(IFormatProvider provider, string format, params object[] args)
             {
-                Logger.Log(_stackBoundary, _levelTrace, new SystemStringFormat(provider, format, args), null);
+                this.Logger.Log(this._stackBoundary, _levelTrace, new SystemStringFormat(provider, format, args), null);
             }
 
             public void Warn(object message)
             {
-                Warn(message, null);
+                this.Warn(message, null);
             }
 
             public void Warn(object message, Exception exception)
             {
-                Logger.Log(_stackBoundary, _levelWarn, message, exception);
+                this.Logger.Log(this._stackBoundary, _levelWarn, message, exception);
             }
 
             public void WarnFormat(string format, params object[] args)
             {
-                WarnFormat(CultureInfo.InvariantCulture, format, args);
+                this.WarnFormat(CultureInfo.InvariantCulture, format, args);
             }
 
             public void WarnFormat(IFormatProvider provider, string format, params object[] args)
             {
-                Logger.Log(_stackBoundary, _levelWarn, new SystemStringFormat(provider, format, args), null);
+                this.Logger.Log(this._stackBoundary, _levelWarn, new SystemStringFormat(provider, format, args), null);
             }
 
             public void Error(object message)
             {
-                Error(message, null);
+                this.Error(message, null);
             }
 
             public void Error(object message, Exception exception)
             {
-                Logger.Log(_stackBoundary, _levelError, message, exception);
+                this.Logger.Log(this._stackBoundary, _levelError, message, exception);
             }
 
             public void ErrorFormat(string format, params object[] args)
             {
-                ErrorFormat(CultureInfo.InvariantCulture, format, args);
+                this.ErrorFormat(CultureInfo.InvariantCulture, format, args);
             }
 
             public void ErrorFormat(IFormatProvider provider, string format, params object[] args)
             {
-                Logger.Log(_stackBoundary, _levelError, new SystemStringFormat(provider, format, args), null);
+                this.Logger.Log(this._stackBoundary, _levelError, new SystemStringFormat(provider, format, args), null);
             }
 
             public void Fatal(object message)
             {
-                Fatal(message, null);
+                this.Fatal(message, null);
             }
 
             public void Fatal(object message, Exception exception)
             {
-                Logger.Log(_stackBoundary, _levelFatal, message, exception);
+                this.Logger.Log(this._stackBoundary, _levelFatal, message, exception);
             }
 
             public void FatalFormat(string format, params object[] args)
             {
-                FatalFormat(CultureInfo.InvariantCulture, format, args);
+                this.FatalFormat(CultureInfo.InvariantCulture, format, args);
             }
 
             public void FatalFormat(IFormatProvider provider, string format, params object[] args)
             {
-                Logger.Log(_stackBoundary, _levelFatal, new SystemStringFormat(provider, format, args), null);
+                this.Logger.Log(this._stackBoundary, _levelFatal, new SystemStringFormat(provider, format, args), null);
             }
         }
     }

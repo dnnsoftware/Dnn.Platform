@@ -60,7 +60,7 @@ namespace log4net.Config
 		/// </remarks>
 		protected ConfiguratorAttribute(int priority)
 		{
-			m_priority = priority;
+			this.m_priority = priority;
 		}
 
 		/// <summary>
@@ -102,7 +102,7 @@ namespace log4net.Config
 			if (target != null)
 			{
 				// Compare the priorities
-				result = target.m_priority.CompareTo(m_priority);
+				result = target.m_priority.CompareTo(this.m_priority);
 				if (result == 0)
 				{
 					// Same priority, so have to provide some ordering

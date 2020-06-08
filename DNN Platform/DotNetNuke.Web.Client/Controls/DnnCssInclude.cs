@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     {
         public DnnCssInclude()
         {
-            ForceProvider = ClientResourceManager.DefaultCssProvider;
+            this.ForceProvider = ClientResourceManager.DefaultCssProvider;
         }
 
         protected override void OnLoad(System.EventArgs e)
@@ -27,9 +27,9 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
         protected override void Render(HtmlTextWriter writer)
         {
-            if (AddTag || Context.IsDebuggingEnabled)
+            if (this.AddTag || this.Context.IsDebuggingEnabled)
             {
-                writer.Write("<!--CDF({0}|{1}|{2}|{3})-->", DependencyType, FilePath, ForceProvider, Priority);
+                writer.Write("<!--CDF({0}|{1}|{2}|{3})-->", this.DependencyType, this.FilePath, this.ForceProvider, this.Priority);
             }
         }
     }

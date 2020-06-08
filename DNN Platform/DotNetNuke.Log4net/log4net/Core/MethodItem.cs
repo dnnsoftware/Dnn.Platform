@@ -45,8 +45,8 @@ namespace log4net.Core
 		/// </summary>
 		public MethodItem()
 		{
-			m_name = NA;
-			m_parameters = new string[0];
+			this.m_name = NA;
+			this.m_parameters = new string[0];
 		}
 
 		/// <summary>
@@ -56,7 +56,7 @@ namespace log4net.Core
 		public MethodItem(string name)
 			: this()
 		{
-			m_name = name;
+			this.m_name = name;
 		}
 
 		/// <summary>
@@ -67,7 +67,7 @@ namespace log4net.Core
 		public MethodItem(string name, string[] parameters)
 			: this(name)
 		{
-			m_parameters = parameters;
+			this.m_parameters = parameters;
 		}
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace log4net.Core
 		/// </remarks>
 		public string Name
 		{
-			get { return m_name; }
+			get { return this.m_name; }
 		}
 
 		/// <summary>
@@ -140,7 +140,7 @@ namespace log4net.Core
 		/// </remarks>
 		public string[] Parameters
 		{
-			get { return m_parameters; }
+			get { return this.m_parameters; }
 		}
 
 		#endregion

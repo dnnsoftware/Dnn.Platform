@@ -16,17 +16,17 @@ namespace DotNetNuke.Entities.Modules.Communications
         {
             get
             {
-                return (IModuleCommunicator) List[index];
+                return (IModuleCommunicator) this.List[index];
             }
             set
             {
-                List[index] = value;
+                this.List[index] = value;
             }
         }
 
         public int Add(IModuleCommunicator item)
         {
-            return List.Add(item);
+            return this.List.Add(item);
         }
     }
 }

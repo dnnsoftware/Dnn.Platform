@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
                 throw new FolderProviderException(Localization.Localization.GetExceptionMessage("DeleteFileUnderlyingSystemError", "The underlying system threw an exception. The file has not been deleted."), ex);
             }
 
-            DeleteFileData(file);
+            this.DeleteFileData(file);
 
             DataCache.RemoveCache("GetFileById" + file.FileId);
         }
@@ -49,14 +49,14 @@ namespace DotNetNuke.Services.FileSystem.Internal
 
             FileVersionController.Instance.DeleteAllUnpublishedVersions(file, false);
             
-            DeleteFileData(file);
+            this.DeleteFileData(file);
         }
 
 
         public void DeleteFileData(IFileInfo file)
         {
             DataProvider.Instance().DeleteFile(file.PortalId, file.FileName, file.FolderId);
-            DeleteContentItem(file.ContentItemID);
+            this.DeleteContentItem(file.ContentItemID);
         }
 
         private void DeleteContentItem(int contentItemId)

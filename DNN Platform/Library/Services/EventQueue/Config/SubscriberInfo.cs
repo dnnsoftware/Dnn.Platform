@@ -17,17 +17,17 @@ namespace DotNetNuke.Services.EventQueue.Config
     {
         public SubscriberInfo()
         {
-            ID = Guid.NewGuid().ToString();
-            Name = "";
-            Description = "";
-            Address = "";
+            this.ID = Guid.NewGuid().ToString();
+            this.Name = "";
+            this.Description = "";
+            this.Address = "";
             var oPortalSecurity = PortalSecurity.Instance;
-            PrivateKey = oPortalSecurity.CreateKey(16);
+            this.PrivateKey = oPortalSecurity.CreateKey(16);
         }
 
         public SubscriberInfo(string subscriberName) : this()
         {
-            Name = subscriberName;
+            this.Name = subscriberName;
         }
 
         public string ID { get; set; }

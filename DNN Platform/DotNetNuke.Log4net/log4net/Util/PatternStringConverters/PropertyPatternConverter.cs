@@ -88,10 +88,10 @@ namespace log4net.Util.PatternStringConverters
 			// TODO: Add Repository Properties
 			compositeProperties.Add(GlobalContext.Properties.GetReadOnlyProperties());
 
-			if (Option != null)
+			if (this.Option != null)
 			{
 				// Write the value for the specified key
-				WriteObject(writer, null, compositeProperties[Option]);
+				WriteObject(writer, null, compositeProperties[this.Option]);
 			}
 			else
 			{

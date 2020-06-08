@@ -32,19 +32,19 @@ namespace DotNetNuke.Entities.Tabs
 
         public int KeyID 
         { 
-            get { return TabAliasSkinId; } 
-            set { TabAliasSkinId = value; }
+            get { return this.TabAliasSkinId; } 
+            set { this.TabAliasSkinId = value; }
         }
 
         public void Fill(IDataReader dr)
         {
             base.FillInternal(dr);
 
-            TabAliasSkinId = Null.SetNullInteger(dr["TabAliasSkinId"]);
-            HttpAlias = Null.SetNullString(dr["HttpAlias"]);
-            PortalAliasId = Null.SetNullInteger(dr["PortalAliasId"]);
-            SkinSrc = Null.SetNullString(dr["SkinSrc"]);
-            TabId = Null.SetNullInteger(dr["TabId"]);
+            this.TabAliasSkinId = Null.SetNullInteger(dr["TabAliasSkinId"]);
+            this.HttpAlias = Null.SetNullString(dr["HttpAlias"]);
+            this.PortalAliasId = Null.SetNullInteger(dr["PortalAliasId"]);
+            this.SkinSrc = Null.SetNullString(dr["SkinSrc"]);
+            this.TabId = Null.SetNullInteger(dr["TabId"]);
         }
     }
 }

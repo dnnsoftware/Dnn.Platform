@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Analytics
 
         public override string RenderScript(string scriptTemplate)
         {
-            AnalyticsConfiguration config = GetConfig();
+            AnalyticsConfiguration config = this.GetConfig();
 
             if (config == null)
             {
@@ -80,7 +80,7 @@ namespace DotNetNuke.Services.Analytics
                 scriptTemplate = scriptTemplate.Replace("[PAGE_URL]", "");
             }
 
-            scriptTemplate = scriptTemplate.Replace("[CUSTOM_SCRIPT]", RenderCustomScript(config));
+            scriptTemplate = scriptTemplate.Replace("[CUSTOM_SCRIPT]", this.RenderCustomScript(config));
 
             return scriptTemplate;
         }

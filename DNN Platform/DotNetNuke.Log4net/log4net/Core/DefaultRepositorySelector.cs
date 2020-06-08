@@ -72,8 +72,8 @@ namespace log4net.Core
 		/// </remarks>
 		public event LoggerRepositoryCreationEventHandler LoggerRepositoryCreatedEvent 
 		{
-			add { m_loggerRepositoryCreatedEvent += value; }
-			remove { m_loggerRepositoryCreatedEvent -= value; }
+			add { this.m_loggerRepositoryCreatedEvent += value; }
+			remove { this.m_loggerRepositoryCreatedEvent -= value; }
 		}
 
 		#endregion Public Events
@@ -106,9 +106,9 @@ namespace log4net.Core
 				throw log4net.Util.SystemInfo.CreateArgumentOutOfRangeException("defaultRepositoryType", defaultRepositoryType, "Parameter: defaultRepositoryType, Value: [" + defaultRepositoryType + "] out of range. Argument must implement the ILoggerRepository interface");
 			}
 
-			m_defaultRepositoryType = defaultRepositoryType;
+			this.m_defaultRepositoryType = defaultRepositoryType;
 
-			LogLog.Debug(declaringType, "defaultRepositoryType [" + m_defaultRepositoryType + "]");
+			LogLog.Debug(declaringType, "defaultRepositoryType [" + this.m_defaultRepositoryType + "]");
 		}
 
 		#endregion Public Instance Constructors
@@ -144,7 +144,7 @@ namespace log4net.Core
 			{
 				throw new ArgumentNullException("repositoryAssembly");
 			}
-			return CreateRepository(repositoryAssembly, m_defaultRepositoryType);
+			return this.CreateRepository(repositoryAssembly, this.m_defaultRepositoryType);
 		}
 
 		/// <summary>
@@ -174,7 +174,7 @@ namespace log4net.Core
 			lock(this)
 			{
 				// Lookup in map
-				ILoggerRepository rep = m_name2repositoryMap[repositoryName] as ILoggerRepository;
+				ILoggerRepository rep = this.m_name2repositoryMap[repositoryName] as ILoggerRepository;
 				if (rep == null)
 				{
 					throw new LogException("Repository [" + repositoryName + "] is NOT defined.");
@@ -221,7 +221,7 @@ namespace log4net.Core
 		/// <exception cref="ArgumentNullException"><paramref name="repositoryAssembly"/> is <see langword="null" />.</exception>
 		public ILoggerRepository CreateRepository(Assembly repositoryAssembly, Type repositoryType)
 		{
-			return CreateRepository(repositoryAssembly, repositoryType, DefaultRepositoryName, true);
+			return this.CreateRepository(repositoryAssembly, repositoryType, DefaultRepositoryName, true);
 		}
 
 		/// <summary>
@@ -272,13 +272,13 @@ namespace log4net.Core
 			// If the type is not set then use the default type
 			if (repositoryType == null)
 			{
-				repositoryType = m_defaultRepositoryType;
+				repositoryType = this.m_defaultRepositoryType;
 			}
 
 			lock(this)
 			{
 				// Lookup in map
-				ILoggerRepository rep = m_assembly2repositoryMap[repositoryAssembly] as ILoggerRepository;
+				ILoggerRepository rep = this.m_assembly2repositoryMap[repositoryAssembly] as ILoggerRepository;
 				if (rep == null)
 				{
 					// Not found, therefore create
@@ -291,30 +291,30 @@ namespace log4net.Core
 					if (readAssemblyAttributes)
 					{
 						// Get the repository and type from the assembly attributes
-						GetInfoForAssembly(repositoryAssembly, ref actualRepositoryName, ref actualRepositoryType);
+						this.GetInfoForAssembly(repositoryAssembly, ref actualRepositoryName, ref actualRepositoryType);
 					}
 
 					LogLog.Debug(declaringType, "Assembly [" + repositoryAssembly + "] using repository [" + actualRepositoryName + "] and repository type [" + actualRepositoryType + "]");
 
 					// Lookup the repository in the map (as this may already be defined)
-					rep = m_name2repositoryMap[actualRepositoryName] as ILoggerRepository;
+					rep = this.m_name2repositoryMap[actualRepositoryName] as ILoggerRepository;
 					if (rep == null)
 					{
 						// Create the repository
-						rep = CreateRepository(actualRepositoryName, actualRepositoryType);
+						rep = this.CreateRepository(actualRepositoryName, actualRepositoryType);
 
 						if (readAssemblyAttributes)
 						{
 							try
 							{
 								// Look for aliasing attributes
-								LoadAliases(repositoryAssembly, rep);
+								this.LoadAliases(repositoryAssembly, rep);
 
 								// Look for plugins defined on the assembly
-								LoadPlugins(repositoryAssembly, rep);
+								this.LoadPlugins(repositoryAssembly, rep);
 
 								// Configure the repository using the assembly attributes
-								ConfigureRepository(repositoryAssembly, rep);
+								this.ConfigureRepository(repositoryAssembly, rep);
 							}
 							catch (Exception ex)
 							{
@@ -331,7 +331,7 @@ namespace log4net.Core
 							try
 							{
 								// Look for plugins defined on the assembly
-								LoadPlugins(repositoryAssembly, rep);
+								this.LoadPlugins(repositoryAssembly, rep);
 							}
 							catch (Exception ex)
 							{
@@ -339,7 +339,7 @@ namespace log4net.Core
 							}
 						}
 					}
-					m_assembly2repositoryMap[repositoryAssembly] = rep;
+					this.m_assembly2repositoryMap[repositoryAssembly] = rep;
 				}
 				return rep;
 			}
@@ -371,7 +371,7 @@ namespace log4net.Core
 			// If the type is not set then use the default type
 			if (repositoryType == null)
 			{
-				repositoryType = m_defaultRepositoryType;
+				repositoryType = this.m_defaultRepositoryType;
 			}
 
 			lock(this)
@@ -379,7 +379,7 @@ namespace log4net.Core
 				ILoggerRepository rep = null;
 
 				// First check that the repository does not exist
-				rep = m_name2repositoryMap[repositoryName] as ILoggerRepository;
+				rep = this.m_name2repositoryMap[repositoryName] as ILoggerRepository;
 				if (rep != null)
 				{
 					throw new LogException("Repository [" + repositoryName + "] is already defined. Repositories cannot be redefined.");
@@ -387,7 +387,7 @@ namespace log4net.Core
 				else
 				{
 					// Lookup an alias before trying to create the new repository
-					ILoggerRepository aliasedRepository = m_alias2repositoryMap[repositoryName] as ILoggerRepository;
+					ILoggerRepository aliasedRepository = this.m_alias2repositoryMap[repositoryName] as ILoggerRepository;
 					if (aliasedRepository != null)
 					{
 						// Found an alias
@@ -400,7 +400,7 @@ namespace log4net.Core
 							rep = aliasedRepository;
 
 							// Store in map
-							m_name2repositoryMap[repositoryName] = rep;
+							this.m_name2repositoryMap[repositoryName] = rep;
 						}
 						else
 						{
@@ -423,10 +423,10 @@ namespace log4net.Core
 						rep.Name = repositoryName;
 
 						// Store in map
-						m_name2repositoryMap[repositoryName] = rep;
+						this.m_name2repositoryMap[repositoryName] = rep;
 
 						// Notify listeners that the repository has been created
-						OnLoggerRepositoryCreatedEvent(rep);
+						this.OnLoggerRepositoryCreatedEvent(rep);
 					}
 				}
 
@@ -450,7 +450,7 @@ namespace log4net.Core
 		{
 			lock(this)
 			{
-				return m_name2repositoryMap.ContainsKey(repositoryName);
+				return this.m_name2repositoryMap.ContainsKey(repositoryName);
 			}
 		}
 
@@ -467,7 +467,7 @@ namespace log4net.Core
 		{
 			lock(this)
 			{
-				ICollection reps = m_name2repositoryMap.Values;
+				ICollection reps = this.m_name2repositoryMap.Values;
 				ILoggerRepository[] all = new ILoggerRepository[reps.Count];
 				reps.CopyTo(all, 0);
 				return all;
@@ -512,20 +512,20 @@ namespace log4net.Core
 			lock(this) 
 			{
 				// Check if the alias is already set
-				if (m_alias2repositoryMap.Contains(repositoryAlias)) 
+				if (this.m_alias2repositoryMap.Contains(repositoryAlias)) 
 				{
 					// Check if this is a duplicate of the current alias
-					if (repositoryTarget != ((ILoggerRepository)m_alias2repositoryMap[repositoryAlias])) 
+					if (repositoryTarget != ((ILoggerRepository)this.m_alias2repositoryMap[repositoryAlias])) 
 					{
 						// Cannot redefine existing alias
-						throw new InvalidOperationException("Repository [" + repositoryAlias + "] is already aliased to repository [" + ((ILoggerRepository)m_alias2repositoryMap[repositoryAlias]).Name + "]. Aliases cannot be redefined.");
+						throw new InvalidOperationException("Repository [" + repositoryAlias + "] is already aliased to repository [" + ((ILoggerRepository)this.m_alias2repositoryMap[repositoryAlias]).Name + "]. Aliases cannot be redefined.");
 					}
 				}
 					// Check if the alias is already mapped to a repository
-				else if (m_name2repositoryMap.Contains(repositoryAlias)) 
+				else if (this.m_name2repositoryMap.Contains(repositoryAlias)) 
 				{
 					// Check if this is a duplicate of the current mapping
-					if ( repositoryTarget != ((ILoggerRepository)m_name2repositoryMap[repositoryAlias]) ) 
+					if ( repositoryTarget != ((ILoggerRepository)this.m_name2repositoryMap[repositoryAlias]) ) 
 					{
 						// Cannot define alias for already mapped repository
 						throw new InvalidOperationException("Repository [" + repositoryAlias + "] already exists and cannot be aliased to repository [" + repositoryTarget.Name + "].");
@@ -534,7 +534,7 @@ namespace log4net.Core
 				else 
 				{
 					// Set the alias
-					m_alias2repositoryMap[repositoryAlias] = repositoryTarget;
+					this.m_alias2repositoryMap[repositoryAlias] = repositoryTarget;
 				}
 			}
 		}
@@ -554,7 +554,7 @@ namespace log4net.Core
 		/// </remarks>
 		protected virtual void OnLoggerRepositoryCreatedEvent(ILoggerRepository repository) 
 		{
-			LoggerRepositoryCreationEventHandler handler = m_loggerRepositoryCreatedEvent;
+			LoggerRepositoryCreationEventHandler handler = this.m_loggerRepositoryCreatedEvent;
 			if (handler != null) 
 			{
 				handler(this, new LoggerRepositoryCreationEventArgs(repository));
@@ -874,7 +874,7 @@ namespace log4net.Core
 				{
 					try
 					{
-						AliasRepository(configAttr.Name, repository);
+						this.AliasRepository(configAttr.Name, repository);
 					}
 					catch(Exception ex)
 					{

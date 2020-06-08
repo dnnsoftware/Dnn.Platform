@@ -41,13 +41,13 @@ namespace DotNetNuke.Services.FileSystem
 
         internal FolderInfo(bool initialiseEmptyPermissions)
         {
-            FolderID = Null.NullInteger;
-            UniqueId = Guid.NewGuid();
-            VersionGuid = Guid.NewGuid();
-            WorkflowID = Null.NullInteger;            
+            this.FolderID = Null.NullInteger;
+            this.UniqueId = Guid.NewGuid();
+            this.VersionGuid = Guid.NewGuid();
+            this.WorkflowID = Null.NullInteger;            
             if (initialiseEmptyPermissions)
             {
-                _folderPermissions = new FolderPermissionCollection();   
+                this._folderPermissions = new FolderPermissionCollection();   
             }            
         }
         #endregion
@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                string folderName = PathUtils.Instance.RemoveTrailingSlash(FolderPath);
+                string folderName = PathUtils.Instance.RemoveTrailingSlash(this.FolderPath);
                 if (folderName.Length > 0 && folderName.LastIndexOf("/", StringComparison.Ordinal) > -1)
                 {
                     folderName = folderName.Substring(folderName.LastIndexOf("/", StringComparison.Ordinal) + 1);
@@ -94,15 +94,15 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if (string.IsNullOrEmpty(_displayName))
+                if (string.IsNullOrEmpty(this._displayName))
                 {
-                    _displayName = FolderName;
+                    this._displayName = this.FolderName;
                 }
-                return _displayName;
+                return this._displayName;
             }
             set
             {
-                _displayName = value;
+                this._displayName = value;
             }
         }
 
@@ -114,15 +114,15 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if (string.IsNullOrEmpty(_displayPath))
+                if (string.IsNullOrEmpty(this._displayPath))
                 {
-                    _displayPath = FolderPath;
+                    this._displayPath = this.FolderPath;
                 }
-                return _displayPath;
+                return this._displayPath;
             }
             set
             {
-                _displayPath = value;
+                this._displayPath = value;
             }
         }
 
@@ -171,22 +171,22 @@ namespace DotNetNuke.Services.FileSystem
                     portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 }
 
-                if (PortalID == Null.NullInteger)
+                if (this.PortalID == Null.NullInteger)
                 {
-                    physicalPath = Globals.HostMapPath + FolderPath;
+                    physicalPath = Globals.HostMapPath + this.FolderPath;
                 }
                 else
                 {
-                    if (portalSettings == null || portalSettings.PortalId != PortalID)
+                    if (portalSettings == null || portalSettings.PortalId != this.PortalID)
                     {
                         //Get the PortalInfo  based on the Portalid
-                        var portal = PortalController.Instance.GetPortal(PortalID);
+                        var portal = PortalController.Instance.GetPortal(this.PortalID);
 
-                        physicalPath = portal.HomeDirectoryMapPath + FolderPath;
+                        physicalPath = portal.HomeDirectoryMapPath + this.FolderPath;
                     }
                     else
                     {
-                        physicalPath = portalSettings.HomeDirectoryMapPath + FolderPath;
+                        physicalPath = portalSettings.HomeDirectoryMapPath + this.FolderPath;
                     }
                 }
 
@@ -205,7 +205,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             get 
             {
-                return _folderPermissions ?? (_folderPermissions = new FolderPermissionCollection(FolderPermissionController.GetFolderPermissionsCollectionByFolder(PortalID, FolderPath)));
+                return this._folderPermissions ?? (this._folderPermissions = new FolderPermissionCollection(FolderPermissionController.GetFolderPermissionsCollectionByFolder(this.PortalID, this.FolderPath)));
             }
         }
 
@@ -213,30 +213,30 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if (_folderMappingId == 0)
+                if (this._folderMappingId == 0)
                 {
-                    switch (StorageLocation)
+                    switch (this.StorageLocation)
                     {
                         case (int)FolderController.StorageLocationTypes.InsecureFileSystem:
-                            _folderMappingId = FolderMappingController.Instance.GetFolderMapping(PortalID, "Standard").FolderMappingID;
+                            this._folderMappingId = FolderMappingController.Instance.GetFolderMapping(this.PortalID, "Standard").FolderMappingID;
                             break;
                         case (int)FolderController.StorageLocationTypes.SecureFileSystem:
-                            _folderMappingId = FolderMappingController.Instance.GetFolderMapping(PortalID, "Secure").FolderMappingID;
+                            this._folderMappingId = FolderMappingController.Instance.GetFolderMapping(this.PortalID, "Secure").FolderMappingID;
                             break;
                         case (int)FolderController.StorageLocationTypes.DatabaseSecure:
-                            _folderMappingId = FolderMappingController.Instance.GetFolderMapping(PortalID, "Database").FolderMappingID;
+                            this._folderMappingId = FolderMappingController.Instance.GetFolderMapping(this.PortalID, "Database").FolderMappingID;
                             break;
                         default:
-                            _folderMappingId = FolderMappingController.Instance.GetDefaultFolderMapping(PortalID).FolderMappingID;
+                            this._folderMappingId = FolderMappingController.Instance.GetDefaultFolderMapping(this.PortalID).FolderMappingID;
                             break;
                     }
                 }
 
-                return _folderMappingId;
+                return this._folderMappingId;
             }
             set
             {
-                _folderMappingId = value;
+                this._folderMappingId = value;
             }
         }
 
@@ -244,7 +244,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                var folderMapping = FolderMappingController.Instance.GetFolderMapping(PortalID, FolderMappingID);
+                var folderMapping = FolderMappingController.Instance.GetFolderMapping(this.PortalID, this.FolderMappingID);
                 return FolderProvider.Instance(folderMapping.FolderProviderType).IsStorageSecure;
             }   
         }
@@ -261,21 +261,21 @@ namespace DotNetNuke.Services.FileSystem
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
-            FolderID = Null.SetNullInteger(dr["FolderID"]);
-            UniqueId = Null.SetNullGuid(dr["UniqueId"]);
-            VersionGuid = Null.SetNullGuid(dr["VersionGuid"]);
-            PortalID = Null.SetNullInteger(dr["PortalID"]);
-            FolderPath = Null.SetNullString(dr["FolderPath"]);
-            MappedPath = Null.SetNullString(dr["MappedPath"]);
-            IsCached = Null.SetNullBoolean(dr["IsCached"]);
-            IsProtected = Null.SetNullBoolean(dr["IsProtected"]);
-            StorageLocation = Null.SetNullInteger(dr["StorageLocation"]);
-            LastUpdated = Null.SetNullDateTime(dr["LastUpdated"]);
-            FolderMappingID = Null.SetNullInteger(dr["FolderMappingID"]);
-            IsVersioned = Null.SetNullBoolean(dr["IsVersioned"]);
-            WorkflowID = Null.SetNullInteger(dr["WorkflowID"]);
-            ParentID = Null.SetNullInteger(dr["ParentID"]);
-            FillBaseProperties(dr);            
+            this.FolderID = Null.SetNullInteger(dr["FolderID"]);
+            this.UniqueId = Null.SetNullGuid(dr["UniqueId"]);
+            this.VersionGuid = Null.SetNullGuid(dr["VersionGuid"]);
+            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
+            this.FolderPath = Null.SetNullString(dr["FolderPath"]);
+            this.MappedPath = Null.SetNullString(dr["MappedPath"]);
+            this.IsCached = Null.SetNullBoolean(dr["IsCached"]);
+            this.IsProtected = Null.SetNullBoolean(dr["IsProtected"]);
+            this.StorageLocation = Null.SetNullInteger(dr["StorageLocation"]);
+            this.LastUpdated = Null.SetNullDateTime(dr["LastUpdated"]);
+            this.FolderMappingID = Null.SetNullInteger(dr["FolderMappingID"]);
+            this.IsVersioned = Null.SetNullBoolean(dr["IsVersioned"]);
+            this.WorkflowID = Null.SetNullInteger(dr["WorkflowID"]);
+            this.ParentID = Null.SetNullInteger(dr["ParentID"]);
+            this.FillBaseProperties(dr);            
         }
 
         /// -----------------------------------------------------------------------------
@@ -289,11 +289,11 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                return FolderID;
+                return this.FolderID;
             }
             set
             {
-                FolderID = value;
+                this.FolderID = value;
             }
         }
 
@@ -310,17 +310,17 @@ namespace DotNetNuke.Services.FileSystem
         [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers. Scheduled removal in v10.0.0.")]
         public FolderInfo(Guid uniqueId, int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
         {
-            FolderID = Null.NullInteger;
-            UniqueId = uniqueId;
-            VersionGuid = Guid.NewGuid();
-            WorkflowID = Null.NullInteger;
+            this.FolderID = Null.NullInteger;
+            this.UniqueId = uniqueId;
+            this.VersionGuid = Guid.NewGuid();
+            this.WorkflowID = Null.NullInteger;
 
-            PortalID = portalId;
-            FolderPath = folderpath;
-            StorageLocation = storageLocation;
-            IsProtected = isProtected;
-            IsCached = isCached;
-            LastUpdated = lastUpdated;
+            this.PortalID = portalId;
+            this.FolderPath = folderpath;
+            this.StorageLocation = storageLocation;
+            this.IsProtected = isProtected;
+            this.IsCached = isCached;
+            this.LastUpdated = lastUpdated;
         }
 
         #endregion

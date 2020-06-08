@@ -30,8 +30,8 @@ namespace DotNetNuke.Entities
     {
         protected BaseEntityInfo()
         {
-            CreatedByUserID = Null.NullInteger;
-            LastModifiedByUserID = Null.NullInteger;
+            this.CreatedByUserID = Null.NullInteger;
+            this.LastModifiedByUserID = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
@@ -79,9 +79,9 @@ namespace DotNetNuke.Entities
         /// -----------------------------------------------------------------------------
         public UserInfo CreatedByUser(int portalId)
         {
-            if (CreatedByUserID > Null.NullInteger)
+            if (this.CreatedByUserID > Null.NullInteger)
             {
-                UserInfo user = UserController.GetUserById(portalId, CreatedByUserID);
+                UserInfo user = UserController.GetUserById(portalId, this.CreatedByUserID);
                 return user;
             }
             return null;
@@ -96,9 +96,9 @@ namespace DotNetNuke.Entities
         /// -----------------------------------------------------------------------------
         public UserInfo LastModifiedByUser(int portalId)
         {
-            if (LastModifiedByUserID > Null.NullInteger)
+            if (this.LastModifiedByUserID > Null.NullInteger)
             {
-                UserInfo user = UserController.GetUserById(portalId, LastModifiedByUserID);
+                UserInfo user = UserController.GetUserById(portalId, this.LastModifiedByUserID);
                 return user;
             }
             return null;
@@ -112,10 +112,10 @@ namespace DotNetNuke.Entities
         /// -----------------------------------------------------------------------------
         protected virtual void FillInternal(IDataReader dr)
         {
-            CreatedByUserID = Null.SetNullInteger(dr["CreatedByUserID"]);
-            CreatedOnDate = Null.SetNullDateTime(dr["CreatedOnDate"]);
-            LastModifiedByUserID = Null.SetNullInteger(dr["LastModifiedByUserID"]);
-            LastModifiedOnDate = Null.SetNullDateTime(dr["LastModifiedOnDate"]);
+            this.CreatedByUserID = Null.SetNullInteger(dr["CreatedByUserID"]);
+            this.CreatedOnDate = Null.SetNullDateTime(dr["CreatedOnDate"]);
+            this.LastModifiedByUserID = Null.SetNullInteger(dr["LastModifiedByUserID"]);
+            this.LastModifiedOnDate = Null.SetNullDateTime(dr["LastModifiedOnDate"]);
         }
 
 		protected void CloneBaseProperties(BaseEntityInfo clonedItem, BaseEntityInfo originalItem)
@@ -133,7 +133,7 @@ namespace DotNetNuke.Entities
         /// <remarks></remarks>
         internal void FillBaseProperties(IDataReader dr)
         {
-            FillInternal(dr);
+            this.FillInternal(dr);
         }
     }
 }

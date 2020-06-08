@@ -16,10 +16,10 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
         }
         public PageModel(DotNetNuke.Entities.Tabs.TabInfo tab): base(tab)
         {
-            Container = tab.ContainerSrc;
-            Url = tab.Url;
-            Keywords = tab.KeyWords;
-            Description = tab.Description;
+            this.Container = tab.ContainerSrc;
+            this.Url = tab.Url;
+            this.Keywords = tab.KeyWords;
+            this.Description = tab.Description;
         }
     }
 }

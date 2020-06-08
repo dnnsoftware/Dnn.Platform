@@ -43,7 +43,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         public ProfilePropertyDefinitionCollection(ArrayList definitionsList)
         {
-            AddRange(definitionsList);
+            this.AddRange(definitionsList);
         }
 
         /// -----------------------------------------------------------------------------
@@ -54,7 +54,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         public ProfilePropertyDefinitionCollection(ProfilePropertyDefinitionCollection collection)
         {
-            AddRange(collection);
+            this.AddRange(collection);
         }
 
         /// -----------------------------------------------------------------------------
@@ -69,11 +69,11 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return (ProfilePropertyDefinition) List[index];
+                return (ProfilePropertyDefinition) this.List[index];
             }
             set
             {
-                List[index] = value;
+                this.List[index] = value;
             }
         }
 
@@ -89,7 +89,7 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return GetByName(name);
+                return this.GetByName(name);
             }
         }
 
@@ -102,7 +102,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         public int Add(ProfilePropertyDefinition value)
         {
-            return List.Add(value);
+            return this.List.Add(value);
         }
 
         /// -----------------------------------------------------------------------------
@@ -115,7 +115,7 @@ namespace DotNetNuke.Entities.Profile
         {
             foreach (ProfilePropertyDefinition objProfilePropertyDefinition in definitionsList)
             {
-                Add(objProfilePropertyDefinition);
+                this.Add(objProfilePropertyDefinition);
             }
         }
 
@@ -129,7 +129,7 @@ namespace DotNetNuke.Entities.Profile
         {
             foreach (ProfilePropertyDefinition objProfilePropertyDefinition in collection)
             {
-                Add(objProfilePropertyDefinition);
+                this.Add(objProfilePropertyDefinition);
             }
         }
 
@@ -142,7 +142,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         public bool Contains(ProfilePropertyDefinition value)
         {
-            return List.Contains(value);
+            return this.List.Contains(value);
         }
 
         /// -----------------------------------------------------------------------------
@@ -155,7 +155,7 @@ namespace DotNetNuke.Entities.Profile
         public ProfilePropertyDefinitionCollection GetByCategory(string category)
         {
             var collection = new ProfilePropertyDefinitionCollection();
-            foreach (ProfilePropertyDefinition profileProperty in InnerList)
+            foreach (ProfilePropertyDefinition profileProperty in this.InnerList)
             {
                 if (profileProperty.PropertyCategory == category)
                 {
@@ -175,7 +175,7 @@ namespace DotNetNuke.Entities.Profile
         public ProfilePropertyDefinition GetById(int id)
         {
             ProfilePropertyDefinition profileItem = null;
-            foreach (ProfilePropertyDefinition profileProperty in InnerList)
+            foreach (ProfilePropertyDefinition profileProperty in this.InnerList)
             {
                 if (profileProperty.PropertyDefinitionId == id)
                 {
@@ -195,7 +195,7 @@ namespace DotNetNuke.Entities.Profile
         public ProfilePropertyDefinition GetByName(string name)
         {
             ProfilePropertyDefinition profileItem = null;
-            foreach (ProfilePropertyDefinition profileProperty in InnerList)
+            foreach (ProfilePropertyDefinition profileProperty in this.InnerList)
             {
                 if (profileProperty?.PropertyName == name)
                 {
@@ -215,7 +215,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         public int IndexOf(ProfilePropertyDefinition value)
         {
-            return List.IndexOf(value);
+            return this.List.IndexOf(value);
         }
 
         /// -----------------------------------------------------------------------------
@@ -227,7 +227,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         public void Insert(int index, ProfilePropertyDefinition value)
         {
-            List.Insert(index, value);
+            this.List.Insert(index, value);
         }
 
         /// -----------------------------------------------------------------------------
@@ -238,7 +238,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         public void Remove(ProfilePropertyDefinition value)
         {
-            List.Remove(value);
+            this.List.Remove(value);
         }
 
         /// -----------------------------------------------------------------------------
@@ -248,7 +248,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         public void Sort()
         {
-            InnerList.Sort(new ProfilePropertyDefinitionComparer());
+            this.InnerList.Sort(new ProfilePropertyDefinitionComparer());
         }
     }
 }

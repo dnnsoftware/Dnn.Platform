@@ -49,8 +49,8 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
         public HttpSimulator(string applicationPath, string physicalApplicationPath)
         {
-            ApplicationPath = applicationPath;
-            PhysicalApplicationPath = physicalApplicationPath;
+            this.ApplicationPath = applicationPath;
+            this.PhysicalApplicationPath = physicalApplicationPath;
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// </remarks>
         public HttpSimulator SimulateRequest()
         {
-            return SimulateRequest(new Uri("http://localhost/"));
+            return this.SimulateRequest(new Uri("http://localhost/"));
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <param name="url"></param>
         public HttpSimulator SimulateRequest(Uri url)
         {
-            return SimulateRequest(url, HttpVerb.GET);
+            return this.SimulateRequest(url, HttpVerb.GET);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <param name="httpVerb"></param>
         public HttpSimulator SimulateRequest(Uri url, HttpVerb httpVerb)
         {
-            return SimulateRequest(url, httpVerb, null, null);
+            return this.SimulateRequest(url, httpVerb, null, null);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <param name="formVariables"></param>
         public HttpSimulator SimulateRequest(Uri url, NameValueCollection formVariables)
         {
-            return SimulateRequest(url, HttpVerb.POST, formVariables, null);
+            return this.SimulateRequest(url, HttpVerb.POST, formVariables, null);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <param name="headers"></param>
         public HttpSimulator SimulateRequest(Uri url, NameValueCollection formVariables, NameValueCollection headers)
         {
-            return SimulateRequest(url, HttpVerb.POST, formVariables, headers);
+            return this.SimulateRequest(url, HttpVerb.POST, formVariables, headers);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <param name="headers"></param>
         public HttpSimulator SimulateRequest(Uri url, HttpVerb httpVerb, NameValueCollection headers)
         {
-            return SimulateRequest(url, httpVerb, null, headers);
+            return this.SimulateRequest(url, httpVerb, null, headers);
         }
 
         /// <summary>
@@ -126,36 +126,36 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         {
             HttpContext.Current = null;
 
-            ParseRequestUrl(url);
+            this.ParseRequestUrl(url);
 
-            if (ResponseWriter == null)
+            if (this.ResponseWriter == null)
             {
-                _builder = new StringBuilder();
-                ResponseWriter = new StringWriter(_builder);
+                this._builder = new StringBuilder();
+                this.ResponseWriter = new StringWriter(this._builder);
             }
 
-            SetHttpRuntimeInternals();
+            this.SetHttpRuntimeInternals();
 
             var query = ExtractQueryStringPart(url);
 
             if (formVariables != null)
-                _formVars.Add(formVariables);
+                this._formVars.Add(formVariables);
 
-            if (_formVars.Count > 0)
+            if (this._formVars.Count > 0)
                 httpVerb = HttpVerb.POST; //Need to enforce this.
 
             if (headers != null)
-                _headers.Add(headers);
+                this._headers.Add(headers);
 
-            WorkerRequest = new SimulatedHttpRequest(ApplicationPath, PhysicalApplicationPath, PhysicalPath, Page, query, ResponseWriter, Host, Port, httpVerb.ToString());
+            this.WorkerRequest = new SimulatedHttpRequest(this.ApplicationPath, this.PhysicalApplicationPath, this.PhysicalPath, this.Page, query, this.ResponseWriter, this.Host, this.Port, httpVerb.ToString());
 
-            WorkerRequest.Form.Add(_formVars);
-            WorkerRequest.Headers.Add(_headers);
+            this.WorkerRequest.Form.Add(this._formVars);
+            this.WorkerRequest.Headers.Add(this._headers);
 
-            if (_referer != null)
-                WorkerRequest.SetReferer(_referer);
+            if (this._referer != null)
+                this.WorkerRequest.SetReferer(this._referer);
 
-        	InitializeSession();
+        	this.InitializeSession();
 
 			InitializeApplication();
             
@@ -197,7 +197,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
 		private void InitializeSession()
 		{
-			HttpContext.Current = new HttpContext(WorkerRequest);
+			HttpContext.Current = new HttpContext(this.WorkerRequest);
 			HttpContext.Current.Items.Clear();
 			var session = (HttpSessionState)ReflectionHelper.Instantiate(typeof(HttpSessionState), new[] { typeof(IHttpSessionState) }, new FakeHttpSessionState());
 
@@ -218,7 +218,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 			///
 			public void Abandon()
 			{
-				BaseClear();	
+				this.BaseClear();	
 			}
 
 			///<summary>
@@ -229,7 +229,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 			///<param name="value">The value of the item to add to the session-state collection. </param>
 			public void Add(string name, object value)
 			{
-				BaseAdd(name, value);
+				this.BaseAdd(name, value);
 			}
 
 			///<summary>
@@ -239,7 +239,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 			///<param name="name">The name of the item to delete from the session-state item collection. </param>
 			public void Remove(string name)
 			{
-				BaseRemove(name);
+				this.BaseRemove(name);
 			}
 
 			///<summary>
@@ -249,7 +249,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 			///<param name="index">The index of the item to remove from the session-state collection. </param>
 			public void RemoveAt(int index)
 			{
-				BaseRemoveAt(index);
+				this.BaseRemoveAt(index);
 			}
 
 			///<summary>
@@ -258,7 +258,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 			///
 			public void Clear()
 			{
-				BaseClear();
+				this.BaseClear();
 			}
 
 			///<summary>
@@ -267,7 +267,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 			///
 			public void RemoveAll()
 			{
-				BaseClear();
+				this.BaseClear();
 			}
 
 			///<summary>
@@ -291,7 +291,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 			///
 			public string SessionID
 			{
-				get { return _sessionId; }
+				get { return this._sessionId; }
 			}
 
 			///<summary>
@@ -304,8 +304,8 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 			///
 			public int Timeout
 			{
-				get { return _timeout; }
-				set { _timeout = value; }
+				get { return this._timeout; }
+				set { this._timeout = value; }
 			}
 
 			///<summary>
@@ -390,7 +390,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 			///
 			public HttpStaticObjectsCollection StaticObjects
 			{
-				get { return _staticObjects; }
+				get { return this._staticObjects; }
 			}
 
 			///<summary>
@@ -404,8 +404,8 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 			///<param name="name">The key name of the session-state item value. </param>
 			public object this[string name]
 			{
-				get { return BaseGet(name); }
-				set { BaseSet(name, value); }
+				get { return this.BaseGet(name); }
+				set { this.BaseSet(name, value); }
 			}
 
 			///<summary>
@@ -419,8 +419,8 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 			///<param name="index">The numerical index of the session-state item value. </param>
 			public object this[int index]
 			{
-				get { return BaseGet(index); }
-				set { BaseSet(index, value); }
+				get { return this.BaseGet(index); }
+				set { this.BaseSet(index, value); }
 			}
 
 			///<summary>
@@ -433,7 +433,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 			///
 			public object SyncRoot
 			{
-				get { return _syncRoot; }
+				get { return this._syncRoot; }
 			}
 
 			
@@ -474,9 +474,9 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <returns></returns>
         public HttpSimulator SetReferer(Uri referer)
         {
-            if(WorkerRequest != null)
-                WorkerRequest.SetReferer(referer);
-            _referer = referer;
+            if(this.WorkerRequest != null)
+                this.WorkerRequest.SetReferer(referer);
+            this._referer = referer;
             return this;
         }
 
@@ -488,10 +488,10 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <returns></returns>
         public HttpSimulator SetFormVariable(string name, string value)
         {
-            if (WorkerRequest != null)
+            if (this.WorkerRequest != null)
                 throw new InvalidOperationException("Cannot set form variables after calling Simulate().");
 
-            _formVars.Add(name, value);
+            this._formVars.Add(name, value);
 
             return this;
         }
@@ -504,10 +504,10 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <returns></returns>
         public HttpSimulator SetHeader(string name, string value)
         {
-            if (WorkerRequest != null)
+            if (this.WorkerRequest != null)
                 throw new InvalidOperationException("Cannot set headers after calling Simulate().");
 
-            _headers.Add(name, value);
+            this._headers.Add(name, value);
 
             return this;
         }
@@ -516,11 +516,11 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         {
             if (url == null)
                 return;
-            Host = url.Host;
-            Port = url.Port;
-            LocalPath = url.LocalPath;
-        	Page = StripPrecedingSlashes(RightAfter(url.LocalPath, ApplicationPath));
-            _physicalPath = Path.Combine(_physicalApplicationPath, Page.Replace("/", @"\"));
+            this.Host = url.Host;
+            this.Port = url.Port;
+            this.LocalPath = url.LocalPath;
+        	this.Page = StripPrecedingSlashes(RightAfter(url.LocalPath, this.ApplicationPath));
+            this._physicalPath = Path.Combine(this._physicalApplicationPath, this.Page.Replace("/", @"\"));
         }
 
 		static string RightAfter(string original, string search)
@@ -563,11 +563,11 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// </summary>
         public string ApplicationPath
         {
-            get { return _applicationPath; }
+            get { return this._applicationPath; }
             set 
             { 
-                _applicationPath = value ?? "/";
-                _applicationPath = NormalizeSlashes(_applicationPath);
+                this._applicationPath = value ?? "/";
+                this._applicationPath = NormalizeSlashes(this._applicationPath);
             }
         }
 
@@ -578,12 +578,12 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// </summary>
         public string PhysicalApplicationPath
         {
-            get { return _physicalApplicationPath; }
+            get { return this._physicalApplicationPath; }
             set 
             {
-                _physicalApplicationPath = value ?? WebsitePhysicalAppPath;
+                this._physicalApplicationPath = value ?? WebsitePhysicalAppPath;
                 //strip trailing backslashes.
-                _physicalApplicationPath = StripTrailingBackSlashes(_physicalApplicationPath) + @"\";
+                this._physicalApplicationPath = StripTrailingBackSlashes(this._physicalApplicationPath) + @"\";
             }
         }
 
@@ -594,7 +594,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// </summary>
         public string PhysicalPath
         {
-            get { return _physicalPath; }
+            get { return this._physicalPath; }
         }
 
 	    public TextWriter ResponseWriter { get; set; }
@@ -606,7 +606,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         {
             get
             {
-                return (_builder ?? new StringBuilder()).ToString();
+                return (this._builder ?? new StringBuilder()).ToString();
             }
         }
 
@@ -626,17 +626,17 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             var runtime = ReflectionHelper.GetStaticFieldValue<HttpRuntime>("_theRuntime", typeof (HttpRuntime));
            
             // set app path property value
-            ReflectionHelper.SetPrivateInstanceFieldValue("_appDomainAppPath", runtime, PhysicalApplicationPath);
+            ReflectionHelper.SetPrivateInstanceFieldValue("_appDomainAppPath", runtime, this.PhysicalApplicationPath);
             // set app virtual path property value
             const string vpathTypeName = "System.Web.VirtualPath, System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
-            var virtualPath = ReflectionHelper.Instantiate(vpathTypeName, new[] { typeof(string) }, new object[] { ApplicationPath });
+            var virtualPath = ReflectionHelper.Instantiate(vpathTypeName, new[] { typeof(string) }, new object[] { this.ApplicationPath });
             ReflectionHelper.SetPrivateInstanceFieldValue("_appDomainAppVPath", runtime, virtualPath);
 
             // set codegen dir property value
-            ReflectionHelper.SetPrivateInstanceFieldValue("_codegenDir", runtime, PhysicalApplicationPath);
+            ReflectionHelper.SetPrivateInstanceFieldValue("_codegenDir", runtime, this.PhysicalApplicationPath);
 
             var environment = GetHostingEnvironment();
-            ReflectionHelper.SetPrivateInstanceFieldValue("_appPhysicalPath", environment, PhysicalApplicationPath);
+            ReflectionHelper.SetPrivateInstanceFieldValue("_appPhysicalPath", environment, this.PhysicalApplicationPath);
             ReflectionHelper.SetPrivateInstanceFieldValue("_appVirtualPath", environment, virtualPath);
             ReflectionHelper.SetPrivateInstanceFieldValue("_configMapPath", environment, new ConfigMapPath(this));
         }
@@ -695,7 +695,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             private readonly HttpSimulator _requestSimulation;
             public ConfigMapPath(HttpSimulator simulation)
             {
-                _requestSimulation = simulation;
+                this._requestSimulation = simulation;
             }
 
             public string GetMachineConfigFilename()
@@ -725,13 +725,13 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
             public string MapPath(string siteId, string path)
             {
-                var page = StripPrecedingSlashes(RightAfter(path, _requestSimulation.ApplicationPath));
-                return Path.Combine(_requestSimulation.PhysicalApplicationPath, page.Replace("/", @"\"));
+                var page = StripPrecedingSlashes(RightAfter(path, this._requestSimulation.ApplicationPath));
+                return Path.Combine(this._requestSimulation.PhysicalApplicationPath, page.Replace("/", @"\"));
             }
 
             public string GetAppPathForPath(string siteId, string path)
             {
-                return _requestSimulation.ApplicationPath;
+                return this._requestSimulation.ApplicationPath;
             }
         }
 

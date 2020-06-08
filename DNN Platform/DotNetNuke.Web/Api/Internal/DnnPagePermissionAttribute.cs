@@ -14,18 +14,18 @@ namespace DotNetNuke.Web.Api.Internal
         {
             get
             {
-                return permissionKey;
+                return this.permissionKey;
             }
             set
             {
-                permissionKey = value;
+                this.permissionKey = value;
             }
         }
         public override bool IsAuthorized(AuthFilterContext context)
         {
             Requires.NotNull("context", context);
 
-            return PagePermissionsAttributesHelper.HasTabPermission(PermissionKey);
+            return PagePermissionsAttributesHelper.HasTabPermission(this.PermissionKey);
         }
     }
 }

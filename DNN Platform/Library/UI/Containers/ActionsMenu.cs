@@ -56,11 +56,11 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (_ActionRoot == null)
+                if (this._ActionRoot == null)
                 {
-                    _ActionRoot = new ModuleAction(ModuleControl.ModuleContext.GetNextActionID(), " ", "", "", "action.gif");
+                    this._ActionRoot = new ModuleAction(this.ModuleControl.ModuleContext.GetNextActionID(), " ", "", "", "action.gif");
                 }
-                return _ActionRoot;
+                return this._ActionRoot;
             }
         }
 
@@ -74,7 +74,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return _ProviderControl;
+                return this._ProviderControl;
             }
         }
 		
@@ -92,15 +92,15 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (PopulateNodesFromClient == false || ProviderControl.SupportsPopulateOnDemand == false)
+                if (this.PopulateNodesFromClient == false || this.ProviderControl.SupportsPopulateOnDemand == false)
                 {
                     return -1;
                 }
-                return _ExpandDepth;
+                return this._ExpandDepth;
             }
             set
             {
-                _ExpandDepth = value;
+                this._ExpandDepth = value;
             }
         }
 
@@ -130,11 +130,11 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return _ProviderName;
+                return this._ProviderName;
             }
             set
             {
-                _ProviderName = value;
+                this._ProviderName = value;
             }
         }
 
@@ -152,11 +152,11 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (_ActionManager == null)
+                if (this._ActionManager == null)
                 {
-                    _ActionManager = new ActionManager(this);
+                    this._ActionManager = new ActionManager(this);
                 }
-                return _ActionManager;
+                return this._ActionManager;
             }
         }
 
@@ -183,16 +183,16 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         private void BindMenu(DNNNodeCollection objNodes)
         {
-            Visible = ActionManager.DisplayControl(objNodes);
-            if (Visible)
+            this.Visible = this.ActionManager.DisplayControl(objNodes);
+            if (this.Visible)
             {
                 //since we always bind we need to clear the nodes for providers that maintain their state
-                ProviderControl.ClearNodes();
+                this.ProviderControl.ClearNodes();
                 foreach (DNNNode objNode in objNodes)
                 {
-                    ProcessNodes(objNode);
+                    this.ProcessNodes(objNode);
                 }
-                ProviderControl.Bind(objNodes);
+                this.ProviderControl.Bind(objNodes);
             }
         }
 
@@ -206,11 +206,11 @@ namespace DotNetNuke.UI.Containers
         {
             if (!String.IsNullOrEmpty(objParent.JSFunction))
             {
-                objParent.JSFunction = string.Format("if({0}){{{1}}};", objParent.JSFunction, Page.ClientScript.GetPostBackEventReference(ProviderControl.NavigationControl, objParent.ID));
+                objParent.JSFunction = string.Format("if({0}){{{1}}};", objParent.JSFunction, this.Page.ClientScript.GetPostBackEventReference(this.ProviderControl.NavigationControl, objParent.ID));
             }
             foreach (DNNNode objNode in objParent.DNNNodes)
             {
-                ProcessNodes(objNode);
+                this.ProcessNodes(objNode);
             }
         }
 
@@ -224,28 +224,28 @@ namespace DotNetNuke.UI.Containers
             try
             {
 				//--- original page set attributes ---
-                ProviderControl.StyleIconWidth = 15;
-                ProviderControl.MouseOutHideDelay = 500;
-                ProviderControl.MouseOverAction = NavigationProvider.HoverAction.Expand;
-                ProviderControl.MouseOverDisplay = NavigationProvider.HoverDisplay.None;
+                this.ProviderControl.StyleIconWidth = 15;
+                this.ProviderControl.MouseOutHideDelay = 500;
+                this.ProviderControl.MouseOverAction = NavigationProvider.HoverAction.Expand;
+                this.ProviderControl.MouseOverDisplay = NavigationProvider.HoverDisplay.None;
 
                 //style sheet settings
-                ProviderControl.CSSControl = "ModuleTitle_MenuBar";
-                ProviderControl.CSSContainerRoot = "ModuleTitle_MenuContainer";
-                ProviderControl.CSSNode = "ModuleTitle_MenuItem";
-                ProviderControl.CSSIcon = "ModuleTitle_MenuIcon";
-                ProviderControl.CSSContainerSub = "ModuleTitle_SubMenu";
-                ProviderControl.CSSBreak = "ModuleTitle_MenuBreak";
-                ProviderControl.CSSNodeHover = "ModuleTitle_MenuItemSel";
-                ProviderControl.CSSIndicateChildSub = "ModuleTitle_MenuArrow";
-                ProviderControl.CSSIndicateChildRoot = "ModuleTitle_RootMenuArrow";
+                this.ProviderControl.CSSControl = "ModuleTitle_MenuBar";
+                this.ProviderControl.CSSContainerRoot = "ModuleTitle_MenuContainer";
+                this.ProviderControl.CSSNode = "ModuleTitle_MenuItem";
+                this.ProviderControl.CSSIcon = "ModuleTitle_MenuIcon";
+                this.ProviderControl.CSSContainerSub = "ModuleTitle_SubMenu";
+                this.ProviderControl.CSSBreak = "ModuleTitle_MenuBreak";
+                this.ProviderControl.CSSNodeHover = "ModuleTitle_MenuItemSel";
+                this.ProviderControl.CSSIndicateChildSub = "ModuleTitle_MenuArrow";
+                this.ProviderControl.CSSIndicateChildRoot = "ModuleTitle_RootMenuArrow";
                 
-                ProviderControl.PathImage = Globals.ApplicationPath + "/Images/";
-                ProviderControl.PathSystemImage = Globals.ApplicationPath + "/Images/";
-                ProviderControl.IndicateChildImageSub = "action_right.gif";
-                ProviderControl.IndicateChildren = true;
-                ProviderControl.StyleRoot = "background-color: Transparent; font-size: 1pt;";
-                ProviderControl.NodeClick += MenuItem_Click;
+                this.ProviderControl.PathImage = Globals.ApplicationPath + "/Images/";
+                this.ProviderControl.PathSystemImage = Globals.ApplicationPath + "/Images/";
+                this.ProviderControl.IndicateChildImageSub = "action_right.gif";
+                this.ProviderControl.IndicateChildren = true;
+                this.ProviderControl.StyleRoot = "background-color: Transparent; font-size: 1pt;";
+                this.ProviderControl.NodeClick += this.MenuItem_Click;
             }
             catch (Exception exc) //Module failed to load
             {
@@ -264,7 +264,7 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         protected void BindMenu()
         {
-            BindMenu(Navigation.GetActionNodes(ActionRoot, this, ExpandDepth));
+            this.BindMenu(Navigation.GetActionNodes(this.ActionRoot, this, this.ExpandDepth));
         }
 
         /// -----------------------------------------------------------------------------
@@ -274,9 +274,9 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         protected virtual void OnAction(ActionEventArgs e)
         {
-            if (Action != null)
+            if (this.Action != null)
             {
-                Action(this, e);
+                this.Action(this, e);
             }
         }
 
@@ -287,12 +287,12 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
-            _ProviderControl = NavigationProvider.Instance(ProviderName);
-            ProviderControl.PopulateOnDemand += ProviderControl_PopulateOnDemand;
+            this._ProviderControl = NavigationProvider.Instance(this.ProviderName);
+            this.ProviderControl.PopulateOnDemand += this.ProviderControl_PopulateOnDemand;
             base.OnInit(e);
-            ProviderControl.ControlID = "ctl" + ID;
-            ProviderControl.Initialize();
-            Controls.Add(ProviderControl.NavigationControl);
+            this.ProviderControl.ControlID = "ctl" + this.ID;
+            this.ProviderControl.Initialize();
+            this.Controls.Add(this.ProviderControl.NavigationControl);
         }
 
         /// -----------------------------------------------------------------------------
@@ -305,10 +305,10 @@ namespace DotNetNuke.UI.Containers
             base.OnLoad(e);
 
             //Add the Actions to the Action Root
-            ActionRoot.Actions.AddRange(ModuleControl.ModuleContext.Actions);
+            this.ActionRoot.Actions.AddRange(this.ModuleControl.ModuleContext.Actions);
 
             //Set Menu Defaults
-            SetMenuDefaults();
+            this.SetMenuDefaults();
         }
 
         /// -----------------------------------------------------------------------------
@@ -319,7 +319,7 @@ namespace DotNetNuke.UI.Containers
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            BindMenu();
+            this.BindMenu();
         }
 
 		#endregion
@@ -335,10 +335,10 @@ namespace DotNetNuke.UI.Containers
         {
             if (Globals.NumberMatchRegex.IsMatch(args.ID))
             {
-                ModuleAction action = ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID));
-                if (!ActionManager.ProcessAction(action))
+                ModuleAction action = this.ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID));
+                if (!this.ActionManager.ProcessAction(action))
                 {
-                    OnAction(new ActionEventArgs(action, ModuleControl.ModuleContext.Configuration));
+                    this.OnAction(new ActionEventArgs(action, this.ModuleControl.ModuleContext.Configuration));
                 }
             }
         }
@@ -350,20 +350,20 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         private void ProviderControl_PopulateOnDemand(NavigationEventArgs args)
         {
-            SetMenuDefaults();
-            ActionRoot.Actions.AddRange(ModuleControl.ModuleContext.Actions); //Modules how add custom actions in control lifecycle will not have those actions populated...
+            this.SetMenuDefaults();
+            this.ActionRoot.Actions.AddRange(this.ModuleControl.ModuleContext.Actions); //Modules how add custom actions in control lifecycle will not have those actions populated...
 
-            ModuleAction objAction = ActionRoot;
-            if (ActionRoot.ID != Convert.ToInt32(args.ID))
+            ModuleAction objAction = this.ActionRoot;
+            if (this.ActionRoot.ID != Convert.ToInt32(args.ID))
             {
-                objAction = ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID));
+                objAction = this.ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID));
             }
             if (args.Node == null)
             {
-                args.Node = Navigation.GetActionNode(args.ID, ProviderControl.ID, objAction, this);
+                args.Node = Navigation.GetActionNode(args.ID, this.ProviderControl.ID, objAction, this);
             }
-            ProviderControl.ClearNodes(); //since we always bind we need to clear the nodes for providers that maintain their state
-            BindMenu(Navigation.GetActionNodes(objAction, args.Node, this, ExpandDepth));
+            this.ProviderControl.ClearNodes(); //since we always bind we need to clear the nodes for providers that maintain their state
+            this.BindMenu(Navigation.GetActionNodes(objAction, args.Node, this, this.ExpandDepth));
         }
 		
 		#endregion

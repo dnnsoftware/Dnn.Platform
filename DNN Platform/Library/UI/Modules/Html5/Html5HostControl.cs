@@ -23,7 +23,7 @@ namespace DotNetNuke.UI.Modules.Html5
 
         public Html5HostControl(string html5File)
         {
-            _html5File = html5File;
+            this._html5File = html5File;
         }
 
         public ModuleActionCollection ModuleActions { get; private set; }
@@ -32,27 +32,27 @@ namespace DotNetNuke.UI.Modules.Html5
         {
             base.OnInit(e);
 
-            if (!(string.IsNullOrEmpty(_html5File)))
+            if (!(string.IsNullOrEmpty(this._html5File)))
             {
                 //Check if css file exists
-                var cssFile = Path.ChangeExtension(_html5File, ".css");
-                if (FileExists(cssFile))
+                var cssFile = Path.ChangeExtension(this._html5File, ".css");
+                if (this.FileExists(cssFile))
                 {
-                    ClientResourceManager.RegisterStyleSheet(Page, cssFile, FileOrder.Css.DefaultPriority);
+                    ClientResourceManager.RegisterStyleSheet(this.Page, cssFile, FileOrder.Css.DefaultPriority);
                 }
 
                 //Check if js file exists
-                var jsFile = Path.ChangeExtension(_html5File, ".js");
-                if (FileExists(jsFile))
+                var jsFile = Path.ChangeExtension(this._html5File, ".js");
+                if (this.FileExists(jsFile))
                 {
-                    ClientResourceManager.RegisterScript(Page, jsFile, FileOrder.Js.DefaultPriority);
+                    ClientResourceManager.RegisterScript(this.Page, jsFile, FileOrder.Js.DefaultPriority);
                 }
 
-                _fileContent = GetFileContent(_html5File);
+                this._fileContent = this.GetFileContent(this._html5File);
 
-                ModuleActions = new ModuleActionCollection();
-                var tokenReplace = new Html5ModuleTokenReplace(Page, _html5File, ModuleContext, ModuleActions);
-                _fileContent = tokenReplace.ReplaceEnvironmentTokens(_fileContent);
+                this.ModuleActions = new ModuleActionCollection();
+                var tokenReplace = new Html5ModuleTokenReplace(this.Page, this._html5File, this.ModuleContext, this.ModuleActions);
+                this._fileContent = tokenReplace.ReplaceEnvironmentTokens(this._fileContent);
             }
 
             //Register for Services Framework
@@ -62,7 +62,7 @@ namespace DotNetNuke.UI.Modules.Html5
         private string GetFileContent(string filepath)
         {
             var cacheKey = string.Format(DataCache.SpaModulesContentHtmlFileCacheKey, filepath);
-            var absoluteFilePath = Page.Server.MapPath(filepath);
+            var absoluteFilePath = this.Page.Server.MapPath(filepath);
             var cacheItemArgs = new CacheItemArgs(cacheKey, DataCache.SpaModulesHtmlFileTimeOut,
                 DataCache.SpaModulesHtmlFileCachePriority)
             {
@@ -77,7 +77,7 @@ namespace DotNetNuke.UI.Modules.Html5
             return CBO.GetCachedObject<bool>(new CacheItemArgs(cacheKey,
                 DataCache.SpaModulesHtmlFileTimeOut,
                 DataCache.SpaModulesHtmlFileCachePriority), 
-                c => File.Exists(Page.Server.MapPath(filepath)));
+                c => File.Exists(this.Page.Server.MapPath(filepath)));
         }
 
         private static string GetFileContentInternal(string filepath)
@@ -92,9 +92,9 @@ namespace DotNetNuke.UI.Modules.Html5
         {
             base.OnPreRender(e);
 
-            if (!(string.IsNullOrEmpty(_html5File)))
+            if (!(string.IsNullOrEmpty(this._html5File)))
             {
-                Controls.Add(new LiteralControl(HttpUtility.HtmlDecode(_fileContent)));
+                this.Controls.Add(new LiteralControl(HttpUtility.HtmlDecode(this._fileContent)));
             }
         }
     }

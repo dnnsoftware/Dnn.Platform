@@ -17,9 +17,9 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
 
         public ConsoleCommandAttribute(string name, string category, string description)
         {
-            Name = name;
-            Category = category;
-            Description = description;
+            this.Name = name;
+            this.Category = category;
+            this.Description = description;
         }
     }
 }

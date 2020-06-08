@@ -138,7 +138,7 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public void DeleteDesktopModule(DesktopModuleInfo objDesktopModule)
         {
-            DeleteDesktopModule(objDesktopModule.DesktopModuleID);
+            this.DeleteDesktopModule(objDesktopModule.DesktopModuleID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -371,12 +371,12 @@ namespace DotNetNuke.Entities.Modules
 
         public void UpdateModuleInterfaces(ref DesktopModuleInfo desktopModuleInfo)
         {
-            UpdateModuleInterfaces(ref desktopModuleInfo, (UserController.Instance.GetCurrentUserInfo() == null) ? "" : UserController.Instance.GetCurrentUserInfo().Username, true);
+            this.UpdateModuleInterfaces(ref desktopModuleInfo, (UserController.Instance.GetCurrentUserInfo() == null) ? "" : UserController.Instance.GetCurrentUserInfo().Username, true);
         }
 
         public void UpdateModuleInterfaces(ref DesktopModuleInfo desktopModuleInfo, string sender, bool forceAppRestart)
         {
-            CheckInterfacesImplementation(ref desktopModuleInfo);
+            this.CheckInterfacesImplementation(ref desktopModuleInfo);
             var oAppStartMessage = new EventMessage
             {
                 Sender = sender,

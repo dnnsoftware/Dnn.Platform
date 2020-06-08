@@ -45,7 +45,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return (IEnumerable)DataSource;
+                return (IEnumerable)this.DataSource;
             }
         }
 
@@ -151,15 +151,15 @@ namespace DotNetNuke.UI.WebControls
         private Hashtable GetFieldNames()
         {
             var fields = new Hashtable();
-            fields.Add("Category", CategoryDataField);
-            fields.Add("Editor", EditorDataField);
-            fields.Add("Name", NameDataField);
-            fields.Add("Required", RequiredDataField);
-            fields.Add("Type", TypeDataField);
-            fields.Add("ValidationExpression", ValidationExpressionDataField);
-            fields.Add("Value", ValueDataField);
-            fields.Add("ProfileVisibility", VisibilityDataField);
-            fields.Add("Length", LengthDataField);
+            fields.Add("Category", this.CategoryDataField);
+            fields.Add("Editor", this.EditorDataField);
+            fields.Add("Name", this.NameDataField);
+            fields.Add("Required", this.RequiredDataField);
+            fields.Add("Type", this.TypeDataField);
+            fields.Add("ValidationExpression", this.ValidationExpressionDataField);
+            fields.Add("Value", this.ValueDataField);
+            fields.Add("ProfileVisibility", this.VisibilityDataField);
+            fields.Add("Length", this.LengthDataField);
 
             return fields;
         }
@@ -170,17 +170,17 @@ namespace DotNetNuke.UI.WebControls
 
         protected override void AddEditorRow(Table table, object obj)
         {
-            AddEditorRow(table, NameDataField, new CollectionEditorInfoAdapter(obj, ID, NameDataField, GetFieldNames()));
+            this.AddEditorRow(table, this.NameDataField, new CollectionEditorInfoAdapter(obj, this.ID, this.NameDataField, this.GetFieldNames()));
         }
 
         protected override void AddEditorRow(Panel container, object obj)
         {
-            AddEditorRow(container, NameDataField, new CollectionEditorInfoAdapter(obj, ID, NameDataField, GetFieldNames()));
+            this.AddEditorRow(container, this.NameDataField, new CollectionEditorInfoAdapter(obj, this.ID, this.NameDataField, this.GetFieldNames()));
         }
 
         protected override void AddEditorRow(object obj)
         {
-            AddEditorRow(this, NameDataField, new CollectionEditorInfoAdapter(obj, ID, NameDataField, GetFieldNames()));
+            this.AddEditorRow(this, this.NameDataField, new CollectionEditorInfoAdapter(obj, this.ID, this.NameDataField, this.GetFieldNames()));
         }
 
         /// -----------------------------------------------------------------------------
@@ -194,9 +194,9 @@ namespace DotNetNuke.UI.WebControls
             string _Category = Null.NullString;
 			
 			//Get Category Field
-            if (!String.IsNullOrEmpty(CategoryDataField))
+            if (!String.IsNullOrEmpty(this.CategoryDataField))
             {
-                objProperty = obj.GetType().GetProperty(CategoryDataField);
+                objProperty = obj.GetType().GetProperty(this.CategoryDataField);
                 if (!(objProperty == null || (objProperty.GetValue(obj, null) == null)))
                 {
                     _Category = Convert.ToString(objProperty.GetValue(obj, null));
@@ -218,9 +218,9 @@ namespace DotNetNuke.UI.WebControls
             foreach (object obj in arrObjects)
             {
 				//Get Category Field
-                if (!String.IsNullOrEmpty(CategoryDataField))
+                if (!String.IsNullOrEmpty(this.CategoryDataField))
                 {
-                    objProperty = obj.GetType().GetProperty(CategoryDataField);
+                    objProperty = obj.GetType().GetProperty(this.CategoryDataField);
                     if (!((objProperty == null) || (objProperty.GetValue(obj, null) == null)))
                     {
                         string _Category = Convert.ToString(objProperty.GetValue(obj, null));
@@ -250,15 +250,15 @@ namespace DotNetNuke.UI.WebControls
         {
             bool isVisible = true;
             PropertyInfo objProperty;
-            objProperty = obj.GetType().GetProperty(VisibleDataField);
+            objProperty = obj.GetType().GetProperty(this.VisibleDataField);
             if (!(objProperty == null || (objProperty.GetValue(obj, null) == null)))
             {
                 isVisible = Convert.ToBoolean(objProperty.GetValue(obj, null));
             }
-            if (!isVisible && EditMode == PropertyEditorMode.Edit)
+            if (!isVisible && this.EditMode == PropertyEditorMode.Edit)
             {
 				//Check if property is required - as this will need to override visibility
-                objProperty = obj.GetType().GetProperty(RequiredDataField);
+                objProperty = obj.GetType().GetProperty(this.RequiredDataField);
                 if (!(objProperty == null || (objProperty.GetValue(obj, null) == null)))
                 {
                     isVisible = Convert.ToBoolean(objProperty.GetValue(obj, null));

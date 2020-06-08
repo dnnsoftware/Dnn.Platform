@@ -17,9 +17,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
     {
         public override void UpdateSettings()
         {
-            if (SettingsEditor.IsValid && SettingsEditor.IsDirty)
+            if (this.SettingsEditor.IsValid && this.SettingsEditor.IsDirty)
             {
-                var config = (AuthenticationConfig) SettingsEditor.DataSource;
+                var config = (AuthenticationConfig) this.SettingsEditor.DataSource;
                 AuthenticationConfig.UpdateConfig(config);
             }
         }
@@ -30,9 +30,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
             try
             {
-                AuthenticationConfig config = AuthenticationConfig.GetConfig(PortalId);
-                SettingsEditor.DataSource = config;
-                SettingsEditor.DataBind();
+                AuthenticationConfig config = AuthenticationConfig.GetConfig(this.PortalId);
+                this.SettingsEditor.DataSource = config;
+                this.SettingsEditor.DataBind();
             }
             catch (Exception exc)
             {

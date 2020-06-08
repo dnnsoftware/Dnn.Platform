@@ -32,14 +32,14 @@ namespace DotNetNuke.Web.Services
         public IHttpActionResult Monikers(string moduleList)
         {
             var monikers = GetMonikersForList(moduleList);
-            return Ok(monikers.Select(kpv => new { tabModuleId = kpv.Key, moniker = kpv.Value }));
+            return this.Ok(monikers.Select(kpv => new { tabModuleId = kpv.Key, moniker = kpv.Value }));
         }
 
         [HttpGet]
         public HttpResponseMessage ModuleDetails(string moduleList)
         {
-            var siteDetails = GetSiteDetails(moduleList);
-            return Request.CreateResponse(HttpStatusCode.OK, siteDetails);
+            var siteDetails = this.GetSiteDetails(moduleList);
+            return this.Request.CreateResponse(HttpStatusCode.OK, siteDetails);
         }
 
         #region private methods
@@ -81,10 +81,10 @@ namespace DotNetNuke.Web.Services
         {
             var siteDetails = new SiteDetail
             {
-                SiteName = PortalSettings.PortalName,
-                DnnVersion = _dnnVersion,
-                IsHost = UserInfo.IsSuperUser,
-                IsAdmin = UserInfo.IsInRole("Administrators")
+                SiteName = this.PortalSettings.PortalName,
+                DnnVersion = this._dnnVersion,
+                IsHost = this.UserInfo.IsSuperUser,
+                IsAdmin = this.UserInfo.IsInRole("Administrators")
             };
 
             foreach (var moduleName in (moduleList ?? "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))

@@ -82,7 +82,7 @@ namespace log4net.Config
 		/// </remarks>
 		public RepositoryAttribute(string name)
 		{
-			m_name = name;
+			this.m_name = name;
 		}
 
 		#endregion Public Instance Constructors
@@ -104,8 +104,8 @@ namespace log4net.Config
 		/// </remarks>
 		public string Name
 		{
-			get { return m_name; }
-			set { m_name = value ; }
+			get { return this.m_name; }
+			set { this.m_name = value ; }
 		}
 
 		/// <summary>
@@ -130,8 +130,8 @@ namespace log4net.Config
 		/// </remarks>
 		public Type RepositoryType
 		{
-			get { return m_repositoryType; }
-			set { m_repositoryType = value ; }
+			get { return this.m_repositoryType; }
+			set { this.m_repositoryType = value ; }
 		}
 
 		#endregion Public Instance Properties

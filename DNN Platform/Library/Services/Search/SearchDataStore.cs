@@ -115,7 +115,7 @@ namespace DotNetNuke.Services.Search
             var portalSettings = new PortalSettings(portal);
 
             //We will assume that the content is in the locale of the Portal
-            Hashtable commonWords = GetCommonWords(portalSettings.DefaultLanguage);
+            Hashtable commonWords = this.GetCommonWords(portalSettings.DefaultLanguage);
 
             //clean criteria
             criteria = criteria.ToLowerInvariant();

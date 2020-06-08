@@ -24,13 +24,13 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         internal TermUsage(int total, int month, int week, int day)
         {
-            TotalTermUsage = total;
+            this.TotalTermUsage = total;
 
-            MonthTermUsage = month;
+            this.MonthTermUsage = month;
 
-            WeekTermUsage = week;
+            this.WeekTermUsage = week;
 
-            DayTermUsage = day;
+            this.DayTermUsage = day;
         }
     }
 }

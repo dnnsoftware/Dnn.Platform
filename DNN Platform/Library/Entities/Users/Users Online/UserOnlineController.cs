@@ -104,7 +104,7 @@ namespace DotNetNuke.Entities.Users
         public bool IsUserOnline(UserInfo user)
         {
             bool isOnline = false;
-            if (IsEnabled())
+            if (this.IsEnabled())
             {
                 isOnline = memberProvider.IsUserOnline(user);
             }
@@ -138,7 +138,7 @@ namespace DotNetNuke.Entities.Users
                 return;
             }
             AnonymousUserInfo user;
-            Hashtable userList = GetUserList();
+            Hashtable userList = this.GetUserList();
             string userID;
 
             //Check if the Tracking cookie exists
@@ -230,7 +230,7 @@ namespace DotNetNuke.Entities.Users
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
             //Get user list
-            Hashtable userList = GetUserList();
+            Hashtable userList = this.GetUserList();
 
             var user = new OnlineUserInfo();
             if (objUserInfo.UserID > 0)
@@ -245,7 +245,7 @@ namespace DotNetNuke.Entities.Users
                 user.CreationDate = user.LastActiveDate;
             }
             userList[objUserInfo.UserID.ToString()] = user;
-            SetUserList(userList);
+            this.SetUserList(userList);
         }
 
         /// -----------------------------------------------------------------------------
@@ -269,11 +269,11 @@ namespace DotNetNuke.Entities.Users
             }
             if ((context.Request.IsAuthenticated))
             {
-                TrackAuthenticatedUser(context);
+                this.TrackAuthenticatedUser(context);
             }
             else if ((context.Request.Browser.Cookies))
             {
-                TrackAnonymousUser(context);
+                this.TrackAnonymousUser(context);
             }
         }
 
@@ -286,13 +286,13 @@ namespace DotNetNuke.Entities.Users
         public void UpdateUsersOnline()
         {
             //Get a Current User List
-            Hashtable userList = GetUserList();
+            Hashtable userList = this.GetUserList();
 
             //Create a shallow copy of the list to Process
             var listToProcess = (Hashtable) userList.Clone();
 
             //Clear the list
-            ClearUserList();
+            this.ClearUserList();
 			
 			//Persist the current User List
             try
@@ -306,7 +306,7 @@ namespace DotNetNuke.Entities.Users
             }
 			
             //Remove users that have expired
-            memberProvider.DeleteUsersOnline(GetOnlineTimeWindow());
+            memberProvider.DeleteUsersOnline(this.GetOnlineTimeWindow());
         }
     }
 }

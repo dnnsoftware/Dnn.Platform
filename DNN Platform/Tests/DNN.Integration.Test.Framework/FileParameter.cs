@@ -13,9 +13,9 @@ namespace DNN.Integration.Test.Framework
         public FileParameter(byte[] file, string filename) : this(file, filename, null) { }
         public FileParameter(byte[] file, string filename, string contenttype)
         {
-            File = file;
-            FileName = filename;
-            ContentType = contenttype;
+            this.File = file;
+            this.FileName = filename;
+            this.ContentType = contenttype;
         }
     }
 }

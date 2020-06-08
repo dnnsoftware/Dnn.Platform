@@ -120,7 +120,7 @@ namespace log4net.DateFormatter
                         }
                         else
                         {
-                            timeString = (string) s_lastTimeStrings[GetType()];
+                            timeString = (string) s_lastTimeStrings[this.GetType()];
                         }
 
                         if (timeString == null)
@@ -131,7 +131,7 @@ namespace log4net.DateFormatter
 				// PERF: Try removing this lock and using a new StringBuilder each time
 				lock(s_lastTimeBuf)
 				{
-                                        timeString = (string) s_lastTimeStrings[GetType()];
+                                        timeString = (string) s_lastTimeStrings[this.GetType()];
 
                                         if (timeString == null)
                                         {
@@ -139,7 +139,7 @@ namespace log4net.DateFormatter
 						s_lastTimeBuf.Length = 0;
 
 						// Calculate the new string for this second
-						FormatDateWithoutMillis(dateToFormat, s_lastTimeBuf);
+						this.FormatDateWithoutMillis(dateToFormat, s_lastTimeBuf);
 
 						// Render the string buffer to a string
                                                 timeString = s_lastTimeBuf.ToString();
@@ -150,7 +150,7 @@ namespace log4net.DateFormatter
 						System.Threading.Thread.MemoryBarrier();
 #endif
 						// Store the time as a string (we only have to do this once per second)
-                                                s_lastTimeStrings[GetType()] = timeString;
+                                                s_lastTimeStrings[this.GetType()] = timeString;
 						s_lastTimeToTheSecond = currentTimeToTheSecond;
 					}
 				}

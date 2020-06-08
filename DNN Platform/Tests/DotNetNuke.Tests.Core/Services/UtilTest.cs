@@ -16,13 +16,13 @@ namespace DotNetNuke.Tests.Core.Services
         [Test]
         public void Dnn_9838_TryToCreateAndExecute_UnsuccesfulRewrite()
         {
-            TryToRewriteFile(lockFileFor: 1000, tryRewriteFileFor: 500, isRewritten: false);
+            this.TryToRewriteFile(lockFileFor: 1000, tryRewriteFileFor: 500, isRewritten: false);
         }
 
         [Test]
         public void Dnn_9838_TryToCreateAndExecute_SuccessfulRewrite()
         {
-            TryToRewriteFile(lockFileFor: 500, tryRewriteFileFor: 1000, isRewritten: true);
+            this.TryToRewriteFile(lockFileFor: 500, tryRewriteFileFor: 1000, isRewritten: true);
         }
 
         private void TryToRewriteFile(int lockFileFor, int tryRewriteFileFor, bool isRewritten)

@@ -20,15 +20,15 @@ namespace DotNetNuke.Web
         private static readonly ILog _logger = LoggerSource.Instance.GetLogger(typeof(Startup));
         public Startup()
         {
-            Configure();
+            this.Configure();
         }
 
         private void Configure()
         {
             var services = new ServiceCollection();
             services.AddSingleton<IScopeAccessor, ScopeAccessor>();
-            ConfigureServices(services);
-            DependencyProvider = services.BuildServiceProvider();
+            this.ConfigureServices(services);
+            this.DependencyProvider = services.BuildServiceProvider();
         }
 
         public IServiceProvider DependencyProvider { get; private set; }
@@ -43,7 +43,7 @@ namespace DotNetNuke.Web
                             !x.IsAbstract);
 
             var startupInstances = startupTypes
-                .Select(x => CreateInstance(x))
+                .Select(x => this.CreateInstance(x))
                 .Where(x => x != null);
 
             foreach (IDnnStartup startup in startupInstances)

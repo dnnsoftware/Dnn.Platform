@@ -18,7 +18,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return Utilities.GetLocalResourceFile(Owner.OwnerGrid.Parent);
+                return Utilities.GetLocalResourceFile(this.Owner.OwnerGrid.Parent);
             }
         }
 

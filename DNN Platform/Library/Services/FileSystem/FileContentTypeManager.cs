@@ -26,26 +26,26 @@ namespace DotNetNuke.Services.FileSystem
 		{
 			get
 			{
-				if (_contentTypes == null)
+				if (this._contentTypes == null)
 				{
 					lock (_threadLocker)
 					{
-						if (_contentTypes == null)
+						if (this._contentTypes == null)
 						{
 							var listController = new ListController();
 							var listEntries = listController.GetListEntryInfoItems("ContentTypes");
 							if (listEntries == null || !listEntries.Any())
 							{
-								_contentTypes = GetDefaultContentTypes();
+								this._contentTypes = this.GetDefaultContentTypes();
 							}
 							else
 							{
-								_contentTypes = new Dictionary<string, string>();
+								this._contentTypes = new Dictionary<string, string>();
 								if (listEntries != null)
 								{
 									foreach (var contentTypeEntry in listEntries)
 									{
-										_contentTypes.Add(contentTypeEntry.Value, contentTypeEntry.Text);
+										this._contentTypes.Add(contentTypeEntry.Value, contentTypeEntry.Text);
 									}
 								}
 							}
@@ -53,7 +53,7 @@ namespace DotNetNuke.Services.FileSystem
 					}
 				}
 
-				return _contentTypes;
+				return this._contentTypes;
 			}
 		}
 
@@ -63,7 +63,7 @@ namespace DotNetNuke.Services.FileSystem
 			if (string.IsNullOrEmpty(extension)) return "application/octet-stream";
 
 			var key = extension.TrimStart('.').ToLowerInvariant();
-			return ContentTypes.ContainsKey(key) ? ContentTypes[key] : "application/octet-stream";
+			return this.ContentTypes.ContainsKey(key) ? this.ContentTypes[key] : "application/octet-stream";
 		}
 
 		#endregion

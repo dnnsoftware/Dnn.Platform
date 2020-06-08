@@ -122,8 +122,8 @@ namespace log4net.Config
 		/// </remarks>
 		public string ConfigFile
 		{
-			get { return m_configFile; }
-			set { m_configFile = value; }
+			get { return this.m_configFile; }
+			set { this.m_configFile = value; }
 		}
 
 		/// <summary>
@@ -150,8 +150,8 @@ namespace log4net.Config
 		/// </remarks>
 		public string ConfigFileExtension
 		{
-			get { return m_configFileExtension; }
-			set { m_configFileExtension = value; }
+			get { return this.m_configFileExtension; }
+			set { this.m_configFileExtension = value; }
 		}
 
 		/// <summary>
@@ -178,8 +178,8 @@ namespace log4net.Config
 		/// </remarks>
 		public bool Watch
 		{
-			get { return m_configureAndWatch; }
-			set { m_configureAndWatch = value; }
+			get { return this.m_configureAndWatch; }
+			set { this.m_configureAndWatch = value; }
 		}
 
 		#endregion Public Instance Properties
@@ -219,11 +219,11 @@ namespace log4net.Config
 
                 if (applicationBaseDirectory == null || (new Uri(applicationBaseDirectory)).IsFile)
                 {
-                    ConfigureFromFile(sourceAssembly, targetRepository);
+                    this.ConfigureFromFile(sourceAssembly, targetRepository);
                 }
                 else
                 {
-                    ConfigureFromUri(sourceAssembly, targetRepository);
+                    this.ConfigureFromUri(sourceAssembly, targetRepository);
                 }
             }
 
@@ -243,9 +243,9 @@ namespace log4net.Config
 			string fullPath2ConfigFile = null;
 			
 			// Select the config file
-			if (m_configFile == null || m_configFile.Length == 0)
+			if (this.m_configFile == null || this.m_configFile.Length == 0)
 			{
-				if (m_configFileExtension == null || m_configFileExtension.Length == 0)
+				if (this.m_configFileExtension == null || this.m_configFileExtension.Length == 0)
 				{
 					// Use the default .config file for the AppDomain
 					try
@@ -260,9 +260,9 @@ namespace log4net.Config
 				else
 				{
 					// Force the extension to start with a '.'
-					if (m_configFileExtension[0] != '.')
+					if (this.m_configFileExtension[0] != '.')
 					{
-						m_configFileExtension = "." + m_configFileExtension;
+						this.m_configFileExtension = "." + this.m_configFileExtension;
 					}
 
 					string applicationBaseDirectory = null;
@@ -277,7 +277,7 @@ namespace log4net.Config
 
 					if (applicationBaseDirectory != null)
 					{
-						fullPath2ConfigFile = Path.Combine(applicationBaseDirectory, SystemInfo.AssemblyFileName(sourceAssembly) + m_configFileExtension);
+						fullPath2ConfigFile = Path.Combine(applicationBaseDirectory, SystemInfo.AssemblyFileName(sourceAssembly) + this.m_configFileExtension);
 					}
 				}
 			}
@@ -290,23 +290,23 @@ namespace log4net.Config
 				}
 				catch(Exception ex)
 				{
-					LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. ConfigFile property path ["+m_configFile+"] will be treated as an absolute path.", ex);
+					LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. ConfigFile property path ["+this.m_configFile+"] will be treated as an absolute path.", ex);
 				}
 
 				if (applicationBaseDirectory != null)
 				{
 					// Just the base dir + the config file
-					fullPath2ConfigFile = Path.Combine(applicationBaseDirectory, m_configFile);
+					fullPath2ConfigFile = Path.Combine(applicationBaseDirectory, this.m_configFile);
 				}
 				else
 				{
-					fullPath2ConfigFile = m_configFile;
+					fullPath2ConfigFile = this.m_configFile;
 				}
 			}
 
 			if (fullPath2ConfigFile != null)
 			{
-				ConfigureFromFile(targetRepository, new FileInfo(fullPath2ConfigFile));
+				this.ConfigureFromFile(targetRepository, new FileInfo(fullPath2ConfigFile));
 			}
 		}
 
@@ -325,7 +325,7 @@ namespace log4net.Config
 			XmlConfigurator.Configure(targetRepository, configFile);
 #else
 			// Do we configure just once or do we configure and then watch?
-			if (m_configureAndWatch)
+			if (this.m_configureAndWatch)
 			{
 				XmlConfigurator.ConfigureAndWatch(targetRepository, configFile);
 			}
@@ -347,9 +347,9 @@ namespace log4net.Config
 			Uri fullPath2ConfigFile = null;
 			
 			// Select the config file
-			if (m_configFile == null || m_configFile.Length == 0)
+			if (this.m_configFile == null || this.m_configFile.Length == 0)
 			{
-				if (m_configFileExtension == null || m_configFileExtension.Length == 0)
+				if (this.m_configFileExtension == null || this.m_configFileExtension.Length == 0)
 				{
 					string systemConfigFilePath = null;
 					try
@@ -372,9 +372,9 @@ namespace log4net.Config
 				else
 				{
 					// Force the extension to start with a '.'
-					if (m_configFileExtension[0] != '.')
+					if (this.m_configFileExtension[0] != '.')
 					{
-						m_configFileExtension = "." + m_configFileExtension;
+						this.m_configFileExtension = "." + this.m_configFileExtension;
 					}
 
 					string systemConfigFilePath = null;
@@ -398,7 +398,7 @@ namespace log4net.Config
 						{
 							path = path.Substring(0, startOfExtension);
 						}
-						path += m_configFileExtension;
+						path += this.m_configFileExtension;
 
 						builder.Path = path;
 						fullPath2ConfigFile = builder.Uri;
@@ -414,17 +414,17 @@ namespace log4net.Config
 				}
 				catch(Exception ex)
 				{
-					LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. ConfigFile property path ["+m_configFile+"] will be treated as an absolute URI.", ex);
+					LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. ConfigFile property path ["+this.m_configFile+"] will be treated as an absolute URI.", ex);
 				}
 
 				if (applicationBaseDirectory != null)
 				{
 					// Just the base dir + the config file
-					fullPath2ConfigFile = new Uri(new Uri(applicationBaseDirectory), m_configFile);
+					fullPath2ConfigFile = new Uri(new Uri(applicationBaseDirectory), this.m_configFile);
 				}
 				else
 				{
-					fullPath2ConfigFile = new Uri(m_configFile);
+					fullPath2ConfigFile = new Uri(this.m_configFile);
 				}
 			}
 
@@ -434,11 +434,11 @@ namespace log4net.Config
 				{
 					// The m_configFile could be an absolute local path, therefore we have to be
 					// prepared to switch back to using FileInfos here
-					ConfigureFromFile(targetRepository, new FileInfo(fullPath2ConfigFile.LocalPath));
+					this.ConfigureFromFile(targetRepository, new FileInfo(fullPath2ConfigFile.LocalPath));
 				}
 				else
 				{
-					if (m_configureAndWatch)
+					if (this.m_configureAndWatch)
 					{
 						LogLog.Warn(declaringType, "XmlConfiguratorAttribute: Unable to watch config file loaded from a URI");
 					}

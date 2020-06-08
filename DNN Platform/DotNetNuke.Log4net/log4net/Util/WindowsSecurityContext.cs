@@ -134,8 +134,8 @@ namespace log4net.Util
 		/// </remarks>
 		public ImpersonationMode Credentials
 		{
-			get { return m_impersonationMode; }
-			set { m_impersonationMode = value; }
+			get { return this.m_impersonationMode; }
+			set { this.m_impersonationMode = value; }
 		}
 
 		/// <summary>
@@ -152,8 +152,8 @@ namespace log4net.Util
 		/// </remarks>
 		public string UserName
 		{
-			get { return m_userName; }
-			set { m_userName = value; }
+			get { return this.m_userName; }
+			set { this.m_userName = value; }
 		}
 
 		/// <summary>
@@ -174,8 +174,8 @@ namespace log4net.Util
 		/// </remarks>
 		public string DomainName
 		{
-			get { return m_domainName; }
-			set { m_domainName = value; }
+			get { return this.m_domainName; }
+			set { this.m_domainName = value; }
 		}
 
 		/// <summary>
@@ -192,7 +192,7 @@ namespace log4net.Util
 		/// </remarks>
 		public string Password
 		{
-			set { m_password = value; }
+			set { this.m_password = value; }
 		}
 
 		#endregion
@@ -223,13 +223,13 @@ namespace log4net.Util
 		/// <see cref="DomainName" /> or <see cref="Password" /> properties were not specified.</exception>
 		public void ActivateOptions()
 		{
-			if (m_impersonationMode == ImpersonationMode.User)
+			if (this.m_impersonationMode == ImpersonationMode.User)
 			{
-				if (m_userName == null) throw new ArgumentNullException("m_userName");
-				if (m_domainName == null) throw new ArgumentNullException("m_domainName");
-				if (m_password == null) throw new ArgumentNullException("m_password");
+				if (this.m_userName == null) throw new ArgumentNullException("m_userName");
+				if (this.m_domainName == null) throw new ArgumentNullException("m_domainName");
+				if (this.m_password == null) throw new ArgumentNullException("m_password");
 
-				m_identity = LogonUser(m_userName, m_domainName, m_password);
+				this.m_identity = LogonUser(this.m_userName, this.m_domainName, this.m_password);
 			}
 		}
 
@@ -251,14 +251,14 @@ namespace log4net.Util
 		/// </remarks>
 		public override IDisposable Impersonate(object state)
 		{
-			if (m_impersonationMode == ImpersonationMode.User)
+			if (this.m_impersonationMode == ImpersonationMode.User)
 			{
-				if (m_identity != null)
+				if (this.m_identity != null)
 				{
-					return new DisposableImpersonationContext(m_identity.Impersonate());
+					return new DisposableImpersonationContext(this.m_identity.Impersonate());
 				}
 			}
-			else if (m_impersonationMode == ImpersonationMode.Process)
+			else if (this.m_impersonationMode == ImpersonationMode.Process)
 			{
 				// Impersonate(0) will revert to the process credentials
 				return new DisposableImpersonationContext(WindowsIdentity.Impersonate(IntPtr.Zero));
@@ -363,7 +363,7 @@ namespace log4net.Util
 			/// </remarks>
 			public DisposableImpersonationContext(WindowsImpersonationContext impersonationContext)
 			{
-				m_impersonationContext = impersonationContext;
+				this.m_impersonationContext = impersonationContext;
 			}
 
 			/// <summary>
@@ -376,7 +376,7 @@ namespace log4net.Util
 			/// </remarks>
 			public void Dispose()
 			{
-				m_impersonationContext.Undo();
+				this.m_impersonationContext.Undo();
 			}
 		}
 

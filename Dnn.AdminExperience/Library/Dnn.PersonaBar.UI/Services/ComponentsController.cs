@@ -38,26 +38,26 @@ namespace Dnn.PersonaBar.UI.Services
         {
             try
             {
-                if(!UserInfo.IsInRole(PortalSettings.AdministratorRoleName) && !PagePermissionsAttributesHelper.HasTabPermission("VIEW"))
+                if(!this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName) && !PagePermissionsAttributesHelper.HasTabPermission("VIEW"))
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, Localization.GetString("UnauthorizedRequest", LocalResourcesFile));
+                    return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, Localization.GetString("UnauthorizedRequest", this.LocalResourcesFile));
                 }
 
                 if (reload)
                 {
-                    DataCache.RemoveCache(string.Format(DataCache.RoleGroupsCacheKey, PortalId));
+                    DataCache.RemoveCache(string.Format(DataCache.RoleGroupsCacheKey, this.PortalId));
                 }
 
-                var groups = RoleController.GetRoleGroups(PortalId)
+                var groups = RoleController.GetRoleGroups(this.PortalId)
                                 .Cast<RoleGroupInfo>()
                                 .Select(RoleGroupDto.FromRoleGroupInfo);
 
-                return Request.CreateResponse(HttpStatusCode.OK, groups);
+                return this.Request.CreateResponse(HttpStatusCode.OK, groups);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
             }
         }
 
@@ -72,15 +72,15 @@ namespace Dnn.PersonaBar.UI.Services
             {
                 if (string.IsNullOrEmpty(keyword))
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, new List<SuggestionDto>());
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new List<SuggestionDto>());
                 }
 
                 var displayMatch = keyword + "%";
                 var totalRecords = 0;
                 var totalRecords2 = 0;
-                var matchedUsers = UserController.GetUsersByDisplayName(PortalId, displayMatch, 0, count,
+                var matchedUsers = UserController.GetUsersByDisplayName(this.PortalId, displayMatch, 0, count,
                     ref totalRecords, false, false);
-                matchedUsers.AddRange(UserController.GetUsersByUserName(PortalId, displayMatch, 0, count, ref totalRecords2, false, false));
+                matchedUsers.AddRange(UserController.GetUsersByUserName(this.PortalId, displayMatch, 0, count, ref totalRecords2, false, false));
                 var finalUsers = matchedUsers
                     .Cast<UserInfo>()
                     .Where(x=>x.Membership.Approved)
@@ -90,12 +90,12 @@ namespace Dnn.PersonaBar.UI.Services
                         Label = $"{u.DisplayName}"
                     });
 
-                return Request.CreateResponse(HttpStatusCode.OK, finalUsers.ToList().GroupBy(x => x.Value).Select(group => group.First()));
+                return this.Request.CreateResponse(HttpStatusCode.OK, finalUsers.ToList().GroupBy(x => x.Value).Select(group => group.First()));
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
             }
 
         }
@@ -106,10 +106,10 @@ namespace Dnn.PersonaBar.UI.Services
             {
                 if (string.IsNullOrEmpty(keyword))
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, new List<SuggestionDto>());
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new List<SuggestionDto>());
                 }
 
-                var matchedRoles = RoleController.Instance.GetRoles(PortalId)
+                var matchedRoles = RoleController.Instance.GetRoles(this.PortalId)
                     .Where(r => (roleGroupId == -2 || r.RoleGroupID == roleGroupId)
                                 && r.RoleName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1
                                    && r.Status == RoleStatus.Approved)
@@ -119,12 +119,12 @@ namespace Dnn.PersonaBar.UI.Services
                         Label = r.RoleName
                     });
 
-                return Request.CreateResponse(HttpStatusCode.OK, matchedRoles);
+                return this.Request.CreateResponse(HttpStatusCode.OK, matchedRoles);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
             }
 
         }

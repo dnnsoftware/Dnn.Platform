@@ -32,7 +32,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         public void DeleteLibrary(JavaScriptLibrary library)
         {
             DataProvider.Instance().ExecuteNonQuery("DeleteJavaScriptLibrary", library.JavaScriptLibraryID);
-            ClearCache();
+            this.ClearCache();
         }
 
         /// <summary>Get information about the latest version of a <see cref="JavaScriptLibrary"/> that matches the given <paramref name="predicate"/></summary>
@@ -43,7 +43,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <returns>The highest version <see cref="JavaScriptLibrary"/> instance that matches the <paramref name="predicate"/>, or <c>null</c> if no library matches</returns>
         public JavaScriptLibrary GetLibrary(Func<JavaScriptLibrary, bool> predicate)
         {
-            return GetLibraries(predicate).OrderByDescending(l => l.Version).FirstOrDefault();
+            return this.GetLibraries(predicate).OrderByDescending(l => l.Version).FirstOrDefault();
         }
 
         /// <summary>Gets all of the <see cref="JavaScriptLibrary"/> instances matching the given <paramref name="predicate"/></summary>
@@ -54,7 +54,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <returns>A sequence of <see cref="JavaScriptLibrary"/> instances</returns>
         public IEnumerable<JavaScriptLibrary> GetLibraries(Func<JavaScriptLibrary, bool> predicate)
         {
-            return GetLibraries().Where(predicate);
+            return this.GetLibraries().Where(predicate);
         }
 
         /// <summary>Gets all of the <see cref="JavaScriptLibrary"/> instances</summary>
@@ -80,7 +80,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                                                         library.ObjectName,
                                                         library.PreferredScriptLocation,
                                                         library.CDNPath);
-            ClearCache();
+            this.ClearCache();
         }
 
         #endregion

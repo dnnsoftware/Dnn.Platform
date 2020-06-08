@@ -65,11 +65,11 @@ namespace DotNetNuke.Framework
                 var key = new StringBuilder();
                 {
                     key.Append("VIEWSTATE_");
-                    key.Append(Page.Session.SessionID);
+                    key.Append(this.Page.Session.SessionID);
                     key.Append("_");
-                    key.Append(Page.Request.RawUrl);
+                    key.Append(this.Page.Request.RawUrl);
                 }
-                return CacheDirectory + "\\" + Globals.CleanFileName(key.ToString()) + ".txt";
+                return this.CacheDirectory + "\\" + Globals.CleanFileName(key.ToString()) + ".txt";
             }
         }
 
@@ -84,17 +84,17 @@ namespace DotNetNuke.Framework
             //Read the state string, using the StateFormatter.
             try
             {
-                reader = new StreamReader(StateFileName);
+                reader = new StreamReader(this.StateFileName);
 
                 string serializedStatePair = reader.ReadToEnd();
 
-                IStateFormatter formatter = StateFormatter;
+                IStateFormatter formatter = this.StateFormatter;
 
                 //Deserialize returns the Pair object that is serialized in
                 //the Save method.      
                 var statePair = (Pair) formatter.Deserialize(serializedStatePair);
-                ViewState = statePair.First;
-                ControlState = statePair.Second;
+                this.ViewState = statePair.First;
+                this.ControlState = statePair.Second;
             }
             finally
             {
@@ -113,22 +113,22 @@ namespace DotNetNuke.Framework
         public override void Save()
         {
 			//No processing needed if no states available
-            if (ViewState == null && ControlState == null)
+            if (this.ViewState == null && this.ControlState == null)
             {
                 return;
             }
-            if (Page.Session != null)
+            if (this.Page.Session != null)
             {
-                if (!Directory.Exists(CacheDirectory))
+                if (!Directory.Exists(this.CacheDirectory))
                 {
-                    Directory.CreateDirectory(CacheDirectory);
+                    Directory.CreateDirectory(this.CacheDirectory);
                 }
 
                 //Write a state string, using the StateFormatter.
-                using (var writer = new StreamWriter(StateFileName, false))
+                using (var writer = new StreamWriter(this.StateFileName, false))
                 {
-                    IStateFormatter formatter = StateFormatter;
-                    var statePair = new Pair(ViewState, ControlState);
+                    IStateFormatter formatter = this.StateFormatter;
+                    var statePair = new Pair(this.ViewState, this.ControlState);
                     string serializedState = formatter.Serialize(statePair);
                     writer.Write(serializedState);
                     writer.Close();

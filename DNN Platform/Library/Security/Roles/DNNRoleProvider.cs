@@ -45,7 +45,7 @@ namespace DotNetNuke.Security.Roles
         private void AddDNNUserRole(UserRoleInfo userRole)
         {
             //Add UserRole to DNN
-            userRole.UserRoleID = Convert.ToInt32(dataProvider.AddUserRole(userRole.PortalID, userRole.UserID, userRole.RoleID,
+            userRole.UserRoleID = Convert.ToInt32(this.dataProvider.AddUserRole(userRole.PortalID, userRole.UserID, userRole.RoleID,
                                                                 (int)userRole.Status, userRole.IsOwner,
                                                                 userRole.EffectiveDate, userRole.ExpiryDate, 
                                                                 UserController.Instance.GetCurrentUserInfo().UserID));
@@ -71,7 +71,7 @@ namespace DotNetNuke.Security.Roles
             try
             {
                 role.RoleID =
-                    Convert.ToInt32(dataProvider.AddRole(role.PortalID,
+                    Convert.ToInt32(this.dataProvider.AddRole(role.PortalID,
                                                          role.RoleGroupID,
                                                          role.RoleName.Trim(),
                                                          (role.Description ?? "").Trim(),
@@ -106,7 +106,7 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override void DeleteRole(RoleInfo role)
         {
-            dataProvider.DeleteRole(role.RoleID);
+            this.dataProvider.DeleteRole(role.RoleID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -120,20 +120,20 @@ namespace DotNetNuke.Security.Roles
         public override ArrayList GetRoles(int portalId)
         {
             var arrRoles = CBO.FillCollection(portalId == Null.NullInteger 
-                                        ? dataProvider.GetRoles() 
-                                        : dataProvider.GetPortalRoles(portalId), typeof (RoleInfo));
+                                        ? this.dataProvider.GetRoles() 
+                                        : this.dataProvider.GetPortalRoles(portalId), typeof (RoleInfo));
             return arrRoles;
         }
 
         public override IList<RoleInfo> GetRolesBasicSearch(int portalID, int pageSize, string filterBy)
         {
-            return CBO.FillCollection<RoleInfo>(dataProvider.GetRolesBasicSearch(portalID, -1, pageSize, filterBy));
+            return CBO.FillCollection<RoleInfo>(this.dataProvider.GetRolesBasicSearch(portalID, -1, pageSize, filterBy));
         }
 
         public override IDictionary<string, string> GetRoleSettings(int roleId)
         {
             var settings = new Dictionary<string, string> { };
-            using (IDataReader dr = dataProvider.GetRoleSettings(roleId)) {
+            using (IDataReader dr = this.dataProvider.GetRoleSettings(roleId)) {
                 while (dr.Read()) {
                     settings.Add(dr["SettingName"].ToString(), dr["SettingValue"].ToString());
                 }
@@ -150,7 +150,7 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override void UpdateRole(RoleInfo role)
         {
-            dataProvider.UpdateRole(role.RoleID,
+            this.dataProvider.UpdateRole(role.RoleID,
                                     role.RoleGroupID,
                                     role.RoleName.Trim(),
                                     (role.Description ?? "").Trim(),
@@ -178,13 +178,13 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override void UpdateRoleSettings(RoleInfo role)
         {
-            var currentSettings = GetRoleSettings(role.RoleID);
+            var currentSettings = this.GetRoleSettings(role.RoleID);
 
             foreach (var setting in role.Settings)
             {
                 if (!currentSettings.ContainsKey(setting.Key) || currentSettings[setting.Key] != setting.Value)
                 {
-                    dataProvider.UpdateRoleSetting(role.RoleID, setting.Key, setting.Value, UserController.Instance.GetCurrentUserInfo().UserID);
+                    this.dataProvider.UpdateRoleSetting(role.RoleID, setting.Key, setting.Value, UserController.Instance.GetCurrentUserInfo().UserID);
                 }
             }
         }
@@ -210,7 +210,7 @@ namespace DotNetNuke.Security.Roles
             try
             {
 				//Add UserRole to DNN
-                AddDNNUserRole(userRole);
+                this.AddDNNUserRole(userRole);
             }
             catch (Exception exc)
             {
@@ -235,7 +235,7 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override UserRoleInfo GetUserRole(int portalId, int userId, int roleId)
         {
-            return CBO.FillObject<UserRoleInfo>(dataProvider.GetUserRole(portalId, userId, roleId));
+            return CBO.FillObject<UserRoleInfo>(this.dataProvider.GetUserRole(portalId, userId, roleId));
         }
 
         /// <summary>
@@ -249,8 +249,8 @@ namespace DotNetNuke.Security.Roles
             Requires.NotNull("user", user);
 
             return CBO.FillCollection<UserRoleInfo>(includePrivate 
-                    ? dataProvider.GetUserRoles(user.PortalID, user.UserID) 
-                    : dataProvider.GetServices(user.PortalID, user.UserID));
+                    ? this.dataProvider.GetUserRoles(user.PortalID, user.UserID) 
+                    : this.dataProvider.GetServices(user.PortalID, user.UserID));
         }
 
         /// -----------------------------------------------------------------------------
@@ -266,7 +266,7 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override ArrayList GetUserRoles(int portalId, string userName, string roleName)
         {
-            return CBO.FillCollection(dataProvider.GetUserRolesByUsername(portalId, userName, roleName), typeof (UserRoleInfo));
+            return CBO.FillCollection(this.dataProvider.GetUserRolesByUsername(portalId, userName, roleName), typeof (UserRoleInfo));
         }
 
         /// -----------------------------------------------------------------------------
@@ -280,7 +280,7 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override ArrayList GetUsersByRoleName(int portalId, string roleName)
         {
-            return AspNetMembershipProvider.FillUserCollection(portalId, dataProvider.GetUsersByRolename(portalId, roleName));
+            return AspNetMembershipProvider.FillUserCollection(portalId, this.dataProvider.GetUsersByRolename(portalId, roleName));
         }
 
         /// -----------------------------------------------------------------------------
@@ -295,7 +295,7 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override void RemoveUserFromRole(int portalId, UserInfo user, UserRoleInfo userRole)
         {
-            dataProvider.DeleteUserRole(userRole.UserID, userRole.RoleID);
+            this.dataProvider.DeleteUserRole(userRole.UserID, userRole.RoleID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -306,7 +306,7 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override void UpdateUserRole(UserRoleInfo userRole)
         {
-            dataProvider.UpdateUserRole(userRole.UserRoleID,
+            this.dataProvider.UpdateUserRole(userRole.UserRoleID,
                                         (int)userRole.Status, userRole.IsOwner,
                                         userRole.EffectiveDate, userRole.ExpiryDate, 
                                         UserController.Instance.GetCurrentUserInfo().UserID);
@@ -318,7 +318,7 @@ namespace DotNetNuke.Security.Roles
 
         private void ClearRoleGroupCache(int portalId)
         {
-            DataCache.ClearCache(GetRoleGroupsCacheKey(portalId));
+            DataCache.ClearCache(this.GetRoleGroupsCacheKey(portalId));
         }
 
         private string GetRoleGroupsCacheKey(int portalId)
@@ -337,10 +337,10 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override int CreateRoleGroup(RoleGroupInfo roleGroup)
         {
-            var roleGroupId = dataProvider.AddRoleGroup(roleGroup.PortalID, roleGroup.RoleGroupName.Trim(),
+            var roleGroupId = this.dataProvider.AddRoleGroup(roleGroup.PortalID, roleGroup.RoleGroupName.Trim(),
                                                         (roleGroup.Description ?? "").Trim(),
                                                         UserController.Instance.GetCurrentUserInfo().UserID);
-            ClearRoleGroupCache(roleGroup.PortalID);
+            this.ClearRoleGroupCache(roleGroup.PortalID);
             return roleGroupId;
         }
 
@@ -352,8 +352,8 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override void DeleteRoleGroup(RoleGroupInfo roleGroup)
         {
-            dataProvider.DeleteRoleGroup(roleGroup.RoleGroupID);
-            ClearRoleGroupCache(roleGroup.PortalID);
+            this.dataProvider.DeleteRoleGroup(roleGroup.RoleGroupID);
+            this.ClearRoleGroupCache(roleGroup.PortalID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -366,13 +366,13 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override RoleGroupInfo GetRoleGroup(int portalId, int roleGroupId)
         {
-            return GetRoleGroupsInternal(portalId).SingleOrDefault(r => r.RoleGroupID == roleGroupId);
+            return this.GetRoleGroupsInternal(portalId).SingleOrDefault(r => r.RoleGroupID == roleGroupId);
         }
 
         public override RoleGroupInfo GetRoleGroupByName(int portalId, string roleGroupName)
         {
             roleGroupName = roleGroupName.Trim();
-            return GetRoleGroupsInternal(portalId).SingleOrDefault(
+            return this.GetRoleGroupsInternal(portalId).SingleOrDefault(
                 r => roleGroupName.Equals(r.RoleGroupName.Trim(), StringComparison.InvariantCultureIgnoreCase));
         }
 
@@ -385,17 +385,17 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override ArrayList GetRoleGroups(int portalId)
         {
-            return new ArrayList(GetRoleGroupsInternal(portalId).ToList());
+            return new ArrayList(this.GetRoleGroupsInternal(portalId).ToList());
         }
 
         private IEnumerable<RoleGroupInfo> GetRoleGroupsInternal(int portalId)
         {
-            var cacheArgs = new CacheItemArgs(GetRoleGroupsCacheKey(portalId), 
+            var cacheArgs = new CacheItemArgs(this.GetRoleGroupsCacheKey(portalId), 
                                                 DataCache.RoleGroupsCacheTimeOut, 
                                                 DataCache.RoleGroupsCachePriority);
 
             return CBO.GetCachedObject<IEnumerable<RoleGroupInfo>>(cacheArgs, c => 
-                                            CBO.FillCollection<RoleGroupInfo>(dataProvider.GetRoleGroups(portalId)));
+                                            CBO.FillCollection<RoleGroupInfo>(this.dataProvider.GetRoleGroups(portalId)));
         }
 
         /// -----------------------------------------------------------------------------
@@ -406,9 +406,9 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override void UpdateRoleGroup(RoleGroupInfo roleGroup)
         {
-            dataProvider.UpdateRoleGroup(roleGroup.RoleGroupID, roleGroup.RoleGroupName.Trim(),
+            this.dataProvider.UpdateRoleGroup(roleGroup.RoleGroupID, roleGroup.RoleGroupName.Trim(),
                 (roleGroup.Description ?? "").Trim(), UserController.Instance.GetCurrentUserInfo().UserID);
-            ClearRoleGroupCache(roleGroup.PortalID);
+            this.ClearRoleGroupCache(roleGroup.PortalID);
         }
 		
 

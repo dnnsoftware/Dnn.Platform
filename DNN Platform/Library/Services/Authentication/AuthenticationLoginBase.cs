@@ -28,9 +28,9 @@ namespace DotNetNuke.Services.Authentication
 
         protected AuthenticationLoginBase()
         {
-            RedirectURL = Null.NullString;
-            AuthenticationType = Null.NullString;
-            Mode = AuthMode.Login;
+            this.RedirectURL = Null.NullString;
+            this.AuthenticationType = Null.NullString;
+            this.Mode = AuthMode.Login;
         }
 
         /// -----------------------------------------------------------------------------
@@ -90,9 +90,9 @@ namespace DotNetNuke.Services.Authentication
 
         protected virtual void OnUserAuthenticated(UserAuthenticatedEventArgs ea)
         {
-            if (UserAuthenticated != null)
+            if (this.UserAuthenticated != null)
             {
-                UserAuthenticated(null, ea);
+                this.UserAuthenticated(null, ea);
             }
         }
 

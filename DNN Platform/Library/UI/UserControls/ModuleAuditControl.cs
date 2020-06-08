@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.UserControls
 
         private static readonly Regex CheckDateColumnRegex = new Regex(@"^-?\d+$", RegexOptions.Compiled);
 
-        private string DisplayMode => (Request.QueryString["Display"] ?? "").ToLowerInvariant();
+        private string DisplayMode => (this.Request.QueryString["Display"] ?? "").ToLowerInvariant();
 
         [Serializable]
 		private class EntityInfo
@@ -42,10 +42,10 @@ namespace DotNetNuke.UI.UserControls
 
         public ModuleAuditControl()
         {
-            LastModifiedDate = String.Empty;
-            LastModifiedByUser = String.Empty;
-            CreatedByUser = String.Empty;
-            CreatedDate = String.Empty;
+            this.LastModifiedDate = String.Empty;
+            this.LastModifiedByUser = String.Empty;
+            this.CreatedByUser = String.Empty;
+            this.CreatedDate = String.Empty;
         }
 
         public string CreatedDate { private get; set; }
@@ -68,18 +68,18 @@ namespace DotNetNuke.UI.UserControls
 					entity.LastModifiedByUserID = value.LastModifiedByUserID;
 					entity.LastModifiedOnDate = value.LastModifiedOnDate;
 
-					ViewState["Entity"] = entity;
+					this.ViewState["Entity"] = entity;
 				}
 				else
 				{
-					ViewState["Entity"] = null;
+					this.ViewState["Entity"] = null;
 				}
 			}
 		}
 
 	    private EntityInfo Model
 	    {
-		    get { return ViewState["Entity"] as EntityInfo; }
+		    get { return this.ViewState["Entity"] as EntityInfo; }
 	    }
 
         protected override void OnLoad(EventArgs e)
@@ -88,24 +88,24 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-				if (Model != null)
+				if (this.Model != null)
                 {
-					CreatedByUser = Model.CreatedByUserID.ToString();
-					CreatedDate = Model.CreatedOnDate.ToString();
-					LastModifiedByUser = Model.LastModifiedByUserID.ToString();
-					LastModifiedDate = Model.LastModifiedOnDate.ToString();
+					this.CreatedByUser = this.Model.CreatedByUserID.ToString();
+					this.CreatedDate = this.Model.CreatedOnDate.ToString();
+					this.LastModifiedByUser = this.Model.LastModifiedByUserID.ToString();
+					this.LastModifiedDate = this.Model.LastModifiedOnDate.ToString();
                 }
 
                 //check to see if updated check is redundant
-                var isCreatorAndUpdater = CreatedByUser == LastModifiedByUser &&
-                    Globals.NumberMatchRegex.IsMatch(CreatedByUser) && Globals.NumberMatchRegex.IsMatch(LastModifiedByUser);
+                var isCreatorAndUpdater = this.CreatedByUser == this.LastModifiedByUser &&
+                    Globals.NumberMatchRegex.IsMatch(this.CreatedByUser) && Globals.NumberMatchRegex.IsMatch(this.LastModifiedByUser);
 
-                _systemUser = Localization.GetString("SystemUser", Localization.GetResourceFile(this, MyFileName));
-                var displayMode = DisplayMode;
+                this._systemUser = Localization.GetString("SystemUser", Localization.GetResourceFile(this, MyFileName));
+                var displayMode = this.DisplayMode;
                 if (displayMode != "editor" && displayMode != "settings")
                 {
-                    ShowCreatedString();
-                    ShowUpdatedString(isCreatorAndUpdater);
+                    this.ShowCreatedString();
+                    this.ShowUpdatedString(isCreatorAndUpdater);
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -116,58 +116,58 @@ namespace DotNetNuke.UI.UserControls
 
         private void ShowCreatedString()
         {
-            if (CheckDateColumnRegex.IsMatch(CreatedByUser))
+            if (CheckDateColumnRegex.IsMatch(this.CreatedByUser))
             {
-                if (int.Parse(CreatedByUser) == Null.NullInteger)
+                if (int.Parse(this.CreatedByUser) == Null.NullInteger)
                 {
-                    CreatedByUser = _systemUser;
+                    this.CreatedByUser = this._systemUser;
                 }
                 else
                 {
                     //contains a UserID
-                    UserInfo userInfo = UserController.GetUserById(PortalController.Instance.GetCurrentPortalSettings().PortalId, int.Parse(CreatedByUser));
+                    UserInfo userInfo = UserController.GetUserById(PortalController.Instance.GetCurrentPortalSettings().PortalId, int.Parse(this.CreatedByUser));
                     if (userInfo != null)
                     {
-                        CreatedByUser = userInfo.DisplayName;
+                        this.CreatedByUser = userInfo.DisplayName;
                     }
                 }
             }
             string createdString = Localization.GetString("CreatedBy", Localization.GetResourceFile(this, MyFileName));
-            lblCreatedBy.Text = string.Format(createdString, CreatedByUser, CreatedDate);
+            this.lblCreatedBy.Text = string.Format(createdString, this.CreatedByUser, this.CreatedDate);
 
         }
 
         private void ShowUpdatedString(bool isCreatorAndUpdater)
         {
             //check to see if audit contains update information
-            if (string.IsNullOrEmpty(LastModifiedDate))
+            if (string.IsNullOrEmpty(this.LastModifiedDate))
             {
                 return;
             }
 
-            if (CheckDateColumnRegex.IsMatch(LastModifiedByUser))
+            if (CheckDateColumnRegex.IsMatch(this.LastModifiedByUser))
             {
                 if (isCreatorAndUpdater)
                 {
-                    LastModifiedByUser = CreatedByUser;
+                    this.LastModifiedByUser = this.CreatedByUser;
                 }
-                else if (int.Parse(LastModifiedByUser) == Null.NullInteger)
+                else if (int.Parse(this.LastModifiedByUser) == Null.NullInteger)
                 {
-                    LastModifiedByUser = _systemUser;
+                    this.LastModifiedByUser = this._systemUser;
                 }
                 else
                 {
                     //contains a UserID
-                    UserInfo userInfo = UserController.GetUserById(PortalController.Instance.GetCurrentPortalSettings().PortalId, int.Parse(LastModifiedByUser));
+                    UserInfo userInfo = UserController.GetUserById(PortalController.Instance.GetCurrentPortalSettings().PortalId, int.Parse(this.LastModifiedByUser));
                     if (userInfo != null)
                     {
-                        LastModifiedByUser = userInfo.DisplayName;
+                        this.LastModifiedByUser = userInfo.DisplayName;
                     }
                 }
             }
 
             string updatedByString = Localization.GetString("UpdatedBy", Localization.GetResourceFile(this, MyFileName));
-            lblUpdatedBy.Text = string.Format(updatedByString, LastModifiedByUser, LastModifiedDate);
+            this.lblUpdatedBy.Text = string.Format(updatedByString, this.LastModifiedByUser, this.LastModifiedDate);
         }
     }
 }

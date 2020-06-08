@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.GeneratedImage
         /// <summary>
         /// Provides an Unique String for the image transformation
         /// </summary>
-        public virtual string UniqueString => GetType().FullName;
+        public virtual string UniqueString => this.GetType().FullName;
 
         /// <summary>
         /// Creates a new image from stream. The created image is independent of the stream.
@@ -60,9 +60,9 @@ namespace DotNetNuke.Services.GeneratedImage
                 using (var graph = Graphics.FromImage(destImage))
                 {
                     graph.CompositingMode = CompositingMode.SourceCopy;
-                    graph.CompositingQuality = CompositingQuality;
-                    graph.InterpolationMode = InterpolationMode;
-                    graph.SmoothingMode = SmoothingMode;
+                    graph.CompositingQuality = this.CompositingQuality;
+                    graph.InterpolationMode = this.InterpolationMode;
+                    graph.SmoothingMode = this.SmoothingMode;
                     graph.DrawImage(srcImage, new Rectangle(0, 0, srcImage.Width, srcImage.Height));
                 }
                 return destImage;

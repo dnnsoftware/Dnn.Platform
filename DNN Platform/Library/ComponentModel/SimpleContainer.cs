@@ -40,7 +40,7 @@ namespace DotNetNuke.ComponentModel
         /// <param name = "name"></param>
         public SimpleContainer(string name)
         {
-            _name = name;
+            this._name = name;
         }
 
         #endregion
@@ -49,7 +49,7 @@ namespace DotNetNuke.ComponentModel
 
         private void AddBuilder(Type contractType, IComponentBuilder builder)
         {
-            ComponentType componentType = GetComponentType(contractType);
+            ComponentType componentType = this.GetComponentType(contractType);
             if (componentType != null)
             {
                 ComponentBuilderCollection builders = componentType.ComponentBuilders;
@@ -59,24 +59,24 @@ namespace DotNetNuke.ComponentModel
                     builders.AddBuilder(builder, true);
                 }
 
-                using (_componentBuilders.GetWriteLock())
+                using (this._componentBuilders.GetWriteLock())
                 {
-                    _componentBuilders.AddBuilder(builder, false);
+                    this._componentBuilders.AddBuilder(builder, false);
                 }
             }
         }
 
         private void AddComponentType(Type contractType)
         {
-            ComponentType componentType = GetComponentType(contractType);
+            ComponentType componentType = this.GetComponentType(contractType);
 
             if (componentType == null)
             {
                 componentType = new ComponentType(contractType);
 
-                using (_componentTypes.GetWriteLock())
+                using (this._componentTypes.GetWriteLock())
                 {
-                    _componentTypes[componentType.BaseType] = componentType;
+                    this._componentTypes[componentType.BaseType] = componentType;
                 }
             }
         }
@@ -99,9 +99,9 @@ namespace DotNetNuke.ComponentModel
         {
             IComponentBuilder builder;
 
-            using (_componentBuilders.GetReadLock())
+            using (this._componentBuilders.GetReadLock())
             {
-                _componentBuilders.TryGetValue(name, out builder);
+                this._componentBuilders.TryGetValue(name, out builder);
             }
 
             return builder;
@@ -123,9 +123,9 @@ namespace DotNetNuke.ComponentModel
         {
             ComponentType componentType;
 
-            using (_componentTypes.GetReadLock())
+            using (this._componentTypes.GetReadLock())
             {
-                _componentTypes.TryGetValue(contractType, out componentType);
+                this._componentTypes.TryGetValue(contractType, out componentType);
             }
 
             return componentType;
@@ -133,9 +133,9 @@ namespace DotNetNuke.ComponentModel
 
         public override void RegisterComponent(string name, Type type)
         {
-            using (_registeredComponents.GetWriteLock())
+            using (this._registeredComponents.GetWriteLock())
             {
-                _registeredComponents[type] = name;
+                this._registeredComponents[type] = name;
             }
         }
 
@@ -145,20 +145,20 @@ namespace DotNetNuke.ComponentModel
         {
             get
             {
-                return _name;
+                return this._name;
             }
         }
 
         public override object GetComponent(string name)
         {
-            IComponentBuilder builder = GetComponentBuilder(name);
+            IComponentBuilder builder = this.GetComponentBuilder(name);
 
-            return GetComponent(builder);
+            return this.GetComponent(builder);
         }
 
         public override object GetComponent(Type contractType)
         {
-            ComponentType componentType = GetComponentType(contractType);
+            ComponentType componentType = this.GetComponentType(contractType);
             object component = null;
 
             if (componentType != null)
@@ -172,9 +172,9 @@ namespace DotNetNuke.ComponentModel
 
                 if (builderCount > 0)
                 {
-                    IComponentBuilder builder = GetDefaultComponentBuilder(componentType);
+                    IComponentBuilder builder = this.GetDefaultComponentBuilder(componentType);
 
-                    component = GetComponent(builder);
+                    component = this.GetComponent(builder);
                 }
             }
 
@@ -183,14 +183,14 @@ namespace DotNetNuke.ComponentModel
 
         public override object GetComponent(string name, Type contractType)
         {
-            ComponentType componentType = GetComponentType(contractType);
+            ComponentType componentType = this.GetComponentType(contractType);
             object component = null;
 
             if (componentType != null)
             {
-                IComponentBuilder builder = GetComponentBuilder(name);
+                IComponentBuilder builder = this.GetComponentBuilder(name);
 
-                component = GetComponent(builder);
+                component = this.GetComponent(builder);
             }
             return component;
         }
@@ -199,9 +199,9 @@ namespace DotNetNuke.ComponentModel
         {
             var components = new List<string>();
 
-            using (_registeredComponents.GetReadLock())
+            using (this._registeredComponents.GetReadLock())
             {
-                foreach (KeyValuePair<Type, string> kvp in _registeredComponents)
+                foreach (KeyValuePair<Type, string> kvp in this._registeredComponents)
                 {
                     if (contractType.IsAssignableFrom(kvp.Key))
                     {
@@ -215,16 +215,16 @@ namespace DotNetNuke.ComponentModel
         public override IDictionary GetComponentSettings(string name)
         {
             IDictionary settings;
-            using (_componentDependencies.GetReadLock())
+            using (this._componentDependencies.GetReadLock())
             {
-                settings = _componentDependencies[name];
+                settings = this._componentDependencies[name];
             }
             return settings;
         }
 
         public override void RegisterComponent(string name, Type contractType, Type type, ComponentLifeStyleType lifestyle)
         {
-            AddComponentType(contractType);
+            this.AddComponentType(contractType);
 
             IComponentBuilder builder = null;
             switch (lifestyle)
@@ -236,25 +236,25 @@ namespace DotNetNuke.ComponentModel
                     builder = new SingletonComponentBuilder(name, type);
                     break;
             }
-            AddBuilder(contractType, builder);
+            this.AddBuilder(contractType, builder);
 
-            RegisterComponent(name, type);
+            this.RegisterComponent(name, type);
         }
 
         public override void RegisterComponentInstance(string name, Type contractType, object instance)
         {
-            AddComponentType(contractType);
+            this.AddComponentType(contractType);
 
-            AddBuilder(contractType, new InstanceComponentBuilder(name, instance));
+            this.AddBuilder(contractType, new InstanceComponentBuilder(name, instance));
 
-            RegisterComponent(name, instance.GetType());
+            this.RegisterComponent(name, instance.GetType());
         }
 
         public override void RegisterComponentSettings(string name, IDictionary dependencies)
         {
-            using (_componentDependencies.GetWriteLock())
+            using (this._componentDependencies.GetWriteLock())
             {
-                _componentDependencies[name] = dependencies;
+                this._componentDependencies[name] = dependencies;
             }
         }
     }

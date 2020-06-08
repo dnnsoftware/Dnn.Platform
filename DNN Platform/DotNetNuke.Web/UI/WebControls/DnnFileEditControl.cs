@@ -52,23 +52,23 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void CreateChildControls()
         {
             //First clear the controls collection
-            Controls.Clear();
+            this.Controls.Clear();
 
-            var userControl = Page.LoadControl("~/controls/filepickeruploader.ascx");
-            _fileControl = userControl as DnnFilePickerUploader;
+            var userControl = this.Page.LoadControl("~/controls/filepickeruploader.ascx");
+            this._fileControl = userControl as DnnFilePickerUploader;
 
-            if (_fileControl != null)
+            if (this._fileControl != null)
             {
-                _fileControl.ID = string.Format("{0}FileControl", ID);
-                _fileControl.FileFilter = FileFilter;
-                _fileControl.FilePath = FilePath;
-                _fileControl.FileID = IntegerValue;
-                _fileControl.UsePersonalFolder = true;
-                _fileControl.User = User;
-	            _fileControl.Required = true;
+                this._fileControl.ID = string.Format("{0}FileControl", this.ID);
+                this._fileControl.FileFilter = this.FileFilter;
+                this._fileControl.FilePath = this.FilePath;
+                this._fileControl.FileID = this.IntegerValue;
+                this._fileControl.UsePersonalFolder = true;
+                this._fileControl.User = this.User;
+	            this._fileControl.Required = true;
 
                 //Add table to Control
-                Controls.Add(_fileControl);
+                this.Controls.Add(this._fileControl);
             }
 
             base.CreateChildControls();
@@ -76,7 +76,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void OnInit(EventArgs e)
         {
-            EnsureChildControls();
+            this.EnsureChildControls();
             base.OnInit(e);
         }
 
@@ -89,11 +89,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnPreRender(e);
 
-            _fileControl.FileID = IntegerValue;
+            this._fileControl.FileID = this.IntegerValue;
 
-            if (Page != null)
+            if (this.Page != null)
             {
-                Page.RegisterRequiresPostBack(this);
+                this.Page.RegisterRequiresPostBack(this);
             }
         }
 
@@ -105,7 +105,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
-            RenderChildren(writer);
+            this.RenderChildren(writer);
         }
 
         #endregion
@@ -127,12 +127,12 @@ namespace DotNetNuke.Web.UI.WebControls
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             bool dataChanged = false;
-            string presentValue = StringValue;
+            string presentValue = this.StringValue;
             //string postedValue = postCollection[string.Format("{0}FileControl$dnnFileUploadFileId", postDataKey)];
-            string postedValue = _fileControl.FileID.ToString();
+            string postedValue = this._fileControl.FileID.ToString();
             if (!presentValue.Equals(postedValue))
             {
-                Value = postedValue;
+                this.Value = postedValue;
                 dataChanged = true;
             }
             return dataChanged;

@@ -17,10 +17,10 @@ namespace DotNetNuke.ExtensionPoints
         private void LoadControl(IEditPagePanelExtensionPoint extension)
         {
             var editPanel = new PanelEditPagePanelExtensionControl { PanelId = extension.EditPagePanelId, Text = extension.Text, CssClass = extension.CssClass };
-            var control = Page.LoadControl(extension.UserControlSrc);
+            var control = this.Page.LoadControl(extension.UserControlSrc);
             control.ID = Path.GetFileNameWithoutExtension(extension.UserControlSrc);
             editPanel.Controls.Add(control);
-            Controls.Add(editPanel);
+            this.Controls.Add(editPanel);
             
         }
 
@@ -29,21 +29,21 @@ namespace DotNetNuke.ExtensionPoints
             base.OnInit(e);
             var extensionPointManager = new ExtensionPointManager();
             
-            if (!String.IsNullOrEmpty(Name))
+            if (!String.IsNullOrEmpty(this.Name))
             {
-                var extension = extensionPointManager.GetEditPagePanelExtensionPointFirstByPriority(Module, Name);
+                var extension = extensionPointManager.GetEditPagePanelExtensionPointFirstByPriority(this.Module, this.Name);
                 if (extension != null)
                 {
-                    LoadControl(extension);                    
+                    this.LoadControl(extension);                    
                 }
             }
             else
             {
-                foreach (var extension in extensionPointManager.GetEditPagePanelExtensionPoints(Module, Group))
+                foreach (var extension in extensionPointManager.GetEditPagePanelExtensionPoints(this.Module, this.Group))
                 {
                     if (extension != null)
                     {
-                        LoadControl(extension);                        
+                        this.LoadControl(extension);                        
                     }
                 }
             }
@@ -51,7 +51,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public void BindAction(int portalId, int tabId, int moduleId)
         {
-            foreach (var control in Controls)
+            foreach (var control in this.Controls)
             {
                 var panelcontrol = control as PanelEditPagePanelExtensionControl;
                 if (panelcontrol != null)
@@ -70,7 +70,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public void SaveAction(int portalId, int tabId, int moduleId)
         {
-            foreach (var control in Controls)
+            foreach (var control in this.Controls)
             {
                 var panelcontrol = control as PanelEditPagePanelExtensionControl;
                 if (panelcontrol != null)
@@ -89,7 +89,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public void CancelAction(int portalId, int tabId, int moduleId)
         {
-            foreach (var control in Controls)
+            foreach (var control in this.Controls)
             {
                 var panelcontrol = control as PanelEditPagePanelExtensionControl;
                 if (panelcontrol != null)
@@ -115,9 +115,9 @@ namespace DotNetNuke.ExtensionPoints
         protected override void RenderContents(HtmlTextWriter op)
         {
 
-            op.Write(@"<div class="""+CssClass+@""">
-	<h2 id="""+PanelId+@""" class=""dnnFormSectionHead"">
-<a href="" class=""dnnLabelExpanded"">"+Text+@"</a>
+            op.Write(@"<div class="""+this.CssClass+@""">
+	<h2 id="""+this.PanelId+@""" class=""dnnFormSectionHead"">
+<a href="" class=""dnnLabelExpanded"">"+this.Text+@"</a>
 </h2>
 	<fieldset>");
             base.RenderContents(op);

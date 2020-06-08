@@ -34,25 +34,25 @@ namespace Dnn.EditBar.UI.Services
         {
             try
             {
-                var resources = GetResourcesFromFile(culture);
+                var resources = this.GetResourcesFromFile(culture);
                 if (resources == null)
                 {
                     lock (_threadLocker)
                     {
-                        resources = GetResourcesFromFile(culture);
+                        resources = this.GetResourcesFromFile(culture);
                         if (resources == null)
                         {
-                            resources = GenerateJsonFile(culture);
+                            resources = this.GenerateJsonFile(culture);
                         }
                     }
                 }
 
-                return Request.CreateResponse(HttpStatusCode.OK, resources);
+                return this.Request.CreateResponse(HttpStatusCode.OK, resources);
             }
             catch (Exception ex)
             {
                 Exceptions.LogException(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
             }
         }
 
@@ -63,9 +63,9 @@ namespace Dnn.EditBar.UI.Services
         private IDictionary<string, IDictionary<string, string>> GetResourcesFromFile(string culture)
         {
 
-            if (!Expired(culture))
+            if (!this.Expired(culture))
             {
-                var jsonFileContent = GetJsonFileContent(culture);
+                var jsonFileContent = this.GetJsonFileContent(culture);
                 return jsonFileContent != null
                     ? JsonConvert.DeserializeObject<IDictionary<string, IDictionary<string, string>>>(jsonFileContent)
                     : null;
@@ -82,7 +82,7 @@ namespace Dnn.EditBar.UI.Services
                 return false;
             }
 
-            var jsonFilePath = GetResourcesJsonFilePath(culture);
+            var jsonFilePath = this.GetResourcesJsonFilePath(culture);
             var jsonFile = new FileInfo(jsonFilePath);
             if (!jsonFile.Exists)
             {
@@ -90,7 +90,7 @@ namespace Dnn.EditBar.UI.Services
             }
 
             var lastModifiedTime = jsonFile.LastWriteTime;
-            var resourceFiles = GetAllResourceFiles(culture);
+            var resourceFiles = this.GetAllResourceFiles(culture);
 
             var expired = resourceFiles.Select(file => new FileInfo(file))
                 .Any(resourceFile => resourceFile.LastWriteTime > lastModifiedTime);
@@ -104,14 +104,14 @@ namespace Dnn.EditBar.UI.Services
 
         private string GetJsonFileContent(string culture)
         {
-            var path = GetResourcesJsonFilePath(culture);
+            var path = this.GetResourcesJsonFilePath(culture);
             return File.Exists(path) ? File.ReadAllText(path, Encoding.UTF8) : null;
         }
 
         private IDictionary<string, IDictionary<string, string>> GenerateJsonFile(string culture)
         {
             var resources = new Dictionary<string, IDictionary<string, string>>();
-            var resourceFiles = GetAllResourceFiles(culture);
+            var resourceFiles = this.GetAllResourceFiles(culture);
             var editBarResourcesPath = Path.Combine(Constants.EditBarRelativePath, "App_LocalResources");
             foreach (var resourcesFile in resourceFiles)
             {
@@ -123,7 +123,7 @@ namespace Dnn.EditBar.UI.Services
             }
 
             var content = JsonConvert.SerializeObject(resources);
-            var filePath = GetResourcesJsonFilePath(culture);
+            var filePath = this.GetResourcesJsonFilePath(culture);
             var folderPath = Path.GetDirectoryName(filePath);
             if (!Directory.Exists(folderPath))
             {

@@ -29,7 +29,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         /// <returns>XmlDocument with the result of the merge operation</returns>
         private XmlDocument ExecuteMerge()
         {
-            return ExecuteMerge(null);
+            return this.ExecuteMerge(null);
         }
 
         /// <summary>
@@ -37,14 +37,14 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         /// </summary>
         private XmlDocument ExecuteMerge(string mergeName)
         {
-            string testMethodName = GetTestMethodName();
+            string testMethodName = this.GetTestMethodName();
 
-            XmlMerge merge = GetXmlMerge(mergeName ?? testMethodName);
-            XmlDocument targetDoc = LoadTargetDoc(testMethodName);
+            XmlMerge merge = this.GetXmlMerge(mergeName ?? testMethodName);
+            XmlDocument targetDoc = this.LoadTargetDoc(testMethodName);
 
             merge.UpdateConfig(targetDoc);
 
-            WriteToDebug(targetDoc);
+            this.WriteToDebug(targetDoc);
 
             return targetDoc;
         }
@@ -67,7 +67,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         private XmlDocument LoadTargetDoc(string testMethodName)
         {
             using (Stream targetStream =
-                _assembly.GetManifestResourceStream(string.Format("DotNetNuke.Tests.Integration.Services.Installer.MergeFiles.{0}Target.xml",
+                this._assembly.GetManifestResourceStream(string.Format("DotNetNuke.Tests.Integration.Services.Installer.MergeFiles.{0}Target.xml",
                                                                   testMethodName)))
             {
                 Debug.Assert(targetStream != null,
@@ -81,7 +81,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         private XmlMerge GetXmlMerge(string fileName)
         {
             using (Stream mergeStream =
-                _assembly.GetManifestResourceStream(string.Format("DotNetNuke.Tests.Integration.Services.Installer.MergeFiles.{0}Merge.xml",
+                this._assembly.GetManifestResourceStream(string.Format("DotNetNuke.Tests.Integration.Services.Installer.MergeFiles.{0}Merge.xml",
                                                                   fileName)))
             {
                 Debug.Assert(mergeStream != null,
@@ -112,7 +112,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 		[SetUp]
 		public void SetUp()
 		{
-			AppDomain.CurrentDomain.SetData("APPBASE", WebsitePhysicalAppPath);
+			AppDomain.CurrentDomain.SetData("APPBASE", this.WebsitePhysicalAppPath);
 
 			LoggerSource.SetTestableInstance(new TestLogSource());
 		}
@@ -121,7 +121,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void SimpleUpdate()
         {
-            XmlDocument targetDoc = ExecuteMerge();
+            XmlDocument targetDoc = this.ExecuteMerge();
 
             //children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/updateme/children/child");
@@ -135,7 +135,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void SimpleUpdateInLocation()
         {
-            XmlDocument targetDoc = ExecuteMerge("SimpleUpdate");
+            XmlDocument targetDoc = this.ExecuteMerge("SimpleUpdate");
 
             //children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/location/updateme/children/child");
@@ -149,7 +149,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void SimpleUpdateInLocationWithDistractingLocations()
         {
-            XmlDocument targetDoc = ExecuteMerge("SimpleUpdate");
+            XmlDocument targetDoc = this.ExecuteMerge("SimpleUpdate");
 
             //children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/location/updateme/children/child");
@@ -163,7 +163,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void UpdateWithTargetPath()
         {
-            XmlDocument targetDoc = ExecuteMerge();
+            XmlDocument targetDoc = this.ExecuteMerge();
 
             //children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/updateme/children/child");
@@ -177,7 +177,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void UpdateInLocationWithTargetPath()
         {
-            XmlDocument targetDoc = ExecuteMerge("UpdateWithTargetPath");
+            XmlDocument targetDoc = this.ExecuteMerge("UpdateWithTargetPath");
 
             //children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/location/updateme/children/child");
@@ -191,7 +191,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void UpdateWithDistractingLocationAndTargetPath()
         {
-            XmlDocument targetDoc = ExecuteMerge("UpdateWithTargetPath");
+            XmlDocument targetDoc = this.ExecuteMerge("UpdateWithTargetPath");
 
             //children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/updateme/children/child");
@@ -205,7 +205,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void UpdateInLocationWithDistractingLocationAndTargetPath()
         {
-            XmlDocument targetDoc = ExecuteMerge("UpdateWithTargetPath");
+            XmlDocument targetDoc = this.ExecuteMerge("UpdateWithTargetPath");
 
             //children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/location/updateme/children/child");
@@ -219,7 +219,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void UpdateInFirstLocationWithDistractingLocationAndTargetPath()
         {
-            XmlDocument targetDoc = ExecuteMerge("UpdateWithTargetPath");
+            XmlDocument targetDoc = this.ExecuteMerge("UpdateWithTargetPath");
 
             //children are in correct location
             //first location/updateme has updated node
@@ -244,7 +244,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void SimpleAdd()
         {
-            XmlDocument targetDoc = ExecuteMerge();
+            XmlDocument targetDoc = this.ExecuteMerge();
 
             //children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/updateme/children/child");
@@ -254,7 +254,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void AddWithLocation()
         {
-            XmlDocument targetDoc = ExecuteMerge("SimpleAdd");
+            XmlDocument targetDoc = this.ExecuteMerge("SimpleAdd");
 
             //children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/updateme/children/child");
@@ -277,7 +277,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void SimpleInsertBefore()
         {
-            XmlDocument targetDoc = ExecuteMerge();
+            XmlDocument targetDoc = this.ExecuteMerge();
 
             //children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/updateme/children/child");
@@ -291,7 +291,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void InsertBeforeInLocation()
         {
-            XmlDocument targetDoc = ExecuteMerge("SimpleInsertBefore");
+            XmlDocument targetDoc = this.ExecuteMerge("SimpleInsertBefore");
 
             //children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/location/updateme/children/child");
@@ -305,7 +305,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void SimpleInsertAfter()
         {
-            XmlDocument targetDoc = ExecuteMerge();
+            XmlDocument targetDoc = this.ExecuteMerge();
 
             //children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/updateme/children/child");
@@ -319,7 +319,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void InsertAfterInLocation()
         {
-            XmlDocument targetDoc = ExecuteMerge("SimpleInsertAfter");
+            XmlDocument targetDoc = this.ExecuteMerge("SimpleInsertAfter");
 
             //children are in correct location
             XmlNodeList nodes = targetDoc.SelectNodes("/configuration/location/updateme/children/child");
@@ -333,7 +333,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void SimpleRemove()
         {
-            XmlDocument targetDoc = ExecuteMerge();
+            XmlDocument targetDoc = this.ExecuteMerge();
 
             //node is gone
             var nodes = targetDoc.SelectNodes("//removeme");
@@ -347,7 +347,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void RemoveFromLocation()
         {
-            XmlDocument targetDoc = ExecuteMerge("SimpleRemove");
+            XmlDocument targetDoc = this.ExecuteMerge("SimpleRemove");
 
             //node is gone
             var nodes = targetDoc.SelectNodes("//removeme");
@@ -361,7 +361,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void SimpleRemoveAttribute()
         {
-            var targetDoc = ExecuteMerge();
+            var targetDoc = this.ExecuteMerge();
 
             var node = targetDoc.SelectSingleNode("/configuration/updateme");
             Assert.AreEqual(0, node.Attributes.Count);
@@ -370,7 +370,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void RemoveAttributeFromLocation()
         {
-            var targetDoc = ExecuteMerge("SimpleRemoveAttribute");
+            var targetDoc = this.ExecuteMerge("SimpleRemoveAttribute");
 
             var node = targetDoc.SelectSingleNode("/configuration/location/updateme");
             Assert.AreEqual(0, node.Attributes.Count);
@@ -379,7 +379,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void SimpleInsertAttribute()
         {
-            var targetDoc = ExecuteMerge();
+            var targetDoc = this.ExecuteMerge();
 
             var node = targetDoc.SelectSingleNode("/configuration/updateme");
             Assert.AreEqual(2, node.Attributes.Count);
@@ -389,7 +389,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void InsertAttributeInLocation()
         {
-            var targetDoc = ExecuteMerge("SimpleInsertAttribute");
+            var targetDoc = this.ExecuteMerge("SimpleInsertAttribute");
 
             var node = targetDoc.SelectSingleNode("/configuration/location/updateme");
             Assert.AreEqual(2, node.Attributes.Count);
@@ -399,7 +399,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void UpdateAttributeInLocation()
         {
-            var targetDoc = ExecuteMerge("SimpleInsertAttribute");
+            var targetDoc = this.ExecuteMerge("SimpleInsertAttribute");
 
             var node = targetDoc.SelectSingleNode("/configuration/location/updateme");
             Assert.AreEqual(2, node.Attributes.Count);
@@ -409,7 +409,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void SimpleUpdateWithKey()
         {
-            var targetDoc = ExecuteMerge();
+            var targetDoc = this.ExecuteMerge();
 
             //a key was added
             var nodes = targetDoc.SelectNodes("/configuration/updateme/add");
@@ -424,7 +424,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void UpdateWithKeyInLocation()
         {
-            var targetDoc = ExecuteMerge("SimpleUpdateWithKey");
+            var targetDoc = this.ExecuteMerge("SimpleUpdateWithKey");
 
             //a key was added
             var nodes = targetDoc.SelectNodes("/configuration/location/updateme/add");
@@ -439,12 +439,12 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void NoChangeOnOverwrite()
         {
-            XmlMerge merge = GetXmlMerge(nameof(NoChangeOnOverwrite));
-            XmlDocument targetDoc = LoadTargetDoc(nameof(NoChangeOnOverwrite));
+            XmlMerge merge = this.GetXmlMerge(nameof(this.NoChangeOnOverwrite));
+            XmlDocument targetDoc = this.LoadTargetDoc(nameof(this.NoChangeOnOverwrite));
 
             merge.UpdateConfig(targetDoc);
 
-            WriteToDebug(targetDoc);
+            this.WriteToDebug(targetDoc);
 
             var nodes = targetDoc.SelectNodes("/configuration/appSettings/add");
             Assert.AreEqual(3, nodes.Count);
@@ -455,12 +455,12 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void ShouldChangeOnOverwrite()
         {
-            XmlMerge merge = GetXmlMerge(nameof(ShouldChangeOnOverwrite));
-            XmlDocument targetDoc = LoadTargetDoc(nameof(ShouldChangeOnOverwrite));
+            XmlMerge merge = this.GetXmlMerge(nameof(this.ShouldChangeOnOverwrite));
+            XmlDocument targetDoc = this.LoadTargetDoc(nameof(this.ShouldChangeOnOverwrite));
 
             merge.UpdateConfig(targetDoc);
 
-            WriteToDebug(targetDoc);
+            this.WriteToDebug(targetDoc);
 
             var nodes = targetDoc.SelectNodes("/configuration/appSettings/add");
             Assert.AreEqual(3, nodes.Count);
@@ -471,7 +471,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         [Test]
         public void ShouldPreserveEmptyNamespaceOnSave()
         {
-            var targetDoc = ExecuteMerge();
+            var targetDoc = this.ExecuteMerge();
 
             var ns = new XmlNamespaceManager(targetDoc.NameTable);
             ns.AddNamespace("ab", "urn:schemas-microsoft-com:asm.v1");

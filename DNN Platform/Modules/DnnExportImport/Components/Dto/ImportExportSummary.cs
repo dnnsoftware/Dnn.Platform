@@ -19,7 +19,7 @@ namespace Dnn.ExportImport.Components.Dto
     {
         public ImportExportSummary()
         {
-            SummaryItems = new SummaryList();
+            this.SummaryItems = new SummaryList();
         }
         /// <summary>
         /// Does this import/export includes the properties definitions or not.
@@ -56,7 +56,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// <summary>
         /// Formatted Date from which data was taken to perform export.
         /// </summary>
-        public string FromDateString => Util.GetDateTimeString(FromDate);
+        public string FromDateString => Util.GetDateTimeString(this.FromDate);
 
         /// <summary>
         /// Date till which data was taken to perform export.
@@ -66,7 +66,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// <summary>
         /// Formatted Date till which data was taken to perform export.
         /// </summary>
-        public string ToDateString => Util.GetDateTimeString(ToDate);
+        public string ToDateString => Util.GetDateTimeString(this.ToDate);
 
         /// <summary>
         /// Summary of each item export.
@@ -80,19 +80,19 @@ namespace Dnn.ExportImport.Components.Dto
         public void ConvertToLocal(UserInfo userInfo)
         {
             if (userInfo == null) return;
-            ToDate = Util.ToLocalDateTime(ToDate, userInfo);
-            if (FromDate != null)
-                FromDate = Util.ToLocalDateTime(FromDate.Value, userInfo);
-            ExportFileInfo?.ConvertToLocal(userInfo);
+            this.ToDate = Util.ToLocalDateTime(this.ToDate, userInfo);
+            if (this.FromDate != null)
+                this.FromDate = Util.ToLocalDateTime(this.FromDate.Value, userInfo);
+            this.ExportFileInfo?.ConvertToLocal(userInfo);
 
-            if (SummaryItems == null) return;
+            if (this.SummaryItems == null) return;
             var tempSummaryItems = new SummaryList();
-            foreach (var summaryItem in SummaryItems)
+            foreach (var summaryItem in this.SummaryItems)
             {
                 summaryItem.ConvertToLocal(userInfo);
                 tempSummaryItems.Add(summaryItem);
             }
-            SummaryItems = tempSummaryItems;
+            this.SummaryItems = tempSummaryItems;
         }
     }
 }

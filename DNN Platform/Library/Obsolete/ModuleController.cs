@@ -49,14 +49,14 @@ namespace DotNetNuke.Entities.Modules
         [Obsolete("Deprecated in DotNetNuke 7.3. No longer neccessary. Scheduled removal in v10.0.0.")]
         public void CopyTabModuleSettings(ModuleInfo fromModule, ModuleInfo toModule)
         {
-            CopyTabModuleSettingsInternal(fromModule, toModule);
+            this.CopyTabModuleSettingsInternal(fromModule, toModule);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 7.3. Use an alternate overload. Scheduled removal in v10.0.0.")]
         public void DeleteAllModules(int moduleId, int tabId, List<TabInfo> fromTabs)
         {
-            DeleteAllModules(moduleId, tabId, fromTabs, true, false, false);
+            this.DeleteAllModules(moduleId, tabId, fromTabs, true, false, false);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -67,7 +67,7 @@ namespace DotNetNuke.Entities.Modules
             var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.MODULE_SETTING_DELETED.ToString()};
             log.LogProperties.Add(new LogDetailInfo("ModuleId", moduleId.ToString()));
             LogController.Instance.AddLog(log);
-            UpdateTabModuleVersionsByModuleID(moduleId);
+            this.UpdateTabModuleVersionsByModuleID(moduleId);
             ClearModuleSettingsCache(moduleId);
         }
 
@@ -122,14 +122,14 @@ namespace DotNetNuke.Entities.Modules
         [Obsolete("Deprecated in DNN 7.3. Replaced by GetTabModulesByModule(moduleID). Scheduled removal in v10.0.0.")]
         public ArrayList GetModuleTabs(int moduleID)
         {
-            return new ArrayList(GetTabModulesByModule(moduleID).ToArray());
+            return new ArrayList(this.GetTabModulesByModule(moduleID).ToArray());
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 7.3. Replaced by GetModules(portalId). Scheduled removal in v10.0.0.")]
         public ArrayList GetRecycleModules(int portalID)
         {
-            return GetModules(portalID);
+            return this.GetModules(portalID);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

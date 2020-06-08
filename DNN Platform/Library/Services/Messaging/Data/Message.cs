@@ -46,9 +46,9 @@ namespace DotNetNuke.Services.Messaging.Data
 
         public Message()
         {
-            Conversation = Guid.Empty;
-            Status = MessageStatusType.Draft;
-            MessageDate = DateTime.Now;
+            this.Conversation = Guid.Empty;
+            this.Status = MessageStatusType.Draft;
+            this.MessageDate = DateTime.Now;
         }
 
         #endregion
@@ -62,11 +62,11 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return _FromUserName;
+                return this._FromUserName;
             }
             private set
             {
-                _FromUserName = value;
+                this._FromUserName = value;
             }
         }
 
@@ -75,11 +75,11 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return _FromUserID;
+                return this._FromUserID;
             }
             set
             {
-                _FromUserID = value;
+                this._FromUserID = value;
             }
         }
 
@@ -88,11 +88,11 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return _ToRoleId;
+                return this._ToRoleId;
             }
             set
             {
-                _ToRoleId = value;
+                this._ToRoleId = value;
             }
         }
 
@@ -101,11 +101,11 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return _allowReply;
+                return this._allowReply;
             }
             set
             {
-                _allowReply = value;
+                this._allowReply = value;
             }
         }
 
@@ -114,11 +114,11 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return _skipInbox;
+                return this._skipInbox;
             }
             set
             {
-                _skipInbox = value;
+                this._skipInbox = value;
             }
         }
 
@@ -126,11 +126,11 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return _EmailSent;
+                return this._EmailSent;
             }
             set
             {
-                _EmailSent = value;
+                this._EmailSent = value;
             }
         }
 
@@ -139,11 +139,11 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return _Body;
+                return this._Body;
             }
             set
             {
-                _Body = value;
+                this._Body = value;
             }
         }
 
@@ -151,11 +151,11 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return _MessageDate;
+                return this._MessageDate;
             }
             set
             {
-                _MessageDate = value;
+                this._MessageDate = value;
             }
         }
 
@@ -163,11 +163,11 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return _Conversation;
+                return this._Conversation;
             }
             set
             {
-                _Conversation = value;
+                this._Conversation = value;
             }
         }
 
@@ -175,11 +175,11 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return _MessageID;
+                return this._MessageID;
             }
             private set
             {
-                _MessageID = value;
+                this._MessageID = value;
             }
         }
 
@@ -188,11 +188,11 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return _PortalID;
+                return this._PortalID;
             }
             set
             {
-                _PortalID = value;
+                this._PortalID = value;
             }
         }
 
@@ -200,11 +200,11 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return _ReplyTo;
+                return this._ReplyTo;
             }
             private set
             {
-                _ReplyTo = value;
+                this._ReplyTo = value;
             }
         }
 
@@ -212,11 +212,11 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return _Status;
+                return this._Status;
             }
             set
             {
-                _Status = value;
+                this._Status = value;
             }
         }
 
@@ -225,13 +225,13 @@ namespace DotNetNuke.Services.Messaging.Data
             get
             {
                 var ps = PortalSecurity.Instance;
-                return ps.InputFilter(_Subject, PortalSecurity.FilterFlag.NoMarkup);
+                return ps.InputFilter(this._Subject, PortalSecurity.FilterFlag.NoMarkup);
             }
             set
             {
                 var ps = PortalSecurity.Instance;
                 ps.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
-                _Subject = ps.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
+                this._Subject = ps.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
             }
         }
 
@@ -240,11 +240,11 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return _ToUserID;
+                return this._ToUserID;
             }
             set
             {
-                _ToUserID = value;
+                this._ToUserID = value;
             }
         }
 
@@ -252,11 +252,11 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return _ToUserName;
+                return this._ToUserName;
             }
             private set
             {
-                _ToUserName = value;
+                this._ToUserName = value;
             }
         }
 
@@ -265,11 +265,11 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return _EmailSentDate;
+                return this._EmailSentDate;
             }
             private set
             {
-                _EmailSentDate = value;
+                this._EmailSentDate = value;
             }
         }
 
@@ -278,11 +278,11 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return _EmailSchedulerInstance;
+                return this._EmailSchedulerInstance;
             }
             private set
             {
-                _EmailSchedulerInstance = value;
+                this._EmailSchedulerInstance = value;
             }
         }
 
@@ -293,16 +293,16 @@ namespace DotNetNuke.Services.Messaging.Data
         public Message GetReplyMessage()
         {
             var message = new Message();
-            message.AllowReply = AllowReply;
-            message.Body = string.Format("<br><br><br>On {0} {1} wrote ", MessageDate, FromUserName) + Body;
-            message.Conversation = Conversation;
-            message.FromUserID = ToUserID;
-            message.ToUserID = FromUserID;
-            message.ToUserName = FromUserName;
-            message.PortalID = PortalID;
-            message.ReplyTo = MessageID;
-            message.SkipInbox = SkipInbox;
-            message.Subject = "RE:" + Subject;
+            message.AllowReply = this.AllowReply;
+            message.Body = string.Format("<br><br><br>On {0} {1} wrote ", this.MessageDate, this.FromUserName) + this.Body;
+            message.Conversation = this.Conversation;
+            message.FromUserID = this.ToUserID;
+            message.ToUserID = this.FromUserID;
+            message.ToUserName = this.FromUserName;
+            message.PortalID = this.PortalID;
+            message.ReplyTo = this.MessageID;
+            message.SkipInbox = this.SkipInbox;
+            message.Subject = "RE:" + this.Subject;
 
             return message;
         }
@@ -313,26 +313,26 @@ namespace DotNetNuke.Services.Messaging.Data
 
         public void Fill(IDataReader dr)
         {
-            MessageID = Null.SetNullInteger(dr["MessageID"]);
-            PortalID = Null.SetNullInteger(dr["PortalID"]);
-            FromUserID = Null.SetNullInteger(dr["FromUserID"]);
-            FromUserName = Null.SetNullString(dr["FromUserName"]);
-            ToUserID = Null.SetNullInteger(dr["ToUserID"]);
+            this.MessageID = Null.SetNullInteger(dr["MessageID"]);
+            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
+            this.FromUserID = Null.SetNullInteger(dr["FromUserID"]);
+            this.FromUserName = Null.SetNullString(dr["FromUserName"]);
+            this.ToUserID = Null.SetNullInteger(dr["ToUserID"]);
             //'_ToUserName = Null.SetNullString(dr.Item("ToUserName"))
-            ReplyTo = Null.SetNullInteger(dr["ReplyTo"]);
-            Status = (MessageStatusType) Enum.Parse(typeof (MessageStatusType), Null.SetNullString(dr["Status"]));
-            Body = Null.SetNullString(dr["Body"]);
-            Subject = Null.SetNullString(dr["Subject"]);
-            MessageDate = Null.SetNullDateTime(dr["Date"]);
-            ToRoleID = Null.SetNullInteger(dr["ToRoleID"]);
-            AllowReply = Null.SetNullBoolean(dr["AllowReply"]);
-            SkipInbox = Null.SetNullBoolean(dr["SkipPortal"]);
-            EmailSent = Null.SetNullBoolean(dr["EmailSent"]);
-            ToUserName = Null.SetNullString(dr["ToUserName"]);
+            this.ReplyTo = Null.SetNullInteger(dr["ReplyTo"]);
+            this.Status = (MessageStatusType) Enum.Parse(typeof (MessageStatusType), Null.SetNullString(dr["Status"]));
+            this.Body = Null.SetNullString(dr["Body"]);
+            this.Subject = Null.SetNullString(dr["Subject"]);
+            this.MessageDate = Null.SetNullDateTime(dr["Date"]);
+            this.ToRoleID = Null.SetNullInteger(dr["ToRoleID"]);
+            this.AllowReply = Null.SetNullBoolean(dr["AllowReply"]);
+            this.SkipInbox = Null.SetNullBoolean(dr["SkipPortal"]);
+            this.EmailSent = Null.SetNullBoolean(dr["EmailSent"]);
+            this.ToUserName = Null.SetNullString(dr["ToUserName"]);
             string g = Null.SetNullString(dr["Conversation"]);
-            EmailSentDate = Null.SetNullDateTime(dr["EmailSentDate"]);
-            EmailSchedulerInstance = Null.SetNullGuid(dr["EmailSchedulerInstance"]);
-            Conversation = Null.SetNullGuid(dr["Conversation"]);
+            this.EmailSentDate = Null.SetNullDateTime(dr["EmailSentDate"]);
+            this.EmailSchedulerInstance = Null.SetNullGuid(dr["EmailSchedulerInstance"]);
+            this.Conversation = Null.SetNullGuid(dr["Conversation"]);
 
 
             //'Conversation = New Guid(g)
@@ -342,11 +342,11 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             get
             {
-                return MessageID;
+                return this.MessageID;
             }
             set
             {
-                MessageID = value;
+                this.MessageID = value;
             }
         }
 

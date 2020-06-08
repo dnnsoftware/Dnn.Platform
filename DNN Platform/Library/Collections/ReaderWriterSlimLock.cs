@@ -18,14 +18,14 @@ namespace DotNetNuke.Collections.Internal
 
         public ReaderWriterSlimLock(ReaderWriterLockSlim @lock)
         {
-            _lock = @lock;
+            this._lock = @lock;
         }
 
         #region ISharedCollectionLock Members
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
 
             GC.SuppressFinalize(this);
         }
@@ -34,7 +34,7 @@ namespace DotNetNuke.Collections.Internal
 
         private void EnsureNotDisposed()
         {
-            if (_disposed)
+            if (this._disposed)
             {
                 throw new ObjectDisposedException("ReaderWriterSlimLock");
             }
@@ -42,7 +42,7 @@ namespace DotNetNuke.Collections.Internal
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!this._disposed)
             {
                 if (disposing)
                 {
@@ -50,27 +50,27 @@ namespace DotNetNuke.Collections.Internal
                 }
 
                 //free unmanaged resrources here
-                if (_lock.IsReadLockHeld)
+                if (this._lock.IsReadLockHeld)
                 {
-                    _lock.ExitReadLock();
+                    this._lock.ExitReadLock();
                 }
-                else if (_lock.IsWriteLockHeld)
+                else if (this._lock.IsWriteLockHeld)
                 {
-                    _lock.ExitWriteLock();
+                    this._lock.ExitWriteLock();
                 }
-                else if (_lock.IsUpgradeableReadLockHeld)
+                else if (this._lock.IsUpgradeableReadLockHeld)
                 {
-                    _lock.ExitUpgradeableReadLock();
+                    this._lock.ExitUpgradeableReadLock();
                 }
 
-                _lock = null;
-                _disposed = true;
+                this._lock = null;
+                this._disposed = true;
             }
         }
 
         ~ReaderWriterSlimLock()
         {
-            Dispose(false);
+            this.Dispose(false);
         }
     }
 }

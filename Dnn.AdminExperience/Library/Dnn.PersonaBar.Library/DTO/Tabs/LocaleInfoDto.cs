@@ -11,8 +11,8 @@ namespace Dnn.PersonaBar.Library.DTO.Tabs
     {
         public LocaleInfoDto(string cultureCode)
         {
-            CultureCode = cultureCode;
-            Icon = string.IsNullOrEmpty(cultureCode)
+            this.CultureCode = cultureCode;
+            this.Icon = string.IsNullOrEmpty(cultureCode)
                 ? "/images/Flags/none.gif"
                 : $"/images/Flags/{cultureCode}.gif";
         }

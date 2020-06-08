@@ -476,7 +476,7 @@ namespace DotNetNuke.Security
             }
             if ((filterType & FilterFlag.NoScripting) == FilterFlag.NoScripting)
             {
-                tempInput = FormatDisableScripting(tempInput);
+                tempInput = this.FormatDisableScripting(tempInput);
             }
             if ((filterType & FilterFlag.MultiLine) == FilterFlag.MultiLine)
             {
@@ -484,7 +484,7 @@ namespace DotNetNuke.Security
             }
             if ((filterType & FilterFlag.NoProfanity) == FilterFlag.NoProfanity)
             {
-                tempInput = Replace(tempInput, ConfigType.ListController, "ProfanityFilter", FilterScope.SystemAndPortalList);
+                tempInput = this.Replace(tempInput, ConfigType.ListController, "ProfanityFilter", FilterScope.SystemAndPortalList);
             }
             return tempInput;
         }
@@ -805,7 +805,7 @@ namespace DotNetNuke.Security
         ///-----------------------------------------------------------------------------
         public bool ValidateInput(string userInput, FilterFlag filterType)
         {
-            string filteredInput = InputFilter(userInput, filterType);
+            string filteredInput = this.InputFilter(userInput, filterType);
 
             return (userInput == filteredInput);
         }

@@ -24,14 +24,14 @@ namespace DotNetNuke.Services.Exceptions
 
         public SearchException(string message, Exception inner, SearchItemInfo searchItem) : base(message, inner)
         {
-            m_SearchItem = searchItem;
+            this.m_SearchItem = searchItem;
         }
 
         public SearchItemInfo SearchItem
         {
             get
             {
-                return m_SearchItem;
+                return this.m_SearchItem;
             }
         }
     }

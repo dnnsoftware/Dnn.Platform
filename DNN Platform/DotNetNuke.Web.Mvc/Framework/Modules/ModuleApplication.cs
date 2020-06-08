@@ -42,11 +42,11 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         }
         public ModuleApplication(RequestContext requestContext, bool disableMvcResponseHeader)
         {
-            RequestContext = requestContext;
+            this.RequestContext = requestContext;
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             DisableMvcResponseHeader = disableMvcResponseHeader;
-            ControllerFactory = Globals.DependencyProvider.GetRequiredService<IControllerFactory>();
-            ViewEngines = new ViewEngineCollection();
+            this.ControllerFactory = Globals.DependencyProvider.GetRequiredService<IControllerFactory>();
+            this.ViewEngines = new ViewEngineCollection();
             //ViewEngines.Add(new ModuleDelegatingViewEngine());
         }
 
@@ -68,19 +68,19 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         {
             // Double-check lock to wait for initialization
             // TODO: Is there a better (preferably using events and waits) way to do this?
-            if (_initialized) return;
-            lock (_lock)
+            if (this._initialized) return;
+            lock (this._lock)
             {
-                if (_initialized) return;
-                Init();
-                _initialized = true;
+                if (this._initialized) return;
+                this.Init();
+                this._initialized = true;
             }
         }
 
         public virtual ModuleRequestResult ExecuteRequest(ModuleRequestContext context)
         {
-            EnsureInitialized();
-            RequestContext = RequestContext ?? new RequestContext(context.HttpContext, context.RouteData);
+            this.EnsureInitialized();
+            this.RequestContext = this.RequestContext ?? new RequestContext(context.HttpContext, context.RouteData);
             var currentContext = HttpContext.Current;
             if (currentContext != null)
             {
@@ -90,13 +90,13 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                     ValidationUtility.EnableDynamicValidation(currentContext);
                 }
             }
-            AddVersionHeader(RequestContext.HttpContext);
-            RemoveOptionalRoutingParameters();
+            this.AddVersionHeader(this.RequestContext.HttpContext);
+            this.RemoveOptionalRoutingParameters();
 
-            var controllerName = RequestContext.RouteData.GetRequiredString("controller");
+            var controllerName = this.RequestContext.RouteData.GetRequiredString("controller");
 
             //Construct the controller using the ControllerFactory
-            var controller = ControllerFactory.CreateController(RequestContext, controllerName);
+            var controller = this.ControllerFactory.CreateController(this.RequestContext, controllerName);
             try
             {
                 // Check if the controller supports IDnnController
@@ -120,11 +120,11 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                                                     Localization.LocalResourceDirectory,
                                                     controllerName);
 
-                moduleController.ViewEngineCollectionEx = ViewEngines;
+                moduleController.ViewEngineCollectionEx = this.ViewEngines;
                 // Execute the controller and capture the result
                 // if our ActionFilter is executed after the ActionResult has triggered an Exception the filter
                 // MUST explicitly flip the ExceptionHandled bit otherwise the view will not render
-                moduleController.Execute(RequestContext);
+                moduleController.Execute(this.RequestContext);
                 var result = moduleController.ResultOfLastExecute;
 
                 // Return the final result
@@ -139,13 +139,13 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             }
             finally
             {
-                ControllerFactory.ReleaseController(controller);
+                this.ControllerFactory.ReleaseController(controller);
             }
         }
 
         protected internal virtual void Init()
         {
-            var prefix = NormalizeFolderPath(FolderPath);
+            var prefix = NormalizeFolderPath(this.FolderPath);
             string[] masterFormats =
             { 
                 string.Format(CultureInfo.InvariantCulture, ControllerMasterFormat, prefix),
@@ -159,7 +159,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                 string.Format(CultureInfo.InvariantCulture, SharedPartialFormat, prefix)
             };
 
-            ViewEngines.Add(new RazorViewEngine
+            this.ViewEngines.Add(new RazorViewEngine
                                     {
                                         MasterLocationFormats = masterFormats,
                                         ViewLocationFormats = viewFormats,
@@ -183,7 +183,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
         private void RemoveOptionalRoutingParameters()
         {
-            var rvd = RequestContext.RouteData.Values;
+            var rvd = this.RequestContext.RouteData.Values;
 
             // Ensure delegate is stateless
             rvd.RemoveFromDictionary((entry) => entry.Value == UrlParameter.Optional);

@@ -47,14 +47,14 @@ namespace DotNetNuke.Services.Search.Controllers
 
         public SearchResults SiteSearch(SearchQuery searchQuery)
         {
-            var results = GetResults(searchQuery);
+            var results = this.GetResults(searchQuery);
             return new SearchResults{TotalHits = results.Item1, Results = results.Item2};
         }
 
         public SearchResults ModuleSearch(SearchQuery searchQuery)
         {
-            searchQuery.SearchTypeIds = new List<int> { _moduleSearchTypeId };
-            var results = GetResults(searchQuery);
+            searchQuery.SearchTypeIds = new List<int> { this._moduleSearchTypeId };
+            var results = this.GetResults(searchQuery);
             return new SearchResults { TotalHits = results.Item1, Results = results.Item2 };
         }
 
@@ -67,7 +67,7 @@ namespace DotNetNuke.Services.Search.Controllers
             Requires.NotNull("Query", searchQuery);
             Requires.PropertyNotEqualTo("searchQuery", "SearchTypeIds", searchQuery.SearchTypeIds.Count(), 0);
 
-            if((searchQuery.ModuleId > 0) && (searchQuery.SearchTypeIds.Count() > 1 || !searchQuery.SearchTypeIds.Contains(_moduleSearchTypeId)))
+            if((searchQuery.ModuleId > 0) && (searchQuery.SearchTypeIds.Count() > 1 || !searchQuery.SearchTypeIds.Contains(this._moduleSearchTypeId)))
                 throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleIdMustHaveSearchTypeIdForModule", "ModuleId based search must have SearchTypeId for a module only"));
 
             if(searchQuery.SortField == SortFields.CustomStringField || searchQuery.SortField == SortFields.CustomNumericField
@@ -112,7 +112,7 @@ namespace DotNetNuke.Services.Search.Controllers
             }
             if (searchQuery.PortalIds.Any()) query.Add(portalIdQuery, Occur.MUST);
 
-            ApplySearchTypeIdFilter(query, searchQuery);
+            this.ApplySearchTypeIdFilter(query, searchQuery);
 
             if (searchQuery.BeginModifiedTimeUtc > DateTime.MinValue && searchQuery.EndModifiedTimeUtc >= searchQuery.BeginModifiedTimeUtc)
             {
@@ -156,14 +156,14 @@ namespace DotNetNuke.Services.Search.Controllers
             var luceneQuery = new LuceneQuery
             {
                 Query = query,
-                Sort = GetSort(searchQuery),
+                Sort = this.GetSort(searchQuery),
                 PageIndex = searchQuery.PageIndex,
                 PageSize = searchQuery.PageSize,
                 TitleSnippetLength = searchQuery.TitleSnippetLength,
                 BodySnippetLength = searchQuery.BodySnippetLength
             };
 
-            return GetSecurityTrimmedResults(searchQuery, luceneQuery);
+            return this.GetSecurityTrimmedResults(searchQuery, luceneQuery);
         }
 
         private Sort GetSort(SearchQuery query)
@@ -208,7 +208,7 @@ namespace DotNetNuke.Services.Search.Controllers
         private void ApplySearchTypeIdFilter(BooleanQuery query, SearchQuery searchQuery)
         {
             //Special handling for Module Search
-            if (searchQuery.SearchTypeIds.Count() == 1 && searchQuery.SearchTypeIds.Contains(_moduleSearchTypeId))
+            if (searchQuery.SearchTypeIds.Count() == 1 && searchQuery.SearchTypeIds.Contains(this._moduleSearchTypeId))
             {
                 //When moduleid is specified, we ignore other searchtypeid or moduledefinitionid. Major security check
                 if (searchQuery.ModuleId > 0)
@@ -227,14 +227,14 @@ namespace DotNetNuke.Services.Search.Controllers
                         query.Add(modDefQuery, Occur.MUST); //Note the MUST
                 }
 
-                query.Add(NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, _moduleSearchTypeId, _moduleSearchTypeId, true, true), Occur.MUST);
+                query.Add(NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, this._moduleSearchTypeId, this._moduleSearchTypeId, true, true), Occur.MUST);
             }
             else
             {
                 var searchTypeIdQuery = new BooleanQuery();
                 foreach (var searchTypeId in searchQuery.SearchTypeIds)
                 {
-                    if (searchTypeId == _moduleSearchTypeId)
+                    if (searchTypeId == this._moduleSearchTypeId)
                     {
 			foreach (var moduleDefId in searchQuery.ModuleDefIds.OrderBy(id => id))
                         {
@@ -383,7 +383,7 @@ namespace DotNetNuke.Services.Search.Controllers
         private Dictionary<int, BaseResultController> GetSearchResultControllers()
         {
             var cachArg = new CacheItemArgs(SeacrchContollersCacheKey, 120, CacheItemPriority.Default);
-            return CBO.GetCachedObject<Dictionary<int, BaseResultController>>(cachArg, GetSearchResultsControllersCallBack);
+            return CBO.GetCachedObject<Dictionary<int, BaseResultController>>(cachArg, this.GetSearchResultsControllersCallBack);
         }
 
         private Dictionary<int, BaseResultController> GetSearchResultsControllersCallBack(CacheItemArgs cacheItem)
@@ -423,9 +423,9 @@ namespace DotNetNuke.Services.Search.Controllers
                     {
                         LuceneQuery = luceneQuery,
                         SearchQuery = searchQuery,
-                        SecurityCheckerDelegate = HasPermissionToViewDoc
+                        SecurityCheckerDelegate = this.HasPermissionToViewDoc
                     });
-                results = luceneResults.Results.Select(GetSearchResultFromLuceneResult).ToList();
+                results = luceneResults.Results.Select(this.GetSearchResultFromLuceneResult).ToList();
                 totalHits = luceneResults.TotalHits;
 
                 //****************************************************************************
@@ -435,7 +435,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 {
                     if (string.IsNullOrEmpty(result.Url))
                     {
-                        var resultController = GetSearchResultControllers().Single(sc => sc.Key == result.SearchTypeId).Value;
+                        var resultController = this.GetSearchResultControllers().Single(sc => sc.Key == result.SearchTypeId).Value;
                         result.Url = resultController.GetDocUrl(result);
                     }
                 }
@@ -448,7 +448,7 @@ namespace DotNetNuke.Services.Search.Controllers
         {
             // others LuceneResult fields are not impotrant at this moment
             var result = GetPartialSearchResult(document, searchQuery);
-            var resultController = GetSearchResultControllers().SingleOrDefault(sc => sc.Key == result.SearchTypeId).Value;
+            var resultController = this.GetSearchResultControllers().SingleOrDefault(sc => sc.Key == result.SearchTypeId).Value;
             return resultController != null && resultController.HasViewPermission(result);
         }
 

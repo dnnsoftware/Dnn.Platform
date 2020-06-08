@@ -99,9 +99,9 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-				var isHost = Globals.IsHostTab(PortalSettings.ActiveTab.TabID);
+				var isHost = Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
                 //if not host tab but current edit user is a host user, then return true
-                if(!isHost && User != null && User.IsSuperUser)
+                if(!isHost && this.User != null && this.User.IsSuperUser)
                 {
                     isHost = true;
                 }
@@ -114,11 +114,11 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-				return _maxHeight;
+				return this._maxHeight;
 			}
 			set
 			{
-				_maxHeight = value;
+				this._maxHeight = value;
 			}
 		}
 
@@ -126,11 +126,11 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-				return _maxWidth;
+				return this._maxWidth;
 			}
 			set
 			{
-				_maxWidth = value;
+				this._maxWidth = value;
 			}
 		}
 
@@ -145,11 +145,11 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-				return ViewState["Mode"] == null ? FileControlMode.Normal : (FileControlMode) ViewState["Mode"];
+				return this.ViewState["Mode"] == null ? FileControlMode.Normal : (FileControlMode) this.ViewState["Mode"];
 			}
 			set
 			{
-				ViewState["Mode"] = value;
+				this.ViewState["Mode"] = value;
 			}
 		}
 
@@ -161,7 +161,7 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-                return IsHost ? Globals.HostMapPath : PortalSettings.HomeDirectoryMapPath;
+                return this.IsHost ? Globals.HostMapPath : this.PortalSettings.HomeDirectoryMapPath;
 			}
 		}
 
@@ -176,13 +176,13 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-                if ((Page.Request.QueryString["pid"] != null) && (Globals.IsHostTab(PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
+                if ((this.Page.Request.QueryString["pid"] != null) && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
-                    return Int32.Parse(Page.Request.QueryString["pid"]);
+                    return Int32.Parse(this.Page.Request.QueryString["pid"]);
                 }
-			    if (!IsHost)
+			    if (!this.IsHost)
 			    {
-			        return PortalSettings.PortalId;
+			        return this.PortalSettings.PortalId;
 			    }
 
 			    return Null.NullInteger;			    
@@ -215,12 +215,12 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-				var cssClass = Convert.ToString(ViewState["CommandCssClass"]);
+				var cssClass = Convert.ToString(this.ViewState["CommandCssClass"]);
 				return string.IsNullOrEmpty(cssClass) ? "dnnSecondaryAction" : cssClass;
 			}
 			set
 			{
-				ViewState["CommandCssClass"] = value;
+				this.ViewState["CommandCssClass"] = value;
 			}
 		}
 
@@ -235,11 +235,11 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-				return ViewState["FileFilter"] != null ? (string) ViewState["FileFilter"] : "";
+				return this.ViewState["FileFilter"] != null ? (string) this.ViewState["FileFilter"] : "";
 			}
 			set
 			{
-				ViewState["FileFilter"] = value;
+				this.ViewState["FileFilter"] = value;
 			}
 		}
 
@@ -251,29 +251,29 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-				EnsureChildControls();
-				if (ViewState["FileID"] == null)
+				this.EnsureChildControls();
+				if (this.ViewState["FileID"] == null)
 				{
 					//Get FileId from the file combo
 					var fileId = Null.NullInteger;
-					if (_cboFiles.SelectedItem != null)
+					if (this._cboFiles.SelectedItem != null)
 					{
-						fileId = Int32.Parse(_cboFiles.SelectedItem.Value);
+						fileId = Int32.Parse(this._cboFiles.SelectedItem.Value);
 					}
-					ViewState["FileID"] = fileId;
+					this.ViewState["FileID"] = fileId;
 				}
-				return Convert.ToInt32(ViewState["FileID"]);
+				return Convert.ToInt32(this.ViewState["FileID"]);
 			}
 			set
 			{
-				EnsureChildControls();
-				ViewState["FileID"] = value;
-				if (string.IsNullOrEmpty(FilePath))
+				this.EnsureChildControls();
+				this.ViewState["FileID"] = value;
+				if (string.IsNullOrEmpty(this.FilePath))
 				{
 					var fileInfo = FileManager.Instance.GetFile(value);
 					if (fileInfo != null)
 					{
-						SetFilePath(fileInfo.Folder + fileInfo.FileName);
+						this.SetFilePath(fileInfo.Folder + fileInfo.FileName);
 					}
 				}
 			}
@@ -287,11 +287,11 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-				return Convert.ToString(ViewState["FilePath"]);
+				return Convert.ToString(this.ViewState["FilePath"]);
 			}
 			set
 			{
-				ViewState["FilePath"] = value;
+				this.ViewState["FilePath"] = value;
 			}
 		}
 
@@ -306,11 +306,11 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-				return ViewState["UsePersonalFolder"] != null && Convert.ToBoolean(ViewState["UsePersonalFolder"]);
+				return this.ViewState["UsePersonalFolder"] != null && Convert.ToBoolean(this.ViewState["UsePersonalFolder"]);
 			}
 			set
 			{
-				ViewState["UsePersonalFolder"] = value;
+				this.ViewState["UsePersonalFolder"] = value;
 			}
 		}
 
@@ -322,12 +322,12 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-				var cssClass = Convert.ToString(ViewState["LabelCssClass"]);
+				var cssClass = Convert.ToString(this.ViewState["LabelCssClass"]);
 				return string.IsNullOrEmpty(cssClass) ? "" : cssClass;
 			}
 			set
 			{
-				ViewState["LabelCssClass"] = value;
+				this.ViewState["LabelCssClass"] = value;
 			}
 		}
 
@@ -335,12 +335,12 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-				var permissions = Convert.ToString(ViewState["Permissions"]);
+				var permissions = Convert.ToString(this.ViewState["Permissions"]);
 				return string.IsNullOrEmpty(permissions) ? "BROWSE,ADD" : permissions;
 			}
 			set
 			{
-				ViewState["Permissions"] = value;
+				this.ViewState["Permissions"] = value;
 			}
 		}
 
@@ -355,11 +355,11 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-				return ViewState["Required"] != null && Convert.ToBoolean(ViewState["Required"]);
+				return this.ViewState["Required"] != null && Convert.ToBoolean(this.ViewState["Required"]);
 			}
 			set
 			{
-				ViewState["Required"] = value;
+				this.ViewState["Required"] = value;
 			}
 		}
 
@@ -367,11 +367,11 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-				return ViewState["ShowFolders"] == null || Convert.ToBoolean(ViewState["ShowFolders"]);
+				return this.ViewState["ShowFolders"] == null || Convert.ToBoolean(this.ViewState["ShowFolders"]);
 			}
 			set
 			{
-				ViewState["ShowFolders"] = value;
+				this.ViewState["ShowFolders"] = value;
 			}
 		}
 
@@ -386,11 +386,11 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-				return ViewState["ShowUpLoad"] == null || Convert.ToBoolean(ViewState["ShowUpLoad"]);
+				return this.ViewState["ShowUpLoad"] == null || Convert.ToBoolean(this.ViewState["ShowUpLoad"]);
 			}
 			set
 			{
-				ViewState["ShowUpLoad"] = value;
+				this.ViewState["ShowUpLoad"] = value;
 			}
 		}
 
@@ -407,10 +407,10 @@ namespace DotNetNuke.Web.UI.WebControls
 		private void AddButton(ref LinkButton button)
 		{
 		    button = new LinkButton {EnableViewState = false, CausesValidation = false};
-		    button.ControlStyle.CssClass = CommandCssClass;
+		    button.ControlStyle.CssClass = this.CommandCssClass;
 			button.Visible = false;
 
-			_pnlButtons.Controls.Add(button);
+			this._pnlButtons.Controls.Add(button);
 		}
 
 		/// <summary>
@@ -418,18 +418,18 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// </summary>
 		private void AddButtonArea()
 		{
-		    _pnlButtons = new Panel {Visible = false};
+		    this._pnlButtons = new Panel {Visible = false};
 
-		    AddButton(ref _cmdUpload);
-			_cmdUpload.Click += UploadFile;
+		    this.AddButton(ref this._cmdUpload);
+			this._cmdUpload.Click += this.UploadFile;
 
-			AddButton(ref _cmdSave);
-			_cmdSave.Click += SaveFile;
+			this.AddButton(ref this._cmdSave);
+			this._cmdSave.Click += this.SaveFile;
 
-			AddButton(ref _cmdCancel);
-			_cmdCancel.Click += CancelUpload;
+			this.AddButton(ref this._cmdCancel);
+			this._cmdCancel.Click += this.CancelUpload;
 
-			_pnlLeftDiv.Controls.Add(_pnlButtons);
+			this._pnlLeftDiv.Controls.Add(this._pnlButtons);
 		}
 
 		/// <summary>
@@ -438,28 +438,28 @@ namespace DotNetNuke.Web.UI.WebControls
 		private void AddFileAndUploadArea()
 		{
 			//Create Url Div
-		    _pnlFile = new Panel {CssClass = "dnnFormItem"};
+		    this._pnlFile = new Panel {CssClass = "dnnFormItem"};
 
 		    //Create File Label
-		    _lblFile = new Label {EnableViewState = false};
-		    _pnlFile.Controls.Add(_lblFile);
+		    this._lblFile = new Label {EnableViewState = false};
+		    this._pnlFile.Controls.Add(this._lblFile);
 
 			//Create Files Combo
-		    _cboFiles = new DropDownList {ID = "File", DataTextField = "Text", DataValueField = "Value", AutoPostBack = true};
-		    _cboFiles.SelectedIndexChanged += FileChanged;
-			_pnlFile.Controls.Add(_cboFiles);
+		    this._cboFiles = new DropDownList {ID = "File", DataTextField = "Text", DataValueField = "Value", AutoPostBack = true};
+		    this._cboFiles.SelectedIndexChanged += this.FileChanged;
+			this._pnlFile.Controls.Add(this._cboFiles);
 
-			_pnlLeftDiv.Controls.Add(_pnlFile);
+			this._pnlLeftDiv.Controls.Add(this._pnlFile);
 
 			//Create Upload Div
-		    _pnlUpload = new Panel {CssClass = "dnnFormItem"};
+		    this._pnlUpload = new Panel {CssClass = "dnnFormItem"};
 
 		    //Create Upload Box
-			_txtFile = new HtmlInputFile();
-			_txtFile.Attributes.Add("size", "13");
-			_pnlUpload.Controls.Add(_txtFile);
+			this._txtFile = new HtmlInputFile();
+			this._txtFile.Attributes.Add("size", "13");
+			this._pnlUpload.Controls.Add(this._txtFile);
 
-			_pnlLeftDiv.Controls.Add(_pnlUpload);
+			this._pnlLeftDiv.Controls.Add(this._pnlUpload);
 		}
 
 		/// <summary>
@@ -468,22 +468,22 @@ namespace DotNetNuke.Web.UI.WebControls
 		private void AddFolderArea()
 		{
 			//Create Url Div
-		    _pnlFolder = new Panel {CssClass = "dnnFormItem"};
+		    this._pnlFolder = new Panel {CssClass = "dnnFormItem"};
 
 		    //Create Folder Label
-		    _lblFolder = new Label {EnableViewState = false};
-		    _pnlFolder.Controls.Add(_lblFolder);
+		    this._lblFolder = new Label {EnableViewState = false};
+		    this._pnlFolder.Controls.Add(this._lblFolder);
 
 			//Create Folders Combo
-		    _cboFolders = new DropDownList {ID = "Folder", AutoPostBack = true};
-		    _cboFolders.SelectedIndexChanged += FolderChanged;
-			_pnlFolder.Controls.Add(_cboFolders);
+		    this._cboFolders = new DropDownList {ID = "Folder", AutoPostBack = true};
+		    this._cboFolders.SelectedIndexChanged += this.FolderChanged;
+			this._pnlFolder.Controls.Add(this._cboFolders);
 
 			// add to left div
-			_pnlLeftDiv.Controls.Add(_pnlFolder);
+			this._pnlLeftDiv.Controls.Add(this._pnlFolder);
 
 			//Load Folders
-			LoadFolders();
+			this.LoadFolders();
 		}
 
 		/// <summary>
@@ -491,8 +491,8 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// </summary>
 		private void GeneratePreviewImage()
 		{
-			_imgPreview = new Image();
-			_pnlRightDiv.Controls.Add(_imgPreview);
+			this._imgPreview = new Image();
+			this._pnlRightDiv.Controls.Add(this._imgPreview);
 		}
 
 		/// <summary>
@@ -500,30 +500,30 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// </summary>
 		private void AddMessageRow()
 		{
-		    _pnlMessage = new Panel {CssClass = "dnnFormMessage dnnFormWarning"};
+		    this._pnlMessage = new Panel {CssClass = "dnnFormMessage dnnFormWarning"};
 
 		    //Create Label
-		    _lblMessage = new Label {EnableViewState = false, Text = ""};
-		    _pnlMessage.Controls.Add(_lblMessage);
+		    this._lblMessage = new Label {EnableViewState = false, Text = ""};
+		    this._pnlMessage.Controls.Add(this._lblMessage);
 
-			_pnlLeftDiv.Controls.Add(_pnlMessage);
+			this._pnlLeftDiv.Controls.Add(this._pnlMessage);
 		}
 
 		private bool IsUserFolder(string folderPath)
 		{
-            UserInfo user = User ?? UserController.Instance.GetCurrentUserInfo();
+            UserInfo user = this.User ?? UserController.Instance.GetCurrentUserInfo();
             return (folderPath.StartsWith("users/", StringComparison.InvariantCultureIgnoreCase) && folderPath.EndsWith(string.Format("/{0}/", user.UserID)));
 		}
 
 		private void LoadFiles()
 		{
-		    int effectivePortalId = PortalId;
-            if (IsUserFolder(_cboFolders.SelectedItem.Value))
+		    int effectivePortalId = this.PortalId;
+            if (this.IsUserFolder(this._cboFolders.SelectedItem.Value))
             {
-                effectivePortalId = PortalController.GetEffectivePortalId(PortalId);
+                effectivePortalId = PortalController.GetEffectivePortalId(this.PortalId);
             }
-            _cboFiles.DataSource = Globals.GetFileList(effectivePortalId, FileFilter, !Required, _cboFolders.SelectedItem.Value);							
-			_cboFiles.DataBind();
+            this._cboFiles.DataSource = Globals.GetFileList(effectivePortalId, this.FileFilter, !this.Required, this._cboFolders.SelectedItem.Value);							
+			this._cboFiles.DataBind();
 		}
 
 		/// <summary>
@@ -531,14 +531,14 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// </summary>
 		private void LoadFolders()
 		{
-            UserInfo user = User ?? UserController.Instance.GetCurrentUserInfo();
-            _cboFolders.Items.Clear();
+            UserInfo user = this.User ?? UserController.Instance.GetCurrentUserInfo();
+            this._cboFolders.Items.Clear();
 
 			//Add Personal Folder
-			if (UsePersonalFolder)
+			if (this.UsePersonalFolder)
 			{
 			    var userFolder = FolderManager.Instance.GetUserFolder(user).FolderPath;
-				var userFolderItem = _cboFolders.Items.FindByValue(userFolder);
+				var userFolderItem = this._cboFolders.Items.FindByValue(userFolder);
 				if (userFolderItem != null)
 				{
 					userFolderItem.Text = Utilities.GetLocalizedString("MyFolder");
@@ -546,12 +546,12 @@ namespace DotNetNuke.Web.UI.WebControls
 				else
 				{
 					//Add DummyFolder
-					_cboFolders.Items.Add(new ListItem(Utilities.GetLocalizedString("MyFolder"), userFolder));
+					this._cboFolders.Items.Add(new ListItem(Utilities.GetLocalizedString("MyFolder"), userFolder));
 				}
 			}
 			else
 			{
-                var folders = FolderManager.Instance.GetFolders(PortalId, "READ,ADD", user.UserID);
+                var folders = FolderManager.Instance.GetFolders(this.PortalId, "READ,ADD", user.UserID);
 				foreach (FolderInfo folder in folders)
 				{
 				    var folderItem = new ListItem
@@ -562,7 +562,7 @@ namespace DotNetNuke.Web.UI.WebControls
 				                                     : folder.DisplayPath,
 				                             Value = folder.FolderPath
 				                         };
-				    _cboFolders.Items.Add(folderItem);
+				    this._cboFolders.Items.Add(folderItem);
 				}
 			}
 		}
@@ -575,7 +575,7 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// </remarks>
 		private void SetFilePath()
 		{
-			SetFilePath(_cboFiles.SelectedItem.Text);
+			this.SetFilePath(this._cboFiles.SelectedItem.Text);
 		}
 
 		/// <summary>
@@ -587,13 +587,13 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// <param name = "fileName">The filename to use in setting the property</param>
 		private void SetFilePath(string fileName)
 		{
-			if (string.IsNullOrEmpty(_cboFolders.SelectedItem.Value))
+			if (string.IsNullOrEmpty(this._cboFolders.SelectedItem.Value))
 			{
-				FilePath = fileName;
+				this.FilePath = fileName;
 			}
 			else
 			{
-				FilePath = (_cboFolders.SelectedItem.Value + "/") + fileName;
+				this.FilePath = (this._cboFolders.SelectedItem.Value + "/") + fileName;
 			}
 		}
 
@@ -610,7 +610,7 @@ namespace DotNetNuke.Web.UI.WebControls
 				button.Text = Utilities.GetLocalizedString(command);
 			}
 			AJAX.RegisterPostBackControl(button);
-			_pnlButtons.Visible = true;
+			this._pnlButtons.Visible = true;
 		}
 
 		/// <summary>
@@ -618,29 +618,29 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// </summary>
 		private void ShowImage()
 		{
-			var image = (FileInfo)FileManager.Instance.GetFile(FileID);
+			var image = (FileInfo)FileManager.Instance.GetFile(this.FileID);
 
             if (image != null)
             {
-                _imgPreview.ImageUrl = FileManager.Instance.GetUrl(image);
+                this._imgPreview.ImageUrl = FileManager.Instance.GetUrl(image);
                 try
                 {
-                    Utilities.CreateThumbnail(image, _imgPreview, MaxWidth, MaxHeight);
+                    Utilities.CreateThumbnail(image, this._imgPreview, this.MaxWidth, this.MaxHeight);
                 }
                 catch (Exception)
                 {
                     Logger.WarnFormat("Unable to create thumbnail for {0}", image.PhysicalPath);
-                    _pnlRightDiv.Visible = false;
+                    this._pnlRightDiv.Visible = false;
                 }
 
             }
             else
             {
-                _imgPreview.Visible = false;
+                this._imgPreview.Visible = false;
 
                 Panel imageHolderPanel = new Panel { CssClass = "dnnFilePickerImageHolder" };
-                _pnlRightDiv.Controls.Add(imageHolderPanel);
-                _pnlRightDiv.Visible = true;
+                this._pnlRightDiv.Controls.Add(imageHolderPanel);
+                this._pnlRightDiv.Visible = true;
             }
 		}
 
@@ -651,8 +651,8 @@ namespace DotNetNuke.Web.UI.WebControls
 		protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
-			LocalResourceFile = Utilities.GetLocalResourceFile(this);
-			EnsureChildControls();
+			this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
+			this.EnsureChildControls();
 		}
 
 	    /// <summary>
@@ -662,26 +662,26 @@ namespace DotNetNuke.Web.UI.WebControls
 		protected override void CreateChildControls()
 		{
 			//First clear the controls collection
-			Controls.Clear();
+			this.Controls.Clear();
 
-	        _pnlContainer = new Panel {CssClass = "dnnFilePicker"};
+	        this._pnlContainer = new Panel {CssClass = "dnnFilePicker"};
 
-	        _pnlLeftDiv = new Panel {CssClass = "dnnLeft"};
+	        this._pnlLeftDiv = new Panel {CssClass = "dnnLeft"};
 
-	        AddFolderArea();
-			AddFileAndUploadArea();
-			AddButtonArea();
-			AddMessageRow();
+	        this.AddFolderArea();
+			this.AddFileAndUploadArea();
+			this.AddButtonArea();
+			this.AddMessageRow();
 
-			_pnlContainer.Controls.Add(_pnlLeftDiv);
+			this._pnlContainer.Controls.Add(this._pnlLeftDiv);
 
-	        _pnlRightDiv = new Panel {CssClass = "dnnLeft"};
+	        this._pnlRightDiv = new Panel {CssClass = "dnnLeft"};
 
-	        GeneratePreviewImage();
+	        this.GeneratePreviewImage();
 		
-			_pnlContainer.Controls.Add(_pnlRightDiv);
+			this._pnlContainer.Controls.Add(this._pnlRightDiv);
 
-			Controls.Add(_pnlContainer);
+			this.Controls.Add(this._pnlContainer);
 
 			base.CreateChildControls();
 		}
@@ -693,88 +693,88 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			base.OnPreRender(e);
 
-			if (_cboFolders.Items.Count > 0)
+			if (this._cboFolders.Items.Count > 0)
 			{
 				//Configure Labels
-				_lblFolder.Text = Utilities.GetLocalizedString("Folder");
-				_lblFolder.CssClass = LabelCssClass;
-				_lblFile.Text = Utilities.GetLocalizedString("File");
-				_lblFile.CssClass = LabelCssClass;
+				this._lblFolder.Text = Utilities.GetLocalizedString("Folder");
+				this._lblFolder.CssClass = this.LabelCssClass;
+				this._lblFile.Text = Utilities.GetLocalizedString("File");
+				this._lblFile.CssClass = this.LabelCssClass;
 
 				//select folder
 				string fileName;
 				string folderPath;
-				if (!string.IsNullOrEmpty(FilePath))
+				if (!string.IsNullOrEmpty(this.FilePath))
 				{
-					fileName = FilePath.Substring(FilePath.LastIndexOf("/") + 1);
-					folderPath = string.IsNullOrEmpty(fileName) ? FilePath : FilePath.Replace(fileName, "");
+					fileName = this.FilePath.Substring(this.FilePath.LastIndexOf("/") + 1);
+					folderPath = string.IsNullOrEmpty(fileName) ? this.FilePath : this.FilePath.Replace(fileName, "");
 				}
 				else
 				{
-					fileName = FilePath;
+					fileName = this.FilePath;
 					folderPath = string.Empty;
 				}
 
-				if (_cboFolders.Items.FindByValue(folderPath) != null)
+				if (this._cboFolders.Items.FindByValue(folderPath) != null)
 				{
-					_cboFolders.SelectedIndex = -1;
-					_cboFolders.Items.FindByValue(folderPath).Selected = true;
+					this._cboFolders.SelectedIndex = -1;
+					this._cboFolders.Items.FindByValue(folderPath).Selected = true;
 				}
 
 				//Get Files
-				LoadFiles();
-				if (_cboFiles.Items.FindByText(fileName) != null)
+				this.LoadFiles();
+				if (this._cboFiles.Items.FindByText(fileName) != null)
 				{
-					_cboFiles.Items.FindByText(fileName).Selected = true;
+					this._cboFiles.Items.FindByText(fileName).Selected = true;
 				}
-				if (_cboFiles.SelectedItem == null || string.IsNullOrEmpty(_cboFiles.SelectedItem.Value))
+				if (this._cboFiles.SelectedItem == null || string.IsNullOrEmpty(this._cboFiles.SelectedItem.Value))
 				{
-					FileID = -1;
+					this.FileID = -1;
 				}
 				else
 				{
-					FileID = Int32.Parse(_cboFiles.SelectedItem.Value);
+					this.FileID = Int32.Parse(this._cboFiles.SelectedItem.Value);
 				}
 
-				if (_cboFolders.Items.Count > 1 && ShowFolders)
+				if (this._cboFolders.Items.Count > 1 && this.ShowFolders)
 				{
-					_pnlFolder.Visible = true;
+					this._pnlFolder.Visible = true;
 				}
 				else
 				{
-					_pnlFolder.Visible = false;
+					this._pnlFolder.Visible = false;
 				}
 				//Configure Mode
-				switch (Mode)
+				switch (this.Mode)
 				{
 					case FileControlMode.Normal:
-						_pnlFile.Visible = true;
-						_pnlUpload.Visible = false;
-						_pnlRightDiv.Visible = true;
-						ShowImage();
+						this._pnlFile.Visible = true;
+						this._pnlUpload.Visible = false;
+						this._pnlRightDiv.Visible = true;
+						this.ShowImage();
 
-						if ((FolderPermissionController.HasFolderPermission(PortalId, _cboFolders.SelectedItem.Value, "ADD") || IsUserFolder(_cboFolders.SelectedItem.Value)) && ShowUpLoad)
+						if ((FolderPermissionController.HasFolderPermission(this.PortalId, this._cboFolders.SelectedItem.Value, "ADD") || this.IsUserFolder(this._cboFolders.SelectedItem.Value)) && this.ShowUpLoad)
 						{
-							ShowButton(_cmdUpload, "Upload");
+							this.ShowButton(this._cmdUpload, "Upload");
 						}
 						break;
 
 					case FileControlMode.UpLoadFile:
-						_pnlFile.Visible = false;
-						_pnlUpload.Visible = true;
-                        _pnlRightDiv.Visible = false;
-						ShowButton(_cmdSave, "Save");
-						ShowButton(_cmdCancel, "Cancel");
+						this._pnlFile.Visible = false;
+						this._pnlUpload.Visible = true;
+                        this._pnlRightDiv.Visible = false;
+						this.ShowButton(this._cmdSave, "Save");
+						this.ShowButton(this._cmdCancel, "Cancel");
 						break;
 				}
 			}
 			else
 			{
-				_lblMessage.Text = Utilities.GetLocalizedString("NoPermission");
+				this._lblMessage.Text = Utilities.GetLocalizedString("NoPermission");
 			}
 
 			//Show message Row
-			_pnlMessage.Visible = (!string.IsNullOrEmpty(_lblMessage.Text));
+			this._pnlMessage.Visible = (!string.IsNullOrEmpty(this._lblMessage.Text));
 		}
 
 		#endregion
@@ -783,102 +783,102 @@ namespace DotNetNuke.Web.UI.WebControls
 
 		private void CancelUpload(object sender, EventArgs e)
 		{
-			Mode = FileControlMode.Normal;
+			this.Mode = FileControlMode.Normal;
 		}
 
 		private void FileChanged(object sender, EventArgs e)
 		{
-			SetFilePath();
+			this.SetFilePath();
 		}
 
 		private void FolderChanged(object sender, EventArgs e)
 		{
-			LoadFiles();
-			SetFilePath();
+			this.LoadFiles();
+			this.SetFilePath();
 		}
 
 		private void SaveFile(object sender, EventArgs e)
 		{
 			//if file is selected exit
-			if (!string.IsNullOrEmpty(_txtFile.PostedFile.FileName))
+			if (!string.IsNullOrEmpty(this._txtFile.PostedFile.FileName))
 			{
-				var extension = Path.GetExtension(_txtFile.PostedFile.FileName).Replace(".", "");
+				var extension = Path.GetExtension(this._txtFile.PostedFile.FileName).Replace(".", "");
 
-				if (!string.IsNullOrEmpty(FileFilter) && !FileFilter.ToLowerInvariant().Contains(extension.ToLowerInvariant()))
+				if (!string.IsNullOrEmpty(this.FileFilter) && !this.FileFilter.ToLowerInvariant().Contains(extension.ToLowerInvariant()))
 				{
 					// trying to upload a file not allowed for current filter
-					var localizedString = Localization.GetString("UploadError", LocalResourceFile);
+					var localizedString = Localization.GetString("UploadError", this.LocalResourceFile);
 					if(String.IsNullOrEmpty(localizedString))
 					{
 						localizedString = Utilities.GetLocalizedString("UploadError");
 					}
 
-					_lblMessage.Text = string.Format(localizedString, FileFilter, extension);
+					this._lblMessage.Text = string.Format(localizedString, this.FileFilter, extension);
 				}
 				else
 				{
 					var folderManager = FolderManager.Instance;
 
-					var folderPath = PathUtils.Instance.GetRelativePath(PortalId, ParentFolder) + _cboFolders.SelectedItem.Value;
+					var folderPath = PathUtils.Instance.GetRelativePath(this.PortalId, this.ParentFolder) + this._cboFolders.SelectedItem.Value;
 
 					//Check if this is a User Folder
 				    IFolderInfo folder;
-					if (IsUserFolder(_cboFolders.SelectedItem.Value))
+					if (this.IsUserFolder(this._cboFolders.SelectedItem.Value))
 					{
 						//Make sure the user folder exists
-                        folder = folderManager.GetFolder(PortalController.GetEffectivePortalId(PortalId), folderPath);
+                        folder = folderManager.GetFolder(PortalController.GetEffectivePortalId(this.PortalId), folderPath);
 						if (folder == null)
 						{
 							//Add User folder
-                            var user = User ?? UserController.Instance.GetCurrentUserInfo();
+                            var user = this.User ?? UserController.Instance.GetCurrentUserInfo();
                             //fix user's portal id
-						    user.PortalID = PortalId;
+						    user.PortalID = this.PortalId;
                             folder = ((FolderManager)folderManager).AddUserFolder(user);
 						}
 					}
 					else
 					{
-                        folder = folderManager.GetFolder(PortalId, folderPath);
+                        folder = folderManager.GetFolder(this.PortalId, folderPath);
                     }
 
-					var fileName = Path.GetFileName(_txtFile.PostedFile.FileName);
+					var fileName = Path.GetFileName(this._txtFile.PostedFile.FileName);
 
 					try
 					{
-                        FileManager.Instance.AddFile(folder, fileName, _txtFile.PostedFile.InputStream, true);
+                        FileManager.Instance.AddFile(folder, fileName, this._txtFile.PostedFile.InputStream, true);
 					}
 					catch (PermissionsNotMetException)
 					{
-                        _lblMessage.Text += "<br />" + string.Format(Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
+                        this._lblMessage.Text += "<br />" + string.Format(Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
 					}
 					catch (NoSpaceAvailableException)
 					{
-						_lblMessage.Text += "<br />" + string.Format(Localization.GetString("DiskSpaceExceeded"), fileName);
+						this._lblMessage.Text += "<br />" + string.Format(Localization.GetString("DiskSpaceExceeded"), fileName);
 					}
 					catch (InvalidFileExtensionException)
 					{
-						_lblMessage.Text += "<br />" + string.Format(Localization.GetString("RestrictedFileType"), fileName, Host.AllowedExtensionWhitelist.ToDisplayString());
+						this._lblMessage.Text += "<br />" + string.Format(Localization.GetString("RestrictedFileType"), fileName, Host.AllowedExtensionWhitelist.ToDisplayString());
 					}
 					catch (Exception ex)
 					{
 						Logger.Error(ex);
 
-						_lblMessage.Text += "<br />" + string.Format(Localization.GetString("SaveFileError"), fileName);
+						this._lblMessage.Text += "<br />" + string.Format(Localization.GetString("SaveFileError"), fileName);
 					}
 				}
 
-				if (string.IsNullOrEmpty(_lblMessage.Text))
+				if (string.IsNullOrEmpty(this._lblMessage.Text))
 				{
-					var fileName = _txtFile.PostedFile.FileName.Substring(_txtFile.PostedFile.FileName.LastIndexOf("\\") + 1);
-					SetFilePath(fileName);
+					var fileName = this._txtFile.PostedFile.FileName.Substring(this._txtFile.PostedFile.FileName.LastIndexOf("\\") + 1);
+					this.SetFilePath(fileName);
 				}
 			}
-			Mode = FileControlMode.Normal;
+			this.Mode = FileControlMode.Normal;
 		}
 
 		private void UploadFile(object sender, EventArgs e)
 		{
-			Mode = FileControlMode.UpLoadFile;
+			this.Mode = FileControlMode.UpLoadFile;
 		}
 
 		#endregion
@@ -889,11 +889,11 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-				return _localize;
+				return this._localize;
 			}
 			set
 			{
-				_localize = value;
+				this._localize = value;
 			}
 		}
 

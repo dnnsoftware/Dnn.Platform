@@ -101,16 +101,16 @@ namespace DotNetNuke.Services.Search.Entities
 
         public SearchDocumentToDelete()
         {
-            Keywords = new Dictionary<string, string>();
-            NumericKeys = new Dictionary<string, int>();
-            CultureCode = string.Empty;
-            SearchTypeId =
-                PortalId =
-                RoleId = -1;
-            ModuleDefId =
-                ModuleId =
-                TabId =
-                AuthorUserId = 0;
+            this.Keywords = new Dictionary<string, string>();
+            this.NumericKeys = new Dictionary<string, int>();
+            this.CultureCode = string.Empty;
+            this.SearchTypeId =
+                this.PortalId =
+                this.RoleId = -1;
+            this.ModuleDefId =
+                this.ModuleId =
+                this.TabId =
+                this.AuthorUserId = 0;
         }
 
         /// <summary>

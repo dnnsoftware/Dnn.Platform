@@ -40,39 +40,39 @@ namespace DotNetNuke.Services.Exceptions
         //constructor with exception message
 		public BasePortalException(string message) : base(message)
         {
-            InitializePrivateVariables();
+            this.InitializePrivateVariables();
         }
 
         //constructor with message and inner exception
         public BasePortalException(string message, Exception inner) : base(message, inner)
         {
-            InitializePrivateVariables();
+            this.InitializePrivateVariables();
         }
 
         protected BasePortalException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
-            InitializePrivateVariables();
-            AssemblyVersion = info.GetString("m_AssemblyVersion");
-            PortalID = info.GetInt32("m_PortalID");
-            PortalName = info.GetString("m_PortalName");
-            UserID = info.GetInt32("m_UserID");
-            UserName = info.GetString("m_Username");
-            ActiveTabID = info.GetInt32("m_ActiveTabID");
-            ActiveTabName = info.GetString("m_ActiveTabName");
-            RawURL = info.GetString("m_RawURL");
-            AbsoluteURL = info.GetString("m_AbsoluteURL");
-            AbsoluteURLReferrer = info.GetString("m_AbsoluteURLReferrer");
-            UserAgent = info.GetString("m_UserAgent");
-            DefaultDataProvider = info.GetString("m_DefaultDataProvider");
-            ExceptionGUID = info.GetString("m_ExceptionGUID");
-            m_InnerExceptionString = info.GetString("m_InnerExceptionString");
-            FileName = info.GetString("m_FileName");
-            FileLineNumber = info.GetInt32("m_FileLineNumber");
-            FileColumnNumber = info.GetInt32("m_FileColumnNumber");
-            Method = info.GetString("m_Method");
-            m_StackTrace = info.GetString("m_StackTrace");
-            m_Message = info.GetString("m_Message");
-            m_Source = info.GetString("m_Source");
+            this.InitializePrivateVariables();
+            this.AssemblyVersion = info.GetString("m_AssemblyVersion");
+            this.PortalID = info.GetInt32("m_PortalID");
+            this.PortalName = info.GetString("m_PortalName");
+            this.UserID = info.GetInt32("m_UserID");
+            this.UserName = info.GetString("m_Username");
+            this.ActiveTabID = info.GetInt32("m_ActiveTabID");
+            this.ActiveTabName = info.GetString("m_ActiveTabName");
+            this.RawURL = info.GetString("m_RawURL");
+            this.AbsoluteURL = info.GetString("m_AbsoluteURL");
+            this.AbsoluteURLReferrer = info.GetString("m_AbsoluteURLReferrer");
+            this.UserAgent = info.GetString("m_UserAgent");
+            this.DefaultDataProvider = info.GetString("m_DefaultDataProvider");
+            this.ExceptionGUID = info.GetString("m_ExceptionGUID");
+            this.m_InnerExceptionString = info.GetString("m_InnerExceptionString");
+            this.FileName = info.GetString("m_FileName");
+            this.FileLineNumber = info.GetInt32("m_FileLineNumber");
+            this.FileColumnNumber = info.GetInt32("m_FileColumnNumber");
+            this.Method = info.GetString("m_Method");
+            this.m_StackTrace = info.GetString("m_StackTrace");
+            this.m_Message = info.GetString("m_Message");
+            this.m_Source = info.GetString("m_Source");
         }
 
 	    public string AssemblyVersion { get; private set; }
@@ -126,141 +126,141 @@ namespace DotNetNuke.Services.Exceptions
             {
                 var context = HttpContext.Current;
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                var innerException = new Exception(Message, this);
+                var innerException = new Exception(this.Message, this);
                 while (innerException.InnerException != null)
                 {
                     innerException = innerException.InnerException;
                 }
                 var exceptionInfo = Exceptions.GetExceptionInfo(innerException);
 
-                AssemblyVersion = DotNetNukeContext.Current.Application.Version.ToString(3);
+                this.AssemblyVersion = DotNetNukeContext.Current.Application.Version.ToString(3);
                 if (portalSettings != null)
                 {
-                    PortalID = portalSettings.PortalId;
-                    PortalName = portalSettings.PortalName;
-                    ActiveTabID = portalSettings.ActiveTab.TabID;
-                    ActiveTabName = portalSettings.ActiveTab.TabName;
+                    this.PortalID = portalSettings.PortalId;
+                    this.PortalName = portalSettings.PortalName;
+                    this.ActiveTabID = portalSettings.ActiveTab.TabID;
+                    this.ActiveTabName = portalSettings.ActiveTab.TabName;
                 }
                 else
                 {
-                    PortalID = -1;
-                    PortalName = "";
-                    ActiveTabID = -1;
-                    ActiveTabName = "";
+                    this.PortalID = -1;
+                    this.PortalName = "";
+                    this.ActiveTabID = -1;
+                    this.ActiveTabName = "";
                 }
 
                 var currentUserInfo = UserController.Instance.GetCurrentUserInfo();
-                UserID = (currentUserInfo != null) ? currentUserInfo.UserID : -1;
+                this.UserID = (currentUserInfo != null) ? currentUserInfo.UserID : -1;
 
-                if (UserID != -1)
+                if (this.UserID != -1)
                 {
-                    currentUserInfo = UserController.GetUserById(PortalID, UserID);
-                    UserName = currentUserInfo != null ? currentUserInfo.Username : "";
+                    currentUserInfo = UserController.GetUserById(this.PortalID, this.UserID);
+                    this.UserName = currentUserInfo != null ? currentUserInfo.Username : "";
                 }
                 else
                 {
-                    UserName = "";
+                    this.UserName = "";
                 }
 
                 if (context != null)
                 {
-                    RawURL = HttpUtility.HtmlEncode(context.Request.RawUrl);
-                    AbsoluteURL = HttpUtility.HtmlEncode(context.Request.Url.AbsolutePath);
+                    this.RawURL = HttpUtility.HtmlEncode(context.Request.RawUrl);
+                    this.AbsoluteURL = HttpUtility.HtmlEncode(context.Request.Url.AbsolutePath);
                     if (context.Request.UrlReferrer != null)
                     {
-                        AbsoluteURLReferrer = HttpUtility.HtmlEncode(context.Request.UrlReferrer.AbsoluteUri);
+                        this.AbsoluteURLReferrer = HttpUtility.HtmlEncode(context.Request.UrlReferrer.AbsoluteUri);
                     }
-                    UserAgent = HttpUtility.HtmlEncode(context.Request.UserAgent ?? "");
+                    this.UserAgent = HttpUtility.HtmlEncode(context.Request.UserAgent ?? "");
                 }
                 else
                 {
-                    RawURL = "";
-                    AbsoluteURL = "";
-                    AbsoluteURLReferrer = "";
-                    UserAgent = "";
+                    this.RawURL = "";
+                    this.AbsoluteURL = "";
+                    this.AbsoluteURLReferrer = "";
+                    this.UserAgent = "";
                 }
                 try
                 {
                     ProviderConfiguration objProviderConfiguration = ProviderConfiguration.GetProviderConfiguration("data");
                     string strTypeName = ((Provider)objProviderConfiguration.Providers[objProviderConfiguration.DefaultProvider]).Type;
-                    DefaultDataProvider = strTypeName;
+                    this.DefaultDataProvider = strTypeName;
                     
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
 
-                    DefaultDataProvider = "";
+                    this.DefaultDataProvider = "";
                 }
 
-                ExceptionGUID = Guid.NewGuid().ToString();
+                this.ExceptionGUID = Guid.NewGuid().ToString();
 
                 if (exceptionInfo != null)
                 {
-                    FileName = exceptionInfo.FileName;
-                    FileLineNumber = exceptionInfo.FileLineNumber;
-                    FileColumnNumber = exceptionInfo.FileColumnNumber;
-                    Method = exceptionInfo.Method;
+                    this.FileName = exceptionInfo.FileName;
+                    this.FileLineNumber = exceptionInfo.FileLineNumber;
+                    this.FileColumnNumber = exceptionInfo.FileColumnNumber;
+                    this.Method = exceptionInfo.Method;
                 }
                 else
                 {
-                    FileName = "";
-                    FileLineNumber = -1;
-                    FileColumnNumber = -1;
-                    Method = "";
+                    this.FileName = "";
+                    this.FileLineNumber = -1;
+                    this.FileColumnNumber = -1;
+                    this.Method = "";
                 }
 
                 try
                 {
-                    m_StackTrace = StackTrace;
+                    this.m_StackTrace = this.StackTrace;
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
 
-                    m_StackTrace = "";
+                    this.m_StackTrace = "";
                 }
                 try
                 {
-                    m_Message = Message;
+                    this.m_Message = this.Message;
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
 
-                    m_Message = "";
+                    this.m_Message = "";
                 }
                 try
                 {
-                    m_Source = Source;
+                    this.m_Source = this.Source;
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
 
-                    m_Source = "";
+                    this.m_Source = "";
                 }
             }
             catch (Exception exc)
             {
-                PortalID = -1;
-                UserID = -1;
-                AssemblyVersion = "-1";
-                ActiveTabID = -1;
-                ActiveTabName = "";
-                RawURL = "";
-                AbsoluteURL = "";
-                AbsoluteURLReferrer = "";
-                UserAgent = "";
-                DefaultDataProvider = "";
-                ExceptionGUID = "";
-                FileName = "";
-                FileLineNumber = -1;
-                FileColumnNumber = -1;
-                Method = "";
-                m_StackTrace = "";
-                m_Message = "";
-                m_Source = "";
+                this.PortalID = -1;
+                this.UserID = -1;
+                this.AssemblyVersion = "-1";
+                this.ActiveTabID = -1;
+                this.ActiveTabName = "";
+                this.RawURL = "";
+                this.AbsoluteURL = "";
+                this.AbsoluteURLReferrer = "";
+                this.UserAgent = "";
+                this.DefaultDataProvider = "";
+                this.ExceptionGUID = "";
+                this.FileName = "";
+                this.FileLineNumber = -1;
+                this.FileColumnNumber = -1;
+                this.Method = "";
+                this.m_StackTrace = "";
+                this.m_Message = "";
+                this.m_Source = "";
                 Logger.Error(exc);
 
             }

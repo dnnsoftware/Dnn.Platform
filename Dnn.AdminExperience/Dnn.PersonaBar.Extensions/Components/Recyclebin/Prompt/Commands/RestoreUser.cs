@@ -36,24 +36,24 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             
-            UserId = GetFlagValue(FlagId, "User Id", -1, true, true, true);
+            this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
         }
 
         public override ConsoleResultModel Run()
         {
             UserInfo userInfo;
-            _userValidator.ValidateUser(UserId, PortalSettings, User, out userInfo);
+            this._userValidator.ValidateUser(this.UserId, this.PortalSettings, this.User, out userInfo);
                 
             if (userInfo == null)
-                return new ConsoleErrorResultModel(string.Format(LocalizeString("UserNotFound"), UserId));
+                return new ConsoleErrorResultModel(string.Format(this.LocalizeString("UserNotFound"), this.UserId));
 
             if (!userInfo.IsDeleted)
-                return new ConsoleErrorResultModel(LocalizeString("Prompt_RestoreNotRequired"));
+                return new ConsoleErrorResultModel(this.LocalizeString("Prompt_RestoreNotRequired"));
 
             string message;
-            var restoredUser = _recyclebinController.RestoreUser(userInfo, out message);
+            var restoredUser = this._recyclebinController.RestoreUser(userInfo, out message);
             return restoredUser
-                ? new ConsoleResultModel(LocalizeString("UserRestored")) { Records = 1 }
+                ? new ConsoleResultModel(this.LocalizeString("UserRestored")) { Records = 1 }
                 : new ConsoleErrorResultModel(message);
         }
     }

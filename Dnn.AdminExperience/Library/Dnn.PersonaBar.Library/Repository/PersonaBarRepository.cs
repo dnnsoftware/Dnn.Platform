@@ -31,13 +31,13 @@ namespace Dnn.PersonaBar.Library.Repository
                     if (menu == null)
                     {
                         menu = new PersonaBarMenu();
-                        var menuItems = CBO.FillCollection<MenuItem>(_dataService.GetPersonaBarMenu())
+                        var menuItems = CBO.FillCollection<MenuItem>(this._dataService.GetPersonaBarMenu())
                             .OrderBy(m => m.Order).ToList();
 
                         foreach (var menuItem in menuItems.Where(m => m.ParentId == Null.NullInteger))
                         {
                             menu.MenuItems.Add(menuItem);
-                            InjectMenuItems(menuItem, menuItems);
+                            this.InjectMenuItems(menuItem, menuItems);
                         }
 
                         DataCache.SetCache(PersonaBarMenuCacheKey, menu);
@@ -50,19 +50,19 @@ namespace Dnn.PersonaBar.Library.Repository
 
         public MenuItem GetMenuItem(string identifier)
         {
-            return GetMenu().AllItems.ToList().FirstOrDefault(m => m.Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase));
+            return this.GetMenu().AllItems.ToList().FirstOrDefault(m => m.Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public MenuItem GetMenuItem(int menuId)
         {
-            return GetMenu().AllItems.ToList().FirstOrDefault(m => m.MenuId == menuId);
+            return this.GetMenu().AllItems.ToList().FirstOrDefault(m => m.MenuId == menuId);
         }
 
         public void SaveMenuItem(MenuItem item)
         {
             var user = UserController.Instance.GetCurrentUserInfo();
 
-            item.MenuId = _dataService.SavePersonaBarMenu(
+            item.MenuId = this._dataService.SavePersonaBarMenu(
                 item.Identifier,
                 item.ModuleName,
                 item.FolderName,
@@ -79,31 +79,31 @@ namespace Dnn.PersonaBar.Library.Repository
                 user.UserID
             );
 
-            ClearCache();
+            this.ClearCache();
         }
 
         public void DeleteMenuItem(string identifier)
         {
-            _dataService.DeletePersonaBarMenuByIdentifier(identifier);
+            this._dataService.DeletePersonaBarMenuByIdentifier(identifier);
 
-            ClearCache();
+            this.ClearCache();
         }
 
         public string GetMenuDefaultPermissions(int menuId)
         {
-            return _dataService.GetPersonaBarMenuDefaultPermissions(menuId);
+            return this._dataService.GetPersonaBarMenuDefaultPermissions(menuId);
         }
 
         public void SaveMenuDefaultPermissions(MenuItem menuItem, string roleNames)
         {
-            _dataService.SavePersonaBarMenuDefaultPermissions(menuItem.MenuId, roleNames);
+            this._dataService.SavePersonaBarMenuDefaultPermissions(menuItem.MenuId, roleNames);
         }
 
         public void UpdateMenuController(string identifier, string controller)
         {
             var user = UserController.Instance.GetCurrentUserInfo();
-            _dataService.UpdateMenuController(identifier, controller, user.UserID);
-            ClearCache();
+            this._dataService.UpdateMenuController(identifier, controller, user.UserID);
+            this.ClearCache();
         }
 
         private void InjectMenuItems(MenuItem parent, IList<MenuItem> menuItems)
@@ -111,7 +111,7 @@ namespace Dnn.PersonaBar.Library.Repository
             foreach (var menuItem in menuItems.Where(m => m.ParentId == parent.MenuId))
             {
                 parent.Children.Add(menuItem);
-                InjectMenuItems(menuItem, menuItems);
+                this.InjectMenuItems(menuItem, menuItems);
             }
         }
 

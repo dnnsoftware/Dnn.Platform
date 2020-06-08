@@ -21,22 +21,22 @@ namespace DotNetNuke.Services.Messaging.Data
 
         public IDataReader GetMessageByID(int messageId)
         {
-            return provider.ExecuteReader("Messaging_GetMessage", messageId);
+            return this.provider.ExecuteReader("Messaging_GetMessage", messageId);
         }
 
         public IDataReader GetUserInbox(int PortalID, int UserID, int PageNumber, int PageSize)
         {
-            return provider.ExecuteReader("Messaging_GetInbox", PortalID, UserID, PageNumber, PageSize);
+            return this.provider.ExecuteReader("Messaging_GetInbox", PortalID, UserID, PageNumber, PageSize);
         }
 
         public int GetInboxCount(int PortalID, int UserID)
         {
-            return provider.ExecuteScalar<int>("Messaging_GetInboxCount", PortalID, UserID);
+            return this.provider.ExecuteScalar<int>("Messaging_GetInboxCount", PortalID, UserID);
         }
 
         public long SaveMessage(Message objMessaging)
         {
-            return provider.ExecuteScalar<long>("Messaging_Save_Message",
+            return this.provider.ExecuteScalar<long>("Messaging_Save_Message",
                                                       objMessaging.PortalID,
                                                       objMessaging.FromUserID,
                                                       objMessaging.ToUserID,
@@ -53,22 +53,22 @@ namespace DotNetNuke.Services.Messaging.Data
 
         public int GetNewMessageCount(int PortalID, int UserID)
         {
-            return provider.ExecuteScalar<int>("Messaging_GetNewMessageCount", PortalID, UserID);
+            return this.provider.ExecuteScalar<int>("Messaging_GetNewMessageCount", PortalID, UserID);
         }
 
         public IDataReader GetNextMessageForDispatch(Guid SchedulerInstance)
         {
-            return provider.ExecuteReader("Messaging_GetNextMessageForDispatch", SchedulerInstance);
+            return this.provider.ExecuteReader("Messaging_GetNextMessageForDispatch", SchedulerInstance);
         }
 
         public void MarkMessageAsDispatched(int MessageID)
         {
-            provider.ExecuteNonQuery("Messaging_MarkMessageAsDispatched", MessageID);
+            this.provider.ExecuteNonQuery("Messaging_MarkMessageAsDispatched", MessageID);
         }
 
         public void UpdateMessage(Message message)
         {
-            provider.ExecuteNonQuery("Messaging_UpdateMessage",
+            this.provider.ExecuteNonQuery("Messaging_UpdateMessage",
                                      message.MessageID,
                                      message.ToUserID,
                                      message.ToRoleID,

@@ -28,7 +28,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Security
 
             // make sure the request succeeds when the user is logged in
             //var result1 = session.GetContent(GetPortaslApi, null, false); -- use same method to validate
-            var result1 = SendDirectGetRequest(session.Domain, GetPortaslApi, session.Timeout, cookies);
+            var result1 = this.SendDirectGetRequest(session.Domain, GetPortaslApi, session.Timeout, cookies);
             Assert.IsTrue(result1.IsSuccessStatusCode);
             Assert.AreEqual(HttpStatusCode.OK, result1.StatusCode);
 
@@ -36,7 +36,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Security
             Assert.IsFalse(session.IsLoggedIn);
 
             // make sure the request fails when using the same cookies before logging out
-            var result2 = SendDirectGetRequest(session.Domain, GetPortaslApi, session.Timeout, cookies);
+            var result2 = this.SendDirectGetRequest(session.Domain, GetPortaslApi, session.Timeout, cookies);
             Assert.IsFalse(result2.IsSuccessStatusCode);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result2.StatusCode);
         }

@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.FileSystem
 
         public FileVersionInfo()
         {
-            Version = 1;
+            this.Version = 1;
         }
 
         #endregion

@@ -74,8 +74,8 @@ namespace log4net.Filter
 		/// </remarks>
 		public string Key
 		{
-			get { return m_key; }
-			set { m_key = value; }
+			get { return this.m_key; }
+			set { this.m_key = value; }
 		}
 
 		#region Override implementation of FilterSkeleton
@@ -106,7 +106,7 @@ namespace log4net.Filter
 			}
 
 			// Check if we have a key to lookup the event property value with
-			if (m_key == null)
+			if (this.m_key == null)
 			{
 				// We cannot filter so allow the filter chain
 				// to continue processing
@@ -115,13 +115,13 @@ namespace log4net.Filter
 
 			// Lookup the string to match in from the properties using 
 			// the key specified.
-			object msgObj = loggingEvent.LookupProperty(m_key);
+			object msgObj = loggingEvent.LookupProperty(this.m_key);
 
 			// Use an ObjectRenderer to convert the property value to a string
 			string msg = loggingEvent.Repository.RendererMap.FindAndRender(msgObj);
 
 			// Check if we have been setup to filter
-			if (msg == null || (m_stringToMatch == null && m_regexToMatch == null))
+			if (msg == null || (this.m_stringToMatch == null && this.m_regexToMatch == null))
 			{
 				// We cannot filter so allow the filter chain
 				// to continue processing
@@ -129,33 +129,33 @@ namespace log4net.Filter
 			}
     
 			// Firstly check if we are matching using a regex
-			if (m_regexToMatch != null)
+			if (this.m_regexToMatch != null)
 			{
 				// Check the regex
-				if (m_regexToMatch.Match(msg).Success == false)
+				if (this.m_regexToMatch.Match(msg).Success == false)
 				{
 					// No match, continue processing
 					return FilterDecision.Neutral;
 				} 
 
 				// we've got a match
-				if (m_acceptOnMatch) 
+				if (this.m_acceptOnMatch) 
 				{
 					return FilterDecision.Accept;
 				} 
 				return FilterDecision.Deny;
 			}
-			else if (m_stringToMatch != null)
+			else if (this.m_stringToMatch != null)
 			{
 				// Check substring match
-				if (msg.IndexOf(m_stringToMatch) == -1) 
+				if (msg.IndexOf(this.m_stringToMatch) == -1) 
 				{
 					// No match, continue processing
 					return FilterDecision.Neutral;
 				} 
 
 				// we've got a match
-				if (m_acceptOnMatch) 
+				if (this.m_acceptOnMatch) 
 				{
 					return FilterDecision.Accept;
 				} 

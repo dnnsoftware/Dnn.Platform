@@ -87,8 +87,8 @@ namespace log4net.Core
         /// </remarks>
         public TimeEvaluator(int interval)
         {
-            m_interval = interval;
-            m_lastTimeUtc = DateTime.UtcNow;
+            this.m_interval = interval;
+            this.m_lastTimeUtc = DateTime.UtcNow;
         }
 
         /// <summary>
@@ -106,8 +106,8 @@ namespace log4net.Core
         /// </remarks>
         public int Interval
         {
-            get { return m_interval; }
-            set { m_interval = value; }
+            get { return this.m_interval; }
+            set { this.m_interval = value; }
         }
 
         /// <summary>
@@ -131,15 +131,15 @@ namespace log4net.Core
             }
 
             // disable the evaluator if threshold is zero
-            if (m_interval == 0) return false;
+            if (this.m_interval == 0) return false;
 
             lock (this) // avoid triggering multiple times
             {
-                TimeSpan passed = DateTime.UtcNow.Subtract(m_lastTimeUtc);
+                TimeSpan passed = DateTime.UtcNow.Subtract(this.m_lastTimeUtc);
 
-                if (passed.TotalSeconds > m_interval)
+                if (passed.TotalSeconds > this.m_interval)
                 {
-                    m_lastTimeUtc = DateTime.UtcNow;
+                    this.m_lastTimeUtc = DateTime.UtcNow;
                     return true;
                 }
                 else

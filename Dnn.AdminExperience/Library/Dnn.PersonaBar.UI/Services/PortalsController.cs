@@ -36,9 +36,9 @@ namespace Dnn.PersonaBar.UI.Services
             try
             {
                 var portals = PortalController.Instance.GetPortals().OfType<PortalInfo>();
-                if (!UserInfo.IsSuperUser)
+                if (!this.UserInfo.IsSuperUser)
                 {
-                    portals = portals.Where(portal => portal.PortalID == PortalId);
+                    portals = portals.Where(portal => portal.PortalID == this.PortalId);
                 }
 
                 var availablePortals = portals.Select(v => new
@@ -64,12 +64,12 @@ namespace Dnn.PersonaBar.UI.Services
                     TotalResults = availablePortals.Count
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
     }

@@ -25,19 +25,19 @@ namespace DotNetNuke.Modules.Groups
         private readonly INavigationManager _navigationManager;
         public Create()
         {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
         protected override void OnInit(EventArgs e)
         {
-            InitializeComponent();
+            this.InitializeComponent();
             base.OnInit(e);
         }
 
         private void InitializeComponent()
         {
-            Load += Page_Load;
-            btnCreate.Click += Create_Click;
-            btnCancel.Click += Cancel_Click;
+            this.Load += this.Page_Load;
+            this.btnCreate.Click += this.Create_Click;
+            this.btnCancel.Click += this.Cancel_Click;
         }
 
 
@@ -48,51 +48,51 @@ namespace DotNetNuke.Modules.Groups
 
         private void Cancel_Click(object sender, EventArgs e)
         {
-            Response.Redirect(ModuleContext.NavigateUrl(TabId, string.Empty, false, null));
+            this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, string.Empty, false, null));
         }
         private void Create_Click(object sender, EventArgs e)
         {
             var ps = Security.PortalSecurity.Instance;
-            txtGroupName.Text = ps.InputFilter(txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoScripting);
-            txtGroupName.Text = ps.InputFilter(txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
+            this.txtGroupName.Text = ps.InputFilter(this.txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoScripting);
+            this.txtGroupName.Text = ps.InputFilter(this.txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
 
-            txtDescription.Text = ps.InputFilter(txtDescription.Text, Security.PortalSecurity.FilterFlag.NoScripting);
-            txtDescription.Text = ps.InputFilter(txtDescription.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
-            if (RoleController.Instance.GetRoleByName(PortalId, txtGroupName.Text) != null)
+            this.txtDescription.Text = ps.InputFilter(this.txtDescription.Text, Security.PortalSecurity.FilterFlag.NoScripting);
+            this.txtDescription.Text = ps.InputFilter(this.txtDescription.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
+            if (RoleController.Instance.GetRoleByName(this.PortalId, this.txtGroupName.Text) != null)
             {
-                lblInvalidGroupName.Visible = true;
+                this.lblInvalidGroupName.Visible = true;
                 return;
             }
 
 
             var modRoles = new List<RoleInfo>();
 			var modUsers = new List<UserInfo>();
-            foreach (ModulePermissionInfo modulePermissionInfo in ModulePermissionController.GetModulePermissions(ModuleId, TabId))
+            foreach (ModulePermissionInfo modulePermissionInfo in ModulePermissionController.GetModulePermissions(this.ModuleId, this.TabId))
             {
                 if (modulePermissionInfo.PermissionKey == "MODGROUP" && modulePermissionInfo.AllowAccess)
                 {
 	                if (modulePermissionInfo.RoleID > int.Parse(Globals.glbRoleNothing))
 	                {
-                        modRoles.Add(RoleController.Instance.GetRoleById(PortalId, modulePermissionInfo.RoleID));
+                        modRoles.Add(RoleController.Instance.GetRoleById(this.PortalId, modulePermissionInfo.RoleID));
 	                }
 					else if (modulePermissionInfo.UserID > Null.NullInteger)
 					{
-						modUsers.Add(UserController.GetUserById(PortalId, modulePermissionInfo.UserID));
+						modUsers.Add(UserController.GetUserById(this.PortalId, modulePermissionInfo.UserID));
 					}
                 }
             }
 
             var roleInfo = new RoleInfo()
             {
-                PortalID = PortalId,
-                RoleName = txtGroupName.Text,
-                Description = txtDescription.Text,
+                PortalID = this.PortalId,
+                RoleName = this.txtGroupName.Text,
+                Description = this.txtDescription.Text,
                 SecurityMode = SecurityMode.SocialGroup,
                 Status = RoleStatus.Approved,
-                IsPublic = rdAccessTypePublic.Checked
+                IsPublic = this.rdAccessTypePublic.Checked
             };
             var userRoleStatus = RoleStatus.Pending;
-            if (GroupModerationEnabled)
+            if (this.GroupModerationEnabled)
             {
                 roleInfo.Status = RoleStatus.Pending;
                 userRoleStatus = RoleStatus.Pending;
@@ -102,14 +102,14 @@ namespace DotNetNuke.Modules.Groups
                 userRoleStatus = RoleStatus.Approved;
             }
 
-            var objModulePermissions = new ModulePermissionCollection(CBO.FillCollection(DataProvider.Instance().GetModulePermissionsByModuleID(ModuleId, -1), typeof(ModulePermissionInfo)));
+            var objModulePermissions = new ModulePermissionCollection(CBO.FillCollection(DataProvider.Instance().GetModulePermissionsByModuleID(this.ModuleId, -1), typeof(ModulePermissionInfo)));
             if (ModulePermissionController.HasModulePermission(objModulePermissions, "MODGROUP"))
             {
                 roleInfo.Status = RoleStatus.Approved;
                 userRoleStatus = RoleStatus.Approved;
             }
 
-	        var roleGroupId = DefaultRoleGroupId;
+	        var roleGroupId = this.DefaultRoleGroupId;
 	        if (roleGroupId < Null.NullInteger)
 	        {
 		        roleGroupId = Null.NullInteger;
@@ -117,9 +117,9 @@ namespace DotNetNuke.Modules.Groups
 			roleInfo.RoleGroupID = roleGroupId;
 
             roleInfo.RoleID = RoleController.Instance.AddRole(roleInfo);
-            roleInfo = RoleController.Instance.GetRoleById(PortalId, roleInfo.RoleID);
+            roleInfo = RoleController.Instance.GetRoleById(this.PortalId, roleInfo.RoleID);
 
-	        var groupUrl = _navigationManager.NavigateURL(GroupViewTabId, "", new String[] {"groupid=" + roleInfo.RoleID.ToString()});
+	        var groupUrl = this._navigationManager.NavigateURL(this.GroupViewTabId, "", new String[] {"groupid=" + roleInfo.RoleID.ToString()});
 			if (groupUrl.StartsWith("http://") || groupUrl.StartsWith("https://"))
 			{
 				const int startIndex = 8; // length of https://
@@ -127,25 +127,25 @@ namespace DotNetNuke.Modules.Groups
 			}
 			roleInfo.Settings.Add("URL", groupUrl);
 
-            roleInfo.Settings.Add("GroupCreatorName", UserInfo.DisplayName);
-            roleInfo.Settings.Add("ReviewMembers", chkMemberApproved.Checked.ToString());
+            roleInfo.Settings.Add("GroupCreatorName", this.UserInfo.DisplayName);
+            roleInfo.Settings.Add("ReviewMembers", this.chkMemberApproved.Checked.ToString());
 
             RoleController.Instance.UpdateRoleSettings(roleInfo, true);
-	    if (inpFile.PostedFile != null && inpFile.PostedFile.ContentLength > 0)
+	    if (this.inpFile.PostedFile != null && this.inpFile.PostedFile.ContentLength > 0)
             {
                 IFileManager _fileManager = FileManager.Instance;
                 IFolderManager _folderManager = FolderManager.Instance;
-                var rootFolderPath = PathUtils.Instance.FormatFolderPath(PortalSettings.HomeDirectory);
+                var rootFolderPath = PathUtils.Instance.FormatFolderPath(this.PortalSettings.HomeDirectory);
 
-                IFolderInfo groupFolder = _folderManager.GetFolder(PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
+                IFolderInfo groupFolder = _folderManager.GetFolder(this.PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
                 if (groupFolder == null)
                 {
-                    groupFolder = _folderManager.AddFolder(PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
+                    groupFolder = _folderManager.AddFolder(this.PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
                 }
                 if (groupFolder != null)
                 {
-                    var fileName = Path.GetFileName(inpFile.PostedFile.FileName);
-                    var fileInfo = _fileManager.AddFile(groupFolder, fileName, inpFile.PostedFile.InputStream, true);
+                    var fileName = Path.GetFileName(this.inpFile.PostedFile.FileName);
+                    var fileInfo = _fileManager.AddFile(groupFolder, fileName, this.inpFile.PostedFile.InputStream, true);
                     roleInfo.IconFile = "FileID=" + fileInfo.FileId;
                     RoleController.Instance.UpdateRole(roleInfo);
                 }
@@ -154,22 +154,22 @@ namespace DotNetNuke.Modules.Groups
             var notifications = new Notifications();
 
 
-            RoleController.Instance.AddUserRole(PortalId, UserId, roleInfo.RoleID, userRoleStatus, true, Null.NullDate, Null.NullDate);
+            RoleController.Instance.AddUserRole(this.PortalId, this.UserId, roleInfo.RoleID, userRoleStatus, true, Null.NullDate, Null.NullDate);
             if (roleInfo.Status == RoleStatus.Pending)
             {
                 //Send notification to Group Moderators to approve/reject group.
-                notifications.AddGroupNotification(Constants.GroupPendingNotification, GroupViewTabId, ModuleId, roleInfo, UserInfo, modRoles, modUsers);
+                notifications.AddGroupNotification(Constants.GroupPendingNotification, this.GroupViewTabId, this.ModuleId, roleInfo, this.UserInfo, modRoles, modUsers);
             }
             else
             {
                 //Send notification to Group Moderators informing of new group.
-                notifications.AddGroupNotification(Constants.GroupCreatedNotification, GroupViewTabId, ModuleId, roleInfo, UserInfo, modRoles, modUsers);
+                notifications.AddGroupNotification(Constants.GroupCreatedNotification, this.GroupViewTabId, this.ModuleId, roleInfo, this.UserInfo, modRoles, modUsers);
 
                 //Add entry to journal.
-                GroupUtilities.CreateJournalEntry(roleInfo, UserInfo);
+                GroupUtilities.CreateJournalEntry(roleInfo, this.UserInfo);
             }
 
-            Response.Redirect(ModuleContext.NavigateUrl(TabId, string.Empty, false, null));
+            this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, string.Empty, false, null));
         }
     }
 }

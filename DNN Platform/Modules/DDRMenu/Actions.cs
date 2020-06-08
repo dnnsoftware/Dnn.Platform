@@ -41,12 +41,12 @@ namespace DotNetNuke.Web.DDRMenu
 			{
 				base.OnInit(e);
 
-				navProvider = (DDRMenuNavigationProvider)NavigationProvider.Instance("DDRMenuNavigationProvider");
-				navProvider.ControlID = "ctl" + ID;
-				navProvider.MenuStyle = MenuStyle;
-				navProvider.Initialize();
+				this.navProvider = (DDRMenuNavigationProvider)NavigationProvider.Instance("DDRMenuNavigationProvider");
+				this.navProvider.ControlID = "ctl" + this.ID;
+				this.navProvider.MenuStyle = this.MenuStyle;
+				this.navProvider.Initialize();
 
-				Controls.Add(navProvider.NavigationControl);
+				this.Controls.Add(this.navProvider.NavigationControl);
 			}
 		}
 
@@ -56,7 +56,7 @@ namespace DotNetNuke.Web.DDRMenu
 			{
 				base.OnLoad(e);
 
-				SetMenuDefaults();
+				this.SetMenuDefaults();
 			}
 		}
 
@@ -68,8 +68,8 @@ namespace DotNetNuke.Web.DDRMenu
 
 				try
 				{
-					navProvider.TemplateArguments = TemplateArguments;
-					BindMenu(Navigation.GetActionNodes(ActionRoot, this, -1));
+					this.navProvider.TemplateArguments = this.TemplateArguments;
+					this.BindMenu(Navigation.GetActionNodes(this.ActionRoot, this, -1));
 				}
 				catch (Exception exc)
 				{
@@ -80,18 +80,18 @@ namespace DotNetNuke.Web.DDRMenu
 
 		private void BindMenu(DNNNodeCollection objNodes)
 		{
-			Visible = DisplayControl(objNodes);
-			if (!Visible)
+			this.Visible = this.DisplayControl(objNodes);
+			if (!this.Visible)
 			{
 				return;
 			}
 
-			navProvider.ClearNodes();
+			this.navProvider.ClearNodes();
 			foreach (DNNNode node in objNodes)
 			{
-				ProcessNode(node);
+				this.ProcessNode(node);
 			}
-			navProvider.Bind(objNodes, false);
+			this.navProvider.Bind(objNodes, false);
 		}
 
 		private void ActionClick(NavigationEventArgs args)
@@ -100,7 +100,7 @@ namespace DotNetNuke.Web.DDRMenu
 			{
 				try
 				{
-					ProcessAction(args.ID);
+					this.ProcessAction(args.ID);
 				}
 				catch (Exception exc)
 				{
@@ -111,36 +111,36 @@ namespace DotNetNuke.Web.DDRMenu
 
 		private void AddActionIDs(ModuleAction action)
 		{
-			if (!actions.ContainsKey(action.ID))
+			if (!this.actions.ContainsKey(action.ID))
 			{
-				actions.Add(action.ID, action);
+				this.actions.Add(action.ID, action);
 			}
 			if (action.HasChildren())
 			{
 				foreach (ModuleAction a in action.Actions)
 				{
-					AddActionIDs(a);
+					this.AddActionIDs(a);
 				}
 			}
 		}
 
 		private ModuleAction FindAction(int id)
 		{
-			if (actions == null)
+			if (this.actions == null)
 			{
-				actions = new Dictionary<int, ModuleAction>();
-				AddActionIDs(ActionRoot);
+				this.actions = new Dictionary<int, ModuleAction>();
+				this.AddActionIDs(this.ActionRoot);
 			}
 
 			ModuleAction result;
-			return actions.TryGetValue(id, out result) ? result : null;
+			return this.actions.TryGetValue(id, out result) ? result : null;
 		}
 
 		private void ProcessNode(DNNNode dnnNode)
 		{
 			if (!dnnNode.IsBreak)
 			{
-				var action = FindAction(Convert.ToInt32(dnnNode.Key));
+				var action = this.FindAction(Convert.ToInt32(dnnNode.Key));
 				if (action != null)
 				{
 					dnnNode.set_CustomAttribute("CommandName", action.CommandName);
@@ -153,12 +153,12 @@ namespace DotNetNuke.Web.DDRMenu
 				dnnNode.JSFunction = string.Format(
 					"if({0}){{{1}}};",
 					dnnNode.JSFunction,
-					Page.ClientScript.GetPostBackEventReference(navProvider.NavigationControl, dnnNode.ID));
+					this.Page.ClientScript.GetPostBackEventReference(this.navProvider.NavigationControl, dnnNode.ID));
 			}
 
 			foreach (DNNNode node in dnnNode.DNNNodes)
 			{
-				ProcessNode(node);
+				this.ProcessNode(node);
 			}
 		}
 
@@ -166,25 +166,25 @@ namespace DotNetNuke.Web.DDRMenu
 		{
 			try
 			{
-				navProvider.StyleIconWidth = 15M;
-				navProvider.MouseOutHideDelay = 500M;
-				navProvider.MouseOverAction = NavigationProvider.HoverAction.Expand;
-				navProvider.MouseOverDisplay = NavigationProvider.HoverDisplay.None;
-				navProvider.CSSControl = "ModuleTitle_MenuBar";
-				navProvider.CSSContainerRoot = "ModuleTitle_MenuContainer";
-				navProvider.CSSNode = "ModuleTitle_MenuItem";
-				navProvider.CSSIcon = "ModuleTitle_MenuIcon";
-				navProvider.CSSContainerSub = "ModuleTitle_SubMenu";
-				navProvider.CSSBreak = "ModuleTitle_MenuBreak";
-				navProvider.CSSNodeHover = "ModuleTitle_MenuItemSel";
-				navProvider.CSSIndicateChildSub = "ModuleTitle_MenuArrow";
-				navProvider.CSSIndicateChildRoot = "ModuleTitle_RootMenuArrow";
-				navProvider.PathImage = Globals.ApplicationPath + "/Images/";
-				navProvider.PathSystemImage = Globals.ApplicationPath + "/Images/";
-				navProvider.IndicateChildImageSub = "action_right.gif";
-				navProvider.IndicateChildren = true;
-				navProvider.StyleRoot = "background-color: Transparent; font-size: 1pt;";
-				navProvider.NodeClick += ActionClick;
+				this.navProvider.StyleIconWidth = 15M;
+				this.navProvider.MouseOutHideDelay = 500M;
+				this.navProvider.MouseOverAction = NavigationProvider.HoverAction.Expand;
+				this.navProvider.MouseOverDisplay = NavigationProvider.HoverDisplay.None;
+				this.navProvider.CSSControl = "ModuleTitle_MenuBar";
+				this.navProvider.CSSContainerRoot = "ModuleTitle_MenuContainer";
+				this.navProvider.CSSNode = "ModuleTitle_MenuItem";
+				this.navProvider.CSSIcon = "ModuleTitle_MenuIcon";
+				this.navProvider.CSSContainerSub = "ModuleTitle_SubMenu";
+				this.navProvider.CSSBreak = "ModuleTitle_MenuBreak";
+				this.navProvider.CSSNodeHover = "ModuleTitle_MenuItemSel";
+				this.navProvider.CSSIndicateChildSub = "ModuleTitle_MenuArrow";
+				this.navProvider.CSSIndicateChildRoot = "ModuleTitle_RootMenuArrow";
+				this.navProvider.PathImage = Globals.ApplicationPath + "/Images/";
+				this.navProvider.PathSystemImage = Globals.ApplicationPath + "/Images/";
+				this.navProvider.IndicateChildImageSub = "action_right.gif";
+				this.navProvider.IndicateChildren = true;
+				this.navProvider.StyleRoot = "background-color: Transparent; font-size: 1pt;";
+				this.navProvider.NodeClick += this.ActionClick;
 			}
 			catch (Exception exc)
 			{

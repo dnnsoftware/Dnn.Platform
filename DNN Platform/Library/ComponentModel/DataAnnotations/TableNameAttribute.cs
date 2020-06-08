@@ -14,7 +14,7 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
     {
         public TableNameAttribute(string tableName)
         {
-            TableName = tableName;
+            this.TableName = tableName;
         }
 
         public string TableName { get; set; }

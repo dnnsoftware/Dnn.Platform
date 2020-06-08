@@ -96,8 +96,8 @@ namespace log4net.Appender
 		[Obsolete("Instead use the default constructor and set the Layout & Writer properties. Scheduled removal in v10.0.0.")]
 		public TextWriterAppender(ILayout layout, TextWriter writer) 
 		{
-			Layout = layout;
-			Writer = writer;
+			this.Layout = layout;
+			this.Writer = writer;
 		}
 
 		#endregion
@@ -129,8 +129,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public bool ImmediateFlush 
 		{
-			get { return m_immediateFlush; }
-			set { m_immediateFlush = value; }
+			get { return this.m_immediateFlush; }
+			set { this.m_immediateFlush = value; }
 		}
 
 		/// <summary>
@@ -150,16 +150,16 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual public TextWriter Writer 
 		{
-			get { return m_qtw; }
+			get { return this.m_qtw; }
 			set 
 			{
 				lock(this) 
 				{
-					Reset();
+					this.Reset();
 					if (value != null)
 					{
-						m_qtw = new QuietTextWriter(value, ErrorHandler);
-						WriteHeader();
+						this.m_qtw = new QuietTextWriter(value, this.ErrorHandler);
+						this.WriteHeader();
 					}
 				}
 			}
@@ -186,20 +186,20 @@ namespace log4net.Appender
 				return false;
 			}
 
-			if (m_qtw == null) 
+			if (this.m_qtw == null) 
 			{
 				// Allow subclass to lazily create the writer
-				PrepareWriter();
+				this.PrepareWriter();
 
-				if (m_qtw == null) 
+				if (this.m_qtw == null) 
 				{
-					ErrorHandler.Error("No output stream or file set for the appender named ["+ Name +"].");
+					this.ErrorHandler.Error("No output stream or file set for the appender named ["+ this.Name +"].");
 					return false;
 				}
 			}
-			if (m_qtw.Closed) 
+			if (this.m_qtw.Closed) 
 			{
-				ErrorHandler.Error("Output stream for appender named ["+ Name +"] has been closed.");
+				this.ErrorHandler.Error("Output stream for appender named ["+ this.Name +"] has been closed.");
 				return false;
 			}
 
@@ -222,11 +222,11 @@ namespace log4net.Appender
 		/// </remarks>
 		override protected void Append(LoggingEvent loggingEvent) 
 		{
-			RenderLoggingEvent(m_qtw, loggingEvent);
+			this.RenderLoggingEvent(this.m_qtw, loggingEvent);
 
-			if (m_immediateFlush) 
+			if (this.m_immediateFlush) 
 			{
-				m_qtw.Flush();
+				this.m_qtw.Flush();
 			} 
 		}
 
@@ -245,12 +245,12 @@ namespace log4net.Appender
 		{
 			foreach(LoggingEvent loggingEvent in loggingEvents)
 			{
-				RenderLoggingEvent(m_qtw, loggingEvent);
+				this.RenderLoggingEvent(this.m_qtw, loggingEvent);
 			}
 
-			if (m_immediateFlush) 
+			if (this.m_immediateFlush) 
 			{
-				m_qtw.Flush();
+				this.m_qtw.Flush();
 			} 
 		}
 
@@ -264,7 +264,7 @@ namespace log4net.Appender
 		{
 			lock(this)
 			{
-				Reset();
+				this.Reset();
 			}
 		}
 
@@ -289,9 +289,9 @@ namespace log4net.Appender
 					else 
 					{
 						base.ErrorHandler = value;
-						if (m_qtw != null) 
+						if (this.m_qtw != null) 
 						{
-							m_qtw.ErrorHandler = value;
+							this.m_qtw.ErrorHandler = value;
 						}
 					}	
 				}
@@ -326,8 +326,8 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual protected void WriteFooterAndCloseWriter()
 		{
-			WriteFooter();
-			CloseWriter();
+			this.WriteFooter();
+			this.CloseWriter();
 		}
 
 		/// <summary>
@@ -340,15 +340,15 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual protected void CloseWriter() 
 		{
-			if (m_qtw != null) 
+			if (this.m_qtw != null) 
 			{
 				try 
 				{
-					m_qtw.Close();
+					this.m_qtw.Close();
 				} 
 				catch(Exception e) 
 				{
-					ErrorHandler.Error("Could not close writer ["+m_qtw+"]", e); 
+					this.ErrorHandler.Error("Could not close writer ["+this.m_qtw+"]", e); 
 					// do need to invoke an error handler
 					// at this late stage
 				}
@@ -366,8 +366,8 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual protected void Reset() 
 		{
-			WriteFooterAndCloseWriter();
-			m_qtw = null;
+			this.WriteFooterAndCloseWriter();
+			this.m_qtw = null;
 		}
 
 		/// <summary>
@@ -380,12 +380,12 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual protected void WriteFooter() 
 		{
-			if (Layout != null && m_qtw != null && !m_qtw.Closed) 
+			if (this.Layout != null && this.m_qtw != null && !this.m_qtw.Closed) 
 			{
-				string f = Layout.Footer;
+				string f = this.Layout.Footer;
 				if (f != null)
 				{
-					m_qtw.Write(f);
+					this.m_qtw.Write(f);
 				}
 			}
 		}
@@ -400,12 +400,12 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual protected void WriteHeader() 
 		{
-			if (Layout != null && m_qtw != null && !m_qtw.Closed) 
+			if (this.Layout != null && this.m_qtw != null && !this.m_qtw.Closed) 
 			{
-				string h = Layout.Header;
+				string h = this.Layout.Header;
 				if (h != null)
 				{
-					m_qtw.Write(h);
+					this.m_qtw.Write(h);
 				}
 			}
 		}
@@ -439,8 +439,8 @@ namespace log4net.Appender
 		/// </remarks>
 		protected QuietTextWriter QuietWriter
 		{
-			get { return m_qtw; }
-			set { m_qtw = value; }
+			get { return this.m_qtw; }
+			set { this.m_qtw = value; }
         }
 
         #endregion Protected Instance Methods
@@ -494,12 +494,12 @@ namespace log4net.Appender
             public override bool Flush(int millisecondsTimeout)
             {
                 // Nothing to do if ImmediateFlush is true
-                if (m_immediateFlush) return true;
+                if (this.m_immediateFlush) return true;
 
                 // lock(this) will block any Appends while the buffer is flushed.
                 lock (this)
                 {
-                    m_qtw.Flush();
+                    this.m_qtw.Flush();
                 }
 
                 return true;

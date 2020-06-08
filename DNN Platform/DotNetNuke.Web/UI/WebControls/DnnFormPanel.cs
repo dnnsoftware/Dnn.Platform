@@ -17,22 +17,22 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClass);
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);
             writer.RenderBeginTag(HtmlTextWriterTag.H2);
 
-            if (Expanded)
+            if (this.Expanded)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Class, "dnnSectionExpanded");
             }
             writer.RenderBeginTag(HtmlTextWriterTag.A);
-            writer.Write(Text);
+            writer.Write(this.Text);
             writer.RenderEndTag();
 
             writer.RenderEndTag();
 
             writer.RenderBeginTag(HtmlTextWriterTag.Fieldset);
 
-            RenderChildren(writer);
+            this.RenderChildren(writer);
 
             writer.RenderEndTag();
         }

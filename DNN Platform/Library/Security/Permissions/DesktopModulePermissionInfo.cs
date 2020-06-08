@@ -44,8 +44,8 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
 		public DesktopModulePermissionInfo()
         {
-            _desktopModulePermissionID = Null.NullInteger;
-            _portalDesktopModuleID = Null.NullInteger;
+            this._desktopModulePermissionID = Null.NullInteger;
+            this._portalDesktopModuleID = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
@@ -56,11 +56,11 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public DesktopModulePermissionInfo(PermissionInfo permission) : this()
         {
-            ModuleDefID = permission.ModuleDefID;
-            PermissionCode = permission.PermissionCode;
-            PermissionID = permission.PermissionID;
-            PermissionKey = permission.PermissionKey;
-            PermissionName = permission.PermissionName;
+            this.ModuleDefID = permission.ModuleDefID;
+            this.PermissionCode = permission.PermissionCode;
+            this.PermissionID = permission.PermissionID;
+            this.PermissionKey = permission.PermissionKey;
+            this.PermissionName = permission.PermissionName;
         }
 		
 		#endregion
@@ -77,11 +77,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _desktopModulePermissionID;
+                return this._desktopModulePermissionID;
             }
             set
             {
-                _desktopModulePermissionID = value;
+                this._desktopModulePermissionID = value;
             }
         }
 
@@ -95,11 +95,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _portalDesktopModuleID;
+                return this._portalDesktopModuleID;
             }
             set
             {
-                _portalDesktopModuleID = value;
+                this._portalDesktopModuleID = value;
             }
         }
 		
@@ -116,8 +116,8 @@ namespace DotNetNuke.Security.Permissions
         public void Fill(IDataReader dr)
         {
             base.FillInternal(dr);
-            DesktopModulePermissionID = Null.SetNullInteger(dr["DesktopModulePermissionID"]);
-            PortalDesktopModuleID = Null.SetNullInteger(dr["PortalDesktopModuleID"]);
+            this.DesktopModulePermissionID = Null.SetNullInteger(dr["DesktopModulePermissionID"]);
+            this.PortalDesktopModuleID = Null.SetNullInteger(dr["PortalDesktopModuleID"]);
         }
 
         /// -----------------------------------------------------------------------------
@@ -130,11 +130,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return DesktopModulePermissionID;
+                return this.DesktopModulePermissionID;
             }
             set
             {
-                DesktopModulePermissionID = value;
+                this.DesktopModulePermissionID = value;
             }
         }
 
@@ -166,7 +166,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return true;
             }
-            return (AllowAccess == other.AllowAccess) && (PortalDesktopModuleID == other.PortalDesktopModuleID) && (RoleID == other.RoleID) && (PermissionID == other.PermissionID);
+            return (this.AllowAccess == other.AllowAccess) && (this.PortalDesktopModuleID == other.PortalDesktopModuleID) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -197,14 +197,14 @@ namespace DotNetNuke.Security.Permissions
             {
                 return false;
             }
-            return Equals((DesktopModulePermissionInfo) obj);
+            return this.Equals((DesktopModulePermissionInfo) obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return (_desktopModulePermissionID*397) ^ _portalDesktopModuleID;
+                return (this._desktopModulePermissionID*397) ^ this._portalDesktopModuleID;
             }
         }
 		

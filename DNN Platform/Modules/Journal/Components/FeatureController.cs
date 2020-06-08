@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.Journal.Components {
         protected INavigationManager NavigationManager { get; }
         public FeatureController()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Optional Interfaces
@@ -190,7 +190,7 @@ namespace DotNetNuke.Modules.Journal.Components {
                         }
 
                         //index comments for this journal
-                        AddCommentItems(journalIds, searchDocuments);
+                        this.AddCommentItems(journalIds, searchDocuments);
                     }
                 }
             }
@@ -279,15 +279,15 @@ namespace DotNetNuke.Modules.Journal.Components {
 
             if (groupId > 0 && tabId > 0)
             {
-                url = NavigationManager.NavigateURL(tabId, string.Empty, "GroupId=" + groupId, "jid=" + journalId);
+                url = this.NavigationManager.NavigateURL(tabId, string.Empty, "GroupId=" + groupId, "jid=" + journalId);
             }
             else if (tabId == portalSettings.UserTabId)
             {
-                url = NavigationManager.NavigateURL(portalSettings.UserTabId, string.Empty, string.Format("userId={0}", profileId), "jid=" + journalId);
+                url = this.NavigationManager.NavigateURL(portalSettings.UserTabId, string.Empty, string.Format("userId={0}", profileId), "jid=" + journalId);
             }
             else
             {
-                url = NavigationManager.NavigateURL(tabId, string.Empty, "jid=" + journalId);
+                url = this.NavigationManager.NavigateURL(tabId, string.Empty, "jid=" + journalId);
             }
 
             return url;

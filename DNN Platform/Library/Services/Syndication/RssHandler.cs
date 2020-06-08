@@ -32,29 +32,29 @@ namespace DotNetNuke.Services.Syndication
         protected override void PopulateChannel(string channelName, string userName)
         {
             ModuleInfo objModule;
-            if (Request == null || Settings == null || Settings.ActiveTab == null || ModuleId == Null.NullInteger)
+            if (this.Request == null || this.Settings == null || this.Settings.ActiveTab == null || this.ModuleId == Null.NullInteger)
             {
                 return;
             }
-            Channel["title"] = Settings.PortalName;
-            Channel["link"] = Globals.AddHTTP(Globals.GetDomainName(Request));
-            if (!String.IsNullOrEmpty(Settings.Description))
+            this.Channel["title"] = this.Settings.PortalName;
+            this.Channel["link"] = Globals.AddHTTP(Globals.GetDomainName(this.Request));
+            if (!String.IsNullOrEmpty(this.Settings.Description))
             {
-                Channel["description"] = Settings.Description;
+                this.Channel["description"] = this.Settings.Description;
             }
             else
             {
-                Channel["description"] = Settings.PortalName;
+                this.Channel["description"] = this.Settings.PortalName;
             }
-            Channel["language"] = Settings.DefaultLanguage;
-            Channel["copyright"] = !string.IsNullOrEmpty(Settings.FooterText) ? Settings.FooterText.Replace("[year]", DateTime.Now.Year.ToString()) : string.Empty;
-            Channel["webMaster"] = Settings.Email;
+            this.Channel["language"] = this.Settings.DefaultLanguage;
+            this.Channel["copyright"] = !string.IsNullOrEmpty(this.Settings.FooterText) ? this.Settings.FooterText.Replace("[year]", DateTime.Now.Year.ToString()) : string.Empty;
+            this.Channel["webMaster"] = this.Settings.Email;
             
             IList<SearchResult> searchResults = null;
             var query = new SearchQuery();
-            query.PortalIds = new[] { Settings.PortalId };
-            query.TabId = TabId;
-            query.ModuleId = ModuleId;
+            query.PortalIds = new[] { this.Settings.PortalId };
+            query.TabId = this.TabId;
+            query.ModuleId = this.ModuleId;
             query.SearchTypeIds = new[] { SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId };
 
             try
@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Syndication
                 {
                     if (!result.UniqueKey.StartsWith(Constants.ModuleMetaDataPrefixTag) && TabPermissionController.CanViewPage())
                     {
-                        if (Settings.ActiveTab.StartDate < DateTime.Now && Settings.ActiveTab.EndDate > DateTime.Now)
+                        if (this.Settings.ActiveTab.StartDate < DateTime.Now && this.Settings.ActiveTab.EndDate > DateTime.Now)
                         {
                             objModule = ModuleController.Instance.GetModule(result.ModuleId, query.TabId, false);
                             if (objModule != null && objModule.DisplaySyndicate && objModule.IsDeleted == false)
@@ -81,7 +81,7 @@ namespace DotNetNuke.Services.Syndication
                                     if (Convert.ToDateTime(objModule.StartDate == Null.NullDate ? DateTime.MinValue : objModule.StartDate) < DateTime.Now &&
                                         Convert.ToDateTime(objModule.EndDate == Null.NullDate ? DateTime.MaxValue : objModule.EndDate) > DateTime.Now)
                                     {
-                                        Channel.Items.Add(GetRssItem(result));
+                                        this.Channel.Items.Add(this.GetRssItem(result));
                                     }
                                 }
                             }
@@ -129,9 +129,9 @@ namespace DotNetNuke.Services.Syndication
         {
             base.OnPreRender(ea);
 
-            Context.Response.Cache.SetExpires(DateTime.Now.AddSeconds(60));
-            Context.Response.Cache.SetCacheability(HttpCacheability.Public);
-            Context.Response.Cache.VaryByParams["moduleid"] = true;
+            this.Context.Response.Cache.SetExpires(DateTime.Now.AddSeconds(60));
+            this.Context.Response.Cache.SetCacheability(HttpCacheability.Public);
+            this.Context.Response.Cache.VaryByParams["moduleid"] = true;
         }
     }
 }

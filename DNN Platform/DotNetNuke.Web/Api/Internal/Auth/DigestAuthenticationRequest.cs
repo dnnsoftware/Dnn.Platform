@@ -26,17 +26,17 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             //opaque="5ccc069c403ebaf9f0171e9517f40e41"
             try
             {
-                RequestParams = new NameValueCollection();
+                this.RequestParams = new NameValueCollection();
                 foreach (Match m in AuthHeaderRegex.Matches(authorizationHeader))
                 {
-                    RequestParams.Add(m.Groups["name"].Value, m.Groups["value"].Value);
+                    this.RequestParams.Add(m.Groups["name"].Value, m.Groups["value"].Value);
                 }
-                HttpMethod = httpMethod;
-                RawUsername = RequestParams["username"].Replace("\\\\", "\\");
-                CleanUsername = RawUsername;
-                if (CleanUsername.LastIndexOf("\\", System.StringComparison.Ordinal) > 0)
+                this.HttpMethod = httpMethod;
+                this.RawUsername = this.RequestParams["username"].Replace("\\\\", "\\");
+                this.CleanUsername = this.RawUsername;
+                if (this.CleanUsername.LastIndexOf("\\", System.StringComparison.Ordinal) > 0)
                 {
-                    CleanUsername = CleanUsername.Substring(CleanUsername.LastIndexOf("\\", System.StringComparison.Ordinal) + 2 - 1);
+                    this.CleanUsername = this.CleanUsername.Substring(this.CleanUsername.LastIndexOf("\\", System.StringComparison.Ordinal) + 2 - 1);
                 }
             }
             catch (Exception)

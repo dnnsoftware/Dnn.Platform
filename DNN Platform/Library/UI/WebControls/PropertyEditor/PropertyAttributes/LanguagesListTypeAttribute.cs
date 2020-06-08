@@ -23,14 +23,14 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="type">The type of List</param>
         public LanguagesListTypeAttribute(LanguagesListType type)
         {
-            _ListType = type;
+            this._ListType = type;
         }
 
         public LanguagesListType ListType
         {
             get
             {
-                return _ListType;
+                return this._ListType;
             }
         }
     }

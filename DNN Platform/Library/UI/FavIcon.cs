@@ -27,7 +27,7 @@ namespace DotNetNuke.UI.Internals
         /// <param name="portalId">The id of the portal</param>
         public FavIcon(int portalId)
         {
-            _portalId = portalId;
+            this._portalId = portalId;
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace DotNetNuke.UI.Internals
         /// <returns>Path to the favicon file relative to portal root, or empty string when there is no favicon set</returns>
         public string GetSettingPath()
         {
-            return PortalController.GetPortalSetting(SettingName, _portalId, "");
+            return PortalController.GetPortalSetting(SettingName, this._portalId, "");
         }
 
         /// <summary>
@@ -47,8 +47,8 @@ namespace DotNetNuke.UI.Internals
         /// <param name="fileId">The file id or Null.NullInteger for none</param>
         public void Update(int fileId)
         {
-            PortalController.UpdatePortalSetting(_portalId, SettingName, fileId != Null.NullInteger ? string.Format("FileID={0}", fileId) : "", /*clearCache*/ true);
-            DataCache.ClearCache(GetCacheKey(_portalId));
+            PortalController.UpdatePortalSetting(this._portalId, SettingName, fileId != Null.NullInteger ? string.Format("FileID={0}", fileId) : "", /*clearCache*/ true);
+            DataCache.ClearCache(GetCacheKey(this._portalId));
         }
 
         /// <summary>
@@ -88,16 +88,16 @@ namespace DotNetNuke.UI.Internals
 
         private string GetRelativeUrl()
         {
-            var fileInfo = GetFileInfo();
+            var fileInfo = this.GetFileInfo();
             return fileInfo == null ? string.Empty : FileManager.Instance.GetUrl(fileInfo);
         }
 
         private IFileInfo GetFileInfo()
         {
-            var path = GetSettingPath();
+            var path = this.GetSettingPath();
             if( ! String.IsNullOrEmpty(path) )
             { 
-                return FileManager.Instance.GetFile(_portalId, path);
+                return FileManager.Instance.GetFile(this._portalId, path);
             }
 
             return null;

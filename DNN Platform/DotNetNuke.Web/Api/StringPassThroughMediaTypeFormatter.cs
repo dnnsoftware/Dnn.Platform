@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.Api
         {
             foreach (var type in mediaTypes)
             {
-                SupportedMediaTypes.Add(new MediaTypeHeaderValue(type));
+                this.SupportedMediaTypes.Add(new MediaTypeHeaderValue(type));
             }
         }
 

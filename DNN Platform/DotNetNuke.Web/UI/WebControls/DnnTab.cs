@@ -22,7 +22,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                EnsureChildControls();
+                this.EnsureChildControls();
                 return base.Controls;
             }
         }
@@ -35,17 +35,17 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void CreateChildControls()
         {
-            Controls.Clear();
+            this.Controls.Clear();
 
-            if (Content != null)
+            if (this.Content != null)
             {
-                Content.InstantiateIn(this);
+                this.Content.InstantiateIn(this);
             }
         }
 
         public override Control FindControl(string id)
         {
-            EnsureChildControls();
+            this.EnsureChildControls();
             return base.FindControl(id);
         }
 

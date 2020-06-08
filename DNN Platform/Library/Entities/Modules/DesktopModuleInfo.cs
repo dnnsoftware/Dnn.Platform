@@ -63,12 +63,12 @@ namespace DotNetNuke.Entities.Modules
 
             public bool HasAdminPage()
             {
-                return Type.IndexOf("admin", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
+                return this.Type.IndexOf("admin", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
             }
 
             public bool HasHostPage()
             {
-                return Type.IndexOf("host", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
+                return this.Type.IndexOf("host", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
             }
 
 
@@ -101,26 +101,26 @@ namespace DotNetNuke.Entities.Modules
                     switch (reader.Name)
                     {
                         case "page":
-                            Type = reader.GetAttribute("type");
+                            this.Type = reader.GetAttribute("type");
                             var commonValue = reader.GetAttribute("common");
                             if (!string.IsNullOrEmpty(commonValue))
                             {
-                                IsCommon = commonValue.Equals("true", StringComparison.InvariantCultureIgnoreCase);
+                                this.IsCommon = commonValue.Equals("true", StringComparison.InvariantCultureIgnoreCase);
                             }
 
                             reader.Read();
                             break;
                         case "name":
-                            Name = reader.ReadElementContentAsString();
+                            this.Name = reader.ReadElementContentAsString();
                             break;
                         case "icon":
-                            Icon = reader.ReadElementContentAsString();
+                            this.Icon = reader.ReadElementContentAsString();
                             break;
                         case "largeIcon":
-                            LargeIcon = reader.ReadElementContentAsString();
+                            this.LargeIcon = reader.ReadElementContentAsString();
                             break;
                         case "description":
-                            Description = reader.ReadElementContentAsString();
+                            this.Description = reader.ReadElementContentAsString();
                             break;
                         default:
                             reader.Read();
@@ -133,14 +133,14 @@ namespace DotNetNuke.Entities.Modules
             {
                 //Write start of main elemenst
                 writer.WriteStartElement("page");
-                writer.WriteAttributeString("type", Type);
-                writer.WriteAttributeString("common", IsCommon.ToString().ToLowerInvariant());
+                writer.WriteAttributeString("type", this.Type);
+                writer.WriteAttributeString("common", this.IsCommon.ToString().ToLowerInvariant());
 
                 //write out properties
-                writer.WriteElementString("name", Name);
-                writer.WriteElementString("icon", Icon);
-                writer.WriteElementString("largeIcon", LargeIcon);
-                writer.WriteElementString("description", Description);
+                writer.WriteElementString("name", this.Name);
+                writer.WriteElementString("icon", this.Icon);
+                writer.WriteElementString("largeIcon", this.LargeIcon);
+                writer.WriteElementString("description", this.Description);
 
                 //Write end of main element
                 writer.WriteEndElement();
@@ -154,13 +154,13 @@ namespace DotNetNuke.Entities.Modules
 
         public DesktopModuleInfo()
         {
-            IsPremium = Null.NullBoolean;
-            IsAdmin = Null.NullBoolean;
-            CodeSubDirectory = Null.NullString;
-            PackageID = Null.NullInteger;
-            DesktopModuleID = Null.NullInteger;
-            SupportedFeatures = Null.NullInteger;
-            Shareable = ModuleSharing.Unknown;
+            this.IsPremium = Null.NullBoolean;
+            this.IsAdmin = Null.NullBoolean;
+            this.CodeSubDirectory = Null.NullString;
+            this.PackageID = Null.NullInteger;
+            this.DesktopModuleID = Null.NullInteger;
+            this.SupportedFeatures = Null.NullInteger;
+            this.Shareable = ModuleSharing.Unknown;
         }
 
 		#region "Public Properties"
@@ -198,12 +198,12 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                Term term = (from Term t in Terms select t).FirstOrDefault();
+                Term term = (from Term t in this.Terms select t).FirstOrDefault();
                 return (term != null) ? term.Name : String.Empty;
             } 
             set
             {
-                Terms.Clear();
+                this.Terms.Clear();
                 ITermController termController = Util.GetTermController();
                 var term = (from Term t in termController.GetTermsByVocabulary("Module_Categories") 
                             where t.Name == value 
@@ -211,7 +211,7 @@ namespace DotNetNuke.Entities.Modules
                             .FirstOrDefault();
                 if (term != null)
                 {
-                    Terms.Add(term);
+                    this.Terms.Add(term);
                 }
             }
         }
@@ -288,11 +288,11 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return GetFeature(DesktopModuleSupportedFeature.IsPortable);
+                return this.GetFeature(DesktopModuleSupportedFeature.IsPortable);
             }
             set
             {
-                UpdateFeature(DesktopModuleSupportedFeature.IsPortable, value);
+                this.UpdateFeature(DesktopModuleSupportedFeature.IsPortable, value);
             }
         }
 
@@ -314,11 +314,11 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return GetFeature(DesktopModuleSupportedFeature.IsSearchable);
+                return this.GetFeature(DesktopModuleSupportedFeature.IsSearchable);
             }
             set
             {
-                UpdateFeature(DesktopModuleSupportedFeature.IsSearchable, value);
+                this.UpdateFeature(DesktopModuleSupportedFeature.IsSearchable, value);
             }
         }
 
@@ -332,11 +332,11 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return GetFeature(DesktopModuleSupportedFeature.IsUpgradeable);
+                return this.GetFeature(DesktopModuleSupportedFeature.IsUpgradeable);
             }
             set
             {
-                UpdateFeature(DesktopModuleSupportedFeature.IsUpgradeable, value);
+                this.UpdateFeature(DesktopModuleSupportedFeature.IsUpgradeable, value);
             }
         }
 
@@ -359,18 +359,18 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (_moduleDefinitions == null)
+                if (this._moduleDefinitions == null)
                 {
-                    if (DesktopModuleID > Null.NullInteger)
+                    if (this.DesktopModuleID > Null.NullInteger)
                     {
-                        _moduleDefinitions = ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(DesktopModuleID);
+                        this._moduleDefinitions = ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(this.DesktopModuleID);
                     }
                     else
                     {
-                        _moduleDefinitions = new Dictionary<string, ModuleDefinitionInfo>();
+                        this._moduleDefinitions = new Dictionary<string, ModuleDefinitionInfo>();
                     }
                 }
-                return _moduleDefinitions;
+                return this._moduleDefinitions;
             }
         }
 
@@ -410,9 +410,9 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (_pageInfo == null && PackageID > Null.NullInteger)
+                if (this._pageInfo == null && this.PackageID > Null.NullInteger)
                 {
-                    var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID);
+                    var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == this.PackageID);
                     if (package != null && !string.IsNullOrEmpty(package.Manifest))
                     {
                         var xmlDocument = new XmlDocument { XmlResolver = null };
@@ -420,16 +420,16 @@ namespace DotNetNuke.Entities.Modules
                         var pageNode = xmlDocument.SelectSingleNode("//package//components//component[@type=\"Module\"]//page");
                         if (pageNode != null)
                         {
-                            _pageInfo = CBO.DeserializeObject<PageInfo>(new StringReader(pageNode.OuterXml));
+                            this._pageInfo = CBO.DeserializeObject<PageInfo>(new StringReader(pageNode.OuterXml));
                         }
                     }
                 }
 
-                return _pageInfo;
+                return this._pageInfo;
             }
             set
             {
-                _pageInfo = value;
+                this._pageInfo = value;
             }
         }
 
@@ -445,24 +445,24 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public override void Fill(IDataReader dr)
         {
-            DesktopModuleID = Null.SetNullInteger(dr["DesktopModuleID"]);
-            PackageID = Null.SetNullInteger(dr["PackageID"]);
-            ModuleName = Null.SetNullString(dr["ModuleName"]);
-            FriendlyName = Null.SetNullString(dr["FriendlyName"]);
-            Description = Null.SetNullString(dr["Description"]);
-            FolderName = Null.SetNullString(dr["FolderName"]);
-            Version = Null.SetNullString(dr["Version"]);
-            Description = Null.SetNullString(dr["Description"]);
-            IsPremium = Null.SetNullBoolean(dr["IsPremium"]);
-            IsAdmin = Null.SetNullBoolean(dr["IsAdmin"]);
-            BusinessControllerClass = Null.SetNullString(dr["BusinessControllerClass"]);
-            SupportedFeatures = Null.SetNullInteger(dr["SupportedFeatures"]);
-            CompatibleVersions = Null.SetNullString(dr["CompatibleVersions"]);
-            Dependencies = Null.SetNullString(dr["Dependencies"]);
-            Permissions = Null.SetNullString(dr["Permissions"]);
-		    Shareable = (ModuleSharing)Null.SetNullInteger(dr["Shareable"]);
-            AdminPage = Null.SetNullString(dr["AdminPage"]);
-            HostPage = Null.SetNullString(dr["HostPage"]);
+            this.DesktopModuleID = Null.SetNullInteger(dr["DesktopModuleID"]);
+            this.PackageID = Null.SetNullInteger(dr["PackageID"]);
+            this.ModuleName = Null.SetNullString(dr["ModuleName"]);
+            this.FriendlyName = Null.SetNullString(dr["FriendlyName"]);
+            this.Description = Null.SetNullString(dr["Description"]);
+            this.FolderName = Null.SetNullString(dr["FolderName"]);
+            this.Version = Null.SetNullString(dr["Version"]);
+            this.Description = Null.SetNullString(dr["Description"]);
+            this.IsPremium = Null.SetNullBoolean(dr["IsPremium"]);
+            this.IsAdmin = Null.SetNullBoolean(dr["IsAdmin"]);
+            this.BusinessControllerClass = Null.SetNullString(dr["BusinessControllerClass"]);
+            this.SupportedFeatures = Null.SetNullInteger(dr["SupportedFeatures"]);
+            this.CompatibleVersions = Null.SetNullString(dr["CompatibleVersions"]);
+            this.Dependencies = Null.SetNullString(dr["Dependencies"]);
+            this.Permissions = Null.SetNullString(dr["Permissions"]);
+		    this.Shareable = (ModuleSharing)Null.SetNullInteger(dr["Shareable"]);
+            this.AdminPage = Null.SetNullString(dr["AdminPage"]);
+            this.HostPage = Null.SetNullString(dr["HostPage"]);
             //Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
         }
@@ -501,19 +501,19 @@ namespace DotNetNuke.Entities.Modules
                 }
                 if (reader.NodeType == XmlNodeType.Element && reader.Name == "moduleDefinitions" && !reader.IsEmptyElement)
                 {
-                    ReadModuleDefinitions(reader);
+                    this.ReadModuleDefinitions(reader);
                 }
                 else if (reader.NodeType == XmlNodeType.Element && reader.Name == "supportedFeatures" && !reader.IsEmptyElement)
                 {
-                    ReadSupportedFeatures(reader);
+                    this.ReadSupportedFeatures(reader);
                 }
                 else if (reader.NodeType == XmlNodeType.Element && reader.Name == "shareable" && !reader.IsEmptyElement)
                 {
-                    ReadModuleSharing(reader);
+                    this.ReadModuleSharing(reader);
                 }
                 else if (reader.NodeType == XmlNodeType.Element && reader.Name == "page" && !reader.IsEmptyElement)
                 {
-                    ReadPageInfo(reader);
+                    this.ReadPageInfo(reader);
                 }
                 else
                 {
@@ -522,39 +522,39 @@ namespace DotNetNuke.Entities.Modules
                         case "desktopModule":
                             break;
                         case "moduleName":
-                            ModuleName = reader.ReadElementContentAsString();
+                            this.ModuleName = reader.ReadElementContentAsString();
                             break;
                         case "foldername":
-                            FolderName = reader.ReadElementContentAsString();
+                            this.FolderName = reader.ReadElementContentAsString();
                             break;
                         case "businessControllerClass":
-                            BusinessControllerClass = reader.ReadElementContentAsString();
+                            this.BusinessControllerClass = reader.ReadElementContentAsString();
                             break;
                         case "codeSubDirectory":
-                            CodeSubDirectory = reader.ReadElementContentAsString();
+                            this.CodeSubDirectory = reader.ReadElementContentAsString();
                             break;
                         case "page":
-                            ReadPageInfo(reader);
+                            this.ReadPageInfo(reader);
 
-                            if (Page.HasAdminPage())
+                            if (this.Page.HasAdminPage())
                             {
-                                AdminPage = Page.Name;
+                                this.AdminPage = this.Page.Name;
                             }
 
-                            if (Page.HasHostPage())
+                            if (this.Page.HasHostPage())
                             {
-                                HostPage = Page.Name;
+                                this.HostPage = this.Page.Name;
                             }
                             break;
                         case "isAdmin":
                             bool isAdmin;
                             Boolean.TryParse(reader.ReadElementContentAsString(), out isAdmin);
-                            IsAdmin = isAdmin;
+                            this.IsAdmin = isAdmin;
                             break;
                         case "isPremium":
                             bool isPremium;
                             Boolean.TryParse(reader.ReadElementContentAsString(), out isPremium);
-                            IsPremium = isPremium;
+                            this.IsPremium = isPremium;
                             break;
                         default:
                             if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
@@ -580,29 +580,29 @@ namespace DotNetNuke.Entities.Modules
             writer.WriteStartElement("desktopModule");
 
             //write out properties
-            writer.WriteElementString("moduleName", ModuleName);
-            writer.WriteElementString("foldername", FolderName);
-            writer.WriteElementString("businessControllerClass", BusinessControllerClass);
-            if (!string.IsNullOrEmpty(CodeSubDirectory))
+            writer.WriteElementString("moduleName", this.ModuleName);
+            writer.WriteElementString("foldername", this.FolderName);
+            writer.WriteElementString("businessControllerClass", this.BusinessControllerClass);
+            if (!string.IsNullOrEmpty(this.CodeSubDirectory))
             {
-                writer.WriteElementString("codeSubDirectory", CodeSubDirectory);
+                writer.WriteElementString("codeSubDirectory", this.CodeSubDirectory);
             }
 			
             //Write out Supported Features
             writer.WriteStartElement("supportedFeatures");
-            if (IsPortable)
+            if (this.IsPortable)
             {
                 writer.WriteStartElement("supportedFeature");
                 writer.WriteAttributeString("type", "Portable");
                 writer.WriteEndElement();
             }
-            if (IsSearchable)
+            if (this.IsSearchable)
             {
                 writer.WriteStartElement("supportedFeature");
                 writer.WriteAttributeString("type", "Searchable");
                 writer.WriteEndElement();
             }
-            if (IsUpgradeable)
+            if (this.IsUpgradeable)
             {
                 writer.WriteStartElement("supportedFeature");
                 writer.WriteAttributeString("type", "Upgradeable");
@@ -613,17 +613,17 @@ namespace DotNetNuke.Entities.Modules
             writer.WriteEndElement();
 
             //Write admin/host page info.
-            if (Page != null)
+            if (this.Page != null)
             {
-                Page.WriteXml(writer);
+                this.Page.WriteXml(writer);
             }
 
             // Module sharing
 
-            if(Shareable != ModuleSharing.Unknown)
+            if(this.Shareable != ModuleSharing.Unknown)
             {
                 writer.WriteStartElement("shareable");
-                switch (Shareable)
+                switch (this.Shareable)
                 {
                     case ModuleSharing.Supported:
                         writer.WriteString("Supported");
@@ -639,7 +639,7 @@ namespace DotNetNuke.Entities.Modules
             writer.WriteStartElement("moduleDefinitions");
 
             //Iterate through definitions
-            foreach (ModuleDefinitionInfo definition in ModuleDefinitions.Values)
+            foreach (ModuleDefinitionInfo definition in this.ModuleDefinitions.Values)
             {
                 definition.WriteXml(writer);
             }
@@ -663,7 +663,7 @@ namespace DotNetNuke.Entities.Modules
         private void ClearFeature(DesktopModuleSupportedFeature feature)
         {
 			//And with the 1's complement of Feature to Clear the Feature flag
-            SupportedFeatures = SupportedFeatures & ~((int) feature);
+            this.SupportedFeatures = this.SupportedFeatures & ~((int) feature);
         }
 
         /// -----------------------------------------------------------------------------
@@ -674,7 +674,7 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         private bool GetFeature(DesktopModuleSupportedFeature feature)
         {
-            return SupportedFeatures > Null.NullInteger && (SupportedFeatures & (int) feature) == (int) feature;
+            return this.SupportedFeatures > Null.NullInteger && (this.SupportedFeatures & (int) feature) == (int) feature;
         }
 
         /// -----------------------------------------------------------------------------
@@ -685,7 +685,7 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         private void SetFeature(DesktopModuleSupportedFeature feature)
         {
-            SupportedFeatures |= (int) feature;
+            this.SupportedFeatures |= (int) feature;
         }
 
         /// -----------------------------------------------------------------------------
@@ -699,11 +699,11 @@ namespace DotNetNuke.Entities.Modules
         {
             if (isSet)
             {
-                SetFeature(feature);
+                this.SetFeature(feature);
             }
             else
             {
-                ClearFeature(feature);
+                this.ClearFeature(feature);
             }
         }
 
@@ -715,7 +715,7 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         private void ReadSupportedFeatures(XmlReader reader)
         {
-            SupportedFeatures = 0;
+            this.SupportedFeatures = 0;
             reader.ReadStartElement("supportedFeatures");
             do
             {
@@ -725,13 +725,13 @@ namespace DotNetNuke.Entities.Modules
                     switch (reader.ReadContentAsString())
                     {
                         case "Portable":
-                            IsPortable = true;
+                            this.IsPortable = true;
                             break;
                         case "Searchable":
-                            IsSearchable = true;
+                            this.IsSearchable = true;
                             break;
                         case "Upgradeable":
-                            IsUpgradeable = true;
+                            this.IsUpgradeable = true;
                             break;
                     }
                 }
@@ -744,21 +744,21 @@ namespace DotNetNuke.Entities.Modules
 
             if (string.IsNullOrEmpty(sharing))
             {
-                Shareable = ModuleSharing.Unknown;
+                this.Shareable = ModuleSharing.Unknown;
             }
             else
             {
                 switch (sharing.ToLowerInvariant())
                 {
                     case "supported":
-                        Shareable = ModuleSharing.Supported;
+                        this.Shareable = ModuleSharing.Supported;
                         break;
                     case "unsupported":
-                        Shareable = ModuleSharing.Unsupported;
+                        this.Shareable = ModuleSharing.Unsupported;
                         break;
                     default:
                     case "unknown":
-                        Shareable = ModuleSharing.Unknown;
+                        this.Shareable = ModuleSharing.Unknown;
                         break;
                 }
             }
@@ -784,24 +784,24 @@ namespace DotNetNuke.Entities.Modules
                 moduleDefinition.ReadXml(reader);
 
 				//Add to the collection
-                ModuleDefinitions.Add(moduleDefinition.FriendlyName, moduleDefinition);
+                this.ModuleDefinitions.Add(moduleDefinition.FriendlyName, moduleDefinition);
             } while (reader.ReadToNextSibling("moduleDefinition"));
 		}
 
         private void ReadPageInfo(XmlReader reader)
         {
-            Page = new PageInfo();
+            this.Page = new PageInfo();
             //Load it from the Xml
-            Page.ReadXml(reader.ReadSubtree());
+            this.Page.ReadXml(reader.ReadSubtree());
 
-            if (Page.HasAdminPage())
+            if (this.Page.HasAdminPage())
             {
-                AdminPage = Page.Name;
+                this.AdminPage = this.Page.Name;
             }
 
-            if (Page.HasHostPage())
+            if (this.Page.HasHostPage())
             {
-                HostPage = Page.Name;
+                this.HostPage = this.Page.Name;
             }
         }
 

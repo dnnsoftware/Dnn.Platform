@@ -27,7 +27,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = table.GetValueOrDefault<string>("cat id");
 
-            Expect(value, Is.Null);
+            this.Expect(value, Is.Null);
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = table.GetValueOrDefault<string>("app id");
 
-            Expect(value, Is.EqualTo("abc123"));
+            this.Expect(value, Is.EqualTo("abc123"));
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = table.GetValueOrDefault("app id", "abracadabra");
 
-            Expect(value, Is.EqualTo("abc123"));
+            this.Expect(value, Is.EqualTo("abc123"));
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = table.GetValueOrDefault("cat id", "Frank");
 
-            Expect(value, Is.EqualTo("Frank"));
+            this.Expect(value, Is.EqualTo("Frank"));
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = table.GetValueOrDefault<bool>("app id");
 
-            Expect(value, Is.True);
+            this.Expect(value, Is.True);
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = table.GetValueOrDefault("app id", false);
 
-            Expect(value, Is.True);
+            this.Expect(value, Is.True);
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             value = table.GetValueOrDefault("Allow Windows Live Writer", value);
 
-            Expect(value, Is.True);
+            this.Expect(value, Is.True);
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = table.GetValueOrDefault<bool>("Allow Windows Live Writer");
 
-            Expect(value, Is.False);
+            this.Expect(value, Is.False);
         }
 
         [Test]
@@ -119,7 +119,7 @@ namespace DotNetNuke.Tests.Core.Collections
                     return allowed;
                 });
 
-            Expect(value, Is.True);
+            this.Expect(value, Is.True);
         }
 
         [Test]
@@ -129,7 +129,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault<int>("appId");
 
-            Expect(value, Is.EqualTo(123));
+            this.Expect(value, Is.EqualTo(123));
         }
 
         [Test]
@@ -139,7 +139,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault<decimal>("appId");
 
-            Expect(value, Is.EqualTo(1.23m));
+            this.Expect(value, Is.EqualTo(1.23m));
         }
 
         [Test]
@@ -150,7 +150,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault<decimal>("appId");
 
-            Expect(value, Is.EqualTo(1.23m));
+            this.Expect(value, Is.EqualTo(1.23m));
         }
 
         [Test]
@@ -160,7 +160,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault<DateTime>("startDate");
 
-            Expect(value, Is.EqualTo(new DateTime(2012, 5, 4)));
+            this.Expect(value, Is.EqualTo(new DateTime(2012, 5, 4)));
         }
 
         [Test]
@@ -170,7 +170,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValue<string>("app id");
 
-            Expect(value, Is.Null);
+            this.Expect(value, Is.Null);
         }
 
         [Test]
@@ -180,7 +180,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault("app id", "a default value");
 
-            Expect(value, Is.Null);
+            this.Expect(value, Is.Null);
         }
 
         [Test]
@@ -190,7 +190,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValue<DateTime?>("startDate");
 
-            Expect(value, Is.Null);
+            this.Expect(value, Is.Null);
         }
 
         [Test]
@@ -201,7 +201,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault<DateTime>("startDate");
 
-            Expect(value, Is.EqualTo(new DateTime(2012, 5, 4)));
+            this.Expect(value, Is.EqualTo(new DateTime(2012, 5, 4)));
         }
 
         [Test]
@@ -211,7 +211,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault<string>("appId");
 
-            Expect(value, Is.EqualTo("123"));
+            this.Expect(value, Is.EqualTo("123"));
         }
 
         [Test]
@@ -223,7 +223,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = node.GetValueOrDefault<int>("id");
 
-            Expect(value, Is.EqualTo(14));
+            this.Expect(value, Is.EqualTo(14));
         }
 
         [Test]
@@ -237,7 +237,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = doc.DocumentElement.GetValueOrDefault<int>("id");
 
-            Expect(value, Is.EqualTo(13));
+            this.Expect(value, Is.EqualTo(13));
         }
 
         [Test]
@@ -247,7 +247,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault("length", TimeSpan.Parse);
 
-            Expect(value, Is.EqualTo(TimeSpan.FromSeconds(4210)));
+            this.Expect(value, Is.EqualTo(TimeSpan.FromSeconds(4210)));
         }
 
         [Test]
@@ -257,7 +257,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault("radio", CollectionExtensions.GetFlexibleBooleanParsingFunction());
 
-            Expect(value, Is.False);
+            this.Expect(value, Is.False);
         }
 
         [Test]
@@ -267,7 +267,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault("radio", CollectionExtensions.GetFlexibleBooleanParsingFunction());
 
-            Expect(value, Is.True);
+            this.Expect(value, Is.True);
         }
 
         [Test]
@@ -277,7 +277,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValueOrDefault("question", CollectionExtensions.GetFlexibleBooleanParsingFunction("yes"));
 
-            Expect(value, Is.True);
+            this.Expect(value, Is.True);
         }
 
         [Test]
@@ -287,7 +287,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var lookup = collection.ToLookup();
 
-            Expect(lookup["question"], Is.EquivalentTo(new[] { "YES" }));
+            this.Expect(lookup["question"], Is.EquivalentTo(new[] { "YES" }));
         }
 
         [Test]
@@ -297,7 +297,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var lookup = collection.ToLookup();
 
-            Expect(lookup["question"], Is.EquivalentTo(new[] { "A", "B", "C", }));
+            this.Expect(lookup["question"], Is.EquivalentTo(new[] { "A", "B", "C", }));
         }
 
         [Test]
@@ -307,7 +307,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = dictionary.GetValueOrDefault("question", "yes");
 
-            Expect(value, Is.Null);
+            this.Expect(value, Is.Null);
         }
 
         [Test]
@@ -317,7 +317,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = dictionary.GetValueOrDefault("question", "yes");
 
-            Expect(value, Is.Empty);
+            this.Expect(value, Is.Empty);
         }
 
         [Test]
@@ -327,7 +327,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = dictionary.GetValue<string>("question");
 
-            Expect(value, Is.EqualTo("what is it"));
+            this.Expect(value, Is.EqualTo("what is it"));
         }
 
         [Test]
@@ -337,7 +337,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = dictionary.GetValue("question", (object v) => v is string ? 10 : 20);
 
-            Expect(value, Is.EqualTo(10));
+            this.Expect(value, Is.EqualTo(10));
         }
 
         [Test]
@@ -347,7 +347,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValue<string>("question");
 
-            Expect(value, Is.EqualTo("what is it"));
+            this.Expect(value, Is.EqualTo("what is it"));
         }
 
         [Test]
@@ -357,7 +357,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValue<string>("question");
 
-            Expect(value, Is.EqualTo("what, is it?"));
+            this.Expect(value, Is.EqualTo("what, is it?"));
         }
 
         [Test]
@@ -367,7 +367,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValues<string>("state");
 
-            Expect(value, Is.EquivalentTo(new[] { "CA", "BC", }));
+            this.Expect(value, Is.EquivalentTo(new[] { "CA", "BC", }));
         }
 
         [Test]
@@ -377,7 +377,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValues<string>("state");
 
-            Expect(value, Is.EquivalentTo(new[] { "CA" }));
+            this.Expect(value, Is.EquivalentTo(new[] { "CA" }));
         }
 
         [Test]
@@ -387,7 +387,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValues<string>("cat");
 
-            Expect(value, Is.Empty);
+            this.Expect(value, Is.Empty);
         }
 
         [Test]
@@ -397,7 +397,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = collection.GetValues("state", v => int.Parse(v, CultureInfo.InvariantCulture) + 10);
 
-            Expect(value, Is.EquivalentTo(new[] { 22, 11 }));
+            this.Expect(value, Is.EquivalentTo(new[] { 22, 11 }));
         }
 
         [Test]
@@ -407,7 +407,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = dictionary.GetValue<string>("question");
 
-            Expect(value, Is.EqualTo("what is it"));
+            this.Expect(value, Is.EqualTo("what is it"));
         }
 
         [Test]
@@ -419,7 +419,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = node.GetValue<int>("id");
 
-            Expect(value, Is.EqualTo(21));
+            this.Expect(value, Is.EqualTo(21));
         }
 
         [Test]
@@ -433,7 +433,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = doc.DocumentElement.GetValue<int>("id");
 
-            Expect(value, Is.EqualTo(123));
+            this.Expect(value, Is.EqualTo(123));
         }
 
         [Test]
@@ -441,7 +441,7 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             var dictionary = new Hashtable { { "question", "what is it" } };
 
-            Expect(() => dictionary.GetValue<string>("answer"), Throws.ArgumentException.With.Property("ParamName").EqualTo("key"));
+            this.Expect(() => dictionary.GetValue<string>("answer"), Throws.ArgumentException.With.Property("ParamName").EqualTo("key"));
         }
 
         [Test]
@@ -449,7 +449,7 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             var collection = new NameValueCollection { { "state", "CA" }, { "state", "BC" } };
 
-            Expect(() => collection.GetValueOrDefault<string>("state"), Throws.InvalidOperationException);
+            this.Expect(() => collection.GetValueOrDefault<string>("state"), Throws.InvalidOperationException);
         }
 
         [Test]
@@ -457,7 +457,7 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             IDictionary dictionary = null;
 
-            Expect(() => dictionary.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("dictionary"));
+            this.Expect(() => dictionary.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("dictionary"));
         }
 
         [Test]
@@ -465,7 +465,7 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             XElement node = null;
 
-            Expect(() => node.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("node"));
+            this.Expect(() => node.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("node"));
         }
 
         [Test]
@@ -473,7 +473,7 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             XmlNode node = null;
 
-            Expect(() => node.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("node"));
+            this.Expect(() => node.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("node"));
         }
 
         [Test]
@@ -483,7 +483,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             var value = dictionary.GetValueOrDefault<ApplicationException>("length");
 
-            Expect(value, Is.Null);
+            this.Expect(value, Is.Null);
         }
 
         [Test]
@@ -491,7 +491,7 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             NameValueCollection col = null;
 
-            Expect(() => col.ToLookup(), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("collection"));
+            this.Expect(() => col.ToLookup(), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("collection"));
         }
     }
 }

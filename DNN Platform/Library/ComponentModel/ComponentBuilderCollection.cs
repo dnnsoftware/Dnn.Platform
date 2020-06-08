@@ -16,13 +16,13 @@ namespace DotNetNuke.ComponentModel
 
         internal void AddBuilder(IComponentBuilder builder, bool setDefault)
         {
-            if (!ContainsKey(builder.Name))
+            if (!this.ContainsKey(builder.Name))
             {
                 this[builder.Name] = builder;
 
-                if (setDefault && DefaultBuilder == null)
+                if (setDefault && this.DefaultBuilder == null)
                 {
-                    DefaultBuilder = builder;
+                    this.DefaultBuilder = builder;
                 }
             }
         }

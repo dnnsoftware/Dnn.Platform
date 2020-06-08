@@ -83,11 +83,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return Convert.ToInt32(ViewState["ModuleId"]);
+                return Convert.ToInt32(this.ViewState["ModuleId"]);
             }
             set
             {
-                _ModuleId = value;
+                this._ModuleId = value;
             }
         }
 
@@ -95,11 +95,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return Convert.ToString(ViewState["LabelColumnWidth"]);
+                return Convert.ToString(this.ViewState["LabelColumnWidth"]);
             }
             set
             {
-                _LabelColumnWidth = value;
+                this._LabelColumnWidth = value;
             }
         }
 
@@ -107,11 +107,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return Convert.ToString(ViewState["ControlColumnWidth"]);
+                return Convert.ToString(this.ViewState["ControlColumnWidth"]);
             }
             set
             {
-                _ControlColumnWidth = value;
+                this._ControlColumnWidth = value;
             }
         }
 
@@ -119,11 +119,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return txtFirstName.Text;
+                return this.txtFirstName.Text;
             }
             set
             {
-                _FirstName = value;
+                this._FirstName = value;
             }
         }
 
@@ -131,11 +131,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return txtLastName.Text;
+                return this.txtLastName.Text;
             }
             set
             {
-                _LastName = value;
+                this._LastName = value;
             }
         }
 
@@ -143,11 +143,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return txtUsername.Text;
+                return this.txtUsername.Text;
             }
             set
             {
-                _UserName = value;
+                this._UserName = value;
             }
         }
 
@@ -155,11 +155,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return txtPassword.Text;
+                return this.txtPassword.Text;
             }
             set
             {
-                _Password = value;
+                this._Password = value;
             }
         }
 
@@ -167,11 +167,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return txtConfirm.Text;
+                return this.txtConfirm.Text;
             }
             set
             {
-                _Confirm = value;
+                this._Confirm = value;
             }
         }
 
@@ -179,11 +179,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return txtEmail.Text;
+                return this.txtEmail.Text;
             }
             set
             {
-                _Email = value;
+                this._Email = value;
             }
         }
 
@@ -191,11 +191,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return txtWebsite.Text;
+                return this.txtWebsite.Text;
             }
             set
             {
-                _Website = value;
+                this._Website = value;
             }
         }
 
@@ -203,11 +203,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return txtIM.Text;
+                return this.txtIM.Text;
             }
             set
             {
-                _IM = value;
+                this._IM = value;
             }
         }
 
@@ -215,7 +215,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                _StartTabIndex = value;
+                this._StartTabIndex = value;
             }
         }
 
@@ -223,7 +223,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                _ShowPassword = value;
+                this._ShowPassword = value;
             }
         }
 
@@ -231,7 +231,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return Localization.GetResourceFile(this, MyFileName);
+                return Localization.GetResourceFile(this, this.MyFileName);
             }
         }
 
@@ -251,66 +251,66 @@ namespace DotNetNuke.UI.UserControls
             base.OnLoad(e);
             try
             {
-                if (Page.IsPostBack == false)
+                if (this.Page.IsPostBack == false)
                 {
-                    txtFirstName.TabIndex = Convert.ToInt16(_StartTabIndex);
-                    txtLastName.TabIndex = Convert.ToInt16(_StartTabIndex + 1);
-                    txtUsername.TabIndex = Convert.ToInt16(_StartTabIndex + 2);
-                    txtPassword.TabIndex = Convert.ToInt16(_StartTabIndex + 3);
-                    txtConfirm.TabIndex = Convert.ToInt16(_StartTabIndex + 4);
-                    txtEmail.TabIndex = Convert.ToInt16(_StartTabIndex + 5);
-                    txtWebsite.TabIndex = Convert.ToInt16(_StartTabIndex + 6);
-                    txtIM.TabIndex = Convert.ToInt16(_StartTabIndex + 7);
-                    txtFirstName.Text = _FirstName;
-                    txtLastName.Text = _LastName;
-                    txtEmail.Text = _Email;		    
-                    txtUsername.Text = _UserName;
-                    lblUsername.Text = _UserName;
-                    txtPassword.Text = _Password;
-                    txtConfirm.Text = _Confirm;
-                    txtWebsite.Text = _Website;
-                    txtIM.Text = _IM;
-                    if (!String.IsNullOrEmpty(_ControlColumnWidth))
+                    this.txtFirstName.TabIndex = Convert.ToInt16(this._StartTabIndex);
+                    this.txtLastName.TabIndex = Convert.ToInt16(this._StartTabIndex + 1);
+                    this.txtUsername.TabIndex = Convert.ToInt16(this._StartTabIndex + 2);
+                    this.txtPassword.TabIndex = Convert.ToInt16(this._StartTabIndex + 3);
+                    this.txtConfirm.TabIndex = Convert.ToInt16(this._StartTabIndex + 4);
+                    this.txtEmail.TabIndex = Convert.ToInt16(this._StartTabIndex + 5);
+                    this.txtWebsite.TabIndex = Convert.ToInt16(this._StartTabIndex + 6);
+                    this.txtIM.TabIndex = Convert.ToInt16(this._StartTabIndex + 7);
+                    this.txtFirstName.Text = this._FirstName;
+                    this.txtLastName.Text = this._LastName;
+                    this.txtEmail.Text = this._Email;		    
+                    this.txtUsername.Text = this._UserName;
+                    this.lblUsername.Text = this._UserName;
+                    this.txtPassword.Text = this._Password;
+                    this.txtConfirm.Text = this._Confirm;
+                    this.txtWebsite.Text = this._Website;
+                    this.txtIM.Text = this._IM;
+                    if (!String.IsNullOrEmpty(this._ControlColumnWidth))
                     {
-                        txtFirstName.Width = Unit.Parse(_ControlColumnWidth);
-                        txtLastName.Width = Unit.Parse(_ControlColumnWidth);
-                        txtEmail.Width = Unit.Parse(_ControlColumnWidth);			
-                        txtUsername.Width = Unit.Parse(_ControlColumnWidth);
-                        txtPassword.Width = Unit.Parse(_ControlColumnWidth);
-                        txtConfirm.Width = Unit.Parse(_ControlColumnWidth);
-                        txtWebsite.Width = Unit.Parse(_ControlColumnWidth);
-                        txtIM.Width = Unit.Parse(_ControlColumnWidth);
+                        this.txtFirstName.Width = Unit.Parse(this._ControlColumnWidth);
+                        this.txtLastName.Width = Unit.Parse(this._ControlColumnWidth);
+                        this.txtEmail.Width = Unit.Parse(this._ControlColumnWidth);			
+                        this.txtUsername.Width = Unit.Parse(this._ControlColumnWidth);
+                        this.txtPassword.Width = Unit.Parse(this._ControlColumnWidth);
+                        this.txtConfirm.Width = Unit.Parse(this._ControlColumnWidth);
+                        this.txtWebsite.Width = Unit.Parse(this._ControlColumnWidth);
+                        this.txtIM.Width = Unit.Parse(this._ControlColumnWidth);
                     }
-                    if (!_ShowPassword)
+                    if (!this._ShowPassword)
                     {
-                        valPassword.Enabled = false;
-                        valConfirm1.Enabled = false;
-                        valConfirm2.Enabled = false;
-                        PasswordRow.Visible = false;
-                        ConfirmPasswordRow.Visible = false;
-                        txtUsername.Visible = false;
-                        valUsername.Enabled = false;
-                        lblUsername.Visible = true;
-                        lblUsernameAsterisk.Visible = false;
+                        this.valPassword.Enabled = false;
+                        this.valConfirm1.Enabled = false;
+                        this.valConfirm2.Enabled = false;
+                        this.PasswordRow.Visible = false;
+                        this.ConfirmPasswordRow.Visible = false;
+                        this.txtUsername.Visible = false;
+                        this.valUsername.Enabled = false;
+                        this.lblUsername.Visible = true;
+                        this.lblUsernameAsterisk.Visible = false;
                     }
                     else
                     {
-                        txtUsername.Visible = true;
-                        valUsername.Enabled = true;
-                        lblUsername.Visible = false;
-                        lblUsernameAsterisk.Visible = true;
-                        valPassword.Enabled = true;
-                        valConfirm1.Enabled = true;
-                        valConfirm2.Enabled = true;
-                        PasswordRow.Visible = true;
-                        ConfirmPasswordRow.Visible = true;
+                        this.txtUsername.Visible = true;
+                        this.valUsername.Enabled = true;
+                        this.lblUsername.Visible = false;
+                        this.lblUsernameAsterisk.Visible = true;
+                        this.valPassword.Enabled = true;
+                        this.valConfirm1.Enabled = true;
+                        this.valConfirm2.Enabled = true;
+                        this.PasswordRow.Visible = true;
+                        this.ConfirmPasswordRow.Visible = true;
                     }
-                    ViewState["ModuleId"] = Convert.ToString(_ModuleId);
-                    ViewState["LabelColumnWidth"] = _LabelColumnWidth;
-                    ViewState["ControlColumnWidth"] = _ControlColumnWidth;
+                    this.ViewState["ModuleId"] = Convert.ToString(this._ModuleId);
+                    this.ViewState["LabelColumnWidth"] = this._LabelColumnWidth;
+                    this.ViewState["ControlColumnWidth"] = this._ControlColumnWidth;
                 }
-                txtPassword.Attributes.Add("value", txtPassword.Text);
-                txtConfirm.Attributes.Add("value", txtConfirm.Text);
+                this.txtPassword.Attributes.Add("value", this.txtPassword.Text);
+                this.txtConfirm.Attributes.Add("value", this.txtConfirm.Text);
             }
             catch (Exception exc)
             {

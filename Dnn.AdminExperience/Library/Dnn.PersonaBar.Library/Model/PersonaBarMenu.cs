@@ -22,13 +22,13 @@ namespace Dnn.PersonaBar.Library.Model
         {
             get
             {
-                if (_allItems == null)
+                if (this._allItems == null)
                 {
-                    _allItems = new List<MenuItem>();
-                    FillAllItems(_allItems, MenuItems);
+                    this._allItems = new List<MenuItem>();
+                    this.FillAllItems(this._allItems, this.MenuItems);
                 }
 
-                return _allItems;
+                return this._allItems;
             }
         }
 
@@ -37,7 +37,7 @@ namespace Dnn.PersonaBar.Library.Model
             foreach (var menu in menuItems)
             {
                 allItems.Add(menu);
-                FillAllItems(allItems, menu.Children);
+                this.FillAllItems(allItems, menu.Children);
             }
         }
     }

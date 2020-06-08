@@ -24,18 +24,18 @@ namespace DotNetNuke.Authentication.LiveConnect.Components
         {
             //DNN-6464 Correct TokenEndpoint and AuthorizationEndpoint Urls
             // Add TokenMethod of Post to conform to other OAuth extensions
-            TokenMethod = HttpMethod.POST;
-            TokenEndpoint = new Uri("https://login.live.com/oauth20_token.srf");
-            AuthorizationEndpoint = new Uri("https://login.live.com/oauth20_authorize.srf");
-            MeGraphEndpoint = new Uri("https://apis.live.net/v5.0/me");
+            this.TokenMethod = HttpMethod.POST;
+            this.TokenEndpoint = new Uri("https://login.live.com/oauth20_token.srf");
+            this.AuthorizationEndpoint = new Uri("https://login.live.com/oauth20_authorize.srf");
+            this.MeGraphEndpoint = new Uri("https://apis.live.net/v5.0/me");
 
-            Scope = HttpContext.Current.Server.UrlEncode("wl.signin wl.basic wl.emails");
+            this.Scope = HttpContext.Current.Server.UrlEncode("wl.signin wl.basic wl.emails");
 
-            AuthTokenName = "LiveUserToken";
+            this.AuthTokenName = "LiveUserToken";
 
-            OAuthVersion = "2.0";
+            this.OAuthVersion = "2.0";
 
-            LoadTokenCookie(String.Empty);
+            this.LoadTokenCookie(String.Empty);
         }
 
         #endregion

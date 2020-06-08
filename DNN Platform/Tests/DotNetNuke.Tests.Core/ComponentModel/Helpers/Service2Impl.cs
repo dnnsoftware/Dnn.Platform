@@ -10,14 +10,14 @@ namespace DotNetNuke.Tests.Core.ComponentModel.Helpers
 
         public Service2Impl(IService service)
         {
-            _service = service;
+            this._service = service;
         }
 
         #region IService2 Members
 
         public IService Service
         {
-            get { return _service; }
+            get { return this._service; }
         }
 
         #endregion

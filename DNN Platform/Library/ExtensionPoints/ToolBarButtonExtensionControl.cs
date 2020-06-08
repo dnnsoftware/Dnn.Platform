@@ -31,18 +31,18 @@ namespace DotNetNuke.ExtensionPoints
                 .And(new FilterByHostMenu(this.IsHost))
                 .And(new FilterByUnauthenticated(HttpContext.Current.Request.IsAuthenticated));
 
-            foreach (var extension in extensionPointManager.GetToolBarButtonExtensionPoints(Module, Group, filter))
+            foreach (var extension in extensionPointManager.GetToolBarButtonExtensionPoints(this.Module, this.Group, filter))
             {
                 if (extension is IToolBarMenuButtonExtensionPoint)
                 {
-                    btnRenderer = new ToolBarMenuButtonRenderer();
-                    str.AppendFormat(btnRenderer.GetOutput(extension));
+                    this.btnRenderer = new ToolBarMenuButtonRenderer();
+                    str.AppendFormat(this.btnRenderer.GetOutput(extension));
                 }
                 else
                 {
-                    extension.ModuleContext = ModuleContext;
-                    btnRenderer = new ToolBarButtonRenderer();
-                    str.AppendFormat(btnRenderer.GetOutput(extension));
+                    extension.ModuleContext = this.ModuleContext;
+                    this.btnRenderer = new ToolBarButtonRenderer();
+                    str.AppendFormat(this.btnRenderer.GetOutput(extension));
                 }
             }
             
@@ -51,7 +51,7 @@ namespace DotNetNuke.ExtensionPoints
 
         protected override void Render(HtmlTextWriter writer)
         {
-            RenderContents(writer);
+            this.RenderContents(writer);
         }
     }
 }

@@ -24,8 +24,8 @@ namespace DotNetNuke.Common
 
         public XmlValidatorBase()
         {
-            _errs = new ArrayList();
-            _schemaSet = new XmlSchemaSet();
+            this._errs = new ArrayList();
+            this._schemaSet = new XmlSchemaSet();
         }
 
 		/// <summary>
@@ -38,11 +38,11 @@ namespace DotNetNuke.Common
         {
             get
             {
-                return _errs;
+                return this._errs;
             }
             set
             {
-                _errs = value;
+                this._errs = value;
             }
         }
 
@@ -53,7 +53,7 @@ namespace DotNetNuke.Common
         {
             get
             {
-                return _schemaSet;
+                return this._schemaSet;
             }
         }
 
@@ -64,7 +64,7 @@ namespace DotNetNuke.Common
 		/// <param name="args">The <see cref="System.Xml.Schema.ValidationEventArgs"/> instance containing the event data.</param>
         protected void ValidationCallBack(object sender, ValidationEventArgs args)
         {
-            _errs.Add(args.Message);
+            this._errs.Add(args.Message);
         }
 
 		/// <summary>
@@ -82,17 +82,17 @@ namespace DotNetNuke.Common
 
             //Create a validating reader
             var settings = new XmlReaderSettings();
-            settings.Schemas = _schemaSet;
+            settings.Schemas = this._schemaSet;
             settings.ValidationType = ValidationType.Schema;
             //Set the validation event handler.
-            settings.ValidationEventHandler += ValidationCallBack;
-            XmlReader vreader = XmlReader.Create(_reader, settings);
+            settings.ValidationEventHandler += this.ValidationCallBack;
+            XmlReader vreader = XmlReader.Create(this._reader, settings);
             //Read and validate the XML data.
             while (vreader.Read())
             {
             }
             vreader.Close();
-            return (_errs.Count == 0);
+            return (this._errs.Count == 0);
         }
 
 		/// <summary>
@@ -103,12 +103,12 @@ namespace DotNetNuke.Common
         public virtual bool Validate(Stream xmlStream)
         {
             xmlStream.Seek(0, SeekOrigin.Begin);
-            _reader = new XmlTextReader(xmlStream)
+            this._reader = new XmlTextReader(xmlStream)
             {
                 XmlResolver = null,
                 DtdProcessing = DtdProcessing.Prohibit
             };
-            return IsValid();
+            return this.IsValid();
         }
 
 		/// <summary>
@@ -118,12 +118,12 @@ namespace DotNetNuke.Common
 		/// <returns></returns>
         public virtual bool Validate(string filename)
         {
-            _reader = new XmlTextReader(filename)
+            this._reader = new XmlTextReader(filename)
             {
                 XmlResolver = null,
                 DtdProcessing = DtdProcessing.Prohibit
             };
-            return IsValid();
+            return this.IsValid();
         }
     }
 }

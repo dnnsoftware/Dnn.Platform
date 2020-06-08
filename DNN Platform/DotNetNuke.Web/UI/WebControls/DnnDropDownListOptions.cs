@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _onClientSelectionChanged ?? (_onClientSelectionChanged = new List<string>());
+                return this._onClientSelectionChanged ?? (this._onClientSelectionChanged = new List<string>());
             }
         }
 
@@ -45,10 +45,10 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public DnnDropDownListOptions()
         {
-            SelectedItemCss = "selected-item";
-            SelectItemDefaultText = "";
-            Services = new ItemListServicesOptions();
-            ItemList = new ItemListOptions();
+            this.SelectedItemCss = "selected-item";
+            this.SelectItemDefaultText = "";
+            this.Services = new ItemListServicesOptions();
+            this.ItemList = new ItemListOptions();
         }
 
     }

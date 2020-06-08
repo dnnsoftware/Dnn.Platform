@@ -89,8 +89,8 @@ namespace log4net.Filter
 		/// </remarks>
 		public bool AcceptOnMatch
 		{
-			get { return m_acceptOnMatch; }
-			set { m_acceptOnMatch = value; }
+			get { return this.m_acceptOnMatch; }
+			set { this.m_acceptOnMatch = value; }
 		}
 
 		/// <summary>
@@ -105,8 +105,8 @@ namespace log4net.Filter
 		/// </remarks>
 		public Level LevelToMatch
 		{
-			get { return m_levelToMatch; }
-			set { m_levelToMatch = value; }
+			get { return this.m_levelToMatch; }
+			set { this.m_levelToMatch = value; }
 		}
 
 		#region Override implementation of FilterSkeleton
@@ -133,10 +133,10 @@ namespace log4net.Filter
 				throw new ArgumentNullException("loggingEvent");
 			}
 
-			if (m_levelToMatch != null && m_levelToMatch == loggingEvent.Level) 
+			if (this.m_levelToMatch != null && this.m_levelToMatch == loggingEvent.Level) 
 			{
 				// Found match
-				return m_acceptOnMatch ? FilterDecision.Accept : FilterDecision.Deny;
+				return this.m_acceptOnMatch ? FilterDecision.Accept : FilterDecision.Deny;
 			}
 			return FilterDecision.Neutral;
 		}

@@ -45,38 +45,38 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 
         public EditExtension()
         {
-            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         protected bool IsSuperTab
         {
             get
             {
-                return (ModuleContext.PortalSettings.ActiveTab.IsSuperTab);
+                return (this.ModuleContext.PortalSettings.ActiveTab.IsSuperTab);
             }
         }
 
         protected string ReturnUrl
         {
-            get { return (string)ViewState["ReturnUrl"]; }
-            set { ViewState["ReturnUrl"] = value; }
+            get { return (string)this.ViewState["ReturnUrl"]; }
+            set { this.ViewState["ReturnUrl"] = value; }
         }
 
         public string Mode
         {
             get
             {
-                return Convert.ToString(ModuleContext.Settings["Extensions_Mode"]);
+                return Convert.ToString(this.ModuleContext.Settings["Extensions_Mode"]);
             }
         }
 
-        protected string DisplayMode => (Request.QueryString["Display"] ?? "").ToLowerInvariant();
+        protected string DisplayMode => (this.Request.QueryString["Display"] ?? "").ToLowerInvariant();
 
         protected PackageInfo Package
         {
             get
             {
-                return _package ?? (_package = PackageID == Null.NullInteger ? new PackageInfo() : PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID, true));
+                return this._package ?? (this._package = this.PackageID == Null.NullInteger ? new PackageInfo() : PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == this.PackageID, true));
             }
         }
 
@@ -84,18 +84,18 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         {
             get
             {
-                if (_control == null)
+                if (this._control == null)
                 {
-                    if (Package != null)
+                    if (this.Package != null)
                     {
-                        var pkgType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(Package.PackageType, StringComparison.OrdinalIgnoreCase));
+                        var pkgType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase));
                         if ((pkgType != null) && (!string.IsNullOrEmpty(pkgType.EditorControlSrc)))
                         {
-                            _control = ControlUtilities.LoadControl<Control>(this, pkgType.EditorControlSrc);
+                            this._control = ControlUtilities.LoadControl<Control>(this, pkgType.EditorControlSrc);
                         }
                     }
                 }
-                return _control as IPackageEditor;
+                return this._control as IPackageEditor;
             }
         }
 
@@ -104,9 +104,9 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             get
             {
                 var packageID = Null.NullInteger;
-                if ((Request.QueryString["PackageID"] != null))
+                if ((this.Request.QueryString["PackageID"] != null))
                 {
-                    packageID = Int32.Parse(Request.QueryString["PackageID"]);
+                    packageID = Int32.Parse(this.Request.QueryString["PackageID"]);
                 }
                 return packageID;
             }
@@ -117,7 +117,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             get
             {
                 var viewMode = PropertyEditorMode.View;
-                if (Request.IsLocal && IsSuperTab)
+                if (this.Request.IsLocal && this.IsSuperTab)
                 {
                     viewMode = PropertyEditorMode.Edit;
                 }
@@ -127,96 +127,96 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 
         private void BindData()
         {
-            email.ValidationExpression = Globals.glbEmailRegEx;
-            trLanguagePackType.Visible = false;
-            switch (Mode)
+            this.email.ValidationExpression = Globals.glbEmailRegEx;
+            this.trLanguagePackType.Visible = false;
+            switch (this.Mode)
             {
                 case "All":
-                    lblHelp.Text = Localization.GetString("EditHelp", LocalResourceFile);
-                    cmdUpdate.Text = Localization.GetString("cmdUpdate", LocalResourceFile);
+                    this.lblHelp.Text = Localization.GetString("EditHelp", this.LocalResourceFile);
+                    this.cmdUpdate.Text = Localization.GetString("cmdUpdate", this.LocalResourceFile);
                     break;
                 case "LanguagePack":
-                    lblHelp.Text = Localization.GetString("EditLanguageHelp", LocalResourceFile);
-                    cmdUpdate.Text = Localization.GetString("cmdUpdateLanguage", LocalResourceFile);
+                    this.lblHelp.Text = Localization.GetString("EditLanguageHelp", this.LocalResourceFile);
+                    this.cmdUpdate.Text = Localization.GetString("cmdUpdateLanguage", this.LocalResourceFile);
                     break;
                 case "Module":
-                    lblHelp.Text = Localization.GetString("EditModuleHelp", LocalResourceFile);
-                    cmdUpdate.Text = Localization.GetString("cmdUpdateModule", LocalResourceFile);
+                    this.lblHelp.Text = Localization.GetString("EditModuleHelp", this.LocalResourceFile);
+                    this.cmdUpdate.Text = Localization.GetString("cmdUpdateModule", this.LocalResourceFile);
                     break;
                 case "Skin":
-                    lblHelp.Text = Localization.GetString("EditSkinHelp", LocalResourceFile);
-                    cmdUpdate.Text = Localization.GetString("cmdUpdateSkin", LocalResourceFile);
+                    this.lblHelp.Text = Localization.GetString("EditSkinHelp", this.LocalResourceFile);
+                    this.cmdUpdate.Text = Localization.GetString("cmdUpdateSkin", this.LocalResourceFile);
                     break;
             }
 
-            cmdPackage.Visible = IsSuperTab;
-            cmdUpdate.Visible = IsSuperTab;
-            if (Package != null)
+            this.cmdPackage.Visible = this.IsSuperTab;
+            this.cmdUpdate.Visible = this.IsSuperTab;
+            if (this.Package != null)
             {
                 
-                if (PackageEditor == null || PackageID == Null.NullInteger)
+                if (this.PackageEditor == null || this.PackageID == Null.NullInteger)
                 {
-                    extensionSection.Visible = false;
+                    this.extensionSection.Visible = false;
                 }
                 else
                 {
-                    phEditor.Controls.Clear();
-                    phEditor.Controls.Add(PackageEditor as Control);
-                    var moduleControl = PackageEditor as IModuleControl;
+                    this.phEditor.Controls.Clear();
+                    this.phEditor.Controls.Add(this.PackageEditor as Control);
+                    var moduleControl = this.PackageEditor as IModuleControl;
                     if (moduleControl != null)
                     {
-                        moduleControl.ModuleContext.Configuration = ModuleContext.Configuration;
+                        moduleControl.ModuleContext.Configuration = this.ModuleContext.Configuration;
                     }
-                    PackageEditor.PackageID = PackageID;
-                    PackageEditor.Initialize();
+                    this.PackageEditor.PackageID = this.PackageID;
+                    this.PackageEditor.Initialize();
 
-                    Package.IconFile = Util.ParsePackageIconFileName(Package);
+                    this.Package.IconFile = Util.ParsePackageIconFileName(this.Package);
                 }
                 
-                switch (Package.PackageType)
+                switch (this.Package.PackageType)
                 {                                        
                     case "Auth_System":
                     case "Container":
                     case "Module":
                     case "Skin":
-                        iconFile.Enabled = true;
-                        Package.IconFile = Util.ParsePackageIconFileName(Package);
+                        this.iconFile.Enabled = true;
+                        this.Package.IconFile = Util.ParsePackageIconFileName(this.Package);
                         break;
                     default:
-                        iconFile.Enabled = false;
-                        Package.IconFile = "Not Available";
+                        this.iconFile.Enabled = false;
+                        this.Package.IconFile = "Not Available";
                         break;
                 }
                 
-                if (Mode != "All")
+                if (this.Mode != "All")
                 {
-                    packageType.Visible = false;
+                    this.packageType.Visible = false;
                 }
                 //Determine if Package is ready for packaging
-                PackageWriterBase writer = PackageWriterFactory.GetWriter(Package);
-                cmdPackage.Visible = IsSuperTab && writer != null && Directory.Exists(Path.Combine(Globals.ApplicationMapPath, writer.BasePath));
+                PackageWriterBase writer = PackageWriterFactory.GetWriter(this.Package);
+                this.cmdPackage.Visible = this.IsSuperTab && writer != null && Directory.Exists(Path.Combine(Globals.ApplicationMapPath, writer.BasePath));
 
-                cmdDelete.Visible = IsSuperTab && (!Package.IsSystemPackage) && (PackageController.CanDeletePackage(Package, ModuleContext.PortalSettings));
-                ctlAudit.Entity = Package;
+                this.cmdDelete.Visible = this.IsSuperTab && (!this.Package.IsSystemPackage) && (PackageController.CanDeletePackage(this.Package, this.ModuleContext.PortalSettings));
+                this.ctlAudit.Entity = this.Package;
 
-                packageForm.DataSource = Package;
-                packageFormReadOnly.DataSource = Package;
-                if(!Page.IsPostBack)
+                this.packageForm.DataSource = this.Package;
+                this.packageFormReadOnly.DataSource = this.Package;
+                if(!this.Page.IsPostBack)
                 {
-                    packageForm.DataBind();
-                    packageFormReadOnly.DataBind();
+                    this.packageForm.DataBind();
+                    this.packageFormReadOnly.DataBind();
                 }
-                packageForm.Visible = IsSuperTab;
-                packageFormReadOnly.Visible = !IsSuperTab;
+                this.packageForm.Visible = this.IsSuperTab;
+                this.packageFormReadOnly.Visible = !this.IsSuperTab;
 
             }
         }
 
         private void UpdatePackage(bool displayMessage)
         {
-            if (packageForm.IsValid)
+            if (this.packageForm.IsValid)
             {
-                var package = packageForm.DataSource as PackageInfo;
+                var package = this.packageForm.DataSource as PackageInfo;
                 if (package != null)
                 {
                     var pkgIconFile = Util.ParsePackageIconFileName(package);
@@ -225,12 +225,12 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 }
                 if (displayMessage)
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PackageUpdated", LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
+                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PackageUpdated", this.LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
                 }
             }
-            if (PackageEditor != null)
+            if (this.PackageEditor != null)
             {
-                PackageEditor.UpdatePackage();
+                this.PackageEditor.UpdatePackage();
             }
         }
 
@@ -250,65 +250,65 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         {
             base.OnLoad(e);
 
-            cmdCancel.Click += OnCancelClick;
-            cmdDelete.Click += OnDeleteClick;
-            cmdPackage.Click += OnPackageClick;
-            cmdUpdate.Click += OnUpdateClick;
-            Page.PreRenderComplete += (sender, args) =>
+            this.cmdCancel.Click += this.OnCancelClick;
+            this.cmdDelete.Click += this.OnDeleteClick;
+            this.cmdPackage.Click += this.OnPackageClick;
+            this.cmdUpdate.Click += this.OnUpdateClick;
+            this.Page.PreRenderComplete += (sender, args) =>
                                           {
                                               if (UrlUtils.InPopUp())
                                               {
-                                                  var title = string.Format("{0} > {1}", Page.Title, Package.FriendlyName);
-                                                  Page.Title = title;
+                                                  var title = string.Format("{0} > {1}", this.Page.Title, this.Package.FriendlyName);
+                                                  this.Page.Title = title;
                                               }
                                           };
 
-            BindData();
+            this.BindData();
 
-            if (!IsPostBack)
+            if (!this.IsPostBack)
             {
-                ReturnUrl = Request.UrlReferrer != null ? Request.UrlReferrer.ToString() : _navigationManager.NavigateURL();
-                switch (DisplayMode)
+                this.ReturnUrl = this.Request.UrlReferrer != null ? this.Request.UrlReferrer.ToString() : this._navigationManager.NavigateURL();
+                switch (this.DisplayMode)
                 {
                     case "editor":
-                        packageSettingsSection.Visible = false;
+                        this.packageSettingsSection.Visible = false;
                         break;
                     case "settings":
-                        extensionSection.Visible = false;
+                        this.extensionSection.Visible = false;
                         break;
                 }
             }
 
-            switch (DisplayMode)
+            switch (this.DisplayMode)
             {
                 case "editor":
-                    cmdCancel.Visible = cmdCancel.Enabled = false;
-                    cmdUpdate.Visible = cmdUpdate.Enabled = false;
-                    cmdPackage.Visible = cmdPackage.Enabled = false;
-                    cmdDelete.Visible = cmdDelete.Enabled = false;
+                    this.cmdCancel.Visible = this.cmdCancel.Enabled = false;
+                    this.cmdUpdate.Visible = this.cmdUpdate.Enabled = false;
+                    this.cmdPackage.Visible = this.cmdPackage.Enabled = false;
+                    this.cmdDelete.Visible = this.cmdDelete.Enabled = false;
                     break;
                 case "settings":
-                    cmdCancel.Visible = cmdCancel.Enabled = false;
+                    this.cmdCancel.Visible = this.cmdCancel.Enabled = false;
                     break;
             }
         }
 
         protected void OnCancelClick(object sender, EventArgs e)
         {
-            Response.Redirect(ReturnUrl);
+            this.Response.Redirect(this.ReturnUrl);
         }
 
         protected void OnDeleteClick(object sender, EventArgs e)
         {
-            Response.Redirect(Util.UnInstallURL(ModuleContext.TabId, PackageID));
+            this.Response.Redirect(Util.UnInstallURL(this.ModuleContext.TabId, this.PackageID));
         }
 
         protected void OnPackageClick(object sender, EventArgs e)
         {
             try
             {
-                UpdatePackage(false);
-                Response.Redirect(Util.PackageWriterURL(ModuleContext, PackageID));
+                this.UpdatePackage(false);
+                this.Response.Redirect(Util.PackageWriterURL(this.ModuleContext, this.PackageID));
             }
             catch (Exception ex)
             {
@@ -320,7 +320,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         {
             try
             {
-                UpdatePackage(true);
+                this.UpdatePackage(true);
             }
             catch (Exception ex)
             {

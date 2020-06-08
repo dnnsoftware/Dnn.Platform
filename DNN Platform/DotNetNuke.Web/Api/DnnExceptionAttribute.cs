@@ -26,11 +26,11 @@ namespace DotNetNuke.Web.Api
                 var actionName = actionExecutedContext.ActionContext.ActionDescriptor.ActionName;
                 var controllerName = actionExecutedContext.ActionContext.ControllerContext.ControllerDescriptor.ControllerName;
 
-                var resourceFile = string.IsNullOrEmpty(LocalResourceFile)
+                var resourceFile = string.IsNullOrEmpty(this.LocalResourceFile)
                     ? Localization.ExceptionsResourceFile
-                    : LocalResourceFile;
+                    : this.LocalResourceFile;
 
-                var key = string.IsNullOrEmpty(MessageKey) ? controllerName + "_" + actionName + ".Error" : MessageKey;
+                var key = string.IsNullOrEmpty(this.MessageKey) ? controllerName + "_" + actionName + ".Error" : this.MessageKey;
 
                 HttpStatusCode statusCode;
                 if (exception is NotImplementedException)

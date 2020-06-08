@@ -25,10 +25,10 @@ namespace DotNetNuke.Services.Journal {
                     XmlNode xNode = null;
                     xNode = xRoot.SelectSingleNode("//entity");
                     if ((xNode != null)) {
-                        Id = int.Parse(xNode["id"].InnerText);
-                        Name = xNode["name"].InnerText.ToString();
+                        this.Id = int.Parse(xNode["id"].InnerText);
+                        this.Name = xNode["name"].InnerText.ToString();
                         if ((xNode["vanity"] != null)) {
-                            Vanity= xNode["vanity"].InnerText.ToString();
+                            this.Vanity= xNode["vanity"].InnerText.ToString();
                         }
 
                     }
@@ -50,13 +50,13 @@ namespace DotNetNuke.Services.Journal {
             propertyName = propertyName.ToLowerInvariant();
             switch (propertyName) {
                 case "id":
-                    return PropertyAccess.FormatString(Id.ToString(), format);
+                    return PropertyAccess.FormatString(this.Id.ToString(), format);
                 case "name":
-                    return PropertyAccess.FormatString(Name.ToString(), format);
+                    return PropertyAccess.FormatString(this.Name.ToString(), format);
                 case "vanity":
-                    return PropertyAccess.FormatString(Vanity.ToString(), format);
+                    return PropertyAccess.FormatString(this.Vanity.ToString(), format);
                 case "avatar":
-                    return PropertyAccess.FormatString(Avatar.ToString(), format);
+                    return PropertyAccess.FormatString(this.Avatar.ToString(), format);
                 
 
             }

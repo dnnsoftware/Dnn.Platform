@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
 
         public void CreateLinkMenu(TabInfo tab)
         {
-            if (!ValidateTab(tab))
+            if (!this.ValidateTab(tab))
             {
                 return;
             }
@@ -88,7 +88,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             var portalId = tab.PortalID;
             var tabName = tab.TabName;
 
-            var knownPages = GetKnownPages(type);
+            var knownPages = this.GetKnownPages(type);
             if (knownPages.Contains(tabName, StringComparer.InvariantCultureIgnoreCase))
             {
                 return false;
@@ -110,14 +110,14 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
 
         private IList<string> GetKnownPages(string type)
         {
-            if (_knownPages == null)
+            if (this._knownPages == null)
             {
-                _knownPages = new Dictionary<string, IList<string>>();
+                this._knownPages = new Dictionary<string, IList<string>>();
             }
 
-            if (_knownPages.ContainsKey(type))
+            if (this._knownPages.ContainsKey(type))
             {
-                return _knownPages[type];
+                return this._knownPages[type];
             }
 
             var personaBarPath = Constants.PersonaBarRelativePath.Replace("~/", string.Empty);
@@ -125,7 +125,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             var xmlDocument = new XmlDocument { XmlResolver = null };
             xmlDocument.Load(dataPath);
             var pages = xmlDocument.SelectNodes($"//pages//{type}//name")?.Cast<XmlNode>().Select(n => n.InnerXml.Trim()).ToList();
-            _knownPages.Add(type, pages);
+            this._knownPages.Add(type, pages);
 
             return pages;
         }

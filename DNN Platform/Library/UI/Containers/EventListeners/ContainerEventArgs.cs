@@ -22,14 +22,14 @@ namespace DotNetNuke.UI.Containers.EventListeners
 
         public ContainerEventArgs(Container container)
         {
-            _Container = container;
+            this._Container = container;
         }
 
         public Container Container
         {
             get
             {
-                return _Container;
+                return this._Container;
             }
         }
     }

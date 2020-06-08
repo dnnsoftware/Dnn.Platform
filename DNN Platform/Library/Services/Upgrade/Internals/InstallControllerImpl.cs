@@ -259,7 +259,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
         public void RemoveFromInstallConfig(string xmlNodePath)
         {
-            InstallConfig config = GetInstallConfig();
+            InstallConfig config = this.GetInstallConfig();
             if (config == null)
             {
                 return;
@@ -530,7 +530,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 {
                     var newCulture = new CultureInfo(cultureCode);
                     Thread.CurrentThread.CurrentCulture = newCulture;
-                    GetLanguagePack(downloadUrl, installFolder);
+                    this.GetLanguagePack(downloadUrl, installFolder);
                     return true;
                 }
                 return false;
@@ -547,13 +547,13 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
 
             // 1. querystring
-            pageCulture = GetCultureFromQs();
+            pageCulture = this.GetCultureFromQs();
 
             // 2. cookie
-            pageCulture = GetCultureFromCookie();
+            pageCulture = this.GetCultureFromCookie();
 
             // 3. browser
-            pageCulture = GetCultureFromBrowser();
+            pageCulture = this.GetCultureFromBrowser();
 
             return pageCulture;
         }

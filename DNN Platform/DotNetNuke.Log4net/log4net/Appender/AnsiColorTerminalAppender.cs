@@ -252,18 +252,18 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual public string Target
 		{
-			get { return m_writeToErrorStream ? ConsoleError : ConsoleOut; }
+			get { return this.m_writeToErrorStream ? ConsoleError : ConsoleOut; }
 			set
 			{
 				string trimmedTargetName = value.Trim();
 
 				if (SystemInfo.EqualsIgnoringCase(ConsoleError, trimmedTargetName))
 				{
-					m_writeToErrorStream = true;
+					this.m_writeToErrorStream = true;
 				} 
 				else 
 				{
-					m_writeToErrorStream = false;
+					this.m_writeToErrorStream = false;
 				}
 			}
 		}
@@ -281,7 +281,7 @@ namespace log4net.Appender
 		/// </remarks>
 		public void AddMapping(LevelColors mapping)
 		{
-			m_levelMapping.Add(mapping);
+			this.m_levelMapping.Add(mapping);
 		}
 
 		#endregion Public Instance Properties
@@ -302,10 +302,10 @@ namespace log4net.Appender
 		/// </remarks>
 		override protected void Append(log4net.Core.LoggingEvent loggingEvent) 
 		{
-			string loggingMessage = RenderLoggingEvent(loggingEvent);
+			string loggingMessage = this.RenderLoggingEvent(loggingEvent);
 
 			// see if there is a specified lookup.
-			LevelColors levelColors = m_levelMapping.Lookup(loggingEvent.Level) as LevelColors;
+			LevelColors levelColors = this.m_levelMapping.Lookup(loggingEvent.Level) as LevelColors;
 			if (levelColors != null)
 			{
 				// Prepend the Ansi Color code
@@ -347,7 +347,7 @@ namespace log4net.Appender
 			// Write to the output stream
 			Console.Write(loggingMessage);
 #else
-			if (m_writeToErrorStream)
+			if (this.m_writeToErrorStream)
 			{
 				// Write to the error stream
 				Console.Error.Write(loggingMessage);
@@ -386,7 +386,7 @@ namespace log4net.Appender
 		public override void ActivateOptions()
 		{
 			base.ActivateOptions();
-			m_levelMapping.ActivateOptions();
+			this.m_levelMapping.ActivateOptions();
 		}
 
 		#endregion Override implementation of AppenderSkeleton
@@ -467,8 +467,8 @@ namespace log4net.Appender
 			/// </remarks>
 			public AnsiColor ForeColor
 			{
-				get { return m_foreColor; }
-				set { m_foreColor = value; }
+				get { return this.m_foreColor; }
+				set { this.m_foreColor = value; }
 			}
 
 			/// <summary>
@@ -482,8 +482,8 @@ namespace log4net.Appender
 			/// </remarks>
 			public AnsiColor BackColor
 			{
-				get { return m_backColor; }
-				set { m_backColor = value; }
+				get { return this.m_backColor; }
+				set { this.m_backColor = value; }
 			}
 
 			/// <summary>
@@ -497,8 +497,8 @@ namespace log4net.Appender
 			/// </remarks>
 			public AnsiAttributes Attributes
 			{
-				get { return m_attributes; }
-				set { m_attributes = value; }
+				get { return this.m_attributes; }
+				set { this.m_attributes = value; }
 			}
 
 			/// <summary>
@@ -519,48 +519,48 @@ namespace log4net.Appender
 				// Reset any existing codes
 				buf.Append("\x1b[0;");
 
-				int lightAdjustment = ((m_attributes & AnsiAttributes.Light) > 0) ? 60 : 0;
+				int lightAdjustment = ((this.m_attributes & AnsiAttributes.Light) > 0) ? 60 : 0;
 				
 				// set the foreground color
-				buf.Append(30 + lightAdjustment + (int)m_foreColor);
+				buf.Append(30 + lightAdjustment + (int)this.m_foreColor);
 				buf.Append(';');
 
 				// set the background color
-				buf.Append(40 + lightAdjustment + (int)m_backColor);
+				buf.Append(40 + lightAdjustment + (int)this.m_backColor);
 
 				// set the attributes
-				if ((m_attributes & AnsiAttributes.Bright) > 0)
+				if ((this.m_attributes & AnsiAttributes.Bright) > 0)
 				{
 					buf.Append(";1");
 				}
-				if ((m_attributes & AnsiAttributes.Dim) > 0)
+				if ((this.m_attributes & AnsiAttributes.Dim) > 0)
 				{
 					buf.Append(";2");
 				}
-				if ((m_attributes & AnsiAttributes.Underscore) > 0)
+				if ((this.m_attributes & AnsiAttributes.Underscore) > 0)
 				{
 					buf.Append(";4");
 				}
-				if ((m_attributes & AnsiAttributes.Blink) > 0)
+				if ((this.m_attributes & AnsiAttributes.Blink) > 0)
 				{
 					buf.Append(";5");
 				}
-				if ((m_attributes & AnsiAttributes.Reverse) > 0)
+				if ((this.m_attributes & AnsiAttributes.Reverse) > 0)
 				{
 					buf.Append(";7");
 				}
-				if ((m_attributes & AnsiAttributes.Hidden) > 0)
+				if ((this.m_attributes & AnsiAttributes.Hidden) > 0)
 				{
 					buf.Append(";8");
 				}
-				if ((m_attributes & AnsiAttributes.Strikethrough) > 0)
+				if ((this.m_attributes & AnsiAttributes.Strikethrough) > 0)
 				{
 					buf.Append(";9");
 				}
 
 				buf.Append('m');
 
-				m_combinedColor = buf.ToString();
+				this.m_combinedColor = buf.ToString();
 			}
 
 			/// <summary>
@@ -569,7 +569,7 @@ namespace log4net.Appender
 			/// </summary>
 			internal string CombinedColor
 			{
-				get { return m_combinedColor; }
+				get { return this.m_combinedColor; }
 			}
 		}
 

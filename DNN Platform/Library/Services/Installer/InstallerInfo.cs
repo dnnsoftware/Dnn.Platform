@@ -45,8 +45,8 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public InstallerInfo()
         {
-            PhysicalSitePath = Null.NullString;
-            Initialize();
+            this.PhysicalSitePath = Null.NullString;
+            this.Initialize();
         }
 
         /// -----------------------------------------------------------------------------
@@ -59,10 +59,10 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public InstallerInfo(string sitePath, InstallMode mode)
         {
-            Initialize();
-            TempInstallFolder = Globals.InstallMapPath + "Temp\\" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
-            PhysicalSitePath = sitePath;
-            InstallMode = mode;
+            this.Initialize();
+            this.TempInstallFolder = Globals.InstallMapPath + "Temp\\" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
+            this.PhysicalSitePath = sitePath;
+            this.InstallMode = mode;
         }
 
         /// -----------------------------------------------------------------------------
@@ -75,12 +75,12 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public InstallerInfo(Stream inputStream, string sitePath)
         {
-            Initialize();
-            TempInstallFolder = Globals.InstallMapPath + "Temp\\" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
-            PhysicalSitePath = sitePath;
+            this.Initialize();
+            this.TempInstallFolder = Globals.InstallMapPath + "Temp\\" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
+            this.PhysicalSitePath = sitePath;
 
             //Read the Zip file into its component entries
-            ReadZipStream(inputStream, false);
+            this.ReadZipStream(inputStream, false);
         }
 
         /// -----------------------------------------------------------------------------
@@ -95,12 +95,12 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public InstallerInfo(string tempFolder, string manifest, string sitePath)
         {
-            Initialize();
-            TempInstallFolder = tempFolder;
-            PhysicalSitePath = sitePath;
+            this.Initialize();
+            this.TempInstallFolder = tempFolder;
+            this.PhysicalSitePath = sitePath;
             if (!string.IsNullOrEmpty(manifest))
             {
-                ManifestFile = new InstallFile(manifest, this);
+                this.ManifestFile = new InstallFile(manifest, this);
             }
         }
 
@@ -113,11 +113,11 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public InstallerInfo(PackageInfo package, string sitePath)
         {
-            Initialize();
-            PhysicalSitePath = sitePath;
-            TempInstallFolder = Globals.InstallMapPath + "Temp\\" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
-            InstallMode = InstallMode.UnInstall;
-            ManifestFile = new InstallFile(Path.Combine(TempInstallFolder, package.Name + ".dnn"));
+            this.Initialize();
+            this.PhysicalSitePath = sitePath;
+            this.TempInstallFolder = Globals.InstallMapPath + "Temp\\" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
+            this.InstallMode = InstallMode.UnInstall;
+            this.ManifestFile = new InstallFile(Path.Combine(this.TempInstallFolder, package.Name + ".dnn"));
             package.AttachInstallerInfo(this);
         }
 		
@@ -152,7 +152,7 @@ namespace DotNetNuke.Services.Installer
             get
             {
                 bool _HasValidFiles = true;
-                if (Files.Values.Any(file => !Util.IsFileValid(file, AllowableFiles)))
+                if (this.Files.Values.Any(file => !Util.IsFileValid(file, this.AllowableFiles)))
                 {
                     _HasValidFiles = Null.NullBoolean;
                 }
@@ -194,7 +194,7 @@ namespace DotNetNuke.Services.Installer
         {
             get
             {
-                string _InvalidFileExtensions = Files.Values.Where(file => !Util.IsFileValid(file, AllowableFiles))
+                string _InvalidFileExtensions = this.Files.Values.Where(file => !Util.IsFileValid(file, this.AllowableFiles))
                                                             .Aggregate(Null.NullString, (current, file) => current + (", " + file.Extension));
                 if (!string.IsNullOrEmpty(_InvalidFileExtensions))
                 {
@@ -221,7 +221,7 @@ namespace DotNetNuke.Services.Installer
         {
             get
             {
-                return Log.Valid;
+                return this.Log.Valid;
             }
         }
 
@@ -304,22 +304,22 @@ namespace DotNetNuke.Services.Installer
 
         private void Initialize()
         {
-            TempInstallFolder = Null.NullString;
-            SecurityAccessLevel = SecurityAccessLevel.Host;
-            RepairInstall = Null.NullBoolean;
-            PortalID = Null.NullInteger;
-            PackageID = Null.NullInteger;
-            Log = new Logger();
-            IsLegacyMode = Null.NullBoolean;
-            IgnoreWhiteList = Null.NullBoolean;
-            InstallMode = InstallMode.Install;
-            Installed = Null.NullBoolean;
-            Files = new Dictionary<string, InstallFile>();
+            this.TempInstallFolder = Null.NullString;
+            this.SecurityAccessLevel = SecurityAccessLevel.Host;
+            this.RepairInstall = Null.NullBoolean;
+            this.PortalID = Null.NullInteger;
+            this.PackageID = Null.NullInteger;
+            this.Log = new Logger();
+            this.IsLegacyMode = Null.NullBoolean;
+            this.IgnoreWhiteList = Null.NullBoolean;
+            this.InstallMode = InstallMode.Install;
+            this.Installed = Null.NullBoolean;
+            this.Files = new Dictionary<string, InstallFile>();
         }
 
         private void ReadZipStream(Stream inputStream, bool isEmbeddedZip)
         {
-            Log.StartJob(Util.FILES_Reading);
+            this.Log.StartJob(Util.FILES_Reading);
             if (inputStream.CanSeek)
             {
                 inputStream.Seek(0, SeekOrigin.Begin);
@@ -337,20 +337,20 @@ namespace DotNetNuke.Services.Installer
                     if (file.Type == InstallFileType.Resources && (file.Name.Equals("containers.zip", StringComparison.InvariantCultureIgnoreCase) || file.Name.Equals("skins.zip", StringComparison.InvariantCultureIgnoreCase)))
                     {
 						//Temporarily save the TempInstallFolder
-                        string tmpInstallFolder = TempInstallFolder;
+                        string tmpInstallFolder = this.TempInstallFolder;
 
                         //Create Zip Stream from File
                         using (var zipStream = new FileStream(file.TempFileName, FileMode.Open, FileAccess.Read))
                         {
                             //Set TempInstallFolder
-                            TempInstallFolder = Path.Combine(TempInstallFolder, Path.GetFileNameWithoutExtension(file.Name));
+                            this.TempInstallFolder = Path.Combine(this.TempInstallFolder, Path.GetFileNameWithoutExtension(file.Name));
 
                             //Extract files from zip
-                            ReadZipStream(zipStream, true);
+                            this.ReadZipStream(zipStream, true);
                         }
 
                         //Restore TempInstallFolder
-                        TempInstallFolder = tmpInstallFolder;
+                        this.TempInstallFolder = tmpInstallFolder;
 
                         //Delete zip file
                         var zipFile = new FileInfo(file.TempFileName);
@@ -358,50 +358,50 @@ namespace DotNetNuke.Services.Installer
                     }
                     else
                     {
-                        Files[file.FullName.ToLowerInvariant()] = file;
+                        this.Files[file.FullName.ToLowerInvariant()] = file;
                         if (file.Type == InstallFileType.Manifest && !isEmbeddedZip)
                         {
-                            if (ManifestFile == null)
+                            if (this.ManifestFile == null)
                             {
-                                ManifestFile = file;
+                                this.ManifestFile = file;
                             }
                             else
                             {
-                                if (file.Extension == "dnn7" && (ManifestFile.Extension == "dnn" || ManifestFile.Extension == "dnn5" || ManifestFile.Extension == "dnn6"))
+                                if (file.Extension == "dnn7" && (this.ManifestFile.Extension == "dnn" || this.ManifestFile.Extension == "dnn5" || this.ManifestFile.Extension == "dnn6"))
                                 {
-                                    ManifestFile = file;
+                                    this.ManifestFile = file;
                                 }
-                                else if (file.Extension == "dnn6" && (ManifestFile.Extension == "dnn" || ManifestFile.Extension == "dnn5"))
+                                else if (file.Extension == "dnn6" && (this.ManifestFile.Extension == "dnn" || this.ManifestFile.Extension == "dnn5"))
                                 {
-                                   ManifestFile = file; 
+                                   this.ManifestFile = file; 
                                 }
-                                else if (file.Extension == "dnn5" && ManifestFile.Extension == "dnn")
+                                else if (file.Extension == "dnn5" && this.ManifestFile.Extension == "dnn")
                                 {
-                                    ManifestFile = file;
+                                    this.ManifestFile = file;
                                 }
-                                else if (file.Extension == ManifestFile.Extension)
+                                else if (file.Extension == this.ManifestFile.Extension)
                                 {
-                                    Log.AddFailure((Util.EXCEPTION_MultipleDnn + ManifestFile.Name + " and " + file.Name));
+                                    this.Log.AddFailure((Util.EXCEPTION_MultipleDnn + this.ManifestFile.Name + " and " + file.Name));
                                 }
                             }
                         }
                     }
-                    Log.AddInfo(string.Format(Util.FILE_ReadSuccess, file.FullName));
+                    this.Log.AddInfo(string.Format(Util.FILE_ReadSuccess, file.FullName));
                 }
                 entry = unzip.GetNextEntry();
             }
-            if (ManifestFile == null)
+            if (this.ManifestFile == null)
             {
-                Log.AddFailure(Util.EXCEPTION_MissingDnn);
+                this.Log.AddFailure(Util.EXCEPTION_MissingDnn);
             }
-            if (Log.Valid)
+            if (this.Log.Valid)
             {
-                Log.EndJob(Util.FILES_ReadingEnd);
+                this.Log.EndJob(Util.FILES_ReadingEnd);
             }
             else
             {
-                Log.AddFailure(new Exception(Util.EXCEPTION_FileLoad));
-                Log.EndJob(Util.FILES_ReadingEnd);
+                this.Log.AddFailure(new Exception(Util.EXCEPTION_FileLoad));
+                this.Log.EndJob(Util.FILES_ReadingEnd);
             }
 			
             //Close the Zip Input Stream as we have finished with it

@@ -43,8 +43,8 @@ namespace DotNetNuke.Tests.Utilities
 
         public DnnWebTest(int portalId)
         {
-            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", WebsitePhysicalAppPath);
-            simulator.SimulateRequest(new Uri(WebsiteAppPath));
+            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", this.WebsitePhysicalAppPath);
+            simulator.SimulateRequest(new Uri(this.WebsiteAppPath));
 
             InstallComponents();
 
@@ -54,7 +54,7 @@ namespace DotNetNuke.Tests.Utilities
             LoadDnnProviders("data;logging;caching;authentication;members;roles;profiles;permissions;folder;clientcapability");
 
             //fix Globals.ApplicationMapPath
-            var appPath = WebsitePhysicalAppPath;
+            var appPath = this.WebsitePhysicalAppPath;
             if (!string.IsNullOrEmpty(appPath))
             {
                 var mappath = typeof(Globals).GetField("_applicationMapPath", BindingFlags.Static | BindingFlags.NonPublic);
@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.Utilities
             var ps = new Entities.Portals.PortalSettings(59, objPortalAliasInfo);
             HttpContext.Current.Items.Add("PortalSettings", ps);
 
-            PortalId = portalId;
+            this.PortalId = portalId;
         }
 
         private static void InstallComponents()

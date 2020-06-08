@@ -22,28 +22,28 @@ namespace DotNetNuke.Services.GeneratedImage
 
         internal void DataBind()
         {
-            if (DataBinding != null)
+            if (this.DataBinding != null)
             {
-                DataBinding(this, EventArgs.Empty);
+                this.DataBinding(this, EventArgs.Empty);
             }
         }
 
         public override string ToString()
         {
-            if (string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(Value))
+            if (string.IsNullOrEmpty(this.Name) && string.IsNullOrEmpty(this.Value))
             {
                 return base.ToString();
             }
-            return string.Format(CultureInfo.InvariantCulture, "{0} = {1}", Name, Value);
+            return string.Format(CultureInfo.InvariantCulture, "{0} = {1}", this.Name, this.Value);
         }
 
         public Control BindingContainer { get; internal set; }
 
         #region IDataBindingsAccessor Members
 
-        DataBindingCollection IDataBindingsAccessor.DataBindings => _dataBindings;
+        DataBindingCollection IDataBindingsAccessor.DataBindings => this._dataBindings;
 
-        bool IDataBindingsAccessor.HasDataBindings => _dataBindings.Count != 0;
+        bool IDataBindingsAccessor.HasDataBindings => this._dataBindings.Count != 0;
 
         #endregion
     }

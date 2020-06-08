@@ -38,11 +38,11 @@ namespace DotNetNuke.Framework
 
         protected override void RegisterAjaxScript()
         {
-            if (Page.Form != null)
+            if (this.Page.Form != null)
             {
                 if (ServicesFrameworkInternal.Instance.IsAjaxScriptSupportRequired)
                 {
-                    ServicesFrameworkInternal.Instance.RegisterAjaxScript(Page);
+                    ServicesFrameworkInternal.Instance.RegisterAjaxScript(this.Page);
                 }
             }
         }
@@ -59,7 +59,7 @@ namespace DotNetNuke.Framework
             {
                 JavaScript.RegisterClientReference(this, ClientAPI.ClientNamespaceReferences.dnn_dom_positioning);
                 ClientAPI.RegisterClientVariable(this, "ScrollToControl", objControl.ClientID, true);
-                DNNClientAPI.SetScrollTop(Page);
+                DNNClientAPI.SetScrollTop(this.Page);
             }
         }
 
@@ -83,13 +83,13 @@ namespace DotNetNuke.Framework
             get
             {
                 string result ;
-                var tab = TabController.Instance.GetTabByName("Advanced Settings", PortalSettings.PortalId);
+                var tab = TabController.Instance.GetTabByName("Advanced Settings", this.PortalSettings.PortalId);
                 var modules = ModuleController.Instance.GetTabModules(tab.TabID).Values;
 
                 if (modules.Count > 0)
                 {
                     var pmb = new PortalModuleBase();
-                    result = pmb.EditUrl(tab.TabID, "", false, string.Concat("mid=", modules.ElementAt(0).ModuleID), "popUp=true", string.Concat("ReturnUrl=", Server.UrlEncode(TestableGlobals.Instance.NavigateURL())));
+                    result = pmb.EditUrl(tab.TabID, "", false, string.Concat("mid=", modules.ElementAt(0).ModuleID), "popUp=true", string.Concat("ReturnUrl=", this.Server.UrlEncode(TestableGlobals.Instance.NavigateURL())));
                 }
                 else
                 {

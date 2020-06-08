@@ -34,15 +34,15 @@ namespace DotNetNuke.Services.Authentication
         /// -----------------------------------------------------------------------------
         public UserAuthenticatedEventArgs(UserInfo user, string token, UserLoginStatus status, string type)
         {
-            Profile = new NameValueCollection();
-            Message = String.Empty;
-            AutoRegister = false;
-            Authenticated = true;
-            User = user;
-            LoginStatus = status;
-            UserToken = token;
-            AuthenticationType = type;
-            RememberMe = false;
+            this.Profile = new NameValueCollection();
+            this.Message = String.Empty;
+            this.AutoRegister = false;
+            this.Authenticated = true;
+            this.User = user;
+            this.LoginStatus = status;
+            this.UserToken = token;
+            this.AuthenticationType = type;
+            this.RememberMe = false;
         }
 
         /// -----------------------------------------------------------------------------

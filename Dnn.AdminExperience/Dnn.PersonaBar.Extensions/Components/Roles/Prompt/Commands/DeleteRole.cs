@@ -29,7 +29,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             
-            RoleId = GetFlagValue(FlagId, "Role Id", -1, true, true, true);
+            this.RoleId = this.GetFlagValue(FlagId, "Role Id", -1, true, true, true);
         }
 
         public override ConsoleResultModel Run()
@@ -37,15 +37,15 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             try
             {
                 KeyValuePair<HttpStatusCode, string> message;
-                var roleName = RolesController.Instance.DeleteRole(PortalSettings, RoleId, out message);
+                var roleName = RolesController.Instance.DeleteRole(this.PortalSettings, this.RoleId, out message);
                 return !string.IsNullOrEmpty(roleName)
-                    ? new ConsoleResultModel($"{LocalizeString("DeleteRole.Message")} '{roleName}' ({RoleId})") { Records = 1 }
+                    ? new ConsoleResultModel($"{this.LocalizeString("DeleteRole.Message")} '{roleName}' ({this.RoleId})") { Records = 1 }
                     : new ConsoleErrorResultModel(message.Value);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return new ConsoleErrorResultModel(LocalizeString("DeleteRole.Error"));
+                return new ConsoleErrorResultModel(this.LocalizeString("DeleteRole.Error"));
             }
         }
     }

@@ -21,41 +21,41 @@ namespace DotNetNuke.Web.InternalServices
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Authorize(NotificationDTO postData)
         {
-            var user = GetUser(postData);
+            var user = this.GetUser(postData);
             if (user == null)
             {
                 NotificationsController.Instance.DeleteNotification(postData.NotificationId);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "User not found");
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "User not found");
             }
 
             user.Membership.Approved = true;
-            UserController.UpdateUser(PortalSettings.PortalId, user);
+            UserController.UpdateUser(this.PortalSettings.PortalId, user);
 
             //Update User Roles if needed
-            if (!user.IsSuperUser && user.IsInRole("Unverified Users") && PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
+            if (!user.IsSuperUser && user.IsInRole("Unverified Users") && this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
             {
                 UserController.ApproveUser(user);
             }
 
-            Mail.SendMail(user, MessageType.UserAuthorized, PortalSettings);
+            Mail.SendMail(user, MessageType.UserAuthorized, this.PortalSettings);
 
-            return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Reject(NotificationDTO postData)
         {
-            var user = GetUser(postData);
+            var user = this.GetUser(postData);
             if (user == null)
             {
                 NotificationsController.Instance.DeleteNotification(postData.NotificationId);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "User not found");
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "User not found");
             }
 
             UserController.RemoveUser(user);
 
-            return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
 
         [HttpPost]
@@ -63,24 +63,24 @@ namespace DotNetNuke.Web.InternalServices
         [ValidateAntiForgeryToken]
         public HttpResponseMessage SendVerificationMail(NotificationDTO postData)
         {
-            if (UserInfo.Membership.Approved)
+            if (this.UserInfo.Membership.Approved)
             {
                 throw new UserAlreadyVerifiedException();
             }
 
-            if (!UserInfo.IsInRole("Unverified Users"))
+            if (!this.UserInfo.IsInRole("Unverified Users"))
             {
                 throw new InvalidVerificationCodeException();
             }
 
-            var message = Mail.SendMail(UserInfo, MessageType.UserRegistrationVerified, PortalSettings);
+            var message = Mail.SendMail(this.UserInfo, MessageType.UserRegistrationVerified, this.PortalSettings);
             if (string.IsNullOrEmpty(message))
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new {Result = Localization.GetSafeJSString("VerificationMailSendSuccessful", Localization.SharedResourceFile) });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = Localization.GetSafeJSString("VerificationMailSendSuccessful", Localization.SharedResourceFile) });
             }
             else
             {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
             }
         }
 
@@ -94,7 +94,7 @@ namespace DotNetNuke.Web.InternalServices
                 return null;
             }
 
-            return UserController.GetUserById(PortalSettings.PortalId, userId);            
+            return UserController.GetUserById(this.PortalSettings.PortalId, userId);            
         }
     }
 }

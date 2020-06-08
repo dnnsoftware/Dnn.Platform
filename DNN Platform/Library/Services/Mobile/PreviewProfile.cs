@@ -28,11 +28,11 @@ namespace DotNetNuke.Services.Mobile
 		{
 			get
 			{
-				return _id;
+				return this._id;
 			}
 			set
 			{
-				_id = value;
+				this._id = value;
 			}
 		}
 

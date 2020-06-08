@@ -31,11 +31,11 @@ namespace DotNetNuke.Modules.MemberDirectory.Presenters
         {
             base.OnLoad();
 
-            View.Model.Groups = RoleController.Instance.GetRoles(PortalId, r => r.Status == RoleStatus.Approved);
-            View.Model.Relationships = RelationshipController.Instance.GetRelationshipsByPortalId(PortalId);
+            this.View.Model.Groups = RoleController.Instance.GetRoles(this.PortalId, r => r.Status == RoleStatus.Approved);
+            this.View.Model.Relationships = RelationshipController.Instance.GetRelationshipsByPortalId(this.PortalId);
 
-            View.Model.ProfileProperties = new List<ProfilePropertyDefinition>();
-            foreach (ProfilePropertyDefinition definition in ProfileController.GetPropertyDefinitionsByPortal(PortalId))
+            this.View.Model.ProfileProperties = new List<ProfilePropertyDefinition>();
+            foreach (ProfilePropertyDefinition definition in ProfileController.GetPropertyDefinitionsByPortal(this.PortalId))
             {
                 var controller = new ListController();
                 ListEntryInfo textType = controller.GetListEntryInfo("DataType", "Text");
@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Presenters
                 ListEntryInfo countryType = controller.GetListEntryInfo("DataType", "Country");
                 if (definition.DataType == textType.EntryID || definition.DataType == regionType.EntryID || definition.DataType == countryType.EntryID)
                 {
-                    View.Model.ProfileProperties.Add(definition);
+                    this.View.Model.ProfileProperties.Add(definition);
                 }
             }
         }

@@ -76,7 +76,7 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
             var user = CreateNewUser();
 
             var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", AppDomain.CurrentDomain.BaseDirectory);
-            simulator.SimulateRequest(new Uri(WebsiteAppPath));
+            simulator.SimulateRequest(new Uri(this.WebsiteAppPath));
             HttpContextBase httpContextBase = new HttpContextWrapper(HttpContext.Current);
             HttpContextSource.RegisterInstance(httpContextBase);
 

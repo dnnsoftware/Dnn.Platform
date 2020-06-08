@@ -25,7 +25,7 @@ namespace Dnn.AuthServices.Jwt.Auth
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtAuthMessageHandler));
 
-        public override string AuthScheme => _jwtController.SchemeType;
+        public override string AuthScheme => this._jwtController.SchemeType;
         public override bool BypassAntiForgeryToken => true;
 
         internal static bool IsEnabled { get; set; }
@@ -50,9 +50,9 @@ namespace Dnn.AuthServices.Jwt.Auth
 
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if (NeedsAuthentication(request))
+            if (this.NeedsAuthentication(request))
             {
-                TryToAuthenticate(request);
+                this.TryToAuthenticate(request);
             }
 
             return base.OnInboundRequest(request, cancellationToken);
@@ -62,11 +62,11 @@ namespace Dnn.AuthServices.Jwt.Auth
         {
             try
             {
-                var username = _jwtController.ValidateToken(request);
+                var username = this._jwtController.ValidateToken(request);
                 if (!string.IsNullOrEmpty(username))
                 {
                     if (Logger.IsTraceEnabled) Logger.Trace($"Authenticated user '{username}'");
-                    SetCurrentPrincipal(new GenericPrincipal(new GenericIdentity(username, AuthScheme), null), request);
+                    SetCurrentPrincipal(new GenericPrincipal(new GenericIdentity(username, this.AuthScheme), null), request);
                 }
             }
             catch (Exception ex)

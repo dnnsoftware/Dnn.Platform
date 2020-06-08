@@ -29,29 +29,29 @@ namespace DotNetNuke.Tests.Urls
 
         public virtual void SetUp()
         {
-            ExecuteScriptFile(String.Format("{0}\\{1}\\{2}", TestType, GetTestFolder(), "SetUp.sql"));
+            this.ExecuteScriptFile(String.Format("{0}\\{1}\\{2}", this.TestType, this.GetTestFolder(), "SetUp.sql"));
         }
 
         public virtual void TestFixtureSetUp()
         {
-            ExecuteScriptFile(String.Format("{0}\\{1}", TestType, "SetUp.sql"));
+            this.ExecuteScriptFile(String.Format("{0}\\{1}", this.TestType, "SetUp.sql"));
         }
 
         public virtual void TearDown()
         {
-            ExecuteScriptFile(String.Format("{0}\\{1}\\{2}", TestType, GetTestFolder(), "TearDown.sql"));
+            this.ExecuteScriptFile(String.Format("{0}\\{1}\\{2}", this.TestType, this.GetTestFolder(), "TearDown.sql"));
         }
 
         public virtual void TestFixtureTearDown()
         {
-            ExecuteScriptFile(String.Format("{0}\\{1}", TestType, "TearDown.sql"));
+            this.ExecuteScriptFile(String.Format("{0}\\{1}", this.TestType, "TearDown.sql"));
         }
 
         #endregion
 
         protected void CreateTab(string tabName)
         {
-            var tab = new TabInfo { PortalID = PortalId, TabName = tabName };
+            var tab = new TabInfo { PortalID = this.PortalId, TabName = tabName };
 
             TabController.Instance.AddTab(tab);
         }
@@ -74,11 +74,11 @@ namespace DotNetNuke.Tests.Urls
 
         protected void GetDefaultAlias()
         {
-            foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId))
+            foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalId))
             {
                 if (alias.IsPrimary)
                 {
-                    DefaultAlias = alias.HTTPAlias;
+                    this.DefaultAlias = alias.HTTPAlias;
                     break;
                 }
             }
@@ -86,12 +86,12 @@ namespace DotNetNuke.Tests.Urls
 
         protected void SetDefaultAlias(Dictionary<string, string> testFields)
         {
-            SetDefaultAlias(testFields["Alias"]);
+            this.SetDefaultAlias(testFields["Alias"]);
         }
 
         protected void SetDefaultAlias(string defaultAlias)
         {
-            foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId))
+            foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalId))
             {
                 if (string.Equals(alias.HTTPAlias, defaultAlias, StringComparison.InvariantCultureIgnoreCase))
                 {

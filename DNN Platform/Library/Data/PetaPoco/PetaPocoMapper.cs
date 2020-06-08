@@ -22,7 +22,7 @@ namespace DotNetNuke.Data.PetaPoco
 
         public PetaPocoMapper(string tablePrefix)
         {
-            _tablePrefix = tablePrefix;
+            this._tablePrefix = tablePrefix;
             _defaultMapper = new StandardMapper();
         }
 
@@ -70,7 +70,7 @@ namespace DotNetNuke.Data.PetaPoco
             //Table Name
             ti.TableName = DataUtil.GetTableName(pocoType, ti.TableName + "s");
 
-            ti.TableName = _tablePrefix + ti.TableName;
+            ti.TableName = this._tablePrefix + ti.TableName;
 
             //Primary Key
             ti.PrimaryKey = DataUtil.GetPrimaryKeyColumn(pocoType, ti.PrimaryKey);

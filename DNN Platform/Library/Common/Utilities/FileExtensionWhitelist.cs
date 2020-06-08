@@ -20,7 +20,7 @@ namespace DotNetNuke.Common.Utilities
         /// should not have an '.' in the extensions (e.g. txt,jpg,png,doc)</remarks>
         public FileExtensionWhitelist(string extensionList)
         {
-            _extensions = EscapedString.Seperate(extensionList.ToLowerInvariant()).Select(item => "." + item).ToList();
+            this._extensions = EscapedString.Seperate(extensionList.ToLowerInvariant()).Select(item => "." + item).ToList();
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>A String of the whitelist extensions formatted for display to an end user</returns>
         public string ToDisplayString()
         {
-            return ToDisplayString(null);
+            return this.ToDisplayString(null);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>A String of the whitelist extensions formatted for storage display to an end user</returns>
         public string ToDisplayString(IEnumerable<string> additionalExtensions)
         {
-            IEnumerable<string> allExtensions = CombineLists(additionalExtensions);
+            IEnumerable<string> allExtensions = this.CombineLists(additionalExtensions);
             return "*" + string.Join(", *", allExtensions.ToArray());
         }
 
@@ -52,7 +52,7 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return _extensions;
+                return this._extensions;
             }
         }
 
@@ -63,7 +63,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>True if extension is in whitelist or whitelist is empty.  False otherwise.</returns>
         public bool IsAllowedExtension(String extension)
         {
-            return IsAllowedExtension(extension, null);
+            return this.IsAllowedExtension(extension, null);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>True if extension is in whitelist or whitelist is empty.  False otherwise.</returns>
         public bool IsAllowedExtension(string extension, IEnumerable<string> additionalExtensions)
         {
-            List<string> allExtensions = CombineLists(additionalExtensions).ToList();
+            List<string> allExtensions = this.CombineLists(additionalExtensions).ToList();
             if (!allExtensions.Any())
             {
                 return true;
@@ -94,7 +94,7 @@ namespace DotNetNuke.Common.Utilities
 
         public override string ToString()
         {
-            return ToDisplayString();
+            return this.ToDisplayString();
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>A String of the whitelist extensions formatted for storage as a Host setting</returns>
         public string ToStorageString()
         {
-            return ToStorageString(null);
+            return this.ToStorageString(null);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>A String of the whitelist extensions formatted for storage as a Host setting</returns>
         public string ToStorageString(IEnumerable<string> additionalExtensions)
         {
-            IEnumerable<string> allExtensions = CombineLists(additionalExtensions);
+            IEnumerable<string> allExtensions = this.CombineLists(additionalExtensions);
             var leadingDotRemoved = allExtensions.Select(ext => ext.Substring(1));
             return EscapedString.Combine(leadingDotRemoved);
         }
@@ -123,18 +123,18 @@ namespace DotNetNuke.Common.Utilities
         {
             if (additionalExtensions == null)
             {
-                return _extensions;
+                return this._extensions;
             }
 
             //toList required to ensure that multiple enumerations of the list are possible
             var additionalExtensionsList = additionalExtensions.ToList();
             if (!additionalExtensionsList.Any())
             {
-                return _extensions;
+                return this._extensions;
             }
 
-            var normalizedExtensions = NormalizeExtensions(additionalExtensionsList);
-            return _extensions.Union(normalizedExtensions);
+            var normalizedExtensions = this.NormalizeExtensions(additionalExtensionsList);
+            return this._extensions.Union(normalizedExtensions);
         }
 
         private IEnumerable<string> NormalizeExtensions(IEnumerable<string> additionalExtensions)
@@ -145,7 +145,7 @@ namespace DotNetNuke.Common.Utilities
         public FileExtensionWhitelist RestrictBy(FileExtensionWhitelist parentList)
         {
             var filter = parentList._extensions;
-            return new FileExtensionWhitelist(string.Join(",", _extensions.Where(x => filter.Contains(x)).Select(s => s.Substring(1))));
+            return new FileExtensionWhitelist(string.Join(",", this._extensions.Where(x => filter.Contains(x)).Select(s => s.Substring(1))));
         }
     }
 }

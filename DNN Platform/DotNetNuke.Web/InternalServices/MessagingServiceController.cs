@@ -33,12 +33,12 @@ namespace DotNetNuke.Web.InternalServices
         {
             try
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Value = InternalMessagingController.Instance.WaitTimeForNextMessage(UserInfo) });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Value = InternalMessagingController.Instance.WaitTimeForNextMessage(this.UserInfo) });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -57,7 +57,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             try
             {
-                var portalId = PortalController.GetEffectivePortalId(PortalSettings.PortalId);
+                var portalId = PortalController.GetEffectivePortalId(this.PortalSettings.PortalId);
                 var roleIdsList = string.IsNullOrEmpty(postData.RoleIds) ? null : postData.RoleIds.FromJson<IList<int>>();
                 var userIdsList = string.IsNullOrEmpty(postData.UserIds) ? null : postData.UserIds.FromJson<IList<int>>();
                 var fileIdsList = string.IsNullOrEmpty(postData.FileIds) ? null : postData.FileIds.FromJson<IList<int>>();
@@ -74,12 +74,12 @@ namespace DotNetNuke.Web.InternalServices
 
                 var message = new Message { Subject = HttpUtility.UrlDecode(postData.Subject), Body = HttpUtility.UrlDecode(postData.Body) };
                 MessagingController.Instance.SendMessage(message, roles, users, fileIdsList);
-                return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Value = message.MessageID });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Value = message.MessageID });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -88,13 +88,13 @@ namespace DotNetNuke.Web.InternalServices
         {
             try
             {
-                var portalId = PortalController.GetEffectivePortalId(PortalSettings.PortalId);
-                var isAdmin = UserInfo.IsSuperUser || UserInfo.IsInRole("Administrators");
+                var portalId = PortalController.GetEffectivePortalId(this.PortalSettings.PortalId);
+                var isAdmin = this.UserInfo.IsSuperUser || this.UserInfo.IsInRole("Administrators");
                 const int numResults = 10;
 
                 // GetUsersAdvancedSearch doesn't accept a comma or a single quote in the query so we have to remove them for now. See issue 20224.
                 q = q.Replace(",", "").Replace("'", "");
-                if (q.Length == 0) return Request.CreateResponse<SearchResult>(HttpStatusCode.OK, null);
+                if (q.Length == 0) return this.Request.CreateResponse<SearchResult>(HttpStatusCode.OK, null);
 
                 var results = UserController.Instance.GetUsersBasicSearch(portalId, 0, numResults, "DisplayName", true, "DisplayName", q)
                     .Select(user => new SearchResult
@@ -109,22 +109,22 @@ namespace DotNetNuke.Web.InternalServices
                 results.AddRange(from roleInfo in roles
                                     where
                                         isAdmin ||
-                                        UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == roleInfo.RoleID && ur.IsOwner) != null
+                                        this.UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == roleInfo.RoleID && ur.IsOwner) != null
                                     select new SearchResult
                                     {
                                         id = "role-" + roleInfo.RoleID,
                                         name = roleInfo.RoleName,
                                         iconfile = TestableGlobals.Instance.ResolveUrl(string.IsNullOrEmpty(roleInfo.IconFile)
                                                     ? "~/images/no_avatar.gif"
-                                                    : PortalSettings.HomeDirectory.TrimEnd('/') + "/" + roleInfo.IconFile)
+                                                    : this.PortalSettings.HomeDirectory.TrimEnd('/') + "/" + roleInfo.IconFile)
                                     });
 
-                return Request.CreateResponse(HttpStatusCode.OK, results.OrderBy(sr => sr.name));
+                return this.Request.CreateResponse(HttpStatusCode.OK, results.OrderBy(sr => sr.name));
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 

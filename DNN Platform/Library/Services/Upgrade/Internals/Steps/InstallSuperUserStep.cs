@@ -29,18 +29,18 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
         /// </summary>        
         public override void Execute()
         {
-            Percentage = 0;
-            Status = StepStatus.Running;
+            this.Percentage = 0;
+            this.Status = StepStatus.Running;
 
-            Details = Localization.Localization.GetString("CreateSuperUser", LocalInstallResourceFile);
+            this.Details = Localization.Localization.GetString("CreateSuperUser", this.LocalInstallResourceFile);
             var installConfig = InstallController.Instance.GetInstallConfig();
 
             //if any super user (even deleted) is found - exit
             var superUsers = UserController.GetUsers(true, true, Null.NullInteger);
             if (superUsers != null && superUsers.Count > 0)
             {
-                Details = "...";
-                Status = StepStatus.Done;
+                this.Details = "...";
+                this.Status = StepStatus.Done;
                 return;
             }
 
@@ -83,9 +83,9 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                     UserController.CreateUser(ref superUser);
             }
 
-            Details = Localization.Localization.GetString("CreatingSuperUser", LocalInstallResourceFile) + installConfig.SuperUser.UserName;
+            this.Details = Localization.Localization.GetString("CreatingSuperUser", this.LocalInstallResourceFile) + installConfig.SuperUser.UserName;
 
-            Status = StepStatus.Done;
+            this.Status = StepStatus.Done;
         }
 
         #endregion

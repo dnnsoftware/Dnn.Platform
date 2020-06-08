@@ -39,7 +39,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public Toast()
         {
-            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public bool IsOnline()
@@ -50,12 +50,12 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public string GetNotificationLink()
         {
-            return GetMessageLink() + "?view=notifications&action=notifications";
+            return this.GetMessageLink() + "?view=notifications&action=notifications";
         }
 
         public string GetMessageLink()
         {
-            return _navigationManager.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", PortalSettings.UserId));
+            return this._navigationManager.NavigateURL(this.GetMessageTab(), "", string.Format("userId={0}", this.PortalSettings.UserId));
         }
 
         public string GetMessageLabel()
@@ -71,13 +71,13 @@ namespace DotNetNuke.UI.Skins.Controls
         //This method is copied from user skin object
         private int GetMessageTab()
         {
-            var cacheKey = string.Format("MessageCenterTab:{0}:{1}", PortalSettings.PortalId, PortalSettings.CultureCode);
+            var cacheKey = string.Format("MessageCenterTab:{0}:{1}", this.PortalSettings.PortalId, this.PortalSettings.CultureCode);
             var messageTabId = DataCache.GetCache<int>(cacheKey);
             if (messageTabId > 0)
                 return messageTabId;
 
             //Find the Message Tab
-            messageTabId = FindMessageTab();
+            messageTabId = this.FindMessageTab();
 
             //save in cache
             //NOTE - This cache is not being cleared. There is no easy way to clear this, except Tools->Clear Cache
@@ -91,7 +91,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             //On brand new install the new Message Center Module is on the child page of User Profile Page 
             //On Upgrade to 6.2.0, the Message Center module is on the User Profile Page
-            var profileTab = TabController.Instance.GetTab(PortalSettings.UserTabId, PortalSettings.PortalId, false);
+            var profileTab = TabController.Instance.GetTab(this.PortalSettings.UserTabId, this.PortalSettings.PortalId, false);
             if (profileTab != null)
             {
                 var childTabs = TabController.Instance.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
@@ -109,7 +109,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
 
             //default to User Profile Page
-            return PortalSettings.UserTabId;            
+            return this.PortalSettings.UserTabId;            
         }        
 
         protected override void OnLoad(EventArgs e)
@@ -119,23 +119,23 @@ namespace DotNetNuke.UI.Skins.Controls
 			JavaScript.RequestRegistration(CommonJs.jQueryUI);
 			ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.js", DotNetNuke.Web.Client.FileOrder.Js.jQuery);
-			ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.css", DotNetNuke.Web.Client.FileOrder.Css.DefaultCss);
+            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.js", DotNetNuke.Web.Client.FileOrder.Js.jQuery);
+			ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.css", DotNetNuke.Web.Client.FileOrder.Css.DefaultCss);
 
-            InitializeConfig();
+            this.InitializeConfig();
         }
 
         private void InitializeConfig()
         {
-            ServiceModuleName = "InternalServices";
-            ServiceAction = "NotificationsService/GetToasts";
+            this.ServiceModuleName = "InternalServices";
+            this.ServiceAction = "NotificationsService/GetToasts";
 
             try
             {
                 var toastConfig = DataCache.GetCache<IDictionary<string, string>>(ToastCacheKey);
                 if (toastConfig == null)
                 {
-                    var configFile = Server.MapPath(Path.Combine(TemplateSourceDirectory, "Toast.config"));
+                    var configFile = this.Server.MapPath(Path.Combine(this.TemplateSourceDirectory, "Toast.config"));
                     
                     if (File.Exists(configFile))
                     {
@@ -147,26 +147,26 @@ namespace DotNetNuke.UI.Skins.Controls
 
                         if (moduleNameNode != null && !string.IsNullOrEmpty(moduleNameNode.InnerText))
                         {
-                            ServiceModuleName = moduleNameNode.InnerText;
+                            this.ServiceModuleName = moduleNameNode.InnerText;
                         }
 
                         if (actionNode != null && !string.IsNullOrEmpty(actionNode.InnerText))
                         {
-                            ServiceAction = actionNode.InnerText;
+                            this.ServiceAction = actionNode.InnerText;
                         }
 
                         if (scriptsNode != null && !string.IsNullOrEmpty(scriptsNode.InnerText))
                         {
-                            addtionalScripts.Text = scriptsNode.InnerText;
-                            addtionalScripts.Visible = true;
+                            this.addtionalScripts.Text = scriptsNode.InnerText;
+                            this.addtionalScripts.Visible = true;
                         }
                     }
 
                     var config = new Dictionary<string, string>()
                     {
-                        {"ServiceModuleName", ServiceModuleName },
-                        {"ServiceAction", ServiceAction },
-                        {"AddtionalScripts", addtionalScripts.Text },
+                        {"ServiceModuleName", this.ServiceModuleName },
+                        {"ServiceAction", this.ServiceAction },
+                        {"AddtionalScripts", this.addtionalScripts.Text },
                     };
                     DataCache.SetCache(ToastCacheKey, config);
                 }
@@ -174,18 +174,18 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     if (!string.IsNullOrEmpty(toastConfig["ServiceModuleName"]))
                     {
-                        ServiceModuleName = toastConfig["ServiceModuleName"];
+                        this.ServiceModuleName = toastConfig["ServiceModuleName"];
                     }
 
                     if (!string.IsNullOrEmpty(toastConfig["ServiceAction"]))
                     {
-                        ServiceAction = toastConfig["ServiceAction"];
+                        this.ServiceAction = toastConfig["ServiceAction"];
                     }
 
                     if (!string.IsNullOrEmpty(toastConfig["AddtionalScripts"]))
                     {
-                        addtionalScripts.Text = toastConfig["AddtionalScripts"];
-                        addtionalScripts.Visible = true;
+                        this.addtionalScripts.Text = toastConfig["AddtionalScripts"];
+                        this.addtionalScripts.Visible = true;
                     }
                 }
             }

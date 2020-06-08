@@ -30,36 +30,36 @@ namespace DotNetNuke.Modules.Groups
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            btnGo.Visible = Request.IsAuthenticated;
-            btnGo.Enabled = Request.IsAuthenticated;
-            btnGo.Click += btGo_Click;
+            this.btnGo.Visible = this.Request.IsAuthenticated;
+            this.btnGo.Enabled = this.Request.IsAuthenticated;
+            this.btnGo.Click += this.btGo_Click;
         }
 
         public void btGo_Click(object sender, EventArgs e)
         {
             //Setup Child Page - Main View/Activity
-            TabInfo tab = CreatePage(PortalSettings.ActiveTab, PortalId, TabId, "Group Activity", false);
+            TabInfo tab = this.CreatePage(this.PortalSettings.ActiveTab, this.PortalId, this.TabId, "Group Activity", false);
 
             //Add Module to Child Page
-            int groupViewModuleId = AddModule(tab, PortalId, "Social Groups", "ContentPane");
-            int journalModuleId = AddModule(tab, PortalId, "Journal", "ContentPane");
-            int consoleId = AddModule(tab, PortalId, "Console", "RightPane");
+            int groupViewModuleId = this.AddModule(tab, this.PortalId, "Social Groups", "ContentPane");
+            int journalModuleId = this.AddModule(tab, this.PortalId, "Journal", "ContentPane");
+            int consoleId = this.AddModule(tab, this.PortalId, "Console", "RightPane");
 
             ModuleInfo groupConsoleModule = ModuleController.Instance.GetModule(consoleId, tab.TabID, false);
-            TabInfo memberTab = CreatePage(PortalSettings.ActiveTab, PortalId, tab.TabID, "Members", true);
+            TabInfo memberTab = this.CreatePage(this.PortalSettings.ActiveTab, this.PortalId, tab.TabID, "Members", true);
             ModuleController.Instance.CopyModule(groupConsoleModule, memberTab, "RightPane", true);
 
             ModuleInfo groupViewModule = ModuleController.Instance.GetModule(groupViewModuleId, tab.TabID, false);
             ModuleController.Instance.CopyModule(groupViewModule, memberTab, "ContentPane", true);
-            AddModule(memberTab, PortalId, "DotNetNuke.Modules.MemberDirectory", "ContentPane");
+            this.AddModule(memberTab, this.PortalId, "DotNetNuke.Modules.MemberDirectory", "ContentPane");
 
 
             //List Settings
-            ModuleController.Instance.UpdateTabModuleSetting(TabModuleId, Constants.GroupLoadView, GroupMode.List.ToString());
-            ModuleController.Instance.UpdateTabModuleSetting(TabModuleId, Constants.GroupViewPage, tab.TabID.ToString(CultureInfo.InvariantCulture));
+            ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupLoadView, GroupMode.List.ToString());
+            ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupViewPage, tab.TabID.ToString(CultureInfo.InvariantCulture));
 
 			//Default Social Groups
-	        var defaultGroup = RoleController.GetRoleGroupByName(PortalId, Constants.DefaultGroupName);
+	        var defaultGroup = RoleController.GetRoleGroupByName(this.PortalId, Constants.DefaultGroupName);
 	        var groupId = -2;
 			if (defaultGroup != null)
 			{
@@ -68,14 +68,14 @@ namespace DotNetNuke.Modules.Groups
 			else
 			{
 				var groupInfo = new RoleGroupInfo();
-                groupInfo.PortalID = PortalId;
+                groupInfo.PortalID = this.PortalId;
                 groupInfo.RoleGroupName = Constants.DefaultGroupName;
                 groupInfo.Description = Constants.DefaultGroupName;
 				groupId = RoleController.AddRoleGroup(groupInfo);
 			}
-            ModuleController.Instance.UpdateTabModuleSetting(TabModuleId, Constants.DefaultRoleGroupSetting, groupId.ToString());
+            ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.DefaultRoleGroupSetting, groupId.ToString());
 
-            Response.Redirect(Request.RawUrl);
+            this.Response.Redirect(this.Request.RawUrl);
         }
 
         private TabInfo CreatePage(TabInfo tab, int portalId, int parentTabId, string tabName, bool includeInMenu)
@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.Groups
                 newTab.TabName = tabName;
                 newTab.Title = tabName;
                 newTab.IsVisible = includeInMenu;
-                newTab.SkinSrc = GetSkin();
+                newTab.SkinSrc = this.GetSkin();
 
                 id = TabController.Instance.AddTab(newTab);
                 newTab = TabController.Instance.GetTab(id, portalId, true);
@@ -126,9 +126,9 @@ namespace DotNetNuke.Modules.Groups
         private string GetSkin()
         {
             //attempt to find and load a  skin from the assigned skinned source
-            var skinSource = PortalSettings.DefaultPortalSkin;
+            var skinSource = this.PortalSettings.DefaultPortalSkin;
 
-            var tab = TabController.Instance.GetTab(TabId, PortalId, false);
+            var tab = TabController.Instance.GetTab(this.TabId, this.PortalId, false);
 
             if (!string.IsNullOrEmpty(tab.SkinSrc))
             {
@@ -137,7 +137,7 @@ namespace DotNetNuke.Modules.Groups
             else
             {
                 skinSource = SkinController.FormatSkinPath(skinSource) + "groups.ascx";
-                var physicalSkinFile = SkinController.FormatSkinSrc(skinSource, PortalSettings);
+                var physicalSkinFile = SkinController.FormatSkinSrc(skinSource, this.PortalSettings);
 
                 if (!File.Exists(HttpContext.Current.Server.MapPath(physicalSkinFile)))
                 {
@@ -153,13 +153,13 @@ namespace DotNetNuke.Modules.Groups
             int id = -1;
             if (module == null)
             {
-                int desktopModuleId = GetDesktopModuleId(portalId, moduleName);
+                int desktopModuleId = this.GetDesktopModuleId(portalId, moduleName);
                 int moduleId = -1;
                 if (desktopModuleId > -1)
                 {
                     if (moduleId <= 0)
                     {
-                        moduleId = AddNewModule(tab, string.Empty, desktopModuleId, pane, 0, string.Empty);
+                        moduleId = this.AddNewModule(tab, string.Empty, desktopModuleId, pane, 0, string.Empty);
                     }
                     id = moduleId;
                     ModuleInfo mi = ModuleController.Instance.GetModule(moduleId, tab.TabID, false);
@@ -253,7 +253,7 @@ namespace DotNetNuke.Modules.Groups
                             continue;
                         }
 
-                        ModulePermissionInfo objModulePermission = AddModulePermission(objModule,
+                        ModulePermissionInfo objModulePermission = this.AddModulePermission(objModule,
                                                                                        objSystemModulePermission,
                                                                                        objTabPermission.RoleID,
                                                                                        objTabPermission.UserID,
@@ -262,7 +262,7 @@ namespace DotNetNuke.Modules.Groups
                         // ensure that every EDIT permission which allows access also provides VIEW permission
                         if (objModulePermission.PermissionKey == "EDIT" & objModulePermission.AllowAccess)
                         {
-                            ModulePermissionInfo objModuleViewperm = AddModulePermission(objModule,
+                            ModulePermissionInfo objModuleViewperm = this.AddModulePermission(objModule,
                                                                                          (PermissionInfo) arrSystemModuleViewPermissions[0],
                                                                                          objModulePermission.RoleID,
                                                                                          objModulePermission.UserID,

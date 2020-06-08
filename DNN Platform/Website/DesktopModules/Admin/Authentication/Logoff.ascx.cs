@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 		private void Redirect()
 		{
 			//Redirect browser back to portal 
-			Response.Redirect(AuthenticationController.GetLogoffRedirectURL(PortalSettings, Request), true);
+			this.Response.Redirect(AuthenticationController.GetLogoffRedirectURL(this.PortalSettings, this.Request), true);
 		}
 
 		private void DoLogoff()
@@ -40,9 +40,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
 			try
 			{
 				//Remove user from cache
-				if (User != null)
+				if (this.User != null)
 				{
-					DataCache.ClearUserCache(PortalSettings.PortalId, Context.User.Identity.Name);
+					DataCache.ClearUserCache(this.PortalSettings.PortalId, this.Context.User.Identity.Name);
 				}
 				var objPortalSecurity = PortalSecurity.Instance;
 				objPortalSecurity.SignOut();
@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
 				if (authSystem != null && !string.IsNullOrEmpty(authSystem.LogoffControlSrc))
 				{
-					var authLogoffControl = (AuthenticationLogoffBase) LoadControl("~/" + authSystem.LogoffControlSrc);
+					var authLogoffControl = (AuthenticationLogoffBase) this.LoadControl("~/" + authSystem.LogoffControlSrc);
 
 					//set the control ID to the resource file name ( ie. controlname.ascx = controlname )
 					//this is necessary for the Localization in PageBase
@@ -80,19 +80,19 @@ namespace DotNetNuke.Modules.Admin.Authentication
 					authLogoffControl.ID = Path.GetFileNameWithoutExtension(authSystem.LogoffControlSrc) + "_" + authSystem.AuthenticationType;
 					authLogoffControl.LocalResourceFile = authLogoffControl.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" +
 														  Path.GetFileNameWithoutExtension(authSystem.LogoffControlSrc);
-					authLogoffControl.ModuleConfiguration = ModuleConfiguration;
+					authLogoffControl.ModuleConfiguration = this.ModuleConfiguration;
 
-					authLogoffControl.LogOff += UserLogOff;
-					authLogoffControl.Redirect += UserRedirect;
+					authLogoffControl.LogOff += this.UserLogOff;
+					authLogoffControl.Redirect += this.UserRedirect;
 
 					//Add Login Control to Control
-					pnlLogoffContainer.Controls.Add(authLogoffControl);
+					this.pnlLogoffContainer.Controls.Add(authLogoffControl);
 				}
 				else
 				{
 					//The current auth system has no custom logoff control so LogOff
-					DoLogoff();
-					Redirect();
+					this.DoLogoff();
+					this.Redirect();
 				}
 			}
 			catch (ThreadAbortException)
@@ -107,12 +107,12 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
 		protected void UserLogOff(Object sender, EventArgs e)
 		{
-			DoLogoff();
+			this.DoLogoff();
 		}
 
 		protected void UserRedirect(Object sender, EventArgs e)
 		{
-			Redirect();
+			this.Redirect();
 		}
 
 		#endregion

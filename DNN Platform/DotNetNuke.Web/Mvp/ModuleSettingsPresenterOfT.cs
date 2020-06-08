@@ -17,20 +17,20 @@ namespace DotNetNuke.Web.Mvp
     {
         protected ModuleSettingsPresenter(TView view) : base(view)
         {
-            view.OnLoadSettings += OnLoadSettingsInternal;
-            view.OnSaveSettings += OnSaveSettingsInternal;
+            view.OnLoadSettings += this.OnLoadSettingsInternal;
+            view.OnSaveSettings += this.OnSaveSettingsInternal;
         }
 
         #region Event Handlers
 
         private void OnLoadSettingsInternal(object sender, EventArgs e)
         {
-            LoadSettings();
+            this.LoadSettings();
         }
 
         private void OnSaveSettingsInternal(object sender, EventArgs e)
         {
-            SaveSettings();
+            this.SaveSettings();
         }
 
         #endregion
@@ -41,24 +41,24 @@ namespace DotNetNuke.Web.Mvp
         {
             base.OnLoad();
 
-            if (IsPostBack)
+            if (this.IsPostBack)
             {
                 //Initialize dictionaries as LoadSettings is not called on Postback
-                View.Model.ModuleSettings = new Dictionary<string, string>();
-                View.Model.TabModuleSettings = new Dictionary<string, string>();
+                this.View.Model.ModuleSettings = new Dictionary<string, string>();
+                this.View.Model.TabModuleSettings = new Dictionary<string, string>();
             }
         }
 
         protected virtual void LoadSettings()
         {
-            View.Model.ModuleSettings = new Dictionary<string, string>(
-                                            ModuleContext.Configuration.ModuleSettings
+            this.View.Model.ModuleSettings = new Dictionary<string, string>(
+                                            this.ModuleContext.Configuration.ModuleSettings
                                             .Cast<DictionaryEntry>()
                                             .ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value)
                                         );
 
-            View.Model.TabModuleSettings = new Dictionary<string, string>(
-                                            ModuleContext.Configuration.TabModuleSettings
+            this.View.Model.TabModuleSettings = new Dictionary<string, string>(
+                                            this.ModuleContext.Configuration.TabModuleSettings
                                             .Cast<DictionaryEntry>()
                                             .ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value)
                                         );
@@ -68,14 +68,14 @@ namespace DotNetNuke.Web.Mvp
         {
             var controller = ModuleController.Instance;
 
-            foreach (var setting in View.Model.ModuleSettings)
+            foreach (var setting in this.View.Model.ModuleSettings)
             {
-                ModuleController.Instance.UpdateModuleSetting(ModuleId, setting.Key, setting.Value);
+                ModuleController.Instance.UpdateModuleSetting(this.ModuleId, setting.Key, setting.Value);
             }
 
-            foreach (var setting in View.Model.TabModuleSettings)
+            foreach (var setting in this.View.Model.TabModuleSettings)
             {
-                ModuleController.Instance.UpdateTabModuleSetting(ModuleContext.TabModuleId, setting.Key, setting.Value);
+                ModuleController.Instance.UpdateTabModuleSetting(this.ModuleContext.TabModuleId, setting.Key, setting.Value);
             }
         }
 

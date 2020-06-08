@@ -87,13 +87,13 @@ namespace log4net.Util
 			get 
 			{
 				// Look in the flattened properties first
-				if (m_flattened != null)
+				if (this.m_flattened != null)
 				{
-					return m_flattened[key];
+					return this.m_flattened[key];
 				}
 
 				// Look for the key in all the nested properties
-				foreach(ReadOnlyPropertiesDictionary cur in m_nestedProperties)
+				foreach(ReadOnlyPropertiesDictionary cur in this.m_nestedProperties)
 				{
 					if (cur.Contains(key))
 					{
@@ -120,8 +120,8 @@ namespace log4net.Util
 		/// </remarks>
 		public void Add(ReadOnlyPropertiesDictionary properties)
 		{
-			m_flattened = null;
-			m_nestedProperties.Add(properties);
+			this.m_flattened = null;
+			this.m_nestedProperties.Add(properties);
 		}
 
 		/// <summary>
@@ -136,21 +136,21 @@ namespace log4net.Util
 		/// </remarks>
 		public PropertiesDictionary Flatten()
 		{
-			if (m_flattened == null)
+			if (this.m_flattened == null)
 			{
-				m_flattened = new PropertiesDictionary();
+				this.m_flattened = new PropertiesDictionary();
 
-				for(int i=m_nestedProperties.Count; --i>=0; )
+				for(int i=this.m_nestedProperties.Count; --i>=0; )
 				{
-					ReadOnlyPropertiesDictionary cur = (ReadOnlyPropertiesDictionary)m_nestedProperties[i];
+					ReadOnlyPropertiesDictionary cur = (ReadOnlyPropertiesDictionary)this.m_nestedProperties[i];
 
 					foreach(DictionaryEntry entry in cur)
 					{
-						m_flattened[(string)entry.Key] = entry.Value;
+						this.m_flattened[(string)entry.Key] = entry.Value;
 					}
 				}
 			}
-			return m_flattened;
+			return this.m_flattened;
 		}
 
 		#endregion Public Instance Methods

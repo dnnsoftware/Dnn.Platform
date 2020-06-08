@@ -66,7 +66,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
         {
             get
             {
-                return States == null || !States.Any() ? null : States.OrderBy(s => s.Order).FirstOrDefault();
+                return this.States == null || !this.States.Any() ? null : this.States.OrderBy(s => s.Order).FirstOrDefault();
             }
         }
 
@@ -78,7 +78,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
         {
             get
             {
-                return States == null || !States.Any() ? null : States.OrderBy(s => s.Order).LastOrDefault();
+                return this.States == null || !this.States.Any() ? null : this.States.OrderBy(s => s.Order).LastOrDefault();
             }
         }
     }

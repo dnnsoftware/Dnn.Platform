@@ -561,7 +561,7 @@ namespace DotNetNuke.Entities.Users
         {
             var url = $"/DnnImageHandler.ashx?mode=profilepic&userId={userId}&h={width}&w={height}";
 
-            var childPortalAlias = Globals.ResolveUrl(GetUserProfilePictureUrl(userId, width, height));
+            var childPortalAlias = Globals.ResolveUrl(this.GetUserProfilePictureUrl(userId, width, height));
             var cdv = GetProfilePictureCdv(portalId, userId);
 
             return childPortalAlias.StartsWith(Globals.ApplicationPath)
@@ -632,12 +632,12 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public void UpdateDisplayNames()
         {
-            int portalId = GetEffectivePortalId(PortalId);
+            int portalId = GetEffectivePortalId(this.PortalId);
 
-            var arrUsers = GetUsers(PortalId);
+            var arrUsers = GetUsers(this.PortalId);
             foreach (UserInfo objUser in arrUsers)
             {
-                objUser.UpdateDisplayName(DisplayFormat);
+                objUser.UpdateDisplayName(this.DisplayFormat);
                 UpdateUser(portalId, objUser);
             }
         }

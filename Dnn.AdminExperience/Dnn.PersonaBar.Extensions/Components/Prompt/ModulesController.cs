@@ -103,7 +103,7 @@ namespace Dnn.PersonaBar.Prompt.Components
 
         public ModuleInfo CopyModule(PortalSettings portalSettings, int moduleId, int sourcePageId, int targetPageId, string pane, bool includeSettings, out KeyValuePair<HttpStatusCode, string> message, bool moveBahaviour = false)
         {
-            var sourceModule = GetModule(portalSettings, moduleId, sourcePageId, out message);
+            var sourceModule = this.GetModule(portalSettings, moduleId, sourcePageId, out message);
 
             if (sourceModule == null)
             {
@@ -151,7 +151,7 @@ namespace Dnn.PersonaBar.Prompt.Components
 
         public void DeleteModule(PortalSettings portalSettings, int moduleId, int pageId, out KeyValuePair<HttpStatusCode, string> message)
         {         
-            var module = GetModule(portalSettings,moduleId,pageId,out message);
+            var module = this.GetModule(portalSettings,moduleId,pageId,out message);
 
             if (module != null)
             {               

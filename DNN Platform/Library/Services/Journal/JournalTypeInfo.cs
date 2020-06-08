@@ -25,25 +25,25 @@ namespace DotNetNuke.Services.Journal {
         public bool EnableComments { get; set; }
         public int KeyID {
             get {
-                return JournalTypeId;
+                return this.JournalTypeId;
             }
             set {
-                JournalTypeId = value;
+                this.JournalTypeId = value;
             }
         }
 
         public void Fill(System.Data.IDataReader dr) {
-            JournalTypeId = Null.SetNullInteger(dr["JournalTypeId"]);
-            PortalId = Null.SetNullInteger(dr["PortalId"]);
-            JournalType = Null.SetNullString(dr["JournalType"]);
-            icon = Null.SetNullString(dr["icon"]);
-            AppliesToProfile = Null.SetNullBoolean(dr["AppliesToProfile"]);
-            AppliesToGroup = Null.SetNullBoolean(dr["AppliesToGroup"]);
-            AppliesToStream = Null.SetNullBoolean(dr["AppliesToStream"]);
-            SupportsNotify = Null.SetNullBoolean(dr["SupportsNotify"]);
-            Options = Null.SetNullString(dr["Options"]);
-            IsEnabled = Null.SetNullBoolean(dr["IsEnabled"]);
-            EnableComments = Null.SetNullBoolean(dr["EnableComments"]);
+            this.JournalTypeId = Null.SetNullInteger(dr["JournalTypeId"]);
+            this.PortalId = Null.SetNullInteger(dr["PortalId"]);
+            this.JournalType = Null.SetNullString(dr["JournalType"]);
+            this.icon = Null.SetNullString(dr["icon"]);
+            this.AppliesToProfile = Null.SetNullBoolean(dr["AppliesToProfile"]);
+            this.AppliesToGroup = Null.SetNullBoolean(dr["AppliesToGroup"]);
+            this.AppliesToStream = Null.SetNullBoolean(dr["AppliesToStream"]);
+            this.SupportsNotify = Null.SetNullBoolean(dr["SupportsNotify"]);
+            this.Options = Null.SetNullString(dr["Options"]);
+            this.IsEnabled = Null.SetNullBoolean(dr["IsEnabled"]);
+            this.EnableComments = Null.SetNullBoolean(dr["EnableComments"]);
         }
     }
 }

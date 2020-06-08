@@ -45,8 +45,8 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public ModulePermissionInfo()
         {
-            _modulePermissionID = Null.NullInteger;
-            _moduleID = Null.NullInteger;
+            this._modulePermissionID = Null.NullInteger;
+            this._moduleID = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
@@ -57,11 +57,11 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public ModulePermissionInfo(PermissionInfo permission) : this()
         {
-            ModuleDefID = permission.ModuleDefID;
-            PermissionCode = permission.PermissionCode;
-            PermissionID = permission.PermissionID;
-            PermissionKey = permission.PermissionKey;
-            PermissionName = permission.PermissionName;
+            this.ModuleDefID = permission.ModuleDefID;
+            this.PermissionCode = permission.PermissionCode;
+            this.PermissionID = permission.PermissionID;
+            this.PermissionKey = permission.PermissionKey;
+            this.PermissionName = permission.PermissionName;
         }
 		
 		#endregion
@@ -79,11 +79,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _modulePermissionID;
+                return this._modulePermissionID;
             }
             set
             {
-                _modulePermissionID = value;
+                this._modulePermissionID = value;
             }
         }
 
@@ -98,11 +98,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _moduleID;
+                return this._moduleID;
             }
             set
             {
-                _moduleID = value;
+                this._moduleID = value;
             }
         }
 		
@@ -119,8 +119,8 @@ namespace DotNetNuke.Security.Permissions
         public void Fill(IDataReader dr)
         {
             base.FillInternal(dr);
-            ModulePermissionID = Null.SetNullInteger(dr["ModulePermissionID"]);
-            ModuleID = Null.SetNullInteger(dr["ModuleID"]);
+            this.ModulePermissionID = Null.SetNullInteger(dr["ModulePermissionID"]);
+            this.ModuleID = Null.SetNullInteger(dr["ModuleID"]);
         }
 
         /// -----------------------------------------------------------------------------
@@ -134,11 +134,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return ModulePermissionID;
+                return this.ModulePermissionID;
             }
             set
             {
-                ModulePermissionID = value;
+                this.ModulePermissionID = value;
             }
         }
 
@@ -170,7 +170,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return true;
             }
-            return (AllowAccess == other.AllowAccess) && (ModuleID == other.ModuleID) && (RoleID == other.RoleID) && (PermissionID == other.PermissionID);
+            return (this.AllowAccess == other.AllowAccess) && (this.ModuleID == other.ModuleID) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -201,14 +201,14 @@ namespace DotNetNuke.Security.Permissions
             {
                 return false;
             }
-            return Equals((ModulePermissionInfo) obj);
+            return this.Equals((ModulePermissionInfo) obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return (_moduleID*397) ^ _modulePermissionID;
+                return (this._moduleID*397) ^ this._modulePermissionID;
             }
         }
 		

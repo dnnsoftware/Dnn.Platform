@@ -23,11 +23,11 @@ namespace Dnn.PersonaBar.Extensions.Components
             switch (version)
             {
                 case "01.04.00":
-                    UpdateMenuController();
+                    this.UpdateMenuController();
                     break;
 
                 case "01.05.00":
-                    if (TelerikAssemblyExists())
+                    if (this.TelerikAssemblyExists())
                     {
                         UpdateTelerikEncryptionKey("Telerik.Web.UI.DialogParametersEncryptionKey");
                     }

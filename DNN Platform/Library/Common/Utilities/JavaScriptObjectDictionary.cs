@@ -17,18 +17,18 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
     {
         get
         {
-            return _dictionary ?? (_dictionary = new OrderedDictionary());
+            return this._dictionary ?? (this._dictionary = new OrderedDictionary());
         }
     }
 
     public void AddMethodBody(string name, string methodBody)
     {
-        AddMethod(name, "function() { " + methodBody + "; }");
+        this.AddMethod(name, "function() { " + methodBody + "; }");
     }
 
     public void AddMethod(string name, string method)
     {
-        Dictionary[name] = method;
+        this.Dictionary[name] = method;
     }
 
     private static string ToJsonString(IEnumerable<KeyValuePair<string, string>> methods)
@@ -125,7 +125,7 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
 
     public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
     {
-        var enumerator = Dictionary.GetEnumerator();
+        var enumerator = this.Dictionary.GetEnumerator();
         while (enumerator.MoveNext())
         {
             yield return new KeyValuePair<string, string>(enumerator.Key.ToString(), enumerator.Value.ToString());
@@ -134,15 +134,15 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
 
     private IEnumerator GetEnumeratorPrivate()
     {
-        return GetEnumerator();
+        return this.GetEnumerator();
     }
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return GetEnumeratorPrivate();
+        return this.GetEnumeratorPrivate();
     }
 
     public override string ToString()
     {
-        return _dictionary == null ? string.Empty : _dictionary.ToString();
+        return this._dictionary == null ? string.Empty : this._dictionary.ToString();
     }
 }

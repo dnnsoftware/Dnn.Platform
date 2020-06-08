@@ -38,33 +38,33 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public ScopeType(string scopeType)
         {
-            ScopeTypeId = Null.NullInteger;
-            ScopeType = scopeType;
+            this.ScopeTypeId = Null.NullInteger;
+            this.ScopeType = scopeType;
         }
 
         public int ScopeTypeId { get; set; }
 
 	    public void Fill(IDataReader dr)
         {
-            ScopeTypeId = Null.SetNullInteger(dr["ScopeTypeID"]);
-            ScopeType = Null.SetNullString(dr["ScopeType"]);
+            this.ScopeTypeId = Null.SetNullInteger(dr["ScopeTypeID"]);
+            this.ScopeType = Null.SetNullString(dr["ScopeType"]);
         }
 
         public int KeyID
         {
             get
             {
-                return ScopeTypeId;
+                return this.ScopeTypeId;
             }
             set
             {
-                ScopeTypeId = value;
+                this.ScopeTypeId = value;
             }
         }
 
         public override string ToString()
         {
-            return ScopeType;
+            return this.ScopeType;
         }
     }
 }

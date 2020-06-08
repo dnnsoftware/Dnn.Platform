@@ -35,16 +35,16 @@ namespace DotNetNuke.Entities.Host
         /// </remarks>
         public IPFilterInfo(string ipAddress, string subnetMask, int ruleType)
         {
-            IPAddress = ipAddress;
-            SubnetMask = subnetMask;
-            RuleType = ruleType;
+            this.IPAddress = ipAddress;
+            this.SubnetMask = subnetMask;
+            this.RuleType = ruleType;
         }
 
         public IPFilterInfo()
         {
-            IPAddress = String.Empty;
-            SubnetMask = String.Empty;
-            RuleType = -1;
+            this.IPAddress = String.Empty;
+            this.SubnetMask = String.Empty;
+            this.RuleType = -1;
         }
 
         #endregion        	
@@ -72,11 +72,11 @@ namespace DotNetNuke.Entities.Host
         /// <seealso cref="KeyID"></seealso></remarks>
         public void Fill(IDataReader dr)
         {
-            IPFilterID = Null.SetNullInteger(dr["IPFilterID"]);
+            this.IPFilterID = Null.SetNullInteger(dr["IPFilterID"]);
 
             try
             {
-                IPFilterID = Null.SetNullInteger(dr["IPFilterID"]);
+                this.IPFilterID = Null.SetNullInteger(dr["IPFilterID"]);
             }
             catch (IndexOutOfRangeException)
             {
@@ -84,11 +84,11 @@ namespace DotNetNuke.Entities.Host
                 //else swallow the error
             }
 
-            IPAddress = Null.SetNullString(dr["IPAddress"]);
-            SubnetMask = Null.SetNullString(dr["SubnetMask"]);
-            RuleType = Null.SetNullInteger(dr["RuleType"]);
+            this.IPAddress = Null.SetNullString(dr["IPAddress"]);
+            this.SubnetMask = Null.SetNullString(dr["SubnetMask"]);
+            this.RuleType = Null.SetNullInteger(dr["RuleType"]);
             
-            FillInternal(dr);
+            this.FillInternal(dr);
         }
 
         /// <summary>
@@ -100,11 +100,11 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                return IPFilterID;
+                return this.IPFilterID;
             }
             set
             {
-                IPFilterID = value;
+                this.IPFilterID = value;
             }
         }
 

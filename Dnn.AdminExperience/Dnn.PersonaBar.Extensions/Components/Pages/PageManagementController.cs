@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         public PageManagementController()
         {
-            _tabController = TabController.Instance;
+            this._tabController = TabController.Instance;
         }
         
         
@@ -46,7 +46,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         public string GetTabHierarchy(TabInfo tab)
         {
-            _tabController.PopulateBreadCrumbs(ref tab);
+            this._tabController.PopulateBreadCrumbs(ref tab);
             return tab.BreadCrumbs.Count == 1 ? string.Empty : string.Join(" > ", from t in tab.BreadCrumbs.Cast<TabInfo>().Take(tab.BreadCrumbs.Count - 1) select t.LocalizedTabName);
         }
 

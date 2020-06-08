@@ -24,17 +24,17 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
     {
         protected DnnController()
         {
-            ActionInvoker = new ResultCapturingActionInvoker();
+            this.ActionInvoker = new ResultCapturingActionInvoker();
         }
 
         public ModuleInfo ActiveModule
         {
-            get { return (ModuleContext == null) ? null : ModuleContext.Configuration; }
+            get { return (this.ModuleContext == null) ? null : this.ModuleContext.Configuration; }
         }
 
         public TabInfo ActivePage
         {
-            get { return (PortalSettings == null) ? null : PortalSettings.ActiveTab; }
+            get { return (this.PortalSettings == null) ? null : this.PortalSettings.ActiveTab; }
         }
 
         public Page DnnPage { get; set; }
@@ -45,7 +45,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
 
         public string LocalizeString(string key)
         {
-            return Localization.GetString(key, LocalResourceFile);
+            return Localization.GetString(key, this.LocalResourceFile);
         }
 
         public ModuleActionCollection ModuleActions { get; set; }
@@ -54,12 +54,12 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
 
         public PortalSettings PortalSettings
         {
-            get { return (ModuleContext == null) ? null : ModuleContext.PortalSettings; }
+            get { return (this.ModuleContext == null) ? null : this.ModuleContext.PortalSettings; }
         }
 
         protected override RedirectToRouteResult RedirectToAction(string actionName, string controllerName, RouteValueDictionary routeValues)
         {
-            return new DnnRedirecttoRouteResult(actionName, controllerName, string.Empty, routeValues, false, Url);
+            return new DnnRedirecttoRouteResult(actionName, controllerName, string.Empty, routeValues, false, this.Url);
         }
 
         protected internal RedirectToRouteResult RedirectToDefaultRoute()
@@ -71,28 +71,28 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
         {
             get
             {
-                var actionInvoker = ActionInvoker as ResultCapturingActionInvoker;
+                var actionInvoker = this.ActionInvoker as ResultCapturingActionInvoker;
                 return (actionInvoker != null) ?  actionInvoker.ResultOfLastInvoke : null;
             }
         }
 
         public new UserInfo User
         {
-            get { return (PortalSettings == null) ? null : PortalSettings.UserInfo; }
+            get { return (this.PortalSettings == null) ? null : this.PortalSettings.UserInfo; }
         }
 
         protected override ViewResult View(IView view, object model)
         {
             if (model != null)
             {
-                ViewData.Model = model;
+                this.ViewData.Model = model;
             }
 
             return new DnnViewResult
             {
                 View = view,
-                ViewData = ViewData,
-                TempData = TempData
+                ViewData = this.ViewData,
+                TempData = this.TempData
             };
         }
 
@@ -100,16 +100,16 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
         {
             if (model != null)
             {
-                ViewData.Model = model;
+                this.ViewData.Model = model;
             }
 
             return new DnnViewResult
             {
                 ViewName = viewName,
                 MasterName = masterName,
-                ViewData = ViewData,
-                TempData = TempData,
-                ViewEngineCollection = ViewEngineCollection
+                ViewData = this.ViewData,
+                TempData = this.TempData,
+                ViewEngineCollection = this.ViewEngineCollection
             };
         }
 
@@ -117,22 +117,22 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
         {
             if (model != null)
             {
-                ViewData.Model = model;
+                this.ViewData.Model = model;
             }
 
             return new DnnPartialViewResult
             {
                 ViewName = viewName,
-                ViewData = ViewData,
-                TempData = TempData,
-                ViewEngineCollection = ViewEngineCollection
+                ViewData = this.ViewData,
+                TempData = this.TempData,
+                ViewEngineCollection = this.ViewEngineCollection
             };
         }
 
         protected override void Initialize(RequestContext requestContext)
         {
             base.Initialize(requestContext);
-            Url = new DnnUrlHelper(requestContext, this);
+            this.Url = new DnnUrlHelper(requestContext, this);
         }
 
         public ViewEngineCollection ViewEngineCollectionEx { get; set; }

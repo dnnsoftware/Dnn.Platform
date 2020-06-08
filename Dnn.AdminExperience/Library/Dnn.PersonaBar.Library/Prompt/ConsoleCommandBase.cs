@@ -25,7 +25,7 @@ namespace Dnn.PersonaBar.Library.Prompt
         protected bool HasFlag(string flagName)
         {
             flagName = NormalizeFlagName(flagName);
-            return Flags.ContainsKey(flagName);
+            return this.Flags.ContainsKey(flagName);
         }
 
         protected bool IsFlag(object input)
@@ -36,12 +36,12 @@ namespace Dnn.PersonaBar.Library.Prompt
 
         protected string LocalizeString(string key)
         {
-            var localizedText = Localization.GetString(key, LocalResourceFile);
+            var localizedText = Localization.GetString(key, this.LocalResourceFile);
             return string.IsNullOrEmpty(localizedText) ? key : localizedText;
         }
         protected void AddMessage(string message)
         {
-            ValidationMessage += message;
+            this.ValidationMessage += message;
         }
         
         /// <summary>
@@ -62,23 +62,23 @@ namespace Dnn.PersonaBar.Library.Prompt
             dynamic value = null;
             try
             {
-                if (HasFlag(flag))
+                if (this.HasFlag(flag))
                 {
-                    if (IsBoolean<T>())
+                    if (this.IsBoolean<T>())
                     {
-                        value = Flag<Boolean>(flag, true);
+                        value = this.Flag<Boolean>(flag, true);
                     }
                     else
                     {
-                        value = Flag<T>(flag, defaultVal);
+                        value = this.Flag<T>(flag, defaultVal);
                     }
                 }
                 else
                 {
-                    if (checkmain && Args.Length >= 2 && !IsFlag(Args[1]))
+                    if (checkmain && this.Args.Length >= 2 && !this.IsFlag(this.Args[1]))
                     {
                         var tc = TypeDescriptor.GetConverter(typeof(T));
-                        value = tc.ConvertFrom(Args[1]);
+                        value = tc.ConvertFrom(this.Args[1]);
                     }
                     else if (!required)
                     {
@@ -86,7 +86,7 @@ namespace Dnn.PersonaBar.Library.Prompt
                     }
                     else
                     {
-                        ValidationMessage += Localization.GetString(
+                        this.ValidationMessage += Localization.GetString(
                             checkmain ? "Promp_MainFlagIsRequired" : "Prompt_FlagIsRequired",
                             resourceFile)?.Replace("[0]", fieldName).Replace("[1]", flag);
                     }
@@ -94,7 +94,7 @@ namespace Dnn.PersonaBar.Library.Prompt
             }
             catch (Exception)
             {
-                ValidationMessage +=
+                this.ValidationMessage +=
                     Localization.GetString("Prompt_InvalidType", resourceFile)?
                         .Replace("[0]", fieldName)
                         .Replace("[1]", GetTypeName(typeof(T)));
@@ -103,7 +103,7 @@ namespace Dnn.PersonaBar.Library.Prompt
                 (typeof(T) == typeof(int) || typeof(T) == typeof(long) || typeof(T) == typeof(int?) ||
                  typeof(T) == typeof(long?)) && value != null && Convert.ToInt32(value) <= 0)
             {
-                ValidationMessage += Localization.GetString("Promp_PositiveValueRequired", resourceFile)?.Replace("[0]", fieldName);
+                this.ValidationMessage += Localization.GetString("Promp_PositiveValueRequired", resourceFile)?.Replace("[0]", fieldName);
             }
             return value ?? defaultVal;
         }
@@ -118,47 +118,47 @@ namespace Dnn.PersonaBar.Library.Prompt
 
         public void Initialize(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            Args = args;
-            PortalSettings = portalSettings;
-            User = userInfo;
-            PortalId = portalSettings.PortalId;
-            TabId = activeTabId;
-            ValidationMessage = "";
-            ParseFlags();
-            Init(args, portalSettings, userInfo, activeTabId);
+            this.Args = args;
+            this.PortalSettings = portalSettings;
+            this.User = userInfo;
+            this.PortalId = portalSettings.PortalId;
+            this.TabId = activeTabId;
+            this.ValidationMessage = "";
+            this.ParseFlags();
+            this.Init(args, portalSettings, userInfo, activeTabId);
         }
 
         public abstract ConsoleResultModel Run();
 
         public virtual bool IsValid()
         {
-            return string.IsNullOrEmpty(ValidationMessage);
+            return string.IsNullOrEmpty(this.ValidationMessage);
         }
         #endregion
 
         #region Private Methods
         private void ParseFlags()
         {
-            Flags = new Hashtable();
+            this.Flags = new Hashtable();
             // loop through arguments, skipping the first one (the command)
-            for (var i = 1; i <= Args.Length - 1; i++)
+            for (var i = 1; i <= this.Args.Length - 1; i++)
             {
-                if (!Args[i].StartsWith("--")) continue;
+                if (!this.Args[i].StartsWith("--")) continue;
                 // found a flag
-                var flagName = NormalizeFlagName(Args[i]);
+                var flagName = NormalizeFlagName(this.Args[i]);
                 var flagValue = string.Empty;
-                if (i < Args.Length - 1)
+                if (i < this.Args.Length - 1)
                 {
-                    if (!string.IsNullOrEmpty(Args[i + 1]))
+                    if (!string.IsNullOrEmpty(this.Args[i + 1]))
                     {
-                        if (Args[i + 1].StartsWith("--"))
+                        if (this.Args[i + 1].StartsWith("--"))
                         {
                             // next value is another flag, so this flag has no value
                             flagValue = string.Empty;
                         }
                         else
                         {
-                            flagValue = Args[i + 1];
+                            flagValue = this.Args[i + 1];
                         }
                     }
                     else
@@ -166,15 +166,15 @@ namespace Dnn.PersonaBar.Library.Prompt
                         flagValue = string.Empty;
                     }
                 }
-                Flags.Add(flagName.ToLower(), flagValue);
+                this.Flags.Add(flagName.ToLower(), flagValue);
             }
         }
 
         private object Flag<T>(string flagName, T defValue)
         {
             flagName = NormalizeFlagName(flagName);
-            if (!Flags.ContainsKey(flagName)) return defValue;
-            var retVal = Flags[flagName];
+            if (!this.Flags.ContainsKey(flagName)) return defValue;
+            var retVal = this.Flags[flagName];
             if (retVal == null || (string)retVal == "")
                 return defValue;
             var tc = TypeDescriptor.GetConverter(typeof(T));
@@ -224,6 +224,6 @@ namespace Dnn.PersonaBar.Library.Prompt
         /// <summary>
         /// Resource key for the result html.
         /// </summary>
-        public virtual string ResultHtml => LocalizeString($"Prompt_{GetType().Name}_ResultHtml");
+        public virtual string ResultHtml => this.LocalizeString($"Prompt_{this.GetType().Name}_ResultHtml");
     }
 }

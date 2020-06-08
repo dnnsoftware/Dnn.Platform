@@ -37,8 +37,8 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             
-            UserId = GetFlagValue(FlagId, "User Id", -1, true, true, true);
-            Notify = GetFlagValue(FlagNotify, "Notify", false);
+            this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
+            this.Notify = this.GetFlagValue(FlagNotify, "Notify", false);
         }
 
         public override ConsoleResultModel Run()
@@ -47,10 +47,10 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             UserInfo userInfo;
 
             if (
-                (errorResultModel = _userValidator.ValidateUser(
-                    UserId,
-                    PortalSettings,
-                    User,
+                (errorResultModel = this._userValidator.ValidateUser(
+                    this.UserId,
+                    this.PortalSettings,
+                    this.User,
                     out userInfo)
                 ) != null
                )
@@ -59,15 +59,15 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             }
 
             //Don't allow self password change.
-            if (userInfo.UserID == User.UserID)
+            if (userInfo.UserID == this.User.UserID)
             {
-                return new ConsoleErrorResultModel(LocalizeString("InSufficientPermissions"));
+                return new ConsoleErrorResultModel(this.LocalizeString("InSufficientPermissions"));
             }
 
-            var success = UsersController.Instance.ForceChangePassword(userInfo, PortalId, Notify);
+            var success = UsersController.Instance.ForceChangePassword(userInfo, this.PortalId, this.Notify);
             return success
-                ? new ConsoleResultModel(LocalizeString("Prompt_PasswordReset") + (Notify ? LocalizeString("Prompt_EmailSent") : "")) { Records = 1 }
-                : new ConsoleErrorResultModel(LocalizeString("OptionUnavailable"));
+                ? new ConsoleResultModel(this.LocalizeString("Prompt_PasswordReset") + (this.Notify ? this.LocalizeString("Prompt_EmailSent") : "")) { Records = 1 }
+                : new ConsoleErrorResultModel(this.LocalizeString("OptionUnavailable"));
         }
     }
 }

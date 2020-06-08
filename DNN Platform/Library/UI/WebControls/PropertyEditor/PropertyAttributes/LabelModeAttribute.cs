@@ -21,14 +21,14 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="mode">The label mode to apply to the associated property</param>
         public LabelModeAttribute(LabelMode mode)
         {
-            _Mode = mode;
+            this._Mode = mode;
         }
 
         public LabelMode Mode
         {
             get
             {
-                return _Mode;
+                return this._Mode;
             }
         }
     }

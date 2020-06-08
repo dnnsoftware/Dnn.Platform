@@ -21,10 +21,10 @@ namespace DotNetNuke.Services.OutputCache.Providers
         {
             if (maxVaryByCount > -1 && Services.OutputCache.Providers.MemoryProvider.GetCacheKeys(itemId).Count >= maxVaryByCount)
             {
-                HasErrored = true;
+                this.HasErrored = true;
                 return;
             }
-            CaptureStream = new MemoryStream();
+            this.CaptureStream = new MemoryStream();
         }
 
         protected static System.Web.Caching.Cache Cache
@@ -42,12 +42,12 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
         protected override void AddItemToCache(int itemId, string output)
         {
-            Cache.Insert(CacheKey, output, null, DateTime.UtcNow.Add(CacheDuration), System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, null);
+            Cache.Insert(this.CacheKey, output, null, DateTime.UtcNow.Add(this.CacheDuration), System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, null);
         }
 
         protected override void RemoveItemFromCache(int itemId)
         {
-            Cache.Remove(CacheKey);
+            Cache.Remove(this.CacheKey);
         }
     }
 }

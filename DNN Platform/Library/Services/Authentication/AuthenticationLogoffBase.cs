@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Authentication
 
         public AuthenticationLogoffBase()
         {
-            DependencyProvider = Globals.DependencyProvider;
+            this.DependencyProvider = Globals.DependencyProvider;
         }
 
         /// -----------------------------------------------------------------------------
@@ -47,11 +47,11 @@ namespace DotNetNuke.Services.Authentication
         {
             get
             {
-                return _AuthenticationType;
+                return this._AuthenticationType;
             }
             set
             {
-                _AuthenticationType = value;
+                this._AuthenticationType = value;
             }
         }
 
@@ -60,17 +60,17 @@ namespace DotNetNuke.Services.Authentication
 
         protected virtual void OnLogOff(EventArgs a)
         {
-            if (LogOff != null)
+            if (this.LogOff != null)
             {
-                LogOff(null, a);
+                this.LogOff(null, a);
             }
         }
 
         protected virtual void OnRedirect(EventArgs a)
         {
-            if (Redirect != null)
+            if (this.Redirect != null)
             {
-                Redirect(null, a);
+                this.Redirect(null, a);
             }
         }
     }

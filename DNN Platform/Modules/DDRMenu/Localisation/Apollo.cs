@@ -22,7 +22,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
         [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
         public bool HaveApi()
 		{
-			if (!haveChecked)
+			if (!this.haveChecked)
 			{
 				try
 				{
@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 					{
 						var api = Activator.CreateInstance("Apollo.LocalizationApi", "Apollo.DNN_Localization.LocalizeTab").Unwrap();
 						var apiType = api.GetType();
-						apiMember = apiType.GetMethod("getLocalizedTab", new[] {typeof(TabInfo)});
+						this.apiMember = apiType.GetMethod("getLocalizedTab", new[] {typeof(TabInfo)});
 					}
 				}
 // ReSharper disable EmptyGeneralCatchClause
@@ -38,16 +38,16 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 // ReSharper restore EmptyGeneralCatchClause
 				{
 				}
-				haveChecked = true;
+				this.haveChecked = true;
 			}
 
-			return (apiMember != null);
+			return (this.apiMember != null);
 		}
 
         [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
         public TabInfo LocaliseTab(TabInfo tab, int portalId)
 		{
-			return apiMember.Invoke(null, new object[] {tab}) as TabInfo ?? tab;
+			return this.apiMember.Invoke(null, new object[] {tab}) as TabInfo ?? tab;
 		}
 
         [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]

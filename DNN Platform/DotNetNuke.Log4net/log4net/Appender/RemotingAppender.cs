@@ -118,8 +118,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string Sink
 		{
-			get { return m_sinkUrl; }
-			set { m_sinkUrl = value; }
+			get { return this.m_sinkUrl; }
+			set { this.m_sinkUrl = value; }
 		}
 
 		#endregion Public Instance Properties
@@ -152,7 +152,7 @@ namespace log4net.Appender
 			IDictionary channelProperties = new Hashtable(); 
 			channelProperties["typeFilterLevel"] = "Full";
 
-			m_sinkObj = (IRemoteLoggingSink)Activator.GetObject(typeof(IRemoteLoggingSink), m_sinkUrl, channelProperties);
+			this.m_sinkObj = (IRemoteLoggingSink)Activator.GetObject(typeof(IRemoteLoggingSink), this.m_sinkUrl, channelProperties);
 		}
 
 		#endregion
@@ -180,15 +180,15 @@ namespace log4net.Appender
 		override protected void SendBuffer(LoggingEvent[] events)
 		{
 			// Setup for an async send
-			BeginAsyncSend();
+			this.BeginAsyncSend();
 
 			// Send the events
-			if (!ThreadPool.QueueUserWorkItem(new WaitCallback(SendBufferCallback), events))
+			if (!ThreadPool.QueueUserWorkItem(new WaitCallback(this.SendBufferCallback), events))
 			{
 				// Cancel the async send
-				EndAsyncSend();
+				this.EndAsyncSend();
 
-				ErrorHandler.Error("RemotingAppender ["+Name+"] failed to ThreadPool.QueueUserWorkItem logging events in SendBuffer.");
+				this.ErrorHandler.Error("RemotingAppender ["+this.Name+"] failed to ThreadPool.QueueUserWorkItem logging events in SendBuffer.");
 			}
 		}
 
@@ -216,9 +216,9 @@ namespace log4net.Appender
 			base.OnClose();
 
 			// Wait for the work queue to become empty before closing, timeout 30 seconds
-			if (!m_workQueueEmptyEvent.WaitOne(30 * 1000, false))
+			if (!this.m_workQueueEmptyEvent.WaitOne(30 * 1000, false))
 			{
-				ErrorHandler.Error("RemotingAppender ["+Name+"] failed to send all queued events before close, in OnClose.");
+				this.ErrorHandler.Error("RemotingAppender ["+this.Name+"] failed to send all queued events before close, in OnClose.");
 			}
 		}
 
@@ -230,7 +230,7 @@ namespace log4net.Appender
 		public override bool Flush(int millisecondsTimeout)
 		{
 			base.Flush();
-			return m_workQueueEmptyEvent.WaitOne(millisecondsTimeout, false);
+			return this.m_workQueueEmptyEvent.WaitOne(millisecondsTimeout, false);
 		}
 
 		#endregion
@@ -241,10 +241,10 @@ namespace log4net.Appender
 		private void BeginAsyncSend()
 		{
 			// The work queue is not empty
-			m_workQueueEmptyEvent.Reset();
+			this.m_workQueueEmptyEvent.Reset();
 
 			// Increment the queued count
-			Interlocked.Increment(ref m_queuedCallbackCount);
+			Interlocked.Increment(ref this.m_queuedCallbackCount);
 		}
 
 		/// <summary>
@@ -253,10 +253,10 @@ namespace log4net.Appender
 		private void EndAsyncSend()
 		{
 			// Decrement the queued count
-			if (Interlocked.Decrement(ref m_queuedCallbackCount) <= 0)
+			if (Interlocked.Decrement(ref this.m_queuedCallbackCount) <= 0)
 			{
 				// If the work queue is empty then set the event
-				m_workQueueEmptyEvent.Set();
+				this.m_workQueueEmptyEvent.Set();
 			}
 		}
 
@@ -276,15 +276,15 @@ namespace log4net.Appender
 				LoggingEvent[] events = (LoggingEvent[])state;
 
 				// Send the events
-				m_sinkObj.LogEvents(events);
+				this.m_sinkObj.LogEvents(events);
 			}
 			catch(Exception ex)
 			{
-				ErrorHandler.Error("Failed in SendBufferCallback", ex);
+				this.ErrorHandler.Error("Failed in SendBufferCallback", ex);
 			}
 			finally
 			{
-				EndAsyncSend();
+				this.EndAsyncSend();
 			}
 		}
 

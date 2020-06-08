@@ -25,22 +25,22 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
 
         public RoleModelBase(RoleInfo role)
         {
-            AutoAssign = role.AutoAssignment;
-            ModifiedDate = role.LastModifiedOnDate.ToPromptShortDateString();
-            ModifiedBy = role.LastModifiedByUserID;
-            IsPublic = role.IsPublic;
-            RoleGroupId = role.RoleGroupID;
-            RoleId = role.RoleID;
-            RoleName = role.RoleName;
-            UserCount = role.UserCount;
+            this.AutoAssign = role.AutoAssignment;
+            this.ModifiedDate = role.LastModifiedOnDate.ToPromptShortDateString();
+            this.ModifiedBy = role.LastModifiedByUserID;
+            this.IsPublic = role.IsPublic;
+            this.RoleGroupId = role.RoleGroupID;
+            this.RoleId = role.RoleID;
+            this.RoleName = role.RoleName;
+            this.UserCount = role.UserCount;
         }
         #endregion
 
         #region Command Links
-        public string __ModifiedBy => $"get-user {ModifiedBy}";
+        public string __ModifiedBy => $"get-user {this.ModifiedBy}";
 
-        public string __RoleId => $"get-role {RoleId}";
-        public string __UserCount => $"list-users --role '{RoleName}'";
+        public string __RoleId => $"get-role {this.RoleId}";
+        public string __UserCount => $"list-users --role '{this.RoleName}'";
 
         #endregion
     }

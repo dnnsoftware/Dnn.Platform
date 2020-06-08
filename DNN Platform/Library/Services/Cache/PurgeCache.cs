@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.Cache
     {
         public PurgeCache(ScheduleHistoryItem objScheduleHistoryItem)
         {
-            ScheduleHistoryItem = objScheduleHistoryItem; //REQUIRED
+            this.ScheduleHistoryItem = objScheduleHistoryItem; //REQUIRED
         }
 
         public override void DoWork()
@@ -25,17 +25,17 @@ namespace DotNetNuke.Services.Cache
             {
                 string str = CachingProvider.Instance().PurgeCache();
 
-                ScheduleHistoryItem.Succeeded = true; //REQUIRED
-                ScheduleHistoryItem.AddLogNote(str);
+                this.ScheduleHistoryItem.Succeeded = true; //REQUIRED
+                this.ScheduleHistoryItem.AddLogNote(str);
             }
             catch (Exception exc) //REQUIRED
             {
-                ScheduleHistoryItem.Succeeded = false; //REQUIRED
+                this.ScheduleHistoryItem.Succeeded = false; //REQUIRED
 
-                ScheduleHistoryItem.AddLogNote(string.Format("Purging cache task failed: {0}.", exc.ToString()));
+                this.ScheduleHistoryItem.AddLogNote(string.Format("Purging cache task failed: {0}.", exc.ToString()));
 
                 //notification that we have errored
-                Errored(ref exc); //REQUIRED
+                this.Errored(ref exc); //REQUIRED
 				
 				//log the exception
                 Exceptions.Exceptions.LogException(exc); //OPTIONAL

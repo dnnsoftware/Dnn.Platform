@@ -55,7 +55,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         public void AddFriend(UserInfo targetUser)
         {
             var initiatingUser = UserController.Instance.GetCurrentUserInfo();
-            AddFriend(initiatingUser, targetUser);
+            this.AddFriend(initiatingUser, targetUser);
         }
 
         /// -----------------------------------------------------------------------------
@@ -99,7 +99,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         public void DeleteFriend(UserInfo targetUser)
         {
             var initiatingUser = UserController.Instance.GetCurrentUserInfo();
-            DeleteFriend(initiatingUser, targetUser);
+            this.DeleteFriend(initiatingUser, targetUser);
         }
 
         /// -----------------------------------------------------------------------------

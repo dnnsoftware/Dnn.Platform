@@ -89,8 +89,8 @@ namespace log4net.Filter
 		/// </remarks>
 		public bool AcceptOnMatch
 		{
-			get { return m_acceptOnMatch; }
-			set { m_acceptOnMatch = value; }
+			get { return this.m_acceptOnMatch; }
+			set { this.m_acceptOnMatch = value; }
 		}
 
 		/// <summary>
@@ -107,8 +107,8 @@ namespace log4net.Filter
 		/// </remarks>
 		public string LoggerToMatch
 		{
-			get { return m_loggerToMatch; }
-			set { m_loggerToMatch = value; }
+			get { return this.m_loggerToMatch; }
+			set { this.m_loggerToMatch = value; }
 		}
 
 		#endregion 
@@ -141,11 +141,11 @@ namespace log4net.Filter
 			}
 
 			// Check if we have been setup to filter
-			if ((m_loggerToMatch != null && m_loggerToMatch.Length != 0) && 
-				loggingEvent.LoggerName.StartsWith(m_loggerToMatch))
+			if ((this.m_loggerToMatch != null && this.m_loggerToMatch.Length != 0) && 
+				loggingEvent.LoggerName.StartsWith(this.m_loggerToMatch))
 			{
 				// we've got a match
-				if (m_acceptOnMatch) 
+				if (this.m_acceptOnMatch) 
 				{
 					return FilterDecision.Accept;
 				} 

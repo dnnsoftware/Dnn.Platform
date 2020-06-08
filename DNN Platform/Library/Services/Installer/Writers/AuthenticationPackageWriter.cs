@@ -27,14 +27,14 @@ namespace DotNetNuke.Services.Installer.Writers
 		
         public AuthenticationPackageWriter(PackageInfo package) : base(package)
         {
-            AuthSystem = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
-            Initialize();
+            this.AuthSystem = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
+            this.Initialize();
         }
 
         public AuthenticationPackageWriter(AuthenticationInfo authSystem, PackageInfo package) : base(package)
         {
-            AuthSystem = authSystem;
-            Initialize();
+            this.AuthSystem = authSystem;
+            this.Initialize();
         }
 		
 		#endregion
@@ -55,9 +55,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private void Initialize()
         {
-            BasePath = Path.Combine("DesktopModules\\AuthenticationServices", AuthSystem.AuthenticationType);
-            AppCodePath = Path.Combine("App_Code\\AuthenticationServices", AuthSystem.AuthenticationType);
-            AssemblyPath = "bin";
+            this.BasePath = Path.Combine("DesktopModules\\AuthenticationServices", this.AuthSystem.AuthenticationType);
+            this.AppCodePath = Path.Combine("App_Code\\AuthenticationServices", this.AuthSystem.AuthenticationType);
+            this.AssemblyPath = "bin";
         }
 
         private void WriteAuthenticationComponent(XmlWriter writer)
@@ -69,10 +69,10 @@ namespace DotNetNuke.Services.Installer.Writers
             //Start authenticationService Element
             writer.WriteStartElement("authenticationService");
 
-            writer.WriteElementString("type", AuthSystem.AuthenticationType);
-            writer.WriteElementString("settingsControlSrc", AuthSystem.SettingsControlSrc);
-            writer.WriteElementString("loginControlSrc", AuthSystem.LoginControlSrc);
-            writer.WriteElementString("logoffControlSrc", AuthSystem.LogoffControlSrc);
+            writer.WriteElementString("type", this.AuthSystem.AuthenticationType);
+            writer.WriteElementString("settingsControlSrc", this.AuthSystem.SettingsControlSrc);
+            writer.WriteElementString("loginControlSrc", this.AuthSystem.LoginControlSrc);
+            writer.WriteElementString("logoffControlSrc", this.AuthSystem.LogoffControlSrc);
 
             //End authenticationService Element
             writer.WriteEndElement();
@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.Installer.Writers
         protected override void WriteManifestComponent(XmlWriter writer)
         {
 			//Write Authentication Component
-            WriteAuthenticationComponent(writer);
+            this.WriteAuthenticationComponent(writer);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             get
             {
-                return Name;
+                return this.Name;
             }
             set { }
         }
@@ -37,9 +37,9 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             get
             {
-                return (!String.IsNullOrEmpty(Name) && Name.IndexOf(" ", StringComparison.Ordinal) > 0) ? Name.Substring(0, Name.IndexOf(" ", StringComparison.Ordinal)) : String.Empty;
+                return (!String.IsNullOrEmpty(this.Name) && this.Name.IndexOf(" ", StringComparison.Ordinal) > 0) ? this.Name.Substring(0, this.Name.IndexOf(" ", StringComparison.Ordinal)) : String.Empty;
             }
-            set { Name = value + " " + LastName; }
+            set { this.Name = value + " " + this.LastName; }
         }
 
         [DataMember(Name = "gender")]
@@ -49,9 +49,9 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             get
             {
-                return (!String.IsNullOrEmpty(Name) && Name.IndexOf(" ", StringComparison.Ordinal) > 0) ? Name.Substring(Name.IndexOf(" ", StringComparison.Ordinal) + 1) : Name;
+                return (!String.IsNullOrEmpty(this.Name) && this.Name.IndexOf(" ", StringComparison.Ordinal) > 0) ? this.Name.Substring(this.Name.IndexOf(" ", StringComparison.Ordinal) + 1) : this.Name;
             }
-            set { Name = FirstName + " " + value; }
+            set { this.Name = this.FirstName + " " + value; }
 
         }
 
@@ -65,11 +65,11 @@ namespace DotNetNuke.Services.Authentication.OAuth
         { 
             get
             {
-                if (Emails == null)
+                if (this.Emails == null)
                 {
-                    return Email;
+                    return this.Email;
                 }
-                return Emails.PreferredEmail;
+                return this.Emails.PreferredEmail;
             }
         }
 

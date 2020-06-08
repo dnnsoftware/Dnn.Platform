@@ -18,7 +18,7 @@ namespace DotNetNuke.Entities.Portals.Data
 
         public int AddPortalGroup(PortalGroupInfo portalGroup, int createdByUserId)
         {
-            return _provider.ExecuteScalar<int>("AddPortalGroup",
+            return this._provider.ExecuteScalar<int>("AddPortalGroup",
                                                portalGroup.PortalGroupName,
                                                portalGroup.PortalGroupDescription,
                                                portalGroup.MasterPortalId,
@@ -28,17 +28,17 @@ namespace DotNetNuke.Entities.Portals.Data
 
         public void DeletePortalGroup(PortalGroupInfo portalGroup)
         {
-            _provider.ExecuteNonQuery("DeletePortalGroup", portalGroup.PortalGroupId);
+            this._provider.ExecuteNonQuery("DeletePortalGroup", portalGroup.PortalGroupId);
         }
 
         public IDataReader GetPortalGroups()
         {
-            return _provider.ExecuteReader("GetPortalGroups");
+            return this._provider.ExecuteReader("GetPortalGroups");
         }
 
         public void UpdatePortalGroup(PortalGroupInfo portalGroup, int lastModifiedByUserId)
         {
-            _provider.ExecuteNonQuery("UpdatePortalGroup",
+            this._provider.ExecuteNonQuery("UpdatePortalGroup",
                                             portalGroup.PortalGroupId,
                                             portalGroup.PortalGroupName,
                                             portalGroup.PortalGroupDescription,
@@ -48,12 +48,12 @@ namespace DotNetNuke.Entities.Portals.Data
 
         public IDataReader GetSharedModulesWithPortal(PortalInfo portal)
         {
-            return _provider.ExecuteReader("GetSharedModulesWithPortal", portal.PortalID);
+            return this._provider.ExecuteReader("GetSharedModulesWithPortal", portal.PortalID);
         }
 
         public IDataReader GetSharedModulesByPortal(PortalInfo portal)
         {
-            return _provider.ExecuteReader("GetSharedModulesByPortal", portal.PortalID);
+            return this._provider.ExecuteReader("GetSharedModulesByPortal", portal.PortalID);
         }
     }
 }

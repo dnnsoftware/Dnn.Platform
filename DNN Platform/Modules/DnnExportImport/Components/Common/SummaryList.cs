@@ -28,7 +28,7 @@ namespace Dnn.ExportImport.Components.Common
             var summaryItems = items as IList<SummaryItem> ?? items.ToList();
             foreach (var summaryItem in summaryItems.OrderBy(x => x.Order))
             {
-                Add(summaryItem);
+                this.Add(summaryItem);
             }
         }
     }

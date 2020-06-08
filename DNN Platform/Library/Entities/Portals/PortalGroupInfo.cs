@@ -30,9 +30,9 @@ namespace DotNetNuke.Entities.Portals
             get
             {
                 string portalName = String.Empty;
-                if (MasterPortalId > -1)
+                if (this.MasterPortalId > -1)
                 {
-                    var portal = PortalController.Instance.GetPortal(MasterPortalId);
+                    var portal = PortalController.Instance.GetPortal(this.MasterPortalId);
                     if (portal != null)
                     {
                         portalName = portal.PortalName;
@@ -54,23 +54,23 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return PortalGroupId;
+                return this.PortalGroupId;
             }
             set
             {
-                PortalGroupId = value;
+                this.PortalGroupId = value;
             }
         }
 
         public void Fill(IDataReader dr)
         {
-            FillInternal(dr);
+            this.FillInternal(dr);
 
-            PortalGroupId = Null.SetNullInteger(dr["PortalGroupID"]);
-            PortalGroupName = Null.SetNullString(dr["PortalGroupName"]);
-            PortalGroupDescription = Null.SetNullString(dr["PortalGroupDescription"]);
-            MasterPortalId = Null.SetNullInteger(dr["MasterPortalID"]);
-            AuthenticationDomain = Null.SetNullString(dr["AuthenticationDomain"]);
+            this.PortalGroupId = Null.SetNullInteger(dr["PortalGroupID"]);
+            this.PortalGroupName = Null.SetNullString(dr["PortalGroupName"]);
+            this.PortalGroupDescription = Null.SetNullString(dr["PortalGroupDescription"]);
+            this.MasterPortalId = Null.SetNullInteger(dr["MasterPortalID"]);
+            this.AuthenticationDomain = Null.SetNullString(dr["AuthenticationDomain"]);
         }
 
         #endregion

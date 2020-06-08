@@ -32,18 +32,18 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if (_folderMappingSettings == null)
+                if (this._folderMappingSettings == null)
                 {
-                    if (FolderMappingID == Null.NullInteger)
+                    if (this.FolderMappingID == Null.NullInteger)
                     {
-                        _folderMappingSettings = new Hashtable();
+                        this._folderMappingSettings = new Hashtable();
                     }
                     else
                     {
-                        _folderMappingSettings = FolderMappingController.Instance.GetFolderMappingSettings(FolderMappingID);
+                        this._folderMappingSettings = FolderMappingController.Instance.GetFolderMappingSettings(this.FolderMappingID);
                     }
                 }
-                return _folderMappingSettings;
+                return this._folderMappingSettings;
             }
         }
 
@@ -52,12 +52,12 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if (string.IsNullOrEmpty(_imageUrl))
+                if (string.IsNullOrEmpty(this._imageUrl))
                 {
-                    _imageUrl = FolderProvider.Instance(FolderProviderType).GetFolderProviderIconPath();
+                    this._imageUrl = FolderProvider.Instance(this.FolderProviderType).GetFolderProviderIconPath();
                 }
                 
-                return _imageUrl;
+                return this._imageUrl;
             }
         }
 
@@ -65,7 +65,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                return !DefaultFolderProviders.GetDefaultProviders().Contains(FolderProviderType);
+                return !DefaultFolderProviders.GetDefaultProviders().Contains(this.FolderProviderType);
             }
         }
 
@@ -73,16 +73,16 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if(FolderMappingSettings.ContainsKey("SyncAllSubFolders"))
+                if(this.FolderMappingSettings.ContainsKey("SyncAllSubFolders"))
                 {
-                    return bool.Parse(FolderMappingSettings["SyncAllSubFolders"].ToString());
+                    return bool.Parse(this.FolderMappingSettings["SyncAllSubFolders"].ToString());
                 }
 
                 return true;
             }
             set
             {
-                FolderMappingSettings["SyncAllSubFolders"] = value;
+                this.FolderMappingSettings["SyncAllSubFolders"] = value;
             }
         }
 
@@ -92,16 +92,16 @@ namespace DotNetNuke.Services.FileSystem
 
         public FolderMappingInfo()
         {
-            FolderMappingID = Null.NullInteger;
-            PortalID = Null.NullInteger;
+            this.FolderMappingID = Null.NullInteger;
+            this.PortalID = Null.NullInteger;
         }
 
         public FolderMappingInfo(int portalID, string mappingName, string folderProviderType)
         {
-            FolderMappingID = Null.NullInteger;
-            PortalID = portalID;
-            MappingName = mappingName;
-            FolderProviderType = folderProviderType;
+            this.FolderMappingID = Null.NullInteger;
+            this.PortalID = portalID;
+            this.MappingName = mappingName;
+            this.FolderProviderType = folderProviderType;
         }
 
         #endregion
@@ -114,11 +114,11 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name = "dr">The Data Reader to use</param>
         public void Fill(IDataReader dr)
         {
-            FolderMappingID = Null.SetNullInteger(dr["FolderMappingID"]);
-            PortalID = Null.SetNullInteger(dr["PortalID"]);
-            MappingName = Null.SetNullString(dr["MappingName"]);
-            FolderProviderType = Null.SetNullString(dr["FolderProviderType"]);
-            Priority = Null.SetNullInteger(dr["Priority"]);
+            this.FolderMappingID = Null.SetNullInteger(dr["FolderMappingID"]);
+            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
+            this.MappingName = Null.SetNullString(dr["MappingName"]);
+            this.FolderProviderType = Null.SetNullString(dr["FolderProviderType"]);
+            this.Priority = Null.SetNullInteger(dr["Priority"]);
         }
 
         /// <summary>
@@ -128,11 +128,11 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                return FolderMappingID;
+                return this.FolderMappingID;
             }
             set
             {
-                FolderMappingID = value;
+                this.FolderMappingID = value;
             }
         }
 

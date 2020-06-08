@@ -138,11 +138,11 @@ namespace log4net.Appender
 		/// </remarks>
 		public AdoNetAppender()
 		{
-			ConnectionType = "System.Data.OleDb.OleDbConnection, System.Data, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089";
-			UseTransactions = true;
-			CommandType = System.Data.CommandType.Text;
-			m_parameters = new ArrayList();
-			ReconnectOnError = false;
+			this.ConnectionType = "System.Data.OleDb.OleDbConnection, System.Data, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089";
+			this.UseTransactions = true;
+			this.CommandType = System.Data.CommandType.Text;
+			this.m_parameters = new ArrayList();
+			this.ReconnectOnError = false;
 		}
 
 		#endregion // Public Instance Constructors
@@ -173,8 +173,8 @@ namespace log4net.Appender
 		/// </example>
 		public string ConnectionString
 		{
-			get { return m_connectionString; }
-			set { m_connectionString = value; }
+			get { return this.m_connectionString; }
+			set { this.m_connectionString = value; }
 		}
 
 		/// <summary>
@@ -182,8 +182,8 @@ namespace log4net.Appender
 		/// </summary>
 		public string AppSettingsKey
 		{
-			get { return m_appSettingsKey; }
-			set { m_appSettingsKey = value; }
+			get { return this.m_appSettingsKey; }
+			set { this.m_appSettingsKey = value; }
 		}
 
 #if NET_2_0
@@ -195,8 +195,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string ConnectionStringName
 		{
-			get { return m_connectionStringName; }
-			set { m_connectionStringName = value; }
+			get { return this.m_connectionStringName; }
+			set { this.m_connectionStringName = value; }
 		}
 #endif
 
@@ -235,8 +235,8 @@ namespace log4net.Appender
 		/// </example>
 		public string ConnectionType
 		{
-			get { return m_connectionType; }
-			set { m_connectionType = value; }
+			get { return this.m_connectionType; }
+			set { this.m_connectionType = value; }
 		}
 
 		/// <summary>
@@ -263,8 +263,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string CommandText
 		{
-			get { return m_commandText; }
-			set { m_commandText = value; }
+			get { return this.m_commandText; }
+			set { this.m_commandText = value; }
 		}
 
 		/// <summary>
@@ -287,8 +287,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public CommandType CommandType
 		{
-			get { return m_commandType; }
-			set { m_commandType = value; }
+			get { return this.m_commandType; }
+			set { this.m_commandType = value; }
 		}
 
 		/// <summary>
@@ -311,8 +311,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public bool UseTransactions
 		{
-			get { return m_useTransactions; }
-			set { m_useTransactions = value; }
+			get { return this.m_useTransactions; }
+			set { this.m_useTransactions = value; }
 		}
 
 		/// <summary>
@@ -331,8 +331,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public SecurityContext SecurityContext
 		{
-			get { return m_securityContext; }
-			set { m_securityContext = value; }
+			get { return this.m_securityContext; }
+			set { this.m_securityContext = value; }
 		}
 
 		/// <summary>
@@ -361,8 +361,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public bool ReconnectOnError
 		{
-			get { return m_reconnectOnError; }
-			set { m_reconnectOnError = value; }
+			get { return this.m_reconnectOnError; }
+			set { this.m_reconnectOnError = value; }
 		}
 
 		#endregion // Public Instance Properties
@@ -384,8 +384,8 @@ namespace log4net.Appender
 		/// </remarks>
 		protected IDbConnection Connection
 		{
-			get { return m_dbConnection; }
-			set { m_dbConnection = value; }
+			get { return this.m_dbConnection; }
+			set { this.m_dbConnection = value; }
 		}
 
 		#endregion // Protected Instance Properties
@@ -412,12 +412,12 @@ namespace log4net.Appender
 		{
 			base.ActivateOptions();
 
-			if (SecurityContext == null)
+			if (this.SecurityContext == null)
 			{
-				SecurityContext = SecurityContextProvider.DefaultProvider.CreateSecurityContext(this);
+				this.SecurityContext = SecurityContextProvider.DefaultProvider.CreateSecurityContext(this);
 			}
 
-			InitializeDatabaseConnection();
+			this.InitializeDatabaseConnection();
 		}
 
 		#endregion
@@ -435,7 +435,7 @@ namespace log4net.Appender
 		override protected void OnClose()
 		{
 			base.OnClose();
-			DiposeConnection();
+			this.DiposeConnection();
 		}
 
 		#endregion
@@ -454,25 +454,25 @@ namespace log4net.Appender
 		/// </remarks>
 		override protected void SendBuffer(LoggingEvent[] events)
 		{
-			if (ReconnectOnError && (Connection == null || Connection.State != ConnectionState.Open))
+			if (this.ReconnectOnError && (this.Connection == null || this.Connection.State != ConnectionState.Open))
 			{
-				LogLog.Debug(declaringType, "Attempting to reconnect to database. Current Connection State: " + ((Connection == null) ? SystemInfo.NullText : Connection.State.ToString()));
+				LogLog.Debug(declaringType, "Attempting to reconnect to database. Current Connection State: " + ((this.Connection == null) ? SystemInfo.NullText : this.Connection.State.ToString()));
 
-				InitializeDatabaseConnection();
+				this.InitializeDatabaseConnection();
 			}
 
 			// Check that the connection exists and is open
-			if (Connection != null && Connection.State == ConnectionState.Open)
+			if (this.Connection != null && this.Connection.State == ConnectionState.Open)
 			{
-				if (UseTransactions)
+				if (this.UseTransactions)
 				{
 					// Create transaction
 					// NJC - Do this on 2 lines because it can confuse the debugger
-					using (IDbTransaction dbTran = Connection.BeginTransaction())
+					using (IDbTransaction dbTran = this.Connection.BeginTransaction())
 					{
 						try
 						{
-							SendBuffer(dbTran, events);
+							this.SendBuffer(dbTran, events);
 
 							// commit transaction
 							dbTran.Commit();
@@ -490,14 +490,14 @@ namespace log4net.Appender
 							}
 
 							// Can't insert into the database. That's a bad thing
-							ErrorHandler.Error("Exception while writing to database", ex);
+							this.ErrorHandler.Error("Exception while writing to database", ex);
 						}
 					}
 				}
 				else
 				{
 					// Send without transaction
-					SendBuffer(null, events);
+					this.SendBuffer(null, events);
 				}
 			}
 		}
@@ -517,7 +517,7 @@ namespace log4net.Appender
 		/// </remarks>
 		public void AddParameter(AdoNetAppenderParameter parameter)
 		{
-			m_parameters.Add(parameter);
+			this.m_parameters.Add(parameter);
 		}
 
 
@@ -540,15 +540,15 @@ namespace log4net.Appender
 		virtual protected void SendBuffer(IDbTransaction dbTran, LoggingEvent[] events)
 		{
 			// string.IsNotNullOrWhiteSpace() does not exist in ancient .NET frameworks
-			if (CommandText != null && CommandText.Trim() != "")
+			if (this.CommandText != null && this.CommandText.Trim() != "")
 			{
-				using (IDbCommand dbCmd = Connection.CreateCommand())
+				using (IDbCommand dbCmd = this.Connection.CreateCommand())
 				{
 					// Set the command string
-					dbCmd.CommandText = CommandText;
+					dbCmd.CommandText = this.CommandText;
 
 					// Set the command type
-					dbCmd.CommandType = CommandType;
+					dbCmd.CommandType = this.CommandType;
 					// Send buffer using the prepared command object
 					if (dbTran != null)
 					{
@@ -563,7 +563,7 @@ namespace log4net.Appender
 						dbCmd.Parameters.Clear();
 
 						// Set the parameter values
-						foreach (AdoNetAppenderParameter param in m_parameters)
+						foreach (AdoNetAppenderParameter param in this.m_parameters)
 						{
 							param.Prepare(dbCmd);
 							param.FormatValue(dbCmd, e);
@@ -577,7 +577,7 @@ namespace log4net.Appender
 			else
 			{
 				// create a new command
-				using (IDbCommand dbCmd = Connection.CreateCommand())
+				using (IDbCommand dbCmd = this.Connection.CreateCommand())
 				{
 					if (dbTran != null)
 					{
@@ -587,7 +587,7 @@ namespace log4net.Appender
 					foreach (LoggingEvent e in events)
 					{
 						// Get the command text from the Layout
-						string logStatement = GetLogStatement(e);
+						string logStatement = this.GetLogStatement(e);
 
 						LogLog.Debug(declaringType, "LogStatement [" + logStatement + "]");
 
@@ -611,15 +611,15 @@ namespace log4net.Appender
 		/// </returns>
 		virtual protected string GetLogStatement(LoggingEvent logEvent)
 		{
-			if (Layout == null)
+			if (this.Layout == null)
 			{
-				ErrorHandler.Error("AdoNetAppender: No Layout specified.");
+				this.ErrorHandler.Error("AdoNetAppender: No Layout specified.");
 				return "";
 			}
 			else
 			{
 				StringWriter writer = new StringWriter(System.Globalization.CultureInfo.InvariantCulture);
-				Layout.Format(writer, logEvent);
+				this.Layout.Format(writer, logEvent);
 				return writer.ToString();
 			}
 		}
@@ -651,16 +651,16 @@ namespace log4net.Appender
 		/// <returns>A connection string used to connect to the database.</returns>
 		virtual protected string ResolveConnectionString(out string connectionStringContext)
 		{
-			if (ConnectionString != null && ConnectionString.Length > 0)
+			if (this.ConnectionString != null && this.ConnectionString.Length > 0)
 			{
 				connectionStringContext = "ConnectionString";
-				return ConnectionString;
+				return this.ConnectionString;
 			}
 
 #if NET_2_0
-			if (!String.IsNullOrEmpty(ConnectionStringName))
+			if (!String.IsNullOrEmpty(this.ConnectionStringName))
 			{
-				ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings[ConnectionStringName];
+				ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings[this.ConnectionStringName];
 				if (settings != null)
 				{
 					connectionStringContext = "ConnectionStringName";
@@ -668,18 +668,18 @@ namespace log4net.Appender
 				}
 				else
 				{
-					throw new LogException("Unable to find [" + ConnectionStringName + "] ConfigurationManager.ConnectionStrings item");
+					throw new LogException("Unable to find [" + this.ConnectionStringName + "] ConfigurationManager.ConnectionStrings item");
 				}
 			}
 #endif
 
-			if (AppSettingsKey != null && AppSettingsKey.Length > 0)
+			if (this.AppSettingsKey != null && this.AppSettingsKey.Length > 0)
 			{
 				connectionStringContext = "AppSettingsKey";
-				string appSettingsConnectionString = SystemInfo.GetAppSetting(AppSettingsKey);
+				string appSettingsConnectionString = SystemInfo.GetAppSetting(this.AppSettingsKey);
 				if (appSettingsConnectionString == null || appSettingsConnectionString.Length == 0)
 				{
-					throw new LogException("Unable to find [" + AppSettingsKey + "] AppSettings key.");
+					throw new LogException("Unable to find [" + this.AppSettingsKey + "] AppSettings key.");
 				}
 				return appSettingsConnectionString;
 			}
@@ -707,11 +707,11 @@ namespace log4net.Appender
 		{
 			try
 			{
-				return SystemInfo.GetTypeFromString(ConnectionType, true, false);
+				return SystemInfo.GetTypeFromString(this.ConnectionType, true, false);
 			}
 			catch (Exception ex)
 			{
-				ErrorHandler.Error("Failed to load connection type [" + ConnectionType + "]", ex);
+				this.ErrorHandler.Error("Failed to load connection type [" + this.ConnectionType + "]", ex);
 				throw;
 			}
 		}
@@ -730,25 +730,25 @@ namespace log4net.Appender
 
 			try
 			{
-				DiposeConnection();
+				this.DiposeConnection();
 
 				// Set the connection string
-				resolvedConnectionString = ResolveConnectionString(out connectionStringContext);
+				resolvedConnectionString = this.ResolveConnectionString(out connectionStringContext);
 
-				Connection = CreateConnection(ResolveConnectionType(), resolvedConnectionString);
+				this.Connection = this.CreateConnection(this.ResolveConnectionType(), resolvedConnectionString);
 
-				using (SecurityContext.Impersonate(this))
+				using (this.SecurityContext.Impersonate(this))
 				{
 					// Open the database connection
-					Connection.Open();
+					this.Connection.Open();
 				}
 			}
 			catch (Exception e)
 			{
 				// Sadly, your connection string is bad.
-				ErrorHandler.Error("Could not open database connection [" + resolvedConnectionString + "]. Connection string context [" + connectionStringContext + "].", e);
+				this.ErrorHandler.Error("Could not open database connection [" + resolvedConnectionString + "]. Connection string context [" + connectionStringContext + "].", e);
 
-				Connection = null;
+				this.Connection = null;
 			}
 		}
 
@@ -760,17 +760,17 @@ namespace log4net.Appender
 		/// </remarks>
 		private void DiposeConnection()
 		{
-			if (Connection != null)
+			if (this.Connection != null)
 			{
 				try
 				{
-					Connection.Close();
+					this.Connection.Close();
 				}
 				catch (Exception ex)
 				{
 					LogLog.Warn(declaringType, "Exception while disposing cached connection object", ex);
 				}
-				Connection = null;
+				this.Connection = null;
 			}
 		}
 
@@ -886,9 +886,9 @@ namespace log4net.Appender
 		/// </remarks>
 		public AdoNetAppenderParameter()
 		{
-			Precision = 0;
-			Scale = 0;
-			Size = 0;
+			this.Precision = 0;
+			this.Scale = 0;
+			this.Size = 0;
 		}
 
 		#endregion // Public Instance Constructors
@@ -910,8 +910,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string ParameterName
 		{
-			get { return m_parameterName; }
-			set { m_parameterName = value; }
+			get { return this.m_parameterName; }
+			set { this.m_parameterName = value; }
 		}
 
 		/// <summary>
@@ -934,11 +934,11 @@ namespace log4net.Appender
 		/// <seealso cref="IDataParameter.DbType" />
 		public DbType DbType
 		{
-			get { return m_dbType; }
+			get { return this.m_dbType; }
 			set
 			{
-				m_dbType = value;
-				m_inferType = false;
+				this.m_dbType = value;
+				this.m_inferType = false;
 			}
 		}
 
@@ -960,8 +960,8 @@ namespace log4net.Appender
 		/// <seealso cref="IDbDataParameter.Precision" />
 		public byte Precision
 		{
-			get { return m_precision; }
-			set { m_precision = value; }
+			get { return this.m_precision; }
+			set { this.m_precision = value; }
 		}
 
 		/// <summary>
@@ -982,8 +982,8 @@ namespace log4net.Appender
 		/// <seealso cref="IDbDataParameter.Scale" />
 		public byte Scale
 		{
-			get { return m_scale; }
-			set { m_scale = value; }
+			get { return this.m_scale; }
+			set { this.m_scale = value; }
 		}
 
 		/// <summary>
@@ -1007,8 +1007,8 @@ namespace log4net.Appender
 		/// <seealso cref="IDbDataParameter.Size" />
 		public int Size
 		{
-			get { return m_size; }
-			set { m_size = value; }
+			get { return this.m_size; }
+			set { this.m_size = value; }
 		}
 
 		/// <summary>
@@ -1033,8 +1033,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public IRawLayout Layout
 		{
-			get { return m_layout; }
-			set { m_layout = value; }
+			get { return this.m_layout; }
+			set { this.m_layout = value; }
 		}
 
 		#endregion // Public Instance Properties
@@ -1057,23 +1057,23 @@ namespace log4net.Appender
 			IDbDataParameter param = command.CreateParameter();
 
 			// Set the parameter properties
-			param.ParameterName = ParameterName;
+			param.ParameterName = this.ParameterName;
 
-			if (!m_inferType)
+			if (!this.m_inferType)
 			{
-				param.DbType = DbType;
+				param.DbType = this.DbType;
 			}
-			if (Precision != 0)
+			if (this.Precision != 0)
 			{
-				param.Precision = Precision;
+				param.Precision = this.Precision;
 			}
-			if (Scale != 0)
+			if (this.Scale != 0)
 			{
-				param.Scale = Scale;
+				param.Scale = this.Scale;
 			}
-			if (Size != 0)
+			if (this.Size != 0)
 			{
-				param.Size = Size;
+				param.Size = this.Size;
 			}
 
 			// Add the parameter to the collection of params
@@ -1094,10 +1094,10 @@ namespace log4net.Appender
 		virtual public void FormatValue(IDbCommand command, LoggingEvent loggingEvent)
 		{
 			// Lookup the parameter
-			IDbDataParameter param = (IDbDataParameter)command.Parameters[ParameterName];
+			IDbDataParameter param = (IDbDataParameter)command.Parameters[this.ParameterName];
 
 			// Format the value
-			object formattedValue = Layout.Format(loggingEvent);
+			object formattedValue = this.Layout.Format(loggingEvent);
 
 			// If the value is null then convert to a DBNull
 			if (formattedValue == null)

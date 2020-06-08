@@ -19,14 +19,14 @@ namespace Dnn.PersonaBar.Library.Prompt.Common
             // Use IdnMapping class to convert unicode domain names (https://msdn.microsoft.com/en-us/library/system.globalization.idnmapping(v=vs.110).aspx)
             try
             {
-                emailToTest = Regex.Replace(emailToTest, "(@)(.+)$", DomainMapper, RegexOptions.None, TimeSpan.FromMilliseconds(200));
+                emailToTest = Regex.Replace(emailToTest, "(@)(.+)$", this.DomainMapper, RegexOptions.None, TimeSpan.FromMilliseconds(200));
             }
             catch (RegexMatchTimeoutException)
             {
                 return false;
             }
 
-            if (_invalid)
+            if (this._invalid)
                 return false;
 
             // Return True if valid email format
@@ -52,7 +52,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Common
             }
             catch (Exception)
             {
-                _invalid = true;
+                this._invalid = true;
             }
             return match.Groups[1].Value + domainName;
         }

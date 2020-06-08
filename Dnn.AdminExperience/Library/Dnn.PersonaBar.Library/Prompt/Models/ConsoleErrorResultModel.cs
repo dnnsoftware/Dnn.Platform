@@ -13,14 +13,14 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
 
         public ConsoleErrorResultModel()
         {
-            IsError = true;
-            Output = Localization.GetString("Prompt_InvalidSyntax", LocalResourcesFile, true);
+            this.IsError = true;
+            this.Output = Localization.GetString("Prompt_InvalidSyntax", LocalResourcesFile, true);
         }
 
         public ConsoleErrorResultModel(string errMessage)
         {
-            IsError = true;
-            Output = errMessage;
+            this.IsError = true;
+            this.Output = errMessage;
         }
     }
 }

@@ -46,9 +46,9 @@ namespace DotNetNuke.Services.Installer.Writers
         /// -----------------------------------------------------------------------------
         public FileComponentWriter(string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
         {
-            _Files = files;
-            _BasePath = basePath;
-            _Package = package;
+            this._Files = files;
+            this._BasePath = basePath;
+            this._Package = package;
         }
 		
 		#endregion
@@ -107,7 +107,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return _Package.Log;
+                return this._Package.Log;
             }
         }
 
@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return _Package;
+                return this._Package;
             }
         }
 		
@@ -133,11 +133,11 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return _InstallOrder;
+                return this._InstallOrder;
             }
             set
             {
-                _InstallOrder = value;
+                this._InstallOrder = value;
             }
         }
 
@@ -145,11 +145,11 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return _UnInstallOrder;
+                return this._UnInstallOrder;
             }
             set
             {
-                _UnInstallOrder = value;
+                this._UnInstallOrder = value;
             }
         }
 		
@@ -171,20 +171,20 @@ namespace DotNetNuke.Services.Installer.Writers
 
         protected virtual void WriteFileElement(XmlWriter writer, InstallFile file)
         {
-            Log.AddInfo(string.Format(Util.WRITER_AddFileToManifest, file.Name));
+            this.Log.AddInfo(string.Format(Util.WRITER_AddFileToManifest, file.Name));
 
             //Start file Element
-            writer.WriteStartElement(ItemNodeName);
+            writer.WriteStartElement(this.ItemNodeName);
 
             //Write path
             if (!string.IsNullOrEmpty(file.Path))
             {
                 string path = file.Path;
-                if (!string.IsNullOrEmpty(_BasePath))
+                if (!string.IsNullOrEmpty(this._BasePath))
                 {
-                    if (file.Path.ToLowerInvariant().Contains(_BasePath.ToLowerInvariant()))
+                    if (file.Path.ToLowerInvariant().Contains(this._BasePath.ToLowerInvariant()))
                     {
-                        path = file.Path.ToLowerInvariant().Replace(_BasePath.ToLowerInvariant() + "\\", "");
+                        path = file.Path.ToLowerInvariant().Replace(this._BasePath.ToLowerInvariant() + "\\", "");
                     }
                 }
                 writer.WriteElementString("path", path);
@@ -211,30 +211,30 @@ namespace DotNetNuke.Services.Installer.Writers
         {
 			//Start component Element
             writer.WriteStartElement("component");
-            writer.WriteAttributeString("type", ComponentType);
-            if (InstallOrder > Null.NullInteger)
+            writer.WriteAttributeString("type", this.ComponentType);
+            if (this.InstallOrder > Null.NullInteger)
             {
-                writer.WriteAttributeString("installOrder", InstallOrder.ToString());
+                writer.WriteAttributeString("installOrder", this.InstallOrder.ToString());
             }
-            if (UnInstallOrder > Null.NullInteger)
+            if (this.UnInstallOrder > Null.NullInteger)
             {
-                writer.WriteAttributeString("unInstallOrder", UnInstallOrder.ToString());
+                writer.WriteAttributeString("unInstallOrder", this.UnInstallOrder.ToString());
             }
 			
             //Start files element
-            writer.WriteStartElement(CollectionNodeName);
+            writer.WriteStartElement(this.CollectionNodeName);
 
             //Write custom manifest items
-            WriteCustomManifest(writer);
+            this.WriteCustomManifest(writer);
 
             //Write basePath Element
-            if (!string.IsNullOrEmpty(_BasePath))
+            if (!string.IsNullOrEmpty(this._BasePath))
             {
-                writer.WriteElementString("basePath", _BasePath);
+                writer.WriteElementString("basePath", this._BasePath);
             }
-            foreach (InstallFile file in _Files.Values)
+            foreach (InstallFile file in this._Files.Values)
             {
-                WriteFileElement(writer, file);
+                this.WriteFileElement(writer, file);
             }
 			
             //End files Element

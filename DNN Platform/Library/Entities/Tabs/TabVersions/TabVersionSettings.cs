@@ -56,7 +56,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             Requires.NotNegative("portalId", portalId);
             Requires.NotNegative("tabId", tabId);
 
-            if (!IsVersioningEnabled(portalId))
+            if (!this.IsVersioningEnabled(portalId))
             {
                 return false;
             }

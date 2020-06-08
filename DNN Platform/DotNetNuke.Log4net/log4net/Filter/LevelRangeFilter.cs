@@ -93,8 +93,8 @@ namespace log4net.Filter
 		/// </remarks>
 		public bool AcceptOnMatch
 		{
-			get { return m_acceptOnMatch; }
-			set { m_acceptOnMatch = value; }
+			get { return this.m_acceptOnMatch; }
+			set { this.m_acceptOnMatch = value; }
 		}
 
 		/// <summary>
@@ -109,8 +109,8 @@ namespace log4net.Filter
 		/// </remarks>
 		public Level LevelMin
 		{
-			get { return m_levelMin; }
-			set { m_levelMin = value; }
+			get { return this.m_levelMin; }
+			set { this.m_levelMin = value; }
 		}
 
 		/// <summary>
@@ -125,8 +125,8 @@ namespace log4net.Filter
 		/// </remarks>
 		public Level LevelMax
 		{
-			get { return m_levelMax; }
-			set { m_levelMax = value; }
+			get { return this.m_levelMax; }
+			set { this.m_levelMax = value; }
 		}
 
 		#region Override implementation of FilterSkeleton
@@ -153,25 +153,25 @@ namespace log4net.Filter
 				throw new ArgumentNullException("loggingEvent");
 			}
 
-			if (m_levelMin != null) 
+			if (this.m_levelMin != null) 
 			{
-				if (loggingEvent.Level < m_levelMin) 
+				if (loggingEvent.Level < this.m_levelMin) 
 				{
 					// level of event is less than minimum
 					return FilterDecision.Deny;
 				}
 			}
 
-			if (m_levelMax != null) 
+			if (this.m_levelMax != null) 
 			{
-				if (loggingEvent.Level > m_levelMax) 
+				if (loggingEvent.Level > this.m_levelMax) 
 				{
 					// level of event is greater than maximum
 					return FilterDecision.Deny;
 				}
 			}
 
-			if (m_acceptOnMatch) 
+			if (this.m_acceptOnMatch) 
 			{
 				// this filter set up to bypass later filters and always return
 				// accept if level in range

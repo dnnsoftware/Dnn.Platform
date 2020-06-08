@@ -13,7 +13,7 @@ namespace DotNetNuke.Tests.Core.ComponentModel.Helpers
 
         public int Id
         {
-            get { return id; }
+            get { return this.id; }
         }
     }
 }

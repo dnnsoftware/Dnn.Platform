@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             get
             {
-                string summary = HtmlUtils.Clean(ToString(), true);
+                string summary = HtmlUtils.Clean(this.ToString(), true);
                 if (summary.Length > 75)
                 {
                     summary = summary.Substring(0, 75);
@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 reader.ReadStartElement("LogProperties");
                 if (reader.ReadState != ReadState.EndOfFile && reader.NodeType != XmlNodeType.None && !String.IsNullOrEmpty(reader.LocalName))
                 {
-                    ReadXml(reader);
+                    this.ReadXml(reader);
                 }
                 reader.Close();
             }
@@ -63,7 +63,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 logDetail.ReadXml(reader);
 
                 //Add to the collection
-                Add(logDetail);
+                this.Add(logDetail);
 
             } while (reader.ReadToNextSibling("LogProperty"));
         }
@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.Log.EventLog
             var sb = new StringBuilder();
             using (XmlWriter writer = XmlWriter.Create(sb, settings))
             {
-                WriteXml(writer);
+                this.WriteXml(writer);
                 writer.Close();
                 return sb.ToString();
             }

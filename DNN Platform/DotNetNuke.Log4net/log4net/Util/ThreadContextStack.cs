@@ -84,7 +84,7 @@ namespace log4net.Util
 		/// </remarks>
 		public int Count
 		{
-			get { return m_stack.Count; }
+			get { return this.m_stack.Count; }
 		}
 
 		#endregion // Public Properties
@@ -108,7 +108,7 @@ namespace log4net.Util
 		/// </remarks>
 		public void Clear() 
 		{
-			m_stack.Clear();
+			this.m_stack.Clear();
 		}
 
 		/// <summary>
@@ -124,7 +124,7 @@ namespace log4net.Util
 		/// </remarks>
 		public string Pop() 
 		{
-			Stack stack = m_stack;
+			Stack stack = this.m_stack;
 			if (stack.Count > 0)
 			{
 				return ((StackFrame)(stack.Pop())).Message;
@@ -157,7 +157,7 @@ namespace log4net.Util
 		/// </example>
 		public IDisposable Push(string message) 
 		{
-			Stack stack = m_stack;
+			Stack stack = this.m_stack;
 			stack.Push(new StackFrame(message, (stack.Count>0) ? (StackFrame)stack.Peek() : null));
 
 			return new AutoPopStackFrame(stack, stack.Count - 1);
@@ -173,7 +173,7 @@ namespace log4net.Util
 		/// <returns>The current context information.</returns>
 		internal string GetFullMessage() 
 		{
-			Stack stack = m_stack;
+			Stack stack = this.m_stack;
 			if (stack.Count > 0)
 			{
 				return ((StackFrame)(stack.Peek())).FullMessage;
@@ -194,8 +194,8 @@ namespace log4net.Util
 		/// </remarks>
 		internal Stack InternalStack
 		{
-			get { return m_stack; }
-			set { m_stack = value; }
+			get { return this.m_stack; }
+			set { this.m_stack = value; }
 		}
   
 		#endregion Internal Methods
@@ -211,7 +211,7 @@ namespace log4net.Util
 		/// </remarks>
 		public override string ToString()
 		{
-			return GetFullMessage();
+			return this.GetFullMessage();
 		}
 
 		/// <summary>
@@ -225,7 +225,7 @@ namespace log4net.Util
 		/// </remarks>
 		object IFixingRequired.GetFixedObject()
 		{
-			return GetFullMessage();
+			return this.GetFullMessage();
 		}
 
 		/// <summary>
@@ -261,12 +261,12 @@ namespace log4net.Util
 			/// </remarks>
 			internal StackFrame(string message, StackFrame parent) 
 			{
-				m_message = message;
-				m_parent = parent;
+				this.m_message = message;
+				this.m_parent = parent;
 
 				if (parent == null) 
 				{
-					m_fullMessage = message;
+					this.m_fullMessage = message;
 				} 
 			}
 
@@ -285,7 +285,7 @@ namespace log4net.Util
 			/// </remarks>
 			internal string Message
 			{
-				get { return m_message; }
+				get { return this.m_message; }
 			}
 
 			/// <summary>
@@ -303,11 +303,11 @@ namespace log4net.Util
 			{
 				get 
 				{
-					if (m_fullMessage == null && m_parent != null)
+					if (this.m_fullMessage == null && this.m_parent != null)
 					{
-						m_fullMessage = string.Concat(m_parent.FullMessage, " ", m_message);
+						this.m_fullMessage = string.Concat(this.m_parent.FullMessage, " ", this.m_message);
 					}
-					return m_fullMessage; 
+					return this.m_fullMessage; 
 				}
 			}
 
@@ -354,8 +354,8 @@ namespace log4net.Util
 			/// </remarks>
 			internal AutoPopStackFrame(Stack frameStack, int frameDepth)
 			{
-				m_frameStack = frameStack;
-				m_frameDepth = frameDepth;
+				this.m_frameStack = frameStack;
+				this.m_frameDepth = frameDepth;
 			}
 
 			#endregion Internal Instance Constructors
@@ -372,11 +372,11 @@ namespace log4net.Util
 			/// </remarks>
 			public void Dispose()
 			{
-				if (m_frameDepth >= 0 && m_frameStack != null)
+				if (this.m_frameDepth >= 0 && this.m_frameStack != null)
 				{
-					while(m_frameStack.Count > m_frameDepth)
+					while(this.m_frameStack.Count > this.m_frameDepth)
 					{
-						m_frameStack.Pop();
+						this.m_frameStack.Pop();
 					}
 				}
 			}

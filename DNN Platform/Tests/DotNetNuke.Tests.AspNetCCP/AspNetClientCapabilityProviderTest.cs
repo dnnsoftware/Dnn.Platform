@@ -34,7 +34,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProvider
         [SetUp]
         public void Setup()
         {
-            _clientCapabilityProvider = new Providers.AspNetClientCapabilityProvider.AspNetClientCapabilityProvider();
+            this._clientCapabilityProvider = new Providers.AspNetClientCapabilityProvider.AspNetClientCapabilityProvider();
 
 			ComponentFactory.Container = new SimpleContainer();
 			var dataProvider = MockComponentProvider.CreateDataProvider();
@@ -66,7 +66,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProvider
         {
             //Act
             string nullClientCapabilityId = String.Empty;         
-            var clientCapabilitiesByNullId = _clientCapabilityProvider.GetClientCapabilityById(nullClientCapabilityId);
+            var clientCapabilitiesByNullId = this._clientCapabilityProvider.GetClientCapabilityById(nullClientCapabilityId);
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProvider
         {
             //Act
             string nullClientCapabilityId = null;
-            var clientCapabilitiesByEmptyId = _clientCapabilityProvider.GetClientCapabilityById(nullClientCapabilityId);
+            var clientCapabilitiesByEmptyId = this._clientCapabilityProvider.GetClientCapabilityById(nullClientCapabilityId);
         }
 
         #endregion

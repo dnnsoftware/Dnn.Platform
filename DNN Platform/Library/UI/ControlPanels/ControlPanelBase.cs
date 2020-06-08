@@ -55,7 +55,7 @@ namespace DotNetNuke.UI.ControlPanels
         {
             get
             {
-                return PortalSettings.ControlPanelVisible;
+                return this.PortalSettings.ControlPanelVisible;
             }
         }
 
@@ -82,7 +82,7 @@ namespace DotNetNuke.UI.ControlPanels
         {
             get
             {
-                return PortalSettings.UserMode;
+                return this.PortalSettings.UserMode;
             }
         }
 
@@ -97,19 +97,19 @@ namespace DotNetNuke.UI.ControlPanels
             get
             {
                 string fileRoot;
-                if (String.IsNullOrEmpty(_localResourceFile))
+                if (String.IsNullOrEmpty(this._localResourceFile))
                 {
-                    fileRoot = TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" + ID;
+                    fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" + this.ID;
                 }
                 else
                 {
-                    fileRoot = _localResourceFile;
+                    fileRoot = this._localResourceFile;
                 }
                 return fileRoot;
             }
             set
             {
-                _localResourceFile = value;
+                this._localResourceFile = value;
             }
         }
 
@@ -215,7 +215,7 @@ namespace DotNetNuke.UI.ControlPanels
             ModuleInfo objModule;
 
             int UserId = -1;
-            if (Request.IsAuthenticated)
+            if (this.Request.IsAuthenticated)
             {
                 UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
                 UserId = objUserInfo.UserID;
@@ -225,12 +225,12 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 //clone the module object ( to avoid creating an object reference to the data cache )
                 ModuleInfo objClone = objModule.Clone();
-                objClone.TabID = PortalSettings.ActiveTab.TabID;
+                objClone.TabID = this.PortalSettings.ActiveTab.TabID;
                 objClone.ModuleOrder = position;
                 objClone.PaneName = paneName;
                 objClone.Alignment = align;
                 ModuleController.Instance.AddModule(objClone);
-                EventLogController.Instance.AddLog(objClone, PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_CREATED);
+                EventLogController.Instance.AddLog(objClone, this.PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_CREATED);
             }
         }
 
@@ -247,12 +247,12 @@ namespace DotNetNuke.UI.ControlPanels
         /// -----------------------------------------------------------------------------
         protected void AddNewModule(string title, int desktopModuleId, string paneName, int position, ViewPermissionType permissionType, string align)
         {
-            TabPermissionCollection objTabPermissions = PortalSettings.ActiveTab.TabPermissions;
+            TabPermissionCollection objTabPermissions = this.PortalSettings.ActiveTab.TabPermissions;
             var objPermissionController = new PermissionController();
             try
             {
                 DesktopModuleInfo desktopModule;
-                if (!DesktopModuleController.GetDesktopModules(PortalSettings.PortalId).TryGetValue(desktopModuleId, out desktopModule))
+                if (!DesktopModuleController.GetDesktopModules(this.PortalSettings.PortalId).TryGetValue(desktopModuleId, out desktopModule))
                 {
                     throw new ArgumentException("desktopModuleId");
                 }
@@ -262,7 +262,7 @@ namespace DotNetNuke.UI.ControlPanels
                 Exceptions.LogException(ex);
             }
             int UserId = -1;
-            if (Request.IsAuthenticated)
+            if (this.Request.IsAuthenticated)
             {
                 UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
                 UserId = objUserInfo.UserID;
@@ -271,9 +271,9 @@ namespace DotNetNuke.UI.ControlPanels
                 ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModuleId).Values)
             {
                 var objModule = new ModuleInfo();
-                objModule.Initialize(PortalSettings.PortalId);
-                objModule.PortalID = PortalSettings.PortalId;
-                objModule.TabID = PortalSettings.ActiveTab.TabID;
+                objModule.Initialize(this.PortalSettings.PortalId);
+                objModule.PortalID = this.PortalSettings.PortalId;
+                objModule.TabID = this.PortalSettings.ActiveTab.TabID;
                 objModule.ModuleOrder = position;
                 if (String.IsNullOrEmpty(title))
                 {
@@ -332,7 +332,7 @@ namespace DotNetNuke.UI.ControlPanels
 							//Only Page Editors get View permissions if "Page Editors Only"
                             continue;
                         }
-                        ModulePermissionInfo objModulePermission = AddModulePermission(objModule,
+                        ModulePermissionInfo objModulePermission = this.AddModulePermission(objModule,
                                                                                        objSystemModulePermission,
                                                                                        objTabPermission.RoleID,
                                                                                        objTabPermission.UserID,
@@ -341,7 +341,7 @@ namespace DotNetNuke.UI.ControlPanels
                         //ensure that every EDIT permission which allows access also provides VIEW permission
                         if (objModulePermission.PermissionKey == "EDIT" && objModulePermission.AllowAccess)
                         {
-                            ModulePermissionInfo objModuleViewperm = AddModulePermission(objModule,
+                            ModulePermissionInfo objModuleViewperm = this.AddModulePermission(objModule,
                                                                                          (PermissionInfo) arrSystemModuleViewPermissions[0],
                                                                                          objModulePermission.RoleID,
                                                                                          objModulePermission.UserID,
@@ -361,7 +361,7 @@ namespace DotNetNuke.UI.ControlPanels
 							//create the module permission
                             PermissionInfo objCustomModulePermission;
                             objCustomModulePermission = (PermissionInfo) arrCustomModulePermissions[j];
-                            AddModulePermission(objModule, objCustomModulePermission, objTabPermission.RoleID, objTabPermission.UserID, objTabPermission.AllowAccess);
+                            this.AddModulePermission(objModule, objCustomModulePermission, objTabPermission.RoleID, objTabPermission.UserID, objTabPermission.AllowAccess);
                         }
                     }
                 }
@@ -428,7 +428,7 @@ namespace DotNetNuke.UI.ControlPanels
         /// -----------------------------------------------------------------------------
         protected void SetUserMode(string userMode)
         {
-            Personalization.SetProfile("Usability", "UserMode" + PortalSettings.PortalId, userMode.ToUpper());
+            Personalization.SetProfile("Usability", "UserMode" + this.PortalSettings.PortalId, userMode.ToUpper());
         }
 
         /// -----------------------------------------------------------------------------
@@ -439,7 +439,7 @@ namespace DotNetNuke.UI.ControlPanels
         /// -----------------------------------------------------------------------------
         protected void SetVisibleMode(bool isVisible)
         {
-            Personalization.SetProfile("Usability", "ControlPanelVisible" + PortalSettings.PortalId, isVisible.ToString());
+            Personalization.SetProfile("Usability", "ControlPanelVisible" + this.PortalSettings.PortalId, isVisible.ToString());
         }
 
 		protected override void OnInit(EventArgs e)

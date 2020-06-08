@@ -69,13 +69,13 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         {
             return new UserRoleInfo()
             {
-                UserRoleID = Id,
-                UserID = UserId,
-                FullName = DisplayName,
-                RoleID = RoleId,
-                RoleName = RoleName,
-                EffectiveDate = StartTime,
-                ExpiryDate = ExpiresTime,
+                UserRoleID = this.Id,
+                UserID = this.UserId,
+                FullName = this.DisplayName,
+                RoleID = this.RoleId,
+                RoleName = this.RoleName,
+                EffectiveDate = this.StartTime,
+                ExpiryDate = this.ExpiresTime,
             };
         }
 

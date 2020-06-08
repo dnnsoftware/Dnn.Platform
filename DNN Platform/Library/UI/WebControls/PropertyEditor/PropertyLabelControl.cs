@@ -73,13 +73,13 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				EnsureChildControls();
-				return lblLabel.Text;
+				this.EnsureChildControls();
+				return this.lblLabel.Text;
 			}
 			set
 			{
-				EnsureChildControls();
-				lblLabel.Text = value;
+				this.EnsureChildControls();
+				this.lblLabel.Text = value;
 			}
 		}
 
@@ -87,13 +87,13 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				EnsureChildControls();
-				return lblLabel.AssociatedControlID;
+				this.EnsureChildControls();
+				return this.lblLabel.AssociatedControlID;
 			}
 			set
 			{
-				EnsureChildControls();
-				lblLabel.AssociatedControlID = value;
+				this.EnsureChildControls();
+				this.lblLabel.AssociatedControlID = value;
 			}
 		}
 
@@ -113,13 +113,13 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				EnsureChildControls();
-				return lblHelp.Text;
+				this.EnsureChildControls();
+				return this.lblHelp.Text;
 			}
 			set
 			{
-				EnsureChildControls();
-				lblHelp.Text = value;
+				this.EnsureChildControls();
+				this.lblHelp.Text = value;
 			}
 		}
 
@@ -137,17 +137,17 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				return _ResourceKey;
+				return this._ResourceKey;
 			}
 			set
 			{
-				_ResourceKey = value;
+				this._ResourceKey = value;
 
-				EnsureChildControls();
+				this.EnsureChildControls();
 
 				//Localize the Label and the Help text
-				lblHelp.Attributes["resourcekey"] = _ResourceKey + ".Help";
-				lblLabel.Attributes["resourcekey"] = _ResourceKey + ".Text";
+				this.lblHelp.Attributes["resourcekey"] = this._ResourceKey + ".Help";
+				this.lblLabel.Attributes["resourcekey"] = this._ResourceKey + ".Text";
 			}
 		}
 
@@ -156,13 +156,13 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				EnsureChildControls();
-				return cmdHelp.Visible;
+				this.EnsureChildControls();
+				return this.cmdHelp.Visible;
 			}
 			set
 			{
-				EnsureChildControls();
-				cmdHelp.Visible = value;
+				this.EnsureChildControls();
+				this.cmdHelp.Visible = value;
 			}
 		}
 		
@@ -198,8 +198,8 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				EnsureChildControls();
-				return pnlHelp.ControlStyle;
+				this.EnsureChildControls();
+				return this.pnlHelp.ControlStyle;
 			}
 		}
 
@@ -215,8 +215,8 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				EnsureChildControls();
-				return lblLabel.ControlStyle;
+				this.EnsureChildControls();
+				return this.lblLabel.ControlStyle;
 			}
 		}
 
@@ -233,39 +233,39 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		protected override void CreateChildControls()
 		{
-            CssClass += "dnnLabel";
+            this.CssClass += "dnnLabel";
 
-            label = new HtmlGenericControl { TagName = "label" };
+            this.label = new HtmlGenericControl { TagName = "label" };
 
-            if (!DesignMode)
+            if (!this.DesignMode)
             {
-                cmdHelp = new LinkButton { ID = ID + "_cmdHelp", CssClass = "dnnFormHelp", CausesValidation = false, EnableViewState = false, TabIndex = -1 };
-                cmdHelp.Attributes.Add("aria-label", "Help");
-                lblLabel = new Label { ID = ID + "_label", EnableViewState = false };
+                this.cmdHelp = new LinkButton { ID = this.ID + "_cmdHelp", CssClass = "dnnFormHelp", CausesValidation = false, EnableViewState = false, TabIndex = -1 };
+                this.cmdHelp.Attributes.Add("aria-label", "Help");
+                this.lblLabel = new Label { ID = this.ID + "_label", EnableViewState = false };
 
-                label.Controls.Add(lblLabel);
+                this.label.Controls.Add(this.lblLabel);
 
-                Controls.Add(label);
-                Controls.Add(cmdHelp);
+                this.Controls.Add(this.label);
+                this.Controls.Add(this.cmdHelp);
             }
 
-            pnlTooltip = new Panel { CssClass = "dnnTooltip" };
+            this.pnlTooltip = new Panel { CssClass = "dnnTooltip" };
 
-            pnlHelp = new Panel { ID = ID + "_pnlHelp", EnableViewState = false, CssClass = "dnnFormHelpContent dnnClear" };
+            this.pnlHelp = new Panel { ID = this.ID + "_pnlHelp", EnableViewState = false, CssClass = "dnnFormHelpContent dnnClear" };
 
-            pnlTooltip.Controls.Add(pnlHelp);
+            this.pnlTooltip.Controls.Add(this.pnlHelp);
           
-            lblHelp = new Label { ID = ID + "_lblHelp", EnableViewState = false };
-            pnlHelp.Controls.Add(lblHelp);
+            this.lblHelp = new Label { ID = this.ID + "_lblHelp", EnableViewState = false };
+            this.pnlHelp.Controls.Add(this.lblHelp);
 
             var aHelpPin = new HyperLink();
             aHelpPin.CssClass = "pinHelp";
             aHelpPin.Attributes.Add("href", "#");
             aHelpPin.Attributes.Add("aria-label", "Pin");
-            pnlHelp.Controls.Add(aHelpPin);
+            this.pnlHelp.Controls.Add(aHelpPin);
 
             //Controls.Add(label);
-            Controls.Add(pnlTooltip);
+            this.Controls.Add(this.pnlTooltip);
 		}
 
 		/// <summary>
@@ -275,20 +275,20 @@ namespace DotNetNuke.UI.WebControls
 		protected override void OnDataBinding(EventArgs e)
 		{
 			//If there is a DataSource bind the relevent Properties
-			if (DataSource != null)
+			if (this.DataSource != null)
 			{
-				EnsureChildControls();
-				if (!String.IsNullOrEmpty(DataField))
+				this.EnsureChildControls();
+				if (!String.IsNullOrEmpty(this.DataField))
 				{
 					//DataBind the Label (via the Resource Key)
-					var dataRow = (DataRowView) DataSource;
-					if (ResourceKey == string.Empty)
+					var dataRow = (DataRowView) this.DataSource;
+					if (this.ResourceKey == string.Empty)
 					{
-						ResourceKey = Convert.ToString(dataRow[DataField]);
+						this.ResourceKey = Convert.ToString(dataRow[this.DataField]);
 					}
-					if (DesignMode)
+					if (this.DesignMode)
 					{
-						label.InnerText = Convert.ToString(dataRow[DataField]);
+						this.label.InnerText = Convert.ToString(dataRow[this.DataField]);
 					}
 				}
 			}
@@ -298,7 +298,7 @@ namespace DotNetNuke.UI.WebControls
 		{
 			base.OnLoad(e);
 
-            JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
+            JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 		    ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
 		}
@@ -310,27 +310,27 @@ namespace DotNetNuke.UI.WebControls
 		protected override void OnPreRender(EventArgs e)
 		{
 			//Make sure the Child Controls are created before assigning any properties
-			EnsureChildControls();
+			this.EnsureChildControls();
 
-            if (Required)
+            if (this.Required)
             {
-                lblLabel.CssClass += " dnnFormRequired";
+                this.lblLabel.CssClass += " dnnFormRequired";
             }
 
 			//DNNClientAPI.EnableMinMax(cmdHelp, pnlHelp, true, DNNClientAPI.MinMaxPersistanceType.None);
-			if (EditControl != null)
+			if (this.EditControl != null)
 			{
-				label.Attributes.Add("for", EditControl is EditControl ? ((EditControl)EditControl).EditControlClientId : EditControl.ClientID);
+				this.label.Attributes.Add("for", this.EditControl is EditControl ? ((EditControl)this.EditControl).EditControlClientId : this.EditControl.ClientID);
 			}
 
             //make sure the help container have the default css class to active js handler.
-            if (!pnlHelp.ControlStyle.CssClass.Contains("dnnClear"))
+            if (!this.pnlHelp.ControlStyle.CssClass.Contains("dnnClear"))
             {
-                pnlHelp.ControlStyle.CssClass = string.Format("dnnClear {0}", pnlHelp.ControlStyle.CssClass);
+                this.pnlHelp.ControlStyle.CssClass = string.Format("dnnClear {0}", this.pnlHelp.ControlStyle.CssClass);
             }
-            if(!pnlHelp.ControlStyle.CssClass.Contains("dnnFormHelpContent"))
+            if(!this.pnlHelp.ControlStyle.CssClass.Contains("dnnFormHelpContent"))
             {
-                pnlHelp.ControlStyle.CssClass = string.Format("dnnFormHelpContent {0}", pnlHelp.ControlStyle.CssClass);
+                this.pnlHelp.ControlStyle.CssClass = string.Format("dnnFormHelpContent {0}", this.pnlHelp.ControlStyle.CssClass);
             }
 		}
 

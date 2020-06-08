@@ -21,13 +21,13 @@ namespace DotNetNuke.Authentication.LiveConnect.Components
 
         public override string FirstName
         {
-            get { return LiveFirstName; }
+            get { return this.LiveFirstName; }
             set { }
         }
 
         public override string LastName
         {
-            get { return LiveLastName; }
+            get { return this.LiveLastName; }
             set { }
         }
 

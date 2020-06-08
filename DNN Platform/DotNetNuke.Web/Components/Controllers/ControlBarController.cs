@@ -25,7 +25,7 @@ namespace DotNetNuke.Web.Components.Controllers
 
         public ControlBarController()
         {
-            _mef = new ExtensionPointManager();
+            this._mef = new ExtensionPointManager();
         }
         public IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetCategoryDesktopModules(int portalId, string category, string searchTerm = "")
         {
@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.Components.Controllers
         {
             var formattedSearchTerm = String.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.ToLower(CultureInfo.InvariantCulture);
             
-            IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> bookmarkedModules = GetBookmarkedModules(PortalSettings.Current.PortalId, userId)
+            IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> bookmarkedModules = this.GetBookmarkedModules(PortalSettings.Current.PortalId, userId)
                 .Where(kvp => kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm));
 
             return bookmarkedModules;
@@ -54,7 +54,7 @@ namespace DotNetNuke.Web.Components.Controllers
             var ensuredBookmarkValue = bookmarkValue;
             if (bookmarkTitle == BookmarkModulesTitle)
             {
-                ensuredBookmarkValue = EnsureBookmarkValue(portalId, ensuredBookmarkValue);
+                ensuredBookmarkValue = this.EnsureBookmarkValue(portalId, ensuredBookmarkValue);
             }
             
             var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
@@ -78,7 +78,7 @@ namespace DotNetNuke.Web.Components.Controllers
         public UpgradeIndicatorViewModel GetUpgradeIndicator(Version version, bool isLocal, bool isSecureConnection)
         {
             var imageUrl = Upgrade.UpgradeIndicator(version, isLocal, isSecureConnection);
-            return !String.IsNullOrEmpty(imageUrl) ? GetDefaultUpgradeIndicator(imageUrl) : null;            
+            return !String.IsNullOrEmpty(imageUrl) ? this.GetDefaultUpgradeIndicator(imageUrl) : null;            
         }
 
         public string GetControlBarLogoURL()
@@ -88,8 +88,8 @@ namespace DotNetNuke.Web.Components.Controllers
 
         public IEnumerable<MenuItemViewModel> GetCustomMenuItems()
         {
-            var menuItemsExtensionPoints = _mef.GetUserControlExtensionPoints("ControlBar", "CustomMenuItems");
-            return menuItemsExtensionPoints.Select(GetMenuItemFromExtensionPoint);
+            var menuItemsExtensionPoints = this._mef.GetUserControlExtensionPoints("ControlBar", "CustomMenuItems");
+            return menuItemsExtensionPoints.Select(this.GetMenuItemFromExtensionPoint);
         }
 
         private UpgradeIndicatorViewModel GetDefaultUpgradeIndicator(string imageUrl)
@@ -122,7 +122,7 @@ namespace DotNetNuke.Web.Components.Controllers
 
         private string EnsureBookmarkValue(int portalId, string bookmarkValue)
         {
-            var bookmarkCategoryModules = GetCategoryDesktopModules(portalId, GetBookmarkCategory(portalId));            
+            var bookmarkCategoryModules = this.GetCategoryDesktopModules(portalId, this.GetBookmarkCategory(portalId));            
             var ensuredModules = bookmarkValue.Split(',').Where(desktopModuleId => bookmarkCategoryModules.All(m => m.Value.DesktopModuleID.ToString(CultureInfo.InvariantCulture) != desktopModuleId)).ToList();
             return String.Join(",", ensuredModules.Distinct());
         }

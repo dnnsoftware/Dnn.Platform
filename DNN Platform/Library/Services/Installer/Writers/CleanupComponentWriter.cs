@@ -40,8 +40,8 @@ namespace DotNetNuke.Services.Installer.Writers
         /// -----------------------------------------------------------------------------
         public CleanupComponentWriter(string basePath, SortedList<string, InstallFile> files)
         {
-            _Files = files;
-            _BasePath = basePath;
+            this._Files = files;
+            this._BasePath = basePath;
         }
 		
 		#endregion
@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.Installer.Writers
 		
         public virtual void WriteManifest(XmlWriter writer)
         {
-            foreach (KeyValuePair<string, InstallFile> kvp in _Files)
+            foreach (KeyValuePair<string, InstallFile> kvp in this._Files)
             {
 				//Start component Element
                 writer.WriteStartElement("component");

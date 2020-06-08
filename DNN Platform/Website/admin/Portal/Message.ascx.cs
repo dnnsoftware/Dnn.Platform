@@ -16,13 +16,13 @@ namespace DotNetNuke.Common.Controls
     {
         private void InitializeComponent()
         {
-            ID = "Message";
+            this.ID = "Message";
         }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

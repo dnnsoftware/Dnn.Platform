@@ -33,9 +33,9 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public void OnProfileUpdateCompleted(EventArgs e)
         {
-            if (ProfileUpdateCompleted != null)
+            if (this.ProfileUpdateCompleted != null)
             {
-                ProfileUpdateCompleted(this, e);
+                this.ProfileUpdateCompleted(this, e);
             }
         }
 
@@ -46,9 +46,9 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public void OnProfileUpdated(EventArgs e)
         {
-            if (ProfileUpdated != null)
+            if (this.ProfileUpdated != null)
             {
-                ProfileUpdated(this, e);
+                this.ProfileUpdated(this, e);
             }
         }
     }

@@ -70,7 +70,7 @@ namespace log4net.Core
 		/// </remarks>
 		public LoggerRepositoryCreationEventArgs(ILoggerRepository repository)
 		{
-			m_repository = repository;
+			this.m_repository = repository;
 		}
 
 		/// <summary>
@@ -86,7 +86,7 @@ namespace log4net.Core
 		/// </remarks>
 		public ILoggerRepository LoggerRepository
 		{
-			get { return m_repository; }
+			get { return this.m_repository; }
 		}
 	}
 

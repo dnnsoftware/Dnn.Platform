@@ -20,8 +20,8 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
         public ClientOption(string name, string value)
         {
-            Name = name;
-            Value = value;
+            this.Name = name;
+            this.Value = value;
         }
     }
 
@@ -33,8 +33,8 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
         public ClientString(string name, string value)
         {
-            Name = name;
-            Value = value;
+            this.Name = name;
+            this.Value = value;
         }
     }
 
@@ -46,8 +46,8 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
         public ClientNumber(string name, string value)
         {
-            Name = name;
-            Value = value;
+            this.Name = name;
+            this.Value = value;
         }
     }
 
@@ -59,8 +59,8 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
         public ClientBoolean(string name, string value)
         {
-            Name = name;
-            Value = value;
+            this.Name = name;
+            this.Value = value;
         }
     }
 }

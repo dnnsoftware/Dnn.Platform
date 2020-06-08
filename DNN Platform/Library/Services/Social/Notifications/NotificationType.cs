@@ -36,11 +36,11 @@ namespace DotNetNuke.Services.Social.Notifications
         {
             get
             {
-                return _notificationTypeId;
+                return this._notificationTypeId;
             }
             set
             {
-                _notificationTypeId = value;
+                this._notificationTypeId = value;
             }
         }
 
@@ -76,11 +76,11 @@ namespace DotNetNuke.Services.Social.Notifications
         {
             get
             {
-                return _desktopModuleId;
+                return this._desktopModuleId;
             }
             set
             {
-                _desktopModuleId = value;
+                this._desktopModuleId = value;
             }
         }
 
@@ -101,8 +101,8 @@ namespace DotNetNuke.Services.Social.Notifications
         [XmlIgnore]
         public int KeyID
         {
-            get { return NotificationTypeId; }
-            set { NotificationTypeId = value; }
+            get { return this.NotificationTypeId; }
+            set { this.NotificationTypeId = value; }
         }
 
         /// <summary>
@@ -111,19 +111,19 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {
-            NotificationTypeId = Convert.ToInt32(dr["NotificationTypeID"]);
-            Name = dr["Name"].ToString();
-            Description = Null.SetNullString(dr["Description"]);
+            this.NotificationTypeId = Convert.ToInt32(dr["NotificationTypeID"]);
+            this.Name = dr["Name"].ToString();
+            this.Description = Null.SetNullString(dr["Description"]);
             var timeToLive = Null.SetNullInteger(dr["TTL"]);
             if (timeToLive != Null.NullInteger)
             {
-                TimeToLive = new TimeSpan(0, timeToLive, 0);
+                this.TimeToLive = new TimeSpan(0, timeToLive, 0);
             }
-            DesktopModuleId = Null.SetNullInteger(dr["DesktopModuleID"]);
-            IsTask = Null.SetNullBoolean(dr["IsTask"]);
+            this.DesktopModuleId = Null.SetNullInteger(dr["DesktopModuleID"]);
+            this.IsTask = Null.SetNullBoolean(dr["IsTask"]);
 
             //add audit column data
-            FillInternal(dr);
+            this.FillInternal(dr);
         }
 
         #endregion

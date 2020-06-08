@@ -46,8 +46,8 @@ namespace DotNetNuke.Entities.Content
 
         public ContentType(string contentType)
         {
-            ContentTypeId = Null.NullInteger;
-            ContentType = contentType;
+            this.ContentTypeId = Null.NullInteger;
+            this.ContentType = contentType;
         }
 
         #endregion
@@ -97,8 +97,8 @@ namespace DotNetNuke.Entities.Content
         /// <seealso cref="IHydratable.Fill"/>
         public void Fill(IDataReader dr)
         {
-            ContentTypeId = Null.SetNullInteger(dr["ContentTypeID"]);
-            ContentType = Null.SetNullString(dr["ContentType"]);
+            this.ContentTypeId = Null.SetNullInteger(dr["ContentTypeID"]);
+            this.ContentType = Null.SetNullString(dr["ContentType"]);
         }
 
         /// <summary>
@@ -111,11 +111,11 @@ namespace DotNetNuke.Entities.Content
         {
             get
             {
-                return ContentTypeId;
+                return this.ContentTypeId;
             }
             set
             {
-                ContentTypeId = value;
+                this.ContentTypeId = value;
             }
         }
 
@@ -129,7 +129,7 @@ namespace DotNetNuke.Entities.Content
         /// </returns>
         public override string ToString()
         {
-            return ContentType;
+            return this.ContentType;
         }
     }
 }

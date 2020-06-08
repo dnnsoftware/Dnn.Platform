@@ -52,7 +52,7 @@ namespace DotNetNuke.Security.Permissions
                                                        permission.PermissionName,
                                                        UserController.Instance.GetCurrentUserInfo().UserID));
 
-            ClearCache();
+            this.ClearCache();
             return permissionId;
         }
 
@@ -64,7 +64,7 @@ namespace DotNetNuke.Security.Permissions
                                UserController.Instance.GetCurrentUserInfo().UserID,
                                EventLogController.EventLogType.PERMISSION_DELETED);
             provider.DeletePermission(permissionID);
-            ClearCache();
+            this.ClearCache();
         }
 
         public PermissionInfo GetPermission(int permissionID)
@@ -99,7 +99,7 @@ namespace DotNetNuke.Security.Permissions
                                       permission.PermissionKey,
                                       permission.PermissionName,
                                       UserController.Instance.GetCurrentUserInfo().UserID);
-            ClearCache();
+            this.ClearCache();
         }
 		
 		#endregion
@@ -167,7 +167,7 @@ namespace DotNetNuke.Security.Permissions
 
         public T RemapPermission<T>(T permission, int portalId) where T : PermissionInfoBase
         {
-            PermissionInfo permissionInfo = GetPermissionByCodeAndKey(permission.PermissionCode, permission.PermissionKey).ToArray().Cast<PermissionInfo>().FirstOrDefault();
+            PermissionInfo permissionInfo = this.GetPermissionByCodeAndKey(permission.PermissionCode, permission.PermissionKey).ToArray().Cast<PermissionInfo>().FirstOrDefault();
             T result = null;
 
             if ((permissionInfo != null))
@@ -229,7 +229,7 @@ namespace DotNetNuke.Security.Permissions
         {
             var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
 
-            return GetPermissionsByModuleDefID(module.ModuleDefID);
+            return this.GetPermissionsByModuleDefID(module.ModuleDefID);
         }
     }
 }

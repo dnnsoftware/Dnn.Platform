@@ -56,7 +56,7 @@ namespace log4net.Plugin
 		/// </remarks>
 		public PluginMap(ILoggerRepository repository)
 		{
-			m_repository = repository;
+			this.m_repository = repository;
 		}
 
 		#endregion Public Instance Constructors
@@ -88,7 +88,7 @@ namespace log4net.Plugin
 
 				lock(this)
 				{
-					return (IPlugin)m_mapName2Plugin[name];
+					return (IPlugin)this.m_mapName2Plugin[name];
 				}
 			}
 		}
@@ -108,7 +108,7 @@ namespace log4net.Plugin
 			{
 				lock(this)
 				{
-					return new PluginCollection(m_mapName2Plugin.Values);
+					return new PluginCollection(this.m_mapName2Plugin.Values);
 				}
 			}
 		}
@@ -144,10 +144,10 @@ namespace log4net.Plugin
 			lock(this)
 			{
 				// Get the current plugin if it exists
-				curPlugin = m_mapName2Plugin[plugin.Name] as IPlugin;
+				curPlugin = this.m_mapName2Plugin[plugin.Name] as IPlugin;
 
 				// Store new plugin
-				m_mapName2Plugin[plugin.Name] = plugin;
+				this.m_mapName2Plugin[plugin.Name] = plugin;
 			}
 
 			// Shutdown existing plugin with same name
@@ -157,7 +157,7 @@ namespace log4net.Plugin
 			}
 
 			// Attach new plugin to repository
-			plugin.Attach(m_repository);
+			plugin.Attach(this.m_repository);
 		}
 
 		/// <summary>
@@ -177,7 +177,7 @@ namespace log4net.Plugin
 			}
 			lock(this)
 			{
-				m_mapName2Plugin.Remove(plugin.Name);
+				this.m_mapName2Plugin.Remove(plugin.Name);
 			}
 		}
 

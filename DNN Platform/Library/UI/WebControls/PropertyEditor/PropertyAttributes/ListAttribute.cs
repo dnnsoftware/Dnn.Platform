@@ -27,17 +27,17 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="valueField">Value Field.</param>
         public ListAttribute(string listName, string parentKey, ListBoundField valueField, ListBoundField textField)
         {
-            _ListName = listName;
-            _ParentKey = parentKey;
-            _TextField = textField;
-            _ValueField = valueField;
+            this._ListName = listName;
+            this._ParentKey = parentKey;
+            this._TextField = textField;
+            this._ValueField = valueField;
         }
 
         public string ListName
         {
             get
             {
-                return _ListName;
+                return this._ListName;
             }
         }
 
@@ -45,7 +45,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return _ParentKey;
+                return this._ParentKey;
             }
         }
 
@@ -53,7 +53,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return _TextField;
+                return this._TextField;
             }
         }
 
@@ -61,7 +61,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return _ValueField;
+                return this._ValueField;
             }
         }
     }

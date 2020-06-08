@@ -14,11 +14,11 @@ namespace DotNetNuke.Web.Mvp
 
         public ModuleSettingsPresenterBase(TView view) : base(view)
         {
-            view.OnLoadSettings += OnLoadSettingsInternal;
-            view.OnSaveSettings += OnSaveSettingsInternal;
+            view.OnLoadSettings += this.OnLoadSettingsInternal;
+            view.OnSaveSettings += this.OnSaveSettingsInternal;
 
-            ModuleSettings = new Dictionary<string, string>();
-            TabModuleSettings = new Dictionary<string, string>();
+            this.ModuleSettings = new Dictionary<string, string>();
+            this.TabModuleSettings = new Dictionary<string, string>();
         }
 
         #endregion
@@ -31,12 +31,12 @@ namespace DotNetNuke.Web.Mvp
 
         private void OnLoadSettingsInternal(object sender, EventArgs e)
         {
-            LoadSettings();
+            this.LoadSettings();
         }
 
         private void OnSaveSettingsInternal(object sender, EventArgs e)
         {
-            SaveSettings();
+            this.SaveSettings();
         }
 
         #endregion
@@ -47,14 +47,14 @@ namespace DotNetNuke.Web.Mvp
         {
             base.LoadFromContext();
 
-            foreach (var key in ModuleContext.Configuration.ModuleSettings.Keys)
+            foreach (var key in this.ModuleContext.Configuration.ModuleSettings.Keys)
             {
-                ModuleSettings.Add(Convert.ToString(key), Convert.ToString(ModuleContext.Configuration.ModuleSettings[key]));
+                this.ModuleSettings.Add(Convert.ToString(key), Convert.ToString(this.ModuleContext.Configuration.ModuleSettings[key]));
             }
 
-            foreach (var key in ModuleContext.Configuration.TabModuleSettings.Keys)
+            foreach (var key in this.ModuleContext.Configuration.TabModuleSettings.Keys)
             {
-                TabModuleSettings.Add(Convert.ToString(key), Convert.ToString(ModuleContext.Configuration.TabModuleSettings[key]));
+                this.TabModuleSettings.Add(Convert.ToString(key), Convert.ToString(this.ModuleContext.Configuration.TabModuleSettings[key]));
             }
         }
 

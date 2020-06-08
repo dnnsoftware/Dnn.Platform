@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.Api.Internal
         /// </param>
         public DnnDependencyResolver(IServiceProvider serviceProvider)
         {
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            this._serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace DotNetNuke.Web.Api.Internal
         /// </returns>
         public IDependencyScope BeginScope()
         {
-            var accessor = _serviceProvider.GetRequiredService<IScopeAccessor>();
+            var accessor = this._serviceProvider.GetRequiredService<IScopeAccessor>();
             var scope = accessor.GetScope();
             return new DnnDependencyResolver(scope.ServiceProvider);
         }
@@ -54,7 +54,7 @@ namespace DotNetNuke.Web.Api.Internal
         /// </returns>
         public object GetService(Type serviceType)
         {
-            return _serviceProvider.GetService(serviceType);
+            return this._serviceProvider.GetService(serviceType);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace DotNetNuke.Web.Api.Internal
         /// </returns>
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            return _serviceProvider.GetServices(serviceType);
+            return this._serviceProvider.GetServices(serviceType);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace DotNetNuke.Web.Api.Internal
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
         }
 
         /// <summary>

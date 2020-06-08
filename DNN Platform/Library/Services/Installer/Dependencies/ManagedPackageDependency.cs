@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
         {
             get
             {
-                return Util.INSTALL_Package + " - " + PackageDependency.PackageName;
+                return Util.INSTALL_Package + " - " + this.PackageDependency.PackageName;
             }
         }
 
@@ -29,8 +29,8 @@ namespace DotNetNuke.Services.Installer.Dependencies
 
                 //Get Package from DataStore
                 PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, 
-                                                (p) => p.Name.Equals(PackageDependency.PackageName, StringComparison.OrdinalIgnoreCase)
-                                                                && p.Version >= PackageDependency.Version);
+                                                (p) => p.Name.Equals(this.PackageDependency.PackageName, StringComparison.OrdinalIgnoreCase)
+                                                                && p.Version >= this.PackageDependency.Version);
                 if (package == null)
                 {
                     _IsValid = false;
@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
 
         public override void ReadManifest(XPathNavigator dependencyNav)
         {
-            PackageDependency = new PackageDependencyInfo
+            this.PackageDependency = new PackageDependencyInfo
             {
                 PackageName = dependencyNav.Value,
                 Version = new Version(Util.ReadAttribute(dependencyNav, "version"))

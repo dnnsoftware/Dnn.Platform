@@ -197,8 +197,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string Sender 
 		{
-			get { return m_sender; }
-			set { m_sender = value; }
+			get { return this.m_sender; }
+			set { this.m_sender = value; }
 		}
 
 		/// <summary>
@@ -212,8 +212,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string Recipient 
 		{
-			get { return m_recipient; }
-			set { m_recipient = value; }
+			get { return this.m_recipient; }
+			set { this.m_recipient = value; }
 		}
 		
 		/// <summary>
@@ -232,8 +232,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string Server 
 		{
-			get { return m_server; }
-			set { m_server = value; }
+			get { return this.m_server; }
+			set { this.m_server = value; }
 		}
 
 		/// <summary>
@@ -252,8 +252,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public SecurityContext SecurityContext 
 		{
-			get { return m_securityContext; }
-			set { m_securityContext = value; }
+			get { return this.m_securityContext; }
+			set { this.m_securityContext = value; }
 		}
 
 		#endregion
@@ -289,9 +289,9 @@ namespace log4net.Appender
 				throw new ArgumentNullException("Recipient", "The required property 'Recipient' was not specified.");
 			}
 
-			if (m_securityContext == null)
+			if (this.m_securityContext == null)
 			{
-				m_securityContext = SecurityContextProvider.DefaultProvider.CreateSecurityContext(this);
+				this.m_securityContext = SecurityContextProvider.DefaultProvider.CreateSecurityContext(this);
 			}
 		}
 
@@ -319,9 +319,9 @@ namespace log4net.Appender
 			NativeError nativeError = null;
 
 			// Render the event in the callers security context
-			string renderedLoggingEvent = RenderLoggingEvent(loggingEvent);
+			string renderedLoggingEvent = this.RenderLoggingEvent(loggingEvent);
 
-			using(m_securityContext.Impersonate(this))
+			using(this.m_securityContext.Impersonate(this))
 			{
 				// Send the message
 				int returnValue = NetMessageBufferSend(this.Server, this.Recipient, this.Sender, renderedLoggingEvent, renderedLoggingEvent.Length * Marshal.SystemDefaultCharSize);   
@@ -337,7 +337,7 @@ namespace log4net.Appender
 			if (nativeError != null)
 			{
 				// Handle the error over to the ErrorHandler
-				ErrorHandler.Error(nativeError.ToString() + " (Params: Server=" + this.Server + ", Recipient=" + this.Recipient + ", Sender=" + this.Sender + ")");
+				this.ErrorHandler.Error(nativeError.ToString() + " (Params: Server=" + this.Server + ", Recipient=" + this.Recipient + ", Sender=" + this.Sender + ")");
 			}
 		}
 

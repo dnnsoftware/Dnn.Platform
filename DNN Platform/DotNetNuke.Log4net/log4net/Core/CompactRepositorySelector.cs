@@ -90,9 +90,9 @@ namespace log4net.Core
 				throw log4net.Util.SystemInfo.CreateArgumentOutOfRangeException("defaultRepositoryType", (object)defaultRepositoryType, "Parameter: defaultRepositoryType, Value: ["+defaultRepositoryType+"] out of range. Argument must implement the ILoggerRepository interface");
 			}
 
-			m_defaultRepositoryType = defaultRepositoryType;
+			this.m_defaultRepositoryType = defaultRepositoryType;
 
-			LogLog.Debug(declaringType, "defaultRepositoryType ["+m_defaultRepositoryType+"]");
+			LogLog.Debug(declaringType, "defaultRepositoryType ["+this.m_defaultRepositoryType+"]");
 		}
 
 		#endregion
@@ -116,7 +116,7 @@ namespace log4net.Core
 		/// </remarks>
 		public ILoggerRepository GetRepository(Assembly assembly)
 		{
-			return CreateRepository(assembly, m_defaultRepositoryType);
+			return this.CreateRepository(assembly, this.m_defaultRepositoryType);
 		}
 
 		/// <summary>
@@ -144,7 +144,7 @@ namespace log4net.Core
 			lock(this)
 			{
 				// Lookup in map
-				ILoggerRepository rep = m_name2repositoryMap[repositoryName] as ILoggerRepository;
+				ILoggerRepository rep = this.m_name2repositoryMap[repositoryName] as ILoggerRepository;
 				if (rep == null)
 				{
 					throw new LogException("Repository ["+repositoryName+"] is NOT defined.");
@@ -178,7 +178,7 @@ namespace log4net.Core
 			// If the type is not set then use the default type
 			if (repositoryType == null)
 			{
-				repositoryType = m_defaultRepositoryType;
+				repositoryType = this.m_defaultRepositoryType;
 			}
 
 			lock(this)
@@ -186,11 +186,11 @@ namespace log4net.Core
 				// This method should not throw if the default repository already exists.
 
 				// First check that the repository does not exist
-				ILoggerRepository rep = m_name2repositoryMap[DefaultRepositoryName] as ILoggerRepository;
+				ILoggerRepository rep = this.m_name2repositoryMap[DefaultRepositoryName] as ILoggerRepository;
 				if (rep == null)
 				{
 					// Must create the repository
-					rep = CreateRepository(DefaultRepositoryName, repositoryType);
+					rep = this.CreateRepository(DefaultRepositoryName, repositoryType);
 				}
 
 				return rep;
@@ -230,7 +230,7 @@ namespace log4net.Core
 			// If the type is not set then use the default type
 			if (repositoryType == null)
 			{
-				repositoryType = m_defaultRepositoryType;
+				repositoryType = this.m_defaultRepositoryType;
 			}
 
 			lock(this)
@@ -238,7 +238,7 @@ namespace log4net.Core
 				ILoggerRepository rep = null;
 
 				// First check that the repository does not exist
-				rep = m_name2repositoryMap[repositoryName] as ILoggerRepository;
+				rep = this.m_name2repositoryMap[repositoryName] as ILoggerRepository;
 				if (rep != null)
 				{
 					throw new LogException("Repository ["+repositoryName+"] is already defined. Repositories cannot be redefined.");
@@ -254,10 +254,10 @@ namespace log4net.Core
 					rep.Name = repositoryName;
 
 					// Store in map
-					m_name2repositoryMap[repositoryName] = rep;
+					this.m_name2repositoryMap[repositoryName] = rep;
 
 					// Notify listeners that the repository has been created
-					OnLoggerRepositoryCreatedEvent(rep);
+					this.OnLoggerRepositoryCreatedEvent(rep);
 				}
 
 				return rep;
@@ -280,7 +280,7 @@ namespace log4net.Core
 		{
 			lock(this)
 			{
-				return m_name2repositoryMap.ContainsKey(repositoryName);
+				return this.m_name2repositoryMap.ContainsKey(repositoryName);
 			}
 		}
 
@@ -297,7 +297,7 @@ namespace log4net.Core
 		{
 			lock(this)
 			{
-				ICollection reps = m_name2repositoryMap.Values;
+				ICollection reps = this.m_name2repositoryMap.Values;
 				ILoggerRepository[] all = new ILoggerRepository[reps.Count];
 				reps.CopyTo(all, 0);
 				return all;
@@ -335,8 +335,8 @@ namespace log4net.Core
 		/// </remarks>
 		public event LoggerRepositoryCreationEventHandler LoggerRepositoryCreatedEvent
 		{
-			add { m_loggerRepositoryCreatedEvent += value; }
-			remove { m_loggerRepositoryCreatedEvent -= value; }
+			add { this.m_loggerRepositoryCreatedEvent += value; }
+			remove { this.m_loggerRepositoryCreatedEvent -= value; }
 		}
 
 		/// <summary>
@@ -351,7 +351,7 @@ namespace log4net.Core
 		/// </remarks>
 		protected virtual void OnLoggerRepositoryCreatedEvent(ILoggerRepository repository)
 		{
-			LoggerRepositoryCreationEventHandler handler = m_loggerRepositoryCreatedEvent;
+			LoggerRepositoryCreationEventHandler handler = this.m_loggerRepositoryCreatedEvent;
 			if (handler != null)
 			{
 				handler(this, new LoggerRepositoryCreationEventArgs(repository));

@@ -59,7 +59,7 @@ namespace log4net.Util
 			{
 				throw new ArgumentNullException("errorHandler");
 			}
-			ErrorHandler = errorHandler;
+			this.ErrorHandler = errorHandler;
 		}
 
 		#endregion Public Instance Constructors
@@ -79,7 +79,7 @@ namespace log4net.Util
 		/// </remarks>
 		public IErrorHandler ErrorHandler
 		{
-			get { return m_errorHandler; }
+			get { return this.m_errorHandler; }
 			set
 			{
 				if (value == null)
@@ -87,7 +87,7 @@ namespace log4net.Util
 					// This is a programming error on the part of the enclosing appender.
 					throw new ArgumentNullException("value");
 				}
-				m_errorHandler = value;
+				this.m_errorHandler = value;
 			}
 		}	
 
@@ -104,7 +104,7 @@ namespace log4net.Util
 		/// </remarks>
 		public bool Closed
 		{
-			get { return m_closed; }
+			get { return this.m_closed; }
 		}
 
 		#endregion Public Instance Properties
@@ -128,7 +128,7 @@ namespace log4net.Util
 			} 
 			catch(Exception e) 
 			{
-				m_errorHandler.Error("Failed to write [" + value + "].", e, ErrorCode.WriteFailure);
+				this.m_errorHandler.Error("Failed to write [" + value + "].", e, ErrorCode.WriteFailure);
 			}
 		}
     
@@ -151,7 +151,7 @@ namespace log4net.Util
 			} 
 			catch(Exception e) 
 			{
-				m_errorHandler.Error("Failed to write buffer.", e, ErrorCode.WriteFailure);
+				this.m_errorHandler.Error("Failed to write buffer.", e, ErrorCode.WriteFailure);
 			}
 		}
     
@@ -172,7 +172,7 @@ namespace log4net.Util
 			} 
 			catch(Exception e) 
 			{
-				m_errorHandler.Error("Failed to write [" + value + "].", e, ErrorCode.WriteFailure);
+				this.m_errorHandler.Error("Failed to write [" + value + "].", e, ErrorCode.WriteFailure);
 			}
 		}
 
@@ -186,7 +186,7 @@ namespace log4net.Util
 		/// </remarks>
 		override public void Close()
 		{
-			m_closed = true;
+			this.m_closed = true;
 			base.Close();
 		}
 

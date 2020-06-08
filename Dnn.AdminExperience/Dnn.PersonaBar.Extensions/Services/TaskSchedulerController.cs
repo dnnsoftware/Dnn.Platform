@@ -64,12 +64,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     TotalResults = servers.Count()
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -84,7 +84,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         {
             try
             {
-                var scheduleviews = _controller.GetScheduleItems(null, serverName);
+                var scheduleviews = this._controller.GetScheduleItems(null, serverName);
                 var arrSchedule = scheduleviews.ToArray();
                 var response = new
                 {
@@ -94,18 +94,18 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                         v.ScheduleID,
                         v.FriendlyName,
                         v.Enabled,
-                        RetryTimeLapse = _controller.GetTimeLapse(v.RetryTimeLapse, v.RetryTimeLapseMeasurement),
+                        RetryTimeLapse = this._controller.GetTimeLapse(v.RetryTimeLapse, v.RetryTimeLapseMeasurement),
                         NextStart = (v.Enabled && !Null.IsNull(v.NextStart)) ? v.NextStart.ToString() : "",
-                        Frequency = _controller.GetTimeLapse(v.TimeLapse, v.TimeLapseMeasurement)
+                        Frequency = this._controller.GetTimeLapse(v.TimeLapse, v.TimeLapseMeasurement)
                     }),
                     TotalResults = arrSchedule.Count()
                 };
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -137,12 +137,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     },
                     TotalResults = 1
                 };
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -183,12 +183,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                 HostController.Instance.Update("SchedulerMode", request.SchedulerMode, false);
                 HostController.Instance.Update("SchedulerdelayAtAppStart", request.SchedulerdelayAtAppStart);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -226,12 +226,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     Results = query.Skip(pageIndex * pageSize).Take(pageSize),
                     TotalResults = query.Count()
                 };
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -271,12 +271,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     },
                     TotalResults = 1
                 };
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -297,22 +297,22 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     scheduleDto.RetryTimeLapse = Null.NullInteger;
                 }
 
-                if (!VerifyValidTimeLapseRetry(scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement, scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement))
+                if (!this.VerifyValidTimeLapseRetry(scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement, scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement))
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("InvalidFrequencyAndRetry", localResourcesFile));
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("InvalidFrequencyAndRetry", localResourcesFile));
                 }
 
-                var scheduleItem = _controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
+                var scheduleItem = this._controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
             scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement, scheduleDto.RetainHistoryNum, scheduleDto.AttachToEvent, scheduleDto.CatchUpEnabled,
             scheduleDto.Enabled, scheduleDto.ObjectDependencies, scheduleDto.ScheduleStartDate, scheduleDto.Servers);
                 SchedulingProvider.Instance().AddSchedule(scheduleItem);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -333,14 +333,14 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     scheduleDto.RetryTimeLapse = Null.NullInteger;
                 }
 
-                if (!VerifyValidTimeLapseRetry(scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement, scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement))
+                if (!this.VerifyValidTimeLapseRetry(scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement, scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement))
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("InvalidFrequencyAndRetry", localResourcesFile));
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("InvalidFrequencyAndRetry", localResourcesFile));
                 }
 
                 var existingItem = SchedulingProvider.Instance().GetSchedule(scheduleDto.ScheduleID);
 
-                var updatedItem = _controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
+                var updatedItem = this._controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
             scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement, scheduleDto.RetainHistoryNum, scheduleDto.AttachToEvent, scheduleDto.CatchUpEnabled,
             scheduleDto.Enabled, scheduleDto.ObjectDependencies, scheduleDto.ScheduleStartDate, scheduleDto.Servers);
                 updatedItem.ScheduleID = scheduleDto.ScheduleID;
@@ -362,12 +362,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
                 }
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -432,7 +432,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                         },
                         TotalResults = 1
                     };
-                    return Request.CreateResponse(HttpStatusCode.OK, response);
+                    return this.Request.CreateResponse(HttpStatusCode.OK, response);
                 }
                 else
                 {
@@ -451,13 +451,13 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                         },
                         TotalResults = 1
                     };
-                    return Request.CreateResponse(HttpStatusCode.OK, response);
+                    return this.Request.CreateResponse(HttpStatusCode.OK, response);
                 }
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -474,12 +474,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             try
             {
                 SchedulingProvider.Instance().StartAndWaitForResponse();
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -495,13 +495,13 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         {
             try
             {
-                _controller.StopSchedule();
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                this._controller.StopSchedule();
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -517,7 +517,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
         {
             try
             {
-                var scheduleItem = _controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
+                var scheduleItem = this._controller.CreateScheduleItem(scheduleDto.TypeFullName, scheduleDto.FriendlyName, scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement,
             scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement, scheduleDto.RetainHistoryNum, scheduleDto.AttachToEvent, scheduleDto.CatchUpEnabled,
             scheduleDto.Enabled, scheduleDto.ObjectDependencies, scheduleDto.ScheduleStartDate, scheduleDto.Servers);
                 scheduleItem.ScheduleID = scheduleDto.ScheduleID;
@@ -527,12 +527,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                 {
                     SchedulingProvider.Instance().ReStart("Change made to schedule.");
                 }
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -550,12 +550,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             {
                 var objScheduleItem = new ScheduleItem { ScheduleID = scheduleDto.ScheduleID };
                 SchedulingProvider.Instance().DeleteSchedule(objScheduleItem);
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 

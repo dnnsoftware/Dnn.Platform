@@ -57,9 +57,9 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public void OnUserCreateCompleted(UserCreatedEventArgs e)
         {
-            if (UserCreateCompleted != null)
+            if (this.UserCreateCompleted != null)
             {
-                UserCreateCompleted(this, e);
+                this.UserCreateCompleted(this, e);
             }
         }
 
@@ -70,9 +70,9 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public void OnUserCreated(UserCreatedEventArgs e)
         {
-            if (UserCreated != null)
+            if (this.UserCreated != null)
             {
-                UserCreated(this, e);
+                this.UserCreated(this, e);
             }
         }
 
@@ -83,9 +83,9 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public void OnUserDeleted(UserDeletedEventArgs e)
         {
-            if (UserDeleted != null)
+            if (this.UserDeleted != null)
             {
-                UserDeleted(this, e);
+                this.UserDeleted(this, e);
             }
         }
 
@@ -96,41 +96,41 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public void OnUserDeleteError(UserUpdateErrorArgs e)
         {
-            if (UserDeleteError != null)
+            if (this.UserDeleteError != null)
             {
-                UserDeleteError(this, e);
+                this.UserDeleteError(this, e);
             }
         }
 
         public void OnUserRestored(UserRestoredEventArgs e)
         {
-            if (UserRestored != null)
+            if (this.UserRestored != null)
             {
-                UserRestored(this, e);
+                this.UserRestored(this, e);
             }
         }
 
         public void OnUserRestoreError(UserUpdateErrorArgs e)
         {
-            if (UserRestoreError != null)
+            if (this.UserRestoreError != null)
             {
-                UserRestoreError(this, e);
+                this.UserRestoreError(this, e);
             }
         }
 
         public void OnUserRemoved(UserRemovedEventArgs e)
         {
-            if (UserRemoved != null)
+            if (this.UserRemoved != null)
             {
-                UserRemoved(this, e);
+                this.UserRemoved(this, e);
             }
         }
 
         public void OnUserRemoveError(UserUpdateErrorArgs e)
         {
-            if (UserRemoveError != null)
+            if (this.UserRemoveError != null)
             {
-                UserRemoveError(this, e);
+                this.UserRemoveError(this, e);
             }
         }
 
@@ -141,9 +141,9 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public void OnUserUpdated(EventArgs e)
         {
-            if (UserUpdated != null)
+            if (this.UserUpdated != null)
             {
-                UserUpdated(this, e);
+                this.UserUpdated(this, e);
             }
         }
 
@@ -154,9 +154,9 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public void OnUserUpdateCompleted(EventArgs e)
         {
-            if (UserUpdateCompleted != null)
+            if (this.UserUpdateCompleted != null)
             {
-                UserUpdateCompleted(this, e);
+                this.UserUpdateCompleted(this, e);
             }
         }
 
@@ -167,9 +167,9 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public void OnUserUpdateError(UserUpdateErrorArgs e)
         {
-            if (UserUpdateError != null)
+            if (this.UserUpdateError != null)
             {
-                UserUpdateError(this, e);
+                this.UserUpdateError(this, e);
             }
         }
 
@@ -177,7 +177,7 @@ namespace DotNetNuke.Entities.Modules
 
         #region "Properties"
 
-        protected override bool AddUser => !Request.IsAuthenticated || base.AddUser;
+        protected override bool AddUser => !this.Request.IsAuthenticated || base.AddUser;
 
         #endregion
 
@@ -227,7 +227,7 @@ namespace DotNetNuke.Entities.Modules
             /// -----------------------------------------------------------------------------
             public UserCreatedEventArgs(UserInfo newUser)
             {
-                NewUser = newUser;
+                this.NewUser = newUser;
             }
 
             /// -----------------------------------------------------------------------------
@@ -239,11 +239,11 @@ namespace DotNetNuke.Entities.Modules
             {
                 get
                 {
-                    return _createStatus;
+                    return this._createStatus;
                 }
                 set
                 {
-                    _createStatus = value;
+                    this._createStatus = value;
                 }
             }
 
@@ -283,8 +283,8 @@ namespace DotNetNuke.Entities.Modules
             /// -----------------------------------------------------------------------------
             public UserDeletedEventArgs(int id, string name)
             {
-                UserId = id;
-                UserName = name;
+                this.UserId = id;
+                this.UserName = name;
             }
         }
 
@@ -309,8 +309,8 @@ namespace DotNetNuke.Entities.Modules
 			/// -----------------------------------------------------------------------------
             public UserRestoredEventArgs(int id, string name)
             {
-                UserId = id;
-                UserName = name;
+                this.UserId = id;
+                this.UserName = name;
             }
         }
 
@@ -336,8 +336,8 @@ namespace DotNetNuke.Entities.Modules
 			/// -----------------------------------------------------------------------------
 			public UserRemovedEventArgs(int id, string name)
             {
-                UserId = id;
-                UserName = name;
+                this.UserId = id;
+                this.UserName = name;
             }
         }
 
@@ -364,9 +364,9 @@ namespace DotNetNuke.Entities.Modules
             /// -----------------------------------------------------------------------------
             public UserUpdateErrorArgs(int id, string name, string message)
             {
-                UserId = id;
-                UserName = name;
-                Message = message;
+                this.UserId = id;
+                this.UserName = name;
+                this.Message = message;
             }
 
             /// -----------------------------------------------------------------------------

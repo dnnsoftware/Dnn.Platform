@@ -34,8 +34,8 @@ namespace DotNetNuke.Entities.Modules.Actions
         ///-----------------------------------------------------------------------------
         public ActionEventArgs(ModuleAction Action, ModuleInfo ModuleConfiguration)
         {
-            _action = Action;
-            _moduleConfiguration = ModuleConfiguration;
+            this._action = Action;
+            this._moduleConfiguration = ModuleConfiguration;
         }
 
         ///-----------------------------------------------------------------------------
@@ -49,7 +49,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
             get
             {
-                return _action;
+                return this._action;
             }
         }
 
@@ -64,7 +64,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
             get
             {
-                return _moduleConfiguration;
+                return this._moduleConfiguration;
             }
         }
     }

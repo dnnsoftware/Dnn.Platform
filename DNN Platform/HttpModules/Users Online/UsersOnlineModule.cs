@@ -29,7 +29,7 @@ namespace DotNetNuke.HttpModules.UsersOnline
 
         public void Init(HttpApplication application)
         {
-            application.AuthorizeRequest += OnAuthorizeRequest;
+            application.AuthorizeRequest += this.OnAuthorizeRequest;
         }
 
         public void Dispose()

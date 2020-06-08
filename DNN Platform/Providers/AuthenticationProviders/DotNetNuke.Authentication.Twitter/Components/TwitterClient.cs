@@ -18,17 +18,17 @@ namespace DotNetNuke.Authentication.Twitter.Components
         public TwitterClient(int portalId, AuthMode mode)
             : base(portalId, mode, "Twitter")
         {
-            AuthorizationEndpoint = new Uri("https://api.twitter.com/oauth/authorize");
-            RequestTokenEndpoint = new Uri("https://api.twitter.com/oauth/request_token");
-            RequestTokenMethod = HttpMethod.POST;
-            TokenEndpoint = new Uri("https://api.twitter.com/oauth/access_token");
-            MeGraphEndpoint = new Uri("https://api.twitter.com/1.1/account/verify_credentials.json");
+            this.AuthorizationEndpoint = new Uri("https://api.twitter.com/oauth/authorize");
+            this.RequestTokenEndpoint = new Uri("https://api.twitter.com/oauth/request_token");
+            this.RequestTokenMethod = HttpMethod.POST;
+            this.TokenEndpoint = new Uri("https://api.twitter.com/oauth/access_token");
+            this.MeGraphEndpoint = new Uri("https://api.twitter.com/1.1/account/verify_credentials.json");
 
-            AuthTokenName = "TwitterUserToken";
+            this.AuthTokenName = "TwitterUserToken";
 
-            OAuthVersion = "1.0";
+            this.OAuthVersion = "1.0";
 
-            LoadTokenCookie(String.Empty);
+            this.LoadTokenCookie(String.Empty);
         }
     }
 }

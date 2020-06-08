@@ -21,14 +21,14 @@ namespace DotNetNuke.ComponentModel
 		/// <param name="baseType">The base type of Components of this ComponentType</param>
 		public ComponentType(Type baseType)
         {
-            _BaseType = baseType;
+            this._BaseType = baseType;
         }
 
         public Type BaseType
         {
             get
             {
-                return _BaseType;
+                return this._BaseType;
             }
         }
 
@@ -36,7 +36,7 @@ namespace DotNetNuke.ComponentModel
         {
             get
             {
-                return _ComponentBuilders;
+                return this._ComponentBuilders;
             }
         }
     }

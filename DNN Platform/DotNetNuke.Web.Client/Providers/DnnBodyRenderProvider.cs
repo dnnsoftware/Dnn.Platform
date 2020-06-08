@@ -58,11 +58,11 @@ namespace DotNetNuke.Web.Client.Providers
 
             var sb = new StringBuilder();
 
-            if (http.IsDebuggingEnabled || !EnableCompositeFiles)
+            if (http.IsDebuggingEnabled || !this.EnableCompositeFiles)
             {
                 foreach (var dependency in jsDependencies)
                 {
-                    sb.Append(RenderSingleJsFile(dependency.FilePath, htmlAttributes));
+                    sb.Append(this.RenderSingleJsFile(dependency.FilePath, htmlAttributes));
                 }
             }
             else
@@ -70,7 +70,7 @@ namespace DotNetNuke.Web.Client.Providers
                 var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(jsDependencies, ClientDependencyType.Javascript, http);
                 foreach (var s in comp)
                 {
-                    sb.Append(RenderSingleJsFile(s, htmlAttributes));
+                    sb.Append(this.RenderSingleJsFile(s, htmlAttributes));
                 }
             }
 
@@ -89,11 +89,11 @@ namespace DotNetNuke.Web.Client.Providers
 
             var sb = new StringBuilder();
 
-            if (http.IsDebuggingEnabled || !EnableCompositeFiles)
+            if (http.IsDebuggingEnabled || !this.EnableCompositeFiles)
             {
                 foreach (var dependency in cssDependencies)
                 {
-                    sb.Append(RenderSingleCssFile(dependency.FilePath, htmlAttributes));
+                    sb.Append(this.RenderSingleCssFile(dependency.FilePath, htmlAttributes));
                 }
             }
             else
@@ -101,7 +101,7 @@ namespace DotNetNuke.Web.Client.Providers
                 var comp = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider.ProcessCompositeList(cssDependencies, ClientDependencyType.Css, http);
                 foreach (var s in comp)
                 {
-                    sb.Append(RenderSingleCssFile(s, htmlAttributes));
+                    sb.Append(this.RenderSingleCssFile(s, htmlAttributes));
                 }
             }
 

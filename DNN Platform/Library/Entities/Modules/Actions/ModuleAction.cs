@@ -94,18 +94,18 @@ namespace DotNetNuke.Entities.Modules.Actions
         public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon, string url, string clientScript, bool useActionEvent, SecurityAccessLevel secure, bool visible,
                             bool newWindow)
         {
-            ID = id;
-            Title = title;
-            CommandName = cmdName;
-            CommandArgument = cmdArg;
-            Icon = icon;
-            Url = url;
-            ClientScript = clientScript;
-            UseActionEvent = useActionEvent;
-            Secure = secure;
-            Visible = visible;
-            NewWindow = newWindow;
-            Actions = new ModuleActionCollection();
+            this.ID = id;
+            this.Title = title;
+            this.CommandName = cmdName;
+            this.CommandArgument = cmdArg;
+            this.Icon = icon;
+            this.Url = url;
+            this.ClientScript = clientScript;
+            this.UseActionEvent = useActionEvent;
+            this.Secure = secure;
+            this.Visible = visible;
+            this.NewWindow = newWindow;
+            this.Actions = new ModuleActionCollection();
         }
 
         ///-----------------------------------------------------------------------------
@@ -193,27 +193,27 @@ namespace DotNetNuke.Entities.Modules.Actions
             get
             {
                 string controlKey = String.Empty;
-                if (!String.IsNullOrEmpty(Url))
+                if (!String.IsNullOrEmpty(this.Url))
                 {
-                    int startIndex = Url.IndexOf("/ctl/");
+                    int startIndex = this.Url.IndexOf("/ctl/");
                     int endIndex = -1;
                     if (startIndex > -1)
                     {
                         startIndex += 4;
-                        endIndex = Url.IndexOf("/", startIndex + 1);
+                        endIndex = this.Url.IndexOf("/", startIndex + 1);
                     }
                     else
                     {
-                        startIndex = Url.IndexOf("ctl=");
+                        startIndex = this.Url.IndexOf("ctl=");
                         if (startIndex > -1)
                         {
                             startIndex += 4;
-                            endIndex = Url.IndexOf("&", startIndex + 1);
+                            endIndex = this.Url.IndexOf("&", startIndex + 1);
                         }
                     }
                     if (startIndex > -1)
                     {
-                        controlKey = endIndex > -1 ? Url.Substring(startIndex + 1, endIndex - startIndex - 1) : Url.Substring(startIndex + 1);
+                        controlKey = endIndex > -1 ? this.Url.Substring(startIndex + 1, endIndex - startIndex - 1) : this.Url.Substring(startIndex + 1);
                     }
                 }
                 return controlKey;
@@ -303,7 +303,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         ///-----------------------------------------------------------------------------
         public bool HasChildren()
         {
-            return (Actions.Count > 0);
+            return (this.Actions.Count > 0);
         }
     }
 }

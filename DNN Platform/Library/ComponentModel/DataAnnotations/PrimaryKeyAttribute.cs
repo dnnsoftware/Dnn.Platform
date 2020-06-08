@@ -18,9 +18,9 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
 
         public PrimaryKeyAttribute(string columnName, string propertyName)
         {
-            ColumnName = columnName;
-            PropertyName = propertyName;
-            AutoIncrement = true;
+            this.ColumnName = columnName;
+            this.PropertyName = propertyName;
+            this.AutoIncrement = true;
         }
 
         public bool AutoIncrement { get; set; }

@@ -21,12 +21,12 @@ namespace DotNetNuke.Common.Lists
 
         public ListInfo GetChildren(string ParentName)
         {
-            return (ListInfo) Item(ParentName);
+            return (ListInfo) this.Item(ParentName);
         }
 
         internal new void Clear()
         {
-            mKeyIndexLookup.Clear();
+            this.mKeyIndexLookup.Clear();
             base.Clear();
         }
 
@@ -37,7 +37,7 @@ namespace DotNetNuke.Common.Lists
             try
             {
                 index = base.List.Add(value);
-                mKeyIndexLookup.Add(key.ToLowerInvariant(), index);
+                this.mKeyIndexLookup.Add(key.ToLowerInvariant(), index);
             }
             catch (Exception exc)
             {
@@ -66,7 +66,7 @@ namespace DotNetNuke.Common.Lists
             object obj;
             try //Do validation first
             {
-                if (mKeyIndexLookup[key.ToLowerInvariant()] == null)
+                if (this.mKeyIndexLookup[key.ToLowerInvariant()] == null)
                 {
                     return null;
                 }
@@ -76,7 +76,7 @@ namespace DotNetNuke.Common.Lists
                 Logger.Error(exc);
                 return null;
             }
-            index = Convert.ToInt32(mKeyIndexLookup[key.ToLowerInvariant()]);
+            index = Convert.ToInt32(this.mKeyIndexLookup[key.ToLowerInvariant()]);
             obj = base.List[index];
             return obj;
         }
@@ -89,7 +89,7 @@ namespace DotNetNuke.Common.Lists
             bool itemExists = false;
             try //Do validation first
             {
-                if (mKeyIndexLookup[key.ToLowerInvariant()] != null)
+                if (this.mKeyIndexLookup[key.ToLowerInvariant()] != null)
                 {
                     itemExists = true;
                 }
@@ -108,13 +108,13 @@ namespace DotNetNuke.Common.Lists
                 //the collection has been cache, so add this entry list into it if specified
                 if (Cache)
                 {
-                    Add(listInfo.Key, listInfo);
+                    this.Add(listInfo.Key, listInfo);
                     return listInfo;
                 }
             }
             else
             {
-                index = Convert.ToInt32(mKeyIndexLookup[key.ToLowerInvariant()]);
+                index = Convert.ToInt32(this.mKeyIndexLookup[key.ToLowerInvariant()]);
                 obj = base.List[index];
             }
             return obj;
@@ -123,7 +123,7 @@ namespace DotNetNuke.Common.Lists
         public ArrayList GetChild(string ParentKey)
         {
             var childList = new ArrayList();
-            foreach (object child in List)
+            foreach (object child in this.List)
             {
                 if (((ListInfo) child).Key.IndexOf(ParentKey.ToLowerInvariant()) > -1)
                 {

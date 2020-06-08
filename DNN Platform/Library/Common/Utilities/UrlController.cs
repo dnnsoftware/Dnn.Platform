@@ -38,7 +38,7 @@ namespace DotNetNuke.Common.Utilities
 
         public void UpdateUrl(int PortalID, string Url, string UrlType, bool LogActivity, bool TrackClicks, int ModuleID, bool NewWindow)
         {
-            UpdateUrl(PortalID, Url, UrlType, 0, Null.NullDate, Null.NullDate, LogActivity, TrackClicks, ModuleID, NewWindow);
+            this.UpdateUrl(PortalID, Url, UrlType, 0, Null.NullDate, Null.NullDate, LogActivity, TrackClicks, ModuleID, NewWindow);
         }
 
         public void UpdateUrl(int PortalID, string Url, string UrlType, int Clicks, DateTime LastClick, DateTime CreatedDate, bool LogActivity, bool TrackClicks, int ModuleID, bool NewWindow)
@@ -47,12 +47,12 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (UrlType == "U")
                 {
-                    if (GetUrl(PortalID, Url) == null)
+                    if (this.GetUrl(PortalID, Url) == null)
                     {
                         DataProvider.Instance().AddUrl(PortalID, Url.Replace(@"\", @"/"));
                     }
                 }
-                UrlTrackingInfo objURLTracking = GetUrlTracking(PortalID, Url, ModuleID);
+                UrlTrackingInfo objURLTracking = this.GetUrlTracking(PortalID, Url, ModuleID);
                 if (objURLTracking == null)
                 {
                     DataProvider.Instance().AddUrlTracking(PortalID, Url, UrlType, LogActivity, TrackClicks, ModuleID, NewWindow);
@@ -84,7 +84,7 @@ namespace DotNetNuke.Common.Utilities
 
                 Url = "FileID=" + file.FileId;
             }
-            UrlTrackingInfo objUrlTracking = GetUrlTracking(PortalID, Url, ModuleId);
+            UrlTrackingInfo objUrlTracking = this.GetUrlTracking(PortalID, Url, ModuleId);
             if (objUrlTracking != null)
             {
                 if (objUrlTracking.TrackClicks)
@@ -105,7 +105,7 @@ namespace DotNetNuke.Common.Utilities
         public ArrayList GetUrlLog(int PortalID, string Url, int ModuleId, DateTime StartDate, DateTime EndDate)
         {
             ArrayList arrUrlLog = null;
-            UrlTrackingInfo objUrlTracking = GetUrlTracking(PortalID, Url, ModuleId);
+            UrlTrackingInfo objUrlTracking = this.GetUrlTracking(PortalID, Url, ModuleId);
             if (objUrlTracking != null)
             {
                 arrUrlLog = CBO.FillCollection(DataProvider.Instance().GetUrlLog(objUrlTracking.UrlTrackingID, StartDate, EndDate), typeof (UrlLogInfo));

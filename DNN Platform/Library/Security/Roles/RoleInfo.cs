@@ -45,10 +45,10 @@ namespace DotNetNuke.Security.Roles
 
         public RoleInfo()
         {
-            TrialFrequency = "N";
-            BillingFrequency = "N";
-            RoleID = Null.NullInteger;
-            IsSystemRole = false;
+            this.TrialFrequency = "N";
+            this.BillingFrequency = "N";
+            this.RoleID = Null.NullInteger;
+            this.IsSystemRole = false;
         }
 
         #region Public Properties
@@ -160,12 +160,12 @@ namespace DotNetNuke.Security.Roles
         {
             get
             {
-                if (!_RoleTypeSet)
+                if (!this._RoleTypeSet)
                 {
-                    GetRoleType();
-                    _RoleTypeSet = true;
+                    this.GetRoleType();
+                    this._RoleTypeSet = true;
                 }
-                return _RoleType;
+                return this._RoleType;
             }
         }
 
@@ -204,9 +204,9 @@ namespace DotNetNuke.Security.Roles
         {
             get
             {
-                return _settings ?? (_settings = (RoleID == Null.NullInteger)
+                return this._settings ?? (this._settings = (this.RoleID == Null.NullInteger)
                                                      ? new Dictionary<string, string>()
-                                                     : RoleController.Instance.GetRoleSettings(RoleID) as
+                                                     : RoleController.Instance.GetRoleSettings(this.RoleID) as
                                                        Dictionary<string, string>);
             }
         }
@@ -266,12 +266,12 @@ namespace DotNetNuke.Security.Roles
             {
                 string photoURL = Globals.ApplicationPath + "/images/sample-group-profile.jpg";
 
-                if ((IconFile != null))
+                if ((this.IconFile != null))
                 {
-                    if (!string.IsNullOrEmpty(IconFile))
+                    if (!string.IsNullOrEmpty(this.IconFile))
                     {
                         IFileInfo fileInfo =
-                            FileManager.Instance.GetFile(int.Parse(IconFile.Replace("FileID=", string.Empty)));
+                            FileManager.Instance.GetFile(int.Parse(this.IconFile.Replace("FileID=", string.Empty)));
                         if ((fileInfo != null))
                         {
                             photoURL = FileManager.Instance.GetUrl(fileInfo);
@@ -288,22 +288,22 @@ namespace DotNetNuke.Security.Roles
 
         private void GetRoleType()
         {
-            var portal = PortalController.Instance.GetPortal(PortalID);
-            if (RoleID == portal.AdministratorRoleId)
+            var portal = PortalController.Instance.GetPortal(this.PortalID);
+            if (this.RoleID == portal.AdministratorRoleId)
             {
-                _RoleType = RoleType.Administrator;
+                this._RoleType = RoleType.Administrator;
             }
-            else if (RoleID == portal.RegisteredRoleId)
+            else if (this.RoleID == portal.RegisteredRoleId)
             {
-                _RoleType = RoleType.RegisteredUser;
+                this._RoleType = RoleType.RegisteredUser;
             }
-            else if (RoleName == "Subscribers")
+            else if (this.RoleName == "Subscribers")
             {
-                _RoleType = RoleType.Subscriber;
+                this._RoleType = RoleType.Subscriber;
             }
-            else if (RoleName == "Unverified Users")
+            else if (this.RoleName == "Unverified Users")
             {
-                _RoleType = RoleType.UnverifiedUser;
+                this._RoleType = RoleType.UnverifiedUser;
             }
         }
 
@@ -319,21 +319,21 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public virtual void Fill(IDataReader dr)
         {
-            RoleID = Null.SetNullInteger(dr["RoleId"]);
-            PortalID = Null.SetNullInteger(dr["PortalID"]);
-            RoleGroupID = Null.SetNullInteger(dr["RoleGroupId"]);
-            RoleName = Null.SetNullString(dr["RoleName"]);
-            Description = Null.SetNullString(dr["Description"]);
-            ServiceFee = Null.SetNullSingle(dr["ServiceFee"]);
-            BillingPeriod = Null.SetNullInteger(dr["BillingPeriod"]);
-            BillingFrequency = Null.SetNullString(dr["BillingFrequency"]);
-            TrialFee = Null.SetNullSingle(dr["TrialFee"]);
-            TrialPeriod = Null.SetNullInteger(dr["TrialPeriod"]);
-            TrialFrequency = Null.SetNullString(dr["TrialFrequency"]);
-            IsPublic = Null.SetNullBoolean(dr["IsPublic"]);
-            AutoAssignment = Null.SetNullBoolean(dr["AutoAssignment"]);
-            RSVPCode = Null.SetNullString(dr["RSVPCode"]);
-            IconFile = Null.SetNullString(dr["IconFile"]);
+            this.RoleID = Null.SetNullInteger(dr["RoleId"]);
+            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
+            this.RoleGroupID = Null.SetNullInteger(dr["RoleGroupId"]);
+            this.RoleName = Null.SetNullString(dr["RoleName"]);
+            this.Description = Null.SetNullString(dr["Description"]);
+            this.ServiceFee = Null.SetNullSingle(dr["ServiceFee"]);
+            this.BillingPeriod = Null.SetNullInteger(dr["BillingPeriod"]);
+            this.BillingFrequency = Null.SetNullString(dr["BillingFrequency"]);
+            this.TrialFee = Null.SetNullSingle(dr["TrialFee"]);
+            this.TrialPeriod = Null.SetNullInteger(dr["TrialPeriod"]);
+            this.TrialFrequency = Null.SetNullString(dr["TrialFrequency"]);
+            this.IsPublic = Null.SetNullBoolean(dr["IsPublic"]);
+            this.AutoAssignment = Null.SetNullBoolean(dr["AutoAssignment"]);
+            this.RSVPCode = Null.SetNullString(dr["RSVPCode"]);
+            this.IconFile = Null.SetNullString(dr["IconFile"]);
 
             //New properties may not be present if called before 6.2 Upgrade has been executed
             try
@@ -342,13 +342,13 @@ namespace DotNetNuke.Security.Roles
                 switch (mode)
                 {
                     case 0:
-                        SecurityMode = SecurityMode.SecurityRole;
+                        this.SecurityMode = SecurityMode.SecurityRole;
                         break;
                     case 1:
-                        SecurityMode = SecurityMode.SocialGroup;
+                        this.SecurityMode = SecurityMode.SocialGroup;
                         break;
                     default:
-                        SecurityMode = SecurityMode.Both;
+                        this.SecurityMode = SecurityMode.Both;
                         break;
                 }
 
@@ -357,13 +357,13 @@ namespace DotNetNuke.Security.Roles
                 switch (status)
                 {
                     case -1:
-                        Status = RoleStatus.Pending;
+                        this.Status = RoleStatus.Pending;
                         break;
                     case 0:
-                        Status = RoleStatus.Disabled;
+                        this.Status = RoleStatus.Disabled;
                         break;
                     default:
-                        Status = RoleStatus.Approved;
+                        this.Status = RoleStatus.Approved;
                         break;
                 }
                 //check for values only relevant to UserRoles
@@ -372,11 +372,11 @@ namespace DotNetNuke.Security.Roles
                 {
                     if (schema.Select("ColumnName = 'UserCount'").Length > 0)
                     {
-                        UserCount = Null.SetNullInteger(dr["UserCount"]);
+                        this.UserCount = Null.SetNullInteger(dr["UserCount"]);
                     }
                     if (schema.Select("ColumnName = 'IsSystemRole'").Length > 0)
                     {
-                        IsSystemRole = Null.SetNullBoolean(dr["IsSystemRole"]);
+                        this.IsSystemRole = Null.SetNullBoolean(dr["IsSystemRole"]);
                     }
                 }
 
@@ -389,7 +389,7 @@ namespace DotNetNuke.Security.Roles
 
 
             //Fill base class fields
-            FillInternal(dr);
+            this.FillInternal(dr);
         }
 
         /// -----------------------------------------------------------------------------
@@ -400,8 +400,8 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public virtual int KeyID
         {
-            get { return RoleID; }
-            set { RoleID = value; }
+            get { return this.RoleID; }
+            set { this.RoleID = value; }
         }
 
         #endregion
@@ -429,55 +429,55 @@ namespace DotNetNuke.Security.Roles
             switch (propName)
             {
                 case "roleid":
-                    return PropertyAccess.FormatString(RoleID.ToString(), format);
+                    return PropertyAccess.FormatString(this.RoleID.ToString(), format);
                 case "groupid":
-                    return PropertyAccess.FormatString(RoleID.ToString(), format);
+                    return PropertyAccess.FormatString(this.RoleID.ToString(), format);
                 case "status":
-                    return PropertyAccess.FormatString(Status.ToString(), format);
+                    return PropertyAccess.FormatString(this.Status.ToString(), format);
                 case "groupname":
-                    return PropertyAccess.FormatString(RoleName, format);
+                    return PropertyAccess.FormatString(this.RoleName, format);
                 case "rolename":
-                    return PropertyAccess.FormatString(RoleName, format);
+                    return PropertyAccess.FormatString(this.RoleName, format);
                 case "groupdescription":
-                    return PropertyAccess.FormatString(Description, format);
+                    return PropertyAccess.FormatString(this.Description, format);
                 case "description":
-                    return PropertyAccess.FormatString(Description, format);
+                    return PropertyAccess.FormatString(this.Description, format);
                 case "usercount":
-                    return PropertyAccess.FormatString(UserCount.ToString(), format);
+                    return PropertyAccess.FormatString(this.UserCount.ToString(), format);
                 case "street":
-                    return PropertyAccess.FormatString(GetString("Street", string.Empty), format);
+                    return PropertyAccess.FormatString(this.GetString("Street", string.Empty), format);
                 case "city":
-                    return PropertyAccess.FormatString(GetString("City", string.Empty), format);
+                    return PropertyAccess.FormatString(this.GetString("City", string.Empty), format);
                 case "region":
-                    return PropertyAccess.FormatString(GetString("Region", string.Empty), format);
+                    return PropertyAccess.FormatString(this.GetString("Region", string.Empty), format);
                 case "country":
-                    return PropertyAccess.FormatString(GetString("Country", string.Empty), format);
+                    return PropertyAccess.FormatString(this.GetString("Country", string.Empty), format);
                 case "postalcode":
-                    return PropertyAccess.FormatString(GetString("PostalCode", string.Empty), format);
+                    return PropertyAccess.FormatString(this.GetString("PostalCode", string.Empty), format);
                 case "website":
-                    return PropertyAccess.FormatString(GetString("Website", string.Empty), format);
+                    return PropertyAccess.FormatString(this.GetString("Website", string.Empty), format);
                 case "datecreated":
-                    return PropertyAccess.FormatString(CreatedOnDate.ToString(), format);
+                    return PropertyAccess.FormatString(this.CreatedOnDate.ToString(), format);
                 case "photourl":
-                    return PropertyAccess.FormatString(FormatUrl(PhotoURL), format);
+                    return PropertyAccess.FormatString(this.FormatUrl(this.PhotoURL), format);
                 case "stat_status":
-                    return PropertyAccess.FormatString(GetString("stat_status", string.Empty), format);
+                    return PropertyAccess.FormatString(this.GetString("stat_status", string.Empty), format);
                 case "stat_photo":
-                    return PropertyAccess.FormatString(GetString("stat_photo", string.Empty), format);
+                    return PropertyAccess.FormatString(this.GetString("stat_photo", string.Empty), format);
                 case "stat_file":
-                    return PropertyAccess.FormatString(GetString("stat_file", string.Empty), format);
+                    return PropertyAccess.FormatString(this.GetString("stat_file", string.Empty), format);
                 case "url":
-                    return PropertyAccess.FormatString(FormatUrl(GetString("URL", string.Empty)), format);
+                    return PropertyAccess.FormatString(this.FormatUrl(this.GetString("URL", string.Empty)), format);
                 case "issystemrole":
-                    return PropertyAccess.Boolean2LocalizedYesNo(IsSystemRole, formatProvider);
+                    return PropertyAccess.Boolean2LocalizedYesNo(this.IsSystemRole, formatProvider);
                 case "grouptype":
-                    return IsPublic ? "Public.Text" : "Private.Text";
+                    return this.IsPublic ? "Public.Text" : "Private.Text";
                 case "groupcreatorname":
-                    return PropertyAccess.FormatString(GetString("GroupCreatorName", string.Empty), format);
+                    return PropertyAccess.FormatString(this.GetString("GroupCreatorName", string.Empty), format);
                 default:
-                    if (Settings.ContainsKey(propertyName))
+                    if (this.Settings.ContainsKey(propertyName))
                     {
-                        return PropertyAccess.FormatString(GetString(propertyName, string.Empty), format);
+                        return PropertyAccess.FormatString(this.GetString(propertyName, string.Empty), format);
                     }
 
                     propertyNotFound = true;
@@ -508,7 +508,7 @@ namespace DotNetNuke.Security.Roles
         public void ReadXml(XmlReader reader)
         {
             //Set status to approved by default
-            Status = RoleStatus.Approved;
+            this.Status = RoleStatus.Approved;
 
             while (reader.Read())
             {
@@ -527,92 +527,92 @@ namespace DotNetNuke.Security.Roles
                         case "role":
                             break;
                         case "rolename":
-                            RoleName = reader.ReadElementContentAsString();
+                            this.RoleName = reader.ReadElementContentAsString();
                             break;
                         case "description":
-                            Description = reader.ReadElementContentAsString();
+                            this.Description = reader.ReadElementContentAsString();
                             break;
                         case "billingfrequency":
-                            BillingFrequency = reader.ReadElementContentAsString();
-                            if (string.IsNullOrEmpty(BillingFrequency))
+                            this.BillingFrequency = reader.ReadElementContentAsString();
+                            if (string.IsNullOrEmpty(this.BillingFrequency))
                             {
-                                BillingFrequency = "N";
+                                this.BillingFrequency = "N";
                             }
                             break;
                         case "billingperiod":
-                            BillingPeriod = reader.ReadElementContentAsInt();
+                            this.BillingPeriod = reader.ReadElementContentAsInt();
                             break;
                         case "servicefee":
-                            ServiceFee = reader.ReadElementContentAsFloat();
-                            if (ServiceFee < 0)
+                            this.ServiceFee = reader.ReadElementContentAsFloat();
+                            if (this.ServiceFee < 0)
                             {
-                                ServiceFee = 0;
+                                this.ServiceFee = 0;
                             }
                             break;
                         case "trialfrequency":
-                            TrialFrequency = reader.ReadElementContentAsString();
-                            if (string.IsNullOrEmpty(TrialFrequency))
+                            this.TrialFrequency = reader.ReadElementContentAsString();
+                            if (string.IsNullOrEmpty(this.TrialFrequency))
                             {
-                                TrialFrequency = "N";
+                                this.TrialFrequency = "N";
                             }
                             break;
                         case "trialperiod":
-                            TrialPeriod = reader.ReadElementContentAsInt();
+                            this.TrialPeriod = reader.ReadElementContentAsInt();
                             break;
                         case "trialfee":
-                            TrialFee = reader.ReadElementContentAsFloat();
-                            if (TrialFee < 0)
+                            this.TrialFee = reader.ReadElementContentAsFloat();
+                            if (this.TrialFee < 0)
                             {
-                                TrialFee = 0;
+                                this.TrialFee = 0;
                             }
                             break;
                         case "ispublic":
-                            IsPublic = reader.ReadElementContentAsBoolean();
+                            this.IsPublic = reader.ReadElementContentAsBoolean();
                             break;
                         case "autoassignment":
-                            AutoAssignment = reader.ReadElementContentAsBoolean();
+                            this.AutoAssignment = reader.ReadElementContentAsBoolean();
                             break;
                         case "rsvpcode":
-                            RSVPCode = reader.ReadElementContentAsString();
+                            this.RSVPCode = reader.ReadElementContentAsString();
                             break;
                         case "iconfile":
-                            IconFile = reader.ReadElementContentAsString();
+                            this.IconFile = reader.ReadElementContentAsString();
                             break;
                         case "issystemrole":
-                            IsSystemRole = reader.ReadElementContentAsBoolean();
+                            this.IsSystemRole = reader.ReadElementContentAsBoolean();
                             break;
                         case "roletype":
                             switch (reader.ReadElementContentAsString())
                             {
                                 case "adminrole":
-                                    _RoleType = RoleType.Administrator;
+                                    this._RoleType = RoleType.Administrator;
                                     break;
                                 case "registeredrole":
-                                    _RoleType = RoleType.RegisteredUser;
+                                    this._RoleType = RoleType.RegisteredUser;
                                     break;
                                 case "subscriberrole":
-                                    _RoleType = RoleType.Subscriber;
+                                    this._RoleType = RoleType.Subscriber;
                                     break;
                                 case "unverifiedrole":
-                                    _RoleType = RoleType.UnverifiedUser;
+                                    this._RoleType = RoleType.UnverifiedUser;
                                     break;
                                 default:
-                                    _RoleType = RoleType.None;
+                                    this._RoleType = RoleType.None;
                                     break;
                             }
-                            _RoleTypeSet = true;
+                            this._RoleTypeSet = true;
                             break;
                         case "securitymode":
                             switch (reader.ReadElementContentAsString())
                             {
                                 case "securityrole":
-                                    SecurityMode = SecurityMode.SecurityRole;
+                                    this.SecurityMode = SecurityMode.SecurityRole;
                                     break;
                                 case "socialgroup":
-                                    SecurityMode = SecurityMode.SocialGroup;
+                                    this.SecurityMode = SecurityMode.SocialGroup;
                                     break;
                                 case "both":
-                                    SecurityMode = SecurityMode.Both;
+                                    this.SecurityMode = SecurityMode.Both;
                                     break;
                             }
                             break;
@@ -620,13 +620,13 @@ namespace DotNetNuke.Security.Roles
                             switch (reader.ReadElementContentAsString())
                             {
                                 case "pending":
-                                    Status = RoleStatus.Pending;
+                                    this.Status = RoleStatus.Pending;
                                     break;
                                 case "disabled":
-                                    Status = RoleStatus.Disabled;
+                                    this.Status = RoleStatus.Disabled;
                                     break;
                                 default:
-                                    Status = RoleStatus.Approved;
+                                    this.Status = RoleStatus.Approved;
                                     break;
                             }
                             break;
@@ -653,20 +653,20 @@ namespace DotNetNuke.Security.Roles
             writer.WriteStartElement("role");
 
             //write out properties
-            writer.WriteElementString("rolename", RoleName);
-            writer.WriteElementString("description", Description);
-            writer.WriteElementString("billingfrequency", BillingFrequency);
-            writer.WriteElementString("billingperiod", BillingPeriod.ToString(CultureInfo.InvariantCulture));
-            writer.WriteElementString("servicefee", ServiceFee.ToString(CultureInfo.InvariantCulture));
-            writer.WriteElementString("trialfrequency", TrialFrequency);
-            writer.WriteElementString("trialperiod", TrialPeriod.ToString(CultureInfo.InvariantCulture));
-            writer.WriteElementString("trialfee", TrialFee.ToString(CultureInfo.InvariantCulture));
-            writer.WriteElementString("ispublic", IsPublic.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
-            writer.WriteElementString("autoassignment", AutoAssignment.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
-            writer.WriteElementString("rsvpcode", RSVPCode);
-            writer.WriteElementString("iconfile", IconFile);
-            writer.WriteElementString("issystemrole", IsSystemRole.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
-            switch (RoleType)
+            writer.WriteElementString("rolename", this.RoleName);
+            writer.WriteElementString("description", this.Description);
+            writer.WriteElementString("billingfrequency", this.BillingFrequency);
+            writer.WriteElementString("billingperiod", this.BillingPeriod.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString("servicefee", this.ServiceFee.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString("trialfrequency", this.TrialFrequency);
+            writer.WriteElementString("trialperiod", this.TrialPeriod.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString("trialfee", this.TrialFee.ToString(CultureInfo.InvariantCulture));
+            writer.WriteElementString("ispublic", this.IsPublic.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
+            writer.WriteElementString("autoassignment", this.AutoAssignment.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
+            writer.WriteElementString("rsvpcode", this.RSVPCode);
+            writer.WriteElementString("iconfile", this.IconFile);
+            writer.WriteElementString("issystemrole", this.IsSystemRole.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
+            switch (this.RoleType)
             {
                 case RoleType.Administrator:
                     writer.WriteElementString("roletype", "adminrole");
@@ -685,7 +685,7 @@ namespace DotNetNuke.Security.Roles
                     break;
             }
 
-            switch (SecurityMode)
+            switch (this.SecurityMode)
             {
                 case SecurityMode.SecurityRole:
                     writer.WriteElementString("securitymode", "securityrole");
@@ -697,7 +697,7 @@ namespace DotNetNuke.Security.Roles
                     writer.WriteElementString("securitymode", "both");
                     break;
             }
-            switch (Status)
+            switch (this.Status)
             {
                 case RoleStatus.Pending:
                     writer.WriteElementString("status", "pending");
@@ -718,13 +718,13 @@ namespace DotNetNuke.Security.Roles
 
         private string GetString(string keyName, string defaultValue)
         {
-            if (Settings == null)
+            if (this.Settings == null)
             {
                 return defaultValue;
             }
-            if (Settings.ContainsKey(keyName))
+            if (this.Settings.ContainsKey(keyName))
             {
-                return Settings[keyName];
+                return this.Settings[keyName];
             }
 
             return defaultValue;

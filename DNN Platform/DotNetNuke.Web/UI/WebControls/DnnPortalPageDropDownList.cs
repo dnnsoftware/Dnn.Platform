@@ -25,13 +25,13 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnInit(e);
 
-            SelectItemDefaultText = Localization.GetString("DropDownList.SelectWebPageDefaultText", Localization.SharedResourceFile);
-            Services.GetTreeMethod = "ItemListService/GetPagesInPortalGroup";
-            Services.GetNodeDescendantsMethod = "ItemListService/GetPageDescendantsInPortalGroup";
-            Services.SearchTreeMethod = "ItemListService/SearchPagesInPortalGroup";
-            Services.GetTreeWithNodeMethod = "ItemListService/GetTreePathForPageInPortalGroup";
-            Services.SortTreeMethod = "ItemListService/SortPagesInPortalGroup";
-            Services.ServiceRoot = "InternalServices";
+            this.SelectItemDefaultText = Localization.GetString("DropDownList.SelectWebPageDefaultText", Localization.SharedResourceFile);
+            this.Services.GetTreeMethod = "ItemListService/GetPagesInPortalGroup";
+            this.Services.GetNodeDescendantsMethod = "ItemListService/GetPageDescendantsInPortalGroup";
+            this.Services.SearchTreeMethod = "ItemListService/SearchPagesInPortalGroup";
+            this.Services.GetTreeWithNodeMethod = "ItemListService/GetTreePathForPageInPortalGroup";
+            this.Services.SortTreeMethod = "ItemListService/SortPagesInPortalGroup";
+            this.Services.ServiceRoot = "InternalServices";
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -48,12 +48,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                var pageId = SelectedItemValueAsInt;
-                return (pageId == Null.NullInteger) ? null : TabController.Instance.GetTab(pageId, _portalId.Value, false);
+                var pageId = this.SelectedItemValueAsInt;
+                return (pageId == Null.NullInteger) ? null : TabController.Instance.GetTab(pageId, this._portalId.Value, false);
             }
             set
             {
-                SelectedItem = (value != null) ? new ListItem() { Text = value.IndentedTabName, Value = value.TabID.ToString(CultureInfo.InvariantCulture) } : null;
+                this.SelectedItem = (value != null) ? new ListItem() { Text = value.IndentedTabName, Value = value.TabID.ToString(CultureInfo.InvariantCulture) } : null;
             }
         }
 

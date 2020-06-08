@@ -21,7 +21,7 @@ namespace Dnn.PersonaBar.Library.DTO
 
         public UserPermission()
         {
-            Permissions = new List<Permission>();
+            this.Permissions = new List<Permission>();
         }
     }
 }

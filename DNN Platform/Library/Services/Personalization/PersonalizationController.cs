@@ -24,14 +24,14 @@ namespace DotNetNuke.Services.Personalization
         //default implementation relies on HTTPContext
         public void LoadProfile(HttpContext httpContext, int userId, int portalId)
         {
-            LoadProfile(new HttpContextWrapper(httpContext), userId, portalId);
+            this.LoadProfile(new HttpContextWrapper(httpContext), userId, portalId);
         }
 
         public void LoadProfile(HttpContextBase httpContext, int userId, int portalId)
         {
             if (HttpContext.Current.Items["Personalization"] == null)
             {
-                httpContext.Items.Add("Personalization", LoadProfile(userId, portalId));
+                httpContext.Items.Add("Personalization", this.LoadProfile(userId, portalId));
             }
         }
 
@@ -102,14 +102,14 @@ namespace DotNetNuke.Services.Personalization
 
         public void SaveProfile(PersonalizationInfo personalization)
         {
-            SaveProfile(personalization, personalization.UserId, personalization.PortalId);
+            this.SaveProfile(personalization, personalization.UserId, personalization.PortalId);
         }
 
         //default implementation relies on HTTPContext
         public void SaveProfile(HttpContext httpContext, int userId, int portalId)
         {
             var objPersonalization = (PersonalizationInfo) httpContext.Items["Personalization"];
-            SaveProfile(objPersonalization, userId, portalId);
+            this.SaveProfile(objPersonalization, userId, portalId);
         }
 
         //override allows for manipulation of PersonalizationInfo outside of HTTPContext

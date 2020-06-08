@@ -289,8 +289,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string Identity
 		{
-			get { return m_identity; }
-			set { m_identity = value; }
+			get { return this.m_identity; }
+			set { this.m_identity = value; }
 		}
 
 		/// <summary>
@@ -303,8 +303,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public SyslogFacility Facility
 		{
-			get { return m_facility; }
-			set { m_facility = value; }
+			get { return this.m_facility; }
+			set { this.m_facility = value; }
 		}
 		
 		#endregion // Public Instance Properties
@@ -320,7 +320,7 @@ namespace log4net.Appender
 		/// </remarks>
 		public void AddMapping(LevelSeverity mapping)
 		{
-			m_levelMapping.Add(mapping);
+			this.m_levelMapping.Add(mapping);
 		}
 
 		#region IOptionHandler Implementation
@@ -348,9 +348,9 @@ namespace log4net.Appender
 		{
 			base.ActivateOptions();
 			
-			m_levelMapping.ActivateOptions();
+			this.m_levelMapping.ActivateOptions();
 
-			string identString = m_identity;
+			string identString = this.m_identity;
 			if (identString == null)
 			{
 				// Set to app name by default
@@ -360,10 +360,10 @@ namespace log4net.Appender
 			// create the native heap ansi string. Note this is a copy of our string
 			// so we do not need to hold on to the string itself, holding on to the
 			// handle will keep the heap ansi string alive.
-			m_handleToIdentity = Marshal.StringToHGlobalAnsi(identString);
+			this.m_handleToIdentity = Marshal.StringToHGlobalAnsi(identString);
 
 			// open syslog
-			openlog(m_handleToIdentity, 1, m_facility);
+			openlog(this.m_handleToIdentity, 1, this.m_facility);
 		}
 
 		#endregion // IOptionHandler Implementation
@@ -390,8 +390,8 @@ namespace log4net.Appender
 #endif
         protected override void Append(LoggingEvent loggingEvent) 
 		{
-			int priority = GeneratePriority(m_facility, GetSeverity(loggingEvent.Level));
-			string message = RenderLoggingEvent(loggingEvent);
+			int priority = GeneratePriority(this.m_facility, this.GetSeverity(loggingEvent.Level));
+			string message = this.RenderLoggingEvent(loggingEvent);
 
 			// Call the local libc syslog method
 			// The second argument is a printf style format string
@@ -423,10 +423,10 @@ namespace log4net.Appender
 				// Ignore dll not found at this point
 			}
 		
-			if (m_handleToIdentity != IntPtr.Zero)
+			if (this.m_handleToIdentity != IntPtr.Zero)
 			{
 				// free global ident
-				Marshal.FreeHGlobal(m_handleToIdentity);
+				Marshal.FreeHGlobal(this.m_handleToIdentity);
 			}
 		}
 
@@ -460,7 +460,7 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual protected SyslogSeverity GetSeverity(Level level)
 		{
-			LevelSeverity levelSeverity = m_levelMapping.Lookup(level) as LevelSeverity;
+			LevelSeverity levelSeverity = this.m_levelMapping.Lookup(level) as LevelSeverity;
 			if (levelSeverity != null)
 			{
 				return levelSeverity.Severity;
@@ -599,8 +599,8 @@ namespace log4net.Appender
 			/// </remarks>
 			public SyslogSeverity Severity
 			{
-				get { return m_severity; }
-				set { m_severity = value; }
+				get { return this.m_severity; }
+				set { this.m_severity = value; }
 			}
 		}
 

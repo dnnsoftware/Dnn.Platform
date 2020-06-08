@@ -38,14 +38,14 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
             if (timeLapse != Null.NullInteger)
             {
                 var str = Null.NullString;
-                var strPrefix = Localization.GetString("TimeLapsePrefix", LocalResourcesFile);
-                var strSec = Localization.GetString("Second", LocalResourcesFile);
-                var strMn = Localization.GetString("Minute", LocalResourcesFile);
-                var strHour = Localization.GetString("Hour", LocalResourcesFile);
-                var strDay = Localization.GetString("Day", LocalResourcesFile);
-                var strWeek = Localization.GetString("Week", LocalResourcesFile);
-                var strMonth = Localization.GetString("Month", LocalResourcesFile);
-                var strYear = Localization.GetString("Year", LocalResourcesFile);
+                var strPrefix = Localization.GetString("TimeLapsePrefix", this.LocalResourcesFile);
+                var strSec = Localization.GetString("Second", this.LocalResourcesFile);
+                var strMn = Localization.GetString("Minute", this.LocalResourcesFile);
+                var strHour = Localization.GetString("Hour", this.LocalResourcesFile);
+                var strDay = Localization.GetString("Day", this.LocalResourcesFile);
+                var strWeek = Localization.GetString("Week", this.LocalResourcesFile);
+                var strMonth = Localization.GetString("Month", this.LocalResourcesFile);
+                var strYear = Localization.GetString("Year", this.LocalResourcesFile);
                 var strSecs = Localization.GetString("Seconds");
                 var strMns = Localization.GetString("Minutes");
                 var strHours = Localization.GetString("Hours");
@@ -79,12 +79,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
                 }
                 return str;
             }
-            return Localization.GetString("n/a", LocalResourcesFile);
+            return Localization.GetString("n/a", this.LocalResourcesFile);
         }
 
         public void StopSchedule()
         {
-            SchedulingProvider.Instance().Halt(Localization.GetString("ManuallyStopped", LocalResourcesFile));
+            SchedulingProvider.Instance().Halt(Localization.GetString("ManuallyStopped", this.LocalResourcesFile));
         }
 
         public ScheduleItem CreateScheduleItem(string typeFullName, string friendlyName, int timeLapse, string timeLapseMeasurement,

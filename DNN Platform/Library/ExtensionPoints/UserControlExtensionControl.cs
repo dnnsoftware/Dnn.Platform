@@ -15,9 +15,9 @@ namespace DotNetNuke.ExtensionPoints
     {
         private void LoadControl(IUserControlExtensionPoint extension)
         {
-            var control = Page.LoadControl(extension.UserControlSrc);
+            var control = this.Page.LoadControl(extension.UserControlSrc);
             control.ID = Path.GetFileNameWithoutExtension(extension.UserControlSrc);
-            Controls.Add(control);
+            this.Controls.Add(control);
         }
 
         protected override void OnInit(EventArgs e)
@@ -25,23 +25,23 @@ namespace DotNetNuke.ExtensionPoints
             base.OnInit(e);
             var extensionPointManager = new ExtensionPointManager();
             
-            if (!String.IsNullOrEmpty(Name))
+            if (!String.IsNullOrEmpty(this.Name))
             {
-                var extension = extensionPointManager.GetUserControlExtensionPointFirstByPriority(Module, Name);
-                LoadControl(extension);
+                var extension = extensionPointManager.GetUserControlExtensionPointFirstByPriority(this.Module, this.Name);
+                this.LoadControl(extension);
             }
             else
             {
-                foreach (var extension in extensionPointManager.GetUserControlExtensionPoints(Module, Group))
+                foreach (var extension in extensionPointManager.GetUserControlExtensionPoints(this.Module, this.Group))
                 {
-                    LoadControl(extension);
+                    this.LoadControl(extension);
                 }
             }
         }
 
         public void BindAction(int portalId, int tabId, int moduleId)
         {
-            foreach (var control in Controls)
+            foreach (var control in this.Controls)
             {
                 var actionsControl = control as IUserControlActions;
                 if (actionsControl != null)
@@ -53,7 +53,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public void SaveAction(int portalId, int tabId, int moduleId)
         {
-            foreach (var control in Controls)
+            foreach (var control in this.Controls)
             {
                 var actionsControl = control as IUserControlActions;
                 if (actionsControl != null)
@@ -65,7 +65,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public void CancelAction(int portalId, int tabId, int moduleId)
         {
-            foreach (var control in Controls)
+            foreach (var control in this.Controls)
             {
                 var actionsControl = control as IUserControlActions;
                 if (actionsControl != null)

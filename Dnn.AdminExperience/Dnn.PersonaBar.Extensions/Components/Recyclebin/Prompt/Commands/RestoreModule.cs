@@ -27,17 +27,17 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             
-            ModuleId = GetFlagValue(FlagId, "Module Id", -1, true, true, true);
-            PageId = GetFlagValue(FlagPageId, "Page Id", -1, true, false, true);
+            this.ModuleId = this.GetFlagValue(FlagId, "Module Id", -1, true, true, true);
+            this.PageId = this.GetFlagValue(FlagPageId, "Page Id", -1, true, false, true);
         }
 
         public override ConsoleResultModel Run()
         {
             string message;
-            var restored = RecyclebinController.Instance.RestoreModule(ModuleId, PageId, out message);
+            var restored = RecyclebinController.Instance.RestoreModule(this.ModuleId, this.PageId, out message);
             return !restored
                 ? new ConsoleErrorResultModel(message)
-                : new ConsoleResultModel(string.Format(LocalizeString("Prompt_ModuleRestoredSuccessfully"), ModuleId)) { Records = 1 };
+                : new ConsoleResultModel(string.Format(this.LocalizeString("Prompt_ModuleRestoredSuccessfully"), this.ModuleId)) { Records = 1 };
         }
     }
 }

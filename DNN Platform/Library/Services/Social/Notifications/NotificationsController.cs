@@ -68,8 +68,8 @@ namespace DotNetNuke.Services.Social.Notifications
             Requires.NotNull("dataService", dataService);
             Requires.NotNull("messagingDataService", messagingDataService);
 
-            _dataService = dataService;
-            _messagingDataService = messagingDataService;
+            this._dataService = dataService;
+            this._messagingDataService = messagingDataService;
         }
 
         #endregion
@@ -97,12 +97,12 @@ namespace DotNetNuke.Services.Social.Notifications
 
             foreach (var action in actions)
             {
-                action.NotificationTypeActionId = _dataService.AddNotificationTypeAction(notificationTypeId,
+                action.NotificationTypeActionId = this._dataService.AddNotificationTypeAction(notificationTypeId,
                                                                                          action.NameResourceKey,
                                                                                          action.DescriptionResourceKey,
                                                                                          action.ConfirmResourceKey,
                                                                                          action.APICall,
-                                                                                         GetCurrentUserId());
+                                                                                         this.GetCurrentUserId());
                 action.NotificationTypeId = notificationTypeId;
             }
         }
@@ -119,7 +119,7 @@ namespace DotNetNuke.Services.Social.Notifications
                 return (int)cacheObject;
             }
 
-            var count = _dataService.CountNotifications(userId, portalId);
+            var count = this._dataService.CountNotifications(userId, portalId);
             cache.Insert(cacheKey, count, (DNNCacheDependency)null,
                 DateTime.Now.AddSeconds(DataCache.NotificationsCacheTimeInSec), System.Web.Caching.Cache.NoSlidingExpiration);
             return count;
@@ -137,7 +137,7 @@ namespace DotNetNuke.Services.Social.Notifications
 
             if (notification.SenderUserID < 1)
             {
-                notification.SenderUserID = GetAdminUser().UserID;
+                notification.SenderUserID = this.GetAdminUser().UserID;
             }
 
             if (string.IsNullOrEmpty(notification.Subject) && string.IsNullOrEmpty(notification.Body))
@@ -182,10 +182,10 @@ namespace DotNetNuke.Services.Social.Notifications
             notification.To = sbTo.ToString().Trim(',');
             if (notification.ExpirationDate != new DateTime())
             {
-                notification.ExpirationDate = GetExpirationDate(notification.NotificationTypeID);
+                notification.ExpirationDate = this.GetExpirationDate(notification.NotificationTypeID);
             }
 
-            notification.NotificationID = _dataService.SendNotification(notification, pid);
+            notification.NotificationID = this._dataService.SendNotification(notification, pid);
 
             //send message to Roles
             if (roles != null)
@@ -196,7 +196,7 @@ namespace DotNetNuke.Services.Social.Notifications
                     .Aggregate(roleIds, (current, roleId) => current + (roleId + ","))
                     .Trim(',');
 
-                _messagingDataService.CreateMessageRecipientsForRole(
+                this._messagingDataService.CreateMessageRecipientsForRole(
                     notification.NotificationID,
                     roleIds,
                     UserController.Instance.GetCurrentUserInfo().UserID);
@@ -220,7 +220,7 @@ namespace DotNetNuke.Services.Social.Notifications
 
             foreach (var recipient in recipients)
             {
-                _messagingDataService.SaveMessageRecipient(
+                this._messagingDataService.SaveMessageRecipient(
                     recipient,
                     UserController.Instance.GetCurrentUserInfo().UserID);
             }
@@ -230,7 +230,7 @@ namespace DotNetNuke.Services.Social.Notifications
             {
                 foreach (var messageRecipient in InternalMessagingController.Instance.GetMessageRecipients(notification.NotificationID))
                 {
-                    MarkReadyForToast(notification, messageRecipient.UserID);
+                    this.MarkReadyForToast(notification, messageRecipient.UserID);
                 }
             }
         }
@@ -245,11 +245,11 @@ namespace DotNetNuke.Services.Social.Notifications
                 notificationType.DesktopModuleId = Null.NullInteger;
             }
 
-            notificationType.NotificationTypeId = _dataService.CreateNotificationType(notificationType.Name,
+            notificationType.NotificationTypeId = this._dataService.CreateNotificationType(notificationType.Name,
                                                                                       notificationType.Description,
                                                                                       (int)notificationType.TimeToLive.TotalMinutes == 0 ? Null.NullInteger : (int)notificationType.TimeToLive.TotalMinutes,
                                                                                       notificationType.DesktopModuleId,
-                                                                                      GetCurrentUserId(), 
+                                                                                      this.GetCurrentUserId(), 
                                                                                       notificationType.IsTask);
         }
 
@@ -260,13 +260,13 @@ namespace DotNetNuke.Services.Social.Notifications
             {
                 DataCache.RemoveCache(string.Format(ToastsCacheKey, recipient.UserID));
             }
-            _dataService.DeleteNotification(notificationId);
+            this._dataService.DeleteNotification(notificationId);
         }
 
         public int DeleteUserNotifications(UserInfo user)
         {
             DataCache.RemoveCache(string.Format(ToastsCacheKey, user.UserID));
-            return _dataService.DeleteUserNotifications(user.UserID, user.PortalID);
+            return this._dataService.DeleteUserNotifications(user.UserID, user.PortalID);
         }
 
         public virtual void DeleteNotificationRecipient(int notificationId, int userId)
@@ -276,7 +276,7 @@ namespace DotNetNuke.Services.Social.Notifications
             var recipients = InternalMessagingController.Instance.GetMessageRecipients(notificationId);
             if (recipients.Count == 0)
             {
-                DeleteNotification(notificationId);
+                this.DeleteNotification(notificationId);
             }
         }
 
@@ -284,40 +284,40 @@ namespace DotNetNuke.Services.Social.Notifications
         {
             foreach (var recipient in InternalMessagingController.Instance.GetMessageRecipients(notificationId))
             {
-                DeleteNotificationRecipient(notificationId, recipient.UserID);
+                this.DeleteNotificationRecipient(notificationId, recipient.UserID);
             }
         }
 
         public virtual void DeleteNotificationRecipient(int notificationTypeId, string context, int userId)
         {
-            foreach (var notification in GetNotificationByContext(notificationTypeId, context))
+            foreach (var notification in this.GetNotificationByContext(notificationTypeId, context))
             {
-                DeleteNotificationRecipient(notification.NotificationID, userId);
+                this.DeleteNotificationRecipient(notification.NotificationID, userId);
             }
         }
 
         public Notification GetNotification(int notificationId)
         {
-            return CBO.FillObject<Notification>(_dataService.GetNotification(notificationId));
+            return CBO.FillObject<Notification>(this._dataService.GetNotification(notificationId));
         }
 
         public virtual IList<Notification> GetNotificationByContext(int notificationTypeId, string context)
         {
-            return CBO.FillCollection<Notification>(_dataService.GetNotificationByContext(notificationTypeId, context));
+            return CBO.FillCollection<Notification>(this._dataService.GetNotificationByContext(notificationTypeId, context));
         }
 
         public virtual void DeleteNotificationType(int notificationTypeId)
         {
-            _dataService.DeleteNotificationType(notificationTypeId);
+            this._dataService.DeleteNotificationType(notificationTypeId);
 
-            RemoveNotificationTypeCache();
+            this.RemoveNotificationTypeCache();
         }
 
         public virtual void DeleteNotificationTypeAction(int notificationTypeActionId)
         {
-            _dataService.DeleteNotificationTypeAction(notificationTypeActionId);
+            this._dataService.DeleteNotificationTypeAction(notificationTypeActionId);
 
-            RemoveNotificationTypeActionCache();
+            this.RemoveNotificationTypeActionCache();
         }
 
         public virtual IList<Notification> GetNotifications(int userId, int portalId, int afterNotificationId, int numberOfRecords)
@@ -329,14 +329,14 @@ namespace DotNetNuke.Services.Social.Notifications
             }
             return userId <= 0
                 ? new List<Notification>(0)
-                : CBO.FillCollection<Notification>(_dataService.GetNotifications(userId, pid, afterNotificationId, numberOfRecords));
+                : CBO.FillCollection<Notification>(this._dataService.GetNotifications(userId, pid, afterNotificationId, numberOfRecords));
         }
 
         public virtual NotificationType GetNotificationType(int notificationTypeId)
         {
             var notificationTypeCacheKey = string.Format(DataCache.NotificationTypesCacheKey, notificationTypeId);
             var cacheItemArgs = new CacheItemArgs(notificationTypeCacheKey, DataCache.NotificationTypesTimeOut, DataCache.NotificationTypesCachePriority, notificationTypeId);
-            return CBO.GetCachedObject<NotificationType>(cacheItemArgs, GetNotificationTypeCallBack);
+            return CBO.GetCachedObject<NotificationType>(cacheItemArgs, this.GetNotificationTypeCallBack);
         }
 
         public virtual NotificationType GetNotificationType(string name)
@@ -345,14 +345,14 @@ namespace DotNetNuke.Services.Social.Notifications
 
             var notificationTypeCacheKey = string.Format(DataCache.NotificationTypesCacheKey, name);
             var cacheItemArgs = new CacheItemArgs(notificationTypeCacheKey, DataCache.NotificationTypesTimeOut, DataCache.NotificationTypesCachePriority, name);
-            return CBO.GetCachedObject<NotificationType>(cacheItemArgs, GetNotificationTypeByNameCallBack);
+            return CBO.GetCachedObject<NotificationType>(cacheItemArgs, this.GetNotificationTypeByNameCallBack);
         }
 
         public virtual NotificationTypeAction GetNotificationTypeAction(int notificationTypeActionId)
         {
             var notificationTypeActionCacheKey = string.Format(DataCache.NotificationTypeActionsCacheKey, notificationTypeActionId);
             var cacheItemArgs = new CacheItemArgs(notificationTypeActionCacheKey, DataCache.NotificationTypeActionsTimeOut, DataCache.NotificationTypeActionsPriority, notificationTypeActionId);
-            return CBO.GetCachedObject<NotificationTypeAction>(cacheItemArgs, GetNotificationTypeActionCallBack);
+            return CBO.GetCachedObject<NotificationTypeAction>(cacheItemArgs, this.GetNotificationTypeActionCallBack);
         }
 
         public virtual NotificationTypeAction GetNotificationTypeAction(int notificationTypeId, string name)
@@ -361,12 +361,12 @@ namespace DotNetNuke.Services.Social.Notifications
 
             var notificationTypeActionCacheKey = string.Format(DataCache.NotificationTypeActionsByNameCacheKey, notificationTypeId, name);
             var cacheItemArgs = new CacheItemArgs(notificationTypeActionCacheKey, DataCache.NotificationTypeActionsTimeOut, DataCache.NotificationTypeActionsPriority, notificationTypeId, name);
-            return CBO.GetCachedObject<NotificationTypeAction>(cacheItemArgs, GetNotificationTypeActionByNameCallBack);
+            return CBO.GetCachedObject<NotificationTypeAction>(cacheItemArgs, this.GetNotificationTypeActionByNameCallBack);
         }
 
         public virtual IList<NotificationTypeAction> GetNotificationTypeActions(int notificationTypeId)
         {
-            return CBO.FillCollection<NotificationTypeAction>(_dataService.GetNotificationTypeActions(notificationTypeId));
+            return CBO.FillCollection<NotificationTypeAction>(this._dataService.GetNotificationTypeActions(notificationTypeId));
         }
 
         #endregion
@@ -375,23 +375,23 @@ namespace DotNetNuke.Services.Social.Notifications
 
 		public bool IsToastPending(int notificationId)
 		{
-			return _dataService.IsToastPending(notificationId);
+			return this._dataService.IsToastPending(notificationId);
 		}
 
 		public void MarkReadyForToast(Notification notification, UserInfo userInfo)
 		{
-			MarkReadyForToast(notification, userInfo.UserID);
+			this.MarkReadyForToast(notification, userInfo.UserID);
 		}
 
         public void MarkReadyForToast(Notification notification, int userId)
         {
             DataCache.RemoveCache(string.Format(ToastsCacheKey, userId));
-            _dataService.MarkReadyForToast(notification.NotificationID, userId);
+            this._dataService.MarkReadyForToast(notification.NotificationID, userId);
         }
 
 		public void MarkToastSent(int notificationId, int userId)
 		{
-			_dataService.MarkToastSent(notificationId, userId);
+			this._dataService.MarkToastSent(notificationId, userId);
 		}
 
         public IList<Notification> GetToasts(UserInfo userInfo)
@@ -401,10 +401,10 @@ namespace DotNetNuke.Services.Social.Notifications
 
             if (toasts == null)
             {
-                toasts = CBO.FillCollection<Notification>(_dataService.GetToasts(userInfo.UserID, userInfo.PortalID));
+                toasts = CBO.FillCollection<Notification>(this._dataService.GetToasts(userInfo.UserID, userInfo.PortalID));
                 foreach (var message in toasts)
                 {
-                    _dataService.MarkToastSent(message.NotificationID, userInfo.UserID);
+                    this._dataService.MarkToastSent(message.NotificationID, userInfo.UserID);
                 }
                 //Set the cache to empty toasts object because we don't want to make calls to database everytime for empty objects.
                 //This empty object cache would be cleared by MarkReadyForToast emthod when a new notification arrives for the user.
@@ -434,7 +434,7 @@ namespace DotNetNuke.Services.Social.Notifications
 
         internal virtual DateTime GetExpirationDate(int notificationTypeId)
         {
-            var notificationType = GetNotificationType(notificationTypeId);
+            var notificationType = this.GetNotificationType(notificationTypeId);
 
             return notificationType.TimeToLive.TotalMinutes > 0
                 ? DateTime.UtcNow.AddMinutes(notificationType.TimeToLive.TotalMinutes)
@@ -444,26 +444,26 @@ namespace DotNetNuke.Services.Social.Notifications
         internal virtual object GetNotificationTypeActionCallBack(CacheItemArgs cacheItemArgs)
         {
             var notificationTypeActionId = (int)cacheItemArgs.ParamList[0];
-            return CBO.FillObject<NotificationTypeAction>(_dataService.GetNotificationTypeAction(notificationTypeActionId));
+            return CBO.FillObject<NotificationTypeAction>(this._dataService.GetNotificationTypeAction(notificationTypeActionId));
         }
 
         internal virtual object GetNotificationTypeActionByNameCallBack(CacheItemArgs cacheItemArgs)
         {
             var notificationTypeId = (int)cacheItemArgs.ParamList[0];
             var name = cacheItemArgs.ParamList[1].ToString();
-            return CBO.FillObject<NotificationTypeAction>(_dataService.GetNotificationTypeActionByName(notificationTypeId, name));
+            return CBO.FillObject<NotificationTypeAction>(this._dataService.GetNotificationTypeActionByName(notificationTypeId, name));
         }
 
         internal virtual object GetNotificationTypeByNameCallBack(CacheItemArgs cacheItemArgs)
         {
             var notificationName = cacheItemArgs.ParamList[0].ToString();
-            return CBO.FillObject<NotificationType>(_dataService.GetNotificationTypeByName(notificationName));
+            return CBO.FillObject<NotificationType>(this._dataService.GetNotificationTypeByName(notificationName));
         }
 
         internal virtual object GetNotificationTypeCallBack(CacheItemArgs cacheItemArgs)
         {
             var notificationTypeId = (int)cacheItemArgs.ParamList[0];
-            return CBO.FillObject<NotificationType>(_dataService.GetNotificationType(notificationTypeId));
+            return CBO.FillObject<NotificationType>(this._dataService.GetNotificationType(notificationTypeId));
         }
 
         internal virtual string GetPortalSetting(string settingName, int portalId, string defaultValue)

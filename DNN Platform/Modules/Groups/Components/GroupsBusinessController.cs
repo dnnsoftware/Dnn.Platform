@@ -16,10 +16,10 @@ namespace DotNetNuke.Modules.Groups.Components
             switch (version)
             {
                 case "06.02.00":
-                    AddNotificationTypes();
+                    this.AddNotificationTypes();
                     break;
                 case "06.02.04":
-                    RemoveRejectActionForCreatedNotification();
+                    this.RemoveRejectActionForCreatedNotification();
                     break;
                 case "07.00.00":
                     ConvertNotificationTypeActionsFor700();

@@ -27,11 +27,11 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return GetAttributeValue(attributeName);
+                return this.GetAttributeValue(attributeName);
             }
             set
             {
-                Attributes[attributeName] = value;
+                this.Attributes[attributeName] = value;
             }
         }
     }

@@ -26,7 +26,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// <summary>
         /// Package file name. It is just fake name for UI representation
         /// </summary>
-        public string FileName => PackageId;
+        public string FileName => this.PackageId;
 
         /// <summary>
         /// DateTime when the package was exported.
@@ -36,7 +36,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// <summary>
         /// Formatted DateTime when the package was exported.
         /// </summary>
-        public string ExporTimeString => Util.GetDateTimeString(ExporTime);
+        public string ExporTimeString => Util.GetDateTimeString(this.ExporTime);
 
         /// <summary>
         /// The portal from which the exported package was created
@@ -51,7 +51,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// <summary>
         /// Path to the thumbnail image for the package.
         /// </summary>
-        public string Thumb => PackageId + ".jpg";
+        public string Thumb => this.PackageId + ".jpg";
 
         /// <summary>
         /// Complete summary of import package
@@ -61,8 +61,8 @@ namespace Dnn.ExportImport.Components.Dto
         public void ConvertToLocal(UserInfo userInfo)
         {
             if (userInfo == null) return;
-            ExporTime = Util.ToLocalDateTime(ExporTime, userInfo);
-            Summary?.ConvertToLocal(userInfo);
+            this.ExporTime = Util.ToLocalDateTime(this.ExporTime, userInfo);
+            this.Summary?.ConvertToLocal(userInfo);
         }
     }
 }

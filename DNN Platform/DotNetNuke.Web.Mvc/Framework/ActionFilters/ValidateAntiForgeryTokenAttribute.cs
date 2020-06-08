@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                         form.AllKeys.Contains("__RequestVerificationToken") ? form.GetValues("__RequestVerificationToken").FirstOrDefault(): null
                         );
 
-                    var cookieValue = GetAntiForgeryCookieValue(httpContext);
+                    var cookieValue = this.GetAntiForgeryCookieValue(httpContext);
                     if (token != null)
                     {
                         AntiForgery.Instance.Validate(cookieValue, token);
@@ -73,7 +73,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            if (!IsAuthenticated(httpContext))
+            if (!this.IsAuthenticated(httpContext))
             {
                 return false;
             }

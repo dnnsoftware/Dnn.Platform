@@ -30,25 +30,25 @@ namespace DotNetNuke.Authentication.LiveConnect
 
         protected override UserData GetCurrentUser()
         {
-            return OAuthClient.GetCurrentUser<LiveUserData>();
+            return this.OAuthClient.GetCurrentUser<LiveUserData>();
         }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            loginButton.Click += loginButton_Click;
-            registerButton.Click += loginButton_Click;
+            this.loginButton.Click += this.loginButton_Click;
+            this.registerButton.Click += this.loginButton_Click;
 
-            OAuthClient = new LiveClient(PortalId, Mode);
+            this.OAuthClient = new LiveClient(this.PortalId, this.Mode);
 
-            loginItem.Visible = (Mode == AuthMode.Login);
-            registerItem.Visible = (Mode == AuthMode.Register);
+            this.loginItem.Visible = (this.Mode == AuthMode.Login);
+            this.registerItem.Visible = (this.Mode == AuthMode.Register);
         }
 
         private void loginButton_Click(object sender, EventArgs e)
         {
-            AuthorisationResult result = OAuthClient.Authorize();
+            AuthorisationResult result = this.OAuthClient.Authorize();
             if (result == AuthorisationResult.Denied)
             {
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);

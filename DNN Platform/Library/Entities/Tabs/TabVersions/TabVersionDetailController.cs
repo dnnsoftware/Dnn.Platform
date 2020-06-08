@@ -18,7 +18,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         #region Public Methods
         public TabVersionDetail GetTabVersionDetail(int tabVersionDetailId, int tabVersionId, bool ignoreCache = false)
         {
-            return GetTabVersionDetails(tabVersionId, ignoreCache).SingleOrDefault(tvd => tvd.TabVersionDetailId == tabVersionDetailId);
+            return this.GetTabVersionDetails(tabVersionId, ignoreCache).SingleOrDefault(tvd => tvd.TabVersionDetailId == tabVersionDetailId);
         }
         
         public IEnumerable<TabVersionDetail> GetTabVersionDetails(int tabVersionId, bool ignoreCache = false)
@@ -42,12 +42,12 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         public void SaveTabVersionDetail(TabVersionDetail tabVersionDetail)
         {
-            SaveTabVersionDetail(tabVersionDetail, tabVersionDetail.CreatedByUserID, tabVersionDetail.LastModifiedByUserID);            
+            this.SaveTabVersionDetail(tabVersionDetail, tabVersionDetail.CreatedByUserID, tabVersionDetail.LastModifiedByUserID);            
         }
 
         public void SaveTabVersionDetail(TabVersionDetail tabVersionDetail, int createdByUserID)
         {
-            SaveTabVersionDetail(tabVersionDetail, createdByUserID, createdByUserID);
+            this.SaveTabVersionDetail(tabVersionDetail, createdByUserID, createdByUserID);
         }
         
         public void SaveTabVersionDetail(TabVersionDetail tabVersionDetail, int createdByUserID, int modifiedByUserID)
@@ -56,13 +56,13 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 tabVersionDetail.TabVersionId, tabVersionDetail.ModuleId, tabVersionDetail.ModuleVersion,
                 tabVersionDetail.PaneName, tabVersionDetail.ModuleOrder, (int)tabVersionDetail.Action, createdByUserID,
                 modifiedByUserID);
-            ClearCache(tabVersionDetail.TabVersionId);
+            this.ClearCache(tabVersionDetail.TabVersionId);
         }
 
         public void DeleteTabVersionDetail(int tabVersionId, int tabVersionDetailId)
         {
             Provider.DeleteTabVersionDetail(tabVersionDetailId);
-            ClearCache(tabVersionId);
+            this.ClearCache(tabVersionId);
         }
 
         public void ClearCache(int tabVersionId)

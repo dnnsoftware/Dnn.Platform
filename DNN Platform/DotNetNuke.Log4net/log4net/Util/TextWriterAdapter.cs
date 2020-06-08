@@ -65,7 +65,7 @@ namespace log4net.Util
 		/// </remarks>
 		protected TextWriterAdapter(TextWriter writer) :  base(CultureInfo.InvariantCulture)
 		{
-			m_writer = writer;
+			this.m_writer = writer;
 		}
 
 		#endregion
@@ -85,8 +85,8 @@ namespace log4net.Util
 		/// </remarks>
 		protected TextWriter Writer 
 		{
-			get { return m_writer; }
-			set { m_writer = value; }
+			get { return this.m_writer; }
+			set { this.m_writer = value; }
 		}
 
 		#endregion Protected Instance Properties
@@ -106,7 +106,7 @@ namespace log4net.Util
 		/// </remarks>
 		override public Encoding Encoding 
 		{
-			get { return m_writer.Encoding; }
+			get { return this.m_writer.Encoding; }
 		}
 
 		/// <summary>
@@ -122,7 +122,7 @@ namespace log4net.Util
 		/// </remarks>
 		override public IFormatProvider FormatProvider 
 		{
-			get { return m_writer.FormatProvider; }
+			get { return this.m_writer.FormatProvider; }
 		}
 
 		/// <summary>
@@ -138,8 +138,8 @@ namespace log4net.Util
 		/// </remarks>
 		override public String NewLine 
 		{
-			get { return m_writer.NewLine; }
-			set { m_writer.NewLine = value; }
+			get { return this.m_writer.NewLine; }
+			set { this.m_writer.NewLine = value; }
 		}
 
 		#endregion
@@ -161,7 +161,7 @@ namespace log4net.Util
 #else
 		override public void Close() 
 		{
-			m_writer.Close();
+			this.m_writer.Close();
 		}
 #endif
 
@@ -178,7 +178,7 @@ namespace log4net.Util
 		{
 			if (disposing)
 			{
-				((IDisposable)m_writer).Dispose();
+				((IDisposable)this.m_writer).Dispose();
 			}
 		}
 
@@ -193,7 +193,7 @@ namespace log4net.Util
 		/// </remarks>
 		override public void Flush() 
 		{
-			m_writer.Flush();
+			this.m_writer.Flush();
 		}
 
 		/// <summary>
@@ -207,7 +207,7 @@ namespace log4net.Util
 		/// </remarks>
 		override public void Write(char value) 
 		{
-			m_writer.Write(value);
+			this.m_writer.Write(value);
 		}
     
 		/// <summary>
@@ -223,7 +223,7 @@ namespace log4net.Util
 		/// </remarks>
 		override public void Write(char[] buffer, int index, int count) 
 		{
-			m_writer.Write(buffer, index, count);
+			this.m_writer.Write(buffer, index, count);
 		}
     
 		/// <summary>
@@ -237,7 +237,7 @@ namespace log4net.Util
 		/// </remarks>
 		override public void Write(String value) 
 		{
-			m_writer.Write(value);
+			this.m_writer.Write(value);
 		}
 
 		#endregion

@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.UI.Services
             try
             {
                 var controller = PersonaBarUserSettingsController.Instance;
-                var portalId = PortalController.GetEffectivePortalId(PortalSettings.PortalId);
+                var portalId = PortalController.GetEffectivePortalId(this.PortalSettings.PortalId);
 
                 var userSettings = new UserSettings();
                 settings.ForEach(kvp =>
@@ -39,13 +39,13 @@ namespace Dnn.PersonaBar.UI.Services
                     userSettings.Add(kvp.Key, kvp.Value);
                 });
 
-                controller.UpdatePersonaBarUserSettings(userSettings, UserInfo.UserID, portalId);
-                return Request.CreateResponse(HttpStatusCode.OK, new {});
+                controller.UpdatePersonaBarUserSettings(userSettings, this.UserInfo.UserID, portalId);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {});
             }
             catch (Exception ex)
             {
                 Exceptions.LogException(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
             }
         }
     }

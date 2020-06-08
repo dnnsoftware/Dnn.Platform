@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.FileSystem
 
         public FolderTypeConfig()
         {
-            Settings = new List<FolderTypeSettingConfig>();
+            this.Settings = new List<FolderTypeSettingConfig>();
         }
     }
 }

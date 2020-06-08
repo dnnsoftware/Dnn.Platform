@@ -37,9 +37,9 @@ namespace DotNetNuke.Application
         /// <param name="application">The application.</param>
         protected DotNetNukeContext(Application application)
         {
-            _application = application;
-            _containerEventListeners = new NaiveLockingList<ContainerEventListener>();
-            _skinEventListeners = new NaiveLockingList<SkinEventListener>();
+            this._application = application;
+            this._containerEventListeners = new NaiveLockingList<ContainerEventListener>();
+            this._skinEventListeners = new NaiveLockingList<SkinEventListener>();
         }
 
 		/// <summary>
@@ -49,7 +49,7 @@ namespace DotNetNuke.Application
         {
             get
             {
-                return _application;
+                return this._application;
             }
         }
 
@@ -65,7 +65,7 @@ namespace DotNetNuke.Application
         {
             get
             {
-                return _containerEventListeners;
+                return this._containerEventListeners;
             }
         }
 
@@ -81,7 +81,7 @@ namespace DotNetNuke.Application
         {
             get
             {
-                return _skinEventListeners;
+                return this._skinEventListeners;
             }
         }
 

@@ -51,7 +51,7 @@ namespace log4net.Util
 		/// </remarks>
 		internal ThreadContextStacks(ContextPropertiesBase properties)
 		{
-			m_properties = properties;
+			this.m_properties = properties;
 		}
 
 		#endregion Public Instance Constructors
@@ -75,12 +75,12 @@ namespace log4net.Util
 			{
 				ThreadContextStack stack = null;
 
-				object propertyValue = m_properties[key];
+				object propertyValue = this.m_properties[key];
 				if (propertyValue == null)
 				{
 					// Stack does not exist, create
 					stack = new ThreadContextStack();
-					m_properties[key] = stack;
+					this.m_properties[key] = stack;
 				}
 				else
 				{

@@ -44,36 +44,36 @@ namespace DotNetNuke.Web.DDRMenu
 				{
 					base.OnPreRender(e);
 
-					menu = MenuBase.Instantiate(MenuStyle);
-					menu.ApplySettings(
+					this.menu = MenuBase.Instantiate(this.MenuStyle);
+					this.menu.ApplySettings(
 						new Settings
 						{
-							MenuStyle = MenuStyle,
-							NodeXmlPath = NodeXmlPath,
-							NodeSelector = NodeSelector,
-							IncludeContext = IncludeContext,
-							IncludeHidden = IncludeHidden,
-							IncludeNodes = IncludeNodes,
-							ExcludeNodes = ExcludeNodes,
-							NodeManipulator = NodeManipulator,
-							ClientOptions = ClientOptions,
-							TemplateArguments = TemplateArguments
+							MenuStyle = this.MenuStyle,
+							NodeXmlPath = this.NodeXmlPath,
+							NodeSelector = this.NodeSelector,
+							IncludeContext = this.IncludeContext,
+							IncludeHidden = this.IncludeHidden,
+							IncludeNodes = this.IncludeNodes,
+							ExcludeNodes = this.ExcludeNodes,
+							NodeManipulator = this.NodeManipulator,
+							ClientOptions = this.ClientOptions,
+							TemplateArguments = this.TemplateArguments
 						});
 
-					if (String.IsNullOrEmpty(NodeXmlPath))
+					if (String.IsNullOrEmpty(this.NodeXmlPath))
 					{
-						menu.RootNode =
+						this.menu.RootNode =
 							new MenuNode(
 								Localiser.LocaliseDNNNodeCollection(
 									Navigation.GetNavigationNodes(
-										ClientID,
+										this.ClientID,
 										Navigation.ToolTipSource.None,
 										-1,
 										-1,
 										DNNAbstract.GetNavNodeOptions(true))));
 					}
 
-					menu.PreRender();
+					this.menu.PreRender();
 				}
 				catch (Exception exc)
 				{
@@ -89,7 +89,7 @@ namespace DotNetNuke.Web.DDRMenu
 				try
 				{
 					base.Render(writer);
-					menu.Render(writer);
+					this.menu.Render(writer);
 				}
 				catch (Exception exc)
 				{

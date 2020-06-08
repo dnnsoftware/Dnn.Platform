@@ -17,14 +17,14 @@ namespace DotNetNuke.Web.Mvp
         {
             get
             {
-                if ((_model == null))
+                if ((this._model == null))
                 {
                     throw new InvalidOperationException(
                         "The Model property is currently null, however it should have been automatically initialized by the presenter. This most likely indicates that no presenter was bound to the control. Check your presenter bindings.");
                 }
-                return _model;
+                return this._model;
             }
-            set { _model = value; }
+            set { this._model = value; }
         }
 
         #endregion
@@ -33,9 +33,9 @@ namespace DotNetNuke.Web.Mvp
         {
             var value = defaultValue;
 
-            if(Model.ModuleSettings.ContainsKey(key))
+            if(this.Model.ModuleSettings.ContainsKey(key))
             {
-                value = Model.ModuleSettings[key];
+                value = this.Model.ModuleSettings[key];
             }
 
             return value;
@@ -45,9 +45,9 @@ namespace DotNetNuke.Web.Mvp
         {
             var value = defaultValue;
 
-            if (Model.TabModuleSettings.ContainsKey(key))
+            if (this.Model.TabModuleSettings.ContainsKey(key))
             {
-                value = Model.TabModuleSettings[key];
+                value = this.Model.TabModuleSettings[key];
             }
 
             return value;

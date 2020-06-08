@@ -91,11 +91,11 @@ namespace DotNetNuke.Security.Permissions
         protected override void FillInternal(IDataReader dr)
         {
             base.FillInternal(dr);
-            PermissionID = Null.SetNullInteger(dr["PermissionID"]);
-            ModuleDefID = Null.SetNullInteger(dr["ModuleDefID"]);
-            PermissionCode = Null.SetNullString(dr["PermissionCode"]);
-            PermissionKey = Null.SetNullString(dr["PermissionKey"]);
-            PermissionName = Null.SetNullString(dr["PermissionName"]);
+            this.PermissionID = Null.SetNullInteger(dr["PermissionID"]);
+            this.ModuleDefID = Null.SetNullInteger(dr["ModuleDefID"]);
+            this.PermissionCode = Null.SetNullString(dr["PermissionCode"]);
+            this.PermissionKey = Null.SetNullString(dr["PermissionKey"]);
+            this.PermissionName = Null.SetNullString(dr["PermissionName"]);
 		}
 
 		#endregion

@@ -49,7 +49,7 @@ namespace log4net.Repository
         /// </summary>
         public ICollection ConfigurationMessages
         {
-            get { return configurationMessages; }
+            get { return this.configurationMessages; }
         }
     }
 }

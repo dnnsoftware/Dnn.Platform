@@ -60,7 +60,7 @@ namespace DotNetNuke.Entities.Controllers
 		/// <exception cref="System.ArgumentException">key is empty.</exception>
         public bool GetBoolean(string key)
         {
-            return GetBoolean(key, Null.NullBoolean);
+            return this.GetBoolean(key, Null.NullBoolean);
         }
 
 		/// <summary>
@@ -78,9 +78,9 @@ namespace DotNetNuke.Entities.Controllers
             try
             {
                 string setting = string.Empty;
-                if ((GetSettings().ContainsKey(key)))
+                if ((this.GetSettings().ContainsKey(key)))
                 {
-                    setting = GetSettings()[key].Value;
+                    setting = this.GetSettings()[key].Value;
                 }
 
                 if (string.IsNullOrEmpty(setting))
@@ -108,7 +108,7 @@ namespace DotNetNuke.Entities.Controllers
 		/// <exception cref="System.ArgumentException">key is empty.</exception>
         public double GetDouble(string key)
         {
-            return GetDouble(key, Null.NullDouble);
+            return this.GetDouble(key, Null.NullDouble);
         }
 
 		/// <summary>
@@ -124,7 +124,7 @@ namespace DotNetNuke.Entities.Controllers
 
             double retValue;
 
-            if ((!GetSettings().ContainsKey(key) || !double.TryParse(GetSettings()[key].Value, out retValue)))
+            if ((!this.GetSettings().ContainsKey(key) || !double.TryParse(this.GetSettings()[key].Value, out retValue)))
             {
                 retValue = defaultValue;
             }
@@ -140,7 +140,7 @@ namespace DotNetNuke.Entities.Controllers
 		/// <exception cref="System.ArgumentException">key is empty.</exception>
         public int GetInteger(string key)
         {
-            return GetInteger(key, Null.NullInteger);
+            return this.GetInteger(key, Null.NullInteger);
         }
 
 		/// <summary>
@@ -156,7 +156,7 @@ namespace DotNetNuke.Entities.Controllers
 
             int retValue;
 
-            if ((!GetSettings().ContainsKey(key) || !int.TryParse(GetSettings()[key].Value, out retValue)))
+            if ((!this.GetSettings().ContainsKey(key) || !int.TryParse(this.GetSettings()[key].Value, out retValue)))
             {
                 retValue = defaultValue;
             }
@@ -184,7 +184,7 @@ namespace DotNetNuke.Entities.Controllers
 		/// <returns>host setting's value.</returns>
         public Dictionary<string, string> GetSettingsDictionary()
         {
-            return GetSettings().ToDictionary(c => c.Key, c => c.Value.Value);
+            return this.GetSettings().ToDictionary(c => c.Key, c => c.Value.Value);
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace DotNetNuke.Entities.Controllers
         {
             Requires.NotNullOrEmpty("key", key);
             Requires.NotNullOrEmpty("passPhrase", passPhrase);
-            var cipherText = GetString(key);
+            var cipherText = this.GetString(key);
             return Security.FIPSCompliant.DecryptAES(cipherText, passPhrase, Entities.Host.Host.GUID);
         }
 
@@ -210,7 +210,7 @@ namespace DotNetNuke.Entities.Controllers
 		/// <exception cref="System.ArgumentException">key is empty.</exception>
         public string GetString(string key)
         {
-            return GetString(key, string.Empty);
+            return this.GetString(key, string.Empty);
         }
 
 		/// <summary>
@@ -224,12 +224,12 @@ namespace DotNetNuke.Entities.Controllers
         {
             Requires.NotNullOrEmpty("key", key);
 
-            if (!GetSettings().ContainsKey(key) || GetSettings()[key].Value == null)
+            if (!this.GetSettings().ContainsKey(key) || this.GetSettings()[key].Value == null)
             {
                 return defaultValue;
             }
 
-            return GetSettings()[key].Value;
+            return this.GetSettings()[key].Value;
         }
 
 		/// <summary>
@@ -240,7 +240,7 @@ namespace DotNetNuke.Entities.Controllers
         {
             foreach (KeyValuePair<string, string> settingKvp in settings)
             {
-                Update(settingKvp.Key, settingKvp.Value, false);
+                this.Update(settingKvp.Key, settingKvp.Value, false);
             }
 
             DataCache.ClearHostCache(false);
@@ -252,7 +252,7 @@ namespace DotNetNuke.Entities.Controllers
 		/// <param name="config">The config.</param>
         public void Update(ConfigurationSetting config)
         {
-            Update(config, true);
+            this.Update(config, true);
         }
 
 		/// <summary>
@@ -311,7 +311,7 @@ namespace DotNetNuke.Entities.Controllers
 		/// <param name="clearCache">if set to <c>true</c> will clear cache after update settings.</param>
         public void Update(string key, string value, bool clearCache)
         {
-            Update(new ConfigurationSetting { Key = key, Value = value }, clearCache);
+            this.Update(new ConfigurationSetting { Key = key, Value = value }, clearCache);
         }
 
 		/// <summary>
@@ -321,7 +321,7 @@ namespace DotNetNuke.Entities.Controllers
 		/// <param name="value">The value.</param>
         public void Update(string key, string value)
         {
-            Update(key, value, true);
+            this.Update(key, value, true);
         }
 
         /// <summary>
@@ -336,7 +336,7 @@ namespace DotNetNuke.Entities.Controllers
             Requires.PropertyNotNull("value", value);
             Requires.NotNullOrEmpty("passPhrase", passPhrase);
             var cipherText = Security.FIPSCompliant.EncryptAES(value, passPhrase, Entities.Host.Host.GUID);
-            Update(key, cipherText);
+            this.Update(key, cipherText);
         }
 
         /// <summary>
@@ -347,7 +347,7 @@ namespace DotNetNuke.Entities.Controllers
         {
             var currentVersion = Host.Host.CrmVersion;
             var newVersion = currentVersion + 1;
-            Update(ClientResourceSettings.VersionKey, newVersion.ToString(CultureInfo.InvariantCulture), true);
+            this.Update(ClientResourceSettings.VersionKey, newVersion.ToString(CultureInfo.InvariantCulture), true);
 
             if (includeOverridingPortals)
             {

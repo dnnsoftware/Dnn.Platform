@@ -36,10 +36,10 @@ namespace DotNetNuke.UI.WebControls
 
         public DualListBox()
         {
-            ShowAddButton = true;
-            ShowAddAllButton = true;
-            ShowRemoveButton = true;
-            ShowRemoveAllButton = true;
+            this.ShowAddButton = true;
+            this.ShowAddAllButton = true;
+            this.ShowRemoveButton = true;
+            this.ShowRemoveAllButton = true;
         }
 
 		#region Public Properties
@@ -112,7 +112,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return _AvailableListBoxStyle;
+                return this._AvailableListBoxStyle;
             }
         }
 
@@ -128,7 +128,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return _ButtonStyle;
+                return this._ButtonStyle;
             }
         }
 
@@ -144,7 +144,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return _ContainerStyle;
+                return this._ContainerStyle;
             }
         }
 
@@ -160,7 +160,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return _HeaderStyle;
+                return this._HeaderStyle;
             }
         }
 
@@ -176,7 +176,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return _SelectedListBoxStyle;
+                return this._SelectedListBoxStyle;
             }
         }
 		#endregion
@@ -191,20 +191,20 @@ namespace DotNetNuke.UI.WebControls
             string addItems = postCollection[postDataKey + "_Available"];
             if (!string.IsNullOrEmpty(addItems))
             {
-                _AddValues = new List<string>();
+                this._AddValues = new List<string>();
                 foreach (string addItem in addItems.Split(','))
                 {
-                    _AddValues.Add(addItem);
+                    this._AddValues.Add(addItem);
                 }
                 retValue = true;
             }
             string removeItems = postCollection[postDataKey + "_Selected"];
             if (!string.IsNullOrEmpty(removeItems))
             {
-                _RemoveValues = new List<string>();
+                this._RemoveValues = new List<string>();
                 foreach (string removeItem in removeItems.Split(','))
                 {
-                    _RemoveValues.Add(removeItem);
+                    this._RemoveValues.Add(removeItem);
                 }
                 retValue = true;
             }
@@ -224,16 +224,16 @@ namespace DotNetNuke.UI.WebControls
             switch (eventArgument)
             {
                 case "Add":
-                    OnAddButtonClick(new DualListBoxEventArgs(_AddValues));
+                    this.OnAddButtonClick(new DualListBoxEventArgs(this._AddValues));
                     break;
                 case "AddAll":
-                    OnAddAllButtonClick(new EventArgs());
+                    this.OnAddAllButtonClick(new EventArgs());
                     break;
                 case "Remove":
-                    OnRemoveButtonClick(new DualListBoxEventArgs(_RemoveValues));
+                    this.OnRemoveButtonClick(new DualListBoxEventArgs(this._RemoveValues));
                     break;
                 case "RemoveAll":
-                    OnRemoveAllButtonClick(new EventArgs());
+                    this.OnRemoveAllButtonClick(new EventArgs());
                     break;
             }
         }
@@ -264,8 +264,8 @@ namespace DotNetNuke.UI.WebControls
                 foreach (object item in dataList)
                 {
                     BindingFlags bindings = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
-                    PropertyInfo objTextProperty = item.GetType().GetProperty(DataTextField, bindings);
-                    PropertyInfo objValueProperty = item.GetType().GetProperty(DataValueField, bindings);
+                    PropertyInfo objTextProperty = item.GetType().GetProperty(this.DataTextField, bindings);
+                    PropertyInfo objValueProperty = item.GetType().GetProperty(this.DataValueField, bindings);
                     string objValue = Convert.ToString(objValueProperty.GetValue(item, null));
                     string objText = Convert.ToString(objTextProperty.GetValue(item, null));
 
@@ -288,40 +288,40 @@ namespace DotNetNuke.UI.WebControls
             switch (buttonType)
             {
                 case "Add":
-                    buttonText = string.IsNullOrEmpty(AddKey) 
-                                    ? AddText 
-                                    : Localization.GetString(AddKey, LocalResourceFile);
-                    imageURL = AddImageURL;
+                    buttonText = string.IsNullOrEmpty(this.AddKey) 
+                                    ? this.AddText 
+                                    : Localization.GetString(this.AddKey, this.LocalResourceFile);
+                    imageURL = this.AddImageURL;
                     break;
                 case "AddAll":
-                    buttonText = string.IsNullOrEmpty(AddAllKey) 
-                                    ? AddAllText 
-                                    : Localization.GetString(AddAllKey, LocalResourceFile);
-                    imageURL = AddAllImageURL;
+                    buttonText = string.IsNullOrEmpty(this.AddAllKey) 
+                                    ? this.AddAllText 
+                                    : Localization.GetString(this.AddAllKey, this.LocalResourceFile);
+                    imageURL = this.AddAllImageURL;
                     break;
                 case "Remove":
-                    buttonText = string.IsNullOrEmpty(RemoveKey) 
-                                    ? RemoveText 
-                                    : Localization.GetString(RemoveKey, LocalResourceFile);
-                    imageURL = RemoveImageURL;
+                    buttonText = string.IsNullOrEmpty(this.RemoveKey) 
+                                    ? this.RemoveText 
+                                    : Localization.GetString(this.RemoveKey, this.LocalResourceFile);
+                    imageURL = this.RemoveImageURL;
                     break;
                 case "RemoveAll":
-                    buttonText = string.IsNullOrEmpty(RemoveAllKey) 
-                                    ? RemoveAllText 
-                                    : Localization.GetString(RemoveAllKey, LocalResourceFile);
-                    imageURL = RemoveAllImageURL;
+                    buttonText = string.IsNullOrEmpty(this.RemoveAllKey) 
+                                    ? this.RemoveAllText 
+                                    : Localization.GetString(this.RemoveAllKey, this.LocalResourceFile);
+                    imageURL = this.RemoveAllImageURL;
                     break;
             }
 			
             //Render Hyperlink
-            writer.AddAttribute(HtmlTextWriterAttribute.Href, Page.ClientScript.GetPostBackEventReference(GetPostBackOptions(buttonType)));
+            writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackEventReference(this.GetPostBackOptions(buttonType)));
             writer.AddAttribute(HtmlTextWriterAttribute.Title, buttonText);
             writer.RenderBeginTag(HtmlTextWriterTag.A);
 
             //Render Image
             if (!string.IsNullOrEmpty(imageURL))
             {
-                writer.AddAttribute(HtmlTextWriterAttribute.Src, ResolveClientUrl(imageURL));
+                writer.AddAttribute(HtmlTextWriterAttribute.Src, this.ResolveClientUrl(imageURL));
                 writer.AddAttribute(HtmlTextWriterAttribute.Title, buttonText);
                 writer.AddAttribute(HtmlTextWriterAttribute.Border, "0");
                 writer.RenderBeginTag(HtmlTextWriterTag.Img);
@@ -347,13 +347,13 @@ namespace DotNetNuke.UI.WebControls
 			//render table
             writer.RenderBeginTag(HtmlTextWriterTag.Table);
 
-            if (ShowAddButton)
+            if (this.ShowAddButton)
             {
-                RenderButton("Add", writer);
+                this.RenderButton("Add", writer);
             }
-            if (ShowAddAllButton)
+            if (this.ShowAddAllButton)
             {
-                RenderButton("AddAll", writer);
+                this.RenderButton("AddAll", writer);
             }
 
             //Begin Button Row
@@ -370,13 +370,13 @@ namespace DotNetNuke.UI.WebControls
             //Render end of Button Row
             writer.RenderEndTag();
 
-            if (ShowRemoveButton)
+            if (this.ShowRemoveButton)
             {
-                RenderButton("Remove", writer);
+                this.RenderButton("Remove", writer);
             }
-            if (ShowRemoveAllButton)
+            if (this.ShowRemoveAllButton)
             {
-                RenderButton("RemoveAll", writer);
+                this.RenderButton("RemoveAll", writer);
             }
 
             //Render end of table
@@ -387,7 +387,7 @@ namespace DotNetNuke.UI.WebControls
         {
             if (dataSource != null)
             {
-                NameValueCollection list = GetList(listType, dataSource);
+                NameValueCollection list = this.GetList(listType, dataSource);
                 if (list != null)
                 {
                     if (style != null)
@@ -397,7 +397,7 @@ namespace DotNetNuke.UI.WebControls
 					
                     //Render ListBox
                     writer.AddAttribute(HtmlTextWriterAttribute.Multiple, "multiple");
-                    writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID + "_" + listType);
+                    writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_" + listType);
                     writer.RenderBeginTag(HtmlTextWriterTag.Select);
                     for (int i = 0; i <= list.Count - 1; i++)
                     {
@@ -418,22 +418,22 @@ namespace DotNetNuke.UI.WebControls
         {
 			//render Header row
             writer.RenderBeginTag(HtmlTextWriterTag.Tr);
-            if (HeaderStyle != null)
+            if (this.HeaderStyle != null)
             {
-                HeaderStyle.AddAttributesToRender(writer);
+                this.HeaderStyle.AddAttributesToRender(writer);
             }
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
-            writer.Write(Localization.GetString(ID + "_Available", LocalResourceFile));
+            writer.Write(Localization.GetString(this.ID + "_Available", this.LocalResourceFile));
             writer.RenderEndTag();
 
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
             writer.RenderEndTag();
-            if (HeaderStyle != null)
+            if (this.HeaderStyle != null)
             {
-                HeaderStyle.AddAttributesToRender(writer);
+                this.HeaderStyle.AddAttributesToRender(writer);
             }
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
-            writer.Write(Localization.GetString(ID + "_Selected", LocalResourceFile));
+            writer.Write(Localization.GetString(this.ID + "_Selected", this.LocalResourceFile));
             writer.RenderEndTag();
 
             //Render end of Header Row
@@ -446,15 +446,15 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderBeginTag(HtmlTextWriterTag.Tr);
 
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
-            RenderListBox("Available", AvailableDataSource, AvailableListBoxStyle, writer);
+            this.RenderListBox("Available", this.AvailableDataSource, this.AvailableListBoxStyle, writer);
             writer.RenderEndTag();
 
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
-            RenderButtons(writer);
+            this.RenderButtons(writer);
             writer.RenderEndTag();
 
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
-            RenderListBox("Selected", SelectedDataSource, SelectedListBoxStyle, writer);
+            this.RenderListBox("Selected", this.SelectedDataSource, this.SelectedListBoxStyle, writer);
             writer.RenderEndTag();
 
             //Render end of List Boxes Row
@@ -479,59 +479,59 @@ namespace DotNetNuke.UI.WebControls
 
         protected void OnAddButtonClick(DualListBoxEventArgs e)
         {
-            if (AddButtonClick != null)
+            if (this.AddButtonClick != null)
             {
-                AddButtonClick(this, e);
+                this.AddButtonClick(this, e);
             }
         }
 
         protected void OnAddAllButtonClick(EventArgs e)
         {
-            if (AddAllButtonClick != null)
+            if (this.AddAllButtonClick != null)
             {
-                AddAllButtonClick(this, e);
+                this.AddAllButtonClick(this, e);
             }
         }
 
         protected void OnRemoveButtonClick(DualListBoxEventArgs e)
         {
-            if (RemoveButtonClick != null)
+            if (this.RemoveButtonClick != null)
             {
-                RemoveButtonClick(this, e);
+                this.RemoveButtonClick(this, e);
             }
         }
 
         protected void OnRemoveAllButtonClick(EventArgs e)
         {
-            if (RemoveAllButtonClick != null)
+            if (this.RemoveAllButtonClick != null)
             {
-                RemoveAllButtonClick(this, e);
+                this.RemoveAllButtonClick(this, e);
             }
         }
 
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            if (Page != null)
+            if (this.Page != null)
             {
-                Page.RegisterRequiresPostBack(this);
+                this.Page.RegisterRequiresPostBack(this);
             }
         }
 
         protected override void RenderContents(HtmlTextWriter writer)
         {
 			//render table
-            if (ContainerStyle != null)
+            if (this.ContainerStyle != null)
             {
-                ContainerStyle.AddAttributesToRender(writer);
+                this.ContainerStyle.AddAttributesToRender(writer);
             }
             writer.RenderBeginTag(HtmlTextWriterTag.Table);
 
             //Render Header Row
-            RenderHeader(writer);
+            this.RenderHeader(writer);
 
             //Render ListBox row
-            RenderListBoxes(writer);
+            this.RenderListBoxes(writer);
 
             //Render end of table
             writer.RenderEndTag();

@@ -40,11 +40,11 @@ namespace DotNetNuke.Services.Social.Messaging
         {
             get
             {
-                return _messageID;
+                return this._messageID;
             }
             set
             {
-                _messageID = value;
+                this._messageID = value;
             }
         }
 
@@ -110,11 +110,11 @@ namespace DotNetNuke.Services.Social.Messaging
         {
             get
             {
-                if (string.IsNullOrEmpty(_displayDate))
+                if (string.IsNullOrEmpty(this._displayDate))
                 {
-                    _displayDate = DateUtils.CalculateDateForDisplay(CreatedOnDate);
+                    this._displayDate = DateUtils.CalculateDateForDisplay(this.CreatedOnDate);
                 }
-                return _displayDate;
+                return this._displayDate;
             }
         }
 
@@ -126,11 +126,11 @@ namespace DotNetNuke.Services.Social.Messaging
         {
             get
             {
-                return MessageID;
+                return this.MessageID;
             }
             set
             {
-                MessageID = value;
+                this.MessageID = value;
             }
         }
 
@@ -140,18 +140,18 @@ namespace DotNetNuke.Services.Social.Messaging
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {
-            MessageID = Convert.ToInt32(dr["MessageID"]);
-            PortalID = Null.SetNullInteger(dr["PortalId"]);
-            To = Null.SetNullString(dr["To"]);
-            From = Null.SetNullString(dr["From"]);
-            Subject = Null.SetNullString(dr["Subject"]);
-            Body = Null.SetNullString(dr["Body"]);
-            ConversationId = Null.SetNullInteger(dr["ConversationID"]);
-            ReplyAllAllowed = Null.SetNullBoolean(dr["ReplyAllAllowed"]);
-            SenderUserID = Convert.ToInt32(dr["SenderUserID"]);
-            NotificationTypeID = Null.SetNullInteger(dr["NotificationTypeID"]);
+            this.MessageID = Convert.ToInt32(dr["MessageID"]);
+            this.PortalID = Null.SetNullInteger(dr["PortalId"]);
+            this.To = Null.SetNullString(dr["To"]);
+            this.From = Null.SetNullString(dr["From"]);
+            this.Subject = Null.SetNullString(dr["Subject"]);
+            this.Body = Null.SetNullString(dr["Body"]);
+            this.ConversationId = Null.SetNullInteger(dr["ConversationID"]);
+            this.ReplyAllAllowed = Null.SetNullBoolean(dr["ReplyAllAllowed"]);
+            this.SenderUserID = Convert.ToInt32(dr["SenderUserID"]);
+            this.NotificationTypeID = Null.SetNullInteger(dr["NotificationTypeID"]);
             //add audit column data
-            FillInternal(dr);
+            this.FillInternal(dr);
         }
     }
 }

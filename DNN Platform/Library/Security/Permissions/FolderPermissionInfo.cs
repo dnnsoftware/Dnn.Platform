@@ -37,10 +37,10 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public FolderPermissionInfo()
         {
-            _folderPermissionID = Null.NullInteger;
-            _folderPath = Null.NullString;
-            _portalID = Null.NullInteger;
-            _folderID = Null.NullInteger;
+            this._folderPermissionID = Null.NullInteger;
+            this._folderPath = Null.NullString;
+            this._portalID = Null.NullInteger;
+            this._folderID = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
@@ -51,11 +51,11 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public FolderPermissionInfo(PermissionInfo permission) : this()
         {
-            ModuleDefID = permission.ModuleDefID;
-            PermissionCode = permission.PermissionCode;
-            PermissionID = permission.PermissionID;
-            PermissionKey = permission.PermissionKey;
-            PermissionName = permission.PermissionName;
+            this.ModuleDefID = permission.ModuleDefID;
+            this.PermissionCode = permission.PermissionCode;
+            this.PermissionID = permission.PermissionID;
+            this.PermissionKey = permission.PermissionKey;
+            this.PermissionName = permission.PermissionName;
         }
 		
 		#endregion
@@ -67,11 +67,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _folderPermissionID;
+                return this._folderPermissionID;
             }
             set
             {
-                _folderPermissionID = value;
+                this._folderPermissionID = value;
             }
         }
 
@@ -80,11 +80,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _folderID;
+                return this._folderID;
             }
             set
             {
-                _folderID = value;
+                this._folderID = value;
             }
         }
 
@@ -93,11 +93,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _portalID;
+                return this._portalID;
             }
             set
             {
-                _portalID = value;
+                this._portalID = value;
             }
         }
 
@@ -106,11 +106,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _folderPath;
+                return this._folderPath;
             }
             set
             {
-                _folderPath = value;
+                this._folderPath = value;
             }
         }
 		
@@ -127,10 +127,10 @@ namespace DotNetNuke.Security.Permissions
         public void Fill(IDataReader dr)
         {
             base.FillInternal(dr);
-            FolderPermissionID = Null.SetNullInteger(dr["FolderPermissionID"]);
-            FolderID = Null.SetNullInteger(dr["FolderID"]);
-            PortalID = Null.SetNullInteger(dr["PortalID"]);
-            FolderPath = Null.SetNullString(dr["FolderPath"]);
+            this.FolderPermissionID = Null.SetNullInteger(dr["FolderPermissionID"]);
+            this.FolderID = Null.SetNullInteger(dr["FolderID"]);
+            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
+            this.FolderPath = Null.SetNullString(dr["FolderPath"]);
         }
 
         /// -----------------------------------------------------------------------------
@@ -144,11 +144,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return FolderPermissionID;
+                return this.FolderPermissionID;
             }
             set
             {
-                FolderPermissionID = value;
+                this.FolderPermissionID = value;
             }
         }
 

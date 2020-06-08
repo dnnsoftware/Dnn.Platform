@@ -22,16 +22,16 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
 		public Control HostControl { get; private set; }
 
 		private Page _Page;
-		public Page Page { get { return _Page ?? (_Page = HostControl.Page); } }
+		public Page Page { get { return this._Page ?? (this._Page = this.HostControl.Page); } }
 
 		private PortalSettings _PortalSettings;
-		public PortalSettings PortalSettings { get { return _PortalSettings ?? (_PortalSettings = PortalController.Instance.GetCurrentPortalSettings()); } }
+		public PortalSettings PortalSettings { get { return this._PortalSettings ?? (this._PortalSettings = PortalController.Instance.GetCurrentPortalSettings()); } }
 
 		private TabInfo _ActiveTab;
-		public TabInfo ActiveTab { get { return _ActiveTab ?? (_ActiveTab = PortalSettings.ActiveTab); } }
+		public TabInfo ActiveTab { get { return this._ActiveTab ?? (this._ActiveTab = this.PortalSettings.ActiveTab); } }
 
 		private string _SkinPath;
-		public string SkinPath { get { return _SkinPath ?? (_SkinPath = ActiveTab.SkinPath); } }
+		public string SkinPath { get { return this._SkinPath ?? (this._SkinPath = this.ActiveTab.SkinPath); } }
 
 		private static string _ModuleName;
 		public static string ModuleName { get { return _ModuleName ?? (_ModuleName = GetModuleNameFromAssembly()); } }
@@ -53,15 +53,15 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
 
 		public DNNContext(Control hostControl)
 		{
-			HostControl = hostControl;
+			this.HostControl = hostControl;
 
-			savedContext = Current;
+			this.savedContext = Current;
 			Current = this;
 		}
 
 		public string ResolveUrl(string relativeUrl)
 		{
-			return HostControl.ResolveUrl(relativeUrl);
+			return this.HostControl.ResolveUrl(relativeUrl);
 		}
 
 		private static string GetModuleNameFromAssembly()
@@ -74,7 +74,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
 
 		public void Dispose()
 		{
-			Current = savedContext;
+			Current = this.savedContext;
 		}
 	}
 }

@@ -23,13 +23,13 @@ namespace DotNetNuke.Entities.Groups
         
         }
         public GroupInfo(RoleInfo roleInfo) {
-            RoleID = roleInfo.RoleID;
-            RoleName = roleInfo.RoleName;
-            Description = roleInfo.Description;
-            PortalID = roleInfo.PortalID;
-            SecurityMode = roleInfo.SecurityMode;
-            ServiceFee = roleInfo.ServiceFee;
-            RSVPCode = roleInfo.RSVPCode;
+            this.RoleID = roleInfo.RoleID;
+            this.RoleName = roleInfo.RoleName;
+            this.Description = roleInfo.Description;
+            this.PortalID = roleInfo.PortalID;
+            this.SecurityMode = roleInfo.SecurityMode;
+            this.ServiceFee = roleInfo.ServiceFee;
+            this.RSVPCode = roleInfo.RSVPCode;
 
           
 
@@ -55,64 +55,64 @@ namespace DotNetNuke.Entities.Groups
            
         public string Street {
             get {
-                return GetString("Street", string.Empty);
+                return this.GetString("Street", string.Empty);
             }
             set {
-                SetString("Street",value);
+                this.SetString("Street",value);
             }
         }
         public string City {
             get {
-                return GetString("City", string.Empty);
+                return this.GetString("City", string.Empty);
             }
             set {
-                SetString("City", value);
+                this.SetString("City", value);
             }
         }
 
         public string Region {
             get {
-                return GetString("Region", string.Empty);
+                return this.GetString("Region", string.Empty);
             }
             set {
-                SetString("Region",value);
+                this.SetString("Region",value);
             }
         }
 
         public string Country {
             get {
-                return GetString("Country", string.Empty);
+                return this.GetString("Country", string.Empty);
             }
             set {
-                SetString("Country",value);
+                this.SetString("Country",value);
             }
         }
 
         public string PostalCode {
             get {
-                return GetString("PostalCode", string.Empty);
+                return this.GetString("PostalCode", string.Empty);
             }
             set {
-                SetString("PostalCode",value);
+                this.SetString("PostalCode",value);
             }
         }
 
         public string Website {
             get {
-                return GetString("Website", string.Empty);
+                return this.GetString("Website", string.Empty);
             }
             set {
-                SetString("Website",value);
+                this.SetString("Website",value);
             }
         }
 
   
         public bool Featured {
             get {
-                return Convert.ToBoolean(GetString("Featured","false"));
+                return Convert.ToBoolean(this.GetString("Featured","false"));
             }
             set {
-                SetString("Featured", value.ToString());
+                this.SetString("Featured", value.ToString());
             }
         }
 
@@ -120,20 +120,20 @@ namespace DotNetNuke.Entities.Groups
       
        
         private string GetString(string keyName, string defaultValue) {
-            if (Settings == null) {
+            if (this.Settings == null) {
                 return defaultValue;
             }
-            if (Settings.ContainsKey(keyName)) {
-                return Settings[keyName];
+            if (this.Settings.ContainsKey(keyName)) {
+                return this.Settings[keyName];
             } else {
                 return defaultValue;
             }
         }
         private void SetString(string keyName, string value) {
-            if (Settings.ContainsKey(keyName)) {
-                Settings[keyName] = value;
+            if (this.Settings.ContainsKey(keyName)) {
+                this.Settings[keyName] = value;
             } else {
-                Settings.Add(keyName, value);
+                this.Settings.Add(keyName, value);
             }
         }
        

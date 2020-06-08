@@ -54,11 +54,11 @@ namespace DotNetNuke.Services.Search.Internals
 
         public LuceneQuery()
         {
-            PageIndex = 1;
-            TitleSnippetLength = 60;
-            BodySnippetLength = 100;
-            PageSize = 10;
-            Sort = Sort.RELEVANCE;
+            this.PageIndex = 1;
+            this.TitleSnippetLength = 60;
+            this.BodySnippetLength = 100;
+            this.PageSize = 10;
+            this.Sort = Sort.RELEVANCE;
         }
 
         #endregion 

@@ -21,8 +21,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public DnnTextLink() : base("span")
         {
-            CssClass = "dnnTextLink";
-            DisabledCssClass = "dnnTextLink disabled";
+            this.CssClass = "dnnTextLink";
+            this.DisabledCssClass = "dnnTextLink disabled";
         }
 
         [Bindable(true)]
@@ -33,11 +33,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return TextHyperlinkControl.Text;
+                return this.TextHyperlinkControl.Text;
             }
             set
             {
-                TextHyperlinkControl.Text = value;
+                this.TextHyperlinkControl.Text = value;
             }
         }
 
@@ -49,11 +49,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return TextHyperlinkControl.ToolTip;
+                return this.TextHyperlinkControl.ToolTip;
             }
             set
             {
-                TextHyperlinkControl.ToolTip = value;
+                this.TextHyperlinkControl.ToolTip = value;
             }
         }
 
@@ -65,11 +65,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return TextHyperlinkControl.NavigateUrl;
+                return this.TextHyperlinkControl.NavigateUrl;
             }
             set
             {
-                TextHyperlinkControl.NavigateUrl = value;
+                this.TextHyperlinkControl.NavigateUrl = value;
             }
         }
 
@@ -81,11 +81,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return TextHyperlinkControl.Target;
+                return this.TextHyperlinkControl.Target;
             }
             set
             {
-                TextHyperlinkControl.Target = value;
+                this.TextHyperlinkControl.Target = value;
             }
         }
 
@@ -97,11 +97,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ViewState["DisabledCssClass"] == null ? string.Empty : (string) ViewState["DisabledCssClass"];
+                return this.ViewState["DisabledCssClass"] == null ? string.Empty : (string) this.ViewState["DisabledCssClass"];
             }
             set
             {
-                ViewState["DisabledCssClass"] = value;
+                this.ViewState["DisabledCssClass"] = value;
             }
         }
 
@@ -109,18 +109,18 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (_textHyperlinkControl == null)
+                if (this._textHyperlinkControl == null)
                 {
-                    _textHyperlinkControl = new HyperLink();
+                    this._textHyperlinkControl = new HyperLink();
                 }
-                return _textHyperlinkControl;
+                return this._textHyperlinkControl;
             }
         }
 
         protected override void CreateChildControls()
         {
-            Controls.Clear();
-            Controls.Add(TextHyperlinkControl);
+            this.Controls.Clear();
+            this.Controls.Add(this.TextHyperlinkControl);
         }
 
         #region "Protected Methods"
@@ -128,20 +128,20 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            LocalResourceFile = Utilities.GetLocalResourceFile(this);
+            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
         }
 
         protected override void Render(HtmlTextWriter writer)
         {
-            LocalizeStrings();
+            this.LocalizeStrings();
 
-            if ((!Enabled))
+            if ((!this.Enabled))
             {
-                if ((!string.IsNullOrEmpty(DisabledCssClass)))
+                if ((!string.IsNullOrEmpty(this.DisabledCssClass)))
                 {
-                    CssClass = DisabledCssClass;
+                    this.CssClass = this.DisabledCssClass;
                 }
-                NavigateUrl = "javascript:void(0);";
+                this.NavigateUrl = "javascript:void(0);";
             }
 
             base.RenderBeginTag(writer);
@@ -157,11 +157,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _localize;
+                return this._localize;
             }
             set
             {
-                _localize = value;
+                this._localize = value;
             }
         }
 
@@ -169,25 +169,25 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public virtual void LocalizeStrings()
         {
-            if ((Localize))
+            if ((this.Localize))
             {
-                if ((!string.IsNullOrEmpty(ToolTip)))
+                if ((!string.IsNullOrEmpty(this.ToolTip)))
                 {
-                    ToolTip = Localization.GetString(ToolTip, LocalResourceFile);
+                    this.ToolTip = Localization.GetString(this.ToolTip, this.LocalResourceFile);
                 }
 
-                if ((!string.IsNullOrEmpty(Text)))
+                if ((!string.IsNullOrEmpty(this.Text)))
                 {
-                    Text = Localization.GetString(Text, LocalResourceFile);
+                    this.Text = Localization.GetString(this.Text, this.LocalResourceFile);
 
-                    if ((string.IsNullOrEmpty(ToolTip)))
+                    if ((string.IsNullOrEmpty(this.ToolTip)))
                     {
-                        ToolTip = Localization.GetString(string.Format("{0}.ToolTip", Text), LocalResourceFile);
+                        this.ToolTip = Localization.GetString(string.Format("{0}.ToolTip", this.Text), this.LocalResourceFile);
                     }
 
-                    if ((string.IsNullOrEmpty(ToolTip)))
+                    if ((string.IsNullOrEmpty(this.ToolTip)))
                     {
-                        ToolTip = Text;
+                        this.ToolTip = this.Text;
                     }
                 }
             }

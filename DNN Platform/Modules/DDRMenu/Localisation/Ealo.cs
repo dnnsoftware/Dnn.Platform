@@ -23,13 +23,13 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
         [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
         public bool HaveApi()
 		{
-			if (!haveChecked)
+			if (!this.haveChecked)
 			{
-				found = (DesktopModuleController.GetDesktopModuleByModuleName("effority.Ealo.Tabs", PortalSettings.Current.PortalId) != null);
-				haveChecked = true;
+				this.found = (DesktopModuleController.GetDesktopModuleByModuleName("effority.Ealo.Tabs", PortalSettings.Current.PortalId) != null);
+				this.haveChecked = true;
 			}
 
-			return found;
+			return this.found;
 		}
 
         [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]

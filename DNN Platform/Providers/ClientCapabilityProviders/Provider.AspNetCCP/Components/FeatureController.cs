@@ -55,7 +55,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
                     if (moduleTabs.Count > 0)
                         return string.Empty;
 
-                    RemoveWurflProvider();
+                    this.RemoveWurflProvider();
                     break;
             }
 
@@ -71,7 +71,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
                 installer.UnInstall(true);
             }
 
-            UpdateRules();
+            this.UpdateRules();
         }
 
         private void UpdateRules()

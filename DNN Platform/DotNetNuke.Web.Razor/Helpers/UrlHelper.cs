@@ -23,20 +23,20 @@ namespace DotNetNuke.Web.Razor.Helpers
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public UrlHelper(ModuleInstanceContext context)
         {
-            _context = context;
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this._context = context;
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public string NavigateToControl()
         {
-            return NavigationManager.NavigateURL(_context.TabId);
+            return this.NavigationManager.NavigateURL(this._context.TabId);
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public string NavigateToControl(string controlKey)
         {
-            return NavigationManager.NavigateURL(_context.TabId, controlKey, "mid=" + _context.ModuleId);
+            return this.NavigationManager.NavigateURL(this._context.TabId, controlKey, "mid=" + this._context.ModuleId);
         }
     }
 }

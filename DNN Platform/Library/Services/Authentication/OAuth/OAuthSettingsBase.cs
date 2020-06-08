@@ -16,9 +16,9 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         public override void UpdateSettings()
         {
-            if (SettingsEditor.IsValid && SettingsEditor.IsDirty)
+            if (this.SettingsEditor.IsValid && this.SettingsEditor.IsDirty)
             {
-                var config = (OAuthConfigBase)SettingsEditor.DataSource;
+                var config = (OAuthConfigBase)this.SettingsEditor.DataSource;
                 OAuthConfigBase.UpdateConfig(config);
             }
         }
@@ -27,9 +27,9 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             base.OnLoad(e);
 
-            OAuthConfigBase config = OAuthConfigBase.GetConfig(AuthSystemApplicationName, PortalId);
-            SettingsEditor.DataSource = config;
-            SettingsEditor.DataBind();
+            OAuthConfigBase config = OAuthConfigBase.GetConfig(this.AuthSystemApplicationName, this.PortalId);
+            this.SettingsEditor.DataSource = config;
+            this.SettingsEditor.DataBind();
         }
     }
 }

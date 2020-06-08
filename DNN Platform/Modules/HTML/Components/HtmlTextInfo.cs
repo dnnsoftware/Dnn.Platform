@@ -33,11 +33,11 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                return _ItemID;
+                return this._ItemID;
             }
             set
             {
-                _ItemID = value;
+                this._ItemID = value;
             }
         }
 
@@ -65,11 +65,11 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                return _IsActive;
+                return this._IsActive;
             }
             set
             {
-                _IsActive = value;
+                this._IsActive = value;
             }
         }
 
@@ -77,11 +77,11 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                return _Comment;
+                return this._Comment;
             }
             set
             {
-                _Comment = value;
+                this._Comment = value;
             }
         }
 
@@ -89,11 +89,11 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                return _Approved;
+                return this._Approved;
             }
             set
             {
-                _Approved = value;
+                this._Approved = value;
             }
         }
 

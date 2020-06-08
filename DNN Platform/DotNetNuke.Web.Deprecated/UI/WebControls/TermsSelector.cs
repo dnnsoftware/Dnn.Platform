@@ -28,9 +28,9 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         public TermsSelector()
         {
-            IncludeSystemVocabularies = false;
-            IncludeTags = true;
-            EnableViewState = false;
+            this.IncludeSystemVocabularies = false;
+            this.IncludeTags = true;
+            this.EnableViewState = false;
         }
 
         #region Public Properties
@@ -49,20 +49,20 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void OnInit(EventArgs e)
         {
-            ItemTemplate = new TreeViewTemplate();
-            Items.Add(new RadComboBoxItem());
+            this.ItemTemplate = new TreeViewTemplate();
+            this.Items.Add(new RadComboBoxItem());
             base.OnInit(e);
 
             JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
 
-            OnClientDropDownOpened = "webcontrols.termsSelector.OnClientDropDownOpened";
-            if (!string.IsNullOrEmpty(CssClass))
+            this.OnClientDropDownOpened = "webcontrols.termsSelector.OnClientDropDownOpened";
+            if (!string.IsNullOrEmpty(this.CssClass))
             {
-                CssClass = string.Format("{0} TermsSelector", CssClass);
+                this.CssClass = string.Format("{0} TermsSelector", this.CssClass);
             }
             else
             {
-                CssClass = "TermsSelector";
+                this.CssClass = "TermsSelector";
             }
         }
 
@@ -70,46 +70,46 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnLoad(e);
 
-            if (Page.IsPostBack)
+            if (this.Page.IsPostBack)
             {
-                if (Terms == null)
+                if (this.Terms == null)
                 {
-                    Terms = new List<Term>();
+                    this.Terms = new List<Term>();
                 }
                 else
                 {
-                    Terms.Clear();
+                    this.Terms.Clear();
                 }
 
-                if (!string.IsNullOrEmpty(SelectedValue))
+                if (!string.IsNullOrEmpty(this.SelectedValue))
                 {
-                    foreach (var id in SelectedValue.Split(','))
+                    foreach (var id in this.SelectedValue.Split(','))
                     {
                         var termId = Convert.ToInt32(id.Trim());
                         var term = Util.GetTermController().GetTerm(termId);
                         if (term != null)
                         {
-                            Terms.Add(term);
+                            this.Terms.Add(term);
                         }
                     }
 
                     //clear the append item by client side
-                    if (Items.Count > 1)
+                    if (this.Items.Count > 1)
                     {
-                        Items.Remove(1);
+                        this.Items.Remove(1);
                     }
                 }
             }
 
 
-            if (!Page.IsPostBack)
+            if (!this.Page.IsPostBack)
             {
-                Page.ClientScript.RegisterClientScriptResource(GetType(), "DotNetNuke.Web.UI.WebControls.Resources.TermsSelector.js");
+                this.Page.ClientScript.RegisterClientScriptResource(this.GetType(), "DotNetNuke.Web.UI.WebControls.Resources.TermsSelector.js");
 
-                ClientResourceManager.RegisterStyleSheet(Page,
-                    Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Web.UI.WebControls.Resources.TermsSelector.css"));
+                ClientResourceManager.RegisterStyleSheet(this.Page,
+                    this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Web.UI.WebControls.Resources.TermsSelector.css"));
 
-                ClientAPI.RegisterClientVariable(Page, "TermsSelectorCallback",
+                ClientAPI.RegisterClientVariable(this.Page, "TermsSelectorCallback",
                     ClientAPI.GetCallbackEventReference(this, "'[PARAMS]'", "webcontrols.termsSelector.itemDataLoaded", "this",
                         "webcontrols.termsSelector.itemDataLoadError"), true);
             }
@@ -118,13 +118,13 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            if (Terms != null)
+            if (this.Terms != null)
             {
-                Attributes.Add("SelectedTerms", String.Join(",", Terms.Select(t => t.TermId.ToString()).ToArray()));
+                this.Attributes.Add("SelectedTerms", String.Join(",", this.Terms.Select(t => t.TermId.ToString()).ToArray()));
             }
-            Attributes.Add("IncludeSystemVocabularies", IncludeSystemVocabularies.ToString().ToLowerInvariant());
-            Attributes.Add("IncludeTags", IncludeTags.ToString().ToLowerInvariant());
-            Attributes.Add("PortalId", PortalId.ToString());
+            this.Attributes.Add("IncludeSystemVocabularies", this.IncludeSystemVocabularies.ToString().ToLowerInvariant());
+            this.Attributes.Add("IncludeTags", this.IncludeTags.ToString().ToLowerInvariant());
+            this.Attributes.Add("PortalId", this.PortalId.ToString());
         }
 
         #endregion
@@ -146,18 +146,18 @@ namespace DotNetNuke.Web.UI.WebControls
 
             public void InstantiateIn(Control container)
             {
-                _container = (RadComboBoxItem)container;
-                _termsSelector = (TermsSelector)container.Parent;
+                this._container = (RadComboBoxItem)container;
+                this._termsSelector = (TermsSelector)container.Parent;
 
-                _tree = new DnnTreeView();
-                _tree.ID = string.Format("{0}_TreeView", _termsSelector.ID);
-                _tree.CheckBoxes = true;
-                _tree.EnableViewState = false;
+                this._tree = new DnnTreeView();
+                this._tree.ID = string.Format("{0}_TreeView", this._termsSelector.ID);
+                this._tree.CheckBoxes = true;
+                this._tree.EnableViewState = false;
 
                 //bind client-side events
-                _tree.OnClientNodeChecked = "webcontrols.termsSelector.OnClientNodeChecked";
+                this._tree.OnClientNodeChecked = "webcontrols.termsSelector.OnClientNodeChecked";
 
-                _container.Controls.Add(_tree);
+                this._container.Controls.Add(this._tree);
             }
 
 
@@ -171,10 +171,10 @@ namespace DotNetNuke.Web.UI.WebControls
         public string RaiseClientAPICallbackEvent(string eventArgument)
         {
             var parameters = eventArgument.Split('-');
-            PortalId = Convert.ToInt32(parameters[1]);
-            IncludeTags = Convert.ToBoolean(parameters[2]);
-            IncludeSystemVocabularies = Convert.ToBoolean(parameters[3]);
-            var terms = GetTerms();
+            this.PortalId = Convert.ToInt32(parameters[1]);
+            this.IncludeTags = Convert.ToBoolean(parameters[2]);
+            this.IncludeSystemVocabularies = Convert.ToBoolean(parameters[3]);
+            var terms = this.GetTerms();
             terms.Insert(0, new { clientId = parameters[0] });
             var serializer = new JavaScriptSerializer();
             return serializer.Serialize(terms);
@@ -188,20 +188,20 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             var vocabRep = Util.GetVocabularyController();
             var terms = new ArrayList();
-            var vocabularies = from v in vocabRep.GetVocabularies() where v.ScopeType.ScopeType == "Application" || (v.ScopeType.ScopeType == "Portal" && v.ScopeId == PortalId) select v;
+            var vocabularies = from v in vocabRep.GetVocabularies() where v.ScopeType.ScopeType == "Application" || (v.ScopeType.ScopeType == "Portal" && v.ScopeId == this.PortalId) select v;
 
             foreach (Vocabulary v in vocabularies)
             {
                 if (v.IsSystem)
                 {
-                    if (IncludeSystemVocabularies || (IncludeTags && v.Name == "Tags"))
+                    if (this.IncludeSystemVocabularies || (this.IncludeTags && v.Name == "Tags"))
                     {
-                        AddTerms(v, terms);
+                        this.AddTerms(v, terms);
                     }
                 }
                 else
                 {
-                    AddTerms(v, terms);
+                    this.AddTerms(v, terms);
                 }
             }
 

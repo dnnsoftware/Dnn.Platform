@@ -85,12 +85,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get 
             {
-                EnsureChildControls();
+                this.EnsureChildControls();
 
                 var path = string.Empty;
-                if (FoldersComboBox.SelectedFolder != null && FilesComboBox.SelectedFile != null)
+                if (this.FoldersComboBox.SelectedFolder != null && this.FilesComboBox.SelectedFile != null)
                 {
-                    path = FilesComboBox.SelectedFile.RelativePath;
+                    path = this.FilesComboBox.SelectedFile.RelativePath;
                 }
 
                 return path;
@@ -98,22 +98,22 @@ namespace DotNetNuke.Web.UI.WebControls
 
             set
             {
-                EnsureChildControls();
+                this.EnsureChildControls();
                 if (!string.IsNullOrEmpty(value))
                 {
-                    var file = FileManager.Instance.GetFile(PortalId, value);
+                    var file = FileManager.Instance.GetFile(this.PortalId, value);
                     if (file != null)
                     {
-                        FoldersComboBox.SelectedFolder = FolderManager.Instance.GetFolder(file.FolderId);
-                        FilesComboBox.SelectedFile = file;
+                        this.FoldersComboBox.SelectedFolder = FolderManager.Instance.GetFolder(file.FolderId);
+                        this.FilesComboBox.SelectedFile = file;
                     }
                 }
                 else
                 {
-                    FoldersComboBox.SelectedFolder = null;
-                    FilesComboBox.SelectedFile = null;
+                    this.FoldersComboBox.SelectedFolder = null;
+                    this.FilesComboBox.SelectedFile = null;
 
-                    LoadFolders();
+                    this.LoadFolders();
                 }
             }
         }
@@ -122,19 +122,19 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                EnsureChildControls();
+                this.EnsureChildControls();
                 
-                return FilesComboBox.SelectedFile != null ? FilesComboBox.SelectedFile.FileId : Null.NullInteger;
+                return this.FilesComboBox.SelectedFile != null ? this.FilesComboBox.SelectedFile.FileId : Null.NullInteger;
             }
 
             set
             {
-                EnsureChildControls();
+                this.EnsureChildControls();
                 var file = FileManager.Instance.GetFile(value);
                 if (file != null)
                 {
-                    FoldersComboBox.SelectedFolder = FolderManager.Instance.GetFolder(file.FolderId);
-                    FilesComboBox.SelectedFile = file;
+                    this.FoldersComboBox.SelectedFolder = FolderManager.Instance.GetFolder(file.FolderId);
+                    this.FilesComboBox.SelectedFile = file;
                 }
             }
         }
@@ -143,16 +143,16 @@ namespace DotNetNuke.Web.UI.WebControls
         { 
             get 
             {
-                return _folderPathSet
-                            ? _folderPath 
-                            : FoldersComboBox.SelectedFolder != null 
-                                ? FoldersComboBox.SelectedFolder.FolderPath 
+                return this._folderPathSet
+                            ? this._folderPath 
+                            : this.FoldersComboBox.SelectedFolder != null 
+                                ? this.FoldersComboBox.SelectedFolder.FolderPath 
                                 : string.Empty; 
             }
             set 
             {
-                _folderPath = value;
-                _folderPathSet = true;
+                this._folderPath = value;
+                this._folderPathSet = true;
             }
         }
 
@@ -160,18 +160,18 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _fileFilter;
+                return this._fileFilter;
             }
             set
             {
-                _fileFilter = value;
+                this._fileFilter = value;
                 if (!string.IsNullOrEmpty(value))
                 {
-                    FileUploadControl.Options.Extensions = value.Split(',').ToList();
+                    this.FileUploadControl.Options.Extensions = value.Split(',').ToList();
                 }
                 else
                 {
-                    FileUploadControl.Options.Extensions.RemoveAll(t => true);
+                    this.FileUploadControl.Options.Extensions.RemoveAll(t => true);
                 }
             }
         }
@@ -184,18 +184,18 @@ namespace DotNetNuke.Web.UI.WebControls
 	    {
 		    get
 		    {
-			    return !_portalId.HasValue ? PortalSettings.Current.PortalId : _portalId.Value;
+			    return !this._portalId.HasValue ? PortalSettings.Current.PortalId : this._portalId.Value;
 		    }
 			set
 			{
-				_portalId = value;
+				this._portalId = value;
 			}
 	    }
 
         public bool SupportHost
         {
-            get { return FileUploadControl.SupportHost; }
-            set { FileUploadControl.SupportHost = value; }
+            get { return this.FileUploadControl.SupportHost; }
+            set { this.FileUploadControl.SupportHost = value; }
         }
 
         #endregion
@@ -206,66 +206,66 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnLoad(e);
 
-            FoldersComboBox.SelectItemDefaultText = (SupportHost && PortalSettings.Current.ActiveTab.IsSuperTab) ? DynamicSharedConstants.HostRootFolder : DynamicSharedConstants.RootFolder;
-            FoldersComboBox.OnClientSelectionChanged.Add("dnn.dnnFileUpload.Folders_Changed");
-            FoldersComboBox.Options.Services.Parameters.Add("permission", "READ,ADD");
+            this.FoldersComboBox.SelectItemDefaultText = (this.SupportHost && PortalSettings.Current.ActiveTab.IsSuperTab) ? DynamicSharedConstants.HostRootFolder : DynamicSharedConstants.RootFolder;
+            this.FoldersComboBox.OnClientSelectionChanged.Add("dnn.dnnFileUpload.Folders_Changed");
+            this.FoldersComboBox.Options.Services.Parameters.Add("permission", "READ,ADD");
 
-            FilesComboBox.OnClientSelectionChanged.Add("dnn.dnnFileUpload.Files_Changed");
-            FilesComboBox.SelectItemDefaultText = DynamicSharedConstants.Unspecified;
-            FilesComboBox.IncludeNoneSpecificItem = true;
-            FilesComboBox.Filter = FileFilter;
+            this.FilesComboBox.OnClientSelectionChanged.Add("dnn.dnnFileUpload.Files_Changed");
+            this.FilesComboBox.SelectItemDefaultText = DynamicSharedConstants.Unspecified;
+            this.FilesComboBox.IncludeNoneSpecificItem = true;
+            this.FilesComboBox.Filter = this.FileFilter;
 
             if (UrlUtils.InPopUp())
             {
-                FileUploadControl.Width = 630;
-                FileUploadControl.Height = 400;
+                this.FileUploadControl.Width = 630;
+                this.FileUploadControl.Height = 400;
             }
 
-            LoadFolders();
-            jQuery.RegisterFileUpload(Page);
+            this.LoadFolders();
+            jQuery.RegisterFileUpload(this.Page);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
 
         protected override void OnPreRender(EventArgs e)
         {
-            if (FoldersComboBox.SelectedFolder != null && FoldersComboBox.SelectedFolder.FolderPath.StartsWith("Users/", StringComparison.InvariantCultureIgnoreCase))
+            if (this.FoldersComboBox.SelectedFolder != null && this.FoldersComboBox.SelectedFolder.FolderPath.StartsWith("Users/", StringComparison.InvariantCultureIgnoreCase))
             {
-                var userFolder = FolderManager.Instance.GetUserFolder(User ?? UserController.Instance.GetCurrentUserInfo());
-                if (FoldersComboBox.SelectedFolder.FolderID == userFolder.FolderID)
+                var userFolder = FolderManager.Instance.GetUserFolder(this.User ?? UserController.Instance.GetCurrentUserInfo());
+                if (this.FoldersComboBox.SelectedFolder.FolderID == userFolder.FolderID)
                 {
-                    FoldersComboBox.SelectedItem = new ListItem
+                    this.FoldersComboBox.SelectedItem = new ListItem
                                                    {
                                                        Text = FolderManager.Instance.MyFolderName, 
                                                        Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture)
                                                    };
                 }
-                else if (UsePersonalFolder) //if UserPersonalFolder is true, make sure the file is under the user folder.
+                else if (this.UsePersonalFolder) //if UserPersonalFolder is true, make sure the file is under the user folder.
                 {
-                    FoldersComboBox.SelectedItem = new ListItem
+                    this.FoldersComboBox.SelectedItem = new ListItem
                                                     {
                                                         Text = FolderManager.Instance.MyFolderName,
                                                         Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture)
                                                     };
 
-                    FilesComboBox.SelectedFile = null;
+                    this.FilesComboBox.SelectedFile = null;
                 }
             }
 
-            FoldersLabel.Text = FolderManager.Instance.MyFolderName;
+            this.FoldersLabel.Text = FolderManager.Instance.MyFolderName;
 
-            FileUploadControl.Options.FolderPicker.Disabled = UsePersonalFolder;
-            if (FileUploadControl.Options.FolderPicker.Disabled && FoldersComboBox.SelectedFolder != null)
+            this.FileUploadControl.Options.FolderPicker.Disabled = this.UsePersonalFolder;
+            if (this.FileUploadControl.Options.FolderPicker.Disabled && this.FoldersComboBox.SelectedFolder != null)
             {
                 var selectedItem = new SerializableKeyValuePair<string, string>(
-                    FoldersComboBox.SelectedItem.Value, FoldersComboBox.SelectedItem.Text);
+                    this.FoldersComboBox.SelectedItem.Value, this.FoldersComboBox.SelectedItem.Text);
 
-                FileUploadControl.Options.FolderPicker.InitialState = new DnnDropDownListState
+                this.FileUploadControl.Options.FolderPicker.InitialState = new DnnDropDownListState
                                                                           {
                                                                               SelectedItem = selectedItem
                                                                                   
                                                                           };
-                FileUploadControl.Options.FolderPath = FoldersComboBox.SelectedFolder.FolderPath;
+                this.FileUploadControl.Options.FolderPath = this.FoldersComboBox.SelectedFolder.FolderPath;
             }
 
             base.OnPreRender(e);
@@ -277,38 +277,38 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void LoadFolders()
         {
-            if (UsePersonalFolder)
+            if (this.UsePersonalFolder)
             {
-                var user = User ?? UserController.Instance.GetCurrentUserInfo();
+                var user = this.User ?? UserController.Instance.GetCurrentUserInfo();
                 var userFolder = FolderManager.Instance.GetUserFolder(user);
-                FoldersComboBox.SelectedFolder = userFolder;
+                this.FoldersComboBox.SelectedFolder = userFolder;
             }
             else
             {
                 //select folder
                 string fileName;
                 string folderPath;
-                if (!string.IsNullOrEmpty(FilePath))
+                if (!string.IsNullOrEmpty(this.FilePath))
                 {
-                    fileName = FilePath.Substring(FilePath.LastIndexOf("/") + 1);
-                    folderPath = string.IsNullOrEmpty(fileName) ? FilePath : FilePath.Replace(fileName, "");
+                    fileName = this.FilePath.Substring(this.FilePath.LastIndexOf("/") + 1);
+                    folderPath = string.IsNullOrEmpty(fileName) ? this.FilePath : this.FilePath.Replace(fileName, "");
                 }
                 else
                 {
-                    fileName = FilePath;
-                    folderPath = FolderPath;
+                    fileName = this.FilePath;
+                    folderPath = this.FolderPath;
                 }
 
-                FoldersComboBox.SelectedFolder = FolderManager.Instance.GetFolder(PortalId, folderPath);
+                this.FoldersComboBox.SelectedFolder = FolderManager.Instance.GetFolder(this.PortalId, folderPath);
 
                 if (!string.IsNullOrEmpty(fileName))
                 {
-                    FilesComboBox.SelectedFile = FileManager.Instance.GetFile(FoldersComboBox.SelectedFolder, fileName);
+                    this.FilesComboBox.SelectedFile = FileManager.Instance.GetFile(this.FoldersComboBox.SelectedFolder, fileName);
                 }
             }
 
-            FoldersComboBox.Enabled = !UsePersonalFolder;
-            FoldersLabel.Visible = UsePersonalFolder;
+            this.FoldersComboBox.Enabled = !this.UsePersonalFolder;
+            this.FoldersLabel.Visible = this.UsePersonalFolder;
         }
 
         #endregion

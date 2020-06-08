@@ -23,18 +23,18 @@ namespace DotNetNuke.Authentication.Google.Components
         public GoogleClient(int portalId, AuthMode mode) 
             : base(portalId, mode, "Google")
         {
-            TokenEndpoint = new Uri("https://accounts.google.com/o/oauth2/token");
-            TokenMethod = HttpMethod.POST;
-            AuthorizationEndpoint = new Uri("https://accounts.google.com/o/oauth2/auth");
-            MeGraphEndpoint = new Uri("https://www.googleapis.com/oauth2/v1/userinfo");
+            this.TokenEndpoint = new Uri("https://accounts.google.com/o/oauth2/token");
+            this.TokenMethod = HttpMethod.POST;
+            this.AuthorizationEndpoint = new Uri("https://accounts.google.com/o/oauth2/auth");
+            this.MeGraphEndpoint = new Uri("https://www.googleapis.com/oauth2/v1/userinfo");
 
-            Scope = HttpUtility.UrlEncode("https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email");
+            this.Scope = HttpUtility.UrlEncode("https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email");
 
-            AuthTokenName = "GoogleUserToken";
+            this.AuthTokenName = "GoogleUserToken";
 
-            OAuthVersion = "2.0";
+            this.OAuthVersion = "2.0";
 
-            LoadTokenCookie(String.Empty);
+            this.LoadTokenCookie(String.Empty);
         }
 
         #endregion

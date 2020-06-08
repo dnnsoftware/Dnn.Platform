@@ -32,17 +32,17 @@ namespace Dnn.PersonaBar.Servers.Services
                     Success = true,
                     Results = new
                     {
-                        LogList = _logController.GetLogFilesList(),
-                        UpgradeLogList = _logController.GetUpgradeLogList()
+                        LogList = this._logController.GetLogFilesList(),
+                        UpgradeLogList = this._logController.GetUpgradeLogList()
                     },
                     TotalResults = 1
                 };
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -53,22 +53,22 @@ namespace Dnn.PersonaBar.Servers.Services
             {
                 var logFilePath = Path.Combine(Globals.ApplicationMapPath, @"portals\_default\logs", fileName);
 
-                ValidateFilePath(logFilePath);
+                this.ValidateFilePath(logFilePath);
 
                 using (var reader = File.OpenText(logFilePath))
                 {
                     var logText = reader.ReadToEnd();
-                    return Request.CreateResponse(HttpStatusCode.OK, logText);
+                    return this.Request.CreateResponse(HttpStatusCode.OK, logText);
                 }
             }
             catch (ArgumentException exc)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -81,7 +81,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 var providerPath = DataProvider.Instance().GetProviderPath();
                 var logFilePath = Path.Combine(providerPath, logName + ".log.resources");
 
-                ValidateFilePath(logFilePath);
+                this.ValidateFilePath(logFilePath);
 
                 if (File.Exists(logFilePath))
                 {
@@ -93,16 +93,16 @@ namespace Dnn.PersonaBar.Servers.Services
                     }
                 }
 
-                return Request.CreateResponse(HttpStatusCode.OK, upgradeText);
+                return this.Request.CreateResponse(HttpStatusCode.OK, upgradeText);
             }
             catch (ArgumentException exc)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
