@@ -1,17 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-// Base oAuth Class for Twitter and LinkedIn
-// Author: Eran Sandler
-// Code Url: http://oauth.net/code/
-// Author Url: http://eran.sandler.co.il/
-//
-// Some modifications by Shannon Whitley
-// Author Url: http://voiceoftech.com/
-//
-// Additional modifications by Evan Smith (DNN-4143 & DNN-6265)
-// Author Url: http://skydnn.com
-
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;

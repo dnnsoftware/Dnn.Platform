@@ -1,16 +1,6 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-//------------------------------------------------------------------------------------------------
-// CountryListBox ASP.NET Web Control, lists	countries and
-// automatically detects	country	of visitors.
-//
-// This	web	control	will load a	listbox	with all countries and
-// upon	loading	will attempt to	automatically recognize	the
-// country that the	visitor	is visiting	the	website	from.
-//------------------------------------------------------------------------------------------------
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 #region Usings
 
 using System;
