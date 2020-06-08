@@ -124,7 +124,7 @@
     <value>en-US</value>
   </data>
   <data name="Setting.FooterText.Text" xml:space="preserve">
-    <value>Copyright [year] by DNN Corp</value>
+    <value>Copyright [year] by My Website</value>
   </data>
   <data name="PortalDescription.Text" xml:space="preserve">
     <value>Blank Template</value>

@@ -129,6 +129,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 var mailFrom = Host.HostEmail;
                 var mailTo = request.SmtpServerMode == "h" ? Host.HostEmail : this.PortalSettings.UserInfo.Email;
 
+
                 var errMessage = Mail.SendMail(mailFrom,
                     mailTo,
                     "",
