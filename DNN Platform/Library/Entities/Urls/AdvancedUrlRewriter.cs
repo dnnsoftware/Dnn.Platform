@@ -346,6 +346,22 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
 
+                    // now we may know the TabId. If the current alias is not the same as the primary alias,
+                    // we should check if the current alias is indeed a valid custom alias for the current tab.
+                    if (result.TabId > 0 && result.HttpAlias != result.PrimaryAlias.HTTPAlias && !CheckIfAliasIsCurrentTabCustomTabAlias(ref result, settings))
+                    {
+                        //it was an incorrect alias
+                        //try and redirect the alias if the settings allow it
+                        if( RedirectPortalAlias(result.PrimaryAlias.HTTPAlias, ref result, settings))
+                        {
+                            //not correct alias for tab : will be redirected
+                            //perform a 301 redirect if one has already been found
+                            response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
+                            response.RedirectPermanent(result.FinalUrl, false);
+                            finished = true;
+                        }
+                    }
+
                     if (!finished && result.DoRewrite)
                     {
                         //check the identified portal alias details for any extra rewrite information required
@@ -1813,6 +1829,39 @@ namespace DotNetNuke.Entities.Urls
             return isACustomTabAlias;
         }
         /// <summary>
+        /// Checks to see whether the specified alias is a customTabAlias for the TabId in result
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="httpAlias"></param>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        private static bool CheckIfAliasIsCurrentTabCustomTabAlias(ref UrlAction result, FriendlyUrlSettings settings)
+        {
+            var customAliasesForTab = TabController.Instance.GetCustomAliases(result.TabId, result.PortalId);
+            bool isCurrentTabCustomTabAlias = false;
+            if (customAliasesForTab != null && customAliasesForTab.Count > 0)
+            {
+                //see if we have a customAlias for the current CultureCode
+                if (customAliasesForTab.ContainsKey(result.CultureCode))
+                {
+                    //if it is for the current culture, we need to know if it's a primary alias
+                    var tabPortalAlias = PortalAliasController.Instance.GetPortalAlias(customAliasesForTab[result.CultureCode]);
+                    if (tabPortalAlias != null && !tabPortalAlias.IsPrimary)
+                    {
+                        // it's not a primary alias, so must be a custom tab alias
+                        isCurrentTabCustomTabAlias = true;
+                    }
+                }
+            }
+            // if it's not a custom alias for the current tab, we'll need to change the result
+            if (!isCurrentTabCustomTabAlias)
+            {
+                result.Action = ActionType.Redirect301;
+                result.Reason = RedirectReason.Wrong_Portal_Alias;
+            }
+            return isCurrentTabCustomTabAlias;
+        }
+        /// <summary>
         /// Configures the result object to set the correct Alias redirect
         /// parameters and destination URL
         /// </summary>
@@ -1838,8 +1887,15 @@ namespace DotNetNuke.Entities.Urls
             if (ignoreCustomAliasTabs == false) //check out custom alias tabs collection
             {
                 //if an alias is a custom tab alias for a specific tab, then don't redirect
-                if (CheckIfAliasIsCustomTabAlias(ref result, wrongAlias, settings)) 
+                // if we have the TabId, we'll need to check if the alias is valid for the current tab
+                if (result.TabId > 0 && CheckIfAliasIsCurrentTabCustomTabAlias(ref result, settings))
+                {
                     doRedirect = false;
+                }
+                else if (result.TabId < 0 && CheckIfAliasIsCustomTabAlias(ref result, wrongAlias, settings))
+                {
+                    doRedirect = false;
+                }
                 else
                 {
                     doRedirect = true;
