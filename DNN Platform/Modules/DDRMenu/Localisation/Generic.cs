@@ -22,7 +22,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 
 		public bool HaveApi()
 		{
-			if (!haveChecked)
+			if (!this.haveChecked)
 			{
 				var modules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
 				foreach (var moduleKeyPair in modules)
@@ -31,23 +31,23 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 					{
 						try
 						{
-                            locApi = Reflection.CreateObject(moduleKeyPair.Value.BusinessControllerClass, moduleKeyPair.Value.BusinessControllerClass);
-							locTab = locApi.GetType().GetMethod("LocaliseTab", new[] {typeof(TabInfo), typeof(int)});
-							if (locTab != null)
+                            this.locApi = Reflection.CreateObject(moduleKeyPair.Value.BusinessControllerClass, moduleKeyPair.Value.BusinessControllerClass);
+							this.locTab = this.locApi.GetType().GetMethod("LocaliseTab", new[] {typeof(TabInfo), typeof(int)});
+							if (this.locTab != null)
 							{
-								if (locTab.IsStatic)
+								if (this.locTab.IsStatic)
 								{
-									locApi = null;
+									this.locApi = null;
 								}
 								break;
 							}
 
-							locNodes = locApi.GetType().GetMethod("LocaliseNodes", new[] {typeof(DNNNodeCollection)});
-							if (locNodes != null)
+							this.locNodes = this.locApi.GetType().GetMethod("LocaliseNodes", new[] {typeof(DNNNodeCollection)});
+							if (this.locNodes != null)
 							{
-								if (locNodes.IsStatic)
+								if (this.locNodes.IsStatic)
 								{
-									locApi = null;
+									this.locApi = null;
 								}
 								break;
 							}
@@ -59,20 +59,20 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 // ReSharper restore EmptyGeneralCatchClause
 					}
 				}
-				haveChecked = true;
+				this.haveChecked = true;
 			}
 
-			return (locTab != null) || (locNodes != null);
+			return (this.locTab != null) || (this.locNodes != null);
 		}
 
 		public TabInfo LocaliseTab(TabInfo tab, int portalId)
 		{
-			return (locTab == null) ? null : (TabInfo)locTab.Invoke(locApi, new object[] {tab, portalId});
+			return (this.locTab == null) ? null : (TabInfo)this.locTab.Invoke(this.locApi, new object[] {tab, portalId});
 		}
 
 		public DNNNodeCollection LocaliseNodes(DNNNodeCollection nodes)
 		{
-			return (locNodes == null) ? null : (DNNNodeCollection)locNodes.Invoke(locApi, new object[] {nodes});
+			return (this.locNodes == null) ? null : (DNNNodeCollection)this.locNodes.Invoke(this.locApi, new object[] {nodes});
 		}
 	}
 }

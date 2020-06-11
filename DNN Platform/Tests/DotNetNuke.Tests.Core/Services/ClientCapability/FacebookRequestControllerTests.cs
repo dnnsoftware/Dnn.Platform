@@ -31,14 +31,14 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
 		[SetUp]
 		public void SetUp()
 		{
-			_requestDics = new Dictionary<string, string>();
-			_requestDics.Add("Empty", string.Empty);
-			_requestDics.Add("Valid", "vlXgu64BQGFSQrY0ZcJBZASMvYvTHu9GQ0YM9rjPSso.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsIjAiOiJwYXlsb2FkIiwidXNlcl9pZCI6ICIxIiwiZXhwaXJlcyI6IjEzMjUzNzU5OTkifQ==");
+			this._requestDics = new Dictionary<string, string>();
+			this._requestDics.Add("Empty", string.Empty);
+			this._requestDics.Add("Valid", "vlXgu64BQGFSQrY0ZcJBZASMvYvTHu9GQ0YM9rjPSso.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsIjAiOiJwYXlsb2FkIiwidXNlcl9pZCI6ICIxIiwiZXhwaXJlcyI6IjEzMjUzNzU5OTkifQ==");
 
-            _requestDics.Add("ValidForAPage", "ylleuHAFR0DTpZ3bNr0fjMp7X7le_j8_HN3ONpbbgkk.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImlzc3VlZF9hdCI6MTMxOTQ4ODEwNywicGFnZSI6eyJpZCI6IjEzMDYzNDU0MDM3MjcyOCIsImxpa2VkIjpmYWxzZSwiYWRtaW4iOnRydWV9LCJ1c2VyIjp7ImNvdW50cnkiOiJjYSIsImxvY2FsZSI6ImVuX1VTIiwiYWdlIjp7Im1pbiI6MjF9fX0");
+            this._requestDics.Add("ValidForAPage", "ylleuHAFR0DTpZ3bNr0fjMp7X7le_j8_HN3ONpbbgkk.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImlzc3VlZF9hdCI6MTMxOTQ4ODEwNywicGFnZSI6eyJpZCI6IjEzMDYzNDU0MDM3MjcyOCIsImxpa2VkIjpmYWxzZSwiYWRtaW4iOnRydWV9LCJ1c2VyIjp7ImNvdW50cnkiOiJjYSIsImxvY2FsZSI6ImVuX1VTIiwiYWdlIjp7Im1pbiI6MjF9fX0");
             //json data "{\"algorithm\":\"HMAC-SHA256\",\"issued_at\":1319488107,\"page\":{\"id\":\"130634540372728\",\"liked\":false,\"admin\":true},\"user\":{\"country\":\"ca\",\"locale\":\"en_US\",\"age\":{\"min\":21}}}"
 
-			_requestDics.Add("Invalid", "Invalid Content");
+			this._requestDics.Add("Invalid", "Invalid Content");
 		}
 
 		#endregion
@@ -48,28 +48,28 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
 		[Test]
 		public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Empty_Request_String()
 		{
-			var request = FacebookRequestController.GetFacebookDetailsFromRequest(_requestDics["Empty"]);
+			var request = FacebookRequestController.GetFacebookDetailsFromRequest(this._requestDics["Empty"]);
 			Assert.IsNull(request);
 		}
 
 		[Test]
 		public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Invalid_Request_String()
 		{
-			var request = FacebookRequestController.GetFacebookDetailsFromRequest(_requestDics["Invalid"]);
+			var request = FacebookRequestController.GetFacebookDetailsFromRequest(this._requestDics["Invalid"]);
 			Assert.IsNull(request);
 		}
 
 		[Test]
 		public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Valid_Request_String()
 		{
-			var request = FacebookRequestController.GetFacebookDetailsFromRequest(_requestDics["Valid"]);
+			var request = FacebookRequestController.GetFacebookDetailsFromRequest(this._requestDics["Valid"]);
 			Assert.AreEqual(true, request.IsValid);
 		}
 
         [Test]
         public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Valid_Request_String_ForAPage()
         {
-            var request = FacebookRequestController.GetFacebookDetailsFromRequest(_requestDics["ValidForAPage"]);
+            var request = FacebookRequestController.GetFacebookDetailsFromRequest(this._requestDics["ValidForAPage"]);
             Assert.AreEqual(true, request.IsValid);
             Assert.AreEqual("HMAC-SHA256", request.Algorithm);
             Assert.AreEqual(ConvertToTimestamp(1319488107), request.IssuedAt);
@@ -108,8 +108,8 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
 		{
 			HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", "");
 			httpRequest.RequestType = "POST";
-			SetReadonly(httpRequest.Form, false);
-			httpRequest.Form.Add("signed_request", _requestDics["Invalid"]);
+			this.SetReadonly(httpRequest.Form, false);
+			httpRequest.Form.Add("signed_request", this._requestDics["Invalid"]);
 
 			var request = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);
 			Assert.IsNull(request);
@@ -120,8 +120,8 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
 		{
 			HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", "");
 			httpRequest.RequestType = "POST";
-			SetReadonly(httpRequest.Form, false);
-			httpRequest.Form.Add("signed_request", _requestDics["Valid"]);
+			this.SetReadonly(httpRequest.Form, false);
+			httpRequest.Form.Add("signed_request", this._requestDics["Valid"]);
 
 			var request = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);
 			Assert.AreEqual(true, request.IsValid);

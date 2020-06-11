@@ -53,7 +53,7 @@ namespace Dnn.EditBar.UI.Controllers
             settings.Add("portalId", portalSettings.PortalId);
             settings.Add("culture", portalSettings.CultureCode);
             settings.Add("loginUrl", Globals.LoginURL(HttpContext.Current?.Request.RawUrl, false));
-            settings.Add("items", GetMenuItems());
+            settings.Add("items", this.GetMenuItems());
 
             return settings;
         }

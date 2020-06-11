@@ -81,13 +81,13 @@ namespace log4net.Util.PatternStringConverters
 		/// </remarks>
 		public void ActivateOptions()
 		{
-			string optionStr = Option;
+			string optionStr = this.Option;
 			if (optionStr != null && optionStr.Length > 0)
 			{
 				int lengthVal;
 				if (SystemInfo.TryParse(optionStr, out lengthVal))
 				{
-					m_length = lengthVal;
+					this.m_length = lengthVal;
 				}
 				else
 				{
@@ -114,7 +114,7 @@ namespace log4net.Util.PatternStringConverters
 			{
 				lock(s_random)
 				{
-					for(int i=0; i<m_length; i++)
+					for(int i=0; i<this.m_length; i++)
 					{
 						int randValue = s_random.Next(36);
 

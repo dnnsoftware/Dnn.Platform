@@ -15,12 +15,12 @@ namespace DotNetNuke.Framework.Reflections
 
         public AssemblyWrapper(Assembly assembly)
         {
-            _assembly = assembly;
+            this._assembly = assembly;
         }
 
         public Type[] GetTypes()
         {
-            return _assembly.GetTypes();
+            return this._assembly.GetTypes();
         }
     }
 }

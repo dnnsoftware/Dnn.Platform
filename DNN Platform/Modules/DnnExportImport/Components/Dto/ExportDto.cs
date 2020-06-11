@@ -127,9 +127,9 @@ namespace Dnn.ExportImport.Components.Dto
         public DateTime ToDateUtc { get; set; }
 
         [JsonIgnore]
-        public DateTime? FromDate => FromDateUtc;
+        public DateTime? FromDate => this.FromDateUtc;
         [JsonIgnore]
-        public DateTime ToDate => ToDateUtc;
+        public DateTime ToDate => this.ToDateUtc;
 
         /// <summary>
         /// The pages to be exported. These are the ID's (plus other information)

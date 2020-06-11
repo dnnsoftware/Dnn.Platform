@@ -29,15 +29,15 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
         private IRemoteStorageItem GetStorageItemInternal(FolderMappingInfo folderMapping, string key)
         {
-            var cacheKey = string.Format(ObjectCacheKey, folderMapping.FolderMappingID, key);
+            var cacheKey = string.Format(this.ObjectCacheKey, folderMapping.FolderMappingID, key);
 
             return CBO.GetCachedObject<IRemoteStorageItem>(new CacheItemArgs(cacheKey,
-                ObjectCacheTimeout,
+                this.ObjectCacheTimeout,
                 CacheItemPriority.Default,
                 folderMapping.FolderMappingID),
                 c =>
                 {
-                    var list = GetObjectList(folderMapping, key);
+                    var list = this.GetObjectList(folderMapping, key);
                     
                     //return list.FirstOrDefault(i => i.Key == key);
                     return list.FirstOrDefault(i => i.Key.Equals(key, StringComparison.InvariantCultureIgnoreCase));
@@ -120,7 +120,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
         protected virtual IList<IRemoteStorageItem> GetObjectList(FolderMappingInfo folderMapping, string path)
         {
-            return GetObjectList(folderMapping);
+            return this.GetObjectList(folderMapping);
         }
 
         protected static string GetSetting(FolderMappingInfo folderMapping, string settingName)
@@ -139,7 +139,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
         protected virtual IRemoteStorageItem GetStorageItem(FolderMappingInfo folderMapping, string key)
         {
-            return GetStorageItemInternal(folderMapping, key);
+            return this.GetStorageItemInternal(folderMapping, key);
         }
         #endregion
 
@@ -148,7 +148,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// </summary>
         public override void AddFolder(string folderPath, FolderMappingInfo folderMapping)
         {
-            AddFolder(folderPath, folderMapping, folderPath);
+            this.AddFolder(folderPath, folderMapping, folderPath);
         }
 
         /// <summary>
@@ -160,15 +160,15 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             Requires.NotNullOrEmpty("fileName", fileName);
             Requires.NotNull("content", content);
 
-            UpdateFile(folder, fileName, content);
+            this.UpdateFile(folder, fileName, content);
         }
 
         public virtual void ClearCache(int folderMappingId)
         {
-            var cacheKey = String.Format(ListObjectsCacheKey, folderMappingId);
+            var cacheKey = String.Format(this.ListObjectsCacheKey, folderMappingId);
             DataCache.RemoveCache(cacheKey);
             //Clear cached objects
-            DataCache.ClearCache(String.Format(ObjectCacheKey, folderMappingId, String.Empty));
+            DataCache.ClearCache(String.Format(this.ObjectCacheKey, folderMappingId, String.Empty));
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
             if (folderPath == newFolderPath) return;
 
-            CopyFileInternal(folderMapping, folderPath + fileName, newFolderPath + fileName);
+            this.CopyFileInternal(folderMapping, folderPath + fileName, newFolderPath + fileName);
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
-            DeleteFileInternal(folderMapping, folder.MappedPath + file.FileName);
+            this.DeleteFileInternal(folderMapping, folder.MappedPath + file.FileName);
         }
 
         /// <remarks>
@@ -209,7 +209,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
 
-            DeleteFolderInternal(folderMapping, folder);
+            this.DeleteFolderInternal(folderMapping, folder);
         }
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             Requires.NotNullOrEmpty("fileName", fileName);
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
-            var item = GetStorageItem(folderMapping, folder.MappedPath + fileName);
+            var item = this.GetStorageItem(folderMapping, folder.MappedPath + fileName);
             return (item != null);
         }
 
@@ -239,7 +239,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
                 return true;
             }
 
-            var list = GetObjectList(folderMapping, folderPath);
+            var list = this.GetObjectList(folderMapping, folderPath);
 
             return list.Any(o => o.Key.StartsWith(folderPath, StringComparison.InvariantCultureIgnoreCase));
         }
@@ -260,7 +260,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             Requires.NotNull("folder", folder);
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
-            var list = GetObjectList(folderMapping, folder.MappedPath);
+            var list = this.GetObjectList(folderMapping, folder.MappedPath);
             var mappedPath = folder.MappedPath;
 
             //return (from i in list
@@ -288,10 +288,10 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
-            var item = GetStorageItem(folderMapping, folder.MappedPath + file.FileName);
+            var item = this.GetStorageItem(folderMapping, folder.MappedPath + file.FileName);
             if (item == null)
             {
-                throw new FileNotFoundException(FileNotFoundMessage, file.RelativePath);
+                throw new FileNotFoundException(this.FileNotFoundMessage, file.RelativePath);
             }
             return item.Size;
 
@@ -308,7 +308,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
-            return GetFileStreamInternal(folderMapping, folder.MappedPath + file.FileName);
+            return this.GetFileStreamInternal(folderMapping, folder.MappedPath + file.FileName);
         }
 
         /// <summary>
@@ -321,7 +321,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
 
-            return GetFileStreamInternal(folderMapping, folder.MappedPath + fileName);
+            return this.GetFileStreamInternal(folderMapping, folder.MappedPath + fileName);
         }
 
         /// <summary>
@@ -334,10 +334,10 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
-            var item = GetStorageItem(folderMapping, folder.MappedPath+file.FileName);
+            var item = this.GetStorageItem(folderMapping, folder.MappedPath+file.FileName);
             if (item == null)
             {
-                throw new FileNotFoundException(FileNotFoundMessage, file.RelativePath);
+                throw new FileNotFoundException(this.FileNotFoundMessage, file.RelativePath);
             }
             return item.LastModified;            
         }
@@ -350,7 +350,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             Requires.NotNull("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
-            var list = GetObjectList(folderMapping, folderPath);
+            var list = this.GetObjectList(folderMapping, folderPath);
             
             var pattern = "^" + Regex.Escape(folderPath);
 
@@ -385,7 +385,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// </remarks>
         public override bool IsInSync(IFileInfo file)
         {
-            return Convert.ToInt32((file.LastModificationTime - GetLastModificationTime(file)).TotalSeconds) == 0;
+            return Convert.ToInt32((file.LastModificationTime - this.GetLastModificationTime(file)).TotalSeconds) == 0;
         }
 
         /// <summary>
@@ -397,7 +397,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             Requires.NotNullOrEmpty("newFolderPath", newFolderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
-            MoveFolderInternal(folderMapping, folderPath, newFolderPath);
+            this.MoveFolderInternal(folderMapping, folderPath, newFolderPath);
         }
 
         /// <summary>
@@ -412,7 +412,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
-            MoveFileInternal(folderMapping, folder.MappedPath + file.FileName, folder.MappedPath + newFileName);
+            this.MoveFileInternal(folderMapping, folder.MappedPath + file.FileName, folder.MappedPath + newFileName);
         }
 
         /// <summary>
@@ -432,7 +432,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
                         mappedPath.Substring(0, mappedPath.LastIndexOf(folder.FolderName, StringComparison.Ordinal)) +
                         newFolderName);
 
-                MoveFolderInternal(folderMapping, mappedPath, newMappedPath);
+                this.MoveFolderInternal(folderMapping, mappedPath, newMappedPath);
             }
         }
 
@@ -463,7 +463,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
-            UpdateFileInternal(content, folderMapping, folder.MappedPath + file.FileName);
+            this.UpdateFileInternal(content, folderMapping, folder.MappedPath + file.FileName);
         }
 
         /// <summary>
@@ -477,7 +477,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
 
-            UpdateFileInternal(content, folderMapping, folder.MappedPath + fileName);
+            this.UpdateFileInternal(content, folderMapping, folder.MappedPath + fileName);
         }
 
         public override string GetHashCode(IFileInfo file)
@@ -486,19 +486,19 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
 
-            var item = GetStorageItem(folderMapping, folder.MappedPath + file.FileName);
+            var item = this.GetStorageItem(folderMapping, folder.MappedPath + file.FileName);
             if (item == null)
             {
-                throw new FileNotFoundException(FileNotFoundMessage, file.RelativePath);
+                throw new FileNotFoundException(this.FileNotFoundMessage, file.RelativePath);
             }
             return (item.Size == file.Size) ? item.HashCode : String.Empty;
         }
 
         public override string GetHashCode(IFileInfo file, Stream fileContent)
         {
-            if (FileExists(FolderManager.Instance.GetFolder(file.FolderId), file.FileName))
+            if (this.FileExists(FolderManager.Instance.GetFolder(file.FolderId), file.FileName))
             {
-                return GetHashCode(file);                
+                return this.GetHashCode(file);                
             }
             return String.Empty;
         }

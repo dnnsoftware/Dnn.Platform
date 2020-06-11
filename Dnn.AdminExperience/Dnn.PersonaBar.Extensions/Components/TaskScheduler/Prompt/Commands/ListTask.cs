@@ -30,17 +30,17 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             
-            Enabled = GetFlagValue<bool?>(FlagEnabled, "Enabled", null, false, true);
-            TaskName = GetFlagValue(FlagName, "Task Name", string.Empty, false, !Enabled.HasValue);
+            this.Enabled = this.GetFlagValue<bool?>(FlagEnabled, "Enabled", null, false, true);
+            this.TaskName = this.GetFlagValue(FlagName, "Task Name", string.Empty, false, !this.Enabled.HasValue);
         }
 
         public override ConsoleResultModel Run()
         {
             var controller = new TaskSchedulerController();
             var tasks = new List<TaskModelBase>();
-            var schedulerItems = controller.GetScheduleItems(Enabled, "", TaskName?.Replace("*", ""));
+            var schedulerItems = controller.GetScheduleItems(this.Enabled, "", this.TaskName?.Replace("*", ""));
             tasks.AddRange(schedulerItems.Select(x => new TaskModelBase(x)));
-            return new ConsoleResultModel(string.Format(LocalizeString("Prompt_TasksFound"), tasks.Count))
+            return new ConsoleResultModel(string.Format(this.LocalizeString("Prompt_TasksFound"), tasks.Count))
             {
                 Data = tasks,
                 Records = tasks.Count

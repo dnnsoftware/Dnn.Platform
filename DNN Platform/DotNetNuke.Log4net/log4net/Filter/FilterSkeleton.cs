@@ -150,8 +150,8 @@ namespace log4net.Filter
 		/// </remarks>
 		public IFilter Next
 		{
-			get { return m_next; }
-			set { m_next = value; }
+			get { return this.m_next; }
+			set { this.m_next = value; }
 		}
 
 		#endregion

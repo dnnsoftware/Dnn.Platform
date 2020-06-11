@@ -45,29 +45,29 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             
-            ModuleName = GetFlagValue(FlagModuleName, "Module Name", string.Empty, true, true);
-            PageId = GetFlagValue(FlagPageId, "Page Id", -1, true, false, true);
-            ModuleTitle = GetFlagValue(FlagModuleTitle, "Module Title", string.Empty);
-            Pane = GetFlagValue(FlagPane, "Pane", "ContentPane");
+            this.ModuleName = this.GetFlagValue(FlagModuleName, "Module Name", string.Empty, true, true);
+            this.PageId = this.GetFlagValue(FlagPageId, "Page Id", -1, true, false, true);
+            this.ModuleTitle = this.GetFlagValue(FlagModuleTitle, "Module Title", string.Empty);
+            this.Pane = this.GetFlagValue(FlagPane, "Pane", "ContentPane");
         }
 
         public override ConsoleResultModel Run()
         {
             try
             {
-                var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(ModuleName, PortalId);
+                var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(this.ModuleName, this.PortalId);
                 if (desktopModule == null)
                 {
-                    return new ConsoleErrorResultModel(string.Format(LocalizeString("Prompt_DesktopModuleNotFound"), ModuleName));
+                    return new ConsoleErrorResultModel(string.Format(this.LocalizeString("Prompt_DesktopModuleNotFound"), this.ModuleName));
                 }
 
                 KeyValuePair<HttpStatusCode, string> message;
                 var addedModules = ModulesControllerLibrary.Instance.AddNewModule(
-                    PortalSettings,
-                    ModuleTitle,
+                    this.PortalSettings,
+                    this.ModuleTitle,
                     desktopModule.DesktopModuleID,
-                    PageId,
-                    Pane,
+                    this.PageId,
+                    this.Pane,
                     0,
                     0,
                     null,
@@ -78,15 +78,15 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                     return new ConsoleErrorResultModel(message.Value);
                 }
                 if (addedModules.Count == 0)
-                    return new ConsoleErrorResultModel(LocalizeString("Prompt_NoModulesAdded"));
+                    return new ConsoleErrorResultModel(this.LocalizeString("Prompt_NoModulesAdded"));
                 var modules = addedModules.Select(newModule => ModuleInstanceModel.FromDnnModuleInfo(ModuleController.Instance.GetTabModule(newModule.TabModuleID))).ToList();
 
-                return new ConsoleResultModel(string.Format(LocalizeString("Prompt_ModuleAdded"), modules.Count, modules.Count == 1 ? string.Empty : "s")) { Data = modules, Records = modules.Count };
+                return new ConsoleResultModel(string.Format(this.LocalizeString("Prompt_ModuleAdded"), modules.Count, modules.Count == 1 ? string.Empty : "s")) { Data = modules, Records = modules.Count };
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return new ConsoleErrorResultModel(LocalizeString("Prompt_AddModuleError"));
+                return new ConsoleErrorResultModel(this.LocalizeString("Prompt_AddModuleError"));
             }
         }
     }

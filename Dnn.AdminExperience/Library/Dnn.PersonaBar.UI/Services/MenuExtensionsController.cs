@@ -41,25 +41,25 @@ namespace Dnn.PersonaBar.UI.Services
                 if (menuItem != null)
                 {
                     var extensions = PersonaBarExtensionRepository.Instance.GetExtensions(menuItem.MenuId)
-                        .Where(IsVisible)
+                        .Where(this.IsVisible)
                         .Select(t => new
                         {
                             identifier = t.Identifier,
                             folderName = t.FolderName,
                             container = t.Container,
-                            path = GetExtensionPathByController(t),
-                            settings = GetExtensionSettings(t)
+                            path = this.GetExtensionPathByController(t),
+                            settings = this.GetExtensionSettings(t)
                         });
 
-                    return Request.CreateResponse(HttpStatusCode.OK, extensions);
+                    return this.Request.CreateResponse(HttpStatusCode.OK, extensions);
                 }
 
-                return Request.CreateResponse(HttpStatusCode.NotFound);
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
             catch (Exception ex)
             {
                 Exceptions.LogException(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
             }
         }
 
@@ -73,20 +73,20 @@ namespace Dnn.PersonaBar.UI.Services
                 return extension.Path;
             }
 
-            var extensionController = GetExtensionController(extension);
+            var extensionController = this.GetExtensionController(extension);
             var path = extensionController?.GetPath(extension);
             return !string.IsNullOrEmpty(path) ? path : extension.Path;
         }
 
         private bool IsVisible(PersonaBarExtension extension)
         {
-            var extensionController = GetExtensionController(extension);
+            var extensionController = this.GetExtensionController(extension);
             return extensionController == null || extensionController.Visible(extension);
         }
 
         private IDictionary<string, object> GetExtensionSettings(PersonaBarExtension extension)
         {
-            var extensionController = GetExtensionController(extension);
+            var extensionController = this.GetExtensionController(extension);
             var settings = extensionController?.GetSettings(extension);
             return settings;
         }

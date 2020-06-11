@@ -102,23 +102,23 @@ namespace Dnn.PersonaBar.Roles.Services.DTO
         {
             return new RoleInfo()
             {
-                RoleID = Id,
-                RoleGroupID = GroupId,
-                RoleName = Name,
-                Description = Description,
-                ServiceFee = ServiceFee,
-                BillingPeriod = BillingPeriod,
-                BillingFrequency = BillingFrequency,
-                TrialFee = TrialFee,
-                TrialPeriod = TrialPeriod,
-                TrialFrequency = TrialFrequency,
-                IsPublic = IsPublic,
-                AutoAssignment = AutoAssign,
-                RSVPCode = RsvpCode,
-                IconFile = Icon,
-                Status = Status,
-                SecurityMode = SecurityMode,
-                IsSystemRole = IsSystem
+                RoleID = this.Id,
+                RoleGroupID = this.GroupId,
+                RoleName = this.Name,
+                Description = this.Description,
+                ServiceFee = this.ServiceFee,
+                BillingPeriod = this.BillingPeriod,
+                BillingFrequency = this.BillingFrequency,
+                TrialFee = this.TrialFee,
+                TrialPeriod = this.TrialPeriod,
+                TrialFrequency = this.TrialFrequency,
+                IsPublic = this.IsPublic,
+                AutoAssignment = this.AutoAssign,
+                RSVPCode = this.RsvpCode,
+                IconFile = this.Icon,
+                Status = this.Status,
+                SecurityMode = this.SecurityMode,
+                IsSystemRole = this.IsSystem
             };
         }
     }

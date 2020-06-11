@@ -45,8 +45,8 @@ namespace Dnn.PersonaBar.Library.Model
         /// -----------------------------------------------------------------------------
         public MenuPermissionInfo()
         {
-            _menuPermissionId = Null.NullInteger;
-            _menuId = Null.NullInteger;
+            this._menuPermissionId = Null.NullInteger;
+            this._menuId = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
@@ -57,11 +57,11 @@ namespace Dnn.PersonaBar.Library.Model
         /// -----------------------------------------------------------------------------
         public MenuPermissionInfo(PermissionInfo permission) : this()
         {
-            ModuleDefID = Null.NullInteger;
-            PermissionCode = "PERSONABAR_MENU";
-            PermissionID = permission.PermissionId;
-            PermissionKey = permission.PermissionKey;
-            PermissionName = permission.PermissionName;
+            this.ModuleDefID = Null.NullInteger;
+            this.PermissionCode = "PERSONABAR_MENU";
+            this.PermissionID = permission.PermissionId;
+            this.PermissionKey = permission.PermissionKey;
+            this.PermissionName = permission.PermissionName;
         }
 		
 		#endregion
@@ -79,11 +79,11 @@ namespace Dnn.PersonaBar.Library.Model
         {
             get
             {
-                return _menuPermissionId;
+                return this._menuPermissionId;
             }
             set
             {
-                _menuPermissionId = value;
+                this._menuPermissionId = value;
             }
         }
 
@@ -98,11 +98,11 @@ namespace Dnn.PersonaBar.Library.Model
         {
             get
             {
-                return _menuId;
+                return this._menuId;
             }
             set
             {
-                _menuId = value;
+                this._menuId = value;
             }
         }
 
@@ -122,9 +122,9 @@ namespace Dnn.PersonaBar.Library.Model
         public void Fill(IDataReader dr)
         {
             base.FillInternal(dr);
-            MenuPermissionId = Null.SetNullInteger(dr["MenuPermissionId"]);
-            MenuId = Null.SetNullInteger(dr["MenuId"]);
-            PortalId = Null.SetNullInteger(dr["PortalId"]);
+            this.MenuPermissionId = Null.SetNullInteger(dr["MenuPermissionId"]);
+            this.MenuId = Null.SetNullInteger(dr["MenuId"]);
+            this.PortalId = Null.SetNullInteger(dr["PortalId"]);
         }
 
         /// -----------------------------------------------------------------------------
@@ -138,11 +138,11 @@ namespace Dnn.PersonaBar.Library.Model
         {
             get
             {
-                return MenuPermissionId;
+                return this.MenuPermissionId;
             }
             set
             {
-                MenuPermissionId = value;
+                this.MenuPermissionId = value;
             }
         }
 
@@ -174,7 +174,7 @@ namespace Dnn.PersonaBar.Library.Model
             {
                 return true;
             }
-            return (AllowAccess == other.AllowAccess) && (MenuId == other.MenuId) && (RoleID == other.RoleID) && (PermissionID == other.PermissionID);
+            return (this.AllowAccess == other.AllowAccess) && (this.MenuId == other.MenuId) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -205,14 +205,14 @@ namespace Dnn.PersonaBar.Library.Model
             {
                 return false;
             }
-            return Equals((MenuPermissionInfo) obj);
+            return this.Equals((MenuPermissionInfo) obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return (_menuId * 397) ^ _menuPermissionId;
+                return (this._menuId * 397) ^ this._menuPermissionId;
             }
         }
 		

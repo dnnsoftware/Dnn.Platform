@@ -12,9 +12,9 @@ namespace Dnn.PersonaBar.Security.Components
     {
         public CheckResult(SeverityEnum severity, string checkname)
         {
-            Severity = severity;
-            CheckName = checkname;
-            Notes = new List<string>();
+            this.Severity = severity;
+            this.CheckName = checkname;
+            this.Notes = new List<string>();
         }
 
         public SeverityEnum Severity { get; set; }
@@ -24,18 +24,18 @@ namespace Dnn.PersonaBar.Security.Components
         {
             get
             {
-                return Localization.GetString(CheckName + "Reason", LocalResourceFile);
+                return Localization.GetString(this.CheckName + "Reason", this.LocalResourceFile);
             }
         }
 
         public string FailureText
         {
-            get { return Localization.GetString(CheckName + "Failure", LocalResourceFile); }
+            get { return Localization.GetString(this.CheckName + "Failure", this.LocalResourceFile); }
         }
 
         public string SuccessText
         {
-            get { return Localization.GetString(CheckName + "Success", LocalResourceFile); }
+            get { return Localization.GetString(this.CheckName + "Success", this.LocalResourceFile); }
         }
 
         public string CheckNameText
@@ -43,7 +43,7 @@ namespace Dnn.PersonaBar.Security.Components
             get
             {
 
-                return CheckName + " : " + Localization.GetString(CheckName + "Name", LocalResourceFile);
+                return this.CheckName + " : " + Localization.GetString(this.CheckName + "Name", this.LocalResourceFile);
             }
         }
 

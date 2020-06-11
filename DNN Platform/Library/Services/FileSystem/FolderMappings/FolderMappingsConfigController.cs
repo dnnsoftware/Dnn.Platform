@@ -20,9 +20,9 @@ namespace DotNetNuke.Services.FileSystem
         #region Constructor
         public FolderMappingsConfigController()
         {
-            FolderMappings = new Dictionary<string, string>();
-            FolderTypes = new List<FolderTypeConfig>();    
-            LoadConfig();     
+            this.FolderMappings = new Dictionary<string, string>();
+            this.FolderTypes = new List<FolderTypeConfig>();    
+            this.LoadConfig();     
         }
         #endregion
 
@@ -31,29 +31,29 @@ namespace DotNetNuke.Services.FileSystem
 
         private void FillFolderMappings(XmlDocument configDocument)
         {
-            var folderMappingsNode = configDocument.SelectSingleNode(ConfigNode+"/folderMappings");            
+            var folderMappingsNode = configDocument.SelectSingleNode(this.ConfigNode+"/folderMappings");            
             if (folderMappingsNode == null)
             {
                 return;
             }
-            FolderMappings.Clear();
+            this.FolderMappings.Clear();
             foreach (XmlNode folderMappingNode in folderMappingsNode)
             {
-                FolderMappings.Add(XmlUtils.GetNodeValue(folderMappingNode, "folderPath"), XmlUtils.GetNodeValue(folderMappingNode, "folderTypeName"));
+                this.FolderMappings.Add(XmlUtils.GetNodeValue(folderMappingNode, "folderPath"), XmlUtils.GetNodeValue(folderMappingNode, "folderTypeName"));
             }
         }
 
         private void FillFolderTypes(XmlDocument configDocument)
         {
-            var folderTypesNode = configDocument.SelectSingleNode(ConfigNode+"/folderTypes");
+            var folderTypesNode = configDocument.SelectSingleNode(this.ConfigNode+"/folderTypes");
             if (folderTypesNode == null)
             {
                 return;
             }
-            FolderTypes.Clear();
+            this.FolderTypes.Clear();
             foreach (XmlNode folderTypeNode in folderTypesNode)
             {
-                FolderTypes.Add(GetFolderMappingFromConfigNode(folderTypeNode));
+                this.FolderTypes.Add(this.GetFolderMappingFromConfigNode(folderTypeNode));
             }
         }
 
@@ -105,8 +105,8 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     var configDocument = new XmlDocument { XmlResolver = null };
                     configDocument.Load(defaultConfigFilePath);
-                    FillFolderMappings(configDocument);
-                    FillFolderTypes(configDocument);
+                    this.FillFolderMappings(configDocument);
+                    this.FillFolderTypes(configDocument);
                 }
             }
             catch (Exception ex)
@@ -119,22 +119,22 @@ namespace DotNetNuke.Services.FileSystem
         {            
             if (!File.Exists(defaultConfigFilePath))
             {
-                var folderMappingsConfigContent = "<" + ConfigNode + ">" + folderMappinsSettings + "</" + ConfigNode +">";
+                var folderMappingsConfigContent = "<" + this.ConfigNode + ">" + folderMappinsSettings + "</" + this.ConfigNode +">";
                 File.AppendAllText(defaultConfigFilePath, folderMappingsConfigContent);
                 var configDocument = new XmlDocument { XmlResolver = null };
                 configDocument.LoadXml(folderMappingsConfigContent);
-                FillFolderMappings(configDocument);
-                FillFolderTypes(configDocument);
+                this.FillFolderMappings(configDocument);
+                this.FillFolderTypes(configDocument);
             }
         }
 
         public FolderMappingInfo GetFolderMapping(int portalId, string folderPath)
         {
-            if (!FolderMappings.ContainsKey(folderPath))
+            if (!this.FolderMappings.ContainsKey(folderPath))
             {
                 return null;
             }
-            return FolderMappingController.Instance.GetFolderMapping(portalId, FolderMappings[folderPath]);
+            return FolderMappingController.Instance.GetFolderMapping(portalId, this.FolderMappings[folderPath]);
         }
         #endregion
 

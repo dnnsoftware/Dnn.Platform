@@ -13,7 +13,7 @@ namespace DotNetNuke.Modules.Journal
     {
         public UserFolderHelper(PortalSettings portalSettings)
         {
-            UserFolder = FolderManager.Instance.GetUserFolder(portalSettings.UserInfo);
+            this.UserFolder = FolderManager.Instance.GetUserFolder(portalSettings.UserInfo);
         }
 
         public IFolderInfo UserFolder { get; set; }
@@ -22,7 +22,7 @@ namespace DotNetNuke.Modules.Journal
         {
             get
             {
-                return UserFolder.PhysicalPath;
+                return this.UserFolder.PhysicalPath;
             }
         }
 
@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.Journal
         {
             get
             {
-                return UserFolder.FolderPath;
+                return this.UserFolder.FolderPath;
             }
         }
     }

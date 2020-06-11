@@ -91,8 +91,8 @@ namespace log4net.Util
 		internal LogicalThreadContextStack(string propertyKey, TwoArgAction registerNew)
 		#endif
 		{
-			m_propertyKey = propertyKey;
-			m_registerNew = registerNew;
+			this.m_propertyKey = propertyKey;
+			this.m_registerNew = registerNew;
 		}
 
 		#endregion Public Instance Constructors
@@ -114,7 +114,7 @@ namespace log4net.Util
 		/// </remarks>
 		public int Count
 		{
-			get { return m_stack.Count; }
+			get { return this.m_stack.Count; }
 		}
 
 		#endregion // Public Properties
@@ -138,7 +138,7 @@ namespace log4net.Util
 		/// </remarks>
 		public void Clear()
 		{
-			m_registerNew(m_propertyKey, new LogicalThreadContextStack(m_propertyKey, m_registerNew));
+			this.m_registerNew(this.m_propertyKey, new LogicalThreadContextStack(this.m_propertyKey, this.m_registerNew));
 		}
 
 		/// <summary>
@@ -155,15 +155,15 @@ namespace log4net.Util
 		public string Pop()
 		{
 			// copy current stack
-			Stack stack = new Stack(new Stack(m_stack));
+			Stack stack = new Stack(new Stack(this.m_stack));
 			string result = "";
 			if (stack.Count > 0)
 			{
 				result = ((StackFrame)(stack.Pop())).Message;
 			}
-			LogicalThreadContextStack ltcs = new LogicalThreadContextStack(m_propertyKey, m_registerNew);
+			LogicalThreadContextStack ltcs = new LogicalThreadContextStack(this.m_propertyKey, this.m_registerNew);
 			ltcs.m_stack = stack;
-			m_registerNew(m_propertyKey, ltcs);
+			this.m_registerNew(this.m_propertyKey, ltcs);
 			return result;
 		}
 
@@ -193,12 +193,12 @@ namespace log4net.Util
 		public IDisposable Push(string message)
 		{
 			// do modifications on a copy
-			Stack stack = new Stack(new Stack(m_stack));
+			Stack stack = new Stack(new Stack(this.m_stack));
 			stack.Push(new StackFrame(message, (stack.Count > 0) ? (StackFrame)stack.Peek() : null));
 
-			LogicalThreadContextStack contextStack = new LogicalThreadContextStack(m_propertyKey, m_registerNew);
+			LogicalThreadContextStack contextStack = new LogicalThreadContextStack(this.m_propertyKey, this.m_registerNew);
 			contextStack.m_stack = stack;
-			m_registerNew(m_propertyKey, contextStack);
+			this.m_registerNew(this.m_propertyKey, contextStack);
 			return new AutoPopStackFrame(contextStack, stack.Count - 1);
 		}
 
@@ -212,7 +212,7 @@ namespace log4net.Util
 		/// <returns>The current context information.</returns>
 		internal string GetFullMessage()
 		{
-			Stack stack = m_stack;
+			Stack stack = this.m_stack;
 			if (stack.Count > 0)
 			{
 				return ((StackFrame)(stack.Peek())).FullMessage;
@@ -233,8 +233,8 @@ namespace log4net.Util
 		/// </remarks>
 		internal Stack InternalStack
 		{
-			get { return m_stack; }
-			set { m_stack = value; }
+			get { return this.m_stack; }
+			set { this.m_stack = value; }
 		}
 
 		#endregion Internal Methods
@@ -250,7 +250,7 @@ namespace log4net.Util
 		/// </remarks>
 		public override string ToString()
 		{
-			return GetFullMessage();
+			return this.GetFullMessage();
 		}
 
 		/// <summary>
@@ -264,7 +264,7 @@ namespace log4net.Util
 		/// </remarks>
 		object IFixingRequired.GetFixedObject()
 		{
-			return GetFullMessage();
+			return this.GetFullMessage();
 		}
 
 		/// <summary>
@@ -300,12 +300,12 @@ namespace log4net.Util
 			/// </remarks>
 			internal StackFrame(string message, StackFrame parent)
 			{
-				m_message = message;
-				m_parent = parent;
+				this.m_message = message;
+				this.m_parent = parent;
 
 				if (parent == null)
 				{
-					m_fullMessage = message;
+					this.m_fullMessage = message;
 				}
 			}
 
@@ -324,7 +324,7 @@ namespace log4net.Util
 			/// </remarks>
 			internal string Message
 			{
-				get { return m_message; }
+				get { return this.m_message; }
 			}
 
 			/// <summary>
@@ -342,11 +342,11 @@ namespace log4net.Util
 			{
 				get
 				{
-					if (m_fullMessage == null && m_parent != null)
+					if (this.m_fullMessage == null && this.m_parent != null)
 					{
-						m_fullMessage = string.Concat(m_parent.FullMessage, " ", m_message);
+						this.m_fullMessage = string.Concat(this.m_parent.FullMessage, " ", this.m_message);
 					}
-					return m_fullMessage;
+					return this.m_fullMessage;
 				}
 			}
 
@@ -393,8 +393,8 @@ namespace log4net.Util
 			/// </remarks>
 			internal AutoPopStackFrame(LogicalThreadContextStack logicalThreadContextStack, int frameDepth)
 			{
-				m_frameDepth = frameDepth;
-				m_logicalThreadContextStack = logicalThreadContextStack;
+				this.m_frameDepth = frameDepth;
+				this.m_logicalThreadContextStack = logicalThreadContextStack;
 			}
 
 			#endregion Internal Instance Constructors
@@ -411,16 +411,16 @@ namespace log4net.Util
 			/// </remarks>
 			public void Dispose()
 			{
-				if (m_frameDepth >= 0 && m_logicalThreadContextStack.m_stack != null)
+				if (this.m_frameDepth >= 0 && this.m_logicalThreadContextStack.m_stack != null)
 				{
-					Stack stack = new Stack(new Stack(m_logicalThreadContextStack.m_stack));
-					while (stack.Count > m_frameDepth)
+					Stack stack = new Stack(new Stack(this.m_logicalThreadContextStack.m_stack));
+					while (stack.Count > this.m_frameDepth)
 					{
 						stack.Pop();
 					}
-					LogicalThreadContextStack ltcs = new LogicalThreadContextStack(m_logicalThreadContextStack.m_propertyKey, m_logicalThreadContextStack.m_registerNew);
+					LogicalThreadContextStack ltcs = new LogicalThreadContextStack(this.m_logicalThreadContextStack.m_propertyKey, this.m_logicalThreadContextStack.m_registerNew);
 					ltcs.m_stack = stack;
-					m_logicalThreadContextStack.m_registerNew(m_logicalThreadContextStack.m_propertyKey,
+					this.m_logicalThreadContextStack.m_registerNew(this.m_logicalThreadContextStack.m_propertyKey,
 						ltcs);
 				}
 			}

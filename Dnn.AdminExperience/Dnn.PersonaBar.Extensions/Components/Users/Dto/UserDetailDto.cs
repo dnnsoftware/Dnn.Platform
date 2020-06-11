@@ -47,10 +47,10 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
 
         [DataMember(Name = "profileUrl")]
-        public string ProfileUrl => UserId > 0 ? Globals.UserProfileURL(UserId) : null;
+        public string ProfileUrl => this.UserId > 0 ? Globals.UserProfileURL(this.UserId) : null;
 
         [DataMember(Name = "editProfileUrl")]
-        public string EditProfileUrl => UserId > 0 ? GetSettingUrl(PortalId, UserId) : null;
+        public string EditProfileUrl => this.UserId > 0 ? GetSettingUrl(this.PortalId, this.UserId) : null;
 
         [DataMember(Name = "userFolder")]
         public string UserFolder { get; set; }
@@ -72,25 +72,25 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         public UserDetailDto(UserInfo user) : base(user)
         {
-            LastLogin = user.Membership.LastLoginDate;
-            LastActivity = user.Membership.LastActivityDate;
-            LastPasswordChange = user.Membership.LastPasswordChangeDate;
-            LastLockout = user.Membership.LastLockoutDate;
-            IsOnline = user.Membership.IsOnLine;
-            IsLocked = user.Membership.LockedOut;
-            NeedUpdatePassword = user.Membership.UpdatePassword;
-            PortalId = user.PortalID;
-            UserFolder = FolderManager.Instance.GetUserFolder(user).FolderPath.Substring(6);
+            this.LastLogin = user.Membership.LastLoginDate;
+            this.LastActivity = user.Membership.LastActivityDate;
+            this.LastPasswordChange = user.Membership.LastPasswordChangeDate;
+            this.LastLockout = user.Membership.LastLockoutDate;
+            this.IsOnline = user.Membership.IsOnLine;
+            this.IsLocked = user.Membership.LockedOut;
+            this.NeedUpdatePassword = user.Membership.UpdatePassword;
+            this.PortalId = user.PortalID;
+            this.UserFolder = FolderManager.Instance.GetUserFolder(user).FolderPath.Substring(6);
             var userFolder = FolderManager.Instance.GetUserFolder(user);
             if (userFolder != null)
             {
-                UserFolderId = userFolder.FolderID;
+                this.UserFolderId = userFolder.FolderID;
 
                 //check whether user had upload files
                 var files = FolderManager.Instance.GetFiles(userFolder, true);
-                HasUserFiles = files.Any();
+                this.HasUserFiles = files.Any();
             }
-            HasAgreedToTermsOn = user.HasAgreedToTermsOn;
+            this.HasAgreedToTermsOn = user.HasAgreedToTermsOn;
         }
 
         private static string GetSettingUrl(int portalId, int userId)

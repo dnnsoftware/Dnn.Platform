@@ -11,7 +11,7 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
 
         public ScopeAttribute(string scope)
         {
-            Scope = scope;
+            this.Scope = scope;
         }
 
         /// <summary>

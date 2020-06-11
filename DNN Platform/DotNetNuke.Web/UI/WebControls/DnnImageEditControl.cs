@@ -10,7 +10,7 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         public DnnImageEditControl()
         {
-            FileFilter = Globals.glbImageFileTypes;
+            this.FileFilter = Globals.glbImageFileTypes;
         }
     }
 }

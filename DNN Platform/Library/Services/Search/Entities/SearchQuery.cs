@@ -165,17 +165,17 @@ namespace DotNetNuke.Services.Search.Entities
 
         public SearchQuery()
         {
-            Tags = new string[0];
-            PortalIds = new int[0];
-            SearchTypeIds = new int[0];
-            ModuleDefIds = new int[0];
-            TitleSnippetLength = 60;
-            BodySnippetLength = 100;
-            PageSize = 10;
-            PageIndex = 1;
-            SearchContext = new Dictionary<string, string>();
-            CustomKeywords = new Dictionary<string, string>();
-            NumericKeys = new Dictionary<string, int>();
+            this.Tags = new string[0];
+            this.PortalIds = new int[0];
+            this.SearchTypeIds = new int[0];
+            this.ModuleDefIds = new int[0];
+            this.TitleSnippetLength = 60;
+            this.BodySnippetLength = 100;
+            this.PageSize = 10;
+            this.PageIndex = 1;
+            this.SearchContext = new Dictionary<string, string>();
+            this.CustomKeywords = new Dictionary<string, string>();
+            this.NumericKeys = new Dictionary<string, int>();
         }
 
         #endregion 

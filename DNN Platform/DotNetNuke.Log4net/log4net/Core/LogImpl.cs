@@ -116,10 +116,10 @@ namespace log4net.Core
 		public LogImpl(ILogger logger) : base(logger)
 		{
 			// Listen for changes to the repository
-			logger.Repository.ConfigurationChanged += new LoggerRepositoryConfigurationChangedEventHandler(LoggerRepositoryConfigurationChanged);
+			logger.Repository.ConfigurationChanged += new LoggerRepositoryConfigurationChangedEventHandler(this.LoggerRepositoryConfigurationChanged);
 
 			// load the current levels
-			ReloadLevels(logger.Repository);
+			this.ReloadLevels(logger.Repository);
 		}
 
 		#endregion Public Instance Constructors
@@ -137,11 +137,11 @@ namespace log4net.Core
 		{
 			LevelMap levelMap = repository.LevelMap;
 
-			m_levelDebug = levelMap.LookupWithDefault(Level.Debug);
-			m_levelInfo = levelMap.LookupWithDefault(Level.Info);
-			m_levelWarn = levelMap.LookupWithDefault(Level.Warn);
-			m_levelError = levelMap.LookupWithDefault(Level.Error);
-			m_levelFatal = levelMap.LookupWithDefault(Level.Fatal);
+			this.m_levelDebug = levelMap.LookupWithDefault(Level.Debug);
+			this.m_levelInfo = levelMap.LookupWithDefault(Level.Info);
+			this.m_levelWarn = levelMap.LookupWithDefault(Level.Warn);
+			this.m_levelError = levelMap.LookupWithDefault(Level.Error);
+			this.m_levelFatal = levelMap.LookupWithDefault(Level.Fatal);
 		}
 
 		#region Implementation of ILog
@@ -171,7 +171,7 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void Debug(object message) 
 		{
-			Logger.Log(ThisDeclaringType, m_levelDebug, message, null);
+			this.Logger.Log(ThisDeclaringType, this.m_levelDebug, message, null);
 		}
 
 		/// <summary>
@@ -192,7 +192,7 @@ namespace log4net.Core
 		/// <seealso cref="M:Debug(object)"/>
 		virtual public void Debug(object message, Exception exception) 
 		{
-			Logger.Log(ThisDeclaringType, m_levelDebug, message, exception);
+			this.Logger.Log(ThisDeclaringType, this.m_levelDebug, message, exception);
 		}
 
 		/// <summary>
@@ -219,9 +219,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void DebugFormat(string format, params object[] args) 
 		{
-			if (IsDebugEnabled)
+			if (this.IsDebugEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelDebug, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelDebug, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
 			}
 		}
 
@@ -249,9 +249,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void DebugFormat(string format, object arg0) 
 		{
-			if (IsDebugEnabled)
+			if (this.IsDebugEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelDebug, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelDebug, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
 			}
 		}
 
@@ -280,9 +280,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void DebugFormat(string format, object arg0, object arg1) 
 		{
-			if (IsDebugEnabled)
+			if (this.IsDebugEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelDebug, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelDebug, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
 			}
 		}
 
@@ -312,9 +312,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void DebugFormat(string format, object arg0, object arg1, object arg2) 
 		{
-			if (IsDebugEnabled)
+			if (this.IsDebugEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelDebug, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelDebug, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
 			}
 		}
 
@@ -338,9 +338,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void DebugFormat(IFormatProvider provider, string format, params object[] args) 
 		{
-			if (IsDebugEnabled)
+			if (this.IsDebugEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelDebug, new SystemStringFormat(provider, format, args), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelDebug, new SystemStringFormat(provider, format, args), null);
 			}
 		}
 
@@ -369,7 +369,7 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void Info(object message) 
 		{
-			Logger.Log(ThisDeclaringType, m_levelInfo, message, null);
+			this.Logger.Log(ThisDeclaringType, this.m_levelInfo, message, null);
 		}
   
 		/// <summary>
@@ -390,7 +390,7 @@ namespace log4net.Core
 		/// <seealso cref="M:Info(object)"/>
 		virtual public void Info(object message, Exception exception) 
 		{
-			Logger.Log(ThisDeclaringType, m_levelInfo, message, exception);
+			this.Logger.Log(ThisDeclaringType, this.m_levelInfo, message, exception);
 		}
 
 		/// <summary>
@@ -417,9 +417,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void InfoFormat(string format, params object[] args) 
 		{
-			if (IsInfoEnabled)
+			if (this.IsInfoEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
 			}
 		}
 
@@ -447,9 +447,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void InfoFormat(string format, object arg0) 
 		{
-			if (IsInfoEnabled)
+			if (this.IsInfoEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
 			}
 		}
 
@@ -478,9 +478,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void InfoFormat(string format, object arg0, object arg1) 
 		{
-			if (IsInfoEnabled)
+			if (this.IsInfoEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
 			}
 		}
 
@@ -510,9 +510,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void InfoFormat(string format, object arg0, object arg1, object arg2) 
 		{
-			if (IsInfoEnabled)
+			if (this.IsInfoEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
 			}
 		}
 
@@ -536,9 +536,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void InfoFormat(IFormatProvider provider, string format, params object[] args) 
 		{
-			if (IsInfoEnabled)
+			if (this.IsInfoEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelInfo, new SystemStringFormat(provider, format, args), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelInfo, new SystemStringFormat(provider, format, args), null);
 			}
 		}
 
@@ -567,7 +567,7 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void Warn(object message) 
 		{
-			Logger.Log(ThisDeclaringType, m_levelWarn, message, null);
+			this.Logger.Log(ThisDeclaringType, this.m_levelWarn, message, null);
 		}
   
 		/// <summary>
@@ -588,7 +588,7 @@ namespace log4net.Core
 		/// <seealso cref="M:Warn(object)"/>
 		virtual public void Warn(object message, Exception exception) 
 		{
-			Logger.Log(ThisDeclaringType, m_levelWarn, message, exception);
+			this.Logger.Log(ThisDeclaringType, this.m_levelWarn, message, exception);
 		}
 
 		/// <summary>
@@ -615,9 +615,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void WarnFormat(string format, params object[] args) 
 		{
-			if (IsWarnEnabled)
+			if (this.IsWarnEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelWarn, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelWarn, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
 			}
 		}
 
@@ -645,9 +645,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void WarnFormat(string format, object arg0) 
 		{
-			if (IsWarnEnabled)
+			if (this.IsWarnEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelWarn, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelWarn, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
 			}
 		}
 
@@ -676,9 +676,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void WarnFormat(string format, object arg0, object arg1) 
 		{
-			if (IsWarnEnabled)
+			if (this.IsWarnEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelWarn, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelWarn, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
 			}
 		}
 
@@ -708,9 +708,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void WarnFormat(string format, object arg0, object arg1, object arg2) 
 		{
-			if (IsWarnEnabled)
+			if (this.IsWarnEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelWarn, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelWarn, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
 			}
 		}
 
@@ -734,9 +734,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void WarnFormat(IFormatProvider provider, string format, params object[] args) 
 		{
-			if (IsWarnEnabled)
+			if (this.IsWarnEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelWarn, new SystemStringFormat(provider, format, args), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelWarn, new SystemStringFormat(provider, format, args), null);
 			}
 		}
 
@@ -765,7 +765,7 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void Error(object message) 
 		{
-			Logger.Log(ThisDeclaringType, m_levelError, message, null);
+			this.Logger.Log(ThisDeclaringType, this.m_levelError, message, null);
 		}
 
 		/// <summary>
@@ -786,7 +786,7 @@ namespace log4net.Core
 		/// <seealso cref="M:Error(object)"/>
 		virtual public void Error(object message, Exception exception) 
 		{
-			Logger.Log(ThisDeclaringType, m_levelError, message, exception);
+			this.Logger.Log(ThisDeclaringType, this.m_levelError, message, exception);
 		}
 
 		/// <summary>
@@ -813,9 +813,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void ErrorFormat(string format, params object[] args) 
 		{
-			if (IsErrorEnabled)
+			if (this.IsErrorEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelError, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelError, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
 			}
 		}
 
@@ -843,9 +843,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void ErrorFormat(string format, object arg0) 
 		{
-			if (IsErrorEnabled)
+			if (this.IsErrorEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelError, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelError, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
 			}
 		}
 
@@ -874,9 +874,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void ErrorFormat(string format, object arg0, object arg1) 
 		{
-			if (IsErrorEnabled)
+			if (this.IsErrorEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelError, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelError, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
 			}
 		}
 
@@ -906,9 +906,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void ErrorFormat(string format, object arg0, object arg1, object arg2) 
 		{
-			if (IsErrorEnabled)
+			if (this.IsErrorEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelError, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelError, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
 			}
 		}
 
@@ -932,9 +932,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void ErrorFormat(IFormatProvider provider, string format, params object[] args) 
 		{
-			if (IsErrorEnabled)
+			if (this.IsErrorEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelError, new SystemStringFormat(provider, format, args), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelError, new SystemStringFormat(provider, format, args), null);
 			}
 		}
 
@@ -963,7 +963,7 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void Fatal(object message) 
 		{
-			Logger.Log(ThisDeclaringType, m_levelFatal, message, null);
+			this.Logger.Log(ThisDeclaringType, this.m_levelFatal, message, null);
 		}
   
 		/// <summary>
@@ -984,7 +984,7 @@ namespace log4net.Core
 		/// <seealso cref="M:Fatal(object)"/>
 		virtual public void Fatal(object message, Exception exception) 
 		{
-			Logger.Log(ThisDeclaringType, m_levelFatal, message, exception);
+			this.Logger.Log(ThisDeclaringType, this.m_levelFatal, message, exception);
 		}
 
 		/// <summary>
@@ -1011,9 +1011,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void FatalFormat(string format, params object[] args) 
 		{
-			if (IsFatalEnabled)
+			if (this.IsFatalEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelFatal, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelFatal, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
 			}
 		}
 
@@ -1041,9 +1041,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void FatalFormat(string format, object arg0) 
 		{
-			if (IsFatalEnabled)
+			if (this.IsFatalEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelFatal, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelFatal, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0 }), null);
 			}
 		}
 
@@ -1072,9 +1072,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void FatalFormat(string format, object arg0, object arg1) 
 		{
-			if (IsFatalEnabled)
+			if (this.IsFatalEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelFatal, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelFatal, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1 }), null);
 			}
 		}
 
@@ -1104,9 +1104,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void FatalFormat(string format, object arg0, object arg1, object arg2) 
 		{
-			if (IsFatalEnabled)
+			if (this.IsFatalEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelFatal, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelFatal, new SystemStringFormat(CultureInfo.InvariantCulture, format, new object[] { arg0, arg1, arg2 }), null);
 			}
 		}
 
@@ -1130,9 +1130,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public void FatalFormat(IFormatProvider provider, string format, params object[] args) 
 		{
-			if (IsFatalEnabled)
+			if (this.IsFatalEnabled)
 			{
-				Logger.Log(ThisDeclaringType, m_levelFatal, new SystemStringFormat(provider, format, args), null);
+				this.Logger.Log(ThisDeclaringType, this.m_levelFatal, new SystemStringFormat(provider, format, args), null);
 			}
 		}
 
@@ -1181,7 +1181,7 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public bool IsDebugEnabled
 		{
-			get { return Logger.IsEnabledFor(m_levelDebug); }
+			get { return this.Logger.IsEnabledFor(this.m_levelDebug); }
 		}
   
 		/// <summary>
@@ -1200,7 +1200,7 @@ namespace log4net.Core
 		/// <seealso cref="LogImpl.IsDebugEnabled"/>
 		virtual public bool IsInfoEnabled
 		{
-			get { return Logger.IsEnabledFor(m_levelInfo); }
+			get { return this.Logger.IsEnabledFor(this.m_levelInfo); }
 		}
 
 		/// <summary>
@@ -1219,7 +1219,7 @@ namespace log4net.Core
 		/// <seealso cref="ILog.IsDebugEnabled"/>
 		virtual public bool IsWarnEnabled
 		{
-			get { return Logger.IsEnabledFor(m_levelWarn); }
+			get { return this.Logger.IsEnabledFor(this.m_levelWarn); }
 		}
 
 		/// <summary>
@@ -1237,7 +1237,7 @@ namespace log4net.Core
 		/// <seealso cref="ILog.IsDebugEnabled"/>
 		virtual public bool IsErrorEnabled
 		{
-			get { return Logger.IsEnabledFor(m_levelError); }
+			get { return this.Logger.IsEnabledFor(this.m_levelError); }
 		}
 
 		/// <summary>
@@ -1255,7 +1255,7 @@ namespace log4net.Core
 		/// <seealso cref="ILog.IsDebugEnabled"/>
 		virtual public bool IsFatalEnabled
 		{
-			get { return Logger.IsEnabledFor(m_levelFatal); }
+			get { return this.Logger.IsEnabledFor(this.m_levelFatal); }
 		}
 
 		#endregion Implementation of ILog
@@ -1272,7 +1272,7 @@ namespace log4net.Core
 			ILoggerRepository repository = sender as ILoggerRepository;
 			if (repository != null)
 			{
-				ReloadLevels(repository);
+				this.ReloadLevels(repository);
 			}
 		}
 

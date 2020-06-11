@@ -28,9 +28,9 @@ namespace DotNetNuke.Services.Authentication
 
         public UserAuthenticationInfo()
         {
-            AuthenticationToken = Null.NullString;
-            AuthenticationType = Null.NullString;
-            UserAuthenticationID = Null.NullInteger;
+            this.AuthenticationToken = Null.NullString;
+            this.AuthenticationType = Null.NullString;
+            this.UserAuthenticationID = Null.NullInteger;
         }
 
         #endregion
@@ -77,13 +77,13 @@ namespace DotNetNuke.Services.Authentication
         /// -----------------------------------------------------------------------------
         public virtual void Fill(IDataReader dr)
         {
-            UserAuthenticationID = Null.SetNullInteger(dr["UserAuthenticationID"]);
-            UserID = Null.SetNullInteger(dr["UserID"]);
-            AuthenticationType = Null.SetNullString(dr["AuthenticationType"]);
-            AuthenticationToken = Null.SetNullString(dr["AuthenticationToken"]);
+            this.UserAuthenticationID = Null.SetNullInteger(dr["UserAuthenticationID"]);
+            this.UserID = Null.SetNullInteger(dr["UserID"]);
+            this.AuthenticationType = Null.SetNullString(dr["AuthenticationType"]);
+            this.AuthenticationToken = Null.SetNullString(dr["AuthenticationToken"]);
 
             //Fill base class fields
-            FillInternal(dr);
+            this.FillInternal(dr);
         }
 
         /// -----------------------------------------------------------------------------
@@ -96,11 +96,11 @@ namespace DotNetNuke.Services.Authentication
         {
             get
             {
-                return UserAuthenticationID;
+                return this.UserAuthenticationID;
             }
             set
             {
-                UserAuthenticationID = value;
+                this.UserAuthenticationID = value;
             }
         }
 

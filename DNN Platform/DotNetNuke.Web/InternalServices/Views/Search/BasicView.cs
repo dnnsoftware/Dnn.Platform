@@ -49,7 +49,7 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
 
         public BasicView()
         {
-            Attributes = new Dictionary<string, string>();
+            this.Attributes = new Dictionary<string, string>();
         }
 
     }

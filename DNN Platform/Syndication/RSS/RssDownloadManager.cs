@@ -33,18 +33,18 @@ namespace DotNetNuke.Services.Syndication
         private RssDownloadManager()
         {
             // create in-memory cache
-            _cache = new Dictionary<string, RssChannelDom>();
+            this._cache = new Dictionary<string, RssChannelDom>();
 
-            _defaultTtlMinutes = 2;
+            this._defaultTtlMinutes = 2;
 
             // prepare disk directory
-            _directoryOnDisk = PrepareTempDir();
+            this._directoryOnDisk = PrepareTempDir();
         }
 
         private RssChannelDom DownloadChannelDom(string url)
         {
             // look for disk cache first
-            RssChannelDom dom = TryLoadFromDisk(url);
+            RssChannelDom dom = this.TryLoadFromDisk(url);
 
             if (dom != null)
             {
@@ -64,19 +64,19 @@ namespace DotNetNuke.Services.Syndication
             // set expiry
             string ttlString = null;
             dom.Channel.TryGetValue("ttl", out ttlString);
-            int ttlMinutes = GetTtlFromString(ttlString, _defaultTtlMinutes);
+            int ttlMinutes = GetTtlFromString(ttlString, this._defaultTtlMinutes);
             DateTime utcExpiry = DateTime.UtcNow.AddMinutes(ttlMinutes);
             dom.SetExpiry(utcExpiry);
 
             // save to disk
-            TrySaveToDisk(doc, url, utcExpiry);
+            this.TrySaveToDisk(doc, url, utcExpiry);
 
             return dom;
         }
 
         private RssChannelDom TryLoadFromDisk(string url)
         {
-            if (_directoryOnDisk == null)
+            if (this._directoryOnDisk == null)
             {
                 return null; // no place to cache
             }
@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Syndication
             // looking for the one matching url that is not expired
             // removing expired (or invalid) ones
             string pattern = GetTempFileNamePrefixFromUrl(url) + "_*.rss.resources";
-            string[] files = Directory.GetFiles(_directoryOnDisk, pattern, SearchOption.TopDirectoryOnly);
+            string[] files = Directory.GetFiles(this._directoryOnDisk, pattern, SearchOption.TopDirectoryOnly);
 
             foreach (string rssFilename in files)
             {
@@ -154,7 +154,7 @@ namespace DotNetNuke.Services.Syndication
 
         private void TrySaveToDisk(XmlDocument doc, string url, DateTime utcExpiry)
         {
-            if (_directoryOnDisk == null)
+            if (this._directoryOnDisk == null)
             {
                 return;
             }
@@ -165,7 +165,7 @@ namespace DotNetNuke.Services.Syndication
 
             try
             {
-                doc.Save(Path.Combine(_directoryOnDisk, fileName));
+                doc.Save(Path.Combine(this._directoryOnDisk, fileName));
             }
             catch
             {
@@ -177,13 +177,13 @@ namespace DotNetNuke.Services.Syndication
         {
             RssChannelDom dom = null;
 
-            lock (_cache)
+            lock (this._cache)
             {
-                if (_cache.TryGetValue(url, out dom))
+                if (this._cache.TryGetValue(url, out dom))
                 {
                     if (DateTime.UtcNow > dom.UtcExpiry)
                     {
-                        _cache.Remove(url);
+                        this._cache.Remove(url);
                         dom = null;
                     }
                 }
@@ -191,11 +191,11 @@ namespace DotNetNuke.Services.Syndication
 
             if (dom == null)
             {
-                dom = DownloadChannelDom(url);
+                dom = this.DownloadChannelDom(url);
 
-                lock (_cache)
+                lock (this._cache)
                 {
-                    _cache[url] = dom;
+                    this._cache[url] = dom;
                 }
             }
 

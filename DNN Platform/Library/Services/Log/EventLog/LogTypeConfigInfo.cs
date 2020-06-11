@@ -35,16 +35,16 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             get
             {
-                switch (NotificationThresholdTimeType)
+                switch (this.NotificationThresholdTimeType)
                 {
                     case NotificationThresholdTimeTypes.Seconds:
-                        return DateTime.Now.AddSeconds(NotificationThresholdTime*-1);
+                        return DateTime.Now.AddSeconds(this.NotificationThresholdTime*-1);
                     case NotificationThresholdTimeTypes.Minutes:
-                        return DateTime.Now.AddMinutes(NotificationThresholdTime*-1);
+                        return DateTime.Now.AddMinutes(this.NotificationThresholdTime*-1);
                     case NotificationThresholdTimeTypes.Hours:
-                        return DateTime.Now.AddHours(NotificationThresholdTime*-1);
+                        return DateTime.Now.AddHours(this.NotificationThresholdTime*-1);
                     case NotificationThresholdTimeTypes.Days:
-                        return DateTime.Now.AddDays(NotificationThresholdTime*-1);
+                        return DateTime.Now.AddDays(this.NotificationThresholdTime*-1);
                     default:
                         return Null.NullDate;
                 }
@@ -58,10 +58,10 @@ namespace DotNetNuke.Services.Log.EventLog
             get {                
                 var portalSettings = Globals.GetPortalSettings();
                 return 
-                    string.IsNullOrWhiteSpace(_mailFromAddress) 
+                    string.IsNullOrWhiteSpace(this._mailFromAddress) 
                     ? (portalSettings == null ? string.Empty : portalSettings.Email) 
-                    : _mailFromAddress; }
-            set { _mailFromAddress = value; }
+                    : this._mailFromAddress; }
+            set { this._mailFromAddress = value; }
         }
 
 

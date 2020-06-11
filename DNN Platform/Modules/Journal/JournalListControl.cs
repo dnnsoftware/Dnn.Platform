@@ -64,12 +64,12 @@ namespace DotNetNuke.Modules.Journal.Controls {
 
         protected override void Render(HtmlTextWriter output) 
         {
-            if (Enabled) {
-                if (CurrentIndex < 0) {
-                    CurrentIndex = 0;
+            if (this.Enabled) {
+                if (this.CurrentIndex < 0) {
+                    this.CurrentIndex = 0;
                 }
-                JournalParser jp = new JournalParser(portalSettings, ModuleId, ProfileId, SocialGroupId, userInfo){JournalId = JournalId};
-                output.Write(jp.GetList(CurrentIndex, PageSize));
+                JournalParser jp = new JournalParser(this.portalSettings, this.ModuleId, this.ProfileId, this.SocialGroupId, this.userInfo){JournalId = this.JournalId};
+                output.Write(jp.GetList(this.CurrentIndex, this.PageSize));
             }
             
         }

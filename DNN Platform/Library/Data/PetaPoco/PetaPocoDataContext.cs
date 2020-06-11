@@ -42,10 +42,10 @@ namespace DotNetNuke.Data.PetaPoco
         {
             Requires.NotNullOrEmpty("connectionStringName", connectionStringName);
 
-            _database = new Database(connectionStringName);
-            _mapper = new PetaPocoMapper(tablePrefix);
-            TablePrefix = tablePrefix;
-            FluentMappers = mappers;
+            this._database = new Database(connectionStringName);
+            this._mapper = new PetaPocoMapper(tablePrefix);
+            this.TablePrefix = tablePrefix;
+            this.FluentMappers = mappers;
         }
 
         #endregion
@@ -58,18 +58,18 @@ namespace DotNetNuke.Data.PetaPoco
 
         public void BeginTransaction()
         {
-            _database.BeginTransaction();
+            this._database.BeginTransaction();
         }
 
         public void Commit()
         {
-            _database.CompleteTransaction();
+            this._database.CompleteTransaction();
         }
 
         public bool EnableAutoSelect
         {
-            get { return _database.EnableAutoSelect; }
-            set { _database.EnableAutoSelect = value; }
+            get { return this._database.EnableAutoSelect; }
+            set { this._database.EnableAutoSelect = value; }
         }
 
         public void Execute(CommandType type, string sql, params object[] args)
@@ -79,18 +79,18 @@ namespace DotNetNuke.Data.PetaPoco
                 sql = DataUtil.GenerateExecuteStoredProcedureSql(sql, args);
             }
 
-            _database.Execute(DataUtil.ReplaceTokens(sql), args);
+            this._database.Execute(DataUtil.ReplaceTokens(sql), args);
         }
 
         public IEnumerable<T> ExecuteQuery<T>(CommandType type, string sql, params object[] args)
         {
-            PetaPocoMapper.SetMapper<T>(_mapper);
+            PetaPocoMapper.SetMapper<T>(this._mapper);
             if (type == CommandType.StoredProcedure)
             {
                 sql = DataUtil.GenerateExecuteStoredProcedureSql(sql, args);
             }
 
-            return _database.Fetch<T>(DataUtil.ReplaceTokens(sql), args);
+            return this._database.Fetch<T>(DataUtil.ReplaceTokens(sql), args);
         }
 
         public T ExecuteScalar<T>(CommandType type, string sql, params object[] args)
@@ -100,18 +100,18 @@ namespace DotNetNuke.Data.PetaPoco
                 sql = DataUtil.GenerateExecuteStoredProcedureSql(sql, args);
             }
 
-            return _database.ExecuteScalar<T>(DataUtil.ReplaceTokens(sql), args);
+            return this._database.ExecuteScalar<T>(DataUtil.ReplaceTokens(sql), args);
         }
 
         public T ExecuteSingleOrDefault<T>(CommandType type, string sql, params object[] args)
         {
-            PetaPocoMapper.SetMapper<T>(_mapper);
+            PetaPocoMapper.SetMapper<T>(this._mapper);
             if (type == CommandType.StoredProcedure)
             {
                 sql = DataUtil.GenerateExecuteStoredProcedureSql(sql, args);
             }
 
-            return _database.SingleOrDefault<T>(DataUtil.ReplaceTokens(sql), args);
+            return this._database.SingleOrDefault<T>(DataUtil.ReplaceTokens(sql), args);
         }
 
         public IRepository<T> GetRepository<T>() where T : class
@@ -119,18 +119,18 @@ namespace DotNetNuke.Data.PetaPoco
             PetaPocoRepository<T> rep = null;
 
             //Determine whether to use a Fluent Mapper
-            if (FluentMappers.ContainsKey(typeof (T)))
+            if (this.FluentMappers.ContainsKey(typeof (T)))
             {
-                var fluentMapper = FluentMappers[typeof(T)] as FluentMapper<T>;
+                var fluentMapper = this.FluentMappers[typeof(T)] as FluentMapper<T>;
                 if (fluentMapper != null)
                 {
-                    rep = new PetaPocoRepository<T>(_database, fluentMapper);
+                    rep = new PetaPocoRepository<T>(this._database, fluentMapper);
                     rep.Initialize(fluentMapper.CacheKey, fluentMapper.CacheTimeOut, fluentMapper.CachePriority, fluentMapper.Scope);
                 }
             }
             else
             {
-                rep = new PetaPocoRepository<T>(_database, _mapper);
+                rep = new PetaPocoRepository<T>(this._database, this._mapper);
             }
 
             return rep;
@@ -138,7 +138,7 @@ namespace DotNetNuke.Data.PetaPoco
 
         public void RollbackTransaction()
         {
-            _database.AbortTransaction();
+            this._database.AbortTransaction();
         }
 
         #endregion
@@ -147,7 +147,7 @@ namespace DotNetNuke.Data.PetaPoco
 
         public void Dispose()
         {
-            _database.Dispose();
+            this._database.Dispose();
         }
 
         #endregion

@@ -16,14 +16,14 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _enumType;
+                return this._enumType;
             }
             set
             {
-                _enumType = value;
+                this._enumType = value;
                 // ReSharper disable AssignNullToNotNullAttribute
-                ListSource = (from object enumValue in Enum.GetValues(Type.GetType(_enumType))
-                              select new { Name = Localization.GetString(Enum.GetName(Type.GetType(_enumType), enumValue)) ?? Enum.GetName(Type.GetType(_enumType), enumValue), Value = (int)enumValue })
+                this.ListSource = (from object enumValue in Enum.GetValues(Type.GetType(this._enumType))
+                              select new { Name = Localization.GetString(Enum.GetName(Type.GetType(this._enumType), enumValue)) ?? Enum.GetName(Type.GetType(this._enumType), enumValue), Value = (int)enumValue })
                                 .ToList();
                 // ReSharper restore AssignNullToNotNullAttribute
             }
@@ -31,10 +31,10 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void BindList()
         {
-            ListTextField = "Name";
-            ListValueField = "Value";
+            this.ListTextField = "Name";
+            this.ListValueField = "Value";
 
-            BindListInternal(ComboBox, Convert.ToInt32(Value), ListSource, ListTextField, ListValueField);
+            BindListInternal(this.ComboBox, Convert.ToInt32(this.Value), this.ListSource, this.ListTextField, this.ListValueField);
         }
     }
 }

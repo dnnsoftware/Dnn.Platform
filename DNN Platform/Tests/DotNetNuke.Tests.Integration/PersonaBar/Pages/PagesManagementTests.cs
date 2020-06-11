@@ -33,8 +33,8 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
         public PagesManagementTests()
         {
             var url = ConfigurationManager.AppSettings["siteUrl"];
-            _hostName = ConfigurationManager.AppSettings["hostUsername"];
-            _hostPass = ConfigurationManager.AppSettings["hostPassword"];
+            this._hostName = ConfigurationManager.AppSettings["hostUsername"];
+            this._hostPass = ConfigurationManager.AppSettings["hostPassword"];
         }
 
         [TestFixtureSetUp]
@@ -44,9 +44,9 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
 
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-            UpdateSslSettings(true);
+            this.UpdateSslSettings(true);
 
-            UpdateContentLocalization(true);
+            this.UpdateContentLocalization(true);
         }
 
         [TestFixtureTearDown]
@@ -54,9 +54,9 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
         {
             base.TestFixtureTearDown();
 
-            UpdateSslSettings(false);
+            this.UpdateSslSettings(false);
 
-            UpdateContentLocalization(false);
+            this.UpdateContentLocalization(false);
         }
 
         #endregion
@@ -67,7 +67,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
         public void Page_Marked_As_Secure_Should_Able_To_Management_In_Insecure_Channel()
         {
             int tabId;
-            var connector = CreateNewSecurePage(out tabId);
+            var connector = this.CreateNewSecurePage(out tabId);
 
             //Try to request the GetLocalization API
             var response = connector.GetContent($"API/PersonaBar/Pages/GetTabLocalization?pageId={tabId}", null, true, false);
@@ -80,7 +80,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
 
             var postData = new
             {
-                PortalId = PortalId,
+                PortalId = this.PortalId,
                 ContentLocalizationEnabled = false,
                 SystemDefaultLanguage = "English (United States)",
                 SystemDefaultLanguageIcon = "/images/Flags/en-US.gif",
@@ -97,8 +97,8 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
 
             connector.PostJson(
                 enabled
-                    ? $"API/PersonaBar/Languages/EnableLocalizedContent?portalId={PortalId}&translatePages=false"
-                    : $"API/PersonaBar/Languages/DisableLocalizedContent?portalId={PortalId}", new {});
+                    ? $"API/PersonaBar/Languages/EnableLocalizedContent?portalId={this.PortalId}&translatePages=false"
+                    : $"API/PersonaBar/Languages/DisableLocalizedContent?portalId={this.PortalId}", new {});
         }
 
         private void UpdateSslSettings(bool sslEnabled)

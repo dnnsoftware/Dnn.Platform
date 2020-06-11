@@ -53,7 +53,7 @@ namespace log4net.Layout
 		/// </summary>
 		public SimpleLayout()
 		{
-			IgnoresException = true;
+			this.IgnoresException = true;
 		}
 
 		#endregion

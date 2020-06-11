@@ -63,9 +63,9 @@ namespace DotNetNuke.Entities.Urls
 
                 if (ignoreForInstall == false)
                 {
-                    _settings = new FriendlyUrlSettings(-1);
+                    this._settings = new FriendlyUrlSettings(-1);
 
-                    SecurityCheck(app);
+                    this.SecurityCheck(app);
                 }
                 
             }
@@ -78,7 +78,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     ShowDebugData(app.Context, app.Request.Url.AbsoluteUri, null, ex);
                     var action = new UrlAction(app.Request) { Action = ActionType.Output404 };
-                    Handle404OrException(_settings, app.Context, ex, action, false, debug);
+                    Handle404OrException(this._settings, app.Context, ex, action, false, debug);
                 }
                 else
                 {
@@ -97,11 +97,11 @@ namespace DotNetNuke.Entities.Urls
                                             IsSSLOffloaded = UrlUtils.IsSslOffloadEnabled(request),
                                             RawUrl = request.RawUrl
                                         };
-                ProcessRequest(app.Context,
+                this.ProcessRequest(app.Context,
                                     app.Context.Request.Url,
                                      Host.Host.UseFriendlyUrls,
                                      result,
-                                     _settings,
+                                     this._settings,
                                      true,
                                      parentTraceId);
             }
@@ -118,8 +118,8 @@ namespace DotNetNuke.Entities.Urls
                                                     FriendlyUrlSettings settings)
         {
             Guid parentTraceId = Guid.Empty;
-            _settings = settings;
-            ProcessRequest(context, 
+            this._settings = settings;
+            this.ProcessRequest(context, 
                                 requestUri,
                                 useFriendlyUrls, 
                                 result,
@@ -230,7 +230,7 @@ namespace DotNetNuke.Entities.Urls
                     //find the portal alias first
                     string wrongAlias;
                     bool isPrimaryAlias;
-                    var requestedAlias = GetPortalAlias(settings, fullUrl, out redirectAlias, out isPrimaryAlias, out wrongAlias);
+                    var requestedAlias = this.GetPortalAlias(settings, fullUrl, out redirectAlias, out isPrimaryAlias, out wrongAlias);
                     
                     if (requestedAlias != null)
                     {
@@ -295,7 +295,7 @@ namespace DotNetNuke.Entities.Urls
                     //check the portal alias again.  This time, in more depth now that the portal Id is known 
                     //this check handles browser types/language specific aliases & mobile aliases
                     string primaryHttpAlias;
-                    if (!redirectAlias && IsPortalAliasIncorrect(context, request, requestUri, result, queryStringCol, settings, parentTraceId, out primaryHttpAlias))
+                    if (!redirectAlias && this.IsPortalAliasIncorrect(context, request, requestUri, result, queryStringCol, settings, parentTraceId, out primaryHttpAlias))
                     {
                         //it was an incorrect alias
                         PortalAliasInfo primaryAlias = PortalAliasController.Instance.GetPortalAlias(primaryHttpAlias);
@@ -411,7 +411,7 @@ namespace DotNetNuke.Entities.Urls
                     //confirm which portal the request is for 
                     if (!finished)
                     {
-                        IdentifyPortalAlias(context, request, requestUri, result, queryStringCol, settings, parentTraceId);
+                        this.IdentifyPortalAlias(context, request, requestUri, result, queryStringCol, settings, parentTraceId);
                         if (result.Action == ActionType.Redirect302Now)
                         {
                             //performs a 302 redirect if requested
@@ -548,7 +548,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
                                 //check if a secure redirection is needed
                                 //this would be done earlier in the piece, but need to know the portal settings, tabid etc before processing it
-                                bool redirectSecure = CheckForSecureRedirect(portalSettings, requestUri, result, queryStringCol, settings);
+                                bool redirectSecure = this.CheckForSecureRedirect(portalSettings, requestUri, result, queryStringCol, settings);
                                 if (redirectSecure)
                                 {
                                     if (response != null)
@@ -1552,7 +1552,7 @@ namespace DotNetNuke.Entities.Urls
                                 stdUrl = result.HttpAlias;
                             }
                             url = url.Replace("http://", "https://");
-                            url = ReplaceDomainName(url, stdUrl, sslUrl);
+                            url = this.ReplaceDomainName(url, stdUrl, sslUrl);
                         }
                     }
                     //check ssl enforced
@@ -1571,7 +1571,7 @@ namespace DotNetNuke.Entities.Urls
                                 string stdUrl = portalSettings.STDURL;
                                 string sslUrl = portalSettings.SSLURL;
                                 url = url.Replace("https://", "http://");
-                                url = ReplaceDomainName(url, sslUrl, stdUrl);
+                                url = this.ReplaceDomainName(url, sslUrl, stdUrl);
                                 redirectSecure = true;
                             }
                         }
@@ -2172,7 +2172,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     string primaryAlias;
                     //checking again in case the rewriting operation changed the values for the valid portal alias
-                    bool incorrectAlias = IsPortalAliasIncorrect(context, request, requestUri, result, queryStringCol, settings, parentTraceId, out primaryAlias);
+                    bool incorrectAlias = this.IsPortalAliasIncorrect(context, request, requestUri, result, queryStringCol, settings, parentTraceId, out primaryAlias);
                     if (incorrectAlias) RedirectPortalAlias(primaryAlias, ref result, settings);
                 }
             }

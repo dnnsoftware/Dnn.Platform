@@ -25,12 +25,12 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         private void IndexChanged(object sender, EventArgs e)
         {
-            UpdateDataSource(Value, ComboBox.SelectedValue, DataField);
+            this.UpdateDataSource(this.Value, this.ComboBox.SelectedValue, this.DataField);
         }
 
         protected override void BindList()
         {
-            BindListInternal(ComboBox, Value, ListSource, ListTextField, ListValueField);
+            BindListInternal(this.ComboBox, this.Value, this.ListSource, this.ListTextField, this.ListValueField);
         }
 
         //internal static void BindListInternal(DropDownList comboBox, object value, IEnumerable listSource, string textField, string valueField)
@@ -69,16 +69,16 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         protected override WebControl CreateControlInternal(Control container)
         {
             //ComboBox = new DropDownList { ID = ID + "_ComboBox" };
-            ComboBox = new DnnComboBox { ID = ID + "_ComboBox" };
-            ComboBox.SelectedIndexChanged += IndexChanged;
-            container.Controls.Add(ComboBox);
+            this.ComboBox = new DnnComboBox { ID = this.ID + "_ComboBox" };
+            this.ComboBox.SelectedIndexChanged += this.IndexChanged;
+            container.Controls.Add(this.ComboBox);
 
-            if (ListSource != null)
+            if (this.ListSource != null)
             {
-                BindList();
+                this.BindList();
             }
 
-            return ComboBox;
+            return this.ComboBox;
         }
     }
 }

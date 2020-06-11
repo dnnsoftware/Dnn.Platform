@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
     {
         public void Delete(string path, bool recursive)
         {
-            if (Exists(path))
+            if (this.Exists(path))
             {
                 Directory.Delete(path, recursive);
             }

@@ -15,13 +15,13 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Utilities
 
         public override ConsoleResultModel Run()
         {
-            if (Args.Length > 1)
+            if (this.Args.Length > 1)
             {
-                return new ConsoleResultModel(Args[1]);
+                return new ConsoleResultModel(this.Args[1]);
             }
 
 
-            return new ConsoleErrorResultModel(LocalizeString("Prompt_Echo_Nothing"));
+            return new ConsoleErrorResultModel(this.LocalizeString("Prompt_Echo_Nothing"));
         }
 
     }

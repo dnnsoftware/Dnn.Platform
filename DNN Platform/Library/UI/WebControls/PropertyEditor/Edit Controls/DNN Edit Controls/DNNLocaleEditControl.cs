@@ -32,7 +32,7 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				return _ListType;
+				return this._ListType;
 			}
 		}
 
@@ -40,7 +40,7 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				return _DisplayMode;
+				return this._DisplayMode;
 			}
 		}
 
@@ -56,27 +56,27 @@ namespace DotNetNuke.UI.WebControls
 
 		public void RaisePostBackEvent(string eventArgument)
 		{
-			_DisplayMode = eventArgument;
+			this._DisplayMode = eventArgument;
 		}
 
 		#endregion
 
 		private bool IsSelected(string locale)
 		{
-			return locale == StringValue;
+			return locale == this.StringValue;
 		}
 
 		private void RenderModeButtons(HtmlTextWriter writer)
 		{
 			writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
 			writer.AddAttribute("aria-label", "Mode");
-            if (DisplayMode == "English")
+            if (this.DisplayMode == "English")
 			{
 				writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
 			}
 			else
 			{
-				writer.AddAttribute(HtmlTextWriterAttribute.Onclick, Page.ClientScript.GetPostBackEventReference(this, "English"));
+				writer.AddAttribute(HtmlTextWriterAttribute.Onclick, this.Page.ClientScript.GetPostBackEventReference(this, "English"));
 			}
 			writer.RenderBeginTag(HtmlTextWriterTag.Input);
 			writer.RenderEndTag();
@@ -85,13 +85,13 @@ namespace DotNetNuke.UI.WebControls
 
 			writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
             writer.AddAttribute("aria-label", "Mode");
-            if (DisplayMode == "Native")
+            if (this.DisplayMode == "Native")
 			{
 				writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
 			}
 			else
 			{
-				writer.AddAttribute(HtmlTextWriterAttribute.Onclick, Page.ClientScript.GetPostBackEventReference(this, "Native"));
+				writer.AddAttribute(HtmlTextWriterAttribute.Onclick, this.Page.ClientScript.GetPostBackEventReference(this, "Native"));
 			}
 			writer.RenderBeginTag(HtmlTextWriterTag.Input);
 			writer.RenderEndTag();
@@ -103,7 +103,7 @@ namespace DotNetNuke.UI.WebControls
 		{
 			string localeName;
 
-			if (DisplayMode == "Native")
+			if (this.DisplayMode == "Native")
 			{
 				localeName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(culture.NativeName);
 			}
@@ -115,7 +115,7 @@ namespace DotNetNuke.UI.WebControls
 			//Add the Value Attribute
 			writer.AddAttribute(HtmlTextWriterAttribute.Value, culture.Name);
 
-			if (IsSelected(culture.Name))
+			if (this.IsSelected(culture.Name))
 			{
 				writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
 			}
@@ -134,14 +134,14 @@ namespace DotNetNuke.UI.WebControls
 		protected override void OnAttributesChanged()
 		{
 			//Get the List settings out of the "Attributes"
-			if ((CustomAttributes != null))
+			if ((this.CustomAttributes != null))
 			{
-				foreach (Attribute attribute in CustomAttributes)
+				foreach (Attribute attribute in this.CustomAttributes)
 				{
 					var listAtt = attribute as LanguagesListTypeAttribute;
 					if (listAtt != null)
 					{
-						_ListType = listAtt.ListType;
+						this._ListType = listAtt.ListType;
 						break;
 					}
 				}
@@ -154,9 +154,9 @@ namespace DotNetNuke.UI.WebControls
 		/// <param name="writer">A HtmlTextWriter.</param>
 		protected override void RenderViewMode(HtmlTextWriter writer)
 		{
-			Locale locale = LocaleController.Instance.GetLocale(StringValue);
+			Locale locale = LocaleController.Instance.GetLocale(this.StringValue);
 
-			ControlStyle.AddAttributesToRender(writer);
+			this.ControlStyle.AddAttributesToRender(writer);
 			writer.RenderBeginTag(HtmlTextWriterTag.Div);
 			if (locale != null)
 			{
@@ -176,11 +176,11 @@ namespace DotNetNuke.UI.WebControls
 			writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
 		    IList<CultureInfo> cultures = new List<CultureInfo>();
-		    switch (ListType)
+		    switch (this.ListType)
 		    {
 		        case LanguagesListType.All:
 		            var culturesArray = CultureInfo.GetCultures(CultureTypes.SpecificCultures);
-		            Array.Sort(culturesArray, new CultureInfoComparer(DisplayMode));
+		            Array.Sort(culturesArray, new CultureInfoComparer(this.DisplayMode));
 		            cultures = culturesArray.ToList();
                     break;
 		        case LanguagesListType.Supported:
@@ -189,17 +189,17 @@ namespace DotNetNuke.UI.WebControls
 		                .ToList();
 		            break;
 		        case LanguagesListType.Enabled:
-		            cultures = LocaleController.Instance.GetLocales(PortalSettings.PortalId).Values
+		            cultures = LocaleController.Instance.GetLocales(this.PortalSettings.PortalId).Values
 		                .Select(c => CultureInfo.GetCultureInfo(c.Code))
 		                .ToList();
 		            break;
 		    }
 
-		    var promptValue = StringValue == Null.NullString && cultures.Count > 1 && !Required;
+		    var promptValue = this.StringValue == Null.NullString && cultures.Count > 1 && !this.Required;
 
             //Render the Select Tag
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
-			writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
+			writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
 		    if (promptValue)
 		    {
                 writer.AddAttribute(HtmlTextWriterAttribute.Onchange, "onLocaleChanged(this)");
@@ -210,7 +210,7 @@ namespace DotNetNuke.UI.WebControls
 			//Add the Value Attribute
 			writer.AddAttribute(HtmlTextWriterAttribute.Value, Null.NullString);
 
-			if (StringValue == Null.NullString)
+			if (this.StringValue == Null.NullString)
 			{
 				//Add the Selected Attribute
 				writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
@@ -221,7 +221,7 @@ namespace DotNetNuke.UI.WebControls
 
 		    foreach (var culture in cultures)
 		    {
-		        RenderOption(writer, culture);
+		        this.RenderOption(writer, culture);
 		    }
 
             //Close Select Tag
@@ -257,7 +257,7 @@ function onLocaleChanged(element){
 			writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
 			//Render Button Row
-			RenderModeButtons(writer);
+			this.RenderModeButtons(writer);
 
 			//close span
 			writer.RenderEndTag();

@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.Mvc.Framework
         /// <param name="controllerContext">The controller context.</param><param name="partialViewName">The name of the partial view.</param><param name="useCache">true to specify that the view engine returns the cached view, if a cached view exists; otherwise, false.</param>
         public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
         {
-            return RunAgainstModuleViewEngines(controllerContext, e => e.FindPartialView(controllerContext, partialViewName, useCache));
+            return this.RunAgainstModuleViewEngines(controllerContext, e => e.FindPartialView(controllerContext, partialViewName, useCache));
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.Mvc.Framework
         /// <param name="controllerContext">The controller context.</param><param name="viewName">The name of the view.</param><param name="masterName">The name of the master.</param><param name="useCache">true to specify that the view engine returns the cached view, if a cached view exists; otherwise, false.</param>
         public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
         {
-            return RunAgainstModuleViewEngines(controllerContext, e => e.FindView(controllerContext, viewName, masterName, useCache));
+            return this.RunAgainstModuleViewEngines(controllerContext, e => e.FindView(controllerContext, viewName, masterName, useCache));
         }
 
         /// <summary>
@@ -48,9 +48,9 @@ namespace DotNetNuke.Web.Mvc.Framework
         /// <param name="controllerContext">The controller context.</param><param name="view">The view.</param>
         public void ReleaseView(ControllerContext controllerContext, IView view)
         {
-            if (_viewEngineMappings.ContainsKey(view))
+            if (this._viewEngineMappings.ContainsKey(view))
             {
-                _viewEngineMappings[view].ReleaseView(controllerContext, view);
+                this._viewEngineMappings[view].ReleaseView(controllerContext, view);
             }
         }
 
@@ -65,7 +65,7 @@ namespace DotNetNuke.Web.Mvc.Framework
             // If there is a view, store the view<->viewengine mapping so release works correctly
             if (result.View != null)
             {
-                _viewEngineMappings[result.View] = result.ViewEngine;
+                this._viewEngineMappings[result.View] = result.ViewEngine;
             }
 
             return result;

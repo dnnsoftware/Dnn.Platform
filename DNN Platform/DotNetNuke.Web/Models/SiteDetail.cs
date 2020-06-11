@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.Models
 
         public SiteDetail()
         {
-            Modules = new List<ModuleDetail>();
+            this.Modules = new List<ModuleDetail>();
         }
     }
 }

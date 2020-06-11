@@ -27,12 +27,12 @@ namespace Dnn.PersonaBar.Library.DTO
 
         protected Permissions(bool needDefinitions)
         {
-            RolePermissions = new List<RolePermission>();
-            UserPermissions = new List<UserPermission>();
+            this.RolePermissions = new List<RolePermission>();
+            this.UserPermissions = new List<UserPermission>();
 
             if (needDefinitions)
             {
-                PermissionDefinitions = new List<Permission>();
+                this.PermissionDefinitions = new List<Permission>();
                 this.LoadPermissionDefinitions();
                 this.EnsureDefaultRoles();
             }

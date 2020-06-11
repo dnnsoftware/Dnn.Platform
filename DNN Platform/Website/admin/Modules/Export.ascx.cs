@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         private readonly INavigationManager _navigationManager;
         public Export()
         {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region Private Members
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             get
             {
-                return _module ?? (_module = ModuleController.Instance.GetModule(ModuleId, TabId, false));
+                return this._module ?? (this._module = ModuleController.Instance.GetModule(this.ModuleId, this.TabId, false));
             }
         }
 
@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             get
             {
-                return UrlUtils.ValidReturnUrl(Request.Params["ReturnURL"]) ?? _navigationManager.NavigateURL();
+                return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this._navigationManager.NavigateURL();
             }
         }
 
@@ -74,27 +74,27 @@ namespace DotNetNuke.Modules.Admin.Modules
         private string ExportModule(int moduleID, string fileName, IFolderInfo folder)
         {
             var strMessage = "";
-            if (Module != null)
+            if (this.Module != null)
             {
-                if (!String.IsNullOrEmpty(Module.DesktopModule.BusinessControllerClass) && Module.DesktopModule.IsPortable)
+                if (!String.IsNullOrEmpty(this.Module.DesktopModule.BusinessControllerClass) && this.Module.DesktopModule.IsPortable)
                 {
                     try
                     {
-                        var objObject = Reflection.CreateObject(Module.DesktopModule.BusinessControllerClass, Module.DesktopModule.BusinessControllerClass);
+                        var objObject = Reflection.CreateObject(this.Module.DesktopModule.BusinessControllerClass, this.Module.DesktopModule.BusinessControllerClass);
 
                         //Double-check
                         if (objObject is IPortable)
                         {
                             XmlDocument moduleXml = new XmlDocument { XmlResolver = null };
-                            XmlNode moduleNode = ModuleController.SerializeModule(moduleXml, Module, true);
+                            XmlNode moduleNode = ModuleController.SerializeModule(moduleXml, this.Module, true);
 
                             //add attributes to XML document
                             XmlAttribute typeAttribute = moduleXml.CreateAttribute("type");
-                            typeAttribute.Value = CleanName(Module.DesktopModule.ModuleName);
+                            typeAttribute.Value = CleanName(this.Module.DesktopModule.ModuleName);
                             moduleNode.Attributes.Append(typeAttribute);
 
                             XmlAttribute versionAttribute = moduleXml.CreateAttribute("version");
-                            versionAttribute.Value = Module.DesktopModule.Version;
+                            versionAttribute.Value = this.Module.DesktopModule.Version;
                             moduleNode.Attributes.Append(versionAttribute);
 
                             // Create content from XmlNode
@@ -111,7 +111,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                                 //          Module.DesktopModule.Version + "\">" + content + "</content>";
 
                                 //First check the Portal limits will not be exceeded (this is approximate)
-                                if (PortalController.Instance.HasSpaceAvailable(PortalId, content.Length))
+                                if (PortalController.Instance.HasSpaceAvailable(this.PortalId, content.Length))
                                 {
                                     //add file to Files table
                                     using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(content)))
@@ -126,12 +126,12 @@ namespace DotNetNuke.Modules.Admin.Modules
                             }
                             else
                             {
-                                strMessage = Localization.GetString("NoContent", LocalResourceFile);
+                                strMessage = Localization.GetString("NoContent", this.LocalResourceFile);
                             }
                         }
                         else
                         {
-                            strMessage = Localization.GetString("ExportNotSupported", LocalResourceFile);
+                            strMessage = Localization.GetString("ExportNotSupported", this.LocalResourceFile);
                         }
                     }
                     catch (Exception ex)
@@ -142,13 +142,13 @@ namespace DotNetNuke.Modules.Admin.Modules
                         }
                         else
                         {
-                            strMessage = Localization.GetString("Error", LocalResourceFile);
+                            strMessage = Localization.GetString("Error", this.LocalResourceFile);
                         }
                     }
                 }
                 else
                 {
-                    strMessage = Localization.GetString("ExportNotSupported", LocalResourceFile);
+                    strMessage = Localization.GetString("ExportNotSupported", this.LocalResourceFile);
                 }
             }
             return strMessage;
@@ -175,13 +175,13 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             base.OnInit(e);
 
-            if (Request.QueryString["moduleid"] != null)
+            if (this.Request.QueryString["moduleid"] != null)
             {
-                Int32.TryParse(Request.QueryString["moduleid"], out ModuleId);
+                Int32.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
             }
-            if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "EXPORT", Module))
+            if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "EXPORT", this.Module))
             {
-                Response.Redirect(Globals.AccessDeniedURL(), true);
+                this.Response.Redirect(Globals.AccessDeniedURL(), true);
             }
         }
 
@@ -189,23 +189,23 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             base.OnLoad(e);
 
-            cmdExport.Click += OnExportClick;
+            this.cmdExport.Click += this.OnExportClick;
 
             try
             {
-                if (Request.QueryString["moduleid"] != null)
+                if (this.Request.QueryString["moduleid"] != null)
                 {
-                    Int32.TryParse(Request.QueryString["moduleid"], out ModuleId);
+                    Int32.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
                 }
-                if (!Page.IsPostBack)
+                if (!this.Page.IsPostBack)
                 {
-                    cmdCancel.NavigateUrl = ReturnURL;
+                    this.cmdCancel.NavigateUrl = this.ReturnURL;
 
-                    cboFolders.UndefinedItem = new ListItem("<" + Localization.GetString("None_Specified") + ">", string.Empty);
-                    cboFolders.Services.Parameters.Add("permission", "ADD");
-                    if (Module != null)
+                    this.cboFolders.UndefinedItem = new ListItem("<" + Localization.GetString("None_Specified") + ">", string.Empty);
+                    this.cboFolders.Services.Parameters.Add("permission", "ADD");
+                    if (this.Module != null)
                     {
-                        txtFile.Text = CleanName(Module.ModuleTitle);
+                        this.txtFile.Text = CleanName(this.Module.ModuleTitle);
                     }
                 }
             }
@@ -220,18 +220,18 @@ namespace DotNetNuke.Modules.Admin.Modules
             try
             {
                 IFolderInfo folder = null;
-                if (cboFolders.SelectedItem != null && !String.IsNullOrEmpty(txtFile.Text))
+                if (this.cboFolders.SelectedItem != null && !String.IsNullOrEmpty(this.txtFile.Text))
                 {
-                    folder = FolderManager.Instance.GetFolder(cboFolders.SelectedItemValueAsInt);
+                    folder = FolderManager.Instance.GetFolder(this.cboFolders.SelectedItemValueAsInt);
                 }
 
                 if (folder != null)
                 {
-                    var strFile = "content." + CleanName(Module.DesktopModule.ModuleName) + "." + CleanName(txtFile.Text) + ".export";
-                    var strMessage = ExportModule(ModuleId, strFile, folder);
+                    var strFile = "content." + CleanName(this.Module.DesktopModule.ModuleName) + "." + CleanName(this.txtFile.Text) + ".export";
+                    var strMessage = this.ExportModule(this.ModuleId, strFile, folder);
                     if (String.IsNullOrEmpty(strMessage))
                     {
-                        Response.Redirect(ReturnURL, true);
+                        this.Response.Redirect(this.ReturnURL, true);
                     }
                     else
                     {
@@ -240,7 +240,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 }
                 else
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("Validation", LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("Validation", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                 }
             }
             catch (Exception exc)

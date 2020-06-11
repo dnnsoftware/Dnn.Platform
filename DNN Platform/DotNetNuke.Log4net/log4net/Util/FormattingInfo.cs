@@ -66,9 +66,9 @@ namespace log4net.Util
 		/// </remarks>
 		public FormattingInfo(int min, int max, bool leftAlign) 
 		{
-			m_min = min;
-			m_max = max;
-			m_leftAlign = leftAlign;
+			this.m_min = min;
+			this.m_max = max;
+			this.m_leftAlign = leftAlign;
 		}
 
 		#endregion Public Instance Constructors
@@ -88,8 +88,8 @@ namespace log4net.Util
 		/// </remarks>
 		public int Min
 		{
-			get { return m_min; }
-			set { m_min = value; }
+			get { return this.m_min; }
+			set { this.m_min = value; }
 		}
 
 		/// <summary>
@@ -105,8 +105,8 @@ namespace log4net.Util
 		/// </remarks>
 		public int Max
 		{
-			get { return m_max; }
-			set { m_max = value; }
+			get { return this.m_max; }
+			set { this.m_max = value; }
 		}
 
 		/// <summary>
@@ -123,8 +123,8 @@ namespace log4net.Util
 		/// </remarks>
 		public bool LeftAlign
 		{
-			get { return m_leftAlign; }
-			set { m_leftAlign = value; }
+			get { return this.m_leftAlign; }
+			set { this.m_leftAlign = value; }
 		}
 
 		#endregion Public Instance Properties

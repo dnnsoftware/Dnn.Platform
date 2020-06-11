@@ -132,18 +132,18 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual public string Target
 		{
-			get { return m_writeToErrorStream ? ConsoleError : ConsoleOut; }
+			get { return this.m_writeToErrorStream ? ConsoleError : ConsoleOut; }
 			set
 			{
 				string v = value.Trim();
 
 				if (SystemInfo.EqualsIgnoringCase(ConsoleError, v))
 				{
-					m_writeToErrorStream = true;
+					this.m_writeToErrorStream = true;
 				} 
 				else 
 				{
-					m_writeToErrorStream = false;
+					this.m_writeToErrorStream = false;
 				}
 			}
 		}
@@ -161,7 +161,7 @@ namespace log4net.Appender
 		/// </remarks>
 		public void AddMapping(LevelColors mapping)
 		{
-			m_levelMapping.Add(mapping);
+			this.m_levelMapping.Add(mapping);
 		}
 		#endregion // Public Instance Properties
 
@@ -182,7 +182,7 @@ namespace log4net.Appender
 		{
 			System.IO.TextWriter writer;
 			
-			if (m_writeToErrorStream)
+			if (this.m_writeToErrorStream)
 				writer = Console.Error;
 			else
 				writer = Console.Out;
@@ -191,7 +191,7 @@ namespace log4net.Appender
 			Console.ResetColor();
 			
 			// see if there is a specified lookup
-			LevelColors levelColors = m_levelMapping.Lookup(loggingEvent.Level) as LevelColors;
+			LevelColors levelColors = this.m_levelMapping.Lookup(loggingEvent.Level) as LevelColors;
 			if (levelColors != null)
 			{
 				// if the backColor has been explicitly set
@@ -203,7 +203,7 @@ namespace log4net.Appender
 			}
 			
 			// Render the event to a string
-			string strLoggingMessage = RenderLoggingEvent(loggingEvent);
+			string strLoggingMessage = this.RenderLoggingEvent(loggingEvent);
 			// and write it
 			writer.Write(strLoggingMessage);
 
@@ -236,7 +236,7 @@ namespace log4net.Appender
 		public override void ActivateOptions()
 		{
 			base.ActivateOptions();
-			m_levelMapping.ActivateOptions();
+			this.m_levelMapping.ActivateOptions();
 		}
 		#endregion // Override implementation of AppenderSkeleton
 
@@ -310,7 +310,7 @@ namespace log4net.Appender
 			private bool hasForeColor;
             internal bool HasForeColor {
                 get {
-                    return hasForeColor;
+                    return this.hasForeColor;
                 }
             }
 
@@ -334,7 +334,7 @@ namespace log4net.Appender
             private bool hasBackColor;
             internal bool HasBackColor {
                 get {
-                    return hasBackColor;
+                    return this.hasBackColor;
                 }
             }
 		}

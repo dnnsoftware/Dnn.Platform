@@ -90,7 +90,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Get_Returns_All_Rows(int count)
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(count);
@@ -108,7 +108,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Get_Returns_List_Of_Models()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
@@ -129,7 +129,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Get_Returns_Models_With_Correct_Properties()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
@@ -141,15 +141,15 @@ namespace DotNetNuke.Tests.Data
 
             //Assert
             var dog = dogs.First();
-            Assert.AreEqual(_dogAges[0], dog.Age.ToString());
-            Assert.AreEqual(_dogNames[0], dog.Name);
+            Assert.AreEqual(this._dogAges[0], dog.Age.ToString());
+            Assert.AreEqual(this._dogNames[0], dog.Name);
         }
 
         [Test]
         public void PetaPocoRepository_Get_Returns_Models_With_Correct_Properties_Using_FluentMapper()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new FluentMapper<Dog>(String.Empty);
             mapper.TableName(Constants.PETAPOCO_DogTableName);
             mapper.Property(d => d.Age, "Age");
@@ -164,8 +164,8 @@ namespace DotNetNuke.Tests.Data
 
             //Assert
             var dog = dogs.First();
-            Assert.AreEqual(_dogAges[0], dog.Age.ToString());
-            Assert.AreEqual(_dogNames[0], dog.Name);
+            Assert.AreEqual(this._dogAges[0], dog.Age.ToString());
+            Assert.AreEqual(this._dogNames[0], dog.Name);
         }
 
         #endregion
@@ -176,7 +176,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_GetById_Returns_Instance_Of_Model_If_Valid_Id()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
@@ -194,7 +194,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_GetById_Returns_Null_If_InValid_Id()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
@@ -212,7 +212,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_GetById_Returns_Null_If_InValid_Id_Using_FluentMapper()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new FluentMapper<Dog>(String.Empty);
             mapper.TableName(Constants.PETAPOCO_DogTableName);
             mapper.PrimaryKey("ID");
@@ -235,7 +235,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_GetById_Returns_Model_With_Correct_Properties()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
@@ -254,7 +254,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_GetById_Returns_Model_With_Correct_Properties_Using_FluentMapper()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new FluentMapper<Dog>(String.Empty);
             mapper.TableName(Constants.PETAPOCO_DogTableName);
             mapper.PrimaryKey("ID");
@@ -282,7 +282,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Add_Inserts_Item_Into_DataBase()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
@@ -307,7 +307,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Add_Inserts_Item_Into_DataBase_With_Correct_ID()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
@@ -332,7 +332,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Add_Inserts_Item_Into_DataBase_With_Correct_ColumnValues()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
@@ -359,7 +359,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Add_Inserts_Item_Into_DataBase_With_Correct_ColumnValues_Using_FluentMapper()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new FluentMapper<Dog>(String.Empty);
             mapper.TableName(Constants.PETAPOCO_DogTableName);
             mapper.PrimaryKey("ID");
@@ -395,7 +395,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Delete_Deletes_Item_From_DataBase()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
@@ -421,7 +421,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Delete_Deletes_Item_From_DataBase_With_Correct_ID()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
@@ -449,7 +449,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Delete_Deletes_Item_From_DataBase_With_Correct_ID_Using_FluentMapper()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new FluentMapper<Dog>(String.Empty);
             mapper.TableName(Constants.PETAPOCO_DogTableName);
             mapper.PrimaryKey("ID");
@@ -482,7 +482,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Delete_Does_Nothing_With_Invalid_ID()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
@@ -509,7 +509,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Delete_Does_Nothing_With_Invalid_ID_Using_FluentMapper()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new FluentMapper<Dog>(String.Empty);
             mapper.TableName(Constants.PETAPOCO_DogTableName);
             mapper.PrimaryKey("ID");
@@ -545,7 +545,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Delete_Overload_Deletes_Item_From_DataBase()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
@@ -565,7 +565,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Delete_Overload_Deletes_Item_From_DataBase_With_Correct_ID()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
@@ -587,7 +587,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Delete_Overload_Does_Nothing_With_Invalid_ID()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
@@ -614,7 +614,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Find_Returns_Correct_Rows(int count, string sqlCondition, object arg)
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
@@ -639,7 +639,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_GetPage_Overload_Returns_Page_Of_Rows(int pageIndex, int pageSize)
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PAGE_TotalCount);
@@ -657,7 +657,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_GetPage_Overload_Returns_List_Of_Models()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PAGE_TotalCount);
@@ -678,7 +678,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_GetPage_Overload_Returns_Models_With_Correct_Properties()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PAGE_TotalCount);
@@ -690,8 +690,8 @@ namespace DotNetNuke.Tests.Data
 
             //Assert
             var dog = dogs.First();
-            Assert.AreEqual(_dogAges[0], dog.Age.ToString());
-            Assert.AreEqual(_dogNames[0], dog.Name);
+            Assert.AreEqual(this._dogAges[0], dog.Age.ToString());
+            Assert.AreEqual(this._dogNames[0], dog.Name);
         }
 
         [Test]
@@ -701,7 +701,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_GetPage_Overload_Returns_Correct_Page(int pageIndex, int pageSize, int firstId)
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PAGE_TotalCount);
@@ -724,7 +724,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Update_Updates_Item_In_DataBase()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
@@ -750,7 +750,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Update_Updates_Item_With_Correct_ID()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
@@ -782,7 +782,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Update_Updates_Item_With_Correct_ID_Using_FluentMapper()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new FluentMapper<Dog>(String.Empty);
             mapper.TableName(Constants.PETAPOCO_DogTableName);
             mapper.PrimaryKey("ID");
@@ -823,7 +823,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Update_Overload_Updates_Item_In_DataBase()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
@@ -843,7 +843,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoRepository_Update_Overload_Updates_Item_With_Correct_ID()
         {
             //Arrange
-            var db = CreatePecaPocoDatabase();
+            var db = this.CreatePecaPocoDatabase();
             var mapper = new PetaPocoMapper(String.Empty);
 
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);

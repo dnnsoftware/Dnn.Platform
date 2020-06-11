@@ -39,9 +39,9 @@ namespace DotNetNuke.Services.FileSystem
         public FolderMappingInfo GetDefaultFolderMapping(int portalId)
         {
             var defaultFolderMapping = Config.GetSection("dotnetnuke/folder") != null ?
-                GetFolderMappings(portalId).Find(fm => fm.FolderProviderType == Config.GetDefaultProvider("folder").Name) :
-                GetFolderMapping(portalId, "Standard");
-            return defaultFolderMapping ?? GetFolderMapping(portalId, "Standard");
+                this.GetFolderMappings(portalId).Find(fm => fm.FolderProviderType == Config.GetDefaultProvider("folder").Name) :
+                this.GetFolderMapping(portalId, "Standard");
+            return defaultFolderMapping ?? this.GetFolderMapping(portalId, "Standard");
         }
 
         public int AddFolderMapping(FolderMappingInfo objFolderMapping)
@@ -94,7 +94,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 if (folderMappingFolders.Count() > 0)
                 {
-                    var defaultFolderMapping = GetDefaultFolderMapping(portalID);
+                    var defaultFolderMapping = this.GetDefaultFolderMapping(portalID);
 
                     foreach (var folderMappingFolder in folderMappingFolders)
                     {
@@ -127,12 +127,12 @@ namespace DotNetNuke.Services.FileSystem
 
         public FolderMappingInfo GetFolderMapping(int portalId, int folderMappingID)
         {
-            return GetFolderMappings(portalId).SingleOrDefault(fm => fm.FolderMappingID == folderMappingID);
+            return this.GetFolderMappings(portalId).SingleOrDefault(fm => fm.FolderMappingID == folderMappingID);
         }
 
         public FolderMappingInfo GetFolderMapping(int portalId, string mappingName)
         {
-            return GetFolderMappings(portalId).SingleOrDefault(fm => fm.MappingName == mappingName);
+            return this.GetFolderMappings(portalId).SingleOrDefault(fm => fm.MappingName == mappingName);
         }
 
         public List<FolderMappingInfo> GetFolderMappings(int portalId)

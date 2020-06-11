@@ -31,8 +31,8 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
         public DDRMenuTests()
         {
             var url = ConfigurationManager.AppSettings["siteUrl"];
-            _hostName = ConfigurationManager.AppSettings["hostUsername"];
-            _hostPass = ConfigurationManager.AppSettings["hostPassword"];
+            this._hostName = ConfigurationManager.AppSettings["hostUsername"];
+            this._hostPass = ConfigurationManager.AppSettings["hostPassword"];
         }
 
         [TestFixtureSetUp]
@@ -50,16 +50,16 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
         {
             //Create new page with DDR Menu on it
             int tabId;
-            CreateNewPage(Null.NullInteger, out tabId);
+            this.CreateNewPage(Null.NullInteger, out tabId);
             int moduleId;
-            AddModuleToPage(tabId, "DDRMenu", out moduleId);
+            this.AddModuleToPage(tabId, "DDRMenu", out moduleId);
 
             //apply module settings.
             ModuleController.SetModuleSettingValue(moduleId, "MenuStyle", "Menus/MainMenu");
 
             //Copy Page
             int copyTabId;
-            CreateNewPage(tabId, out copyTabId);
+            this.CreateNewPage(tabId, out copyTabId);
         }
 
         

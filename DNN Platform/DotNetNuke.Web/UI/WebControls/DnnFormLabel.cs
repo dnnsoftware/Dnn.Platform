@@ -32,12 +32,12 @@ namespace DotNetNuke.Web.UI.WebControls
 
 		protected override void CreateChildControls()
 		{
-			string toolTipText = LocalizeString(ToolTipKey);
-            if (string.IsNullOrEmpty(CssClass))
-                CssClass = "dnnLabel";
+			string toolTipText = this.LocalizeString(this.ToolTipKey);
+            if (string.IsNullOrEmpty(this.CssClass))
+                this.CssClass = "dnnLabel";
 
-            else if (!CssClass.Contains("dnnLabel"))                           
-                CssClass += " dnnLabel";
+            else if (!this.CssClass.Contains("dnnLabel"))                           
+                this.CssClass += " dnnLabel";
             
 
             //var outerPanel = new Panel();
@@ -45,10 +45,10 @@ namespace DotNetNuke.Web.UI.WebControls
             //Controls.Add(outerPanel);            
 
             var outerLabel = new System.Web.UI.HtmlControls.HtmlGenericControl { TagName = "label" };
-            Controls.Add(outerLabel);
+            this.Controls.Add(outerLabel);
             
-            var label = new Label { ID = "Label", Text = LocalizeString(ResourceKey) };
-            if (RequiredField)
+            var label = new Label { ID = "Label", Text = this.LocalizeString(this.ResourceKey) };
+            if (this.RequiredField)
             {
                 label.CssClass += " dnnFormRequired";
             }
@@ -56,19 +56,19 @@ namespace DotNetNuke.Web.UI.WebControls
 
             var link = new LinkButton { ID = "Link", CssClass = "dnnFormHelp", TabIndex = -1 };
             link.Attributes.Add("aria-label", "Help");
-            Controls.Add(link);
+            this.Controls.Add(link);
 			
 			if (!String.IsNullOrEmpty(toolTipText))
 			{
 				//CssClass += "dnnLabel";
 
 			    var tooltipPanel = new Panel() { CssClass = "dnnTooltip"};
-                Controls.Add(tooltipPanel);
+                this.Controls.Add(tooltipPanel);
 
 				var panel = new Panel { ID = "Help", CssClass = "dnnFormHelpContent dnnClear" };				
                 tooltipPanel.Controls.Add(panel);
 				
-				var helpLabel = new Label { ID = "Text", CssClass="dnnHelpText", Text = LocalizeString(ToolTipKey) };
+				var helpLabel = new Label { ID = "Text", CssClass="dnnHelpText", Text = this.LocalizeString(this.ToolTipKey) };
 				panel.Controls.Add(helpLabel);
 
 				var pinLink = new HyperLink { CssClass = "pinHelp"};
@@ -76,7 +76,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 pinLink.Attributes.Add("aria-label", "Pin");
                 panel.Controls.Add(pinLink);
 
-                JavaScript.RegisterClientReference(Page, ClientAPI.ClientNamespaceReferences.dnn);
+                JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 //ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
 			}
@@ -84,7 +84,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
 		protected string LocalizeString(string key)
 		{
-			return Localization.GetString(key, LocalResourceFile);
+			return Localization.GetString(key, this.LocalResourceFile);
 		}
 	}
 }

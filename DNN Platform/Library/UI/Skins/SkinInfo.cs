@@ -34,11 +34,11 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _SkinId;
+                return this._SkinId;
             }
             set
             {
-                _SkinId = value;
+                this._SkinId = value;
             }
         }
 
@@ -46,11 +46,11 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _PortalId;
+                return this._PortalId;
             }
             set
             {
-                _PortalId = value;
+                this._PortalId = value;
             }
         }
 
@@ -58,11 +58,11 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _SkinRoot;
+                return this._SkinRoot;
             }
             set
             {
-                _SkinRoot = value;
+                this._SkinRoot = value;
             }
         }
 
@@ -70,11 +70,11 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _SkinType;
+                return this._SkinType;
             }
             set
             {
-                _SkinType = value;
+                this._SkinType = value;
             }
         }
 
@@ -82,11 +82,11 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _SkinSrc;
+                return this._SkinSrc;
             }
             set
             {
-                _SkinSrc = value;
+                this._SkinSrc = value;
             }
         }
     }

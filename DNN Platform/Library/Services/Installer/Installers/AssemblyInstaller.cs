@@ -81,7 +81,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return PhysicalSitePath + "\\";
+                return this.PhysicalSitePath + "\\";
             }
         }
 		
@@ -116,18 +116,18 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             //Attempt to unregister assembly this will return False if the assembly is used by another package and
             //cannot be delete andtrue if it is not being used and can be deleted
-            if (DataProvider.Instance().UnRegisterAssembly(Package.PackageID, file.Name))
+            if (DataProvider.Instance().UnRegisterAssembly(this.Package.PackageID, file.Name))
             {
-                Log.AddInfo(Util.ASSEMBLY_UnRegistered + " - " + file.FullName);
+                this.Log.AddInfo(Util.ASSEMBLY_UnRegistered + " - " + file.FullName);
                 
-                RemoveBindingRedirect(file);
+                this.RemoveBindingRedirect(file);
                 
                 //Call base class version to deleteFile file from \bin
                 base.DeleteFile(file);
             }
             else
             {
-                Log.AddInfo(Util.ASSEMBLY_InUse + " - " + file.FullName);
+                this.Log.AddInfo(Util.ASSEMBLY_InUse + " - " + file.FullName);
             }
         }
 
@@ -151,26 +151,26 @@ namespace DotNetNuke.Services.Installer.Installers
             bool bSuccess = true;
             if (file.Action == "UnRegister")
             {
-                DeleteFile(file);
+                this.DeleteFile(file);
             }
             else
             {
                 //Attempt to register assembly this will return False if the assembly exists and true if it does not or is older
-                int returnCode = DataProvider.Instance().RegisterAssembly(Package.PackageID, file.Name, file.Version.ToString(3));
+                int returnCode = DataProvider.Instance().RegisterAssembly(this.Package.PackageID, file.Name, file.Version.ToString(3));
                 switch (returnCode)
                 {
                     case 0:
                         //Assembly Does Not Exist
-                        Log.AddInfo(Util.ASSEMBLY_Added + " - " + file.FullName);
+                        this.Log.AddInfo(Util.ASSEMBLY_Added + " - " + file.FullName);
                         break;
                     case 1:
                         //Older version of Assembly Exists
-                        Log.AddInfo(Util.ASSEMBLY_Updated + " - " + file.FullName);
+                        this.Log.AddInfo(Util.ASSEMBLY_Updated + " - " + file.FullName);
                         break;
                     case 2:
                     case 3:
 						//Assembly already Registered
-                        Log.AddInfo(Util.ASSEMBLY_Registered + " - " + file.FullName);
+                        this.Log.AddInfo(Util.ASSEMBLY_Registered + " - " + file.FullName);
                         break;
                 }
 				
@@ -179,7 +179,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     //Call base class version to copy file to \bin
                     bSuccess = base.InstallFile(file);
-                    AddOrUpdateBindingRedirect(file);
+                    this.AddOrUpdateBindingRedirect(file);
                 }
             }
             return bSuccess;
@@ -193,7 +193,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <param name="file">The assembly file.</param>
         private void AddOrUpdateBindingRedirect(InstallFile file)
         {
-            if (ApplyXmlMerge(file, "BindingRedirect.config"))
+            if (this.ApplyXmlMerge(file, "BindingRedirect.config"))
             {
                 this.Log.AddInfo(Util.ASSEMBLY_AddedBindingRedirect + " - " + file.FullName);
             }
@@ -203,9 +203,9 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <param name="file">The assembly file.</param>
         private void RemoveBindingRedirect(InstallFile file)
         {
-            if (ApplyXmlMerge(file, "RemoveBindingRedirect.config"))
+            if (this.ApplyXmlMerge(file, "RemoveBindingRedirect.config"))
             {
-                Log.AddInfo(Util.ASSEMBLY_RemovedBindingRedirect + " - " + file.FullName);
+                this.Log.AddInfo(Util.ASSEMBLY_RemovedBindingRedirect + " - " + file.FullName);
             }
         }
 

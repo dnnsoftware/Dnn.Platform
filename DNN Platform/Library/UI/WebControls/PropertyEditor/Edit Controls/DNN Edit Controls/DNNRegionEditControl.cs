@@ -42,11 +42,11 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				if (_Regions == null)
+				if (this._Regions == null)
 				{
-					_Regions = new DropDownList();
+					this._Regions = new DropDownList();
 				}
-				return _Regions;
+				return this._Regions;
 			}
 		}
 
@@ -55,11 +55,11 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				if (_Region == null)
+				if (this._Region == null)
 				{
-					_Region = new TextBox();
+					this._Region = new TextBox();
 				}
-				return _Region;
+				return this._Region;
 			}
 		}
 
@@ -68,11 +68,11 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				if (_InitialValue == null)
+				if (this._InitialValue == null)
 				{
-					_InitialValue = new HtmlInputHidden();
+					this._InitialValue = new HtmlInputHidden();
 				}
-				return _InitialValue;
+				return this._InitialValue;
 			}
 		}
 		#endregion
@@ -83,9 +83,9 @@ namespace DotNetNuke.UI.WebControls
 			get
 			{
 				string strValue = Null.NullString;
-				if (Value != null)
+				if (this.Value != null)
 				{
-					strValue = Convert.ToString(Value);
+					strValue = Convert.ToString(this.Value);
 				}
 				return strValue;
 			}
@@ -94,7 +94,7 @@ namespace DotNetNuke.UI.WebControls
 
 		protected string OldStringValue
 		{
-			get { return Convert.ToString(OldValue); }
+			get { return Convert.ToString(this.OldValue); }
 		}
 
 		/// <summary>
@@ -110,13 +110,13 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				if (_listEntries == null)
+				if (this._listEntries == null)
 				{
 					var listController = new ListController();
-					_listEntries = listController.GetListEntryInfoItems("Region", ParentKey, PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
+					this._listEntries = listController.GetListEntryInfoItems("Region", this.ParentKey, this.PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
 				}
 
-				return _listEntries;
+				return this._listEntries;
 			}
 		}
 
@@ -132,12 +132,12 @@ namespace DotNetNuke.UI.WebControls
 		#region Constructors
 		public DNNRegionEditControl()
 		{
-			Init += DnnRegionControl_Init;
+			this.Init += this.DnnRegionControl_Init;
 		}
 		public DNNRegionEditControl(string type)
 		{
-			Init += DnnRegionControl_Init;
-			SystemType = type;
+			this.Init += this.DnnRegionControl_Init;
+			this.SystemType = type;
 		}
 		#endregion
 
@@ -150,15 +150,15 @@ namespace DotNetNuke.UI.WebControls
 		protected override void OnAttributesChanged()
 		{
 			//Get the List settings out of the "Attributes"
-			if ((CustomAttributes != null))
+			if ((this.CustomAttributes != null))
 			{
-				foreach (Attribute attribute in CustomAttributes)
+				foreach (Attribute attribute in this.CustomAttributes)
 				{
 					if (attribute is ListAttribute)
 					{
 						var listAtt = (ListAttribute)attribute;
-						ParentKey = listAtt.ParentKey;
-						_listEntries = null;
+						this.ParentKey = listAtt.ParentKey;
+						this._listEntries = null;
 						break;
 					}
 				}
@@ -167,10 +167,10 @@ namespace DotNetNuke.UI.WebControls
 
 		protected override void OnDataChanged(EventArgs e)
 		{
-			PropertyEditorEventArgs args = new PropertyEditorEventArgs(Name);
-			args.Value = StringValue;
-			args.OldValue = OldStringValue;
-			args.StringValue = StringValue;
+			PropertyEditorEventArgs args = new PropertyEditorEventArgs(this.Name);
+			args.Value = this.StringValue;
+			args.OldValue = this.OldStringValue;
+			args.StringValue = this.StringValue;
 			base.OnValueChanged(args);
 		}
 
@@ -178,32 +178,32 @@ namespace DotNetNuke.UI.WebControls
 		{
 			base.CreateChildControls();
 
-			Regions.ControlStyle.CopyFrom(ControlStyle);
-			Regions.ID = ID + "_dropdown";
-			Regions.Attributes.Add("data-editor", "DNNRegionEditControl_DropDown");
-			Regions.Attributes.Add("aria-label", "Region");
-            Regions.Items.Add(new ListItem() { Text = "<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", Value = "" });
-			Controls.Add(Regions);
+			this.Regions.ControlStyle.CopyFrom(this.ControlStyle);
+			this.Regions.ID = this.ID + "_dropdown";
+			this.Regions.Attributes.Add("data-editor", "DNNRegionEditControl_DropDown");
+			this.Regions.Attributes.Add("aria-label", "Region");
+            this.Regions.Items.Add(new ListItem() { Text = "<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", Value = "" });
+			this.Controls.Add(this.Regions);
 
-			Region.ControlStyle.CopyFrom(ControlStyle);
-			Region.ID = ID + "_text";
-			Region.Attributes.Add("data-editor", "DNNRegionEditControl_Text");
-			Controls.Add(Region);
+			this.Region.ControlStyle.CopyFrom(this.ControlStyle);
+			this.Region.ID = this.ID + "_text";
+			this.Region.Attributes.Add("data-editor", "DNNRegionEditControl_Text");
+			this.Controls.Add(this.Region);
 
-			RegionCode.ID = ID + "_value";
-			RegionCode.Attributes.Add("data-editor", "DNNRegionEditControl_Hidden");
-			Controls.Add(RegionCode);
+			this.RegionCode.ID = this.ID + "_value";
+			this.RegionCode.Attributes.Add("data-editor", "DNNRegionEditControl_Hidden");
+			this.Controls.Add(this.RegionCode);
 
 		}
 
 		public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
 		{
 			bool dataChanged = false;
-			string presentValue = StringValue;
+			string presentValue = this.StringValue;
 			string postedValue = postCollection[postDataKey + "_value"];
 			if (!presentValue.Equals(postedValue))
 			{
-				Value = postedValue;
+				this.Value = postedValue;
 				dataChanged = true;
 			}
 			return dataChanged;
@@ -213,32 +213,32 @@ namespace DotNetNuke.UI.WebControls
 		{
 			base.OnPreRender(e);
 
-			LoadControls();
+			this.LoadControls();
 
-			if (Page != null & EditMode == PropertyEditorMode.Edit)
+			if (this.Page != null & this.EditMode == PropertyEditorMode.Edit)
 			{
-				Page.RegisterRequiresPostBack(this);
-				Page.RegisterRequiresPostBack(RegionCode);
+				this.Page.RegisterRequiresPostBack(this);
+				this.Page.RegisterRequiresPostBack(this.RegionCode);
 			}
 
 		}
 
 		protected override void RenderEditMode(HtmlTextWriter writer)
 		{
-			if (ListEntries != null && ListEntries.Any())
+			if (this.ListEntries != null && this.ListEntries.Any())
 			{
-				foreach (ListEntryInfo item in ListEntries)
+				foreach (ListEntryInfo item in this.ListEntries)
 				{
-					Regions.Items.Add(new ListItem() { Text = item.Text, Value = item.EntryID.ToString() });
+					this.Regions.Items.Add(new ListItem() { Text = item.Text, Value = item.EntryID.ToString() });
 				}
 			}
-			ControlStyle.AddAttributesToRender(writer);
-			writer.AddAttribute("data-name", Name);
+			this.ControlStyle.AddAttributesToRender(writer);
+			writer.AddAttribute("data-name", this.Name);
 			writer.AddAttribute("data-list", "Region");
-			writer.AddAttribute("data-category", Category);
-			writer.AddAttribute("data-required", Required.ToString().ToLowerInvariant());
+			writer.AddAttribute("data-category", this.Category);
+			writer.AddAttribute("data-required", this.Required.ToString().ToLowerInvariant());
 			writer.RenderBeginTag(HtmlTextWriterTag.Div);
-			RenderChildren(writer);
+			this.RenderChildren(writer);
 			writer.RenderEndTag();
 		}
 		#endregion
@@ -258,7 +258,7 @@ namespace DotNetNuke.UI.WebControls
 		#region Private Methods
 		private void LoadControls()
 		{
-			RegionCode.Value = StringValue;
+			this.RegionCode.Value = this.StringValue;
 		}
 		#endregion
 

@@ -22,14 +22,14 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         public MaxLengthAttribute(int length)
         {
-            _Length = length;
+            this._Length = length;
         }
 
         public int Length
         {
             get
             {
-                return _Length;
+                return this._Length;
             }
         }
     }

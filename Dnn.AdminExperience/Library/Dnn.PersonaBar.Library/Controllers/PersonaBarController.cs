@@ -26,17 +26,17 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         public PersonaBarController()
         {
-            _personaBarRepository = PersonaBarRepository.Instance;
+            this._personaBarRepository = PersonaBarRepository.Instance;
         }
 
         public PersonaBarMenu GetMenu(PortalSettings portalSettings, UserInfo user)
         {
             try
             {
-                var personaBarMenu = _personaBarRepository.GetMenu();
+                var personaBarMenu = this._personaBarRepository.GetMenu();
                 var filteredMenu = new PersonaBarMenu();
                 var rootItems = personaBarMenu.MenuItems.Where(m => PersonaBarContainer.Instance.RootItems.Contains(m.Identifier)).ToList();
-                GetPersonaBarMenuWithPermissionCheck(portalSettings, user, filteredMenu.MenuItems, rootItems);
+                this.GetPersonaBarMenuWithPermissionCheck(portalSettings, user, filteredMenu.MenuItems, rootItems);
 
                 PersonaBarContainer.Instance.FilterMenu(filteredMenu);
                 return filteredMenu;
@@ -58,7 +58,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             {
                 try
                 {
-                    var menuController = GetMenuItemController(menuItem);
+                    var menuController = this.GetMenuItemController(menuItem);
                     visible = menuController == null || menuController.Visible(menuItem);
                 }
                 catch (Exception ex)
@@ -79,7 +79,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             {
                 try
                 {
-                    if (!IsVisible(portalSettings, user, menuItem))
+                    if (!this.IsVisible(portalSettings, user, menuItem))
                     {
                         menuFiltered = true;
                         continue;
@@ -102,10 +102,10 @@ namespace Dnn.PersonaBar.Library.Controllers
                         ParentId = menuItem.ParentId
                     };
 
-                    UpdateParamters(cloneItem);
-                    cloneItem.Settings = GetMenuSettings(menuItem);
+                    this.UpdateParamters(cloneItem);
+                    cloneItem.Settings = this.GetMenuSettings(menuItem);
 
-                    var filtered = GetPersonaBarMenuWithPermissionCheck(portalSettings, user, cloneItem.Children,
+                    var filtered = this.GetPersonaBarMenuWithPermissionCheck(portalSettings, user, cloneItem.Children,
                         menuItem.Children);
                     if (!filtered || cloneItem.Children.Count > 0)
                     {
@@ -123,7 +123,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         private void UpdateParamters(MenuItem menuItem)
         {
-            var menuController = GetMenuItemController(menuItem);
+            var menuController = this.GetMenuItemController(menuItem);
             try
             {
                 menuController?.UpdateParameters(menuItem);
@@ -139,9 +139,9 @@ namespace Dnn.PersonaBar.Library.Controllers
             IDictionary<string, object> settings;
             try
             {
-                var menuController = GetMenuItemController(menuItem);
+                var menuController = this.GetMenuItemController(menuItem);
                 settings = menuController?.GetSettings(menuItem) ?? new Dictionary<string, object>();
-                AddPermissions(menuItem, settings);
+                this.AddPermissions(menuItem, settings);
             }
             catch (Exception ex)
             {

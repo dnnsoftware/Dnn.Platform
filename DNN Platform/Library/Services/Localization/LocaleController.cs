@@ -85,11 +85,11 @@ namespace DotNetNuke.Services.Localization
 
             if (HttpContext.Current != null && !string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["language"]))
             {
-                locale = GetLocale(HttpContext.Current.Request.QueryString["language"]);
+                locale = this.GetLocale(HttpContext.Current.Request.QueryString["language"]);
             }
             return locale ?? ((PortalId == Null.NullInteger)
-                                ? GetLocale(Localization.SystemLocale)
-                                : GetDefaultLocale(PortalId));
+                                ? this.GetLocale(Localization.SystemLocale)
+                                : this.GetDefaultLocale(PortalId));
         }
 
         /// <summary>
@@ -103,13 +103,13 @@ namespace DotNetNuke.Services.Localization
             Locale locale = null;
             if (portal != null)
             {
-                Dictionary<string, Locale> locales = GetLocales(portal.PortalID);
+                Dictionary<string, Locale> locales = this.GetLocales(portal.PortalID);
                 if (locales != null && locales.ContainsKey(portal.DefaultLanguage))
                 {
                     locale = locales[portal.DefaultLanguage];
                 }
             }
-            return locale ?? (GetLocale(Localization.SystemLocale));
+            return locale ?? (this.GetLocale(Localization.SystemLocale));
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace DotNetNuke.Services.Localization
         /// <returns></returns>
         public Locale GetLocale(string code)
         {
-            return GetLocale(Null.NullInteger, code);
+            return this.GetLocale(Null.NullInteger, code);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace DotNetNuke.Services.Localization
         /// <returns></returns>
         public Locale GetLocale(int portalID, string code)
         {
-            Dictionary<string, Locale> dicLocales = GetLocales(portalID);
+            Dictionary<string, Locale> dicLocales = this.GetLocales(portalID);
             Locale locale = null;
 
             if (dicLocales != null)
@@ -161,7 +161,7 @@ namespace DotNetNuke.Services.Localization
         /// <returns></returns>
         public Locale GetLocale(int languageID)
         {
-            Dictionary<string, Locale> dicLocales = GetLocales(Null.NullInteger);
+            Dictionary<string, Locale> dicLocales = this.GetLocales(Null.NullInteger);
 
             return (from kvp in dicLocales where kvp.Value.LanguageId == languageID select kvp.Value).FirstOrDefault();
         }
@@ -198,7 +198,7 @@ namespace DotNetNuke.Services.Localization
         /// <returns></returns>
         public Dictionary<string, Locale> GetPublishedLocales(int portalID)
         {
-            return GetLocales(portalID).Where(kvp => kvp.Value.IsPublished).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            return this.GetLocales(portalID).Where(kvp => kvp.Value.IsPublished).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace DotNetNuke.Services.Localization
             try
             {
                 bool enabled = false;
-                Dictionary<string, Locale> dicLocales = GetLocales(portalId);
+                Dictionary<string, Locale> dicLocales = this.GetLocales(portalId);
 
                 //if ((!dicLocales.ContainsKey(localeCode)))
                 string locale = localeCode;

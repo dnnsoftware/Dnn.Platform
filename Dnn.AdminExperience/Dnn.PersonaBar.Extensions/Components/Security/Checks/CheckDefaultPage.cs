@@ -19,11 +19,11 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
         public CheckResult Execute()
         {
-            var result = new CheckResult(SeverityEnum.Unverified, Id);
+            var result = new CheckResult(SeverityEnum.Unverified, this.Id);
             try
             {
                 IList<string> modifiedFiles;
-                var fileModified = CheckDefaultPageModified(out modifiedFiles);
+                var fileModified = this.CheckDefaultPageModified(out modifiedFiles);
                 if (fileModified)
                 {
                     if (modifiedFiles.Count == 0)

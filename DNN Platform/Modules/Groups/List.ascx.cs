@@ -15,51 +15,51 @@ namespace DotNetNuke.Modules.Groups
         public INavigationManager _navigationManager { get; }
         public List()
         {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
         protected void Page_Load(object sender, EventArgs e)
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            panelSearch.Visible = GroupListSearchEnabled;
+            this.panelSearch.Visible = this.GroupListSearchEnabled;
 
-            ctlGroupList.TabId = TabId;
-            ctlGroupList.GroupViewTabId = GroupViewTabId;
-            ctlGroupList.RoleGroupId = DefaultRoleGroupId;
-            ctlGroupList.PageSize = GroupListPageSize;
-            ctlGroupList.DisplayCurrentUserGroups = GroupListUserGroupsOnly;
-            ctlGroupList.SearchFilter = GroupListFilter;
-            ctlGroupList.SortField = GroupListSortField;
-            ctlGroupList.SortDirection = GroupListSortDirection;
+            this.ctlGroupList.TabId = this.TabId;
+            this.ctlGroupList.GroupViewTabId = this.GroupViewTabId;
+            this.ctlGroupList.RoleGroupId = this.DefaultRoleGroupId;
+            this.ctlGroupList.PageSize = this.GroupListPageSize;
+            this.ctlGroupList.DisplayCurrentUserGroups = this.GroupListUserGroupsOnly;
+            this.ctlGroupList.SearchFilter = this.GroupListFilter;
+            this.ctlGroupList.SortField = this.GroupListSortField;
+            this.ctlGroupList.SortDirection = this.GroupListSortDirection;
 
-            if (!string.IsNullOrEmpty(GroupListSortField))
+            if (!string.IsNullOrEmpty(this.GroupListSortField))
             {
-                ctlGroupList.SortField = GroupListSortField;
+                this.ctlGroupList.SortField = this.GroupListSortField;
             }
 
-            if (!string.IsNullOrEmpty(GroupListSortDirection))
+            if (!string.IsNullOrEmpty(this.GroupListSortDirection))
             {
-                ctlGroupList.SortDirection = GroupListSortDirection;
+                this.ctlGroupList.SortDirection = this.GroupListSortDirection;
             }
 
 
-            if (!String.IsNullOrEmpty(GroupListTemplate))
+            if (!String.IsNullOrEmpty(this.GroupListTemplate))
             {
-                ctlGroupList.ItemTemplate = GroupListTemplate;
+                this.ctlGroupList.ItemTemplate = this.GroupListTemplate;
             }
 
-            if (!string.IsNullOrEmpty(GroupListFilter))
+            if (!string.IsNullOrEmpty(this.GroupListFilter))
             {
-                txtFilter.Text = GroupListFilter;
+                this.txtFilter.Text = this.GroupListFilter;
             }
 
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            if(!Page.IsValid) return;
+            if(!this.Page.IsValid) return;
 
-            Response.Redirect(_navigationManager.NavigateURL(TabId, "", "filter=" + txtFilter.Text.Trim()));
+            this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId, "", "filter=" + this.txtFilter.Text.Trim()));
         }
     }
 }

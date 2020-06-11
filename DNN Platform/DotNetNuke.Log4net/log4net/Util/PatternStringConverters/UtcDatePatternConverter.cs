@@ -66,7 +66,7 @@ namespace log4net.Util.PatternStringConverters
 		{
 			try 
 			{
-				m_dateFormatter.FormatDate(DateTime.UtcNow, writer);
+				this.m_dateFormatter.FormatDate(DateTime.UtcNow, writer);
 			}
 			catch (Exception ex) 
 			{

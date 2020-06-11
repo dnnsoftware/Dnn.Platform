@@ -19,7 +19,7 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         public DnnRibbonBar() : base("div")
         {
-            CssClass = "dnnRibbon";
+            this.CssClass = "dnnRibbon";
             Control control = this;
             Utilities.ApplySkin(control, "", "RibbonBar", "RibbonBar");
         }
@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return (DnnRibbonBarGroupCollection) Controls;
+                return (DnnRibbonBarGroupCollection) this.Controls;
             }
         }
 
@@ -53,7 +53,7 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            if (Visible)
+            if (this.Visible)
             {
                 Utilities.ApplySkin(this, "", "RibbonBar", "RibbonBar");
             }
@@ -61,10 +61,10 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            if ((Groups.Count > 0))
+            if ((this.Groups.Count > 0))
             {
-                Groups[0].CssClass = Groups[0].CssClass + " " + Groups[0].CssClass.Trim() + "First";
-                Groups[Groups.Count - 1].CssClass = Groups[Groups.Count - 1].CssClass + " " + Groups[Groups.Count - 1].CssClass.Trim() + "Last";
+                this.Groups[0].CssClass = this.Groups[0].CssClass + " " + this.Groups[0].CssClass.Trim() + "First";
+                this.Groups[this.Groups.Count - 1].CssClass = this.Groups[this.Groups.Count - 1].CssClass + " " + this.Groups[this.Groups.Count - 1].CssClass.Trim() + "Last";
             }
 
             base.RenderBeginTag(writer);
@@ -78,7 +78,7 @@ namespace DotNetNuke.Web.UI.WebControls
             writer.RenderBeginTag("table");
             writer.RenderBeginTag("tr");
 
-            foreach (DnnRibbonBarGroup grp in Groups)
+            foreach (DnnRibbonBarGroup grp in this.Groups)
             {
                 if ((grp.Visible))
                 {

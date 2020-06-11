@@ -9,7 +9,7 @@ namespace DotNetNuke.Web.UI.WebControls
         public override void LocalizeStrings()
         {
             base.LocalizeStrings();
-            Text = Text + Utilities.GetLocalizedString("FieldSuffix.Text");
+            this.Text = this.Text + Utilities.GetLocalizedString("FieldSuffix.Text");
         }
     }
 }

@@ -30,14 +30,14 @@ namespace DotNetNuke.Web.Razor
             base.ConfigurePage(parentPage);
 
             //Child pages need to get their context from the Parent
-            Context = parentPage.Context;
+            this.Context = parentPage.Context;
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public dynamic Model
         {
-            get { return _model ?? (_model = PageContext.Model); }
-            set { _model = value; }
+            get { return this._model ?? (this._model = this.PageContext.Model); }
+            set { this._model = value; }
         }
     }
 
@@ -49,14 +49,14 @@ namespace DotNetNuke.Web.Razor
         public DotNetNukeWebPage()
         {
             var model = Globals.DependencyProvider.GetService<TModel>();
-            Model = model ?? Activator.CreateInstance<TModel>();
+            this.Model = model ?? Activator.CreateInstance<TModel>();
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public new TModel Model
         {
-            get { return PageContext?.Model as TModel ?? _model; }
-            set { _model = value; }
+            get { return this.PageContext?.Model as TModel ?? this._model; }
+            set { this._model = value; }
         }
     }
 }

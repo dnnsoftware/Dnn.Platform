@@ -23,7 +23,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             HttpContextBase httpContextBase = MockHelper.CreateMockHttpContext();
 
             //Act
-            var controller = SetupController(httpContextBase);
+            var controller = this.SetupController(httpContextBase);
 
             //Assert
             Assert.IsNull(controller.ActivePage);
@@ -36,7 +36,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             HttpContextBase context = MockHelper.CreateMockHttpContext();
 
             //Act
-            var controller = SetupController(context);
+            var controller = this.SetupController(context);
 
             //Assert
             Assert.IsNull(controller.PortalSettings);
@@ -49,7 +49,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             HttpContextBase httpContextBase = MockHelper.CreateMockHttpContext();
 
             //Act
-            var controller = SetupController(httpContextBase);
+            var controller = this.SetupController(httpContextBase);
             controller.ActionInvoker.InvokeAction(controller.ControllerContext, "Action1");
 
             //Assert
@@ -64,7 +64,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             HttpContextBase httpContextBase = MockHelper.CreateMockHttpContext();
 
             //Act
-            var controller = SetupController(httpContextBase);
+            var controller = this.SetupController(httpContextBase);
 
             //Assert
             Assert.IsNull(controller.User);
@@ -77,7 +77,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             HttpContextBase httpContextBase = MockHelper.CreateMockHttpContext();
 
             //Act
-            var controller = SetupController(httpContextBase);
+            var controller = this.SetupController(httpContextBase);
             var viewResult = controller.Action1();
 
             //Assert
@@ -91,7 +91,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             HttpContextBase httpContextBase = MockHelper.CreateMockHttpContext();
 
             //Act
-            var controller = SetupController(httpContextBase);
+            var controller = this.SetupController(httpContextBase);
             var viewResult = controller.Action1();
 
             //Assert
@@ -107,7 +107,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             HttpContextBase httpContextBase = MockHelper.CreateMockHttpContext();
 
             //Act
-            var controller = SetupController(httpContextBase);
+            var controller = this.SetupController(httpContextBase);
             var viewResult = controller.Action2();
 
             //Assert
@@ -124,7 +124,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             HttpContextBase httpContextBase = MockHelper.CreateMockHttpContext();
 
             //Act
-            var controller = SetupController(httpContextBase);
+            var controller = this.SetupController(httpContextBase);
             controller.ViewData.Add("key", "value");
             var viewResult = controller.Action2();
 
@@ -142,7 +142,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             HttpContextBase httpContextBase = MockHelper.CreateMockHttpContext();
 
             //Act
-            var controller = SetupController(httpContextBase);
+            var controller = this.SetupController(httpContextBase);
             var viewResult = controller.Action3(dog);
 
             //Assert
@@ -159,7 +159,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             HttpContextBase httpContextBase = MockHelper.CreateMockHttpContext();
 
             //Act
-            var controller = SetupController(httpContextBase);
+            var controller = this.SetupController(httpContextBase);
             var viewResult = controller.Action3(dog);
 
             //Assert
@@ -175,7 +175,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             HttpContextBase httpContextBase = MockHelper.CreateMockHttpContext();
 
             //Act
-            var controller = SetupController(httpContextBase);
+            var controller = this.SetupController(httpContextBase);
             controller.MockInitialize(httpContextBase.Request.RequestContext);
 
             //Assert

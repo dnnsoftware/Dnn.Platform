@@ -24,7 +24,7 @@ namespace Dnn.PersonaBar.Servers.Services
             try
             {
                 var serverInfo = new ServerInfo();
-                return Request.CreateResponse(HttpStatusCode.OK, new
+                return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     osVersion = serverInfo.OSVersion,
                     iisVersion = serverInfo.IISVersion,
@@ -40,7 +40,7 @@ namespace Dnn.PersonaBar.Servers.Services
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
     }

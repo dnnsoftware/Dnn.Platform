@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.FileSystem
     {
         public SynchronizeFileSystem(ScheduleHistoryItem objScheduleHistoryItem)
         {
-            ScheduleHistoryItem = objScheduleHistoryItem;
+            this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
         public override void DoWork()
@@ -28,22 +28,22 @@ namespace DotNetNuke.Services.FileSystem
             try
             {
 				//notification that the event is progressing
-                Progressing(); //OPTIONAL
+                this.Progressing(); //OPTIONAL
 
-                Synchronize();
+                this.Synchronize();
 
-                ScheduleHistoryItem.Succeeded = true; //REQUIRED
+                this.ScheduleHistoryItem.Succeeded = true; //REQUIRED
 
-                ScheduleHistoryItem.AddLogNote("File System Synchronized."); //OPTIONAL
+                this.ScheduleHistoryItem.AddLogNote("File System Synchronized."); //OPTIONAL
             }
             catch (Exception exc)
             {
-                ScheduleHistoryItem.Succeeded = false;
+                this.ScheduleHistoryItem.Succeeded = false;
 
-                ScheduleHistoryItem.AddLogNote("File System Synchronization failed. " + exc);
+                this.ScheduleHistoryItem.AddLogNote("File System Synchronization failed. " + exc);
 
                 //notification that we have errored
-                Errored(ref exc);
+                this.Errored(ref exc);
 				
 				//log the exception
                 Exceptions.Exceptions.LogException(exc); //OPTIONAL

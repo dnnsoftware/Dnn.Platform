@@ -29,11 +29,11 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return GetAttributeValue(attributeName);
+                return this.GetAttributeValue(attributeName);
             }
             set
             {
-                Attributes[attributeName] = value;
+                this.Attributes[attributeName] = value;
             }
         }
 
@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return GetImage();
+                return this.GetImage();
             }
         }
 
@@ -62,14 +62,14 @@ namespace DotNetNuke.Services.Syndication
         // Select method for programmatic databinding
         public IEnumerable SelectItems()
         {
-            return SelectItems(-1);
+            return this.SelectItems(-1);
         }
 
         public IEnumerable SelectItems(int maxItems)
         {
             var data = new ArrayList();
 
-            foreach (GenericRssElement element in Items)
+            foreach (GenericRssElement element in this.Items)
             {
                 if (maxItems > 0 && data.Count >= maxItems)
                 {

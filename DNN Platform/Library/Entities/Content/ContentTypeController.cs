@@ -46,7 +46,7 @@ namespace DotNetNuke.Entities.Content
 
         public ContentTypeController(IDataService dataService)
         {
-            _DataService = dataService;
+            this._DataService = dataService;
         }
 
         #endregion
@@ -66,10 +66,10 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNull("contentType", contentType);
             Requires.PropertyNotNullOrEmpty("contentType", "ContentType", contentType.ContentType);
 
-            contentType.ContentTypeId = _DataService.AddContentType(contentType);
+            contentType.ContentTypeId = this._DataService.AddContentType(contentType);
 
             //Refresh cached collection of types
-            ClearContentTypeCache();
+            this.ClearContentTypeCache();
 
             return contentType.ContentTypeId;
         }
@@ -94,10 +94,10 @@ namespace DotNetNuke.Entities.Content
             Requires.NotNull("contentType", contentType);
             Requires.PropertyNotNegative("contentType", "ContentTypeId", contentType.ContentTypeId);
 
-            _DataService.DeleteContentType(contentType);
+            this._DataService.DeleteContentType(contentType);
 
             //Refresh cached collection of types
-            ClearContentTypeCache();
+            this.ClearContentTypeCache();
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace DotNetNuke.Entities.Content
             return CBO.GetCachedObject<List<ContentType>>(new CacheItemArgs(DataCache.ContentTypesCacheKey,
                                                                             DataCache.ContentTypesCacheTimeOut,
                                                                             DataCache.ContentTypesCachePriority),
-                                                                c => CBO.FillQueryable<ContentType>(_DataService.GetContentTypes()).ToList()).AsQueryable();
+                                                                c => CBO.FillQueryable<ContentType>(this._DataService.GetContentTypes()).ToList()).AsQueryable();
         }
 
         /// <summary>
@@ -126,10 +126,10 @@ namespace DotNetNuke.Entities.Content
             Requires.PropertyNotNegative("contentType", "ContentTypeId", contentType.ContentTypeId);
             Requires.PropertyNotNullOrEmpty("contentType", "ContentType", contentType.ContentType);
 
-            _DataService.UpdateContentType(contentType);
+            this._DataService.UpdateContentType(contentType);
 
             //Refresh cached collection of types
-            ClearContentTypeCache();
+            this.ClearContentTypeCache();
         }
 
         #endregion

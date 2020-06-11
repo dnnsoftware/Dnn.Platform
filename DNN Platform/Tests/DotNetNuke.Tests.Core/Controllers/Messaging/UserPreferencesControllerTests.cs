@@ -32,14 +32,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         public void SetUp()
         {
             // Setup Mocks and Stub
-            mockDataService = new Mock<IDataService>();
-            mockCacheProvider = MockComponentProvider.CreateDataCacheProvider();
+            this.mockDataService = new Mock<IDataService>();
+            this.mockCacheProvider = MockComponentProvider.CreateDataCacheProvider();
 
-            DataService.RegisterInstance(mockDataService.Object);
-            SetupCachingProviderHelper.SetupCachingProvider(mockCacheProvider);
+            DataService.RegisterInstance(this.mockDataService.Object);
+            SetupCachingProviderHelper.SetupCachingProvider(this.mockCacheProvider);
 
             // Setup SUT
-            userPrefencesController = new UserPreferencesController();
+            this.userPrefencesController = new UserPreferencesController();
         }
 
         [TearDown]
@@ -64,17 +64,17 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             // Arrange
             var userPreference = new UserPreferenceBuilder().Build();
 
-            mockDataService.Setup(ds => ds.SetUserPreference(
+            this.mockDataService.Setup(ds => ds.SetUserPreference(
                 userPreference.PortalId, 
                 userPreference.UserId, 
                 (int) userPreference.MessagesEmailFrequency,
                 (int)userPreference.NotificationsEmailFrequency)).Verifiable();
 
             //Act
-            userPrefencesController.SetUserPreference(userPreference);
+            this.userPrefencesController.SetUserPreference(userPreference);
 
             // Assert
-            mockDataService.Verify(ds => ds.SetUserPreference(
+            this.mockDataService.Verify(ds => ds.SetUserPreference(
                 userPreference.PortalId,
                 userPreference.UserId,
                 (int)userPreference.MessagesEmailFrequency,
@@ -88,12 +88,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             // Arrange
             var user = GetValidUser();
-            mockDataService.Setup(ds => ds.GetUserPreference(
+            this.mockDataService.Setup(ds => ds.GetUserPreference(
                 Constants.PORTAL_ValidPortalId,
                 Constants.UserID_User12)).Returns(UserPreferenceDataReaderMockHelper.CreateEmptyUserPreferenceReader);
 
             //Act
-            var userPreference = userPrefencesController.GetUserPreference(user);
+            var userPreference = this.userPrefencesController.GetUserPreference(user);
 
             // Assert
             Assert.IsNull(userPreference);
@@ -109,11 +109,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Build();
 
             var user = GetValidUser();
-            mockDataService.Setup(ds => ds.GetUserPreference(Constants.PORTAL_ValidPortalId,Constants.UserID_User12))
+            this.mockDataService.Setup(ds => ds.GetUserPreference(Constants.PORTAL_ValidPortalId,Constants.UserID_User12))
                 .Returns(UserPreferenceDataReaderMockHelper.CreateUserPreferenceReader(expectedUserPreference));
 
             //Act
-            var userPreference = userPrefencesController.GetUserPreference(user);
+            var userPreference = this.userPrefencesController.GetUserPreference(user);
 
             // Assert
             Assert.IsNotNull(userPreference);

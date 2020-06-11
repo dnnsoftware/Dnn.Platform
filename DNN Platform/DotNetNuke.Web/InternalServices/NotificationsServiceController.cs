@@ -26,19 +26,19 @@ namespace DotNetNuke.Web.InternalServices
         {
             try
             {
-                var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, UserInfo.UserID);
+                var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, this.UserInfo.UserID);
                 if (recipient != null)
                 {
-                    NotificationsController.Instance.DeleteNotificationRecipient(postData.NotificationId, UserInfo.UserID);
-                    return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                    NotificationsController.Instance.DeleteNotificationRecipient(postData.NotificationId, this.UserInfo.UserID);
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
                 }
 
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Unable to dismiss notification");
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Unable to dismiss notification");
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -47,8 +47,8 @@ namespace DotNetNuke.Web.InternalServices
 		public HttpResponseMessage GetToasts()
 		{
 			var toasts = NotificationsController.Instance.GetToasts(this.UserInfo);
-			IList<object> convertedObjects = toasts.Select(ToExpandoObject).ToList();
-			return Request.CreateResponse(HttpStatusCode.OK, new { Success = true, Toasts = convertedObjects.Take(3) });
+			IList<object> convertedObjects = toasts.Select(this.ToExpandoObject).ToList();
+			return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, Toasts = convertedObjects.Take(3) });
 		}
 
 		private object ToExpandoObject(Notification notification)

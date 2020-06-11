@@ -33,11 +33,11 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         {
             get
             {
-                return _messageID;
+                return this._messageID;
             }
             set
             {
-                _messageID = value;
+                this._messageID = value;
             }
         }
 
@@ -89,11 +89,11 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         {
             get
             {
-                if (string.IsNullOrEmpty(_displayDate))
+                if (string.IsNullOrEmpty(this._displayDate))
                 {
-                    _displayDate = DateUtils.CalculateDateForDisplay(_createdOnDate);
+                    this._displayDate = DateUtils.CalculateDateForDisplay(this._createdOnDate);
                 }
-                return _displayDate;
+                return this._displayDate;
             }
         }
 
@@ -104,11 +104,11 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         {
             get
             {
-                return MessageID;
+                return this.MessageID;
             }
             set
             {
-                MessageID = value;
+                this.MessageID = value;
             }
         }
 
@@ -139,7 +139,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         {
             get
             {
-                return Globals.UserProfileURL(SenderUserID);
+                return Globals.UserProfileURL(this.SenderUserID);
             }
         }
 
@@ -149,19 +149,19 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {
-            MessageID = Convert.ToInt32(dr["MessageID"]);
-            To = Null.SetNullString(dr["To"]);
-            From = Null.SetNullString(dr["From"]);
-            Subject = Null.SetNullString(dr["Subject"]);
-            Body = Null.SetNullString(dr["Body"]);
-            ConversationId = Null.SetNullInteger(dr["ConversationID"]);
-            ReplyAllAllowed = Null.SetNullBoolean(dr["ReplyAllAllowed"]);
-            SenderUserID = Convert.ToInt32(dr["SenderUserID"]);
-            RowNumber = Convert.ToInt32(dr["RowNumber"]);
-            AttachmentCount = Convert.ToInt32(dr["AttachmentCount"]);
-            NewThreadCount = Convert.ToInt32(dr["NewThreadCount"]);
-            ThreadCount = Convert.ToInt32(dr["ThreadCount"]);
-            _createdOnDate = Null.SetNullDateTime(dr["CreatedOnDate"]);
+            this.MessageID = Convert.ToInt32(dr["MessageID"]);
+            this.To = Null.SetNullString(dr["To"]);
+            this.From = Null.SetNullString(dr["From"]);
+            this.Subject = Null.SetNullString(dr["Subject"]);
+            this.Body = Null.SetNullString(dr["Body"]);
+            this.ConversationId = Null.SetNullInteger(dr["ConversationID"]);
+            this.ReplyAllAllowed = Null.SetNullBoolean(dr["ReplyAllAllowed"]);
+            this.SenderUserID = Convert.ToInt32(dr["SenderUserID"]);
+            this.RowNumber = Convert.ToInt32(dr["RowNumber"]);
+            this.AttachmentCount = Convert.ToInt32(dr["AttachmentCount"]);
+            this.NewThreadCount = Convert.ToInt32(dr["NewThreadCount"]);
+            this.ThreadCount = Convert.ToInt32(dr["ThreadCount"]);
+            this._createdOnDate = Null.SetNullDateTime(dr["CreatedOnDate"]);
         }
     }
 }

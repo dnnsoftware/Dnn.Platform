@@ -23,15 +23,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
 
         internal SubscriptionBuilder()
         {
-            subscriptionId = 1;
-            userId = Constants.USER_InValidId;
-            subscriptionTypeId = 1;
-            portalId = Constants.PORTAL_ValidPortalId;
-            moduleId = Null.NullInteger;
-            tabId = Null.NullInteger;
-            objectKey = "content";
-            description = "my content description";
-            objectData = "";
+            this.subscriptionId = 1;
+            this.userId = Constants.USER_InValidId;
+            this.subscriptionTypeId = 1;
+            this.portalId = Constants.PORTAL_ValidPortalId;
+            this.moduleId = Null.NullInteger;
+            this.tabId = Null.NullInteger;
+            this.objectKey = "content";
+            this.description = "my content description";
+            this.objectData = "";
         }
 
         internal SubscriptionBuilder WithSubscriptionId(int subscriptionId)
@@ -86,16 +86,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
         {
             return new Subscription
                        {
-                           SubscriptionTypeId = subscriptionTypeId,
-                           SubscriptionId = subscriptionId,
+                           SubscriptionTypeId = this.subscriptionTypeId,
+                           SubscriptionId = this.subscriptionId,
                            CreatedOnDate = DateTime.UtcNow,
-                           ModuleId = moduleId,
-                           ObjectKey = objectKey,
-                           Description = description,
-                           PortalId = portalId,
-                           TabId = tabId,
-                           UserId = userId,
-                           ObjectData = objectData
+                           ModuleId = this.moduleId,
+                           ObjectKey = this.objectKey,
+                           Description = this.description,
+                           PortalId = this.portalId,
+                           TabId = this.tabId,
+                           UserId = this.userId,
+                           ObjectData = this.objectData
                        };
 
         }

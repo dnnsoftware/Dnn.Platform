@@ -42,7 +42,7 @@ namespace DotNetNuke.Entities.Users.Social
 
         public UserSocial(UserInfo userInfo)
         {
-            _userInfo = userInfo;
+            this._userInfo = userInfo;
         }
 
         #endregion
@@ -56,15 +56,15 @@ namespace DotNetNuke.Entities.Users.Social
         {
             get
             {
-                var _friendsRelationship = RelationshipController.Instance.GetFriendsRelationshipByPortal(_userInfo.PortalID);
+                var _friendsRelationship = RelationshipController.Instance.GetFriendsRelationshipByPortal(this._userInfo.PortalID);
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
-                return UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == _friendsRelationship.RelationshipId
+                return this.UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == _friendsRelationship.RelationshipId
                                                                 && 
-                                                                (ur.UserId == _userInfo.UserID &&
+                                                                (ur.UserId == this._userInfo.UserID &&
                                                                  ur.RelatedUserId == currentUser.UserID
                                                                  ||
                                                                  (ur.UserId == currentUser.UserID &&
-                                                                  ur.RelatedUserId == _userInfo.UserID)
+                                                                  ur.RelatedUserId == this._userInfo.UserID)
                                                                 )));
             }
         }
@@ -76,11 +76,11 @@ namespace DotNetNuke.Entities.Users.Social
         {
             get
             {
-                var _followerRelationship = RelationshipController.Instance.GetFollowersRelationshipByPortal(_userInfo.PortalID);
+                var _followerRelationship = RelationshipController.Instance.GetFollowersRelationshipByPortal(this._userInfo.PortalID);
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
-                return UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == _followerRelationship.RelationshipId
+                return this.UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == _followerRelationship.RelationshipId
                                                                 &&
-                                                                (ur.UserId == _userInfo.UserID &&
+                                                                (ur.UserId == this._userInfo.UserID &&
                                                                  ur.RelatedUserId == currentUser.UserID
                                                                 )));
             }
@@ -93,12 +93,12 @@ namespace DotNetNuke.Entities.Users.Social
         {
             get
             {
-                var _followerRelationship = RelationshipController.Instance.GetFollowersRelationshipByPortal(_userInfo.PortalID);
+                var _followerRelationship = RelationshipController.Instance.GetFollowersRelationshipByPortal(this._userInfo.PortalID);
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
-                return UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == _followerRelationship.RelationshipId
+                return this.UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == _followerRelationship.RelationshipId
                                                                 &&
                                                                 (ur.UserId == currentUser.UserID &&
-                                                                 ur.RelatedUserId == _userInfo.UserID
+                                                                 ur.RelatedUserId == this._userInfo.UserID
                                                                 )));
             }
         }
@@ -108,7 +108,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// </summary>
         public IList<UserRelationship> UserRelationships
         {
-            get { return _userRelationships ?? (_userRelationships = RelationshipController.Instance.GetUserRelationships(_userInfo)); }
+            get { return this._userRelationships ?? (this._userRelationships = RelationshipController.Instance.GetUserRelationships(this._userInfo)); }
         }
 
         /// <summary>
@@ -119,17 +119,17 @@ namespace DotNetNuke.Entities.Users.Social
         {
             get
             {
-                if (_relationships == null)
+                if (this._relationships == null)
                 {
-                    _relationships = RelationshipController.Instance.GetRelationshipsByPortalId(_userInfo.PortalID);
+                    this._relationships = RelationshipController.Instance.GetRelationshipsByPortalId(this._userInfo.PortalID);
 
-                    foreach (var r in RelationshipController.Instance.GetRelationshipsByUserId(_userInfo.UserID))
+                    foreach (var r in RelationshipController.Instance.GetRelationshipsByUserId(this._userInfo.UserID))
                     {
-                        _relationships.Add(r);
+                        this._relationships.Add(r);
                     }
                 }
 
-                return _relationships;
+                return this._relationships;
             }
         }
 
@@ -141,9 +141,9 @@ namespace DotNetNuke.Entities.Users.Social
         {
             get 
             {
-                return _roles ?? (_roles = (_userInfo.PortalID == -1 && _userInfo.UserID == -1)
+                return this._roles ?? (this._roles = (this._userInfo.PortalID == -1 && this._userInfo.UserID == -1)
                                             ? new List<UserRoleInfo>(0)
-                                            : RoleController.Instance.GetUserRoles(_userInfo, true)
+                                            : RoleController.Instance.GetUserRoles(this._userInfo, true)
                                 ); 
             }
         }

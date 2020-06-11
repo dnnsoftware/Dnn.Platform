@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.Analytics
             {
                 case "05.06.00":
                     //previous module versions
-                    using (StreamReader fileReader = GetConfigFile())
+                    using (StreamReader fileReader = this.GetConfigFile())
                     {
                         if (fileReader != null)
                         {

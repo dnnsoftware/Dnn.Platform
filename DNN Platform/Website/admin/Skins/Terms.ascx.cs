@@ -31,7 +31,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public Terms()
         {
-            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         private void InitializeComponent()
@@ -42,7 +42,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnInit(e);
 
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -50,21 +50,21 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnLoad(e);
             try
             {
-                if (!String.IsNullOrEmpty(CssClass))
+                if (!String.IsNullOrEmpty(this.CssClass))
                 {
-                    hypTerms.CssClass = CssClass;
+                    this.hypTerms.CssClass = this.CssClass;
                 }
-                if (!String.IsNullOrEmpty(Text))
+                if (!String.IsNullOrEmpty(this.Text))
                 {
-                    hypTerms.Text = Text;
+                    this.hypTerms.Text = this.Text;
                 }
                 else
                 {
-                    hypTerms.Text = Localization.GetString("Terms", Localization.GetResourceFile(this, MyFileName));
+                    this.hypTerms.Text = Localization.GetString("Terms", Localization.GetResourceFile(this, MyFileName));
                 }
-                hypTerms.NavigateUrl = PortalSettings.TermsTabId == Null.NullInteger ? _navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Terms") : _navigationManager.NavigateURL(PortalSettings.TermsTabId);
+                this.hypTerms.NavigateUrl = this.PortalSettings.TermsTabId == Null.NullInteger ? this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Terms") : this._navigationManager.NavigateURL(this.PortalSettings.TermsTabId);
 
-                hypTerms.Attributes["rel"] = "nofollow";
+                this.hypTerms.Attributes["rel"] = "nofollow";
             }
             catch (Exception exc)
             {

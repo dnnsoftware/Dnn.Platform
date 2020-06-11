@@ -56,7 +56,7 @@ namespace log4net.Util
 		/// </remarks>
 		public CountingQuietTextWriter(TextWriter writer, IErrorHandler errorHandler) : base(writer, errorHandler)
 		{
-			m_countBytes = 0;
+			this.m_countBytes = 0;
 		}
 
 		#endregion Public Instance Constructors
@@ -81,7 +81,7 @@ namespace log4net.Util
 
 				// get the number of bytes needed to represent the 
 				// char using the supplied encoding.
-				m_countBytes += this.Encoding.GetByteCount(new char[] { value });
+				this.m_countBytes += this.Encoding.GetByteCount(new char[] { value });
 			} 
 			catch(Exception e) 
 			{
@@ -111,7 +111,7 @@ namespace log4net.Util
 
 					// get the number of bytes needed to represent the 
 					// char array using the supplied encoding.
-					m_countBytes += this.Encoding.GetByteCount(buffer, index, count);
+					this.m_countBytes += this.Encoding.GetByteCount(buffer, index, count);
 				} 
 				catch(Exception e) 
 				{
@@ -140,7 +140,7 @@ namespace log4net.Util
 
 					// get the number of bytes needed to represent the 
 					// string using the supplied encoding.
-					m_countBytes += this.Encoding.GetByteCount(str);
+					this.m_countBytes += this.Encoding.GetByteCount(str);
 				}
 				catch(Exception e) 
 				{
@@ -166,8 +166,8 @@ namespace log4net.Util
 		/// </remarks>
 		public long Count 
 		{
-			get { return m_countBytes; }
-			set { m_countBytes = value; }
+			get { return this.m_countBytes; }
+			set { this.m_countBytes = value; }
 		}
 
 		#endregion Public Instance Properties

@@ -17,25 +17,25 @@ namespace DotNetNuke.UI.WebControls
 
         public LiteralTemplate(string html)
         {
-            m_strHTML = html;
+            this.m_strHTML = html;
         }
 
         public LiteralTemplate(Control ctl)
         {
-            m_objControl = ctl;
+            this.m_objControl = ctl;
         }
 
         #region ITemplate Members
 
         public void InstantiateIn(Control container)
         {
-            if (m_objControl == null)
+            if (this.m_objControl == null)
             {
-                container.Controls.Add(new LiteralControl(m_strHTML));
+                container.Controls.Add(new LiteralControl(this.m_strHTML));
             }
             else
             {
-                container.Controls.Add(m_objControl);
+                container.Controls.Add(this.m_objControl);
             }
         }
 

@@ -26,19 +26,19 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                if (_channel == null)
+                if (this._channel == null)
                 {
-                    if (string.IsNullOrEmpty(_url))
+                    if (string.IsNullOrEmpty(this._url))
                     {
-                        _channel = new GenericRssChannel();
+                        this._channel = new GenericRssChannel();
                     }
                     else
                     {
-                        _channel = GenericRssChannel.LoadChannel(_url);
+                        this._channel = GenericRssChannel.LoadChannel(this._url);
                     }
                 }
 
-                return _channel;
+                return this._channel;
             }
         }
 
@@ -48,24 +48,24 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _url;
+                return this._url;
             }
 
             set
             {
-                _channel = null;
-                _url = value;
+                this._channel = null;
+                this._url = value;
             }
         }
 
         protected override DataSourceView GetView(string viewName)
         {
-            if (_itemsView == null)
+            if (this._itemsView == null)
             {
-                _itemsView = new RssDataSourceView(this, viewName);
+                this._itemsView = new RssDataSourceView(this, viewName);
             }
 
-            return _itemsView;
+            return this._itemsView;
         }
     }
 
@@ -75,17 +75,17 @@ namespace DotNetNuke.Services.Syndication
 
         internal RssDataSourceView(RssDataSource owner, string viewName) : base(owner, viewName)
         {
-            _owner = owner;
+            this._owner = owner;
         }
 
         public override void Select(DataSourceSelectArguments arguments, DataSourceViewSelectCallback callback)
         {
-            callback(ExecuteSelect(arguments));
+            callback(this.ExecuteSelect(arguments));
         }
 
         protected override IEnumerable ExecuteSelect(DataSourceSelectArguments arguments)
         {
-            return _owner.Channel.SelectItems(_owner.MaxItems);
+            return this._owner.Channel.SelectItems(this._owner.MaxItems);
         }
     }
 }

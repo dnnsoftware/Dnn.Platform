@@ -83,15 +83,15 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get
             {
-                if (_lastPurge < new DateTime(1990, 1, 1))
+                if (this._lastPurge < new DateTime(1990, 1, 1))
                 {
-                    _lastPurge = DateTime.Now.Subtract(PurgeInterval);
+                    this._lastPurge = DateTime.Now.Subtract(PurgeInterval);
                 }
-                return _lastPurge;
+                return this._lastPurge;
             }
             set
             {
-                _lastPurge = value;
+                this._lastPurge = value;
             }
         }
 
@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 Directory.CreateDirectory(CachePath);
             }
-            _lastPurge = DateTime.Now;
+            this._lastPurge = DateTime.Now;
         }
 
         internal static IImageStore Instance
@@ -215,14 +215,14 @@ namespace DotNetNuke.Services.GeneratedImage
 #endif
             }
 
-            LastPurge = DateTime.Now;
-            _purgeQueued = false;
+            this.LastPurge = DateTime.Now;
+            this._purgeQueued = false;
         }
 
         private void Add(string id, byte[] data)
         {
             var path = BuildFilePath(id);
-            lock (GetFileLockObject(id))
+            lock (this.GetFileLockObject(id))
             {
                 try
                 {
@@ -239,10 +239,10 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             if (EnableAutoPurge)
             {
-                QueueAutoPurge();
+                this.QueueAutoPurge();
             }
             string path = BuildFilePath(id);
-            lock (GetFileLockObject(id))
+            lock (this.GetFileLockObject(id))
             {
                 if (File.Exists(path))
                 {
@@ -256,14 +256,14 @@ namespace DotNetNuke.Services.GeneratedImage
         private void QueueAutoPurge()
         {
             var now = DateTime.Now;
-            if (!_purgeQueued && now.Subtract(LastPurge) > PurgeInterval)
+            if (!this._purgeQueued && now.Subtract(this.LastPurge) > PurgeInterval)
             {
-                lock (_purgeQueuedLock)
+                lock (this._purgeQueuedLock)
                 {
-                    if (!_purgeQueued)
+                    if (!this._purgeQueued)
                     {
-                        _purgeQueued = true;
-                        ThreadPool.QueueUserWorkItem(PurgeCallback);
+                        this._purgeQueued = true;
+                        ThreadPool.QueueUserWorkItem(this.PurgeCallback);
                     }
                 }
             }
@@ -284,7 +284,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
             return lockObject;
 #else
-            return _fileLock;
+            return this._fileLock;
 #endif
         }
 
@@ -310,12 +310,12 @@ namespace DotNetNuke.Services.GeneratedImage
         #region IImageStore Members
         void IImageStore.Add(string id, byte[] data)
         {
-            Add(id, data);
+            this.Add(id, data);
         }
 
         bool IImageStore.TryTransmitIfContains(string id, HttpResponseBase response)
         {
-            return TryTransmitIfContains(id, response);
+            return this.TryTransmitIfContains(id, response);
         }
         #endregion
     }

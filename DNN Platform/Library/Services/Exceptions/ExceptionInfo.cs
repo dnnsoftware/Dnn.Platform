@@ -23,15 +23,15 @@ namespace DotNetNuke.Services.Exceptions
 
 		public ExceptionInfo(Exception e)
 		{
-			Message = e.Message;
-			StackTrace = e.StackTrace;
-			Source = e.Source;
+			this.Message = e.Message;
+			this.StackTrace = e.StackTrace;
+			this.Source = e.Source;
 			if (e.InnerException != null)
 			{
-				InnerMessage = e.InnerException.Message;
-				InnerStackTrace = e.InnerException.StackTrace;
+				this.InnerMessage = e.InnerException.Message;
+				this.InnerStackTrace = e.InnerException.StackTrace;
 			}
-			ExceptionHash = e.Hash();
+			this.ExceptionHash = e.Hash();
 		}
 		#endregion
 
@@ -78,7 +78,7 @@ namespace DotNetNuke.Services.Exceptions
 			{
 				if (reader.Read())
 				{
-					ReadXml(reader);
+					this.ReadXml(reader);
 				}
 				reader.Close();
 			}
@@ -91,55 +91,55 @@ namespace DotNetNuke.Services.Exceptions
 				switch (reader.Name)
 				{
 					case "AssemblyVersion":
-						AssemblyVersion = reader.ReadContentAsString();
+						this.AssemblyVersion = reader.ReadContentAsString();
 						break;
 					case "PortalId":
-						PortalId = reader.ReadContentAsInt();
+						this.PortalId = reader.ReadContentAsInt();
 						break;
 					case "UserId":
-						UserId = reader.ReadContentAsInt();
+						this.UserId = reader.ReadContentAsInt();
 						break;
 					case "TabId":
-						TabId = reader.ReadContentAsInt();
+						this.TabId = reader.ReadContentAsInt();
 						break;
 					case "RawUrl":
-						RawUrl = reader.ReadContentAsString();
+						this.RawUrl = reader.ReadContentAsString();
 						break;
 					case "Referrer":
-						Referrer = reader.ReadContentAsString();
+						this.Referrer = reader.ReadContentAsString();
 						break;
 					case "UserAgent":
-						UserAgent = reader.ReadContentAsString();
+						this.UserAgent = reader.ReadContentAsString();
 						break;
 					case "ExceptionHash":
-						ExceptionHash = reader.ReadContentAsString();
+						this.ExceptionHash = reader.ReadContentAsString();
 						break;
 					case "Message":
-						Message = reader.ReadContentAsString();
+						this.Message = reader.ReadContentAsString();
 						break;
 					case "StackTrace":
-						StackTrace = reader.ReadContentAsString();
+						this.StackTrace = reader.ReadContentAsString();
 						break;
 					case "InnerMessage":
-						InnerMessage = reader.ReadContentAsString();
+						this.InnerMessage = reader.ReadContentAsString();
 						break;
 					case "InnerStackTrace":
-						InnerStackTrace = reader.ReadContentAsString();
+						this.InnerStackTrace = reader.ReadContentAsString();
 						break;
 					case "Source":
-						Source = reader.ReadContentAsString();
+						this.Source = reader.ReadContentAsString();
 						break;
 					case "FileName":
-						FileName = reader.ReadContentAsString();
+						this.FileName = reader.ReadContentAsString();
 						break;
 					case "FileLineNumber":
-						FileLineNumber = reader.ReadContentAsInt();
+						this.FileLineNumber = reader.ReadContentAsInt();
 						break;
 					case "FileColumnNumber":
-						FileColumnNumber = reader.ReadContentAsInt();
+						this.FileColumnNumber = reader.ReadContentAsInt();
 						break;
 					case "Method":
-						Method = reader.ReadContentAsString();
+						this.Method = reader.ReadContentAsString();
 						break;
 				}
 				reader.ReadEndElement();
@@ -155,7 +155,7 @@ namespace DotNetNuke.Services.Exceptions
 			var sb = new StringBuilder();
             using (XmlWriter writer = XmlWriter.Create(sb, settings))
             {
-                WriteXml(writer);
+                this.WriteXml(writer);
                 writer.Close();
                 return sb.ToString();
             }
@@ -164,46 +164,46 @@ namespace DotNetNuke.Services.Exceptions
 		public override string ToString()
 		{
 			var str = new StringBuilder();
-			str.Append("<p><strong>AssemblyVersion:</strong>" + WebUtility.HtmlEncode(AssemblyVersion) + "</p>");
-			str.Append("<p><strong>PortalId:</strong>" + PortalId + "</p>");
-			str.Append("<p><strong>UserId:</strong>" + UserId + "</p>");
-			str.Append("<p><strong>TabId:</strong>" + TabId + "</p>");
-			str.Append("<p><strong>RawUrl:</strong>" + WebUtility.HtmlEncode(RawUrl) + "</p>");
-			str.Append("<p><strong>Referrer:</strong>" + WebUtility.HtmlEncode(Referrer) + "</p>");
-			str.Append("<p><strong>UserAgent:</strong>" + WebUtility.HtmlEncode(UserAgent) + "</p>");
-			str.Append("<p><strong>ExceptionHash:</strong>" + WebUtility.HtmlEncode(ExceptionHash) + "</p>");
-			str.Append("<p><strong>Message:</strong>" + WebUtility.HtmlEncode(Message) + "</p>");
-			str.Append("<p><strong>StackTrace:</strong><pre>" + WebUtility.HtmlEncode(StackTrace)?.Replace(") at ", ")<br/>at ") + "</pre></p>");
-			str.Append("<p><strong>InnerMessage:</strong>" + WebUtility.HtmlEncode(InnerMessage) + "</p>");
-			str.Append("<p><strong>InnerStackTrace:</strong><pre>" + WebUtility.HtmlEncode(InnerStackTrace)?.Replace(") at ",")<br/>at ") + "</pre></p>");
-			str.Append("<p><strong>Source:</strong>" + WebUtility.HtmlEncode(Source) + "</p>");
-			str.Append("<p><strong>FileName:</strong>" + WebUtility.HtmlEncode(FileName) + "</p>");
-			str.Append("<p><strong>FileLineNumber:</strong>" + FileLineNumber + "</p>");
-			str.Append("<p><strong>FileColumnNumber:</strong>" + FileColumnNumber + "</p>");
-			str.Append("<p><strong>Method:</strong>" + WebUtility.HtmlEncode(Method) + "</p>");
+			str.Append("<p><strong>AssemblyVersion:</strong>" + WebUtility.HtmlEncode(this.AssemblyVersion) + "</p>");
+			str.Append("<p><strong>PortalId:</strong>" + this.PortalId + "</p>");
+			str.Append("<p><strong>UserId:</strong>" + this.UserId + "</p>");
+			str.Append("<p><strong>TabId:</strong>" + this.TabId + "</p>");
+			str.Append("<p><strong>RawUrl:</strong>" + WebUtility.HtmlEncode(this.RawUrl) + "</p>");
+			str.Append("<p><strong>Referrer:</strong>" + WebUtility.HtmlEncode(this.Referrer) + "</p>");
+			str.Append("<p><strong>UserAgent:</strong>" + WebUtility.HtmlEncode(this.UserAgent) + "</p>");
+			str.Append("<p><strong>ExceptionHash:</strong>" + WebUtility.HtmlEncode(this.ExceptionHash) + "</p>");
+			str.Append("<p><strong>Message:</strong>" + WebUtility.HtmlEncode(this.Message) + "</p>");
+			str.Append("<p><strong>StackTrace:</strong><pre>" + WebUtility.HtmlEncode(this.StackTrace)?.Replace(") at ", ")<br/>at ") + "</pre></p>");
+			str.Append("<p><strong>InnerMessage:</strong>" + WebUtility.HtmlEncode(this.InnerMessage) + "</p>");
+			str.Append("<p><strong>InnerStackTrace:</strong><pre>" + WebUtility.HtmlEncode(this.InnerStackTrace)?.Replace(") at ",")<br/>at ") + "</pre></p>");
+			str.Append("<p><strong>Source:</strong>" + WebUtility.HtmlEncode(this.Source) + "</p>");
+			str.Append("<p><strong>FileName:</strong>" + WebUtility.HtmlEncode(this.FileName) + "</p>");
+			str.Append("<p><strong>FileLineNumber:</strong>" + this.FileLineNumber + "</p>");
+			str.Append("<p><strong>FileColumnNumber:</strong>" + this.FileColumnNumber + "</p>");
+			str.Append("<p><strong>Method:</strong>" + WebUtility.HtmlEncode(this.Method) + "</p>");
 			return str.ToString();
 		}
 
 		public void WriteXml(XmlWriter writer)
 		{
 			writer.WriteStartElement("Exception");
-			writer.WriteElementString("AssemblyVersion", AssemblyVersion);
-			writer.WriteElementString("PortalId", PortalId.ToString());
-			writer.WriteElementString("UserId", UserId.ToString());
-			writer.WriteElementString("TabId", TabId.ToString());
-			writer.WriteElementString("RawUrl", RawUrl);
-			writer.WriteElementString("Referrer", Referrer);
-			writer.WriteElementString("UserAgent", UserAgent);
-			writer.WriteElementString("ExceptionHash", ExceptionHash);
-			writer.WriteElementString("Message", Message);
-			writer.WriteElementString("StackTrace", StackTrace);
-			writer.WriteElementString("InnerMessage", InnerMessage);
-			writer.WriteElementString("InnerStackTrace", InnerStackTrace);
-			writer.WriteElementString("Source", Source);
-			writer.WriteElementString("FileName", FileName);
-			writer.WriteElementString("FileLineNumber", FileLineNumber.ToString());
-			writer.WriteElementString("FileColumnNumber", FileColumnNumber.ToString());
-			writer.WriteElementString("Method", Method);
+			writer.WriteElementString("AssemblyVersion", this.AssemblyVersion);
+			writer.WriteElementString("PortalId", this.PortalId.ToString());
+			writer.WriteElementString("UserId", this.UserId.ToString());
+			writer.WriteElementString("TabId", this.TabId.ToString());
+			writer.WriteElementString("RawUrl", this.RawUrl);
+			writer.WriteElementString("Referrer", this.Referrer);
+			writer.WriteElementString("UserAgent", this.UserAgent);
+			writer.WriteElementString("ExceptionHash", this.ExceptionHash);
+			writer.WriteElementString("Message", this.Message);
+			writer.WriteElementString("StackTrace", this.StackTrace);
+			writer.WriteElementString("InnerMessage", this.InnerMessage);
+			writer.WriteElementString("InnerStackTrace", this.InnerStackTrace);
+			writer.WriteElementString("Source", this.Source);
+			writer.WriteElementString("FileName", this.FileName);
+			writer.WriteElementString("FileLineNumber", this.FileLineNumber.ToString());
+			writer.WriteElementString("FileColumnNumber", this.FileColumnNumber.ToString());
+			writer.WriteElementString("Method", this.Method);
 			writer.WriteEndElement();
 		}
 		#endregion

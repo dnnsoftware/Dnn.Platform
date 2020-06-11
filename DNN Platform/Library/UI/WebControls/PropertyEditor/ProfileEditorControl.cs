@@ -43,19 +43,19 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void CreateEditor()
         {
-            CategoryDataField = "PropertyCategory";
-            EditorDataField = "DataType";
-            NameDataField = "PropertyName";
-            RequiredDataField = "Required";
-            ValidationExpressionDataField = "ValidationExpression";
-            ValueDataField = "PropertyValue";
-            VisibleDataField = "Visible";
-            VisibilityDataField = "ProfileVisibility";
-            LengthDataField = "Length";
+            this.CategoryDataField = "PropertyCategory";
+            this.EditorDataField = "DataType";
+            this.NameDataField = "PropertyName";
+            this.RequiredDataField = "Required";
+            this.ValidationExpressionDataField = "ValidationExpression";
+            this.ValueDataField = "PropertyValue";
+            this.VisibleDataField = "Visible";
+            this.VisibilityDataField = "ProfileVisibility";
+            this.LengthDataField = "Length";
 
             base.CreateEditor();
 
-            foreach (FieldEditorControl editor in Fields)
+            foreach (FieldEditorControl editor in this.Fields)
             {
                 //Check whether Field is readonly
                 string fieldName = editor.Editor.Name;
@@ -76,7 +76,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     string country = null;
 
-                    foreach (FieldEditorControl checkEditor in Fields)
+                    foreach (FieldEditorControl checkEditor in this.Fields)
                     {
                         if (checkEditor.Editor is DNNCountryEditControl)
                         {

@@ -20,12 +20,12 @@ namespace DotNetNuke.Services.Exceptions
     {
         public ErrorContainer(string strError)
         {
-            Container = FormatException(strError);
+            this.Container = this.FormatException(strError);
         }
 
         public ErrorContainer(string strError, Exception exc)
         {
-            Container = FormatException(strError, exc);
+            this.Container = this.FormatException(strError, exc);
         }
 
         public ErrorContainer(PortalSettings _PortalSettings, string strError, Exception exc)
@@ -33,11 +33,11 @@ namespace DotNetNuke.Services.Exceptions
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
             if (objUserInfo.IsSuperUser)
             {
-                Container = FormatException(strError, exc);
+                this.Container = this.FormatException(strError, exc);
             }
             else
             {
-                Container = FormatException(strError);
+                this.Container = this.FormatException(strError);
             }
         }
 

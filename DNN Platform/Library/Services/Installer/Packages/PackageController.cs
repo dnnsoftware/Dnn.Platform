@@ -204,12 +204,12 @@ namespace DotNetNuke.Services.Installer.Packages
 
         public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)
         {
-            return GetExtensionPackage(portalId, predicate, false);
+            return this.GetExtensionPackage(portalId, predicate, false);
         }
 
         public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate, bool useCopy)
         {
-            var package = GetExtensionPackages(portalId).FirstOrDefault(predicate);
+            var package = this.GetExtensionPackages(portalId).FirstOrDefault(predicate);
 
             if (package != null && useCopy)
             {
@@ -229,7 +229,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         public IList<PackageInfo> GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate)
         {
-            return GetExtensionPackages(portalId).Where(predicate).ToList();
+            return this.GetExtensionPackages(portalId).Where(predicate).ToList();
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         public PackageType GetExtensionPackageType(Func<PackageType, bool> predicate)
         {
-            return GetExtensionPackageTypes().SingleOrDefault(predicate);
+            return this.GetExtensionPackageTypes().SingleOrDefault(predicate);
         }
 
         public IList<PackageType> GetExtensionPackageTypes()

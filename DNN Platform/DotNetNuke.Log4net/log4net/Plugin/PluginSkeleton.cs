@@ -50,7 +50,7 @@ namespace log4net.Plugin
 		/// </remarks>
 		protected PluginSkeleton(string name)
 		{
-			m_name = name;
+			this.m_name = name;
 		}
 
 		#endregion Protected Instance Constructors
@@ -76,8 +76,8 @@ namespace log4net.Plugin
 		/// </remarks>
 		public virtual string Name 
 		{ 
-			get { return m_name; }
-			set { m_name = value; }
+			get { return this.m_name; }
+			set { this.m_name = value; }
 		}
 
 		/// <summary>
@@ -94,7 +94,7 @@ namespace log4net.Plugin
 		/// </remarks>
 		public virtual void Attach(ILoggerRepository repository)
 		{
-			m_repository = repository;
+			this.m_repository = repository;
 		}
 
 		/// <summary>

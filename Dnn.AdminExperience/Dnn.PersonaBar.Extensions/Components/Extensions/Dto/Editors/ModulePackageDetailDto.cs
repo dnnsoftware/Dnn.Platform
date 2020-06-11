@@ -69,18 +69,18 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 
         public ModulePackageDetailDto(int portalId, PackageInfo package, DesktopModuleInfo desktopModule) : base(portalId, package)
         {
-            DesktopModuleId = desktopModule.DesktopModuleID;
-            ModuleName = desktopModule.ModuleName;
-            FolderName = desktopModule.FolderName;
-            BusinessController = desktopModule.BusinessControllerClass;
-            Category = desktopModule.Category;
-            Dependencies = desktopModule.Dependencies;
-            HostPermissions = desktopModule.Permissions;
-            Portable = desktopModule.IsPortable;
-            Searchable = desktopModule.IsSearchable;
-            Upgradeable = desktopModule.IsUpgradeable;
-            PremiumModule = desktopModule.IsPremium;
-            Shareable = desktopModule.Shareable;
+            this.DesktopModuleId = desktopModule.DesktopModuleID;
+            this.ModuleName = desktopModule.ModuleName;
+            this.FolderName = desktopModule.FolderName;
+            this.BusinessController = desktopModule.BusinessControllerClass;
+            this.Category = desktopModule.Category;
+            this.Dependencies = desktopModule.Dependencies;
+            this.HostPermissions = desktopModule.Permissions;
+            this.Portable = desktopModule.IsPortable;
+            this.Searchable = desktopModule.IsSearchable;
+            this.Upgradeable = desktopModule.IsUpgradeable;
+            this.PremiumModule = desktopModule.IsPremium;
+            this.Shareable = desktopModule.Shareable;
 
             if (!desktopModule.IsAdmin)
             {
@@ -89,21 +89,21 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
                 foreach (var portalDesktopModuleInfo in portalDesktopModules)
                 {
                     var value = portalDesktopModuleInfo.Value;
-                    AssignedPortals.Add(new ListItemDto { Id = value.PortalID, Name = value.PortalName });
+                    this.AssignedPortals.Add(new ListItemDto { Id = value.PortalID, Name = value.PortalName });
                 }
 
-                var assignedIds = AssignedPortals.Select(p => p.Id).ToArray();
+                var assignedIds = this.AssignedPortals.Select(p => p.Id).ToArray();
                 var allPortals = PortalController.Instance.GetPortals().OfType<PortalInfo>().Where(p => !assignedIds.Contains(p.PortalID));
 
                 foreach (var portalInfo in allPortals)
                 {
-                    UnassignedPortals.Add(new ListItemDto { Id = portalInfo.PortalID, Name = portalInfo.PortalName });
+                    this.UnassignedPortals.Add(new ListItemDto { Id = portalInfo.PortalID, Name = portalInfo.PortalName });
                 }
             }
 
             foreach (var moduleDefinition in desktopModule.ModuleDefinitions.Values)
             {
-                ModuleDefinitions.Add(new ModuleDefinitionDto(moduleDefinition));
+                this.ModuleDefinitions.Add(new ModuleDefinitionDto(moduleDefinition));
             }
         }
     }

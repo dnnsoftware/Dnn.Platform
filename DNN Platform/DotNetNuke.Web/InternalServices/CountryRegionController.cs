@@ -25,7 +25,7 @@ namespace DotNetNuke.Web.InternalServices
 		{
 			var searchString = (HttpContext.Current.Request.Params["SearchString"] ?? "").NormalizeString();
             var countries = CachedCountryList.GetCountryList(Thread.CurrentThread.CurrentCulture.Name);
-			return Request.CreateResponse(HttpStatusCode.OK, countries.Values.Where(
+			return this.Request.CreateResponse(HttpStatusCode.OK, countries.Values.Where(
                 x => x.NormalizedFullName.IndexOf(searchString, StringComparison.CurrentCulture) > -1).OrderBy(x => x.NormalizedFullName));
 		}
 
@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.InternalServices
 					Value = r.EntryID.ToString()
 				});
 			}
-			return Request.CreateResponse(HttpStatusCode.OK, res.OrderBy(r => r.Text));
+			return this.Request.CreateResponse(HttpStatusCode.OK, res.OrderBy(r => r.Text));
 		}
 
 	}

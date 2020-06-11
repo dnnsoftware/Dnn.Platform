@@ -41,19 +41,19 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// <summary>
         /// Provides an Unique String for the image transformation
         /// </summary>
-        public override string UniqueString => base.UniqueString + Width + "-" + Height + "-" + Color + "-" + BackColor + "-" + Text;
+        public override string UniqueString => base.UniqueString + this.Width + "-" + this.Height + "-" + this.Color + "-" + this.BackColor + "-" + this.Text;
 
         public PlaceholderTransform()
 		{
-			InterpolationMode = InterpolationMode.HighQualityBicubic;
-			SmoothingMode = SmoothingMode.HighQuality;
-			PixelOffsetMode = PixelOffsetMode.HighQuality;
-			CompositingQuality = CompositingQuality.HighQuality;
-			BackColor = Color.LightGray;
-			Color = Color.LightSlateGray;
-			Width = 0;
-			Height = 0;
-			Text = "";
+			this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+			this.SmoothingMode = SmoothingMode.HighQuality;
+			this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+			this.CompositingQuality = CompositingQuality.HighQuality;
+			this.BackColor = Color.LightGray;
+			this.Color = Color.LightSlateGray;
+			this.Width = 0;
+			this.Height = 0;
+			this.Text = "";
 		}
 
         /// <summary>
@@ -64,16 +64,16 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         public override Image ProcessImage(Image image)
 		{
 			// Check dimensions
-			if (Width == 0 && Height > 0)
-				Width = Height;
-			if (Width > 0 && Height == 0)
-				Height = Width;
+			if (this.Width == 0 && this.Height > 0)
+				this.Width = this.Height;
+			if (this.Width > 0 && this.Height == 0)
+				this.Height = this.Width;
 			
-			var bitmap = new Bitmap(Width, Height);
-			Brush backColorBrush = new SolidBrush(BackColor);
-			Brush colorBrush = new SolidBrush(Color);
-			var colorPen = new Pen(Color,2);
-			var text = string.IsNullOrEmpty(Text) ? $"{Width}x{Height}" : Text;
+			var bitmap = new Bitmap(this.Width, this.Height);
+			Brush backColorBrush = new SolidBrush(this.BackColor);
+			Brush colorBrush = new SolidBrush(this.Color);
+			var colorPen = new Pen(this.Color,2);
+			var text = string.IsNullOrEmpty(this.Text) ? $"{this.Width}x{this.Height}" : this.Text;
 
 			using (var objGraphics = Graphics.FromImage(bitmap))
 			{
@@ -84,20 +84,20 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
 				// Fill bitmap with backcolor
 				
-				objGraphics.FillRectangle(backColorBrush,0,0, Width,Height);
+				objGraphics.FillRectangle(backColorBrush,0,0, this.Width,this.Height);
 				
 				// Draw border
-				objGraphics.DrawRectangle(colorPen,1,1,Width-3,Height-3);
+				objGraphics.DrawRectangle(colorPen,1,1,this.Width-3,this.Height-3);
 
 				// Determine fontsize
 				var fontSize = 13;
-				if (Width < 101)
+				if (this.Width < 101)
 					fontSize = 8;
-				else if (Width < 151)
+				else if (this.Width < 151)
 					fontSize = 10;
-				else if (Width < 201)
+				else if (this.Width < 201)
 					fontSize = 12;
-				else if (Width < 301)
+				else if (this.Width < 301)
 					fontSize = 14;
 				else
 					fontSize = 24;
@@ -111,7 +111,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 			        LineAlignment = StringAlignment.Center
 			    };
 
-			    var rectangle = new Rectangle(5, 5, Width - 10, Height - 10);
+			    var rectangle = new Rectangle(5, 5, this.Width - 10, this.Height - 10);
 				objGraphics.DrawString(text, font, colorBrush, rectangle, stringFormat);
 
 				// Save indicator to file

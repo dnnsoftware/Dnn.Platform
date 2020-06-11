@@ -25,7 +25,7 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                return _context;
+                return this._context;
             }
         }
 
@@ -36,7 +36,7 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                return Context.Request;
+                return this.Context.Request;
             }
         }
 
@@ -48,7 +48,7 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                return Context.Response;
+                return this.Context.Response;
             }
         }
 
@@ -59,8 +59,8 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                Request.InputStream.Position = 0;
-                using (var Reader = new StreamReader(Request.InputStream))
+                this.Request.InputStream.Position = 0;
+                using (var Reader = new StreamReader(this.Request.InputStream))
                 {
                     return Reader.ReadToEnd();
                 }
@@ -99,7 +99,7 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                return Context.User.Identity.IsAuthenticated;
+                return this.Context.User.Identity.IsAuthenticated;
             }
         }
 
@@ -135,26 +135,26 @@ namespace DotNetNuke.Framework
         /// <param name = "context">Context.</param>
         public void ProcessRequest(HttpContext context)
         {
-            _context = context;
+            this._context = context;
 
-            SetResponseCachePolicy(Response.Cache);
+            this.SetResponseCachePolicy(this.Response.Cache);
 
-            if (!ValidateParameters())
+            if (!this.ValidateParameters())
             {
-                RespondInternalError();
+                this.RespondInternalError();
                 return;
             }
 
-            if (RequiresAuthentication && !HasPermission)
+            if (this.RequiresAuthentication && !this.HasPermission)
             {
-                RespondForbidden();
+                this.RespondForbidden();
                 return;
             }
 
-            Response.ContentType = ContentMimeType;
-            Response.ContentEncoding = ContentEncoding;
+            this.Response.ContentType = this.ContentMimeType;
+            this.Response.ContentEncoding = this.ContentEncoding;
 
-            HandleRequest();
+            this.HandleRequest();
         }
 
         public virtual bool IsReusable
@@ -223,8 +223,8 @@ namespace DotNetNuke.Framework
         /// </summary>
         protected void RespondFileNotFound()
         {
-            Response.StatusCode = Convert.ToInt32(HttpStatusCode.NotFound);
-            Response.End();
+            this.Response.StatusCode = Convert.ToInt32(HttpStatusCode.NotFound);
+            this.Response.End();
         }
 
         /// <summary>
@@ -235,8 +235,8 @@ namespace DotNetNuke.Framework
         {
             // It's really too bad that StatusCode property
             // is not of type HttpStatusCode.
-            Response.StatusCode = Convert.ToInt32(HttpStatusCode.InternalServerError);
-            Response.End();
+            this.Response.StatusCode = Convert.ToInt32(HttpStatusCode.InternalServerError);
+            this.Response.End();
         }
 
         /// <summary>
@@ -246,8 +246,8 @@ namespace DotNetNuke.Framework
         /// </summary>
         protected void RespondForbidden()
         {
-            Response.StatusCode = Convert.ToInt32(HttpStatusCode.Forbidden);
-            Response.End();
+            this.Response.StatusCode = Convert.ToInt32(HttpStatusCode.Forbidden);
+            this.Response.End();
         }
     }
 }

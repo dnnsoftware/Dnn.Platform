@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         protected DnnHtmlHelper(HtmlHelper htmlHelper)
         {
-            HtmlHelper = htmlHelper;
+            this.HtmlHelper = htmlHelper;
 
             var controller = htmlHelper.ViewContext.Controller as IDnnController;
 
@@ -36,7 +36,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
                 throw new InvalidOperationException("The DnnHtmlHelper class can only be used in Views that inherit from DnnWebViewPage");
             }
 
-            ModuleContext = controller.ModuleContext;
+            this.ModuleContext = controller.ModuleContext;
         }
 
         public MvcHtmlString AntiForgeryToken()
@@ -49,45 +49,45 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         public ModuleInstanceContext ModuleContext { get; set; }
 
-        public RouteCollection RouteCollection => HtmlHelper.RouteCollection;
+        public RouteCollection RouteCollection => this.HtmlHelper.RouteCollection;
 
-        public dynamic ViewBag => HtmlHelper.ViewBag;
+        public dynamic ViewBag => this.HtmlHelper.ViewBag;
 
-        public ViewContext ViewContext => HtmlHelper.ViewContext;
+        public ViewContext ViewContext => this.HtmlHelper.ViewContext;
 
-        public ViewDataDictionary ViewData => HtmlHelper.ViewData;
+        public ViewDataDictionary ViewData => this.HtmlHelper.ViewData;
 
-        public IViewDataContainer ViewDataContainer => HtmlHelper.ViewDataContainer;
+        public IViewDataContainer ViewDataContainer => this.HtmlHelper.ViewDataContainer;
 
-        public string AttributeEncode(string value) => HtmlHelper.AttributeEncode(value);
+        public string AttributeEncode(string value) => this.HtmlHelper.AttributeEncode(value);
 
-        public string AttributeEncode(object value) => HtmlHelper.AttributeEncode(value);
+        public string AttributeEncode(object value) => this.HtmlHelper.AttributeEncode(value);
 
-        public string Encode(string value) => HtmlHelper.Encode(value);
+        public string Encode(string value) => this.HtmlHelper.Encode(value);
 
-        public string Encode(object value) => HtmlHelper.Encode(value);
+        public string Encode(object value) => this.HtmlHelper.Encode(value);
 
-        public string FormatValue(object value, string format) => HtmlHelper.FormatValue(value, format);
+        public string FormatValue(object value, string format) => this.HtmlHelper.FormatValue(value, format);
 
-        public MvcHtmlString HttpMethodOverride(HttpVerbs httpVerb) => HtmlHelper.HttpMethodOverride(httpVerb);
+        public MvcHtmlString HttpMethodOverride(HttpVerbs httpVerb) => this.HtmlHelper.HttpMethodOverride(httpVerb);
 
-        public MvcHtmlString HttpMethodOverride(string httpVerb) => HtmlHelper.HttpMethodOverride(httpVerb);
+        public MvcHtmlString HttpMethodOverride(string httpVerb) => this.HtmlHelper.HttpMethodOverride(httpVerb);
 
-        public IHtmlString Raw(string value) => HtmlHelper.Raw(value);
+        public IHtmlString Raw(string value) => this.HtmlHelper.Raw(value);
 
-        public IHtmlString Raw(object value) => HtmlHelper.Raw(value);
+        public IHtmlString Raw(object value) => this.HtmlHelper.Raw(value);
 
-        public IDictionary<string, object> GetUnobtrusiveValidationAttributes(string name) => HtmlHelper.GetUnobtrusiveValidationAttributes(name);
+        public IDictionary<string, object> GetUnobtrusiveValidationAttributes(string name) => this.HtmlHelper.GetUnobtrusiveValidationAttributes(name);
 
-        public IDictionary<string, object> GetUnobtrusiveValidationAttributes(string name, ModelMetadata metadata) => HtmlHelper.GetUnobtrusiveValidationAttributes(name, metadata);
+        public IDictionary<string, object> GetUnobtrusiveValidationAttributes(string name, ModelMetadata metadata) => this.HtmlHelper.GetUnobtrusiveValidationAttributes(name, metadata);
 
-        public void EnableClientValidation() => HtmlHelper.EnableClientValidation();
+        public void EnableClientValidation() => this.HtmlHelper.EnableClientValidation();
 
-        public void EnableClientValidation(bool enabled) => HtmlHelper.EnableClientValidation(enabled);
+        public void EnableClientValidation(bool enabled) => this.HtmlHelper.EnableClientValidation(enabled);
 
-        public void EnableUnobtrusiveJavaScript() => HtmlHelper.EnableUnobtrusiveJavaScript();
+        public void EnableUnobtrusiveJavaScript() => this.HtmlHelper.EnableUnobtrusiveJavaScript();
 
-        public void EnableUnobtrusiveJavaScript(bool enabled) => HtmlHelper.EnableUnobtrusiveJavaScript(enabled);
+        public void EnableUnobtrusiveJavaScript(bool enabled) => this.HtmlHelper.EnableUnobtrusiveJavaScript(enabled);
 
     }
 }

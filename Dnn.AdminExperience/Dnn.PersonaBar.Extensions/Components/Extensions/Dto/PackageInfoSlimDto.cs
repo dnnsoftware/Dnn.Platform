@@ -63,23 +63,23 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
 
         public PackageInfoSlimDto(int portalId, PackageInfo package)
         {
-            PackageId = package.PackageID;
-            FriendlyName = package.FriendlyName;
-            Name = package.Name;
-            FileName = package.FileName;
-            Description = package.Description;
-            Version = package.Version.ToString(3);
-            IsInUse = ExtensionsController.IsPackageInUse(package, portalId);
-            UpgradeUrl = ExtensionsController.UpgradeRedirect(package.Version, package.PackageType, package.Name);
-            UpgradeIndicator = ExtensionsController.UpgradeIndicator(package.Version, package.PackageType, package.Name);
-            PackageIcon = ExtensionsController.GetPackageIcon(package);
-            Url = package.Url;
-            CanDelete = package.PackageID != Null.NullInteger && !package.IsSystemPackage && PackageController.CanDeletePackage(package, PortalSettings.Current);
+            this.PackageId = package.PackageID;
+            this.FriendlyName = package.FriendlyName;
+            this.Name = package.Name;
+            this.FileName = package.FileName;
+            this.Description = package.Description;
+            this.Version = package.Version.ToString(3);
+            this.IsInUse = ExtensionsController.IsPackageInUse(package, portalId);
+            this.UpgradeUrl = ExtensionsController.UpgradeRedirect(package.Version, package.PackageType, package.Name);
+            this.UpgradeIndicator = ExtensionsController.UpgradeIndicator(package.Version, package.PackageType, package.Name);
+            this.PackageIcon = ExtensionsController.GetPackageIcon(package);
+            this.Url = package.Url;
+            this.CanDelete = package.PackageID != Null.NullInteger && !package.IsSystemPackage && PackageController.CanDeletePackage(package, PortalSettings.Current);
 
             if (package.PackageID != Null.NullInteger)
             {
-                var authService = AuthenticationController.GetAuthenticationServiceByPackageID(PackageId);
-                ReadOnly = authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName;
+                var authService = AuthenticationController.GetAuthenticationServiceByPackageID(this.PackageId);
+                this.ReadOnly = authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName;
             }
         }
     }

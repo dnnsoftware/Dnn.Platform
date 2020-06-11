@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _attributes;
+                return this._attributes;
             }
         }
 
@@ -33,14 +33,14 @@ namespace DotNetNuke.Services.Syndication
 
         internal void SetAttributes(Dictionary<string, string> attributes)
         {
-            _attributes = attributes;
+            this._attributes = attributes;
         }
 
         protected string GetAttributeValue(string attributeName)
         {
             string attributeValue;
 
-            if (!_attributes.TryGetValue(attributeName, out attributeValue))
+            if (!this._attributes.TryGetValue(attributeName, out attributeValue))
             {
                 attributeValue = string.Empty;
             }
@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.Syndication
 
         protected void SetAttributeValue(string attributeName, string attributeValue)
         {
-            _attributes[attributeName] = attributeValue;
+            this._attributes[attributeName] = attributeValue;
         }
     }
 }

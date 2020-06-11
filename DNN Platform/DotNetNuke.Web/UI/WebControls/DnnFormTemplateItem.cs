@@ -20,12 +20,12 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void CreateControlHierarchy()
         {
-            CssClass += " dnnFormItem";
-            CssClass += (FormMode == DnnFormMode.Long) ? " dnnFormLong" : " dnnFormShort";
+            this.CssClass += " dnnFormItem";
+            this.CssClass += (this.FormMode == DnnFormMode.Long) ? " dnnFormLong" : " dnnFormShort";
 
             var template = new DnnFormEmptyTemplate();
-            ItemTemplate.InstantiateIn(template);
-            Controls.Add(template);
+            this.ItemTemplate.InstantiateIn(template);
+            this.Controls.Add(template);
         }
     }
 }

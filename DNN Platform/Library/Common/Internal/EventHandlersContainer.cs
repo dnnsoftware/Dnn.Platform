@@ -24,7 +24,7 @@ namespace DotNetNuke.Common.Internal
         {
             try
             {
-                if (GetCurrentStatus() != Globals.UpgradeStatus.None)
+                if (this.GetCurrentStatus() != Globals.UpgradeStatus.None)
                 {
                     return;
                 }
@@ -40,7 +40,7 @@ namespace DotNetNuke.Common.Internal
         {
             get
             {
-                return _eventHandlers;
+                return this._eventHandlers;
             }
         }
 

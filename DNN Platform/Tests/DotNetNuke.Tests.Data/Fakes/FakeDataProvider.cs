@@ -13,7 +13,7 @@ namespace DotNetNuke.Tests.Data.Fakes
     {
         public FakeDataProvider(Dictionary<string, string> settings )
         {
-            Settings = settings;
+            this.Settings = settings;
         }
 
         #region Overrides of DataProvider

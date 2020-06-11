@@ -16,7 +16,7 @@ namespace DotNetNuke.Entities.Tabs
 
         public TabUrlInfo()
         {
-            PortalAliasUsage = PortalAliasUsageType.Default;
+            this.PortalAliasUsage = PortalAliasUsageType.Default;
         }
 
         #endregion

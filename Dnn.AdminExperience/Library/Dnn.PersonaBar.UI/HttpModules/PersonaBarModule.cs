@@ -34,7 +34,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
                     return;
                 }
 
-                ApplicationStart();
+                this.ApplicationStart();
                 _hasAppStarted = true;
             }
         }
@@ -48,10 +48,10 @@ namespace Dnn.PersonaBar.UI.HttpModules
         {
             EventsController.Instance.ApplicationStartEvent();
 
-            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinInit, OnSkinInit));
-            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinLoad, OnSkinLoad));
-            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinPreRender, OnSkinPreRender));
-            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinUnLoad, OnSkinUnLoad));
+            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinInit, this.OnSkinInit));
+            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinLoad, this.OnSkinLoad));
+            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinPreRender, this.OnSkinPreRender));
+            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinUnLoad, this.OnSkinUnLoad));
         }
 
         private void OnSkinInit(object sender, SkinEventArgs e)

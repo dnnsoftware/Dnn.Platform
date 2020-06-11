@@ -47,56 +47,56 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            PageId = GetFlagValue(FlagId, "Page Id", -1, false, true);
-            ParentId = GetFlagValue(FlagParentId, "Parent Id", -1);
-            PageName = GetFlagValue(FlagName, "Page Name", string.Empty);
-            if (PageId <= 0 && string.IsNullOrEmpty(PageName))
+            this.PageId = this.GetFlagValue(FlagId, "Page Id", -1, false, true);
+            this.ParentId = this.GetFlagValue(FlagParentId, "Parent Id", -1);
+            this.PageName = this.GetFlagValue(FlagName, "Page Name", string.Empty);
+            if (this.PageId <= 0 && string.IsNullOrEmpty(this.PageName))
             {
-                AddMessage(LocalizeString("Prompt_RestorePageNoParams"));
+                this.AddMessage(this.LocalizeString("Prompt_RestorePageNoParams"));
             }
         }
 
         public override ConsoleResultModel Run()
         {
             TabInfo tab;
-            string message = string.Format(LocalizeString("PageNotFound"), PageId);
+            string message = string.Format(this.LocalizeString("PageNotFound"), this.PageId);
 
-            if (PageId > 0)
+            if (this.PageId > 0)
             {
-                tab = _tabController.GetTab(PageId, PortalId);
+                tab = this._tabController.GetTab(this.PageId, this.PortalId);
                 if (tab == null)
                 {
                     return new ConsoleErrorResultModel(message);
                 }
             }
-            else if (!string.IsNullOrEmpty(PageName))
+            else if (!string.IsNullOrEmpty(this.PageName))
             {
-                tab = ParentId > 0
-                    ? _tabController.GetTabByName(PageName, PortalId, ParentId)
-                    : _tabController.GetTabByName(PageName, PortalId);
+                tab = this.ParentId > 0
+                    ? this._tabController.GetTabByName(this.PageName, this.PortalId, this.ParentId)
+                    : this._tabController.GetTabByName(this.PageName, this.PortalId);
 
                 if (tab == null)
                 {
-                    message = string.Format(LocalizeString("PageNotFoundWithName"), PageName);
+                    message = string.Format(this.LocalizeString("PageNotFoundWithName"), this.PageName);
                     return new ConsoleErrorResultModel(message);
                 }
             }
             else
             {
-                return new ConsoleErrorResultModel(LocalizeString("Prompt_RestorePageNoParams"));
+                return new ConsoleErrorResultModel(this.LocalizeString("Prompt_RestorePageNoParams"));
             }
 
-            if (!_contentVerifier.IsContentExistsForRequestedPortal(tab.PortalID, PortalSettings))
+            if (!this._contentVerifier.IsContentExistsForRequestedPortal(tab.PortalID, this.PortalSettings))
             {
                 return new ConsoleErrorResultModel(message);
             }
 
-            _recyclebinController.RestoreTab(tab, out message);
+            this._recyclebinController.RestoreTab(tab, out message);
 
             if (string.IsNullOrEmpty(message))
             {
                 var successMessage = string.Format(
-                    LocalizeString("Prompt_PageRestoredSuccessfully"),
+                    this.LocalizeString("Prompt_PageRestoredSuccessfully"),
                     tab.TabID,
                     tab.TabName
                     );

@@ -22,16 +22,16 @@ namespace DotNetNuke.UI.Skins.Controls
 		{
 			base.OnInit(e);
 
-            if (Request.QueryString["dnnprintmode"] != "true" && !UrlUtils.InPopUp())
+            if (this.Request.QueryString["dnnprintmode"] != "true" && !UrlUtils.InPopUp())
 			{
 				var objControlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
-                var objForm = (HtmlForm)Page.FindControl("Form");
+                var objForm = (HtmlForm)this.Page.FindControl("Form");
 
                 if(objControlPanel.IncludeInControlHierarchy)
                 {
-                    objControlPanel.IsDockable = IsDockable;
+                    objControlPanel.IsDockable = this.IsDockable;
                     if (!Host.ControlPanel.EndsWith("controlbar.ascx", StringComparison.InvariantCultureIgnoreCase))
-                        Controls.Add(objControlPanel);
+                        this.Controls.Add(objControlPanel);
                     else
                     {
                         if (objForm != null)
@@ -40,12 +40,12 @@ namespace DotNetNuke.UI.Skins.Controls
                         }
                         else
                         {
-                            Page.Controls.AddAt(0, objControlPanel);
+                            this.Page.Controls.AddAt(0, objControlPanel);
                         }
                     }
 
                     //register admin.css
-                    ClientResourceManager.RegisterAdminStylesheet(Page, Globals.HostPath + "admin.css");
+                    ClientResourceManager.RegisterAdminStylesheet(this.Page, Globals.HostPath + "admin.css");
                 }
 			}
 		}

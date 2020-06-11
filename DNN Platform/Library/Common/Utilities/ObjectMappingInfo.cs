@@ -45,8 +45,8 @@ namespace DotNetNuke.Common.Utilities
         ///-----------------------------------------------------------------------------
         public ObjectMappingInfo()
         {
-            _Properties = new Dictionary<string, PropertyInfo>();
-            _ColumnNames = new Dictionary<string, string>();
+            this._Properties = new Dictionary<string, PropertyInfo>();
+            this._ColumnNames = new Dictionary<string, string>();
         }
 
         /// -----------------------------------------------------------------------------
@@ -59,10 +59,10 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                string _CacheKey = RootCacheKey + TableName + "_";
-                if (!string.IsNullOrEmpty(CacheByProperty))
+                string _CacheKey = RootCacheKey + this.TableName + "_";
+                if (!string.IsNullOrEmpty(this.CacheByProperty))
                 {
-                    _CacheKey += CacheByProperty + "_";
+                    _CacheKey += this.CacheByProperty + "_";
                 }
                 return _CacheKey;
             }
@@ -80,11 +80,11 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return _CacheByProperty;
+                return this._CacheByProperty;
             }
             set
             {
-                _CacheByProperty = value;
+                this._CacheByProperty = value;
             }
         }
 
@@ -100,11 +100,11 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return _CacheTimeOutMultiplier;
+                return this._CacheTimeOutMultiplier;
             }
             set
             {
-                _CacheTimeOutMultiplier = value;
+                this._CacheTimeOutMultiplier = value;
             }
         }
 
@@ -117,7 +117,7 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return _ColumnNames;
+                return this._ColumnNames;
             }
         }
 
@@ -130,11 +130,11 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return _ObjectType;
+                return this._ObjectType;
             }
             set
             {
-                _ObjectType = value;
+                this._ObjectType = value;
             }
         }
 
@@ -148,11 +148,11 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return _PrimaryKey;
+                return this._PrimaryKey;
             }
             set
             {
-                _PrimaryKey = value;
+                this._PrimaryKey = value;
             }
         }
 
@@ -165,7 +165,7 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return _Properties;
+                return this._Properties;
             }
         }
 
@@ -179,11 +179,11 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return _TableName;
+                return this._TableName;
             }
             set
             {
-                _TableName = value;
+                this._TableName = value;
             }
         }
     }

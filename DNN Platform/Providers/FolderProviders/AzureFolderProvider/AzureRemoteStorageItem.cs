@@ -17,15 +17,15 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
         {
             get
             {
-                var path = Blob.RelativePath.Replace("+", "%2b");
+                var path = this.Blob.RelativePath.Replace("+", "%2b");
                 return HttpUtility.UrlDecode(path);
             }
         }
 
-        public DateTime LastModified => Blob.LastModifiedUtc;
+        public DateTime LastModified => this.Blob.LastModifiedUtc;
 
-        public long Size => Blob.Length;
+        public long Size => this.Blob.Length;
 
-        public string HashCode => Blob.ETag;
+        public string HashCode => this.Blob.ETag;
     }
 }

@@ -16,12 +16,12 @@ namespace DotNetNuke.UI.WebControls.Internal
 
         public PermissionTriStateTemplate(PermissionInfo permission)
         {
-            _permission = permission;
+            this._permission = permission;
         }
         public void InstantiateIn(Control container)
         {
             var triState = new PermissionTriState();
-            triState.DataBinding += BindToTriState;
+            triState.DataBinding += this.BindToTriState;
             container.Controls.Add(triState);
         }
         
@@ -30,12 +30,12 @@ namespace DotNetNuke.UI.WebControls.Internal
             var triState = (PermissionTriState) sender;
             var dataRowView = ((DataRowView) ((DataGridItem)triState.NamingContainer).DataItem);
 
-            triState.Value = dataRowView[_permission.PermissionName].ToString();
-            triState.Locked = !bool.Parse(dataRowView[_permission.PermissionName + "_Enabled"].ToString());
-            triState.SupportsDenyMode = SupportDenyMode;
-            triState.IsFullControl = IsFullControl;
-            triState.IsView = IsView;
-            triState.PermissionKey = _permission.PermissionKey;
+            triState.Value = dataRowView[this._permission.PermissionName].ToString();
+            triState.Locked = !bool.Parse(dataRowView[this._permission.PermissionName + "_Enabled"].ToString());
+            triState.SupportsDenyMode = this.SupportDenyMode;
+            triState.IsFullControl = this.IsFullControl;
+            triState.IsView = this.IsView;
+            triState.PermissionKey = this._permission.PermissionKey;
         }
 
         public bool IsFullControl { get; set; }

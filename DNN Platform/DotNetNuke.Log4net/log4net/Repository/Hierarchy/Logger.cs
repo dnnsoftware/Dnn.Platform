@@ -81,7 +81,7 @@ namespace log4net.Repository.Hierarchy
 			// NETCF: String.Intern causes Native Exception
 			m_name = name;
 #else
-			m_name = string.Intern(name);
+			this.m_name = string.Intern(name);
 #endif
 		}
 
@@ -103,8 +103,8 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		virtual public Logger Parent
 		{
-			get { return m_parent; }
-			set { m_parent = value; }
+			get { return this.m_parent; }
+			set { this.m_parent = value; }
 		}
 
 		/// <summary>
@@ -126,8 +126,8 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		virtual public bool Additivity
 		{
-			get { return m_additive; }
-			set { m_additive = value; }
+			get { return this.m_additive; }
+			set { this.m_additive = value; }
 		}
 
 		/// <summary>
@@ -173,8 +173,8 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		virtual public Hierarchy Hierarchy
 		{
-			get { return m_hierarchy; }
-			set { m_hierarchy = value; }
+			get { return this.m_hierarchy; }
+			set { this.m_hierarchy = value; }
 		}
 
 		/// <summary>
@@ -190,8 +190,8 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		virtual public Level Level
 		{
-			get { return m_level; }
-			set { m_level = value; }
+			get { return this.m_level; }
+			set { this.m_level = value; }
 		}
 
 		#endregion Public Instance Properties
@@ -220,18 +220,18 @@ namespace log4net.Repository.Hierarchy
 				throw new ArgumentNullException("newAppender");
 			}
 
-			m_appenderLock.AcquireWriterLock();
+			this.m_appenderLock.AcquireWriterLock();
 			try
 			{
-				if (m_appenderAttachedImpl == null) 
+				if (this.m_appenderAttachedImpl == null) 
 				{
-					m_appenderAttachedImpl = new log4net.Util.AppenderAttachedImpl();
+					this.m_appenderAttachedImpl = new log4net.Util.AppenderAttachedImpl();
 				}
-				m_appenderAttachedImpl.AddAppender(newAppender);
+				this.m_appenderAttachedImpl.AddAppender(newAppender);
 			}
 			finally
 			{
-				m_appenderLock.ReleaseWriterLock();
+				this.m_appenderLock.ReleaseWriterLock();
 			}
 		}
 
@@ -251,21 +251,21 @@ namespace log4net.Repository.Hierarchy
 		{
 			get
 			{
-				m_appenderLock.AcquireReaderLock();
+				this.m_appenderLock.AcquireReaderLock();
 				try
 				{
-					if (m_appenderAttachedImpl == null)
+					if (this.m_appenderAttachedImpl == null)
 					{
 						return AppenderCollection.EmptyCollection;
 					}
 					else 
 					{
-						return m_appenderAttachedImpl.Appenders;
+						return this.m_appenderAttachedImpl.Appenders;
 					}
 				}
 				finally
 				{
-					m_appenderLock.ReleaseReaderLock();
+					this.m_appenderLock.ReleaseReaderLock();
 				}
 			}
 		}
@@ -282,19 +282,19 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		virtual public IAppender GetAppender(string name) 
 		{
-			m_appenderLock.AcquireReaderLock();
+			this.m_appenderLock.AcquireReaderLock();
 			try
 			{
-				if (m_appenderAttachedImpl == null || name == null)
+				if (this.m_appenderAttachedImpl == null || name == null)
 				{
 					return null;
 				}
 
-				return m_appenderAttachedImpl.GetAppender(name);
+				return this.m_appenderAttachedImpl.GetAppender(name);
 			}
 			finally
 			{
-				m_appenderLock.ReleaseReaderLock();
+				this.m_appenderLock.ReleaseReaderLock();
 			}
 		}
 
@@ -311,18 +311,18 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		virtual public void RemoveAllAppenders() 
 		{
-			m_appenderLock.AcquireWriterLock();
+			this.m_appenderLock.AcquireWriterLock();
 			try
 			{
-				if (m_appenderAttachedImpl != null) 
+				if (this.m_appenderAttachedImpl != null) 
 				{
-					m_appenderAttachedImpl.RemoveAllAppenders();
-					m_appenderAttachedImpl = null;
+					this.m_appenderAttachedImpl.RemoveAllAppenders();
+					this.m_appenderAttachedImpl = null;
 				}
 			}
 			finally
 			{
-				m_appenderLock.ReleaseWriterLock();
+				this.m_appenderLock.ReleaseWriterLock();
 			}
 		}
 
@@ -341,17 +341,17 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		virtual public IAppender RemoveAppender(IAppender appender) 
 		{
-			m_appenderLock.AcquireWriterLock();
+			this.m_appenderLock.AcquireWriterLock();
 			try
 			{
-				if (appender != null && m_appenderAttachedImpl != null) 
+				if (appender != null && this.m_appenderAttachedImpl != null) 
 				{
-					return m_appenderAttachedImpl.RemoveAppender(appender);
+					return this.m_appenderAttachedImpl.RemoveAppender(appender);
 				}
 			}
 			finally
 			{
-				m_appenderLock.ReleaseWriterLock();
+				this.m_appenderLock.ReleaseWriterLock();
 			}
 			return null;
 		}
@@ -371,17 +371,17 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		virtual public IAppender RemoveAppender(string name) 
 		{
-			m_appenderLock.AcquireWriterLock();
+			this.m_appenderLock.AcquireWriterLock();
 			try
 			{
-				if (name != null && m_appenderAttachedImpl != null)
+				if (name != null && this.m_appenderAttachedImpl != null)
 				{
-					return m_appenderAttachedImpl.RemoveAppender(name);
+					return this.m_appenderAttachedImpl.RemoveAppender(name);
 				}
 			}
 			finally
 			{
-				m_appenderLock.ReleaseWriterLock();
+				this.m_appenderLock.ReleaseWriterLock();
 			}
 			return null;
 		}
@@ -403,7 +403,7 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		virtual public string Name
 		{
-			get { return m_name; }
+			get { return this.m_name; }
 		}
 
 		/// <summary>
@@ -427,9 +427,9 @@ namespace log4net.Repository.Hierarchy
 		{
 			try
 			{
-				if (IsEnabledFor(level))
+				if (this.IsEnabledFor(level))
 				{
-                    ForcedLog((callerStackBoundaryDeclaringType != null) ? callerStackBoundaryDeclaringType : declaringType, level, message, exception);
+                    this.ForcedLog((callerStackBoundaryDeclaringType != null) ? callerStackBoundaryDeclaringType : declaringType, level, message, exception);
 				}
 			}
 			catch (Exception ex)
@@ -463,9 +463,9 @@ namespace log4net.Repository.Hierarchy
 			{
 				if (logEvent != null)
 				{
-					if (IsEnabledFor(logEvent.Level))
+					if (this.IsEnabledFor(logEvent.Level))
 					{
-						ForcedLog(logEvent);
+						this.ForcedLog(logEvent);
 					}
 				}
 			}
@@ -502,7 +502,7 @@ namespace log4net.Repository.Hierarchy
 			{
 				if (level != null)
 				{
-					if (m_hierarchy.IsDisabled(level))
+					if (this.m_hierarchy.IsDisabled(level))
 					{
 						return false;
 					}
@@ -537,7 +537,7 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		public ILoggerRepository Repository
 		{ 
-			get { return m_hierarchy; }
+			get { return this.m_hierarchy; }
 		}
 
   		#endregion Implementation of ILogger
@@ -601,10 +601,10 @@ namespace log4net.Repository.Hierarchy
 			// or impossible to determine which .config file is missing appender
 			// definitions.
 			//
-			if (!m_hierarchy.EmittedNoAppenderWarning && writes == 0) 
+			if (!this.m_hierarchy.EmittedNoAppenderWarning && writes == 0) 
 			{
-				m_hierarchy.EmittedNoAppenderWarning = true;
-				LogLog.Debug(declaringType, "No appenders could be found for logger [" + Name + "] repository [" + Repository.Name + "]");
+				this.m_hierarchy.EmittedNoAppenderWarning = true;
+				LogLog.Debug(declaringType, "No appenders could be found for logger [" + this.Name + "] repository [" + this.Repository.Name + "]");
 				LogLog.Debug(declaringType, "Please initialize the log4net system properly.");
 				try
 				{
@@ -632,12 +632,12 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		virtual public void CloseNestedAppenders() 
 		{
-			m_appenderLock.AcquireWriterLock();
+			this.m_appenderLock.AcquireWriterLock();
 			try
 			{
-				if (m_appenderAttachedImpl != null)
+				if (this.m_appenderAttachedImpl != null)
 				{
-					AppenderCollection appenders = m_appenderAttachedImpl.Appenders;
+					AppenderCollection appenders = this.m_appenderAttachedImpl.Appenders;
 					foreach(IAppender appender in appenders)
 					{
 						if (appender is IAppenderAttachable)
@@ -649,7 +649,7 @@ namespace log4net.Repository.Hierarchy
 			}
 			finally
 			{
-				m_appenderLock.ReleaseWriterLock();
+				this.m_appenderLock.ReleaseWriterLock();
 			}
 		}
 
@@ -667,9 +667,9 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		virtual public void Log(Level level, object message, Exception exception) 
 		{
-			if (IsEnabledFor(level))
+			if (this.IsEnabledFor(level))
 			{
-                ForcedLog(declaringType, level, message, exception);
+                this.ForcedLog(declaringType, level, message, exception);
 			}
 		}
 
@@ -689,7 +689,7 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		virtual protected void ForcedLog(Type callerStackBoundaryDeclaringType, Level level, object message, Exception exception) 
 		{
-			CallAppenders(new LoggingEvent(callerStackBoundaryDeclaringType, this.Hierarchy, this.Name, level, message, exception));
+			this.CallAppenders(new LoggingEvent(callerStackBoundaryDeclaringType, this.Hierarchy, this.Name, level, message, exception));
 		}
 
 		/// <summary>
@@ -708,7 +708,7 @@ namespace log4net.Repository.Hierarchy
 			// is required for the appenders to correctly lookup renderers etc...
 			logEvent.EnsureRepository(this.Hierarchy);
 
-			CallAppenders(logEvent);
+			this.CallAppenders(logEvent);
 		}
 
 		#region Private Static Fields

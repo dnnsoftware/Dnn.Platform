@@ -29,7 +29,7 @@ namespace Dnn.PersonaBar.Servers.Services
 
         public ServerController(INavigationManager navigationManager)
         {
-            NavigationManager = navigationManager;
+            this.NavigationManager = navigationManager;
         }
 
         [HttpPost]
@@ -42,12 +42,12 @@ namespace Dnn.PersonaBar.Servers.Services
                 log.AddProperty("Message", Localization.GetString("UserRestart", LocalResourceFile));
                 LogController.Instance.AddLog(log);
                 Config.Touch();
-                return Request.CreateResponse(HttpStatusCode.OK, new {url = NavigationManager.NavigateURL()});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {url = this.NavigationManager.NavigateURL()});
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -59,12 +59,12 @@ namespace Dnn.PersonaBar.Servers.Services
             {
                 DataCache.ClearCache();
                 ClientResourceManager.ClearCache();
-                return Request.CreateResponse(HttpStatusCode.OK, new {url = NavigationManager.NavigateURL() });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {url = this.NavigationManager.NavigateURL() });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
     }

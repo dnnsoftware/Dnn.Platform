@@ -28,12 +28,12 @@ namespace DotNetNuke.Modules.Groups.Components
 
         public GroupViewParser(PortalSettings portalSettings, RoleInfo roleInfo, UserInfo currentUser, string template, int groupViewTabId)
         {
-            PortalSettings = portalSettings;
-            RoleInfo = roleInfo;
-            CurrentUser = currentUser;
-            Template = template;
-            GroupViewTabId = groupViewTabId;
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.PortalSettings = portalSettings;
+            this.RoleInfo = roleInfo;
+            this.CurrentUser = currentUser;
+            this.Template = template;
+            this.GroupViewTabId = groupViewTabId;
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public string ParseView()
@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.Groups.Components
 
             if (HttpContext.Current.Request.IsAuthenticated)
             {
-                var userRoleInfo = CurrentUser.Social.Roles.FirstOrDefault(r => r.RoleID == RoleInfo.RoleID);
+                var userRoleInfo = this.CurrentUser.Social.Roles.FirstOrDefault(r => r.RoleID == this.RoleInfo.RoleID);
 
                 if (userRoleInfo != null)
                 {
@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.Groups.Components
                         membershipPending = true;
                     }
                 }
-                if (RoleInfo.CreatedByUserID == CurrentUser.UserID || CurrentUser.IsSuperUser)
+                if (this.RoleInfo.CreatedByUserID == this.CurrentUser.UserID || this.CurrentUser.IsSuperUser)
                 {
                     isOwner = true;
                 }
@@ -64,43 +64,43 @@ namespace DotNetNuke.Modules.Groups.Components
             if (isOwner)
             {
 
-                Template = Template.Replace("[GROUPEDITBUTTON]", String.Format(editUrl, GroupEditUrl));
-                Template = Utilities.ParseTokenWrapper(Template, "IsNotOwner", false);
-                Template = Utilities.ParseTokenWrapper(Template, "IsOwner", true);
+                this.Template = this.Template.Replace("[GROUPEDITBUTTON]", String.Format(editUrl, this.GroupEditUrl));
+                this.Template = Utilities.ParseTokenWrapper(this.Template, "IsNotOwner", false);
+                this.Template = Utilities.ParseTokenWrapper(this.Template, "IsOwner", true);
             }
-            else if (CurrentUser.IsInRole(RoleInfo.RoleName))
+            else if (this.CurrentUser.IsInRole(this.RoleInfo.RoleName))
             {
-                Template = Utilities.ParseTokenWrapper(Template, "IsNotOwner", true);
-                Template = Utilities.ParseTokenWrapper(Template, "IsOwner", false);
+                this.Template = Utilities.ParseTokenWrapper(this.Template, "IsNotOwner", true);
+                this.Template = Utilities.ParseTokenWrapper(this.Template, "IsOwner", false);
             }
 
-            Template = Utilities.ParseTokenWrapper(Template, "IsNotOwner", false);
-            Template = Utilities.ParseTokenWrapper(Template, "IsOwner", false);
+            this.Template = Utilities.ParseTokenWrapper(this.Template, "IsNotOwner", false);
+            this.Template = Utilities.ParseTokenWrapper(this.Template, "IsOwner", false);
 
-            if (CurrentUser.IsInRole(RoleInfo.RoleName) || !HttpContext.Current.Request.IsAuthenticated || membershipPending)
-                Template = Utilities.ParseTokenWrapper(Template, "IsNotMember", false);
+            if (this.CurrentUser.IsInRole(this.RoleInfo.RoleName) || !HttpContext.Current.Request.IsAuthenticated || membershipPending)
+                this.Template = Utilities.ParseTokenWrapper(this.Template, "IsNotMember", false);
             else
-                Template = Utilities.ParseTokenWrapper(Template, "IsNotMember", true);
+                this.Template = Utilities.ParseTokenWrapper(this.Template, "IsNotMember", true);
 
-            if (CurrentUser.IsInRole(RoleInfo.RoleName))
+            if (this.CurrentUser.IsInRole(this.RoleInfo.RoleName))
             {
-                Template = Utilities.ParseTokenWrapper(Template, "IsMember", true);
-                Template = Utilities.ParseTokenWrapper(Template, "IsPendingMember", false);
+                this.Template = Utilities.ParseTokenWrapper(this.Template, "IsMember", true);
+                this.Template = Utilities.ParseTokenWrapper(this.Template, "IsPendingMember", false);
             }
             else
-                Template = Utilities.ParseTokenWrapper(Template, "IsMember", false);
+                this.Template = Utilities.ParseTokenWrapper(this.Template, "IsMember", false);
 
-            Template = Utilities.ParseTokenWrapper(Template, "AllowJoin", RoleInfo.IsPublic);
+            this.Template = Utilities.ParseTokenWrapper(this.Template, "AllowJoin", this.RoleInfo.IsPublic);
 
-            Template = Template.Replace("[GROUPEDITBUTTON]", String.Empty);
+            this.Template = this.Template.Replace("[GROUPEDITBUTTON]", String.Empty);
 
-            var url = NavigationManager.NavigateURL(GroupViewTabId, "", new String[] { "groupid=" + RoleInfo.RoleID.ToString() });
+            var url = this.NavigationManager.NavigateURL(this.GroupViewTabId, "", new String[] { "groupid=" + this.RoleInfo.RoleID.ToString() });
 
-            Template = Utilities.ParseTokenWrapper(Template, "IsPendingMember", membershipPending);
-            Template = Template.Replace("[groupviewurl]", url);
-            Components.GroupItemTokenReplace tokenReplace = new Components.GroupItemTokenReplace(RoleInfo);
-            Template = tokenReplace.ReplaceGroupItemTokens(Template);
-            return Template;
+            this.Template = Utilities.ParseTokenWrapper(this.Template, "IsPendingMember", membershipPending);
+            this.Template = this.Template.Replace("[groupviewurl]", url);
+            Components.GroupItemTokenReplace tokenReplace = new Components.GroupItemTokenReplace(this.RoleInfo);
+            this.Template = tokenReplace.ReplaceGroupItemTokens(this.Template);
+            return this.Template;
         }
     }
 }

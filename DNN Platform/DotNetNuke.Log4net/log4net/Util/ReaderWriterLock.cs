@@ -68,7 +68,7 @@ namespace log4net.Util
 
 #if HAS_READERWRITERLOCK
 #if HAS_READERWRITERLOCKSLIM
-			m_lock = new System.Threading.ReaderWriterLockSlim(System.Threading.LockRecursionPolicy.SupportsRecursion);
+			this.m_lock = new System.Threading.ReaderWriterLockSlim(System.Threading.LockRecursionPolicy.SupportsRecursion);
 #else
 			m_lock = new System.Threading.ReaderWriterLock();
 #endif
@@ -96,7 +96,7 @@ namespace log4net.Util
                     try { } 
                     finally
                     {
-			m_lock.EnterReadLock();
+			this.m_lock.EnterReadLock();
                     }
 #else
 			m_lock.AcquireReaderLock(-1);
@@ -119,7 +119,7 @@ namespace log4net.Util
 		{
 #if HAS_READERWRITERLOCK
 #if HAS_READERWRITERLOCKSLIM
-			m_lock.ExitReadLock();
+			this.m_lock.ExitReadLock();
 #else
 			m_lock.ReleaseReaderLock();
 
@@ -145,7 +145,7 @@ namespace log4net.Util
                     try { } 
                     finally
                     {
-			m_lock.EnterWriteLock();
+			this.m_lock.EnterWriteLock();
                     }
 #else
 			m_lock.AcquireWriterLock(-1);
@@ -168,7 +168,7 @@ namespace log4net.Util
 		{
 #if HAS_READERWRITERLOCK
 #if HAS_READERWRITERLOCKSLIM
-			m_lock.ExitWriteLock();
+			this.m_lock.ExitWriteLock();
 #else
 			m_lock.ReleaseWriterLock();
 #endif

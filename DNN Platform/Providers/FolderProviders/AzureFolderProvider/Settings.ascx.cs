@@ -33,15 +33,15 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             var folderProvider = FolderProvider.Instance(Constants.FolderProviderType);
             if (folderMappingSettings.ContainsKey(Constants.AccountName))
             {
-                tbAccountName.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, Constants.AccountName);
+                this.tbAccountName.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, Constants.AccountName);
             }
 
             if (folderMappingSettings.ContainsKey(Constants.AccountKey))
             {
-                tbAccountKey.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, Constants.AccountKey);                
+                this.tbAccountKey.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, Constants.AccountKey);                
             }
 
-            if (tbAccountName.Text.Length > 0 && tbAccountKey.Text.Length > 0)
+            if (this.tbAccountName.Text.Length > 0 && this.tbAccountKey.Text.Length > 0)
             {
                 var bucketName = "";
 
@@ -50,35 +50,35 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                     bucketName = folderMappingSettings[Constants.Container].ToString();
                 }
 
-                LoadContainers();
+                this.LoadContainers();
 
-                var bucket = ddlContainers.Items.FindByText(bucketName);
+                var bucket = this.ddlContainers.Items.FindByText(bucketName);
 
                 if (bucket != null)
                 {
-                    ddlContainers.SelectedIndex = ddlContainers.Items.IndexOf(bucket);
+                    this.ddlContainers.SelectedIndex = this.ddlContainers.Items.IndexOf(bucket);
                 }
             }
 
             if (folderMappingSettings.ContainsKey(Constants.UseHttps))
             {
-                chkUseHttps.Checked = bool.Parse(folderMappingSettings[Constants.UseHttps].ToString());
+                this.chkUseHttps.Checked = bool.Parse(folderMappingSettings[Constants.UseHttps].ToString());
             }
 
-            chkDirectLink.Checked = !folderMappingSettings.ContainsKey(Constants.DirectLink) || folderMappingSettings[Constants.DirectLink].ToString().ToLowerInvariant() == "true";
+            this.chkDirectLink.Checked = !folderMappingSettings.ContainsKey(Constants.DirectLink) || folderMappingSettings[Constants.DirectLink].ToString().ToLowerInvariant() == "true";
 
             if (folderMappingSettings.ContainsKey(Constants.CustomDomain))
             {
-                tbCustomDomain.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, Constants.CustomDomain);
+                this.tbCustomDomain.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, Constants.CustomDomain);
             }
 
             if (folderMappingSettings.ContainsKey(Constants.SyncBatchSize) && folderMappingSettings[Constants.SyncBatchSize] != null)
             {
-                tbSyncBatchSize.Text = folderMappingSettings[Constants.SyncBatchSize].ToString();
+                this.tbSyncBatchSize.Text = folderMappingSettings[Constants.SyncBatchSize].ToString();
             }
             else
             {
-                tbSyncBatchSize.Text = Constants.DefaultSyncBatchSize.ToString();
+                this.tbSyncBatchSize.Text = Constants.DefaultSyncBatchSize.ToString();
             }
         }
 
@@ -88,9 +88,9 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
         /// <param name="folderMappingID">The folder mapping identifier.</param>
         public override void UpdateSettings(int folderMappingID)
         {
-            Page.Validate();
+            this.Page.Validate();
 
-            if (!Page.IsValid)
+            if (!this.Page.IsValid)
             {
                 throw new Exception();
             }
@@ -98,17 +98,17 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             var folderMappingController = FolderMappingController.Instance;
             var folderMapping = folderMappingController.GetFolderMapping(folderMappingID);
 
-            var accountName = GetAccountName();
-            var accountKey = GetAccountKey();
-            var container = GetContainer();
-            var useHttps = GetUseHttps();
-            var customDomain = GetCustomDomain();
-            var synchBatchSize = GetSynchBatchSize();
+            var accountName = this.GetAccountName();
+            var accountKey = this.GetAccountKey();
+            var container = this.GetContainer();
+            var useHttps = this.GetUseHttps();
+            var customDomain = this.GetCustomDomain();
+            var synchBatchSize = this.GetSynchBatchSize();
 
             if (AreThereFolderMappingsWithSameSettings(folderMapping, accountName, container))
             {
-                valContainerName.ErrorMessage = Localization.GetString("MultipleFolderMappingsWithSameSettings.ErrorMessage", LocalResourceFile);
-                valContainerName.IsValid = false;
+                this.valContainerName.ErrorMessage = Localization.GetString("MultipleFolderMappingsWithSameSettings.ErrorMessage", this.LocalResourceFile);
+                this.valContainerName.IsValid = false;
 
                 throw new Exception();
             }
@@ -117,7 +117,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             folderMapping.FolderMappingSettings[Constants.AccountKey] = accountKey;
             folderMapping.FolderMappingSettings[Constants.Container] = container;
             folderMapping.FolderMappingSettings[Constants.UseHttps] = useHttps;
-			folderMapping.FolderMappingSettings[Constants.DirectLink] = chkDirectLink.Checked;
+			folderMapping.FolderMappingSettings[Constants.DirectLink] = this.chkDirectLink.Checked;
             folderMapping.FolderMappingSettings[Constants.CustomDomain] = customDomain;
             folderMapping.FolderMappingSettings[Constants.SyncBatchSize] = synchBatchSize;
 
@@ -141,21 +141,21 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
         private string GetUseHttps()
         {
-            return chkUseHttps.Checked.ToString();
+            return this.chkUseHttps.Checked.ToString();
         }
 
         private string GetContainer()
         {
             string container;
 
-            if (SelectContainerPanel.Visible)
+            if (this.SelectContainerPanel.Visible)
             {
-                container = ddlContainers.SelectedValue;
+                container = this.ddlContainers.SelectedValue;
             }
             else
             {
-                container = tbContainerName.Text.Trim().ToLowerInvariant();
-                if (!CreateContainer(container)) throw new Exception();
+                container = this.tbContainerName.Text.Trim().ToLowerInvariant();
+                if (!this.CreateContainer(container)) throw new Exception();
             }
 
             return container;
@@ -163,9 +163,9 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
         private bool CreateContainer(string containerName)
         {
-            var accountName = tbAccountName.Text.Trim();
-            var accountKey = tbAccountKey.Text.Trim();
-            var useHttps = chkUseHttps.Checked;
+            var accountName = this.tbAccountName.Text.Trim();
+            var accountKey = this.tbAccountKey.Text.Trim();
+            var useHttps = this.chkUseHttps.Checked;
 
             StorageCredentials sc;
 
@@ -177,8 +177,8 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             {
                 Logger.Error(ex);
 
-                valContainerName.ErrorMessage = Localization.GetString("AuthenticationFailure.ErrorMessage", LocalResourceFile);
-                valContainerName.IsValid = false;
+                this.valContainerName.ErrorMessage = Localization.GetString("AuthenticationFailure.ErrorMessage", this.LocalResourceFile);
+                this.valContainerName.IsValid = false;
 
                 return false;
             }
@@ -205,66 +205,66 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                     switch (ex.RequestInformation.ExtendedErrorInformation.ErrorCode)
                     {
                         case "AccountNotFound":
-                            valContainerName.ErrorMessage = Localization.GetString("AccountNotFound.ErrorMessage",
-                                LocalResourceFile);
+                            this.valContainerName.ErrorMessage = Localization.GetString("AccountNotFound.ErrorMessage",
+                                this.LocalResourceFile);
                             break;
                         case "AuthenticationFailure":
-                            valContainerName.ErrorMessage = Localization.GetString(
-                                "AuthenticationFailure.ErrorMessage", LocalResourceFile);
+                            this.valContainerName.ErrorMessage = Localization.GetString(
+                                "AuthenticationFailure.ErrorMessage", this.LocalResourceFile);
                             break;
                         case "AccessDenied":
-                            valContainerName.ErrorMessage = Localization.GetString("AccessDenied.ErrorMessage",
-                                LocalResourceFile);
+                            this.valContainerName.ErrorMessage = Localization.GetString("AccessDenied.ErrorMessage",
+                                this.LocalResourceFile);
                             break;
                         case "ContainerAlreadyExists":
                             return true;
                         default:
                             Logger.Error(ex);
-                            valContainerName.ErrorMessage = Localization.GetString("NewContainer.ErrorMessage",
-                                LocalResourceFile);
+                            this.valContainerName.ErrorMessage = Localization.GetString("NewContainer.ErrorMessage",
+                                this.LocalResourceFile);
                             break;
                     }
                 }
                 else
                 {
-                    valContainerName.ErrorMessage = ex.RequestInformation.HttpStatusMessage ?? ex.Message;
+                    this.valContainerName.ErrorMessage = ex.RequestInformation.HttpStatusMessage ?? ex.Message;
                 }
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                valContainerName.ErrorMessage = Localization.GetString("NewContainer.ErrorMessage", LocalResourceFile);
+                this.valContainerName.ErrorMessage = Localization.GetString("NewContainer.ErrorMessage", this.LocalResourceFile);
             }
 
-            valContainerName.IsValid = false;
+            this.valContainerName.IsValid = false;
             return false;
         }
 
         private string GetAccountKey()
         {
-            return FolderProvider.Instance(Constants.FolderProviderType).EncryptValue(tbAccountKey.Text);            
+            return FolderProvider.Instance(Constants.FolderProviderType).EncryptValue(this.tbAccountKey.Text);            
         }
 
         private string GetAccountName()
         {
-            return FolderProvider.Instance(Constants.FolderProviderType).EncryptValue(tbAccountName.Text);            
+            return FolderProvider.Instance(Constants.FolderProviderType).EncryptValue(this.tbAccountName.Text);            
         }
 
         private string GetCustomDomain()
         {
-            return FolderProvider.Instance(Constants.FolderProviderType).EncryptValue(tbCustomDomain.Text);
+            return FolderProvider.Instance(Constants.FolderProviderType).EncryptValue(this.tbCustomDomain.Text);
         }
 
         private string GetSynchBatchSize()
         {
-            return tbSyncBatchSize.Text;
+            return this.tbSyncBatchSize.Text;
         }
 
         private void LoadContainers()
         {
-            var accountName = tbAccountName.Text.Trim();
-            var accountKey = tbAccountKey.Text.Trim();
-            var useHttps = chkUseHttps.Checked;
+            var accountName = this.tbAccountName.Text.Trim();
+            var accountKey = this.tbAccountKey.Text.Trim();
+            var useHttps = this.chkUseHttps.Checked;
 
             StorageCredentials sc;
             
@@ -276,8 +276,8 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             {
                 Logger.Error(ex);
 
-                valContainerName.ErrorMessage = Localization.GetString("AuthenticationFailure.ErrorMessage", LocalResourceFile);
-                valContainerName.IsValid = false;
+                this.valContainerName.ErrorMessage = Localization.GetString("AuthenticationFailure.ErrorMessage", this.LocalResourceFile);
+                this.valContainerName.IsValid = false;
                 
                 return;
             }
@@ -289,7 +289,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             {
                 foreach (var container in blobClient.ListContainers())
                 {
-                    ddlContainers.Items.Add(container.Name);
+                    this.ddlContainers.Items.Add(container.Name);
                 }
             }
             catch (StorageException ex)
@@ -299,26 +299,26 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                     switch (ex.RequestInformation.ExtendedErrorInformation.ErrorCode)
                     {
                         case "AuthenticationFailure":
-                            valContainerName.ErrorMessage = Localization.GetString("AuthenticationFailure.ErrorMessage", LocalResourceFile);
+                            this.valContainerName.ErrorMessage = Localization.GetString("AuthenticationFailure.ErrorMessage", this.LocalResourceFile);
                             break;
                         default:
                             Logger.Error(ex);
-                            valContainerName.ErrorMessage = Localization.GetString("ListContainers.ErrorMessage", LocalResourceFile);
+                            this.valContainerName.ErrorMessage = Localization.GetString("ListContainers.ErrorMessage", this.LocalResourceFile);
                             break;
                     }
                 }
                 else
                 {
-                    valContainerName.ErrorMessage = ex.RequestInformation.HttpStatusMessage ?? ex.Message;
+                    this.valContainerName.ErrorMessage = ex.RequestInformation.HttpStatusMessage ?? ex.Message;
                 }
 
-                valContainerName.IsValid = false;
+                this.valContainerName.IsValid = false;
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                valContainerName.ErrorMessage = Localization.GetString("ListContainers.ErrorMessage", LocalResourceFile);
-                valContainerName.IsValid = false;
+                this.valContainerName.ErrorMessage = Localization.GetString("ListContainers.ErrorMessage", this.LocalResourceFile);
+                this.valContainerName.IsValid = false;
             }
         }
 
@@ -330,27 +330,27 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
         /// </summary>
         protected void ddlContainers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddlContainers.SelectedIndex != 1) return;
+            if (this.ddlContainers.SelectedIndex != 1) return;
 
-            if (tbAccountName.Text.Trim().Length > 0 && tbAccountKey.Text.Trim().Length > 0)
+            if (this.tbAccountName.Text.Trim().Length > 0 && this.tbAccountKey.Text.Trim().Length > 0)
             {
-                ddlContainers.Items.Clear();
+                this.ddlContainers.Items.Clear();
 
-                ddlContainers.Items.Add(Localization.GetString("SelectContainer", LocalResourceFile));
-                ddlContainers.Items.Add(Localization.GetString("RefreshContainerList", LocalResourceFile));
+                this.ddlContainers.Items.Add(Localization.GetString("SelectContainer", this.LocalResourceFile));
+                this.ddlContainers.Items.Add(Localization.GetString("RefreshContainerList", this.LocalResourceFile));
 
-                LoadContainers();
+                this.LoadContainers();
 
-                if (ddlContainers.Items.Count == 3)
+                if (this.ddlContainers.Items.Count == 3)
                 {
                     // If there is only one container, then select it
-                    ddlContainers.SelectedValue = ddlContainers.Items[2].Value;
+                    this.ddlContainers.SelectedValue = this.ddlContainers.Items[2].Value;
                 }
             }
             else
             {
-                valContainerName.ErrorMessage = Localization.GetString("CredentialsRequired.ErrorMessage", LocalResourceFile);
-                valContainerName.IsValid = false;
+                this.valContainerName.ErrorMessage = Localization.GetString("CredentialsRequired.ErrorMessage", this.LocalResourceFile);
+                this.valContainerName.IsValid = false;
             }
         }
 
@@ -358,25 +358,25 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
         /// </summary>
         protected void btnNewContainer_Click(object sender, EventArgs e)
         {
-            SelectContainerPanel.Visible = false;
-            CreateContainerPanel.Visible = true;
+            this.SelectContainerPanel.Visible = false;
+            this.CreateContainerPanel.Visible = true;
         }
 
         /// <summary>
         /// </summary>
         protected void btnSelectExistingContainer_Click(object sender, EventArgs e)
         {
-            SelectContainerPanel.Visible = true;
-            CreateContainerPanel.Visible = false;
+            this.SelectContainerPanel.Visible = true;
+            this.CreateContainerPanel.Visible = false;
         }
 
         /// <summary>
         /// </summary>
         protected void valContainerName_ServerValidate(object source, ServerValidateEventArgs args)
         {
-            if (SelectContainerPanel.Visible)
+            if (this.SelectContainerPanel.Visible)
             {
-                if (ddlContainers.SelectedIndex > 1)
+                if (this.ddlContainers.SelectedIndex > 1)
                 {
                     args.IsValid = true;
                     return;
@@ -384,14 +384,14 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             }
             else
             {
-                if (tbContainerName.Text.Trim().Length > 0)
+                if (this.tbContainerName.Text.Trim().Length > 0)
                 {
                     args.IsValid = true;
                     return;
                 }
             }
 
-            valContainerName.ErrorMessage = Localization.GetString("valContainerName.ErrorMessage", LocalResourceFile);
+            this.valContainerName.ErrorMessage = Localization.GetString("valContainerName.ErrorMessage", this.LocalResourceFile);
             args.IsValid = false;
         }
 

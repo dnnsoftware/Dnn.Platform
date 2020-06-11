@@ -79,7 +79,7 @@ namespace log4net.Util.TypeConverters
 		/// </remarks>
 		public TypeConverterAttribute(string typeName)
 		{
-			m_typeName = typeName;
+			this.m_typeName = typeName;
 		}
 
 		/// <summary>
@@ -94,7 +94,7 @@ namespace log4net.Util.TypeConverters
 		/// </remarks>
 		public TypeConverterAttribute(Type converterType)
 		{
-			m_typeName = log4net.Util.SystemInfo.AssemblyQualifiedName(converterType);
+			this.m_typeName = log4net.Util.SystemInfo.AssemblyQualifiedName(converterType);
 		}
 
 		#endregion
@@ -113,8 +113,8 @@ namespace log4net.Util.TypeConverters
 		/// </remarks>
 		public string ConverterTypeName
 		{
-			get { return m_typeName; }
-			set { m_typeName = value ; }
+			get { return this.m_typeName; }
+			set { this.m_typeName = value ; }
 		}
 	}
 }

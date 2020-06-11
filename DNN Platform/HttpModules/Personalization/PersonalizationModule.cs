@@ -29,7 +29,7 @@ namespace DotNetNuke.HttpModules.Personalization
 
         public void Init(HttpApplication application)
         {
-            application.EndRequest += OnEndRequest;
+            application.EndRequest += this.OnEndRequest;
         }
 
         public void Dispose()

@@ -30,13 +30,13 @@ namespace DotNetNuke.UI.WebControls
 
         public SettingInfo(object name, object value)
         {
-            Name = Convert.ToString(name);
-            Value = value;
-            _Type = value.GetType();
-            Editor = EditorInfo.GetEditor(-1);
+            this.Name = Convert.ToString(name);
+            this.Value = value;
+            this._Type = value.GetType();
+            this.Editor = EditorInfo.GetEditor(-1);
             string strValue = Convert.ToString(value);
             bool IsFound = false;
-            if (_Type.IsEnum)
+            if (this._Type.IsEnum)
             {
                 IsFound = true;
             }
@@ -45,7 +45,7 @@ namespace DotNetNuke.UI.WebControls
                 try
                 {
                     bool boolValue = bool.Parse(strValue);
-                    Editor = EditorInfo.GetEditor("Checkbox");
+                    this.Editor = EditorInfo.GetEditor("Checkbox");
                     IsFound = true;
                 }
                 catch (Exception exc)
@@ -59,7 +59,7 @@ namespace DotNetNuke.UI.WebControls
                 try
                 {
                     int intValue = int.Parse(strValue);
-                    Editor = EditorInfo.GetEditor("Integer");
+                    this.Editor = EditorInfo.GetEditor("Integer");
                     IsFound = true;
                 }
                 catch (Exception exc)
@@ -80,11 +80,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return _Type;
+                return this._Type;
             }
             set
             {
-                _Type = value;
+                this._Type = value;
             }
         }
     }

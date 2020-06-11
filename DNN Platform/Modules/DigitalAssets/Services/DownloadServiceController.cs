@@ -25,7 +25,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         public DownloadServiceController()
         {
             var f = new Factory();
-            DigitalAssetsController = f.DigitalAssetsController;
+            this.DigitalAssetsController = f.DigitalAssetsController;
         }
 
         protected IDigitalAssetsController DigitalAssetsController { get; private set; }
@@ -36,7 +36,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
             var result = new HttpResponseMessage(HttpStatusCode.OK);
             string fileName;
             string contentType;
-            var streamContent = DigitalAssetsController.GetFileContent(fileId, out fileName, out contentType);
+            var streamContent = this.DigitalAssetsController.GetFileContent(fileId, out fileName, out contentType);
             result.Content = new StreamContent(streamContent);
             result.Content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
             result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue(forceDownload ? "attachment" : "inline");

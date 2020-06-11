@@ -32,7 +32,7 @@ namespace DotNetNuke.Services.Search
 
         public SearchEngineScheduler(ScheduleHistoryItem objScheduleHistoryItem)
         {
-            ScheduleHistoryItem = objScheduleHistoryItem;
+            this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
         /// -----------------------------------------------------------------------------
@@ -46,35 +46,35 @@ namespace DotNetNuke.Services.Search
         {
             try
             {
-                var lastSuccessFulDateTime = SearchHelper.Instance.GetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID);
+                var lastSuccessFulDateTime = SearchHelper.Instance.GetLastSuccessfulIndexingDateTime(this.ScheduleHistoryItem.ScheduleID);
                 Logger.Trace("Search: Site Crawler - Starting. Content change start time " + lastSuccessFulDateTime.ToString("g"));
-                ScheduleHistoryItem.AddLogNote(string.Format("Starting. Content change start time <b>{0:g}</b>", lastSuccessFulDateTime));
+                this.ScheduleHistoryItem.AddLogNote(string.Format("Starting. Content change start time <b>{0:g}</b>", lastSuccessFulDateTime));
 
-                var searchEngine = new SearchEngine(ScheduleHistoryItem, lastSuccessFulDateTime);
+                var searchEngine = new SearchEngine(this.ScheduleHistoryItem, lastSuccessFulDateTime);
                 try
                 {
                     searchEngine.DeleteOldDocsBeforeReindex();
                     searchEngine.DeleteRemovedObjects();
                     searchEngine.IndexContent();
-                    searchEngine.CompactSearchIndexIfNeeded(ScheduleHistoryItem);
+                    searchEngine.CompactSearchIndexIfNeeded(this.ScheduleHistoryItem);
                 }
                 finally
                 {
                     searchEngine.Commit();
                 }
 
-                ScheduleHistoryItem.Succeeded = true;
-                ScheduleHistoryItem.AddLogNote("<br/><b>Indexing Successful</b>");
-                SearchHelper.Instance.SetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID, ScheduleHistoryItem.StartDate);
+                this.ScheduleHistoryItem.Succeeded = true;
+                this.ScheduleHistoryItem.AddLogNote("<br/><b>Indexing Successful</b>");
+                SearchHelper.Instance.SetLastSuccessfulIndexingDateTime(this.ScheduleHistoryItem.ScheduleID, this.ScheduleHistoryItem.StartDate);
 
                 Logger.Trace("Search: Site Crawler - Indexing Successful");
             }
             catch (Exception ex)
             {
-                ScheduleHistoryItem.Succeeded = false;
-                ScheduleHistoryItem.AddLogNote("<br/>EXCEPTION: " + ex.Message);
-                Errored(ref ex);
-                if (ScheduleHistoryItem.ScheduleSource != ScheduleSource.STARTED_FROM_BEGIN_REQUEST)
+                this.ScheduleHistoryItem.Succeeded = false;
+                this.ScheduleHistoryItem.AddLogNote("<br/>EXCEPTION: " + ex.Message);
+                this.Errored(ref ex);
+                if (this.ScheduleHistoryItem.ScheduleSource != ScheduleSource.STARTED_FROM_BEGIN_REQUEST)
                 {
                     Exceptions.Exceptions.LogException(ex);
                 }

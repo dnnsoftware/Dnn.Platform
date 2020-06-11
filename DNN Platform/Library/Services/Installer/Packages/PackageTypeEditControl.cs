@@ -42,15 +42,15 @@ namespace DotNetNuke.Services.Installer.Packages.WebControls
             IList<PackageType> packageTypes = PackageController.Instance.GetExtensionPackageTypes();
 
             //Render the Select Tag
-            ControlStyle.AddAttributesToRender(writer);
+            this.ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
             writer.RenderBeginTag(HtmlTextWriterTag.Select);
 
             //Add the Not Specified Option
             writer.AddAttribute(HtmlTextWriterAttribute.Value, Null.NullString);
 
-            if (StringValue == Null.NullString)
+            if (this.StringValue == Null.NullString)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
             }
@@ -65,7 +65,7 @@ namespace DotNetNuke.Services.Installer.Packages.WebControls
 				//Add the Value Attribute
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, type.PackageType);
 
-                if (type.PackageType == StringValue)
+                if (type.PackageType == this.StringValue)
                 {
 					//Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");

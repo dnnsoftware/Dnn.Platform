@@ -60,7 +60,7 @@ namespace log4net.Layout
 		/// </remarks>
 		protected XmlLayoutBase() : this(false)
 		{
-			IgnoresException = false;
+			this.IgnoresException = false;
 		}
 
 		/// <summary>
@@ -82,8 +82,8 @@ namespace log4net.Layout
 		/// </remarks>
 		protected XmlLayoutBase(bool locationInfo)
 		{
-			IgnoresException = false;
-			m_locationInfo = locationInfo;
+			this.IgnoresException = false;
+			this.m_locationInfo = locationInfo;
 		}
 
 		#endregion Protected Instance Constructors
@@ -112,8 +112,8 @@ namespace log4net.Layout
 		/// </remarks>
 		public bool LocationInfo
 		{
-			get { return m_locationInfo; }
-			set { m_locationInfo = value; }
+			get { return this.m_locationInfo; }
+			set { this.m_locationInfo = value; }
 		}
 		/// <summary>
 		/// The string to replace characters that can not be expressed in XML with.
@@ -130,8 +130,8 @@ namespace log4net.Layout
 		/// </summary>
 		public string InvalidCharReplacement
 		{
-			get {return m_invalidCharReplacement;}
-			set {m_invalidCharReplacement=value;}
+			get {return this.m_invalidCharReplacement;}
+			set {this.m_invalidCharReplacement=value;}
 		}
 		#endregion
 
@@ -213,7 +213,7 @@ namespace log4net.Layout
 			xmlWriter.Namespaces = false;
 #endif
 			// Write the event to the writer
-			FormatXml(xmlWriter, loggingEvent);
+			this.FormatXml(xmlWriter, loggingEvent);
 
 			xmlWriter.WriteWhitespace(SystemInfo.NewLine);
 

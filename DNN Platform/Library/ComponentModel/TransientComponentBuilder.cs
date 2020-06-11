@@ -24,22 +24,22 @@ namespace DotNetNuke.ComponentModel
         /// <param name="type">The type of the component</param>
         public TransientComponentBuilder(string name, Type type)
         {
-            _Name = name;
-            _Type = type;
+            this._Name = name;
+            this._Type = type;
         }
 
         #region IComponentBuilder Members
 
         public object BuildComponent()
         {
-            return Reflection.CreateObject(_Type);
+            return Reflection.CreateObject(this._Type);
         }
 
         public string Name
         {
             get
             {
-                return _Name;
+                return this._Name;
             }
         }
 

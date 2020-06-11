@@ -15,12 +15,12 @@ namespace DotNetNuke.Collections.Internal
         
         void DoInReadLock(Action action)
         {
-            DoInReadLock(() =>{ action.Invoke(); return true; });
+            this.DoInReadLock(() =>{ action.Invoke(); return true; });
         }
 
         TRet DoInReadLock<TRet>(Func<TRet> func)
         {
-            using (_list.GetReadLock())
+            using (this._list.GetReadLock())
             {
                 return func.Invoke();
             }
@@ -28,12 +28,12 @@ namespace DotNetNuke.Collections.Internal
 
         void DoInWriteLock(Action action)
         {
-            DoInWriteLock(() => { action.Invoke(); return true; });
+            this.DoInWriteLock(() => { action.Invoke(); return true; });
         }
 
         private TRet DoInWriteLock<TRet>(Func<TRet> func)
         {
-            using (_list.GetWriteLock())
+            using (this._list.GetWriteLock())
             {
                 return func.Invoke();
             }
@@ -49,7 +49,7 @@ namespace DotNetNuke.Collections.Internal
         {
             get
             {
-                return _list;
+                return this._list;
             }
         }
 
@@ -58,45 +58,45 @@ namespace DotNetNuke.Collections.Internal
             //disposal of enumerator will release read lock
             //TODO is there a need for some sort of timed release?  the timmer must release from the correct thread
             //if using RWLS
-            var readLock = _list.GetReadLock();
-            return new NaiveLockingEnumerator(_list.GetEnumerator(), readLock);
+            var readLock = this._list.GetReadLock();
+            return new NaiveLockingEnumerator(this._list.GetEnumerator(), readLock);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            return this.GetEnumerator();
         }
 
         public void Add(T item)
         {
-            DoInWriteLock(() => _list.Add(item));
+            this.DoInWriteLock(() => this._list.Add(item));
         }
 
         public void Clear()
         {
-            DoInWriteLock(() => _list.Clear());
+            this.DoInWriteLock(() => this._list.Clear());
         }
 
         public bool Contains(T item)
         {
-            return DoInReadLock(() => _list.Contains(item));
+            return this.DoInReadLock(() => this._list.Contains(item));
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            DoInReadLock(() => _list.CopyTo(array, arrayIndex));
+            this.DoInReadLock(() => this._list.CopyTo(array, arrayIndex));
         }
 
         public bool Remove(T item)
         {
-            return DoInWriteLock(() => _list.Remove(item));
+            return this.DoInWriteLock(() => this._list.Remove(item));
         }
 
         public int Count
         {
             get
             {
-                return DoInReadLock(() => _list.Count);
+                return this.DoInReadLock(() => this._list.Count);
             }
         }
 
@@ -110,28 +110,28 @@ namespace DotNetNuke.Collections.Internal
 
         public int IndexOf(T item)
         {
-            return DoInReadLock(() => _list.IndexOf(item));
+            return this.DoInReadLock(() => this._list.IndexOf(item));
         }
 
         public void Insert(int index, T item)
         {
-            DoInWriteLock(() => _list.Insert(index, item));
+            this.DoInWriteLock(() => this._list.Insert(index, item));
         }
 
         public void RemoveAt(int index)
         {
-            DoInWriteLock(() => _list.RemoveAt(index));
+            this.DoInWriteLock(() => this._list.RemoveAt(index));
         }
 
         public T this[int index]
         {
             get
             {
-                return DoInReadLock(() => _list[index]);
+                return this.DoInReadLock(() => this._list[index]);
             }
             set
             {
-                DoInWriteLock(() => _list[index] = value);
+                this.DoInWriteLock(() => this._list[index] = value);
             }
         }
 
@@ -143,25 +143,25 @@ namespace DotNetNuke.Collections.Internal
 
             public NaiveLockingEnumerator(IEnumerator<T> enumerator, ISharedCollectionLock readLock)
             {
-                _enumerator = enumerator;
-                _readLock = readLock;
+                this._enumerator = enumerator;
+                this._readLock = readLock;
             }
 
             public bool MoveNext()
             {
-                return _enumerator.MoveNext();
+                return this._enumerator.MoveNext();
             }
 
             public void Reset()
             {
-                _enumerator.Reset();
+                this._enumerator.Reset();
             }
 
             public T Current
             {
                 get
                 {
-                    return _enumerator.Current;
+                    return this._enumerator.Current;
                 }
             }
 
@@ -169,36 +169,36 @@ namespace DotNetNuke.Collections.Internal
             {
                 get
                 {
-                    return Current;
+                    return this.Current;
                 }
             }
 
             public void Dispose()
             {
-                Dispose(true);
+                this.Dispose(true);
 
                 GC.SuppressFinalize(this);
             }
 
             protected virtual void Dispose(bool disposing)
             {
-                if (!_isDisposed)
+                if (!this._isDisposed)
                 {
                     if (disposing)
                     {
                         //dispose managed resrources here
-                        _enumerator.Dispose();
-                        _readLock.Dispose();
+                        this._enumerator.Dispose();
+                        this._readLock.Dispose();
                     }
 
                     //dispose unmanaged resrources here
-                    _isDisposed = true;
+                    this._isDisposed = true;
                 }
             }
 
             ~NaiveLockingEnumerator()
             {
-                Dispose(false);
+                this.Dispose(false);
             }
         }
     }

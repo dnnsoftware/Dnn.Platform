@@ -35,27 +35,27 @@ namespace DotNetNuke.Services.Installer.Writers
 
         public SkinPackageWriter(PackageInfo package) : base(package)
         {
-            _SkinPackage = SkinController.GetSkinByPackageID(package.PackageID);
-            SetBasePath();
+            this._SkinPackage = SkinController.GetSkinByPackageID(package.PackageID);
+            this.SetBasePath();
         }
 
         public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package) : base(package)
         {
-            _SkinPackage = skinPackage;
-            SetBasePath();
+            this._SkinPackage = skinPackage;
+            this.SetBasePath();
         }
 
         public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package, string basePath) : base(package)
         {
-            _SkinPackage = skinPackage;
-            BasePath = basePath;
+            this._SkinPackage = skinPackage;
+            this.BasePath = basePath;
         }
 
         public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package, string basePath, string subFolder) : base(package)
         {
-            _SkinPackage = skinPackage;
-            _SubFolder = subFolder;
-            BasePath = Path.Combine(basePath, subFolder);
+            this._SkinPackage = skinPackage;
+            this._SubFolder = subFolder;
+            this.BasePath = Path.Combine(basePath, subFolder);
         }
 		
 		#endregion
@@ -73,7 +73,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                return _SkinPackage;
+                return this._SkinPackage;
             }
         }
 		
@@ -81,13 +81,13 @@ namespace DotNetNuke.Services.Installer.Writers
 
         public void SetBasePath()
         {
-            if (_SkinPackage.SkinType == "Skin")
+            if (this._SkinPackage.SkinType == "Skin")
             {
-                BasePath = Path.Combine("Portals\\_default\\Skins", SkinPackage.SkinName);
+                this.BasePath = Path.Combine("Portals\\_default\\Skins", this.SkinPackage.SkinName);
             }
             else
             {
-                BasePath = Path.Combine("Portals\\_default\\Containers", SkinPackage.SkinName);
+                this.BasePath = Path.Combine("Portals\\_default\\Containers", this.SkinPackage.SkinName);
             }
         }
 
@@ -110,14 +110,14 @@ namespace DotNetNuke.Services.Installer.Writers
                 }
                 if (!file.Extension.Equals(".dnn", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    if (string.IsNullOrEmpty(_SubFolder))
+                    if (string.IsNullOrEmpty(this._SubFolder))
                     {
-                        AddFile(Path.Combine(filePath, file.Name));
+                        this.AddFile(Path.Combine(filePath, file.Name));
                     }
                     else
                     {
                         filePath = Path.Combine(filePath, file.Name);
-                        AddFile(filePath, Path.Combine(_SubFolder, filePath));
+                        this.AddFile(filePath, Path.Combine(this._SubFolder, filePath));
                     }
                 }
             }
@@ -125,14 +125,14 @@ namespace DotNetNuke.Services.Installer.Writers
 
         protected override void WriteFilesToManifest(XmlWriter writer)
         {
-            var skinFileWriter = new SkinComponentWriter(SkinPackage.SkinName, BasePath, Files, Package);
-            if (SkinPackage.SkinType == "Skin")
+            var skinFileWriter = new SkinComponentWriter(this.SkinPackage.SkinName, this.BasePath, this.Files, this.Package);
+            if (this.SkinPackage.SkinType == "Skin")
             {
-                skinFileWriter = new SkinComponentWriter(SkinPackage.SkinName, BasePath, Files, Package);
+                skinFileWriter = new SkinComponentWriter(this.SkinPackage.SkinName, this.BasePath, this.Files, this.Package);
             }
             else
             {
-                skinFileWriter = new ContainerComponentWriter(SkinPackage.SkinName, BasePath, Files, Package);
+                skinFileWriter = new ContainerComponentWriter(this.SkinPackage.SkinName, this.BasePath, this.Files, this.Package);
             }
             skinFileWriter.WriteManifest(writer);
         }

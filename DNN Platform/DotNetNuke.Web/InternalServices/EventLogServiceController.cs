@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.InternalServices
             Guid logId;
             if (string.IsNullOrEmpty(guid) || !Guid.TryParse(guid, out logId))
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
             }
 
             try
@@ -38,19 +38,19 @@ namespace DotNetNuke.Web.InternalServices
                 logInfo = EventLogController.Instance.GetSingleLog(logInfo, LoggingProvider.ReturnType.LogInfoObjects) as LogInfo;
                 if (logInfo == null)
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    return this.Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
 
-                return Request.CreateResponse(HttpStatusCode.OK, new
+                return this.Request.CreateResponse(HttpStatusCode.OK, new
                                                                      {
                                                                          Title = Localization.GetSafeJSString("CriticalError.Error", Localization.SharedResourceFile),
-                                                                         Content = GetPropertiesText(logInfo)
+                                                                         Content = this.GetPropertiesText(logInfo)
                                                                      });
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
 

@@ -19,22 +19,22 @@ namespace DotNetNuke.Web.Mvp
 
         public void LoadSettings()
         {
-            if (OnLoadSettings != null)
+            if (this.OnLoadSettings != null)
             {
-                OnLoadSettings(this, EventArgs.Empty);
+                this.OnLoadSettings(this, EventArgs.Empty);
             }
 
-            OnSettingsLoaded();
+            this.OnSettingsLoaded();
 
         }
 
         public void UpdateSettings()
         {
-            OnSavingSettings();
+            this.OnSavingSettings();
 
-            if (OnSaveSettings != null)
+            if (this.OnSaveSettings != null)
             {
-                OnSaveSettings(this, EventArgs.Empty);
+                this.OnSaveSettings(this, EventArgs.Empty);
             }
         }
 

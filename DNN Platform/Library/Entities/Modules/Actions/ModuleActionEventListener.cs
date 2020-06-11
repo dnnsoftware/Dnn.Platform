@@ -29,8 +29,8 @@ namespace DotNetNuke.Entities.Modules.Actions
         ///-----------------------------------------------------------------------------
         public ModuleActionEventListener(int ModID, ActionEventHandler e)
         {
-            _moduleID = ModID;
-            _actionEvent = e;
+            this._moduleID = ModID;
+            this._actionEvent = e;
         }
 
         ///-----------------------------------------------------------------------------
@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
             get
             {
-                return _moduleID;
+                return this._moduleID;
             }
         }
 
@@ -59,7 +59,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
             get
             {
-                return _actionEvent;
+                return this._actionEvent;
             }
         }
     }

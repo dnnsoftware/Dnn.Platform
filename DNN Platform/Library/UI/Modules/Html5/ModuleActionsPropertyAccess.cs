@@ -43,8 +43,8 @@ namespace DotNetNuke.UI.Modules.Html5
 
         public ModuleActionsPropertyAccess(ModuleInstanceContext moduleContext, ModuleActionCollection moduleActions)
         {
-            _moduleContext = moduleContext;
-            _moduleActions = moduleActions;
+            this._moduleContext = moduleContext;
+            this._moduleActions = moduleActions;
         }
 
         protected override string ProcessToken(ModuleActionDto model, UserInfo accessingUser, Scope accessLevel)
@@ -74,7 +74,7 @@ namespace DotNetNuke.UI.Modules.Html5
                 }
             }
 
-            var moduleAction = new ModuleAction(_moduleContext.GetNextActionID())
+            var moduleAction = new ModuleAction(this._moduleContext.GetNextActionID())
             {
                 Title = title,
                 Icon = model.Icon,
@@ -83,7 +83,7 @@ namespace DotNetNuke.UI.Modules.Html5
 
             if (string.IsNullOrEmpty(model.Script))
             {
-                moduleAction.Url = _moduleContext.EditUrl(model.ControlKey);
+                moduleAction.Url = this._moduleContext.EditUrl(model.ControlKey);
             }
             else
             {
@@ -92,7 +92,7 @@ namespace DotNetNuke.UI.Modules.Html5
                                     string.Format("javascript:{0}", model.Script);
             }
 
-            _moduleActions.Add(moduleAction);
+            this._moduleActions.Add(moduleAction);
 
             return String.Empty;
         }

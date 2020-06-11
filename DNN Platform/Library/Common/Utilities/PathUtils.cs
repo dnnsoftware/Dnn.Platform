@@ -75,7 +75,7 @@ namespace DotNetNuke.Common.Utilities
         {
             Requires.PropertyNotNull("relativePath", relativePath);
 
-            var path1 = GetRootFolderMapPath(portalID);
+            var path1 = this.GetRootFolderMapPath(portalID);
             var path2 = relativePath.Replace("/", "\\");
 
             if (Path.IsPathRooted(path2))
@@ -85,7 +85,7 @@ namespace DotNetNuke.Common.Utilities
 
             var physicalPath = Path.Combine(path1, path2);
 
-            return RemoveTrailingSlash(physicalPath);
+            return this.RemoveTrailingSlash(physicalPath);
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace DotNetNuke.Common.Utilities
                 throw new ArgumentException("The argument 'physicalPath' is not a valid path. " + physicalPath);
             }
 
-            var rootFolderMapPath = RemoveTrailingSlash(GetRootFolderMapPath(portalID));
+            var rootFolderMapPath = this.RemoveTrailingSlash(this.GetRootFolderMapPath(portalID));
 
             string relativePath;
 
@@ -120,7 +120,7 @@ namespace DotNetNuke.Common.Utilities
                 throw new ArgumentException("The argument 'physicalPath' is not a valid path.");
             }
 
-            return FormatFolderPath(relativePath);
+            return this.FormatFolderPath(relativePath);
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The element from the user folder path.</returns>
         public virtual string GetUserFolderPathElement(int userID, UserFolderElement mode)
         {
-            return GetUserFolderPathElementInternal(userID, mode);
+            return this.GetUserFolderPathElementInternal(userID, mode);
         }
 
         internal string GetUserFolderPathElementInternal(int userId, UserFolderElement mode)
@@ -173,8 +173,8 @@ namespace DotNetNuke.Common.Utilities
         
         internal string GetUserFolderPathInternal(UserInfo user)
         {
-            var rootFolder = GetUserFolderPathElementInternal(user.UserID, UserFolderElement.Root);
-            var subFolder = GetUserFolderPathElementInternal(user.UserID, UserFolderElement.SubFolder);
+            var rootFolder = this.GetUserFolderPathElementInternal(user.UserID, UserFolderElement.Root);
+            var subFolder = this.GetUserFolderPathElementInternal(user.UserID, UserFolderElement.SubFolder);
 
             var fullPath = Path.Combine(Path.Combine(rootFolder, subFolder), user.UserID.ToString(CultureInfo.InvariantCulture));
 
@@ -224,7 +224,7 @@ namespace DotNetNuke.Common.Utilities
 
             if (path.StartsWith("~") | path.StartsWith(".") | path.StartsWith("/"))
             {
-                convertedPath = convertedPath.Length > 1 ? string.Concat(AddTrailingSlash(applicationMapPath), convertedPath.Substring(1)) : applicationMapPath;
+                convertedPath = convertedPath.Length > 1 ? string.Concat(this.AddTrailingSlash(applicationMapPath), convertedPath.Substring(1)) : applicationMapPath;
             }
 
             convertedPath = Path.GetFullPath(convertedPath);

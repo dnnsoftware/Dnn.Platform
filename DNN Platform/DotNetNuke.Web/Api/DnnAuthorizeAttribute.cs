@@ -37,11 +37,11 @@ namespace DotNetNuke.Web.Api
         /// </summary>
         public string StaticRoles
         {
-            get { return _staticRoles; }
+            get { return this._staticRoles; }
             set
             {
-                _staticRoles = value;
-                _staticRolesSplit = SplitString(_staticRoles);
+                this._staticRoles = value;
+                this._staticRolesSplit = SplitString(this._staticRoles);
             }
         }
 
@@ -50,11 +50,11 @@ namespace DotNetNuke.Web.Api
         /// </summary>
         public string DenyRoles
         {
-            get { return _denyRoles; }
+            get { return this._denyRoles; }
             set 
             { 
-                _denyRoles = value;
-                _denyRolesSplit = SplitString(_denyRoles);
+                this._denyRoles = value;
+                this._denyRolesSplit = SplitString(this._denyRoles);
             }
         }
 
@@ -63,11 +63,11 @@ namespace DotNetNuke.Web.Api
         /// </summary>
         public string AuthTypes
         {
-            get { return _authTypes; }
+            get { return this._authTypes; }
             set 
             {
-                _authTypes = value;
-                _authTypesSplit = SplitString(_authTypes);
+                this._authTypes = value;
+                this._authTypesSplit = SplitString(this._authTypes);
             }
         }
 
@@ -81,19 +81,19 @@ namespace DotNetNuke.Web.Api
                 return false;
             }
 
-            if(_denyRolesSplit.Any())
+            if(this._denyRolesSplit.Any())
             {
                 var currentUser = PortalController.Instance.GetCurrentPortalSettings().UserInfo;
-                if (!currentUser.IsSuperUser && _denyRolesSplit.Any(currentUser.IsInRole))
+                if (!currentUser.IsSuperUser && this._denyRolesSplit.Any(currentUser.IsInRole))
                 {
                     return false;
                 }
             }
 
-            if (_staticRolesSplit.Any())
+            if (this._staticRolesSplit.Any())
             {
                 var currentUser = PortalController.Instance.GetCurrentPortalSettings().UserInfo;
-                if (!_staticRolesSplit.Any(currentUser.IsInRole))
+                if (!this._staticRolesSplit.Any(currentUser.IsInRole))
                 {
                     return false;
                 }
@@ -104,9 +104,9 @@ namespace DotNetNuke.Web.Api
             var currentAuthType = (identity.AuthenticationType ?? "").Trim();
             if (currentAuthType.Length > 0)
             {
-                if (_authTypesSplit.Any())
+                if (this._authTypesSplit.Any())
                 {
-                    return _authTypesSplit.Contains(currentAuthType);
+                    return this._authTypesSplit.Contains(currentAuthType);
                 }
 
                 return DefaultAuthTypes.Contains(currentAuthType);

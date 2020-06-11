@@ -34,8 +34,8 @@ namespace DotNetNuke.Web.UI.WebControls
         public DnnConfirmPasswordOptions()
         {
             // all the Confirm Password related resources are located under the Website\App_GlobalResources\WebControls.resx
-            ConfirmPasswordUnmatchedText = Utilities.GetLocalizedString("ConfirmPasswordUnmatched");
-            ConfirmPasswordMatchedText = Utilities.GetLocalizedString("ConfirmPasswordMatched");
+            this.ConfirmPasswordUnmatchedText = Utilities.GetLocalizedString("ConfirmPasswordUnmatched");
+            this.ConfirmPasswordMatchedText = Utilities.GetLocalizedString("ConfirmPasswordMatched");
         }
 
     }

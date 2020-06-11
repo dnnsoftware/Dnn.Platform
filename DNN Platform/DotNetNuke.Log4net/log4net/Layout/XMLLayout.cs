@@ -121,8 +121,8 @@ namespace log4net.Layout
 		/// </remarks>
 		public string Prefix
 		{
-			get { return m_prefix; }
-			set { m_prefix = value; }
+			get { return this.m_prefix; }
+			set { this.m_prefix = value; }
 		}
 
 		
@@ -141,8 +141,8 @@ namespace log4net.Layout
 		/// </remarks>
 		public bool Base64EncodeMessage
 		{
-			get {return m_base64Message;}
-			set {m_base64Message=value;}
+			get {return this.m_base64Message;}
+			set {this.m_base64Message=value;}
 		}
 
 		/// <summary>
@@ -160,8 +160,8 @@ namespace log4net.Layout
 		/// </remarks>
 		public bool Base64EncodeProperties
 		{
-			get {return m_base64Properties;}
-			set {m_base64Properties=value;}
+			get {return this.m_base64Properties;}
+			set {this.m_base64Properties=value;}
 		}
 
 
@@ -193,14 +193,14 @@ namespace log4net.Layout
 			base.ActivateOptions();
 
 			// Cache the full element names including the prefix
-			if (m_prefix != null && m_prefix.Length > 0)
+			if (this.m_prefix != null && this.m_prefix.Length > 0)
 			{
-				m_elmEvent = m_prefix + ":" + ELM_EVENT;
-				m_elmMessage = m_prefix + ":" + ELM_MESSAGE;
-				m_elmProperties = m_prefix + ":" + ELM_PROPERTIES;
-				m_elmData = m_prefix + ":" + ELM_DATA;
-				m_elmException = m_prefix + ":" + ELM_EXCEPTION;
-				m_elmLocation = m_prefix + ":" + ELM_LOCATION;
+				this.m_elmEvent = this.m_prefix + ":" + ELM_EVENT;
+				this.m_elmMessage = this.m_prefix + ":" + ELM_MESSAGE;
+				this.m_elmProperties = this.m_prefix + ":" + ELM_PROPERTIES;
+				this.m_elmData = this.m_prefix + ":" + ELM_DATA;
+				this.m_elmException = this.m_prefix + ":" + ELM_EXCEPTION;
+				this.m_elmLocation = this.m_prefix + ":" + ELM_LOCATION;
 			}
 		}
 
@@ -221,7 +221,7 @@ namespace log4net.Layout
 		/// </remarks>
 		override protected void FormatXml(XmlWriter writer, LoggingEvent loggingEvent)
 		{
-			writer.WriteStartElement(m_elmEvent);
+			writer.WriteStartElement(this.m_elmEvent);
 			writer.WriteAttributeString(ATTR_LOGGER, loggingEvent.LoggerName);
 
 #if NET_2_0 || NETCF_2_0 || MONO_2_0 || NETSTANDARD1_3
@@ -247,7 +247,7 @@ namespace log4net.Layout
 			}
     
 			// Append the message text
-			writer.WriteStartElement(m_elmMessage);
+			writer.WriteStartElement(this.m_elmMessage);
 			if (!this.Base64EncodeMessage)
 			{
 				Transform.WriteEscapedXmlString(writer, loggingEvent.RenderedMessage, this.InvalidCharReplacement);
@@ -265,10 +265,10 @@ namespace log4net.Layout
 			// Append the properties text
 			if (properties.Count > 0)
 			{
-				writer.WriteStartElement(m_elmProperties);
+				writer.WriteStartElement(this.m_elmProperties);
 				foreach(System.Collections.DictionaryEntry entry in properties)
 				{
-					writer.WriteStartElement(m_elmData);
+					writer.WriteStartElement(this.m_elmData);
 					writer.WriteAttributeString(ATTR_NAME, Transform.MaskXmlInvalidCharacters((string)entry.Key,this.InvalidCharReplacement));
 
 					// Use an ObjectRenderer to convert the object to a string
@@ -293,16 +293,16 @@ namespace log4net.Layout
 			if (exceptionStr != null && exceptionStr.Length > 0)
 			{
 				// Append the stack trace line
-				writer.WriteStartElement(m_elmException);
+				writer.WriteStartElement(this.m_elmException);
 				Transform.WriteEscapedXmlString(writer, exceptionStr,this.InvalidCharReplacement);
 				writer.WriteEndElement();
 			}
 
-			if (LocationInfo)
+			if (this.LocationInfo)
 			{ 
 				LocationInfo locationInfo = loggingEvent.LocationInformation;
 
-				writer.WriteStartElement(m_elmLocation);
+				writer.WriteStartElement(this.m_elmLocation);
 				writer.WriteAttributeString(ATTR_CLASS, locationInfo.ClassName);
 				writer.WriteAttributeString(ATTR_METHOD, locationInfo.MethodName);
 				writer.WriteAttributeString(ATTR_FILE, locationInfo.FileName);

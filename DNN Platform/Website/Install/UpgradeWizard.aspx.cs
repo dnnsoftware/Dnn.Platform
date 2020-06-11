@@ -97,22 +97,22 @@ namespace DotNetNuke.Services.Install
 
         private void LocalizePage()
         {
-            SetBrowserLanguage();
-            Page.Title = LocalizeString("Title");
-            if (Globals.FormatVersion(ApplicationVersion) == Globals.FormatVersion(CurrentVersion))
+            this.SetBrowserLanguage();
+            this.Page.Title = this.LocalizeString("Title");
+            if (Globals.FormatVersion(this.ApplicationVersion) == Globals.FormatVersion(this.CurrentVersion))
             {
-                versionLabel.Visible = false;
-                currentVersionLabel.Visible = false;
-                versionsMatch.Text = LocalizeString("VersionsMatch");
-                if (Globals.IncrementalVersionExists(CurrentVersion))
+                this.versionLabel.Visible = false;
+                this.currentVersionLabel.Visible = false;
+                this.versionsMatch.Text = this.LocalizeString("VersionsMatch");
+                if (Globals.IncrementalVersionExists(this.CurrentVersion))
                 {
-                    versionsMatch.Text = LocalizeString("VersionsMatchButIncrementalExists");
+                    this.versionsMatch.Text = this.LocalizeString("VersionsMatchButIncrementalExists");
                 }
             }
             else
             {
-                versionLabel.Text = string.Format(LocalizeString("Version"), Globals.FormatVersion(ApplicationVersion));
-                currentVersionLabel.Text = string.Format(LocalizeString("CurrentVersion"), Globals.FormatVersion(CurrentVersion));  
+                this.versionLabel.Text = string.Format(this.LocalizeString("Version"), Globals.FormatVersion(this.ApplicationVersion));
+                this.currentVersionLabel.Text = string.Format(this.LocalizeString("CurrentVersion"), Globals.FormatVersion(this.CurrentVersion));  
             }
         }
 
@@ -154,20 +154,20 @@ namespace DotNetNuke.Services.Install
         private void SetBrowserLanguage()
         {
             string cultureCode;
-            if (string.IsNullOrEmpty(PageLocale.Value) && string.IsNullOrEmpty(_culture))
+            if (string.IsNullOrEmpty(this.PageLocale.Value) && string.IsNullOrEmpty(_culture))
             {
                 cultureCode = TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(_supportedLanguages);
             }
-            else if (string.IsNullOrEmpty(PageLocale.Value) && !string.IsNullOrEmpty(_culture))
+            else if (string.IsNullOrEmpty(this.PageLocale.Value) && !string.IsNullOrEmpty(_culture))
             {
                 cultureCode = _culture;
             }
             else
             {
-                cultureCode = PageLocale.Value;
+                cultureCode = this.PageLocale.Value;
             }
 
-            PageLocale.Value = cultureCode;
+            this.PageLocale.Value = cultureCode;
             _culture = cultureCode;
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(cultureCode);
@@ -295,17 +295,17 @@ namespace DotNetNuke.Services.Install
             Upgrade.Upgrade.DeleteInstallerFiles();
 
             Config.Touch();
-            Response.Redirect("../Default.aspx", true);
+            this.Response.Redirect("../Default.aspx", true);
         }
 
         private void SslRequiredCheck()
         {
-            if (Entities.Host.Host.UpgradeForceSsl && !Request.IsSecureConnection)
+            if (Entities.Host.Host.UpgradeForceSsl && !this.Request.IsSecureConnection)
             {
                 var sslDomain = Entities.Host.Host.SslDomain;
                 if (string.IsNullOrEmpty(sslDomain))
                 {
-                    sslDomain = Request.Url.Host;
+                    sslDomain = this.Request.Url.Host;
                 }
                 else if (sslDomain.Contains("://"))
                 {
@@ -313,9 +313,9 @@ namespace DotNetNuke.Services.Install
                 }
 
                 var sslUrl = string.Format("https://{0}{1}",
-                    sslDomain, Request.RawUrl);
+                    sslDomain, this.Request.RawUrl);
 
-                Response.Redirect(sslUrl, true);
+                this.Response.Redirect(sslUrl, true);
             }
         }
 
@@ -348,10 +348,10 @@ namespace DotNetNuke.Services.Install
 
             if (Upgrade.Upgrade.UpdateNewtonsoftVersion())
             {
-                Response.Redirect(Request.RawUrl, true);
+                this.Response.Redirect(this.Request.RawUrl, true);
             }
 
-            SslRequiredCheck();
+            this.SslRequiredCheck();
             GetInstallerLocales();
         }
 
@@ -366,21 +366,21 @@ namespace DotNetNuke.Services.Install
         {
             if (InstallBlocker.Instance.IsInstallInProgress())
             {
-                Response.Redirect("Install.aspx", true);
+                this.Response.Redirect("Install.aspx", true);
             }
 
             base.OnLoad(e);
 
-            pnlAcceptTerms.Visible = NeedAcceptTerms;
-            LocalizePage();
+            this.pnlAcceptTerms.Visible = this.NeedAcceptTerms;
+            this.LocalizePage();
 
-			if (Request.RawUrl.EndsWith("?complete"))
+			if (this.Request.RawUrl.EndsWith("?complete"))
 			{
-				CompleteUpgrade();
+				this.CompleteUpgrade();
 			}
             
             //Create Status Files
-            if (!Page.IsPostBack)
+            if (!this.Page.IsPostBack)
             {
                 //Reset the accept terms flag
                 HostController.Instance.Update("AcceptDnnTerms", "N");

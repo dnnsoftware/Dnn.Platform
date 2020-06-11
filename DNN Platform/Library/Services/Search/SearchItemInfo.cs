@@ -61,31 +61,31 @@ namespace DotNetNuke.Services.Search
 
         public SearchItemInfo(string Title, string Description, int Author, DateTime PubDate, int ModuleID, string SearchKey, string Content, string Guid, int Image)
         {
-            _Title = Title;
-            _Description = Description;
-            _Author = Author;
-            _PubDate = PubDate;
-            _ModuleId = ModuleID;
-            _SearchKey = SearchKey;
-            _Content = Content;
-            _GUID = Guid;
-            _ImageFileId = Image;
-            _HitCount = 0;
+            this._Title = Title;
+            this._Description = Description;
+            this._Author = Author;
+            this._PubDate = PubDate;
+            this._ModuleId = ModuleID;
+            this._SearchKey = SearchKey;
+            this._Content = Content;
+            this._GUID = Guid;
+            this._ImageFileId = Image;
+            this._HitCount = 0;
         }
 
         public SearchItemInfo(string Title, string Description, int Author, DateTime PubDate, int ModuleID, string SearchKey, string Content, string Guid, int Image, int TabID)
         {
-            _Title = Title;
-            _Description = Description;
-            _Author = Author;
-            _PubDate = PubDate;
-            _ModuleId = ModuleID;
-            _SearchKey = SearchKey;
-            _Content = Content;
-            _GUID = Guid;
-            _ImageFileId = Image;
-            _HitCount = 0;
-            _TabId = TabID;
+            this._Title = Title;
+            this._Description = Description;
+            this._Author = Author;
+            this._PubDate = PubDate;
+            this._ModuleId = ModuleID;
+            this._SearchKey = SearchKey;
+            this._Content = Content;
+            this._GUID = Guid;
+            this._ImageFileId = Image;
+            this._HitCount = 0;
+            this._TabId = TabID;
         }
 
 
@@ -93,11 +93,11 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _SearchItemId;
+                return this._SearchItemId;
             }
             set
             {
-                _SearchItemId = value;
+                this._SearchItemId = value;
             }
         }
 
@@ -105,11 +105,11 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _Title;
+                return this._Title;
             }
             set
             {
-                _Title = value;
+                this._Title = value;
             }
         }
 
@@ -117,11 +117,11 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _Description;
+                return this._Description;
             }
             set
             {
-                _Description = value;
+                this._Description = value;
             }
         }
 
@@ -129,11 +129,11 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _Author;
+                return this._Author;
             }
             set
             {
-                _Author = value;
+                this._Author = value;
             }
         }
 
@@ -141,11 +141,11 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _PubDate;
+                return this._PubDate;
             }
             set
             {
-                _PubDate = value;
+                this._PubDate = value;
             }
         }
 
@@ -153,11 +153,11 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _ModuleId;
+                return this._ModuleId;
             }
             set
             {
-                _ModuleId = value;
+                this._ModuleId = value;
             }
         }
 
@@ -165,11 +165,11 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _SearchKey;
+                return this._SearchKey;
             }
             set
             {
-                _SearchKey = value;
+                this._SearchKey = value;
             }
         }
 
@@ -177,11 +177,11 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _Content;
+                return this._Content;
             }
             set
             {
-                _Content = value;
+                this._Content = value;
             }
         }
 
@@ -189,11 +189,11 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _GUID;
+                return this._GUID;
             }
             set
             {
-                _GUID = value;
+                this._GUID = value;
             }
         }
 
@@ -201,11 +201,11 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _ImageFileId;
+                return this._ImageFileId;
             }
             set
             {
-                _ImageFileId = value;
+                this._ImageFileId = value;
             }
         }
 
@@ -213,11 +213,11 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _HitCount;
+                return this._HitCount;
             }
             set
             {
-                _HitCount = value;
+                this._HitCount = value;
             }
         }
 
@@ -225,11 +225,11 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _TabId;
+                return this._TabId;
             }
             set
             {
-                _TabId = value;
+                this._TabId = value;
             }
         }
     }

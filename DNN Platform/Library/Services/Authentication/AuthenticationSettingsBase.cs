@@ -30,11 +30,11 @@ namespace DotNetNuke.Services.Authentication
         {
             get
             {
-                return _AuthenticationType;
+                return this._AuthenticationType;
             }
             set
             {
-                _AuthenticationType = value;
+                this._AuthenticationType = value;
             }
         }
 

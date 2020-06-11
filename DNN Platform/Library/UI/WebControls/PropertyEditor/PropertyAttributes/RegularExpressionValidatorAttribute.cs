@@ -20,14 +20,14 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         public RegularExpressionValidatorAttribute(string expression)
         {
-            _Expression = expression;
+            this._Expression = expression;
         }
 
         public string Expression
         {
             get
             {
-                return _Expression;
+                return this._Expression;
             }
         }
     }

@@ -33,8 +33,8 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
         /// </summary>        
         public override void Execute()
         {
-            Percentage = 0;
-            Status = StepStatus.Running;
+            this.Percentage = 0;
+            this.Status = StepStatus.Running;
 
             var installConfig = InstallController.Instance.GetInstallConfig();
             string culture = installConfig.InstallCulture;
@@ -63,7 +63,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 	            }
 
             }
-            Status = StepStatus.Done;
+            this.Status = StepStatus.Done;
         }
 
         #endregion

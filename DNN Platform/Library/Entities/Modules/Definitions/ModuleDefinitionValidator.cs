@@ -31,7 +31,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
     {
         private string GetDnnSchemaPath(Stream xmlStream)
         {
-            ModuleDefinitionVersion Version = GetModuleDefinitionVersion(xmlStream);
+            ModuleDefinitionVersion Version = this.GetModuleDefinitionVersion(xmlStream);
             string schemaPath = "";
             switch (Version)
             {
@@ -116,7 +116,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         public override bool Validate(Stream XmlStream)
         {
-            SchemaSet.Add("", GetDnnSchemaPath(XmlStream));
+            this.SchemaSet.Add("", this.GetDnnSchemaPath(XmlStream));
             return base.Validate(XmlStream);
         }
     }

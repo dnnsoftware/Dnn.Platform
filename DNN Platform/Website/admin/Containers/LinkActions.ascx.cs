@@ -25,11 +25,11 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return _itemSeparator;
+                return this._itemSeparator;
             }
             set
             {
-                _itemSeparator = value;
+                this._itemSeparator = value;
             }
         }
 
@@ -39,18 +39,18 @@ namespace DotNetNuke.UI.Containers
             try
             {
                 {
-                    if (ActionRoot.Visible)
+                    if (this.ActionRoot.Visible)
                     {
 						//Is Root Menu visible?
-                        if (Controls.Count > 0)
+                        if (this.Controls.Count > 0)
                         {
-                            Controls.Clear();
+                            this.Controls.Clear();
                         }
-                        var PreSpacer = new LiteralControl(ItemSeparator);
-                        Controls.Add(PreSpacer);
+                        var PreSpacer = new LiteralControl(this.ItemSeparator);
+                        this.Controls.Add(PreSpacer);
 
                         //Add Menu Items
-                        foreach (ModuleAction action in ActionRoot.Actions)
+                        foreach (ModuleAction action in this.ActionRoot.Actions)
                         {
                             if (action.Title == "~")
                             {
@@ -60,7 +60,7 @@ namespace DotNetNuke.UI.Containers
                             {
                                 if (action.Visible)
                                 {
-                                    if ((ModuleControl.ModuleContext.EditMode && Globals.IsAdminControl() == false) ||
+                                    if ((this.ModuleControl.ModuleContext.EditMode && Globals.IsAdminControl() == false) ||
                                         (action.Secure != SecurityAccessLevel.Anonymous && action.Secure != SecurityAccessLevel.View))
                                     {
                                         var ModuleActionLink = new LinkButton();
@@ -68,11 +68,11 @@ namespace DotNetNuke.UI.Containers
                                         ModuleActionLink.CssClass = "CommandButton";
                                         ModuleActionLink.ID = "lnk" + action.ID;
 
-                                        ModuleActionLink.Click += LinkAction_Click;
+                                        ModuleActionLink.Click += this.LinkAction_Click;
 
-                                        Controls.Add(ModuleActionLink);
-                                        var Spacer = new LiteralControl(ItemSeparator);
-                                        Controls.Add(Spacer);
+                                        this.Controls.Add(ModuleActionLink);
+                                        var Spacer = new LiteralControl(this.ItemSeparator);
+                                        this.Controls.Add(Spacer);
                                     }
                                 }
                             }
@@ -81,13 +81,13 @@ namespace DotNetNuke.UI.Containers
                 }
 				
                 //Need to determine if this action list actually has any items.
-                if (Controls.Count > 0)
+                if (this.Controls.Count > 0)
                 {
-                    Visible = true;
+                    this.Visible = true;
                 }
                 else
                 {
-                    Visible = false;
+                    this.Visible = false;
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -99,9 +99,9 @@ namespace DotNetNuke.UI.Containers
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            if (String.IsNullOrEmpty(_itemSeparator))
+            if (String.IsNullOrEmpty(this._itemSeparator))
             {
-                _itemSeparator = "&nbsp;&nbsp;";
+                this._itemSeparator = "&nbsp;&nbsp;";
             }
         }
 
@@ -109,7 +109,7 @@ namespace DotNetNuke.UI.Containers
         {
             try
             {
-                ProcessAction(((LinkButton) sender).ID.Substring(3));
+                this.ProcessAction(((LinkButton) sender).ID.Substring(3));
             }
             catch (Exception exc) //Module failed to load
             {

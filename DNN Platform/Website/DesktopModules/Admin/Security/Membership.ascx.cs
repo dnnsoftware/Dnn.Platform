@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.Admin.Users
         private readonly INavigationManager _navigationManager;
         public Membership()
         {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
 		#region "Public Properties"
@@ -53,9 +53,9 @@ namespace DotNetNuke.Modules.Admin.Users
             get
             {
                 UserMembership membership = null;
-                if (User != null)
+                if (this.User != null)
                 {
-                    membership = User.Membership;
+                    membership = this.User.Membership;
                 }
                 return membership;
             }
@@ -89,14 +89,14 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         public void OnMembershipPromoteToSuperuser(EventArgs e)
         {
-            if (IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin == false)
             {
                 return;
             }
-            if (MembershipPromoteToSuperuser != null)
+            if (this.MembershipPromoteToSuperuser != null)
             {
-                MembershipPromoteToSuperuser(this, e);
-                Response.Redirect(_navigationManager.NavigateURL(), true);
+                this.MembershipPromoteToSuperuser(this, e);
+                this.Response.Redirect(this._navigationManager.NavigateURL(), true);
             }
         }
 
@@ -107,14 +107,14 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         public void OnMembershipDemoteFromSuperuser(EventArgs e)
         {
-            if (IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin == false)
             {
                 return;
             }
-            if (MembershipDemoteFromSuperuser != null)
+            if (this.MembershipDemoteFromSuperuser != null)
             {
-                MembershipDemoteFromSuperuser(this, e);
-                Response.Redirect(_navigationManager.NavigateURL(), true);
+                this.MembershipDemoteFromSuperuser(this, e);
+                this.Response.Redirect(this._navigationManager.NavigateURL(), true);
             }
         }
 
@@ -126,13 +126,13 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         public void OnMembershipAuthorized(EventArgs e)
         {
-            if (IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin == false)
             {
                 return;
             }
-            if (MembershipAuthorized != null)
+            if (this.MembershipAuthorized != null)
             {
-                MembershipAuthorized(this, e);
+                this.MembershipAuthorized(this, e);
             }
         }
 
@@ -143,13 +143,13 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         public void OnMembershipPasswordUpdateChanged(EventArgs e)
         {
-            if (IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin == false)
             {
                 return;
             }
-            if (MembershipPasswordUpdateChanged != null)
+            if (this.MembershipPasswordUpdateChanged != null)
             {
-                MembershipPasswordUpdateChanged(this, e);
+                this.MembershipPasswordUpdateChanged(this, e);
             }
         }
 
@@ -160,13 +160,13 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         public void OnMembershipUnAuthorized(EventArgs e)
         {
-            if (IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin == false)
             {
                 return;
             }
-            if (MembershipUnAuthorized != null)
+            if (this.MembershipUnAuthorized != null)
             {
-                MembershipUnAuthorized(this, e);
+                this.MembershipUnAuthorized(this, e);
             }
         }
 
@@ -177,13 +177,13 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         public void OnMembershipUnLocked(EventArgs e)
         {
-            if (IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin == false)
             {
                 return;
             }
-            if (MembershipUnLocked != null)
+            if (this.MembershipUnLocked != null)
             {
-                MembershipUnLocked(this, e);
+                this.MembershipUnLocked(this, e);
             }
         }
 
@@ -199,58 +199,58 @@ namespace DotNetNuke.Modules.Admin.Users
         public override void DataBind()
         {
 			//disable/enable buttons
-            if (UserInfo.UserID == User.UserID)
+            if (this.UserInfo.UserID == this.User.UserID)
             {
-                cmdAuthorize.Visible = false;
-                cmdUnAuthorize.Visible = false;
-                cmdUnLock.Visible = false;
-                cmdPassword.Visible = false;
+                this.cmdAuthorize.Visible = false;
+                this.cmdUnAuthorize.Visible = false;
+                this.cmdUnLock.Visible = false;
+                this.cmdPassword.Visible = false;
             }
             else
             {
-                cmdUnLock.Visible = UserMembership.LockedOut;
-                cmdUnAuthorize.Visible = UserMembership.Approved && !User.IsInRole("Unverified Users");
-                cmdAuthorize.Visible = !UserMembership.Approved || User.IsInRole("Unverified Users");
-                cmdPassword.Visible = !UserMembership.UpdatePassword;
+                this.cmdUnLock.Visible = this.UserMembership.LockedOut;
+                this.cmdUnAuthorize.Visible = this.UserMembership.Approved && !this.User.IsInRole("Unverified Users");
+                this.cmdAuthorize.Visible = !this.UserMembership.Approved || this.User.IsInRole("Unverified Users");
+                this.cmdPassword.Visible = !this.UserMembership.UpdatePassword;
             }
-            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser && UserController.Instance.GetCurrentUserInfo().UserID!=User.UserID)
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser && UserController.Instance.GetCurrentUserInfo().UserID!=this.User.UserID)
             {
-                cmdToggleSuperuser.Visible = true;
+                this.cmdToggleSuperuser.Visible = true;
 
-                if (User.IsSuperUser)
+                if (this.User.IsSuperUser)
                 {
-                    cmdToggleSuperuser.Text = Localization.GetString("DemoteFromSuperUser", LocalResourceFile);
+                    this.cmdToggleSuperuser.Text = Localization.GetString("DemoteFromSuperUser", this.LocalResourceFile);
                 }
                 else
                 {
-                    cmdToggleSuperuser.Text = Localization.GetString("PromoteToSuperUser", LocalResourceFile);
+                    this.cmdToggleSuperuser.Text = Localization.GetString("PromoteToSuperUser", this.LocalResourceFile);
                 }
-                if (PortalController.GetPortalsByUser(User.UserID).Count == 0)
+                if (PortalController.GetPortalsByUser(this.User.UserID).Count == 0)
                 {
-                    cmdToggleSuperuser.Visible = false;
+                    this.cmdToggleSuperuser.Visible = false;
                 }
             }
-            lastLockoutDate.Value = UserMembership.LastLockoutDate.Year > 2000
-                                        ? (object) UserMembership.LastLockoutDate
-                                        : LocalizeString("Never");
+            this.lastLockoutDate.Value = this.UserMembership.LastLockoutDate.Year > 2000
+                                        ? (object) this.UserMembership.LastLockoutDate
+                                        : this.LocalizeString("Never");
             // ReSharper disable SpecifyACultureInStringConversionExplicitly
-            isOnLine.Value = LocalizeString(UserMembership.IsOnLine.ToString());
-            lockedOut.Value = LocalizeString(UserMembership.LockedOut.ToString());
-            approved.Value = LocalizeString(UserMembership.Approved.ToString());
-            updatePassword.Value = LocalizeString(UserMembership.UpdatePassword.ToString());
-            isDeleted.Value = LocalizeString(UserMembership.IsDeleted.ToString());
+            this.isOnLine.Value = this.LocalizeString(this.UserMembership.IsOnLine.ToString());
+            this.lockedOut.Value = this.LocalizeString(this.UserMembership.LockedOut.ToString());
+            this.approved.Value = this.LocalizeString(this.UserMembership.Approved.ToString());
+            this.updatePassword.Value = this.LocalizeString(this.UserMembership.UpdatePassword.ToString());
+            this.isDeleted.Value = this.LocalizeString(this.UserMembership.IsDeleted.ToString());
 
             //show the user folder path without default parent folder, and only visible to admin.
-            userFolder.Visible = UserInfo.IsInRole(PortalSettings.AdministratorRoleName);
-            if (userFolder.Visible)
+            this.userFolder.Visible = this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
+            if (this.userFolder.Visible)
             {
-                userFolder.Value = FolderManager.Instance.GetUserFolder(User).FolderPath.Substring(6);
+                this.userFolder.Value = FolderManager.Instance.GetUserFolder(this.User).FolderPath.Substring(6);
             }
 
             // ReSharper restore SpecifyACultureInStringConversionExplicitly
 
-            membershipForm.DataSource = UserMembership;
-            membershipForm.DataBind();
+            this.membershipForm.DataSource = this.UserMembership;
+            this.membershipForm.DataBind();
         }
 
 		#endregion
@@ -268,11 +268,11 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             base.OnLoad(e);
 
-            cmdAuthorize.Click += cmdAuthorize_Click;
-            cmdPassword.Click += cmdPassword_Click;
-            cmdUnAuthorize.Click += cmdUnAuthorize_Click;
-            cmdUnLock.Click += cmdUnLock_Click;
-            cmdToggleSuperuser.Click+=cmdToggleSuperuser_Click;
+            this.cmdAuthorize.Click += this.cmdAuthorize_Click;
+            this.cmdPassword.Click += this.cmdPassword_Click;
+            this.cmdUnAuthorize.Click += this.cmdUnAuthorize_Click;
+            this.cmdUnLock.Click += this.cmdUnLock_Click;
+            this.cmdToggleSuperuser.Click+=this.cmdToggleSuperuser_Click;
         }
 
 
@@ -283,29 +283,29 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         private void cmdAuthorize_Click(object sender, EventArgs e)
         {
-            if (IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin == false)
             {
                 return;
             }
-            if (Request.IsAuthenticated != true) return;
+            if (this.Request.IsAuthenticated != true) return;
 
 			//Get the Membership Information from the property editors
-            User.Membership = (UserMembership)membershipForm.DataSource;
+            this.User.Membership = (UserMembership)this.membershipForm.DataSource;
 
-            User.Membership.Approved = true;
+            this.User.Membership.Approved = true;
 
             //Update User
-            UserController.UpdateUser(PortalId, User);
+            UserController.UpdateUser(this.PortalId, this.User);
 
             //Update User Roles if needed
-            if (!User.IsSuperUser && User.IsInRole("Unverified Users") && PortalSettings.UserRegistration == (int)Common.Globals.PortalRegistrationType.VerifiedRegistration)
+            if (!this.User.IsSuperUser && this.User.IsInRole("Unverified Users") && this.PortalSettings.UserRegistration == (int)Common.Globals.PortalRegistrationType.VerifiedRegistration)
             {
-                UserController.ApproveUser(User);
+                UserController.ApproveUser(this.User);
             }
 
-            Mail.SendMail(User, MessageType.UserAuthorized, PortalSettings);
+            Mail.SendMail(this.User, MessageType.UserAuthorized, this.PortalSettings);
 
-            OnMembershipAuthorized(EventArgs.Empty);
+            this.OnMembershipAuthorized(EventArgs.Empty);
         }
 
         /// -----------------------------------------------------------------------------
@@ -315,29 +315,29 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         private void cmdPassword_Click(object sender, EventArgs e)
         {
-            if (IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin == false)
             {
                 return;
             }
-            if (Request.IsAuthenticated != true) return;
+            if (this.Request.IsAuthenticated != true) return;
 
-            bool canSend = Mail.SendMail(User, MessageType.PasswordReminder, PortalSettings) == string.Empty;
+            bool canSend = Mail.SendMail(this.User, MessageType.PasswordReminder, this.PortalSettings) == string.Empty;
             var message = String.Empty;
             if (canSend)
             {
                 //Get the Membership Information from the property editors
-                User.Membership = (UserMembership)membershipForm.DataSource;
+                this.User.Membership = (UserMembership)this.membershipForm.DataSource;
 
-                User.Membership.UpdatePassword = true;
+                this.User.Membership.UpdatePassword = true;
 
                 //Update User
-                UserController.UpdateUser(PortalId, User);
+                UserController.UpdateUser(this.PortalId, this.User);
 
-                OnMembershipPasswordUpdateChanged(EventArgs.Empty);
+                this.OnMembershipPasswordUpdateChanged(EventArgs.Empty);
             }
             else
             {
-                message = Localization.GetString("OptionUnavailable", LocalResourceFile);
+                message = Localization.GetString("OptionUnavailable", this.LocalResourceFile);
                 UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.YellowWarning);
             }
 
@@ -350,21 +350,21 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         private void cmdUnAuthorize_Click(object sender, EventArgs e)
         {
-            if (IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin == false)
             {
                 return;
             }
-            if (Request.IsAuthenticated != true) return;
+            if (this.Request.IsAuthenticated != true) return;
 
 			//Get the Membership Information from the property editors
-            User.Membership = (UserMembership)membershipForm.DataSource;
+            this.User.Membership = (UserMembership)this.membershipForm.DataSource;
 
-            User.Membership.Approved = false;
+            this.User.Membership.Approved = false;
 
             //Update User
-            UserController.UpdateUser(PortalId, User);
+            UserController.UpdateUser(this.PortalId, this.User);
 
-            OnMembershipUnAuthorized(EventArgs.Empty);
+            this.OnMembershipUnAuthorized(EventArgs.Empty);
         }
         /// <summary>
         /// cmdToggleSuperuser_Click runs when the toggle superuser button is clicked
@@ -373,27 +373,27 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="e"></param>
         private void cmdToggleSuperuser_Click(object sender, EventArgs e)
         {
-            if (IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin == false)
             {
                 return;
             }
-            if (Request.IsAuthenticated != true) return;
+            if (this.Request.IsAuthenticated != true) return;
             ////ensure only superusers can change user superuser state
             if (UserController.Instance.GetCurrentUserInfo().IsSuperUser != true) return;
 
-            var currentSuperUserState = User.IsSuperUser;
-            User.IsSuperUser = !currentSuperUserState;
+            var currentSuperUserState = this.User.IsSuperUser;
+            this.User.IsSuperUser = !currentSuperUserState;
             //Update User
-            UserController.UpdateUser(PortalId, User);
+            UserController.UpdateUser(this.PortalId, this.User);
             DataCache.ClearCache();
 
             if (currentSuperUserState)
             {
-                OnMembershipDemoteFromSuperuser(EventArgs.Empty);
+                this.OnMembershipDemoteFromSuperuser(EventArgs.Empty);
             }
             else
             {
-                OnMembershipPromoteToSuperuser(EventArgs.Empty);
+                this.OnMembershipPromoteToSuperuser(EventArgs.Empty);
             }
 
         }
@@ -404,20 +404,20 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         private void cmdUnLock_Click(Object sender, EventArgs e)
         {
-            if (IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin == false)
             {
                 return;
             }
-            if (Request.IsAuthenticated != true) return;
+            if (this.Request.IsAuthenticated != true) return;
 
 			//update the user record in the database
-            bool isUnLocked = UserController.UnLockUser(User);
+            bool isUnLocked = UserController.UnLockUser(this.User);
 
             if (isUnLocked)
             {
-                User.Membership.LockedOut = false;
+                this.User.Membership.LockedOut = false;
 
-                OnMembershipUnLocked(EventArgs.Empty);
+                this.OnMembershipUnLocked(EventArgs.Empty);
             }
         }
 

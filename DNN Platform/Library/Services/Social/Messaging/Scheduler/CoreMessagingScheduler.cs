@@ -54,12 +54,12 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             try
             {
                 var schedulerInstance = Guid.NewGuid();
-                ScheduleHistoryItem.AddLogNote("Messaging Scheduler DoWork Starting " + schedulerInstance);
+                this.ScheduleHistoryItem.AddLogNote("Messaging Scheduler DoWork Starting " + schedulerInstance);
 
                 if (string.IsNullOrEmpty(Host.SMTPServer))
                 {
-                    ScheduleHistoryItem.AddLogNote("<br>No SMTP Servers have been configured for this host. Terminating task.");
-                    ScheduleHistoryItem.Succeeded = true;
+                    this.ScheduleHistoryItem.AddLogNote("<br>No SMTP Servers have been configured for this host. Terminating task.");
+                    this.ScheduleHistoryItem.Succeeded = true;
                 }
                 else
                 {
@@ -72,13 +72,13 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                         this.HandleFrequentDigests(schedulerInstance, remainingMessages);
                     }
 
-                    ScheduleHistoryItem.Succeeded = true;
+                    this.ScheduleHistoryItem.Succeeded = true;
                 }
             }
             catch (Exception ex)
             {
-                ScheduleHistoryItem.Succeeded = false;
-                ScheduleHistoryItem.AddLogNote("<br>Messaging Scheduler Failed: " + ex);
+                this.ScheduleHistoryItem.Succeeded = false;
+                this.ScheduleHistoryItem.AddLogNote("<br>Messaging Scheduler Failed: " + ex);
                 this.Errored(ref ex);
             }
         }
@@ -454,7 +454,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 if (handledMessages < remainingMessages)
                 {
                     SchedulingProvider.Instance().AddScheduleItemSetting(
-                        ScheduleHistoryItem.ScheduleID, settingKeyLastRunDate, DateTime.Now.ToString(CultureInfo.InvariantCulture));
+                        this.ScheduleHistoryItem.ScheduleID, settingKeyLastRunDate, DateTime.Now.ToString(CultureInfo.InvariantCulture));
                 }
             }
 
@@ -471,7 +471,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             var messagesSent = 0;
 
             // get subscribers based on frequency, utilize remaining batch size as part of count of users to return (note, if multiple subscriptions have the same frequency they will be combined into 1 email)
-            ScheduleHistoryItem.AddLogNote("<br>Messaging Scheduler Starting Digest '" + schedulerInstance + "'.  ");
+            this.ScheduleHistoryItem.AddLogNote("<br>Messaging Scheduler Starting Digest '" + schedulerInstance + "'.  ");
             
             var messageLeft = true;
 
@@ -504,7 +504,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                         }
 
                         // at this point we have sent all digest notifications for this batch
-                        ScheduleHistoryItem.AddLogNote("Sent " + messagesSent + " digest subscription emails for this batch.  ");
+                        this.ScheduleHistoryItem.AddLogNote("Sent " + messagesSent + " digest subscription emails for this batch.  ");
                         return messagesSent;
                     }
                     catch (Exception e)
@@ -518,7 +518,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 }
             }
 
-            ScheduleHistoryItem.AddLogNote("Sent " + messagesSent + " " + frequency + " digest subscription emails.  ");
+            this.ScheduleHistoryItem.AddLogNote("Sent " + messagesSent + " " + frequency + " digest subscription emails.  ");
             
             return messagesSent;
         }
@@ -585,7 +585,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <returns>The date the schedule was ran</returns>
         private DateTime GetScheduleItemDateSetting(string settingKey)
         {
-            var colScheduleItemSettings = SchedulingProvider.Instance().GetScheduleItemSettings(ScheduleHistoryItem.ScheduleID);
+            var colScheduleItemSettings = SchedulingProvider.Instance().GetScheduleItemSettings(this.ScheduleHistoryItem.ScheduleID);
             var dateValue = DateTime.Now;
 
             if (colScheduleItemSettings.Count > 0)
@@ -598,13 +598,13 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             else
             {
                 SchedulingProvider.Instance().AddScheduleItemSetting(
-                    ScheduleHistoryItem.ScheduleID, SettingLastHourlyRun, dateValue.ToString(CultureInfo.InvariantCulture));
+                    this.ScheduleHistoryItem.ScheduleID, SettingLastHourlyRun, dateValue.ToString(CultureInfo.InvariantCulture));
                 SchedulingProvider.Instance().AddScheduleItemSetting(
-                   ScheduleHistoryItem.ScheduleID, SettingLastDailyRun, dateValue.ToString(CultureInfo.InvariantCulture));
+                   this.ScheduleHistoryItem.ScheduleID, SettingLastDailyRun, dateValue.ToString(CultureInfo.InvariantCulture));
                 SchedulingProvider.Instance().AddScheduleItemSetting(
-                   ScheduleHistoryItem.ScheduleID, SettingLastWeeklyRun, dateValue.ToString(CultureInfo.InvariantCulture));
+                   this.ScheduleHistoryItem.ScheduleID, SettingLastWeeklyRun, dateValue.ToString(CultureInfo.InvariantCulture));
                 SchedulingProvider.Instance().AddScheduleItemSetting(
-                   ScheduleHistoryItem.ScheduleID, SettingLastMonthlyRun, dateValue.ToString(CultureInfo.InvariantCulture));
+                   this.ScheduleHistoryItem.ScheduleID, SettingLastMonthlyRun, dateValue.ToString(CultureInfo.InvariantCulture));
             }
 
             return dateValue;
@@ -643,7 +643,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 }
             }
 
-            ScheduleHistoryItem.AddLogNote(string.Format("<br>Messaging Scheduler '{0}' sent a total of {1} message(s)", schedulerInstance, messagesSent));
+            this.ScheduleHistoryItem.AddLogNote(string.Format("<br>Messaging Scheduler '{0}' sent a total of {1} message(s)", schedulerInstance, messagesSent));
             return messagesSent;
         }
 
@@ -690,7 +690,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 // Include the attachment in the email message if configured to do so
                 if (InternalMessagingController.Instance.AttachmentsAllowed(message.PortalID))
                 {
-                    Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body, CreateAttachments(message.MessageID).ToList());
+                    Mail.Mail.SendEmail(fromAddress, senderAddress, toAddress, subject, body, this.CreateAttachments(message.MessageID).ToList());
                 }
                 else
                 {

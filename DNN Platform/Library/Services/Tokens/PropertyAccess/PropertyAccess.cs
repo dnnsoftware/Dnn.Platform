@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Tokens
 
         public PropertyAccess(object TokenSource)
         {
-            obj = TokenSource;
+            this.obj = TokenSource;
         }
 
         public static string ContentLocked
@@ -40,11 +40,11 @@ namespace DotNetNuke.Services.Tokens
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
-            if (obj == null)
+            if (this.obj == null)
             {
                 return string.Empty;
             }
-            return GetObjectProperty(obj, propertyName, format, formatProvider, ref PropertyNotFound);
+            return GetObjectProperty(this.obj, propertyName, format, formatProvider, ref PropertyNotFound);
         }
 
         public CacheLevel Cacheability

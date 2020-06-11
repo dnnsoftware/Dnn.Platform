@@ -25,7 +25,7 @@ namespace DotNetNuke.Security.Cookies
             if (string.IsNullOrEmpty(cookieValue)) return;
 
             DataCache.ClearCache(GetKey(cookieValue));
-            _dataProvider.UpdateAuthCookie(cookieValue, utcExpiry, userId);
+            this._dataProvider.UpdateAuthCookie(cookieValue, utcExpiry, userId);
         }
 
         public PersistedAuthCookie Find(string cookieValue)
@@ -34,7 +34,7 @@ namespace DotNetNuke.Security.Cookies
 
             return CBO.Instance.GetCachedObject<PersistedAuthCookie>(
                 new CacheItemArgs(GetKey(cookieValue), (int)FormsAuthentication.Timeout.TotalMinutes, CacheItemPriority.AboveNormal),
-                _ => CBO.Instance.FillObject<PersistedAuthCookie>(_dataProvider.FindAuthCookie(cookieValue)), false);
+                _ => CBO.Instance.FillObject<PersistedAuthCookie>(this._dataProvider.FindAuthCookie(cookieValue)), false);
         }
 
         public void DeleteByValue(string cookieValue)
@@ -43,12 +43,12 @@ namespace DotNetNuke.Security.Cookies
 
             // keep in cache so hacking tries don't hit the database; it will expire automatically
             //DataCache.ClearCache(GetKey(cookieValue));
-            _dataProvider.DeleteAuthCookie(cookieValue);
+            this._dataProvider.DeleteAuthCookie(cookieValue);
         }
 
         public void DeleteExpired(DateTime utcExpiredBefore)
         {
-            _dataProvider.DeleteExpiredAuthCookies(utcExpiredBefore);
+            this._dataProvider.DeleteExpiredAuthCookies(utcExpiredBefore);
         }
 
         private static string GetKey(string cookieValue)

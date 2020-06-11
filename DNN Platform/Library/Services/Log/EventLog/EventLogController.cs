@@ -196,12 +196,12 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public void AddLog(string propertyName, string propertyValue, EventLogType logType)
         {
-            AddLog(propertyName, propertyValue, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, logType);
+            this.AddLog(propertyName, propertyValue, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, logType);
         }
 
         public void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, EventLogType logType)
         {
-            AddLog(propertyName, propertyValue, portalSettings, userID, logType.ToString());
+            this.AddLog(propertyName, propertyValue, portalSettings, userID, logType.ToString());
         }
 
         public void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, string logType)
@@ -209,7 +209,7 @@ namespace DotNetNuke.Services.Log.EventLog
             var properties = new LogProperties();
             var logDetailInfo = new LogDetailInfo {PropertyName = propertyName, PropertyValue = propertyValue};
             properties.Add(logDetailInfo);
-            AddLog(properties, portalSettings, userID, logType, false);
+            this.AddLog(properties, portalSettings, userID, logType, false);
         }
 
         public void AddLog(LogProperties properties, PortalSettings portalSettings, int userID, string logTypeKey, bool bypassBuffering)
@@ -232,12 +232,12 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public void AddLog(PortalSettings portalSettings, int userID, EventLogType logType)
         {
-            AddLog(new LogProperties(), portalSettings, userID, logType.ToString(), false);
+            this.AddLog(new LogProperties(), portalSettings, userID, logType.ToString(), false);
         }
 
         public void AddLog(object businessObject, PortalSettings portalSettings, int userID, string userName, EventLogType logType)
         {
-            AddLog(businessObject, portalSettings, userID, userName, logType.ToString());
+            this.AddLog(businessObject, portalSettings, userID, userName, logType.ToString());
         }
 
         public void AddLog(object businessObject, PortalSettings portalSettings, int userID, string userName, string logType)

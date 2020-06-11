@@ -52,7 +52,7 @@ namespace log4net.Layout.Pattern
 		public ExceptionPatternConverter()
 		{
 			// This converter handles the exception
-			IgnoresException = false;
+			this.IgnoresException = false;
 		}
 
 		/// <summary>
@@ -96,9 +96,9 @@ namespace log4net.Layout.Pattern
 		/// </remarks>
 		override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
 		{
-			if (loggingEvent.ExceptionObject != null && Option != null && Option.Length > 0)
+			if (loggingEvent.ExceptionObject != null && this.Option != null && this.Option.Length > 0)
 			{
-				switch (Option.ToLower())
+				switch (this.Option.ToLower())
 				{
 					case "message":
 						WriteObject(writer, loggingEvent.Repository, loggingEvent.ExceptionObject.Message);

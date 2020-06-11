@@ -764,7 +764,7 @@ namespace DotNetNuke.Services.Localization
 
         public string GetFixedCurrency(decimal expression, string culture, int numDigitsAfterDecimal)
         {
-            string oldCurrentCulture = CurrentUICulture;
+            string oldCurrentCulture = this.CurrentUICulture;
             var newCulture = new CultureInfo(culture);
             Thread.CurrentThread.CurrentUICulture = newCulture;
             string currencyStr = expression.ToString(newCulture.NumberFormat.CurrencySymbol);
@@ -775,7 +775,7 @@ namespace DotNetNuke.Services.Localization
 
         public string GetFixedDate(DateTime expression, string culture)
         {
-            string oldCurrentCulture = CurrentUICulture;
+            string oldCurrentCulture = this.CurrentUICulture;
             var newCulture = new CultureInfo(culture);
             Thread.CurrentThread.CurrentUICulture = newCulture;
             string dateStr = expression.ToString(newCulture.DateTimeFormat.FullDateTimePattern);

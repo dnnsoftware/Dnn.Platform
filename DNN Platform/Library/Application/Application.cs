@@ -232,7 +232,7 @@ namespace DotNetNuke.Application
         /// </remarks>
         public virtual bool ApplyToProduct(string productNames)
         {
-            return productNames.Contains(Name);
+            return productNames.Contains(this.Name);
         }
 
         #endregion

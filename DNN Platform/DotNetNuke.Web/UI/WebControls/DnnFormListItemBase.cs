@@ -20,15 +20,15 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _listSource;
+                return this._listSource;
             }
             set
             {
-                var changed = !Equals(_listSource, value);
+                var changed = !Equals(this._listSource, value);
                 if (changed)
                 {
-                    _listSource = value;
-                    BindList();
+                    this._listSource = value;
+                    this.BindList();
                 }
             }
         }

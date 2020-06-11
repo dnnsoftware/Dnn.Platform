@@ -38,11 +38,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return String.IsNullOrEmpty(_CSSClassLinkActive) ? "" : _CSSClassLinkActive;
+                return String.IsNullOrEmpty(this._CSSClassLinkActive) ? "" : this._CSSClassLinkActive;
             }
             set
             {
-                _CSSClassLinkActive = value;
+                this._CSSClassLinkActive = value;
             }
         }
 
@@ -51,11 +51,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return String.IsNullOrEmpty(_CSSClassLinkInactive) ? "" : _CSSClassLinkInactive;
+                return String.IsNullOrEmpty(this._CSSClassLinkInactive) ? "" : this._CSSClassLinkInactive;
             }
             set
             {
-                _CSSClassLinkInactive = value;
+                this._CSSClassLinkInactive = value;
             }
         }
 
@@ -64,11 +64,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return String.IsNullOrEmpty(_CSSClassPagingStatus) ? "" : _CSSClassPagingStatus;
+                return String.IsNullOrEmpty(this._CSSClassPagingStatus) ? "" : this._CSSClassPagingStatus;
             }
             set
             {
-                _CSSClassPagingStatus = value;
+                this._CSSClassPagingStatus = value;
             }
         }
 
@@ -79,11 +79,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return _Mode;
+                return this._Mode;
             }
             set
             {
-                _Mode = value;
+                this._Mode = value;
             }
         }
 
@@ -103,8 +103,8 @@ namespace DotNetNuke.UI.WebControls
 
         public void RaisePostBackEvent(string eventArgument)
         {
-            CurrentPage = int.Parse(eventArgument.Replace("Page_", ""));
-            OnPageChanged(new EventArgs());
+            this.CurrentPage = int.Parse(eventArgument.Replace("Page_", ""));
+            this.OnPageChanged(new EventArgs());
         }
 
         #endregion
@@ -116,46 +116,46 @@ namespace DotNetNuke.UI.WebControls
             const int pageLinksPerPage = 10;
             if (TotalRecords < 1 || RecordsPerPage < 1)
             {
-                _totalPages = 1;
+                this._totalPages = 1;
                 return;
             }
-            _totalPages = TotalRecords/RecordsPerPage >= 1 ? Convert.ToInt32(Math.Ceiling(Convert.ToDouble(TotalRecords)/RecordsPerPage)) : 0;
-            if (_totalPages > 0)
+            this._totalPages = TotalRecords/RecordsPerPage >= 1 ? Convert.ToInt32(Math.Ceiling(Convert.ToDouble(TotalRecords)/RecordsPerPage)) : 0;
+            if (this._totalPages > 0)
             {
                 var ht = new DataTable();
                 ht.Columns.Add("PageNum");
                 DataRow tmpRow;
                 var LowNum = 1;
-                var HighNum = Convert.ToInt32(_totalPages);
+                var HighNum = Convert.ToInt32(this._totalPages);
                 double tmpNum;
-                tmpNum = CurrentPage - pageLinksPerPage/2;
+                tmpNum = this.CurrentPage - pageLinksPerPage/2;
                 if (tmpNum < 1)
                 {
                     tmpNum = 1;
                 }
-                if (CurrentPage > (pageLinksPerPage/2))
+                if (this.CurrentPage > (pageLinksPerPage/2))
                 {
                     LowNum = Convert.ToInt32(Math.Floor(tmpNum));
                 }
-                if (Convert.ToInt32(_totalPages) <= pageLinksPerPage)
+                if (Convert.ToInt32(this._totalPages) <= pageLinksPerPage)
                 {
-                    HighNum = Convert.ToInt32(_totalPages);
+                    HighNum = Convert.ToInt32(this._totalPages);
                 }
                 else
                 {
                     HighNum = LowNum + pageLinksPerPage - 1;
                 }
-                if (HighNum > Convert.ToInt32(_totalPages))
+                if (HighNum > Convert.ToInt32(this._totalPages))
                 {
-                    HighNum = Convert.ToInt32(_totalPages);
+                    HighNum = Convert.ToInt32(this._totalPages);
                     if (HighNum - LowNum < pageLinksPerPage)
                     {
                         LowNum = HighNum - pageLinksPerPage + 1;
                     }
                 }
-                if (HighNum > Convert.ToInt32(_totalPages))
+                if (HighNum > Convert.ToInt32(this._totalPages))
                 {
-                    HighNum = Convert.ToInt32(_totalPages);
+                    HighNum = Convert.ToInt32(this._totalPages);
                 }
                 if (LowNum < 1)
                 {
@@ -168,21 +168,21 @@ namespace DotNetNuke.UI.WebControls
                     tmpRow["PageNum"] = i;
                     ht.Rows.Add(tmpRow);
                 }
-                PageNumbers.DataSource = ht;
-                PageNumbers.DataBind();
+                this.PageNumbers.DataSource = ht;
+                this.PageNumbers.DataBind();
             }
         }
 
         private string CreateURL(string CurrentPage)
         {
-            switch (Mode)
+            switch (this.Mode)
             {
                 case PagingControlMode.URL:
-                    return !String.IsNullOrEmpty(QuerystringParams)
-                               ? (!String.IsNullOrEmpty(CurrentPage) ? TestableGlobals.Instance.NavigateURL(TabID, "", QuerystringParams, "currentpage=" + CurrentPage) : TestableGlobals.Instance.NavigateURL(TabID, "", QuerystringParams))
-                               : (!String.IsNullOrEmpty(CurrentPage) ? TestableGlobals.Instance.NavigateURL(TabID, "", "currentpage=" + CurrentPage) : TestableGlobals.Instance.NavigateURL(TabID));
+                    return !String.IsNullOrEmpty(this.QuerystringParams)
+                               ? (!String.IsNullOrEmpty(CurrentPage) ? TestableGlobals.Instance.NavigateURL(this.TabID, "", this.QuerystringParams, "currentpage=" + CurrentPage) : TestableGlobals.Instance.NavigateURL(this.TabID, "", this.QuerystringParams))
+                               : (!String.IsNullOrEmpty(CurrentPage) ? TestableGlobals.Instance.NavigateURL(this.TabID, "", "currentpage=" + CurrentPage) : TestableGlobals.Instance.NavigateURL(this.TabID));
                 default:
-                    return Page.ClientScript.GetPostBackClientHyperlink(this, "Page_" + CurrentPage, false);
+                    return this.Page.ClientScript.GetPostBackClientHyperlink(this, "Page_" + CurrentPage, false);
             }
         }
 
@@ -193,13 +193,13 @@ namespace DotNetNuke.UI.WebControls
         /// </remarks>
         private string GetLink(int PageNum)
         {
-            if (PageNum == CurrentPage)
+            if (PageNum == this.CurrentPage)
             {
-                return CSSClassLinkInactive.Trim().Length > 0 ? "<span class=\"" + CSSClassLinkInactive + "\">[" + PageNum + "]</span>" : "<span>[" + PageNum + "]</span>";
+                return this.CSSClassLinkInactive.Trim().Length > 0 ? "<span class=\"" + this.CSSClassLinkInactive + "\">[" + PageNum + "]</span>" : "<span>[" + PageNum + "]</span>";
             }
-            return CSSClassLinkActive.Trim().Length > 0
-                       ? "<a href=\"" + CreateURL(PageNum.ToString()) + "\" class=\"" + CSSClassLinkActive + "\">" + PageNum + "</a>"
-                       : "<a href=\"" + CreateURL(PageNum.ToString()) + "\">" + PageNum + "</a>";
+            return this.CSSClassLinkActive.Trim().Length > 0
+                       ? "<a href=\"" + this.CreateURL(PageNum.ToString()) + "\" class=\"" + this.CSSClassLinkActive + "\">" + PageNum + "</a>"
+                       : "<a href=\"" + this.CreateURL(PageNum.ToString()) + "\">" + PageNum + "</a>";
         }
 
         /// <summary>
@@ -209,13 +209,13 @@ namespace DotNetNuke.UI.WebControls
         /// </remarks>
         private string GetPreviousLink()
         {
-            return CurrentPage > 1 && _totalPages > 0
-                       ? (CSSClassLinkActive.Trim().Length > 0
-                              ? "<a href=\"" + CreateURL((CurrentPage - 1).ToString()) + "\" class=\"" + CSSClassLinkActive + "\">" +
+            return this.CurrentPage > 1 && this._totalPages > 0
+                       ? (this.CSSClassLinkActive.Trim().Length > 0
+                              ? "<a href=\"" + this.CreateURL((this.CurrentPage - 1).ToString()) + "\" class=\"" + this.CSSClassLinkActive + "\">" +
                                 Localization.GetString("Previous", Localization.SharedResourceFile) + "</a>"
-                              : "<a href=\"" + CreateURL((CurrentPage - 1).ToString()) + "\">" + Localization.GetString("Previous", Localization.SharedResourceFile) + "</a>")
-                       : (CSSClassLinkInactive.Trim().Length > 0
-                              ? "<span class=\"" + CSSClassLinkInactive + "\">" + Localization.GetString("Previous", Localization.SharedResourceFile) + "</span>"
+                              : "<a href=\"" + this.CreateURL((this.CurrentPage - 1).ToString()) + "\">" + Localization.GetString("Previous", Localization.SharedResourceFile) + "</a>")
+                       : (this.CSSClassLinkInactive.Trim().Length > 0
+                              ? "<span class=\"" + this.CSSClassLinkInactive + "\">" + Localization.GetString("Previous", Localization.SharedResourceFile) + "</span>"
                               : "<span>" + Localization.GetString("Previous", Localization.SharedResourceFile) + "</span>");
         }
 
@@ -226,13 +226,13 @@ namespace DotNetNuke.UI.WebControls
         /// </remarks>
         private string GetNextLink()
         {
-            return CurrentPage != _totalPages && _totalPages > 0
-                       ? (CSSClassLinkActive.Trim().Length > 0
-                              ? "<a href=\"" + CreateURL((CurrentPage + 1).ToString()) + "\" class=\"" + CSSClassLinkActive + "\">" + Localization.GetString("Next", Localization.SharedResourceFile) +
+            return this.CurrentPage != this._totalPages && this._totalPages > 0
+                       ? (this.CSSClassLinkActive.Trim().Length > 0
+                              ? "<a href=\"" + this.CreateURL((this.CurrentPage + 1).ToString()) + "\" class=\"" + this.CSSClassLinkActive + "\">" + Localization.GetString("Next", Localization.SharedResourceFile) +
                                 "</a>"
-                              : "<a href=\"" + CreateURL((CurrentPage + 1).ToString()) + "\">" + Localization.GetString("Next", Localization.SharedResourceFile) + "</a>")
-                       : (CSSClassLinkInactive.Trim().Length > 0
-                              ? "<span class=\"" + CSSClassLinkInactive + "\">" + Localization.GetString("Next", Localization.SharedResourceFile) + "</span>"
+                              : "<a href=\"" + this.CreateURL((this.CurrentPage + 1).ToString()) + "\">" + Localization.GetString("Next", Localization.SharedResourceFile) + "</a>")
+                       : (this.CSSClassLinkInactive.Trim().Length > 0
+                              ? "<span class=\"" + this.CSSClassLinkInactive + "\">" + Localization.GetString("Next", Localization.SharedResourceFile) + "</span>"
                               : "<span>" + Localization.GetString("Next", Localization.SharedResourceFile) + "</span>");
         }
 
@@ -243,14 +243,14 @@ namespace DotNetNuke.UI.WebControls
         /// </remarks>
         private string GetFirstLink()
         {
-            if (CurrentPage > 1 && _totalPages > 0)
+            if (this.CurrentPage > 1 && this._totalPages > 0)
             {
-                return CSSClassLinkActive.Trim().Length > 0
-                           ? "<a href=\"" + CreateURL("1") + "\" class=\"" + CSSClassLinkActive + "\">" + Localization.GetString("First", Localization.SharedResourceFile) + "</a>"
-                           : "<a href=\"" + CreateURL("1") + "\">" + Localization.GetString("First", Localization.SharedResourceFile) + "</a>";
+                return this.CSSClassLinkActive.Trim().Length > 0
+                           ? "<a href=\"" + this.CreateURL("1") + "\" class=\"" + this.CSSClassLinkActive + "\">" + Localization.GetString("First", Localization.SharedResourceFile) + "</a>"
+                           : "<a href=\"" + this.CreateURL("1") + "\">" + Localization.GetString("First", Localization.SharedResourceFile) + "</a>";
             }
-            return CSSClassLinkInactive.Trim().Length > 0
-                       ? "<span class=\"" + CSSClassLinkInactive + "\">" + Localization.GetString("First", Localization.SharedResourceFile) + "</span>"
+            return this.CSSClassLinkInactive.Trim().Length > 0
+                       ? "<span class=\"" + this.CSSClassLinkInactive + "\">" + Localization.GetString("First", Localization.SharedResourceFile) + "</span>"
                        : "<span>" + Localization.GetString("First", Localization.SharedResourceFile) + "</span>";
         }
 
@@ -261,70 +261,70 @@ namespace DotNetNuke.UI.WebControls
         /// </remarks>
         private string GetLastLink()
         {
-            if (CurrentPage != _totalPages && _totalPages > 0)
+            if (this.CurrentPage != this._totalPages && this._totalPages > 0)
             {
-                return CSSClassLinkActive.Trim().Length > 0
-                           ? "<a href=\"" + CreateURL(_totalPages.ToString()) + "\" class=\"" + CSSClassLinkActive + "\">" + Localization.GetString("Last", Localization.SharedResourceFile) + "</a>"
-                           : "<a href=\"" + CreateURL(_totalPages.ToString()) + "\">" + Localization.GetString("Last", Localization.SharedResourceFile) + "</a>";
+                return this.CSSClassLinkActive.Trim().Length > 0
+                           ? "<a href=\"" + this.CreateURL(this._totalPages.ToString()) + "\" class=\"" + this.CSSClassLinkActive + "\">" + Localization.GetString("Last", Localization.SharedResourceFile) + "</a>"
+                           : "<a href=\"" + this.CreateURL(this._totalPages.ToString()) + "\">" + Localization.GetString("Last", Localization.SharedResourceFile) + "</a>";
             }
-            return CSSClassLinkInactive.Trim().Length > 0
-                       ? "<span class=\"" + CSSClassLinkInactive + "\">" + Localization.GetString("Last", Localization.SharedResourceFile) + "</span>"
+            return this.CSSClassLinkInactive.Trim().Length > 0
+                       ? "<span class=\"" + this.CSSClassLinkInactive + "\">" + Localization.GetString("Last", Localization.SharedResourceFile) + "</span>"
                        : "<span>" + Localization.GetString("Last", Localization.SharedResourceFile) + "</span>";
         }
 
         protected override void CreateChildControls()
         {
-            tablePageNumbers = new Table();
-            cellDisplayStatus = new TableCell();
-            cellDisplayLinks = new TableCell();
+            this.tablePageNumbers = new Table();
+            this.cellDisplayStatus = new TableCell();
+            this.cellDisplayLinks = new TableCell();
             //cellDisplayStatus.CssClass = "Normal";
             //cellDisplayLinks.CssClass = "Normal";
-            tablePageNumbers.CssClass = String.IsNullOrEmpty(CssClass) ? "PagingTable" : CssClass;
-            var intRowIndex = tablePageNumbers.Rows.Add(new TableRow());
-            PageNumbers = new Repeater();
+            this.tablePageNumbers.CssClass = String.IsNullOrEmpty(this.CssClass) ? "PagingTable" : this.CssClass;
+            var intRowIndex = this.tablePageNumbers.Rows.Add(new TableRow());
+            this.PageNumbers = new Repeater();
             var I = new PageNumberLinkTemplate(this);
-            PageNumbers.ItemTemplate = I;
-            BindPageNumbers(TotalRecords, PageSize);
-            cellDisplayStatus.HorizontalAlign = HorizontalAlign.Left;
+            this.PageNumbers.ItemTemplate = I;
+            this.BindPageNumbers(this.TotalRecords, this.PageSize);
+            this.cellDisplayStatus.HorizontalAlign = HorizontalAlign.Left;
             //cellDisplayStatus.Width = new Unit("50%");
-            cellDisplayLinks.HorizontalAlign = HorizontalAlign.Right;
+            this.cellDisplayLinks.HorizontalAlign = HorizontalAlign.Right;
             //cellDisplayLinks.Width = new Unit("50%");
-            var intTotalPages = _totalPages;
+            var intTotalPages = this._totalPages;
             if (intTotalPages == 0)
             {
                 intTotalPages = 1;
             }
-            var str = string.Format(Localization.GetString("Pages"), CurrentPage, intTotalPages);
+            var str = string.Format(Localization.GetString("Pages"), this.CurrentPage, intTotalPages);
             var lit = new LiteralControl(str);
-            cellDisplayStatus.Controls.Add(lit);
-            tablePageNumbers.Rows[intRowIndex].Cells.Add(cellDisplayStatus);
-            tablePageNumbers.Rows[intRowIndex].Cells.Add(cellDisplayLinks);
+            this.cellDisplayStatus.Controls.Add(lit);
+            this.tablePageNumbers.Rows[intRowIndex].Cells.Add(this.cellDisplayStatus);
+            this.tablePageNumbers.Rows[intRowIndex].Cells.Add(this.cellDisplayLinks);
         }
 
         protected void OnPageChanged(EventArgs e)
         {
-            if (PageChanged != null)
+            if (this.PageChanged != null)
             {
-                PageChanged(this, e);
+                this.PageChanged(this, e);
             }
         }
 
         protected override void Render(HtmlTextWriter output)
         {
-            if (PageNumbers == null)
+            if (this.PageNumbers == null)
             {
-                CreateChildControls();
+                this.CreateChildControls();
             }
             var str = new StringBuilder();
-            str.Append(GetFirstLink() + "&nbsp;&nbsp;&nbsp;");
-            str.Append(GetPreviousLink() + "&nbsp;&nbsp;&nbsp;");
+            str.Append(this.GetFirstLink() + "&nbsp;&nbsp;&nbsp;");
+            str.Append(this.GetPreviousLink() + "&nbsp;&nbsp;&nbsp;");
             var result = new StringBuilder(1024);
-            PageNumbers.RenderControl(new HtmlTextWriter(new StringWriter(result)));
+            this.PageNumbers.RenderControl(new HtmlTextWriter(new StringWriter(result)));
             str.Append(result.ToString());
-            str.Append(GetNextLink() + "&nbsp;&nbsp;&nbsp;");
-            str.Append(GetLastLink() + "&nbsp;&nbsp;&nbsp;");
-            cellDisplayLinks.Controls.Add(new LiteralControl(str.ToString()));
-            tablePageNumbers.RenderControl(output);
+            str.Append(this.GetNextLink() + "&nbsp;&nbsp;&nbsp;");
+            str.Append(this.GetLastLink() + "&nbsp;&nbsp;&nbsp;");
+            this.cellDisplayLinks.Controls.Add(new LiteralControl(str.ToString()));
+            this.tablePageNumbers.RenderControl(output);
         }
 
         #region Nested type: PageNumberLinkTemplate
@@ -335,7 +335,7 @@ namespace DotNetNuke.UI.WebControls
 
             public PageNumberLinkTemplate(PagingControl ctlPagingControl)
             {
-                _PagingControl = ctlPagingControl;
+                this._PagingControl = ctlPagingControl;
             }
 
             #region ITemplate Members
@@ -343,7 +343,7 @@ namespace DotNetNuke.UI.WebControls
             void ITemplate.InstantiateIn(Control container)
             {
                 var l = new Literal();
-                l.DataBinding += BindData;
+                l.DataBinding += this.BindData;
                 container.Controls.Add(l);
             }
 
@@ -355,7 +355,7 @@ namespace DotNetNuke.UI.WebControls
                 lc = (Literal) sender;
                 RepeaterItem container;
                 container = (RepeaterItem) lc.NamingContainer;
-                lc.Text = _PagingControl.GetLink(Convert.ToInt32(DataBinder.Eval(container.DataItem, "PageNum"))) + "&nbsp;&nbsp;";
+                lc.Text = this._PagingControl.GetLink(Convert.ToInt32(DataBinder.Eval(container.DataItem, "PageNum"))) + "&nbsp;&nbsp;";
             }
         }
 

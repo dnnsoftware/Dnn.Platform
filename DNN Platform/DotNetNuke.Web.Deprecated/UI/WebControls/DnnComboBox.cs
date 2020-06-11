@@ -21,17 +21,17 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnInit(e);
             base.EnableEmbeddedBaseStylesheet = false;
-            OnClientLoad = "$.dnnComboBoxLoaded";
-            OnClientFocus = "$.dnnComboBoxHack";
-            OnClientDropDownOpened = "$.dnnComboBoxScroll";
-            OnClientItemsRequested = "$.dnnComboBoxItemRequested";
-            MaxHeight = 240;
-            ZIndex = 100010;
-            Localization.ItemsCheckedString = Utilities.GetLocalizedString("ItemsCheckedString");
-            Localization.CheckAllString = Utilities.GetLocalizedString("CheckAllString");
-            Localization.AllItemsCheckedString = Utilities.GetLocalizedString("AllItemsCheckedString");
-            Localization.NoMatches = Utilities.GetLocalizedString("NoMatches");
-            Localization.ShowMoreFormatString = Utilities.GetLocalizedString("ShowMoreFormatString");
+            this.OnClientLoad = "$.dnnComboBoxLoaded";
+            this.OnClientFocus = "$.dnnComboBoxHack";
+            this.OnClientDropDownOpened = "$.dnnComboBoxScroll";
+            this.OnClientItemsRequested = "$.dnnComboBoxItemRequested";
+            this.MaxHeight = 240;
+            this.ZIndex = 100010;
+            this.Localization.ItemsCheckedString = Utilities.GetLocalizedString("ItemsCheckedString");
+            this.Localization.CheckAllString = Utilities.GetLocalizedString("CheckAllString");
+            this.Localization.AllItemsCheckedString = Utilities.GetLocalizedString("AllItemsCheckedString");
+            this.Localization.NoMatches = Utilities.GetLocalizedString("NoMatches");
+            this.Localization.ShowMoreFormatString = Utilities.GetLocalizedString("ShowMoreFormatString");
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -43,40 +43,40 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public void AddItem(string text, string value)
         {
-            Items.Add(new DnnComboBoxItem(text, value));
+            this.Items.Add(new DnnComboBoxItem(text, value));
         }
 
         public void InsertItem(int index, string text, string value)
         {
-            Items.Insert(index, new DnnComboBoxItem(text, value));
+            this.Items.Insert(index, new DnnComboBoxItem(text, value));
         }
 
         public void DataBind(string initialValue)
         {
-            DataBind(initialValue, false);
+            this.DataBind(initialValue, false);
         }
 
         public void DataBind(string initial, bool findByText)
         {
-            DataBind();
+            this.DataBind();
 
-            Select(initial, findByText);
+            this.Select(initial, findByText);
         }
 
         public void Select(string initial, bool findByText)
         {
             if (findByText)
             {
-                if (FindItemByText(initial, true) != null)
+                if (this.FindItemByText(initial, true) != null)
                 {
-					FindItemByText(initial, true).Selected = true;
+					this.FindItemByText(initial, true).Selected = true;
                 }
             }
             else
             {
-				if (FindItemByValue(initial, true) != null)
+				if (this.FindItemByValue(initial, true) != null)
                 {
-					FindItemByValue(initial, true).Selected = true;
+					this.FindItemByValue(initial, true).Selected = true;
                 }
             } 
         }

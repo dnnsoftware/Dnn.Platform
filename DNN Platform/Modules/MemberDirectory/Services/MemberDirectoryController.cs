@@ -63,20 +63,20 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             }
 
             var canView = (group.SecurityMode == SecurityMode.SecurityRole)
-                               ? (PortalSettings.UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
-                               : (PortalSettings.UserInfo.IsInRole(group.RoleName));
+                               ? (this.PortalSettings.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
+                               : (this.PortalSettings.UserInfo.IsInRole(group.RoleName));
 
 			//if current user can view the group page and group is public, then should be able to view members.
 			if (!canView)
 			{
-				canView = ModulePermissionController.CanViewModule(ActiveModule) && group.IsPublic;
+				canView = ModulePermissionController.CanViewModule(this.ActiveModule) && group.IsPublic;
 			}
             return canView;
         }
 
         private IList<Member> GetMembers(IEnumerable<UserInfo> users)
         {
-            return users.Select(user => new Member(user, PortalSettings)).ToList();
+            return users.Select(user => new Member(user, this.PortalSettings)).ToList();
         }
 
         private static string GetSetting(IDictionary settings, string key, string defaultValue)
@@ -91,18 +91,18 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         private IEnumerable<UserInfo> GetUsers(int userId, int groupId, string searchTerm, int pageIndex, int pageSize, string propertyNames, string propertyValues)
         {
-            var portalId = PortalSettings.PortalId;            
-            var isAdmin = PortalSettings.UserInfo.IsInRole(PortalSettings.AdministratorRoleName);
+            var portalId = this.PortalSettings.PortalId;            
+            var isAdmin = this.PortalSettings.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
 
-            var filterBy = GetSetting(ActiveModule.ModuleSettings, "FilterBy", String.Empty);
-            var filterValue = GetSetting(ActiveModule.ModuleSettings, "FilterValue", String.Empty);
+            var filterBy = GetSetting(this.ActiveModule.ModuleSettings, "FilterBy", String.Empty);
+            var filterValue = GetSetting(this.ActiveModule.ModuleSettings, "FilterValue", String.Empty);
 
             if (filterBy == "Group" && filterValue == "-1" && groupId > 0)
             {
                 filterValue = groupId.ToString();
             }
 
-            var sortField = GetSetting(ActiveModule.TabModuleSettings, "SortField", "DisplayName");
+            var sortField = GetSetting(this.ActiveModule.TabModuleSettings, "SortField", "DisplayName");
 
             // QuickFix DNN-6096. See: https://dnntracker.atlassian.net/browse/DNN-6096
             // Instead of changing the available SortFields, we'll use "UserId" as SortField if the TabModuleSetting SortField was CreatedOnDate.
@@ -113,9 +113,9 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                 sortField = "UserId";
             }
 
-            var sortOrder = GetSetting(ActiveModule.TabModuleSettings, "SortOrder", "ASC");
+            var sortOrder = GetSetting(this.ActiveModule.TabModuleSettings, "SortOrder", "ASC");
 
-            var excludeHostUsers = Boolean.Parse(GetSetting(ActiveModule.TabModuleSettings, "ExcludeHostUsers", "false"));
+            var excludeHostUsers = Boolean.Parse(GetSetting(this.ActiveModule.TabModuleSettings, "ExcludeHostUsers", "false"));
             var isBasicSearch = false;
             if (String.IsNullOrEmpty(propertyNames))
             {
@@ -134,9 +134,9 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                     {
                         groupId = Int32.Parse(filterValue);
                     }
-                    if (CanViewGroupMembers(portalId, groupId))
+                    if (this.CanViewGroupMembers(portalId, groupId))
                     {
-                        users = UserController.Instance.GetUsersAdvancedSearch(portalId, PortalSettings.UserId, userId,
+                        users = UserController.Instance.GetUsersAdvancedSearch(portalId, this.PortalSettings.UserId, userId,
                                                                                        groupId,
                                                                                        -1, isAdmin, pageIndex, pageSize,
                                                                                        sortField, (sortOrder == "ASC"),
@@ -148,26 +148,26 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                     }
                     break;
                 case "Relationship":
-                    users = UserController.Instance.GetUsersAdvancedSearch(portalId, PortalSettings.UserId, userId, -1,
+                    users = UserController.Instance.GetUsersAdvancedSearch(portalId, this.PortalSettings.UserId, userId, -1,
                                                                            Int32.Parse(filterValue), isAdmin, pageIndex, pageSize,
                                                                            sortField, (sortOrder == "ASC"),
                                                                            propertyNames, propertyValues);
                     break;
                 case "ProfileProperty":
-                    var propertyValue = GetSetting(ActiveModule.ModuleSettings, "FilterPropertyValue", String.Empty);
+                    var propertyValue = GetSetting(this.ActiveModule.ModuleSettings, "FilterPropertyValue", String.Empty);
                     AddSearchTerm(ref propertyNames, ref propertyValues, filterValue, propertyValue);
 
-                    users = UserController.Instance.GetUsersAdvancedSearch(portalId, PortalSettings.UserId, userId, -1,
+                    users = UserController.Instance.GetUsersAdvancedSearch(portalId, this.PortalSettings.UserId, userId, -1,
                                                                            -1, isAdmin, pageIndex, pageSize,
                                                                            sortField, (sortOrder == "ASC"),
                                                                            propertyNames, propertyValues);
                     break;
                 default:
-                    users = isBasicSearch ? UserController.Instance.GetUsersBasicSearch(PortalSettings.PortalId, pageIndex, pageSize,
+                    users = isBasicSearch ? UserController.Instance.GetUsersBasicSearch(this.PortalSettings.PortalId, pageIndex, pageSize,
                                                                            sortField, (sortOrder == "ASC"),
                                                                            "DisplayName", searchTerm)
                                                                            :
-                                                                           UserController.Instance.GetUsersAdvancedSearch(portalId, PortalSettings.UserId, userId, -1,
+                                                                           UserController.Instance.GetUsersAdvancedSearch(portalId, this.PortalSettings.UserId, userId, -1,
                                                                                -1, isAdmin, pageIndex, pageSize,
                                                                                sortField, (sortOrder == "ASC"),
                                                                                propertyNames, propertyValues);
@@ -175,7 +175,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             }
             if (excludeHostUsers)
             {                
-                return FilterExcludedUsers(users);
+                return this.FilterExcludedUsers(users);
             }
             return users;
         }
@@ -194,12 +194,12 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                if (userId < 0) userId = PortalSettings.UserId;
+                if (userId < 0) userId = this.PortalSettings.UserId;
                 
-                var searchField1 = GetSetting(ActiveModule.TabModuleSettings, "SearchField1", "DisplayName");
-                var searchField2 = GetSetting(ActiveModule.TabModuleSettings, "SearchField2", "Email");
-                var searchField3 = GetSetting(ActiveModule.TabModuleSettings, "SearchField3", "City");
-                var searchField4 = GetSetting(ActiveModule.TabModuleSettings, "SearchField4", "Country");
+                var searchField1 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField1", "DisplayName");
+                var searchField2 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField2", "Email");
+                var searchField3 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField3", "City");
+                var searchField4 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField4", "Country");
 
                 var propertyNames = "";
                 var propertyValues = "";
@@ -208,13 +208,13 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                 AddSearchTerm(ref propertyNames, ref propertyValues, searchField3, searchTerm3);
                 AddSearchTerm(ref propertyNames, ref propertyValues, searchField4, searchTerm4);
 
-                var members = GetUsers(userId, groupId, searchTerm1, pageIndex, pageSize, propertyNames, propertyValues);
-                return Request.CreateResponse(HttpStatusCode.OK, GetMembers(members));
+                var members = this.GetUsers(userId, groupId, searchTerm1, pageIndex, pageSize, propertyNames, propertyValues);
+                return this.Request.CreateResponse(HttpStatusCode.OK, this.GetMembers(members));
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -223,13 +223,13 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var users = GetUsers(-1, groupId, string.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.Trim(), pageIndex, pageSize, "", "");
-                return Request.CreateResponse(HttpStatusCode.OK, GetMembers(users));
+                var users = this.GetUsers(-1, groupId, string.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.Trim(), pageIndex, pageSize, "", "");
+                return this.Request.CreateResponse(HttpStatusCode.OK, this.GetMembers(users));
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -239,15 +239,15 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             try
             {
                 var users = new List<UserInfo>();
-                var user = UserController.GetUserById(PortalSettings.PortalId, userId);
+                var user = UserController.GetUserById(this.PortalSettings.PortalId, userId);
                 users.Add(user);
 
-                return Request.CreateResponse(HttpStatusCode.OK, GetMembers(users));
+                return this.Request.CreateResponse(HttpStatusCode.OK, this.GetMembers(users));
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -256,16 +256,16 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var names = (from UserInfo user in GetUsers(-1, groupId, displayName.Trim(), 0, 10, "", "")
+                var names = (from UserInfo user in this.GetUsers(-1, groupId, displayName.Trim(), 0, 10, "", "")
                              select new { label = user.DisplayName, value = user.DisplayName, userId = user.UserID })
                                 .ToList();
 
-                return Request.CreateResponse(HttpStatusCode.OK, names);
+                return this.Request.CreateResponse(HttpStatusCode.OK, names);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -275,14 +275,14 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var friend = UserController.GetUserById(PortalSettings.PortalId, postData.FriendId);
+                var friend = UserController.GetUserById(this.PortalSettings.PortalId, postData.FriendId);
                 FriendsController.Instance.AcceptFriend(friend);
-                return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -292,14 +292,14 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var friend = UserController.GetUserById(PortalSettings.PortalId, postData.FriendId);
+                var friend = UserController.GetUserById(this.PortalSettings.PortalId, postData.FriendId);
                 FriendsController.Instance.AddFriend(friend);
-                return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -309,14 +309,14 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var follow = UserController.GetUserById(PortalSettings.PortalId, postData.FollowId);
+                var follow = UserController.GetUserById(this.PortalSettings.PortalId, postData.FollowId);
                 FollowersController.Instance.FollowUser(follow);
-                return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -326,14 +326,14 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var friend = UserController.GetUserById(PortalSettings.PortalId, postData.FriendId);
+                var friend = UserController.GetUserById(this.PortalSettings.PortalId, postData.FriendId);
                 FriendsController.Instance.DeleteFriend(friend);
-                return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -343,14 +343,14 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var follow = UserController.GetUserById(PortalSettings.PortalId, postData.FollowId);
+                var follow = UserController.GetUserById(this.PortalSettings.PortalId, postData.FollowId);
                 FollowersController.Instance.UnFollowUser(follow);
-                return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 

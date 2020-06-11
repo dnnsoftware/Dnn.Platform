@@ -39,11 +39,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _alignment;
+                return this._alignment;
             }
             set
             {
-                _alignment = value.ToLowerInvariant();
+                this._alignment = value.ToLowerInvariant();
             }
         }
 
@@ -53,11 +53,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _level;
+                return this._level;
             }
             set
             {
-                _level = value.ToLowerInvariant();
+                this._level = value.ToLowerInvariant();
             }
         }
 
@@ -69,11 +69,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _forceLinks;
+                return this._forceLinks;
             }
             set
             {
-                _forceLinks = value;
+                this._forceLinks = value;
             }
         }
 
@@ -81,11 +81,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _includeActiveTab;
+                return this._includeActiveTab;
             }
             set
             {
-                _includeActiveTab = value;
+                this._includeActiveTab = value;
             }
         }
 		
@@ -97,42 +97,42 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnLoad(e);
             string strCssClass;
-            if (!String.IsNullOrEmpty(CssClass))
+            if (!String.IsNullOrEmpty(this.CssClass))
             {
-                strCssClass = CssClass;
+                strCssClass = this.CssClass;
             }
             else
             {
                 strCssClass = "SkinObject";
             }
             string strSeparator = string.Empty;
-            if (!String.IsNullOrEmpty(Separator))
+            if (!String.IsNullOrEmpty(this.Separator))
             {
-                if (Separator.IndexOf("src=", StringComparison.Ordinal) != -1)
+                if (this.Separator.IndexOf("src=", StringComparison.Ordinal) != -1)
                 {
 					//Add the skinpath to image paths
-                    Separator = SrcRegex.Replace(Separator, "$&" + PortalSettings.ActiveTab.SkinPath);
+                    this.Separator = SrcRegex.Replace(this.Separator, "$&" + this.PortalSettings.ActiveTab.SkinPath);
                 }
 				
 				//Wrap in a span
-                Separator = string.Format("<span class=\"{0}\">{1}</span>", strCssClass, Separator);
+                this.Separator = string.Format("<span class=\"{0}\">{1}</span>", strCssClass, this.Separator);
             }
             else
             {
-                Separator = " ";
+                this.Separator = " ";
             }
 			
             //build links
             string strLinks = "";
 
-            strLinks = BuildLinks(Level, strSeparator, strCssClass);
+            strLinks = this.BuildLinks(this.Level, strSeparator, strCssClass);
 			
 			//Render links, even if nothing is returned with the currently set level
-            if (String.IsNullOrEmpty(strLinks) && ForceLinks)
+            if (String.IsNullOrEmpty(strLinks) && this.ForceLinks)
             {
-                strLinks = BuildLinks("", strSeparator, strCssClass);
+                strLinks = this.BuildLinks("", strSeparator, strCssClass);
             }
-            lblLinks.Text = strLinks;
+            this.lblLinks.Text = strLinks;
         }
 		
 		#endregion
@@ -143,52 +143,52 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             var sbLinks = new StringBuilder();
 
-            List<TabInfo> portalTabs = TabController.GetTabsBySortOrder(PortalSettings.PortalId);
+            List<TabInfo> portalTabs = TabController.GetTabsBySortOrder(this.PortalSettings.PortalId);
             List<TabInfo> hostTabs = TabController.GetTabsBySortOrder(Null.NullInteger);
 
             foreach (TabInfo objTab in portalTabs)
             {
-                sbLinks.Append(ProcessLink(ProcessTab(objTab, strLevel, strCssClass), sbLinks.ToString().Length));
+                sbLinks.Append(this.ProcessLink(this.ProcessTab(objTab, strLevel, strCssClass), sbLinks.ToString().Length));
             }
             foreach (TabInfo objTab in hostTabs)
             {
-                sbLinks.Append(ProcessLink(ProcessTab(objTab, strLevel, strCssClass), sbLinks.ToString().Length));
+                sbLinks.Append(this.ProcessLink(this.ProcessTab(objTab, strLevel, strCssClass), sbLinks.ToString().Length));
             }
             return sbLinks.ToString();
         }
 
         private string ProcessTab(TabInfo objTab, string strLevel, string strCssClass)
         {
-            if (Navigation.CanShowTab(objTab, AdminMode, ShowDisabled))
+            if (Navigation.CanShowTab(objTab, this.AdminMode, this.ShowDisabled))
             {
                 switch (strLevel)
                 {
                     case "same": //Render tabs on the same level as the current tab
                     case "":
-                        if (objTab.ParentId == PortalSettings.ActiveTab.ParentId)
+                        if (objTab.ParentId == this.PortalSettings.ActiveTab.ParentId)
                         {
-                            if (IncludeActiveTab || objTab.TabID != PortalSettings.ActiveTab.TabID)
+                            if (this.IncludeActiveTab || objTab.TabID != this.PortalSettings.ActiveTab.TabID)
                             {
-                                return AddLink(objTab.TabName, objTab.FullUrl, strCssClass);
+                                return this.AddLink(objTab.TabName, objTab.FullUrl, strCssClass);
                             }
                         }
                         break;
                     case "child": //Render the current tabs child tabs
-                        if (objTab.ParentId == PortalSettings.ActiveTab.TabID)
+                        if (objTab.ParentId == this.PortalSettings.ActiveTab.TabID)
                         {
-                            return AddLink(objTab.TabName, objTab.FullUrl, strCssClass);
+                            return this.AddLink(objTab.TabName, objTab.FullUrl, strCssClass);
                         }
                         break;
                     case "parent": //Render the current tabs parenttab
-                        if (objTab.TabID == PortalSettings.ActiveTab.ParentId)
+                        if (objTab.TabID == this.PortalSettings.ActiveTab.ParentId)
                         {
-                            return AddLink(objTab.TabName, objTab.FullUrl, strCssClass);
+                            return this.AddLink(objTab.TabName, objTab.FullUrl, strCssClass);
                         }
                         break;
                     case "root": //Render Root tabs
                         if (objTab.Level == 0)
                         {
-                            return AddLink(objTab.TabName, objTab.FullUrl, strCssClass);
+                            return this.AddLink(objTab.TabName, objTab.FullUrl, strCssClass);
                         }
                         break;
                 }
@@ -203,14 +203,14 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return "";
             }
-            if (Alignment == "vertical")
+            if (this.Alignment == "vertical")
             {
-                sLink = string.Concat("<div>", Separator, sLink, "</div>");
+                sLink = string.Concat("<div>", this.Separator, sLink, "</div>");
             }
-            else if (!String.IsNullOrEmpty(Separator) && iLinksLength > 0)
+            else if (!String.IsNullOrEmpty(this.Separator) && iLinksLength > 0)
             {
 				//If not vertical, then render the separator
-                sLink = string.Concat(Separator, sLink);
+                sLink = string.Concat(this.Separator, sLink);
             }
             return sLink;
         }

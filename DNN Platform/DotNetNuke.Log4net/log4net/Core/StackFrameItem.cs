@@ -47,23 +47,23 @@ namespace log4net.Core
         public StackFrameItem(StackFrame frame)
         {
             // set default values
-            m_lineNumber = NA;
-            m_fileName = NA;
-            m_method = new MethodItem();
-            m_className = NA;
+            this.m_lineNumber = NA;
+            this.m_fileName = NA;
+            this.m_method = new MethodItem();
+            this.m_className = NA;
 
 			try
 			{
 				// get frame values
-				m_lineNumber = frame.GetFileLineNumber().ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
-				m_fileName = frame.GetFileName();
+				this.m_lineNumber = frame.GetFileLineNumber().ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
+				this.m_fileName = frame.GetFileName();
 				// get method values
 				MethodBase method = frame.GetMethod();
 				if (method != null)
 				{
 					if(method.DeclaringType != null)
-						m_className = method.DeclaringType.FullName;
-					m_method = new MethodItem(method);
+						this.m_className = method.DeclaringType.FullName;
+					this.m_method = new MethodItem(method);
 				}
 			}
 			catch (Exception ex)
@@ -72,7 +72,7 @@ namespace log4net.Core
 			}
 
             // set full info
-            m_fullInfo = m_className + '.' + m_method.Name + '(' + m_fileName + ':' + m_lineNumber + ')';
+            this.m_fullInfo = this.m_className + '.' + this.m_method.Name + '(' + this.m_fileName + ':' + this.m_lineNumber + ')';
         }
 
         #endregion
@@ -95,7 +95,7 @@ namespace log4net.Core
         /// </remarks>
         public string ClassName
         {
-            get { return m_className; }
+            get { return this.m_className; }
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace log4net.Core
         /// </remarks>
         public string FileName
         {
-            get { return m_fileName; }
+            get { return this.m_fileName; }
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace log4net.Core
         /// </remarks>
         public string LineNumber
         {
-            get { return m_lineNumber; }
+            get { return this.m_lineNumber; }
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace log4net.Core
         /// </remarks>
         public MethodItem Method
         {
-            get { return m_method; }
+            get { return this.m_method; }
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace log4net.Core
         /// </remarks>
         public string FullInfo
         {
-            get { return m_fullInfo; }
+            get { return this.m_fullInfo; }
         }
 
         #endregion Public Instance Properties

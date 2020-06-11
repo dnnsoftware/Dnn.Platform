@@ -26,12 +26,12 @@ namespace Dnn.PersonaBar.Library.Permissions
 
         public MenuPermissionCollection(IList<MenuPermissionInfo> menuPermissions)
         {
-            AddRange(menuPermissions);
+            this.AddRange(menuPermissions);
         }
 
         public MenuPermissionCollection(MenuPermissionCollection permissions)
         {
-            AddRange(permissions);
+            this.AddRange(permissions);
         }
 
         public MenuPermissionCollection(ArrayList menuPermissions, int menuId)
@@ -40,7 +40,7 @@ namespace Dnn.PersonaBar.Library.Permissions
             {
                 if (permission.MenuId == menuId)
                 {
-                    Add(permission);
+                    this.Add(permission);
                 }
             }
         }
@@ -49,17 +49,17 @@ namespace Dnn.PersonaBar.Library.Permissions
         {
             get
             {
-                return (MenuPermissionInfo) List[index];
+                return (MenuPermissionInfo) this.List[index];
             }
             set
             {
-                List[index] = value;
+                this.List[index] = value;
             }
         }
 
         public int Add(MenuPermissionInfo value)
         {
-            return List.Add(value);
+            return this.List.Add(value);
         }
 
         public int Add(MenuPermissionInfo value, bool checkForDuplicates)
@@ -67,12 +67,12 @@ namespace Dnn.PersonaBar.Library.Permissions
             int id = Null.NullInteger;
             if (!checkForDuplicates)
             {
-                id = Add(value);
+                id = this.Add(value);
             }
             else
             {
                 bool isMatch = false;
-                foreach (MenuPermissionInfo permission in List)
+                foreach (MenuPermissionInfo permission in this.List)
                 {
                     if (permission.PortalId == value.PortalId
                             && permission.MenuId == value.MenuId
@@ -86,7 +86,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                 }
                 if (!isMatch)
                 {
-                    id = Add(value);
+                    id = this.Add(value);
                 }
             }
 
@@ -95,14 +95,14 @@ namespace Dnn.PersonaBar.Library.Permissions
 
         public void AddRange(ArrayList menuPermissions)
         {
-            AddRange(menuPermissions.Cast<MenuPermissionInfo>().ToList());
+            this.AddRange(menuPermissions.Cast<MenuPermissionInfo>().ToList());
         }
 
         public void AddRange(IList<MenuPermissionInfo> menuPermissions)
         {
             foreach (MenuPermissionInfo permission in menuPermissions)
             {
-                Add(permission);
+                this.Add(permission);
             }
         }
 
@@ -110,19 +110,19 @@ namespace Dnn.PersonaBar.Library.Permissions
         {
             foreach (MenuPermissionInfo permission in menuPermissions)
             {
-                Add(permission);
+                this.Add(permission);
             }
         }
 
         public bool CompareTo(MenuPermissionCollection menuPermissionCollection)
         {
-            if (menuPermissionCollection.Count != Count)
+            if (menuPermissionCollection.Count != this.Count)
             {
                 return false;
             }
-            InnerList.Sort(new CompareMenuPermissions());
+            this.InnerList.Sort(new CompareMenuPermissions());
             menuPermissionCollection.InnerList.Sort(new CompareMenuPermissions());
-            for (int i = 0; i <= Count - 1; i++)
+            for (int i = 0; i <= this.Count - 1; i++)
             {
                 if (menuPermissionCollection[i].MenuPermissionId != this[i].MenuPermissionId 
                     || menuPermissionCollection[i].AllowAccess != this[i].AllowAccess)
@@ -135,31 +135,31 @@ namespace Dnn.PersonaBar.Library.Permissions
 
         public bool Contains(MenuPermissionInfo value)
         {
-            return List.Contains(value);
+            return this.List.Contains(value);
         }
 
         public int IndexOf(MenuPermissionInfo value)
         {
-            return List.IndexOf(value);
+            return this.List.IndexOf(value);
         }
 
         public void Insert(int index, MenuPermissionInfo value)
         {
-            List.Insert(index, value);
+            this.List.Insert(index, value);
         }
 
         public void Remove(MenuPermissionInfo value)
         {
-            List.Remove(value);
+            this.List.Remove(value);
         }
 
         public void Remove(int permissionId, int roleId, int userId)
         {
-            foreach (PermissionInfoBase permission in List)
+            foreach (PermissionInfoBase permission in this.List)
             {
                 if (permission.PermissionID == permissionId && permission.UserID == userId && permission.RoleID == roleId)
                 {
-                    List.Remove(permission);
+                    this.List.Remove(permission);
                     break;
                 }
             }
@@ -168,7 +168,7 @@ namespace Dnn.PersonaBar.Library.Permissions
         public List<PermissionInfoBase> ToList()
         {
             var list = new List<PermissionInfoBase>();
-            foreach (PermissionInfoBase permission in List)
+            foreach (PermissionInfoBase permission in this.List)
             {
                 list.Add(permission);
             }
@@ -177,7 +177,7 @@ namespace Dnn.PersonaBar.Library.Permissions
 
         public string ToString(string key)
         {
-            return PermissionController.BuildPermissions(List, key);
+            return PermissionController.BuildPermissions(this.List, key);
         }
 
         public IEnumerable<MenuPermissionInfo> Where(Func<MenuPermissionInfo, bool> predicate)

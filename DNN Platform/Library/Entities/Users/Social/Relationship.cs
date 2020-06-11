@@ -35,7 +35,7 @@ namespace DotNetNuke.Entities.Users.Social
     {
         public Relationship()
         {
-            RelationshipId = -1;
+            this.RelationshipId = -1;
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace DotNetNuke.Entities.Users.Social
         { 
             get
             {
-                return UserId == Null.NullInteger && PortalId >= 0;
+                return this.UserId == Null.NullInteger && this.PortalId >= 0;
             }
         }
 
@@ -100,7 +100,7 @@ namespace DotNetNuke.Entities.Users.Social
         {
             get
             {
-                return UserId == Null.NullInteger && PortalId == Null.NullInteger;
+                return this.UserId == Null.NullInteger && this.PortalId == Null.NullInteger;
             }
         }
 
@@ -112,7 +112,7 @@ namespace DotNetNuke.Entities.Users.Social
         {
             get
             {
-                return UserId > 0 && PortalId >= 0;
+                return this.UserId > 0 && this.PortalId >= 0;
             }
         }
         /// <summary>
@@ -146,7 +146,7 @@ namespace DotNetNuke.Entities.Users.Social
             this.RelationshipTypeId = Convert.ToInt32(dr["RelationshipTypeID"]);
 
             //add audit column data
-            FillInternal(dr);
+            this.FillInternal(dr);
         }
     }
 }

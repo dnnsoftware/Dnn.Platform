@@ -30,7 +30,7 @@ namespace DotNetNuke.Entities.Modules.Communications
         {
             get
             {
-                return _ModuleCommunicators;
+                return this._ModuleCommunicators;
             }
         }
 
@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Modules.Communications
         {
             get
             {
-                return _ModuleListeners;
+                return this._ModuleListeners;
             }
         }
 
@@ -58,24 +58,24 @@ namespace DotNetNuke.Entities.Modules.Communications
             // Check and see if the module implements IModuleCommunicator 
             if (ctrl is IModuleCommunicator)
             {
-                Add((IModuleCommunicator) ctrl);
+                this.Add((IModuleCommunicator) ctrl);
             }
 
             // Check and see if the module implements IModuleListener 
             if (ctrl is IModuleListener)
             {
-                Add((IModuleListener) ctrl);
+                this.Add((IModuleListener) ctrl);
             }
         }
 
         private int Add(IModuleCommunicator item)
         {
-            int returnData = _ModuleCommunicators.Add(item);
+            int returnData = this._ModuleCommunicators.Add(item);
 
             int i = 0;
-            for (i = 0; i <= _ModuleListeners.Count - 1; i++)
+            for (i = 0; i <= this._ModuleListeners.Count - 1; i++)
             {
-                item.ModuleCommunication += _ModuleListeners[i].OnModuleCommunication;
+                item.ModuleCommunication += this._ModuleListeners[i].OnModuleCommunication;
             }
 
 
@@ -84,12 +84,12 @@ namespace DotNetNuke.Entities.Modules.Communications
 
         private int Add(IModuleListener item)
         {
-            int returnData = _ModuleListeners.Add(item);
+            int returnData = this._ModuleListeners.Add(item);
 
             int i = 0;
-            for (i = 0; i <= _ModuleCommunicators.Count - 1; i++)
+            for (i = 0; i <= this._ModuleCommunicators.Count - 1; i++)
             {
-                _ModuleCommunicators[i].ModuleCommunication += item.OnModuleCommunication;
+                this._ModuleCommunicators[i].ModuleCommunication += item.OnModuleCommunication;
             }
 
             return returnData;

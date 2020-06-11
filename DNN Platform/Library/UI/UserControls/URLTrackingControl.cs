@@ -63,11 +63,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return _FormattedURL;
+                return this._FormattedURL;
             }
             set
             {
-                _FormattedURL = value;
+                this._FormattedURL = value;
             }
         }
 
@@ -75,11 +75,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return _TrackingURL;
+                return this._TrackingURL;
             }
             set
             {
-                _TrackingURL = value;
+                this._TrackingURL = value;
             }
         }
 
@@ -87,11 +87,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return _URL;
+                return this._URL;
             }
             set
             {
-                _URL = value;
+                this._URL = value;
             }
         }
 
@@ -99,19 +99,19 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                int moduleID = _ModuleID;
+                int moduleID = this._ModuleID;
                 if (moduleID == -2)
                 {
-                    if (Request.QueryString["mid"] != null)
+                    if (this.Request.QueryString["mid"] != null)
                     {
-                        Int32.TryParse(Request.QueryString["mid"], out moduleID);
+                        Int32.TryParse(this.Request.QueryString["mid"], out moduleID);
                     }
                 }
                 return moduleID;
             }
             set
             {
-                _ModuleID = value;
+                this._ModuleID = value;
             }
         }
 
@@ -120,19 +120,19 @@ namespace DotNetNuke.UI.UserControls
             get
             {
                 string fileRoot;
-                if (String.IsNullOrEmpty(_localResourceFile))
+                if (String.IsNullOrEmpty(this._localResourceFile))
                 {
-                    fileRoot = TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/URLTrackingControl.ascx";
+                    fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/URLTrackingControl.ascx";
                 }
                 else
                 {
-                    fileRoot = _localResourceFile;
+                    fileRoot = this._localResourceFile;
                 }
                 return fileRoot;
             }
             set
             {
-                _localResourceFile = value;
+                this._localResourceFile = value;
             }
         }
 		
@@ -144,82 +144,82 @@ namespace DotNetNuke.UI.UserControls
         {
             base.OnLoad(e);
 
-            cmdDisplay.Click += cmdDisplay_Click;
+            this.cmdDisplay.Click += this.cmdDisplay_Click;
 
             try
             {
 				//this needs to execute always to the client script code is registred in InvokePopupCal
-                cmdStartCalendar.NavigateUrl = Calendar.InvokePopupCal(txtStartDate);
-                cmdEndCalendar.NavigateUrl = Calendar.InvokePopupCal(txtEndDate);
-                if (!Page.IsPostBack)
+                this.cmdStartCalendar.NavigateUrl = Calendar.InvokePopupCal(this.txtStartDate);
+                this.cmdEndCalendar.NavigateUrl = Calendar.InvokePopupCal(this.txtEndDate);
+                if (!this.Page.IsPostBack)
                 {
-                    if (!String.IsNullOrEmpty(_URL))
+                    if (!String.IsNullOrEmpty(this._URL))
                     {
-                        lblLogURL.Text = URL; //saved for loading Log grid
-                        TabType URLType = Globals.GetURLType(_URL);
-                        if (URLType == TabType.File && _URL.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
+                        this.lblLogURL.Text = this.URL; //saved for loading Log grid
+                        TabType URLType = Globals.GetURLType(this._URL);
+                        if (URLType == TabType.File && this._URL.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
                         {
                             //to handle legacy scenarios before the introduction of the FileServerHandler
-                            var fileName = Path.GetFileName(_URL);
+                            var fileName = Path.GetFileName(this._URL);
 
-                            var folderPath = _URL.Substring(0, _URL.LastIndexOf(fileName));
-                            var folder = FolderManager.Instance.GetFolder(PortalSettings.PortalId, folderPath);
+                            var folderPath = this._URL.Substring(0, this._URL.LastIndexOf(fileName));
+                            var folder = FolderManager.Instance.GetFolder(this.PortalSettings.PortalId, folderPath);
 
                             var file = FileManager.Instance.GetFile(folder, fileName);
 
-                            lblLogURL.Text = "FileID=" + file.FileId;
+                            this.lblLogURL.Text = "FileID=" + file.FileId;
                         }
                         var objUrls = new UrlController();
-                        UrlTrackingInfo objUrlTracking = objUrls.GetUrlTracking(PortalSettings.PortalId, lblLogURL.Text, ModuleID);
+                        UrlTrackingInfo objUrlTracking = objUrls.GetUrlTracking(this.PortalSettings.PortalId, this.lblLogURL.Text, this.ModuleID);
                         if (objUrlTracking != null)
                         {
-                            if (String.IsNullOrEmpty(_FormattedURL))
+                            if (String.IsNullOrEmpty(this._FormattedURL))
                             {
-                                lblURL.Text = Globals.LinkClick(URL, PortalSettings.ActiveTab.TabID, ModuleID, false);
-                                if (!lblURL.Text.StartsWith("http") && !lblURL.Text.StartsWith("mailto"))
+                                this.lblURL.Text = Globals.LinkClick(this.URL, this.PortalSettings.ActiveTab.TabID, this.ModuleID, false);
+                                if (!this.lblURL.Text.StartsWith("http") && !this.lblURL.Text.StartsWith("mailto"))
                                 {
-                                    lblURL.Text = Globals.AddHTTP(Request.Url.Host) + lblURL.Text;
+                                    this.lblURL.Text = Globals.AddHTTP(this.Request.Url.Host) + this.lblURL.Text;
                                 }
                             }
                             else
                             {
-                                lblURL.Text = _FormattedURL;
+                                this.lblURL.Text = this._FormattedURL;
                             }
-                            lblCreatedDate.Text = objUrlTracking.CreatedDate.ToString();
+                            this.lblCreatedDate.Text = objUrlTracking.CreatedDate.ToString();
 
                             if (objUrlTracking.TrackClicks)
                             {
-                                pnlTrack.Visible = true;
-                                if (String.IsNullOrEmpty(_TrackingURL))
+                                this.pnlTrack.Visible = true;
+                                if (String.IsNullOrEmpty(this._TrackingURL))
                                 {
-                                    if (!URL.StartsWith("http"))
+                                    if (!this.URL.StartsWith("http"))
                                     {
-                                        lblTrackingURL.Text = Globals.AddHTTP(Request.Url.Host);
+                                        this.lblTrackingURL.Text = Globals.AddHTTP(this.Request.Url.Host);
                                     }
-                                    lblTrackingURL.Text += Globals.LinkClick(URL, PortalSettings.ActiveTab.TabID, ModuleID, objUrlTracking.TrackClicks);
+                                    this.lblTrackingURL.Text += Globals.LinkClick(this.URL, this.PortalSettings.ActiveTab.TabID, this.ModuleID, objUrlTracking.TrackClicks);
                                 }
                                 else
                                 {
-                                    lblTrackingURL.Text = _TrackingURL;
+                                    this.lblTrackingURL.Text = this._TrackingURL;
                                 }
-                                lblClicks.Text = objUrlTracking.Clicks.ToString();
+                                this.lblClicks.Text = objUrlTracking.Clicks.ToString();
                                 if (!Null.IsNull(objUrlTracking.LastClick))
                                 {
-                                    lblLastClick.Text = objUrlTracking.LastClick.ToString();
+                                    this.lblLastClick.Text = objUrlTracking.LastClick.ToString();
                                 }
                             }
                             if (objUrlTracking.LogActivity)
                             {
-                                pnlLog.Visible = true;
+                                this.pnlLog.Visible = true;
 
-                                txtStartDate.Text = DateTime.Today.AddDays(-6).ToShortDateString();
-                                txtEndDate.Text = DateTime.Today.AddDays(1).ToShortDateString();
+                                this.txtStartDate.Text = DateTime.Today.AddDays(-6).ToShortDateString();
+                                this.txtEndDate.Text = DateTime.Today.AddDays(1).ToShortDateString();
                             }
                         }
                     }
                     else
                     {
-                        Visible = false;
+                        this.Visible = false;
                     }
                 }
             }
@@ -233,21 +233,21 @@ namespace DotNetNuke.UI.UserControls
         {
             try
             {
-                string strStartDate = txtStartDate.Text;
+                string strStartDate = this.txtStartDate.Text;
                 if (!String.IsNullOrEmpty(strStartDate))
                 {
                     strStartDate = strStartDate + " 00:00";
                 }
-                string strEndDate = txtEndDate.Text;
+                string strEndDate = this.txtEndDate.Text;
                 if (!String.IsNullOrEmpty(strEndDate))
                 {
                     strEndDate = strEndDate + " 23:59";
                 }
                 var objUrls = new UrlController();
                 //localize datagrid
-                Localization.LocalizeDataGrid(ref grdLog, LocalResourceFile);
-                grdLog.DataSource = objUrls.GetUrlLog(PortalSettings.PortalId, lblLogURL.Text, ModuleID, Convert.ToDateTime(strStartDate), Convert.ToDateTime(strEndDate));
-                grdLog.DataBind();
+                Localization.LocalizeDataGrid(ref this.grdLog, this.LocalResourceFile);
+                this.grdLog.DataSource = objUrls.GetUrlLog(this.PortalSettings.PortalId, this.lblLogURL.Text, this.ModuleID, Convert.ToDateTime(strStartDate), Convert.ToDateTime(strEndDate));
+                this.grdLog.DataBind();
             }
             catch (Exception exc) //Module failed to load
             {

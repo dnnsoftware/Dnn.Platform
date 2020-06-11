@@ -88,7 +88,7 @@ namespace log4net.Util.TypeConverters
 		public object ConvertTo(object source, Type targetType)
 		{
 			PatternString patternString = source as PatternString;
-			if (patternString != null && CanConvertTo(targetType))
+			if (patternString != null && this.CanConvertTo(targetType))
 			{
 				return patternString.Format();
 			}

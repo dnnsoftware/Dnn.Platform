@@ -25,7 +25,7 @@ namespace DotNetNuke.Web.Mvp
 
         protected ModuleViewBase()
         {
-            AutoDataBind = true;
+            this.AutoDataBind = true;
         }
 
         #endregion
@@ -34,29 +34,29 @@ namespace DotNetNuke.Web.Mvp
 
         protected T DataItem<T>() where T : class, new()
         {
-            var _T = Page.GetDataItem() as T ?? new T();
+            var _T = this.Page.GetDataItem() as T ?? new T();
             return _T;
         }
 
         protected T DataValue<T>()
         {
-            return (T) Page.GetDataItem();
+            return (T) this.Page.GetDataItem();
         }
 
         protected string DataValue<T>(string format)
         {
-            return string.Format(CultureInfo.CurrentCulture, format, DataValue<T>());
+            return string.Format(CultureInfo.CurrentCulture, format, this.DataValue<T>());
         }
 
         protected override void OnInit(EventArgs e)
         {
-            PageViewHost.Register(this, Context, false);
+            PageViewHost.Register(this, this.Context, false);
 
             base.OnInit(e);
 
-            Page.InitComplete += PageInitComplete;
-            Page.PreRenderComplete += PagePreRenderComplete;
-            Page.Load += PageLoad;
+            this.Page.InitComplete += this.PageInitComplete;
+            this.Page.PreRenderComplete += this.PagePreRenderComplete;
+            this.Page.Load += this.PageLoad;
         }
 
         #endregion
@@ -94,17 +94,17 @@ namespace DotNetNuke.Web.Mvp
 
         private void PageInitComplete(object sender, EventArgs e)
         {
-            if (Initialize != null)
+            if (this.Initialize != null)
             {
-                Initialize(this, EventArgs.Empty);
+                this.Initialize(this, EventArgs.Empty);
             }
         }
 
         private void PageLoad(object sender, EventArgs e)
         {
-            if (Load != null)
+            if (this.Load != null)
             {
-                Load(this, e);
+                this.Load(this, e);
             }
         }
 
@@ -112,9 +112,9 @@ namespace DotNetNuke.Web.Mvp
         {
             //This event is raised after any async page tasks have completed, so it
             //is safe to data-bind
-            if ((AutoDataBind))
+            if ((this.AutoDataBind))
             {
-                DataBind();
+                this.DataBind();
             }
         }
 

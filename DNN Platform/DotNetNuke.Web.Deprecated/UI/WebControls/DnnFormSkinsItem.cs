@@ -36,12 +36,12 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void ContainerIndexChanged(object sender, EventArgs e)
         {
-            UpdateDataSource(_containerValue, _containerCombo.SelectedValue, ContainerDataField);
+            this.UpdateDataSource(this._containerValue, this._containerCombo.SelectedValue, this.ContainerDataField);
         }
 
         private void SkinIndexChanged(object sender, EventArgs e)
         {
-            UpdateDataSource(_skinValue, _skinCombo.SelectedValue, SkinDataField);
+            this.UpdateDataSource(this._skinValue, this._skinCombo.SelectedValue, this.SkinDataField);
         }
 
         private Dictionary<string, string> GetSkins(string skinRoot)
@@ -49,10 +49,10 @@ namespace DotNetNuke.Web.UI.WebControls
             // load host skins
             var skins = SkinController.GetSkins(null, skinRoot, SkinScope.Host).ToDictionary(skin => skin.Key, skin => skin.Value);
 
-            if (IncludePortalSkins)
+            if (this.IncludePortalSkins)
             {
                 // load portal skins
-                var portal = PortalController.Instance.GetPortal(PortalId);
+                var portal = PortalController.Instance.GetPortal(this.PortalId);
 
                 foreach (var skin in SkinController.GetSkins(portal, skinRoot, SkinScope.Site))
                 {
@@ -68,50 +68,50 @@ namespace DotNetNuke.Web.UI.WebControls
 
             container.Controls.Add(panel);
 
-            var skinLabel = new Label { Text = LocalizeString("Skin") };
+            var skinLabel = new Label { Text = this.LocalizeString("Skin") };
             skinLabel.CssClass += "dnnFormSkinLabel";
             panel.Controls.Add(skinLabel);
 
             //_skinCombo = new DropDownList { ID = ID + "_SkinComboBox" };
-            _skinCombo = new DnnComboBox { ID = ID + "_SkinComboBox" };
-            _skinCombo.CssClass += "dnnFormSkinInput"; 
-            _skinCombo.SelectedIndexChanged += SkinIndexChanged;
-            panel.Controls.Add(_skinCombo);
+            this._skinCombo = new DnnComboBox { ID = this.ID + "_SkinComboBox" };
+            this._skinCombo.CssClass += "dnnFormSkinInput"; 
+            this._skinCombo.SelectedIndexChanged += this.SkinIndexChanged;
+            panel.Controls.Add(this._skinCombo);
 
-            DnnFormComboBoxItem.BindListInternal(_skinCombo, _skinValue, GetSkins(SkinController.RootSkin), "Key", "Value");
+            DnnFormComboBoxItem.BindListInternal(this._skinCombo, this._skinValue, this.GetSkins(SkinController.RootSkin), "Key", "Value");
 
-            var containerLabel = new Label { Text = LocalizeString("Container") };
+            var containerLabel = new Label { Text = this.LocalizeString("Container") };
             containerLabel.CssClass += "dnnFormSkinLabel";
             panel.Controls.Add(containerLabel);
 
             //_containerCombo = new DropDownList { ID = ID + "_ContainerComboBox" };
-            _containerCombo = new DnnComboBox { ID = ID + "_ContainerComboBox" };
-            _containerCombo.CssClass += "dnnFormSkinInput";
-            _containerCombo.SelectedIndexChanged += ContainerIndexChanged;
-            panel.Controls.Add(_containerCombo);
+            this._containerCombo = new DnnComboBox { ID = this.ID + "_ContainerComboBox" };
+            this._containerCombo.CssClass += "dnnFormSkinInput";
+            this._containerCombo.SelectedIndexChanged += this.ContainerIndexChanged;
+            panel.Controls.Add(this._containerCombo);
 
-            DnnFormComboBoxItem.BindListInternal(_containerCombo, _containerValue, GetSkins(SkinController.RootContainer), "Key", "Value");
+            DnnFormComboBoxItem.BindListInternal(this._containerCombo, this._containerValue, this.GetSkins(SkinController.RootContainer), "Key", "Value");
 
             return panel;
         }
 
         protected override void DataBindInternal()
         {
-            DataBindInternal(SkinDataField, ref _skinValue);
+            this.DataBindInternal(this.SkinDataField, ref this._skinValue);
 
-            DataBindInternal(ContainerDataField, ref _containerValue);
+            this.DataBindInternal(this.ContainerDataField, ref this._containerValue);
 
-            Value = new Pair {First = _skinValue, Second = _containerValue};
+            this.Value = new Pair {First = this._skinValue, Second = this._containerValue};
         }
 
         protected override void LoadControlState(object state)
         {
             base.LoadControlState(state);
-            var pair = Value as Pair;
+            var pair = this.Value as Pair;
             if (pair != null)
             {
-                _skinValue = pair.First;
-                _containerValue = pair.Second;
+                this._skinValue = pair.First;
+                this._containerValue = pair.Second;
             }
         }
     }

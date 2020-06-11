@@ -21,12 +21,12 @@ namespace DotNetNuke.ExtensionPoints
         {
             get
             {
-                var s = (String)ViewState["TabControlId"];
+                var s = (String)this.ViewState["TabControlId"];
                 return (s ?? String.Empty);
             }
             set
             {
-                ViewState["TabControlId"] = value;
+                this.ViewState["TabControlId"] = value;
             }
         }
 
@@ -36,12 +36,12 @@ namespace DotNetNuke.ExtensionPoints
         {
             get
             {
-                var s = (String)ViewState["PanelControlId"];
+                var s = (String)this.ViewState["PanelControlId"];
                 return (s ?? String.Empty);
             }
             set
             {
-                ViewState["PanelControlId"] = value;
+                this.ViewState["PanelControlId"] = value;
             }
         }
         
@@ -49,10 +49,10 @@ namespace DotNetNuke.ExtensionPoints
         {
             var extensionPointManager = new ExtensionPointManager();
             
-            var tabs = (HtmlGenericControl)Parent.FindControl(TabControlId);
-            var panel = Parent.FindControl(PanelControlId);
+            var tabs = (HtmlGenericControl)this.Parent.FindControl(this.TabControlId);
+            var panel = this.Parent.FindControl(this.PanelControlId);
 
-            foreach (var extension in extensionPointManager.GetEditPageTabExtensionPoints(Module, Group))
+            foreach (var extension in extensionPointManager.GetEditPageTabExtensionPoints(this.Module, this.Group))
             {
                 if (extension.Visible)
                 {
@@ -64,7 +64,7 @@ namespace DotNetNuke.ExtensionPoints
                     tabs.Controls.Add(liElement);
 
                     var container = new PanelTabExtensionControl { PanelId = extension.EditPageTabId };
-                    var control = Page.LoadControl(extension.UserControlSrc);
+                    var control = this.Page.LoadControl(extension.UserControlSrc);
                     control.ID = Path.GetFileNameWithoutExtension(extension.UserControlSrc);
                     container.Controls.Add(control);
                     panel.Controls.Add(container);
@@ -74,7 +74,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public void BindAction(int portalId, int tabId, int moduleId)
         {
-            var panel = Parent.FindControl(PanelControlId);
+            var panel = this.Parent.FindControl(this.PanelControlId);
 
             foreach (var control in panel.Controls)
             {
@@ -95,7 +95,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public void SaveAction(int portalId, int tabId, int moduleId)
         {
-            var panel = Parent.FindControl(PanelControlId);
+            var panel = this.Parent.FindControl(this.PanelControlId);
 
             foreach (var control in panel.Controls)
             {
@@ -116,7 +116,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public void CancelAction(int portalId, int tabId, int moduleId)
         {
-            var panel = Parent.FindControl(PanelControlId);
+            var panel = this.Parent.FindControl(this.PanelControlId);
 
             foreach (var control in panel.Controls)
             {
@@ -153,7 +153,7 @@ namespace DotNetNuke.ExtensionPoints
 
         protected override void RenderContents(HtmlTextWriter op)
         {
-            op.Write("<div class=\"ehccContent dnnClear\" id=\"" + PanelId + "\">");
+            op.Write("<div class=\"ehccContent dnnClear\" id=\"" + this.PanelId + "\">");
             base.RenderContents(op);
             op.Write("</div>");
         } 

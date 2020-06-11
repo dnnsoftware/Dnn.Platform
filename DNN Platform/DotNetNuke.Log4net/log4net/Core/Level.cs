@@ -114,13 +114,13 @@ namespace log4net.Core
 				throw new ArgumentNullException("displayName");
 			}
 
-			m_levelValue = level;
+			this.m_levelValue = level;
 #if NETSTANDARD1_3
 			m_levelName = levelName;
 #else
-			m_levelName = string.Intern(levelName);
+			this.m_levelName = string.Intern(levelName);
 #endif
-			m_levelDisplayName = displayName;
+			this.m_levelDisplayName = displayName;
 		}
 
 		/// <summary>
@@ -155,7 +155,7 @@ namespace log4net.Core
 		/// </remarks>
 		public string Name
 		{
-			get { return m_levelName; }
+			get { return this.m_levelName; }
 		}
 
 		/// <summary>
@@ -171,7 +171,7 @@ namespace log4net.Core
 		/// </remarks>
 		public int Value
 		{
-			get { return m_levelValue; }
+			get { return this.m_levelValue; }
 		}
 
 		/// <summary>
@@ -187,7 +187,7 @@ namespace log4net.Core
 		/// </remarks>
 		public string DisplayName
 		{
-			get { return m_levelDisplayName; }
+			get { return this.m_levelDisplayName; }
 		}
 
 		#endregion Public Instance Properties
@@ -208,7 +208,7 @@ namespace log4net.Core
 		/// </remarks>
 		override public string ToString() 
 		{
-			return m_levelName;
+			return this.m_levelName;
 		}
 
 		/// <summary>
@@ -228,7 +228,7 @@ namespace log4net.Core
 			Level otherLevel = o as Level;
 			if (otherLevel != null)
 			{
-				return m_levelValue == otherLevel.m_levelValue;
+				return this.m_levelValue == otherLevel.m_levelValue;
 			}
 			else
 			{
@@ -251,7 +251,7 @@ namespace log4net.Core
 		/// </remarks>
 		override public int GetHashCode()
 		{
-			return m_levelValue;
+			return this.m_levelValue;
 		}
 
 		#endregion Override implementation of Object

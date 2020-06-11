@@ -117,7 +117,7 @@ namespace log4net.Layout.Pattern
 		/// </remarks>
 		public void ActivateOptions()
 		{
-			string dateFormatStr = Option;
+			string dateFormatStr = this.Option;
 			if (dateFormatStr == null)
 			{
 				dateFormatStr = AbsoluteTimeDateFormatter.Iso8601TimeDateFormat;
@@ -125,26 +125,26 @@ namespace log4net.Layout.Pattern
 
 			if (SystemInfo.EqualsIgnoringCase(dateFormatStr, AbsoluteTimeDateFormatter.Iso8601TimeDateFormat))
 			{
-				m_dateFormatter = new Iso8601DateFormatter();
+				this.m_dateFormatter = new Iso8601DateFormatter();
 			}
 			else if (SystemInfo.EqualsIgnoringCase(dateFormatStr, AbsoluteTimeDateFormatter.AbsoluteTimeDateFormat))
 			{
-				m_dateFormatter = new AbsoluteTimeDateFormatter();
+				this.m_dateFormatter = new AbsoluteTimeDateFormatter();
 			}
 			else if (SystemInfo.EqualsIgnoringCase(dateFormatStr, AbsoluteTimeDateFormatter.DateAndTimeDateFormat))
 			{
-				m_dateFormatter = new DateTimeDateFormatter();
+				this.m_dateFormatter = new DateTimeDateFormatter();
 			}
 			else
 			{
 				try 
 				{
-					m_dateFormatter = new SimpleDateFormatter(dateFormatStr);
+					this.m_dateFormatter = new SimpleDateFormatter(dateFormatStr);
 				}
 				catch (Exception e) 
 				{
 					LogLog.Error(declaringType, "Could not instantiate SimpleDateFormatter with ["+dateFormatStr+"]", e);
-					m_dateFormatter = new Iso8601DateFormatter();
+					this.m_dateFormatter = new Iso8601DateFormatter();
 				}	
 			}
 		}
@@ -169,7 +169,7 @@ namespace log4net.Layout.Pattern
 		{
 			try 
 			{
-				m_dateFormatter.FormatDate(loggingEvent.TimeStamp, writer);
+				this.m_dateFormatter.FormatDate(loggingEvent.TimeStamp, writer);
 			}
 			catch (Exception ex) 
 			{

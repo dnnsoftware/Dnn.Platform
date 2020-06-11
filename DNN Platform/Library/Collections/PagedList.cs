@@ -32,7 +32,7 @@ namespace DotNetNuke.Collections
         public PagedList(IEnumerable<T> source, int pageIndex, int pageSize)
         {
             var enumerable = source as T[] ?? source.ToArray();
-            CommonConstruct(enumerable.Skip(pageIndex * pageSize).Take(pageSize).ToList(), enumerable.Count(), pageIndex, pageSize);
+            this.CommonConstruct(enumerable.Skip(pageIndex * pageSize).Take(pageSize).ToList(), enumerable.Count(), pageIndex, pageSize);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace DotNetNuke.Collections
         /// <param name = "pageSize">The size of the page to retrieve</param>
         public PagedList(IEnumerable<T> items, int totalCount, int pageIndex, int pageSize)
         {
-            CommonConstruct(items, totalCount, pageIndex, pageSize);
+            this.CommonConstruct(items, totalCount, pageIndex, pageSize);
         }
 
         #endregion
@@ -53,9 +53,9 @@ namespace DotNetNuke.Collections
 
         private void CommonConstruct(IEnumerable<T> items, int totalCount, int pageIndex, int pageSize)
         {
-            PageCount = (int)Math.Ceiling(totalCount / (double)pageSize);
+            this.PageCount = (int)Math.Ceiling(totalCount / (double)pageSize);
 
-            if (PageCount == 0)
+            if (this.PageCount == 0)
             {
                 if (pageIndex > 0)
                 {
@@ -68,20 +68,20 @@ namespace DotNetNuke.Collections
                 {
                     throw new IndexOutOfRangeException("Index cannot be negative");
                 }
-                if (pageIndex >= PageCount)
+                if (pageIndex >= this.PageCount)
                 {
                     throw new IndexOutOfRangeException("Invalid Page Index");
                 }
             }
-            TotalCount = totalCount;
-            PageSize = pageSize;
-            PageIndex = pageIndex;
-            AddRange(items);
+            this.TotalCount = totalCount;
+            this.PageSize = pageSize;
+            this.PageIndex = pageIndex;
+            this.AddRange(items);
 
-            HasNextPage = (PageIndex < (PageCount - 1));
-            HasPreviousPage = (PageIndex > 0);
-            IsFirstPage = (PageIndex <= 0);
-            IsLastPage = (PageIndex >= (PageCount - 1));
+            this.HasNextPage = (this.PageIndex < (this.PageCount - 1));
+            this.HasPreviousPage = (this.PageIndex > 0);
+            this.IsFirstPage = (this.PageIndex <= 0);
+            this.IsLastPage = (this.PageIndex >= (this.PageCount - 1));
         }
 
         #endregion

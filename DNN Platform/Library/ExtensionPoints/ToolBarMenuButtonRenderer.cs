@@ -45,7 +45,7 @@ namespace DotNetNuke.ExtensionPoints
             str.AppendLine("<ul>");
             foreach (var item in extension.Items)
             {
-                str.AppendLine(GetItemOutput(item));
+                str.AppendLine(this.GetItemOutput(item));
             }            
 
             str.AppendLine("</ul>");

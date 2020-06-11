@@ -28,18 +28,18 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [SetUp]
         public void SetUp()
         {
-            _mockCache = MockComponentProvider.CreateDataCacheProvider();
-            _mockHostController = new Mock<IHostController>();
-            _portalController = new Mock<IPortalController>();
-            _moduleController = new Mock<IModuleController>();
-            _userController = new Mock<IUserController>();
-            PortalController.SetTestableInstance(_portalController.Object);
-            ModuleController.SetTestableInstance(_moduleController.Object);
-            UserController.SetTestableInstance(_userController.Object);
-            HostController.RegisterInstance(_mockHostController.Object);
-            SetupPortalSettings();
-            SetupModuleInfo();
-            SetupUserInfo();
+            this._mockCache = MockComponentProvider.CreateDataCacheProvider();
+            this._mockHostController = new Mock<IHostController>();
+            this._portalController = new Mock<IPortalController>();
+            this._moduleController = new Mock<IModuleController>();
+            this._userController = new Mock<IUserController>();
+            PortalController.SetTestableInstance(this._portalController.Object);
+            ModuleController.SetTestableInstance(this._moduleController.Object);
+            UserController.SetTestableInstance(this._userController.Object);
+            HostController.RegisterInstance(this._mockHostController.Object);
+            this.SetupPortalSettings();
+            this.SetupModuleInfo();
+            this.SetupUserInfo();
         }
 
         [TearDown]
@@ -91,7 +91,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
                 ActiveTab = new TabInfo { ModuleID = 1, TabID = 1 }
             };
 
-            _portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
+            this._portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
         }
 
         private void SetupModuleInfo()
@@ -99,10 +99,10 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             var moduleInfo = new ModuleInfo
             {
                 ModuleID = 1,
-                PortalID = _portalController.Object.GetCurrentPortalSettings().PortalId
+                PortalID = this._portalController.Object.GetCurrentPortalSettings().PortalId
             };
 
-            _moduleController.Setup(mc => mc.GetModule(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
+            this._moduleController.Setup(mc => mc.GetModule(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
                 .Returns(moduleInfo);
         }
 
@@ -112,9 +112,9 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             {
                 UserID = 1,
                 Username = "admin",
-                PortalID = _portalController.Object.GetCurrentPortalSettings().PortalId
+                PortalID = this._portalController.Object.GetCurrentPortalSettings().PortalId
             };
-            _userController.Setup(uc => uc.GetUser(It.IsAny<int>(), It.IsAny<int>())).Returns(userInfo);
+            this._userController.Setup(uc => uc.GetUser(It.IsAny<int>(), It.IsAny<int>())).Returns(userInfo);
         }
     }
 }

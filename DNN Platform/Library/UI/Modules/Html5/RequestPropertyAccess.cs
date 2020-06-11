@@ -15,7 +15,7 @@ namespace DotNetNuke.UI.Modules.Html5
 
         public RequestPropertyAccess(HttpRequest request)
         {
-            _request = request;
+            this._request = request;
         }
 
         public virtual CacheLevel Cacheability
@@ -28,7 +28,7 @@ namespace DotNetNuke.UI.Modules.Html5
             switch (propertyName.ToLowerInvariant())
             {
                 case "querystring":
-                    return _request.QueryString.ToString();
+                    return this._request.QueryString.ToString();
             }
 
             propertyNotFound = true;

@@ -52,12 +52,12 @@ namespace DotNetNuke.Security.Permissions
 
         public PermissionInfoBase()
         {
-            _RoleID = int.Parse(Globals.glbRoleNothing);
-            _AllowAccess = false;
-            _RoleName = Null.NullString;
-            _UserID = Null.NullInteger;
-            _Username = Null.NullString;
-            _DisplayName = Null.NullString;
+            this._RoleID = int.Parse(Globals.glbRoleNothing);
+            this._AllowAccess = false;
+            this._RoleName = Null.NullString;
+            this._UserID = Null.NullInteger;
+            this._Username = Null.NullString;
+            this._DisplayName = Null.NullString;
         }
 		
 		#endregion
@@ -75,11 +75,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _AllowAccess;
+                return this._AllowAccess;
             }
             set
             {
-                _AllowAccess = value;
+                this._AllowAccess = value;
             }
         }
 
@@ -94,11 +94,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _DisplayName;
+                return this._DisplayName;
             }
             set
             {
-                _DisplayName = value;
+                this._DisplayName = value;
             }
         }
 
@@ -113,11 +113,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _RoleID;
+                return this._RoleID;
             }
             set
             {
-                _RoleID = value;
+                this._RoleID = value;
             }
         }
 
@@ -132,11 +132,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _RoleName;
+                return this._RoleName;
             }
             set
             {
-                _RoleName = value;
+                this._RoleName = value;
             }
         }
 
@@ -151,11 +151,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _UserID;
+                return this._UserID;
             }
             set
             {
-                _UserID = value;
+                this._UserID = value;
             }
         }
 
@@ -170,11 +170,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _Username;
+                return this._Username;
             }
             set
             {
-                _Username = value;
+                this._Username = value;
             }
         }
 		
@@ -193,20 +193,20 @@ namespace DotNetNuke.Security.Permissions
             //Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
 
-            UserID = Null.SetNullInteger(dr["UserID"]);
-            Username = Null.SetNullString(dr["Username"]);
-            DisplayName = Null.SetNullString(dr["DisplayName"]);
-            if (UserID == Null.NullInteger)
+            this.UserID = Null.SetNullInteger(dr["UserID"]);
+            this.Username = Null.SetNullString(dr["Username"]);
+            this.DisplayName = Null.SetNullString(dr["DisplayName"]);
+            if (this.UserID == Null.NullInteger)
             {
-                RoleID = Null.SetNullInteger(dr["RoleID"]);
-                RoleName = Null.SetNullString(dr["RoleName"]);
+                this.RoleID = Null.SetNullInteger(dr["RoleID"]);
+                this.RoleName = Null.SetNullString(dr["RoleName"]);
             }
             else
             {
-                RoleID = int.Parse(Globals.glbRoleNothing);
-                RoleName = "";
+                this.RoleID = int.Parse(Globals.glbRoleNothing);
+                this.RoleName = "";
             }
-            AllowAccess = Null.SetNullBoolean(dr["AllowAccess"]);
+            this.AllowAccess = Null.SetNullBoolean(dr["AllowAccess"]);
         }
 		
 		#endregion

@@ -125,7 +125,7 @@ namespace Dnn.PersonaBar.Users.Components
             var settings = UserController.GetUserSettings(portalSettings.PortalId);
 
             //Verify Profanity filter
-            if (GetBoolSetting(settings, "Registration_UseProfanityFilter"))
+            if (this.GetBoolSetting(settings, "Registration_UseProfanityFilter"))
             {
                 var portalSecurity = PortalSecurity.Instance;
                 if (!portalSecurity.ValidateInput(newUser.Username, PortalSecurity.FilterFlag.NoProfanity) || !portalSecurity.ValidateInput(newUser.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
@@ -136,7 +136,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
 
             //Email Address Validation
-            var emailValidator = GetStringSetting(settings, "Security_EmailValidation");
+            var emailValidator = this.GetStringSetting(settings, "Security_EmailValidation");
             if (!string.IsNullOrEmpty(emailValidator))
             {
                 var regExp = RegexUtils.GetCachedRegex(emailValidator, RegexOptions.IgnoreCase | RegexOptions.Multiline);
@@ -149,7 +149,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
 
             //Excluded Terms Verification
-            var excludeRegex = GetExcludeTermsRegex(settings);
+            var excludeRegex = this.GetExcludeTermsRegex(settings);
             if (!string.IsNullOrEmpty(excludeRegex))
             {
                 var regExp = RegexUtils.GetCachedRegex(excludeRegex, RegexOptions.IgnoreCase | RegexOptions.Multiline);
@@ -162,7 +162,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
 
             //User Name Validation
-            var userNameValidator = GetStringSetting(settings, "Security_UserNameValidation");
+            var userNameValidator = this.GetStringSetting(settings, "Security_UserNameValidation");
             if (!string.IsNullOrEmpty(userNameValidator))
             {
                 var regExp = RegexUtils.GetCachedRegex(userNameValidator, RegexOptions.IgnoreCase | RegexOptions.Multiline);
@@ -178,7 +178,7 @@ namespace Dnn.PersonaBar.Users.Components
             var user = UserController.GetUserByName(portalSettings.PortalId, newUser.Username);
             if (user != null)
             {
-                if (GetBoolSetting(settings, "Registration_UseEmailAsUserName"))
+                if (this.GetBoolSetting(settings, "Registration_UseEmailAsUserName"))
                 {
                     throw new Exception(UserController.GetUserCreateStatus(UserCreateStatus.DuplicateEmail));
                 }
@@ -195,7 +195,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
 
             //ensure unique display name
-            if (GetBoolSetting(settings, "Registration_RequireUniqueDisplayName"))
+            if (this.GetBoolSetting(settings, "Registration_RequireUniqueDisplayName"))
             {
                 user = UserController.Instance.GetUserByDisplayname(portalSettings.PortalId, newUser.DisplayName);
                 if (user != null)
@@ -213,7 +213,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
 
             //Update display name format
-            var displaynameFormat = GetStringSetting(settings, "Security_DisplayNameFormat");
+            var displaynameFormat = this.GetStringSetting(settings, "Security_DisplayNameFormat");
             if (!string.IsNullOrEmpty(displaynameFormat)) newUser.UpdateDisplayName(displaynameFormat);
 
             //membership is approved only for public registration
@@ -311,7 +311,7 @@ namespace Dnn.PersonaBar.Users.Components
 
         private string GetExcludeTermsRegex(Hashtable settings)
         {
-            var excludeTerms = GetStringSetting(settings, "Registration_ExcludeTerms");
+            var excludeTerms = this.GetStringSetting(settings, "Registration_ExcludeTerms");
             var regex = String.Empty;
             if (!String.IsNullOrEmpty(excludeTerms))
             {

@@ -38,11 +38,11 @@ namespace DotNetNuke.Services.Social.Messaging
         {
             get
             {
-                return _recipientID;
+                return this._recipientID;
             }
             set
             {
-                _recipientID = value;
+                this._recipientID = value;
             }
         }
 
@@ -100,7 +100,7 @@ namespace DotNetNuke.Services.Social.Messaging
             this.Read = Null.SetNullBoolean(dr["Read"]);
             
             //add audit column data
-            FillInternal(dr);
+            this.FillInternal(dr);
             
         }
     }

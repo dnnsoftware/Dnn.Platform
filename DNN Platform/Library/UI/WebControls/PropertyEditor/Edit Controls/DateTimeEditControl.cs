@@ -57,57 +57,57 @@ namespace DotNetNuke.UI.WebControls
             base.OnInit(e);
             if (string.IsNullOrEmpty(CultureInfo.CurrentCulture.DateTimeFormat.AMDesignator))
             {
-                is24HourClock = true;
+                this.is24HourClock = true;
             }
         }
 
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
-            Controls.Add(new LiteralControl("<br/>"));
-            hourField = new DropDownList();
+            this.Controls.Add(new LiteralControl("<br/>"));
+            this.hourField = new DropDownList();
             int maxHour = 12;
             int minHour = 1;
-            if (is24HourClock)
+            if (this.is24HourClock)
             {
                 minHour = 0;
                 maxHour = 23;
             }
             for (int i = minHour; i <= maxHour; i++)
             {
-                hourField.Items.Add(new ListItem(i.ToString("00"), i.ToString()));
+                this.hourField.Items.Add(new ListItem(i.ToString("00"), i.ToString()));
             }
-            hourField.ControlStyle.CopyFrom(ControlStyle);
-            hourField.ID = ID + "hours";
-            Controls.Add(hourField);
-            Controls.Add(new LiteralControl("&nbsp"));
-            minutesField = new DropDownList();
+            this.hourField.ControlStyle.CopyFrom(this.ControlStyle);
+            this.hourField.ID = this.ID + "hours";
+            this.Controls.Add(this.hourField);
+            this.Controls.Add(new LiteralControl("&nbsp"));
+            this.minutesField = new DropDownList();
             for (int i = 0; i <= 59; i++)
             {
-                minutesField.Items.Add(new ListItem(i.ToString("00"), i.ToString()));
+                this.minutesField.Items.Add(new ListItem(i.ToString("00"), i.ToString()));
             }
-            minutesField.ControlStyle.CopyFrom(ControlStyle);
-            minutesField.ID = ID + "minutes";
-            Controls.Add(minutesField);
-            if (!is24HourClock)
+            this.minutesField.ControlStyle.CopyFrom(this.ControlStyle);
+            this.minutesField.ID = this.ID + "minutes";
+            this.Controls.Add(this.minutesField);
+            if (!this.is24HourClock)
             {
-                Controls.Add(new LiteralControl("&nbsp"));
-                ampmField = new DropDownList();
-                ampmField.Items.Add(new ListItem("AM", "AM"));
-                ampmField.Items.Add(new ListItem("PM", "PM"));
-                ampmField.ControlStyle.CopyFrom(ControlStyle);
-                ampmField.ID = ID + "ampm";
-                Controls.Add(ampmField);
+                this.Controls.Add(new LiteralControl("&nbsp"));
+                this.ampmField = new DropDownList();
+                this.ampmField.Items.Add(new ListItem("AM", "AM"));
+                this.ampmField.Items.Add(new ListItem("PM", "PM"));
+                this.ampmField.ControlStyle.CopyFrom(this.ControlStyle);
+                this.ampmField.ID = this.ID + "ampm";
+                this.Controls.Add(this.ampmField);
             }
         }
 
         protected override void LoadDateControls()
         {
             base.LoadDateControls();
-            int hour = DateValue.Hour;
-            int minute = DateValue.Minute;
+            int hour = this.DateValue.Hour;
+            int minute = this.DateValue.Minute;
             bool isAM = true;
-            if (!is24HourClock)
+            if (!this.is24HourClock)
             {
                 if (hour >= 12)
                 {
@@ -119,23 +119,23 @@ namespace DotNetNuke.UI.WebControls
                     hour = 12;
                 }
             }
-            if (hourField.Items.FindByValue(hour.ToString()) != null)
+            if (this.hourField.Items.FindByValue(hour.ToString()) != null)
             {
-                hourField.Items.FindByValue(hour.ToString()).Selected = true;
+                this.hourField.Items.FindByValue(hour.ToString()).Selected = true;
             }
-            if (minutesField.Items.FindByValue(minute.ToString()) != null)
+            if (this.minutesField.Items.FindByValue(minute.ToString()) != null)
             {
-                minutesField.Items.FindByValue(minute.ToString()).Selected = true;
+                this.minutesField.Items.FindByValue(minute.ToString()).Selected = true;
             }
-            if (!is24HourClock)
+            if (!this.is24HourClock)
             {
                 if (isAM)
                 {
-                    ampmField.SelectedIndex = 0;
+                    this.ampmField.SelectedIndex = 0;
                 }
                 else
                 {
-                    ampmField.SelectedIndex = 1;
+                    this.ampmField.SelectedIndex = 1;
                 }
             }
         }
@@ -143,7 +143,7 @@ namespace DotNetNuke.UI.WebControls
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             bool dataChanged = false;
-            DateTime presentValue = OldDateValue;
+            DateTime presentValue = this.OldDateValue;
             string postedDate = postCollection[postDataKey + "date"];
             string postedHours = postCollection[postDataKey + "hours"];
             string postedMinutes = postCollection[postDataKey + "minutes"];
@@ -153,19 +153,19 @@ namespace DotNetNuke.UI.WebControls
             {
                 DateTime.TryParse(postedDate, out postedValue);
             }
-            if (postedHours != "12" || is24HourClock)
+            if (postedHours != "12" || this.is24HourClock)
             {
                 int hours = 0;                
                 if(Int32.TryParse(postedHours, out hours)) postedValue = postedValue.AddHours(hours);
             }
             postedValue = postedValue.AddMinutes(Int32.Parse(postedMinutes));
-            if (!is24HourClock && postedAMPM.Equals("PM"))
+            if (!this.is24HourClock && postedAMPM.Equals("PM"))
             {
                 postedValue = postedValue.AddHours(12);
             }
             if (!presentValue.Equals(postedValue))
             {
-                Value = postedValue.ToString(CultureInfo.InvariantCulture);
+                this.Value = postedValue.ToString(CultureInfo.InvariantCulture);
                 dataChanged = true;
             }
             return dataChanged;

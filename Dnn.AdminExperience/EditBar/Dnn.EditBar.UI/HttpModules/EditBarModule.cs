@@ -41,14 +41,14 @@ namespace Dnn.EditBar.UI.HttpModules
                     return;
                 }
 
-                ApplicationStart();
+                this.ApplicationStart();
                 _hasAppStarted = true;
             }
         }
 
         private void ApplicationStart()
         {
-            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinInit, OnSkinInit));
+            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinInit, this.OnSkinInit));
         }
 
         public void Dispose()

@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                     alias = alias.Remove(i, appPath.Length);
                 }
             }
-            return GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
+            return this.GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
         }
 
         private static string GeneratePrefixString(int count)
@@ -86,12 +86,12 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         public void ClearCachedData()
         {
-            _prefixCounts = null;
+            this._prefixCounts = null;
         }
 
         public IEnumerable<int> GetRoutePrefixCounts()
         {
-            if (_prefixCounts != null) return _prefixCounts;
+            if (this._prefixCounts != null) return this._prefixCounts;
             //prefixCounts are required for each route that is mapped but they only change
             //when a new portal is added so cache them until that time
             var portals = PortalController.Instance.GetPortals();
@@ -104,7 +104,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                             portal =>
                                 PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID)
                                     .Select(x => x.HTTPAlias))
-                        .Select(StripApplicationPath)
+                        .Select(this.StripApplicationPath)
                         .SelectMany(
                             aliases =>
                                 aliases.Select(CalcAliasPrefixCount).Where(count => !segmentCounts1.Contains(count))))
@@ -112,9 +112,9 @@ namespace DotNetNuke.Web.Mvc.Routing
                 segmentCounts1.Add(count);
             }
             IEnumerable<int> segmentCounts = segmentCounts1;
-            _prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
+            this._prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
 
-            return _prefixCounts;
+            return this._prefixCounts;
         }
 
         private static int CalcAliasPrefixCount(string alias)

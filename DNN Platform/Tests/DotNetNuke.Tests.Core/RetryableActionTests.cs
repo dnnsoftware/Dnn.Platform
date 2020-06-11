@@ -19,8 +19,8 @@ namespace DotNetNuke.Tests.Core
         [SetUp]
         public void Setup()
         {
-            _sleepMonitor = new SleepMonitor();
-            RetryableAction.SleepAction = _sleepMonitor.GoToSleep;
+            this._sleepMonitor = new SleepMonitor();
+            RetryableAction.SleepAction = this._sleepMonitor.GoToSleep;
         }
 
         [Test]
@@ -53,9 +53,9 @@ namespace DotNetNuke.Tests.Core
 
             retryable.TryIt();
 
-            var firstRetry = _sleepMonitor.SleepPeriod[0];
-            var secondRetry = _sleepMonitor.SleepPeriod[1];
-            var thirdRetry = _sleepMonitor.SleepPeriod[2];
+            var firstRetry = this._sleepMonitor.SleepPeriod[0];
+            var secondRetry = this._sleepMonitor.SleepPeriod[1];
+            var thirdRetry = this._sleepMonitor.SleepPeriod[2];
 
             Assert.AreEqual(5, firstRetry);
             Assert.AreEqual(50, secondRetry);
@@ -89,14 +89,14 @@ namespace DotNetNuke.Tests.Core
 
         public void GoToSleep(int delay)
         {
-            _periods.Add(delay);
+            this._periods.Add(delay);
         }
 
         public IList<int> SleepPeriod
         {
             get
             {
-                return _periods.AsReadOnly();
+                return this._periods.AsReadOnly();
             }
         }
     }
@@ -110,7 +110,7 @@ namespace DotNetNuke.Tests.Core
 
         public ActionMonitor(int failureCount)
         {
-            _failuresRemaining = failureCount;
+            this._failuresRemaining = failureCount;
         }
 
         public int TimesCalled { get; private set; }
@@ -119,20 +119,20 @@ namespace DotNetNuke.Tests.Core
         {
             get
             {
-                return _callTimes.AsReadOnly();
+                return this._callTimes.AsReadOnly();
             }
         }
 
         public void Action()
         {
-            _callTimes.Add(DateTime.Now);
-            TimesCalled++;
+            this._callTimes.Add(DateTime.Now);
+            this.TimesCalled++;
 
-            if(_failuresRemaining != 0)
+            if(this._failuresRemaining != 0)
             {
-                if (_failuresRemaining > 0)
+                if (this._failuresRemaining > 0)
                 {
-                    _failuresRemaining--;
+                    this._failuresRemaining--;
                 }
                 
                 throw new Exception("it failed");

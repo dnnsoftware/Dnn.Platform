@@ -81,11 +81,11 @@ namespace log4net.Core
 		public LocationInfo(Type callerStackBoundaryDeclaringType) 
 		{
 			// Initialize all fields
-			m_className = NA;
-			m_fileName = NA;
-			m_lineNumber = NA;
-			m_methodName = NA;
-			m_fullInfo = NA;
+			this.m_className = NA;
+			this.m_fileName = NA;
+			this.m_lineNumber = NA;
+			this.m_methodName = NA;
+			this.m_fullInfo = NA;
 
 #if !(NETCF || NETSTANDARD1_3) // StackTrace isn't fully implemented for NETSTANDARD1_3 https://github.com/dotnet/corefx/issues/1797
 			if (callerStackBoundaryDeclaringType != null)
@@ -122,13 +122,13 @@ namespace log4net.Core
 						// take into account the frames we skip above
 						int adjustedFrameCount = st.FrameCount - frameIndex;
                         ArrayList stackFramesList = new ArrayList(adjustedFrameCount);
-						m_stackFrames = new StackFrameItem[adjustedFrameCount];
+						this.m_stackFrames = new StackFrameItem[adjustedFrameCount];
 						for (int i=frameIndex; i < st.FrameCount; i++) 
 						{
 							stackFramesList.Add(new StackFrameItem(st.GetFrame(i)));
 						}
 												
-						stackFramesList.CopyTo(m_stackFrames, 0);
+						stackFramesList.CopyTo(this.m_stackFrames, 0);
 						
 						// now frameIndex is the first 'user' caller frame
 						StackFrame locationFrame = st.GetFrame(frameIndex);
@@ -139,17 +139,17 @@ namespace log4net.Core
 
 							if (method != null)
 							{
-								m_methodName =  method.Name;
+								this.m_methodName =  method.Name;
 								if (method.DeclaringType != null)
 								{
-									m_className = method.DeclaringType.FullName;
+									this.m_className = method.DeclaringType.FullName;
 								}
 							}
-							m_fileName = locationFrame.GetFileName();
-							m_lineNumber = locationFrame.GetFileLineNumber().ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
+							this.m_fileName = locationFrame.GetFileName();
+							this.m_lineNumber = locationFrame.GetFileLineNumber().ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
 
 							// Combine all location info
-							m_fullInfo =  m_className + '.' + m_methodName + '(' + m_fileName + ':' + m_lineNumber + ')';
+							this.m_fullInfo =  this.m_className + '.' + this.m_methodName + '(' + this.m_fileName + ':' + this.m_lineNumber + ')';
 						}
 					}
 				}
@@ -178,12 +178,12 @@ namespace log4net.Core
 		/// </remarks>
 		public LocationInfo(string className, string methodName, string fileName, string lineNumber)
 		{
-			m_className = className;
-			m_fileName = fileName;
-			m_lineNumber = lineNumber;
-			m_methodName = methodName;
-			m_fullInfo = m_className + '.' + m_methodName + '(' + m_fileName + 
-				':' + m_lineNumber + ')';
+			this.m_className = className;
+			this.m_fileName = fileName;
+			this.m_lineNumber = lineNumber;
+			this.m_methodName = methodName;
+			this.m_fullInfo = this.m_className + '.' + this.m_methodName + '(' + this.m_fileName + 
+				':' + this.m_lineNumber + ')';
 		}
 
 		#endregion Public Instance Constructors
@@ -206,7 +206,7 @@ namespace log4net.Core
 		/// </remarks>
 		public string ClassName
 		{
-			get { return m_className; }
+			get { return this.m_className; }
 		}
 
 		/// <summary>
@@ -222,7 +222,7 @@ namespace log4net.Core
 		/// </remarks>
 		public string FileName
 		{
-			get { return m_fileName; }
+			get { return this.m_fileName; }
 		}
 
 		/// <summary>
@@ -238,7 +238,7 @@ namespace log4net.Core
 		/// </remarks>
 		public string LineNumber
 		{
-			get { return m_lineNumber; }
+			get { return this.m_lineNumber; }
 		}
 
 		/// <summary>
@@ -254,7 +254,7 @@ namespace log4net.Core
 		/// </remarks>
 		public string MethodName
 		{
-			get { return m_methodName; }
+			get { return this.m_methodName; }
 		}
 
 		/// <summary>
@@ -272,7 +272,7 @@ namespace log4net.Core
 		/// </remarks>
 		public string FullInfo
 		{
-			get { return m_fullInfo; }
+			get { return this.m_fullInfo; }
 		}
 		
 #if !(NETCF || NETSTANDARD1_3)
@@ -281,7 +281,7 @@ namespace log4net.Core
 		/// </summary>
 		public StackFrameItem[] StackFrames
 		{
-			get { return m_stackFrames; }
+			get { return this.m_stackFrames; }
 		}
 #endif
 

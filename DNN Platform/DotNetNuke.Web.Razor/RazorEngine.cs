@@ -26,13 +26,13 @@ namespace DotNetNuke.Web.Razor
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public RazorEngine(string razorScriptFile, ModuleInstanceContext moduleContext, string localResourceFile)
         {
-            RazorScriptFile = razorScriptFile;
-            ModuleContext = moduleContext;
-            LocalResourceFile = localResourceFile ?? Path.Combine(Path.GetDirectoryName(razorScriptFile), Localization.LocalResourceDirectory, Path.GetFileName(razorScriptFile) + ".resx");
+            this.RazorScriptFile = razorScriptFile;
+            this.ModuleContext = moduleContext;
+            this.LocalResourceFile = localResourceFile ?? Path.Combine(Path.GetDirectoryName(razorScriptFile), Localization.LocalResourceDirectory, Path.GetFileName(razorScriptFile) + ".resx");
 
             try
             {
-                InitWebpage();
+                this.InitWebpage();
             }
             catch (HttpParseException)
             {
@@ -69,9 +69,9 @@ namespace DotNetNuke.Web.Razor
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public Type RequestedModelType()
         {
-            if (Webpage != null)
+            if (this.Webpage != null)
             {
-                var webpageType = Webpage.GetType();
+                var webpageType = this.Webpage.GetType();
                 if (webpageType.BaseType.IsGenericType)
                 {
                     return webpageType.BaseType.GetGenericArguments()[0];
@@ -85,7 +85,7 @@ namespace DotNetNuke.Web.Razor
         {
             try
             {
-                Webpage.ExecutePageHierarchy(new WebPageContext(HttpContext, Webpage, model), writer, Webpage);
+                this.Webpage.ExecutePageHierarchy(new WebPageContext(this.HttpContext, this.Webpage, model), writer, this.Webpage);
             }
             catch (Exception exc)
             {
@@ -98,7 +98,7 @@ namespace DotNetNuke.Web.Razor
         {
             try
             {
-                Webpage.ExecutePageHierarchy(new WebPageContext(HttpContext, Webpage, null), writer, Webpage);
+                this.Webpage.ExecutePageHierarchy(new WebPageContext(this.HttpContext, this.Webpage, null), writer, this.Webpage);
             }
             catch (Exception exc)
             {
@@ -111,7 +111,7 @@ namespace DotNetNuke.Web.Razor
         {
             try
             {
-                Webpage.ExecutePageHierarchy(context, writer, Webpage);
+                this.Webpage.ExecutePageHierarchy(context, writer, this.Webpage);
             }
             catch (Exception exc)
             {
@@ -121,7 +121,7 @@ namespace DotNetNuke.Web.Razor
 
         private object CreateWebPageInstance()
         {
-            var compiledType = BuildManager.GetCompiledType(RazorScriptFile);
+            var compiledType = BuildManager.GetCompiledType(this.RazorScriptFile);
             object objectValue = null;
             if (((compiledType != null)))
             {
@@ -132,28 +132,28 @@ namespace DotNetNuke.Web.Razor
 
         private void InitHelpers(DotNetNukeWebPage webPage)
         {
-            webPage.Dnn = new DnnHelper(ModuleContext);
-            webPage.Html = new HtmlHelper(ModuleContext, LocalResourceFile);
-            webPage.Url = new UrlHelper(ModuleContext);
+            webPage.Dnn = new DnnHelper(this.ModuleContext);
+            webPage.Html = new HtmlHelper(this.ModuleContext, this.LocalResourceFile);
+            webPage.Url = new UrlHelper(this.ModuleContext);
         }
 
         private void InitWebpage()
         {
-            if (!string.IsNullOrEmpty(RazorScriptFile))
+            if (!string.IsNullOrEmpty(this.RazorScriptFile))
             {
-                var objectValue = RuntimeHelpers.GetObjectValue(CreateWebPageInstance());
+                var objectValue = RuntimeHelpers.GetObjectValue(this.CreateWebPageInstance());
                 if ((objectValue == null))
                 {
-                    throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "The webpage found at '{0}' was not created.", new object[] {RazorScriptFile}));
+                    throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "The webpage found at '{0}' was not created.", new object[] {this.RazorScriptFile}));
                 }
-                Webpage = objectValue as DotNetNukeWebPage;
-                if ((Webpage == null))
+                this.Webpage = objectValue as DotNetNukeWebPage;
+                if ((this.Webpage == null))
                 {
-                    throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "The webpage at '{0}' must derive from DotNetNukeWebPage.", new object[] {RazorScriptFile}));
+                    throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "The webpage at '{0}' must derive from DotNetNukeWebPage.", new object[] {this.RazorScriptFile}));
                 }
-                Webpage.Context = HttpContext;
-                Webpage.VirtualPath = VirtualPathUtility.GetDirectory(RazorScriptFile);
-                InitHelpers(Webpage);
+                this.Webpage.Context = this.HttpContext;
+                this.Webpage.VirtualPath = VirtualPathUtility.GetDirectory(this.RazorScriptFile);
+                this.InitHelpers(this.Webpage);
             }
         }
     }

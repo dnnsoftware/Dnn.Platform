@@ -14,7 +14,7 @@ namespace DotNetNuke.Modules.DigitalAssets
     {
         protected override void OnInit(EventArgs e)
         {
-            ClientResourceManager.RegisterScript(Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssets.SearchBox.js", FileOrder.Js.DefaultPriority + 10);
+            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssets.SearchBox.js", FileOrder.Js.DefaultPriority + 10);
         }
     }
 }

@@ -36,15 +36,15 @@ namespace Dnn.PersonaBar.Prompt.Services
         {
             get
             {
-                if (_portalId == -1)
+                if (this._portalId == -1)
                 {
-                    _portalId = base.PortalId;
+                    this._portalId = base.PortalId;
                 }
-                return _portalId;
+                return this._portalId;
             }
             set
             {
-                _portalId = value;
+                this._portalId = value;
             }
         }
         private PortalSettings _portalSettings;
@@ -52,15 +52,15 @@ namespace Dnn.PersonaBar.Prompt.Services
         {
             get
             {
-                if (_portalSettings == null)
+                if (this._portalSettings == null)
                 {
-                    _portalSettings = base.PortalSettings;
+                    this._portalSettings = base.PortalSettings;
                 }
-                return _portalSettings;
+                return this._portalSettings;
             }
             set
             {
-                _portalSettings = value;
+                this._portalSettings = value;
             }
         }
 
@@ -74,21 +74,21 @@ namespace Dnn.PersonaBar.Prompt.Services
             {
                 var errorMessage = string.Format(Localization.GetString("Prompt_GetPortal_NotFound", Constants.LocalResourcesFile), portalId);
                 Logger.Error(errorMessage);
-                return AddLogAndReturnResponse(null, null, command, DateTime.Now, errorMessage);
+                return this.AddLogAndReturnResponse(null, null, command, DateTime.Now, errorMessage);
             }
 
-            PortalId = portalId;
-            SetupPortalSettings(portalId);
+            this.PortalId = portalId;
+            this.SetupPortalSettings(portalId);
 
-            return Cmd(command);
+            return this.Cmd(command);
         }
 
         private void SetupPortalSettings(int portalId)
         {
-            PortalSettings = new PortalSettings(portalId);
+            this.PortalSettings = new PortalSettings(portalId);
             var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
-            PortalSettings.PrimaryAlias = portalAliases.FirstOrDefault(a => a.IsPrimary);
-            PortalSettings.PortalAlias = PortalAliasController.Instance.GetPortalAlias(PortalSettings.DefaultPortalAlias);
+            this.PortalSettings.PrimaryAlias = portalAliases.FirstOrDefault(a => a.IsPrimary);
+            this.PortalSettings.PortalAlias = PortalAliasController.Instance.GetPortalAlias(this.PortalSettings.DefaultPortalAlias);
         }
 
         [ValidateAntiForgeryToken]
@@ -105,10 +105,10 @@ namespace Dnn.PersonaBar.Prompt.Services
                 var cmdName = isHelpCmd ? (args.Length > 1 ? args[1].ToUpper() : "") : args.First().ToUpper();
                 if (isHelpCmd && (isHelpSyntax || isHelpLearn))
                 {
-                    return GetHelp(command, null, isHelpSyntax, isHelpLearn);
+                    return this.GetHelp(command, null, isHelpSyntax, isHelpLearn);
                 }
                 if (isHelpCmd && args.Length == 1)
-                    return AddLogAndReturnResponse(null, null, command, startTime,
+                    return this.AddLogAndReturnResponse(null, null, command, startTime,
                         string.Format(Localization.GetString("CommandNotFound", Constants.LocalResourcesFile),
                             cmdName.ToLower()));
 
@@ -123,7 +123,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                     {
                         sbError.AppendFormat(Localization.GetString("DidYouMean", Constants.LocalResourcesFile), suggestion);
                     }
-                    return AddLogAndReturnResponse(null, null, command, startTime, sbError.ToString());
+                    return this.AddLogAndReturnResponse(null, null, command, startTime, sbError.ToString());
                 }
                 var cmdTypeToRun = allCommands[cmdName].CommandType;
 
@@ -131,21 +131,21 @@ namespace Dnn.PersonaBar.Prompt.Services
                 try
                 {
                     var cmdObj = (IConsoleCommand)Activator.CreateInstance(cmdTypeToRun);
-                    if (isHelpCmd) return GetHelp(command, cmdObj);
+                    if (isHelpCmd) return this.GetHelp(command, cmdObj);
                     // set env. data for command use
-                    cmdObj.Initialize(args, PortalSettings, UserInfo, command.CurrentPage);
-                    return AddLogAndReturnResponse(cmdObj, cmdTypeToRun, command, startTime);
+                    cmdObj.Initialize(args, this.PortalSettings, this.UserInfo, command.CurrentPage);
+                    return this.AddLogAndReturnResponse(cmdObj, cmdTypeToRun, command, startTime);
                 }
                 catch (Exception ex)
                 {
                     Logger.Error(ex);
-                    return AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
+                    return this.AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
                 }
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
+                return this.AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
             }
         }
 
@@ -205,20 +205,20 @@ namespace Dnn.PersonaBar.Prompt.Services
                                     result.PagingInfo.PageNo, result.PagingInfo.TotalPages);
                         }
                     }
-                    message = Request.CreateResponse(HttpStatusCode.OK, result);
+                    message = this.Request.CreateResponse(HttpStatusCode.OK, result);
                     logInfo.LogProperties.Add(new LogDetailInfo("RecordsAffected", result.Records.ToString()));
                     logInfo.LogProperties.Add(new LogDetailInfo("Output", result.Output));
                 }
                 else
                 {
                     logInfo.LogProperties.Add(new LogDetailInfo("Output", consoleCommand?.ValidationMessage ?? error));
-                    message = BadRequestResponse(consoleCommand?.ValidationMessage ?? error);
+                    message = this.BadRequestResponse(consoleCommand?.ValidationMessage ?? error);
                 }
             }
             catch (Exception ex)
             {
                 logInfo.Exception = new ExceptionInfo(ex);
-                message = BadRequestResponse(ex.Message);
+                message = this.BadRequestResponse(ex.Message);
             }
             logInfo.LogProperties.Add(new LogDetailInfo("ExecutionTime(hh:mm:ss)", TimeSpan.FromMilliseconds(DateTime.Now.Subtract(startTime).TotalMilliseconds).ToString(@"hh\:mm\:ss\.ffffff")));
             LogController.Instance.AddLog(logInfo);
@@ -227,7 +227,7 @@ namespace Dnn.PersonaBar.Prompt.Services
 
         private HttpResponseMessage GetHelp(CommandInputModel command, IConsoleCommand consoleCommand, bool showSyntax = false, bool showLearn = false)
         {
-            return Request.CreateResponse(HttpStatusCode.OK, CommandRepository.Instance.GetCommandHelp(command, consoleCommand, showSyntax, showLearn));
+            return this.Request.CreateResponse(HttpStatusCode.OK, CommandRepository.Instance.GetCommandHelp(command, consoleCommand, showSyntax, showLearn));
         }
 
         private static string FilterCommand(string command)

@@ -42,7 +42,7 @@ namespace DotNetNuke.HttpModules.Exceptions
         /// <param name="application">The application.</param>
         public void Init(HttpApplication application)
         {
-            application.Error += OnErrorRequest;
+            application.Error += this.OnErrorRequest;
         }
 
         public void Dispose()

@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.WebControls
     {
         public CheckEditControl()
         {
-            SystemType = "System.Boolean";
+            this.SystemType = "System.Boolean";
         }
 
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
@@ -40,9 +40,9 @@ namespace DotNetNuke.UI.WebControls
             {
                 boolValue = true;
             }
-            if (!BooleanValue.Equals(boolValue))
+            if (!this.BooleanValue.Equals(boolValue))
             {
-                Value = boolValue;
+                this.Value = boolValue;
                 return true;
             }
             return false;
@@ -51,16 +51,16 @@ namespace DotNetNuke.UI.WebControls
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            if (Page != null && EditMode == PropertyEditorMode.Edit)
+            if (this.Page != null && this.EditMode == PropertyEditorMode.Edit)
             {
-                Page.RegisterRequiresPostBack(this);
+                this.Page.RegisterRequiresPostBack(this);
             }
         }
 
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");
-            if ((BooleanValue))
+            if ((this.BooleanValue))
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, "1");
@@ -71,8 +71,8 @@ namespace DotNetNuke.UI.WebControls
             }
 
             writer.AddAttribute("onclick", "this.value = this.checked ? '1' : '';");
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
-            writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();
         }
@@ -80,7 +80,7 @@ namespace DotNetNuke.UI.WebControls
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");
-            if ((BooleanValue))
+            if ((this.BooleanValue))
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
             }

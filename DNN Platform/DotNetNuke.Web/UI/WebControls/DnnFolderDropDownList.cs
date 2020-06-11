@@ -26,15 +26,15 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnInit(e);
 
-            SelectItemDefaultText = Localization.GetString("DropDownList.SelectFolderDefaultText", Localization.SharedResourceFile);
-            Services.GetTreeMethod = "ItemListService/GetFolders";
-            Services.GetNodeDescendantsMethod = "ItemListService/GetFolderDescendants";
-            Services.SearchTreeMethod = "ItemListService/SearchFolders";
-            Services.GetTreeWithNodeMethod = "ItemListService/GetTreePathForFolder";
-            Services.SortTreeMethod = "ItemListService/SortFolders";
-            Services.ServiceRoot = "InternalServices";
+            this.SelectItemDefaultText = Localization.GetString("DropDownList.SelectFolderDefaultText", Localization.SharedResourceFile);
+            this.Services.GetTreeMethod = "ItemListService/GetFolders";
+            this.Services.GetNodeDescendantsMethod = "ItemListService/GetFolderDescendants";
+            this.Services.SearchTreeMethod = "ItemListService/SearchFolders";
+            this.Services.GetTreeWithNodeMethod = "ItemListService/GetTreePathForFolder";
+            this.Services.SortTreeMethod = "ItemListService/SortFolders";
+            this.Services.ServiceRoot = "InternalServices";
 
-            Options.ItemList.DisableUnspecifiedOrder = true;
+            this.Options.ItemList.DisableUnspecifiedOrder = true;
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnPreRender(e);
 
             //add the selected folder's level path so that it can expand to the selected node in client side.
-            var selectedFolder = SelectedFolder;
+            var selectedFolder = this.SelectedFolder;
             if (selectedFolder != null && selectedFolder.ParentID > Null.NullInteger)
             {
                 var folderLevel = string.Empty;
@@ -54,7 +54,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     parentFolder = (parentFolder.ParentID < 0) ? null : FolderManager.Instance.GetFolder(parentFolder.ParentID);
                 }
 
-                ExpandPath = folderLevel.TrimEnd(',');
+                this.ExpandPath = folderLevel.TrimEnd(',');
             }
             
         }
@@ -67,7 +67,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                var folderId = SelectedItemValueAsInt;
+                var folderId = this.SelectedItemValueAsInt;
                 return (folderId == Null.NullInteger) ? null : FolderManager.Instance.GetFolder(folderId);
             }
             set
@@ -78,7 +78,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     folderName = PortalSettings.Current.ActiveTab.IsSuperTab ? DynamicSharedConstants.HostRootFolder : DynamicSharedConstants.RootFolder;
                 }
 
-                SelectedItem = (value != null) ? new ListItem() { Text = folderName, Value = value.FolderID.ToString(CultureInfo.InvariantCulture) } : null;
+                this.SelectedItem = (value != null) ? new ListItem() { Text = folderName, Value = value.FolderID.ToString(CultureInfo.InvariantCulture) } : null;
             }
         }
 

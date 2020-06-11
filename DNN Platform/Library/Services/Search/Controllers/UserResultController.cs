@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 return false;
             }
 
-            var userInSearchResult = UserController.GetUserById(PortalSettings.PortalId, userId);
+            var userInSearchResult = UserController.GetUserById(this.PortalSettings.PortalId, userId);
             if (userInSearchResult == null || userInSearchResult.IsDeleted)
             {
                 return false;
@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 var extendedVisibility = searchResult.UniqueKey.IndexOf("_") != searchResult.UniqueKey.LastIndexOf("_")
                                              ? searchResult.UniqueKey.Split('_')[2]
                                              : string.Empty;
-                return HasSocialReplationship(userInSearchResult, UserController.Instance.GetCurrentUserInfo(), extendedVisibility);
+                return this.HasSocialReplationship(userInSearchResult, UserController.Instance.GetCurrentUserInfo(), extendedVisibility);
             }
 
             if (searchResult.UniqueKey.Contains("membersonly"))
@@ -100,7 +100,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
         public override string GetDocUrl(SearchResult searchResult)
         {
-            var url = TestableGlobals.Instance.NavigateURL(PortalSettings.UserTabId, string.Empty, "userid=" + GetUserId(searchResult));
+            var url = TestableGlobals.Instance.NavigateURL(this.PortalSettings.UserTabId, string.Empty, "userid=" + GetUserId(searchResult));
             return url;
         }
 
@@ -117,7 +117,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 return false;
             }
 
-            var profileVisibility = new ProfileVisibility(PortalSettings.PortalId, extendedVisibility);
+            var profileVisibility = new ProfileVisibility(this.PortalSettings.PortalId, extendedVisibility);
 
             var isVisible = accessingUser.UserID == targetUser.UserID;
             if (!isVisible)

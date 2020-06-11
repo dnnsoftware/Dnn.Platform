@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.Html
         public ArrayList GetWorkflowStates(int WorkflowID)
         {
             string cacheKey = string.Format(WORKFLOW_CACHE_KEY, WorkflowID);
-            return CBO.GetCachedObject<ArrayList>(new CacheItemArgs(cacheKey, WORKFLOW_CACHE_TIMEOUT, WORKFLOW_CACHE_PRIORITY, WorkflowID), GetWorkflowStatesCallBack);
+            return CBO.GetCachedObject<ArrayList>(new CacheItemArgs(cacheKey, WORKFLOW_CACHE_TIMEOUT, WORKFLOW_CACHE_PRIORITY, WorkflowID), this.GetWorkflowStatesCallBack);
         }
 
         /// -----------------------------------------------------------------------------
@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.Html
         public int GetFirstWorkflowStateID(int WorkflowID)
         {
             int intStateID = -1;
-            ArrayList arrWorkflowStates = GetWorkflowStates(WorkflowID);
+            ArrayList arrWorkflowStates = this.GetWorkflowStates(WorkflowID);
             if (arrWorkflowStates.Count > 0)
             {
                 intStateID = ((WorkflowStateInfo) (arrWorkflowStates[0])).StateID;
@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.Html
         public int GetPreviousWorkflowStateID(int WorkflowID, int StateID)
         {
             int intPreviousStateID = -1;
-            ArrayList arrWorkflowStates = GetWorkflowStates(WorkflowID);
+            ArrayList arrWorkflowStates = this.GetWorkflowStates(WorkflowID);
             int intItem = 0;
 
             // locate the current state
@@ -134,7 +134,7 @@ namespace DotNetNuke.Modules.Html
             // if none found then reset to first state
             if (intPreviousStateID == -1)
             {
-                intPreviousStateID = GetFirstWorkflowStateID(WorkflowID);
+                intPreviousStateID = this.GetFirstWorkflowStateID(WorkflowID);
             }
 
             return intPreviousStateID;
@@ -152,7 +152,7 @@ namespace DotNetNuke.Modules.Html
         public int GetNextWorkflowStateID(int WorkflowID, int StateID)
         {
             int intNextStateID = -1;
-            ArrayList arrWorkflowStates = GetWorkflowStates(WorkflowID);
+            ArrayList arrWorkflowStates = this.GetWorkflowStates(WorkflowID);
             int intItem = 0;
 
             // locate the current state
@@ -183,7 +183,7 @@ namespace DotNetNuke.Modules.Html
             // if none found then reset to first state
             if (intNextStateID == -1)
             {
-                intNextStateID = GetFirstWorkflowStateID(WorkflowID);
+                intNextStateID = this.GetFirstWorkflowStateID(WorkflowID);
             }
 
             return intNextStateID;
@@ -200,7 +200,7 @@ namespace DotNetNuke.Modules.Html
         public int GetLastWorkflowStateID(int WorkflowID)
         {
             int intStateID = -1;
-            ArrayList arrWorkflowStates = GetWorkflowStates(WorkflowID);
+            ArrayList arrWorkflowStates = this.GetWorkflowStates(WorkflowID);
             if (arrWorkflowStates.Count > 0)
             {
                 intStateID = ((WorkflowStateInfo) (arrWorkflowStates[arrWorkflowStates.Count - 1])).StateID;

@@ -37,23 +37,23 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 		public void SetUp()
 		{
 			ComponentFactory.Container = new SimpleContainer();
-			_dataProvider = MockComponentProvider.CreateDataProvider();
-			_dataProvider.Setup(d => d.GetProviderPath()).Returns("");
+			this._dataProvider = MockComponentProvider.CreateDataProvider();
+			this._dataProvider.Setup(d => d.GetProviderPath()).Returns("");
 			MockComponentProvider.CreateDataCacheProvider();
 			MockComponentProvider.CreateEventLogController();
 
-			_dtProfiles = new DataTable("PreviewProfiles");
-			var pkCol = _dtProfiles.Columns.Add("Id", typeof(int));
-			_dtProfiles.Columns.Add("PortalId", typeof(int));
-			_dtProfiles.Columns.Add("Name", typeof(string));
-			_dtProfiles.Columns.Add("Width", typeof(int));
-			_dtProfiles.Columns.Add("Height", typeof(int));
-			_dtProfiles.Columns.Add("UserAgent", typeof(string));
-			_dtProfiles.Columns.Add("SortOrder", typeof(int));
+			this._dtProfiles = new DataTable("PreviewProfiles");
+			var pkCol = this._dtProfiles.Columns.Add("Id", typeof(int));
+			this._dtProfiles.Columns.Add("PortalId", typeof(int));
+			this._dtProfiles.Columns.Add("Name", typeof(string));
+			this._dtProfiles.Columns.Add("Width", typeof(int));
+			this._dtProfiles.Columns.Add("Height", typeof(int));
+			this._dtProfiles.Columns.Add("UserAgent", typeof(string));
+			this._dtProfiles.Columns.Add("SortOrder", typeof(int));
 
-			_dtProfiles.PrimaryKey = new[] { pkCol };
+			this._dtProfiles.PrimaryKey = new[] { pkCol };
 
-			_dataProvider.Setup(d =>
+			this._dataProvider.Setup(d =>
 								d.SavePreviewProfile(It.IsAny<int>(),
 								It.IsAny<int>(),
 								It.IsAny<string>(),
@@ -66,16 +66,16 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 															{
 																if (id == -1)
 																{
-																	if (_dtProfiles.Rows.Count == 0)
+																	if (this._dtProfiles.Rows.Count == 0)
 																	{
 																		id = 1;
 																	}
 																	else
 																	{
-																		id = Convert.ToInt32(_dtProfiles.Select("", "Id Desc")[0]["Id"]) + 1;
+																		id = Convert.ToInt32(this._dtProfiles.Select("", "Id Desc")[0]["Id"]) + 1;
 																	}
 
-                                                                    var row = _dtProfiles.NewRow();
+                                                                    var row = this._dtProfiles.NewRow();
 																	row["Id"] = id;
 																	row["PortalId"] = portalId;
 																	row["name"] = name;
@@ -84,11 +84,11 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 																	row["useragent"] = userAgent;
 																	row["sortorder"] = sortOrder;
 
-																	_dtProfiles.Rows.Add(row);
+																	this._dtProfiles.Rows.Add(row);
 																}
 																else
 																{
-																	var rows = _dtProfiles.Select("Id = " + id);
+																	var rows = this._dtProfiles.Select("Id = " + id);
 																	if (rows.Length == 1)
 																	{
 																		var row = rows[0];
@@ -104,13 +104,13 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 																return id;
 															});
 
-			_dataProvider.Setup(d => d.GetPreviewProfiles(It.IsAny<int>())).Returns<int>((portalId) => { return GetProfilesCallBack(portalId); });
-			_dataProvider.Setup(d => d.DeletePreviewProfile(It.IsAny<int>())).Callback<int>((id) =>
+			this._dataProvider.Setup(d => d.GetPreviewProfiles(It.IsAny<int>())).Returns<int>((portalId) => { return this.GetProfilesCallBack(portalId); });
+			this._dataProvider.Setup(d => d.DeletePreviewProfile(It.IsAny<int>())).Callback<int>((id) =>
 																							{
-																								var rows = _dtProfiles.Select("Id = " + id);
+																								var rows = this._dtProfiles.Select("Id = " + id);
 																								if (rows.Length == 1)
 																								{
-																									_dtProfiles.Rows.Remove(rows[0]);
+																									this._dtProfiles.Rows.Remove(rows[0]);
 																								}
 																							});
 		}
@@ -125,7 +125,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 			var profile = new PreviewProfile { Name = "Test R", PortalId = 0, Width = 800, Height = 480 };
 			new PreviewProfileController().Save(profile);
 
-			var dataReader = _dataProvider.Object.GetPreviewProfiles(0);
+			var dataReader = this._dataProvider.Object.GetPreviewProfiles(0);
 			var affectedCount = 0;
 			while (dataReader.Read())
 			{
@@ -138,7 +138,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 		[Test]
 		public void PreviewProfileController_GetProfilesByPortal_With_Valid_PortalID()
 		{
-			PrepareData();
+			this.PrepareData();
 
 			IList<IPreviewProfile> list = new PreviewProfileController().GetProfilesByPortal(0);
 
@@ -148,7 +148,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 		[Test]
 		public void PreviewProfileController_Delete_With_ValidID()
 		{
-			PrepareData();
+			this.PrepareData();
 			new PreviewProfileController().Delete(0, 1);
 
 			IList<IPreviewProfile> list = new PreviewProfileController().GetProfilesByPortal(0);
@@ -162,8 +162,8 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
 		private IDataReader GetProfilesCallBack(int portalId)
 		{
-			var dtCheck = _dtProfiles.Clone();
-			foreach (var row in _dtProfiles.Select("PortalId = " + portalId))
+			var dtCheck = this._dtProfiles.Clone();
+			foreach (var row in this._dtProfiles.Select("PortalId = " + portalId))
 			{
 				dtCheck.Rows.Add(row.ItemArray);
 			}
@@ -173,12 +173,12 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
 		private void PrepareData()
 		{
-			_dtProfiles.Rows.Add(1, 0, "R1", 640, 480, "", 1);
-			_dtProfiles.Rows.Add(2, 0, "R2", 640, 480, "", 2);
-			_dtProfiles.Rows.Add(3, 0, "R3", 640, 480, "", 3);
-			_dtProfiles.Rows.Add(4, 1, "R4", 640, 480, "", 4);
-			_dtProfiles.Rows.Add(5, 1, "R5", 640, 480, "", 5);
-			_dtProfiles.Rows.Add(6, 1, "R6", 640, 480, "", 6);
+			this._dtProfiles.Rows.Add(1, 0, "R1", 640, 480, "", 1);
+			this._dtProfiles.Rows.Add(2, 0, "R2", 640, 480, "", 2);
+			this._dtProfiles.Rows.Add(3, 0, "R3", 640, 480, "", 3);
+			this._dtProfiles.Rows.Add(4, 1, "R4", 640, 480, "", 4);
+			this._dtProfiles.Rows.Add(5, 1, "R5", 640, 480, "", 5);
+			this._dtProfiles.Rows.Add(6, 1, "R6", 640, 480, "", 6);
 		}
 
 		#endregion

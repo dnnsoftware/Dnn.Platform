@@ -39,12 +39,12 @@ namespace DotNetNuke.Services.Social.Messaging
         #region Public API
         public void SetUserPreference(UserPreference userPreference)
         {
-            dataService.SetUserPreference(userPreference.PortalId, userPreference.UserId, Convert.ToInt32(userPreference.MessagesEmailFrequency), Convert.ToInt32(userPreference.NotificationsEmailFrequency));
+            this.dataService.SetUserPreference(userPreference.PortalId, userPreference.UserId, Convert.ToInt32(userPreference.MessagesEmailFrequency), Convert.ToInt32(userPreference.NotificationsEmailFrequency));
         }
 
         public UserPreference GetUserPreference(UserInfo userinfo)
         {
-            return CBO.FillObject<UserPreference>(dataService.GetUserPreference(userinfo.PortalID, userinfo.UserID));
+            return CBO.FillObject<UserPreference>(this.dataService.GetUserPreference(userinfo.PortalID, userinfo.UserID));
         }
 
         #endregion

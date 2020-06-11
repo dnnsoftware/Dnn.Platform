@@ -13,89 +13,89 @@ namespace DotNetNuke.Tests.Integration.Executers.Builders
     {
         public PageSettingsBuilder()
         {
-            WithTabId(0);
-            WithName("RB" + Guid.NewGuid().ToString().Replace("-",""));
-            WithPageType(string.Empty);
-            WithUrl(string.Empty);
-            WithPermission(new TabPermissions());
+            this.WithTabId(0);
+            this.WithName("RB" + Guid.NewGuid().ToString().Replace("-",""));
+            this.WithPageType(string.Empty);
+            this.WithUrl(string.Empty);
+            this.WithPermission(new TabPermissions());
         }
 
         public PageSettingsBuilder WithTabId(int tabId)
         {
-            Set(x => x.tabId, tabId);
+            this.Set(x => x.tabId, tabId);
             return this;
         }
 
         public PageSettingsBuilder WithPageType(string pageType)
         {
-            Set(x => x.pageType, pageType);
+            this.Set(x => x.pageType, pageType);
             return this;
         }
 
         public PageSettingsBuilder WithName(string name)
         {
-            Set(x => x.Name, name);
+            this.Set(x => x.Name, name);
             return this;
         }
 
         public PageSettingsBuilder WithStartDate(DateTime startDate)
         {
-            Set(x => x.startDate, startDate);
+            this.Set(x => x.startDate, startDate);
             return this;
         }
 
         public PageSettingsBuilder WithEndDate(DateTime endDate)
         {
-            Set(x => x.endDate, endDate);
+            this.Set(x => x.endDate, endDate);
             return this;
         }
 
         public PageSettingsBuilder WithKeyWords(string keyWords)
         {
-            Set(x => x.keywords, keyWords);
+            this.Set(x => x.keywords, keyWords);
             return this;
         }
 
         public PageSettingsBuilder WithDescription(string description)
         {
-            Set(x => x.Description, description);
+            this.Set(x => x.Description, description);
             return this;
         }
         
         public PageSettingsBuilder WithUrl(string url)
         {
-            Set(x => x.Url, url);
+            this.Set(x => x.Url, url);
             return this;
         }
 
         public PageSettingsBuilder WithPermission(TabPermissions permissions)
         {
-            Set(x => x.permissions, permissions);
+            this.Set(x => x.permissions, permissions);
             return this;
         }
 
         public PageSettingsBuilder WithTemplateTabId(int templateTabId)
         {
-            Set(x => x.templateTabId, templateTabId);
+            this.Set(x => x.templateTabId, templateTabId);
             return this;
         }
 
         public PageSettingsBuilder WithCopyModules(IList<CopyModuleItem> modules)
         {
-            Set(x => x.modules, modules);
+            this.Set(x => x.modules, modules);
 
             return this;
         }
 
         public PageSettingsBuilder WithSecure(bool secure)
         {
-            Set(x => x.isSecure, secure);
+            this.Set(x => x.isSecure, secure);
             return this;
         }
 
         protected override PageSettings BuildObject()
         {
-            var name = GetOrDefault(p => p.Name);
+            var name = this.GetOrDefault(p => p.Name);
             var pageSettings = new PageSettings
             {
                 ApplyWorkflowToChildren = false,
@@ -107,25 +107,25 @@ namespace DotNetNuke.Tests.Integration.Executers.Builders
                 isCopy = false,
                 isWorkflowCompleted = true,
                 isWorkflowPropagationAvailable = false,
-                keywords = GetOrDefault(p => p.keywords),
+                keywords = this.GetOrDefault(p => p.keywords),
                 localizedName = "",
                 Name = name,
-                pageType = GetOrDefault(p => p.pageType),
-                tabId = GetOrDefault(p => p.tabId),
+                pageType = this.GetOrDefault(p => p.pageType),
+                tabId = this.GetOrDefault(p => p.tabId),
                 tags = "",
                 thumbnail = "",
                 title = "",
                 trackLinks = false,
                 type = 0,
-                workflowId = GetOrDefault(p => p.workflowId),
-                Url = GetOrDefault(p => p.Url),
-                Description = GetOrDefault(p => p.Description),
-                startDate = GetOrDefault(p => p.startDate),
-                endDate = GetOrDefault(p => p.endDate),
-                permissions = GetOrDefault(p => p.permissions),
-                templateTabId = GetOrDefault(p => p.templateTabId),
-                modules = GetOrDefault(p => p.modules),
-                isSecure = GetOrDefault(p => p.isSecure)
+                workflowId = this.GetOrDefault(p => p.workflowId),
+                Url = this.GetOrDefault(p => p.Url),
+                Description = this.GetOrDefault(p => p.Description),
+                startDate = this.GetOrDefault(p => p.startDate),
+                endDate = this.GetOrDefault(p => p.endDate),
+                permissions = this.GetOrDefault(p => p.permissions),
+                templateTabId = this.GetOrDefault(p => p.templateTabId),
+                modules = this.GetOrDefault(p => p.modules),
+                isSecure = this.GetOrDefault(p => p.isSecure)
             };
             return pageSettings;
         }

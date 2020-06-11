@@ -32,7 +32,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public Logo()
         {
-            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -40,43 +40,43 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnLoad(e);
             try
             {
-                if (!String.IsNullOrEmpty(BorderWidth))
+                if (!String.IsNullOrEmpty(this.BorderWidth))
                 {
-                    imgLogo.BorderWidth = Unit.Parse(BorderWidth);
+                    this.imgLogo.BorderWidth = Unit.Parse(this.BorderWidth);
                 }
-                if (!String.IsNullOrEmpty(CssClass))
+                if (!String.IsNullOrEmpty(this.CssClass))
                 {
-                    imgLogo.CssClass = CssClass;
+                    this.imgLogo.CssClass = this.CssClass;
                 }
                 bool logoVisible = false;
-                if (!String.IsNullOrEmpty(PortalSettings.LogoFile))
+                if (!String.IsNullOrEmpty(this.PortalSettings.LogoFile))
                 {
-                    var fileInfo = GetLogoFileInfo();
+                    var fileInfo = this.GetLogoFileInfo();
                     if (fileInfo != null)
                     {
                         string imageUrl = FileManager.Instance.GetUrl(fileInfo);
                         if (!String.IsNullOrEmpty(imageUrl))
                         {
-                            imgLogo.ImageUrl = imageUrl;
+                            this.imgLogo.ImageUrl = imageUrl;
                             logoVisible = true;
                         }
                     }
                 }
-                imgLogo.Visible = logoVisible;
-                imgLogo.AlternateText = PortalSettings.PortalName;
-                hypLogo.ToolTip = PortalSettings.PortalName;
+                this.imgLogo.Visible = logoVisible;
+                this.imgLogo.AlternateText = this.PortalSettings.PortalName;
+                this.hypLogo.ToolTip = this.PortalSettings.PortalName;
 
-                if (!imgLogo.Visible)
+                if (!this.imgLogo.Visible)
                 {
-                    hypLogo.Attributes.Add("aria-label", PortalSettings.PortalName);
+                    this.hypLogo.Attributes.Add("aria-label", this.PortalSettings.PortalName);
                 }
-                if (PortalSettings.HomeTabId != -1)
+                if (this.PortalSettings.HomeTabId != -1)
                 {
-                    hypLogo.NavigateUrl = _navigationManager.NavigateURL(PortalSettings.HomeTabId);
+                    this.hypLogo.NavigateUrl = this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId);
                 }
                 else
                 {
-                    hypLogo.NavigateUrl = Globals.AddHTTP(PortalSettings.PortalAlias.HTTPAlias);
+                    this.hypLogo.NavigateUrl = Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias);
                 }
             }
             catch (Exception exc)
@@ -87,16 +87,16 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private IFileInfo GetLogoFileInfo()
         {
-            string cacheKey = String.Format(DataCache.PortalCacheKey, PortalSettings.PortalId, PortalSettings.CultureCode) + "LogoFile";
+            string cacheKey = String.Format(DataCache.PortalCacheKey, this.PortalSettings.PortalId, this.PortalSettings.CultureCode) + "LogoFile";
             var file = CBO.GetCachedObject<FileInfo>(new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority),
-                                                    GetLogoFileInfoCallBack);
+                                                    this.GetLogoFileInfoCallBack);
 
             return file;
         }
 
         private IFileInfo GetLogoFileInfoCallBack(CacheItemArgs itemArgs)
         {
-            return FileManager.Instance.GetFile(PortalSettings.PortalId, PortalSettings.LogoFile);
+            return FileManager.Instance.GetFile(this.PortalSettings.PortalId, this.PortalSettings.LogoFile);
         }
     }
 }

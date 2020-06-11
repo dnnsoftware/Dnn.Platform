@@ -40,7 +40,7 @@ namespace DotNetNuke.Common.Lists
             //<tam:note key to be lowercase for appropiated seeking>
             try
             {
-                if (_keyIndexLookup[key.ToLowerInvariant()] == null)
+                if (this._keyIndexLookup[key.ToLowerInvariant()] == null)
                 {
                     return null;
                 }
@@ -50,18 +50,18 @@ namespace DotNetNuke.Common.Lists
                 Logger.Error(exc);
                 return null;
             }
-            index = Convert.ToInt32(_keyIndexLookup[key.ToLowerInvariant()]);
+            index = Convert.ToInt32(this._keyIndexLookup[key.ToLowerInvariant()]);
             return (ListEntryInfo) base.List[index];
         }
 
         public ListEntryInfo GetChildren(string parentName)
         {
-            return Item(parentName);
+            return this.Item(parentName);
         }
 
         internal new void Clear()
         {
-            _keyIndexLookup.Clear();
+            this._keyIndexLookup.Clear();
             base.Clear();
         }
 
@@ -71,7 +71,7 @@ namespace DotNetNuke.Common.Lists
             try //Do validation first
             {
                 index = base.List.Add(value);
-                _keyIndexLookup.Add(key.ToLowerInvariant(), index);
+                this._keyIndexLookup.Add(key.ToLowerInvariant(), index);
             }
             catch (Exception exc)
             {

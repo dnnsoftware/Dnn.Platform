@@ -28,9 +28,9 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         internal MvcRoutingManager(RouteCollection routes)
         {
-            _routes = routes;
-            _portalAliasMvcRouteManager = new PortalAliasMvcRouteManager();
-            TypeLocator = new TypeLocator();
+            this._routes = routes;
+            this._portalAliasMvcRouteManager = new PortalAliasMvcRouteManager();
+            this.TypeLocator = new TypeLocator();
         }
 
            internal ITypeLocator TypeLocator { get; set; }
@@ -39,12 +39,12 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         public Route MapRoute(string moduleFolderName, string routeName, string url, string[] namespaces)
         {
-            return MapRoute(moduleFolderName, routeName, url, null /* defaults */, null /* constraints */, namespaces);
+            return this.MapRoute(moduleFolderName, routeName, url, null /* defaults */, null /* constraints */, namespaces);
         }
 
         public Route MapRoute(string moduleFolderName, string routeName, string url, object defaults, string[] namespaces)
         {
-            return MapRoute(moduleFolderName, routeName, url, defaults, null /* constraints */, namespaces);
+            return this.MapRoute(moduleFolderName, routeName, url, defaults, null /* constraints */, namespaces);
         }
 
         public Route MapRoute(string moduleFolderName, string routeName, string url, object defaults, object constraints, string[] namespaces)
@@ -60,7 +60,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
             url = url.Trim('/', '\\');
 
-            var prefixCounts = _portalAliasMvcRouteManager.GetRoutePrefixCounts();
+            var prefixCounts = this._portalAliasMvcRouteManager.GetRoutePrefixCounts();
             Route route = null;
 
             if (url == null)
@@ -68,10 +68,10 @@ namespace DotNetNuke.Web.Mvc.Routing
 
             foreach (var count in prefixCounts)
             {
-                var fullRouteName = _portalAliasMvcRouteManager.GetRouteName(moduleFolderName, routeName, count);
-                var routeUrl = _portalAliasMvcRouteManager.GetRouteUrl(moduleFolderName, url, count);
+                var fullRouteName = this._portalAliasMvcRouteManager.GetRouteName(moduleFolderName, routeName, count);
+                var routeUrl = this._portalAliasMvcRouteManager.GetRouteUrl(moduleFolderName, url, count);
                 route = MapRouteWithNamespace(fullRouteName, routeUrl, defaults, constraints, namespaces);
-                _routes.Add(route);
+                this._routes.Add(route);
                 Logger.Trace("Mapping route: " + fullRouteName + " @ " + routeUrl);
             }
 
@@ -84,12 +84,12 @@ namespace DotNetNuke.Web.Mvc.Routing
         {
             //add standard tab and module id provider
             GlobalConfiguration.Configuration.AddTabAndModuleInfoProvider(new StandardTabAndModuleInfoProvider());
-            using (_routes.GetWriteLock())
+            using (this._routes.GetWriteLock())
             {
                 //_routes.Clear(); -- don't use; it will remove original WEP API maps
-                LocateServicesAndMapRoutes();
+                this.LocateServicesAndMapRoutes();
             }
-            Logger.TraceFormat("Registered a total of {0} routes", _routes.Count);
+            Logger.TraceFormat("Registered a total of {0} routes", this._routes.Count);
         }
 
         private static bool IsTracingEnabled()
@@ -102,10 +102,10 @@ namespace DotNetNuke.Web.Mvc.Routing
         private void LocateServicesAndMapRoutes()
         {
             RegisterSystemRoutes();
-            ClearCachedRouteData();
+            this.ClearCachedRouteData();
 
-            _moduleUsage.Clear();
-            foreach (var routeMapper in GetServiceRouteMappers())
+            this._moduleUsage.Clear();
+            foreach (var routeMapper in this.GetServiceRouteMappers())
             {
                 try
                 {
@@ -121,7 +121,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         private void ClearCachedRouteData()
         {
-            _portalAliasMvcRouteManager.ClearCachedData();
+            this._portalAliasMvcRouteManager.ClearCachedData();
         }
 
         private static void RegisterSystemRoutes()
@@ -131,7 +131,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         private IEnumerable<IMvcRouteMapper> GetServiceRouteMappers()
         {
-            IEnumerable<Type> types = GetAllServiceRouteMapperTypes();
+            IEnumerable<Type> types = this.GetAllServiceRouteMapperTypes();
 
             foreach (var routeMapperType in types)
             {
@@ -156,7 +156,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         private IEnumerable<Type> GetAllServiceRouteMapperTypes()
         {
-            return TypeLocator.GetAllMatchingTypes(IsValidServiceRouteMapper);
+            return this.TypeLocator.GetAllMatchingTypes(IsValidServiceRouteMapper);
         }
 
         internal static bool IsValidServiceRouteMapper(Type t)

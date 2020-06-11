@@ -26,29 +26,29 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
             // HOST-ONLY ACCESS
             if (!userInfo.IsSuperUser)
             {
-                sbErrors.Append(LocalizeString("Prompt_GetHost_Unauthorized"));
+                sbErrors.Append(this.LocalizeString("Prompt_GetHost_Unauthorized"));
             }
             else
             {
                 // default usage: return current page if nothing else specified
                 if (args.Length != 1)
                 {
-                    sbErrors.Append(LocalizeString("Prompt_GetHost__NoArgs"));
+                    sbErrors.Append(this.LocalizeString("Prompt_GetHost__NoArgs"));
                 }
             }
-            AddMessage(sbErrors.ToString());
+            this.AddMessage(sbErrors.ToString());
         }
 
         public override ConsoleResultModel Run()
         {
             var lst = new List<HostModel>();
             // double-check host access:
-            if (User.IsSuperUser)
+            if (this.User.IsSuperUser)
             {
                 lst.Add(HostModel.Current());
             }
 
-            return new ConsoleResultModel(string.Empty) { Data = lst, Output = LocalizeString("Prompt_GetHost_OkMessage") };
+            return new ConsoleResultModel(string.Empty) { Data = lst, Output = this.LocalizeString("Prompt_GetHost_OkMessage") };
         }
 
 

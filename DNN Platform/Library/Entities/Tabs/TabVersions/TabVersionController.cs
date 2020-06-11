@@ -21,7 +21,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         #region Public Methods
         public TabVersion GetTabVersion(int tabVersionId, int tabId, bool ignoreCache = false)
         {
-            return GetTabVersions(tabId, ignoreCache).SingleOrDefault(tv => tv.TabVersionId == tabVersionId);
+            return this.GetTabVersions(tabId, ignoreCache).SingleOrDefault(tv => tv.TabVersionId == tabVersionId);
         }
         
         public IEnumerable<TabVersion> GetTabVersions(int tabId, bool ignoreCache = false)
@@ -43,23 +43,23 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         }
         public void SaveTabVersion(TabVersion tabVersion)
         {
-            SaveTabVersion(tabVersion, tabVersion.CreatedByUserID, tabVersion.LastModifiedByUserID);
+            this.SaveTabVersion(tabVersion, tabVersion.CreatedByUserID, tabVersion.LastModifiedByUserID);
         }
 
         public void SaveTabVersion(TabVersion tabVersion, int createdByUserID)
         {
-            SaveTabVersion(tabVersion, createdByUserID, createdByUserID);
+            this.SaveTabVersion(tabVersion, createdByUserID, createdByUserID);
         }
 
         public void SaveTabVersion(TabVersion tabVersion, int createdByUserID, int modifiedByUserID)
         {
             tabVersion.TabVersionId = Provider.SaveTabVersion(tabVersion.TabVersionId, tabVersion.TabId, tabVersion.TimeStamp, tabVersion.Version, tabVersion.IsPublished, createdByUserID, modifiedByUserID);
-            ClearCache(tabVersion.TabId);
+            this.ClearCache(tabVersion.TabId);
         }
 
         public TabVersion CreateTabVersion(int tabId, int createdByUserID, bool isPublished = false)
         {
-            var lastTabVersion = GetTabVersions(tabId).OrderByDescending(tv => tv.Version).FirstOrDefault();
+            var lastTabVersion = this.GetTabVersions(tabId).OrderByDescending(tv => tv.Version).FirstOrDefault();
             var newVersion = 1;
 
             if (lastTabVersion != null)
@@ -72,15 +72,15 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
             
             var tabVersionId = Provider.SaveTabVersion(0, tabId, DateTime.UtcNow, newVersion, isPublished, createdByUserID, createdByUserID);
-            ClearCache(tabId);
+            this.ClearCache(tabId);
 
-            return GetTabVersion(tabVersionId, tabId);
+            return this.GetTabVersion(tabVersionId, tabId);
         }
 
         public void DeleteTabVersion(int tabId, int tabVersionId)
         {
             Provider.DeleteTabVersion(tabVersionId);
-            ClearCache(tabId);
+            this.ClearCache(tabId);
         }
 
         public void DeleteTabVersionDetailByModule(int moduleId)

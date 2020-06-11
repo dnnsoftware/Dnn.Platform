@@ -53,17 +53,17 @@ namespace DotNetNuke.Entities.Users
             base.Fill(dr);
 
 			//Fill this class properties
-            UserRoleID = Null.SetNullInteger(dr["UserRoleID"]);
-            UserID = Null.SetNullInteger(dr["UserID"]);
-            FullName = Null.SetNullString(dr["DisplayName"]);
-            Email = Null.SetNullString(dr["Email"]);
-            EffectiveDate = Null.SetNullDateTime(dr["EffectiveDate"]);
-            ExpiryDate = Null.SetNullDateTime(dr["ExpiryDate"]);
-            IsOwner = Null.SetNullBoolean(dr["IsOwner"]);
-            IsTrialUsed = Null.SetNullBoolean(dr["IsTrialUsed"]);
-            if (UserRoleID > Null.NullInteger)
+            this.UserRoleID = Null.SetNullInteger(dr["UserRoleID"]);
+            this.UserID = Null.SetNullInteger(dr["UserID"]);
+            this.FullName = Null.SetNullString(dr["DisplayName"]);
+            this.Email = Null.SetNullString(dr["Email"]);
+            this.EffectiveDate = Null.SetNullDateTime(dr["EffectiveDate"]);
+            this.ExpiryDate = Null.SetNullDateTime(dr["ExpiryDate"]);
+            this.IsOwner = Null.SetNullBoolean(dr["IsOwner"]);
+            this.IsTrialUsed = Null.SetNullBoolean(dr["IsTrialUsed"]);
+            if (this.UserRoleID > Null.NullInteger)
             {
-                Subscribed = true;
+                this.Subscribed = true;
             }
         }
     }

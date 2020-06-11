@@ -32,7 +32,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 company = company.Substring(0, company.IndexOf("."));
             }
 
-            BasePath = Path.Combine("Resources\\Widgets\\User", company);
+            this.BasePath = Path.Combine("Resources\\Widgets\\User", company);
         }
 		
 		#endregion
@@ -57,8 +57,8 @@ namespace DotNetNuke.Services.Installer.Writers
 
         protected override void WriteFilesToManifest(XmlWriter writer)
         {
-            string company = Package.Name.Substring(0, Package.Name.IndexOf("."));
-            var widgetFileWriter = new WidgetComponentWriter(company, Files, Package);
+            string company = this.Package.Name.Substring(0, this.Package.Name.IndexOf("."));
+            var widgetFileWriter = new WidgetComponentWriter(company, this.Files, this.Package);
             widgetFileWriter.WriteManifest(writer);
         }
     }

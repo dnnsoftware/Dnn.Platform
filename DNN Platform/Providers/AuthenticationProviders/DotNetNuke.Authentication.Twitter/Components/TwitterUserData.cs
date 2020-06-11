@@ -19,25 +19,25 @@ namespace DotNetNuke.Authentication.Twitter.Components
 
         public override string DisplayName
         {
-            get { return ScreenName; }
+            get { return this.ScreenName; }
             set { }
         }
 
         public override string Locale
         {
-            get { return LanguageCode; }
+            get { return this.LanguageCode; }
             set { }
         }
 
         public override string ProfileImage
         {
-            get { return ProfileImageUrl; }
+            get { return this.ProfileImageUrl; }
             set { }
         }
 
         public override string Website
         {
-            get { return Url; }
+            get { return this.Url; }
             set { }
         }
 

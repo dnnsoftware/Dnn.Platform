@@ -35,9 +35,9 @@ namespace DotNetNuke.Web.Client.Providers
             switch (type)
             {
                 case ClientDependencyType.Css:
-                    return MinifyCss ? CssHelper.MinifyCss(fileStream) : streamToString(fileStream);
+                    return this.MinifyCss ? CssHelper.MinifyCss(fileStream) : streamToString(fileStream);
                 case ClientDependencyType.Javascript:
-                    return MinifyJs ? JSMin.CompressJS(fileStream) : streamToString(fileStream);
+                    return this.MinifyJs ? JSMin.CompressJS(fileStream) : streamToString(fileStream);
                 default:
                     return streamToString(fileStream);
             }
@@ -48,10 +48,10 @@ namespace DotNetNuke.Web.Client.Providers
             switch (type)
             {
                 case ClientDependencyType.Css:
-                    return MinifyCss ? CssHelper.MinifyCss(fileContents) : fileContents;
+                    return this.MinifyCss ? CssHelper.MinifyCss(fileContents) : fileContents;
                 case ClientDependencyType.Javascript:
                 {
-                    if (!MinifyJs)
+                    if (!this.MinifyJs)
                         return fileContents;
 
                     using (var ms = new MemoryStream())
@@ -71,8 +71,8 @@ namespace DotNetNuke.Web.Client.Providers
         {
             get
             {
-                var enableCssMinification = clientResourceSettings.EnableCssMinification();
-                return enableCssMinification.HasValue ? enableCssMinification.Value : EnableCssMinify;
+                var enableCssMinification = this.clientResourceSettings.EnableCssMinification();
+                return enableCssMinification.HasValue ? enableCssMinification.Value : this.EnableCssMinify;
             }
         }
 
@@ -80,8 +80,8 @@ namespace DotNetNuke.Web.Client.Providers
         {
             get
             {
-                var enableJsMinification = clientResourceSettings.EnableJsMinification();
-                return enableJsMinification.HasValue ? enableJsMinification.Value : EnableJsMinify;
+                var enableJsMinification = this.clientResourceSettings.EnableJsMinification();
+                return enableJsMinification.HasValue ? enableJsMinification.Value : this.EnableJsMinify;
             }
         }
     }

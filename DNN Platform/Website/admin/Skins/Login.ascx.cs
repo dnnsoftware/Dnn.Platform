@@ -29,8 +29,8 @@ namespace DotNetNuke.UI.Skins.Controls
         private readonly INavigationManager _navigationManager;
         public Login()
         {
-            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-            LegacyMode = true;
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.LegacyMode = true;
         }
 
 		#region Private Members
@@ -64,73 +64,73 @@ namespace DotNetNuke.UI.Skins.Controls
 		{
 			base.OnInit(e);
 
-			Visible = (!PortalSettings.HideLoginControl || Request.IsAuthenticated)
-		                && (!PortalSettings.InErrorPageRequest() || ShowInErrorPage);
+			this.Visible = (!this.PortalSettings.HideLoginControl || this.Request.IsAuthenticated)
+		                && (!this.PortalSettings.InErrorPageRequest() || this.ShowInErrorPage);
 		}
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-	        if (Visible)
+	        if (this.Visible)
 	        {
 		        try
 		        {
-			        if (LegacyMode)
+			        if (this.LegacyMode)
 			        {
-				        loginLink.Visible = true;
-				        loginGroup.Visible = false;
+				        this.loginLink.Visible = true;
+				        this.loginGroup.Visible = false;
 			        }
 			        else
 			        {
-				        loginLink.Visible = false;
-				        loginGroup.Visible = true;
+				        this.loginLink.Visible = false;
+				        this.loginGroup.Visible = true;
 			        }
 
-			        if (!String.IsNullOrEmpty(CssClass))
+			        if (!String.IsNullOrEmpty(this.CssClass))
 			        {
-				        loginLink.CssClass = CssClass;
-				        enhancedLoginLink.CssClass = CssClass;
+				        this.loginLink.CssClass = this.CssClass;
+				        this.enhancedLoginLink.CssClass = this.CssClass;
 			        }
 
-			        if (Request.IsAuthenticated)
+			        if (this.Request.IsAuthenticated)
 			        {
-				        if (!String.IsNullOrEmpty(LogoffText))
+				        if (!String.IsNullOrEmpty(this.LogoffText))
 				        {
-					        if (LogoffText.IndexOf("src=") != -1)
+					        if (this.LogoffText.IndexOf("src=") != -1)
 					        {
-						        LogoffText = LogoffText.Replace("src=\"", "src=\"" + PortalSettings.ActiveTab.SkinPath);
+						        this.LogoffText = this.LogoffText.Replace("src=\"", "src=\"" + this.PortalSettings.ActiveTab.SkinPath);
 					        }
-					        loginLink.Text = LogoffText;
-					        enhancedLoginLink.Text = LogoffText;
+					        this.loginLink.Text = this.LogoffText;
+					        this.enhancedLoginLink.Text = this.LogoffText;
 				        }
 				        else
 				        {
-					        loginLink.Text = Localization.GetString("Logout", Localization.GetResourceFile(this, MyFileName));
-					        enhancedLoginLink.Text = loginLink.Text;
-					        loginLink.ToolTip = loginLink.Text;
-					        enhancedLoginLink.ToolTip = loginLink.Text;
+					        this.loginLink.Text = Localization.GetString("Logout", Localization.GetResourceFile(this, MyFileName));
+					        this.enhancedLoginLink.Text = this.loginLink.Text;
+					        this.loginLink.ToolTip = this.loginLink.Text;
+					        this.enhancedLoginLink.ToolTip = this.loginLink.Text;
 				        }
-				        loginLink.NavigateUrl = _navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Logoff");
-				        enhancedLoginLink.NavigateUrl = loginLink.NavigateUrl;
+				        this.loginLink.NavigateUrl = this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Logoff");
+				        this.enhancedLoginLink.NavigateUrl = this.loginLink.NavigateUrl;
 			        }
 			        else
 			        {
-				        if (!String.IsNullOrEmpty(Text))
+				        if (!String.IsNullOrEmpty(this.Text))
 				        {
-					        if (Text.IndexOf("src=") != -1)
+					        if (this.Text.IndexOf("src=") != -1)
 					        {
-						        Text = Text.Replace("src=\"", "src=\"" + PortalSettings.ActiveTab.SkinPath);
+						        this.Text = this.Text.Replace("src=\"", "src=\"" + this.PortalSettings.ActiveTab.SkinPath);
 					        }
-					        loginLink.Text = Text;
-					        enhancedLoginLink.Text = Text;
+					        this.loginLink.Text = this.Text;
+					        this.enhancedLoginLink.Text = this.Text;
 				        }
 				        else
 				        {
-					        loginLink.Text = Localization.GetString("Login", Localization.GetResourceFile(this, MyFileName));
-					        enhancedLoginLink.Text = loginLink.Text;
-					        loginLink.ToolTip = loginLink.Text;
-					        enhancedLoginLink.ToolTip = loginLink.Text;
+					        this.loginLink.Text = Localization.GetString("Login", Localization.GetResourceFile(this, MyFileName));
+					        this.enhancedLoginLink.Text = this.loginLink.Text;
+					        this.loginLink.ToolTip = this.loginLink.Text;
+					        this.enhancedLoginLink.ToolTip = this.loginLink.Text;
 				        }
 
 				        string returnUrl = HttpContext.Current.Request.RawUrl;
@@ -140,23 +140,23 @@ namespace DotNetNuke.UI.Skins.Controls
 				        }
 				        returnUrl = HttpUtility.UrlEncode(returnUrl);
 
-				        loginLink.NavigateUrl = Globals.LoginURL(returnUrl, (Request.QueryString["override"] != null));
-				        enhancedLoginLink.NavigateUrl = loginLink.NavigateUrl;
+				        this.loginLink.NavigateUrl = Globals.LoginURL(returnUrl, (this.Request.QueryString["override"] != null));
+				        this.enhancedLoginLink.NavigateUrl = this.loginLink.NavigateUrl;
 
                         //avoid issues caused by multiple clicks of login link
                         var oneclick = "this.disabled=true;";
-			            if (Request.UserAgent != null && Request.UserAgent.Contains("MSIE 8.0")==false)
+			            if (this.Request.UserAgent != null && this.Request.UserAgent.Contains("MSIE 8.0")==false)
 			            {
-                            loginLink.Attributes.Add("onclick", oneclick);
-                            enhancedLoginLink.Attributes.Add("onclick", oneclick);
+                            this.loginLink.Attributes.Add("onclick", oneclick);
+                            this.enhancedLoginLink.Attributes.Add("onclick", oneclick);
 			            }
 
-				        if (PortalSettings.EnablePopUps && PortalSettings.LoginTabId == Null.NullInteger && !AuthenticationController.HasSocialAuthenticationEnabled(this))
+				        if (this.PortalSettings.EnablePopUps && this.PortalSettings.LoginTabId == Null.NullInteger && !AuthenticationController.HasSocialAuthenticationEnabled(this))
 				        {
 					        //To avoid duplicated encodes of URL
-                            var clickEvent = "return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(loginLink.NavigateUrl), this, PortalSettings, true, false, 300, 650);
-					        loginLink.Attributes.Add("onclick", clickEvent);
-					        enhancedLoginLink.Attributes.Add("onclick", clickEvent);
+                            var clickEvent = "return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(this.loginLink.NavigateUrl), this, this.PortalSettings, true, false, 300, 650);
+					        this.loginLink.Attributes.Add("onclick", clickEvent);
+					        this.enhancedLoginLink.Attributes.Add("onclick", clickEvent);
 				        }
 			        }
 		        }

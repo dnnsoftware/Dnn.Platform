@@ -37,18 +37,18 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                var messageBoxView = InternalMessagingController.Instance.GetRecentInbox(UserInfo.UserID, afterMessageId, numberOfRecords);
+                var messageBoxView = InternalMessagingController.Instance.GetRecentInbox(this.UserInfo.UserID, afterMessageId, numberOfRecords);
                 var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
 
-                messageBoxView.TotalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(UserInfo.UserID, portalId);
-                messageBoxView.TotalConversations = InternalMessagingController.Instance.CountConversations(UserInfo.UserID, portalId);
+                messageBoxView.TotalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(this.UserInfo.UserID, portalId);
+                messageBoxView.TotalConversations = InternalMessagingController.Instance.CountConversations(this.UserInfo.UserID, portalId);
 
-                return Request.CreateResponse(HttpStatusCode.OK, messageBoxView);
+                return this.Request.CreateResponse(HttpStatusCode.OK, messageBoxView);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -57,17 +57,17 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                var messageBoxView = InternalMessagingController.Instance.GetRecentSentbox(UserInfo.UserID, afterMessageId, numberOfRecords);
+                var messageBoxView = InternalMessagingController.Instance.GetRecentSentbox(this.UserInfo.UserID, afterMessageId, numberOfRecords);
                 var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
-                messageBoxView.TotalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(UserInfo.UserID, portalId);
-                messageBoxView.TotalConversations = InternalMessagingController.Instance.CountSentConversations(UserInfo.UserID, portalId);
+                messageBoxView.TotalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(this.UserInfo.UserID, portalId);
+                messageBoxView.TotalConversations = InternalMessagingController.Instance.CountSentConversations(this.UserInfo.UserID, portalId);
 
-                return Request.CreateResponse(HttpStatusCode.OK, messageBoxView);
+                return this.Request.CreateResponse(HttpStatusCode.OK, messageBoxView);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -76,17 +76,17 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                var messageBoxView = InternalMessagingController.Instance.GetArchivedMessages(UserInfo.UserID, afterMessageId, numberOfRecords);
+                var messageBoxView = InternalMessagingController.Instance.GetArchivedMessages(this.UserInfo.UserID, afterMessageId, numberOfRecords);
                 var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
-                messageBoxView.TotalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(UserInfo.UserID, portalId);
-                messageBoxView.TotalConversations = InternalMessagingController.Instance.CountArchivedConversations(UserInfo.UserID, portalId);
+                messageBoxView.TotalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(this.UserInfo.UserID, portalId);
+                messageBoxView.TotalConversations = InternalMessagingController.Instance.CountArchivedConversations(this.UserInfo.UserID, portalId);
 
-                return Request.CreateResponse(HttpStatusCode.OK, messageBoxView);
+                return this.Request.CreateResponse(HttpStatusCode.OK, messageBoxView);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -96,18 +96,18 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 var totalRecords = 0;
-                var messageThreadsView = InternalMessagingController.Instance.GetMessageThread(conversationId, UserInfo.UserID, afterMessageId, numberOfRecords, ref totalRecords);
+                var messageThreadsView = InternalMessagingController.Instance.GetMessageThread(conversationId, this.UserInfo.UserID, afterMessageId, numberOfRecords, ref totalRecords);
                 var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
-                messageThreadsView.TotalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(UserInfo.UserID, portalId);
+                messageThreadsView.TotalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(this.UserInfo.UserID, portalId);
                 messageThreadsView.TotalThreads = InternalMessagingController.Instance.CountMessagesByConversation(conversationId);
                 messageThreadsView.TotalArchivedThreads = InternalMessagingController.Instance.CountArchivedMessagesByConversation(conversationId);
 
-                return Request.CreateResponse(HttpStatusCode.OK, messageThreadsView);
+                return this.Request.CreateResponse(HttpStatusCode.OK, messageThreadsView);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -119,19 +119,19 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             {
                 postData.Body = HttpUtility.UrlDecode(postData.Body);
                 var messageId = InternalMessagingController.Instance.ReplyMessage(postData.ConversationId, postData.Body, postData.FileIds);
-				var message = ToExpandoObject(InternalMessagingController.Instance.GetMessage(messageId));
+				var message = this.ToExpandoObject(InternalMessagingController.Instance.GetMessage(messageId));
                 var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
 
-                var totalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(UserInfo.UserID, portalId);
+                var totalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(this.UserInfo.UserID, portalId);
                 var totalThreads = InternalMessagingController.Instance.CountMessagesByConversation(postData.ConversationId);
                 var totalArchivedThreads = InternalMessagingController.Instance.CountArchivedMessagesByConversation(postData.ConversationId);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Conversation = message, TotalNewThreads = totalNewThreads, TotalThreads = totalThreads, TotalArchivedThreads = totalArchivedThreads });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Conversation = message, TotalNewThreads = totalNewThreads, TotalThreads = totalThreads, TotalArchivedThreads = totalArchivedThreads });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -141,13 +141,13 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                InternalMessagingController.Instance.MarkArchived(postData.ConversationId, UserInfo.UserID);
-                return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                InternalMessagingController.Instance.MarkArchived(postData.ConversationId, this.UserInfo.UserID);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -157,13 +157,13 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                InternalMessagingController.Instance.MarkUnArchived(postData.ConversationId, UserInfo.UserID);
-                return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                InternalMessagingController.Instance.MarkUnArchived(postData.ConversationId, this.UserInfo.UserID);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -173,13 +173,13 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                InternalMessagingController.Instance.MarkRead(postData.ConversationId, UserInfo.UserID);
-                return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                InternalMessagingController.Instance.MarkRead(postData.ConversationId, this.UserInfo.UserID);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -189,13 +189,13 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                InternalMessagingController.Instance.MarkUnRead(postData.ConversationId, UserInfo.UserID);
-                return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                InternalMessagingController.Instance.MarkUnRead(postData.ConversationId, this.UserInfo.UserID);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -205,13 +205,13 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                InternalMessagingController.Instance.DeleteUserFromConversation(postData.ConversationId, UserInfo.UserID);
-                return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                InternalMessagingController.Instance.DeleteUserFromConversation(postData.ConversationId, this.UserInfo.UserID);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -221,17 +221,17 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
-                var notificationsDomainModel = NotificationsController.Instance.GetNotifications(UserInfo.UserID, portalId, afterNotificationId, numberOfRecords);
+                var notificationsDomainModel = NotificationsController.Instance.GetNotifications(this.UserInfo.UserID, portalId, afterNotificationId, numberOfRecords);
 
                 var notificationsViewModel = new NotificationsViewModel
                 {
-                    TotalNotifications = NotificationsController.Instance.CountNotifications(UserInfo.UserID, portalId),
+                    TotalNotifications = NotificationsController.Instance.CountNotifications(this.UserInfo.UserID, portalId),
                     Notifications = new List<NotificationViewModel>(notificationsDomainModel.Count)
                 };
 
                 foreach (var notification in notificationsDomainModel)
                 {
-                    var user = UserController.Instance.GetUser(PortalSettings.PortalId, notification.SenderUserID);
+                    var user = UserController.Instance.GetUser(this.PortalSettings.PortalId, notification.SenderUserID);
                     var displayName = (user != null ? user.DisplayName : "");
 
                     var notificationViewModel = new NotificationViewModel
@@ -254,9 +254,9 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                     {
                         var notificationActionViewModel = new NotificationActionViewModel
                         {
-                            Name = LocalizeActionString(notificationTypeAction.NameResourceKey, notificationType.DesktopModuleId),
-                            Description = LocalizeActionString(notificationTypeAction.DescriptionResourceKey, notificationType.DesktopModuleId),
-                            Confirm = LocalizeActionString(notificationTypeAction.ConfirmResourceKey, notificationType.DesktopModuleId),
+                            Name = this.LocalizeActionString(notificationTypeAction.NameResourceKey, notificationType.DesktopModuleId),
+                            Description = this.LocalizeActionString(notificationTypeAction.DescriptionResourceKey, notificationType.DesktopModuleId),
+                            Confirm = this.LocalizeActionString(notificationTypeAction.ConfirmResourceKey, notificationType.DesktopModuleId),
                             APICall = notificationTypeAction.APICall
                         };
 
@@ -277,12 +277,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                     notificationsViewModel.Notifications.Add(notificationViewModel);
                 }
 
-                return Request.CreateResponse(HttpStatusCode.OK, notificationsViewModel);
+                return this.Request.CreateResponse(HttpStatusCode.OK, notificationsViewModel);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -292,12 +292,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 var recipientCount = InternalMessagingController.Instance.CheckReplyHasRecipients(conversationId, UserController.Instance.GetCurrentUserInfo().UserID);
-                return Request.CreateResponse(HttpStatusCode.OK, recipientCount);
+                return this.Request.CreateResponse(HttpStatusCode.OK, recipientCount);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -307,13 +307,13 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
-                int notifications = NotificationsController.Instance.CountNotifications(UserInfo.UserID, portalId);
-                return Request.CreateResponse(HttpStatusCode.OK, notifications);
+                int notifications = NotificationsController.Instance.CountNotifications(this.UserInfo.UserID, portalId);
+                return this.Request.CreateResponse(HttpStatusCode.OK, notifications);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -323,13 +323,13 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
-                var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(UserInfo.UserID, portalId);
-                return Request.CreateResponse(HttpStatusCode.OK, unreadMessages);
+                var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(this.UserInfo.UserID, portalId);
+                return this.Request.CreateResponse(HttpStatusCode.OK, unreadMessages);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -341,16 +341,16 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
                 var totalsViewModel = new TotalsViewModel
                 {
-                    TotalUnreadMessages = InternalMessagingController.Instance.CountUnreadMessages(UserInfo.UserID, portalId),
-                    TotalNotifications = NotificationsController.Instance.CountNotifications(UserInfo.UserID, portalId)
+                    TotalUnreadMessages = InternalMessagingController.Instance.CountUnreadMessages(this.UserInfo.UserID, portalId),
+                    TotalNotifications = NotificationsController.Instance.CountNotifications(this.UserInfo.UserID, portalId)
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, totalsViewModel);
+                return this.Request.CreateResponse(HttpStatusCode.OK, totalsViewModel);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -360,13 +360,13 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                var deletedCount = NotificationsController.Instance.DeleteUserNotifications(UserInfo);
-                return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", count = deletedCount });
+                var deletedCount = NotificationsController.Instance.DeleteUserNotifications(this.UserInfo);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", count = deletedCount });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
         #endregion
@@ -396,7 +396,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
             if (desktopModuleId > 0)
             {
-                var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, PortalSettings.PortalId);
+                var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, this.PortalSettings.PortalId);
 
                 var resourceFile = string.Format("~/DesktopModules/{0}/{1}/{2}",
                     desktopModule.FolderName.Replace("\\", "/"),

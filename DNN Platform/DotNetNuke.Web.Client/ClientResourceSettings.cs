@@ -79,22 +79,22 @@ namespace DotNetNuke.Web.Client
 
         public bool? AreCompositeFilesEnabled()
         {
-            return IsBooleanSettingEnabled(EnableCompositeFilesKey);
+            return this.IsBooleanSettingEnabled(EnableCompositeFilesKey);
         }
 
         public bool? EnableCssMinification()
         {
-            return IsBooleanSettingEnabled(MinifyCssKey);
+            return this.IsBooleanSettingEnabled(MinifyCssKey);
         }
 
         public bool? EnableJsMinification()
         {
-            return IsBooleanSettingEnabled(MinifyJsKey);
+            return this.IsBooleanSettingEnabled(MinifyJsKey);
         }
 
         private bool? IsBooleanSettingEnabled(string settingKey)
         {
-            if (Status != UpgradeStatus.None)
+            if (this.Status != UpgradeStatus.None)
             {
                 return false;
             }
@@ -234,13 +234,13 @@ namespace DotNetNuke.Web.Client
         {
             get
             {
-                if (!_statusChecked)
+                if (!this._statusChecked)
                 {
-                    _status = GetStatusByReflection();
-                    _statusChecked = true;
+                    this._status = this.GetStatusByReflection();
+                    this._statusChecked = true;
                 }
 
-                return _status;
+                return this._status;
             }
         }
 

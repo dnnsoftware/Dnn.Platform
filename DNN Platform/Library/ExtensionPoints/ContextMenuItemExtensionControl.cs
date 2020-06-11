@@ -27,7 +27,7 @@ namespace DotNetNuke.ExtensionPoints
 
             StringBuilder str = new StringBuilder();
 
-            foreach (var extension in extensionPointManager.GetContextMenuItemExtensionPoints(Module, Group))
+            foreach (var extension in extensionPointManager.GetContextMenuItemExtensionPoints(this.Module, this.Group))
             {
                 var icon = extension.Icon;
                 if (icon.StartsWith("~/"))
@@ -43,12 +43,12 @@ namespace DotNetNuke.ExtensionPoints
 </li>");
             }
 
-            content = str.ToString();
+            this.content = str.ToString();
         }
 
         protected override void RenderContents(HtmlTextWriter output)
         {
-            output.Write(content);
+            output.Write(this.content);
         }
     }
 }

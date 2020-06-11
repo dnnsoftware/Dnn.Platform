@@ -22,14 +22,14 @@ namespace Dnn.PersonaBar.Users.Tests
 
         protected override RestoreUser CreateCommand()
         {
-            return new RestoreUser(_userValidatorMock.Object, _recyclebinControllerMock.Object);
+            return new RestoreUser(this._userValidatorMock.Object, this._recyclebinControllerMock.Object);
         }
 
         [SetUp]
         protected override void ChildSetup()
         {
-            _userValidatorMock = new Mock<IUserValidator>();
-            _recyclebinControllerMock = new Mock<IRecyclebinController>();
+            this._userValidatorMock = new Mock<IUserValidator>();
+            this._recyclebinControllerMock = new Mock<IRecyclebinController>();
         }
 
         [Test]
@@ -37,15 +37,15 @@ namespace Dnn.PersonaBar.Users.Tests
         {
             // Arrange    
             var userId = 2;
-            UserInfo userInfo = GetUser(userId, true);
-            _userValidatorMock
-                .Setup(u => u.ValidateUser(userId, portalSettings, null, out userInfo))
-                .Returns(errorResultModel);
+            UserInfo userInfo = this.GetUser(userId, true);
+            this._userValidatorMock
+                .Setup(u => u.ValidateUser(userId, this.portalSettings, null, out userInfo))
+                .Returns(this.errorResultModel);
             var message = string.Empty;
-            _recyclebinControllerMock.Setup(r => r.RestoreUser(userInfo, out message)).Returns(true);
+            this._recyclebinControllerMock.Setup(r => r.RestoreUser(userInfo, out message)).Returns(true);
 
             // Act
-            var result = RunCommand(userId.ToString());
+            var result = this.RunCommand(userId.ToString());
 
             // Assert
             Assert.IsFalse(result.IsError);
@@ -56,15 +56,15 @@ namespace Dnn.PersonaBar.Users.Tests
         {
             // Arrange        
             var userId = 2;
-            UserInfo userInfo = GetUser(userId, true);
-            _userValidatorMock
-                .Setup(u => u.ValidateUser(userId, portalSettings, null, out userInfo))
-                .Returns(errorResultModel);
+            UserInfo userInfo = this.GetUser(userId, true);
+            this._userValidatorMock
+                .Setup(u => u.ValidateUser(userId, this.portalSettings, null, out userInfo))
+                .Returns(this.errorResultModel);
             var message = string.Empty;
-            _recyclebinControllerMock.Setup(r => r.RestoreUser(userInfo, out message)).Returns(false);
+            this._recyclebinControllerMock.Setup(r => r.RestoreUser(userInfo, out message)).Returns(false);
 
             // Act
-            var result = RunCommand(userId.ToString());
+            var result = this.RunCommand(userId.ToString());
 
             // Assert
             Assert.IsTrue(result.IsError);
@@ -75,13 +75,13 @@ namespace Dnn.PersonaBar.Users.Tests
         {
             // Arrange        
             var userId = 2;
-            UserInfo userinfo = GetUser(userId, false);
-            _userValidatorMock
-                .Setup(u => u.ValidateUser(userId, portalSettings, null, out userinfo))
-                .Returns(errorResultModel);
+            UserInfo userinfo = this.GetUser(userId, false);
+            this._userValidatorMock
+                .Setup(u => u.ValidateUser(userId, this.portalSettings, null, out userinfo))
+                .Returns(this.errorResultModel);
 
             // Act
-            var result = RunCommand(userId.ToString());
+            var result = this.RunCommand(userId.ToString());
 
             // Assert
             Assert.IsTrue(result.IsError);
@@ -91,15 +91,15 @@ namespace Dnn.PersonaBar.Users.Tests
         public void Run_RestoreNullUserId_ReturnErrorResponse()
         {
             // Arrange        
-            errorResultModel = new ConsoleErrorResultModel();
+            this.errorResultModel = new ConsoleErrorResultModel();
 
             UserInfo userinfo;
-            _userValidatorMock
-                .Setup(u => u.ValidateUser(-1, portalSettings, null, out userinfo))
-                .Returns(errorResultModel);
+            this._userValidatorMock
+                .Setup(u => u.ValidateUser(-1, this.portalSettings, null, out userinfo))
+                .Returns(this.errorResultModel);
 
             // Act
-            var result = RunCommand();
+            var result = this.RunCommand();
 
             // Assert
             Assert.IsTrue(result.IsError);

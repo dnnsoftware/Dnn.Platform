@@ -33,18 +33,18 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		public DNNCountryEditControl()
 		{
-			AutoPostBack = true;
-			ListName = "Country";
-			ParentKey = "";
-			TextField = ListBoundField.Text;
-			ValueField = ListBoundField.Id;
-			ItemChanged += OnItemChanged;
-			SortAlphabetically = true;
+			this.AutoPostBack = true;
+			this.ListName = "Country";
+			this.ParentKey = "";
+			this.TextField = ListBoundField.Text;
+			this.ValueField = ListBoundField.Id;
+			this.ItemChanged += this.OnItemChanged;
+			this.SortAlphabetically = true;
 		}
 
 		void OnItemChanged(object sender, PropertyEditorEventArgs e)
 		{
-			var regionContainer = ControlUtilities.FindControl<Control>(Parent, "Region", true);
+			var regionContainer = ControlUtilities.FindControl<Control>(this.Parent, "Region", true);
 			if (regionContainer != null)
 			{
 				var regionControl = ControlUtilities.FindFirstDescendent<DNNRegionEditControl>(regionContainer);

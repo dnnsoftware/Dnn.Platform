@@ -49,11 +49,11 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                if (_PermissionsList == null && _TabPermissions != null)
+                if (this._PermissionsList == null && this._TabPermissions != null)
                 {
-                    _PermissionsList = _TabPermissions.ToList();
+                    this._PermissionsList = this._TabPermissions.ToList();
                 }
-                return _PermissionsList;
+                return this._PermissionsList;
             }
         }
 
@@ -67,10 +67,10 @@ namespace DotNetNuke.Security.Permissions.Controls
             get
             {
                 //First Update Permissions in case they have been changed
-                UpdatePermissions();
+                this.UpdatePermissions();
 
                 //Return the TabPermissions
-                return _TabPermissions;
+                return this._TabPermissions;
             }
         }
 
@@ -83,14 +83,14 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                return _TabID;
+                return this._TabID;
             }
             set
             {
-                _TabID = value;
-                if (!Page.IsPostBack)
+                this._TabID = value;
+                if (!this.Page.IsPostBack)
                 {
-                    GetTabPermissions();
+                    this.GetTabPermissions();
                 }
             }
         }
@@ -102,13 +102,13 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         private void GetTabPermissions()
         {
-            _TabPermissions = new TabPermissionCollection(TabPermissionController.GetTabPermissions(TabID, PortalId));
-            _PermissionsList = null;
+            this._TabPermissions = new TabPermissionCollection(TabPermissionController.GetTabPermissions(this.TabID, this.PortalId));
+            this._PermissionsList = null;
         }
 
         public override void DataBind()
         {
-            GetTabPermissions();
+            this.GetTabPermissions();
             base.DataBind();
         }
 
@@ -132,7 +132,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 objTabPermission.TabPermissionID = Convert.ToInt32(Settings[2]);
             }
-            objTabPermission.TabID = TabID;
+            objTabPermission.TabID = this.TabID;
 
             return objTabPermission;
         }
@@ -144,7 +144,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
             {
                 var roleID = Int32.Parse(((DataRowView)item.DataItem)[0].ToString());
-                if (IsImplicitRole(PortalSettings.Current.PortalId, roleID))
+                if (this.IsImplicitRole(PortalSettings.Current.PortalId, roleID))
                 {
                     var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
                     if (actionImage != null)
@@ -163,22 +163,22 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
-            rolePermissionsGrid.ItemDataBound += rolePermissionsGrid_ItemDataBound;
+            this.rolePermissionsGrid.ItemDataBound += this.rolePermissionsGrid_ItemDataBound;
         }
         
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
             var objPermission = new TabPermissionInfo(permission);
-            objPermission.TabID = TabID;
+            objPermission.TabID = this.TabID;
             objPermission.RoleID = roleId;
             objPermission.RoleName = roleName;
             objPermission.AllowAccess = allowAccess;
             objPermission.UserID = userId;
             objPermission.DisplayName = displayName;
-            _TabPermissions.Add(objPermission, true);
+            this._TabPermissions.Add(objPermission, true);
 
             //Clear Permission List
-            _PermissionsList = null;
+            this._PermissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------
@@ -192,7 +192,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             //Search TabPermission Collection for the user 
             bool isMatch = false;
-            foreach (TabPermissionInfo objTabPermission in _TabPermissions)
+            foreach (TabPermissionInfo objTabPermission in this._TabPermissions)
             {
                 if (objTabPermission.UserID == user.UserID)
                 {
@@ -208,7 +208,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 {
                     if (objPermission.PermissionKey == "VIEW")
                     {
-                        AddPermission(objPermission, int.Parse(Globals.glbRoleNothing), Null.NullString, user.UserID, user.DisplayName, true);
+                        this.AddPermission(objPermission, int.Parse(Globals.glbRoleNothing), Null.NullString, user.UserID, user.DisplayName, true);
                     }
                 }
             }
@@ -224,7 +224,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override void AddPermission(ArrayList permissions, RoleInfo role)
         {
             //Search TabPermission Collection for the user 
-            if (_TabPermissions.Cast<TabPermissionInfo>().Any(objTabPermission => objTabPermission.RoleID == role.RoleID))
+            if (this._TabPermissions.Cast<TabPermissionInfo>().Any(objTabPermission => objTabPermission.RoleID == role.RoleID))
             {
                 return;
             }
@@ -234,7 +234,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 if (objPermission.PermissionKey == "VIEW")
                 {
-                    AddPermission(objPermission, role.RoleID, role.RoleName, Null.NullInteger, Null.NullString, true);
+                    this.AddPermission(objPermission, role.RoleID, role.RoleName, Null.NullInteger, Null.NullString, true);
                 }
             }
         }
@@ -249,7 +249,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         protected override bool GetEnabled(PermissionInfo objPerm, RoleInfo role, int column)
         {
-            return !IsImplicitRole(role.PortalID, role.RoleID);
+            return !this.IsImplicitRole(role.PortalID, role.RoleID);
         }
 
         /// -----------------------------------------------------------------------------
@@ -266,7 +266,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             string permission;
 
-            if (role.RoleID == AdministratorRoleId)
+            if (role.RoleID == this.AdministratorRoleId)
             {
                 permission = PermissionTypeGrant;
             }
@@ -310,13 +310,13 @@ namespace DotNetNuke.Security.Permissions.Controls
                 //Load TabId
                 if (myState[1] != null)
                 {
-                    TabID = Convert.ToInt32(myState[1]);
+                    this.TabID = Convert.ToInt32(myState[1]);
                 }
 
                 //Load TabPermissions
                 if (myState[2] != null)
                 {
-                    _TabPermissions = new TabPermissionCollection();
+                    this._TabPermissions = new TabPermissionCollection();
                     string state = Convert.ToString(myState[2]);
                     if (!String.IsNullOrEmpty(state))
                     {
@@ -325,7 +325,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                         foreach (string key in permissionKeys)
                         {
                             string[] Settings = key.Split('|');
-                            _TabPermissions.Add(ParseKeys(Settings));
+                            this._TabPermissions.Add(this.ParseKeys(Settings));
                         }
                     }
                 }
@@ -334,9 +334,9 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
-            _TabPermissions.Remove(permissionID, roleID, userID);
+            this._TabPermissions.Remove(permissionID, roleID, userID);
             //Clear Permission List
-            _PermissionsList = null;
+            this._PermissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------
@@ -352,14 +352,14 @@ namespace DotNetNuke.Security.Permissions.Controls
             allStates[0] = base.SaveViewState();
 
             //Save the Tab Id
-            allStates[1] = TabID;
+            allStates[1] = this.TabID;
 
             //Persist the TabPermisisons
             var sb = new StringBuilder();
-            if (_TabPermissions != null)
+            if (this._TabPermissions != null)
             {
                 bool addDelimiter = false;
-                foreach (TabPermissionInfo objTabPermission in _TabPermissions)
+                foreach (TabPermissionInfo objTabPermission in this._TabPermissions)
                 {
                     if (addDelimiter)
                     {
@@ -369,7 +369,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     {
                         addDelimiter = true;
                     }
-                    sb.Append(BuildKey(objTabPermission.AllowAccess,
+                    sb.Append(this.BuildKey(objTabPermission.AllowAccess,
                                        objTabPermission.PermissionID,
                                        objTabPermission.TabPermissionID,
                                        objTabPermission.RoleID,

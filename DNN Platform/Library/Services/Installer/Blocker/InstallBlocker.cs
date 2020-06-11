@@ -28,28 +28,28 @@ namespace DotNetNuke.Services.Installer.Blocker
 
         public void RegisterInstallBegining()
         {          
-            if(!fileCreated)  
+            if(!this.fileCreated)  
                 File.Create(Globals.ApplicationMapPath + installBlockerFile);
-            fileCreated = true;
+            this.fileCreated = true;
         }
 
         public bool IsInstallInProgress()
         {
-            return fileCreated || File.Exists(Globals.ApplicationMapPath + installBlockerFile);
+            return this.fileCreated || File.Exists(Globals.ApplicationMapPath + installBlockerFile);
         }
 
         public void RegisterInstallEnd()
         {
             var retryable = new RetryableAction(() =>
             {
-                if (IsInstallInProgress() && fileCreated)
+                if (this.IsInstallInProgress() && this.fileCreated)
                 {
                     File.Delete(Globals.ApplicationMapPath + installBlockerFile);
                 }
             }, "Deleting lock file", 60, TimeSpan.FromSeconds(1));
 
             retryable.TryIt();
-            fileCreated = false;
+            this.fileCreated = false;
         }
 
         #endregion

@@ -237,7 +237,7 @@ method="run" file="Generator.java" line="94"/>
 				writer.WriteEndElement();
 			}
 
-			if (LocationInfo)
+			if (this.LocationInfo)
 			{ 
 				LocationInfo locationInfo = loggingEvent.LocationInformation;
 

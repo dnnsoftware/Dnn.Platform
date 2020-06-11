@@ -56,34 +56,34 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 
         public ModuleControlDto(ModuleControlInfo moduleControl)
         {
-            Id = moduleControl.ModuleControlID;
-            DefinitionId = moduleControl.ModuleDefID;
-            Key = moduleControl.ControlKey;
-            Title = moduleControl.ControlTitle;
-            Source = moduleControl.ControlSrc;
-            Type = moduleControl.ControlType;
-            Order = moduleControl.ViewOrder;
-            Icon = moduleControl.IconFile;
-            HelpUrl = moduleControl.HelpURL;
-            SupportPopups = moduleControl.SupportsPopUps;
-            SupportPartialRendering = moduleControl.SupportsPartialRendering;
+            this.Id = moduleControl.ModuleControlID;
+            this.DefinitionId = moduleControl.ModuleDefID;
+            this.Key = moduleControl.ControlKey;
+            this.Title = moduleControl.ControlTitle;
+            this.Source = moduleControl.ControlSrc;
+            this.Type = moduleControl.ControlType;
+            this.Order = moduleControl.ViewOrder;
+            this.Icon = moduleControl.IconFile;
+            this.HelpUrl = moduleControl.HelpURL;
+            this.SupportPopups = moduleControl.SupportsPopUps;
+            this.SupportPartialRendering = moduleControl.SupportsPartialRendering;
         }
 
         public ModuleControlInfo ToModuleControlInfo()
         {
             return new ModuleControlInfo
             {
-                ModuleControlID = Id,
-                ModuleDefID = DefinitionId,
-                ControlKey = Key,
-                ControlTitle = Title,
-                ControlSrc = Source,
-                ControlType = Type,
-                ViewOrder = Order,
-                IconFile = Icon,
-                HelpURL = HelpUrl,
-                SupportsPartialRendering = SupportPartialRendering,
-                SupportsPopUps = SupportPopups
+                ModuleControlID = this.Id,
+                ModuleDefID = this.DefinitionId,
+                ControlKey = this.Key,
+                ControlTitle = this.Title,
+                ControlSrc = this.Source,
+                ControlType = this.Type,
+                ViewOrder = this.Order,
+                IconFile = this.Icon,
+                HelpURL = this.HelpUrl,
+                SupportsPartialRendering = this.SupportPartialRendering,
+                SupportsPopUps = this.SupportPopups
             };
         }
     }

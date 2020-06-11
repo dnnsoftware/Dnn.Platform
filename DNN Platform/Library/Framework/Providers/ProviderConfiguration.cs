@@ -22,7 +22,7 @@ namespace DotNetNuke.Framework.Providers
         {
             get
             {
-                return _DefaultProvider;
+                return this._DefaultProvider;
             }
         }
 
@@ -30,7 +30,7 @@ namespace DotNetNuke.Framework.Providers
         {
             get
             {
-                return _Providers;
+                return this._Providers;
             }
         }
 
@@ -44,14 +44,14 @@ namespace DotNetNuke.Framework.Providers
             XmlAttributeCollection attributeCollection = node.Attributes;
 
 			//Get the default provider
-            _DefaultProvider = attributeCollection["defaultProvider"].Value;
+            this._DefaultProvider = attributeCollection["defaultProvider"].Value;
 
 			//Read child nodes
             foreach (XmlNode child in node.ChildNodes)
             {
                 if (child.Name == "providers")
                 {
-                    GetProviders(child);
+                    this.GetProviders(child);
                 }
             }
         }
@@ -63,13 +63,13 @@ namespace DotNetNuke.Framework.Providers
                 switch (Provider.Name)
                 {
                     case "add":
-                        Providers.Add(Provider.Attributes["name"].Value, new Provider(Provider.Attributes));
+                        this.Providers.Add(Provider.Attributes["name"].Value, new Provider(Provider.Attributes));
                         break;
                     case "remove":
-                        Providers.Remove(Provider.Attributes["name"].Value);
+                        this.Providers.Remove(Provider.Attributes["name"].Value);
                         break;
                     case "clear":
-                        Providers.Clear();
+                        this.Providers.Clear();
                         break;
                 }
             }

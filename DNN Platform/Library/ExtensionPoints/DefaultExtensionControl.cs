@@ -19,12 +19,12 @@ namespace DotNetNuke.ExtensionPoints
         {
             get
             {
-                var s = (string)ViewState["Module"];
+                var s = (string)this.ViewState["Module"];
                 return s ?? string.Empty;
             }
             set
             {
-                ViewState["Module"] = value;
+                this.ViewState["Module"] = value;
             }
         }
 
@@ -34,12 +34,12 @@ namespace DotNetNuke.ExtensionPoints
         {
             get
             {
-                var s = (string)ViewState["Group"];
+                var s = (string)this.ViewState["Group"];
                 return s ?? string.Empty;
             }
             set
             {
-                ViewState["Group"] = value;
+                this.ViewState["Group"] = value;
             }
         }
 
@@ -49,12 +49,12 @@ namespace DotNetNuke.ExtensionPoints
         {
             get
             {
-                var s = (string)ViewState["Name"];
+                var s = (string)this.ViewState["Name"];
                 return s ?? string.Empty;
             }
             set
             {
-                ViewState["Name"] = value;
+                this.ViewState["Name"] = value;
             }
         }
 

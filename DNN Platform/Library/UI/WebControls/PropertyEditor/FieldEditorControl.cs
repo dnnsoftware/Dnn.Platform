@@ -62,18 +62,18 @@ namespace DotNetNuke.UI.WebControls
 
 		public FieldEditorControl()
 		{
-			ValidationExpression = Null.NullString;
-			ShowRequired = true;
-			LabelMode = LabelMode.None;
-			EditorTypeName = Null.NullString;
-			EditorDisplayMode = EditorDisplayMode.Div;
-			HelpDisplayMode = HelpDisplayMode.Always;
-			VisibilityStyle = new Style();
-			LabelStyle = new Style();
-			HelpStyle = new Style();
-			EditControlStyle = new Style();
-			ErrorStyle = new Style();
-            ViewStateMode = ViewStateMode.Disabled;
+			this.ValidationExpression = Null.NullString;
+			this.ShowRequired = true;
+			this.LabelMode = LabelMode.None;
+			this.EditorTypeName = Null.NullString;
+			this.EditorDisplayMode = EditorDisplayMode.Div;
+			this.HelpDisplayMode = HelpDisplayMode.Always;
+			this.VisibilityStyle = new Style();
+			this.LabelStyle = new Style();
+			this.HelpStyle = new Style();
+			this.EditControlStyle = new Style();
+			this.ErrorStyle = new Style();
+            this.ViewStateMode = ViewStateMode.Disabled;
 		}
 
 		#endregion
@@ -143,22 +143,22 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				if (_EditorInfoAdapter == null)
+				if (this._EditorInfoAdapter == null)
 				{
-					if (_StdAdapter == null)
+					if (this._StdAdapter == null)
 					{
-						_StdAdapter = new StandardEditorInfoAdapter(DataSource, DataField);
+						this._StdAdapter = new StandardEditorInfoAdapter(this.DataSource, this.DataField);
 					}
-					return _StdAdapter;
+					return this._StdAdapter;
 				}
 				else
 				{
-					return _EditorInfoAdapter;
+					return this._EditorInfoAdapter;
 				}
 			}
 			set
 			{
-				_EditorInfoAdapter = value;
+				this._EditorInfoAdapter = value;
 			}
 		}
 		
@@ -206,11 +206,11 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				if (!_Validated)
+				if (!this._Validated)
 				{
-					Validate();
+					this.Validate();
 				}
-				return _IsValid;
+				return this._IsValid;
 			}
 		}
 
@@ -341,52 +341,52 @@ namespace DotNetNuke.UI.WebControls
 			var propLabel = new PropertyLabelControl();
             propLabel.ViewStateMode = ViewStateMode.Disabled;
 
-			var propEditor = BuildEditor(editInfo);
-			var visibility = BuildVisibility(editInfo);
+			var propEditor = this.BuildEditor(editInfo);
+			var visibility = this.BuildVisibility(editInfo);
 
 			if (editInfo.LabelMode != LabelMode.None)
 			{
-				propLabel = BuildLabel(editInfo);
+				propLabel = this.BuildLabel(editInfo);
 				propLabel.EditControl = propEditor;
 			}
 
 			var strValue = editInfo.Value as string; 
-			if (ShowRequired && editInfo.Required && (editInfo.EditMode == PropertyEditorMode.Edit || (editInfo.Required && string.IsNullOrEmpty(strValue))))
+			if (this.ShowRequired && editInfo.Required && (editInfo.EditMode == PropertyEditorMode.Edit || (editInfo.Required && string.IsNullOrEmpty(strValue))))
 			{
                 propLabel.Required = true;
 			}
 
 			if (editInfo.LabelMode == LabelMode.Left || editInfo.LabelMode == LabelMode.Top)
 			{
-				Controls.Add(propLabel);
-				Controls.Add(propEditor);
+				this.Controls.Add(propLabel);
+				this.Controls.Add(propEditor);
 				if (visibility != null)
 				{
-					Controls.Add(visibility);
+					this.Controls.Add(visibility);
 				}
 			}
 			else
 			{
-				Controls.Add(propEditor);
+				this.Controls.Add(propEditor);
 				if (visibility != null)
 				{
-					Controls.Add(visibility);
+					this.Controls.Add(visibility);
 				}
 				if ((propLabel != null))
 				{
-					Controls.Add(propLabel);
+					this.Controls.Add(propLabel);
 				}
 			}
 			
 			//Build the Validators
-			BuildValidators(editInfo, propEditor.ID);
-			if (Validators.Count > 0)
+			this.BuildValidators(editInfo, propEditor.ID);
+			if (this.Validators.Count > 0)
 			{
 				//Add the Validators to the editor cell
-				foreach (BaseValidator validator in Validators)
+				foreach (BaseValidator validator in this.Validators)
 				{
-					validator.Width = Width;
-					Controls.Add(validator);
+					validator.Width = this.Width;
+					this.Controls.Add(validator);
 				}
 			}
 		}
@@ -399,22 +399,22 @@ namespace DotNetNuke.UI.WebControls
 		{
 			EditControl propEditor = EditControlFactory.CreateEditControl(editInfo);
             propEditor.ViewStateMode = ViewStateMode.Enabled;
-			propEditor.ControlStyle.CopyFrom(EditControlStyle);
-			propEditor.LocalResourceFile = LocalResourceFile;
-		    propEditor.User = User;
+			propEditor.ControlStyle.CopyFrom(this.EditControlStyle);
+			propEditor.LocalResourceFile = this.LocalResourceFile;
+		    propEditor.User = this.User;
 			if (editInfo.ControlStyle != null)
 			{
 				propEditor.ControlStyle.CopyFrom(editInfo.ControlStyle);
 			}
-			propEditor.ItemAdded += CollectionItemAdded;
-			propEditor.ItemDeleted += CollectionItemDeleted;
-			propEditor.ValueChanged += ValueChanged;
+			propEditor.ItemAdded += this.CollectionItemAdded;
+			propEditor.ItemDeleted += this.CollectionItemDeleted;
+			propEditor.ValueChanged += this.ValueChanged;
 			if (propEditor is DNNListEditControl)
 			{
 				var listEditor = (DNNListEditControl) propEditor;
-				listEditor.ItemChanged += ListItemChanged;
+				listEditor.ItemChanged += this.ListItemChanged;
 			}
-			Editor = propEditor;
+			this.Editor = propEditor;
 
 			return propEditor;
 		}
@@ -426,10 +426,10 @@ namespace DotNetNuke.UI.WebControls
 		private PropertyLabelControl BuildLabel(EditorInfo editInfo)
 		{
 			var propLabel = new PropertyLabelControl {ID = editInfo.Name + "_Label"};
-		    propLabel.HelpStyle.CopyFrom(HelpStyle);
-			propLabel.LabelStyle.CopyFrom(LabelStyle);
+		    propLabel.HelpStyle.CopyFrom(this.HelpStyle);
+			propLabel.LabelStyle.CopyFrom(this.LabelStyle);
 			var strValue = editInfo.Value as string;
-			switch (HelpDisplayMode)
+			switch (this.HelpDisplayMode)
 			{
 				case HelpDisplayMode.Always:
 					propLabel.ShowHelp = true;
@@ -453,7 +453,7 @@ namespace DotNetNuke.UI.WebControls
 			propLabel.ResourceKey = editInfo.ResourceKey;
 			if (editInfo.LabelMode == LabelMode.Left || editInfo.LabelMode == LabelMode.Right)
 			{
-				propLabel.Width = LabelWidth;
+				propLabel.Width = this.LabelWidth;
 			}
 			return propLabel;
 		}
@@ -466,16 +466,16 @@ namespace DotNetNuke.UI.WebControls
 		{
 			Image img = null;
 			var strValue = editInfo.Value as string;
-			if (ShowRequired && editInfo.Required && (editInfo.EditMode == PropertyEditorMode.Edit || (editInfo.Required && string.IsNullOrEmpty(strValue))))
+			if (this.ShowRequired && editInfo.Required && (editInfo.EditMode == PropertyEditorMode.Edit || (editInfo.Required && string.IsNullOrEmpty(strValue))))
 			{
 				img = new Image();
-				if (String.IsNullOrEmpty(RequiredUrl) || RequiredUrl == Null.NullString)
+				if (String.IsNullOrEmpty(this.RequiredUrl) || this.RequiredUrl == Null.NullString)
 				{
 					img.ImageUrl = "~/images/required.gif";
 				}
 				else
 				{
-					img.ImageUrl = RequiredUrl;
+					img.ImageUrl = this.RequiredUrl;
 				}
 				img.Attributes.Add("resourcekey", editInfo.ResourceKey + ".Required");
 			}
@@ -496,15 +496,15 @@ namespace DotNetNuke.UI.WebControls
 
 			//Build Label Cell
 			labelCell.VerticalAlign = VerticalAlign.Top;
-			labelCell.Controls.Add(BuildLabel(editInfo));
+			labelCell.Controls.Add(this.BuildLabel(editInfo));
 			if (editInfo.LabelMode == LabelMode.Left || editInfo.LabelMode == LabelMode.Right)
 			{
-				labelCell.Width = LabelWidth;
+				labelCell.Width = this.LabelWidth;
 			}
 			//Build Editor Cell
 			editorCell.VerticalAlign = VerticalAlign.Top;
-			EditControl propEditor = BuildEditor(editInfo);
-			Image requiredIcon = BuildRequiredIcon(editInfo);
+			EditControl propEditor = this.BuildEditor(editInfo);
+			Image requiredIcon = this.BuildRequiredIcon(editInfo);
 			editorCell.Controls.Add(propEditor);
 			if (requiredIcon != null)
 			{
@@ -512,9 +512,9 @@ namespace DotNetNuke.UI.WebControls
 			}
 			if (editInfo.LabelMode == LabelMode.Left || editInfo.LabelMode == LabelMode.Right)
 			{
-				editorCell.Width = EditControlWidth;
+				editorCell.Width = this.EditControlWidth;
 			}
-			VisibilityControl visibility = BuildVisibility(editInfo);
+			VisibilityControl visibility = this.BuildVisibility(editInfo);
 			if (visibility != null)
 			{
 				editorCell.Controls.Add(new LiteralControl("&nbsp;&nbsp;"));
@@ -557,13 +557,13 @@ namespace DotNetNuke.UI.WebControls
 			}
 			
 			//Build the Validators
-			BuildValidators(editInfo, propEditor.ID);
+			this.BuildValidators(editInfo, propEditor.ID);
 
 			var validatorsRow = new TableRow();
 			var validatorsCell = new TableCell();
 			validatorsCell.ColumnSpan = 2;
 			//Add the Validators to the editor cell
-			foreach (BaseValidator validator in Validators)
+			foreach (BaseValidator validator in this.Validators)
 			{
 				validatorsCell.Controls.Add(validator);
 			}
@@ -571,7 +571,7 @@ namespace DotNetNuke.UI.WebControls
 			tbl.Rows.Add(validatorsRow);
 
 			//Add the Table to the Controls Collection
-			Controls.Add(tbl);
+			this.Controls.Add(tbl);
 		}
 
 		/// -----------------------------------------------------------------------------
@@ -583,7 +583,7 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		private void BuildValidators(EditorInfo editInfo, string targetId)
 		{
-			Validators.Clear();
+			this.Validators.Clear();
 
 			//Add Required Validators
 			if (editInfo.Required)
@@ -592,15 +592,15 @@ namespace DotNetNuke.UI.WebControls
 				reqValidator.ID = editInfo.Name + "_Req";
 				reqValidator.ControlToValidate = targetId;
 				reqValidator.Display = ValidatorDisplay.Dynamic;
-				reqValidator.ControlStyle.CopyFrom(ErrorStyle);
+				reqValidator.ControlStyle.CopyFrom(this.ErrorStyle);
 			    if(String.IsNullOrEmpty(reqValidator.CssClass))
 			    {
 			        reqValidator.CssClass = "dnnFormMessage dnnFormError";
 			    }
-				reqValidator.EnableClientScript = EnableClientValidation;
+				reqValidator.EnableClientScript = this.EnableClientValidation;
 				reqValidator.Attributes.Add("resourcekey", editInfo.ResourceKey + ".Required");
 				reqValidator.ErrorMessage = editInfo.Name + " is Required";
-				Validators.Add(reqValidator);
+				this.Validators.Add(reqValidator);
 			}
 			
 			//Add Regular Expression Validators
@@ -611,15 +611,15 @@ namespace DotNetNuke.UI.WebControls
 				regExValidator.ControlToValidate = targetId;
 				regExValidator.ValidationExpression = editInfo.ValidationExpression;
 				regExValidator.Display = ValidatorDisplay.Dynamic;
-				regExValidator.ControlStyle.CopyFrom(ErrorStyle);
+				regExValidator.ControlStyle.CopyFrom(this.ErrorStyle);
 			    if(String.IsNullOrEmpty(regExValidator.CssClass))
 			    {
                     regExValidator.CssClass = "dnnFormMessage dnnFormError";
 			    }
-				regExValidator.EnableClientScript = EnableClientValidation;
+				regExValidator.EnableClientScript = this.EnableClientValidation;
 				regExValidator.Attributes.Add("resourcekey", editInfo.ResourceKey + ".Validation");
 				regExValidator.ErrorMessage = editInfo.Name + " is Invalid";
-				Validators.Add(regExValidator);
+				this.Validators.Add(regExValidator);
 			}
 		}
 
@@ -631,17 +631,17 @@ namespace DotNetNuke.UI.WebControls
 		{
 			VisibilityControl visControl = null;
 
-			if (ShowVisibility)
+			if (this.ShowVisibility)
 			{
 			    visControl = new VisibilityControl
 			                     {
 			                         ID = "_visibility", 
                                      Name = editInfo.Name, 
-                                     User = User, 
+                                     User = this.User, 
                                      Value = editInfo.ProfileVisibility
 			                     };
-			    visControl.ControlStyle.CopyFrom(VisibilityStyle);
-				visControl.VisibilityChanged += VisibilityChanged;
+			    visControl.ControlStyle.CopyFrom(this.VisibilityStyle);
+				visControl.VisibilityChanged += this.VisibilityChanged;
 			}
 			return visControl;
 		}
@@ -657,55 +657,55 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		protected virtual void CreateEditor()
 		{
-			EditorInfo editInfo = EditorInfoAdapter.CreateEditControl();
+			EditorInfo editInfo = this.EditorInfoAdapter.CreateEditControl();
 
-		    ID = editInfo.Name;
+		    this.ID = editInfo.Name;
 
 			if (editInfo != null)
 			{
-                editInfo.User = User;
+                editInfo.User = this.User;
 
                 if (editInfo.EditMode == PropertyEditorMode.Edit)
 				{
-					editInfo.EditMode = EditMode;
+					editInfo.EditMode = this.EditMode;
 				}
 				
 				//Get the Editor Type to use (if specified)
-				if (!string.IsNullOrEmpty(EditorTypeName))
+				if (!string.IsNullOrEmpty(this.EditorTypeName))
 				{
-					editInfo.Editor = EditorTypeName;
+					editInfo.Editor = this.EditorTypeName;
 				}
 				
 				//Get the Label Mode to use (if specified)
-				if (LabelMode != LabelMode.Left)
+				if (this.LabelMode != LabelMode.Left)
 				{
-					editInfo.LabelMode = LabelMode;
+					editInfo.LabelMode = this.LabelMode;
 				}
 				
 				//if Required is specified set editors property
-				if (Required)
+				if (this.Required)
 				{
-					editInfo.Required = Required;
+					editInfo.Required = this.Required;
 				}
 				
 				//Get the ValidationExpression to use (if specified)
-				if (!string.IsNullOrEmpty(ValidationExpression))
+				if (!string.IsNullOrEmpty(this.ValidationExpression))
 				{
-					editInfo.ValidationExpression = ValidationExpression;
+					editInfo.ValidationExpression = this.ValidationExpression;
 				}
 				
 				//Raise the ItemCreated Event
-				OnItemCreated(new PropertyEditorItemEventArgs(editInfo));
+				this.OnItemCreated(new PropertyEditorItemEventArgs(editInfo));
 
-				Visible = editInfo.Visible;
+				this.Visible = editInfo.Visible;
 
-				if (EditorDisplayMode == EditorDisplayMode.Div)
+				if (this.EditorDisplayMode == EditorDisplayMode.Div)
 				{
-					BuildDiv(editInfo);
+					this.BuildDiv(editInfo);
 				}
 				else
 				{
-					BuildTable(editInfo);
+					this.BuildTable(editInfo);
 				}
 			}
 		}
@@ -717,7 +717,7 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		protected virtual void CollectionItemAdded(object sender, PropertyEditorEventArgs e)
 		{
-			OnItemAdded(e);
+			this.OnItemAdded(e);
 		}
 
 		/// -----------------------------------------------------------------------------
@@ -727,7 +727,7 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		protected virtual void CollectionItemDeleted(object sender, PropertyEditorEventArgs e)
 		{
-			OnItemDeleted(e);
+			this.OnItemDeleted(e);
 		}
 
 		/// -----------------------------------------------------------------------------
@@ -737,9 +737,9 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		protected virtual void OnItemAdded(PropertyEditorEventArgs e)
 		{
-			if (ItemAdded != null)
+			if (this.ItemAdded != null)
 			{
-				ItemAdded(this, e);
+				this.ItemAdded(this, e);
 			}
 		}
 
@@ -750,9 +750,9 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		protected virtual void OnItemCreated(PropertyEditorItemEventArgs e)
 		{
-			if (ItemCreated != null)
+			if (this.ItemCreated != null)
 			{
-				ItemCreated(this, e);
+				this.ItemCreated(this, e);
 			}
 		}
 
@@ -763,9 +763,9 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		protected virtual void OnItemDeleted(PropertyEditorEventArgs e)
 		{
-			if (ItemDeleted != null)
+			if (this.ItemDeleted != null)
 			{
-				ItemDeleted(this, e);
+				this.ItemDeleted(this, e);
 			}
 		}
 
@@ -773,9 +773,9 @@ namespace DotNetNuke.UI.WebControls
 		{
 			base.OnPreRender(e);
 
-			if (String.IsNullOrEmpty(CssClass))
+			if (String.IsNullOrEmpty(this.CssClass))
 			{
-				CssClass = "dnnFormItem";
+				this.CssClass = "dnnFormItem";
 			}
 		}
 
@@ -786,7 +786,7 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		protected virtual void ValueChanged(object sender, PropertyEditorEventArgs e)
 		{
-			IsDirty = EditorInfoAdapter.UpdateValue(e);
+			this.IsDirty = this.EditorInfoAdapter.UpdateValue(e);
 		}
 
 		/// -----------------------------------------------------------------------------
@@ -796,7 +796,7 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		protected virtual void VisibilityChanged(object sender, PropertyEditorEventArgs e)
 		{
-			IsDirty = EditorInfoAdapter.UpdateVisibility(e);
+			this.IsDirty = this.EditorInfoAdapter.UpdateVisibility(e);
 		}
 
 		#endregion
@@ -814,19 +814,19 @@ namespace DotNetNuke.UI.WebControls
 			base.OnDataBinding(EventArgs.Empty);
 
 			//Clear Existing Controls
-			Controls.Clear();
+			this.Controls.Clear();
 
 			//Clear Child View State as controls will be loaded from DataSource
-			ClearChildViewState();
+			this.ClearChildViewState();
 
 			//Start Tracking ViewState
-			TrackViewState();
+			this.TrackViewState();
 
 			//Create the editor
-			CreateEditor();
+			this.CreateEditor();
 
 			//Set flag so CreateChildConrols should not be invoked later in control's lifecycle
-			ChildControlsCreated = true;
+			this.ChildControlsCreated = true;
 		}
 
 		/// -----------------------------------------------------------------------------
@@ -836,22 +836,22 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		public virtual void Validate()
 		{
-			_IsValid = Editor.IsValid;
+			this._IsValid = this.Editor.IsValid;
 
-			if (_IsValid)
+			if (this._IsValid)
 			{
-				IEnumerator valEnumerator = Validators.GetEnumerator();
+				IEnumerator valEnumerator = this.Validators.GetEnumerator();
 				while (valEnumerator.MoveNext())
 				{
 					var validator = (IValidator) valEnumerator.Current;
 					validator.Validate();
 					if (!validator.IsValid)
 					{
-						_IsValid = false;
+						this._IsValid = false;
 						break;
 					}
 				}
-				_Validated = true;
+				this._Validated = true;
 			}
 		}
 		
@@ -867,9 +867,9 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		protected virtual void ListItemChanged(object sender, PropertyEditorEventArgs e)
 		{
-			if (ItemChanged != null)
+			if (this.ItemChanged != null)
 			{
-				ItemChanged(this, e);
+				this.ItemChanged(this, e);
 			}
 		}
 		

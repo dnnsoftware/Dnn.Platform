@@ -25,7 +25,7 @@ namespace DotNetNuke.UI.Modules
         protected INavigationManager NavigationManager { get; }
         public ProfileModuleUserControlBase()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region IProfileModule Members
@@ -36,9 +36,9 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-                if (!string.IsNullOrEmpty(Request.Params["UserId"]))
+                if (!string.IsNullOrEmpty(this.Request.Params["UserId"]))
                 {
-                    return Int32.Parse(Request.Params["UserId"]);
+                    return Int32.Parse(this.Request.Params["UserId"]);
                 }
 
                 return UserController.Instance.GetCurrentUserInfo().UserID;
@@ -51,12 +51,12 @@ namespace DotNetNuke.UI.Modules
 
         protected bool IsUser
         {
-            get { return ProfileUserId == ModuleContext.PortalSettings.UserId; }
+            get { return this.ProfileUserId == this.ModuleContext.PortalSettings.UserId; }
         }
 
         protected UserInfo ProfileUser
         {
-            get { return UserController.GetUserById(ModuleContext.PortalId, ProfileUserId); }
+            get { return UserController.GetUserById(this.ModuleContext.PortalId, this.ProfileUserId); }
         }
 
         #endregion
@@ -66,7 +66,7 @@ namespace DotNetNuke.UI.Modules
         private string GetRedirectUrl()
         {
             //redirect user to default page if not specific the home tab, do this action to prevent loop redirect.
-            var homeTabId = ModuleContext.PortalSettings.HomeTabId;
+            var homeTabId = this.ModuleContext.PortalSettings.HomeTabId;
             string redirectUrl;
 
             if (homeTabId > Null.NullInteger)
@@ -75,7 +75,7 @@ namespace DotNetNuke.UI.Modules
             }
             else
             {
-                redirectUrl = TestableGlobals.Instance.GetPortalDomainName(PortalSettings.Current.PortalAlias.HTTPAlias, Request, true) +
+                redirectUrl = TestableGlobals.Instance.GetPortalDomainName(PortalSettings.Current.PortalAlias.HTTPAlias, this.Request, true) +
                               "/" + Globals.glbDefaultPage;
             }
 
@@ -88,16 +88,16 @@ namespace DotNetNuke.UI.Modules
 
         protected override void OnInit(EventArgs e)
         {
-			if (string.IsNullOrEmpty(Request.Params["UserId"]) &&
-                            (ModuleContext.PortalSettings.ActiveTab.TabID == ModuleContext.PortalSettings.UserTabId
-                                || ModuleContext.PortalSettings.ActiveTab.ParentId == ModuleContext.PortalSettings.UserTabId))
+			if (string.IsNullOrEmpty(this.Request.Params["UserId"]) &&
+                            (this.ModuleContext.PortalSettings.ActiveTab.TabID == this.ModuleContext.PortalSettings.UserTabId
+                                || this.ModuleContext.PortalSettings.ActiveTab.ParentId == this.ModuleContext.PortalSettings.UserTabId))
             {
                 try
                 {
                     //Clicked on breadcrumb - don't know which user
-                    Response.Redirect(Request.IsAuthenticated
-                                          ? NavigationManager.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID, "", "UserId=" + ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
-                                          : GetRedirectUrl(), true);
+                    this.Response.Redirect(this.Request.IsAuthenticated
+                                          ? this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, "", "UserId=" + this.ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
+                                          : this.GetRedirectUrl(), true);
                 }
                 catch (ThreadAbortException)
                 {

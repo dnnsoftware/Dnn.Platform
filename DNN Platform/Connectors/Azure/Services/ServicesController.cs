@@ -26,32 +26,32 @@ namespace Dnn.AzureConnector.Services
             {
                 var containers = new List<string>();
                 var folderProvider = new AzureFolderProvider();
-                var folderMapping = Components.AzureConnector.FindAzureFolderMappingStatic(PortalSettings.PortalId, id, false);
+                var folderMapping = Components.AzureConnector.FindAzureFolderMappingStatic(this.PortalSettings.PortalId, id, false);
                 if (folderMapping != null)
                 {
                     containers = folderProvider.GetAllContainers(folderMapping);
                 }
 
-                return Request.CreateResponse(HttpStatusCode.OK, containers);
+                return this.Request.CreateResponse(HttpStatusCode.OK, containers);
             }
             catch (StorageException ex)
             {
                 Exceptions.LogException(ex);
                 var message = ex.RequestInformation.HttpStatusMessage ?? ex.Message;
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { Message = message });
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Message = message });
             }
             catch (Exception ex)
             {
                 Exceptions.LogException(ex);
                 const string message = "An error has occurred connecting to the Azure account.";
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { Message = message });
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Message = message });
             }
         }
 
         [HttpGet]
         public HttpResponseMessage GetFolderMappingId()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, Components.AzureConnector.FindAzureFolderMappingStatic(PortalSettings.PortalId).FolderMappingID);
+            return this.Request.CreateResponse(HttpStatusCode.OK, Components.AzureConnector.FindAzureFolderMappingStatic(this.PortalSettings.PortalId).FolderMappingID);
         }
 
         #endregion

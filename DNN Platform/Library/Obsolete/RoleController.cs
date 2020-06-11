@@ -32,22 +32,22 @@ namespace DotNetNuke.Security.Roles
         [Obsolete("Deprecated in DotNetNuke 7.3. This function has been replaced by overload with extra parameters. Scheduled removal in v10.0.0.")]
         public void AddUserRole(int portalId, int userId, int roleId, DateTime expiryDate)
         {
-            AddUserRole(portalId, userId, roleId, RoleStatus.Approved, false, Null.NullDate, expiryDate);
+            this.AddUserRole(portalId, userId, roleId, RoleStatus.Approved, false, Null.NullDate, expiryDate);
         }
 
         public void AddUserRole(int portalId, int userId, int roleId, DateTime effectiveDate, DateTime expiryDate)
         {
-            AddUserRole(portalId, userId, roleId, RoleStatus.Approved, false, effectiveDate, expiryDate);
+            this.AddUserRole(portalId, userId, roleId, RoleStatus.Approved, false, effectiveDate, expiryDate);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.3. This function has been replaced by DeleteRole(role). Scheduled removal in v10.0.0.")]
         public void DeleteRole(int roleId, int portalId)
         {
-            RoleInfo role = GetRole(portalId, r => r.RoleID == roleId);
+            RoleInfo role = this.GetRole(portalId, r => r.RoleID == roleId);
             if (role != null)
             {
-                DeleteRole(role);
+                this.DeleteRole(role);
             }
         }
 
@@ -62,7 +62,7 @@ namespace DotNetNuke.Security.Roles
         [Obsolete("Deprecated in DotNetNuke 7.3. This method has been replacd by GetRoleById. Scheduled removal in v10.0.0.")]
         public RoleInfo GetRole(int roleId, int portalId)
         {
-            return GetRoleById(portalId, roleId);
+            return this.GetRoleById(portalId, roleId);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -95,14 +95,14 @@ namespace DotNetNuke.Security.Roles
         [Obsolete("Deprecated in DotNetNuke 7.3. This function has been replaced by overload with extra parameters. Scheduled removal in v10.0.0.")]
         public void UpdateUserRole(int portalId, int userId, int roleId)
         {
-            UpdateUserRole(portalId, userId, roleId, RoleStatus.Approved, false, false);
+            this.UpdateUserRole(portalId, userId, roleId, RoleStatus.Approved, false, false);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.3. This function has been replaced by overload with extra parameters. Scheduled removal in v10.0.0.")]
         public void UpdateUserRole(int portalId, int userId, int roleId, bool cancel)
         {
-            UpdateUserRole(portalId, userId, roleId, RoleStatus.Approved, false, cancel);
+            this.UpdateUserRole(portalId, userId, roleId, RoleStatus.Approved, false, cancel);
         }
 
 

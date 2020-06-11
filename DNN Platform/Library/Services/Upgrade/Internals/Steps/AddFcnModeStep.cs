@@ -21,16 +21,16 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
         public override void Execute()
         {
-            Percentage = 0;
-            Status = StepStatus.Running;
+            this.Percentage = 0;
+            this.Status = StepStatus.Running;
 
             string strError = Config.AddFCNMode(Config.FcnMode.Single);
             if (!string.IsNullOrEmpty(strError))
             {
-                Errors.Add(Localization.Localization.GetString("FcnMode", LocalInstallResourceFile) + ": " + strError);
+                this.Errors.Add(Localization.Localization.GetString("FcnMode", this.LocalInstallResourceFile) + ": " + strError);
                 Logger.TraceFormat("Adding FcnMode : {0}", strError);
             }
-            Status = Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
+            this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
         }
     }
 }

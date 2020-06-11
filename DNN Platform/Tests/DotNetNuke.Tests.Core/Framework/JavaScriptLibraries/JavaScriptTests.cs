@@ -54,8 +54,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         public void CanRegisterLibraryByName()
         {
             //Arrange
-            int JavaScriptLibraryID = libraryIdCounter++;
-            SetupJavaScriptLibraryController(new JavaScriptLibrary
+            int JavaScriptLibraryID = this.libraryIdCounter++;
+            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
             {
                 JavaScriptLibraryID = JavaScriptLibraryID,
                 LibraryName = "Test",
@@ -73,8 +73,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         public void CanRegisterLibraryByNameWithMismatchedCase()
         {
             //Arrange
-            int JavaScriptLibraryID = libraryIdCounter++;
-            SetupJavaScriptLibraryController(new JavaScriptLibrary
+            int JavaScriptLibraryID = this.libraryIdCounter++;
+            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
             {
                 JavaScriptLibraryID = JavaScriptLibraryID,
                 LibraryName = "Test",
@@ -92,8 +92,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         public void CanRegisterLibraryByNameAndVersion()
         {
             //Arrange
-            int JavaScriptLibraryID = libraryIdCounter++;
-            SetupJavaScriptLibraryController(new JavaScriptLibrary
+            int JavaScriptLibraryID = this.libraryIdCounter++;
+            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
             {
                 JavaScriptLibraryID = JavaScriptLibraryID,
                 LibraryName = "Test",
@@ -111,8 +111,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         public void CanRegisterLibraryByNameAndExactVersion()
         {
             //Arrange
-            int JavaScriptLibraryID = libraryIdCounter++;
-            SetupJavaScriptLibraryController(new JavaScriptLibrary
+            int JavaScriptLibraryID = this.libraryIdCounter++;
+            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
             {
                 JavaScriptLibraryID = JavaScriptLibraryID,
                 LibraryName = "Test",
@@ -130,8 +130,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         public void CanRegisterLibraryByNameWithMismatchedCaseAndExactVersion()
         {
             //Arrange
-            int JavaScriptLibraryID = libraryIdCounter++;
-            SetupJavaScriptLibraryController(new JavaScriptLibrary
+            int JavaScriptLibraryID = this.libraryIdCounter++;
+            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
             {
                 JavaScriptLibraryID = JavaScriptLibraryID,
                 LibraryName = "Test",
@@ -149,8 +149,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         public void FailToRegisterLibraryByNameAndMismatchedVersion()
         {
             //Arrange
-            int JavaScriptLibraryID = libraryIdCounter++;
-            SetupJavaScriptLibraryController(new JavaScriptLibrary
+            int JavaScriptLibraryID = this.libraryIdCounter++;
+            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
             {
                 JavaScriptLibraryID = JavaScriptLibraryID,
                 LibraryName = "Test",
@@ -168,8 +168,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         public void FailToRegisterLibraryByNameAndMismatchedExactVersion()
         {
             //Arrange
-            int JavaScriptLibraryID = libraryIdCounter++;
-            SetupJavaScriptLibraryController(new JavaScriptLibrary
+            int JavaScriptLibraryID = this.libraryIdCounter++;
+            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
             {
                 JavaScriptLibraryID = JavaScriptLibraryID,
                 LibraryName = "Test",
@@ -187,8 +187,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         public void CanRegisterLibraryByNameAndSameMinorVersion()
         {
             //Arrange
-            int JavaScriptLibraryID = libraryIdCounter++;
-            SetupJavaScriptLibraryController(new JavaScriptLibrary
+            int JavaScriptLibraryID = this.libraryIdCounter++;
+            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
             {
                 JavaScriptLibraryID = JavaScriptLibraryID,
                 LibraryName = "Test",
@@ -206,8 +206,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         public void CanRegisterLibraryByNameWithMismatchedCaseAndSameMinorVersion()
         {
             //Arrange
-            int JavaScriptLibraryID = libraryIdCounter++;
-            SetupJavaScriptLibraryController(new JavaScriptLibrary
+            int JavaScriptLibraryID = this.libraryIdCounter++;
+            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
             {
                 JavaScriptLibraryID = JavaScriptLibraryID,
                 LibraryName = "Test",
@@ -225,9 +225,9 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         public void FallbackToHighestVersionLibraryWhenDifferentMinorVersion()
         {
             //Arrange
-            int lowerVersionJavaScriptLibraryId = libraryIdCounter++;
-            int higherVersionJavaScriptLibraryId = libraryIdCounter++;
-            SetupJavaScriptLibraryController(new JavaScriptLibrary
+            int lowerVersionJavaScriptLibraryId = this.libraryIdCounter++;
+            int higherVersionJavaScriptLibraryId = this.libraryIdCounter++;
+            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
             {
                 JavaScriptLibraryID = lowerVersionJavaScriptLibraryId,
                 LibraryName = "Test",
@@ -251,9 +251,9 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         public void FallbackToHighestVersionLibraryWhenDifferentMinorVersionWithMismatchedCase()
         {
             //Arrange
-            int lowerVersionJavaScriptLibraryId = libraryIdCounter++;
-            int higherVersionJavaScriptLibraryId = libraryIdCounter++;
-            SetupJavaScriptLibraryController(new JavaScriptLibrary
+            int lowerVersionJavaScriptLibraryId = this.libraryIdCounter++;
+            int higherVersionJavaScriptLibraryId = this.libraryIdCounter++;
+            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
             {
                 JavaScriptLibraryID = lowerVersionJavaScriptLibraryId,
                 LibraryName = "test",
@@ -277,8 +277,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         public void CanRegisterLibraryByNameAndSameMajorVersion()
         {
             //Arrange
-            int JavaScriptLibraryID = libraryIdCounter++;
-            SetupJavaScriptLibraryController(new JavaScriptLibrary
+            int JavaScriptLibraryID = this.libraryIdCounter++;
+            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
             {
                 JavaScriptLibraryID = JavaScriptLibraryID,
                 LibraryName = "Test",
@@ -296,8 +296,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         public void CanRegisterLibraryByNameWithMismatchedCaseAndSameMajorVersion()
         {
             //Arrange
-            int JavaScriptLibraryID = libraryIdCounter++;
-            SetupJavaScriptLibraryController(new JavaScriptLibrary
+            int JavaScriptLibraryID = this.libraryIdCounter++;
+            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
             {
                 JavaScriptLibraryID = JavaScriptLibraryID,
                 LibraryName = "Test",
@@ -315,9 +315,9 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         public void FallbackToHighestVersionLibraryWhenDifferentMajorVersion()
         {
             //Arrange
-            int lowerVersionJavaScriptLibraryId = libraryIdCounter++;
-            int higherVersionJavaScriptLibraryId = libraryIdCounter++;
-            SetupJavaScriptLibraryController(new JavaScriptLibrary
+            int lowerVersionJavaScriptLibraryId = this.libraryIdCounter++;
+            int higherVersionJavaScriptLibraryId = this.libraryIdCounter++;
+            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
             {
                 JavaScriptLibraryID = lowerVersionJavaScriptLibraryId,
                 LibraryName = "Test",
@@ -341,9 +341,9 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         public void FallbackToHighestVersionLibraryWhenDifferentMajorVersionWithMismatchedCase()
         {
             //Arrange
-            int lowerVersionJavaScriptLibraryId = libraryIdCounter++;
-            int higherVersionJavaScriptLibraryId = libraryIdCounter++;
-            SetupJavaScriptLibraryController(new JavaScriptLibrary
+            int lowerVersionJavaScriptLibraryId = this.libraryIdCounter++;
+            int higherVersionJavaScriptLibraryId = this.libraryIdCounter++;
+            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
             {
                 JavaScriptLibraryID = lowerVersionJavaScriptLibraryId,
                 LibraryName = "test",

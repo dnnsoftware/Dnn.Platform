@@ -32,7 +32,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public DnnFormToggleButtonItem()
         {
-            Mode = CheckBoxMode.TrueFalse;
+            this.Mode = CheckBoxMode.TrueFalse;
         }
 
         public CheckBoxMode Mode { get; set; }
@@ -40,56 +40,56 @@ namespace DotNetNuke.Web.UI.WebControls
         private void CheckedChanged(object sender, EventArgs e)
         {
             string newValue;
-            switch (Mode)
+            switch (this.Mode)
             {
                 case CheckBoxMode.YN:
-                    newValue = (_checkBox.Checked) ? "Y" : "N";
+                    newValue = (this._checkBox.Checked) ? "Y" : "N";
                     break;
                 case CheckBoxMode.YesNo:
-                    newValue = (_checkBox.Checked) ? "Yes" : "No";
+                    newValue = (this._checkBox.Checked) ? "Yes" : "No";
                     break;
                 default:
-                    newValue = (_checkBox.Checked) ? "true" : "false";
+                    newValue = (this._checkBox.Checked) ? "true" : "false";
                     break;
             }
-            UpdateDataSource(Value, newValue, DataField);
+            this.UpdateDataSource(this.Value, newValue, this.DataField);
         }
 
         protected override WebControl CreateControlInternal(Control container)
         {
             //_checkBox = new DnnRadButton {ID = ID + "_CheckBox", ButtonType = RadButtonType.ToggleButton, ToggleType = ButtonToggleType.CheckBox, AutoPostBack = false};
-            _checkBox = new CheckBox{ ID = ID + "_CheckBox", AutoPostBack = false };
+            this._checkBox = new CheckBox{ ID = this.ID + "_CheckBox", AutoPostBack = false };
 
-            _checkBox.CheckedChanged += CheckedChanged;
-            container.Controls.Add(_checkBox);
+            this._checkBox.CheckedChanged += this.CheckedChanged;
+            container.Controls.Add(this._checkBox);
 
             //Load from ControlState
-            if (!_checkBox.Page.IsPostBack)
+            if (!this._checkBox.Page.IsPostBack)
             {
             }
-            switch (Mode)
+            switch (this.Mode)
             {
                 case CheckBoxMode.YN:
                 case CheckBoxMode.YesNo:
-                    var stringValue = Value as string;
+                    var stringValue = this.Value as string;
                     if (stringValue != null)
                     {
-                        _checkBox.Checked = stringValue.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase);
+                        this._checkBox.Checked = stringValue.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase);
                     }
                     break;
                 default:
-                    _checkBox.Checked = Convert.ToBoolean(Value);
+                    this._checkBox.Checked = Convert.ToBoolean(this.Value);
                     break;
             }
 
-            return _checkBox;
+            return this._checkBox;
         }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            FormMode = DnnFormMode.Short;
+            this.FormMode = DnnFormMode.Short;
         }
     }
 }

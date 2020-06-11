@@ -24,23 +24,23 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnInit(e);
 
-            SelectItemDefaultText = Localization.GetString("DropDownList.SelectFileDefaultText", Localization.SharedResourceFile);
-            Services.GetTreeMethod = "ItemListService/GetFiles";
-            Services.SearchTreeMethod = "ItemListService/SearchFiles";
-            Services.SortTreeMethod = "ItemListService/SortFiles";
-            Services.ServiceRoot = "InternalServices";
-            Options.ItemList.DisableUnspecifiedOrder = true;
+            this.SelectItemDefaultText = Localization.GetString("DropDownList.SelectFileDefaultText", Localization.SharedResourceFile);
+            this.Services.GetTreeMethod = "ItemListService/GetFiles";
+            this.Services.SearchTreeMethod = "ItemListService/SearchFiles";
+            this.Services.SortTreeMethod = "ItemListService/SortFiles";
+            this.Services.ServiceRoot = "InternalServices";
+            this.Options.ItemList.DisableUnspecifiedOrder = true;
 
-            FolderId = Null.NullInteger;
+            this.FolderId = Null.NullInteger;
         }
 
         protected override void OnPreRender(EventArgs e)
         {
             this.AddCssClass("file");
 
-            if (IncludeNoneSpecificItem)
+            if (this.IncludeNoneSpecificItem)
             {
-                UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, Null.NullInteger.ToString(CultureInfo.InvariantCulture));
+                this.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, Null.NullInteger.ToString(CultureInfo.InvariantCulture));
             }
 
             base.OnPreRender(e);
@@ -54,12 +54,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                var fileId = SelectedItemValueAsInt;
+                var fileId = this.SelectedItemValueAsInt;
                 return (fileId == Null.NullInteger) ? null : FileManager.Instance.GetFile(fileId);
             }
             set
             {
-                SelectedItem = (value != null) ? new ListItem() { Text = value.FileName, Value = value.FileId.ToString(CultureInfo.InvariantCulture) } : null;
+                this.SelectedItem = (value != null) ? new ListItem() { Text = value.FileName, Value = value.FileId.ToString(CultureInfo.InvariantCulture) } : null;
             }
         }
 
@@ -67,18 +67,18 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return Services.Parameters.ContainsKey("parentId") ? Convert.ToInt32(Services.Parameters["parentId"]) : Null.NullInteger;
+                return this.Services.Parameters.ContainsKey("parentId") ? Convert.ToInt32(this.Services.Parameters["parentId"]) : Null.NullInteger;
             }
             set
             {
-                Services.Parameters["parentId"] = value.ToString();
+                this.Services.Parameters["parentId"] = value.ToString();
             }
         }
 
         public string Filter
         {
-            get { return Services.Parameters.ContainsKey("filter") ? Services.Parameters["filter"] : string.Empty; }
-            set { Services.Parameters["filter"] = value; }
+            get { return this.Services.Parameters.ContainsKey("filter") ? this.Services.Parameters["filter"] : string.Empty; }
+            set { this.Services.Parameters["filter"] = value; }
         }
 
         public bool IncludeNoneSpecificItem { get; set; }

@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.ModuleCache
             using (var sha256 = new SHA256CryptoServiceProvider())
             {
                 hash = sha256.ComputeHash(hash);
-                return tabModuleId + "_" + ByteArrayToString(hash);
+                return tabModuleId + "_" + this.ByteArrayToString(hash);
             }
         }
 
@@ -178,7 +178,7 @@ namespace DotNetNuke.Services.ModuleCache
                     cacheKey.Append(string.Concat(key, "=", varyByParms.Current.Value, "|"));
                 }
             }
-            return GenerateCacheKeyHash(tabModuleId, cacheKey.ToString());
+            return this.GenerateCacheKeyHash(tabModuleId, cacheKey.ToString());
         }
 
         public override int GetItemCount(int tabModuleId)
@@ -204,7 +204,7 @@ namespace DotNetNuke.Services.ModuleCache
 
         public override void PurgeCache(int portalId)
         {
-            PurgeCache(GetCacheFolder(portalId));
+            this.PurgeCache(GetCacheFolder(portalId));
         }
 
         public override void PurgeExpiredItems(int portalId)
@@ -218,7 +218,7 @@ namespace DotNetNuke.Services.ModuleCache
                 {
                     foreach (string File in Directory.GetFiles(cacheFolder, String.Format("*{0}", AttribFileExtension)))
                     {
-                        if (IsFileExpired(File))
+                        if (this.IsFileExpired(File))
                         {
                             string fileToDelete = File.Replace(AttribFileExtension, DataFileExtension);
                             if (!FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200))

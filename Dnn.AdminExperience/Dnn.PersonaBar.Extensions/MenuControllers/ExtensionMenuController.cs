@@ -18,7 +18,7 @@ namespace Dnn.PersonaBar.Extensions.MenuControllers
         protected INavigationManager NavigationManager { get; }
         public ExtensionMenuController()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public void UpdateParameters(MenuItem menuItem)
@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.Extensions.MenuControllers
         {
             var settings = new Dictionary<string, object>();
             settings.Add("portalId", PortalSettings.Current.PortalId);
-            settings.Add("installUrl", NavigationManager.NavigateURL(PortalSettings.Current.ActiveTab.TabID, PortalSettings.Current, "Install", "popUp=true"));
+            settings.Add("installUrl", this.NavigationManager.NavigateURL(PortalSettings.Current.ActiveTab.TabID, PortalSettings.Current, "Install", "popUp=true"));
             return settings;
         }
     }

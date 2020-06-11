@@ -44,13 +44,13 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                EnsureChildControls();
-                return _ButtonList.CommandName;
+                this.EnsureChildControls();
+                return this._ButtonList.CommandName;
             }
             set
             {
-                EnsureChildControls();
-                _ButtonList.CommandName = value;
+                this.EnsureChildControls();
+                this._ButtonList.CommandName = value;
             }
         }
 
@@ -67,13 +67,13 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                EnsureChildControls();
-                return _ButtonList.CssClass;
+                this.EnsureChildControls();
+                return this._ButtonList.CssClass;
             }
             set
             {
-                EnsureChildControls();
-                _ButtonList.CssClass = value;
+                this.EnsureChildControls();
+                this._ButtonList.CssClass = value;
             }
         }
 
@@ -90,13 +90,13 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                EnsureChildControls();
-                return _ButtonList.DisplayLink;
+                this.EnsureChildControls();
+                return this._ButtonList.DisplayLink;
             }
             set
             {
-                EnsureChildControls();
-                _ButtonList.DisplayLink = value;
+                this.EnsureChildControls();
+                this._ButtonList.DisplayLink = value;
             }
         }
 
@@ -113,13 +113,13 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                EnsureChildControls();
-                return _ButtonList.DisplayIcon;
+                this.EnsureChildControls();
+                return this._ButtonList.DisplayIcon;
             }
             set
             {
-                EnsureChildControls();
-                _ButtonList.DisplayIcon = value;
+                this.EnsureChildControls();
+                this._ButtonList.DisplayIcon = value;
             }
         }
 
@@ -136,13 +136,13 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                EnsureChildControls();
-                return _ButtonList.ImageURL;
+                this.EnsureChildControls();
+                return this._ButtonList.ImageURL;
             }
             set
             {
-                EnsureChildControls();
-                _ButtonList.ImageURL = value;
+                this.EnsureChildControls();
+                this._ButtonList.ImageURL = value;
             }
         }
 
@@ -159,13 +159,13 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                EnsureChildControls();
-                return _ButtonList.ButtonSeparator;
+                this.EnsureChildControls();
+                return this._ButtonList.ButtonSeparator;
             }
             set
             {
-                EnsureChildControls();
-                _ButtonList.ButtonSeparator = value;
+                this.EnsureChildControls();
+                this._ButtonList.ButtonSeparator = value;
             }
         }
 
@@ -180,7 +180,7 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         private void Action_Click(object sender, ActionEventArgs e)
         {
-            ProcessAction(e.Action.ID.ToString());
+            this.ProcessAction(e.Action.ID.ToString());
         }
 
         #endregion
@@ -196,10 +196,10 @@ namespace DotNetNuke.UI.Containers
         {
             base.CreateChildControls();
 
-            _ButtonList = new ActionButtonList();
-            _ButtonList.Action += Action_Click;
+            this._ButtonList = new ActionButtonList();
+            this._ButtonList.Action += this.Action_Click;
 
-            Controls.Add(_ButtonList);
+            this.Controls.Add(this._ButtonList);
         }
 
         #endregion

@@ -24,19 +24,19 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             
-            UserId = GetFlagValue(FlagId, "User Id", -1, true, true, true);
+            this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
         }
 
         public override ConsoleResultModel Run()
         {
-            var userInfo = UserController.Instance.GetUser(PortalId, UserId);
+            var userInfo = UserController.Instance.GetUser(this.PortalId, this.UserId);
             if (userInfo == null)
-                return new ConsoleErrorResultModel(string.Format(LocalizeString("UserNotFound"), UserId));
+                return new ConsoleErrorResultModel(string.Format(this.LocalizeString("UserNotFound"), this.UserId));
             if (!userInfo.IsDeleted)
-                return new ConsoleErrorResultModel(LocalizeString("Prompt_CannotPurgeUser"));
+                return new ConsoleErrorResultModel(this.LocalizeString("Prompt_CannotPurgeUser"));
 
             RecyclebinController.Instance.DeleteUsers(new List<UserInfo> { userInfo });
-            return new ConsoleResultModel(LocalizeString("Prompt_UserPurged")) { Records = 1 };
+            return new ConsoleResultModel(this.LocalizeString("Prompt_UserPurged")) { Records = 1 };
         }
     }
 }

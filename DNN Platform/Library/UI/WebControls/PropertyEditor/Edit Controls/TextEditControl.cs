@@ -45,7 +45,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public TextEditControl(string type)
         {
-            SystemType = type;
+            this.SystemType = type;
         }
 
         /// -----------------------------------------------------------------------------
@@ -58,7 +58,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return Convert.ToString(OldValue);
+                return Convert.ToString(this.OldValue);
             }
         }
 
@@ -73,15 +73,15 @@ namespace DotNetNuke.UI.WebControls
             get
             {
                 string strValue = Null.NullString;
-                if (Value != null)
+                if (this.Value != null)
                 {
-                    strValue = Convert.ToString(Value);
+                    strValue = Convert.ToString(this.Value);
                 }
                 return strValue;
             }
             set
             {
-                Value = value;
+                this.Value = value;
             }
         }
 
@@ -93,10 +93,10 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
-            var args = new PropertyEditorEventArgs(Name);
-            args.Value = StringValue;
-            args.OldValue = OldStringValue;
-            args.StringValue = StringValue;
+            var args = new PropertyEditorEventArgs(this.Name);
+            args.Value = this.StringValue;
+            args.OldValue = this.OldStringValue;
+            args.StringValue = this.StringValue;
             base.OnValueChanged(args);
         }
 
@@ -109,9 +109,9 @@ namespace DotNetNuke.UI.WebControls
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             int length = Null.NullInteger;
-            if ((CustomAttributes != null))
+            if ((this.CustomAttributes != null))
             {
-                foreach (Attribute attribute in CustomAttributes)
+                foreach (Attribute attribute in this.CustomAttributes)
                 {
                     if (attribute is MaxLengthAttribute)
                     {
@@ -121,15 +121,15 @@ namespace DotNetNuke.UI.WebControls
                     }
                 }
             }
-            ControlStyle.AddAttributesToRender(writer);
+            this.ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
-            writer.AddAttribute(HtmlTextWriterAttribute.Value, StringValue);
+            writer.AddAttribute(HtmlTextWriterAttribute.Value, this.StringValue);
             if (length > Null.NullInteger)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString());
             }
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
-            writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();
         }

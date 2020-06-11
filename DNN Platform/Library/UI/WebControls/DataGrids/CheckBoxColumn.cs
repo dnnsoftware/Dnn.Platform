@@ -54,7 +54,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public CheckBoxColumn(bool autoPostBack)
         {
-            AutoPostBack = autoPostBack;
+            this.AutoPostBack = autoPostBack;
         }
 		
 		#endregion
@@ -73,11 +73,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mAutoPostBack;
+                return this.mAutoPostBack;
             }
             set
             {
-                mAutoPostBack = value;
+                this.mAutoPostBack = value;
             }
         }
 
@@ -100,11 +100,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mDataField;
+                return this.mDataField;
             }
             set
             {
-                mDataField = value;
+                this.mDataField = value;
             }
         }
 
@@ -120,11 +120,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mEnabled;
+                return this.mEnabled;
             }
             set
             {
-                mEnabled = value;
+                this.mEnabled = value;
             }
         }
 
@@ -139,11 +139,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mEnabledField;
+                return this.mEnabledField;
             }
             set
             {
-                mEnabledField = value;
+                this.mEnabledField = value;
             }
         }
 
@@ -158,11 +158,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mHeaderCheckBox;
+                return this.mHeaderCheckBox;
             }
             set
             {
-                mHeaderCheckBox = value;
+                this.mHeaderCheckBox = value;
             }
         }
 		
@@ -192,18 +192,18 @@ namespace DotNetNuke.UI.WebControls
             var template = new CheckBoxColumnTemplate(type);
             if (type != ListItemType.Header)
             {
-                template.AutoPostBack = AutoPostBack;
+                template.AutoPostBack = this.AutoPostBack;
             }
-            template.Checked = Checked;
-            template.DataField = DataField;
-            template.Enabled = Enabled;
-            template.EnabledField = EnabledField;
-            template.CheckedChanged += OnCheckedChanged;
+            template.Checked = this.Checked;
+            template.DataField = this.DataField;
+            template.Enabled = this.Enabled;
+            template.EnabledField = this.EnabledField;
+            template.CheckedChanged += this.OnCheckedChanged;
             if (type == ListItemType.Header)
             {
-                template.Text = HeaderText;
+                template.Text = this.HeaderText;
                 template.AutoPostBack = true;
-                template.HeaderCheckBox = HeaderCheckBox;
+                template.HeaderCheckBox = this.HeaderCheckBox;
             }
             template.DesignMode = isDesignMode;
             return template;
@@ -218,9 +218,9 @@ namespace DotNetNuke.UI.WebControls
         {
             //Add the column to the Event Args
             e.Column = this;
-            if (CheckedChanged != null)
+            if (this.CheckedChanged != null)
             {
-                CheckedChanged(sender, e);
+                this.CheckedChanged(sender, e);
             }
         }
 		
@@ -235,17 +235,17 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public override void Initialize()
         {
-            ItemTemplate = CreateTemplate(ListItemType.Item);
-            EditItemTemplate = CreateTemplate(ListItemType.EditItem);
-            HeaderTemplate = CreateTemplate(ListItemType.Header);
+            this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
+            this.EditItemTemplate = this.CreateTemplate(ListItemType.EditItem);
+            this.HeaderTemplate = this.CreateTemplate(ListItemType.Header);
             if (HttpContext.Current == null)
             {
-                HeaderStyle.Font.Names = new[] {"Tahoma, Verdana, Arial"};
-                HeaderStyle.Font.Size = new FontUnit("10pt");
-                HeaderStyle.Font.Bold = true;
+                this.HeaderStyle.Font.Names = new[] {"Tahoma, Verdana, Arial"};
+                this.HeaderStyle.Font.Size = new FontUnit("10pt");
+                this.HeaderStyle.Font.Bold = true;
             }
-            ItemStyle.HorizontalAlign = HorizontalAlign.Center;
-            HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
+            this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
         }
 		
 		#endregion

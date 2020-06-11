@@ -29,29 +29,29 @@ namespace DotNetNuke.Web.DDRMenu
 			{
 				base.OnPreRender(e);
 
-				MenuSettings.MenuStyle = MenuSettings.MenuStyle ?? "DNNMenu";
-				menu = MenuBase.Instantiate(MenuSettings.MenuStyle);
-				menu.RootNode = RootNode ?? new MenuNode();
-				menu.SkipLocalisation = SkipLocalisation;
-				menu.ApplySettings(MenuSettings);
+				this.MenuSettings.MenuStyle = this.MenuSettings.MenuStyle ?? "DNNMenu";
+				this.menu = MenuBase.Instantiate(this.MenuSettings.MenuStyle);
+				this.menu.RootNode = this.RootNode ?? new MenuNode();
+				this.menu.SkipLocalisation = this.SkipLocalisation;
+				this.menu.ApplySettings(this.MenuSettings);
 
-				menu.PreRender();
+				this.menu.PreRender();
 			}
 		}
 
 		protected override void Render(HtmlTextWriter htmlWriter)
 		{
 			using (new DNNContext(this))
-				menu.Render(htmlWriter);
+				this.menu.Render(htmlWriter);
 		}
 
 		public void RaisePostBackEvent(string eventArgument)
 		{
 			using (new DNNContext(this))
 			{
-				if (NodeClick != null)
+				if (this.NodeClick != null)
 				{
-					NodeClick(eventArgument);
+					this.NodeClick(eventArgument);
 				}
 			}
 		}

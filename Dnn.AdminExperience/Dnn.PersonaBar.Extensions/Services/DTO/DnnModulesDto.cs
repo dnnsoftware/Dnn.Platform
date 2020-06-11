@@ -17,16 +17,16 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         public DnnModulesDto(IEnumerable<string> locales)
         {
-            Modules = new List<DnnModuleDto>(); // one module for each language
+            this.Modules = new List<DnnModuleDto>(); // one module for each language
             foreach (var locale in locales)
             {
-                Modules.Add(new DnnModuleDto {CultureCode = locale});
+                this.Modules.Add(new DnnModuleDto {CultureCode = locale});
             }
         }
 
         public DnnModuleDto Module(string locale)
         {
-            return Modules.Single(mo => mo.CultureCode == locale);
+            return this.Modules.Single(mo => mo.CultureCode == locale);
         }
     }
 }

@@ -54,7 +54,7 @@ namespace log4net.DateFormatter
 		/// </remarks>
 		public DateTimeDateFormatter()
 		{
-			m_dateTimeFormatInfo = DateTimeFormatInfo.InvariantInfo;
+			this.m_dateTimeFormatInfo = DateTimeFormatInfo.InvariantInfo;
 		}
 
 		#endregion Public Instance Constructors
@@ -86,7 +86,7 @@ namespace log4net.DateFormatter
 			buffer.Append(day);
 			buffer.Append(' ');		
 
-			buffer.Append(m_dateTimeFormatInfo.GetAbbreviatedMonthName(dateToFormat.Month));
+			buffer.Append(this.m_dateTimeFormatInfo.GetAbbreviatedMonthName(dateToFormat.Month));
 			buffer.Append(' ');	
 
 			buffer.Append(dateToFormat.Year);

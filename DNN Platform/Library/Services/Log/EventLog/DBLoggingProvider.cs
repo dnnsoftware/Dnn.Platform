@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         private LogTypeConfigInfo GetLogTypeConfigInfoByKey(string logTypeKey, string logTypePortalID)
         {
-            var configInfoByKey = (Hashtable)DataCache.GetCache(LogTypeInfoByKeyCacheKey) ?? FillLogTypeConfigInfoByKey(GetLogTypeConfigInfo());
+            var configInfoByKey = (Hashtable)DataCache.GetCache(LogTypeInfoByKeyCacheKey) ?? FillLogTypeConfigInfoByKey(this.GetLogTypeConfigInfo());
             var logTypeConfigInfo = (LogTypeConfigInfo) configInfoByKey[logTypeKey + "|" + logTypePortalID];
             if (logTypeConfigInfo == null)
             {
@@ -239,7 +239,7 @@ namespace DotNetNuke.Services.Log.EventLog
             string configPortalID = logInfo.LogPortalID != Null.NullInteger 
                                         ? logInfo.LogPortalID.ToString() 
                                         : "*";
-            var logTypeConfigInfo = GetLogTypeConfigInfoByKey(logInfo.LogTypeKey, configPortalID);
+            var logTypeConfigInfo = this.GetLogTypeConfigInfoByKey(logInfo.LogTypeKey, configPortalID);
             if (logTypeConfigInfo == null || logTypeConfigInfo.LoggingIsActive == false)
             {
                 return;
@@ -406,7 +406,7 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 configPortalID = "*";
             }
-            LogTypeConfigInfo configInfo = GetLogTypeConfigInfoByKey(logType, configPortalID);
+            LogTypeConfigInfo configInfo = this.GetLogTypeConfigInfoByKey(logType, configPortalID);
             if (configInfo == null)
             {
                 return false;

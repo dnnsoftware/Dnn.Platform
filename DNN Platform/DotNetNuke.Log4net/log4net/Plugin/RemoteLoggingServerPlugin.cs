@@ -82,7 +82,7 @@ namespace log4net.Plugin
 		/// </remarks>
 		public RemoteLoggingServerPlugin(string sinkUri) : base("RemoteLoggingServerPlugin:"+sinkUri)
 		{
-			m_sinkUri = sinkUri;
+			this.m_sinkUri = sinkUri;
 		}
 
 		#endregion Public Instance Constructors
@@ -103,8 +103,8 @@ namespace log4net.Plugin
 		/// </remarks>
 		public virtual string SinkUri 
 		{ 
-			get { return m_sinkUri; }
-			set { m_sinkUri = value; }
+			get { return this.m_sinkUri; }
+			set { this.m_sinkUri = value; }
 		}
 
 		#endregion Public Instance Properties
@@ -131,11 +131,11 @@ namespace log4net.Plugin
 			base.Attach(repository);
 
 			// Create the sink and marshal it
-			m_sink = new RemoteLoggingSinkImpl(repository); 
+			this.m_sink = new RemoteLoggingSinkImpl(repository); 
 
 			try
 			{
-				RemotingServices.Marshal(m_sink, m_sinkUri, typeof(IRemoteLoggingSink));		
+				RemotingServices.Marshal(this.m_sink, this.m_sinkUri, typeof(IRemoteLoggingSink));		
 			}
 			catch(Exception ex)
 			{
@@ -158,8 +158,8 @@ namespace log4net.Plugin
         override public void Shutdown()
 		{
 			// Stops the sink from receiving messages
-			RemotingServices.Disconnect(m_sink);
-			m_sink = null;
+			RemotingServices.Disconnect(this.m_sink);
+			this.m_sink = null;
 
 			base.Shutdown();
 		}
@@ -211,7 +211,7 @@ namespace log4net.Plugin
 			/// </remarks>
 			public RemoteLoggingSinkImpl(ILoggerRepository repository)
 			{
-				m_repository = repository;
+				this.m_repository = repository;
 			}
 
 			#endregion Public Instance Constructors
@@ -235,7 +235,7 @@ namespace log4net.Plugin
 					{
 						if (logEvent != null)
 						{
-							m_repository.Log(logEvent);
+							this.m_repository.Log(logEvent);
 						}
 					}
 				}

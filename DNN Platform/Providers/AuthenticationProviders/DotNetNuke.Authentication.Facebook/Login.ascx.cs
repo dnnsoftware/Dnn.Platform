@@ -30,27 +30,27 @@ namespace DotNetNuke.Authentication.Facebook
 
         protected override UserData GetCurrentUser()
         {
-            return OAuthClient.GetCurrentUser<FacebookUserData>();
+            return this.OAuthClient.GetCurrentUser<FacebookUserData>();
         }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            loginButton.Click += loginButton_Click;
-            registerButton.Click += loginButton_Click;
+            this.loginButton.Click += this.loginButton_Click;
+            this.registerButton.Click += this.loginButton_Click;
 
-            OAuthClient = new FacebookClient(PortalId, Mode);
+            this.OAuthClient = new FacebookClient(this.PortalId, this.Mode);
 
-            loginItem.Visible = (Mode == AuthMode.Login);
-            registerItem.Visible = (Mode == AuthMode.Register);
+            this.loginItem.Visible = (this.Mode == AuthMode.Login);
+            this.registerItem.Visible = (this.Mode == AuthMode.Register);
         }
 
         protected override void AddCustomProperties(NameValueCollection properties)
         {
             base.AddCustomProperties(properties);
 
-            var facebookUserData = OAuthClient.GetCurrentUser<FacebookUserData>();
+            var facebookUserData = this.OAuthClient.GetCurrentUser<FacebookUserData>();
             if (facebookUserData.Link != null) {
                 properties.Add("Facebook", facebookUserData.Link.ToString());
             }
@@ -58,7 +58,7 @@ namespace DotNetNuke.Authentication.Facebook
 
         private void loginButton_Click(object sender, EventArgs e)
         {
-            AuthorisationResult result = OAuthClient.Authorize();
+            AuthorisationResult result = this.OAuthClient.Authorize();
             if (result == AuthorisationResult.Denied)
             {
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);

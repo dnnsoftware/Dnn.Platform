@@ -11,15 +11,15 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
         public string Data;
         public ResponseModel(bool err, string msg)
         {
-            IsError = err;
-            Message = msg;
-            Data = "";
+            this.IsError = err;
+            this.Message = msg;
+            this.Data = "";
         }
         public ResponseModel(bool err, string msg, string data)
         {
-            IsError = err;
-            Message = msg;
-            Data = data;
+            this.IsError = err;
+            this.Message = msg;
+            this.Data = data;
         }
     }
 }

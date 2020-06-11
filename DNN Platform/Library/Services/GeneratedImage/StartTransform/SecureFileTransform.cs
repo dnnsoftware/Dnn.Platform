@@ -32,15 +32,15 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// <summary>
         /// Provides an Unique String for the image transformation
         /// </summary>
-        public override string UniqueString => base.UniqueString + SecureFile.FileId;
+        public override string UniqueString => base.UniqueString + this.SecureFile.FileId;
 	    #endregion 
        
         public SecureFileTransform()
 		{
-            InterpolationMode = InterpolationMode.HighQualityBicubic;
-            SmoothingMode = SmoothingMode.HighQuality;
-            PixelOffsetMode = PixelOffsetMode.HighQuality;
-            CompositingQuality = CompositingQuality.HighQuality;
+            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            this.SmoothingMode = SmoothingMode.HighQuality;
+            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            this.CompositingQuality = CompositingQuality.HighQuality;
 		}
 
         /// <summary>
@@ -54,14 +54,14 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         public override Image ProcessImage(Image image)
         {
             // if SecureFile is no ImageFile return FileType-Image instead
-            if (!IsImageExtension(SecureFile.Extension))
+            if (!IsImageExtension(this.SecureFile.Extension))
             {
-                return GetSecureFileExtensionIconImage();
+                return this.GetSecureFileExtensionIconImage();
             }
 
-            using (var content = FileManager.Instance.GetFileContent(SecureFile))
+            using (var content = FileManager.Instance.GetFileContent(this.SecureFile))
             {
-                return CopyImage(content);
+                return this.CopyImage(content);
             }
 		}
 
@@ -69,16 +69,16 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         {
             var extensionImageAbsolutePath = Globals.ApplicationMapPath + "\\" +
                        PortalSettings.Current.DefaultIconLocation.Replace("/", "\\") + "\\" +
-                       "Ext" + SecureFile.Extension + "_32x32_Standard.png";
+                       "Ext" + this.SecureFile.Extension + "_32x32_Standard.png";
 
             if (!File.Exists(extensionImageAbsolutePath))
             {
-                return EmptyImage;
+                return this.EmptyImage;
             }
 
             using (var stream = new FileStream(extensionImageAbsolutePath, FileMode.Open))
             {
-                return CopyImage(stream);
+                return this.CopyImage(stream);
             }
         }
 

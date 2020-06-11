@@ -58,7 +58,7 @@ namespace log4net.Util
 		/// </remarks>
 		public PatternParser(string pattern) 
 		{
-			m_pattern = pattern;
+			this.m_pattern = pattern;
 		}
 
 		#endregion Public Instance Constructors
@@ -76,11 +76,11 @@ namespace log4net.Util
 		/// </remarks>
 		public PatternConverter Parse()
 		{
-			string[] converterNamesCache = BuildCache();
+			string[] converterNamesCache = this.BuildCache();
 
-			ParseInternal(m_pattern, converterNamesCache);
+			this.ParseInternal(this.m_pattern, converterNamesCache);
 
-			return m_head;
+			return this.m_head;
 		}
 
 		#endregion Public Instance Methods
@@ -100,7 +100,7 @@ namespace log4net.Util
 		/// </remarks>
 		public Hashtable PatternConverters
 		{
-			get { return m_patternConverters; }
+			get { return this.m_patternConverters; }
 		}
 
 		#endregion Public Instance Properties
@@ -118,8 +118,8 @@ namespace log4net.Util
 		/// </remarks>
 		private string[] BuildCache()
 		{
-			string[] converterNamesCache = new string[m_patternConverters.Keys.Count];
-			m_patternConverters.Keys.CopyTo(converterNamesCache, 0);
+			string[] converterNamesCache = new string[this.m_patternConverters.Keys.Count];
+			this.m_patternConverters.Keys.CopyTo(converterNamesCache, 0);
 
 			// sort array so that longer strings come first
 			Array.Sort(converterNamesCache, 0, converterNamesCache.Length, StringLengthComparer.Instance);
@@ -192,7 +192,7 @@ namespace log4net.Util
 				int i = pattern.IndexOf('%', offset);
 				if (i < 0 || i == pattern.Length - 1)
 				{
-					ProcessLiteral(pattern.Substring(offset));
+					this.ProcessLiteral(pattern.Substring(offset));
 					offset = pattern.Length;
 				}
 				else
@@ -200,12 +200,12 @@ namespace log4net.Util
 					if (pattern[i+1] == '%')
 					{
 						// Escaped
-						ProcessLiteral(pattern.Substring(offset, i - offset + 1));
+						this.ProcessLiteral(pattern.Substring(offset, i - offset + 1));
 						offset = i + 2;
 					}
 					else
 					{
-						ProcessLiteral(pattern.Substring(offset, i - offset));
+						this.ProcessLiteral(pattern.Substring(offset, i - offset));
 						offset = i + 1;
 
 						FormattingInfo formattingInfo = new FormattingInfo();
@@ -295,7 +295,7 @@ namespace log4net.Util
 										}
 									}
 
-									ProcessConverter(matches[m], option, formattingInfo);
+									this.ProcessConverter(matches[m], option, formattingInfo);
 									break;
 								}
 							}
@@ -314,7 +314,7 @@ namespace log4net.Util
 			if (text.Length > 0)
 			{
 				// Convert into a pattern
-				ProcessConverter("literal", text, new FormattingInfo());
+				this.ProcessConverter("literal", text, new FormattingInfo());
 			}
 		}
 
@@ -329,7 +329,7 @@ namespace log4net.Util
 			LogLog.Debug(declaringType, "Converter ["+converterName+"] Option ["+option+"] Format [min="+formattingInfo.Min+",max="+formattingInfo.Max+",leftAlign="+formattingInfo.LeftAlign+"]");
 
 			// Lookup the converter type
-            ConverterInfo converterInfo = (ConverterInfo)m_patternConverters[converterName];
+            ConverterInfo converterInfo = (ConverterInfo)this.m_patternConverters[converterName];
 			if (converterInfo == null)
 			{
 				LogLog.Error(declaringType, "Unknown converter name ["+converterName+"] in conversion pattern.");
@@ -359,7 +359,7 @@ namespace log4net.Util
 					optionHandler.ActivateOptions();
 				}
 
-				AddConverter(pc);
+				this.AddConverter(pc);
 			}
 		}
 
@@ -372,9 +372,9 @@ namespace log4net.Util
 		{
 			// Add the pattern converter to the list.
 
-			if (m_head == null) 
+			if (this.m_head == null) 
 			{
-				m_head = m_tail = pc;
+				this.m_head = this.m_tail = pc;
 			}
 			else 
 			{
@@ -382,7 +382,7 @@ namespace log4net.Util
 				// Update the tail reference
 				// note that a converter may combine the 'next' into itself
 				// and therefore the tail would not change!
-				m_tail = m_tail.SetNext(pc);
+				this.m_tail = this.m_tail.SetNext(pc);
 			}
 		}
 

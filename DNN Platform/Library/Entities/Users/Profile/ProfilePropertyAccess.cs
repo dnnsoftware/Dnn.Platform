@@ -78,25 +78,25 @@ namespace DotNetNuke.Entities.Users
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
-            if (currentScope >= Scope.DefaultSettings && user != null && user.Profile != null)
+            if (currentScope >= Scope.DefaultSettings && this.user != null && this.user.Profile != null)
             {
-                var profile = user.Profile;
+                var profile = this.user.Profile;
                 var property = profile.ProfileProperties.Cast<ProfilePropertyDefinition>()
                                                         .SingleOrDefault(p => String.Equals(p.PropertyName, propertyName, StringComparison.CurrentCultureIgnoreCase));
 
                 if(property != null)
                 {
 					var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-					if (CheckAccessLevel(portalSettings, property, accessingUser, user))
+					if (CheckAccessLevel(portalSettings, property, accessingUser, this.user))
                     {
                         switch (property.PropertyName.ToLowerInvariant())
                         {
                             case "photo":
-                                return user.Profile.PhotoURL;
+                                return this.user.Profile.PhotoURL;
                             case "country":
-                                return user.Profile.Country;
+                                return this.user.Profile.Country;
                             case "region":
-                                return user.Profile.Region;
+                                return this.user.Profile.Region;
                             default:
                                 return GetRichValue(property, format, formatProvider);
                         }

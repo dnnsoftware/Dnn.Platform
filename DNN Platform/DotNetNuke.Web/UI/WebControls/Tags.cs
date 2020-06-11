@@ -54,15 +54,15 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 bool _IsEditMode = false;
-                if (ViewState["IsEditMode"] != null)
+                if (this.ViewState["IsEditMode"] != null)
                 {
-                    _IsEditMode = Convert.ToBoolean(ViewState["IsEditMode"]);
+                    _IsEditMode = Convert.ToBoolean(this.ViewState["IsEditMode"]);
                 }
                 return _IsEditMode;
             }
             set
             {
-                ViewState["IsEditMode"] = value;
+                this.ViewState["IsEditMode"] = value;
             }
         }
 
@@ -72,11 +72,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _RepeatDirection;
+                return this._RepeatDirection;
             }
             set
             {
-                _RepeatDirection = value;
+                this._RepeatDirection = value;
             }
         }
 
@@ -86,11 +86,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _Separator;
+                return this._Separator;
             }
             set
             {
-                _Separator = value;
+                this._Separator = value;
             }
         }
 
@@ -119,25 +119,25 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void RenderButton(HtmlTextWriter writer, string buttonType, string imageUrl)
         {
-            writer.AddAttribute(HtmlTextWriterAttribute.Title, LocalizeString(string.Format("{0}.ToolTip", buttonType)));
-            writer.AddAttribute(HtmlTextWriterAttribute.Href, Page.ClientScript.GetPostBackClientHyperlink(this, buttonType));
+            writer.AddAttribute(HtmlTextWriterAttribute.Title, this.LocalizeString(string.Format("{0}.ToolTip", buttonType)));
+            writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackClientHyperlink(this, buttonType));
             writer.RenderBeginTag(HtmlTextWriterTag.A);
 
             //Image
             if (!string.IsNullOrEmpty(imageUrl))
             {
-                writer.AddAttribute(HtmlTextWriterAttribute.Src, ResolveUrl(imageUrl));
+                writer.AddAttribute(HtmlTextWriterAttribute.Src, this.ResolveUrl(imageUrl));
                 writer.RenderBeginTag(HtmlTextWriterTag.Img);
                 writer.RenderEndTag();
             }
 
-            writer.Write(LocalizeString(buttonType));
+            writer.Write(this.LocalizeString(buttonType));
             writer.RenderEndTag();
         }
 
         private void RenderTerm(HtmlTextWriter writer, Term term, bool renderSeparator)
         {
-            writer.AddAttribute(HtmlTextWriterAttribute.Href, string.Format(NavigateUrlFormatString, term.Name));
+            writer.AddAttribute(HtmlTextWriterAttribute.Href, string.Format(this.NavigateUrlFormatString, term.Name));
             writer.AddAttribute(HtmlTextWriterAttribute.Title, term.Name);
             writer.AddAttribute(HtmlTextWriterAttribute.Rel, "tag");
             writer.RenderBeginTag(HtmlTextWriterTag.A);
@@ -146,13 +146,13 @@ namespace DotNetNuke.Web.UI.WebControls
 
             if (renderSeparator)
             {
-                writer.Write(Separator);
+                writer.Write(this.Separator);
             }
         }
 
         private void SaveTags()
         {
-            string tags = _Tags;
+            string tags = this._Tags;
 
             if (!string.IsNullOrEmpty(tags))
             {
@@ -161,35 +161,35 @@ namespace DotNetNuke.Web.UI.WebControls
                     if (!string.IsNullOrEmpty(t))
                     {
                         string tagName = t.Trim(' ');
-                        Term existingTerm = (from term in ContentItem.Terms.AsQueryable() where term.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase) select term).SingleOrDefault();
+                        Term existingTerm = (from term in this.ContentItem.Terms.AsQueryable() where term.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase) select term).SingleOrDefault();
 
                         if (existingTerm == null)
                         {
                             //Not tagged
                             TermController termController = new TermController();
                             Term term =
-                                (from te in termController.GetTermsByVocabulary(TagVocabulary.VocabularyId) where te.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase) select te).
+                                (from te in termController.GetTermsByVocabulary(this.TagVocabulary.VocabularyId) where te.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase) select te).
                                     SingleOrDefault();
                             if (term == null)
                             {
                                 //Add term
-                                term = new Term(TagVocabulary.VocabularyId);
+                                term = new Term(this.TagVocabulary.VocabularyId);
                                 term.Name = tagName;
                                 termController.AddTerm(term);
                             }
 
                             //Add term to content
-                            ContentItem.Terms.Add(term);
-                            termController.AddTermToContent(term, ContentItem);
+                            this.ContentItem.Terms.Add(term);
+                            termController.AddTermToContent(term, this.ContentItem);
                         }
                     }
                 }
             }
 
-            IsEditMode = false;
+            this.IsEditMode = false;
 
             //Raise the Tags Updated Event
-            OnTagsUpdate(EventArgs.Empty);
+            this.OnTagsUpdate(EventArgs.Empty);
         }
 
         #endregion
@@ -198,9 +198,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected void OnTagsUpdate(EventArgs e)
         {
-            if (TagsUpdated != null)
+            if (this.TagsUpdated != null)
             {
-                TagsUpdated(this, e);
+                this.TagsUpdated(this, e);
             }
         }
 
@@ -210,7 +210,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnPreRender(e);
 
-            if ((!Page.ClientScript.IsClientScriptBlockRegistered(UniqueID)))
+            if ((!this.Page.ClientScript.IsClientScriptBlockRegistered(this.UniqueID)))
             {
                 StringBuilder sb = new StringBuilder();
 
@@ -227,7 +227,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 sb.Append("}");
                 sb.Append("</script>");
 
-                Page.ClientScript.RegisterClientScriptBlock(GetType(), UniqueID, sb.ToString());
+                this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), this.UniqueID, sb.ToString());
             }
         }
 
@@ -235,19 +235,19 @@ namespace DotNetNuke.Web.UI.WebControls
         public override void RenderControl(HtmlTextWriter writer)
         {
             //Render Outer Div
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, RepeatDirection.ToLowerInvariant());
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, this.RepeatDirection.ToLowerInvariant());
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
             //Render Categories
-            if (ShowCategories)
+            if (this.ShowCategories)
             {
                 //Render UL
                 writer.AddAttribute(HtmlTextWriterAttribute.Class, "categories");
-                writer.AddAttribute(HtmlTextWriterAttribute.Title, LocalizeString("Category.ToolTip"));
+                writer.AddAttribute(HtmlTextWriterAttribute.Title, this.LocalizeString("Category.ToolTip"));
                 writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
                 //Render Category Links
-                var categories = (from cat in ContentItem.Terms where cat.VocabularyId != TagVocabulary.VocabularyId select cat);
+                var categories = (from cat in this.ContentItem.Terms where cat.VocabularyId != this.TagVocabulary.VocabularyId select cat);
 
                 for (int i = 0; i <= categories.Count() - 1; i++)
                 {
@@ -263,7 +263,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
                     writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
-                    RenderTerm(writer, categories.ToList()[i], i < categories.Count() - 1 && RepeatDirection.ToLowerInvariant() == "horizontal");
+                    this.RenderTerm(writer, categories.ToList()[i], i < categories.Count() - 1 && this.RepeatDirection.ToLowerInvariant() == "horizontal");
 
                     writer.RenderEndTag();
                 }
@@ -271,15 +271,15 @@ namespace DotNetNuke.Web.UI.WebControls
                 writer.RenderEndTag();
             }
 
-            if (ShowTags)
+            if (this.ShowTags)
             {
                 //Render UL
                 writer.AddAttribute(HtmlTextWriterAttribute.Class, "tags");
-                writer.AddAttribute(HtmlTextWriterAttribute.Title, LocalizeString("Tag.ToolTip"));
+                writer.AddAttribute(HtmlTextWriterAttribute.Title, this.LocalizeString("Tag.ToolTip"));
                 writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
                 //Render Tag Links
-                var tags = (from cat in ContentItem.Terms where cat.VocabularyId == TagVocabulary.VocabularyId select cat);
+                var tags = (from cat in this.ContentItem.Terms where cat.VocabularyId == this.TagVocabulary.VocabularyId select cat);
 
                 for (int i = 0; i <= tags.Count() - 1; i++)
                 {
@@ -295,20 +295,20 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
                     writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
-                    RenderTerm(writer, tags.ToList()[i], i < tags.Count() - 1 && RepeatDirection.ToLowerInvariant() == "horizontal");
+                    this.RenderTerm(writer, tags.ToList()[i], i < tags.Count() - 1 && this.RepeatDirection.ToLowerInvariant() == "horizontal");
 
                     writer.RenderEndTag();
                 }
 
-                if (AllowTagging)
+                if (this.AllowTagging)
                 {
                     writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
-                    if (IsEditMode)
+                    if (this.IsEditMode)
                     {
                         writer.Write("&nbsp;&nbsp;");
 
-                        writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
+                        writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
                         writer.AddAttribute("OnKeyPress", "return disableEnterKey(event)");
                         writer.RenderBeginTag(HtmlTextWriterTag.Input);
                         writer.RenderEndTag();
@@ -316,19 +316,19 @@ namespace DotNetNuke.Web.UI.WebControls
                         writer.Write("&nbsp;&nbsp;");
 
                         //Render Save Button
-                        RenderButton(writer, "Save", SaveImageUrl);
+                        this.RenderButton(writer, "Save", this.SaveImageUrl);
 
                         writer.Write("&nbsp;&nbsp;");
 
                         //Render Add Button
-                        RenderButton(writer, "Cancel", CancelImageUrl);
+                        this.RenderButton(writer, "Cancel", this.CancelImageUrl);
                     }
                     else
                     {
                         writer.Write("&nbsp;&nbsp;");
 
                         //Render Add Button
-                        RenderButton(writer, "Add", AddImageUrl);
+                        this.RenderButton(writer, "Add", this.AddImageUrl);
                     }
 
                     writer.RenderEndTag();
@@ -346,7 +346,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
-            _Tags = postCollection[postDataKey];
+            this._Tags = postCollection[postDataKey];
 
             return true;
         }
@@ -365,16 +365,16 @@ namespace DotNetNuke.Web.UI.WebControls
             switch (eventArgument)
             {
                 case "Add":
-                    IsEditMode = true;
+                    this.IsEditMode = true;
                     break;
                 case "Cancel":
-                    IsEditMode = false;
+                    this.IsEditMode = false;
                     break;
                 case "Save":
-                    SaveTags();
+                    this.SaveTags();
                     break;
                 default:
-                    IsEditMode = false;
+                    this.IsEditMode = false;
                     break;
             }
         }

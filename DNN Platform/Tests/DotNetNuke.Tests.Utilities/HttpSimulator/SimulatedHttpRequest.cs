@@ -36,8 +36,8 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <param name="verb">The HTTP Verb to use.</param>
 	    public SimulatedHttpRequest(string applicationPath, string physicalAppPath, string physicalFilePath, string page, string query, TextWriter output, string host, int port, string verb) : base(applicationPath, physicalAppPath, page, query, output)
 	    {
-            Form = new NameValueCollection();
-            Headers = new NameValueCollection();
+            this.Form = new NameValueCollection();
+            this.Headers = new NameValueCollection();
             if (host == null)
                 throw new ArgumentNullException("host", "Host cannot be null.");
 
@@ -47,15 +47,15 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             if (applicationPath == null)
                 throw new ArgumentNullException("applicationPath", "Can't create a request with a null application path. Try empty string.");
 
-            _host = host;
-            _verb = verb;
-	        _port = port;
-            _physicalFilePath = physicalFilePath;
+            this._host = host;
+            this._verb = verb;
+	        this._port = port;
+            this._physicalFilePath = physicalFilePath;
 	    }
 
         internal void SetReferer(Uri referer)
         {
-            _referer = referer;
+            this._referer = referer;
         }
 
 	    /// <summary>
@@ -67,7 +67,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 		/// </returns>
 		public override string GetHttpVerbName()
 		{
-			return _verb;
+			return this._verb;
 		}
 		
 		/// <summary>
@@ -76,17 +76,17 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 		/// <returns></returns>
 		public override string GetServerName()
 		{
-			return _host;
+			return this._host;
 		}
 	    
 	    public override int GetLocalPort()
 	    {
-            return _port;
+            return this._port;
 	    }
 
         public override bool IsSecure()
         {
-            return (_port == 443) ? true : false;
+            return (this._port == 443) ? true : false;
         }
 
         //public override string GetProtocol()
@@ -112,16 +112,16 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 		/// <returns>An array of header name-value pairs.</returns>
 		public override string[][] GetUnknownRequestHeaders()
 		{
-			if(Headers == null || Headers.Count == 0)
+			if(this.Headers == null || this.Headers.Count == 0)
 			{
 				return null;
 			}
-			var headersArray = new string[Headers.Count][];
-			for(var i = 0; i < Headers.Count; i++)
+			var headersArray = new string[this.Headers.Count][];
+			for(var i = 0; i < this.Headers.Count; i++)
 			{
 				headersArray[i] = new string[2];
-				headersArray[i][0] = Headers.Keys[i];
-				headersArray[i][1] = Headers[i];
+				headersArray[i][0] = this.Headers.Keys[i];
+				headersArray[i][1] = this.Headers[i];
 			}
 			return headersArray;
 		}
@@ -129,9 +129,9 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         public override string GetKnownRequestHeader(int index)
         {
             if (index == 0x24)
-				return _referer == null ? string.Empty : _referer.ToString();
+				return this._referer == null ? string.Empty : this._referer.ToString();
 
-            if (index == 12 && _verb == "POST")
+            if (index == 12 && this._verb == "POST")
                 return "application/x-www-form-urlencoded";
             
             return base.GetKnownRequestHeader(index);
@@ -139,7 +139,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
 	    public override string GetFilePathTranslated()
         {
-            return _physicalFilePath;
+            return this._physicalFilePath;
         }
 		
 		/// <summary>
@@ -148,7 +148,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 		/// <returns>The number of bytes read.</returns>
 		public override byte[] GetPreloadedEntityBody()
 		{
-			return Encoding.UTF8.GetBytes(Form.Keys.Cast<string>().Aggregate(string.Empty, (current, key) => current + string.Format("{0}={1}&", key, Form[key])));
+			return Encoding.UTF8.GetBytes(this.Form.Keys.Cast<string>().Aggregate(string.Empty, (current, key) => current + string.Format("{0}={1}&", key, this.Form[key])));
 		}
 		
 		/// <summary>

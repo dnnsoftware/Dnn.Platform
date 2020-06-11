@@ -97,12 +97,12 @@ namespace log4net.Filter
 		/// </remarks>
 		override public void ActivateOptions() 
 		{
-			if (m_stringRegexToMatch != null)
+			if (this.m_stringRegexToMatch != null)
 			{
 #if NETSTANDARD1_3
 				m_regexToMatch = new Regex(m_stringRegexToMatch);
 #else
-				m_regexToMatch = new Regex(m_stringRegexToMatch, RegexOptions.Compiled);
+				this.m_regexToMatch = new Regex(this.m_stringRegexToMatch, RegexOptions.Compiled);
 #endif
 			}
 		}
@@ -125,8 +125,8 @@ namespace log4net.Filter
 		/// </remarks>
 		public bool AcceptOnMatch
 		{
-			get { return m_acceptOnMatch; }
-			set { m_acceptOnMatch = value; }
+			get { return this.m_acceptOnMatch; }
+			set { this.m_acceptOnMatch = value; }
 		}
 
 		/// <summary>
@@ -146,8 +146,8 @@ namespace log4net.Filter
 		/// </remarks>
 		public string StringToMatch
 		{
-			get { return m_stringToMatch; }
-			set { m_stringToMatch = value; }
+			get { return this.m_stringToMatch; }
+			set { this.m_stringToMatch = value; }
 		}
 
 		/// <summary>
@@ -167,8 +167,8 @@ namespace log4net.Filter
 		/// </remarks>
 		public string RegexToMatch
 		{
-			get { return m_stringRegexToMatch; }
-			set { m_stringRegexToMatch = value; }
+			get { return this.m_stringRegexToMatch; }
+			set { this.m_stringRegexToMatch = value; }
 		}
 
 		#region Override implementation of FilterSkeleton
@@ -200,7 +200,7 @@ namespace log4net.Filter
 			string msg = loggingEvent.RenderedMessage;
 
 			// Check if we have been setup to filter
-			if (msg == null || (m_stringToMatch == null && m_regexToMatch == null))
+			if (msg == null || (this.m_stringToMatch == null && this.m_regexToMatch == null))
 			{
 				// We cannot filter so allow the filter chain
 				// to continue processing
@@ -208,33 +208,33 @@ namespace log4net.Filter
 			}
     
 			// Firstly check if we are matching using a regex
-			if (m_regexToMatch != null)
+			if (this.m_regexToMatch != null)
 			{
 				// Check the regex
-				if (m_regexToMatch.Match(msg).Success == false)
+				if (this.m_regexToMatch.Match(msg).Success == false)
 				{
 					// No match, continue processing
 					return FilterDecision.Neutral;
 				} 
 
 				// we've got a match
-				if (m_acceptOnMatch) 
+				if (this.m_acceptOnMatch) 
 				{
 					return FilterDecision.Accept;
 				} 
 				return FilterDecision.Deny;
 			}
-			else if (m_stringToMatch != null)
+			else if (this.m_stringToMatch != null)
 			{
 				// Check substring match
-				if (msg.IndexOf(m_stringToMatch) == -1) 
+				if (msg.IndexOf(this.m_stringToMatch) == -1) 
 				{
 					// No match, continue processing
 					return FilterDecision.Neutral;
 				} 
 
 				// we've got a match
-				if (m_acceptOnMatch) 
+				if (this.m_acceptOnMatch) 
 				{
 					return FilterDecision.Accept;
 				} 

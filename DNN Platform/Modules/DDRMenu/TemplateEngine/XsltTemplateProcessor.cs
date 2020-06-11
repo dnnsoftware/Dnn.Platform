@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                     return false;
                 }
 
-				xsl = Utilities.CachedXslt(baseDefinition.TemplatePath);
+				this.xsl = Utilities.CachedXslt(baseDefinition.TemplatePath);
 				return true;
 			}
 			catch (Exception)
@@ -60,7 +60,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 			{
 				Utilities.SerialiserFor(source.GetType()).Serialize(xmlStream, source);
 				xmlStream.Seek(0, SeekOrigin.Begin);
-				xsl.Transform(XmlReader.Create(xmlStream), args, htmlWriter);
+				this.xsl.Transform(XmlReader.Create(xmlStream), args, htmlWriter);
 			}
 		}
 

@@ -14,7 +14,7 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
     {
         public ColumnNameAttribute(string columnName)
         {
-            ColumnName = columnName;
+            this.ColumnName = columnName;
         }
 
         public string ColumnName { get; set; }

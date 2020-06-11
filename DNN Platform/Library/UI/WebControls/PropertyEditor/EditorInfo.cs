@@ -31,7 +31,7 @@ namespace DotNetNuke.UI.WebControls
     {
         public EditorInfo()
         {
-            Visible = true;
+            this.Visible = true;
         }
 
         public object[] Attributes { get; set; }

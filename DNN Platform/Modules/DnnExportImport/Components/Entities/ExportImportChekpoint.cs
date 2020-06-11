@@ -30,12 +30,12 @@ namespace Dnn.ExportImport.Components.Entities
 
         public double Progress
         {
-            get { return _progress; }
+            get { return this._progress; }
             set
             {
                 if (value < 0) value = 0;
                 else if (value > 100) value = 100;
-                _progress = value;
+                this._progress = value;
             }
         }
 
@@ -44,24 +44,24 @@ namespace Dnn.ExportImport.Components.Entities
 
         public int KeyID
         {
-            get { return CheckpointId; }
-            set { CheckpointId = value; }
+            get { return this.CheckpointId; }
+            set { this.CheckpointId = value; }
         }
 
         public void Fill(IDataReader dr)
         {
-            CheckpointId = Null.SetNullInteger(dr[nameof(CheckpointId)]);
-            JobId = Null.SetNullInteger(dr[nameof(JobId)]);
-            AssemblyName = Null.SetNullString(dr[nameof(AssemblyName)]);
-            Category = Null.SetNullString(dr[nameof(Category)]);
-            Stage = Null.SetNullInteger(dr[nameof(Stage)]);
-            StageData = Null.SetNullString(dr[nameof(StageData)]);
-            Progress = Null.SetNullInteger(dr[nameof(Progress)]);
-            TotalItems = Null.SetNullInteger(dr[nameof(TotalItems)]);
-            ProcessedItems = Null.SetNullInteger(dr[nameof(ProcessedItems)]);
-            StartDate = Null.SetNullDateTime(dr[nameof(StartDate)]);
-            LastUpdateDate = Null.SetNullDateTime(dr[nameof(LastUpdateDate)]);
-            Completed = Null.SetNullBoolean(dr[nameof(Completed)]);
+            this.CheckpointId = Null.SetNullInteger(dr[nameof(this.CheckpointId)]);
+            this.JobId = Null.SetNullInteger(dr[nameof(this.JobId)]);
+            this.AssemblyName = Null.SetNullString(dr[nameof(this.AssemblyName)]);
+            this.Category = Null.SetNullString(dr[nameof(this.Category)]);
+            this.Stage = Null.SetNullInteger(dr[nameof(this.Stage)]);
+            this.StageData = Null.SetNullString(dr[nameof(this.StageData)]);
+            this.Progress = Null.SetNullInteger(dr[nameof(this.Progress)]);
+            this.TotalItems = Null.SetNullInteger(dr[nameof(this.TotalItems)]);
+            this.ProcessedItems = Null.SetNullInteger(dr[nameof(this.ProcessedItems)]);
+            this.StartDate = Null.SetNullDateTime(dr[nameof(this.StartDate)]);
+            this.LastUpdateDate = Null.SetNullDateTime(dr[nameof(this.LastUpdateDate)]);
+            this.Completed = Null.SetNullBoolean(dr[nameof(this.Completed)]);
         }
     }
 }

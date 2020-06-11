@@ -67,7 +67,7 @@ namespace DotNetNuke.Services.ClientCapability
         /// </summary>
         public virtual IClientCapability GetClientCapability(HttpRequest httpRequest)
         {
-            IClientCapability clientCapability = GetClientCapability(httpRequest.UserAgent);        	
+            IClientCapability clientCapability = this.GetClientCapability(httpRequest.UserAgent);        	
             clientCapability.FacebookRequest = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);
 
             return clientCapability;

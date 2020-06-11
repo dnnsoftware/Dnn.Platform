@@ -57,9 +57,9 @@ namespace Dnn.PersonaBar.Library.Attributes
             }
 
             //when there have excluded roles defined, and current user in the role. the service call will failed.
-            if (!string.IsNullOrEmpty(Exclude))
+            if (!string.IsNullOrEmpty(this.Exclude))
             {
-                foreach (var roleName in Exclude.Split(';'))
+                foreach (var roleName in this.Exclude.Split(';'))
                 {
                     var cleanRoleName = roleName.Trim();
                     if (!string.IsNullOrEmpty(cleanRoleName))
@@ -73,17 +73,17 @@ namespace Dnn.PersonaBar.Library.Attributes
             }
 
             //if menu identifier defined, then will check the menu permission, multiple identifier should split with ",".
-            if (!string.IsNullOrEmpty(MenuName))
+            if (!string.IsNullOrEmpty(this.MenuName))
             {
                 if (isAdmin)
                     return true;
 
                 var hasPermission = false;
-                MenuName.Split(',').ForEach(menuName =>
+                this.MenuName.Split(',').ForEach(menuName =>
                 {
                     if (!hasPermission)
                     {
-                        var menuItem = GetMenuByIdentifier(menuName);
+                        var menuItem = this.GetMenuByIdentifier(menuName);
                         if (menuItem != null && portalSettings != null)
                         {
                             hasPermission = PersonaBarController.Instance.IsVisible(portalSettings, portalSettings.UserInfo, menuItem);
@@ -96,7 +96,7 @@ namespace Dnn.PersonaBar.Library.Attributes
             
 
             //when menu identifier not defined, will check the service scope permission.
-            switch (Scope)
+            switch (this.Scope)
             {
                 case ServiceScope.Admin:
                     return authenticated && isAdmin;

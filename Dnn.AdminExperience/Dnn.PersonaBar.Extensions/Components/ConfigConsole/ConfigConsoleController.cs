@@ -28,7 +28,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
 
         public string GetConfigFile(string configFile)
         {
-            ValidateFilePath(configFile);
+            this.ValidateFilePath(configFile);
 
             var configDoc = Config.Load(configFile);
             using (var txtWriter = new StringWriter())
@@ -44,7 +44,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
 
         public void UpdateConfigFile(string fileName, string fileContent)
         {
-            ValidateFilePath(fileName);
+            this.ValidateFilePath(fileName);
 
             var configDoc = new XmlDocument { XmlResolver = null };
             configDoc.LoadXml(fileContent);
@@ -53,7 +53,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
 
         public void MergeConfigFile(string fileContent)
         {
-            if (IsValidXmlMergDocument(fileContent))
+            if (this.IsValidXmlMergDocument(fileContent))
             {
                 var doc = new XmlDocument { XmlResolver = null };
                 doc.LoadXml(fileContent);

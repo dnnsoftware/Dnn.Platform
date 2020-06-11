@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.RazorHost
 
         public EditScript()
         {
-            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -39,10 +39,10 @@ namespace DotNetNuke.Modules.RazorHost
             get
             {
                 string m_RazorScriptFile = Null.NullString;
-                var scriptFileSetting = ModuleContext.Settings["ScriptFile"] as string;
+                var scriptFileSetting = this.ModuleContext.Settings["ScriptFile"] as string;
                 if (!(string.IsNullOrEmpty(scriptFileSetting)))
                 {
-                    m_RazorScriptFile = string.Format(razorScriptFileFormatString, scriptFileSetting);
+                    m_RazorScriptFile = string.Format(this.razorScriptFileFormatString, scriptFileSetting);
                 }
                 return m_RazorScriptFile;
             }
@@ -50,10 +50,10 @@ namespace DotNetNuke.Modules.RazorHost
 
         private void LoadScripts()
         {
-            string basePath = Server.MapPath(razorScriptFolder);
-            var scriptFileSetting = ModuleContext.Settings["ScriptFile"] as string;
+            string basePath = this.Server.MapPath(this.razorScriptFolder);
+            var scriptFileSetting = this.ModuleContext.Settings["ScriptFile"] as string;
 
-            foreach (string script in Directory.GetFiles(Server.MapPath(razorScriptFolder), "*.??html"))
+            foreach (string script in Directory.GetFiles(this.Server.MapPath(this.razorScriptFolder), "*.??html"))
             {
                 string scriptPath = script.Replace(basePath, "");
                 var item = new ListItem(scriptPath, scriptPath);
@@ -61,43 +61,43 @@ namespace DotNetNuke.Modules.RazorHost
                 {
                     item.Selected = true;
                 }
-                scriptList.Items.Add(item);
+                this.scriptList.Items.Add(item);
             }
         }
 
         private void DisplayFile()
         {
-            var scriptFileSetting = ModuleContext.Settings["ScriptFile"] as string;
-            string scriptFile = string.Format(razorScriptFileFormatString, scriptList.SelectedValue);
-            string srcFile = Server.MapPath(scriptFile);
+            var scriptFileSetting = this.ModuleContext.Settings["ScriptFile"] as string;
+            string scriptFile = string.Format(this.razorScriptFileFormatString, this.scriptList.SelectedValue);
+            string srcFile = this.Server.MapPath(scriptFile);
 
-            lblSourceFile.Text = string.Format(Localization.GetString("SourceFile", LocalResourceFile), scriptFile);
+            this.lblSourceFile.Text = string.Format(Localization.GetString("SourceFile", this.LocalResourceFile), scriptFile);
 
             StreamReader objStreamReader = null;
             objStreamReader = File.OpenText(srcFile);
-            txtSource.Text = objStreamReader.ReadToEnd();
+            this.txtSource.Text = objStreamReader.ReadToEnd();
             objStreamReader.Close();
 
             if (!(string.IsNullOrEmpty(scriptFileSetting)))
             {
-                isCurrentScript.Checked = (scriptList.SelectedValue.ToLowerInvariant() == scriptFileSetting.ToLowerInvariant());
+                this.isCurrentScript.Checked = (this.scriptList.SelectedValue.ToLowerInvariant() == scriptFileSetting.ToLowerInvariant());
             }
         }
 
         private void SaveScript()
         {
-            string srcFile = Server.MapPath(string.Format(razorScriptFileFormatString, scriptList.SelectedValue));
+            string srcFile = this.Server.MapPath(string.Format(this.razorScriptFileFormatString, this.scriptList.SelectedValue));
 
             // write file
             StreamWriter objStream = null;
             objStream = File.CreateText(srcFile);
-            objStream.WriteLine(txtSource.Text);
+            objStream.WriteLine(this.txtSource.Text);
             objStream.Close();
 
-            if (isCurrentScript.Checked)
+            if (this.isCurrentScript.Checked)
             {
                 //Update setting
-                ModuleController.Instance.UpdateModuleSetting(ModuleContext.ModuleId, "ScriptFile", scriptList.SelectedValue);
+                ModuleController.Instance.UpdateModuleSetting(this.ModuleContext.ModuleId, "ScriptFile", this.scriptList.SelectedValue);
             }
         }
 
@@ -106,11 +106,11 @@ namespace DotNetNuke.Modules.RazorHost
         {
             base.OnInit(e);
 
-            cmdCancel.Click += cmdCancel_Click;
-            cmdSave.Click += cmdSave_Click;
-            cmdSaveClose.Click += cmdSaveClose_Click;
-            cmdAdd.Click += cmdAdd_Click;
-            scriptList.SelectedIndexChanged += scriptList_SelectedIndexChanged;
+            this.cmdCancel.Click += this.cmdCancel_Click;
+            this.cmdSave.Click += this.cmdSave_Click;
+            this.cmdSaveClose.Click += this.cmdSaveClose_Click;
+            this.cmdAdd.Click += this.cmdAdd_Click;
+            this.scriptList.SelectedIndexChanged += this.scriptList_SelectedIndexChanged;
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -118,10 +118,10 @@ namespace DotNetNuke.Modules.RazorHost
         {
             base.OnLoad(e);
 
-            if (!Page.IsPostBack)
+            if (!this.Page.IsPostBack)
             {
-                LoadScripts();
-                DisplayFile();
+                this.LoadScripts();
+                this.DisplayFile();
             }
         }
 
@@ -129,7 +129,7 @@ namespace DotNetNuke.Modules.RazorHost
         {
             try
             {
-                Response.Redirect(_navigationManager.NavigateURL(), true);
+                this.Response.Redirect(this._navigationManager.NavigateURL(), true);
             }
             catch (Exception exc) //Module failed to load
             {
@@ -141,7 +141,7 @@ namespace DotNetNuke.Modules.RazorHost
         {
             try
             {
-                SaveScript();
+                this.SaveScript();
             }
             catch (Exception exc) //Module failed to load
             {
@@ -153,8 +153,8 @@ namespace DotNetNuke.Modules.RazorHost
         {
             try
             {
-                SaveScript();
-                Response.Redirect(_navigationManager.NavigateURL(), true);
+                this.SaveScript();
+                this.Response.Redirect(this._navigationManager.NavigateURL(), true);
             }
             catch (Exception exc) //Module failed to load
             {
@@ -166,7 +166,7 @@ namespace DotNetNuke.Modules.RazorHost
         {
             try
             {
-                Response.Redirect(ModuleContext.EditUrl("Add"), true);
+                this.Response.Redirect(this.ModuleContext.EditUrl("Add"), true);
             }
             catch (Exception exc) //Module failed to load
             {
@@ -176,7 +176,7 @@ namespace DotNetNuke.Modules.RazorHost
 
         private void scriptList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DisplayFile();
+            this.DisplayFile();
         }
 
 

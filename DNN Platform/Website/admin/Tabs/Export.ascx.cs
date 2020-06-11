@@ -34,18 +34,18 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
         public Export()
         {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public TabInfo Tab
         {
             get
             {
-                if (_tab == null)
+                if (this._tab == null)
                 {
-                    _tab = TabController.Instance.GetTab(TabId, PortalId, false);
+                    this._tab = TabController.Instance.GetTab(this.TabId, this.PortalId, false);
                 }
-                return _tab;
+                return this._tab;
             }
         }
 
@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
         private void SerializeTab(XmlDocument xmlTemplate, XmlNode nodeTabs)
         {
             var xmlTab = new XmlDocument { XmlResolver = null };
-            var nodeTab = TabController.SerializeTab(xmlTab, Tab, chkContent.Checked);
+            var nodeTab = TabController.SerializeTab(xmlTab, this.Tab, this.chkContent.Checked);
             nodeTabs.AppendChild(xmlTemplate.ImportNode(nodeTab, true));
         }
 
@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
             if (!TabPermissionController.CanExportPage())
             {
-                Response.Redirect(Globals.AccessDeniedURL(), true);
+                this.Response.Redirect(Globals.AccessDeniedURL(), true);
             }
         }
 
@@ -79,24 +79,24 @@ namespace DotNetNuke.Modules.Admin.Tabs
         {
             base.OnLoad(e);
 
-            cmdExport.Click += OnExportClick;
+            this.cmdExport.Click += this.OnExportClick;
 
             try
             {
-                if (Page.IsPostBack) return;
-                cmdCancel.NavigateUrl = _navigationManager.NavigateURL();
+                if (this.Page.IsPostBack) return;
+                this.cmdCancel.NavigateUrl = this._navigationManager.NavigateURL();
                 var folderPath = "Templates/";
-                var templateFolder = FolderManager.Instance.GetFolder(UserInfo.PortalID, folderPath);
-                cboFolders.Services.Parameters.Add("permission", "ADD");
+                var templateFolder = FolderManager.Instance.GetFolder(this.UserInfo.PortalID, folderPath);
+                this.cboFolders.Services.Parameters.Add("permission", "ADD");
 
-                if (templateFolder != null && IsAccessibleByUser(templateFolder))
+                if (templateFolder != null && this.IsAccessibleByUser(templateFolder))
                 {
-                    cboFolders.SelectedFolder = templateFolder;
+                    this.cboFolders.SelectedFolder = templateFolder;
                 }
 
-                if (Tab != null)
+                if (this.Tab != null)
                 {
-                    txtFile.Text = Globals.CleanName(Tab.TabName);
+                    this.txtFile.Text = Globals.CleanName(this.Tab.TabName);
                 }
             }
             catch (Exception exc)
@@ -114,17 +114,17 @@ namespace DotNetNuke.Modules.Admin.Tabs
         {
             try
             {
-                if (!Page.IsValid)
+                if (!this.Page.IsValid)
                 {
                     return;
                 }
 
-                if (cboFolders.SelectedItem != null)
+                if (this.cboFolders.SelectedItem != null)
                 {
-                    var folder = FolderManager.Instance.GetFolder(cboFolders.SelectedItemValueAsInt);
+                    var folder = FolderManager.Instance.GetFolder(this.cboFolders.SelectedItemValueAsInt);
                     if (folder != null)
                     {
-                        var filename = folder.FolderPath + txtFile.Text + ".page.template";
+                        var filename = folder.FolderPath + this.txtFile.Text + ".page.template";
                         filename = filename.Replace("/", "\\");
 
                         var xmlTemplate = new XmlDocument { XmlResolver = null };
@@ -136,19 +136,19 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
                         //Add template description
                         XmlElement node = xmlTemplate.CreateElement("description");
-                        node.InnerXml = Server.HtmlEncode(txtDescription.Text);
+                        node.InnerXml = this.Server.HtmlEncode(this.txtDescription.Text);
                         nodePortal.AppendChild(node);
 
                         //Serialize tabs
                         XmlNode nodeTabs = nodePortal.AppendChild(xmlTemplate.CreateElement("tabs"));
-                        SerializeTab(xmlTemplate, nodeTabs);
+                        this.SerializeTab(xmlTemplate, nodeTabs);
 
-                        UI.Skins.Skin.AddModuleMessage(this, "", string.Format(Localization.GetString("ExportedMessage", LocalResourceFile), filename), ModuleMessage.ModuleMessageType.BlueInfo);
+                        UI.Skins.Skin.AddModuleMessage(this, "", string.Format(Localization.GetString("ExportedMessage", this.LocalResourceFile), filename), ModuleMessage.ModuleMessageType.BlueInfo);
 
                         //add file to Files table
 						using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(xmlTemplate.OuterXml)))
 						{
-							Services.FileSystem.FileManager.Instance.AddFile(folder, txtFile.Text + ".page.template", fileContent, true, true, "application/octet-stream");
+							Services.FileSystem.FileManager.Instance.AddFile(folder, this.txtFile.Text + ".page.template", fileContent, true, true, "application/octet-stream");
 						}
 
                     }

@@ -47,7 +47,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 {
                     PortalName = PortalSettings.Current.PortalName,
 
-                    CachingProvider = _performanceController.GetCachingProvider(),
+                    CachingProvider = this._performanceController.GetCachingProvider(),
                     PageStatePersistence = Host.PageStatePersister,
                     ModuleCacheProvider = Host.ModuleCachingMethod,
                     PageCacheProvider = Host.PageCachingMethod,
@@ -61,26 +61,26 @@ namespace Dnn.PersonaBar.Servers.Services
                     HostEnableCompositeFiles = Host.CrmEnableCompositeFiles,
                     HostMinifyCss = Host.CrmMinifyCss,
                     HostMinifyJs = Host.CrmMinifyJs,
-                    CurrentPortalVersion = GetPortalVersion(portalId),
+                    CurrentPortalVersion = this.GetPortalVersion(portalId),
                     PortalEnableCompositeFiles = Parse(PortalController.GetPortalSetting(ClientResourceSettings.EnableCompositeFilesKey, portalId, "false")),
                     PortalMinifyCss = Parse(PortalController.GetPortalSetting(ClientResourceSettings.MinifyCssKey, portalId, "false")),
                     PortalMinifyJs = Parse(PortalController.GetPortalSetting(ClientResourceSettings.MinifyJsKey, portalId, "false")),
 
                     // Options
-                    CachingProviderOptions = _performanceController.GetCachingProviderOptions(),
-                    PageStatePersistenceOptions = _performanceController.GetPageStatePersistenceOptions(),
-                    ModuleCacheProviders = _performanceController.GetModuleCacheProviders(),
-                    PageCacheProviders = _performanceController.GetPageCacheProviders(),
-                    CacheSettingOptions = _performanceController.GetCacheSettingOptions(),
-                    AuthCacheabilityOptions = _performanceController.GetCacheabilityOptions(),
-                    UnauthCacheabilityOptions = _performanceController.GetCacheabilityOptions()
+                    CachingProviderOptions = this._performanceController.GetCachingProviderOptions(),
+                    PageStatePersistenceOptions = this._performanceController.GetPageStatePersistenceOptions(),
+                    ModuleCacheProviders = this._performanceController.GetModuleCacheProviders(),
+                    PageCacheProviders = this._performanceController.GetPageCacheProviders(),
+                    CacheSettingOptions = this._performanceController.GetCacheSettingOptions(),
+                    AuthCacheabilityOptions = this._performanceController.GetCacheabilityOptions(),
+                    UnauthCacheabilityOptions = this._performanceController.GetCacheabilityOptions()
                 };
-                return Request.CreateResponse(HttpStatusCode.OK, perfSettings);
+                return this.Request.CreateResponse(HttpStatusCode.OK, perfSettings);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -116,12 +116,12 @@ namespace Dnn.PersonaBar.Servers.Services
                 PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, TrueString, false);
                 PortalController.UpdatePortalSetting(portalId, "ClientResourcesManagementMode", "p", false);
                 DataCache.ClearCache();
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -141,12 +141,12 @@ namespace Dnn.PersonaBar.Servers.Services
                 PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, FalseString, false);
                 PortalController.UpdatePortalSetting(portalId, "ClientResourcesManagementMode", "h", false);
                 DataCache.ClearCache();
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
 }
 
@@ -163,10 +163,10 @@ namespace Dnn.PersonaBar.Servers.Services
             try
             {
                 var portalId = PortalSettings.Current.PortalId;
-                SaveCachingProvider(request.CachingProvider);
+                this.SaveCachingProvider(request.CachingProvider);
                 HostController.Instance.Update("PageStatePersister", request.PageStatePersistence);
                 HostController.Instance.Update("ModuleCaching", request.ModuleCacheProvider, false);
-                if (_performanceController.GetPageCacheProviders().Any())
+                if (this._performanceController.GetPageCacheProviders().Any())
                 {
                     HostController.Instance.Update("PageCaching", request.PageCacheProvider, false);
                 }
@@ -200,12 +200,12 @@ namespace Dnn.PersonaBar.Servers.Services
 
                 DataCache.ClearCache();
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 

@@ -57,10 +57,10 @@ namespace Dnn.PersonaBar.Library.Model
             base.FillInternal(dr);
 
             
-            PermissionId = Null.SetNullInteger(dr["PermissionId"]);
-            MenuId = Null.SetNullInteger(dr["MenuId"]);
-            PermissionKey = Null.SetNullString(dr["PermissionKey"]);
-            PermissionName = Null.SetNullString(dr["PermissionName"]);
+            this.PermissionId = Null.SetNullInteger(dr["PermissionId"]);
+            this.MenuId = Null.SetNullInteger(dr["MenuId"]);
+            this.PermissionKey = Null.SetNullString(dr["PermissionKey"]);
+            this.PermissionName = Null.SetNullString(dr["PermissionName"]);
         }
 
         /// -----------------------------------------------------------------------------
@@ -74,11 +74,11 @@ namespace Dnn.PersonaBar.Library.Model
         {
             get
             {
-                return PermissionId;
+                return this.PermissionId;
             }
             set
             {
-                PermissionId = value;
+                this.PermissionId = value;
             }
         }
 

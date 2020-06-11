@@ -94,7 +94,7 @@ namespace log4net.Util
 			get 
 			{ 
 				// Don't create the dictionary if it does not already exist
-				PropertiesDictionary dictionary = GetProperties(false);
+				PropertiesDictionary dictionary = this.GetProperties(false);
 				if (dictionary != null)
 				{
 					return dictionary[key]; 
@@ -104,7 +104,7 @@ namespace log4net.Util
 			set 
 			{
 				// Force the dictionary to be created
-				PropertiesDictionary props = GetProperties(true);
+				PropertiesDictionary props = this.GetProperties(true);
 				// Reason for cloning the dictionary below: object instances set on the CallContext
 				// need to be immutable to correctly flow through async/await
 				PropertiesDictionary immutableProps = new PropertiesDictionary(props);
@@ -128,7 +128,7 @@ namespace log4net.Util
 		/// </remarks>
 		public void Remove(string key)
 		{
-			PropertiesDictionary dictionary = GetProperties(false);
+			PropertiesDictionary dictionary = this.GetProperties(false);
 			if (dictionary != null)
 			{
 				PropertiesDictionary immutableProps = new PropertiesDictionary(dictionary);
@@ -147,7 +147,7 @@ namespace log4net.Util
 		/// </remarks>
 		public void Clear()
 		{
-			PropertiesDictionary dictionary = GetProperties(false);
+			PropertiesDictionary dictionary = this.GetProperties(false);
 			if (dictionary != null)
 			{
 				PropertiesDictionary immutableProps = new PropertiesDictionary();
@@ -173,7 +173,7 @@ namespace log4net.Util
 		/// </remarks>
 		internal PropertiesDictionary GetProperties(bool create)
 		{
-			if (!m_disabled)
+			if (!this.m_disabled)
 			{
 				try
 				{
@@ -187,7 +187,7 @@ namespace log4net.Util
 				}
 				catch (SecurityException secEx)
 				{
-					m_disabled = true;
+					this.m_disabled = true;
 					
 					// Thrown if we don't have permission to read or write the CallContext
 					LogLog.Warn(declaringType, "SecurityException while accessing CallContext. Disabling LogicalThreadContextProperties", secEx);

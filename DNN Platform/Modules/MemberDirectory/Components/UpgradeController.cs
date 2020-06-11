@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Components
 				switch (Version)
 				{
 					case "07.00.06":
-						UpdateDisplaySearchSettings();
+						this.UpdateDisplaySearchSettings();
 						break;
 				}
 			}

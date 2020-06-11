@@ -66,7 +66,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return _Files;
+                return this._Files;
             }
         }
 
@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                string _PhysicalBasePath = PhysicalSitePath + "\\" + BasePath;
+                string _PhysicalBasePath = this.PhysicalSitePath + "\\" + this.BasePath;
                 if (!_PhysicalBasePath.EndsWith("\\"))
                 {
                     _PhysicalBasePath += "\\";
@@ -132,11 +132,11 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                return _DeleteFiles;
+                return this._DeleteFiles;
             }
             set
             {
-                _DeleteFiles = value;
+                this._DeleteFiles = value;
             }
         }
 
@@ -176,9 +176,9 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         protected virtual void DeleteFile(InstallFile insFile)
         {
-            if (DeleteFiles)
+            if (this.DeleteFiles)
             {
-                Util.DeleteFile(insFile, PhysicalBasePath, Log);
+                Util.DeleteFile(insFile, this.PhysicalBasePath, this.Log);
             }
         }
 
@@ -193,27 +193,27 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
 				//Check the White Lists
-                if ((Package.InstallerInfo.IgnoreWhiteList || Util.IsFileValid(insFile, Package.InstallerInfo.AllowableFiles)))
+                if ((this.Package.InstallerInfo.IgnoreWhiteList || Util.IsFileValid(insFile, this.Package.InstallerInfo.AllowableFiles)))
                 {
 					//Install File
-                    if (File.Exists(PhysicalBasePath + insFile.FullName))
+                    if (File.Exists(this.PhysicalBasePath + insFile.FullName))
                     {
-                        Util.BackupFile(insFile, PhysicalBasePath, Log);
+                        Util.BackupFile(insFile, this.PhysicalBasePath, this.Log);
                     }
                     
 					//Copy file from temp location
-					Util.CopyFile(insFile, PhysicalBasePath, Log);
+					Util.CopyFile(insFile, this.PhysicalBasePath, this.Log);
                     return true;
                 }
                 else
                 {
-                    Log.AddFailure(string.Format(Util.FILE_NotAllowed, insFile.FullName));
+                    this.Log.AddFailure(string.Format(Util.FILE_NotAllowed, insFile.FullName));
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                Log.AddFailure(ex);
+                this.Log.AddFailure(ex);
                 return false;
             }
         }
@@ -238,12 +238,12 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         protected virtual void ProcessFile(InstallFile file, XPathNavigator nav)
         {
-            if (file != null && IsCorrectType(file.Type))
+            if (file != null && this.IsCorrectType(file.Type))
             {
-                Files.Add(file);
+                this.Files.Add(file);
 
                 //Add to the
-                Package.InstallerInfo.Files[file.FullName.ToLowerInvariant()] = file;
+                this.Package.InstallerInfo.Files[file.FullName.ToLowerInvariant()] = file;
             }
         }
 
@@ -273,7 +273,7 @@ namespace DotNetNuke.Services.Installer.Installers
             XPathNavigator pathNav = nav.SelectSingleNode("path");
             if (pathNav == null)
             {
-                fileName = DefaultPath;
+                fileName = this.DefaultPath;
             }
             else
             {
@@ -289,8 +289,8 @@ namespace DotNetNuke.Services.Installer.Installers
             
 			//Get the sourceFileName
 			string sourceFileName = Util.ReadElement(nav, "sourceFileName");
-            var file = new InstallFile(fileName, sourceFileName, Package.InstallerInfo);
-            if ((!string.IsNullOrEmpty(BasePath)) && (BasePath.StartsWith("app_code", StringComparison.InvariantCultureIgnoreCase) && file.Type == InstallFileType.Other))
+            var file = new InstallFile(fileName, sourceFileName, this.Package.InstallerInfo);
+            if ((!string.IsNullOrEmpty(this.BasePath)) && (this.BasePath.StartsWith("app_code", StringComparison.InvariantCultureIgnoreCase) && file.Type == InstallFileType.Other))
             {
                 file.Type = InstallFileType.AppCode;
             }
@@ -304,7 +304,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
                 else
                 {
-                    file.SetVersion(Package.Version);
+                    file.SetVersion(this.Package.Version);
                 }
                 
 				//Set the Action
@@ -313,15 +313,15 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     file.Action = strAction;
                 }
-                if (InstallMode == InstallMode.Install && checkFileExists && file.Action != "UnRegister")
+                if (this.InstallMode == InstallMode.Install && checkFileExists && file.Action != "UnRegister")
                 {
                     if (File.Exists(file.TempFileName))
                     {
-                        Log.AddInfo(string.Format(Util.FILE_Found, file.Path, file.Name));
+                        this.Log.AddInfo(string.Format(Util.FILE_Found, file.Path, file.Name));
                     }
                     else
                     {
-                        Log.AddFailure(Util.FILE_NotFound + " - " + file.TempFileName);
+                        this.Log.AddFailure(Util.FILE_NotFound + " - " + file.TempFileName);
                     }
                 }
             }
@@ -340,11 +340,11 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             if (File.Exists(installFile.BackupFileName))
             {
-                Util.RestoreFile(installFile, PhysicalBasePath, Log);
+                Util.RestoreFile(installFile, this.PhysicalBasePath, this.Log);
             }
             else
             {
-                DeleteFile(installFile);
+                this.DeleteFile(installFile);
             }
         }
 
@@ -356,7 +356,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         protected virtual void UnInstallFile(InstallFile unInstallFile)
         {
-            DeleteFile(unInstallFile);
+            this.DeleteFile(unInstallFile);
         }
 		
 		#endregion
@@ -374,15 +374,15 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-                foreach (InstallFile file in Files)
+                foreach (InstallFile file in this.Files)
                 {
-                    CommitFile(file);
+                    this.CommitFile(file);
                 }
-                Completed = true;
+                this.Completed = true;
             }
             catch (Exception ex)
             {
-                Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
+                this.Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
             }
         }
 
@@ -396,19 +396,19 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
                 bool bSuccess = true;
-                foreach (InstallFile file in Files)
+                foreach (InstallFile file in this.Files)
                 {
-                    bSuccess = InstallFile(file);
+                    bSuccess = this.InstallFile(file);
                     if (!bSuccess)
                     {
                         break;
                     }
                 }
-                Completed = bSuccess;
+                this.Completed = bSuccess;
             }
             catch (Exception ex)
             {
-                Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
+                this.Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
             }
         }
 
@@ -419,18 +419,18 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void ReadManifest(XPathNavigator manifestNav)
         {
-            XPathNavigator rootNav = manifestNav.SelectSingleNode(CollectionNodeName);
+            XPathNavigator rootNav = manifestNav.SelectSingleNode(this.CollectionNodeName);
             if (rootNav != null)
             {
                 XPathNavigator baseNav = rootNav.SelectSingleNode("basePath");
                 if (baseNav != null)
                 {
-                    BasePath = baseNav.Value;
+                    this.BasePath = baseNav.Value;
                 }
-                ReadCustomManifest(rootNav);
-                foreach (XPathNavigator nav in rootNav.Select(ItemNodeName))
+                this.ReadCustomManifest(rootNav);
+                foreach (XPathNavigator nav in rootNav.Select(this.ItemNodeName))
                 {
-                    ProcessFile(ReadManifestItem(nav, true), nav);
+                    this.ProcessFile(this.ReadManifestItem(nav, true), nav);
                 }
             }
         }
@@ -445,15 +445,15 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-                foreach (InstallFile file in Files)
+                foreach (InstallFile file in this.Files)
                 {
-                    RollbackFile(file);
+                    this.RollbackFile(file);
                 }
-                Completed = true;
+                this.Completed = true;
             }
             catch (Exception ex)
             {
-                Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
+                this.Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
             }
         }
 
@@ -466,15 +466,15 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-                foreach (InstallFile file in Files)
+                foreach (InstallFile file in this.Files)
                 {
-                    UnInstallFile(file);
+                    this.UnInstallFile(file);
                 }
-                Completed = true;
+                this.Completed = true;
             }
             catch (Exception ex)
             {
-                Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
+                this.Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
             }
         }
 		

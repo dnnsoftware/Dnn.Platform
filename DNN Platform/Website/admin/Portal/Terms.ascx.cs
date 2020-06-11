@@ -32,7 +32,7 @@ namespace DotNetNuke.Common.Controls
             
 			//CODEGEN: This method call is required by the Web Form Designer
             //Do not modify it using the code editor.
-			InitializeComponent();
+			this.InitializeComponent();
         }
 
         /// <summary>The Page_Load server event handler on this page is used to populate the role information for the page</summary>
@@ -41,9 +41,9 @@ namespace DotNetNuke.Common.Controls
             base.OnLoad(e);
             try
             {
-                if (!Page.IsPostBack)
+                if (!this.Page.IsPostBack)
                 {
-                    lblTerms.Text = Localization.GetSystemMessage(PortalSettings, "MESSAGE_PORTAL_TERMS");
+                    this.lblTerms.Text = Localization.GetSystemMessage(this.PortalSettings, "MESSAGE_PORTAL_TERMS");
                 }
             }
             catch (Exception exc) //Module failed to load

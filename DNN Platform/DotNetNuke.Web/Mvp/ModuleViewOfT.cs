@@ -24,14 +24,14 @@ namespace DotNetNuke.Web.Mvp
         {
             get
             {
-                if ((_model == null))
+                if ((this._model == null))
                 {
                     throw new InvalidOperationException(
                         "The Model property is currently null, however it should have been automatically initialized by the presenter. This most likely indicates that no presenter was bound to the control. Check your presenter bindings.");
                 }
-                return _model;
+                return this._model;
             }
-            set { _model = value; }
+            set { this._model = value; }
         }
 
         #endregion
@@ -40,12 +40,12 @@ namespace DotNetNuke.Web.Mvp
         {
             //Call the base class to load any View State
             base.LoadViewState(savedState);
-            AttributeBasedViewStateSerializer.DeSerialize(Model, ViewState);
+            AttributeBasedViewStateSerializer.DeSerialize(this.Model, this.ViewState);
         }
 
         protected override object SaveViewState()
         {
-            AttributeBasedViewStateSerializer.Serialize(Model, ViewState);
+            AttributeBasedViewStateSerializer.Serialize(this.Model, this.ViewState);
             //Call the base class to save the View State
             return base.SaveViewState();
         }

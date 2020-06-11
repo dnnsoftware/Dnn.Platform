@@ -43,7 +43,7 @@ namespace DotNetNuke.UI.WebControls
 
         public ImageCommandColumnTemplate(ListItemType itemType)
         {
-            ItemType = itemType;
+            this.ItemType = itemType;
         }
 		
 		#endregion
@@ -76,11 +76,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mEditMode;
+                return this.mEditMode;
             }
             set
             {
-                mEditMode = value;
+                this.mEditMode = value;
             }
         }
 
@@ -102,11 +102,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mItemType;
+                return this.mItemType;
             }
             set
             {
-                mItemType = value;
+                this.mItemType = value;
             }
         }
 
@@ -153,11 +153,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mShowImage;
+                return this.mShowImage;
             }
             set
             {
-                mShowImage = value;
+                this.mShowImage = value;
             }
         }
 
@@ -181,11 +181,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mVisible;
+                return this.mVisible;
             }
             set
             {
-                mVisible = value;
+                this.mVisible = value;
             }
         }
 
@@ -209,77 +209,77 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public void InstantiateIn(Control container)
         {
-            switch (ItemType)
+            switch (this.ItemType)
             {
                 case ListItemType.Item:
                 case ListItemType.AlternatingItem:
                 case ListItemType.SelectedItem:
                 case ListItemType.EditItem:
-                    if (EditMode == ImageCommandColumnEditMode.URL)
+                    if (this.EditMode == ImageCommandColumnEditMode.URL)
                     {
                         var hypLink = new HyperLink();
-                        hypLink.ToolTip = Text;
-                        if (!String.IsNullOrEmpty(ImageURL) && ShowImage)
+                        hypLink.ToolTip = this.Text;
+                        if (!String.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                         {
                             var img = new Image();
-                            if (DesignMode)
+                            if (this.DesignMode)
                             {
-                                img.ImageUrl = ImageURL.Replace("~/", "../../");
+                                img.ImageUrl = this.ImageURL.Replace("~/", "../../");
                             }
                             else
                             {
-                                img.ImageUrl = ImageURL;
+                                img.ImageUrl = this.ImageURL;
                             }
                             hypLink.Controls.Add(img);
-                            img.ToolTip = Text;
+                            img.ToolTip = this.Text;
                         }
                         else
                         {
-                            hypLink.Text = Text;
+                            hypLink.Text = this.Text;
                         }
-                        hypLink.DataBinding += Item_DataBinding;
+                        hypLink.DataBinding += this.Item_DataBinding;
                         container.Controls.Add(hypLink);
                     }
                     else
                     {
-                        if (!String.IsNullOrEmpty(ImageURL) && ShowImage)
+                        if (!String.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                         {
                             var colIcon = new ImageButton();
-                            if (DesignMode)
+                            if (this.DesignMode)
                             {
-                                colIcon.ImageUrl = ImageURL.Replace("~/", "../../");
+                                colIcon.ImageUrl = this.ImageURL.Replace("~/", "../../");
                             }
                             else
                             {
-                                colIcon.ImageUrl = ImageURL;
+                                colIcon.ImageUrl = this.ImageURL;
                             }
-                            colIcon.ToolTip = Text;
-                            if (!String.IsNullOrEmpty(OnClickJS))
+                            colIcon.ToolTip = this.Text;
+                            if (!String.IsNullOrEmpty(this.OnClickJS))
                             {
-                                ClientAPI.AddButtonConfirm(colIcon, OnClickJS);
+                                ClientAPI.AddButtonConfirm(colIcon, this.OnClickJS);
                             }
-                            colIcon.CommandName = CommandName;
-                            colIcon.DataBinding += Item_DataBinding;
+                            colIcon.CommandName = this.CommandName;
+                            colIcon.DataBinding += this.Item_DataBinding;
                             container.Controls.Add(colIcon);
                         }
-                        if (!String.IsNullOrEmpty(Text) && !ShowImage)
+                        if (!String.IsNullOrEmpty(this.Text) && !this.ShowImage)
                         {
                             var colLink = new LinkButton();
-                            colLink.ToolTip = Text;
-                            if (!String.IsNullOrEmpty(OnClickJS))
+                            colLink.ToolTip = this.Text;
+                            if (!String.IsNullOrEmpty(this.OnClickJS))
                             {
-                                ClientAPI.AddButtonConfirm(colLink, OnClickJS);
+                                ClientAPI.AddButtonConfirm(colLink, this.OnClickJS);
                             }
-                            colLink.CommandName = CommandName;
-                            colLink.Text = Text;
-                            colLink.DataBinding += Item_DataBinding;
+                            colLink.CommandName = this.CommandName;
+                            colLink.Text = this.Text;
+                            colLink.DataBinding += this.Item_DataBinding;
                             container.Controls.Add(colLink);
                         }
                     }
                     break;
                 case ListItemType.Footer:
                 case ListItemType.Header:
-                    container.Controls.Add(new LiteralControl(Text));
+                    container.Controls.Add(new LiteralControl(this.Text));
                     break;
             }
         }
@@ -299,13 +299,13 @@ namespace DotNetNuke.UI.WebControls
         private bool GetIsVisible(DataGridItem container)
         {
             bool isVisible;
-            if (!String.IsNullOrEmpty(VisibleField))
+            if (!String.IsNullOrEmpty(this.VisibleField))
             {
-                isVisible = Convert.ToBoolean(DataBinder.Eval(container.DataItem, VisibleField));
+                isVisible = Convert.ToBoolean(DataBinder.Eval(container.DataItem, this.VisibleField));
             }
             else
             {
-                isVisible = Visible;
+                isVisible = this.Visible;
             }
             return isVisible;
         }
@@ -319,9 +319,9 @@ namespace DotNetNuke.UI.WebControls
         private int GetValue(DataGridItem container)
         {
             int keyValue = Null.NullInteger;
-            if (!String.IsNullOrEmpty(KeyField))
+            if (!String.IsNullOrEmpty(this.KeyField))
             {
-                keyValue = Convert.ToInt32(DataBinder.Eval(container.DataItem, KeyField));
+                keyValue = Convert.ToInt32(DataBinder.Eval(container.DataItem, this.KeyField));
             }
             return keyValue;
         }
@@ -339,14 +339,14 @@ namespace DotNetNuke.UI.WebControls
         {
             DataGridItem container;
             int keyValue = Null.NullInteger;
-            if (EditMode == ImageCommandColumnEditMode.URL)
+            if (this.EditMode == ImageCommandColumnEditMode.URL)
             {
                 var hypLink = (HyperLink) sender;
                 container = (DataGridItem) hypLink.NamingContainer;
-                keyValue = GetValue(container);
-                if (!String.IsNullOrEmpty(NavigateURLFormatString))
+                keyValue = this.GetValue(container);
+                if (!String.IsNullOrEmpty(this.NavigateURLFormatString))
                 {
-                    hypLink.NavigateUrl = string.Format(NavigateURLFormatString, keyValue);
+                    hypLink.NavigateUrl = string.Format(this.NavigateURLFormatString, keyValue);
                 }
                 else
                 {
@@ -356,22 +356,22 @@ namespace DotNetNuke.UI.WebControls
             else
             {
 				//Bind Image Button
-                if (!String.IsNullOrEmpty(ImageURL) && ShowImage)
+                if (!String.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                 {
                     var colIcon = (ImageButton) sender;
                     container = (DataGridItem) colIcon.NamingContainer;
-                    keyValue = GetValue(container);
+                    keyValue = this.GetValue(container);
                     colIcon.CommandArgument = keyValue.ToString();
-                    colIcon.Visible = GetIsVisible(container);
+                    colIcon.Visible = this.GetIsVisible(container);
                 }
-                if (!String.IsNullOrEmpty(Text) && !ShowImage)
+                if (!String.IsNullOrEmpty(this.Text) && !this.ShowImage)
                 {
 					//Bind Link Button
                     var colLink = (LinkButton) sender;
                     container = (DataGridItem) colLink.NamingContainer;
-                    keyValue = GetValue(container);
+                    keyValue = this.GetValue(container);
                     colLink.CommandArgument = keyValue.ToString();
-                    colLink.Visible = GetIsVisible(container);
+                    colLink.Visible = this.GetIsVisible(container);
                 }
             }
         }

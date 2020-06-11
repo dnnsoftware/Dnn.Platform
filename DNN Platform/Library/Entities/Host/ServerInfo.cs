@@ -24,12 +24,12 @@ namespace DotNetNuke.Entities.Host
 
         public ServerInfo(DateTime created, DateTime lastactivity)
         {
-            IISAppName = Globals.IISAppName;
-            ServerName = Globals.ServerName;
-            ServerGroup = String.Empty;
-            CreatedDate = created;
-            LastActivityDate = lastactivity;
-            Enabled = true;
+            this.IISAppName = Globals.IISAppName;
+            this.ServerName = Globals.ServerName;
+            this.ServerGroup = String.Empty;
+            this.CreatedDate = created;
+            this.LastActivityDate = lastactivity;
+            this.Enabled = true;
         }
 
         public int ServerID { get; set; }
@@ -62,28 +62,28 @@ namespace DotNetNuke.Entities.Host
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
-            ServerID = Null.SetNullInteger(dr["ServerID"]);
-            IISAppName = Null.SetNullString(dr["IISAppName"]);
-            ServerName = Null.SetNullString(dr["ServerName"]);
-            Url = Null.SetNullString(dr["URL"]);
-            Enabled = Null.SetNullBoolean(dr["Enabled"]);
-            CreatedDate = Null.SetNullDateTime(dr["CreatedDate"]);
-            LastActivityDate = Null.SetNullDateTime(dr["LastActivityDate"]);
+            this.ServerID = Null.SetNullInteger(dr["ServerID"]);
+            this.IISAppName = Null.SetNullString(dr["IISAppName"]);
+            this.ServerName = Null.SetNullString(dr["ServerName"]);
+            this.Url = Null.SetNullString(dr["URL"]);
+            this.Enabled = Null.SetNullBoolean(dr["Enabled"]);
+            this.CreatedDate = Null.SetNullDateTime(dr["CreatedDate"]);
+            this.LastActivityDate = Null.SetNullDateTime(dr["LastActivityDate"]);
 
             var schema = dr.GetSchemaTable();
             if (schema != null)
             {
                 if (schema.Select("ColumnName = 'PingFailureCount'").Length > 0)
                 {
-                    PingFailureCount = Null.SetNullInteger(dr["PingFailureCount"]);
+                    this.PingFailureCount = Null.SetNullInteger(dr["PingFailureCount"]);
                 }
                 if (schema.Select("ColumnName = 'ServerGroup'").Length > 0)
                 {
-                    ServerGroup = Null.SetNullString(dr["ServerGroup"]);
+                    this.ServerGroup = Null.SetNullString(dr["ServerGroup"]);
                 }
                 if (schema.Select("ColumnName = 'UniqueId'").Length > 0)
                 {
-                    UniqueId = Null.SetNullString(dr["UniqueId"]);
+                    this.UniqueId = Null.SetNullString(dr["UniqueId"]);
                 }
             }
         }
@@ -98,11 +98,11 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                return ServerID;
+                return this.ServerID;
             }
             set
             {
-                ServerID = value;
+                this.ServerID = value;
             }
         }
 

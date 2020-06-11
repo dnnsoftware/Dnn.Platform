@@ -32,7 +32,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
         {
             try
             {
-                var configFileList = _controller.GetConfigFilesList().ToList();
+                var configFileList = this._controller.GetConfigFilesList().ToList();
 
                 var response = new
                 {
@@ -41,12 +41,12 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
                     TotalResults = configFileList.Count()
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -61,7 +61,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
         {
             try
             {
-                var fileContent = _controller.GetConfigFile(fileName);
+                var fileContent = this._controller.GetConfigFile(fileName);
 
                 var response = new
                 {
@@ -69,16 +69,16 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
                     FileContent = fileContent
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (ArgumentException exc)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -94,17 +94,17 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
         {
             try
             {
-                _controller.UpdateConfigFile(configFileDto.FileName, configFileDto.FileContent);
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                this._controller.UpdateConfigFile(configFileDto.FileName, configFileDto.FileContent);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (ArgumentException exc)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -120,13 +120,13 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
         {
             try
             {
-                _controller.MergeConfigFile(configFileDto.FileContent);
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                this._controller.MergeConfigFile(configFileDto.FileContent);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
     }

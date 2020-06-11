@@ -16,14 +16,14 @@ namespace DotNetNuke.Tests.Integration.Executers.Dto
 
         public int KeyID
         {
-            get { return Id; }
-            set { Id = value; }
+            get { return this.Id; }
+            set { this.Id = value; }
         }
 
         public void Fill(IDataReader dr)
         {
-            Id = Convert.ToInt32(dr["ModuleId"]);
-            Title = Convert.ToString(dr["ModuleTitle"]);
+            this.Id = Convert.ToInt32(dr["ModuleId"]);
+            this.Title = Convert.ToString(dr["ModuleTitle"]);
         }
     }
 }

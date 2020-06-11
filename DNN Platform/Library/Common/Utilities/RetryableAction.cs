@@ -78,43 +78,43 @@ namespace DotNetNuke.Common.Utilities.Internal
                 throw new ArgumentException(string.Format("delay must be less than {0} milliseconds", int.MaxValue));
             }
             
-            Action = action;
-            Description = description;
-            MaxRetries = maxRetries;
-            Delay = delay;
-            DelayMultiplier = delayMultiplier;
+            this.Action = action;
+            this.Description = description;
+            this.MaxRetries = maxRetries;
+            this.Delay = delay;
+            this.DelayMultiplier = delayMultiplier;
         }
 
         public void TryIt()
         {
-            var currentDelay = (int) Delay.TotalMilliseconds;
-            int retrysRemaining = MaxRetries;
+            var currentDelay = (int) this.Delay.TotalMilliseconds;
+            int retrysRemaining = this.MaxRetries;
 
             do
             {
                 try
                 {
-                    Action();
+                    this.Action();
                     if (Logger.IsTraceEnabled)
-                        Logger.TraceFormat("Action succeeded - {0}", Description);
+                        Logger.TraceFormat("Action succeeded - {0}", this.Description);
                     return;
                 }
                 catch(Exception)
                 {
                     if (retrysRemaining <= 0)
                     {
-                        Logger.WarnFormat("All retries of action failed - {0}", Description);
+                        Logger.WarnFormat("All retries of action failed - {0}", this.Description);
                         throw;
                     }
 
                     if (Logger.IsTraceEnabled)
-                        Logger.TraceFormat("Retrying action {0} - {1}", retrysRemaining, Description);
+                        Logger.TraceFormat("Retrying action {0} - {1}", retrysRemaining, this.Description);
                     SleepAction.Invoke(currentDelay);
 
                     const double epsilon = 0.0001;
-                    if(Math.Abs(DelayMultiplier - 1) > epsilon)
+                    if(Math.Abs(this.DelayMultiplier - 1) > epsilon)
                     {
-                        currentDelay = (int)(currentDelay * DelayMultiplier);
+                        currentDelay = (int)(currentDelay * this.DelayMultiplier);
                     }
                 }
                 retrysRemaining--;

@@ -19,7 +19,7 @@ namespace DotNetNuke.UI.WebControls
 
         public NavDataPageHierarchyData(DNNNode obj)
         {
-            m_objNode = obj;
+            this.m_objNode = obj;
         }
 
         /// <summary>
@@ -32,13 +32,13 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (String.IsNullOrEmpty(m_objNode.Image) || m_objNode.Image.StartsWith("/"))
+                if (String.IsNullOrEmpty(this.m_objNode.Image) || this.m_objNode.Image.StartsWith("/"))
                 {
-                    return m_objNode.Image;
+                    return this.m_objNode.Image;
                 }
                 else
                 {
-                    return PortalController.Instance.GetCurrentPortalSettings().HomeDirectory + m_objNode.Image;
+                    return PortalController.Instance.GetCurrentPortalSettings().HomeDirectory + this.m_objNode.Image;
                 }
             }
         }
@@ -55,7 +55,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return m_objNode.HasNodes;
+                return this.m_objNode.HasNodes;
             }
         }
 
@@ -69,7 +69,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return GetValuePath(m_objNode);
+                return this.GetValuePath(this.m_objNode);
             }
         }
 
@@ -83,7 +83,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return m_objNode;
+                return this.m_objNode;
             }
         }
 
@@ -109,9 +109,9 @@ namespace DotNetNuke.UI.WebControls
         public virtual IHierarchicalEnumerable GetChildren()
         {
             var objNodes = new NavDataPageHierarchicalEnumerable();
-            if (m_objNode != null)
+            if (this.m_objNode != null)
             {
-                foreach (DNNNode objNode in m_objNode.DNNNodes)
+                foreach (DNNNode objNode in this.m_objNode.DNNNodes)
                 {
                     objNodes.Add(new NavDataPageHierarchyData(objNode));
                 }
@@ -126,9 +126,9 @@ namespace DotNetNuke.UI.WebControls
         /// <remarks></remarks>
         public virtual IHierarchyData GetParent()
         {
-            if (m_objNode != null)
+            if (this.m_objNode != null)
             {
-                return new NavDataPageHierarchyData(m_objNode.ParentNode);
+                return new NavDataPageHierarchyData(this.m_objNode.ParentNode);
             }
             else
             {
@@ -150,7 +150,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return GetSafeValue(m_objNode.Text, "");
+                return this.GetSafeValue(this.m_objNode.Text, "");
             }
         }
 
@@ -164,7 +164,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return GetValuePath(m_objNode);
+                return this.GetValuePath(this.m_objNode);
             }
         }
 
@@ -178,7 +178,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return GetSafeValue(m_objNode.NavigateURL, "");
+                return this.GetSafeValue(this.m_objNode.NavigateURL, "");
             }
         }
 
@@ -192,7 +192,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return GetSafeValue(m_objNode.ToolTip, "");
+                return this.GetSafeValue(this.m_objNode.ToolTip, "");
             }
         }
 
@@ -200,7 +200,7 @@ namespace DotNetNuke.UI.WebControls
 
         public override string ToString()
         {
-            return m_objNode.Text;
+            return this.m_objNode.Text;
         }
 
         /// <summary>
@@ -231,14 +231,14 @@ namespace DotNetNuke.UI.WebControls
         private string GetValuePath(DNNNode objNode)
         {
             DNNNode objParent = objNode.ParentNode;
-            string strPath = GetSafeValue(objNode.Key, "");
+            string strPath = this.GetSafeValue(objNode.Key, "");
             do
             {
                 if (objParent == null || objParent.Level == -1)
                 {
                     break;
                 }
-                strPath = GetSafeValue(objParent.Key, "") + "\\" + strPath;
+                strPath = this.GetSafeValue(objParent.Key, "") + "\\" + strPath;
                 objParent = objParent.ParentNode;
             } while (true);
             return strPath;

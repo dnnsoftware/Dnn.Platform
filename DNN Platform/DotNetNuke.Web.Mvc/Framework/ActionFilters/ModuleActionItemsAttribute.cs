@@ -32,27 +32,27 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
             object instance;
 
-            if (Type == null)
+            if (this.Type == null)
             {
                 type = filterContext.Controller.GetType();
                 instance = controller;
             }
             else
             {
-                type = Type;
+                type = this.Type;
                 instance = Reflection.CreateInstance(type);
             }
 
-            if (String.IsNullOrEmpty(MethodName))
+            if (String.IsNullOrEmpty(this.MethodName))
             {
                 methodName = String.Format(MethodNameTemplate, filterContext.ActionDescriptor.ActionName);
             }
             else
             {
-                methodName = MethodName;
+                methodName = this.MethodName;
             }
 
-            var method = GetMethod(type, methodName);
+            var method = this.GetMethod(type, methodName);
 
             controller.ModuleActions = method.Invoke(instance, null) as ModuleActionCollection;
         }

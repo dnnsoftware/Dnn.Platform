@@ -11,10 +11,10 @@ namespace DotNetNuke.Services.Tokens
         public HtmlTokenReplace(Page page)
             : base(Scope.DefaultSettings)
         {
-            PropertySource["css"] = new CssPropertyAccess(page);
-            PropertySource["js"] = new JavaScriptPropertyAccess(page);
-            PropertySource["javascript"] = new JavaScriptPropertyAccess(page);
-            PropertySource["antiforgerytoken"] = new AntiForgeryTokenPropertyAccess();
+            this.PropertySource["css"] = new CssPropertyAccess(page);
+            this.PropertySource["js"] = new JavaScriptPropertyAccess(page);
+            this.PropertySource["javascript"] = new JavaScriptPropertyAccess(page);
+            this.PropertySource["antiforgerytoken"] = new AntiForgeryTokenPropertyAccess();
         }
     }
 }

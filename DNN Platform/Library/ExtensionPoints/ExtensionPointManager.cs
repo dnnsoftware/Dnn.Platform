@@ -71,12 +71,12 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEnumerable<IEditPageTabExtensionPoint> GetEditPageTabExtensionPoints(string module)
         {
-            return GetEditPageTabExtensionPoints(module, null);
+            return this.GetEditPageTabExtensionPoints(module, null);
         }
 
         public IEnumerable<IEditPageTabExtensionPoint> GetEditPageTabExtensionPoints(string module, string group)
         {
-            return from e in _editPageTabExtensionPoint
+            return from e in this._editPageTabExtensionPoint
                    where e.Metadata.Module == module
                         && (string.IsNullOrEmpty(@group) || e.Metadata.Group == @group)
                    orderby e.Value.Order
@@ -85,25 +85,25 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEnumerable<IToolBarButtonExtensionPoint> GetToolBarButtonExtensionPoints(string module)
         {
-            return GetToolBarButtonExtensionPoints(module, null);
+            return this.GetToolBarButtonExtensionPoints(module, null);
         }
 
         public IEnumerable<IToolBarButtonExtensionPoint> GetToolBarButtonExtensionPoints(string module, string group)
         {
-            return GetToolBarButtonExtensionPoints(module, group, new NoFilter());
+            return this.GetToolBarButtonExtensionPoints(module, group, new NoFilter());
         }
 
         public IEnumerable<IToolBarButtonExtensionPoint> GetToolBarButtonExtensionPoints(string module, string group, IExtensionPointFilter filter)
         {            
-            return from e in _toolbarButtonExtensionPoints
-                   where FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
+            return from e in this._toolbarButtonExtensionPoints
+                   where this.FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
                    orderby e.Value.Order
                    select e.Value;                
         }
 
         public IToolBarButtonExtensionPoint GetToolBarButtonExtensionPointFirstByPriority(string module, string name)
         {
-            return (from e in _toolbarButtonExtensionPoints
+            return (from e in this._toolbarButtonExtensionPoints
                     where e.Metadata.Module == module && e.Metadata.Name == name
                     orderby e.Metadata.Priority
                     select e.Value).FirstOrDefault();            
@@ -112,12 +112,12 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEnumerable<IScriptItemExtensionPoint> GetScriptItemExtensionPoints(string module)
         {
-            return GetScriptItemExtensionPoints(module, null);
+            return this.GetScriptItemExtensionPoints(module, null);
         }
 
         public IEnumerable<IScriptItemExtensionPoint> GetScriptItemExtensionPoints(string module, string group)
         {
-            return from e in _scripts
+            return from e in this._scripts
                 where e.Metadata.Module == module 
                     && (string.IsNullOrEmpty(@group) || e.Metadata.Group == @group)     
                 orderby e.Value.Order
@@ -126,12 +126,12 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEnumerable<IEditPagePanelExtensionPoint> GetEditPagePanelExtensionPoints(string module)
         {
-            return GetEditPagePanelExtensionPoints(module, null);
+            return this.GetEditPagePanelExtensionPoints(module, null);
         }
 
         public IEnumerable<IEditPagePanelExtensionPoint> GetEditPagePanelExtensionPoints(string module, string group)
         {
-            return from e in _editPagePanelExtensionPoints
+            return from e in this._editPagePanelExtensionPoints
                    where e.Metadata.Module == module
                         && (string.IsNullOrEmpty(@group) || e.Metadata.Group == @group)
                    orderby e.Value.Order
@@ -140,7 +140,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEditPagePanelExtensionPoint GetEditPagePanelExtensionPointFirstByPriority(string module, string name)
         {
-            return (from e in _editPagePanelExtensionPoints 
+            return (from e in this._editPagePanelExtensionPoints 
                     where e.Metadata.Module == module && e.Metadata.Name == name
                     orderby e.Metadata.Priority
                     select e.Value).FirstOrDefault(); 
@@ -148,12 +148,12 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEnumerable<IContextMenuItemExtensionPoint> GetContextMenuItemExtensionPoints(string module)
         {
-            return GetContextMenuItemExtensionPoints(module, null);
+            return this.GetContextMenuItemExtensionPoints(module, null);
         }
 
         public IEnumerable<IContextMenuItemExtensionPoint> GetContextMenuItemExtensionPoints(string module, string group)
         {            
-            return from e in _ctxMenuItemExtensionPoints
+            return from e in this._ctxMenuItemExtensionPoints
                    where e.Metadata.Module == module
                         && (string.IsNullOrEmpty(@group) || e.Metadata.Group == @group)
                    orderby e.Value.Order 
@@ -162,7 +162,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public IUserControlExtensionPoint GetUserControlExtensionPointFirstByPriority(string module, string name)
         {
-            return (from e in _userControlExtensionPoints
+            return (from e in this._userControlExtensionPoints
                     where e.Metadata.Module == module && e.Metadata.Name == name
                     orderby e.Metadata.Priority
                     select e.Value).FirstOrDefault();            
@@ -170,7 +170,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEnumerable<IUserControlExtensionPoint> GetUserControlExtensionPoints(string module, string group)
         {
-            return from e in _userControlExtensionPoints
+            return from e in this._userControlExtensionPoints
                 where e.Metadata.Module == module && e.Metadata.Group == @group
                 orderby e.Value.Order
                 select e.Value;
@@ -178,36 +178,36 @@ namespace DotNetNuke.ExtensionPoints
 
         public IEnumerable<IMenuItemExtensionPoint> GetMenuItemExtensionPoints(string module)
         {
-            return GetMenuItemExtensionPoints(module, null);
+            return this.GetMenuItemExtensionPoints(module, null);
         }
 
         public IEnumerable<IMenuItemExtensionPoint> GetMenuItemExtensionPoints(string module, string group)
         {
-            return GetMenuItemExtensionPoints(module, group, new NoFilter());
+            return this.GetMenuItemExtensionPoints(module, group, new NoFilter());
         }
 
         public IEnumerable<IMenuItemExtensionPoint> GetMenuItemExtensionPoints(string module, string group, IExtensionPointFilter filter)
         {
-            return from e in _menuItems
-                   where FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
+            return from e in this._menuItems
+                   where this.FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
                    orderby e.Value.Order 
                    select e.Value;
         }
         
         public IEnumerable<IGridColumnExtensionPoint> GetGridColumnExtensionPoints(string module)
         {
-            return GetGridColumnExtensionPoints(module, null);
+            return this.GetGridColumnExtensionPoints(module, null);
         }
 
         public IEnumerable<IGridColumnExtensionPoint> GetGridColumnExtensionPoints(string module, string group)
         {
-            return GetGridColumnExtensionPoints(module, group, new NoFilter());
+            return this.GetGridColumnExtensionPoints(module, group, new NoFilter());
         }
 
         public IEnumerable<IGridColumnExtensionPoint> GetGridColumnExtensionPoints(string module, string group, IExtensionPointFilter filter)
         {
-            return from e in _gridColumns
-                   where FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
+            return from e in this._gridColumns
+                   where this.FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
                    orderby e.Value.Order
                    select e.Value;
         }

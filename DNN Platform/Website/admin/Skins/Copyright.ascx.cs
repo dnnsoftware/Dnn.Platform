@@ -25,17 +25,17 @@ namespace DotNetNuke.UI.Skins.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (!String.IsNullOrEmpty(CssClass))
+            if (!String.IsNullOrEmpty(this.CssClass))
             {
-                lblCopyright.CssClass = CssClass;
+                this.lblCopyright.CssClass = this.CssClass;
             }
-            if (!String.IsNullOrEmpty(PortalSettings.FooterText))
+            if (!String.IsNullOrEmpty(this.PortalSettings.FooterText))
             {
-                lblCopyright.Text = PortalSettings.FooterText.Replace("[year]", DateTime.Now.ToString("yyyy"));
+                this.lblCopyright.Text = this.PortalSettings.FooterText.Replace("[year]", DateTime.Now.ToString("yyyy"));
             }
             else
             {
-                lblCopyright.Text = string.Format(Localization.GetString("Copyright", Localization.GetResourceFile(this, MyFileName)), DateTime.Now.Year, PortalSettings.PortalName);
+                this.lblCopyright.Text = string.Format(Localization.GetString("Copyright", Localization.GetResourceFile(this, MyFileName)), DateTime.Now.Year, this.PortalSettings.PortalName);
             }
         }
     }

@@ -78,31 +78,31 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         case "javaScriptLibrary":
                             break;
                         case "libraryName":
-                            LibraryName = reader.ReadElementContentAsString();
+                            this.LibraryName = reader.ReadElementContentAsString();
                             break;
                         case "objectName":
-                            ObjectName = reader.ReadElementContentAsString();
+                            this.ObjectName = reader.ReadElementContentAsString();
                             break;
                         case "fileName":
-                            FileName = reader.ReadElementContentAsString();
+                            this.FileName = reader.ReadElementContentAsString();
                             break;
                         case "preferredScriptLocation":
                             var location = reader.ReadElementContentAsString();
                             switch (location)
                             {
                                 case "BodyTop":
-                                    PreferredScriptLocation = ScriptLocation.BodyTop;
+                                    this.PreferredScriptLocation = ScriptLocation.BodyTop;
                                     break;
                                 case "BodyBottom":
-                                    PreferredScriptLocation = ScriptLocation.BodyBottom;
+                                    this.PreferredScriptLocation = ScriptLocation.BodyBottom;
                                     break;
                                 default:
-                                    PreferredScriptLocation = ScriptLocation.PageHead;
+                                    this.PreferredScriptLocation = ScriptLocation.PageHead;
                                     break;
                             }
                             break;
                         case "CDNPath":
-                            CDNPath = reader.ReadElementContentAsString();
+                            this.CDNPath = reader.ReadElementContentAsString();
                             break;
                         default:
                             if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
@@ -127,11 +127,11 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             writer.WriteStartElement("javaScriptLibrary");
 
             //write out properties
-            writer.WriteElementString("libraryName", LibraryName);
-            writer.WriteElementString("fileName", FileName);
-            writer.WriteElementString("objectName", ObjectName);
-            writer.WriteElementString("preferredScriptLocation", PreferredScriptLocation.ToString());
-            writer.WriteElementString("CDNPath", CDNPath);
+            writer.WriteElementString("libraryName", this.LibraryName);
+            writer.WriteElementString("fileName", this.FileName);
+            writer.WriteElementString("objectName", this.ObjectName);
+            writer.WriteElementString("preferredScriptLocation", this.PreferredScriptLocation.ToString());
+            writer.WriteElementString("CDNPath", this.CDNPath);
 
             //Write end of main element
             writer.WriteEndElement();

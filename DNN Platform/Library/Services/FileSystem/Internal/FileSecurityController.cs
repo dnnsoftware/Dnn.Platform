@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             Requires.NotNull("fileContent", fileContent);
 
             var extension = Path.GetExtension(fileName);
-            var checker = GetSecurityChecker(extension?.ToLowerInvariant().TrimStart('.'));
+            var checker = this.GetSecurityChecker(extension?.ToLowerInvariant().TrimStart('.'));
 
             //when there is no specfic file check for the file type, then treat it as validated.
             if (checker == null)
@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             }
 
             //use copy of the stream as we can't make sure how the check process the stream.
-            using (var copyStream = CopyStream(fileContent))
+            using (var copyStream = this.CopyStream(fileContent))
             {
                 return checker.Validate(copyStream);
             }

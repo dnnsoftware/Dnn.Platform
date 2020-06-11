@@ -19,17 +19,17 @@ namespace DotNetNuke.Entities.Users
 
         public MembershipPropertyAccess(UserInfo User)
         {
-            objUser = User;
+            this.objUser = User;
         }
 
         #region IPropertyAccess Members
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope CurrentScope, ref bool PropertyNotFound)
         {
-            UserMembership objMembership = objUser.Membership;
-            bool UserQueriesHimself = (objUser.UserID == AccessingUser.UserID && objUser.UserID != -1);
+            UserMembership objMembership = this.objUser.Membership;
+            bool UserQueriesHimself = (this.objUser.UserID == AccessingUser.UserID && this.objUser.UserID != -1);
             if (CurrentScope < Scope.DefaultSettings || (CurrentScope == Scope.DefaultSettings && !UserQueriesHimself) ||
-                ((CurrentScope != Scope.SystemMessages || objUser.IsSuperUser) 
+                ((CurrentScope != Scope.SystemMessages || this.objUser.IsSuperUser) 
                     && (propertyName.Equals("password", StringComparison.InvariantCultureIgnoreCase) || propertyName.Equals("passwordanswer", StringComparison.InvariantCultureIgnoreCase) || propertyName.Equals("passwordquestion", StringComparison.InvariantCultureIgnoreCase))
                 ))
             {
@@ -68,15 +68,15 @@ namespace DotNetNuke.Entities.Users
                 case "passwordquestion":
                     return PropertyAccess.FormatString(objMembership.PasswordQuestion, format);
                 case "passwordresettoken":
-                    return PropertyAccess.FormatString(Convert.ToString(objUser.PasswordResetToken), format);
+                    return PropertyAccess.FormatString(Convert.ToString(this.objUser.PasswordResetToken), format);
                 case "passwordresetexpiration":
-                    return PropertyAccess.FormatString(objUser.PasswordResetExpiration.ToString(formatProvider), format);
+                    return PropertyAccess.FormatString(this.objUser.PasswordResetExpiration.ToString(formatProvider), format);
                 case "updatepassword":
                     return (PropertyAccess.Boolean2LocalizedYesNo(objMembership.UpdatePassword, formatProvider));
                 case "username":
-                    return (PropertyAccess.FormatString(objUser.Username, format));
+                    return (PropertyAccess.FormatString(this.objUser.Username, format));
                 case "email":
-                    return (PropertyAccess.FormatString(objUser.Email, format));
+                    return (PropertyAccess.FormatString(this.objUser.Email, format));
             }
             return PropertyAccess.GetObjectProperty(objMembership, propertyName, format, formatProvider, ref PropertyNotFound);
         }

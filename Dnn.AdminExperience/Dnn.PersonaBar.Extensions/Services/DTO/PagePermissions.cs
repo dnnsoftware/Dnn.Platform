@@ -24,7 +24,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         {
             foreach (PermissionInfo permission in PermissionController.GetPermissionsByTab())
             {
-                PermissionDefinitions.Add(new Permission
+                this.PermissionDefinitions.Add(new Permission
                 {
                     PermissionId = permission.PermissionID,
                     PermissionName = permission.PermissionName,

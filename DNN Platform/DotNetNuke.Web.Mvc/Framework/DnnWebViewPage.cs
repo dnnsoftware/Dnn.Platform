@@ -17,10 +17,10 @@ namespace DotNetNuke.Web.Mvc.Framework
 
         public override void InitHelpers()
         {
-            Ajax = new AjaxHelper<object>(ViewContext, this);
-            Html = new DnnHtmlHelper<object>(ViewContext, this);
-            Url = new DnnUrlHelper(ViewContext);
-            Dnn = new DnnHelper<object>(ViewContext, this);
+            this.Ajax = new AjaxHelper<object>(this.ViewContext, this);
+            this.Html = new DnnHtmlHelper<object>(this.ViewContext, this);
+            this.Url = new DnnUrlHelper(this.ViewContext);
+            this.Dnn = new DnnHelper<object>(this.ViewContext, this);
         }
     }
 }

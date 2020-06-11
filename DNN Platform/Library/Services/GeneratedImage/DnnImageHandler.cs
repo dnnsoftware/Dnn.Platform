@@ -67,24 +67,24 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 var emptyBmp = new Bitmap(1, 1, PixelFormat.Format1bppIndexed);
                 emptyBmp.MakeTransparent();
-                ContentType = ImageFormat.Png;
+                this.ContentType = ImageFormat.Png;
 
-                if (string.IsNullOrEmpty(_defaultImageFile))
+                if (string.IsNullOrEmpty(this._defaultImageFile))
                 {
                     return emptyBmp;
                 }
 
                 try
                 {
-                    var fullFilePath = HttpContext.Current.Server.MapPath(_defaultImageFile);
+                    var fullFilePath = HttpContext.Current.Server.MapPath(this._defaultImageFile);
 
-                    if (!File.Exists(fullFilePath) || !IsAllowedFilePathImage(_defaultImageFile))
+                    if (!File.Exists(fullFilePath) || !IsAllowedFilePathImage(this._defaultImageFile))
                     {
                         return emptyBmp;
                     }
 
-                    var fi = new System.IO.FileInfo(_defaultImageFile);
-                    ContentType = GetImageFormat(fi.Extension);
+                    var fi = new System.IO.FileInfo(this._defaultImageFile);
+                    this.ContentType = GetImageFormat(fi.Extension);
 
                     using (var stream = new FileStream(fullFilePath, FileMode.Open))
                     {
@@ -102,26 +102,26 @@ namespace DotNetNuke.Services.GeneratedImage
         public DnnImageHandler()
         {
             // Set default settings here
-            EnableClientCache = true;
-            EnableServerCache = true;
-            AllowStandalone = true;
-            LogSecurity = false;
-            EnableIPCount = false;
-            ImageCompression = 95;
+            this.EnableClientCache = true;
+            this.EnableServerCache = true;
+            this.AllowStandalone = true;
+            this.LogSecurity = false;
+            this.EnableIPCount = false;
+            this.ImageCompression = 95;
             DiskImageStore.PurgeInterval = new TimeSpan(0, 3, 0);
-            IPCountPurgeInterval = new TimeSpan(0, 5, 0);
-            IPCountMaxCount = 500;
-            ClientCacheExpiration = new TimeSpan(0, 10, 0);
-            AllowedDomains = new[] { string.Empty };
+            this.IPCountPurgeInterval = new TimeSpan(0, 5, 0);
+            this.IPCountMaxCount = 500;
+            this.ClientCacheExpiration = new TimeSpan(0, 10, 0);
+            this.AllowedDomains = new[] { string.Empty };
 
             // read settings from web.config
-            ReadSettings();
+            this.ReadSettings();
         }
 
         // Add image generation logic here and return an instance of ImageInfo
         public override ImageInfo GenerateImage(NameValueCollection parameters)
         {
-            SetupCulture();
+            this.SetupCulture();
 
             //which type of image should be generated ?
             string mode = string.IsNullOrEmpty(parameters["mode"]) ? "profilepic" : parameters["mode"].ToLowerInvariant();
@@ -147,18 +147,18 @@ namespace DotNetNuke.Services.GeneratedImage
             string text = string.IsNullOrEmpty(parameters["text"]) ? "" : parameters["text"];
 
             // Default Image
-            _defaultImageFile = string.IsNullOrEmpty(parameters["NoImage"]) ? string.Empty : parameters["NoImage"];
+            this._defaultImageFile = string.IsNullOrEmpty(parameters["NoImage"]) ? string.Empty : parameters["NoImage"];
 
             // Do we override caching for this image ?
             if (!string.IsNullOrEmpty(parameters["NoCache"]))
             {
-                EnableClientCache = false;
-                EnableServerCache = false;
+                this.EnableClientCache = false;
+                this.EnableServerCache = false;
             }
 
             try
             {
-                ContentType = GetImageFormat(format);
+                this.ContentType = GetImageFormat(format);
 
                 switch (mode)
                 {
@@ -174,11 +174,11 @@ namespace DotNetNuke.Services.GeneratedImage
                         };
 
                         IFileInfo photoFile;
-                        ContentType = !uppTrans.TryGetPhotoFile(out photoFile)
+                        this.ContentType = !uppTrans.TryGetPhotoFile(out photoFile)
                             ? ImageFormat.Gif
                             : GetImageFormat(photoFile?.Extension ?? "jpg");
 
-                        ImageTransforms.Add(uppTrans);
+                        this.ImageTransforms.Add(uppTrans);
                         break;
 
                     case "placeholder":
@@ -195,7 +195,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         if (!string.IsNullOrEmpty(parameters["BackColor"]))
                             placeHolderTrans.BackColor = backColor;
 
-                        ImageTransforms.Add(placeHolderTrans);
+                        this.ImageTransforms.Add(placeHolderTrans);
                         break;
 
                     case "securefile":
@@ -206,17 +206,17 @@ namespace DotNetNuke.Services.GeneratedImage
                             var file = FileManager.Instance.GetFile(fileId);
                             if (file == null)
                             {
-                                return GetEmptyImageInfo();
+                                return this.GetEmptyImageInfo();
                             }
                             var folder = FolderManager.Instance.GetFolder(file.FolderId);
                             if (!secureFileTrans.DoesHaveReadFolderPermission(folder))
                             {
-                                return GetEmptyImageInfo();
+                                return this.GetEmptyImageInfo();
                             }
-                            ContentType = GetImageFormat(file.Extension);
+                            this.ContentType = GetImageFormat(file.Extension);
                             secureFileTrans.SecureFile = file;
-                            secureFileTrans.EmptyImage = EmptyImage;
-                            ImageTransforms.Add(secureFileTrans);
+                            secureFileTrans.EmptyImage = this.EmptyImage;
+                            this.ImageTransforms.Add(secureFileTrans);
                         }
                         break;
 
@@ -232,7 +232,7 @@ namespace DotNetNuke.Services.GeneratedImage
                             var fullFilePath = HttpContext.Current.Server.MapPath(filePath);
                             if (!File.Exists(fullFilePath) || !IsAllowedFilePathImage(filePath))
                             {
-                                return GetEmptyImageInfo();
+                                return this.GetEmptyImageInfo();
                             }
                             imgFile = fullFilePath;
                         }
@@ -242,7 +242,7 @@ namespace DotNetNuke.Services.GeneratedImage
                             // allow only site resources when using the url parameter
                             if (!url.StartsWith("http") || !UriBelongsToSite(new Uri(url)))
                             {
-                                return GetEmptyImageInfo();
+                                return this.GetEmptyImageInfo();
                             }
 
                             imgUrl = url;
@@ -261,10 +261,10 @@ namespace DotNetNuke.Services.GeneratedImage
                                 string[] parts = parameters["Url"].Split('.');
                                 extension = parts[parts.Length - 1].ToLowerInvariant();
                             }
-                            ContentType = GetImageFormat(extension);
+                            this.ContentType = GetImageFormat(extension);
                         }
                         var imageFileTrans = new ImageFileTransform { ImageFilePath = imgFile, ImageUrl = imgUrl};
-                        ImageTransforms.Add(imageFileTrans);
+                        this.ImageTransforms.Add(imageFileTrans);
                         break;
 
                     default:
@@ -306,14 +306,14 @@ namespace DotNetNuke.Services.GeneratedImage
                                 }
                             }
                         }
-                        ImageTransforms.Add(imageTransform);
+                        this.ImageTransforms.Add(imageTransform);
                         break;
                 }
             }
             catch (Exception ex)
             {
                 Exceptions.Exceptions.LogException(ex);
-                return GetEmptyImageInfo();
+                return this.GetEmptyImageInfo();
             }
 
             // Resize-Transformation
@@ -375,7 +375,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         MaxHeight = maxHeight,
                         Border = border
                     };
-                    ImageTransforms.Add(resizeTrans);
+                    this.ImageTransforms.Add(resizeTrans);
                 }
             }
 
@@ -387,7 +387,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 if (double.TryParse(parameters["Gamma"], NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out gamma) && gamma >= 0.2 && gamma <= 5)
                 {
                     gammaTrans.Gamma = gamma;
-                    ImageTransforms.Add(gammaTrans);
+                    this.ImageTransforms.Add(gammaTrans);
                 }
             }
 
@@ -399,7 +399,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 if (int.TryParse(parameters["Brightness"], out brightness))
                 {
                     brightnessTrans.Brightness = brightness;
-                    ImageTransforms.Add(brightnessTrans);
+                    this.ImageTransforms.Add(brightnessTrans);
                 }
             }
 
@@ -411,7 +411,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 if (double.TryParse(parameters["Contrast"], NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out contrast) && (contrast >= -100 && contrast <= 100))
                 {
                     contrastTrans.Contrast = contrast;
-                    ImageTransforms.Add(contrastTrans);
+                    this.ImageTransforms.Add(contrastTrans);
                 }
             }
 
@@ -419,14 +419,14 @@ namespace DotNetNuke.Services.GeneratedImage
             if (!string.IsNullOrEmpty(parameters["Greyscale"]))
             {
                 var greyscaleTrans = new ImageGreyScaleTransform();
-                ImageTransforms.Add(greyscaleTrans);
+                this.ImageTransforms.Add(greyscaleTrans);
             }
 
             // Invert
             if (!string.IsNullOrEmpty(parameters["Invert"]))
             {
                 var invertTrans = new ImageInvertTransform();
-                ImageTransforms.Add(invertTrans);
+                this.ImageTransforms.Add(invertTrans);
             }
 
             // Rotate / Flip 
@@ -435,7 +435,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 var rotateFlipTrans = new ImageRotateFlipTransform();
                 var rotateFlipType = (RotateFlipType)Enum.Parse(typeof(RotateFlipType), parameters["RotateFlip"]);
                 rotateFlipTrans.RotateFlip = rotateFlipType;
-                ImageTransforms.Add(rotateFlipTrans);
+                this.ImageTransforms.Add(rotateFlipTrans);
 
             }
 
@@ -443,14 +443,14 @@ namespace DotNetNuke.Services.GeneratedImage
             var dummy = new Bitmap(1, 1);
             using (var ms = new MemoryStream())
             {
-                dummy.Save(ms, ContentType);
+                dummy.Save(ms, this.ContentType);
                 return new ImageInfo(ms.ToArray());
             }
         }
 
         private ImageInfo GetEmptyImageInfo()
         {
-            return new ImageInfo(EmptyImage)
+            return new ImageInfo(this.EmptyImage)
             {
                 IsEmptyImage = true
             };
@@ -496,37 +496,37 @@ namespace DotNetNuke.Services.GeneratedImage
                 switch (name)
                 {
                     case "enableclientcache":
-                        EnableClientCache = Convert.ToBoolean(setting[1]);
+                        this.EnableClientCache = Convert.ToBoolean(setting[1]);
                         break;
                     case "clientcacheexpiration":
-                        ClientCacheExpiration = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+                        this.ClientCacheExpiration = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
                         break;
                     case "enableservercache":
-                        EnableServerCache = Convert.ToBoolean(setting[1]);
+                        this.EnableServerCache = Convert.ToBoolean(setting[1]);
                         break;
                     case "servercacheexpiration":
                         DiskImageStore.PurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
                         break;
                     case "allowstandalone":
-                        AllowStandalone = Convert.ToBoolean(setting[1]);
+                        this.AllowStandalone = Convert.ToBoolean(setting[1]);
                         break;
                     case "logsecurity":
-                        LogSecurity = Convert.ToBoolean(setting[1]);
+                        this.LogSecurity = Convert.ToBoolean(setting[1]);
                         break;
                     case "imagecompression":
-                        ImageCompression = Convert.ToInt32(setting[1]);
+                        this.ImageCompression = Convert.ToInt32(setting[1]);
                         break;
                     case "alloweddomains":
-                        AllowedDomains = setting[1].Split(',');
+                        this.AllowedDomains = setting[1].Split(',');
                         break;
                     case "enableipcount":
-                        EnableIPCount = Convert.ToBoolean(setting[1]);
+                        this.EnableIPCount = Convert.ToBoolean(setting[1]);
                         break;
                     case "ipcountmax":
-                        IPCountMaxCount = Convert.ToInt32(setting[1]);
+                        this.IPCountMaxCount = Convert.ToInt32(setting[1]);
                         break;
                     case "ipcountpurgeinterval":
-                        IPCountPurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+                        this.IPCountPurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
                         break;
                 }
             }

@@ -35,13 +35,13 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            if (CheckCancelled(exportJob)) return;
+            if (this.CheckCancelled(exportJob)) return;
             //Skip the export if all the folders have been processed already.
-            if (CheckPoint.Stage >= 1)
+            if (this.CheckPoint.Stage >= 1)
                 return;
 
             //Create Zip File to hold files
-            var skip = GetCurrentSkip();
+            var skip = this.GetCurrentSkip();
             var currentIndex = skip;
             var totalPackagesExported = 0;
             try
@@ -49,75 +49,75 @@ namespace Dnn.ExportImport.Components.Services
                 var packagesZipFileFormat = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipPackages}";
                 var packagesZipFile = string.Format(packagesZipFileFormat, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
 
-                if (CheckPoint.Stage == 0)
+                if (this.CheckPoint.Stage == 0)
                 {
                     var fromDate = exportDto.FromDateUtc ?? Constants.MinDbTime;
                     var toDate = exportDto.ToDateUtc;
 
                     //export skin packages.
                     var extensionPackagesBackupFolder = Path.Combine(Globals.ApplicationMapPath, DotNetNuke.Services.Installer.Util.BackupInstallPackageFolder);
-                    var skinPackageFiles = Directory.GetFiles(extensionPackagesBackupFolder).Where(f => IsValidPackage(f, fromDate, toDate)).ToList();
+                    var skinPackageFiles = Directory.GetFiles(extensionPackagesBackupFolder).Where(f => this.IsValidPackage(f, fromDate, toDate)).ToList();
                     var totalPackages = skinPackageFiles.Count;
 
                     //Update the total items count in the check points. This should be updated only once.
-                    CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalPackages : CheckPoint.TotalItems;
-                    if (CheckPointStageCallback(this)) return;
+                    this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalPackages : this.CheckPoint.TotalItems;
+                    if (this.CheckPointStageCallback(this)) return;
 
                     foreach (var file in skinPackageFiles)
                     {
-                        var exportPackage = GenerateExportPackage(file);
+                        var exportPackage = this.GenerateExportPackage(file);
                         if (exportPackage != null)
                         {
-                            Repository.CreateItem(exportPackage, null);
+                            this.Repository.CreateItem(exportPackage, null);
                             totalPackagesExported += 1;
                             var folderOffset = Path.GetDirectoryName(file)?.Length + 1;
 
                             CompressionUtil.AddFileToArchive(file, packagesZipFile, folderOffset.GetValueOrDefault(0));
                         }
 
-                        CheckPoint.ProcessedItems++;
-                        CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / totalPackages;
+                        this.CheckPoint.ProcessedItems++;
+                        this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalPackages;
                         currentIndex++;
                         //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
-                        if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
+                        if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this)) return;
                     }
 
-                    CheckPoint.Stage++;
+                    this.CheckPoint.Stage++;
                     currentIndex = 0;
-                    CheckPoint.Completed = true;
-                    CheckPoint.Progress = 100;
+                    this.CheckPoint.Completed = true;
+                    this.CheckPoint.Progress = 100;
                 }
             }
             finally
             {
-                CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
-                CheckPointStageCallback(this);
-                Result.AddSummary("Exported Packages", totalPackagesExported.ToString());
+                this.CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
+                this.CheckPointStageCallback(this);
+                this.Result.AddSummary("Exported Packages", totalPackagesExported.ToString());
             }
         }
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (CheckCancelled(importJob)) return;
+            if (this.CheckCancelled(importJob)) return;
             //Skip the export if all the templates have been processed already.
-            if (CheckPoint.Stage >= 1 || CheckPoint.Completed)
+            if (this.CheckPoint.Stage >= 1 || this.CheckPoint.Completed)
                 return;
 
-            _exportImportJob = importJob;
+            this._exportImportJob = importJob;
 
-            ProcessImportModulePackages(importDto);
+            this.ProcessImportModulePackages(importDto);
         }
 
         public override int GetImportTotal()
         {
-            return Repository.GetCount<ExportPackage>();
+            return this.Repository.GetCount<ExportPackage>();
         }
 
         private int GetCurrentSkip()
         {
-            if (!string.IsNullOrEmpty(CheckPoint.StageData))
+            if (!string.IsNullOrEmpty(this.CheckPoint.StageData))
             {
-                dynamic stageData = JsonConvert.DeserializeObject(CheckPoint.StageData);
+                dynamic stageData = JsonConvert.DeserializeObject(this.CheckPoint.StageData);
                 return Convert.ToInt32(stageData.skip) ?? 0;
             }
             return 0;
@@ -176,18 +176,18 @@ namespace Dnn.ExportImport.Components.Services
                      (existPackage.Version == version &&
                       collisionResolution == CollisionResolution.Ignore)))
                 {
-                    Result.AddLogEntry("Import Package ignores",
+                    this.Result.AddLogEntry("Import Package ignores",
                         $"{packageName} has higher version {existPackage.Version} installed, ignore import it");
                     return;
                 }
 
-                InstallPackage(filePath);
-                Result.AddLogEntry("Import Package completed", $"{packageName} version: {version}");
+                this.InstallPackage(filePath);
+                this.Result.AddLogEntry("Import Package completed", $"{packageName} version: {version}");
 
             }
             catch (Exception ex)
             {
-                Result.AddLogEntry("Import Package error",
+                this.Result.AddLogEntry("Import Package error",
                     $"{exportPackage.PackageName} : {exportPackage.Version} - {ex.Message}");
                 Logger.Error(ex);
             }
@@ -195,36 +195,36 @@ namespace Dnn.ExportImport.Components.Services
 
         private void ProcessImportModulePackages(ImportDto importDto)
         {
-            var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{_exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
+            var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{this._exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
             var tempFolder = $"{Path.GetDirectoryName(packageZipFile)}\\{DateTime.Now.Ticks}";
             if (File.Exists(packageZipFile))
             {
                 CompressionUtil.UnZipArchive(packageZipFile, tempFolder);
-                var exportPackages = Repository.GetAllItems<ExportPackage>().ToList();
+                var exportPackages = this.Repository.GetAllItems<ExportPackage>().ToList();
 
-                CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? exportPackages.Count : CheckPoint.TotalItems;
-                if (CheckPointStageCallback(this)) return;
+                this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? exportPackages.Count : this.CheckPoint.TotalItems;
+                if (this.CheckPointStageCallback(this)) return;
 
-                if (CheckPoint.Stage == 0)
+                if (this.CheckPoint.Stage == 0)
                 {
                     try
                     {
                         foreach (var exportPackage in exportPackages)
                         {
 
-                            ProcessImportModulePackage(exportPackage, tempFolder, importDto.CollisionResolution);
+                            this.ProcessImportModulePackage(exportPackage, tempFolder, importDto.CollisionResolution);
 
-                            CheckPoint.ProcessedItems++;
-                            CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / exportPackages.Count;
-                            if (CheckPointStageCallback(this)) break;
+                            this.CheckPoint.ProcessedItems++;
+                            this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / exportPackages.Count;
+                            if (this.CheckPointStageCallback(this)) break;
 
                         }
-                        CheckPoint.Stage++;
-                        CheckPoint.Completed = true;
+                        this.CheckPoint.Stage++;
+                        this.CheckPoint.Completed = true;
                     }
                     finally
                     {
-                        CheckPointStageCallback(this);
+                        this.CheckPointStageCallback(this);
                         try
                         {
                             FileSystemUtils.DeleteFolderRecursive(tempFolder);
@@ -238,9 +238,9 @@ namespace Dnn.ExportImport.Components.Services
             }
             else
             {
-                CheckPoint.Completed = true;
-                CheckPointStageCallback(this);
-                Result.AddLogEntry("PackagesFileNotFound", "Packages file not found. Skipping packages import", ReportLevel.Warn);
+                this.CheckPoint.Completed = true;
+                this.CheckPointStageCallback(this);
+                this.Result.AddLogEntry("PackagesFileNotFound", "Packages file not found. Skipping packages import", ReportLevel.Warn);
             }
         }
 
@@ -269,7 +269,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 catch (Exception ex)
                 {
-                    Result.AddLogEntry("Import Package error", $"{filePath}. ERROR: {ex.Message}");
+                    this.Result.AddLogEntry("Import Package error", $"{filePath}. ERROR: {ex.Message}");
                     Logger.Error(ex);
                 }
             }

@@ -22,8 +22,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
 
         public LocalizationProgress Reset()
         {
-            InProgress = false;
-            CurrentOperationText = "";
+            this.InProgress = false;
+            this.CurrentOperationText = "";
             return this;
         }
     }

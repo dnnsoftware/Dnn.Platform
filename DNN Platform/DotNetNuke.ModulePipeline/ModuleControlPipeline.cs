@@ -44,23 +44,23 @@ namespace DotNetNuke.ModulePipeline
             MvcModuleControlFactory mvc,
             ReflectedModuleControlFactory fallthrough)
         {
-            _controlFactories = new Dictionary<string, IModuleControlFactory>(StringComparer.OrdinalIgnoreCase);
-            _controlFactories.Add(".ascx", webforms);
-            _controlFactories.Add(".htm", html5);
-            _controlFactories.Add(".html", html5);
-            _controlFactories.Add(".cshtml", razor3);
-            _controlFactories.Add(".vbhtml", razor3);
-            _controlFactories.Add(".mvc", mvc);
-            _controlFactories.Add("default", fallthrough);
+            this._controlFactories = new Dictionary<string, IModuleControlFactory>(StringComparer.OrdinalIgnoreCase);
+            this._controlFactories.Add(".ascx", webforms);
+            this._controlFactories.Add(".htm", html5);
+            this._controlFactories.Add(".html", html5);
+            this._controlFactories.Add(".cshtml", razor3);
+            this._controlFactories.Add(".vbhtml", razor3);
+            this._controlFactories.Add(".mvc", mvc);
+            this._controlFactories.Add("default", fallthrough);
         }
 
 #if NET472
         private IModuleControlFactory GetModuleControlFactory(string controlSrc)
         {
             string extension = Path.GetExtension(controlSrc);
-            _controlFactories.TryGetValue(extension, out IModuleControlFactory factory);
+            this._controlFactories.TryGetValue(extension, out IModuleControlFactory factory);
 
-            return factory ?? _controlFactories["default"];
+            return factory ?? this._controlFactories["default"];
         }
 
         public Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlKey, string controlSrc)
@@ -69,7 +69,7 @@ namespace DotNetNuke.ModulePipeline
                 TraceLogger.Debug($"ModuleControlFactory.LoadModuleControl Start (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
 
             Control control = null;
-            IModuleControlFactory controlFactory = GetModuleControlFactory(controlSrc);
+            IModuleControlFactory controlFactory = this.GetModuleControlFactory(controlSrc);
 
             if (controlFactory != null)
             {
@@ -100,7 +100,7 @@ namespace DotNetNuke.ModulePipeline
             if (TraceLogger.IsDebugEnabled)
                 TraceLogger.Debug($"ModuleControlFactory.LoadModuleControl Start (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
             Control control = null;
-            IModuleControlFactory controlFactory = GetModuleControlFactory(moduleConfiguration.ModuleControl.ControlSrc);
+            IModuleControlFactory controlFactory = this.GetModuleControlFactory(moduleConfiguration.ModuleControl.ControlSrc);
 
             if (controlFactory != null)
             {
@@ -132,7 +132,7 @@ namespace DotNetNuke.ModulePipeline
                 TraceLogger.Debug($"ModuleControlFactory.LoadSettingsControl Start (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
 
             Control control = null;
-            IModuleControlFactory controlFactory = GetModuleControlFactory(controlSrc);
+            IModuleControlFactory controlFactory = this.GetModuleControlFactory(controlSrc);
 
             if (controlFactory != null)
             {
@@ -171,7 +171,7 @@ namespace DotNetNuke.ModulePipeline
 
         public Control CreateModuleControl(ModuleInfo moduleConfiguration)
         {
-            IModuleControlFactory factory = GetModuleControlFactory(moduleConfiguration.ModuleControl.ControlSrc);
+            IModuleControlFactory factory = this.GetModuleControlFactory(moduleConfiguration.ModuleControl.ControlSrc);
             return factory.CreateModuleControl(moduleConfiguration);
         }
 #endif

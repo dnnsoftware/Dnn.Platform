@@ -96,18 +96,18 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("sourceFolder", sourceFolder);
             Requires.NotNull("destinationFolder", destinationFolder);
 
-            using (var fileContent = GetFileStream(sourceFolder, fileName))
+            using (var fileContent = this.GetFileStream(sourceFolder, fileName))
             {
                 if (!fileContent.CanSeek)
                 {
                     using (var seekableStream = FileManager.Instance.GetSeekableStream(fileContent))
                     {
-                        AddFile(destinationFolder, fileName, seekableStream);
+                        this.AddFile(destinationFolder, fileName, seekableStream);
                     }
                 }
                 else
                 {
-                    AddFile(destinationFolder, fileName, fileContent);
+                    this.AddFile(destinationFolder, fileName, fileContent);
                 }
             }
         }
@@ -117,7 +117,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("fileName", fileName);
 
-            UpdateFile(folder, fileName, content);
+            this.UpdateFile(folder, fileName, content);
         }
 
         public override void DeleteFile(IFileInfo file)
@@ -166,7 +166,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("file", file);
 
-            return GetFileStreamInternal(DataProvider.Instance().GetFileContent(file.FileId));
+            return this.GetFileStreamInternal(DataProvider.Instance().GetFileContent(file.FileId));
         }
 
         public override Stream GetFileStream(IFolderInfo folder, string fileName)
@@ -176,14 +176,14 @@ namespace DotNetNuke.Services.FileSystem
 
             var file = FileManager.Instance.GetFile(folder, fileName, true);
 
-            return file != null ? GetFileStreamInternal(DataProvider.Instance().GetFileContent(file.FileId)) : null;
+            return file != null ? this.GetFileStreamInternal(DataProvider.Instance().GetFileContent(file.FileId)) : null;
         }
 
         public override Stream GetFileStream(IFolderInfo folder, IFileInfo file, int version)
         {
             Requires.NotNull("file", file);
 
-            return file != null ? GetFileStreamInternal(DataProvider.Instance().GetFileVersionContent(file.FileId, version)) : null;
+            return file != null ? this.GetFileStreamInternal(DataProvider.Instance().GetFileVersionContent(file.FileId, version)) : null;
         }
 
         public override string GetFolderProviderIconPath()
@@ -238,7 +238,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("file", file);
 
-            UpdateFileInternal(file.FileId, content);
+            this.UpdateFileInternal(file.FileId, content);
         }
 
         public override void UpdateFile(IFolderInfo folder, string fileName, Stream content)
@@ -250,7 +250,7 @@ namespace DotNetNuke.Services.FileSystem
 
             if (file == null) return;
 
-            UpdateFileInternal(file.FileId, content);
+            this.UpdateFileInternal(file.FileId, content);
         }
 
         #endregion

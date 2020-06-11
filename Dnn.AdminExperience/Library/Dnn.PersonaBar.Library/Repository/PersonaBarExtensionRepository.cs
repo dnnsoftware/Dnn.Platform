@@ -34,7 +34,7 @@ namespace Dnn.PersonaBar.Library.Repository
 
         public void SaveExtension(PersonaBarExtension extension)
         {
-            _dataService.SavePersonaBarExtension(
+            this._dataService.SavePersonaBarExtension(
                 extension.Identifier,
                 extension.MenuId,
                 extension.FolderName,
@@ -46,19 +46,19 @@ namespace Dnn.PersonaBar.Library.Repository
                 UserController.Instance.GetCurrentUserInfo().UserID
                 );
 
-            ClearCache();
+            this.ClearCache();
         }
 
         public void DeleteExtension(PersonaBarExtension extension)
         {
-            DeleteExtension(extension.Identifier);
+            this.DeleteExtension(extension.Identifier);
         }
 
         public void DeleteExtension(string identifier)
         {
-            _dataService.DeletePersonaBarExtension(identifier);
+            this._dataService.DeletePersonaBarExtension(identifier);
 
-            ClearCache();
+            this.ClearCache();
         }
 
         public IList<PersonaBarExtension> GetExtensions()
@@ -71,7 +71,7 @@ namespace Dnn.PersonaBar.Library.Repository
                     extensions = DataCache.GetCache<IList<PersonaBarExtension>>(PersonaBarExtensionsCacheKey);
                     if (extensions == null)
                     {
-                        extensions = CBO.FillCollection<PersonaBarExtension>(_dataService.GetPersonaBarExtensions())
+                        extensions = CBO.FillCollection<PersonaBarExtension>(this._dataService.GetPersonaBarExtensions())
                             .OrderBy(e => e.Order).ToList();
 
                         DataCache.SetCache(PersonaBarExtensionsCacheKey, extensions);
@@ -84,7 +84,7 @@ namespace Dnn.PersonaBar.Library.Repository
 
         public IList<PersonaBarExtension> GetExtensions(int menuId)
         {
-            return GetExtensions().Where(t => t.MenuId == menuId).ToList();
+            return this.GetExtensions().Where(t => t.MenuId == menuId).ToList();
         }
     }
 }

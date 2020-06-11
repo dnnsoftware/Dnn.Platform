@@ -60,11 +60,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _bodyCssClass;
+                return this._bodyCssClass;
             }
             set
             {
-                _bodyCssClass = value;
+                this._bodyCssClass = value;
             }
         }
 
@@ -72,11 +72,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _cssClass;
+                return this._cssClass;
             }
             set
             {
-                _cssClass = value;
+                this._cssClass = value;
             }
         }
 
@@ -84,11 +84,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _headerCssClass;
+                return this._headerCssClass;
             }
             set
             {
-                _headerCssClass = value;
+                this._headerCssClass = value;
             }
         }
 
@@ -96,11 +96,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _headerTextCssClass;
+                return this._headerTextCssClass;
             }
             set
             {
-                _headerTextCssClass = value;
+                this._headerTextCssClass = value;
             }
         }
 
@@ -108,11 +108,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _headerText;
+                return this._headerText;
             }
             set
             {
-                _headerText = value;
+                this._headerText = value;
             }
         }
 
@@ -120,11 +120,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _includeHeader;
+                return this._includeHeader;
             }
             set
             {
-                _includeHeader = value;
+                this._includeHeader = value;
             }
         }
 
@@ -132,11 +132,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _nodeChildCssClass;
+                return this._nodeChildCssClass;
             }
             set
             {
-                _nodeChildCssClass = value;
+                this._nodeChildCssClass = value;
             }
         }
 
@@ -144,11 +144,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _nodeClosedImage;
+                return this._nodeClosedImage;
             }
             set
             {
-                _nodeClosedImage = value;
+                this._nodeClosedImage = value;
             }
         }
 
@@ -156,11 +156,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _nodeCollapseImage;
+                return this._nodeCollapseImage;
             }
             set
             {
-                _nodeCollapseImage = value;
+                this._nodeCollapseImage = value;
             }
         }
 
@@ -168,11 +168,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _nodeCssClass;
+                return this._nodeCssClass;
             }
             set
             {
-                _nodeCssClass = value;
+                this._nodeCssClass = value;
             }
         }
 
@@ -180,11 +180,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _nodeExpandImage;
+                return this._nodeExpandImage;
             }
             set
             {
-                _nodeExpandImage = value;
+                this._nodeExpandImage = value;
             }
         }
 
@@ -192,11 +192,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _nodeLeafImage;
+                return this._nodeLeafImage;
             }
             set
             {
-                _nodeLeafImage = value;
+                this._nodeLeafImage = value;
             }
         }
 
@@ -204,11 +204,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _nodeOpenImage;
+                return this._nodeOpenImage;
             }
             set
             {
-                _nodeOpenImage = value;
+                this._nodeOpenImage = value;
             }
         }
 
@@ -216,11 +216,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _nodeOverCssClass;
+                return this._nodeOverCssClass;
             }
             set
             {
-                _nodeOverCssClass = value;
+                this._nodeOverCssClass = value;
             }
         }
 
@@ -228,11 +228,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _nodeSelectedCssClass;
+                return this._nodeSelectedCssClass;
             }
             set
             {
-                _nodeSelectedCssClass = value;
+                this._nodeSelectedCssClass = value;
             }
         }
 
@@ -242,11 +242,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _resourceKey;
+                return this._resourceKey;
             }
             set
             {
-                _resourceKey = value;
+                this._resourceKey = value;
             }
         }
 
@@ -254,11 +254,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _treeCssClass;
+                return this._treeCssClass;
             }
             set
             {
-                _treeCssClass = value;
+                this._treeCssClass = value;
             }
         }
 
@@ -266,11 +266,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _treeGoUpImage;
+                return this._treeGoUpImage;
             }
             set
             {
-                _treeGoUpImage = value;
+                this._treeGoUpImage = value;
             }
         }
 
@@ -278,11 +278,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _treeIndentWidth;
+                return this._treeIndentWidth;
             }
             set
             {
-                _treeIndentWidth = value;
+                this._treeIndentWidth = value;
             }
         }
 
@@ -290,11 +290,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _width;
+                return this._width;
             }
             set
             {
-                _width = value;
+                this._width = value;
             }
         }
 
@@ -317,13 +317,13 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             bool blnAddUpNode = false;
             DNNNodeCollection objNodes;
-            objNodes = GetNavigationNodes(objNode);
+            objNodes = this.GetNavigationNodes(objNode);
 
             if (blnPODRequest == false)
             {
-                if (!string.IsNullOrEmpty(Level))
+                if (!string.IsNullOrEmpty(this.Level))
                 {
-                    switch (Level.ToLowerInvariant())
+                    switch (this.Level.ToLowerInvariant())
                     {
                         case "root":
                             break;
@@ -331,7 +331,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             blnAddUpNode = true;
                             break;
                         default:
-                            if (Level.ToLowerInvariant() != "root" && PortalSettings.ActiveTab.BreadCrumbs.Count > 1)
+                            if (this.Level.ToLowerInvariant() != "root" && this.PortalSettings.ActiveTab.BreadCrumbs.Count > 1)
                             {
                                 blnAddUpNode = true;
                             }
@@ -344,25 +344,25 @@ namespace DotNetNuke.UI.Skins.Controls
             if (blnAddUpNode)
             {
                 var objParentNode = new DNNNode();
-                objParentNode.ID = PortalSettings.ActiveTab.ParentId.ToString();
+                objParentNode.ID = this.PortalSettings.ActiveTab.ParentId.ToString();
                 objParentNode.Key = objParentNode.ID;
                 objParentNode.Text = Localization.GetString("Parent", Localization.GetResourceFile(this, MyFileName));
                 objParentNode.ToolTip = Localization.GetString("GoUp", Localization.GetResourceFile(this, MyFileName));
-                objParentNode.CSSClass = NodeCssClass;
-                objParentNode.Image = ResolveUrl(TreeGoUpImage);
+                objParentNode.CSSClass = this.NodeCssClass;
+                objParentNode.Image = this.ResolveUrl(this.TreeGoUpImage);
                 objParentNode.ClickAction = eClickAction.PostBack;
                 objNodes.InsertBefore(0, objParentNode);
             }
             foreach (DNNNode objPNode in objNodes) //clean up to do in processnodes???
             {
-                ProcessNodes(objPNode);
+                this.ProcessNodes(objPNode);
             }
-            Bind(objNodes);
+            this.Bind(objNodes);
 
             //technically this should always be a dnntree.  If using dynamic controls Nav.ascx should be used.  just being safe.
-            if (Control.NavigationControl is DnnTree)
+            if (this.Control.NavigationControl is DnnTree)
             {
-                var objTree = (DnnTree) Control.NavigationControl;
+                var objTree = (DnnTree) this.Control.NavigationControl;
                 if (objTree.SelectedTreeNodes.Count > 0)
                 {
                     var objTNode = (TreeNode) objTree.SelectedTreeNodes[1];
@@ -381,15 +381,15 @@ namespace DotNetNuke.UI.Skins.Controls
             }
             else if (objParent.HasNodes) //imagepath applied in provider...
             {
-                objParent.Image = ResolveUrl(NodeClosedImage);
+                objParent.Image = this.ResolveUrl(this.NodeClosedImage);
             }
             else
             {
-                objParent.Image = ResolveUrl(NodeLeafImage);
+                objParent.Image = this.ResolveUrl(this.NodeLeafImage);
             }
             foreach (DNNNode objNode in objParent.DNNNodes)
             {
-                ProcessNodes(objNode);
+                this.ProcessNodes(objNode);
             }
         }
 
@@ -402,53 +402,53 @@ namespace DotNetNuke.UI.Skins.Controls
         /// -----------------------------------------------------------------------------
         private void InitializeTree()
         {
-            if (String.IsNullOrEmpty(PathImage))
+            if (String.IsNullOrEmpty(this.PathImage))
             {
-                PathImage = PortalSettings.HomeDirectory;
+                this.PathImage = this.PortalSettings.HomeDirectory;
             }
-            if (String.IsNullOrEmpty(PathSystemImage))
+            if (String.IsNullOrEmpty(this.PathSystemImage))
             {
-                PathSystemImage = ResolveUrl("~/images/");
+                this.PathSystemImage = this.ResolveUrl("~/images/");
             }
-            if (String.IsNullOrEmpty(IndicateChildImageRoot))
+            if (String.IsNullOrEmpty(this.IndicateChildImageRoot))
             {
-                IndicateChildImageRoot = ResolveUrl(NodeExpandImage);
+                this.IndicateChildImageRoot = this.ResolveUrl(this.NodeExpandImage);
             }
-            if (String.IsNullOrEmpty(IndicateChildImageSub))
+            if (String.IsNullOrEmpty(this.IndicateChildImageSub))
             {
-                IndicateChildImageSub = ResolveUrl(NodeExpandImage);
+                this.IndicateChildImageSub = this.ResolveUrl(this.NodeExpandImage);
             }
-            if (String.IsNullOrEmpty(IndicateChildImageExpandedRoot))
+            if (String.IsNullOrEmpty(this.IndicateChildImageExpandedRoot))
             {
-                IndicateChildImageExpandedRoot = ResolveUrl(NodeCollapseImage);
+                this.IndicateChildImageExpandedRoot = this.ResolveUrl(this.NodeCollapseImage);
             }
-            if (String.IsNullOrEmpty(IndicateChildImageExpandedSub))
+            if (String.IsNullOrEmpty(this.IndicateChildImageExpandedSub))
             {
-                IndicateChildImageExpandedSub = ResolveUrl(NodeCollapseImage);
+                this.IndicateChildImageExpandedSub = this.ResolveUrl(this.NodeCollapseImage);
             }
-            if (String.IsNullOrEmpty(CSSNode))
+            if (String.IsNullOrEmpty(this.CSSNode))
             {
-                CSSNode = NodeChildCssClass;
+                this.CSSNode = this.NodeChildCssClass;
             }
-            if (String.IsNullOrEmpty(CSSNodeRoot))
+            if (String.IsNullOrEmpty(this.CSSNodeRoot))
             {
-                CSSNodeRoot = NodeCssClass;
+                this.CSSNodeRoot = this.NodeCssClass;
             }
-            if (String.IsNullOrEmpty(CSSNodeHover))
+            if (String.IsNullOrEmpty(this.CSSNodeHover))
             {
-                CSSNodeHover = NodeOverCssClass;
+                this.CSSNodeHover = this.NodeOverCssClass;
             }
-            if (String.IsNullOrEmpty(CSSNodeSelectedRoot))
+            if (String.IsNullOrEmpty(this.CSSNodeSelectedRoot))
             {
-                CSSNodeSelectedRoot = NodeSelectedCssClass;
+                this.CSSNodeSelectedRoot = this.NodeSelectedCssClass;
             }
-            if (String.IsNullOrEmpty(CSSNodeSelectedSub))
+            if (String.IsNullOrEmpty(this.CSSNodeSelectedSub))
             {
-                CSSNodeSelectedSub = NodeSelectedCssClass;
+                this.CSSNodeSelectedSub = this.NodeSelectedCssClass;
             }
-            if (String.IsNullOrEmpty(CSSControl))
+            if (String.IsNullOrEmpty(this.CSSControl))
             {
-                CSSControl = TreeCssClass;
+                this.CSSControl = this.TreeCssClass;
             }
         }
 
@@ -470,69 +470,69 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnLoad(e);
             try
             {
-                if (Page.IsPostBack == false)
+                if (this.Page.IsPostBack == false)
                 {
-                    BuildTree(null, false);
+                    this.BuildTree(null, false);
 					
 					//Main Table Properties
-                    if (!String.IsNullOrEmpty(Width))
+                    if (!String.IsNullOrEmpty(this.Width))
                     {
-                        tblMain.Width = Width;
+                        this.tblMain.Width = this.Width;
                     }
 					
-                    if (!String.IsNullOrEmpty(CssClass))
+                    if (!String.IsNullOrEmpty(this.CssClass))
                     {
-                        tblMain.Attributes.Add("class", CssClass);
+                        this.tblMain.Attributes.Add("class", this.CssClass);
                     }
 					
 					//Header Properties
-                    if (!String.IsNullOrEmpty(HeaderCssClass))
+                    if (!String.IsNullOrEmpty(this.HeaderCssClass))
                     {
-                        cellHeader.Attributes.Add("class", HeaderCssClass);
+                        this.cellHeader.Attributes.Add("class", this.HeaderCssClass);
                     }
 					
-                    if (!String.IsNullOrEmpty(HeaderTextCssClass))
+                    if (!String.IsNullOrEmpty(this.HeaderTextCssClass))
                     {
-                        lblHeader.CssClass = HeaderTextCssClass;
+                        this.lblHeader.CssClass = this.HeaderTextCssClass;
                     }
 					
 					//Header Text (if set)
-                    if (!String.IsNullOrEmpty(HeaderText))
+                    if (!String.IsNullOrEmpty(this.HeaderText))
                     {
-                        lblHeader.Text = HeaderText;
+                        this.lblHeader.Text = this.HeaderText;
                     }
 					
 					//ResourceKey overrides if found
-                    if (!String.IsNullOrEmpty(ResourceKey))
+                    if (!String.IsNullOrEmpty(this.ResourceKey))
                     {
-                        string strHeader = Localization.GetString(ResourceKey, Localization.GetResourceFile(this, MyFileName));
+                        string strHeader = Localization.GetString(this.ResourceKey, Localization.GetResourceFile(this, MyFileName));
                         if (!String.IsNullOrEmpty(strHeader))
                         {
-                            lblHeader.Text = Localization.GetString(ResourceKey, Localization.GetResourceFile(this, MyFileName));
+                            this.lblHeader.Text = Localization.GetString(this.ResourceKey, Localization.GetResourceFile(this, MyFileName));
                         }
                     }
 					
 					//If still not set get default key
-                    if (String.IsNullOrEmpty(lblHeader.Text))
+                    if (String.IsNullOrEmpty(this.lblHeader.Text))
                     {
                         string strHeader = Localization.GetString("Title", Localization.GetResourceFile(this, MyFileName));
                         if (!String.IsNullOrEmpty(strHeader))
                         {
-                            lblHeader.Text = Localization.GetString("Title", Localization.GetResourceFile(this, MyFileName));
+                            this.lblHeader.Text = Localization.GetString("Title", Localization.GetResourceFile(this, MyFileName));
                         }
                         else
                         {
-                            lblHeader.Text = "Site Navigation";
+                            this.lblHeader.Text = "Site Navigation";
                         }
                     }
-                    tblHeader.Visible = IncludeHeader;
+                    this.tblHeader.Visible = this.IncludeHeader;
 					
 					//Main Panel Properties
-                    if (!String.IsNullOrEmpty(BodyCssClass))
+                    if (!String.IsNullOrEmpty(this.BodyCssClass))
                     {
-                        cellBody.Attributes.Add("class", BodyCssClass);
+                        this.cellBody.Attributes.Add("class", this.BodyCssClass);
                     }
-                    cellBody.NoWrap = NoWrap;
+                    this.cellBody.NoWrap = this.NoWrap;
                 }
             }
             catch (Exception exc)
@@ -554,28 +554,28 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             if (args.Node == null)
             {
-                args.Node = Navigation.GetNavigationNode(args.ID, Control.ID);
+                args.Node = Navigation.GetNavigationNode(args.ID, this.Control.ID);
             }
-            Response.Redirect(Globals.ApplicationURL(int.Parse(args.Node.Key)), true);
+            this.Response.Redirect(Globals.ApplicationURL(int.Parse(args.Node.Key)), true);
         }
 
         private void DNNTree_PopulateOnDemand(NavigationEventArgs args)
         {
             if (args.Node == null)
             {
-                args.Node = Navigation.GetNavigationNode(args.ID, Control.ID);
+                args.Node = Navigation.GetNavigationNode(args.ID, this.Control.ID);
             }
-            BuildTree(args.Node, true);
+            this.BuildTree(args.Node, true);
         }
 
         protected override void OnInit(EventArgs e)
         {
-            InitializeTree();
-            InitializeNavControl(cellBody, "DNNTreeNavigationProvider");
-            Control.NodeClick += DNNTree_NodeClick;
-            Control.PopulateOnDemand += DNNTree_PopulateOnDemand;
+            this.InitializeTree();
+            this.InitializeNavControl(this.cellBody, "DNNTreeNavigationProvider");
+            this.Control.NodeClick += this.DNNTree_NodeClick;
+            this.Control.PopulateOnDemand += this.DNNTree_PopulateOnDemand;
             base.OnInit(e);
-            InitializeComponent();
+            this.InitializeComponent();
         }
 		
 		#endregion

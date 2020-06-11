@@ -38,7 +38,7 @@ namespace DotNetNuke.Entities.Tabs.Dto
         /// </value>
         public bool IsChangeControlEnabledForTab
         {
-            get { return IsVersioningEnabledForTab || IsWorkflowEnabledForTab; }
+            get { return this.IsVersioningEnabledForTab || this.IsWorkflowEnabledForTab; }
         }
 
         /// <summary>

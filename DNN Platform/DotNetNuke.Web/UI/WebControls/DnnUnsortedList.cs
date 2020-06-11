@@ -36,16 +36,16 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _listItems ?? (_listItems = new UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem>(this));
+                return this._listItems ?? (this._listItems = new UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem>(this));
             }
         }
 
         protected override void AddAttributesToRender(HtmlTextWriter writer)
         {
-            writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
-            if (!string.IsNullOrEmpty(CssClass))
+            writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
+            if (!string.IsNullOrEmpty(this.CssClass))
             {
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClass);
+                writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);
             }
         }
 
@@ -59,7 +59,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             var listItem = new DnnUnsortedListItem();
             listItem.AddControls(listItemControls);
-            ListItems.Add(listItem);
+            this.ListItems.Add(listItem);
         }
 
     }

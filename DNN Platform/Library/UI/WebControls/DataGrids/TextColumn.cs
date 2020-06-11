@@ -62,16 +62,16 @@ namespace DotNetNuke.UI.WebControls
             var template = new TextColumnTemplate(type);
             if (type != ListItemType.Header)
             {
-                template.DataField = DataField;
+                template.DataField = this.DataField;
             }
-            template.Width = Width;
+            template.Width = this.Width;
             if (type == ListItemType.Header)
             {
-                template.Text = HeaderText;
+                template.Text = this.HeaderText;
             }
             else
             {
-                template.Text = Text;
+                template.Text = this.Text;
             }
             template.DesignMode = isDesignMode;
             return template;
@@ -84,18 +84,18 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public override void Initialize()
         {
-            ItemTemplate = CreateTemplate(ListItemType.Item);
-            EditItemTemplate = CreateTemplate(ListItemType.EditItem);
-            HeaderTemplate = CreateTemplate(ListItemType.Header);
+            this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
+            this.EditItemTemplate = this.CreateTemplate(ListItemType.EditItem);
+            this.HeaderTemplate = this.CreateTemplate(ListItemType.Header);
             if (HttpContext.Current == null)
             {
-                ItemStyle.Font.Names = new[] {"Tahoma, Verdana, Arial"};
-                ItemStyle.Font.Size = new FontUnit("10pt");
-                ItemStyle.HorizontalAlign = HorizontalAlign.Left;
-                HeaderStyle.Font.Names = new[] {"Tahoma, Verdana, Arial"};
-                HeaderStyle.Font.Size = new FontUnit("10pt");
-                HeaderStyle.Font.Bold = true;
-                HeaderStyle.HorizontalAlign = HorizontalAlign.Left;
+                this.ItemStyle.Font.Names = new[] {"Tahoma, Verdana, Arial"};
+                this.ItemStyle.Font.Size = new FontUnit("10pt");
+                this.ItemStyle.HorizontalAlign = HorizontalAlign.Left;
+                this.HeaderStyle.Font.Names = new[] {"Tahoma, Verdana, Arial"};
+                this.HeaderStyle.Font.Size = new FontUnit("10pt");
+                this.HeaderStyle.Font.Bold = true;
+                this.HeaderStyle.HorizontalAlign = HorizontalAlign.Left;
             }
         }
     }

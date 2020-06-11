@@ -13,10 +13,10 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClass);
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);
             writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
-            foreach (ListItem item in Items)
+            foreach (ListItem item in this.Items)
             {
                 writer.RenderBeginTag(HtmlTextWriterTag.Li);
                 

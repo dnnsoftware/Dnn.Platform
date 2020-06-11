@@ -24,22 +24,22 @@ namespace DotNetNuke.Entities.Users.Social.Data
 
         public IDataReader GetAllRelationshipTypes()
         {
-            return _provider.ExecuteReader("GetAllRelationshipTypes");
+            return this._provider.ExecuteReader("GetAllRelationshipTypes");
         }
 
         public IDataReader GetRelationshipType(int relationshipTypeId)
         {
-            return _provider.ExecuteReader("GetRelationshipType", relationshipTypeId);
+            return this._provider.ExecuteReader("GetRelationshipType", relationshipTypeId);
         }
 
         public void DeleteRelationshipType(int relationshipTypeId)
         {            
-            _provider.ExecuteNonQuery("DeleteRelationshipType", relationshipTypeId);
+            this._provider.ExecuteNonQuery("DeleteRelationshipType", relationshipTypeId);
         }
 
         public int SaveRelationshipType(RelationshipType relationshipType, int createUpdateUserId)
         {
-            return _provider.ExecuteScalar<int>("SaveRelationshipType", relationshipType.RelationshipTypeId, relationshipType.Direction, relationshipType.Name, relationshipType.Description, createUpdateUserId);
+            return this._provider.ExecuteScalar<int>("SaveRelationshipType", relationshipType.RelationshipTypeId, relationshipType.Direction, relationshipType.Name, relationshipType.Description, createUpdateUserId);
         }
 
         #endregion
@@ -48,27 +48,27 @@ namespace DotNetNuke.Entities.Users.Social.Data
 
         public void DeleteRelationship(int relationshipId)
         {
-            _provider.ExecuteNonQuery("DeleteRelationship", relationshipId);
+            this._provider.ExecuteNonQuery("DeleteRelationship", relationshipId);
         }
 
         public IDataReader GetRelationship(int relationshipId)
         {
-            return _provider.ExecuteReader("GetRelationship", relationshipId);
+            return this._provider.ExecuteReader("GetRelationship", relationshipId);
         }
 
         public IDataReader GetRelationshipsByUserId(int userId)
         {
-            return _provider.ExecuteReader("GetRelationshipsByUserID", userId);
+            return this._provider.ExecuteReader("GetRelationshipsByUserID", userId);
         }
 
         public IDataReader GetRelationshipsByPortalId(int portalId)
         {
-            return _provider.ExecuteReader("GetRelationshipsByPortalID", portalId);
+            return this._provider.ExecuteReader("GetRelationshipsByPortalID", portalId);
         }
 
         public int SaveRelationship(Relationship relationship, int createUpdateUserId)
         {
-            return _provider.ExecuteScalar<int>("SaveRelationship", relationship.RelationshipId, relationship.RelationshipTypeId, relationship.Name, relationship.Description, _provider.GetNull(relationship.UserId), _provider.GetNull(relationship.PortalId), relationship.DefaultResponse, createUpdateUserId);
+            return this._provider.ExecuteScalar<int>("SaveRelationship", relationship.RelationshipId, relationship.RelationshipTypeId, relationship.Name, relationship.Description, this._provider.GetNull(relationship.UserId), this._provider.GetNull(relationship.PortalId), relationship.DefaultResponse, createUpdateUserId);
         }
 
         #endregion
@@ -77,32 +77,32 @@ namespace DotNetNuke.Entities.Users.Social.Data
 
         public void DeleteUserRelationship(int userRelationshipId)
         {
-            _provider.ExecuteNonQuery("DeleteUserRelationship", userRelationshipId);
+            this._provider.ExecuteNonQuery("DeleteUserRelationship", userRelationshipId);
         }
 
         public IDataReader GetUserRelationship(int userRelationshipId)
         {
-            return _provider.ExecuteReader("GetUserRelationship", userRelationshipId);
+            return this._provider.ExecuteReader("GetUserRelationship", userRelationshipId);
         }
 
         public IDataReader GetUserRelationship(int userId, int relatedUserId, int relationshipId, RelationshipDirection relationshipDirection)
         {
-            return _provider.ExecuteReader("GetUserRelationshipsByMultipleIDs", userId, relatedUserId, relationshipId, relationshipDirection);
+            return this._provider.ExecuteReader("GetUserRelationshipsByMultipleIDs", userId, relatedUserId, relationshipId, relationshipDirection);
         }
 
         public IDataReader GetUserRelationships(int userId)
         {
-            return _provider.ExecuteReader("GetUserRelationships", userId);
+            return this._provider.ExecuteReader("GetUserRelationships", userId);
         }
 
         public IDataReader GetUserRelationshipsByRelationshipId(int relationshipId)
         {
-            return _provider.ExecuteReader("GetUserRelationshipsByRelationshipID", relationshipId);
+            return this._provider.ExecuteReader("GetUserRelationshipsByRelationshipID", relationshipId);
         }
 
         public int SaveUserRelationship(UserRelationship userRelationship, int createUpdateUserId)
         {
-            return _provider.ExecuteScalar<int>("SaveUserRelationship", userRelationship.UserRelationshipId, userRelationship.UserId, userRelationship.RelatedUserId, userRelationship.RelationshipId, userRelationship.Status, createUpdateUserId);
+            return this._provider.ExecuteScalar<int>("SaveUserRelationship", userRelationship.UserRelationshipId, userRelationship.UserId, userRelationship.RelatedUserId, userRelationship.RelationshipId, userRelationship.Status, createUpdateUserId);
         }
 
         #endregion
@@ -111,22 +111,22 @@ namespace DotNetNuke.Entities.Users.Social.Data
 
         public IDataReader GetUserRelationshipPreferenceById(int preferenceId)
         {
-            return _provider.ExecuteReader("GetUserRelationshipPreferenceByID", preferenceId);
+            return this._provider.ExecuteReader("GetUserRelationshipPreferenceByID", preferenceId);
         }
 
         public IDataReader GetUserRelationshipPreference(int userId, int relationshipId)
         {
-            return _provider.ExecuteReader("GetUserRelationshipPreference", userId, relationshipId);
+            return this._provider.ExecuteReader("GetUserRelationshipPreference", userId, relationshipId);
         }
 
         public void DeleteUserRelationshipPreference(int preferenceId)
         {
-            _provider.ExecuteNonQuery("DeleteUserRelationshipPreference", preferenceId);
+            this._provider.ExecuteNonQuery("DeleteUserRelationshipPreference", preferenceId);
         }
 
         public int SaveUserRelationshipPreference(UserRelationshipPreference userRelationshipPreference, int createUpdateUserId)
         {
-            return _provider.ExecuteScalar<int>("SaveUserRelationshipPreference", userRelationshipPreference.PreferenceId, userRelationshipPreference.UserId, userRelationshipPreference.RelationshipId, userRelationshipPreference.DefaultResponse, createUpdateUserId);
+            return this._provider.ExecuteScalar<int>("SaveUserRelationshipPreference", userRelationshipPreference.PreferenceId, userRelationshipPreference.UserId, userRelationshipPreference.RelationshipId, userRelationshipPreference.DefaultResponse, createUpdateUserId);
         }
 
         #endregion

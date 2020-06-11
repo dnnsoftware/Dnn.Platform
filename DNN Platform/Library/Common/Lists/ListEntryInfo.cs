@@ -19,12 +19,12 @@ namespace DotNetNuke.Common.Lists
     {
         public ListEntryInfo()
         {
-            ParentKey = Null.NullString;
-            Parent = Null.NullString;
-            Description = Null.NullString;
-            Text = Null.NullString;
-            Value = Null.NullString;
-            ListName = Null.NullString;
+            this.ParentKey = Null.NullString;
+            this.Parent = Null.NullString;
+            this.Description = Null.NullString;
+            this.Text = Null.NullString;
+            this.Value = Null.NullString;
+            this.ListName = Null.NullString;
         }
 
         public int EntryID { get; set; }
@@ -35,12 +35,12 @@ namespace DotNetNuke.Common.Lists
         {
             get
             {
-                string _Key = ParentKey.Replace(":", ".");
+                string _Key = this.ParentKey.Replace(":", ".");
                 if (!string.IsNullOrEmpty(_Key))
                 {
                     _Key += ".";
                 }
-                return _Key + ListName + ":" + Value;
+                return _Key + this.ListName + ":" + this.Value;
             }
         }
 
@@ -50,7 +50,7 @@ namespace DotNetNuke.Common.Lists
         {
             get
             {
-                return ListName + ":" + Text;
+                return this.ListName + ":" + this.Text;
             }
         }
 
@@ -72,27 +72,27 @@ namespace DotNetNuke.Common.Lists
                 try
                 {
                     string key;
-                    if (string.IsNullOrEmpty(ParentKey))
+                    if (string.IsNullOrEmpty(this.ParentKey))
                     {
-                        key = Value + ".Text";
+                        key = this.Value + ".Text";
                     }
                     else
                     {
-                        key = ParentKey + '.' + Value + ".Text";
+                        key = this.ParentKey + '.' + this.Value + ".Text";
                     }
 
-                    res = Services.Localization.Localization.GetString(key, ResourceFileRoot);
+                    res = Services.Localization.Localization.GetString(key, this.ResourceFileRoot);
                 }
                 catch
                 {
                     //ignore
                 }
-                if (string.IsNullOrEmpty(res)) { res = _Text; };
+                if (string.IsNullOrEmpty(res)) { res = this._Text; };
                 return res;
             }
             set
             {
-                _Text = value;
+                this._Text = value;
             }
         }
 
@@ -106,7 +106,7 @@ namespace DotNetNuke.Common.Lists
         {
             get
             {
-                return _Text;
+                return this._Text;
             }
         }
 
@@ -132,7 +132,7 @@ namespace DotNetNuke.Common.Lists
 	    {
 		    get
 		    {
-				var listName = ListName.Replace(":", ".");
+				var listName = this.ListName.Replace(":", ".");
 				if (listName.IndexOfAny(Path.GetInvalidFileNameChars()) > -1)
 				{
 					listName = Globals.CleanFileName(listName);

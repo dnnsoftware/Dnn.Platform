@@ -35,18 +35,18 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
         {
             get
             {
-                if (ModuleContext == null)
+                if (this.ModuleContext == null)
                 {
                     return string.Empty;
                 }
 
 	            if (PortalSettings.Current.EnablePopUps)
 	            {
-		            return ModuleContext.EditUrl("FolderMappings");
+		            return this.ModuleContext.EditUrl("FolderMappings");
 	            }
 	            else
 	            {
-		            return string.Format("location.href = '{0}';", ModuleContext.EditUrl("FolderMappings"));
+		            return string.Format("location.href = '{0}';", this.ModuleContext.EditUrl("FolderMappings"));
 	            }
             }
         }
@@ -83,8 +83,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
 
         public bool Enabled
         {
-            get { return ModuleContext != null
-                            && ModulePermissionController.CanManageModule(ModuleContext.Configuration); }
+            get { return this.ModuleContext != null
+                            && ModulePermissionController.CanManageModule(this.ModuleContext.Configuration); }
         }
 
         public ModuleInstanceContext ModuleContext { get; set; }

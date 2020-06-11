@@ -14,21 +14,21 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         protected override ActionExecutedContext InvokeActionMethodWithFilters(ControllerContext controllerContext, IList<IActionFilter> filters, ActionDescriptor actionDescriptor, IDictionary<string, object> parameters)
         {
             var context = base.InvokeActionMethodWithFilters(controllerContext, filters, actionDescriptor, parameters);
-            ResultOfLastInvoke = context.Result;
+            this.ResultOfLastInvoke = context.Result;
             return context;
         }
 
         protected override ExceptionContext InvokeExceptionFilters(ControllerContext controllerContext, IList<IExceptionFilter> filters, Exception exception)
         {            
             var context = base.InvokeExceptionFilters(controllerContext, filters, exception);
-            ResultOfLastInvoke = context.Result;            
+            this.ResultOfLastInvoke = context.Result;            
             return context;
         }
         
         protected override void InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
         {
             //Do not invoke the action.  Instead, store it for later retrieval            
-            if(ResultOfLastInvoke == null) ResultOfLastInvoke = actionResult;
+            if(this.ResultOfLastInvoke == null) this.ResultOfLastInvoke = actionResult;
         }
     }
 }

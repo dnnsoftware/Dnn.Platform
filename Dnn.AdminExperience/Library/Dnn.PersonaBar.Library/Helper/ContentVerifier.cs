@@ -24,21 +24,21 @@ namespace Dnn.PersonaBar.Library.Helper
 
         public bool IsContentExistsForRequestedPortal(int contentPortalId, PortalSettings portalSettings, bool checkForSiteGroup = false)
         {
-            var currentPortal = _portalController.GetCurrentPortalSettings();
+            var currentPortal = this._portalController.GetCurrentPortalSettings();
             return contentPortalId == portalSettings.PortalId
                 || portalSettings == currentPortal
-                || (checkForSiteGroup && IsRequestForSiteGroup(contentPortalId, portalSettings.PortalId));
+                || (checkForSiteGroup && this.IsRequestForSiteGroup(contentPortalId, portalSettings.PortalId));
         }
 
         public bool IsRequestForSiteGroup(int portalId, int portalIdSiteGroup)
         {
             const int NO_SITE_GROUPID = -1;
             var isSiteGroupPage = false;
-            var portal = _portalController.GetPortal(portalIdSiteGroup);
+            var portal = this._portalController.GetPortal(portalIdSiteGroup);
 
             if (portal.PortalGroupID != NO_SITE_GROUPID)
             {
-                isSiteGroupPage = _portalGroupController.GetPortalsByGroup(portal.PortalGroupID).Any(p => p.PortalID == portalId);
+                isSiteGroupPage = this._portalGroupController.GetPortalsByGroup(portal.PortalGroupID).Any(p => p.PortalID == portalId);
             }
 
             return isSiteGroupPage;

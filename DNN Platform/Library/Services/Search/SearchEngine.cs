@@ -36,8 +36,8 @@ namespace DotNetNuke.Services.Search
     {
         internal SearchEngine(ScheduleHistoryItem scheduler, DateTime startTime)
         {
-            SchedulerItem = scheduler;
-            IndexingStartTime = startTime;
+            this.SchedulerItem = scheduler;
+            this.IndexingStartTime = startTime;
         }
 
         #region Properties
@@ -59,45 +59,45 @@ namespace DotNetNuke.Services.Search
         {
             //Index TAB META-DATA
             var tabIndexer = new TabIndexer();
-            var searchDocsCount = GetAndStoreSearchDocuments(tabIndexer);
+            var searchDocsCount = this.GetAndStoreSearchDocuments(tabIndexer);
             var indexedSearchDocumentCount = searchDocsCount;
-            AddIdexingResults("Tabs Indexed", searchDocsCount);
+            this.AddIdexingResults("Tabs Indexed", searchDocsCount);
 
             //Index MODULE META-DATA from modules that inherit from ModuleSearchBase
             var moduleIndexer = new ModuleIndexer(true);
-            searchDocsCount = GetAndStoreModuleMetaData(moduleIndexer);
+            searchDocsCount = this.GetAndStoreModuleMetaData(moduleIndexer);
             indexedSearchDocumentCount += searchDocsCount;
-            AddIdexingResults("Modules (Metadata) Indexed", searchDocsCount);
+            this.AddIdexingResults("Modules (Metadata) Indexed", searchDocsCount);
 
             //Index MODULE CONTENT from modules that inherit from ModuleSearchBase
-            searchDocsCount = GetAndStoreSearchDocuments(moduleIndexer);
+            searchDocsCount = this.GetAndStoreSearchDocuments(moduleIndexer);
             indexedSearchDocumentCount += searchDocsCount;
 
             //Index all Defunct ISearchable module content
 #pragma warning disable 0618
-            var searchItems = GetContent(moduleIndexer);
+            var searchItems = this.GetContent(moduleIndexer);
             SearchDataStoreProvider.Instance().StoreSearchItems(searchItems);
 #pragma warning restore 0618
             indexedSearchDocumentCount += searchItems.Count;
 
             //Both ModuleSearchBase and ISearchable module content count
-            AddIdexingResults("Modules (Content) Indexed", searchDocsCount + searchItems.Count);
+            this.AddIdexingResults("Modules (Content) Indexed", searchDocsCount + searchItems.Count);
 
             if (!HostController.Instance.GetBoolean("DisableUserCrawling", false))
             {
                 //Index User data
                 var userIndexer = new UserIndexer();
-                var userIndexed = GetAndStoreSearchDocuments(userIndexer);
+                var userIndexed = this.GetAndStoreSearchDocuments(userIndexer);
                 indexedSearchDocumentCount += userIndexed;
-                AddIdexingResults("Users", userIndexed);
+                this.AddIdexingResults("Users", userIndexed);
             }
 
-            SchedulerItem.AddLogNote("<br/><b>Total Items Indexed: " + indexedSearchDocumentCount + "</b>");
+            this.SchedulerItem.AddLogNote("<br/><b>Total Items Indexed: " + indexedSearchDocumentCount + "</b>");
         }
 
         private void AddIdexingResults(string description, int count)
         {
-            SchedulerItem.AddLogNote(string.Format("<br/>&nbsp;&nbsp;{0}: {1}", description, count));
+            this.SchedulerItem.AddLogNote(string.Format("<br/>&nbsp;&nbsp;{0}: {1}", description, count));
         }
 
         internal bool CompactSearchIndexIfNeeded(ScheduleHistoryItem scheduleItem)
@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.Search
         /// </summary>
         internal void DeleteOldDocsBeforeReindex()
         {
-            var portal2Reindex = SearchHelper.Instance.GetPortalsToReindex(IndexingStartTime);
+            var portal2Reindex = SearchHelper.Instance.GetPortalsToReindex(this.IndexingStartTime);
             var controller = InternalSearchController.Instance;
 
             foreach (var portalId in portal2Reindex)
@@ -137,7 +137,7 @@ namespace DotNetNuke.Services.Search
         internal void DeleteRemovedObjects()
         {
             var deletedCount = 0;
-            var cutoffTime = SchedulerItem.StartDate.ToUniversalTime();
+            var cutoffTime = this.SchedulerItem.StartDate.ToUniversalTime();
             var searchController = InternalSearchController.Instance;
             var dataProvider = DataProvider.Instance();
             using (var reader = dataProvider.GetSearchDeletedItems(cutoffTime))
@@ -151,7 +151,7 @@ namespace DotNetNuke.Services.Search
                 }
                 reader.Close();
             }
-            AddIdexingResults("Deleted Objects", deletedCount);
+            this.AddIdexingResults("Deleted Objects", deletedCount);
             dataProvider.DeleteProcessedSearchDeletedItems(cutoffTime);
         }
 
@@ -181,11 +181,11 @@ namespace DotNetNuke.Services.Search
 
             foreach (var portal in portals.Cast<PortalInfo>())
             {
-                indexSince = FixedIndexingStartDate(portal.PortalID);
+                indexSince = this.FixedIndexingStartDate(portal.PortalID);
                 try
                 {
                     indexedCount += indexer.IndexSearchDocuments(
-                        portal.PortalID, SchedulerItem, indexSince, StoreSearchDocuments);
+                        portal.PortalID, this.SchedulerItem, indexSince, StoreSearchDocuments);
                 }
                 catch (NotImplementedException)
                 {
@@ -198,11 +198,11 @@ namespace DotNetNuke.Services.Search
             }
 
             // Include Host Level Items
-            indexSince = FixedIndexingStartDate(-1);
+            indexSince = this.FixedIndexingStartDate(-1);
             try
             {
                 indexedCount += indexer.IndexSearchDocuments(
-                    Null.NullInteger, SchedulerItem, indexSince, StoreSearchDocuments);
+                    Null.NullInteger, this.SchedulerItem, indexSince, StoreSearchDocuments);
             }
             catch (NotImplementedException)
             {
@@ -230,14 +230,14 @@ namespace DotNetNuke.Services.Search
 
             foreach (var portal in portals.Cast<PortalInfo>())
             {
-                indexSince = FixedIndexingStartDate(portal.PortalID);
+                indexSince = this.FixedIndexingStartDate(portal.PortalID);
                 searchDocs = indexer.GetModuleMetaData(portal.PortalID, indexSince);
                 StoreSearchDocuments(searchDocs);
                 indexedCount += searchDocs.Count();
             }
 
             // Include Host Level Items
-            indexSince = FixedIndexingStartDate(Null.NullInteger);
+            indexSince = this.FixedIndexingStartDate(Null.NullInteger);
             searchDocs = indexer.GetModuleMetaData(Null.NullInteger, indexSince);
             StoreSearchDocuments(searchDocs);
             indexedCount += searchDocs.Count();
@@ -271,7 +271,7 @@ namespace DotNetNuke.Services.Search
         /// -----------------------------------------------------------------------------
         private DateTime FixedIndexingStartDate(int portalId)
         {
-            var startDate = IndexingStartTime;
+            var startDate = this.IndexingStartTime;
             if (startDate < SqlDateTime.MinValue.Value ||
                 SearchHelper.Instance.IsReindexRequested(portalId, startDate))
             {

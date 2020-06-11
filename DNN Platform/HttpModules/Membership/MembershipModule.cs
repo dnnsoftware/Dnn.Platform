@@ -78,8 +78,8 @@ namespace DotNetNuke.HttpModules.Membership
         /// <param name="application">The application.</param>
         public void Init(HttpApplication application)
         {
-            application.AuthenticateRequest += OnAuthenticateRequest;
-            application.PreSendRequestHeaders += OnPreSendRequestHeaders;
+            application.AuthenticateRequest += this.OnAuthenticateRequest;
+            application.PreSendRequestHeaders += this.OnPreSendRequestHeaders;
         }
 
         /// <summary>

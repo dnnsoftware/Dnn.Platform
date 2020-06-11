@@ -33,11 +33,11 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return _LanguagePackID;
+                return this._LanguagePackID;
             }
             set
             {
-                _LanguagePackID = value;
+                this._LanguagePackID = value;
             }
         }
 
@@ -45,11 +45,11 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return _LanguageID;
+                return this._LanguageID;
             }
             set
             {
-                _LanguageID = value;
+                this._LanguageID = value;
             }
         }
 
@@ -57,11 +57,11 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return _PackageID;
+                return this._PackageID;
             }
             set
             {
-                _PackageID = value;
+                this._PackageID = value;
             }
         }
 
@@ -69,11 +69,11 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return _DependentPackageID;
+                return this._DependentPackageID;
             }
             set
             {
-                _DependentPackageID = value;
+                this._DependentPackageID = value;
             }
         }
 
@@ -81,7 +81,7 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                if (DependentPackageID == -2)
+                if (this.DependentPackageID == -2)
                 {
                     return LanguagePackType.Core;
                 }
@@ -98,10 +98,10 @@ namespace DotNetNuke.Services.Localization
 
         public void Fill(IDataReader dr)
         {
-            LanguagePackID = Null.SetNullInteger(dr["LanguagePackID"]);
-            LanguageID = Null.SetNullInteger(dr["LanguageID"]);
-            PackageID = Null.SetNullInteger(dr["PackageID"]);
-            DependentPackageID = Null.SetNullInteger(dr["DependentPackageID"]);
+            this.LanguagePackID = Null.SetNullInteger(dr["LanguagePackID"]);
+            this.LanguageID = Null.SetNullInteger(dr["LanguageID"]);
+            this.PackageID = Null.SetNullInteger(dr["PackageID"]);
+            this.DependentPackageID = Null.SetNullInteger(dr["DependentPackageID"]);
             //Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
         }
@@ -110,11 +110,11 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return LanguagePackID;
+                return this.LanguagePackID;
             }
             set
             {
-                LanguagePackID = value;
+                this.LanguagePackID = value;
             }
         }
 

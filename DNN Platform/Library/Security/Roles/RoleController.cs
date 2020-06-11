@@ -71,7 +71,7 @@ namespace DotNetNuke.Security.Roles
                 {
                     try
                     {
-                        AddUserRole(role.PortalID, objUser.UserID, role.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+                        this.AddUserRole(role.PortalID, objUser.UserID, role.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
                     }
                     catch (Exception exc)
                     {
@@ -171,14 +171,14 @@ namespace DotNetNuke.Security.Roles
             var roleId = -1;
             if (provider.CreateRole(role))
             {
-                AddMessage(role, EventLogController.EventLogType.ROLE_CREATED);
+                this.AddMessage(role, EventLogController.EventLogType.ROLE_CREATED);
                 if (addToExistUsers)
                 {
-                    AutoAssignUsers(role);
+                    this.AutoAssignUsers(role);
                 }
                 roleId = role.RoleID;
 
-                ClearRoleCache(role.PortalID);
+                this.ClearRoleCache(role.PortalID);
 
                 EventManager.Instance.OnRoleCreated(new RoleEventArgs() { Role = role });
             }
@@ -189,7 +189,7 @@ namespace DotNetNuke.Security.Roles
         public void AddUserRole(int portalId, int userId, int roleId, RoleStatus status, bool isOwner, DateTime effectiveDate, DateTime expiryDate)
         {
             UserInfo user = UserController.GetUserById(portalId, userId);
-            UserRoleInfo userRole = GetUserRole(portalId, userId, roleId);
+            UserRoleInfo userRole = this.GetUserRole(portalId, userId, roleId);
             if (userRole == null)
             {
                 //Create new UserRole
@@ -216,7 +216,7 @@ namespace DotNetNuke.Security.Roles
                 EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_ROLE_UPDATED);
             }
 
-            EventManager.Instance.OnRoleJoined(new RoleEventArgs() { Role = GetRoleById(portalId, roleId), User = user });
+            EventManager.Instance.OnRoleJoined(new RoleEventArgs() { Role = this.GetRoleById(portalId, roleId), User = user });
             //Remove the UserInfo and Roles from the Cache, as they have been modified
             DataCache.ClearUserCache(portalId, user.Username);
             Instance.ClearRoleCache(portalId);
@@ -235,7 +235,7 @@ namespace DotNetNuke.Security.Roles
         {
             Requires.NotNull("role", role);
 
-            AddMessage(role, EventLogController.EventLogType.ROLE_DELETED);
+            this.AddMessage(role, EventLogController.EventLogType.ROLE_DELETED);
 
             if (role.SecurityMode != SecurityMode.SecurityRole)
             {
@@ -255,7 +255,7 @@ namespace DotNetNuke.Security.Roles
             }
 
             //Get users before deleting role
-            var users = role.UserCount > 0 ? GetUsersByRole(role.PortalID, role.RoleName) : Enumerable.Empty<UserInfo>();
+            var users = role.UserCount > 0 ? this.GetUsersByRole(role.PortalID, role.RoleName) : Enumerable.Empty<UserInfo>();
 
             provider.DeleteRole(role);
 
@@ -267,7 +267,7 @@ namespace DotNetNuke.Security.Roles
                 DataCache.ClearUserCache(role.PortalID, user.Username);
             }
 
-            ClearRoleCache(role.PortalID);
+            this.ClearRoleCache(role.PortalID);
 
             // queue remove role/group from search index
             var document = new SearchDocumentToDelete
@@ -281,18 +281,18 @@ namespace DotNetNuke.Security.Roles
 
         public RoleInfo GetRole(int portalId, Func<RoleInfo, bool> predicate)
         {
-            return GetRoles(portalId).Where(predicate).FirstOrDefault();
+            return this.GetRoles(portalId).Where(predicate).FirstOrDefault();
         }
 
         public RoleInfo GetRoleById(int portalId, int roleId)
         {
-            return GetRole(portalId, r => r.RoleID == roleId);
+            return this.GetRole(portalId, r => r.RoleID == roleId);
         }
 
         public RoleInfo GetRoleByName(int portalId, string roleName)
         {
             roleName = roleName.Trim();
-            return GetRoles(portalId).SingleOrDefault(r => roleName.Equals(r.RoleName.Trim(), StringComparison.InvariantCultureIgnoreCase) && r.PortalID == portalId);
+            return this.GetRoles(portalId).SingleOrDefault(r => roleName.Equals(r.RoleName.Trim(), StringComparison.InvariantCultureIgnoreCase) && r.PortalID == portalId);
         }
 
         public IList<RoleInfo> GetRoles(int portalId)
@@ -304,7 +304,7 @@ namespace DotNetNuke.Security.Roles
 
         public IList<RoleInfo> GetRoles(int portalId, Func<RoleInfo, bool> predicate)
         {
-            return GetRoles(portalId).Where(predicate).ToList();
+            return this.GetRoles(portalId).Where(predicate).ToList();
         }
 
         public IList<RoleInfo> GetRolesBasicSearch(int portalId, int pageSize, string filterBy)
@@ -352,7 +352,7 @@ namespace DotNetNuke.Security.Roles
 
         void IRoleController.UpdateRole(RoleInfo role)
         {
-            UpdateRole(role, true);
+            this.UpdateRole(role, true);
         }
 
         public void UpdateRole(RoleInfo role, bool addToExistUsers)
@@ -360,14 +360,14 @@ namespace DotNetNuke.Security.Roles
             Requires.NotNull("role", role);
 
             provider.UpdateRole(role);
-            AddMessage(role, EventLogController.EventLogType.ROLE_UPDATED);
+            this.AddMessage(role, EventLogController.EventLogType.ROLE_UPDATED);
 
             if (addToExistUsers)
             {
-                AutoAssignUsers(role);
+                this.AutoAssignUsers(role);
             }
 
-            ClearRoleCache(role.PortalID);
+            this.ClearRoleCache(role.PortalID);
         }
 
         public void UpdateRoleSettings(RoleInfo role, bool clearCache)
@@ -376,14 +376,14 @@ namespace DotNetNuke.Security.Roles
 
             if (clearCache)
             {
-                ClearRoleCache(role.PortalID);
+                this.ClearRoleCache(role.PortalID);
             }
         }
 
         public void UpdateUserRole(int portalId, int userId, int roleId, RoleStatus status, bool isOwner, bool cancel)
         {
             UserInfo user = UserController.GetUserById(portalId, userId);
-            UserRoleInfo userRole = GetUserRole(portalId, userId, roleId);
+            UserRoleInfo userRole = this.GetUserRole(portalId, userId, roleId);
             if (cancel)
             {
                 if (userRole != null && userRole.ServiceFee > 0.0 && userRole.IsTrialUsed)
@@ -481,7 +481,7 @@ namespace DotNetNuke.Security.Roles
                 }
                 else
                 {
-                    AddUserRole(portalId, userId, roleId, status, isOwner, EffectiveDate, ExpiryDate);
+                    this.AddUserRole(portalId, userId, roleId, status, isOwner, EffectiveDate, ExpiryDate);
                 }
             }
             //Remove the UserInfo from the Cache, as it has been modified

@@ -18,15 +18,15 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
         public DnnRedirecttoRouteResult(string actionName, string controllerName, string routeName, RouteValueDictionary routeValues, bool permanent)
             : base(routeName, routeValues, permanent)
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-            ActionName = actionName;
-            ControllerName = controllerName;
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.ActionName = actionName;
+            this.ControllerName = controllerName;
         }
 
         public DnnRedirecttoRouteResult(string actionName, string controllerName, string routeName, RouteValueDictionary routeValues, bool permanent, DnnUrlHelper url)
             : this(actionName, controllerName, routeName, routeValues, permanent)
         {
-            Url = url;
+            this.Url = url;
         }
 
         public DnnUrlHelper Url { get; private set; }
@@ -42,17 +42,17 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
             Guard.Against(context.IsChildAction, "Cannot Redirect In Child Action");
 
             string url;
-            if (Url != null && context.Controller is IDnnController)
+            if (this.Url != null && context.Controller is IDnnController)
             {
-                url = Url.Action(ActionName, ControllerName);
+                url = this.Url.Action(this.ActionName, this.ControllerName);
             }
             else
             {
                 //TODO - match other actions
-                url = NavigationManager.NavigateURL();
+                url = this.NavigationManager.NavigateURL();
             }
 
-            if (Permanent)
+            if (this.Permanent)
             {
                 context.HttpContext.Response.RedirectPermanent(url, true);
             }

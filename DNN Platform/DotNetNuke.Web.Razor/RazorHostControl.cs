@@ -25,13 +25,13 @@ namespace DotNetNuke.Web.Razor
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public RazorHostControl(string scriptFile)
         {
-            _razorScriptFile = scriptFile;
+            this._razorScriptFile = scriptFile;
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected virtual string RazorScriptFile
         {
-            get { return _razorScriptFile; }
+            get { return this._razorScriptFile; }
         }
 
 	    private RazorEngine _engine;
@@ -39,12 +39,12 @@ namespace DotNetNuke.Web.Razor
 	    {
 		    get
 		    {
-				if (_engine == null)
+				if (this._engine == null)
 			    {
-					_engine = new RazorEngine(RazorScriptFile, ModuleContext, LocalResourceFile);
+					this._engine = new RazorEngine(this.RazorScriptFile, this.ModuleContext, this.LocalResourceFile);
 			    }
 
-			    return _engine;
+			    return this._engine;
 		    }
 	    }
 
@@ -53,11 +53,11 @@ namespace DotNetNuke.Web.Razor
         {
             base.OnPreRender(e);
 
-            if (!(string.IsNullOrEmpty(RazorScriptFile)))
+            if (!(string.IsNullOrEmpty(this.RazorScriptFile)))
             {
                 var writer = new StringWriter();
-				Engine.Render(writer);
-                Controls.Add(new LiteralControl(HttpUtility.HtmlDecode(writer.ToString())));
+				this.Engine.Render(writer);
+                this.Controls.Add(new LiteralControl(HttpUtility.HtmlDecode(writer.ToString())));
             }
         }
 
@@ -66,9 +66,9 @@ namespace DotNetNuke.Web.Razor
 		{
 			get
 			{
-				if (Engine.Webpage is IActionable)
+				if (this.Engine.Webpage is IActionable)
 				{
-					return (Engine.Webpage as IActionable).ModuleActions;
+					return (this.Engine.Webpage as IActionable).ModuleActions;
 				}
 
 				return new ModuleActionCollection();

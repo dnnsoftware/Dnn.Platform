@@ -23,17 +23,17 @@ namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets
         {
             var connector = WebApiTestHelper.LoginAdministrator();
 
-            var folder = CreateNewFolder(connector);
+            var folder = this.CreateNewFolder(connector);
             var folderId = Convert.ToInt32(folder.FolderID);
             var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Files\\Test.png");
             connector.UploadCmsFile(filePath, folder.FolderPath.ToString());
-            var fileId = GetFileId(folderId, "Test.png");
+            var fileId = this.GetFileId(folderId, "Test.png");
 
             var newFolderName = Guid.NewGuid().ToString();
-            RenameFolder(connector, folderId, newFolderName);
+            this.RenameFolder(connector, folderId, newFolderName);
 
             var getUrlApi = "API/DigitalAssets/ContentService/GetUrl";
-            var fileUrl = connector.PostJson(getUrlApi, new {fileId = fileId}, GetRequestHeaders()).Content.ReadAsStringAsync().Result;
+            var fileUrl = connector.PostJson(getUrlApi, new {fileId = fileId}, this.GetRequestHeaders()).Content.ReadAsStringAsync().Result;
 
             Assert.IsTrue(fileUrl.Contains(newFolderName));
         }
@@ -41,13 +41,13 @@ namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets
         private int GetRootFolderId()
         {
             return DatabaseHelper.ExecuteScalar<int>(
-                $"SELECT FolderID FROM {{objectQualifier}}[Folders] WHERE PortalId = {PortalId} AND FolderPath = ''");
+                $"SELECT FolderID FROM {{objectQualifier}}[Folders] WHERE PortalId = {this.PortalId} AND FolderPath = ''");
         }
 
         private int GetStandardFolderMappingId()
         {
             return DatabaseHelper.ExecuteScalar<int>(
-                $"SELECT FolderMappingId from {{objectQualifier}}[FolderMappings] where PortalID = {PortalId} and MappingName = 'Standard'");
+                $"SELECT FolderMappingId from {{objectQualifier}}[FolderMappings] where PortalID = {this.PortalId} and MappingName = 'Standard'");
         }
 
         private int GetFileId(int folderId, string fileName)
@@ -58,17 +58,17 @@ namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets
 
         private dynamic CreateNewFolder(IWebApiConnector connector)
         {
-            var rootFolderId = GetRootFolderId();
+            var rootFolderId = this.GetRootFolderId();
             var apiUrl = "API/DigitalAssets/ContentService/CreateNewFolder";
             var postData = new
             {
                 FolderName = Guid.NewGuid().ToString(),
                 ParentFolderId = rootFolderId,
-                FolderMappingId = GetStandardFolderMappingId(),
+                FolderMappingId = this.GetStandardFolderMappingId(),
                 MappedName = string.Empty
             };
 
-            var response = connector.PostJson(apiUrl, postData, GetRequestHeaders());
+            var response = connector.PostJson(apiUrl, postData, this.GetRequestHeaders());
             return Json.Deserialize<dynamic>(response.Content.ReadAsStringAsync().Result);
         }
 
@@ -81,12 +81,12 @@ namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets
                 newFolderName = newFolderName
             };
 
-            connector.PostJson(apiUrl, postData, GetRequestHeaders());
+            connector.PostJson(apiUrl, postData, this.GetRequestHeaders());
         }
 
         private IDictionary<string, string> GetRequestHeaders()
         {
-            return WebApiTestHelper.GetRequestHeaders("//Admin//FileManagement", "Digital Asset Management", PortalId);
+            return WebApiTestHelper.GetRequestHeaders("//Admin//FileManagement", "Digital Asset Management", this.PortalId);
         }
     }
 }

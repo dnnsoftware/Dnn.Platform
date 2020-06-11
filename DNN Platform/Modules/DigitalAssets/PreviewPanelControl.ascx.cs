@@ -15,7 +15,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             get
             {
-                return PreviewInfo.Title;
+                return this.PreviewInfo.Title;
             }
         }
                 
@@ -23,7 +23,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         { 
             get
             {
-                return PreviewInfo.PreviewImageUrl;
+                return this.PreviewInfo.PreviewImageUrl;
             }
         }
 
@@ -37,23 +37,23 @@ namespace DotNetNuke.Modules.DigitalAssets
         #region Public Methods
         public void SetPreviewInfo(PreviewInfoViewModel previewInfoViewModel)
         {
-            PreviewInfo = previewInfoViewModel;
-            if (FieldsControl != null && PreviewInfo != null)
+            this.PreviewInfo = previewInfoViewModel;
+            if (this.FieldsControl != null && this.PreviewInfo != null)
             {
-                var fieldsControl = ((PreviewFieldsControl)FieldsControl);
-                fieldsControl.Fields = PreviewInfo.Fields;
+                var fieldsControl = ((PreviewFieldsControl)this.FieldsControl);
+                fieldsControl.Fields = this.PreviewInfo.Fields;
                 fieldsControl.GenerateFieldsTable();
             }
         }
         
         public void SetController(IDigitalAssetsController damController)
         {
-            Controller = damController;
+            this.Controller = damController;
         }
 
         public void SetModuleConfiguration(ModuleInfo moduleConfiguration)
         {
-            ModuleConfiguration = moduleConfiguration;
+            this.ModuleConfiguration = moduleConfiguration;
         }
         #endregion
     }

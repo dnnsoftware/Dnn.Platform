@@ -19,7 +19,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             if (CultureInfo.CurrentCulture.Name == "ar-SA")
             {
-                Culture.DateTimeFormat.Calendar = new GregorianCalendar();
+                this.Culture.DateTimeFormat.Calendar = new GregorianCalendar();
             }
 
             base.OnInit(e);

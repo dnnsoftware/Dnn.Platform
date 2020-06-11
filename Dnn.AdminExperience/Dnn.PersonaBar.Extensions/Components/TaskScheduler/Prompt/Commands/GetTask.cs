@@ -28,23 +28,23 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             
-            TaskId = GetFlagValue(FlagId, "Task Id", -1, true, true, true);
+            this.TaskId = this.GetFlagValue(FlagId, "Task Id", -1, true, true, true);
         }
 
         public override ConsoleResultModel Run()
         {
             try
             {
-                var task = SchedulingProvider.Instance().GetSchedule(TaskId);
+                var task = SchedulingProvider.Instance().GetSchedule(this.TaskId);
                 if (task == null)
-                    return new ConsoleErrorResultModel(string.Format(LocalizeString("Prompt_TaskNotFound"), TaskId));
+                    return new ConsoleErrorResultModel(string.Format(this.LocalizeString("Prompt_TaskNotFound"), this.TaskId));
                 var tasks = new List<TaskModel> { new TaskModel(task) };
-                return new ConsoleResultModel { Data = tasks, Records = tasks.Count, Output = string.Format(LocalizeString("Prompt_TaskFound"), TaskId) };
+                return new ConsoleResultModel { Data = tasks, Records = tasks.Count, Output = string.Format(this.LocalizeString("Prompt_TaskFound"), this.TaskId) };
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return new ConsoleErrorResultModel(LocalizeString("Prompt_FetchTaskFailed"));
+                return new ConsoleErrorResultModel(this.LocalizeString("Prompt_FetchTaskFailed"));
             }
         }
         public override string LocalResourceFile => Constants.LocalResourcesFile;

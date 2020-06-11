@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Syndication
 
         public RssElementCustomTypeDescriptor(Dictionary<string, string> attributes)
         {
-            _attributes = attributes;
+            this._attributes = attributes;
         }
 
         #region ICustomTypeDescriptor Members
@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Syndication
 
         string ICustomTypeDescriptor.GetClassName()
         {
-            return GetType().Name;
+            return this.GetType().Name;
         }
 
         string ICustomTypeDescriptor.GetComponentName()
@@ -73,12 +73,12 @@ namespace DotNetNuke.Services.Syndication
 
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
         {
-            return GetPropertyDescriptors();
+            return this.GetPropertyDescriptors();
         }
 
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties()
         {
-            return GetPropertyDescriptors();
+            return this.GetPropertyDescriptors();
         }
 
         object ICustomTypeDescriptor.GetPropertyOwner(PropertyDescriptor pd)
@@ -90,10 +90,10 @@ namespace DotNetNuke.Services.Syndication
 
         private PropertyDescriptorCollection GetPropertyDescriptors()
         {
-            var propertyDescriptors = new PropertyDescriptor[_attributes.Count];
+            var propertyDescriptors = new PropertyDescriptor[this._attributes.Count];
             int i = 0;
 
-            foreach (KeyValuePair<string, string> a in _attributes)
+            foreach (KeyValuePair<string, string> a in this._attributes)
             {
                 propertyDescriptors[i++] = new RssElementCustomPropertyDescriptor(a.Key);
             }
@@ -159,7 +159,7 @@ namespace DotNetNuke.Services.Syndication
                 {
                     string propertyValue;
 
-                    if (element._attributes.TryGetValue(Name, out propertyValue))
+                    if (element._attributes.TryGetValue(this.Name, out propertyValue))
                     {
                         return propertyValue;
                     }

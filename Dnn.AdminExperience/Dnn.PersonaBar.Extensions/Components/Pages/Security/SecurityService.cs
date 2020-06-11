@@ -25,7 +25,7 @@ namespace Dnn.PersonaBar.Pages.Components.Security
 
         public SecurityService()
         {
-            _tabController = TabController.Instance;
+            this._tabController = TabController.Instance;
         }
 
         public static ISecurityService Instance
@@ -50,7 +50,7 @@ namespace Dnn.PersonaBar.Pages.Components.Security
 
         public virtual bool IsVisible(MenuItem menuItem)
         {
-            return IsPageAdminUser() || CanViewPageList(menuItem.MenuId);
+            return this.IsPageAdminUser() || this.CanViewPageList(menuItem.MenuId);
         }
 
         private bool IsPageAdmin()
@@ -101,38 +101,38 @@ namespace Dnn.PersonaBar.Pages.Components.Security
 
         public virtual bool CanAdminPage(int tabId)
         {
-            return IsPageAdminUser() || TabPermissionController.CanAdminPage(GetTabById(tabId));
+            return this.IsPageAdminUser() || TabPermissionController.CanAdminPage(this.GetTabById(tabId));
         }
 
         public virtual bool CanManagePage(int tabId)
         {
-            return CanAdminPage(tabId) || TabPermissionController.CanManagePage(GetTabById(tabId));
+            return this.CanAdminPage(tabId) || TabPermissionController.CanManagePage(this.GetTabById(tabId));
         }
 
         public virtual bool CanDeletePage(int tabId)
         {
-            return CanAdminPage(tabId) || TabPermissionController.CanDeletePage(GetTabById(tabId));
+            return this.CanAdminPage(tabId) || TabPermissionController.CanDeletePage(this.GetTabById(tabId));
         }
 
         public virtual bool CanAddPage(int tabId)
         {
-            return CanAdminPage(tabId) || TabPermissionController.CanAddPage(GetTabById(tabId));
+            return this.CanAdminPage(tabId) || TabPermissionController.CanAddPage(this.GetTabById(tabId));
         }
 
         public virtual bool CanCopyPage(int tabId)
         {
-            return CanAdminPage(tabId) || TabPermissionController.CanCopyPage(GetTabById(tabId));
+            return this.CanAdminPage(tabId) || TabPermissionController.CanCopyPage(this.GetTabById(tabId));
         }
 
         public virtual bool CanExportPage(int tabId)
         {
-            return CanAdminPage(tabId) || TabPermissionController.CanExportPage(GetTabById(tabId));
+            return this.CanAdminPage(tabId) || TabPermissionController.CanExportPage(this.GetTabById(tabId));
         }
 
         public virtual bool CanViewPageList(int menuId)
         {
             var permissions = MenuPermissionController.GetMenuPermissions(PortalSettings.Current.PortalId, menuId);
-            return MenuPermissionController.HasMenuPermission(new MenuPermissionCollection(permissions), "VIEW_PAGE_LIST") || IsPageAdmin();
+            return MenuPermissionController.HasMenuPermission(new MenuPermissionCollection(permissions), "VIEW_PAGE_LIST") || this.IsPageAdmin();
         }
 
         public virtual bool CanSavePageDetails(PageSettings pageSettings)
@@ -155,12 +155,12 @@ namespace Dnn.PersonaBar.Pages.Components.Security
             }
 
             return (
-                IsPageAdminUser() ||
-                creatingPage && CanAddPage(parentId) && !creatingTemplate ||
-                creatingTemplate && CanExportPage(pageSettings.TemplateTabId) ||
-                updatingPage && CanManagePage(tabId) && !updatingParentPage ||
-                updatingParentPage && CanManagePage(tabId) && CanAddPage(parentId) ||
-                duplicatingPage && CanCopyPage(pageSettings.TemplateTabId) && CanAddPage(parentId)
+                this.IsPageAdminUser() ||
+                creatingPage && this.CanAddPage(parentId) && !creatingTemplate ||
+                creatingTemplate && this.CanExportPage(pageSettings.TemplateTabId) ||
+                updatingPage && this.CanManagePage(tabId) && !updatingParentPage ||
+                updatingParentPage && this.CanManagePage(tabId) && this.CanAddPage(parentId) ||
+                duplicatingPage && this.CanCopyPage(pageSettings.TemplateTabId) && this.CanAddPage(parentId)
             );
         }
 
@@ -173,7 +173,7 @@ namespace Dnn.PersonaBar.Pages.Components.Security
         private TabInfo GetTabById(int pageId)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return pageId <= 0 ? new TabInfo() : _tabController.GetTab(pageId, portalSettings.PortalId, false);
+            return pageId <= 0 ? new TabInfo() : this._tabController.GetTab(pageId, portalSettings.PortalId, false);
         }
     }
 }

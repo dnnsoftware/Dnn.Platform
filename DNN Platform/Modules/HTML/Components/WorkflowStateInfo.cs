@@ -47,11 +47,11 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                return _IsActive;
+                return this._IsActive;
             }
             set
             {
-                _IsActive = value;
+                this._IsActive = value;
             }
         }
     }

@@ -47,7 +47,7 @@ namespace DotNetNuke.Services.EventQueue
 
         public EventMessage()
         {
-            _attributes = new NameValueCollection();
+            this._attributes = new NameValueCollection();
         }
 		
 		#endregion
@@ -58,11 +58,11 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                return _eventMessageID;
+                return this._eventMessageID;
             }
             set
             {
-                _eventMessageID = value;
+                this._eventMessageID = value;
             }
         }
 
@@ -70,18 +70,18 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                if (_processorType == null)
+                if (this._processorType == null)
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    return _processorType;
+                    return this._processorType;
                 }
             }
             set
             {
-                _processorType = value;
+                this._processorType = value;
             }
         }
 
@@ -89,18 +89,18 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                if (_processorCommand == null)
+                if (this._processorCommand == null)
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    return _processorCommand;
+                    return this._processorCommand;
                 }
             }
             set
             {
-                _processorCommand = value;
+                this._processorCommand = value;
             }
         }
 
@@ -108,18 +108,18 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                if (_body == null)
+                if (this._body == null)
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    return _body;
+                    return this._body;
                 }
             }
             set
             {
-                _body = value;
+                this._body = value;
             }
         }
 
@@ -127,18 +127,18 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                if (_sender == null)
+                if (this._sender == null)
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    return _sender;
+                    return this._sender;
                 }
             }
             set
             {
-                _sender = value;
+                this._sender = value;
             }
         }
 
@@ -146,18 +146,18 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                if (_subscribers == null)
+                if (this._subscribers == null)
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    return _subscribers;
+                    return this._subscribers;
                 }
             }
             set
             {
-                _subscribers = value;
+                this._subscribers = value;
             }
         }
 
@@ -165,18 +165,18 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                if (_authorizedRoles == null)
+                if (this._authorizedRoles == null)
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    return _authorizedRoles;
+                    return this._authorizedRoles;
                 }
             }
             set
             {
-                _authorizedRoles = value;
+                this._authorizedRoles = value;
             }
         }
 
@@ -184,11 +184,11 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                return _priority;
+                return this._priority;
             }
             set
             {
-                _priority = value;
+                this._priority = value;
             }
         }
 
@@ -196,18 +196,18 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                if (_exceptionMessage == null)
+                if (this._exceptionMessage == null)
                 {
                     return string.Empty;
                 }
                 else
                 {
-                    return _exceptionMessage;
+                    return this._exceptionMessage;
                 }
             }
             set
             {
-                _exceptionMessage = value;
+                this._exceptionMessage = value;
             }
         }
 
@@ -215,11 +215,11 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                return _sentDate.ToLocalTime();
+                return this._sentDate.ToLocalTime();
             }
             set
             {
-                _sentDate = value.ToUniversalTime();
+                this._sentDate = value.ToUniversalTime();
             }
         }
 
@@ -227,11 +227,11 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                return _expirationDate.ToLocalTime();
+                return this._expirationDate.ToLocalTime();
             }
             set
             {
-                _expirationDate = value.ToUniversalTime();
+                this._expirationDate = value.ToUniversalTime();
             }
         }
 
@@ -239,11 +239,11 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                return _attributes;
+                return this._attributes;
             }
             set
             {
-                _attributes = value;
+                this._attributes = value;
             }
         }
 		
@@ -282,7 +282,7 @@ namespace DotNetNuke.Services.EventQueue
                     }
 					
                     //Add attribute to the collection
-                    _attributes.Add(attName, attValue);
+                    this._attributes.Add(attName, attValue);
                 } while (reader.ReadToNextSibling("Attribute"));
             }
         }
@@ -299,7 +299,7 @@ namespace DotNetNuke.Services.EventQueue
             {
                 writer.WriteStartElement("Attributes");
 
-                foreach (string key in Attributes.Keys)
+                foreach (string key in this.Attributes.Keys)
                 {
                     writer.WriteStartElement("Attribute");
 
@@ -307,16 +307,16 @@ namespace DotNetNuke.Services.EventQueue
                     writer.WriteElementString("Name", key);
 
                     //Write the Value element
-                    if (Attributes[key].IndexOfAny("<'>\"&".ToCharArray()) > -1)
+                    if (this.Attributes[key].IndexOfAny("<'>\"&".ToCharArray()) > -1)
                     {
                         writer.WriteStartElement("Value");
-                        writer.WriteCData(Attributes[key]);
+                        writer.WriteCData(this.Attributes[key]);
                         writer.WriteEndElement();
                     }
                     else
                     {
                         //Write value
-                        writer.WriteElementString("Value", Attributes[key]);
+                        writer.WriteElementString("Value", this.Attributes[key]);
                     }
 
                     //Close the Attribute node

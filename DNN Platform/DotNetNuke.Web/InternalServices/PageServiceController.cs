@@ -25,11 +25,11 @@ namespace DotNetNuke.Web.InternalServices
         {
             get
             {
-                if (!_portalId.HasValue)
+                if (!this._portalId.HasValue)
                 {
-                    _portalId = PortalSettings.ActiveTab.IsSuperTab ? -1 : PortalSettings.PortalId;
+                    this._portalId = this.PortalSettings.ActiveTab.IsSuperTab ? -1 : this.PortalSettings.PortalId;
                 }
-                return _portalId.Value;
+                return this._portalId.Value;
             }
         }
 
@@ -39,11 +39,11 @@ namespace DotNetNuke.Web.InternalServices
         [DnnPagePermission]
         public HttpResponseMessage PublishPage(PublishPageDto dto)
         {
-            var tabId = Request.FindTabId();
+            var tabId = this.Request.FindTabId();
             
-            TabPublishingController.Instance.SetTabPublishing(tabId, PortalId, dto.Publish);
+            TabPublishingController.Instance.SetTabPublishing(tabId, this.PortalId, dto.Publish);
             
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return this.Request.CreateResponse(HttpStatusCode.OK);
         }
         
         [HttpPost]
@@ -53,13 +53,13 @@ namespace DotNetNuke.Web.InternalServices
             var urlPath = dto.Path.ValueOrEmpty().TrimStart('/');
             bool modified;
             //Clean Url
-            var options = UrlRewriterUtils.ExtendOptionsForCustomURLs( UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(PortalSettings.PortalId)) );
+            var options = UrlRewriterUtils.ExtendOptionsForCustomURLs( UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(this.PortalSettings.PortalId)) );
             
             //now clean the path
             urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
             if (modified)
             {
-                return Request.CreateResponse(HttpStatusCode.OK,
+                return this.Request.CreateResponse(HttpStatusCode.OK,
                     new
                     {
                         Success = false,
@@ -69,10 +69,10 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             //Validate for uniqueness
-            urlPath = FriendlyUrlController.ValidateUrl(urlPath, -1, PortalSettings, out modified);
+            urlPath = FriendlyUrlController.ValidateUrl(urlPath, -1, this.PortalSettings, out modified);
             if (modified)
             {
-                return Request.CreateResponse(HttpStatusCode.OK,
+                return this.Request.CreateResponse(HttpStatusCode.OK,
                     new
                     {
                         Success = false,
@@ -81,8 +81,8 @@ namespace DotNetNuke.Web.InternalServices
                     });
             }
 
-            var tab = PortalSettings.ActiveTab;
-            var cultureCode = LocaleController.Instance.GetLocales(PortalId)
+            var tab = this.PortalSettings.ActiveTab;
+            var cultureCode = LocaleController.Instance.GetLocales(this.PortalId)
                                     .Where(l => l.Value.KeyID == dto.LocaleKey)
                                     .Select(l => l.Value.Code)
                                     .SingleOrDefault();
@@ -107,20 +107,20 @@ namespace DotNetNuke.Web.InternalServices
                                         HttpStatus = dto.StatusCodeKey.ToString(CultureInfo.InvariantCulture),
                                         IsSystem = dto.IsSystem // false
                                     };
-                    TabController.Instance.SaveTabUrl(tabUrl, PortalId, true);
+                    TabController.Instance.SaveTabUrl(tabUrl, this.PortalId, true);
                 }
                 else
                 {
                     //Change the original 200 url to a redirect
                     tabUrl.HttpStatus = "301";
                     tabUrl.SeqNum = dto.Id;
-                    TabController.Instance.SaveTabUrl(tabUrl, PortalId, true);
+                    TabController.Instance.SaveTabUrl(tabUrl, this.PortalId, true);
 
                     //Add new custom url
                     tabUrl.Url = dto.Path.ValueOrEmpty();
                     tabUrl.HttpStatus = "200";
                     tabUrl.SeqNum = tab.TabUrls.Max(t => t.SeqNum) + 1;
-                    TabController.Instance.SaveTabUrl(tabUrl, PortalId, true);
+                    TabController.Instance.SaveTabUrl(tabUrl, this.PortalId, true);
                 }
             }
             else
@@ -138,7 +138,7 @@ namespace DotNetNuke.Web.InternalServices
                                         HttpStatus = dto.StatusCodeKey.ToString(CultureInfo.InvariantCulture),
                                         IsSystem = dto.IsSystem // false
                                     };
-                TabController.Instance.SaveTabUrl(tabUrl, PortalId, true);
+                TabController.Instance.SaveTabUrl(tabUrl, this.PortalId, true);
             }
 
 
@@ -147,7 +147,7 @@ namespace DotNetNuke.Web.InternalServices
                 Success = true,
             };
 
-            return Request.CreateResponse(HttpStatusCode.OK, response);
+            return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
     }
 

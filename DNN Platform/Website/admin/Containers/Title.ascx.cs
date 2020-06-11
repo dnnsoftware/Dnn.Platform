@@ -36,9 +36,9 @@ namespace DotNetNuke.UI.Containers
         private bool CanEditModule()
         {
             var canEdit = false;
-            if (ModuleControl != null && ModuleControl.ModuleContext.ModuleId > Null.NullInteger)
+            if (this.ModuleControl != null && this.ModuleControl.ModuleContext.ModuleId > Null.NullInteger)
             {
-                canEdit = (PortalSettings.UserMode == PortalSettings.Mode.Edit) && TabPermissionController.CanAdminPage() && !Globals.IsAdminControl();
+                canEdit = (this.PortalSettings.UserMode == PortalSettings.Mode.Edit) && TabPermissionController.CanAdminPage() && !Globals.IsAdminControl();
             }
             return canEdit;
         }
@@ -47,7 +47,7 @@ namespace DotNetNuke.UI.Containers
         {
             base.OnInit(e);
 
-            titleLabel.UpdateLabel += UpdateTitle;
+            this.titleLabel.UpdateLabel += this.UpdateTitle;
         }
 
 
@@ -56,37 +56,37 @@ namespace DotNetNuke.UI.Containers
             base.OnPreRender(e);
 
             //public attributes
-            if (!String.IsNullOrEmpty(CssClass))
+            if (!String.IsNullOrEmpty(this.CssClass))
             {
-                titleLabel.CssClass = CssClass;
+                this.titleLabel.CssClass = this.CssClass;
             }
             string moduleTitle = Null.NullString;
-            if (ModuleControl != null)
+            if (this.ModuleControl != null)
             {
-                moduleTitle = Localization.LocalizeControlTitle(ModuleControl);
+                moduleTitle = Localization.LocalizeControlTitle(this.ModuleControl);
             }
             if (moduleTitle == Null.NullString)
             {
                 moduleTitle = " ";
             }
 
-            titleLabel.Text = moduleTitle;
-            titleLabel.EditEnabled = false;
-            titleToolbar.Visible = false;
+            this.titleLabel.Text = moduleTitle;
+            this.titleLabel.EditEnabled = false;
+            this.titleToolbar.Visible = false;
 
-            if (CanEditModule() && PortalSettings.InlineEditorEnabled)
+            if (this.CanEditModule() && this.PortalSettings.InlineEditorEnabled)
             {
-                titleLabel.EditEnabled = true;
-                titleToolbar.Visible = true;
+                this.titleLabel.EditEnabled = true;
+                this.titleToolbar.Visible = true;
             }
 
         }
 
         private void UpdateTitle(object source, DNNLabelEditEventArgs e)
         {
-            if (CanEditModule())
+            if (this.CanEditModule())
             {
-                ModuleInfo moduleInfo = ModuleController.Instance.GetModule(ModuleControl.ModuleContext.ModuleId, ModuleControl.ModuleContext.TabId, false);
+                ModuleInfo moduleInfo = ModuleController.Instance.GetModule(this.ModuleControl.ModuleContext.ModuleId, this.ModuleControl.ModuleContext.TabId, false);
 
                 var ps = PortalSecurity.Instance;
                 var mt = ps.InputFilter(e.Text, PortalSecurity.FilterFlag.NoScripting);

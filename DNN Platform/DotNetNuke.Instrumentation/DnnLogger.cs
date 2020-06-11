@@ -55,18 +55,18 @@ namespace DotNetNuke.Instrumentation
                 int frameDepth = 0;
                 Type methodType = stack[frameDepth].GetMethod().ReflectedType;
 				#pragma warning disable 612,618
-                while (methodType == _dnnExceptionType || methodType == typeof(DnnLogger) || methodType == typeof(DnnLog) || methodType == typeof(Control))
+                while (methodType == this._dnnExceptionType || methodType == typeof(DnnLogger) || methodType == typeof(DnnLog) || methodType == typeof(Control))
 				#pragma warning restore 612,618
                 {
                     frameDepth++;
                     methodType = stack[frameDepth].GetMethod().ReflectedType;
                 }
 
-                _stackBoundary = new StackTrace().GetFrame(frameDepth - 1).GetMethod().DeclaringType;
+                this._stackBoundary = new StackTrace().GetFrame(frameDepth - 1).GetMethod().DeclaringType;
             }
             else
             {
-                _stackBoundary = typeof(DnnLogger);
+                this._stackBoundary = typeof(DnnLogger);
             }
 
             ReloadLevels(logger.Repository);
@@ -138,7 +138,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void Debug(object message)
         {
-            Logger.Log(_stackBoundary, LevelDebug, message, null);
+            this.Logger.Log(this._stackBoundary, LevelDebug, message, null);
         }
 
 
@@ -166,7 +166,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void DebugFormat(string format, params object[] args)
         {
-            Logger.Log(_stackBoundary, LevelDebug, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+            this.Logger.Log(this._stackBoundary, LevelDebug, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void DebugFormat(IFormatProvider provider, string format, params object[] args)
         {
-            Logger.Log(_stackBoundary, LevelDebug, new SystemStringFormat(provider, format, args), null);
+            this.Logger.Log(this._stackBoundary, LevelDebug, new SystemStringFormat(provider, format, args), null);
         }
 
         /// <summary>
@@ -217,7 +217,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void Info(object message)
         {
-            Logger.Log(_stackBoundary, LevelInfo, message, null);
+            this.Logger.Log(this._stackBoundary, LevelInfo, message, null);
         }
 
 
@@ -245,7 +245,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void InfoFormat(string format, params object[] args)
         {
-            Logger.Log(_stackBoundary, LevelInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+            this.Logger.Log(this._stackBoundary, LevelInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
 
@@ -269,22 +269,22 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void InfoFormat(IFormatProvider provider, string format, params object[] args)
         {
-            Logger.Log(_stackBoundary, LevelInfo, new SystemStringFormat(provider, format, args), null);
+            this.Logger.Log(this._stackBoundary, LevelInfo, new SystemStringFormat(provider, format, args), null);
         }
 
         internal void TraceFormat(string format, params object[] args)
         {
-            Logger.Log(_stackBoundary, LevelTrace, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+            this.Logger.Log(this._stackBoundary, LevelTrace, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
         internal void Trace(string message)
         {
-            Logger.Log(_stackBoundary, LevelTrace, message, null);
+            this.Logger.Log(this._stackBoundary, LevelTrace, message, null);
         }
 
         internal void TraceFormat(IFormatProvider provider, string format, params object[] args)
         {
-            Logger.Log(_stackBoundary, LevelTrace, new SystemStringFormat(provider, format, args), null);
+            this.Logger.Log(this._stackBoundary, LevelTrace, new SystemStringFormat(provider, format, args), null);
         }
 
 
@@ -313,7 +313,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void Warn(object message)
         {
-            Logger.Log(_stackBoundary, LevelWarn, message, null);
+            this.Logger.Log(this._stackBoundary, LevelWarn, message, null);
         }
 
         /// <summary>
@@ -334,7 +334,7 @@ namespace DotNetNuke.Instrumentation
         /// <seealso cref = "Warn(object)" />
         public void Warn(object message, Exception exception)
         {
-            Logger.Log(_stackBoundary, LevelWarn, message, exception);
+            this.Logger.Log(this._stackBoundary, LevelWarn, message, exception);
         }
 
         /// <summary>
@@ -361,7 +361,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void WarnFormat(string format, params object[] args)
         {
-            Logger.Log(_stackBoundary, LevelWarn, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+            this.Logger.Log(this._stackBoundary, LevelWarn, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
         /// <summary>
@@ -384,7 +384,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void WarnFormat(IFormatProvider provider, string format, params object[] args)
         {
-            Logger.Log(_stackBoundary, LevelWarn, new SystemStringFormat(provider, format, args), null);
+            this.Logger.Log(this._stackBoundary, LevelWarn, new SystemStringFormat(provider, format, args), null);
         }
 
         /// <summary>
@@ -412,7 +412,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void Error(object message)
         {
-            Logger.Log(_stackBoundary, LevelError, message, null);
+            this.Logger.Log(this._stackBoundary, LevelError, message, null);
         }
 
         /// <summary>
@@ -433,7 +433,7 @@ namespace DotNetNuke.Instrumentation
         /// <seealso cref = "Error(object)" />
         public void Error(object message, Exception exception)
         {
-            Logger.Log(_stackBoundary, LevelError, message, exception);
+            this.Logger.Log(this._stackBoundary, LevelError, message, exception);
         }
 
         /// <summary>
@@ -460,7 +460,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void ErrorFormat(string format, params object[] args)
         {
-            Logger.Log(_stackBoundary, LevelError, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+            this.Logger.Log(this._stackBoundary, LevelError, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
         /// <summary>
@@ -483,7 +483,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void ErrorFormat(IFormatProvider provider, string format, params object[] args)
         {
-            Logger.Log(_stackBoundary, LevelError, new SystemStringFormat(provider, format, args), null);
+            this.Logger.Log(this._stackBoundary, LevelError, new SystemStringFormat(provider, format, args), null);
         }
 
         /// <summary>
@@ -511,7 +511,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void Fatal(object message)
         {
-            Logger.Log(_stackBoundary, LevelFatal, message, null);
+            this.Logger.Log(this._stackBoundary, LevelFatal, message, null);
         }
 
         /// <summary>
@@ -532,7 +532,7 @@ namespace DotNetNuke.Instrumentation
         /// <seealso cref = "Fatal(object)" />
         public void Fatal(object message, Exception exception)
         {
-            Logger.Log(_stackBoundary, LevelFatal, message, exception);
+            this.Logger.Log(this._stackBoundary, LevelFatal, message, exception);
         }
 
         /// <summary>
@@ -559,7 +559,7 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void FatalFormat(string format, params object[] args)
         {
-            Logger.Log(_stackBoundary, LevelFatal, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+            this.Logger.Log(this._stackBoundary, LevelFatal, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
         /// <summary>
@@ -582,43 +582,43 @@ namespace DotNetNuke.Instrumentation
         /// </remarks>
         public void FatalFormat(IFormatProvider provider, string format, params object[] args)
         {
-            Logger.Log(_stackBoundary, LevelFatal, new SystemStringFormat(provider, format, args), null);
+            this.Logger.Log(this._stackBoundary, LevelFatal, new SystemStringFormat(provider, format, args), null);
         }
 
         #region Install log levels
         public void InstallLogError(object message)
         {
-            Logger.Log(_stackBoundary, LevelLogError, message, null);
+            this.Logger.Log(this._stackBoundary, LevelLogError, message, null);
         }
 
         public void InstallLogError(string message, Exception exception)
         {
-            Logger.Log(_stackBoundary, LevelLogError, message, exception);
+            this.Logger.Log(this._stackBoundary, LevelLogError, message, exception);
         }
         
         public void InstallLogErrorFormat(string format, params object[] args)
         {
-            Logger.Log(_stackBoundary, LevelLogError, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+            this.Logger.Log(this._stackBoundary, LevelLogError, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
         public void InstallLogErrorFormat(IFormatProvider provider, string format, params object[] args)
         {
-            Logger.Log(_stackBoundary, LevelLogError, new SystemStringFormat(provider, format, args), null);
+            this.Logger.Log(this._stackBoundary, LevelLogError, new SystemStringFormat(provider, format, args), null);
         }
 
         public void InstallLogInfo(object message)
         {
-            Logger.Log(_stackBoundary, LevelLogInfo, message, null);
+            this.Logger.Log(this._stackBoundary, LevelLogInfo, message, null);
         }
 
         public void InstallLogInfoFormat(string format, params object[] args)
         {
-            Logger.Log(_stackBoundary, LevelLogInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+            this.Logger.Log(this._stackBoundary, LevelLogInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
 
         public void InstallLogInfoFormat(IFormatProvider provider, string format, params object[] args)
         {
-            Logger.Log(_stackBoundary, LevelLogInfo, new SystemStringFormat(provider, format, args), null);
+            this.Logger.Log(this._stackBoundary, LevelLogInfo, new SystemStringFormat(provider, format, args), null);
         }
 
         #endregion

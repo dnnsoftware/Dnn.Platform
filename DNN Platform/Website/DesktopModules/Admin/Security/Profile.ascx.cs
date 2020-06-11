@@ -41,8 +41,8 @@ namespace DesktopModules.Admin.Security
         {
             get
             {
-                object setting = GetSetting(PortalId, "Profile_DisplayVisibility");
-                return Convert.ToBoolean(setting) && IsUser;
+                object setting = GetSetting(this.PortalId, "Profile_DisplayVisibility");
+                return Convert.ToBoolean(setting) && this.IsUser;
             }
         }
 
@@ -59,11 +59,11 @@ namespace DesktopModules.Admin.Security
         {
             get
             {
-                return ProfileProperties.EditMode;
+                return this.ProfileProperties.EditMode;
             }
             set
             {
-                ProfileProperties.EditMode = value;
+                this.ProfileProperties.EditMode = value;
             }
         }
 
@@ -76,7 +76,7 @@ namespace DesktopModules.Admin.Security
         {
             get
             {
-                return ProfileProperties.IsValid || IsAdmin;
+                return this.ProfileProperties.IsValid || this.IsAdmin;
             }
         }
 
@@ -89,11 +89,11 @@ namespace DesktopModules.Admin.Security
         {
             get
             {
-                return actionsRow.Visible;
+                return this.actionsRow.Visible;
             }
             set
             {
-                actionsRow.Visible = value;
+                this.actionsRow.Visible = value;
             }
         }
 
@@ -107,9 +107,9 @@ namespace DesktopModules.Admin.Security
             get
             {
                 UserProfile _Profile = null;
-                if (User != null)
+                if (this.User != null)
                 {
-                    _Profile = User.Profile;
+                    _Profile = this.User.Profile;
                 }
                 return _Profile;
             }
@@ -130,23 +130,23 @@ namespace DesktopModules.Admin.Security
             //Before we bind the Profile to the editor we need to "update" the visible data
             var properties = new ProfilePropertyDefinitionCollection();
 			var imageType = new ListController().GetListEntryInfo("DataType", "Image");
-            foreach (ProfilePropertyDefinition profProperty in UserProfile.ProfileProperties)
+            foreach (ProfilePropertyDefinition profProperty in this.UserProfile.ProfileProperties)
             {
-                if (IsAdmin && !IsProfile)
+                if (this.IsAdmin && !this.IsProfile)
                 {
                     profProperty.Visible = true;
                 }
 
-                if (!profProperty.Deleted && (Request.IsAuthenticated || profProperty.DataType != imageType.EntryID))
+                if (!profProperty.Deleted && (this.Request.IsAuthenticated || profProperty.DataType != imageType.EntryID))
                 {
                     properties.Add(profProperty);
                 }
             }
 
-            ProfileProperties.User = User;
-            ProfileProperties.ShowVisibility = ShowVisibility;
-            ProfileProperties.DataSource = properties;
-            ProfileProperties.DataBind();
+            this.ProfileProperties.User = this.User;
+            this.ProfileProperties.ShowVisibility = this.ShowVisibility;
+            this.ProfileProperties.DataSource = properties;
+            this.ProfileProperties.DataBind();
         }
 
 		#endregion
@@ -163,16 +163,16 @@ namespace DesktopModules.Admin.Security
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            ID = "Profile.ascx";
+            this.ID = "Profile.ascx";
 
             //Get the base Page
-            var basePage = Page as PageBase;
+            var basePage = this.Page as PageBase;
             if (basePage != null)
             {
 				//Check if culture is RTL
-                ProfileProperties.LabelMode = basePage.PageCulture.TextInfo.IsRightToLeft ? LabelMode.Right : LabelMode.Left;
+                this.ProfileProperties.LabelMode = basePage.PageCulture.TextInfo.IsRightToLeft ? LabelMode.Right : LabelMode.Left;
             }
-            ProfileProperties.LocalResourceFile = LocalResourceFile;
+            this.ProfileProperties.LocalResourceFile = this.LocalResourceFile;
         }
 
         /// -----------------------------------------------------------------------------
@@ -185,7 +185,7 @@ namespace DesktopModules.Admin.Security
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            cmdUpdate.Click += cmdUpdate_Click;
+            this.cmdUpdate.Click += this.cmdUpdate_Click;
         }
 
         /// -----------------------------------------------------------------------------
@@ -197,47 +197,47 @@ namespace DesktopModules.Admin.Security
         /// -----------------------------------------------------------------------------
         private void cmdUpdate_Click(object sender, EventArgs e)
         {
-            if (IsUserOrAdmin == false && UserId == Null.NullInteger)
+            if (this.IsUserOrAdmin == false && this.UserId == Null.NullInteger)
             {
                 return;
             }
 
-            if (IsValid)
+            if (this.IsValid)
             {
-                if (User.UserID == PortalSettings.AdministratorId)
+                if (this.User.UserID == this.PortalSettings.AdministratorId)
                 {
                     //Clear the Portal Cache
-                    DataCache.ClearPortalCache(UserPortalID, true);
+                    DataCache.ClearPortalCache(this.UserPortalID, true);
                 }
 
                 //Update DisplayName to conform to Format
-                UpdateDisplayName();
+                this.UpdateDisplayName();
 
-                if (PortalSettings.Registration.RequireUniqueDisplayName)
+                if (this.PortalSettings.Registration.RequireUniqueDisplayName)
                 {
-                    var usersWithSameDisplayName = (List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(PortalId, 0, 2, "DisplayName", true, "DisplayName", User.DisplayName);
-                    if (usersWithSameDisplayName.Any(user => user.UserID != User.UserID))
+                    var usersWithSameDisplayName = (List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(this.PortalId, 0, 2, "DisplayName", true, "DisplayName", this.User.DisplayName);
+                    if (usersWithSameDisplayName.Any(user => user.UserID != this.User.UserID))
                     {
-                        AddModuleMessage("DisplayNameNotUnique", ModuleMessage.ModuleMessageType.RedError, true);
+                        this.AddModuleMessage("DisplayNameNotUnique", ModuleMessage.ModuleMessageType.RedError, true);
                         return;
                     }
                 }
 
-                var properties = (ProfilePropertyDefinitionCollection)ProfileProperties.DataSource;
+                var properties = (ProfilePropertyDefinitionCollection)this.ProfileProperties.DataSource;
 
                 //Update User's profile
-                User = ProfileController.UpdateUserProfile(User, properties);
+                this.User = ProfileController.UpdateUserProfile(this.User, properties);
 
-                OnProfileUpdated(EventArgs.Empty);
-                OnProfileUpdateCompleted(EventArgs.Empty);
+                this.OnProfileUpdated(EventArgs.Empty);
+                this.OnProfileUpdateCompleted(EventArgs.Empty);
             }
         }
 
         private void UpdateDisplayName()
         {
-            if (!string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
+            if (!string.IsNullOrEmpty(this.PortalSettings.Registration.DisplayNameFormat))
             {
-                User.UpdateDisplayName(PortalSettings.Registration.DisplayNameFormat);
+                this.User.UpdateDisplayName(this.PortalSettings.Registration.DisplayNameFormat);
             }
         }
 

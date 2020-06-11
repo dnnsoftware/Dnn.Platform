@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 DateTime dteValue = Null.NullDate;
                 try
                 {
-                    var dteString = Convert.ToString(Value);
+                    var dteString = Convert.ToString(this.Value);
                     DateTime.TryParse(dteString, CultureInfo.InvariantCulture, DateTimeStyles.None, out dteValue);
                 }
                 catch (Exception exc)
@@ -86,10 +86,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
         {
             get
             {
-                string _Format = DefaultFormat;
-                if (CustomAttributes != null)
+                string _Format = this.DefaultFormat;
+                if (this.CustomAttributes != null)
                 {
-                    foreach (Attribute attribute in CustomAttributes)
+                    foreach (Attribute attribute in this.CustomAttributes)
                     {
                         if (attribute is FormatAttribute)
                         {
@@ -117,7 +117,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 try
                 {
 					//Try and cast the value to an DateTime
-                    var dteString = OldValue as string;
+                    var dteString = this.OldValue as string;
                     if (!string.IsNullOrEmpty(dteString))
                     {
                         dteValue = DateTime.Parse(dteString, CultureInfo.InvariantCulture);
@@ -140,15 +140,15 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             get
             {
                 string _StringValue = Null.NullString;
-                if ((DateValue.ToUniversalTime().Date != (DateTime)SqlDateTime.MinValue && DateValue != Null.NullDate))
+                if ((this.DateValue.ToUniversalTime().Date != (DateTime)SqlDateTime.MinValue && this.DateValue != Null.NullDate))
                 {
-                    _StringValue = DateValue.ToString(Format);
+                    _StringValue = this.DateValue.ToString(this.Format);
                 }
                 return _StringValue;
             }
             set
             {
-                Value = DateTime.Parse(value);
+                this.Value = DateTime.Parse(value);
             }
         }
 
@@ -172,8 +172,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
         {
             get
             {
-                EnsureChildControls();
-                return DateControl.ClientID;
+                this.EnsureChildControls();
+                return this.DateControl.ClientID;
 
             }
         }
@@ -186,12 +186,12 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
 	    {
 		    get
 		    {
-			    if (_dateControl == null)
+			    if (this._dateControl == null)
 			    {
-				    _dateControl = new DnnDatePicker();
+				    this._dateControl = new DnnDatePicker();
 			    }
 
-			    return _dateControl;
+			    return this._dateControl;
 		    }
 	    }
 
@@ -202,40 +202,40 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             base.CreateChildControls();
 
 
-			DateControl.ControlStyle.CopyFrom(ControlStyle);
-			DateControl.ID = base.ID + "_control";
+			this.DateControl.ControlStyle.CopyFrom(this.ControlStyle);
+			this.DateControl.ID = base.ID + "_control";
 
-			Controls.Add(DateControl);
+			this.Controls.Add(this.DateControl);
         }
 
         protected virtual void LoadDateControls()
         {
-            if (DateValue != Null.NullDate)
+            if (this.DateValue != Null.NullDate)
             {
-				DateControl.SelectedDate = DateValue.Date;
+				this.DateControl.SelectedDate = this.DateValue.Date;
             }
         }
 
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
-            EnsureChildControls();
+            this.EnsureChildControls();
             bool dataChanged = false;
-            string presentValue = StringValue;
+            string presentValue = this.StringValue;
 			string postedValue = postCollection[postDataKey + "_control"];
             if (!presentValue.Equals(postedValue))
             {
                 if (string.IsNullOrEmpty(postedValue))
                 {
-                    Value = Null.NullDate;
+                    this.Value = Null.NullDate;
                     dataChanged = true;
                 }
                 else
                 {
-                    Value = DateTime.Parse(postedValue).ToString(CultureInfo.InvariantCulture);
+                    this.Value = DateTime.Parse(postedValue).ToString(CultureInfo.InvariantCulture);
                     dataChanged = true;
                 }
             }
-            LoadDateControls();
+            this.LoadDateControls();
             return dataChanged;
         }
 
@@ -245,10 +245,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
         /// <param name="e">An EventArgs object</param>
         protected override void OnDataChanged(EventArgs e)
         {
-            var args = new PropertyEditorEventArgs(Name);
-            args.Value = DateValue;
-            args.OldValue = OldDateValue;
-            args.StringValue = DateValue.ToString(CultureInfo.InvariantCulture);
+            var args = new PropertyEditorEventArgs(this.Name);
+            args.Value = this.DateValue;
+            args.OldValue = this.OldDateValue;
+            args.StringValue = this.DateValue.ToString(CultureInfo.InvariantCulture);
             base.OnValueChanged(args);
         }
 
@@ -256,11 +256,11 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
         {
             base.OnPreRender(e);
 
-            LoadDateControls();
+            this.LoadDateControls();
 
-            if (Page != null && EditMode == PropertyEditorMode.Edit)
+            if (this.Page != null && this.EditMode == PropertyEditorMode.Edit)
             {
-                Page.RegisterRequiresPostBack(this);
+                this.Page.RegisterRequiresPostBack(this);
             }
         }
 
@@ -270,7 +270,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
         /// <param name="writer"></param>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
-            RenderChildren(writer);
+            this.RenderChildren(writer);
         }
 
         /// -----------------------------------------------------------------------------
@@ -281,9 +281,9 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
         /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
-            ControlStyle.AddAttributesToRender(writer);
+            this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
-            writer.Write(StringValue);
+            writer.Write(this.StringValue);
             writer.RenderEndTag();
         }
     }

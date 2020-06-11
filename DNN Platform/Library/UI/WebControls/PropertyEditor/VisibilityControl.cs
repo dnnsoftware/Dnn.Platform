@@ -39,8 +39,8 @@ namespace DotNetNuke.UI.WebControls
 	{
 	    protected ProfileVisibility Visibility
 	    {
-            get { return Value as ProfileVisibility; }
-            set { Value = value; }
+            get { return this.Value as ProfileVisibility; }
+            set { this.Value = value; }
 	    }
 
 		#region Public Properties
@@ -80,7 +80,7 @@ namespace DotNetNuke.UI.WebControls
 		public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
 		{
 			var dataChanged = false;
-            var presentVisibility = Visibility.VisibilityMode;
+            var presentVisibility = this.Visibility.VisibilityMode;
             var postedValue = Convert.ToInt32(postCollection[postDataKey]);
 		    var postedVisibility = (UserVisibilityMode) Enum.ToObject(typeof (UserVisibilityMode), postedValue);
             if (!presentVisibility.Equals(postedVisibility) || postedVisibility == UserVisibilityMode.FriendsAndGroups)
@@ -89,7 +89,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     var sb = new StringBuilder();
                     sb.Append("G:");
-                    foreach (var role in User.Social.Roles)
+                    foreach (var role in this.User.Social.Roles)
                     {
                         if (postCollection[postDataKey + ":group_" + role.RoleID.ToString(CultureInfo.InvariantCulture)] != null)
                         {
@@ -98,7 +98,7 @@ namespace DotNetNuke.UI.WebControls
                     }
 
                     sb.Append(";R:");
-                    foreach (var relationship in User.Social.Relationships)
+                    foreach (var relationship in this.User.Social.Relationships)
                     {
                         if (postCollection[postDataKey + ":relationship_" + relationship.RelationshipId.ToString(CultureInfo.InvariantCulture)] != null)
                         {
@@ -106,14 +106,14 @@ namespace DotNetNuke.UI.WebControls
                         }
                     }
                     
-                    Value = new ProfileVisibility(User.PortalID, sb.ToString())
+                    this.Value = new ProfileVisibility(this.User.PortalID, sb.ToString())
                                     {
                                         VisibilityMode = postedVisibility
                                     };                    
                 }
                 else
                 {
-                    Value = new ProfileVisibility
+                    this.Value = new ProfileVisibility
                                     {
                                         VisibilityMode = postedVisibility
                                     };
@@ -131,8 +131,8 @@ namespace DotNetNuke.UI.WebControls
 		public void RaisePostDataChangedEvent()
 		{
 			//Raise the VisibilityChanged Event
-		    var args = new PropertyEditorEventArgs(Name) {Value = Value};
-		    OnVisibilityChanged(args);
+		    var args = new PropertyEditorEventArgs(this.Name) {Value = this.Value};
+		    this.OnVisibilityChanged(args);
 		}
 
 		#endregion
@@ -152,10 +152,10 @@ namespace DotNetNuke.UI.WebControls
 
             //Render radio button
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
-            writer.AddAttribute("aria-label", ID);
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
+            writer.AddAttribute("aria-label", this.ID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
             writer.AddAttribute(HtmlTextWriterAttribute.Value, optionValue);
-            if ((Visibility.VisibilityMode == selectedVisibility))
+            if ((this.Visibility.VisibilityMode == selectedVisibility))
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
             }
@@ -174,8 +174,8 @@ namespace DotNetNuke.UI.WebControls
 
             //Render radio button
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");
-            writer.AddAttribute("aria-label", ID);
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID + prefix + value);
+            writer.AddAttribute("aria-label", this.ID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + prefix + value);
             writer.AddAttribute(HtmlTextWriterAttribute.Value, value);
             if (selected)
             {
@@ -193,21 +193,21 @@ namespace DotNetNuke.UI.WebControls
 
         private void RenderGroups(HtmlTextWriter writer)
         {
-            foreach (var group in User.Social.Roles.Where((role) => role.SecurityMode != SecurityMode.SecurityRole))
+            foreach (var group in this.User.Social.Roles.Where((role) => role.SecurityMode != SecurityMode.SecurityRole))
             {
-                RenderCheckboxItem(writer, ":group_", group.RoleID.ToString(CultureInfo.InvariantCulture), 
+                this.RenderCheckboxItem(writer, ":group_", group.RoleID.ToString(CultureInfo.InvariantCulture), 
                                         group.RoleName,
-                                        Visibility.RoleVisibilities.Count(r => r.RoleID == group.RoleID) == 1);
+                                        this.Visibility.RoleVisibilities.Count(r => r.RoleID == group.RoleID) == 1);
             }
         }
 
         private void RenderRelationships(HtmlTextWriter writer)
         {
-            foreach (var relationship in User.Social.Relationships)
+            foreach (var relationship in this.User.Social.Relationships)
             {
-                RenderCheckboxItem(writer, ":relationship_", relationship.RelationshipId.ToString(CultureInfo.InvariantCulture), 
+                this.RenderCheckboxItem(writer, ":relationship_", relationship.RelationshipId.ToString(CultureInfo.InvariantCulture), 
                                         relationship.Name,
-                                        Visibility.RelationshipVisibilities.Count(r => r.RelationshipId == relationship.RelationshipId) == 1);
+                                        this.Visibility.RelationshipVisibilities.Count(r => r.RelationshipId == relationship.RelationshipId) == 1);
             }
         }
 
@@ -226,8 +226,8 @@ namespace DotNetNuke.UI.WebControls
         {
             base.OnPreRender(e);
 
-            Page.RegisterRequiresPostBack(this);
-			Page.ClientScript.RegisterClientScriptBlock(GetType(), "visibleChange", "$(document).ready(function(){$('.dnnFormVisibility').on('click', 'input[type=radio]', function(){$(this).parent().parent().find('ul').hide();$(this).parent().next('ul').show();});});", true);
+            this.Page.RegisterRequiresPostBack(this);
+			this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "visibleChange", "$(document).ready(function(){$('.dnnFormVisibility').on('click', 'input[type=radio]', function(){$(this).parent().parent().find('ul').hide();$(this).parent().next('ul').show();});});", true);
         }
 
 		/// <summary>
@@ -236,9 +236,9 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		protected virtual void OnVisibilityChanged(PropertyEditorEventArgs e)
 		{
-			if (VisibilityChanged != null)
+			if (this.VisibilityChanged != null)
 			{
-				VisibilityChanged(this, e);
+				this.VisibilityChanged(this, e);
 			}
 		}
 
@@ -250,7 +250,7 @@ namespace DotNetNuke.UI.WebControls
 		{
             //Render Div container
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "dnnFormVisibility dnnDropdownSettings");
-			writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
+			writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
 			writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
             //Render dnnButtonDropdown
@@ -284,20 +284,20 @@ namespace DotNetNuke.UI.WebControls
 
             writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
-            RenderVisibility(writer, "0", UserVisibilityMode.AllUsers, Localization.GetString("Public").Trim());
+            this.RenderVisibility(writer, "0", UserVisibilityMode.AllUsers, Localization.GetString("Public").Trim());
 
-            RenderVisibility(writer, "1", UserVisibilityMode.MembersOnly, Localization.GetString("MembersOnly").Trim());
+            this.RenderVisibility(writer, "1", UserVisibilityMode.MembersOnly, Localization.GetString("MembersOnly").Trim());
 
-            RenderVisibility(writer, "2", UserVisibilityMode.AdminOnly, Localization.GetString("AdminOnly").Trim());
+            this.RenderVisibility(writer, "2", UserVisibilityMode.AdminOnly, Localization.GetString("AdminOnly").Trim());
 
-            RenderVisibility(writer, "3", UserVisibilityMode.FriendsAndGroups, Localization.GetString("FriendsGroups").Trim());
+            this.RenderVisibility(writer, "3", UserVisibilityMode.FriendsAndGroups, Localization.GetString("FriendsGroups").Trim());
 
             //Render UL for check Box List
-            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, Visibility.VisibilityMode == UserVisibilityMode.FriendsAndGroups ? "block" : "none");
+            writer.AddStyleAttribute(HtmlTextWriterStyle.Display, this.Visibility.VisibilityMode == UserVisibilityMode.FriendsAndGroups ? "block" : "none");
             writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
-		    RenderRelationships(writer);
-            RenderGroups(writer);
+		    this.RenderRelationships(writer);
+            this.RenderGroups(writer);
 
             //Close UL
             writer.RenderEndTag();

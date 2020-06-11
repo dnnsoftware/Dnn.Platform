@@ -26,7 +26,7 @@ namespace DotNetNuke.Entities.Content
 
         public AttachmentController(IContentController contentController)
         {
-            _contentController = contentController;
+            this._contentController = contentController;
         }
 
         private readonly IContentController _contentController;
@@ -35,60 +35,60 @@ namespace DotNetNuke.Entities.Content
 
         private void AddToContent(int contentItemId, Action<ContentItem> action)
         {
-            var contentItem = _contentController.GetContentItem(contentItemId);
+            var contentItem = this._contentController.GetContentItem(contentItemId);
 
             action(contentItem);
             
-            _contentController.UpdateContentItem(contentItem);
+            this._contentController.UpdateContentItem(contentItem);
         }
 
         public void AddFileToContent(int contentItemId, IFileInfo fileInfo)
         {
-            AddFilesToContent(contentItemId, new[] { fileInfo });
+            this.AddFilesToContent(contentItemId, new[] { fileInfo });
         }
 
         public void AddFilesToContent(int contentItemId, IEnumerable<IFileInfo> fileInfo)
         {
-            AddToContent(contentItemId, contentItem => contentItem.Files.AddRange(fileInfo));
+            this.AddToContent(contentItemId, contentItem => contentItem.Files.AddRange(fileInfo));
         }
         
         public void AddVideoToContent(int contentItemId, IFileInfo fileInfo)
         {
-            AddVideosToContent(contentItemId, new[] { fileInfo });
+            this.AddVideosToContent(contentItemId, new[] { fileInfo });
         }
 
         public void AddVideosToContent(int contentItemId, IEnumerable<IFileInfo> fileInfo)
         {
-            AddToContent(contentItemId, contentItem => contentItem.Videos.AddRange(fileInfo));
+            this.AddToContent(contentItemId, contentItem => contentItem.Videos.AddRange(fileInfo));
         }
 
         public void AddImageToContent(int contentItemId, IFileInfo fileInfo)
         {
-            AddImagesToContent(contentItemId, new[] { fileInfo });
+            this.AddImagesToContent(contentItemId, new[] { fileInfo });
         }
 
         public void AddImagesToContent(int contentItemId, IEnumerable<IFileInfo> fileInfo)
         {
-            AddToContent(contentItemId, contentItem => contentItem.Images.AddRange(fileInfo));
+            this.AddToContent(contentItemId, contentItem => contentItem.Images.AddRange(fileInfo));
         }
 
         public IList<IFileInfo> GetVideosByContent(int contentItemId)
         {
-            var files = GetFilesByContent(contentItemId, VideoKey);
+            var files = this.GetFilesByContent(contentItemId, VideoKey);
 
             return files.Select(fileId => FileManager.Instance.GetFile(fileId)).ToList();
         }
 
         public IList<IFileInfo> GetImagesByContent(int contentItemId)
         {
-            var files = GetFilesByContent(contentItemId, ImageKey);
+            var files = this.GetFilesByContent(contentItemId, ImageKey);
 
             return files.Select(fileId => FileManager.Instance.GetFile(fileId)).ToList();
         }
 
         public IList<IFileInfo> GetFilesByContent(int contentItemId)
         {
-            var files = GetFilesByContent(contentItemId, FilesKey);
+            var files = this.GetFilesByContent(contentItemId, FilesKey);
 
             return files.Select(fileId => FileManager.Instance.GetFile(fileId)).ToList();
         }
@@ -129,7 +129,7 @@ namespace DotNetNuke.Entities.Content
 
         private IEnumerable<int> GetFilesByContent(int contentItemId, string type)
         {
-            var contentItem = _contentController.GetContentItem(contentItemId);
+            var contentItem = this._contentController.GetContentItem(contentItemId);
             if (contentItem == null)
             {
                 throw new ApplicationException(string.Format("Cannot find ContentItem ID {0}", contentItemId));

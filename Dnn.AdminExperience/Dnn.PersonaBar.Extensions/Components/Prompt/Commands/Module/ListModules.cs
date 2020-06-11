@@ -48,29 +48,29 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         public override void Init(string[] args, DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Entities.Users.UserInfo userInfo, int activeTabId)
         {
             
-            PageId = GetFlagValue(FlagPageId, "Page Id", -1);
-            ModuleName = GetFlagValue(FlagModuleName, "Module Name", string.Empty);
-            ModuleTitle = GetFlagValue(FlagModuleTitle, "Module Title", string.Empty);
-            Deleted = GetFlagValue<bool?>(FlagDeleted, "Deleted", null);
-            Page = GetFlagValue(FlagPage, "Page No", 1);
-            Max = GetFlagValue(FlagMax, "Page Size", 10);
+            this.PageId = this.GetFlagValue(FlagPageId, "Page Id", -1);
+            this.ModuleName = this.GetFlagValue(FlagModuleName, "Module Name", string.Empty);
+            this.ModuleTitle = this.GetFlagValue(FlagModuleTitle, "Module Title", string.Empty);
+            this.Deleted = this.GetFlagValue<bool?>(FlagDeleted, "Deleted", null);
+            this.Page = this.GetFlagValue(FlagPage, "Page No", 1);
+            this.Max = this.GetFlagValue(FlagMax, "Page Size", 10);
         }
 
         public override ConsoleResultModel Run()
         {
-            var max = Max <= 0 ? 10 : (Max > 500 ? 500 : Max);
+            var max = this.Max <= 0 ? 10 : (this.Max > 500 ? 500 : this.Max);
 
             int total;
-            var portalDesktopModules = DesktopModuleController.GetPortalDesktopModules(PortalId);
+            var portalDesktopModules = DesktopModuleController.GetPortalDesktopModules(this.PortalId);
             var modules = ModulesControllerLibrary.Instance
                 .GetModules(
-                    PortalSettings,
-                    Deleted,
-                    out total, ModuleName,
-                    ModuleTitle,
-                    PageId, (Page > 0 ? Page - 1 : 0),
+                    this.PortalSettings,
+                    this.Deleted,
+                    out total, this.ModuleName,
+                    this.ModuleTitle,
+                    this.PageId, (this.Page > 0 ? this.Page - 1 : 0),
                     max)
-                .Select(x => ModuleInfoModel.FromDnnModuleInfo(x, Deleted))
+                .Select(x => ModuleInfoModel.FromDnnModuleInfo(x, this.Deleted))
                 .Where(m =>
                     {
                         var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(m.ModuleDefId);
@@ -79,7 +79,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                     })
                 .ToList();
             var totalPages = total / max + (total % max == 0 ? 0 : 1);
-            var pageNo = Page > 0 ? Page : 1;
+            var pageNo = this.Page > 0 ? this.Page : 1;
             return new ConsoleResultModel
             {
                 Data = modules,
@@ -90,7 +90,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
                     PageSize = max
                 },
                 Records = modules.Count,
-                Output = modules.Count == 0 ? LocalizeString("Prompt_NoModules") : ""
+                Output = modules.Count == 0 ? this.LocalizeString("Prompt_NoModules") : ""
             };
         }
     }

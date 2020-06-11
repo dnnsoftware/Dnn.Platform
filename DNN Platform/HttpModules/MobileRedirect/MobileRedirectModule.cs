@@ -30,8 +30,8 @@ namespace DotNetNuke.HttpModules
 
         public void Init(HttpApplication application)
         {
-            _redirectionController = new RedirectionController();
-            application.BeginRequest += OnBeginRequest;
+            this._redirectionController = new RedirectionController();
+            application.BeginRequest += this.OnBeginRequest;
         }
 
         public void Dispose()
@@ -50,8 +50,8 @@ namespace DotNetNuke.HttpModules
             if (!Initialize.ProcessHttpModule(app.Request, false, false)
                     || app.Request.HttpMethod == "POST"
                     || ServicesModule.ServiceApi.IsMatch(rawUrl) 
-                    || MvcServicePath.IsMatch(rawUrl)
-                    || IsSpecialPage(rawUrl)
+                    || this.MvcServicePath.IsMatch(rawUrl)
+                    || this.IsSpecialPage(rawUrl)
                     || (portalSettings != null && !IsRedirectAllowed(rawUrl, app, portalSettings)))
             {
                 return;
@@ -59,12 +59,12 @@ namespace DotNetNuke.HttpModules
 
             //Check if redirection has been disabled for the session
             //This method inspects cookie and query string. It can also setup / clear cookies.
-            if (_redirectionController != null &&
+            if (this._redirectionController != null &&
                 portalSettings?.ActiveTab != null &&
                 !string.IsNullOrEmpty(app.Request.UserAgent) &&
-                _redirectionController.IsRedirectAllowedForTheSession(app))
+                this._redirectionController.IsRedirectAllowedForTheSession(app))
             {
-                var redirectUrl = _redirectionController.GetRedirectUrl(app.Request.UserAgent);
+                var redirectUrl = this._redirectionController.GetRedirectUrl(app.Request.UserAgent);
                 if (!string.IsNullOrEmpty(redirectUrl))
                 {
                     //append the query string from original url
@@ -107,7 +107,7 @@ namespace DotNetNuke.HttpModules
             {
                 tabPath = tabPath.Replace(alias.Substring(idx), string.Empty);
             }
-            return _specialPages.Contains(tabPath);
+            return this._specialPages.Contains(tabPath);
         }
     }
 }

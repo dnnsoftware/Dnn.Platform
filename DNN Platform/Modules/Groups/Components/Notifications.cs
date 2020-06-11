@@ -15,11 +15,11 @@ namespace DotNetNuke.Modules.Groups.Components {
     public class Notifications {
         internal virtual Notification AddGroupNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo initiatingUser, IList<RoleInfo> moderators)
         {
-            return AddGroupNotification(notificationTypeName, tabId, moduleId, group, initiatingUser, moderators, null as UserInfo);
+            return this.AddGroupNotification(notificationTypeName, tabId, moduleId, group, initiatingUser, moderators, null as UserInfo);
         }
 		internal virtual Notification AddGroupNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo initiatingUser, IList<RoleInfo> moderators, UserInfo recipient)
 		{
-			return AddGroupNotification(notificationTypeName, tabId, moduleId, group, initiatingUser, moderators, recipient == null ? null : new List<UserInfo> { recipient });
+			return this.AddGroupNotification(notificationTypeName, tabId, moduleId, group, initiatingUser, moderators, recipient == null ? null : new List<UserInfo> { recipient });
 		}
         internal virtual Notification AddGroupNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo initiatingUser, IList<RoleInfo> moderators, IList<UserInfo> recipients) {
             var notificationType = NotificationsController.Instance.GetNotificationType(notificationTypeName);

@@ -26,7 +26,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             }
             else
             {
-                AddMessage(LocalizeString("Prompt_ListPortals_NoArgs"));
+                this.AddMessage(this.LocalizeString("Prompt_ListPortals_NoArgs"));
             }
         }
 
@@ -38,7 +38,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             var lst = (from PortalInfo portal in alPortals select new PortalModelBase(portal)).ToList();
             var count = lst.Count() > 0 ? lst.Count().ToString() : "No";
             var pluralSuffix = lst.Count() > 1 ? "s" : "";
-            return new ConsoleResultModel(string.Empty) { Data = lst, Records = lst.Count, Output = string.Format(LocalizeString("Prompt_ListPortals_Results"), count, pluralSuffix) };
+            return new ConsoleResultModel(string.Empty) { Data = lst, Records = lst.Count, Output = string.Format(this.LocalizeString("Prompt_ListPortals_Results"), count, pluralSuffix) };
         }
     }
 }

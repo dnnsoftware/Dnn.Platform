@@ -16,8 +16,8 @@ namespace DotNetNuke.Common
         /// <param name="text">The text.</param>
         public FileItem(string value, string text)
         {
-            Value = value;
-            Text = text;
+            this.Value = value;
+            this.Text = text;
         }
 
         /// <summary>

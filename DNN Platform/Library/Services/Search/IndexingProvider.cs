@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.Search
         protected DateTime GetLocalTimeOfLastIndexedItem(int portalId, int scheduleId, DateTime localTime)
         {
             var lastTime = SearchHelper.Instance.GetIndexerCheckpointUtcTime(
-                scheduleId, ScheduleItemSettingKey(portalId, TimePostfix)).ToLocalTime();
+                scheduleId, this.ScheduleItemSettingKey(portalId, TimePostfix)).ToLocalTime();
             return lastTime < localTime ? lastTime : localTime;
         }
 
@@ -62,7 +62,7 @@ namespace DotNetNuke.Services.Search
         protected void SetLocalTimeOfLastIndexedItem(int portalId, int scheduleId, DateTime localTime)
         {
             SearchHelper.Instance.SetIndexerCheckpointUtcTime(
-                scheduleId, ScheduleItemSettingKey(portalId, TimePostfix), localTime.ToUniversalTime());
+                scheduleId, this.ScheduleItemSettingKey(portalId, TimePostfix), localTime.ToUniversalTime());
         }
 
         /// <summary>Retrieves free format data to help the indexer to perform its job</summary>
@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Search
         /// <returns>The checkpoint data</returns>
         protected string GetLastCheckpointData(int portalId, int scheduleId)
         {
-            return SearchHelper.Instance.GetIndexerCheckpointData(scheduleId, ScheduleItemSettingKey(portalId, DataPostfix));
+            return SearchHelper.Instance.GetIndexerCheckpointData(scheduleId, this.ScheduleItemSettingKey(portalId, DataPostfix));
         }
 
         /// <summary>Stores free format data to help the indexer to perform its job</summary>
@@ -80,7 +80,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="data">The data to store.</param>
         protected void SetLastCheckpointData(int portalId, int scheduleId, string data)
         {
-            SearchHelper.Instance.SetIndexerCheckpointData(scheduleId, ScheduleItemSettingKey(portalId, DataPostfix), data);
+            SearchHelper.Instance.SetIndexerCheckpointData(scheduleId, this.ScheduleItemSettingKey(portalId, DataPostfix), data);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace DotNetNuke.Services.Search
         private string ScheduleItemSettingKey(int portalId, string propertyId)
         {
             Requires.NotNullOrEmpty("propertyId", propertyId);
-            var t = GetType();
+            var t = this.GetType();
             return string.Join("_", "Search", t.Name, t.FullName.GetHashCode().ToString("x8"), portalId.ToString(), propertyId);
         }
     }

@@ -11,10 +11,10 @@ namespace DotNetNuke.Web.DDRMenu
 	{
 		protected String GetStringSetting(String name, String defaultValue)
 		{
-			var result = Request.QueryString[name];
+			var result = this.Request.QueryString[name];
 			if (String.IsNullOrEmpty(result))
 			{
-				result = (String)Settings[name];
+				result = (String)this.Settings[name];
 			}
 			if (String.IsNullOrEmpty(result))
 			{
@@ -35,28 +35,28 @@ namespace DotNetNuke.Web.DDRMenu
 
 		protected String GetStringSetting(String name)
 		{
-			return GetStringSetting(name, "");
+			return this.GetStringSetting(name, "");
 		}
 
 		protected Int32 GetIntSetting(String name, Int32 defaultValue)
 		{
-			return Convert.ToInt32(GetStringSetting(name, defaultValue.ToString()));
+			return Convert.ToInt32(this.GetStringSetting(name, defaultValue.ToString()));
 		}
 
 		protected Int32 GetIntSetting(String name)
 		{
-			return GetIntSetting(name, 0);
+			return this.GetIntSetting(name, 0);
 		}
 
 		protected Boolean GetBoolSetting(String name, Boolean defaultValue)
 		{
-			var result = GetStringSetting(name);
+			var result = this.GetStringSetting(name);
 			return (result == "") ? defaultValue : Convert.ToBoolean(result);
 		}
 
 		protected Boolean GetBoolSetting(String name)
 		{
-			return GetBoolSetting(name, false);
+			return this.GetBoolSetting(name, false);
 		}
 	}
 }

@@ -30,7 +30,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 throw new ArgumentNullException("key");
             }
-            _key = key + GetType().FullName;
+            this._key = key + this.GetType().FullName;
         }
 
         /// <summary>
@@ -50,11 +50,11 @@ namespace DotNetNuke.Common.Utilities
 
         private object GetInitializedInternalValue()
         {
-            var value = this[_key];
-            if (value == null && _initializer != null)
+            var value = this[this._key];
+            if (value == null && this._initializer != null)
             {
-                value = _initializer();
-                this[_key] = value;
+                value = this._initializer();
+                this[this._key] = value;
             }
             return value;
         }
@@ -82,7 +82,7 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return this[_key] != null;
+                return this[this._key] != null;
             }
         }
 
@@ -96,16 +96,16 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                var returnedValue = GetInitializedInternalValue();
+                var returnedValue = this.GetInitializedInternalValue();
                 if (returnedValue == null)
                 {
-                    throw new InvalidOperationException("There is no value for the '" + _key + "' key.");
+                    throw new InvalidOperationException("There is no value for the '" + this._key + "' key.");
                 }
                 return (T)returnedValue;
             }
             set
             {
-                this[_key] = value;
+                this[this._key] = value;
             }
         }
 
@@ -116,7 +116,7 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                var returnedValue = GetInitializedInternalValue();
+                var returnedValue = this.GetInitializedInternalValue();
                 if (returnedValue == null)
                 {
                     return default(T);
@@ -130,7 +130,7 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         public void Clear()
         {
-            Remove(_key);
+            this.Remove(this._key);
         }
 
     }

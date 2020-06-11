@@ -38,12 +38,12 @@ namespace DotNetNuke.UI.Containers.Controls
     	{
     		get
     		{
-				if(this.Parent == null || string.IsNullOrEmpty(_target))
+				if(this.Parent == null || string.IsNullOrEmpty(this._target))
 				{
 					return string.Empty;
 				}
 
-    			var targetControl = this.Parent.FindControl(_target);
+    			var targetControl = this.Parent.FindControl(this._target);
 				if(targetControl == null)
 				{
 					return string.Empty;
@@ -56,7 +56,7 @@ namespace DotNetNuke.UI.Containers.Controls
     		}
 			set
 			{
-				_target = value;
+				this._target = value;
 			}
     	}
 
@@ -70,22 +70,22 @@ namespace DotNetNuke.UI.Containers.Controls
             JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
 
 			var toggleScript = string.Format("<script type=\"text/javascript\">(function($){{$(\"#{0}\").find(\"a.toggleHandler\").click(function(e){{$(\"#{1}\").slideToggle();$(this).toggleClass('collapsed');e.preventDefault();}});}})(jQuery);</script>",
-			                                 ClientID,
-			                                 Target);
-			Page.ClientScript.RegisterStartupScript(GetType(), ClientID, toggleScript);
+			                                 this.ClientID,
+			                                 this.Target);
+			this.Page.ClientScript.RegisterStartupScript(this.GetType(), this.ClientID, toggleScript);
 		}
 
 		protected override void Render(HtmlTextWriter writer)
 		{
-			writer.AddAttribute("id", ClientID);
-			writer.AddAttribute("class", Class);
+			writer.AddAttribute("id", this.ClientID);
+			writer.AddAttribute("class", this.Class);
 			writer.RenderBeginTag("h2");
 
 			writer.AddAttribute("href", "#");
 			writer.AddAttribute("class", "toggleHandler");
 			writer.RenderBeginTag("a");
 
-			RenderChildren(writer);
+			this.RenderChildren(writer);
 
 			writer.RenderEndTag();
 			writer.RenderEndTag();

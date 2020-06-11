@@ -31,32 +31,32 @@ namespace DotNetNuke.Services.Search.Internals
 
         public SynonymFilter(TokenStream input) : base(input)
         {
-            _termAtt = (TermAttribute) AddAttribute<ITermAttribute>();
-            _posIncrAtt = (PositionIncrementAttribute)AddAttribute<IPositionIncrementAttribute>();
+            this._termAtt = (TermAttribute) this.AddAttribute<ITermAttribute>();
+            this._posIncrAtt = (PositionIncrementAttribute)this.AddAttribute<IPositionIncrementAttribute>();
         }
 
         public override bool IncrementToken()
         {
             //Pop buffered synonyms
-            if (_synonymStack.Count > 0)
+            if (this._synonymStack.Count > 0)
             {
-                var syn = _synonymStack.Pop();
-                RestoreState(_current);
-                _termAtt.SetTermBuffer(syn);
+                var syn = this._synonymStack.Pop();
+                this.RestoreState(this._current);
+                this._termAtt.SetTermBuffer(syn);
 
                 //set position increment to 0
-                _posIncrAtt.PositionIncrement = 0;
+                this._posIncrAtt.PositionIncrement = 0;
                 return true;
             }
 
             //read next token
-            if (!input.IncrementToken())
+            if (!this.input.IncrementToken())
                 return false;
 
             //push synonyms onto stack
-            if (AddAliasesToStack())
+            if (this.AddAliasesToStack())
             {
-                _current = CaptureState(); //save current token
+                this._current = this.CaptureState(); //save current token
             }
 
             return true;
@@ -82,13 +82,13 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 cultureCode = Thread.CurrentThread.CurrentCulture.Name;
             }
-            var synonyms = SearchHelper.Instance.GetSynonyms(portalId, cultureCode, _termAtt.Term).ToArray();
+            var synonyms = SearchHelper.Instance.GetSynonyms(portalId, cultureCode, this._termAtt.Term).ToArray();
             if (!synonyms.Any()) return false;
 
             var cultureInfo = new CultureInfo(cultureCode);
             foreach (var synonym in synonyms)
             {
-                _synonymStack.Push(synonym.ToLower(cultureInfo));
+                this._synonymStack.Push(synonym.ToLower(cultureInfo));
             }
             return true;
         }

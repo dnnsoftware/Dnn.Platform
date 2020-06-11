@@ -68,7 +68,7 @@ namespace log4net.Appender
 		/// </remarks>
 		public SmtpPickupDirAppender()
 		{
-			m_fileExtension = string.Empty; // Default to empty string, not null
+			this.m_fileExtension = string.Empty; // Default to empty string, not null
 		}
 
 		#endregion Public Instance Constructors
@@ -88,8 +88,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string To 
 		{
-			get { return m_to; }
-			set { m_to = value; }
+			get { return this.m_to; }
+			set { this.m_to = value; }
 		}
 
 		/// <summary>
@@ -105,8 +105,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string From 
 		{
-			get { return m_from; }
-			set { m_from = value; }
+			get { return this.m_from; }
+			set { this.m_from = value; }
 		}
 
 		/// <summary>
@@ -122,8 +122,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string Subject 
 		{
-			get { return m_subject; }
-			set { m_subject = value; }
+			get { return this.m_subject; }
+			set { this.m_subject = value; }
 		}
   
 		/// <summary>
@@ -137,8 +137,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string PickupDir
 		{
-			get { return m_pickupDir; }
-			set { m_pickupDir = value; }
+			get { return this.m_pickupDir; }
+			set { this.m_pickupDir = value; }
 		}
 
  		/// <summary>
@@ -154,22 +154,22 @@ namespace log4net.Appender
 		/// </remarks>
 		public string FileExtension
 		{
-			get { return m_fileExtension; }
+			get { return this.m_fileExtension; }
 			set
 			{
-				m_fileExtension = value;
-				if (m_fileExtension == null)
+				this.m_fileExtension = value;
+				if (this.m_fileExtension == null)
 				{
-					m_fileExtension = string.Empty;
+					this.m_fileExtension = string.Empty;
 				}
 				// Make sure any non empty extension starts with a dot
 #if NET_2_0 || MONO_2_0
-				if (!string.IsNullOrEmpty(m_fileExtension) && !m_fileExtension.StartsWith("."))
+				if (!string.IsNullOrEmpty(this.m_fileExtension) && !this.m_fileExtension.StartsWith("."))
 #else
 				if (m_fileExtension != null && m_fileExtension.Length > 0 && !m_fileExtension.StartsWith("."))
 #endif
 				{
-					m_fileExtension = "." + m_fileExtension;
+					this.m_fileExtension = "." + this.m_fileExtension;
 				}
 			}
 		}
@@ -190,8 +190,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public SecurityContext SecurityContext 
 		{
-			get { return m_securityContext; }
-			set { m_securityContext = value; }
+			get { return this.m_securityContext; }
+			set { this.m_securityContext = value; }
 		}
 
 		#endregion Public Instance Properties
@@ -217,27 +217,27 @@ namespace log4net.Appender
 				StreamWriter writer = null;
 
 				// Impersonate to open the file
-				using(SecurityContext.Impersonate(this))
+				using(this.SecurityContext.Impersonate(this))
 				{
-					filePath = Path.Combine(m_pickupDir, SystemInfo.NewGuid().ToString("N") + m_fileExtension);
+					filePath = Path.Combine(this.m_pickupDir, SystemInfo.NewGuid().ToString("N") + this.m_fileExtension);
 					writer = File.CreateText(filePath);
 				}
 
 				if (writer == null)
 				{
-					ErrorHandler.Error("Failed to create output file for writing ["+filePath+"]", null, ErrorCode.FileOpenFailure);
+					this.ErrorHandler.Error("Failed to create output file for writing ["+filePath+"]", null, ErrorCode.FileOpenFailure);
 				}
 				else
 				{
 					using(writer)
 					{
-						writer.WriteLine("To: " + m_to);
-						writer.WriteLine("From: " + m_from);
-						writer.WriteLine("Subject: " + m_subject);
+						writer.WriteLine("To: " + this.m_to);
+						writer.WriteLine("From: " + this.m_from);
+						writer.WriteLine("Subject: " + this.m_subject);
 						writer.WriteLine("Date: " + DateTime.UtcNow.ToString("r"));
 						writer.WriteLine("");
 
-						string t = Layout.Header;
+						string t = this.Layout.Header;
 						if (t != null)
 						{
 							writer.Write(t);
@@ -246,10 +246,10 @@ namespace log4net.Appender
 						for(int i = 0; i < events.Length; i++) 
 						{
 							// Render the event and append the text to the buffer
-							RenderLoggingEvent(writer, events[i]);
+							this.RenderLoggingEvent(writer, events[i]);
 						}
 
-						t = Layout.Footer;
+						t = this.Layout.Footer;
 						if (t != null)
 						{
 							writer.Write(t);
@@ -262,7 +262,7 @@ namespace log4net.Appender
 			} 
 			catch(Exception e) 
 			{
-				ErrorHandler.Error("Error occurred while sending e-mail notification.", e);
+				this.ErrorHandler.Error("Error occurred while sending e-mail notification.", e);
 			}
 		}
 
@@ -290,14 +290,14 @@ namespace log4net.Appender
 		{	
 			base.ActivateOptions();
 
-			if (m_securityContext == null)
+			if (this.m_securityContext == null)
 			{
-				m_securityContext = SecurityContextProvider.DefaultProvider.CreateSecurityContext(this);
+				this.m_securityContext = SecurityContextProvider.DefaultProvider.CreateSecurityContext(this);
 			}
 
-			using(SecurityContext.Impersonate(this))
+			using(this.SecurityContext.Impersonate(this))
 			{
-				m_pickupDir = ConvertToFullPath(m_pickupDir.Trim());
+				this.m_pickupDir = ConvertToFullPath(this.m_pickupDir.Trim());
 			}
 		}
 

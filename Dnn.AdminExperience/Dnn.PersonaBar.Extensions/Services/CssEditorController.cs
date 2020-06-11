@@ -65,13 +65,13 @@ namespace Dnn.PersonaBar.CssEditor.Services
                         }
                     }
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Content = styleSheetContent });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Content = styleSheetContent });
                 }
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -136,12 +136,12 @@ namespace Dnn.PersonaBar.CssEditor.Services
 
                     ClientResourceManager.ClearFileExistsCache(relativePath);
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
                 }
             }
         }
@@ -182,14 +182,14 @@ namespace Dnn.PersonaBar.CssEditor.Services
 
                         ClientResourceManager.ClearFileExistsCache($"{Globals.ApplicationPath}/{portal.HomeDirectory}/portal.css");
                     }
-                    var content = LoadStyleSheet(request.PortalId);
+                    var content = this.LoadStyleSheet(request.PortalId);
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new {Success = true, StyleSheetContent = content});
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new {Success = true, StyleSheetContent = content});
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
                 }
             }
         }

@@ -35,10 +35,10 @@ namespace DotNetNuke.UI.WebControls
 
         public ActionLink()
         {
-            RequireEditMode = false;
-            Security = "Edit";
-            ControlKey = "";
-            Title = "";
+            this.RequireEditMode = false;
+            this.Security = "Edit";
+            this.ControlKey = "";
+            this.Title = "";
         }
 
         #endregion
@@ -66,9 +66,9 @@ namespace DotNetNuke.UI.WebControls
         private bool IsVisible(SecurityAccessLevel security)
         {
             bool isVisible = false;
-            if (ModulePermissionController.HasModuleAccess(security, Null.NullString, ModuleControl.ModuleContext.Configuration))
+            if (ModulePermissionController.HasModuleAccess(security, Null.NullString, this.ModuleControl.ModuleContext.Configuration))
             {
-                if ((RequireEditMode != true || ModuleControl.ModuleContext.PortalSettings.UserMode == PortalSettings.Mode.Edit) || (security == SecurityAccessLevel.Anonymous || security == SecurityAccessLevel.View))
+                if ((this.RequireEditMode != true || this.ModuleControl.ModuleContext.PortalSettings.UserMode == PortalSettings.Mode.Edit) || (security == SecurityAccessLevel.Anonymous || security == SecurityAccessLevel.View))
                 {
                     isVisible = true;
                 }
@@ -92,7 +92,7 @@ namespace DotNetNuke.UI.WebControls
             base.CreateChildControls();
 
             //Set Causes Validation and Enables ViewState to false
-            EnableViewState = false;
+            this.EnableViewState = false;
         }
 
 
@@ -105,21 +105,21 @@ namespace DotNetNuke.UI.WebControls
         {
             base.OnPreRender(e);
 
-            if (Visible && IsVisible((SecurityAccessLevel)Enum.Parse(typeof(SecurityAccessLevel), Security)))
+            if (this.Visible && this.IsVisible((SecurityAccessLevel)Enum.Parse(typeof(SecurityAccessLevel), this.Security)))
             {
-                Text = Title;
-                NavigateUrl = ControlKey != "" 
-                                ? ModuleControl.ModuleContext.EditUrl(KeyName, KeyValue, ControlKey) 
-                                : ModuleControl.ModuleContext.EditUrl(Title);
+                this.Text = this.Title;
+                this.NavigateUrl = this.ControlKey != "" 
+                                ? this.ModuleControl.ModuleContext.EditUrl(this.KeyName, this.KeyValue, this.ControlKey) 
+                                : this.ModuleControl.ModuleContext.EditUrl(this.Title);
 
-                if (CssClass == "")
+                if (this.CssClass == "")
                 {
-                    CssClass = "dnnPrimaryAction";
+                    this.CssClass = "dnnPrimaryAction";
                 }
             }
             else
             {
-                Visible = false;
+                this.Visible = false;
             }
         }
 

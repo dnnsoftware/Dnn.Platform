@@ -11,8 +11,8 @@ namespace DotNetNuke.Entities.Urls
     {
         public PagingInfo(int pageNumber, int pageSize)
         {
-            PageNumber = pageNumber;
-            PageSize = pageSize;
+            this.PageNumber = pageNumber;
+            this.PageSize = pageSize;
         }
 
         public int PageNumber { get; private set; }
@@ -31,7 +31,7 @@ namespace DotNetNuke.Entities.Urls
         {
             get
             {
-                if (LastRow >= (TotalRows))
+                if (this.LastRow >= (this.TotalRows))
                 {
                     return true;
                 }
@@ -44,10 +44,10 @@ namespace DotNetNuke.Entities.Urls
 
         public void UpdatePageResults(int firstRow, int lastRow, int totalRows, int totalPages)
         {
-            FirstRow = firstRow;
-            LastRow = lastRow;
-            TotalRows = totalRows;
-            TotalPages = totalPages;
+            this.FirstRow = firstRow;
+            this.LastRow = lastRow;
+            this.TotalRows = totalRows;
+            this.TotalPages = totalPages;
         }
     }
 }

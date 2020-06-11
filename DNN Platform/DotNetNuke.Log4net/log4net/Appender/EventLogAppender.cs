@@ -102,9 +102,9 @@ namespace log4net.Appender
 		/// </remarks>
 		public EventLogAppender()
 		{
-			m_applicationName	= System.Threading.Thread.GetDomain().FriendlyName;
-			m_logName			= "Application";	// Defaults to application log
-			m_machineName		= ".";	// Only log on the local machine
+			this.m_applicationName	= System.Threading.Thread.GetDomain().FriendlyName;
+			this.m_logName			= "Application";	// Defaults to application log
+			this.m_machineName		= ".";	// Only log on the local machine
 		}
 
 		/// <summary>
@@ -120,7 +120,7 @@ namespace log4net.Appender
 		[Obsolete("Instead use the default constructor and set the Layout property. Scheduled removal in v10.0.0.")]
 		public EventLogAppender(ILayout layout) : this()
 		{
-			Layout = layout;
+			this.Layout = layout;
 		}
 
 		#endregion // Public Instance Constructors
@@ -147,8 +147,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string LogName
 		{
-			get { return m_logName; }
-			set { m_logName = value; }
+			get { return this.m_logName; }
+			set { this.m_logName = value; }
 		}
 
 		/// <summary>
@@ -163,8 +163,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string ApplicationName
 		{
-			get { return m_applicationName; }
-			set { m_applicationName = value; }
+			get { return this.m_applicationName; }
+			set { this.m_applicationName = value; }
 		}
 
 		/// <summary>
@@ -182,7 +182,7 @@ namespace log4net.Appender
 		/// </remarks>
 		public string MachineName
 		{
-			get { return m_machineName; }
+			get { return this.m_machineName; }
 			set { /* Currently we do not allow the machine name to be changed */; }
 		}
 
@@ -198,7 +198,7 @@ namespace log4net.Appender
 		/// </remarks>
 		public void AddMapping(Level2EventLogEntryType mapping)
 		{
-			m_levelMapping.Add(mapping);
+			this.m_levelMapping.Add(mapping);
 		}
 
 		/// <summary>
@@ -220,8 +220,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public SecurityContext SecurityContext 
 		{
-			get { return m_securityContext; }
-			set { m_securityContext = value; }
+			get { return this.m_securityContext; }
+			set { this.m_securityContext = value; }
 		}
 
         /// <summary>
@@ -236,8 +236,8 @@ namespace log4net.Appender
         /// </para>
         /// </remarks>
         public int EventId {
-            get { return m_eventId; }
-            set { m_eventId = value; }
+            get { return this.m_eventId; }
+            set { this.m_eventId = value; }
         }
 
 
@@ -254,8 +254,8 @@ namespace log4net.Appender
         /// </remarks>
         public short Category
         {
-            get { return m_category; }
-            set { m_category = value; }
+            get { return this.m_category; }
+            set { this.m_category = value; }
         }
         #endregion // Public Instance Properties
 
@@ -283,66 +283,66 @@ namespace log4net.Appender
             {
                 base.ActivateOptions();
 
-                if (m_securityContext == null)
+                if (this.m_securityContext == null)
                 {
-                    m_securityContext = SecurityContextProvider.DefaultProvider.CreateSecurityContext(this);
+                    this.m_securityContext = SecurityContextProvider.DefaultProvider.CreateSecurityContext(this);
                 }
 
                 bool sourceAlreadyExists = false;
                 string currentLogName = null;
 
-                using (SecurityContext.Impersonate(this))
+                using (this.SecurityContext.Impersonate(this))
                 {
-                    sourceAlreadyExists = EventLog.SourceExists(m_applicationName);
+                    sourceAlreadyExists = EventLog.SourceExists(this.m_applicationName);
                     if (sourceAlreadyExists) {
-                        currentLogName = EventLog.LogNameFromSourceName(m_applicationName, m_machineName);
+                        currentLogName = EventLog.LogNameFromSourceName(this.m_applicationName, this.m_machineName);
                     }
                 }
 
-                if (sourceAlreadyExists && currentLogName != m_logName)
+                if (sourceAlreadyExists && currentLogName != this.m_logName)
                 {
-                    LogLog.Debug(declaringType, "Changing event source [" + m_applicationName + "] from log [" + currentLogName + "] to log [" + m_logName + "]");
+                    LogLog.Debug(declaringType, "Changing event source [" + this.m_applicationName + "] from log [" + currentLogName + "] to log [" + this.m_logName + "]");
                 }
                 else if (!sourceAlreadyExists)
                 {
-                    LogLog.Debug(declaringType, "Creating event source Source [" + m_applicationName + "] in log " + m_logName + "]");
+                    LogLog.Debug(declaringType, "Creating event source Source [" + this.m_applicationName + "] in log " + this.m_logName + "]");
                 }
 
                 string registeredLogName = null;
 
-                using (SecurityContext.Impersonate(this))
+                using (this.SecurityContext.Impersonate(this))
                 {
-                    if (sourceAlreadyExists && currentLogName != m_logName)
+                    if (sourceAlreadyExists && currentLogName != this.m_logName)
                     {
                         //
                         // Re-register this to the current application if the user has changed
                         // the application / logfile association
                         //
-                        EventLog.DeleteEventSource(m_applicationName, m_machineName);
-                        CreateEventSource(m_applicationName, m_logName, m_machineName);
+                        EventLog.DeleteEventSource(this.m_applicationName, this.m_machineName);
+                        CreateEventSource(this.m_applicationName, this.m_logName, this.m_machineName);
 
-                        registeredLogName = EventLog.LogNameFromSourceName(m_applicationName, m_machineName);
+                        registeredLogName = EventLog.LogNameFromSourceName(this.m_applicationName, this.m_machineName);
                     }
                     else if (!sourceAlreadyExists)
                     {
-                        CreateEventSource(m_applicationName, m_logName, m_machineName);
+                        CreateEventSource(this.m_applicationName, this.m_logName, this.m_machineName);
 
-                        registeredLogName = EventLog.LogNameFromSourceName(m_applicationName, m_machineName);
+                        registeredLogName = EventLog.LogNameFromSourceName(this.m_applicationName, this.m_machineName);
                     }
                 }
 
-                m_levelMapping.ActivateOptions();
+                this.m_levelMapping.ActivateOptions();
 
-                LogLog.Debug(declaringType, "Source [" + m_applicationName + "] is registered to log [" + registeredLogName + "]");
+                LogLog.Debug(declaringType, "Source [" + this.m_applicationName + "] is registered to log [" + registeredLogName + "]");
             }
             catch (System.Security.SecurityException ex)
             {
-                ErrorHandler.Error("Caught a SecurityException trying to access the EventLog.  Most likely the event source "
-                    + m_applicationName
+                this.ErrorHandler.Error("Caught a SecurityException trying to access the EventLog.  Most likely the event source "
+                    + this.m_applicationName
                     + " doesn't exist and must be created by a local administrator.  Will disable EventLogAppender."
                     + "  See http://logging.apache.org/log4net/release/faq.html#trouble-EventLog",
                     ex);
-                Threshold = Level.Off;
+                this.Threshold = Level.Off;
             }
 		}
 
@@ -388,7 +388,7 @@ namespace log4net.Appender
 			//
 			// Write the resulting string to the event log system
 			//
-			int eventID = m_eventId;
+			int eventID = this.m_eventId;
 
 			// Look for the EventID property
 			object eventIDPropertyObj = loggingEvent.LookupProperty("EventID");
@@ -415,13 +415,13 @@ namespace log4net.Appender
 						}
 						else
 						{
-							ErrorHandler.Error("Unable to parse event ID property [" + eventIDPropertyString + "].");
+							this.ErrorHandler.Error("Unable to parse event ID property [" + eventIDPropertyString + "].");
 						}
 					}
 				}
 			}
 
-            short category = m_category;
+            short category = this.m_category;
             // Look for the Category property
             object categoryPropertyObj = loggingEvent.LookupProperty("Category");
             if (categoryPropertyObj != null)
@@ -447,7 +447,7 @@ namespace log4net.Appender
                         }
                         else
                         {
-                            ErrorHandler.Error("Unable to parse event category property [" + categoryPropertyString + "].");
+                            this.ErrorHandler.Error("Unable to parse event category property [" + categoryPropertyString + "].");
                         }
                     }
                 }
@@ -456,7 +456,7 @@ namespace log4net.Appender
 			// Write to the event log
 			try
 			{
-				string eventTxt = RenderLoggingEvent(loggingEvent);
+				string eventTxt = this.RenderLoggingEvent(loggingEvent);
 
 				// There is a limit of about 32K characters for an event log message
 				if (eventTxt.Length > MAX_EVENTLOG_MESSAGE_SIZE)
@@ -464,16 +464,16 @@ namespace log4net.Appender
 					eventTxt = eventTxt.Substring(0, MAX_EVENTLOG_MESSAGE_SIZE);
 				}
 
-				EventLogEntryType entryType = GetEntryType(loggingEvent.Level);
+				EventLogEntryType entryType = this.GetEntryType(loggingEvent.Level);
 
-				using(SecurityContext.Impersonate(this))
+				using(this.SecurityContext.Impersonate(this))
 				{
-					EventLog.WriteEntry(m_applicationName, eventTxt, entryType, eventID, category);
+					EventLog.WriteEntry(this.m_applicationName, eventTxt, entryType, eventID, category);
 				}
 			}
 			catch(Exception ex)
 			{
-				ErrorHandler.Error("Unable to write to event log [" + m_logName + "] using source [" + m_applicationName + "]", ex);
+				this.ErrorHandler.Error("Unable to write to event log [" + this.m_logName + "] using source [" + this.m_applicationName + "]", ex);
 			}
 		} 
 
@@ -509,7 +509,7 @@ namespace log4net.Appender
 		virtual protected EventLogEntryType GetEntryType(Level level)
 		{
 			// see if there is a specified lookup.
-			Level2EventLogEntryType entryType = m_levelMapping.Lookup(level) as Level2EventLogEntryType;
+			Level2EventLogEntryType entryType = this.m_levelMapping.Lookup(level) as Level2EventLogEntryType;
 			if (entryType != null)
 			{
 				return entryType.EventLogEntryType;
@@ -600,8 +600,8 @@ namespace log4net.Appender
 			/// </remarks>
 			public EventLogEntryType EventLogEntryType
 			{
-				get { return m_entryType; }
-				set { m_entryType = value; }
+				get { return this.m_entryType; }
+				set { this.m_entryType = value; }
 			}
 		}
 

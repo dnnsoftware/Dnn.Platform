@@ -16,14 +16,14 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
 
         public DefaultMenuButtonItem(string itemId, string itemType, string itemCssClass, string itemText, string itemAction, string itemIcon, int itemOrder, string itemAttributes)
         {
-            ItemId = itemId;
-            Attributes = itemAttributes;
-            Type = itemType;
-            Text = itemText;
-            Icon = itemIcon;
-            Order = itemOrder;
-            CssClass = itemCssClass;
-            Action = itemAction;
+            this.ItemId = itemId;
+            this.Attributes = itemAttributes;
+            this.Type = itemType;
+            this.Text = itemText;
+            this.Icon = itemIcon;
+            this.Order = itemOrder;
+            this.CssClass = itemCssClass;
+            this.Action = itemAction;
         }
 
         public string ItemId { get; private set; }

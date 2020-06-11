@@ -21,27 +21,27 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         public DnnPagesDto(IList<LocaleInfoDto> locales)
         {
-            Locales = locales;
-            Pages = new List<DnnPageDto>(); // one of each language
-            Modules = new List<DnnModulesDto>(); // one for each module on the page
+            this.Locales = locales;
+            this.Pages = new List<DnnPageDto>(); // one of each language
+            this.Modules = new List<DnnModulesDto>(); // one for each module on the page
             foreach (var locale in locales)
             {
-                Pages.Add(new DnnPageDto { CultureCode = locale.CultureCode });
+                this.Pages.Add(new DnnPageDto { CultureCode = locale.CultureCode });
             }
         }
 
         public DnnPageDto Page(string locale)
         {
-            return Pages.Single(pa => pa.CultureCode == locale);
+            return this.Pages.Single(pa => pa.CultureCode == locale);
         }
 
         public DnnModulesDto Module(Guid uniqueId)
         {
-            var m = Modules.SingleOrDefault(dm => dm.UniqueId == uniqueId);
+            var m = this.Modules.SingleOrDefault(dm => dm.UniqueId == uniqueId);
             if (m == null)
             {
-                m = new DnnModulesDto(Locales.Select(l => l.CultureCode)) { UniqueId = uniqueId };
-                Modules.Add(m);
+                m = new DnnModulesDto(this.Locales.Select(l => l.CultureCode)) { UniqueId = uniqueId };
+                this.Modules.Add(m);
             }
             return m;
 
@@ -49,14 +49,14 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         public bool Error1(int moduleId, Guid uniqueId, string cultureCode)
         {
-            return Modules.Any(dm => dm.UniqueId != uniqueId &&
+            return this.Modules.Any(dm => dm.UniqueId != uniqueId &&
                                      dm.Modules.Any(mm => mm.ModuleId == moduleId && mm.CultureCode != cultureCode));
         }
 
         public void RemoveLocale(string cultureCode)
         {
-            var locale = Locales.FirstOrDefault(l => l.CultureCode == cultureCode);
-            if (locale != null) Locales.Remove(locale);
+            var locale = this.Locales.FirstOrDefault(l => l.CultureCode == cultureCode);
+            if (locale != null) this.Locales.Remove(locale);
         }
     }
 }

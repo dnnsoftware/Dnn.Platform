@@ -23,8 +23,8 @@ namespace DotNetNuke.Services.GeneratedImage
         /// </summary>
         public bool EnableServerCache
         {
-            get { return Implementation.EnableServerCache; }
-            set { Implementation.EnableServerCache = value; }
+            get { return this.Implementation.EnableServerCache; }
+            set { this.Implementation.EnableServerCache = value; }
         }
 
         /// <summary>
@@ -32,8 +32,8 @@ namespace DotNetNuke.Services.GeneratedImage
         /// </summary>
         public bool EnableClientCache
         {
-            get { return Implementation.EnableClientCache; }
-            set { Implementation.EnableClientCache = value; }
+            get { return this.Implementation.EnableClientCache; }
+            set { this.Implementation.EnableClientCache = value; }
         }
 
         /// <summary>
@@ -41,8 +41,8 @@ namespace DotNetNuke.Services.GeneratedImage
         /// </summary>
         public TimeSpan ClientCacheExpiration
         {
-            get { return Implementation.ClientCacheExpiration; }
-            set { Implementation.ClientCacheExpiration = value; }
+            get { return this.Implementation.ClientCacheExpiration; }
+            set { this.Implementation.ClientCacheExpiration = value; }
         }
 
         /// <summary>
@@ -50,20 +50,20 @@ namespace DotNetNuke.Services.GeneratedImage
         /// </summary>
         public string[] AllowedDomains
         {
-            get { return Implementation.AllowedDomains; }
-            set { Implementation.AllowedDomains = value; }
+            get { return this.Implementation.AllowedDomains; }
+            set { this.Implementation.AllowedDomains = value; }
         }
 
         public bool AllowStandalone
         {
-            get { return Implementation.AllowStandalone; }
-            set { Implementation.AllowStandalone = value; }
+            get { return this.Implementation.AllowStandalone; }
+            set { this.Implementation.AllowStandalone = value; }
         }
 
         public bool LogSecurity
         {
-            get { return Implementation.LogSecurity; }
-            set { Implementation.LogSecurity = value; }
+            get { return this.Implementation.LogSecurity; }
+            set { this.Implementation.LogSecurity = value; }
         }
 
         /// <summary>
@@ -71,8 +71,8 @@ namespace DotNetNuke.Services.GeneratedImage
         /// </summary>
         public ImageFormat ContentType
         {
-            get { return Implementation.ContentType; }
-            set { Implementation.ContentType = value; }
+            get { return this.Implementation.ContentType; }
+            set { this.Implementation.ContentType = value; }
         }
 
         /// <summary>
@@ -80,8 +80,8 @@ namespace DotNetNuke.Services.GeneratedImage
         /// </summary>
         public long ImageCompression
         {
-            get { return Implementation.ImageCompression; }
-            set { Implementation.ImageCompression = value; }
+            get { return this.Implementation.ImageCompression; }
+            set { this.Implementation.ImageCompression = value; }
         }
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace DotNetNuke.Services.GeneratedImage
         /// </summary>
         public bool EnableIPCount
         {
-            get { return Implementation.EnableIPCount; }
-            set { Implementation.EnableIPCount = value; }
+            get { return this.Implementation.EnableIPCount; }
+            set { this.Implementation.EnableIPCount = value; }
         }
         
         /// <summary>
@@ -99,8 +99,8 @@ namespace DotNetNuke.Services.GeneratedImage
         /// </summary>
         public int IPCountMaxCount
         {
-            get { return Implementation.IPCountMax; }
-            set { Implementation.IPCountMax = value; }
+            get { return this.Implementation.IPCountMax; }
+            set { this.Implementation.IPCountMax = value; }
         }
 
         /// <summary>
@@ -108,14 +108,14 @@ namespace DotNetNuke.Services.GeneratedImage
         /// </summary>
         public TimeSpan IPCountPurgeInterval
         {
-            get { return Implementation.IpCountPurgeInterval; }
-            set { Implementation.IpCountPurgeInterval = value; }
+            get { return this.Implementation.IpCountPurgeInterval; }
+            set { this.Implementation.IpCountPurgeInterval = value; }
         }
 
         /// <summary>
         /// A list of image transforms that will be applied successively to the image
         /// </summary>
-        protected List<ImageTransform> ImageTransforms => Implementation.ImageTransforms;
+        protected List<ImageTransform> ImageTransforms => this.Implementation.ImageTransforms;
 
         protected ImageHandler()
             : this(new ImageHandlerInternal())
@@ -124,7 +124,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private ImageHandler(ImageHandlerInternal implementation)
         {
-            Implementation = implementation;
+            this.Implementation = implementation;
         }
 
         internal ImageHandler(IImageStore imageStore, DateTime now)
@@ -143,13 +143,13 @@ namespace DotNetNuke.Services.GeneratedImage
                 throw new ArgumentNullException(nameof(context));
             }
             HttpContextBase contextWrapper = new HttpContextWrapper(context);
-            ProcessRequest(contextWrapper);
+            this.ProcessRequest(contextWrapper);
         }
 
         internal void ProcessRequest(HttpContextBase context)
         {
             Debug.Assert(context != null);
-            Implementation.HandleImageRequest(context, GenerateImage, ToString());
+            this.Implementation.HandleImageRequest(context, this.GenerateImage, this.ToString());
         }
     }
 }

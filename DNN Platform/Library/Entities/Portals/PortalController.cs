@@ -77,7 +77,7 @@ namespace DotNetNuke.Entities.Portals
 
         private void AddFolderPermissions(int portalId, int folderId)
         {
-            var portal = GetPortal(portalId);
+            var portal = this.GetPortal(portalId);
             var folderManager = FolderManager.Instance;
             var folder = folderManager.GetFolder(folderId);
             var permissionController = new PermissionController();
@@ -138,7 +138,7 @@ namespace DotNetNuke.Entities.Portals
             }
 
             string templatePath, templateFile;
-            PrepareLocalizedPortalTemplate(template, out templatePath, out templateFile);
+            this.PrepareLocalizedPortalTemplate(template, out templatePath, out templateFile);
             string mergedTemplatePath = Path.Combine(templatePath, templateFile);
 
             if (String.IsNullOrEmpty(homeDirectory))
@@ -205,12 +205,12 @@ namespace DotNetNuke.Entities.Portals
                         }
 
                         //copy the default page template
-                        CopyPageTemplate("Default.page.template", mappedHomeDirectory);
+                        this.CopyPageTemplate("Default.page.template", mappedHomeDirectory);
 
                         // process zip resource file if present
                         if (File.Exists(template.ResourceFilePath))
                         {
-                            ProcessResourceFileExplicit(mappedHomeDirectory, template.ResourceFilePath);
+                            this.ProcessResourceFileExplicit(mappedHomeDirectory, template.ResourceFilePath);
                         }
                     }
                     catch (Exception Exc)
@@ -246,8 +246,8 @@ namespace DotNetNuke.Entities.Portals
                 {
                     try
                     {
-                        CreatePredefinedFolderTypes(portalId);
-                        ParseTemplateInternal(portalId, templatePath, templateFile, adminUser.UserID, PortalTemplateModuleAction.Replace, true, out newPortalLocales);
+                        this.CreatePredefinedFolderTypes(portalId);
+                        this.ParseTemplateInternal(portalId, templatePath, templateFile, adminUser.UserID, PortalTemplateModuleAction.Replace, true, out newPortalLocales);
                     }
                     catch (Exception Exc)
                     {
@@ -262,7 +262,7 @@ namespace DotNetNuke.Entities.Portals
                 if (message == Null.NullString)
                 {
 
-                    var portal = GetPortal(portalId);
+                    var portal = this.GetPortal(portalId);
                     portal.Description = description;
                     portal.KeyWords = keyWords;
                     portal.UserTabId = TabController.GetTabByTabPath(portal.PortalID, "//UserProfile", portal.CultureCode);
@@ -271,7 +271,7 @@ namespace DotNetNuke.Entities.Portals
                         portal.UserTabId = TabController.GetTabByTabPath(portal.PortalID, "//ActivityFeed", portal.CultureCode);
                     }
                     portal.SearchTabId = TabController.GetTabByTabPath(portal.PortalID, "//SearchResults", portal.CultureCode);
-                    UpdatePortalInfo(portal);
+                    this.UpdatePortalInfo(portal);
 
                     adminUser.Profile.PreferredLocale = portal.DefaultLanguage;
                     var portalSettings = new PortalSettings(portal);
@@ -280,7 +280,7 @@ namespace DotNetNuke.Entities.Portals
 
                     DesktopModuleController.AddDesktopModulesToPortal(portalId);
 
-                    AddPortalAlias(portalId, portalAlias);
+                    this.AddPortalAlias(portalId, portalAlias);
 
                     UpdatePortalSetting(portalId, "DefaultPortalAlias", portalAlias, false);
 
@@ -293,7 +293,7 @@ namespace DotNetNuke.Entities.Portals
                             Localization.AddLanguageToPortal(portalId, newPortalLocale.LanguageId, false);
                             if (portalSettings.ContentLocalizationEnabled)
                             {
-                                MapLocalizedSpecialPages(portalId, newPortalLocale.Code);
+                                this.MapLocalizedSpecialPages(portalId, newPortalLocale.Code);
                             }
                         }
                     }
@@ -926,7 +926,7 @@ namespace DotNetNuke.Entities.Portals
                 try
                 {
                     EnsureFolderProviderRegistration<FolderProvider>(folderTypeConfig, webConfig);
-                    FolderMappingController.Instance.AddFolderMapping(GetFolderMappingFromConfig(folderTypeConfig,
+                    FolderMappingController.Instance.AddFolderMapping(this.GetFolderMappingFromConfig(folderTypeConfig,
                         portalId));
                 }
                 catch (Exception ex)
@@ -1045,7 +1045,7 @@ namespace DotNetNuke.Entities.Portals
 
             foreach (FolderTypeSettingConfig settingNode in node.Settings)
             {
-                var settingValue = EnsureSettingValue(folderMapping.FolderProviderType, settingNode, portalId);
+                var settingValue = this.EnsureSettingValue(folderMapping.FolderProviderType, settingNode, portalId);
                 folderMapping.FolderMappingSettings.Add(settingNode.Name, settingValue);
             }
 
@@ -1177,7 +1177,7 @@ namespace DotNetNuke.Entities.Portals
                         try
                         {
                             folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(portalId, folderPath)
-                                            ?? GetFolderMappingFromStorageLocation(portalId, node);
+                                            ?? this.GetFolderMappingFromStorageLocation(portalId, node);
                         }
                         catch (Exception ex)
                         {
@@ -1351,7 +1351,7 @@ namespace DotNetNuke.Entities.Portals
         private void ParsePortalSettings(XmlNode nodeSettings, int portalId)
         {
             String currentCulture = GetActivePortalLanguage(portalId);
-            var objPortal = GetPortal(portalId);
+            var objPortal = this.GetPortal(portalId);
             objPortal.LogoFile = Globals.ImportFile(portalId, XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "logofile"));
             objPortal.FooterText = XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "footertext");
             if (nodeSettings.SelectSingleNode("expirydate") != null)
@@ -1384,7 +1384,7 @@ namespace DotNetNuke.Entities.Portals
             objPortal.PaymentProcessor = XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "paymentprocessor");
 
             objPortal.DefaultLanguage = XmlUtils.GetNodeValue(nodeSettings, "defaultlanguage", "en-US");
-            UpdatePortalInfo(objPortal);
+            this.UpdatePortalInfo(objPortal);
 
             if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "skinsrc", "")))
             {
@@ -1541,8 +1541,8 @@ namespace DotNetNuke.Entities.Portals
             CreateDefaultPortalRoles(portalID, administratorId, ref administratorRoleId, ref registeredRoleId, ref subscriberRoleId, unverifiedRoleId);
 
             //update portal setup
-            var portal = GetPortal(portalID);
-            UpdatePortalSetup(portalID,
+            var portal = this.GetPortal(portalID);
+            this.UpdatePortalSetup(portalID,
                               administratorId,
                               administratorRoleId,
                               registeredRoleId,
@@ -1597,8 +1597,8 @@ namespace DotNetNuke.Entities.Portals
             CreateDefaultPortalRoles(portalID, administratorId, ref administratorRoleId, ref registeredRoleId, ref subscriberRoleId, unverifiedRoleId);
 
             //update portal setup
-            var portal = GetPortal(portalID);
-            UpdatePortalSetup(portalID,
+            var portal = this.GetPortal(portalID);
+            this.UpdatePortalSetup(portalID,
                               administratorId,
                               administratorRoleId,
                               registeredRoleId,
@@ -1620,7 +1620,7 @@ namespace DotNetNuke.Entities.Portals
         {
             TabInfo tab = null;
             string strName = XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "name");
-            var portal = GetPortal(portalId);
+            var portal = this.GetPortal(portalId);
             if (!String.IsNullOrEmpty(strName))
             {
                 if (!isNewPortal)  //running from wizard: try to find the tab by path
@@ -1678,7 +1678,7 @@ namespace DotNetNuke.Entities.Portals
                         logType = "Custom500Tab";
                         break;
                 }
-                UpdatePortalSetup(portalId,
+                this.UpdatePortalSetup(portalId,
                                   portal.AdministratorId,
                                   portal.AdministratorRoleId,
                                   portal.RegisteredRoleId,
@@ -1743,7 +1743,7 @@ namespace DotNetNuke.Entities.Portals
             foreach (XmlNode nodeTab in nodeTabs.SelectNodes("//tab"))
             {
                 HtmlUtils.WriteKeepAlive();
-                ParseTab(nodeTab, portalId, isAdminTemplate, mergeTabs, ref hModules, ref hTabs, isNewPortal);
+                this.ParseTab(nodeTab, portalId, isAdminTemplate, mergeTabs, ref hModules, ref hTabs, isNewPortal);
             }
 
             //Process tabs that are linked to tabs
@@ -1787,7 +1787,7 @@ namespace DotNetNuke.Entities.Portals
         private void ParseTemplateInternal(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
             LocaleCollection localeCollection;
-            ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal, out localeCollection);
+            this.ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal, out localeCollection);
         }
 
         private void ParseTemplateInternal(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection)
@@ -1808,7 +1808,7 @@ namespace DotNetNuke.Entities.Portals
             if (node != null && isNewPortal)
             {
                 HtmlUtils.WriteKeepAlive();
-                ParsePortalSettings(node, portalId);
+                this.ParsePortalSettings(node, portalId);
             }
             node = xmlPortal.SelectSingleNode("//locales");
             if (node != null && isNewPortal)
@@ -1830,12 +1830,12 @@ namespace DotNetNuke.Entities.Portals
             node = xmlPortal.SelectSingleNode("//portal/rolegroups");
             if (node != null)
             {
-                ParseRoleGroups(node.CreateNavigator(), portalId, administratorId);
+                this.ParseRoleGroups(node.CreateNavigator(), portalId, administratorId);
             }
             node = xmlPortal.SelectSingleNode("//portal/roles");
             if (node != null)
             {
-                ParseRoles(node.CreateNavigator(), portalId, administratorId);
+                this.ParseRoles(node.CreateNavigator(), portalId, administratorId);
             }
             node = xmlPortal.SelectSingleNode("//portal/portalDesktopModules");
             if (node != null)
@@ -1846,12 +1846,12 @@ namespace DotNetNuke.Entities.Portals
             node = xmlPortal.SelectSingleNode("//portal/folders");
             if (node != null)
             {
-                ParseFolders(node, portalId);
+                this.ParseFolders(node, portalId);
             }
             node = xmlPortal.SelectSingleNode("//portal/extensionUrlProviders");
             if (node != null)
             {
-                ParseExtensionUrlProviders(node.CreateNavigator(), portalId);
+                this.ParseExtensionUrlProviders(node.CreateNavigator(), portalId);
             }
 
             var defaultFolderMapping = FolderMappingController.Instance.GetDefaultFolderMapping(portalId);
@@ -1862,7 +1862,7 @@ namespace DotNetNuke.Entities.Portals
                 objFolder.IsProtected = true;
                 FolderManager.Instance.UpdateFolder(objFolder);
 
-                AddFolderPermissions(portalId, objFolder.FolderID);
+                this.AddFolderPermissions(portalId, objFolder.FolderID);
             }
 
             if (FolderManager.Instance.GetFolder(portalId, "Templates/") == null)
@@ -1932,7 +1932,7 @@ namespace DotNetNuke.Entities.Portals
                         Logger.Error(ex);
                     }
                 }
-                ParseTabs(node, portalId, false, mergeTabs, isNewPortal);
+                this.ParseTabs(node, portalId, false, mergeTabs, isNewPortal);
             }
 
             CachingProvider.EnableCacheExpiration();
@@ -2193,7 +2193,7 @@ namespace DotNetNuke.Entities.Portals
 
                 if (administratorId > 0)
                 {
-                    CreatePortalInternal(portalId, portalName, adminUser, description, keyWords, template, homeDirectory, portalAlias, serverPath, childPath, isChildPortal, ref message);
+                    this.CreatePortalInternal(portalId, portalName, adminUser, description, keyWords, template, homeDirectory, portalAlias, serverPath, childPath, isChildPortal, ref message);
                 }
             }
             else
@@ -2275,7 +2275,7 @@ namespace DotNetNuke.Entities.Portals
 
                 if (administratorId > 0)
                 {
-                    CreatePortalInternal(portalId, portalName, adminUser, description, keyWords, template, homeDirectory, portalAlias, serverPath, childPath, isChildPortal, ref message);
+                    this.CreatePortalInternal(portalId, portalName, adminUser, description, keyWords, template, homeDirectory, portalAlias, serverPath, childPath, isChildPortal, ref message);
                 }
             }
             else
@@ -2315,7 +2315,7 @@ namespace DotNetNuke.Entities.Portals
             foreach (string templateFilePath in templateFilePaths)
             {
                 var currentFileName = Path.GetFileName(templateFilePath);
-                var langs = languageFileNames.Where(x => GetTemplateName(x).Equals(currentFileName, StringComparison.InvariantCultureIgnoreCase)).Select(x => GetCultureCode(x)).Distinct().ToList();
+                var langs = languageFileNames.Where(x => this.GetTemplateName(x).Equals(currentFileName, StringComparison.InvariantCultureIgnoreCase)).Select(x => this.GetCultureCode(x)).Distinct().ToList();
 
                 if (langs.Any())
                 {
@@ -2360,12 +2360,12 @@ namespace DotNetNuke.Entities.Portals
             }
 
             string defaultLanguage = GetActivePortalLanguage(portalId);
-            PortalInfo portal = GetPortal(portalId, defaultLanguage);
+            PortalInfo portal = this.GetPortal(portalId, defaultLanguage);
             if (portal == null)
             {
                 //Active language may not be valid, so fallback to default language
                 defaultLanguage = GetPortalDefaultLanguage(portalId);
-                portal = GetPortal(portalId, defaultLanguage);
+                portal = this.GetPortal(portalId, defaultLanguage);
             }
             return portal;
         }
@@ -2422,7 +2422,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Portal info.</returns>
         public PortalInfo GetPortal(Guid uniqueId)
         {
-            return GetPortalList(Null.NullString).SingleOrDefault(p => p.GUID == uniqueId);
+            return this.GetPortalList(Null.NullString).SingleOrDefault(p => p.GUID == uniqueId);
         }
 
         /// <summary>
@@ -2431,7 +2431,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>ArrayList of PortalInfo objects</returns>
         public ArrayList GetPortals()
         {
-            return new ArrayList(GetPortalList(Null.NullString));
+            return new ArrayList(this.GetPortalList(Null.NullString));
         }
 
         /// <summary>
@@ -2538,11 +2538,11 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    PortalInfo portal = GetPortal(portalId);
+                    PortalInfo portal = this.GetPortal(portalId);
                     hostSpace = portal.HostSpace;
                 }
             }
-            return (((GetPortalSpaceUsedBytes(portalId) + fileSizeBytes) / Math.Pow(1024, 2)) <= hostSpace) || hostSpace == 0;
+            return (((this.GetPortalSpaceUsedBytes(portalId) + fileSizeBytes) / Math.Pow(1024, 2)) <= hostSpace) || hostSpace == 0;
         }
 
         /// <summary>
@@ -2556,8 +2556,8 @@ namespace DotNetNuke.Entities.Portals
             DataCache.ClearHostCache(true);
             DataProvider.Instance().EnsureLocalizationExists(portalId, cultureCode);
 
-            PortalInfo defaultPortal = GetPortal(portalId, GetPortalDefaultLanguage(portalId));
-            PortalInfo targetPortal = GetPortal(portalId, cultureCode);
+            PortalInfo defaultPortal = this.GetPortal(portalId, GetPortalDefaultLanguage(portalId));
+            PortalInfo targetPortal = this.GetPortal(portalId, cultureCode);
 
             Locale targetLocale = LocaleController.Instance.GetLocale(cultureCode);
             TabInfo tempTab;
@@ -2642,7 +2642,7 @@ namespace DotNetNuke.Entities.Portals
                 }
             }
 
-            UpdatePortalInternal(targetPortal, false);
+            this.UpdatePortalInternal(targetPortal, false);
         }
 
         /// <summary>
@@ -2674,9 +2674,9 @@ namespace DotNetNuke.Entities.Portals
         public void ParseTemplate(int portalId, PortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
             string templatePath, templateFile;
-            PrepareLocalizedPortalTemplate(template, out templatePath, out templateFile);
+            this.PrepareLocalizedPortalTemplate(template, out templatePath, out templateFile);
 
-            ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal);
+            this.ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal);
         }
 
         /// <summary>
@@ -2708,7 +2708,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="cultureCode">The culture code.</param>
         public void UpdatePortalExpiry(int portalId, string cultureCode)
         {
-            var portal = GetPortal(portalId, cultureCode);
+            var portal = this.GetPortal(portalId, cultureCode);
 
             if (portal.ExpiryDate == Null.NullDate)
             {
@@ -2716,7 +2716,7 @@ namespace DotNetNuke.Entities.Portals
             }
             portal.ExpiryDate = portal.ExpiryDate.AddMonths(1);
 
-            UpdatePortalInfo(portal);
+            this.UpdatePortalInfo(portal);
         }
 
         /// <summary>
@@ -2725,7 +2725,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portal"></param>
         public void UpdatePortalInfo(PortalInfo portal)
         {
-            UpdatePortalInternal(portal, true);
+            this.UpdatePortalInternal(portal, true);
         }
 
         [Obsolete("Deprecated in DNN 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
@@ -3532,27 +3532,27 @@ namespace DotNetNuke.Entities.Portals
 
             public PortalTemplateInfo(string templateFilePath, string cultureCode)
             {
-                TemplateFilePath = templateFilePath;
+                this.TemplateFilePath = templateFilePath;
 
-                InitLocalizationFields(cultureCode);
-                InitNameAndDescription();
+                this.InitLocalizationFields(cultureCode);
+                this.InitNameAndDescription();
             }
 
             private void InitNameAndDescription()
             {
-                if (!String.IsNullOrEmpty(LanguageFilePath))
+                if (!String.IsNullOrEmpty(this.LanguageFilePath))
                 {
-                    LoadNameAndDescriptionFromLanguageFile();
+                    this.LoadNameAndDescriptionFromLanguageFile();
                 }
 
-                if (String.IsNullOrEmpty(Name))
+                if (String.IsNullOrEmpty(this.Name))
                 {
-                    Name = Path.GetFileNameWithoutExtension(TemplateFilePath);
+                    this.Name = Path.GetFileNameWithoutExtension(this.TemplateFilePath);
                 }
 
-                if (String.IsNullOrEmpty(Description))
+                if (String.IsNullOrEmpty(this.Description))
                 {
-                    LoadDescriptionFromTemplateFile();
+                    this.LoadDescriptionFromTemplateFile();
                 }
             }
 
@@ -3561,16 +3561,16 @@ namespace DotNetNuke.Entities.Portals
                 try
                 {
                     XDocument xmlDoc;
-                    using (var reader = PortalTemplateIO.Instance.OpenTextReader(TemplateFilePath))
+                    using (var reader = PortalTemplateIO.Instance.OpenTextReader(this.TemplateFilePath))
                     {
                         xmlDoc = XDocument.Load(reader);
                     }
 
-                    Description = xmlDoc.Elements("portal").Elements("description").SingleOrDefault().Value;
+                    this.Description = xmlDoc.Elements("portal").Elements("description").SingleOrDefault().Value;
                 }
                 catch (Exception e)
                 {
-                    Logger.Error("Error while parsing: " + TemplateFilePath, e);
+                    Logger.Error("Error while parsing: " + this.TemplateFilePath, e);
                 }
             }
 
@@ -3578,17 +3578,17 @@ namespace DotNetNuke.Entities.Portals
             {
                 try
                 {
-                    using (var reader = PortalTemplateIO.Instance.OpenTextReader(LanguageFilePath))
+                    using (var reader = PortalTemplateIO.Instance.OpenTextReader(this.LanguageFilePath))
                     {
                         var xmlDoc = XDocument.Load(reader);
 
-                        Name = ReadLanguageFileValue(xmlDoc, "LocalizedTemplateName.Text");
-                        Description = ReadLanguageFileValue(xmlDoc, "PortalDescription.Text");
+                        this.Name = ReadLanguageFileValue(xmlDoc, "LocalizedTemplateName.Text");
+                        this.Description = ReadLanguageFileValue(xmlDoc, "PortalDescription.Text");
                     }
                 }
                 catch (Exception e)
                 {
-                    Logger.Error("Error while parsing: " + TemplateFilePath, e);
+                    Logger.Error("Error while parsing: " + this.TemplateFilePath, e);
                 }
             }
 
@@ -3601,16 +3601,16 @@ namespace DotNetNuke.Entities.Portals
 
             private void InitLocalizationFields(string cultureCode)
             {
-                LanguageFilePath = PortalTemplateIO.Instance.GetLanguageFilePath(TemplateFilePath, cultureCode);
-                if (!String.IsNullOrEmpty(LanguageFilePath))
+                this.LanguageFilePath = PortalTemplateIO.Instance.GetLanguageFilePath(this.TemplateFilePath, cultureCode);
+                if (!String.IsNullOrEmpty(this.LanguageFilePath))
                 {
-                    CultureCode = cultureCode;
+                    this.CultureCode = cultureCode;
                 }
                 else
                 {
                     var portalSettings = PortalSettings.Current;
                     //DNN-6544 portal creation requires valid culture, if template has no culture defined, then use default language.
-                    CultureCode = portalSettings != null ? GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
+                    this.CultureCode = portalSettings != null ? GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
                 }
             }
 
@@ -3624,12 +3624,12 @@ namespace DotNetNuke.Entities.Portals
             {
                 get
                 {
-                    if (_resourceFilePath == null)
+                    if (this._resourceFilePath == null)
                     {
-                        _resourceFilePath = PortalTemplateIO.Instance.GetResourceFilePath(TemplateFilePath);
+                        this._resourceFilePath = PortalTemplateIO.Instance.GetResourceFilePath(this.TemplateFilePath);
                     }
 
-                    return _resourceFilePath;
+                    return this._resourceFilePath;
                 }
             }
         }

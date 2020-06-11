@@ -38,16 +38,16 @@ namespace Dnn.PersonaBar.Users.Components
             }
 
             KeyValuePair<HttpStatusCode, string> response;
-            userInfo = _userControllerWrapper.GetUser(userId.Value, portalSettings, currentUserInfo, out response);
+            userInfo = this._userControllerWrapper.GetUser(userId.Value, portalSettings, currentUserInfo, out response);
 
             if (userInfo == null)
             {
-                var portals = _portalController.GetPortals();
+                var portals = this._portalController.GetPortals();
 
                 foreach (var portal in portals)
                 {
                     var portalInfo = portal as PortalInfo;
-                    userInfo = _userControllerWrapper.GetUserById(portalInfo.PortalID, userId.Value);
+                    userInfo = this._userControllerWrapper.GetUserById(portalInfo.PortalID, userId.Value);
 
                     if (userInfo != null)
                     {
@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Users.Components
                 }
 
                 if (userInfo != null &&
-                    !_contentVerifier.IsContentExistsForRequestedPortal(
+                    !this._contentVerifier.IsContentExistsForRequestedPortal(
                         userInfo.PortalID,
                         portalSettings,
                         true

@@ -22,7 +22,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         public new ViewDataDictionary<TModel> ViewData
         {
-            get { return ((HtmlHelper<TModel>)HtmlHelper).ViewData; }
+            get { return ((HtmlHelper<TModel>)this.HtmlHelper).ViewData; }
         }
     }
 }

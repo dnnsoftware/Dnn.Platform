@@ -30,10 +30,10 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
         public void Init(HttpApplication httpApp)
         {
-            _app = httpApp;
+            this._app = httpApp;
 
-            httpApp.ResolveRequestCache += OnResolveRequestCache;
-            httpApp.UpdateRequestCache += OnUpdateRequestCache;
+            httpApp.ResolveRequestCache += this.OnResolveRequestCache;
+            httpApp.UpdateRequestCache += this.OnUpdateRequestCache;
         }
 
 
@@ -52,17 +52,17 @@ namespace DotNetNuke.HttpModules.OutputCaching
         private void OnResolveRequestCache(object sender, EventArgs e)
         {
             bool cached = false;
-            if (_app == null || _app.Context == null || !_app.Response.ContentType.Equals("text/html", StringComparison.InvariantCultureIgnoreCase) || _app.Context.Request.IsAuthenticated || _app.Context.Request.Browser.Crawler)
+            if (this._app == null || this._app.Context == null || !this._app.Response.ContentType.Equals("text/html", StringComparison.InvariantCultureIgnoreCase) || this._app.Context.Request.IsAuthenticated || this._app.Context.Request.Browser.Crawler)
             {
                 return;
             }
             
-            if (IsInstallInProgress(_app))
+            if (this.IsInstallInProgress(this._app))
             {
                 return;
             }
 
-            if (_app.Context.Request.RequestType == "POST" || ! (_app.Context.Request.Url.LocalPath.EndsWith(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase)))
+            if (this._app.Context.Request.RequestType == "POST" || ! (this._app.Context.Request.Url.LocalPath.EndsWith(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase)))
             {
                 return;
             }
@@ -94,7 +94,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
 
             string tabOutputCacheProvider = tabSettings["CacheProvider"].ToString();
-            _app.Context.Items[ContextKeyTabOutputCacheProvider] = tabOutputCacheProvider;
+            this._app.Context.Items[ContextKeyTabOutputCacheProvider] = tabOutputCacheProvider;
             int maxCachedVariationsForTab = 250; //by default, prevent DOS attacks
             if (tabSettings["MaxVaryByCount"] != null && ! string.IsNullOrEmpty(tabSettings["MaxVaryByCount"].ToString()))
             {
@@ -162,12 +162,12 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
             var varyBy = new SortedDictionary<string, string>();
 
-            foreach (string key in _app.Context.Request.QueryString)
+            foreach (string key in this._app.Context.Request.QueryString)
             {
-                if (key != null && _app.Context.Request.QueryString[key] != null)
+                if (key != null && this._app.Context.Request.QueryString[key] != null)
                 {
                     var varyKey = key.ToLowerInvariant();
-                    varyBy.Add(varyKey, _app.Context.Request.QueryString[key]);
+                    varyBy.Add(varyKey, this._app.Context.Request.QueryString[key]);
 
                     if (includeExclude == IncludeExcludeType.IncludeByDefault && !includeVaryByKeys.Contains(varyKey))
                     {
@@ -196,27 +196,27 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
             string cacheKey = OutputCachingProvider.Instance(tabOutputCacheProvider).GenerateCacheKey(tabId, includeVaryByKeys, excludeVaryByKeys, varyBy);
 
-            bool returnedFromCache = OutputCachingProvider.Instance(tabOutputCacheProvider).StreamOutput(tabId, cacheKey, _app.Context);
+            bool returnedFromCache = OutputCachingProvider.Instance(tabOutputCacheProvider).StreamOutput(tabId, cacheKey, this._app.Context);
 
             if (returnedFromCache)
             {
 				//output the content type heade when read content from cache.
-				_app.Context.Response.AddHeader("Content-Type", string.Format("{0}; charset={1}", _app.Response.ContentType, _app.Response.Charset));
+				this._app.Context.Response.AddHeader("Content-Type", string.Format("{0}; charset={1}", this._app.Response.ContentType, this._app.Response.Charset));
                 //This is to give a site owner the ability
                 //to visually verify that a page was rendered via
                 //the output cache.  Use FireFox FireBug or another
                 //tool to view the response headers easily.
-                _app.Context.Response.AddHeader("DNNOutputCache", "true");
+                this._app.Context.Response.AddHeader("DNNOutputCache", "true");
 
                 //Also add it ti the Context - the Headers are readonly unless using IIS in Integrated Pipleine mode
                 //and we need to know if OutPut Caching is active in the compression module
-                _app.Context.Items.Add("DNNOutputCache", "true");
+                this._app.Context.Items.Add("DNNOutputCache", "true");
 
-                _app.Context.Response.End();
+                this._app.Context.Response.End();
                 cached = true;
             }
 
-            _app.Context.Items[ContextKeyTabId] = tabId;
+            this._app.Context.Items[ContextKeyTabId] = tabId;
 
             if (cached != true)
             {
@@ -225,13 +225,13 @@ namespace DotNetNuke.HttpModules.OutputCaching
                     int seconds = Convert.ToInt32(tabSettings["CacheDuration"].ToString());
                     var duration = new TimeSpan(0, 0, seconds);
 
-                    OutputCacheResponseFilter responseFilter = OutputCachingProvider.Instance(_app.Context.Items[ContextKeyTabOutputCacheProvider].ToString()).GetResponseFilter(Convert.ToInt32(_app.Context.Items[ContextKeyTabId]),
+                    OutputCacheResponseFilter responseFilter = OutputCachingProvider.Instance(this._app.Context.Items[ContextKeyTabOutputCacheProvider].ToString()).GetResponseFilter(Convert.ToInt32(this._app.Context.Items[ContextKeyTabId]),
                                                                                                                                                                                  maxCachedVariationsForTab,
-                                                                                                                                                                                 _app.Response.Filter,
+                                                                                                                                                                                 this._app.Response.Filter,
                                                                                                                                                                                  cacheKey,
                                                                                                                                                                                  duration);
-                    _app.Context.Items[ContextKeyResponseFilter] = responseFilter;
-                    _app.Context.Response.Filter = responseFilter;
+                    this._app.Context.Items[ContextKeyResponseFilter] = responseFilter;
+                    this._app.Context.Response.Filter = responseFilter;
                 }
             }
         }
@@ -240,10 +240,10 @@ namespace DotNetNuke.HttpModules.OutputCaching
         {
             if (! HttpContext.Current.Request.Browser.Crawler)
             {
-                var responseFilter = _app.Context.Items[ContextKeyResponseFilter] as OutputCacheResponseFilter;
+                var responseFilter = this._app.Context.Items[ContextKeyResponseFilter] as OutputCacheResponseFilter;
                 if (responseFilter != null)
                 {
-                    responseFilter.StopFiltering(Convert.ToInt32(_app.Context.Items[ContextKeyTabId]), false);
+                    responseFilter.StopFiltering(Convert.ToInt32(this._app.Context.Items[ContextKeyTabId]), false);
                 }
             }
         }

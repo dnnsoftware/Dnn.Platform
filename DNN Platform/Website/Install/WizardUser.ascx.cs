@@ -22,11 +22,11 @@ namespace DotNetNuke.Services.Install
         {
             get
             {
-                return txtFirstName.Text;
+                return this.txtFirstName.Text;
             }
             set
             {
-                txtFirstName.Text = value;
+                this.txtFirstName.Text = value;
             }
         }
 
@@ -34,11 +34,11 @@ namespace DotNetNuke.Services.Install
         {
             get
             {
-                return txtLastName.Text;
+                return this.txtLastName.Text;
             }
             set
             {
-                txtLastName.Text = value;
+                this.txtLastName.Text = value;
             }
         }
 
@@ -46,11 +46,11 @@ namespace DotNetNuke.Services.Install
         {
             get
             {
-                return txtUserName.Text;
+                return this.txtUserName.Text;
             }
             set
             {
-                txtUserName.Text = value;
+                this.txtUserName.Text = value;
             }
         }
 
@@ -58,11 +58,11 @@ namespace DotNetNuke.Services.Install
         {
             get
             {
-                return txtPassword.Text;
+                return this.txtPassword.Text;
             }
             set
             {
-                txtPassword.Text = value;
+                this.txtPassword.Text = value;
             }
         }
 
@@ -70,11 +70,11 @@ namespace DotNetNuke.Services.Install
         {
             get
             {
-                return txtConfirm.Text;
+                return this.txtConfirm.Text;
             }
             set
             {
-                txtConfirm.Text = value;
+                this.txtConfirm.Text = value;
             }
         }
 
@@ -82,11 +82,11 @@ namespace DotNetNuke.Services.Install
         {
             get
             {
-                return txtEmail.Text;
+                return this.txtEmail.Text;
             }
             set
             {
-                txtEmail.Text = value;
+                this.txtEmail.Text = value;
             }
         }
 
@@ -94,11 +94,11 @@ namespace DotNetNuke.Services.Install
         {
             get
             {
-                return lblFirstName.Text;
+                return this.lblFirstName.Text;
             }
             set
             {
-                lblFirstName.Text = value;
+                this.lblFirstName.Text = value;
             }
         }
 
@@ -106,11 +106,11 @@ namespace DotNetNuke.Services.Install
         {
             get
             {
-                return lblLastName.Text;
+                return this.lblLastName.Text;
             }
             set
             {
-                lblLastName.Text = value;
+                this.lblLastName.Text = value;
             }
         }
 
@@ -118,11 +118,11 @@ namespace DotNetNuke.Services.Install
         {
             get
             {
-                return lblUserName.Text;
+                return this.lblUserName.Text;
             }
             set
             {
-                lblUserName.Text = value;
+                this.lblUserName.Text = value;
             }
         }
 
@@ -130,11 +130,11 @@ namespace DotNetNuke.Services.Install
         {
             get
             {
-                return lblPassword.Text;
+                return this.lblPassword.Text;
             }
             set
             {
-                lblPassword.Text = value;
+                this.lblPassword.Text = value;
             }
         }
 
@@ -142,11 +142,11 @@ namespace DotNetNuke.Services.Install
         {
             get
             {
-                return lblConfirm.Text;
+                return this.lblConfirm.Text;
             }
             set
             {
-                lblConfirm.Text = value;
+                this.lblConfirm.Text = value;
             }
         }
 
@@ -154,38 +154,38 @@ namespace DotNetNuke.Services.Install
         {
             get
             {
-                return lblEmail.Text;
+                return this.lblEmail.Text;
             }
             set
             {
-                lblEmail.Text = value;
+                this.lblEmail.Text = value;
             }
         }
 
         public string Validate()
         {
             string strErrorMessage = Null.NullString;
-            if (txtUserName.Text.Length < 4)
+            if (this.txtUserName.Text.Length < 4)
             {
                 strErrorMessage = "MinUserNamelength";
             }
-            else if (string.IsNullOrEmpty(txtPassword.Text))
+            else if (string.IsNullOrEmpty(this.txtPassword.Text))
             {
                 strErrorMessage = "NoPassword";
             }
-            else if (txtUserName.Text == txtPassword.Text)
+            else if (this.txtUserName.Text == this.txtPassword.Text)
             {
                 strErrorMessage = "PasswordUser";
             }
-            else if (txtPassword.Text.Length < MembershipProviderConfig.MinPasswordLength)
+            else if (this.txtPassword.Text.Length < MembershipProviderConfig.MinPasswordLength)
             {
                 strErrorMessage = "PasswordLength";
             }
-            else if (txtPassword.Text != txtConfirm.Text)
+            else if (this.txtPassword.Text != this.txtConfirm.Text)
             {
                 strErrorMessage = "ConfirmPassword";
             }
-            else if (!Globals.EmailValidatorRegex.IsMatch(txtEmail.Text))
+            else if (!Globals.EmailValidatorRegex.IsMatch(this.txtEmail.Text))
             {
                 strErrorMessage = "InValidEmail";
             }
@@ -203,24 +203,24 @@ namespace DotNetNuke.Services.Install
         {
 			base.OnLoad(e);
 
-			if(IsPostBack)
+			if(this.IsPostBack)
 			{
-				if(!string.IsNullOrEmpty(txtPassword.Text))
+				if(!string.IsNullOrEmpty(this.txtPassword.Text))
 				{
-					ViewState["Password"] = txtPassword.Text;
+					this.ViewState["Password"] = this.txtPassword.Text;
 				}
-				else if(ViewState["Password"] != null)
+				else if(this.ViewState["Password"] != null)
 				{
-					txtPassword.Text = ViewState["Password"].ToString();
+					this.txtPassword.Text = this.ViewState["Password"].ToString();
 				}
 
-				if (!string.IsNullOrEmpty(txtConfirm.Text))
+				if (!string.IsNullOrEmpty(this.txtConfirm.Text))
 				{
-					ViewState["Confirm"] = txtConfirm.Text;
+					this.ViewState["Confirm"] = this.txtConfirm.Text;
 				}
-				else if (ViewState["Confirm"] != null)
+				else if (this.ViewState["Confirm"] != null)
 				{
-					txtConfirm.Text = ViewState["Confirm"].ToString();
+					this.txtConfirm.Text = this.ViewState["Confirm"].ToString();
 				}
 			}
         }
@@ -237,8 +237,8 @@ namespace DotNetNuke.Services.Install
 			base.OnPreRender(e);
 
 			//Make sure that the password is not cleared on pastback
-			txtConfirm.Attributes["value"] = txtConfirm.Text;
-			txtPassword.Attributes["value"] = txtPassword.Text;
+			this.txtConfirm.Attributes["value"] = this.txtConfirm.Text;
+			this.txtPassword.Attributes["value"] = this.txtPassword.Text;
 		}
     }
 }

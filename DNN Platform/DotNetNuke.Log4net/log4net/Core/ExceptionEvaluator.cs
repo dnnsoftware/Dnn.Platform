@@ -71,8 +71,8 @@ namespace log4net.Core
 				throw new ArgumentNullException("exType");
 			}
 
-			m_type = exType;
-			m_triggerOnSubclass = triggerOnSubClass;
+			this.m_type = exType;
+			this.m_triggerOnSubclass = triggerOnSubClass;
 		}
 
 		/// <summary>
@@ -80,8 +80,8 @@ namespace log4net.Core
 		/// </summary>
 		public Type ExceptionType
 		{
-			get { return m_type; }
-			set { m_type = value; }
+			get { return this.m_type; }
+			set { this.m_type = value; }
 		}
 
 		/// <summary>
@@ -89,8 +89,8 @@ namespace log4net.Core
 		/// </summary>
 		public bool TriggerOnSubclass
 		{
-			get { return m_triggerOnSubclass; }
-			set { m_triggerOnSubclass = value; }
+			get { return this.m_triggerOnSubclass; }
+			set { this.m_triggerOnSubclass = value; }
 		}
 
 		#region ITriggeringEventEvaluator Members
@@ -116,15 +116,15 @@ namespace log4net.Core
 				throw new ArgumentNullException("loggingEvent");
 			}
 
-			if (m_triggerOnSubclass && loggingEvent.ExceptionObject != null)
+			if (this.m_triggerOnSubclass && loggingEvent.ExceptionObject != null)
 			{
 				// check if loggingEvent.ExceptionObject is of type ExceptionType or subclass of ExceptionType
 				Type exceptionObjectType = loggingEvent.ExceptionObject.GetType();
-				return exceptionObjectType == m_type || exceptionObjectType.IsSubclassOf(m_type);
+				return exceptionObjectType == this.m_type || exceptionObjectType.IsSubclassOf(this.m_type);
 			}
-			else if (!m_triggerOnSubclass && loggingEvent.ExceptionObject != null)
+			else if (!this.m_triggerOnSubclass && loggingEvent.ExceptionObject != null)
 			{   // check if loggingEvent.ExceptionObject is of type ExceptionType
-				return loggingEvent.ExceptionObject.GetType() == m_type;
+				return loggingEvent.ExceptionObject.GetType() == this.m_type;
 			}
 			else
 			{   // loggingEvent.ExceptionObject is null

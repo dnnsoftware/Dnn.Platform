@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         public LanguageInstaller(LanguagePackType type)
         {
-            LanguagePackType = type;
+            this.LanguagePackType = type;
         }
 		
 		#region Protected Properties
@@ -96,7 +96,7 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
 				//Attempt to get the LanguagePack
-                LanguagePackInfo tempLanguagePack = LanguagePackController.GetLanguagePackByPackage(Package.PackageID);
+                LanguagePackInfo tempLanguagePack = LanguagePackController.GetLanguagePackByPackage(this.Package.PackageID);
 
                 //Attempt to get the Locale
                 Locale language = LocaleController.Instance.GetLocale(tempLanguagePack.LanguageID);
@@ -112,11 +112,11 @@ namespace DotNetNuke.Services.Installer.Installers
                 //    Localization.Localization.DeleteLanguage(language);
                 //}
 
-                Log.AddInfo(string.Format(Util.LANGUAGE_UnRegistered, language.Text));
+                this.Log.AddInfo(string.Format(Util.LANGUAGE_UnRegistered, language.Text));
             }
             catch (Exception ex)
             {
-                Log.AddFailure(ex);
+                this.Log.AddFailure(ex);
             }
         }
 		
@@ -132,17 +132,17 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         protected override void ReadCustomManifest(XPathNavigator nav)
         {
-            Language = new Locale();
-            LanguagePack = new LanguagePackInfo();
+            this.Language = new Locale();
+            this.LanguagePack = new LanguagePackInfo();
 
             //Get the Skin name
-            Language.Code = Util.ReadElement(nav, "code");
-            Language.Text = Util.ReadElement(nav, "displayName");
-            Language.Fallback = Util.ReadElement(nav, "fallback");
+            this.Language.Code = Util.ReadElement(nav, "code");
+            this.Language.Text = Util.ReadElement(nav, "displayName");
+            this.Language.Fallback = Util.ReadElement(nav, "fallback");
 
-            if (LanguagePackType == LanguagePackType.Core)
+            if (this.LanguagePackType == LanguagePackType.Core)
             {
-                LanguagePack.DependentPackageID = -2;
+                this.LanguagePack.DependentPackageID = -2;
             }
             else
             {
@@ -150,7 +150,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase));
                 if (package != null)
                 {
-                    LanguagePack.DependentPackageID = package.PackageID;
+                    this.LanguagePack.DependentPackageID = package.PackageID;
                 }
             }
 			
@@ -170,14 +170,14 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
-            if (LanguagePackType == LanguagePackType.Core || LanguagePack.DependentPackageID > 0)
+            if (this.LanguagePackType == LanguagePackType.Core || this.LanguagePack.DependentPackageID > 0)
             {
                base.Commit();             
             }
             else
             {
-                Completed = true;
-                Skipped = true;
+                this.Completed = true;
+                this.Skipped = true;
             }
         }
 
@@ -188,50 +188,50 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void Install()
         {
-            if (LanguagePackType == LanguagePackType.Core || LanguagePack.DependentPackageID > 0)
+            if (this.LanguagePackType == LanguagePackType.Core || this.LanguagePack.DependentPackageID > 0)
             {
                 try
                 {
                     //Attempt to get the LanguagePack
-                    InstalledLanguagePack = LanguagePackController.GetLanguagePackByPackage(Package.PackageID);
-                    if (InstalledLanguagePack != null)
+                    this.InstalledLanguagePack = LanguagePackController.GetLanguagePackByPackage(this.Package.PackageID);
+                    if (this.InstalledLanguagePack != null)
                     {
-                        LanguagePack.LanguagePackID = InstalledLanguagePack.LanguagePackID;
+                        this.LanguagePack.LanguagePackID = this.InstalledLanguagePack.LanguagePackID;
                     }
 
                     //Attempt to get the Locale
-                    TempLanguage = LocaleController.Instance.GetLocale(Language.Code);
-                    if (TempLanguage != null)
+                    this.TempLanguage = LocaleController.Instance.GetLocale(this.Language.Code);
+                    if (this.TempLanguage != null)
                     {
-                        Language.LanguageId = TempLanguage.LanguageId;
+                        this.Language.LanguageId = this.TempLanguage.LanguageId;
                     }
-                    if (LanguagePack.PackageType == LanguagePackType.Core)
+                    if (this.LanguagePack.PackageType == LanguagePackType.Core)
                     {
                         //Update language
-                        Localization.Localization.SaveLanguage(Language);
+                        Localization.Localization.SaveLanguage(this.Language);
                     }
 
                     //Set properties for Language Pack
-                    LanguagePack.PackageID = Package.PackageID;
-                    LanguagePack.LanguageID = Language.LanguageId;
+                    this.LanguagePack.PackageID = this.Package.PackageID;
+                    this.LanguagePack.LanguageID = this.Language.LanguageId;
 
                     //Update LanguagePack
-                    LanguagePackController.SaveLanguagePack(LanguagePack);
+                    LanguagePackController.SaveLanguagePack(this.LanguagePack);
 
-                    Log.AddInfo(string.Format(Util.LANGUAGE_Registered, Language.Text));
+                    this.Log.AddInfo(string.Format(Util.LANGUAGE_Registered, this.Language.Text));
 
                     //install (copy the files) by calling the base class
                     base.Install();
                 }
                 catch (Exception ex)
                 {
-                    Log.AddFailure(ex);
+                    this.Log.AddFailure(ex);
                 }
             }
             else
             {
-                Completed = true;
-                Skipped = true;
+                this.Completed = true;
+                this.Skipped = true;
             }
         }
 
@@ -244,15 +244,15 @@ namespace DotNetNuke.Services.Installer.Installers
         public override void Rollback()
         {
 			//If Temp Language exists then we need to update the DataStore with this 
-            if (TempLanguage == null)
+            if (this.TempLanguage == null)
             {
 				//No Temp Language - Delete newly added Language
-                DeleteLanguage();
+                this.DeleteLanguage();
             }
             else
             {
 				//Temp Language - Rollback to Temp
-                Localization.Localization.SaveLanguage(TempLanguage);
+                Localization.Localization.SaveLanguage(this.TempLanguage);
             }
             
 			//Call base class to prcoess files
@@ -266,7 +266,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {
-            DeleteLanguage();
+            this.DeleteLanguage();
 
             //Call base class to prcoess files
             base.UnInstall();

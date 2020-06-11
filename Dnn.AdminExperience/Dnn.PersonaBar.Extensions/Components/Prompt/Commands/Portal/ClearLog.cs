@@ -26,9 +26,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return new ConsoleErrorResultModel(LocalizeString("Prompt_ClearLog_Error"));
+                return new ConsoleErrorResultModel(this.LocalizeString("Prompt_ClearLog_Error"));
             }
-            return new ConsoleResultModel(LocalizeString("Prompt_ClearLog_Success"));
+            return new ConsoleResultModel(this.LocalizeString("Prompt_ClearLog_Success"));
 
         }
     }

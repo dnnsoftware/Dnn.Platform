@@ -42,15 +42,15 @@ namespace DotNetNuke.Services.Tokens
         {
             string result = string.Empty;
             bool propertyNotFound = false;
-            if (PropertySource.ContainsKey(objectName.ToLowerInvariant()))
+            if (this.PropertySource.ContainsKey(objectName.ToLowerInvariant()))
             {
-                result = PropertySource[objectName.ToLowerInvariant()].GetProperty(propertyName, format, FormatProvider, AccessingUser, CurrentAccessLevel, ref propertyNotFound);
+                result = this.PropertySource[objectName.ToLowerInvariant()].GetProperty(propertyName, format, this.FormatProvider, this.AccessingUser, this.CurrentAccessLevel, ref propertyNotFound);
             }
             else
             {
-                if (DebugMessages)
+                if (this.DebugMessages)
                 {
-                    string message = Localization.Localization.GetString("TokenReplaceUnknownObject", Localization.Localization.SharedResourceFile, FormatProvider.ToString());
+                    string message = Localization.Localization.GetString("TokenReplaceUnknownObject", Localization.Localization.SharedResourceFile, this.FormatProvider.ToString());
                     if (message == string.Empty)
                     {
                         message = "Error accessing [{0}:{1}], {0} is an unknown datasource";
@@ -58,16 +58,16 @@ namespace DotNetNuke.Services.Tokens
                     result = string.Format(message, objectName, propertyName);
                 }
             }
-            if (DebugMessages && propertyNotFound)
+            if (this.DebugMessages && propertyNotFound)
             {
                 string message;
                 if (result == PropertyAccess.ContentLocked)
                 {
-                    message = Localization.Localization.GetString("TokenReplaceRestrictedProperty", Localization.Localization.GlobalResourceFile, FormatProvider.ToString());
+                    message = Localization.Localization.GetString("TokenReplaceRestrictedProperty", Localization.Localization.GlobalResourceFile, this.FormatProvider.ToString());
                 }
                 else
                 {
-                    message = Localization.Localization.GetString("TokenReplaceUnknownProperty", Localization.Localization.GlobalResourceFile, FormatProvider.ToString());
+                    message = Localization.Localization.GetString("TokenReplaceUnknownProperty", Localization.Localization.GlobalResourceFile, this.FormatProvider.ToString());
                 }
                 if (message == string.Empty)
                 {
@@ -91,9 +91,9 @@ namespace DotNetNuke.Services.Tokens
             if (sourceText != null && !string.IsNullOrEmpty(sourceText))
             {
                 //initialize PropertyAccess classes
-                string DummyResult = ReplaceTokens(sourceText);
+                string DummyResult = this.ReplaceTokens(sourceText);
 
-                foreach (Match currentMatch in TokenizerRegex.Matches(sourceText))
+                foreach (Match currentMatch in this.TokenizerRegex.Matches(sourceText))
                 {
                     string strObjectName = currentMatch.Result("${object}");
                     if (!String.IsNullOrEmpty(strObjectName))
@@ -102,12 +102,12 @@ namespace DotNetNuke.Services.Tokens
                         {
                             //nothing
                         }
-                        else if (!PropertySource.ContainsKey(strObjectName.ToLowerInvariant()))
+                        else if (!this.PropertySource.ContainsKey(strObjectName.ToLowerInvariant()))
                         {
                         }
                         else
                         {
-                            CacheLevel c = PropertySource[strObjectName.ToLowerInvariant()].Cacheability;
+                            CacheLevel c = this.PropertySource[strObjectName.ToLowerInvariant()].Cacheability;
                             if (c < isSafe)
                             {
                                 isSafe = c;
@@ -128,7 +128,7 @@ namespace DotNetNuke.Services.Tokens
         {
             if (!string.IsNullOrEmpty(strSourceText))
             {
-                return TokenizerRegex.Matches(strSourceText).Cast<Match>().Any(currentMatch => currentMatch.Result("${object}").Length > 0);
+                return this.TokenizerRegex.Matches(strSourceText).Cast<Match>().Any(currentMatch => currentMatch.Result("${object}").Length > 0);
             }
             return false;
         }

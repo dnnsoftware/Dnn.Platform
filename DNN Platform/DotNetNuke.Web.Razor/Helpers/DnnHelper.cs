@@ -23,7 +23,7 @@ namespace DotNetNuke.Web.Razor.Helpers
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public DnnHelper(ModuleInstanceContext context)
         {
-            _context = context;
+            this._context = context;
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.Razor.Helpers
         {
             get
             {
-                return _context.Configuration;
+                return this._context.Configuration;
             }
         }
 
@@ -40,7 +40,7 @@ namespace DotNetNuke.Web.Razor.Helpers
         {
             get
             {
-                return _context.PortalSettings.ActiveTab;
+                return this._context.PortalSettings.ActiveTab;
             }
         }
 
@@ -49,7 +49,7 @@ namespace DotNetNuke.Web.Razor.Helpers
         {
             get
             {
-                return _context.PortalSettings;
+                return this._context.PortalSettings;
             }
         }
 
@@ -58,7 +58,7 @@ namespace DotNetNuke.Web.Razor.Helpers
         {
             get
             {
-                return _context.PortalSettings.UserInfo;
+                return this._context.PortalSettings.UserInfo;
             }
         }
     }

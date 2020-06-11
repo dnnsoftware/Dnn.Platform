@@ -16,13 +16,13 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
         public bool IsDeleted { get; set; }
 
         #region Command Links
-        public string __TabId => $"get-page {TabId}";
+        public string __TabId => $"get-page {this.TabId}";
 
-        public string __ParentId => $"list-pages --parentid {ParentId}";
+        public string __ParentId => $"list-pages --parentid {this.ParentId}";
 
-        public string __IncludeInMenu => $"list-pages --visible{(IncludeInMenu ? "" : " false")}";
+        public string __IncludeInMenu => $"list-pages --visible{(this.IncludeInMenu ? "" : " false")}";
 
-        public string __IsDeleted => $"list-pages --deleted{(IsDeleted ? "" : " false")}";
+        public string __IsDeleted => $"list-pages --deleted{(this.IsDeleted ? "" : " false")}";
 
         #endregion
 
@@ -32,14 +32,14 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
         }
         public PageModelBase(DotNetNuke.Entities.Tabs.TabInfo tab)
         {
-            Name = tab.TabName;
-            ParentId = tab.ParentId;
-            Path = tab.TabPath;
-            TabId = tab.TabID;
-            Skin = tab.SkinSrc;
-            Title = tab.Title;
-            IncludeInMenu = tab.IsVisible;
-            IsDeleted = tab.IsDeleted;
+            this.Name = tab.TabName;
+            this.ParentId = tab.ParentId;
+            this.Path = tab.TabPath;
+            this.TabId = tab.TabID;
+            this.Skin = tab.SkinSrc;
+            this.Title = tab.Title;
+            this.IncludeInMenu = tab.IsVisible;
+            this.IsDeleted = tab.IsDeleted;
         }
         #endregion
     }

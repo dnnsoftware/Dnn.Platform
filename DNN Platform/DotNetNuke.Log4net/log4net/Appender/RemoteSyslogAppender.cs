@@ -298,8 +298,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public PatternLayout Identity
 		{
-			get { return m_identity; }
-			set { m_identity = value; }
+			get { return this.m_identity; }
+			set { this.m_identity = value; }
 		}
 
 		/// <summary>
@@ -312,8 +312,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public SyslogFacility Facility
 		{
-			get { return m_facility; }
-			set { m_facility = value; }
+			get { return this.m_facility; }
+			set { this.m_facility = value; }
 		}
 
 		#endregion Public Instance Properties
@@ -329,7 +329,7 @@ namespace log4net.Appender
 		/// </remarks>
 		public void AddMapping(LevelSeverity mapping)
 		{
-			m_levelMapping.Add(mapping);
+			this.m_levelMapping.Add(mapping);
 		}
 
 		#region AppenderSkeleton Implementation
@@ -351,14 +351,14 @@ namespace log4net.Appender
             try
             {
                 // Priority
-                int priority = GeneratePriority(m_facility, GetSeverity(loggingEvent.Level));
+                int priority = GeneratePriority(this.m_facility, this.GetSeverity(loggingEvent.Level));
 
                 // Identity
                 string identity;
 
-                if (m_identity != null)
+                if (this.m_identity != null)
                 {
-                    identity = m_identity.Format(loggingEvent);
+                    identity = this.m_identity.Format(loggingEvent);
                 }
                 else
                 {
@@ -366,7 +366,7 @@ namespace log4net.Appender
                 }
 
                 // Message. The message goes after the tag/identity
-                string message = RenderLoggingEvent(loggingEvent);
+                string message = this.RenderLoggingEvent(loggingEvent);
 
                 Byte[] buffer;
                 int i = 0;
@@ -422,7 +422,7 @@ namespace log4net.Appender
             }
             catch (Exception e)
             {
-                ErrorHandler.Error(
+                this.ErrorHandler.Error(
                     "Unable to send logging event to remote syslog " +
                     this.RemoteAddress.ToString() +
                     " on port " +
@@ -443,7 +443,7 @@ namespace log4net.Appender
 		public override void ActivateOptions()
 		{
 			base.ActivateOptions();
-			m_levelMapping.ActivateOptions();
+			this.m_levelMapping.ActivateOptions();
 		}
 
 		#endregion AppenderSkeleton Implementation
@@ -462,7 +462,7 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual protected SyslogSeverity GetSeverity(Level level)
 		{
-			LevelSeverity levelSeverity = m_levelMapping.Lookup(level) as LevelSeverity;
+			LevelSeverity levelSeverity = this.m_levelMapping.Lookup(level) as LevelSeverity;
 			if (levelSeverity != null)
 			{
 				return levelSeverity.Severity;
@@ -590,8 +590,8 @@ namespace log4net.Appender
 			/// </remarks>
 			public SyslogSeverity Severity
 			{
-				get { return m_severity; }
-				set { m_severity = value; }
+				get { return this.m_severity; }
+				set { this.m_severity = value; }
 			}
 		}
 
