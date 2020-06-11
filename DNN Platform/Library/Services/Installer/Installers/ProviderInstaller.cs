@@ -35,12 +35,12 @@ namespace DotNetNuke.Services.Installer.Installers
 
         public override void Commit()
         {
-            Completed = true;
+            this.Completed = true;
         }
 
         public override void Install()
         {
-            Completed = true;
+            this.Completed = true;
         }
 
         public override void ReadManifest(XPathNavigator manifestNav)
@@ -49,12 +49,12 @@ namespace DotNetNuke.Services.Installer.Installers
 
         public override void Rollback()
         {
-            Completed = true;
+            this.Completed = true;
         }
 
         public override void UnInstall()
         {
-            Completed = true;
+            this.Completed = true;
         }
     }
 }

@@ -50,7 +50,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public DNNMultiStateBoxColumn(bool autoPostBack)
         {
-            AutoPostBack = autoPostBack;
+            this.AutoPostBack = autoPostBack;
         }
 
         /// -----------------------------------------------------------------------------
@@ -63,11 +63,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mAutoPostBack;
+                return this.mAutoPostBack;
             }
             set
             {
-                mAutoPostBack = value;
+                this.mAutoPostBack = value;
             }
         }
 
@@ -81,11 +81,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mSelectedStateKey;
+                return this.mSelectedStateKey;
             }
             set
             {
-                mSelectedStateKey = value;
+                this.mSelectedStateKey = value;
             }
         }
 
@@ -100,11 +100,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mDataField;
+                return this.mDataField;
             }
             set
             {
-                mDataField = value;
+                this.mDataField = value;
             }
         }
 
@@ -120,11 +120,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mEnabled;
+                return this.mEnabled;
             }
             set
             {
-                mEnabled = value;
+                this.mEnabled = value;
             }
         }
 
@@ -139,11 +139,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mEnabledField;
+                return this.mEnabledField;
             }
             set
             {
-                mEnabledField = value;
+                this.mEnabledField = value;
             }
         }
 
@@ -157,11 +157,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mImagePath;
+                return this.mImagePath;
             }
             set
             {
-                mImagePath = value;
+                this.mImagePath = value;
             }
         }
 
@@ -175,15 +175,15 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (mStates == null)
+                if (this.mStates == null)
                 {
-                    mStates = new DNNMultiStateCollection(new DNNMultiStateBox());
+                    this.mStates = new DNNMultiStateCollection(new DNNMultiStateBox());
                 }
-                return mStates;
+                return this.mStates;
             }
             set
             {
-                mStates = value;
+                this.mStates = value;
             }
         }
 
@@ -203,20 +203,20 @@ namespace DotNetNuke.UI.WebControls
             var template = new DNNMultiStateBoxColumnTemplate(type);
             if (type != ListItemType.Header)
             {
-                template.AutoPostBack = AutoPostBack;
+                template.AutoPostBack = this.AutoPostBack;
             }
-            template.DataField = DataField;
-            template.Enabled = Enabled;
-            template.EnabledField = EnabledField;
-            template.ImagePath = ImagePath;
-            foreach (DNNMultiState objState in States)
+            template.DataField = this.DataField;
+            template.Enabled = this.Enabled;
+            template.EnabledField = this.EnabledField;
+            template.ImagePath = this.ImagePath;
+            foreach (DNNMultiState objState in this.States)
             {
                 template.States.Add(objState);
             }
-            template.SelectedStateKey = SelectedStateKey;
+            template.SelectedStateKey = this.SelectedStateKey;
             if (type == ListItemType.Header)
             {
-                template.Text = HeaderText;
+                template.Text = this.HeaderText;
                 template.AutoPostBack = true;
             }
             template.DesignMode = isDesignMode;
@@ -230,17 +230,17 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public override void Initialize()
         {
-            ItemTemplate = CreateTemplate(ListItemType.Item);
-            EditItemTemplate = CreateTemplate(ListItemType.EditItem);
-            HeaderTemplate = CreateTemplate(ListItemType.Header);
+            this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
+            this.EditItemTemplate = this.CreateTemplate(ListItemType.EditItem);
+            this.HeaderTemplate = this.CreateTemplate(ListItemType.Header);
             if (HttpContext.Current == null)
             {
-                HeaderStyle.Font.Names = new[] {"Tahoma, Verdana, Arial"};
-                HeaderStyle.Font.Size = new FontUnit("10pt");
-                HeaderStyle.Font.Bold = true;
+                this.HeaderStyle.Font.Names = new[] {"Tahoma, Verdana, Arial"};
+                this.HeaderStyle.Font.Size = new FontUnit("10pt");
+                this.HeaderStyle.Font.Bold = true;
             }
-            ItemStyle.HorizontalAlign = HorizontalAlign.Center;
-            HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
+            this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
         }
     }
 }

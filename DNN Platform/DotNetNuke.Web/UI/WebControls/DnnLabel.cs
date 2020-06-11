@@ -23,7 +23,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public DnnLabel()
         {
-            CssClass = "dnnFormLabel";
+            this.CssClass = "dnnFormLabel";
         }
 
         #endregion
@@ -33,12 +33,12 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            LocalResourceFile = Utilities.GetLocalResourceFile(this);
+            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
         }
 
         protected override void Render(HtmlTextWriter writer)
         {
-            LocalizeStrings();
+            this.LocalizeStrings();
             base.Render(writer);
         }
 
@@ -50,11 +50,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return !DesignMode && _localize;
+                return !this.DesignMode && this._localize;
             }
             set
             {
-                _localize = value;
+                this._localize = value;
             }
         }
 
@@ -62,22 +62,22 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public virtual void LocalizeStrings()
         {
-            if (Localize)
+            if (this.Localize)
             {
-                if (!string.IsNullOrEmpty(ToolTip))
+                if (!string.IsNullOrEmpty(this.ToolTip))
                 {
-                    ToolTip = Localization.GetString(ToolTip, LocalResourceFile);
+                    this.ToolTip = Localization.GetString(this.ToolTip, this.LocalResourceFile);
                 }
 
-                if (!string.IsNullOrEmpty(Text))
+                if (!string.IsNullOrEmpty(this.Text))
                 {
-                    var unLocalized = Text;
+                    var unLocalized = this.Text;
 
-                    Text = Localization.GetString(unLocalized, LocalResourceFile);
+                    this.Text = Localization.GetString(unLocalized, this.LocalResourceFile);
 
-                    if (string.IsNullOrEmpty(ToolTip))
+                    if (string.IsNullOrEmpty(this.ToolTip))
                     {
-                        ToolTip = Localization.GetString(unLocalized + ".ToolTip", LocalResourceFile);
+                        this.ToolTip = Localization.GetString(unLocalized + ".ToolTip", this.LocalResourceFile);
                     }
                 }
             }

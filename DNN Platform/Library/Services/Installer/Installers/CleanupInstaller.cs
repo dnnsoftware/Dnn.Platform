@@ -51,10 +51,10 @@ namespace DotNetNuke.Services.Installer.Installers
 
         private bool ProcessCleanupFile()
         {
-            Log.AddInfo(string.Format(Util.CLEANUP_Processing, Version.ToString(3)));
+            this.Log.AddInfo(string.Format(Util.CLEANUP_Processing, this.Version.ToString(3)));
             try
             {
-                var strListFile = Path.Combine(Package.InstallerInfo.TempInstallFolder, _fileName);
+                var strListFile = Path.Combine(this.Package.InstallerInfo.TempInstallFolder, this._fileName);
                 if (File.Exists(strListFile))
                 {
                     FileSystemUtils.DeleteFiles(File.ReadAllLines(strListFile));
@@ -62,36 +62,36 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             catch (Exception ex)
             {
-                Log.AddWarning(string.Format(Util.CLEANUP_ProcessError, ex.Message));
+                this.Log.AddWarning(string.Format(Util.CLEANUP_ProcessError, ex.Message));
                 //DNN-9202: MUST NOT fail installation when cleanup files deletion fails
                 //return false;
             }
-            Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, Version.ToString(3)));
+            this.Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
             return true;
         }
 
         private bool ProcessGlob()
         {
-            Log.AddInfo(string.Format(Util.CLEANUP_Processing, Version.ToString(3)));
+            this.Log.AddInfo(string.Format(Util.CLEANUP_Processing, this.Version.ToString(3)));
             try
             {
-                if (_glob.Contains(".."))
+                if (this._glob.Contains(".."))
                 {
-                    Log.AddWarning(Util.EXCEPTION + " - " + Util.EXCEPTION_GlobDotDotNotSupportedInCleanup);
+                    this.Log.AddWarning(Util.EXCEPTION + " - " + Util.EXCEPTION_GlobDotDotNotSupportedInCleanup);
                 }
                 else
                 {
                     var globs = new Matcher(StringComparison.InvariantCultureIgnoreCase);
-                    globs.AddIncludePatterns(_glob.Split(';'));
+                    globs.AddIncludePatterns(this._glob.Split(';'));
                     var files = globs.GetResultsInFullPath(Globals.ApplicationMapPath).ToArray();
                     FileSystemUtils.DeleteFiles(files);
                 }
             }
             catch (Exception ex)
             {
-                Log.AddWarning(string.Format(Util.CLEANUP_ProcessError, ex.Message));
+                this.Log.AddWarning(string.Format(Util.CLEANUP_ProcessError, ex.Message));
             }
-            Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, Version.ToString(3)));
+            this.Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
             return true;
         }
 		
@@ -110,13 +110,13 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
 				//Backup File
-                if (File.Exists(PhysicalBasePath + insFile.FullName))
+                if (File.Exists(this.PhysicalBasePath + insFile.FullName))
                 {
-                    Util.BackupFile(insFile, PhysicalBasePath, Log);
+                    Util.BackupFile(insFile, this.PhysicalBasePath, this.Log);
                 }
 				
 				//Delete file
-                Util.DeleteFile(insFile, PhysicalBasePath, Log);
+                Util.DeleteFile(insFile, this.PhysicalBasePath, this.Log);
                 return true;
             }
             catch (Exception exc)
@@ -138,7 +138,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             if (file != null)
             {
-                Files.Add(file);
+                this.Files.Add(file);
             }
         }
 
@@ -157,7 +157,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             if (File.Exists(installFile.BackupFileName))
             {
-                Util.RestoreFile(installFile, PhysicalBasePath, Log);
+                Util.RestoreFile(installFile, this.PhysicalBasePath, this.Log);
             }
         }
 		
@@ -188,37 +188,37 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
                 bool bSuccess = true;
-                if (string.IsNullOrEmpty(_fileName) && string.IsNullOrEmpty(_glob)) // No attribute: use the xml files definition.
+                if (string.IsNullOrEmpty(this._fileName) && string.IsNullOrEmpty(this._glob)) // No attribute: use the xml files definition.
                 {
-                    foreach (InstallFile file in Files)
+                    foreach (InstallFile file in this.Files)
                     {
-                        bSuccess = CleanupFile(file);
+                        bSuccess = this.CleanupFile(file);
                         if (!bSuccess)
                         {
                             break;
                         }
                     }
                 }
-                else if (!string.IsNullOrEmpty(_fileName)) // Cleanup file provided: clean each file in the cleanup text file line one by one.
+                else if (!string.IsNullOrEmpty(this._fileName)) // Cleanup file provided: clean each file in the cleanup text file line one by one.
                 {
-                    bSuccess = ProcessCleanupFile();
+                    bSuccess = this.ProcessCleanupFile();
                 }
-                else if (!string.IsNullOrEmpty(_glob)) // A globbing pattern was provided, use it to find the files and delete what matches.
+                else if (!string.IsNullOrEmpty(this._glob)) // A globbing pattern was provided, use it to find the files and delete what matches.
                 {
-                    bSuccess = ProcessGlob();
+                    bSuccess = this.ProcessGlob();
                 }
-                Completed = bSuccess;
+                this.Completed = bSuccess;
             }
             catch (Exception ex)
             {
-                Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
+                this.Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
             }
         }
 
         public override void ReadManifest(XPathNavigator manifestNav)
         {
-            _fileName = Util.ReadAttribute(manifestNav, "fileName");
-            _glob = Util.ReadAttribute(manifestNav, "glob");
+            this._fileName = Util.ReadAttribute(manifestNav, "fileName");
+            this._glob = Util.ReadAttribute(manifestNav, "glob");
             base.ReadManifest(manifestNav);
         }
 

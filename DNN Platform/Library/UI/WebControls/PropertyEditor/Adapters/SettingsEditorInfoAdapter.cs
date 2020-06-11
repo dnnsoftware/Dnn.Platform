@@ -34,9 +34,9 @@ namespace DotNetNuke.UI.WebControls
 
         public SettingsEditorInfoAdapter(object dataSource, object dataMember, string fieldName)
         {
-            DataMember = dataMember;
-            DataSource = dataSource;
-            FieldName = fieldName;
+            this.DataMember = dataMember;
+            this.DataSource = dataSource;
+            this.FieldName = fieldName;
         }
 
         #region IEditorInfoAdapter Members
@@ -44,7 +44,7 @@ namespace DotNetNuke.UI.WebControls
         public EditorInfo CreateEditControl()
         {
 
-            var info = (SettingInfo) DataMember;
+            var info = (SettingInfo) this.DataMember;
             var editInfo = new EditorInfo();
 
             //Get the Name of the property
@@ -89,7 +89,7 @@ namespace DotNetNuke.UI.WebControls
             object stringValue = e.StringValue;
             bool _IsDirty = Null.NullBoolean;
 
-            var settings = (Hashtable) DataSource;
+            var settings = (Hashtable) this.DataSource;
             IDictionaryEnumerator settingsEnumerator = settings.GetEnumerator();
             while (settingsEnumerator.MoveNext())
             {

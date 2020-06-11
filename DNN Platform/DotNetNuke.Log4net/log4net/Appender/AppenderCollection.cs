@@ -111,7 +111,7 @@ namespace log4net.Appender
 		/// </summary>
 		public AppenderCollection()
 		{
-			m_array = new IAppender[DEFAULT_CAPACITY];
+			this.m_array = new IAppender[DEFAULT_CAPACITY];
 		}
 		
 		/// <summary>
@@ -123,7 +123,7 @@ namespace log4net.Appender
 		/// </param>
 		public AppenderCollection(int capacity)
 		{
-			m_array = new IAppender[capacity];
+			this.m_array = new IAppender[capacity];
 		}
 
 		/// <summary>
@@ -133,8 +133,8 @@ namespace log4net.Appender
 		/// <param name="c">The <c>AppenderCollection</c> whose elements are copied to the new collection.</param>
 		public AppenderCollection(AppenderCollection c)
 		{
-			m_array = new IAppender[c.Count];
-			AddRange(c);
+			this.m_array = new IAppender[c.Count];
+			this.AddRange(c);
 		}
 
 		/// <summary>
@@ -144,8 +144,8 @@ namespace log4net.Appender
 		/// <param name="a">The <see cref="IAppender"/> array whose elements are copied to the new list.</param>
 		public AppenderCollection(IAppender[] a)
 		{
-			m_array = new IAppender[a.Length];
-			AddRange(a);
+			this.m_array = new IAppender[a.Length];
+			this.AddRange(a);
 		}
 		
 		/// <summary>
@@ -155,8 +155,8 @@ namespace log4net.Appender
 		/// <param name="col">The <see cref="IAppender"/> collection whose elements are copied to the new list.</param>
 		public AppenderCollection(ICollection col)
 		{
-			m_array = new IAppender[col.Count];
-			AddRange(col);
+			this.m_array = new IAppender[col.Count];
+			this.AddRange(col);
 		}
 
 		/// <summary>
@@ -179,7 +179,7 @@ namespace log4net.Appender
 		/// <exclude/>
 		internal protected AppenderCollection(Tag tag)
 		{
-			m_array = null;
+			this.m_array = null;
 		}
 
 		#endregion
@@ -191,7 +191,7 @@ namespace log4net.Appender
 		/// </summary>
 		public virtual int Count
 		{
-			get { return m_count; }
+			get { return this.m_count; }
 		}
 
 		/// <summary>
@@ -212,12 +212,12 @@ namespace log4net.Appender
 		/// <param name="start">The zero-based index in <paramref name="array"/> at which copying begins.</param>
 		public virtual void CopyTo(IAppender[] array, int start)
 		{
-			if (m_count > array.GetUpperBound(0) + 1 - start)
+			if (this.m_count > array.GetUpperBound(0) + 1 - start)
 			{
 				throw new System.ArgumentException("Destination array was not long enough.");
 			}
 			
-			Array.Copy(m_array, 0, array, start, m_count); 
+			Array.Copy(this.m_array, 0, array, start, this.m_count); 
 		}
 
 		/// <summary>
@@ -234,7 +234,7 @@ namespace log4net.Appender
 		/// </summary>
 		public virtual object SyncRoot
 		{
-			get { return m_array; }
+			get { return this.m_array; }
 		}
 
 		#endregion
@@ -254,14 +254,14 @@ namespace log4net.Appender
 		{
 			get
 			{
-				ValidateIndex(index); // throws
-				return m_array[index]; 
+				this.ValidateIndex(index); // throws
+				return this.m_array[index]; 
 			}
 			set
 			{
-				ValidateIndex(index); // throws
-				++m_version; 
-				m_array[index] = value; 
+				this.ValidateIndex(index); // throws
+				++this.m_version; 
+				this.m_array[index] = value; 
 			}
 		}
 
@@ -272,15 +272,15 @@ namespace log4net.Appender
 		/// <returns>The index at which the value has been added.</returns>
 		public virtual int Add(IAppender item)
 		{
-			if (m_count == m_array.Length)
+			if (this.m_count == this.m_array.Length)
 			{
-				EnsureCapacity(m_count + 1);
+				this.EnsureCapacity(this.m_count + 1);
 			}
 
-			m_array[m_count] = item;
-			m_version++;
+			this.m_array[this.m_count] = item;
+			this.m_version++;
 
-			return m_count++;
+			return this.m_count++;
 		}
 		
 		/// <summary>
@@ -288,9 +288,9 @@ namespace log4net.Appender
 		/// </summary>
 		public virtual void Clear()
 		{
-			++m_version;
-			m_array = new IAppender[DEFAULT_CAPACITY];
-			m_count = 0;
+			++this.m_version;
+			this.m_array = new IAppender[DEFAULT_CAPACITY];
+			this.m_count = 0;
 		}
 		
 		/// <summary>
@@ -299,10 +299,10 @@ namespace log4net.Appender
 		/// <returns>A new <see cref="AppenderCollection"/> with a shallow copy of the collection data.</returns>
 		public virtual object Clone()
 		{
-			AppenderCollection newCol = new AppenderCollection(m_count);
-			Array.Copy(m_array, 0, newCol.m_array, 0, m_count);
-			newCol.m_count = m_count;
-			newCol.m_version = m_version;
+			AppenderCollection newCol = new AppenderCollection(this.m_count);
+			Array.Copy(this.m_array, 0, newCol.m_array, 0, this.m_count);
+			newCol.m_count = this.m_count;
+			newCol.m_version = this.m_version;
 
 			return newCol;
 		}
@@ -314,9 +314,9 @@ namespace log4net.Appender
 		/// <returns><c>true</c> if <paramref name="item"/> is found in the <c>AppenderCollection</c>; otherwise, <c>false</c>.</returns>
 		public virtual bool Contains(IAppender item)
 		{
-			for (int i=0; i != m_count; ++i)
+			for (int i=0; i != this.m_count; ++i)
 			{
-				if (m_array[i].Equals(item))
+				if (this.m_array[i].Equals(item))
 				{
 					return true;
 				}
@@ -335,9 +335,9 @@ namespace log4net.Appender
 		/// </returns>
 		public virtual int IndexOf(IAppender item)
 		{
-			for (int i=0; i != m_count; ++i)
+			for (int i=0; i != this.m_count; ++i)
 			{
-				if (m_array[i].Equals(item))
+				if (this.m_array[i].Equals(item))
 				{
 					return i;
 				}
@@ -357,21 +357,21 @@ namespace log4net.Appender
 		/// </exception>
 		public virtual void Insert(int index, IAppender item)
 		{
-			ValidateIndex(index, true); // throws
+			this.ValidateIndex(index, true); // throws
 			
-			if (m_count == m_array.Length)
+			if (this.m_count == this.m_array.Length)
 			{
-				EnsureCapacity(m_count + 1);
+				this.EnsureCapacity(this.m_count + 1);
 			}
 
-			if (index < m_count)
+			if (index < this.m_count)
 			{
-				Array.Copy(m_array, index, m_array, index + 1, m_count - index);
+				Array.Copy(this.m_array, index, this.m_array, index + 1, this.m_count - index);
 			}
 
-			m_array[index] = item;
-			m_count++;
-			m_version++;
+			this.m_array[index] = item;
+			this.m_count++;
+			this.m_version++;
 		}
 
 		/// <summary>
@@ -383,14 +383,14 @@ namespace log4net.Appender
 		/// </exception>
 		public virtual void Remove(IAppender item)
 		{		   
-			int i = IndexOf(item);
+			int i = this.IndexOf(item);
 			if (i < 0)
 			{
 				throw new System.ArgumentException("Cannot remove the specified item because it was not found in the specified Collection.");
 			}
 			
-			++m_version;
-			RemoveAt(i);
+			++this.m_version;
+			this.RemoveAt(i);
 		}
 
 		/// <summary>
@@ -404,21 +404,21 @@ namespace log4net.Appender
 		/// </exception>
 		public virtual void RemoveAt(int index)
 		{
-			ValidateIndex(index); // throws
+			this.ValidateIndex(index); // throws
 			
-			m_count--;
+			this.m_count--;
 
-			if (index < m_count)
+			if (index < this.m_count)
 			{
-				Array.Copy(m_array, index + 1, m_array, index, m_count - index);
+				Array.Copy(this.m_array, index + 1, this.m_array, index, this.m_count - index);
 			}
 			
 			// We can't set the deleted entry equal to null, because it might be a value type.
 			// Instead, we'll create an empty single-element array of the right type and copy it 
 			// over the entry we want to erase.
 			IAppender[] temp = new IAppender[1];
-			Array.Copy(temp, 0, m_array, m_count, 1);
-			m_version++;
+			Array.Copy(temp, 0, this.m_array, this.m_count, 1);
+			this.m_version++;
 		}
 
 		/// <summary>
@@ -463,26 +463,26 @@ namespace log4net.Appender
 		{
 			get 
 			{ 
-				return m_array.Length; 
+				return this.m_array.Length; 
 			}
 			set
 			{
-				if (value < m_count)
+				if (value < this.m_count)
 				{
-					value = m_count;
+					value = this.m_count;
 				}
 
-				if (value != m_array.Length)
+				if (value != this.m_array.Length)
 				{
 					if (value > 0)
 					{
 						IAppender[] temp = new IAppender[value];
-						Array.Copy(m_array, 0, temp, 0, m_count);
-						m_array = temp;
+						Array.Copy(this.m_array, 0, temp, 0, this.m_count);
+						this.m_array = temp;
 					}
 					else
 					{
-						m_array = new IAppender[DEFAULT_CAPACITY];
+						this.m_array = new IAppender[DEFAULT_CAPACITY];
 					}
 				}
 			}
@@ -495,16 +495,16 @@ namespace log4net.Appender
 		/// <returns>The new <see cref="AppenderCollection.Count"/> of the <c>AppenderCollection</c>.</returns>
 		public virtual int AddRange(AppenderCollection x)
 		{
-			if (m_count + x.Count >= m_array.Length)
+			if (this.m_count + x.Count >= this.m_array.Length)
 			{
-				EnsureCapacity(m_count + x.Count);
+				this.EnsureCapacity(this.m_count + x.Count);
 			}
 			
-			Array.Copy(x.m_array, 0, m_array, m_count, x.Count);
-			m_count += x.Count;
-			m_version++;
+			Array.Copy(x.m_array, 0, this.m_array, this.m_count, x.Count);
+			this.m_count += x.Count;
+			this.m_version++;
 
-			return m_count;
+			return this.m_count;
 		}
 
 		/// <summary>
@@ -514,16 +514,16 @@ namespace log4net.Appender
 		/// <returns>The new <see cref="AppenderCollection.Count"/> of the <c>AppenderCollection</c>.</returns>
 		public virtual int AddRange(IAppender[] x)
 		{
-			if (m_count + x.Length >= m_array.Length)
+			if (this.m_count + x.Length >= this.m_array.Length)
 			{
-				EnsureCapacity(m_count + x.Length);
+				this.EnsureCapacity(this.m_count + x.Length);
 			}
 
-			Array.Copy(x, 0, m_array, m_count, x.Length);
-			m_count += x.Length;
-			m_version++;
+			Array.Copy(x, 0, this.m_array, this.m_count, x.Length);
+			this.m_count += x.Length;
+			this.m_version++;
 
-			return m_count;
+			return this.m_count;
 		}
 		
 		/// <summary>
@@ -533,17 +533,17 @@ namespace log4net.Appender
 		/// <returns>The new <see cref="AppenderCollection.Count"/> of the <c>AppenderCollection</c>.</returns>
 		public virtual int AddRange(ICollection col)
 		{
-			if (m_count + col.Count >= m_array.Length)
+			if (this.m_count + col.Count >= this.m_array.Length)
 			{
-				EnsureCapacity(m_count + col.Count);
+				this.EnsureCapacity(this.m_count + col.Count);
 			}
 
 			foreach(object item in col)
 			{
-				Add((IAppender)item);
+				this.Add((IAppender)item);
 			}
 
-			return m_count;
+			return this.m_count;
 		}
 
 		/// <summary>
@@ -551,7 +551,7 @@ namespace log4net.Appender
 		/// </summary>
 		public virtual void TrimToSize()
 		{
-			this.Capacity = m_count;
+			this.Capacity = this.m_count;
 		}
 
 		/// <summary>
@@ -560,10 +560,10 @@ namespace log4net.Appender
 		/// <returns>the array</returns>
 		public virtual IAppender[] ToArray()
 		{
-			IAppender[] resultArray = new IAppender[m_count];
-			if (m_count > 0)
+			IAppender[] resultArray = new IAppender[this.m_count];
+			if (this.m_count > 0)
 			{
-				Array.Copy(m_array, 0, resultArray, 0, m_count);
+				Array.Copy(this.m_array, 0, resultArray, 0, this.m_count);
 			}
 			return resultArray;
 		}
@@ -579,7 +579,7 @@ namespace log4net.Appender
 		/// </exception>
 		private void ValidateIndex(int i)
 		{
-			ValidateIndex(i, false);
+			this.ValidateIndex(i, false);
 		}
 
 		/// <exception cref="ArgumentOutOfRangeException">
@@ -589,7 +589,7 @@ namespace log4net.Appender
 		/// </exception>
 		private void ValidateIndex(int i, bool allowEqualEnd)
 		{
-			int max = (allowEqualEnd) ? (m_count) : (m_count-1);
+			int max = (allowEqualEnd) ? (this.m_count) : (this.m_count-1);
 			if (i < 0 || i > max)
 			{
 				throw log4net.Util.SystemInfo.CreateArgumentOutOfRangeException("i", (object)i, "Index was out of range. Must be non-negative and less than the size of the collection. [" + (object)i + "] Specified argument was out of the range of valid values.");
@@ -598,7 +598,7 @@ namespace log4net.Appender
 
 		private void EnsureCapacity(int min)
 		{
-			int newCapacity = ((m_array.Length == 0) ? DEFAULT_CAPACITY : m_array.Length * 2);
+			int newCapacity = ((this.m_array.Length == 0) ? DEFAULT_CAPACITY : this.m_array.Length * 2);
 			if (newCapacity < min)
 			{
 				newCapacity = min;
@@ -613,9 +613,9 @@ namespace log4net.Appender
 
 		void ICollection.CopyTo(Array array, int start)
 		{
-			if (m_count > 0)
+			if (this.m_count > 0)
 			{
-				Array.Copy(m_array, 0, array, start, m_count);
+				Array.Copy(this.m_array, 0, array, start, this.m_count);
 			}
 		}
 
@@ -694,9 +694,9 @@ namespace log4net.Appender
 			/// <param name="tc"></param>
 			internal Enumerator(AppenderCollection tc)
 			{
-				m_collection = tc;
-				m_index = -1;
-				m_version = tc.m_version;
+				this.m_collection = tc;
+				this.m_index = -1;
+				this.m_version = tc.m_version;
 			}
 			
 			#endregion
@@ -708,7 +708,7 @@ namespace log4net.Appender
 			/// </summary>
 			public IAppender Current
 			{
-				get { return m_collection[m_index]; }
+				get { return this.m_collection[this.m_index]; }
 			}
 
 			/// <summary>
@@ -723,13 +723,13 @@ namespace log4net.Appender
 			/// </exception>
 			public bool MoveNext()
 			{
-				if (m_version != m_collection.m_version)
+				if (this.m_version != this.m_collection.m_version)
 				{
 					throw new System.InvalidOperationException("Collection was modified; enumeration operation may not execute.");
 				}
 
-				++m_index;
-				return (m_index < m_collection.Count);
+				++this.m_index;
+				return (this.m_index < this.m_collection.Count);
 			}
 
 			/// <summary>
@@ -737,7 +737,7 @@ namespace log4net.Appender
 			/// </summary>
 			public void Reset()
 			{
-				m_index = -1;
+				this.m_index = -1;
 			}
 			#endregion
 	
@@ -768,7 +768,7 @@ namespace log4net.Appender
 
 			internal ReadOnlyAppenderCollection(AppenderCollection list) : base(Tag.Default)
 			{
-				m_collection = list;
+				this.m_collection = list;
 			}
 
 			#endregion
@@ -777,27 +777,27 @@ namespace log4net.Appender
 
 			public override void CopyTo(IAppender[] array)
 			{
-				m_collection.CopyTo(array);
+				this.m_collection.CopyTo(array);
 			}
 
 			public override void CopyTo(IAppender[] array, int start)
 			{
-				m_collection.CopyTo(array,start);
+				this.m_collection.CopyTo(array,start);
 			}
 
 			void ICollection.CopyTo(Array array, int start)
 			{
-				((ICollection)m_collection).CopyTo(array, start);
+				((ICollection)this.m_collection).CopyTo(array, start);
 			}
 
 			public override int Count
 			{
-				get { return m_collection.Count; }
+				get { return this.m_collection.Count; }
 			}
 
 			public override bool IsSynchronized
 			{
-				get { return m_collection.IsSynchronized; }
+				get { return this.m_collection.IsSynchronized; }
 			}
 
 			public override object SyncRoot
@@ -811,7 +811,7 @@ namespace log4net.Appender
 
 			public override IAppender this[int i]
 			{
-				get { return m_collection[i]; }
+				get { return this.m_collection[i]; }
 				set { throw new NotSupportedException("This is a Read Only Collection and can not be modified"); }
 			}
 
@@ -827,12 +827,12 @@ namespace log4net.Appender
 
 			public override bool Contains(IAppender x)
 			{
-				return m_collection.Contains(x);
+				return this.m_collection.Contains(x);
 			}
 
 			public override int IndexOf(IAppender x)
 			{
-				return m_collection.IndexOf(x);
+				return this.m_collection.IndexOf(x);
 			}
 
 			public override void Insert(int pos, IAppender x)
@@ -866,7 +866,7 @@ namespace log4net.Appender
 
 			public override IAppenderCollectionEnumerator GetEnumerator()
 			{
-				return m_collection.GetEnumerator();
+				return this.m_collection.GetEnumerator();
 			}
 
 			#endregion
@@ -876,7 +876,7 @@ namespace log4net.Appender
 			// (just to mimic some nice features of ArrayList)
 			public override int Capacity
 			{
-				get { return m_collection.Capacity; }
+				get { return this.m_collection.Capacity; }
 				set { throw new NotSupportedException("This is a Read Only Collection and can not be modified"); }
 			}
 
@@ -892,7 +892,7 @@ namespace log4net.Appender
 
 			public override IAppender[] ToArray()
 			{
-				return m_collection.ToArray();
+				return this.m_collection.ToArray();
 			}
 
 			public override void TrimToSize()

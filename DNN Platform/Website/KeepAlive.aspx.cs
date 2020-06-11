@@ -24,7 +24,7 @@ namespace DotNetNuke.Common.Utilities
 
 			//CODEGEN: This method call is required by the Web Form Designer
 			//Do not modify it using the code editor.
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         protected override void OnLoad(EventArgs e)

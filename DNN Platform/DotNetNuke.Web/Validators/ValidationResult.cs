@@ -22,13 +22,13 @@ namespace DotNetNuke.Web.Validators
 
         public ValidationResult()
         {
-            _Errors = Enumerable.Empty<ValidationError>();
+            this._Errors = Enumerable.Empty<ValidationError>();
         }
 
         public ValidationResult(IEnumerable<ValidationError> errors)
         {
             Requires.NotNull("errors", errors);
-            _Errors = errors;
+            this._Errors = errors;
         }
 
         #endregion
@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.Validators
         {
             get
             {
-                return _Errors;
+                return this._Errors;
             }
         }
 
@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.Validators
         {
             get
             {
-                return (_Errors.Count() == 0);
+                return (this._Errors.Count() == 0);
             }
         }
 
@@ -68,7 +68,7 @@ namespace DotNetNuke.Web.Validators
             Requires.NotNull("other", other);
 
             //Just concatenate the errors collection
-            return new ValidationResult(_Errors.Concat(other.Errors));
+            return new ValidationResult(this._Errors.Concat(other.Errors));
         }
 
         #endregion

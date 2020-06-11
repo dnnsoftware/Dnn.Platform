@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public DnnGridItemSelectedEventArgs(GridItemCollection selectedItems)
         {
-            _SelectedItems = selectedItems;
+            this._SelectedItems = selectedItems;
         }
 
         #endregion
@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _SelectedItems;
+                return this._SelectedItems;
             }
         }
 

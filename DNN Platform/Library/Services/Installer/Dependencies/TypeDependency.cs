@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
         {
             get
             {
-                return Util.INSTALL_Namespace + " - " + _missingDependentType;
+                return Util.INSTALL_Namespace + " - " + this._missingDependentType;
             }
         }
 
@@ -38,15 +38,15 @@ namespace DotNetNuke.Services.Installer.Dependencies
             get
             {
                 bool isValid = true;
-                if (!String.IsNullOrEmpty(_dependentTypes))
+                if (!String.IsNullOrEmpty(this._dependentTypes))
                 {
-                    foreach (string dependentType in (_dependentTypes + ";").Split(';'))
+                    foreach (string dependentType in (this._dependentTypes + ";").Split(';'))
                     {
                         if (!String.IsNullOrEmpty(dependentType.Trim()))
                         {
                             if (Reflection.CreateType(dependentType, true) == null)
                             {
-                                _missingDependentType = dependentType;
+                                this._missingDependentType = dependentType;
                                 isValid = false;
                                 break;
                             }
@@ -59,7 +59,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
 
         public override void ReadManifest(XPathNavigator dependencyNav)
         {
-            _dependentTypes = dependencyNav.Value;
+            this._dependentTypes = dependencyNav.Value;
         }
     }
 }

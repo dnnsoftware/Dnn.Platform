@@ -20,14 +20,14 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         public RequiredAttribute(bool required)
         {
-            _Required = required;
+            this._Required = required;
         }
 
         public bool Required
         {
             get
             {
-                return _Required;
+                return this._Required;
             }
         }
     }

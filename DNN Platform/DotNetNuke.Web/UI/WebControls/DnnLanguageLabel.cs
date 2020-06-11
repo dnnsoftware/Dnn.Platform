@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public DnnLanguageLabel()
         {
-            Localize = true;
+            this.Localize = true;
         }
 
         #region Public Properties
@@ -40,11 +40,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return (string) ViewState["Language"];
+                return (string) this.ViewState["Language"];
             }
             set
             {
-                ViewState["Language"] = value;
+                this.ViewState["Language"] = value;
             }
         }
 
@@ -55,7 +55,7 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            LocalResourceFile = Utilities.GetLocalResourceFile(this);
+            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
         }
 
         /// -----------------------------------------------------------------------------
@@ -67,16 +67,16 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void CreateChildControls()
         {
             //First clear the controls collection
-            Controls.Clear();
+            this.Controls.Clear();
 
-            _Flag = new Image {ViewStateMode = ViewStateMode.Disabled};
-            Controls.Add(_Flag);
+            this._Flag = new Image {ViewStateMode = ViewStateMode.Disabled};
+            this.Controls.Add(this._Flag);
 
-            Controls.Add(new LiteralControl("&nbsp;"));
+            this.Controls.Add(new LiteralControl("&nbsp;"));
 
-            _Label = new Label();
-            _Label.ViewStateMode = ViewStateMode.Disabled;
-            Controls.Add(_Label);
+            this._Label = new Label();
+            this._Label.ViewStateMode = ViewStateMode.Disabled;
+            this.Controls.Add(this._Label);
 
             //Call base class's method
 
@@ -92,16 +92,16 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnPreRender(e);
 
-            if (string.IsNullOrEmpty(Language))
+            if (string.IsNullOrEmpty(this.Language))
             {
-                _Flag.ImageUrl = "~/images/Flags/none.gif";
+                this._Flag.ImageUrl = "~/images/Flags/none.gif";
             }
             else
             {
-                _Flag.ImageUrl = string.Format("~/images/Flags/{0}.gif", Language);
+                this._Flag.ImageUrl = string.Format("~/images/Flags/{0}.gif", this.Language);
             }
 
-            if (DisplayType == 0)
+            if (this.DisplayType == 0)
             {
                 PortalSettings _PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 string _ViewTypePersonalizationKey = "ViewType" + _PortalSettings.PortalId;
@@ -109,28 +109,28 @@ namespace DotNetNuke.Web.UI.WebControls
                 switch (_ViewType)
                 {
                     case "NATIVE":
-                        DisplayType = CultureDropDownTypes.NativeName;
+                        this.DisplayType = CultureDropDownTypes.NativeName;
                         break;
                     case "ENGLISH":
-                        DisplayType = CultureDropDownTypes.EnglishName;
+                        this.DisplayType = CultureDropDownTypes.EnglishName;
                         break;
                     default:
-                        DisplayType = CultureDropDownTypes.DisplayName;
+                        this.DisplayType = CultureDropDownTypes.DisplayName;
                         break;
                 }
             }
 
             string localeName = null;
-            if (string.IsNullOrEmpty(Language))
+            if (string.IsNullOrEmpty(this.Language))
             {
                 localeName = Localization.GetString("NeutralCulture", Localization.GlobalResourceFile);
             }
             else
             {
-                localeName = Localization.GetLocaleName(Language, DisplayType);
+                localeName = Localization.GetLocaleName(this.Language, this.DisplayType);
             }
-            _Label.Text = localeName;
-            _Flag.AlternateText = localeName;
+            this._Label.Text = localeName;
+            this._Flag.AlternateText = localeName;
         }
 
         #endregion

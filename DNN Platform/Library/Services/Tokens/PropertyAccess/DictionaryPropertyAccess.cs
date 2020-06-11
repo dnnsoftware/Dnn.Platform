@@ -20,18 +20,18 @@ namespace DotNetNuke.Services.Tokens
 
         public DictionaryPropertyAccess(IDictionary list)
         {
-            NameValueCollection = list;
+            this.NameValueCollection = list;
         }
 
         #region IPropertyAccess Members
 
         public virtual string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
-            if (NameValueCollection == null)
+            if (this.NameValueCollection == null)
             {
                 return string.Empty;
             }
-            object valueObject = NameValueCollection[propertyName];
+            object valueObject = this.NameValueCollection[propertyName];
             string OutputFormat = format;
             if (string.IsNullOrEmpty(format))
             {

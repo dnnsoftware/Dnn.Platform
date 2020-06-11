@@ -76,7 +76,7 @@ namespace log4net.Util
 		/// </remarks>
 		public virtual PatternConverter Next
 		{
-			get { return m_next; }
+			get { return this.m_next; }
 		}
 
 		/// <summary>
@@ -92,12 +92,12 @@ namespace log4net.Util
 		/// </remarks>
 		public virtual FormattingInfo FormattingInfo
 		{
-			get { return new FormattingInfo(m_min, m_max, m_leftAlign); }
+			get { return new FormattingInfo(this.m_min, this.m_max, this.m_leftAlign); }
 			set
 			{
-				m_min = value.Min;
-				m_max = value.Max;
-				m_leftAlign = value.LeftAlign;
+				this.m_min = value.Min;
+				this.m_max = value.Max;
+				this.m_leftAlign = value.LeftAlign;
 			}
 		}
 
@@ -114,8 +114,8 @@ namespace log4net.Util
 		/// </remarks>
 		public virtual string Option
 		{
-			get { return m_option; }
-			set { m_option = value; }
+			get { return this.m_option; }
+			set { this.m_option = value; }
 		}
 
 		#endregion Public Instance Properties
@@ -152,8 +152,8 @@ namespace log4net.Util
 		/// </remarks>
 		public virtual PatternConverter SetNext(PatternConverter patternConverter)
 		{
-			m_next = patternConverter;
-			return m_next;
+			this.m_next = patternConverter;
+			return this.m_next;
 		}
 
 		/// <summary>
@@ -171,27 +171,27 @@ namespace log4net.Util
 		/// </remarks>
 		virtual public void Format(TextWriter writer, object state) 
 		{
-			if (m_min < 0 && m_max == int.MaxValue)
+			if (this.m_min < 0 && this.m_max == int.MaxValue)
 			{
 				// Formatting options are not in use
-				Convert(writer, state);
+				this.Convert(writer, state);
 			}
 			else
 			{
                 string msg = null;
                 int len;
-                lock (m_formatWriter)
+                lock (this.m_formatWriter)
                 {
-                    m_formatWriter.Reset(c_renderBufferMaxCapacity, c_renderBufferSize);
+                    this.m_formatWriter.Reset(c_renderBufferMaxCapacity, c_renderBufferSize);
 
-                    Convert(m_formatWriter, state);
+                    this.Convert(this.m_formatWriter, state);
 
-                    StringBuilder buf = m_formatWriter.GetStringBuilder();
+                    StringBuilder buf = this.m_formatWriter.GetStringBuilder();
                     len = buf.Length;
-                    if (len > m_max)
+                    if (len > this.m_max)
                     {
-                        msg = buf.ToString(len - m_max, m_max);
-                        len = m_max;
+                        msg = buf.ToString(len - this.m_max, this.m_max);
+                        len = this.m_max;
                     }
                     else
                     {
@@ -199,16 +199,16 @@ namespace log4net.Util
                     }
                 }
 
-				if (len < m_min) 
+				if (len < this.m_min) 
 				{
-					if (m_leftAlign) 
+					if (this.m_leftAlign) 
 					{	
 						writer.Write(msg);
-						SpacePad(writer, m_min - len);
+						SpacePad(writer, this.m_min - len);
 					}
 					else 
 					{
-						SpacePad(writer, m_min - len);
+						SpacePad(writer, this.m_min - len);
 						writer.Write(msg);
 					}
 				}
@@ -394,8 +394,8 @@ namespace log4net.Util
         /// </summary>
         public PropertiesDictionary Properties
 	    {
-	        get { return properties; }
-	        set { properties = value; }
+	        get { return this.properties; }
+	        set { this.properties = value; }
 	    }
 	}
 }

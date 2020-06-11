@@ -28,11 +28,11 @@ namespace DotNetNuke.Services.Authentication
 
         public AuthenticationInfo()
         {
-            LogoffControlSrc = Null.NullString;
-            LoginControlSrc = Null.NullString;
-            SettingsControlSrc = Null.NullString;
-            AuthenticationType = Null.NullString;
-            AuthenticationID = Null.NullInteger;
+            this.LogoffControlSrc = Null.NullString;
+            this.LoginControlSrc = Null.NullString;
+            this.SettingsControlSrc = Null.NullString;
+            this.AuthenticationType = Null.NullString;
+            this.AuthenticationID = Null.NullInteger;
         }
 
         #endregion
@@ -100,16 +100,16 @@ namespace DotNetNuke.Services.Authentication
         /// -----------------------------------------------------------------------------
         public virtual void Fill(IDataReader dr)
         {
-            AuthenticationID = Null.SetNullInteger(dr["AuthenticationID"]);
-            PackageID = Null.SetNullInteger(dr["PackageID"]);
-            IsEnabled = Null.SetNullBoolean(dr["IsEnabled"]);
-            AuthenticationType = Null.SetNullString(dr["AuthenticationType"]);
-            SettingsControlSrc = Null.SetNullString(dr["SettingsControlSrc"]);
-            LoginControlSrc = Null.SetNullString(dr["LoginControlSrc"]);
-            LogoffControlSrc = Null.SetNullString(dr["LogoffControlSrc"]);
+            this.AuthenticationID = Null.SetNullInteger(dr["AuthenticationID"]);
+            this.PackageID = Null.SetNullInteger(dr["PackageID"]);
+            this.IsEnabled = Null.SetNullBoolean(dr["IsEnabled"]);
+            this.AuthenticationType = Null.SetNullString(dr["AuthenticationType"]);
+            this.SettingsControlSrc = Null.SetNullString(dr["SettingsControlSrc"]);
+            this.LoginControlSrc = Null.SetNullString(dr["LoginControlSrc"]);
+            this.LogoffControlSrc = Null.SetNullString(dr["LogoffControlSrc"]);
 
             //Fill base class fields
-            FillInternal(dr);
+            this.FillInternal(dr);
         }
 
         /// -----------------------------------------------------------------------------
@@ -122,11 +122,11 @@ namespace DotNetNuke.Services.Authentication
         {
             get
             {
-                return AuthenticationID;
+                return this.AuthenticationID;
             }
             set
             {
-                AuthenticationID = value;
+                this.AuthenticationID = value;
             }
         }
 

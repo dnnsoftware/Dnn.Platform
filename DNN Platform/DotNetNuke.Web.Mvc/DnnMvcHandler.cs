@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.Mvc
                 throw new ArgumentNullException("requestContext");
             }
 
-            RequestContext = requestContext;
+            this.RequestContext = requestContext;
         }
 
         public static readonly string MvcVersionHeaderName = "X-AspNetMvc-Version";
@@ -38,13 +38,13 @@ namespace DotNetNuke.Web.Mvc
         {
             get
             {
-                if (_controllerBuilder == null)
+                if (this._controllerBuilder == null)
                 {
-                    _controllerBuilder = ControllerBuilder.Current;
+                    this._controllerBuilder = ControllerBuilder.Current;
                 }
-                return _controllerBuilder;
+                return this._controllerBuilder;
             }
-            set { _controllerBuilder = value; }
+            set { this._controllerBuilder = value; }
         }
 
         protected virtual bool IsReusable
@@ -56,13 +56,13 @@ namespace DotNetNuke.Web.Mvc
 
         bool IHttpHandler.IsReusable
         {
-            get { return IsReusable; }
+            get { return this.IsReusable; }
         }
 
         void IHttpHandler.ProcessRequest(HttpContext httpContext)
         {
-            MembershipModule.AuthenticateRequest(RequestContext.HttpContext, allowUnknownExtensions: true);
-            ProcessRequest(httpContext);
+            MembershipModule.AuthenticateRequest(this.RequestContext.HttpContext, allowUnknownExtensions: true);
+            this.ProcessRequest(httpContext);
         }
 
         public RequestContext RequestContext { get; private set; }
@@ -70,19 +70,19 @@ namespace DotNetNuke.Web.Mvc
         protected virtual void ProcessRequest(HttpContext httpContext)
         {
             HttpContextBase httpContextBase = new HttpContextWrapper(httpContext);
-            ProcessRequest(httpContextBase);
+            this.ProcessRequest(httpContextBase);
         }
 
         protected internal virtual void ProcessRequest(HttpContextBase httpContext)
         {
             try
             {
-                var moduleExecutionEngine = GetModuleExecutionEngine();
+                var moduleExecutionEngine = this.GetModuleExecutionEngine();
                 // Check if the controller supports IDnnController
                 var moduleResult =
-                    moduleExecutionEngine.ExecuteModule(GetModuleRequestContext(httpContext));
+                    moduleExecutionEngine.ExecuteModule(this.GetModuleRequestContext(httpContext));
                 httpContext.SetModuleRequestResult(moduleResult);
-                RenderModule(moduleResult);
+                this.RenderModule(moduleResult);
             }
             finally
             {
@@ -112,7 +112,7 @@ namespace DotNetNuke.Web.Mvc
             {
                 HttpContext = httpContext,
                 ModuleContext = moduleContext,
-                ModuleApplication = new ModuleApplication(RequestContext, DisableMvcResponseHeader)
+                ModuleApplication = new ModuleApplication(this.RequestContext, DisableMvcResponseHeader)
                 {
                     ModuleName = desktopModule.ModuleName,
                     FolderPath = desktopModule.FolderName,
@@ -124,7 +124,7 @@ namespace DotNetNuke.Web.Mvc
 
         private void RenderModule(ModuleRequestResult moduleResult)
         {
-            var writer = RequestContext.HttpContext.Response.Output;
+            var writer = this.RequestContext.HttpContext.Response.Output;
 
             var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
 

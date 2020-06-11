@@ -41,13 +41,13 @@ namespace Dnn.PersonaBar.Security.Components
                 checks.Insert(2, new CheckViewstatemac());
             }
 
-            _auditChecks = checks.AsReadOnly();
+            this._auditChecks = checks.AsReadOnly();
         }
 
         public List<CheckResult> DoChecks(bool checkAll = false)
         {
             var results = new List<CheckResult>();
-            foreach (var check in _auditChecks)
+            foreach (var check in this._auditChecks)
             {
                 try
                 {
@@ -68,7 +68,7 @@ namespace Dnn.PersonaBar.Security.Components
         {
             try
             {
-                var check = _auditChecks.FirstOrDefault(c => c.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
+                var check = this._auditChecks.FirstOrDefault(c => c.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
                 return check?.Execute();
             }
             catch (Exception)

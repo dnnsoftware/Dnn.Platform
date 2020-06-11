@@ -23,27 +23,27 @@ namespace DotNetNuke.Web.DDRMenu
 				{
 					base.OnPreRender(e);
 
-					var menuStyle = GetStringSetting("MenuStyle");
+					var menuStyle = this.GetStringSetting("MenuStyle");
 					if (String.IsNullOrEmpty(menuStyle))
 					{
-						menu = null;
+						this.menu = null;
 						return;
 					}
 
 					var menuSettings = new Settings
 					                   {
-					                   	MenuStyle = GetStringSetting("MenuStyle"),
-					                   	NodeXmlPath = GetStringSetting("NodeXmlPath"),
-					                   	NodeSelector = GetStringSetting("NodeSelector"),
-					                   	IncludeContext = GetBoolSetting("IncludeContext"),
-										IncludeHidden = GetBoolSetting("IncludeHidden"),
-										IncludeNodes = GetStringSetting("IncludeNodes"),
-					                   	ExcludeNodes = GetStringSetting("ExcludeNodes"),
-					                   	NodeManipulator = GetStringSetting("NodeManipulator"),
+					                   	MenuStyle = this.GetStringSetting("MenuStyle"),
+					                   	NodeXmlPath = this.GetStringSetting("NodeXmlPath"),
+					                   	NodeSelector = this.GetStringSetting("NodeSelector"),
+					                   	IncludeContext = this.GetBoolSetting("IncludeContext"),
+										IncludeHidden = this.GetBoolSetting("IncludeHidden"),
+										IncludeNodes = this.GetStringSetting("IncludeNodes"),
+					                   	ExcludeNodes = this.GetStringSetting("ExcludeNodes"),
+					                   	NodeManipulator = this.GetStringSetting("NodeManipulator"),
 					                   	TemplateArguments =
-					                   		DDRMenu.Settings.TemplateArgumentsFromSettingString(GetStringSetting("TemplateArguments")),
+					                   		DDRMenu.Settings.TemplateArgumentsFromSettingString(this.GetStringSetting("TemplateArguments")),
 					                   	ClientOptions =
-					                   		DDRMenu.Settings.ClientOptionsFromSettingString(GetStringSetting("ClientOptions"))
+					                   		DDRMenu.Settings.ClientOptionsFromSettingString(this.GetStringSetting("ClientOptions"))
 					                   };
 
 					MenuNode rootNode = null;
@@ -53,18 +53,18 @@ namespace DotNetNuke.Web.DDRMenu
 							new MenuNode(
 								Localiser.LocaliseDNNNodeCollection(
 									Navigation.GetNavigationNodes(
-										ClientID,
+										this.ClientID,
 										Navigation.ToolTipSource.None,
 										-1,
 										-1,
 										DNNAbstract.GetNavNodeOptions(true))));
 					}
 
-					menu = MenuBase.Instantiate(menuStyle);
-					menu.RootNode = rootNode;
-					menu.ApplySettings(menuSettings);
+					this.menu = MenuBase.Instantiate(menuStyle);
+					this.menu.RootNode = rootNode;
+					this.menu.ApplySettings(menuSettings);
 
-					menu.PreRender();
+					this.menu.PreRender();
 				}
 				catch (Exception exc)
 				{
@@ -80,13 +80,13 @@ namespace DotNetNuke.Web.DDRMenu
 				try
 				{
 					base.Render(htmlWriter);
-					if (menu == null)
+					if (this.menu == null)
 					{
 						htmlWriter.WriteEncodedText("Please specify menu style in settings.");
 					}
 					else
 					{
-						menu.Render(htmlWriter);
+						this.menu.Render(htmlWriter);
 					}
 				}
 				catch (Exception exc)

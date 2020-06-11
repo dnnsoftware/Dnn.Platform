@@ -48,7 +48,7 @@ namespace DotNetNuke.Web.InternalServices
             }
             else
             {
-                portalId = FixPortalId(portalId);
+                portalId = this.FixPortalId(portalId);
             }
 
             DesktopModuleInfo desktopModule;
@@ -62,17 +62,17 @@ namespace DotNetNuke.Web.InternalServices
 
                 desktopModule = moduleInfo.DesktopModule;
 
-                requiresWarning = moduleInfo.PortalID != PortalSettings.PortalId && desktopModule.Shareable == ModuleSharing.Unknown;
+                requiresWarning = moduleInfo.PortalID != this.PortalSettings.PortalId && desktopModule.Shareable == ModuleSharing.Unknown;
             }
 
             if (desktopModule == null)
             {
                 var message = string.Format("Cannot find module ID {0} (tab ID {1}, portal ID {2})", moduleId, tabId, portalId);
                 Logger.Error(message);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, new { Shareable = desktopModule.Shareable.ToString(), RequiresWarning = requiresWarning });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Shareable = desktopModule.Shareable.ToString(), RequiresWarning = requiresWarning });
         }
 
         [HttpPost]
@@ -97,7 +97,7 @@ namespace DotNetNuke.Web.InternalServices
             ModuleController.Instance.UpdateModuleOrder(postData.TabId, postData.ModuleId, moduleOrder, postData.Pane);
             ModuleController.Instance.UpdateTabModuleOrder(postData.TabId);
 
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return this.Request.CreateResponse(HttpStatusCode.OK);
         }
 
         /// <summary>
@@ -113,15 +113,15 @@ namespace DotNetNuke.Web.InternalServices
         {
             ModuleController.Instance.DeleteTabModule(deleteModuleDto.TabId, deleteModuleDto.ModuleId, deleteModuleDto.SoftDelete);
 
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return this.Request.CreateResponse(HttpStatusCode.OK);
         }
 
         private int FixPortalId(int portalId)
         {
-            return UserInfo.IsSuperUser && PortalSettings.PortalId != portalId && PortalController.Instance.GetPortals()
+            return this.UserInfo.IsSuperUser && this.PortalSettings.PortalId != portalId && PortalController.Instance.GetPortals()
                        .OfType<PortalInfo>().Any(x => x.PortalID == portalId)
                 ? portalId
-                : PortalSettings.PortalId;
+                : this.PortalSettings.PortalId;
         }
     }
 }

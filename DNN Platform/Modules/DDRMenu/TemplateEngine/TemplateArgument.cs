@@ -15,8 +15,8 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
         public TemplateArgument(string name, string value)
         {
-            Name = name;
-            Value = value;
+            this.Name = name;
+            this.Value = value;
         }
     }
 }

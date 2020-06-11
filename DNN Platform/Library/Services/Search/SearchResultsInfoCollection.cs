@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="value">A <see cref="SearchResultsInfoCollection">SearchResultsInfoCollection</see> with which to initialize the collection.</param>
         public SearchResultsInfoCollection(SearchResultsInfoCollection value)
         {
-            AddRange(value);
+            this.AddRange(value);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="value">An array of <see cref="SearchResultsInfo">SearchResultsInfo</see> objects with which to initialize the collection. </param>
         public SearchResultsInfoCollection(SearchResultsInfo[] value)
         {
-            AddRange(value);
+            this.AddRange(value);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="value">An array of <see cref="SearchResultsInfo">SearchResultsInfo</see> objects with which to initialize the collection. </param>
         public SearchResultsInfoCollection(ArrayList value)
         {
-            AddRange(value);
+            this.AddRange(value);
         }
 
 		#endregion
@@ -76,11 +76,11 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return (SearchResultsInfo) List[index];
+                return (SearchResultsInfo) this.List[index];
             }
             set
             {
-                List[index] = value;
+                this.List[index] = value;
             }
         }
 
@@ -94,7 +94,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="value">An object of type <see cref="SearchResultsInfo">SearchResultsInfo</see> to add to the collection.</param>
         public int Add(SearchResultsInfo value)
         {
-            return List.Add(value);
+            return this.List.Add(value);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace DotNetNuke.Services.Search
         /// <returns>The index in the collection of the specified object, if found; otherwise, -1.</returns>
         public int IndexOf(SearchResultsInfo value)
         {
-            return List.IndexOf(value);
+            return this.List.IndexOf(value);
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="value">An object of type <see cref="SearchResultsInfo">SearchResultsInfo</see> to add to the collection.</param>
         public void Insert(int index, SearchResultsInfo value)
         {
-            List.Insert(index, value);
+            this.List.Insert(index, value);
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="value">An object of type <see cref="SearchResultsInfo">SearchResultsInfo</see> to remove to the collection.</param>
         public void Remove(SearchResultsInfo value)
         {
-            List.Remove(value);
+            this.List.Remove(value);
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace DotNetNuke.Services.Search
         /// <returns><b>true</b> if the collection contains the specified object; otherwise, <b>false</b>.</returns>
         public bool Contains(SearchResultsInfo value)
         {
-            return List.Contains(value);
+            return this.List.Contains(value);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace DotNetNuke.Services.Search
         {
             for (int i = 0; i <= value.Length - 1; i++)
             {
-                Add(value[i]);
+                this.Add(value[i]);
             }
         }
 
@@ -158,7 +158,7 @@ namespace DotNetNuke.Services.Search
             {
                 if (obj is SearchResultsInfo)
                 {
-                    Add((SearchResultsInfo) obj);
+                    this.Add((SearchResultsInfo) obj);
                 }
             }
         }
@@ -171,7 +171,7 @@ namespace DotNetNuke.Services.Search
         {
             for (int i = 0; i <= value.Count - 1; i++)
             {
-                Add((SearchResultsInfo) value.List[i]);
+                this.Add((SearchResultsInfo) value.List[i]);
             }
         }
 
@@ -182,7 +182,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="index">The index of the array at which to begin inserting.</param>
         public void CopyTo(SearchResultsInfo[] array, int index)
         {
-            List.CopyTo(array, index);
+            this.List.CopyTo(array, index);
         }
 
         /// <summary>
@@ -191,8 +191,8 @@ namespace DotNetNuke.Services.Search
         /// <returns>Array of type SearchResultsInfo</returns>
         public SearchResultsInfo[] ToArray()
         {
-            var arr = new SearchResultsInfo[Count];
-            CopyTo(arr, 0);
+            var arr = new SearchResultsInfo[this.Count];
+            this.CopyTo(arr, 0);
             return arr;
         }
 		

@@ -30,11 +30,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ViewState.GetValue("TextBoxCssClass", string.Empty);
+                return this.ViewState.GetValue("TextBoxCssClass", string.Empty);
             }
             set
             {
-                ViewState.SetValue("TextBoxCssClass", value, string.Empty);
+                this.ViewState.SetValue("TextBoxCssClass", value, string.Empty);
             }
         }
 
@@ -47,45 +47,45 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void TextChanged(object sender, EventArgs e)
         {
-            UpdateDataSource(Value, _textBox.Text, DataField);
+            this.UpdateDataSource(this.Value, this._textBox.Text, this.DataField);
         }
 
         protected override WebControl CreateControlInternal(Control container)
         {
 
-            _textBox = new TextBox { ID = ID + "_TextBox" };
+            this._textBox = new TextBox { ID = this.ID + "_TextBox" };
 
-            _textBox.Rows = Rows;
-            _textBox.Columns = Columns;
-            _textBox.TextMode = TextMode;
-            _textBox.CssClass = TextBoxCssClass;
-            _textBox.AutoCompleteType = AutoCompleteType;
-            _textBox.TextChanged += TextChanged;
-            _textBox.Attributes.Add("aria-label", DataField);
+            this._textBox.Rows = this.Rows;
+            this._textBox.Columns = this.Columns;
+            this._textBox.TextMode = this.TextMode;
+            this._textBox.CssClass = this.TextBoxCssClass;
+            this._textBox.AutoCompleteType = this.AutoCompleteType;
+            this._textBox.TextChanged += this.TextChanged;
+            this._textBox.Attributes.Add("aria-label", this.DataField);
 
             //Load from ControlState
-            _textBox.Text = Convert.ToString(Value);
-            if (TextMode == TextBoxMode.Password)
+            this._textBox.Text = Convert.ToString(this.Value);
+            if (this.TextMode == TextBoxMode.Password)
             {
-                _textBox.Attributes.Add("autocomplete", "off");
+                this._textBox.Attributes.Add("autocomplete", "off");
             }
-            if (MaxLength > 0)
+            if (this.MaxLength > 0)
             {
-                _textBox.MaxLength = MaxLength;
+                this._textBox.MaxLength = this.MaxLength;
             }
 
-            container.Controls.Add(_textBox);
+            container.Controls.Add(this._textBox);
 
-            return _textBox;
+            return this._textBox;
         }
 
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
 
-            if (TextMode == TextBoxMode.Password && !ClearContentInPasswordMode)
+            if (this.TextMode == TextBoxMode.Password && !this.ClearContentInPasswordMode)
             {
-                _textBox.Attributes.Add("value", Convert.ToString(Value));
+                this._textBox.Attributes.Add("value", Convert.ToString(this.Value));
             }
         }
 

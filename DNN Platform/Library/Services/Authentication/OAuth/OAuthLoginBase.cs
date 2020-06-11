@@ -33,27 +33,27 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             base.OnLoad(e);
 
-            if (!IsPostBack)
+            if (!this.IsPostBack)
             {
                 //Save the return Url in the cookie
-                HttpContext.Current.Response.Cookies.Set(new HttpCookie("returnurl", RedirectURL)
+                HttpContext.Current.Response.Cookies.Set(new HttpCookie("returnurl", this.RedirectURL)
                 {
                     Expires = DateTime.Now.AddMinutes(5),
                     Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
                 });
             }
 
-            bool shouldAuthorize = OAuthClient.IsCurrentService() && OAuthClient.HaveVerificationCode();
-            if(Mode == AuthMode.Login)
+            bool shouldAuthorize = this.OAuthClient.IsCurrentService() && this.OAuthClient.HaveVerificationCode();
+            if(this.Mode == AuthMode.Login)
             {
-                shouldAuthorize = shouldAuthorize || OAuthClient.IsCurrentUserAuthorized();
+                shouldAuthorize = shouldAuthorize || this.OAuthClient.IsCurrentUserAuthorized();
             }
 
             if (shouldAuthorize)
             {
-                if (OAuthClient.Authorize() == AuthorisationResult.Authorized)
+                if (this.OAuthClient.Authorize() == AuthorisationResult.Authorized)
                 {
-                    OAuthClient.AuthenticateUser(GetCurrentUser(), PortalSettings, IPAddress, AddCustomProperties, OnUserAuthenticated);
+                    this.OAuthClient.AuthenticateUser(this.GetCurrentUser(), this.PortalSettings, this.IPAddress, this.AddCustomProperties, this.OnUserAuthenticated);
                 }
             }
         }
@@ -62,7 +62,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         public override bool Enabled
         {
-            get { return OAuthConfigBase.GetConfig(AuthSystemApplicationName, PortalId).Enabled; }
+            get { return OAuthConfigBase.GetConfig(this.AuthSystemApplicationName, this.PortalId).Enabled; }
         }
 
         #endregion

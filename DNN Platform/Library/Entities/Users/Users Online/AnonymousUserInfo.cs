@@ -36,11 +36,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return _UserID;
+                return this._UserID;
             }
             set
             {
-                _UserID = value;
+                this._UserID = value;
             }
         }
     }

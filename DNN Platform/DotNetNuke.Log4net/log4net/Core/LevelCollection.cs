@@ -103,7 +103,7 @@ namespace log4net.Core
 		/// </summary>
 		public LevelCollection()
 		{
-			m_array = new Level[DEFAULT_CAPACITY];
+			this.m_array = new Level[DEFAULT_CAPACITY];
 		}
 		
 		/// <summary>
@@ -115,7 +115,7 @@ namespace log4net.Core
 		/// </param>
 		public LevelCollection(int capacity)
 		{
-			m_array = new Level[capacity];
+			this.m_array = new Level[capacity];
 		}
 
 		/// <summary>
@@ -125,8 +125,8 @@ namespace log4net.Core
 		/// <param name="c">The <c>LevelCollection</c> whose elements are copied to the new collection.</param>
 		public LevelCollection(LevelCollection c)
 		{
-			m_array = new Level[c.Count];
-			AddRange(c);
+			this.m_array = new Level[c.Count];
+			this.AddRange(c);
 		}
 
 		/// <summary>
@@ -136,8 +136,8 @@ namespace log4net.Core
 		/// <param name="a">The <see cref="Level"/> array whose elements are copied to the new list.</param>
 		public LevelCollection(Level[] a)
 		{
-			m_array = new Level[a.Length];
-			AddRange(a);
+			this.m_array = new Level[a.Length];
+			this.AddRange(a);
 		}
 
 		/// <summary>
@@ -147,8 +147,8 @@ namespace log4net.Core
 		/// <param name="col">The <see cref="Level"/> collection whose elements are copied to the new list.</param>
 		public LevelCollection(ICollection col)
 		{
-			m_array = new Level[col.Count];
-			AddRange(col);
+			this.m_array = new Level[col.Count];
+			this.AddRange(col);
 		}
 		
 		/// <summary>
@@ -169,7 +169,7 @@ namespace log4net.Core
 		/// <param name="tag"></param>
 		protected internal LevelCollection(Tag tag)
 		{
-			m_array = null;
+			this.m_array = null;
 		}
 		#endregion
 		
@@ -180,7 +180,7 @@ namespace log4net.Core
 		/// </summary>
 		public virtual int Count
 		{
-			get { return m_count; }
+			get { return this.m_count; }
 		}
 
 		/// <summary>
@@ -201,12 +201,12 @@ namespace log4net.Core
 		/// <param name="start">The zero-based index in <paramref name="array"/> at which copying begins.</param>
 		public virtual void CopyTo(Level[] array, int start)
 		{
-			if (m_count > array.GetUpperBound(0) + 1 - start)
+			if (this.m_count > array.GetUpperBound(0) + 1 - start)
 			{
 				throw new System.ArgumentException("Destination array was not long enough.");
 			}
 			
-			Array.Copy(m_array, 0, array, start, m_count); 
+			Array.Copy(this.m_array, 0, array, start, this.m_count); 
 		}
 
 		/// <summary>
@@ -223,7 +223,7 @@ namespace log4net.Core
 		/// </summary>
 		public virtual object SyncRoot
 		{
-			get { return m_array; }
+			get { return this.m_array; }
 		}
 
 		#endregion
@@ -243,14 +243,14 @@ namespace log4net.Core
 		{
 			get
 			{
-				ValidateIndex(index); // throws
-				return m_array[index]; 
+				this.ValidateIndex(index); // throws
+				return this.m_array[index]; 
 			}
 			set
 			{
-				ValidateIndex(index); // throws
-				++m_version; 
-				m_array[index] = value; 
+				this.ValidateIndex(index); // throws
+				++this.m_version; 
+				this.m_array[index] = value; 
 			}
 		}
 
@@ -261,15 +261,15 @@ namespace log4net.Core
 		/// <returns>The index at which the value has been added.</returns>
 		public virtual int Add(Level item)
 		{
-			if (m_count == m_array.Length)
+			if (this.m_count == this.m_array.Length)
 			{
-				EnsureCapacity(m_count + 1);
+				this.EnsureCapacity(this.m_count + 1);
 			}
 
-			m_array[m_count] = item;
-			m_version++;
+			this.m_array[this.m_count] = item;
+			this.m_version++;
 
-			return m_count++;
+			return this.m_count++;
 		}
 		
 		/// <summary>
@@ -277,9 +277,9 @@ namespace log4net.Core
 		/// </summary>
 		public virtual void Clear()
 		{
-			++m_version;
-			m_array = new Level[DEFAULT_CAPACITY];
-			m_count = 0;
+			++this.m_version;
+			this.m_array = new Level[DEFAULT_CAPACITY];
+			this.m_count = 0;
 		}
 		
 		/// <summary>
@@ -288,10 +288,10 @@ namespace log4net.Core
 		/// <returns>A new <see cref="LevelCollection"/> with a shallow copy of the collection data.</returns>
 		public virtual object Clone()
 		{
-			LevelCollection newCol = new LevelCollection(m_count);
-			Array.Copy(m_array, 0, newCol.m_array, 0, m_count);
-			newCol.m_count = m_count;
-			newCol.m_version = m_version;
+			LevelCollection newCol = new LevelCollection(this.m_count);
+			Array.Copy(this.m_array, 0, newCol.m_array, 0, this.m_count);
+			newCol.m_count = this.m_count;
+			newCol.m_version = this.m_version;
 
 			return newCol;
 		}
@@ -303,9 +303,9 @@ namespace log4net.Core
 		/// <returns><c>true</c> if <paramref name="item"/> is found in the <c>LevelCollection</c>; otherwise, <c>false</c>.</returns>
 		public virtual bool Contains(Level item)
 		{
-			for (int i=0; i != m_count; ++i)
+			for (int i=0; i != this.m_count; ++i)
 			{
-				if (m_array[i].Equals(item))
+				if (this.m_array[i].Equals(item))
 				{
 					return true;
 				}
@@ -324,9 +324,9 @@ namespace log4net.Core
 		///	</returns>
 		public virtual int IndexOf(Level item)
 		{
-			for (int i=0; i != m_count; ++i)
+			for (int i=0; i != this.m_count; ++i)
 			{
-				if (m_array[i].Equals(item))
+				if (this.m_array[i].Equals(item))
 				{
 					return i;
 				}
@@ -346,21 +346,21 @@ namespace log4net.Core
 		/// </exception>
 		public virtual void Insert(int index, Level item)
 		{
-			ValidateIndex(index, true); // throws
+			this.ValidateIndex(index, true); // throws
 			
-			if (m_count == m_array.Length)
+			if (this.m_count == this.m_array.Length)
 			{
-				EnsureCapacity(m_count + 1);
+				this.EnsureCapacity(this.m_count + 1);
 			}
 
-			if (index < m_count)
+			if (index < this.m_count)
 			{
-				Array.Copy(m_array, index, m_array, index + 1, m_count - index);
+				Array.Copy(this.m_array, index, this.m_array, index + 1, this.m_count - index);
 			}
 
-			m_array[index] = item;
-			m_count++;
-			m_version++;
+			this.m_array[index] = item;
+			this.m_count++;
+			this.m_version++;
 		}
 
 		/// <summary>
@@ -372,14 +372,14 @@ namespace log4net.Core
 		/// </exception>
 		public virtual void Remove(Level item)
 		{		   
-			int i = IndexOf(item);
+			int i = this.IndexOf(item);
 			if (i < 0)
 			{
 				throw new System.ArgumentException("Cannot remove the specified item because it was not found in the specified Collection.");
 			}
 			
-			++m_version;
-			RemoveAt(i);
+			++this.m_version;
+			this.RemoveAt(i);
 		}
 
 		/// <summary>
@@ -393,21 +393,21 @@ namespace log4net.Core
 		/// </exception>
 		public virtual void RemoveAt(int index)
 		{
-			ValidateIndex(index); // throws
+			this.ValidateIndex(index); // throws
 			
-			m_count--;
+			this.m_count--;
 
-			if (index < m_count)
+			if (index < this.m_count)
 			{
-				Array.Copy(m_array, index + 1, m_array, index, m_count - index);
+				Array.Copy(this.m_array, index + 1, this.m_array, index, this.m_count - index);
 			}
 			
 			// We can't set the deleted entry equal to null, because it might be a value type.
 			// Instead, we'll create an empty single-element array of the right type and copy it 
 			// over the entry we want to erase.
 			Level[] temp = new Level[1];
-			Array.Copy(temp, 0, m_array, m_count, 1);
-			m_version++;
+			Array.Copy(temp, 0, this.m_array, this.m_count, 1);
+			this.m_version++;
 		}
 
 		/// <summary>
@@ -452,26 +452,26 @@ namespace log4net.Core
 		{
 			get 
 			{ 
-				return m_array.Length; 
+				return this.m_array.Length; 
 			}
 			set
 			{
-				if (value < m_count)
+				if (value < this.m_count)
 				{
-					value = m_count;
+					value = this.m_count;
 				}
 
-				if (value != m_array.Length)
+				if (value != this.m_array.Length)
 				{
 					if (value > 0)
 					{
 						Level[] temp = new Level[value];
-						Array.Copy(m_array, 0, temp, 0, m_count);
-						m_array = temp;
+						Array.Copy(this.m_array, 0, temp, 0, this.m_count);
+						this.m_array = temp;
 					}
 					else
 					{
-						m_array = new Level[DEFAULT_CAPACITY];
+						this.m_array = new Level[DEFAULT_CAPACITY];
 					}
 				}
 			}
@@ -484,16 +484,16 @@ namespace log4net.Core
 		/// <returns>The new <see cref="LevelCollection.Count"/> of the <c>LevelCollection</c>.</returns>
 		public virtual int AddRange(LevelCollection x)
 		{
-			if (m_count + x.Count >= m_array.Length)
+			if (this.m_count + x.Count >= this.m_array.Length)
 			{
-				EnsureCapacity(m_count + x.Count);
+				this.EnsureCapacity(this.m_count + x.Count);
 			}
 			
-			Array.Copy(x.m_array, 0, m_array, m_count, x.Count);
-			m_count += x.Count;
-			m_version++;
+			Array.Copy(x.m_array, 0, this.m_array, this.m_count, x.Count);
+			this.m_count += x.Count;
+			this.m_version++;
 
-			return m_count;
+			return this.m_count;
 		}
 
 		/// <summary>
@@ -503,16 +503,16 @@ namespace log4net.Core
 		/// <returns>The new <see cref="LevelCollection.Count"/> of the <c>LevelCollection</c>.</returns>
 		public virtual int AddRange(Level[] x)
 		{
-			if (m_count + x.Length >= m_array.Length)
+			if (this.m_count + x.Length >= this.m_array.Length)
 			{
-				EnsureCapacity(m_count + x.Length);
+				this.EnsureCapacity(this.m_count + x.Length);
 			}
 
-			Array.Copy(x, 0, m_array, m_count, x.Length);
-			m_count += x.Length;
-			m_version++;
+			Array.Copy(x, 0, this.m_array, this.m_count, x.Length);
+			this.m_count += x.Length;
+			this.m_version++;
 
-			return m_count;
+			return this.m_count;
 		}
 
 		/// <summary>
@@ -522,17 +522,17 @@ namespace log4net.Core
 		/// <returns>The new <see cref="LevelCollection.Count"/> of the <c>LevelCollection</c>.</returns>
 		public virtual int AddRange(ICollection col)
 		{
-			if (m_count + col.Count >= m_array.Length)
+			if (this.m_count + col.Count >= this.m_array.Length)
 			{
-				EnsureCapacity(m_count + col.Count);
+				this.EnsureCapacity(this.m_count + col.Count);
 			}
 
 			foreach(object item in col)
 			{
-				Add((Level)item);
+				this.Add((Level)item);
 			}
 
-			return m_count;
+			return this.m_count;
 		}
 		
 		/// <summary>
@@ -540,7 +540,7 @@ namespace log4net.Core
 		/// </summary>
 		public virtual void TrimToSize()
 		{
-			this.Capacity = m_count;
+			this.Capacity = this.m_count;
 		}
 
 		#endregion
@@ -554,7 +554,7 @@ namespace log4net.Core
 		/// </exception>
 		private void ValidateIndex(int i)
 		{
-			ValidateIndex(i, false);
+			this.ValidateIndex(i, false);
 		}
 
 		/// <exception cref="ArgumentOutOfRangeException">
@@ -564,7 +564,7 @@ namespace log4net.Core
 		/// </exception>
 		private void ValidateIndex(int i, bool allowEqualEnd)
 		{
-			int max = (allowEqualEnd) ? (m_count) : (m_count-1);
+			int max = (allowEqualEnd) ? (this.m_count) : (this.m_count-1);
 			if (i < 0 || i > max)
 			{
 				throw log4net.Util.SystemInfo.CreateArgumentOutOfRangeException("i", (object)i, "Index was out of range. Must be non-negative and less than the size of the collection. [" + (object)i + "] Specified argument was out of the range of valid values.");
@@ -573,7 +573,7 @@ namespace log4net.Core
 
 		private void EnsureCapacity(int min)
 		{
-			int newCapacity = ((m_array.Length == 0) ? DEFAULT_CAPACITY : m_array.Length * 2);
+			int newCapacity = ((this.m_array.Length == 0) ? DEFAULT_CAPACITY : this.m_array.Length * 2);
 			if (newCapacity < min)
 			{
 				newCapacity = min;
@@ -588,7 +588,7 @@ namespace log4net.Core
 
 		void ICollection.CopyTo(Array array, int start)
 		{
-			Array.Copy(m_array, 0, array, start, m_count);
+			Array.Copy(this.m_array, 0, array, start, this.m_count);
 		}
 
 		#endregion
@@ -665,9 +665,9 @@ namespace log4net.Core
 			/// <param name="tc"></param>
 			internal Enumerator(LevelCollection tc)
 			{
-				m_collection = tc;
-				m_index = -1;
-				m_version = tc.m_version;
+				this.m_collection = tc;
+				this.m_index = -1;
+				this.m_version = tc.m_version;
 			}
 			
 			#endregion
@@ -679,7 +679,7 @@ namespace log4net.Core
 			/// </summary>
 			public Level Current
 			{
-				get { return m_collection[m_index]; }
+				get { return this.m_collection[this.m_index]; }
 			}
 
 			/// <summary>
@@ -694,13 +694,13 @@ namespace log4net.Core
 			/// </exception>
 			public bool MoveNext()
 			{
-				if (m_version != m_collection.m_version)
+				if (this.m_version != this.m_collection.m_version)
 				{
 					throw new System.InvalidOperationException("Collection was modified; enumeration operation may not execute.");
 				}
 
-				++m_index;
-				return (m_index < m_collection.Count);
+				++this.m_index;
+				return (this.m_index < this.m_collection.Count);
 			}
 
 			/// <summary>
@@ -708,7 +708,7 @@ namespace log4net.Core
 			/// </summary>
 			public void Reset()
 			{
-				m_index = -1;
+				this.m_index = -1;
 			}
 
 			#endregion
@@ -739,7 +739,7 @@ namespace log4net.Core
 
 			internal ReadOnlyLevelCollection(LevelCollection list) : base(Tag.Default)
 			{
-				m_collection = list;
+				this.m_collection = list;
 			}
 
 			#endregion
@@ -748,21 +748,21 @@ namespace log4net.Core
 
 			public override void CopyTo(Level[] array)
 			{
-				m_collection.CopyTo(array);
+				this.m_collection.CopyTo(array);
 			}
 
 			public override void CopyTo(Level[] array, int start)
 			{
-				m_collection.CopyTo(array,start);
+				this.m_collection.CopyTo(array,start);
 			}
 			public override int Count
 			{
-				get { return m_collection.Count; }
+				get { return this.m_collection.Count; }
 			}
 
 			public override bool IsSynchronized
 			{
-				get { return m_collection.IsSynchronized; }
+				get { return this.m_collection.IsSynchronized; }
 			}
 
 			public override object SyncRoot
@@ -776,7 +776,7 @@ namespace log4net.Core
 
 			public override Level this[int i]
 			{
-				get { return m_collection[i]; }
+				get { return this.m_collection[i]; }
 				set { throw new NotSupportedException("This is a Read Only Collection and can not be modified"); }
 			}
 
@@ -792,12 +792,12 @@ namespace log4net.Core
 
 			public override bool Contains(Level x)
 			{
-				return m_collection.Contains(x);
+				return this.m_collection.Contains(x);
 			}
 
 			public override int IndexOf(Level x)
 			{
-				return m_collection.IndexOf(x);
+				return this.m_collection.IndexOf(x);
 			}
 
 			public override void Insert(int pos, Level x)
@@ -831,7 +831,7 @@ namespace log4net.Core
 
 			public override ILevelCollectionEnumerator GetEnumerator()
 			{
-				return m_collection.GetEnumerator();
+				return this.m_collection.GetEnumerator();
 			}
 
 			#endregion
@@ -841,7 +841,7 @@ namespace log4net.Core
 			// (just to mimic some nice features of ArrayList)
 			public override int Capacity
 			{
-				get { return m_collection.Capacity; }
+				get { return this.m_collection.Capacity; }
 				set { throw new NotSupportedException("This is a Read Only Collection and can not be modified"); }
 			}
 

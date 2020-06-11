@@ -22,10 +22,10 @@ namespace DotNetNuke.Modules.RazorHost
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public override void LoadSettings()
         {
-            string basePath = Server.MapPath(razorScriptFolder);
-            var scriptFileSetting = Settings["ScriptFile"] as string;
+            string basePath = this.Server.MapPath(this.razorScriptFolder);
+            var scriptFileSetting = this.Settings["ScriptFile"] as string;
 
-            foreach (string script in Directory.GetFiles(Server.MapPath(razorScriptFolder), "*.??html"))
+            foreach (string script in Directory.GetFiles(this.Server.MapPath(this.razorScriptFolder), "*.??html"))
             {
                 string scriptPath = script.Replace(basePath, "");
                 var item = new ListItem(scriptPath, scriptPath);
@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.RazorHost
                 {
                     item.Selected = true;
                 }
-                scriptList.Items.Add(item);
+                this.scriptList.Items.Add(item);
             }
 
             base.LoadSettings();
@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.RazorHost
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public override void UpdateSettings()
         {
-            ModuleController.Instance.UpdateModuleSetting(ModuleId, "ScriptFile", scriptList.SelectedValue);
+            ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "ScriptFile", this.scriptList.SelectedValue);
         }
     }
 }

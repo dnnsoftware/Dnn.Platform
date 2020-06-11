@@ -36,12 +36,12 @@ namespace DotNetNuke.Web.Mvc
 
         public MvcHostControl()
         {
-            _controlKey = String.Empty;
+            this._controlKey = String.Empty;
         }
 
         public MvcHostControl(string controlKey)
         {
-            _controlKey = controlKey;
+            this._controlKey = controlKey;
         }
 
         #endregion
@@ -104,7 +104,7 @@ namespace DotNetNuke.Web.Mvc
 
         private ModuleRequestContext GetModuleRequestContext(HttpContextBase httpContext)
         {
-            var module = ModuleContext.Configuration;
+            var module = this.ModuleContext.Configuration;
 
             //TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
             var desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(module.DesktopModuleID, module.PortalID);
@@ -112,15 +112,15 @@ namespace DotNetNuke.Web.Mvc
 
             var defaultRouteData = ModuleRoutingProvider.Instance().GetRouteData(null, defaultControl);
 
-            var moduleApplication = GetModuleApplication(desktopModule, defaultRouteData);
+            var moduleApplication = this.GetModuleApplication(desktopModule, defaultRouteData);
 
             RouteData routeData;
 
             var queryString = httpContext.Request.QueryString;
 
-            if (String.IsNullOrEmpty(_controlKey))
+            if (String.IsNullOrEmpty(this._controlKey))
             {
-                _controlKey = queryString.GetValueOrDefault("ctl", String.Empty);
+                this._controlKey = queryString.GetValueOrDefault("ctl", String.Empty);
             }
 
             var moduleId = Null.NullInteger;
@@ -129,22 +129,22 @@ namespace DotNetNuke.Web.Mvc
                 int.TryParse(queryString["moduleid"], out moduleId);
             }
 
-            if (moduleId != ModuleContext.ModuleId && String.IsNullOrEmpty(_controlKey))
+            if (moduleId != this.ModuleContext.ModuleId && String.IsNullOrEmpty(this._controlKey))
             {
                 //Set default routeData for module that is not the "selected" module
                 routeData = defaultRouteData;
             }
             else
             {
-                var control = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey(_controlKey, module.ModuleDefID);
+                var control = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey(this._controlKey, module.ModuleDefID);
                 routeData = ModuleRoutingProvider.Instance().GetRouteData(httpContext, control);
             }
 
             var moduleRequestContext = new ModuleRequestContext
                                             {
-                                                DnnPage = Page,
+                                                DnnPage = this.Page,
                                                 HttpContext = httpContext,
-                                                ModuleContext = ModuleContext,
+                                                ModuleContext = this.ModuleContext,
                                                 ModuleApplication = moduleApplication,
                                                 RouteData = routeData
                                             };
@@ -160,7 +160,7 @@ namespace DotNetNuke.Web.Mvc
             {
                 foreach (ModuleAction action in result.ModuleActions)
                 {
-                    action.ID = ModuleContext.GetNextActionID();
+                    action.ID = this.ModuleContext.GetNextActionID();
                     actions.Add(action);
                 }
             }
@@ -189,13 +189,13 @@ namespace DotNetNuke.Web.Mvc
             {
                 HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
 
-                var moduleExecutionEngine = GetModuleExecutionEngine();
+                var moduleExecutionEngine = this.GetModuleExecutionEngine();
 
-                _result = moduleExecutionEngine.ExecuteModule(GetModuleRequestContext(httpContext));
+                this._result = moduleExecutionEngine.ExecuteModule(this.GetModuleRequestContext(httpContext));
 
-                ModuleActions = LoadActions(_result);
+                this.ModuleActions = this.LoadActions(this._result);
 
-                httpContext.SetModuleRequestResult(_result);
+                httpContext.SetModuleRequestResult(this._result);
             }
             catch (Exception exc)
             {
@@ -219,9 +219,9 @@ namespace DotNetNuke.Web.Mvc
         {
             base.OnInit(e);
 
-            if (ExecuteModuleImmediately)
+            if (this.ExecuteModuleImmediately)
             {
-                ExecuteModule();
+                this.ExecuteModule();
             }
         }
 
@@ -230,11 +230,11 @@ namespace DotNetNuke.Web.Mvc
             base.OnPreRender(e);
             try
             {
-                if (_result == null) return;
-                var mvcString = RenderModule(_result);
+                if (this._result == null) return;
+                var mvcString = this.RenderModule(this._result);
                 if (!string.IsNullOrEmpty(Convert.ToString(mvcString)))
                 {
-                    Controls.Add(new LiteralControl(Convert.ToString(mvcString)));
+                    this.Controls.Add(new LiteralControl(Convert.ToString(mvcString)));
                 }
             }
             catch (Exception exc)

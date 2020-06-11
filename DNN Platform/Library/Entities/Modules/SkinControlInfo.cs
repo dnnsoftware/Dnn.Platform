@@ -30,8 +30,8 @@ namespace DotNetNuke.Entities.Modules
     {
         public SkinControlInfo()
         {
-            PackageID = Null.NullInteger;
-            SkinControlID = Null.NullInteger;
+            this.PackageID = Null.NullInteger;
+            this.SkinControlID = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
@@ -60,9 +60,9 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
-            SkinControlID = Null.SetNullInteger(dr["SkinControlID"]);
-            PackageID = Null.SetNullInteger(dr["PackageID"]);
-            FillInternal(dr);
+            this.SkinControlID = Null.SetNullInteger(dr["SkinControlID"]);
+            this.PackageID = Null.SetNullInteger(dr["PackageID"]);
+            this.FillInternal(dr);
         }
 
         /// -----------------------------------------------------------------------------
@@ -75,11 +75,11 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return SkinControlID;
+                return this.SkinControlID;
             }
             set
             {
-                SkinControlID = value;
+                this.SkinControlID = value;
             }
         }
 
@@ -115,7 +115,7 @@ namespace DotNetNuke.Entities.Modules
                 {
                     continue;
                 }
-                ReadXmlInternal(reader);
+                this.ReadXmlInternal(reader);
             }
         }
 
@@ -131,7 +131,7 @@ namespace DotNetNuke.Entities.Modules
             writer.WriteStartElement("moduleControl");
 
             //write out properties
-            WriteXmlInternal(writer);
+            this.WriteXmlInternal(writer);
 
             //Write end of main element
             writer.WriteEndElement();

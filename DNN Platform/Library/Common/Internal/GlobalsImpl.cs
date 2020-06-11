@@ -19,7 +19,7 @@ namespace DotNetNuke.Common.Internal
         protected INavigationManager NavigationManager { get; }
         public GlobalsImpl()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public string ApplicationPath
@@ -69,7 +69,7 @@ namespace DotNetNuke.Common.Internal
 
         public string GetDomainName(Uri requestedUri)
         {
-            return GetDomainName(requestedUri, false);
+            return this.GetDomainName(requestedUri, false);
         }
 
         public string GetDomainName(Uri requestedUri, bool parsePortNumber)
@@ -172,57 +172,57 @@ namespace DotNetNuke.Common.Internal
 
         public string NavigateURL()
         {
-            return NavigationManager.NavigateURL();
+            return this.NavigationManager.NavigateURL();
         }
 
         public string NavigateURL(int tabID)
         {
-            return NavigationManager.NavigateURL(tabID);
+            return this.NavigationManager.NavigateURL(tabID);
         }
 
         public string NavigateURL(int tabID, bool isSuperTab)
         {
-            return NavigationManager.NavigateURL(tabID, isSuperTab);
+            return this.NavigationManager.NavigateURL(tabID, isSuperTab);
         }
 
         public string NavigateURL(string controlKey)
         {
-            return NavigationManager.NavigateURL(controlKey);
+            return this.NavigationManager.NavigateURL(controlKey);
         }
 
         public string NavigateURL(string controlKey, params string[] additionalParameters)
         {
-            return NavigationManager.NavigateURL(controlKey, additionalParameters);
+            return this.NavigationManager.NavigateURL(controlKey, additionalParameters);
         }
 
         public string NavigateURL(int tabID, string controlKey)
         {
-            return NavigationManager.NavigateURL(tabID, controlKey);
+            return this.NavigationManager.NavigateURL(tabID, controlKey);
         }
 
         public string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
-            return NavigationManager.NavigateURL(tabID, controlKey, additionalParameters);
+            return this.NavigationManager.NavigateURL(tabID, controlKey, additionalParameters);
         }
 
         public string NavigateURL(int tabID, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            return NavigationManager.NavigateURL(tabID, settings, controlKey, additionalParameters);
+            return this.NavigationManager.NavigateURL(tabID, settings, controlKey, additionalParameters);
         }
 
         public string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            return NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
+            return this.NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
         }
 
         public string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, params string[] additionalParameters)
         {
-            return NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
+            return this.NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
         }
 
         public string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
-            return NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
+            return this.NavigationManager.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
         }
 
         public string FriendlyUrl(TabInfo tab, string path)

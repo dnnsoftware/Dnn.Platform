@@ -27,119 +27,119 @@ namespace Dnn.ExportImport.Components.Services
         {
             var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
             var toDate = exportDto.ToDateUtc.ToLocalTime();
-            if (CheckPoint.Stage > 2) return;
+            if (this.CheckPoint.Stage > 2) return;
             List<ExportRole> roles = null;
             List<ExportRoleSetting> roleSettings = null;
-            if (CheckPoint.Stage == 0)
+            if (this.CheckPoint.Stage == 0)
             {
-                if (CheckCancelled(exportJob)) return;
+                if (this.CheckCancelled(exportJob)) return;
 
                 var roleGroups = CBO.FillCollection<ExportRoleGroup>(
                     DataProvider.Instance().GetAllRoleGroups(exportJob.PortalId, toDate, fromDate));
 
                 //Update the total items count in the check points. This should be updated only once.
-                CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? roleGroups.Count : CheckPoint.TotalItems;
-                if (CheckPoint.TotalItems == roleGroups.Count)
+                this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? roleGroups.Count : this.CheckPoint.TotalItems;
+                if (this.CheckPoint.TotalItems == roleGroups.Count)
                 {
                     roles = CBO.FillCollection<ExportRole>(
                         DataProvider.Instance().GetAllRoles(exportJob.PortalId, toDate, fromDate));
                     roleSettings = CBO.FillCollection<ExportRoleSetting>(
                         DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, toDate, fromDate));
-                    CheckPoint.TotalItems += roles.Count + roleSettings.Count;
+                    this.CheckPoint.TotalItems += roles.Count + roleSettings.Count;
                 }
-                CheckPointStageCallback(this);
+                this.CheckPointStageCallback(this);
 
-                Repository.CreateItems(roleGroups);
-                Result.AddSummary("Exported Role Groups", roleGroups.Count.ToString());
-                CheckPoint.ProcessedItems = roleGroups.Count;
-                CheckPoint.Progress = 30;
-                CheckPoint.Stage++;
-                if (CheckPointStageCallback(this)) return;
+                this.Repository.CreateItems(roleGroups);
+                this.Result.AddSummary("Exported Role Groups", roleGroups.Count.ToString());
+                this.CheckPoint.ProcessedItems = roleGroups.Count;
+                this.CheckPoint.Progress = 30;
+                this.CheckPoint.Stage++;
+                if (this.CheckPointStageCallback(this)) return;
             }
 
-            if (CheckPoint.Stage == 1)
+            if (this.CheckPoint.Stage == 1)
             {
-                if (CheckCancelled(exportJob)) return;
+                if (this.CheckCancelled(exportJob)) return;
                 if (roles == null)
                     roles = CBO.FillCollection<ExportRole>(
                     DataProvider.Instance().GetAllRoles(exportJob.PortalId, toDate, fromDate));
-                Repository.CreateItems(roles);
-                Result.AddSummary("Exported Roles", roles.Count.ToString());
-                CheckPoint.Progress = 80;
-                CheckPoint.ProcessedItems += roles.Count;
-                CheckPoint.Stage++;
-                if (CheckPointStageCallback(this)) return;
+                this.Repository.CreateItems(roles);
+                this.Result.AddSummary("Exported Roles", roles.Count.ToString());
+                this.CheckPoint.Progress = 80;
+                this.CheckPoint.ProcessedItems += roles.Count;
+                this.CheckPoint.Stage++;
+                if (this.CheckPointStageCallback(this)) return;
             }
 
-            if (CheckPoint.Stage == 2)
+            if (this.CheckPoint.Stage == 2)
             {
-                if (CheckCancelled(exportJob)) return;
+                if (this.CheckCancelled(exportJob)) return;
                 if (roleSettings == null)
                     roleSettings = CBO.FillCollection<ExportRoleSetting>(
                        DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, toDate, fromDate));
-                Repository.CreateItems(roleSettings);
-                Result.AddSummary("Exported Role Settings", roleSettings.Count.ToString());
-                CheckPoint.Progress = 100;
-                CheckPoint.ProcessedItems += roleSettings.Count;
-                CheckPoint.Completed = true;
-                CheckPoint.Stage++;
-                CheckPointStageCallback(this);
+                this.Repository.CreateItems(roleSettings);
+                this.Result.AddSummary("Exported Role Settings", roleSettings.Count.ToString());
+                this.CheckPoint.Progress = 100;
+                this.CheckPoint.ProcessedItems += roleSettings.Count;
+                this.CheckPoint.Completed = true;
+                this.CheckPoint.Stage++;
+                this.CheckPointStageCallback(this);
             }
         }
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (CheckPoint.Stage > 2) return;
+            if (this.CheckPoint.Stage > 2) return;
 
-            if (CheckCancelled(importJob)) return;
+            if (this.CheckCancelled(importJob)) return;
             //Update the total items count in the check points. This should be updated only once.
-            CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? GetImportTotal() : CheckPoint.TotalItems;
-            CheckPointStageCallback(this);
+            this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? this.GetImportTotal() : this.CheckPoint.TotalItems;
+            this.CheckPointStageCallback(this);
 
-            var otherRoleGroups = Repository.GetAllItems<ExportRoleGroup>().ToList();
-            if (CheckPoint.Stage == 0)
+            var otherRoleGroups = this.Repository.GetAllItems<ExportRoleGroup>().ToList();
+            if (this.CheckPoint.Stage == 0)
             {
-                ProcessRoleGroups(importJob, importDto, otherRoleGroups);
-                Repository.UpdateItems(otherRoleGroups);
-                Result.AddSummary("Imported Role Groups", otherRoleGroups.Count.ToString());
-                CheckPoint.Progress = 40;
-                CheckPoint.ProcessedItems = otherRoleGroups.Count;
-                CheckPoint.Stage++;
-                if (CheckPointStageCallback(this)) return;
+                this.ProcessRoleGroups(importJob, importDto, otherRoleGroups);
+                this.Repository.UpdateItems(otherRoleGroups);
+                this.Result.AddSummary("Imported Role Groups", otherRoleGroups.Count.ToString());
+                this.CheckPoint.Progress = 40;
+                this.CheckPoint.ProcessedItems = otherRoleGroups.Count;
+                this.CheckPoint.Stage++;
+                if (this.CheckPointStageCallback(this)) return;
             }
 
-            if (CheckCancelled(importJob)) return;
-            var otherRoles = Repository.GetAllItems<ExportRole>().ToList();
-            if (CheckPoint.Stage == 1)
+            if (this.CheckCancelled(importJob)) return;
+            var otherRoles = this.Repository.GetAllItems<ExportRole>().ToList();
+            if (this.CheckPoint.Stage == 1)
             {
-                Result.AddSummary("Imported Roles", otherRoles.Count.ToString());
-                ProcessRoles(importJob, importDto, otherRoleGroups, otherRoles);
-                Repository.UpdateItems(otherRoles);
-                CheckPoint.Progress = 50;
-                CheckPoint.ProcessedItems += otherRoles.Count;
-                CheckPoint.Stage++;
-                if (CheckPointStageCallback(this)) return;
+                this.Result.AddSummary("Imported Roles", otherRoles.Count.ToString());
+                this.ProcessRoles(importJob, importDto, otherRoleGroups, otherRoles);
+                this.Repository.UpdateItems(otherRoles);
+                this.CheckPoint.Progress = 50;
+                this.CheckPoint.ProcessedItems += otherRoles.Count;
+                this.CheckPoint.Stage++;
+                if (this.CheckPointStageCallback(this)) return;
             }
 
-            if (CheckPoint.Stage == 2)
+            if (this.CheckPoint.Stage == 2)
             {
-                if (CheckCancelled(importJob)) return;
-                var otherRoleSettings = Repository.GetAllItems<ExportRoleSetting>().ToList();
-                ProcessRoleSettings(importJob, importDto, otherRoles, otherRoleSettings);
-                Repository.UpdateItems(otherRoleSettings);
-                Result.AddSummary("Imported Role Settings", otherRoleSettings.Count.ToString());
-                CheckPoint.Progress = 100;
-                CheckPoint.ProcessedItems += otherRoleSettings.Count;
-                CheckPoint.Completed = true;
-                CheckPoint.Stage++;
-                CheckPointStageCallback(this);
+                if (this.CheckCancelled(importJob)) return;
+                var otherRoleSettings = this.Repository.GetAllItems<ExportRoleSetting>().ToList();
+                this.ProcessRoleSettings(importJob, importDto, otherRoles, otherRoleSettings);
+                this.Repository.UpdateItems(otherRoleSettings);
+                this.Result.AddSummary("Imported Role Settings", otherRoleSettings.Count.ToString());
+                this.CheckPoint.Progress = 100;
+                this.CheckPoint.ProcessedItems += otherRoleSettings.Count;
+                this.CheckPoint.Completed = true;
+                this.CheckPoint.Stage++;
+                this.CheckPointStageCallback(this);
             }
         }
 
         public override int GetImportTotal()
         {
-            return Repository.GetCount<ExportRoleGroup>() + Repository.GetCount<ExportRole>() +
-                   Repository.GetCount<ExportRoleSetting>();
+            return this.Repository.GetCount<ExportRoleGroup>() + this.Repository.GetCount<ExportRole>() +
+                   this.Repository.GetCount<ExportRoleSetting>();
         }
 
         private void ProcessRoleGroups(ExportImportJob importJob, ImportDto importDto,
@@ -150,7 +150,7 @@ namespace Dnn.ExportImport.Components.Services
             var localRoleGroups = CBO.FillCollection<ExportRoleGroup>(DataProvider.Instance().GetAllRoleGroups(portalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null));
             foreach (var other in otherRoleGroups)
             {
-                if (CheckCancelled(importJob)) return;
+                if (this.CheckCancelled(importJob)) return;
                 var createdBy = Util.GetUserIdByName(importJob, other.CreatedByUserID, other.CreatedByUserName);
                 var modifiedBy = Util.GetUserIdByName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var local = localRoleGroups.FirstOrDefault(t => t.RoleGroupName == other.RoleGroupName);
@@ -161,7 +161,7 @@ namespace Dnn.ExportImport.Components.Services
                     switch (importDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
-                            Result.AddLogEntry("Ignored role group", other.RoleGroupName);
+                            this.Result.AddLogEntry("Ignored role group", other.RoleGroupName);
                             break;
                         case CollisionResolution.Overwrite:
                             var roleGroup = new RoleGroupInfo(local.RoleGroupID, portalId, false)
@@ -172,7 +172,7 @@ namespace Dnn.ExportImport.Components.Services
                             RoleController.UpdateRoleGroup(roleGroup, false);
                             changedGroups.Add(new RoleGroupItem(roleGroup.RoleGroupID, createdBy, modifiedBy));
                             DataCache.ClearCache(string.Format(DataCache.RoleGroupsCacheKey, local.RoleGroupID));
-                            Result.AddLogEntry("Updated role group", other.RoleGroupName);
+                            this.Result.AddLogEntry("Updated role group", other.RoleGroupName);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
@@ -188,7 +188,7 @@ namespace Dnn.ExportImport.Components.Services
                     };
                     other.LocalId = RoleController.AddRoleGroup(roleGroup);
                     changedGroups.Add(new RoleGroupItem(roleGroup.RoleGroupID, createdBy, modifiedBy));
-                    Result.AddLogEntry("Added role group", other.RoleGroupName);
+                    this.Result.AddLogEntry("Added role group", other.RoleGroupName);
                 }
             }
             if (changedGroups.Count > 0)
@@ -202,7 +202,7 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = importJob.PortalId;
             foreach (var other in otherRoles)
             {
-                if (CheckCancelled(importJob)) return;
+                if (this.CheckCancelled(importJob)) return;
                 var createdBy = Util.GetUserIdByName(importJob, other.CreatedByUserID, other.CreatedByUserName);
                 var modifiedBy = Util.GetUserIdByName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var localRoleInfo = RoleController.Instance.GetRoleByName(portalId, other.RoleName);
@@ -212,7 +212,7 @@ namespace Dnn.ExportImport.Components.Services
                     switch (importDto.CollisionResolution)
                     {
                         case CollisionResolution.Ignore:
-                            Result.AddLogEntry("Ignored role", other.RoleName);
+                            this.Result.AddLogEntry("Ignored role", other.RoleName);
                             break;
                         case CollisionResolution.Overwrite:
                             var group = other.RoleGroupID.HasValue
@@ -244,7 +244,7 @@ namespace Dnn.ExportImport.Components.Services
                                 DataProvider.Instance().SetRoleAutoAssign(localRoleInfo.RoleID);
 
                             RoleController.Instance.ClearRoleCache(localRoleInfo.RoleID);
-                            Result.AddLogEntry("Updated role", other.RoleName);
+                            this.Result.AddLogEntry("Updated role", other.RoleName);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
@@ -281,7 +281,7 @@ namespace Dnn.ExportImport.Components.Services
                     other.LocalId = RoleController.Instance.AddRole(roleInfo, false);
                     roleItems.Add(new RoleItem(roleInfo.RoleID, createdBy, modifiedBy));
                     RoleController.Instance.ClearRoleCache(roleInfo.RoleID);
-                    Result.AddLogEntry("Added role", other.RoleName);
+                    this.Result.AddLogEntry("Added role", other.RoleName);
                 }
             }
 
@@ -297,7 +297,7 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = importJob.PortalId;
             foreach (var other in otherRoleSettings)
             {
-                if (CheckCancelled(importJob)) return;
+                if (this.CheckCancelled(importJob)) return;
                 var createdBy = Util.GetUserIdByName(importJob, other.CreatedByUserID, other.CreatedByUserName);
                 var modifiedBy = Util.GetUserIdByName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var otherRole = otherRoles.FirstOrDefault(r => r.RoleID == other.RoleID);
@@ -308,7 +308,7 @@ namespace Dnn.ExportImport.Components.Services
                 switch (importDto.CollisionResolution)
                 {
                     case CollisionResolution.Ignore:
-                        Result.AddLogEntry("Ignored role setting", other.SettingName);
+                        this.Result.AddLogEntry("Ignored role setting", other.SettingName);
                         break;
                     case CollisionResolution.Overwrite:
                         string settingValue;
@@ -318,12 +318,12 @@ namespace Dnn.ExportImport.Components.Services
                             changedSettings.Add(new SettingItem(localRoleInfo.RoleID, other.SettingName, createdBy, modifiedBy));
                             localRoleInfo.Settings[other.SettingName] = other.SettingValue;
                             RoleController.Instance.UpdateRoleSettings(localRoleInfo, false);
-                            Result.AddLogEntry("Updated role setting", other.SettingName);
+                            this.Result.AddLogEntry("Updated role setting", other.SettingName);
                             //No need to clear cache as the caller will do it one time at end
                         }
                         else
                         {
-                            Result.AddLogEntry("Ignored role setting", other.SettingName);
+                            this.Result.AddLogEntry("Ignored role setting", other.SettingName);
                         }
                         break;
                     default:
@@ -376,9 +376,9 @@ namespace Dnn.ExportImport.Components.Services
 
             public RoleGroupItem(int roleGroupId, int createdBy, int modifiedBy)
             {
-                RoleGroupId = roleGroupId;
-                CreatedBy = createdBy;
-                ModifiedBy = modifiedBy;
+                this.RoleGroupId = roleGroupId;
+                this.CreatedBy = createdBy;
+                this.ModifiedBy = modifiedBy;
             }
         }
 
@@ -390,9 +390,9 @@ namespace Dnn.ExportImport.Components.Services
 
             public RoleItem(int roleId, int createdBy, int modifiedBy)
             {
-                RoleId = roleId;
-                CreatedBy = createdBy;
-                ModifiedBy = modifiedBy;
+                this.RoleId = roleId;
+                this.CreatedBy = createdBy;
+                this.ModifiedBy = modifiedBy;
             }
         }
 
@@ -405,10 +405,10 @@ namespace Dnn.ExportImport.Components.Services
 
             public SettingItem(int roleId, string settingName, int createdBy, int modifiedBy)
             {
-                RoleId = roleId;
-                Name = settingName;
-                CreatedBy = createdBy;
-                ModifiedBy = modifiedBy;
+                this.RoleId = roleId;
+                this.Name = settingName;
+                this.CreatedBy = createdBy;
+                this.ModifiedBy = modifiedBy;
             }
         }
     }

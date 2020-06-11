@@ -35,11 +35,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return _relationshipTypeId;
+                return this._relationshipTypeId;
             }
             set
             {
-                _relationshipTypeId = value;
+                this._relationshipTypeId = value;
             }
         }
 
@@ -89,7 +89,7 @@ namespace DotNetNuke.Entities.Users
             this.Direction = (RelationshipDirection)Convert.ToInt32(dr["Direction"]);
 
             //add audit column data
-            FillInternal(dr);
+            this.FillInternal(dr);
         }
     }
 }

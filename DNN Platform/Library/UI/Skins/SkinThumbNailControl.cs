@@ -44,17 +44,17 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return Convert.ToString(ViewState["SkinControlBorder"]);
+                return Convert.ToString(this.ViewState["SkinControlBorder"]);
             }
             set
             {
-                ViewState["SkinControlBorder"] = value;
+                this.ViewState["SkinControlBorder"] = value;
                 if (!String.IsNullOrEmpty(value))
                 {
-                    ControlContainer.Style.Add("border-top", value);
-                    ControlContainer.Style.Add("border-bottom", value);
-                    ControlContainer.Style.Add("border-left", value);
-                    ControlContainer.Style.Add("border-right", value);
+                    this.ControlContainer.Style.Add("border-top", value);
+                    this.ControlContainer.Style.Add("border-bottom", value);
+                    this.ControlContainer.Style.Add("border-left", value);
+                    this.ControlContainer.Style.Add("border-right", value);
                 }
             }
         }
@@ -63,14 +63,14 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return Convert.ToInt32(ViewState["SkinControlColumns"]);
+                return Convert.ToInt32(this.ViewState["SkinControlColumns"]);
             }
             set
             {
-                ViewState["SkinControlColumns"] = value;
+                this.ViewState["SkinControlColumns"] = value;
                 if (value > 0)
                 {
-                    OptSkin.RepeatColumns = value;
+                    this.OptSkin.RepeatColumns = value;
                 }
             }
         }
@@ -79,14 +79,14 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return Convert.ToString(ViewState["SkinControlHeight"]);
+                return Convert.ToString(this.ViewState["SkinControlHeight"]);
             }
             set
             {
-                ViewState["SkinControlHeight"] = value;
+                this.ViewState["SkinControlHeight"] = value;
                 if (!String.IsNullOrEmpty(value))
                 {
-                    ControlContainer.Style.Add("height", value);
+                    this.ControlContainer.Style.Add("height", value);
                 }
             }
         }
@@ -95,11 +95,11 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return Convert.ToString(ViewState["SkinRoot"]);
+                return Convert.ToString(this.ViewState["SkinRoot"]);
             }
             set
             {
-                ViewState["SkinRoot"] = value;
+                this.ViewState["SkinRoot"] = value;
             }
         }
 
@@ -107,17 +107,17 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return OptSkin.SelectedItem != null ? OptSkin.SelectedItem.Value : "";
+                return this.OptSkin.SelectedItem != null ? this.OptSkin.SelectedItem.Value : "";
             }
             set
             {
 				//select current skin
                 int intIndex;
-                for (intIndex = 0; intIndex <= OptSkin.Items.Count - 1; intIndex++)
+                for (intIndex = 0; intIndex <= this.OptSkin.Items.Count - 1; intIndex++)
                 {
-                    if (OptSkin.Items[intIndex].Value == value)
+                    if (this.OptSkin.Items[intIndex].Value == value)
                     {
-                        OptSkin.Items[intIndex].Selected = true;
+                        this.OptSkin.Items[intIndex].Selected = true;
                         break;
                     }
                 }
@@ -128,14 +128,14 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return Convert.ToString(ViewState["SkinControlWidth"]);
+                return Convert.ToString(this.ViewState["SkinControlWidth"]);
             }
             set
             {
-                ViewState["SkinControlWidth"] = value;
+                this.ViewState["SkinControlWidth"] = value;
                 if (!String.IsNullOrEmpty(value))
                 {
-                    ControlContainer.Style.Add("width", value);
+                    this.ControlContainer.Style.Add("width", value);
                 }
             }
         }
@@ -155,7 +155,7 @@ namespace DotNetNuke.UI.Skins
         {
             var strDefault = Localization.GetString("Not_Specified") + "<br />";
             strDefault += "<img src=\"" + Globals.ApplicationPath.Replace("\\", "/") + "/images/spacer.gif\" width=\"140\" height=\"135\" border=\"0\">";
-            OptSkin.Items.Insert(0, new ListItem(strDefault, ""));
+            this.OptSkin.Items.Insert(0, new ListItem(strDefault, ""));
         }
 
         /// -----------------------------------------------------------------------------
@@ -180,7 +180,7 @@ namespace DotNetNuke.UI.Skins
             {
                 strImage += "<img src=\"" + Globals.ApplicationPath.Replace("\\", "/") + "/images/thumbnail.jpg\" border=\"1\">";
             }
-            OptSkin.Items.Add(new ListItem(FormatSkinName(strFolder, Path.GetFileNameWithoutExtension(strFile)) + "<br />" + strImage, root + "/" + strFolder + "/" + Path.GetFileName(strFile)));
+            this.OptSkin.Items.Add(new ListItem(FormatSkinName(strFolder, Path.GetFileNameWithoutExtension(strFile)) + "<br />" + strImage, root + "/" + strFolder + "/" + Path.GetFileName(strFile)));
         }
 
         /// -----------------------------------------------------------------------------
@@ -303,7 +303,7 @@ namespace DotNetNuke.UI.Skins
         /// -----------------------------------------------------------------------------
         public void Clear()
         {
-            OptSkin.Items.Clear();
+            this.OptSkin.Items.Clear();
         }
 
         /// -----------------------------------------------------------------------------
@@ -319,14 +319,14 @@ namespace DotNetNuke.UI.Skins
             //default value
             if (includeNotSpecified)
             {
-                AddDefaultSkin();
+                this.AddDefaultSkin();
             }
 			
             //load host skins (includeNotSpecified = false as we have already added it)
-            LoadHostSkins(false);
+            this.LoadHostSkins(false);
 
             //load portal skins (includeNotSpecified = false as we have already added it)
-            LoadPortalSkins(false);
+            this.LoadPortalSkins(false);
         }
 
         /// -----------------------------------------------------------------------------
@@ -343,11 +343,11 @@ namespace DotNetNuke.UI.Skins
             //default value
             if (includeNotSpecified)
             {
-                AddDefaultSkin();
+                this.AddDefaultSkin();
             }
 			
 			//load host skins
-            var strRoot = Globals.HostMapPath + SkinRoot;
+            var strRoot = Globals.HostMapPath + this.SkinRoot;
             if (Directory.Exists(strRoot))
             {
                 var arrFolders = Directory.GetDirectories(strRoot);
@@ -355,7 +355,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     if (!strFolder.EndsWith(Globals.glbHostSkinFolder))
                     {
-                        LoadSkins(strFolder, "[G]", false);
+                        this.LoadSkins(strFolder, "[G]", false);
                     }
                 }
             }
@@ -374,17 +374,17 @@ namespace DotNetNuke.UI.Skins
             //default value
             if (includeNotSpecified)
             {
-                AddDefaultSkin();
+                this.AddDefaultSkin();
             }
 			
 			//load portal skins
-            var strRoot = PortalSettings.HomeDirectoryMapPath + SkinRoot;
+            var strRoot = this.PortalSettings.HomeDirectoryMapPath + this.SkinRoot;
             if (Directory.Exists(strRoot))
             {
                 var arrFolders = Directory.GetDirectories(strRoot);
                 foreach (var strFolder in arrFolders)
                 {
-                    LoadSkins(strFolder, "[L]", false);
+                    this.LoadSkins(strFolder, "[L]", false);
                 }
             }
         }
@@ -404,7 +404,7 @@ namespace DotNetNuke.UI.Skins
             //default value
             if (includeNotSpecified)
             {
-                AddDefaultSkin();
+                this.AddDefaultSkin();
             }
             if (Directory.Exists(strFolder))
             {
@@ -413,7 +413,7 @@ namespace DotNetNuke.UI.Skins
 
                 foreach (var strFile in arrFiles)
                 {
-                    AddSkin(skinType + SkinRoot, strFolder, strFile);
+                    this.AddSkin(skinType + this.SkinRoot, strFolder, strFile);
                 }
             }
         }

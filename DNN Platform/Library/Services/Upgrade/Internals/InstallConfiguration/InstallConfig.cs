@@ -35,9 +35,9 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
 
         public InstallConfig()
         {
-            Portals = new List<PortalConfig>();
-            Scripts = new List<string>();
-            Settings = new List<HostSettingConfig>();
+            this.Portals = new List<PortalConfig>();
+            this.Scripts = new List<string>();
+            this.Settings = new List<HostSettingConfig>();
         }
     }
 

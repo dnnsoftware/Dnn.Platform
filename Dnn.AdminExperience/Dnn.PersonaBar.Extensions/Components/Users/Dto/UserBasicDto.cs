@@ -57,7 +57,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
 
         [DataMember(Name = "avatar")]
-        public string AvatarUrl => Utilities.GetProfileAvatar(UserId);
+        public string AvatarUrl => Utilities.GetProfileAvatar(this.UserId);
 
         public UserBasicDto()
         {
@@ -66,17 +66,17 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         public UserBasicDto(UserInfo user)
         {
-            UserId = user.UserID;
-            Username = user.Username;
-            Displayname = user.DisplayName;
-            Email = user.Email;
-            CreatedOnDate = user.CreatedOnDate;
-            IsDeleted = user.IsDeleted;
-            Authorized = user.Membership.Approved;
-            HasAgreedToTerms = user.HasAgreedToTerms;
-            RequestsRemoval = user.RequestsRemoval;
-            IsSuperUser = user.IsSuperUser;
-            IsAdmin = user.Roles.Contains(PortalSettings.AdministratorRoleName);
+            this.UserId = user.UserID;
+            this.Username = user.Username;
+            this.Displayname = user.DisplayName;
+            this.Email = user.Email;
+            this.CreatedOnDate = user.CreatedOnDate;
+            this.IsDeleted = user.IsDeleted;
+            this.Authorized = user.Membership.Approved;
+            this.HasAgreedToTerms = user.HasAgreedToTerms;
+            this.RequestsRemoval = user.RequestsRemoval;
+            this.IsSuperUser = user.IsSuperUser;
+            this.IsAdmin = user.Roles.Contains(this.PortalSettings.AdministratorRoleName);
         }
 
         public static UserBasicDto FromUserInfo(UserInfo user)

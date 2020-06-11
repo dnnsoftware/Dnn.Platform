@@ -30,18 +30,18 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public Tags()
         {
-            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public string AddImageUrl
         {
             get
             {
-                return _AddImageUrl;
+                return this._AddImageUrl;
             }
             set
             {
-                _AddImageUrl = value;
+                this._AddImageUrl = value;
             }
         }
 
@@ -49,11 +49,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _AllowTagging;
+                return this._AllowTagging;
             }
             set
             {
-                _AllowTagging = value;
+                this._AllowTagging = value;
             }
         }
 
@@ -61,11 +61,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _CancelImageUrl;
+                return this._CancelImageUrl;
             }
             set
             {
-                _CancelImageUrl = value;
+                this._CancelImageUrl = value;
             }
         }
 
@@ -75,11 +75,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _ObjectType;
+                return this._ObjectType;
             }
             set
             {
-                _ObjectType = value;
+                this._ObjectType = value;
             }
         }
 
@@ -87,11 +87,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _RepeatDirection;
+                return this._RepeatDirection;
             }
             set
             {
-                _RepeatDirection = value;
+                this._RepeatDirection = value;
             }
         }
 
@@ -99,11 +99,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _SaveImageUrl;
+                return this._SaveImageUrl;
             }
             set
             {
-                _SaveImageUrl = value;
+                this._SaveImageUrl = value;
             }
         }
 
@@ -111,11 +111,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _Separator;
+                return this._Separator;
             }
             set
             {
-                _Separator = value;
+                this._Separator = value;
             }
         }
 
@@ -123,11 +123,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _ShowCategories;
+                return this._ShowCategories;
             }
             set
             {
-                _ShowCategories = value;
+                this._ShowCategories = value;
             }
         }
 
@@ -135,11 +135,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return _ShowTags;
+                return this._ShowTags;
             }
             set
             {
-                _ShowTags = value;
+                this._ShowTags = value;
             }
         }
 
@@ -147,27 +147,27 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnLoad(e);
 
-            if (ObjectType == "Page")
+            if (this.ObjectType == "Page")
             {
-                tagsControl.ContentItem = PortalSettings.ActiveTab;
+                this.tagsControl.ContentItem = this.PortalSettings.ActiveTab;
             }
             else
             {
-                tagsControl.ContentItem = ModuleControl.ModuleContext.Configuration;
+                this.tagsControl.ContentItem = this.ModuleControl.ModuleContext.Configuration;
             }
 
-            tagsControl.AddImageUrl = AddImageUrl;
-            tagsControl.CancelImageUrl = CancelImageUrl;
-            tagsControl.SaveImageUrl = SaveImageUrl;
+            this.tagsControl.AddImageUrl = this.AddImageUrl;
+            this.tagsControl.CancelImageUrl = this.CancelImageUrl;
+            this.tagsControl.SaveImageUrl = this.SaveImageUrl;
 
-            tagsControl.CssClass = CssClass;
+            this.tagsControl.CssClass = this.CssClass;
 
-            tagsControl.AllowTagging = AllowTagging && Request.IsAuthenticated;
-            tagsControl.NavigateUrlFormatString = _navigationManager.NavigateURL(PortalSettings.SearchTabId, "", "Tag={0}");
-            tagsControl.RepeatDirection = RepeatDirection;
-            tagsControl.Separator = Separator;
-            tagsControl.ShowCategories = ShowCategories;
-            tagsControl.ShowTags = ShowTags;
+            this.tagsControl.AllowTagging = this.AllowTagging && this.Request.IsAuthenticated;
+            this.tagsControl.NavigateUrlFormatString = this._navigationManager.NavigateURL(this.PortalSettings.SearchTabId, "", "Tag={0}");
+            this.tagsControl.RepeatDirection = this.RepeatDirection;
+            this.tagsControl.Separator = this.Separator;
+            this.tagsControl.ShowCategories = this.ShowCategories;
+            this.tagsControl.ShowTags = this.ShowTags;
         }
     }
 }

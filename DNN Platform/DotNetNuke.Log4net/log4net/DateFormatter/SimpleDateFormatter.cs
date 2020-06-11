@@ -56,7 +56,7 @@ namespace log4net.DateFormatter
 		/// </remarks>
 		public SimpleDateFormatter(string format)
 		{
-			m_formatString = format;
+			this.m_formatString = format;
 		}
 
 		#endregion Public Instance Constructors
@@ -76,7 +76,7 @@ namespace log4net.DateFormatter
 		/// </remarks>
 		virtual public void FormatDate(DateTime dateToFormat, TextWriter writer)
 		{
-			writer.Write(dateToFormat.ToString(m_formatString, System.Globalization.DateTimeFormatInfo.InvariantInfo));
+			writer.Write(dateToFormat.ToString(this.m_formatString, System.Globalization.DateTimeFormatInfo.InvariantInfo));
 		}
 
 		#endregion

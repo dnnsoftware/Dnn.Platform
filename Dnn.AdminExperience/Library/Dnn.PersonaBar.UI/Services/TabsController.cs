@@ -45,26 +45,26 @@ namespace Dnn.PersonaBar.UI.Services
         {
             try
             {
-                if (!UserInfo.IsSuperUser && portalId != PortalId && portalId > -1)
+                if (!this.UserInfo.IsSuperUser && portalId != this.PortalId && portalId > -1)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, Localization.GetString("UnauthorizedRequest", LocalResourcesFile));
+                    return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, Localization.GetString("UnauthorizedRequest", this.LocalResourcesFile));
                 }
 
                 var response = new
                 {
                     Success = true,
                     Results =
-                        _controller.GetPortalTabs(UserInfo, portalId < 0 ? PortalId : portalId, cultureCode, isMultiLanguage,
+                        this._controller.GetPortalTabs(this.UserInfo, portalId < 0 ? this.PortalId : portalId, cultureCode, isMultiLanguage,
                             excludeAdminTabs, roles,
                             disabledNotSelectable, sortOrder, selectedTabId, validateTab, includeHostPages, includeDisabled, includeDeleted, includeDeletedChildren)
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -90,15 +90,15 @@ namespace Dnn.PersonaBar.UI.Services
                 {
                     Success = true,
                     Results =
-                        _controller.SearchPortalTabs(UserInfo, searchText, portalId < 0 ? PortalId : portalId, roles, disabledNotSelectable, sortOrder, validateTab, includeHostPages, includeDisabled, includeDeleted)
+                        this._controller.SearchPortalTabs(this.UserInfo, searchText, portalId < 0 ? this.PortalId : portalId, roles, disabledNotSelectable, sortOrder, validateTab, includeHostPages, includeDisabled, includeDeleted)
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -118,15 +118,15 @@ namespace Dnn.PersonaBar.UI.Services
                 var response = new
                 {
                     Success = true,
-                    Results = _controller.GetTabByCulture(tabId, portalId < 0 ? PortalId : portalId, cultureCode)
+                    Results = this._controller.GetTabByCulture(tabId, portalId < 0 ? this.PortalId : portalId, cultureCode)
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -155,16 +155,16 @@ namespace Dnn.PersonaBar.UI.Services
                 {
                     Success = true,
                     Results =
-                        _controller.GetTabsDescendants(portalId < 0 ? PortalId : portalId, parentId, cultureCode, isMultiLanguage, roles,
+                        this._controller.GetTabsDescendants(portalId < 0 ? this.PortalId : portalId, parentId, cultureCode, isMultiLanguage, roles,
                             disabledNotSelectable, sortOrder, validateTab, includeHostPages, includeDisabled, includeDeletedChildren)
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
     }

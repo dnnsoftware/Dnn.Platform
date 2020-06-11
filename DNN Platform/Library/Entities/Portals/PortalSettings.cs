@@ -77,7 +77,7 @@ namespace DotNetNuke.Entities.Portals
 
         public PortalSettings()
         {
-            Registration = new RegistrationSettings();
+            this.Registration = new RegistrationSettings();
         }
 
         public PortalSettings(int portalId)
@@ -87,9 +87,9 @@ namespace DotNetNuke.Entities.Portals
 
         public PortalSettings(int tabId, int portalId)
         {
-            PortalId = portalId;
+            this.PortalId = portalId;
             var portal = PortalController.Instance.GetPortal(portalId);
-            BuildPortalSettings(tabId, portal);
+            this.BuildPortalSettings(tabId, portal);
         }
 
         /// -----------------------------------------------------------------------------
@@ -105,13 +105,13 @@ namespace DotNetNuke.Entities.Portals
         /// -----------------------------------------------------------------------------
         public PortalSettings(int tabId, PortalAliasInfo portalAliasInfo)
         {
-            PortalId = portalAliasInfo.PortalID;
-            PortalAlias = portalAliasInfo;
+            this.PortalId = portalAliasInfo.PortalID;
+            this.PortalAlias = portalAliasInfo;
             var portal = string.IsNullOrEmpty(portalAliasInfo.CultureCode) ?
                             PortalController.Instance.GetPortal(portalAliasInfo.PortalID)
                             : PortalController.Instance.GetPortal(portalAliasInfo.PortalID, portalAliasInfo.CultureCode);
 
-            BuildPortalSettings(tabId, portal);
+            this.BuildPortalSettings(tabId, portal);
         }
 
         public PortalSettings(PortalInfo portal)
@@ -121,8 +121,8 @@ namespace DotNetNuke.Entities.Portals
 
         public PortalSettings(int tabId, PortalInfo portal)
         {
-            PortalId = portal != null ? portal.PortalID : Null.NullInteger;
-            BuildPortalSettings(tabId, portal);
+            this.PortalId = portal != null ? portal.PortalID : Null.NullInteger;
+            this.BuildPortalSettings(tabId, portal);
         }
 
         private void BuildPortalSettings(int tabId, PortalInfo portal)
@@ -137,14 +137,14 @@ namespace DotNetNuke.Entities.Portals
             var items = HttpContext.Current != null ? HttpContext.Current.Items : null;
             if (items != null && items.Contains(key))
             {
-                ActiveTab = items[key] as TabInfo;
+                this.ActiveTab = items[key] as TabInfo;
             }
             else
             {
-                ActiveTab = PortalSettingsController.Instance().GetActiveTab(tabId, this);
-                if (items != null && ActiveTab != null)
+                this.ActiveTab = PortalSettingsController.Instance().GetActiveTab(tabId, this);
+                if (items != null && this.ActiveTab != null)
                 {
-                    items[key] = ActiveTab;
+                    items[key] = this.ActiveTab;
                 }
             }
         }
@@ -461,8 +461,8 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                var setting = Convert.ToString(Personalization.GetProfile("Usability", "ControlPanelVisible" + PortalId));
-                return String.IsNullOrEmpty(setting) ? DefaultControlPanelVisibility : Convert.ToBoolean(setting);
+                var setting = Convert.ToString(Personalization.GetProfile("Usability", "ControlPanelVisible" + this.PortalId));
+                return String.IsNullOrEmpty(setting) ? this.DefaultControlPanelVisibility : Convert.ToBoolean(setting);
             }
         }
 
@@ -478,7 +478,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(PortalId).Where(alias => alias.IsPrimary))
+                foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalId).Where(alias => alias.IsPrimary))
                 {
                     return alias.HTTPAlias;
                 }
@@ -490,7 +490,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return PortalSettingsController.Instance().GetPortalAliasMappingMode(PortalId);
+                return PortalSettingsController.Instance().GetPortalAliasMappingMode(this.PortalId);
             }
         }
 
@@ -502,7 +502,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 if (HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated)
                 {
-                    return UserInfo.UserID;
+                    return this.UserInfo.UserID;
                 }
                 return Null.NullInteger;
             }
@@ -525,8 +525,8 @@ namespace DotNetNuke.Entities.Portals
                 Mode mode;
                 if (HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated)
                 {
-                    mode = DefaultControlPanelMode;
-                    string setting = Convert.ToString(Personalization.GetProfile("Usability", "UserMode" + PortalId));
+                    mode = this.DefaultControlPanelMode;
+                    string setting = Convert.ToString(Personalization.GetProfile("Usability", "UserMode" + this.PortalId));
                     switch (setting.ToUpper())
                     {
                         case "VIEW":
@@ -553,7 +553,7 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         public bool IsLocked
         {
-            get { return IsThisPortalLocked || Host.Host.IsLocked; }
+            get { return this.IsThisPortalLocked || Host.Host.IsLocked; }
         }
 
         /// <summary>
@@ -561,7 +561,7 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         public bool IsThisPortalLocked
         {
-            get { return PortalController.GetPortalSettingAsBoolean("IsLocked", PortalId, false); }
+            get { return PortalController.GetPortalSettingAsBoolean("IsLocked", this.PortalId, false); }
         }
 
         public TimeZoneInfo TimeZone { get; set; } = TimeZoneInfo.Local;
@@ -573,7 +573,7 @@ namespace DotNetNuke.Entities.Portals
                 // For New Install
                 string pageHead = "<meta content=\"text/html; charset=UTF-8\" http-equiv=\"Content-Type\" />";
                 string setting;
-                if (PortalController.Instance.GetPortalSettings(PortalId).TryGetValue("PageHeadText", out setting))
+                if (PortalController.Instance.GetPortalSettings(this.PortalId).TryGetValue("PageHeadText", out setting))
                 {
                     // Hack to store empty string portalsetting with non empty default value
                     pageHead = (setting == "false") ? "" : setting;
@@ -593,7 +593,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return PortalController.GetPortalSettingAsBoolean("InjectModuleHyperLink", PortalId, true);
+                return PortalController.GetPortalSettingAsBoolean("InjectModuleHyperLink", this.PortalId, true);
             }
         }
         /*
@@ -607,7 +607,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 string CompatibleHttpHeader = "IE=edge";
                 string setting;
-                if (PortalController.Instance.GetPortalSettings(PortalId).TryGetValue("AddCompatibleHttpHeader", out setting))
+                if (PortalController.Instance.GetPortalSettings(this.PortalId).TryGetValue("AddCompatibleHttpHeader", out setting))
                 {
                     // Hack to store empty string portalsetting with non empty default value
                     CompatibleHttpHeader = (setting == "false") ? "" : setting;
@@ -623,7 +623,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return PortalController.GetPortalSettingAsBoolean("AddCachebusterToResourceUris", PortalId, true);
+                return PortalController.GetPortalSettingAsBoolean("AddCachebusterToResourceUris", this.PortalId, true);
             }
         }
 
@@ -634,7 +634,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return PortalController.GetPortalSetting("DisablePrivateMessage", PortalId, "N") == "Y";
+                return PortalController.GetPortalSetting("DisablePrivateMessage", this.PortalId, "N") == "Y";
             }
         }
 
@@ -705,16 +705,16 @@ namespace DotNetNuke.Entities.Portals
                     break;
                 case "url":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(PortalAlias.HTTPAlias, format);
+                    result = PropertyAccess.FormatString(this.PortalAlias.HTTPAlias, format);
                     break;
                 case "fullurl": //return portal alias with protocol - note this depends on HttpContext
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(Globals.AddHTTP(PortalAlias.HTTPAlias), format);
+                    result = PropertyAccess.FormatString(Globals.AddHTTP(this.PortalAlias.HTTPAlias), format);
                     break;
                 case "passwordreminderurl": //if regsiter page defined in portal settings, then get that page url, otherwise return home page. - note this depends on HttpContext
                     propertyNotFound = false;
-                    var reminderUrl = Globals.AddHTTP(PortalAlias.HTTPAlias);
-                    if (RegisterTabId > Null.NullInteger)
+                    var reminderUrl = Globals.AddHTTP(this.PortalAlias.HTTPAlias);
+                    if (this.RegisterTabId > Null.NullInteger)
                     {
                         reminderUrl = Globals.RegisterURL(string.Empty, string.Empty);
                     }
@@ -722,158 +722,158 @@ namespace DotNetNuke.Entities.Portals
                     break;
                 case "portalid":
                     propertyNotFound = false;
-                    result = (PortalId.ToString(outputFormat, formatProvider));
+                    result = (this.PortalId.ToString(outputFormat, formatProvider));
                     break;
                 case "portalname":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(PortalName, format);
+                    result = PropertyAccess.FormatString(this.PortalName, format);
                     break;
                 case "homedirectory":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(HomeDirectory, format);
+                    result = PropertyAccess.FormatString(this.HomeDirectory, format);
                     break;
                 case "homedirectorymappath":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(HomeDirectoryMapPath, format);
+                    result = PropertyAccess.FormatString(this.HomeDirectoryMapPath, format);
                     break;
                 case "logofile":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(LogoFile, format);
+                    result = PropertyAccess.FormatString(this.LogoFile, format);
                     break;
                 case "footertext":
                     propertyNotFound = false;
-                    var footerText = FooterText.Replace("[year]", DateTime.Now.Year.ToString());
+                    var footerText = this.FooterText.Replace("[year]", DateTime.Now.Year.ToString());
                     result = PropertyAccess.FormatString(footerText, format);
                     break;
                 case "expirydate":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (ExpiryDate.ToString(outputFormat, formatProvider));
+                    result = (this.ExpiryDate.ToString(outputFormat, formatProvider));
                     break;
                 case "userregistration":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (UserRegistration.ToString(outputFormat, formatProvider));
+                    result = (this.UserRegistration.ToString(outputFormat, formatProvider));
                     break;
                 case "banneradvertising":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (BannerAdvertising.ToString(outputFormat, formatProvider));
+                    result = (this.BannerAdvertising.ToString(outputFormat, formatProvider));
                     break;
                 case "currency":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(Currency, format);
+                    result = PropertyAccess.FormatString(this.Currency, format);
                     break;
                 case "administratorid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (AdministratorId.ToString(outputFormat, formatProvider));
+                    result = (this.AdministratorId.ToString(outputFormat, formatProvider));
                     break;
                 case "email":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(Email, format);
+                    result = PropertyAccess.FormatString(this.Email, format);
                     break;
                 case "hostfee":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (HostFee.ToString(outputFormat, formatProvider));
+                    result = (this.HostFee.ToString(outputFormat, formatProvider));
                     break;
                 case "hostspace":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (HostSpace.ToString(outputFormat, formatProvider));
+                    result = (this.HostSpace.ToString(outputFormat, formatProvider));
                     break;
                 case "pagequota":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PageQuota.ToString(outputFormat, formatProvider));
+                    result = (this.PageQuota.ToString(outputFormat, formatProvider));
                     break;
                 case "userquota":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (UserQuota.ToString(outputFormat, formatProvider));
+                    result = (this.UserQuota.ToString(outputFormat, formatProvider));
                     break;
                 case "administratorroleid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (AdministratorRoleId.ToString(outputFormat, formatProvider));
+                    result = (this.AdministratorRoleId.ToString(outputFormat, formatProvider));
                     break;
                 case "administratorrolename":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(AdministratorRoleName, format);
+                    result = PropertyAccess.FormatString(this.AdministratorRoleName, format);
                     break;
                 case "registeredroleid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (RegisteredRoleId.ToString(outputFormat, formatProvider));
+                    result = (this.RegisteredRoleId.ToString(outputFormat, formatProvider));
                     break;
                 case "registeredrolename":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(RegisteredRoleName, format);
+                    result = PropertyAccess.FormatString(this.RegisteredRoleName, format);
                     break;
                 case "description":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(Description, format);
+                    result = PropertyAccess.FormatString(this.Description, format);
                     break;
                 case "keywords":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(KeyWords, format);
+                    result = PropertyAccess.FormatString(this.KeyWords, format);
                     break;
                 case "backgroundfile":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(BackgroundFile, format);
+                    result = PropertyAccess.FormatString(this.BackgroundFile, format);
                     break;
                 case "admintabid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = AdminTabId.ToString(outputFormat, formatProvider);
+                    result = this.AdminTabId.ToString(outputFormat, formatProvider);
                     break;
                 case "supertabid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = SuperTabId.ToString(outputFormat, formatProvider);
+                    result = this.SuperTabId.ToString(outputFormat, formatProvider);
                     break;
                 case "splashtabid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = SplashTabId.ToString(outputFormat, formatProvider);
+                    result = this.SplashTabId.ToString(outputFormat, formatProvider);
                     break;
                 case "hometabid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = HomeTabId.ToString(outputFormat, formatProvider);
+                    result = this.HomeTabId.ToString(outputFormat, formatProvider);
                     break;
                 case "logintabid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = LoginTabId.ToString(outputFormat, formatProvider);
+                    result = this.LoginTabId.ToString(outputFormat, formatProvider);
                     break;
                 case "registertabid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = RegisterTabId.ToString(outputFormat, formatProvider);
+                    result = this.RegisterTabId.ToString(outputFormat, formatProvider);
                     break;
                 case "usertabid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = UserTabId.ToString(outputFormat, formatProvider);
+                    result = this.UserTabId.ToString(outputFormat, formatProvider);
                     break;
                 case "defaultlanguage":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(DefaultLanguage, format);
+                    result = PropertyAccess.FormatString(this.DefaultLanguage, format);
                     break;
                 case "users":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = Users.ToString(outputFormat, formatProvider);
+                    result = this.Users.ToString(outputFormat, formatProvider);
                     break;
                 case "pages":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = Pages.ToString(outputFormat, formatProvider);
+                    result = this.Pages.ToString(outputFormat, formatProvider);
                     break;
                 case "contentvisible":
                     isPublic = false;
@@ -881,7 +881,7 @@ namespace DotNetNuke.Entities.Portals
                 case "controlpanelvisible":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = PropertyAccess.Boolean2LocalizedYesNo(ControlPanelVisible, formatProvider);
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.ControlPanelVisible, formatProvider);
                     break;
             }
             if (!isPublic && accessLevel != Scope.Debug)
@@ -898,7 +898,7 @@ namespace DotNetNuke.Entities.Portals
 
         public PortalSettings Clone()
         {
-            return (PortalSettings)MemberwiseClone();
+            return (PortalSettings)this.MemberwiseClone();
         }
 
         #endregion

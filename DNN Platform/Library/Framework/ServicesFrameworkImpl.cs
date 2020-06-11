@@ -21,7 +21,7 @@ namespace DotNetNuke.Framework
 
         public void RequestAjaxAntiForgerySupport()
         {
-            RequestAjaxScriptSupport();
+            this.RequestAjaxScriptSupport();
             SetKey(AntiForgeryKey);
         }
 

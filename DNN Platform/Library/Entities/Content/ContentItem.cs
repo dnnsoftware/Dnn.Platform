@@ -75,11 +75,11 @@ namespace DotNetNuke.Entities.Content
         
         public ContentItem()
         {
-            TabID = Null.NullInteger;
-            ModuleID = Null.NullInteger;
-            ContentTypeId = Null.NullInteger;
-            ContentItemId = Null.NullInteger;
-            StateID = Null.NullInteger;
+            this.TabID = Null.NullInteger;
+            this.ModuleID = Null.NullInteger;
+            this.ContentTypeId = Null.NullInteger;
+            this.ContentItemId = Null.NullInteger;
+            this.StateID = Null.NullInteger;
         }
 
         #region Public Properties
@@ -143,7 +143,7 @@ namespace DotNetNuke.Entities.Content
         {
             get
             {
-                return _metadata ?? (_metadata = this.GetMetaData(ContentItemId));
+                return this._metadata ?? (this._metadata = this.GetMetaData(this.ContentItemId));
             }
         }
 
@@ -175,7 +175,7 @@ namespace DotNetNuke.Entities.Content
         {
             get
             {
-                return _terms ?? (_terms = this.GetTerms(ContentItemId));
+                return this._terms ?? (this._terms = this.GetTerms(this.ContentItemId));
             }
         }
 
@@ -185,11 +185,11 @@ namespace DotNetNuke.Entities.Content
 	    {
 	        get
 	        {
-	            return Metadata[AttachmentController.TitleKey];
+	            return this.Metadata[AttachmentController.TitleKey];
 	        }
             set
             {
-                Metadata[AttachmentController.TitleKey] = value;
+                this.Metadata[AttachmentController.TitleKey] = value;
             }
 	    }
 
@@ -200,7 +200,7 @@ namespace DotNetNuke.Entities.Content
         [ScriptIgnore]
 	    public List<IFileInfo> Files
 	    {
-	        get { return _files ?? (_files = AttachmentController.DeserializeFileInfo(Metadata[AttachmentController.FilesKey]).ToList()); }
+	        get { return this._files ?? (this._files = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.FilesKey]).ToList()); }
 	    }
 
 	    /// <summary>
@@ -210,7 +210,7 @@ namespace DotNetNuke.Entities.Content
         [ScriptIgnore]
         public List<IFileInfo> Videos
 	    {
-            get { return _videos ?? (_videos = AttachmentController.DeserializeFileInfo(Metadata[AttachmentController.VideoKey]).ToList()); }
+            get { return this._videos ?? (this._videos = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.VideoKey]).ToList()); }
 	    }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace DotNetNuke.Entities.Content
         [ScriptIgnore]
         public List<IFileInfo> Images
 	    {
-            get { return _images ?? (_images = AttachmentController.DeserializeFileInfo(Metadata[AttachmentController.ImageKey]).ToList()); }
+            get { return this._images ?? (this._images = AttachmentController.DeserializeFileInfo(this.Metadata[AttachmentController.ImageKey]).ToList()); }
 	    }
 
         /// <summary>
@@ -247,27 +247,27 @@ namespace DotNetNuke.Entities.Content
         {
             base.FillInternal(dr);
 
-            ContentItemId = Null.SetNullInteger(dr["ContentItemID"]);
-            Content = Null.SetNullString(dr["Content"]);
-            ContentTypeId = Null.SetNullInteger(dr["ContentTypeID"]);
-            TabID = Null.SetNullInteger(dr["TabID"]);
-            ModuleID = Null.SetNullInteger(dr["ModuleID"]);
-            ContentKey = Null.SetNullString(dr["ContentKey"]);
-            Indexed = Null.SetNullBoolean(dr["Indexed"]);
+            this.ContentItemId = Null.SetNullInteger(dr["ContentItemID"]);
+            this.Content = Null.SetNullString(dr["Content"]);
+            this.ContentTypeId = Null.SetNullInteger(dr["ContentTypeID"]);
+            this.TabID = Null.SetNullInteger(dr["TabID"]);
+            this.ModuleID = Null.SetNullInteger(dr["ModuleID"]);
+            this.ContentKey = Null.SetNullString(dr["ContentKey"]);
+            this.Indexed = Null.SetNullBoolean(dr["Indexed"]);
 
             var schema = dr.GetSchemaTable();
             if (schema != null)
             {
                 if (schema.Select("ColumnName = 'StateID'").Length > 0)
                 {
-                    StateID = Null.SetNullInteger(dr["StateID"]);
+                    this.StateID = Null.SetNullInteger(dr["StateID"]);
                 }
             }
         }
 
 		protected void Clone(ContentItem cloneItem, ContentItem originalItem)
 		{
-			CloneBaseProperties(cloneItem, originalItem);
+			this.CloneBaseProperties(cloneItem, originalItem);
 
 			cloneItem.ContentItemId = originalItem.ContentItemId;
 			cloneItem.Content = originalItem.Content;
@@ -290,7 +290,7 @@ namespace DotNetNuke.Entities.Content
 		/// <seealso cref="IHydratable.Fill"/>
         public virtual void Fill(IDataReader dr)
         {
-            FillInternal(dr);
+            this.FillInternal(dr);
         }
 
 		/// <summary>
@@ -307,11 +307,11 @@ namespace DotNetNuke.Entities.Content
         {
             get
             {
-                return ContentItemId;
+                return this.ContentItemId;
             }
             set
             {
-                ContentItemId = value;
+                this.ContentItemId = value;
             }
         }
 

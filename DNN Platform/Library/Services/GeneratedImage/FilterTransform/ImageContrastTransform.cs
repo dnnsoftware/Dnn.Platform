@@ -20,15 +20,15 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         /// <summary>
         /// Provides an Unique String for this class
         /// </summary>
-        public override string UniqueString => base.UniqueString + "-" + Contrast;
+        public override string UniqueString => base.UniqueString + "-" + this.Contrast;
 
 	    public ImageContrastTransform()
 		{
-            InterpolationMode = InterpolationMode.HighQualityBicubic;
-            SmoothingMode = SmoothingMode.HighQuality;
-            PixelOffsetMode = PixelOffsetMode.HighQuality;
-            CompositingQuality = CompositingQuality.HighQuality;
-			Contrast = 0;
+            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            this.SmoothingMode = SmoothingMode.HighQuality;
+            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            this.CompositingQuality = CompositingQuality.HighQuality;
+			this.Contrast = 0;
 		}
 
         /// <summary>
@@ -40,10 +40,10 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 		{
 			var temp = (Bitmap)image;
 			var bmap = (Bitmap)temp.Clone();
-			if (Contrast < -100) Contrast = -100;
-			if (Contrast > 100) Contrast = 100;
-			Contrast = (100.0 + Contrast) / 100.0;
-			Contrast *= Contrast;
+			if (this.Contrast < -100) this.Contrast = -100;
+			if (this.Contrast > 100) this.Contrast = 100;
+			this.Contrast = (100.0 + this.Contrast) / 100.0;
+			this.Contrast *= this.Contrast;
 			Color c;
 			for (int i = 0; i < bmap.Width; i++)
 			{
@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 					c = bmap.GetPixel(i, j);
 					double pR = c.R / 255.0;
 					pR -= 0.5;
-					pR *= Contrast;
+					pR *= this.Contrast;
 					pR += 0.5;
 					pR *= 255;
 					if (pR < 0) pR = 0;
@@ -60,7 +60,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 
 					double pG = c.G / 255.0;
 					pG -= 0.5;
-					pG *= Contrast;
+					pG *= this.Contrast;
 					pG += 0.5;
 					pG *= 255;
 					if (pG < 0) pG = 0;
@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 
 					double pB = c.B / 255.0;
 					pB -= 0.5;
-					pB *= Contrast;
+					pB *= this.Contrast;
 					pB += 0.5;
 					pB *= 255;
 					if (pB < 0) pB = 0;

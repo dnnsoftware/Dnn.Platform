@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 
         public AuthenticationEditor()
         {
-            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
 		#region "Private Members"
@@ -46,11 +46,11 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         {
             get
             {
-                if (_AuthSystem == null)
+                if (this._AuthSystem == null)
                 {
-                    _AuthSystem = AuthenticationController.GetAuthenticationServiceByPackageID(PackageID);
+                    this._AuthSystem = AuthenticationController.GetAuthenticationServiceByPackageID(this.PackageID);
                 }
-                return _AuthSystem;
+                return this._AuthSystem;
             }
         }
 
@@ -66,11 +66,11 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         {
             get
             {
-                if (_SettingsControl == null && !string.IsNullOrEmpty(AuthSystem.SettingsControlSrc))
+                if (this._SettingsControl == null && !string.IsNullOrEmpty(this.AuthSystem.SettingsControlSrc))
                 {
-                    _SettingsControl = (AuthenticationSettingsBase) LoadControl("~/" + AuthSystem.SettingsControlSrc);
+                    this._SettingsControl = (AuthenticationSettingsBase) this.LoadControl("~/" + this.AuthSystem.SettingsControlSrc);
                 }
-                return _SettingsControl;
+                return this._SettingsControl;
             }
         }
 
@@ -85,34 +85,34 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         /// -----------------------------------------------------------------------------
         private void BindAuthentication()
         {
-            if (AuthSystem != null)
+            if (this.AuthSystem != null)
             {
-                if (AuthSystem.AuthenticationType == "DNN")
+                if (this.AuthSystem.AuthenticationType == "DNN")
                 {
-                    authenticationFormReadOnly.DataSource = AuthSystem;
-                    authenticationFormReadOnly.DataBind();
+                    this.authenticationFormReadOnly.DataSource = this.AuthSystem;
+                    this.authenticationFormReadOnly.DataBind();
                 }
                 else
                 {
-                    authenticationForm.DataSource = AuthSystem;
-                    authenticationForm.DataBind();
+                    this.authenticationForm.DataSource = this.AuthSystem;
+                    this.authenticationForm.DataBind();
                 }
-                authenticationFormReadOnly.Visible = IsSuperTab && (AuthSystem.AuthenticationType == "DNN");
-                authenticationForm.Visible = IsSuperTab && AuthSystem.AuthenticationType != "DNN";
+                this.authenticationFormReadOnly.Visible = this.IsSuperTab && (this.AuthSystem.AuthenticationType == "DNN");
+                this.authenticationForm.Visible = this.IsSuperTab && this.AuthSystem.AuthenticationType != "DNN";
 
 
-                if (SettingsControl != null)
+                if (this.SettingsControl != null)
                 {
 					//set the control ID to the resource file name ( ie. controlname.ascx = controlname )
                     //this is necessary for the Localization in PageBase
-                    SettingsControl.ID = Path.GetFileNameWithoutExtension(AuthSystem.SettingsControlSrc);
+                    this.SettingsControl.ID = Path.GetFileNameWithoutExtension(this.AuthSystem.SettingsControlSrc);
 
                     //Add Container to Controls
-                    pnlSettings.Controls.AddAt(0, SettingsControl);
+                    this.pnlSettings.Controls.AddAt(0, this.SettingsControl);
                 }
                 else
                 {
-                    cmdUpdate.Visible = false;
+                    this.cmdUpdate.Visible = false;
                 }
             }
         }
@@ -123,30 +123,30 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 
         public override void Initialize()
         {
-            pnlSettings.Visible = !IsSuperTab;
-            if (IsSuperTab)
+            this.pnlSettings.Visible = !this.IsSuperTab;
+            if (this.IsSuperTab)
             {
-                lblHelp.Text = Localization.GetString("HostHelp", LocalResourceFile);
+                this.lblHelp.Text = Localization.GetString("HostHelp", this.LocalResourceFile);
             }
             else
             {
-                if (SettingsControl == null)
+                if (this.SettingsControl == null)
                 {
-                    lblHelp.Text = Localization.GetString("NoSettings", LocalResourceFile);
+                    this.lblHelp.Text = Localization.GetString("NoSettings", this.LocalResourceFile);
                 }
                 else
                 {
-                    lblHelp.Text = Localization.GetString("AdminHelp", LocalResourceFile);
+                    this.lblHelp.Text = Localization.GetString("AdminHelp", this.LocalResourceFile);
                 }
             }
-            BindAuthentication();
+            this.BindAuthentication();
         }
 
         public override void UpdatePackage()
         {
-            if (authenticationForm.IsValid)
+            if (this.authenticationForm.IsValid)
             {
-                var authInfo = authenticationForm.DataSource as AuthenticationInfo;
+                var authInfo = this.authenticationForm.DataSource as AuthenticationInfo;
                 if (authInfo != null)
                 {
                     AuthenticationController.UpdateAuthentication(authInfo);
@@ -161,21 +161,21 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            cmdUpdate.Click += cmdUpdate_Click;
-            var displayMode = DisplayMode;
+            this.cmdUpdate.Click += this.cmdUpdate_Click;
+            var displayMode = this.DisplayMode;
             if (displayMode == "editor" || displayMode == "settings")
             {
-                AuthEditorHead.Visible = AuthEditorHead.EnableViewState = false;
+                this.AuthEditorHead.Visible = this.AuthEditorHead.EnableViewState = false;
             }
         }
 
         protected void cmdUpdate_Click(object sender, EventArgs e)
         {
-            SettingsControl?.UpdateSettings();
+            this.SettingsControl?.UpdateSettings();
 
-            var displayMode = DisplayMode;
+            var displayMode = this.DisplayMode;
             if (displayMode != "editor" && displayMode != "settings")
-                Response.Redirect(_navigationManager.NavigateURL(), true);
+                this.Response.Redirect(this._navigationManager.NavigateURL(), true);
         }
 
 		#endregion

@@ -31,7 +31,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
             PortalController.Instance.UpdatePortalInfo(firstPortal);
 
             var result = DatabaseHelper.ExecuteScalar<string>(
-                @"SELECT TOP(1) COALESCE(ProcessorPassword, '') FROM {objectQualifier}Portals WHERE PortalID=" + PortalId);
+                @"SELECT TOP(1) COALESCE(ProcessorPassword, '') FROM {objectQualifier}Portals WHERE PortalID=" + this.PortalId);
 
             var decrypted = DotNetNuke.Security.FIPSCompliant.DecryptAES(result, Config.GetDecryptionkey(), Host.GUID);
 

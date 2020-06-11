@@ -101,7 +101,7 @@ namespace log4net.Util
 			}
 			set
 			{
-				GetProperties(true)[key] = value;
+				this.GetProperties(true)[key] = value;
 			}
 		}
 

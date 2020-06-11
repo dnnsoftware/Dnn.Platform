@@ -42,7 +42,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return GetSettings();
+                return this.GetSettings();
             }
         }
 
@@ -78,15 +78,15 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         private ArrayList GetSettings()
         {
-            var settings = (Hashtable) DataSource;
+            var settings = (Hashtable) this.DataSource;
             var arrSettings = new ArrayList();
             IDictionaryEnumerator settingsEnumerator = settings.GetEnumerator();
             while (settingsEnumerator.MoveNext())
             {
                 var info = new SettingInfo(settingsEnumerator.Key, settingsEnumerator.Value);
-                if ((CustomEditors != null) && (CustomEditors[settingsEnumerator.Key] != null))
+                if ((this.CustomEditors != null) && (this.CustomEditors[settingsEnumerator.Key] != null))
                 {
-                    info.Editor = Convert.ToString(CustomEditors[settingsEnumerator.Key]);
+                    info.Editor = Convert.ToString(this.CustomEditors[settingsEnumerator.Key]);
                 }
                 arrSettings.Add(info);
             }
@@ -101,19 +101,19 @@ namespace DotNetNuke.UI.WebControls
 		protected override void AddEditorRow(Table table, object obj)
         {
             var info = (SettingInfo) obj;
-            AddEditorRow(table, info.Name, new SettingsEditorInfoAdapter(DataSource, obj, ID));
+            this.AddEditorRow(table, info.Name, new SettingsEditorInfoAdapter(this.DataSource, obj, this.ID));
         }
 
         protected override void AddEditorRow(Panel container, object obj)
         {
             var info = (SettingInfo)obj;
-            AddEditorRow(container, info.Name, new SettingsEditorInfoAdapter(DataSource, obj, ID));
+            this.AddEditorRow(container, info.Name, new SettingsEditorInfoAdapter(this.DataSource, obj, this.ID));
         }
 
         protected override void AddEditorRow(object obj)
         {
             var info = (SettingInfo)obj; 
-            AddEditorRow(this, info.Name, new SettingsEditorInfoAdapter(DataSource, obj, ID));
+            this.AddEditorRow(this, info.Name, new SettingsEditorInfoAdapter(this.DataSource, obj, this.ID));
         }
 
         /// -----------------------------------------------------------------------------
@@ -126,9 +126,9 @@ namespace DotNetNuke.UI.WebControls
         {
             var info = (SettingInfo) obj;
             bool _IsVisible = true;
-            if ((Visibility != null) && (Visibility[info.Name] != null))
+            if ((this.Visibility != null) && (this.Visibility[info.Name] != null))
             {
-                _IsVisible = Convert.ToBoolean(Visibility[info.Name]);
+                _IsVisible = Convert.ToBoolean(this.Visibility[info.Name]);
             }
             return _IsVisible;
 		}

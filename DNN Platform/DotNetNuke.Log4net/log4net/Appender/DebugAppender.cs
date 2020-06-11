@@ -73,7 +73,7 @@ namespace log4net.Appender
 		[System.Obsolete("Instead use the default constructor and set the Layout property")]
 		public DebugAppender(ILayout layout)
 		{
-			Layout = layout;
+			this.Layout = layout;
 		}
 
 		#endregion Public Instance Constructors
@@ -100,8 +100,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public bool ImmediateFlush
 		{
-			get { return m_immediateFlush; }
-			set { m_immediateFlush = value; }
+			get { return this.m_immediateFlush; }
+			set { this.m_immediateFlush = value; }
 		}
 
 		#endregion Public Instance Properties
@@ -115,7 +115,7 @@ namespace log4net.Appender
             public override bool Flush(int millisecondsTimeout)
             {
                 // Nothing to do if ImmediateFlush is true
-                if (m_immediateFlush) return true;
+                if (this.m_immediateFlush) return true;
 
                 // System.Diagnostics.Debug is thread-safe, so no need for lock(this).
                 System.Diagnostics.Debug.Flush();
@@ -142,12 +142,12 @@ namespace log4net.Appender
 			//
 			// Write the string to the Debug system
 			//
-			System.Diagnostics.Debug.Write(RenderLoggingEvent(loggingEvent), loggingEvent.LoggerName);
+			System.Diagnostics.Debug.Write(this.RenderLoggingEvent(loggingEvent), loggingEvent.LoggerName);
 #if !NETSTANDARD1_3
 			//
 			// Flush the Debug system if needed
 			//
-			if (m_immediateFlush) 
+			if (this.m_immediateFlush) 
 			{
 				System.Diagnostics.Debug.Flush();
 			} 

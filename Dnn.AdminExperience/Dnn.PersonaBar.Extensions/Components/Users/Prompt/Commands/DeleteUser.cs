@@ -41,8 +41,8 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             
-            UserId = GetFlagValue(FlagId, "User Id", -1, true, true, true);
-            Notify = GetFlagValue(FlagNotify, "Notify", false);
+            this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
+            this.Notify = this.GetFlagValue(FlagNotify, "Notify", false);
         }
 
         public override ConsoleResultModel Run()
@@ -50,7 +50,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             ConsoleErrorResultModel errorResultModel;
             UserInfo userInfo;
 
-            if ((errorResultModel = _userValidator.ValidateUser(UserId, PortalSettings, User, out userInfo)) != null)
+            if ((errorResultModel = this._userValidator.ValidateUser(this.UserId, this.PortalSettings, this.User, out userInfo)) != null)
             {
                 return errorResultModel;
             }
@@ -59,23 +59,23 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
             if (userInfo.IsDeleted)
             {
-                return new ConsoleErrorResultModel(LocalizeString("Prompt_UserAlreadyDeleted"));
+                return new ConsoleErrorResultModel(this.LocalizeString("Prompt_UserAlreadyDeleted"));
             }
 
             var validPortalId = userInfo.PortalID;
 
-            if (!_userControllerWrapper.DeleteUserAndClearCache(ref userInfo, Notify, false))
+            if (!this._userControllerWrapper.DeleteUserAndClearCache(ref userInfo, this.Notify, false))
             {
-                return new ConsoleErrorResultModel(LocalizeString("Prompt_UserDeletionFailed"))
+                return new ConsoleErrorResultModel(this.LocalizeString("Prompt_UserDeletionFailed"))
                 {
                     Data = userModels
                 };
             }
 
             // attempt to retrieve the user from the dB 
-            userInfo = _userControllerWrapper.GetUserById(validPortalId, userInfo.UserID);
+            userInfo = this._userControllerWrapper.GetUserById(validPortalId, userInfo.UserID);
             userModels = new List<UserModel> { new UserModel(userInfo) };
-            return new ConsoleResultModel(LocalizeString("UserDeleted")) { Data = userModels, Records = userModels.Count };            
+            return new ConsoleResultModel(this.LocalizeString("UserDeleted")) { Data = userModels, Records = userModels.Count };            
         }
     }
 }

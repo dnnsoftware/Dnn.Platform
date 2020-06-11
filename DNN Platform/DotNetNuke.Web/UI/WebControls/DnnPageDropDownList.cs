@@ -27,47 +27,47 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnInit(e);
 
-            Roles = new List<int>();
+            this.Roles = new List<int>();
 
-            SelectItemDefaultText = Localization.GetString("DropDownList.SelectWebPageDefaultText", Localization.SharedResourceFile);
-            Services.GetTreeMethod = "ItemListService/GetPages";
-            Services.GetNodeDescendantsMethod = "ItemListService/GetPageDescendants";
-            Services.SearchTreeMethod = "ItemListService/SearchPages";
-            Services.GetTreeWithNodeMethod = "ItemListService/GetTreePathForPage";
-            Services.ServiceRoot = "InternalServices";
-            Services.SortTreeMethod = "ItemListService/SortPages";
+            this.SelectItemDefaultText = Localization.GetString("DropDownList.SelectWebPageDefaultText", Localization.SharedResourceFile);
+            this.Services.GetTreeMethod = "ItemListService/GetPages";
+            this.Services.GetNodeDescendantsMethod = "ItemListService/GetPageDescendants";
+            this.Services.SearchTreeMethod = "ItemListService/SearchPages";
+            this.Services.GetTreeWithNodeMethod = "ItemListService/GetTreePathForPage";
+            this.Services.ServiceRoot = "InternalServices";
+            this.Services.SortTreeMethod = "ItemListService/SortPages";
         }
 
         protected override void OnPreRender(EventArgs e)
         {
             this.AddCssClass("page");
-            if (InternalPortalId.HasValue)
+            if (this.InternalPortalId.HasValue)
             {
-                Services.Parameters.Add("PortalId", InternalPortalId.Value.ToString(CultureInfo.InvariantCulture));
+                this.Services.Parameters.Add("PortalId", this.InternalPortalId.Value.ToString(CultureInfo.InvariantCulture));
 			}
 
-			Services.Parameters.Add("includeDisabled", IncludeDisabledTabs.ToString().ToLowerInvariant());
-			Services.Parameters.Add("includeAllTypes", IncludeAllTabTypes.ToString().ToLowerInvariant());
-            Services.Parameters.Add("includeActive", IncludeActiveTab.ToString().ToLowerInvariant());
-            Services.Parameters.Add("disabledNotSelectable", DisabledNotSelectable.ToString().ToLowerInvariant());
-            Services.Parameters.Add("includeHostPages", (IncludeHostPages && UserController.Instance.GetCurrentUserInfo().IsSuperUser).ToString().ToLowerInvariant());
-            Services.Parameters.Add("roles", string.Join(";", Roles.ToArray()));
+			this.Services.Parameters.Add("includeDisabled", this.IncludeDisabledTabs.ToString().ToLowerInvariant());
+			this.Services.Parameters.Add("includeAllTypes", this.IncludeAllTabTypes.ToString().ToLowerInvariant());
+            this.Services.Parameters.Add("includeActive", this.IncludeActiveTab.ToString().ToLowerInvariant());
+            this.Services.Parameters.Add("disabledNotSelectable", this.DisabledNotSelectable.ToString().ToLowerInvariant());
+            this.Services.Parameters.Add("includeHostPages", (this.IncludeHostPages && UserController.Instance.GetCurrentUserInfo().IsSuperUser).ToString().ToLowerInvariant());
+            this.Services.Parameters.Add("roles", string.Join(";", this.Roles.ToArray()));
 
             base.OnPreRender(e);
 
             //add the selected folder's level path so that it can expand to the selected node in client side.
-            var selectedPage = SelectedPage;
+            var selectedPage = this.SelectedPage;
             if (selectedPage != null && selectedPage.ParentId > Null.NullInteger)
             {
                 var tabLevel = string.Empty;
-                var parentTab = TabController.Instance.GetTab(selectedPage.ParentId, PortalId, false);
+                var parentTab = TabController.Instance.GetTab(selectedPage.ParentId, this.PortalId, false);
                 while (parentTab != null)
                 {
                     tabLevel = string.Format("{0},{1}", parentTab.TabID, tabLevel);
-                    parentTab = TabController.Instance.GetTab(parentTab.ParentId, PortalId, false);
+                    parentTab = TabController.Instance.GetTab(parentTab.ParentId, this.PortalId, false);
                 }
 
-                ExpandPath = tabLevel.TrimEnd(',');
+                this.ExpandPath = tabLevel.TrimEnd(',');
             }
         }
 
@@ -101,15 +101,15 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (InternalPortalId.HasValue)
+                if (this.InternalPortalId.HasValue)
                 {
-                    return InternalPortalId.Value;
+                    return this.InternalPortalId.Value;
                 }
                 return PortalSettings.Current.ActiveTab.IsSuperTab ? -1 : PortalSettings.Current.PortalId;
             }
             set
             {
-                InternalPortalId = value;
+                this.InternalPortalId = value;
             }
         }
 
@@ -117,11 +117,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ViewState.GetValue<int?>("PortalId", null);
+                return this.ViewState.GetValue<int?>("PortalId", null);
             }
             set
             {
-                ViewState.SetValue<int?>("PortalId", value, null);
+                this.ViewState.SetValue<int?>("PortalId", value, null);
             }
         }
 
@@ -133,12 +133,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                var pageId = SelectedItemValueAsInt;
-                return (pageId == Null.NullInteger) ? null : TabController.Instance.GetTab(pageId, PortalId, false);
+                var pageId = this.SelectedItemValueAsInt;
+                return (pageId == Null.NullInteger) ? null : TabController.Instance.GetTab(pageId, this.PortalId, false);
             }
             set
             {
-                SelectedItem = (value != null) ? new ListItem() { Text = value.IndentedTabName, Value = value.TabID.ToString(CultureInfo.InvariantCulture) } : null;
+                this.SelectedItem = (value != null) ? new ListItem() { Text = value.IndentedTabName, Value = value.TabID.ToString(CultureInfo.InvariantCulture) } : null;
             }
         }
 

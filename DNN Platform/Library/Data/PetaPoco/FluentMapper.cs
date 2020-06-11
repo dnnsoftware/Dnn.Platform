@@ -17,13 +17,13 @@ namespace DotNetNuke.Data.PetaPoco
 
         public FluentMapper(string tablePrefix)
         {
-            CacheKey = String.Empty;
-            CachePriority = CacheItemPriority.Default;
-            CacheTimeOut = 0;
-            Mappings = new Dictionary<string, FluentColumnMap>();
-            Scope = String.Empty;
-            TableInfo = new TableInfo();
-            _tablePrefix = tablePrefix;
+            this.CacheKey = String.Empty;
+            this.CachePriority = CacheItemPriority.Default;
+            this.CacheTimeOut = 0;
+            this.Mappings = new Dictionary<string, FluentColumnMap>();
+            this.Scope = String.Empty;
+            this.TableInfo = new TableInfo();
+            this._tablePrefix = tablePrefix;
         }
 
         public string CacheKey { get; set; }
@@ -40,13 +40,13 @@ namespace DotNetNuke.Data.PetaPoco
 
         public TableInfo GetTableInfo(Type pocoType)
         {
-            return TableInfo;
+            return this.TableInfo;
         }
 
         public ColumnInfo GetColumnInfo(PropertyInfo pocoProperty)
         {
             var fluentMap = default(FluentColumnMap);
-            if (Mappings.TryGetValue(pocoProperty.Name, out fluentMap))
+            if (this.Mappings.TryGetValue(pocoProperty.Name, out fluentMap))
                 return fluentMap.ColumnInfo;
             return null;
         }
@@ -55,7 +55,7 @@ namespace DotNetNuke.Data.PetaPoco
         {
             // ReSharper disable once RedundantAssignment
             var fluentMap = default(FluentColumnMap);
-            if (Mappings.TryGetValue(targetProperty.Name, out fluentMap))
+            if (this.Mappings.TryGetValue(targetProperty.Name, out fluentMap))
                 return fluentMap.FromDbConverter;
             return null;
         }
@@ -64,14 +64,14 @@ namespace DotNetNuke.Data.PetaPoco
         {
             // ReSharper disable once RedundantAssignment
             var fluentMap = default(FluentColumnMap);
-            if (Mappings.TryGetValue(sourceProperty.Name, out fluentMap))
+            if (this.Mappings.TryGetValue(sourceProperty.Name, out fluentMap))
                 return fluentMap.ToDbConverter;
             return null;
         }
 
         public string GetTablePrefix()
         {
-            return _tablePrefix;
+            return this._tablePrefix;
         }
     }
 }

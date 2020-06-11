@@ -32,11 +32,11 @@ namespace DotNetNuke.Services.ImprovementsProgram
 
         public string GetBeaconEndpoint()
         {
-            if (string.IsNullOrEmpty(_beaconEndpoint))
+            if (string.IsNullOrEmpty(this._beaconEndpoint))
             {
                 var ep = ConfigurationManager.AppSettings["ImprovementProgram.Endpoint"];
 #if DEBUG
-                _beaconEndpoint = string.IsNullOrEmpty(ep)
+                this._beaconEndpoint = string.IsNullOrEmpty(ep)
                     ? "https://dev.dnnapi.com/beacon"
                     : ep;
 #else
@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.ImprovementsProgram
                     : ep;
 #endif
             }
-            return _beaconEndpoint;
+            return this._beaconEndpoint;
         }
 
         public bool IsBeaconEnabledForControlBar(UserInfo user)
@@ -97,10 +97,10 @@ namespace DotNetNuke.Services.ImprovementsProgram
             var qparams = new Dictionary<string, string>
             {
                 // Remember to URL ENCODE values that can be ambigious
-                {"h", HttpUtility.UrlEncode(GetHash(Host.GUID))},
-                {"p", HttpUtility.UrlEncode(GetHash(portalSettings.GUID.ToString()))},
-                {"a", HttpUtility.UrlEncode(GetHash(portalSettings.PortalAlias.HTTPAlias))},
-                {"u", HttpUtility.UrlEncode(GetHash(uid))},
+                {"h", HttpUtility.UrlEncode(this.GetHash(Host.GUID))},
+                {"p", HttpUtility.UrlEncode(this.GetHash(portalSettings.GUID.ToString()))},
+                {"a", HttpUtility.UrlEncode(this.GetHash(portalSettings.PortalAlias.HTTPAlias))},
+                {"u", HttpUtility.UrlEncode(this.GetHash(uid))},
                 {"r", roles.ToString("D")},
             };
 
@@ -111,16 +111,16 @@ namespace DotNetNuke.Services.ImprovementsProgram
             string packageName = DotNetNukeContext.Current.Application.Name;
             string installVersion = Common.Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, "00", 3, "");
             if (!string.IsNullOrEmpty(packageName))
-                qparams["n"] = HttpUtility.UrlEncode(GetHash(packageName));
+                qparams["n"] = HttpUtility.UrlEncode(this.GetHash(packageName));
             if (!string.IsNullOrEmpty(installVersion))
-                qparams["v"] = HttpUtility.UrlEncode(GetHash(installVersion));
+                qparams["v"] = HttpUtility.UrlEncode(this.GetHash(installVersion));
 
             return "?" + string.Join("&", qparams.Select(kpv => kpv.Key + "=" + kpv.Value));
         }
 
         public string GetBeaconUrl(UserInfo user, string filePath = null)
         {
-            return GetBeaconEndpoint() + GetBeaconQuery(user, filePath);
+            return this.GetBeaconEndpoint() + this.GetBeaconQuery(user, filePath);
         }
 
         private string GetHash(string data)

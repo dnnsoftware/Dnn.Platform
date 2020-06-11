@@ -38,7 +38,7 @@ namespace DotNetNuke.UI.WebControls
 
         public CheckBoxColumnTemplate(ListItemType itemType)
         {
-            ItemType = itemType;
+            this.ItemType = itemType;
         }
 
  /// -----------------------------------------------------------------------------
@@ -68,11 +68,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mDataField;
+                return this.mDataField;
             }
             set
             {
-                mDataField = value;
+                this.mDataField = value;
             }
         }
 
@@ -96,11 +96,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mEnabled;
+                return this.mEnabled;
             }
             set
             {
-                mEnabled = value;
+                this.mEnabled = value;
             }
         }
 
@@ -115,11 +115,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mEnabledField;
+                return this.mEnabledField;
             }
             set
             {
-                mEnabledField = value;
+                this.mEnabledField = value;
             }
         }
 
@@ -134,11 +134,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mHeaderCheckBox;
+                return this.mHeaderCheckBox;
             }
             set
             {
-                mHeaderCheckBox = value;
+                this.mHeaderCheckBox = value;
             }
         }
 
@@ -152,11 +152,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mItemType;
+                return this.mItemType;
             }
             set
             {
-                mItemType = value;
+                this.mItemType = value;
             }
         }
 
@@ -170,11 +170,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return mText;
+                return this.mText;
             }
             set
             {
-                mText = value;
+                this.mText = value;
             }
         }
 
@@ -188,16 +188,16 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public void InstantiateIn(Control container)
         {
-            if (!String.IsNullOrEmpty(Text))
+            if (!String.IsNullOrEmpty(this.Text))
             {
-                container.Controls.Add(new LiteralControl(Text + "<br/>"));
+                container.Controls.Add(new LiteralControl(this.Text + "<br/>"));
             }
-            if (ItemType != ListItemType.Header || (ItemType == ListItemType.Header && HeaderCheckBox))
+            if (this.ItemType != ListItemType.Header || (this.ItemType == ListItemType.Header && this.HeaderCheckBox))
             {
                 var box = new CheckBox();
-                box.AutoPostBack = AutoPostBack;
-                box.DataBinding += Item_DataBinding;
-                box.CheckedChanged += OnCheckChanged;
+                box.AutoPostBack = this.AutoPostBack;
+                box.DataBinding += this.Item_DataBinding;
+                box.CheckedChanged += this.OnCheckChanged;
                 container.Controls.Add(box);
             }
         }
@@ -215,35 +215,35 @@ namespace DotNetNuke.UI.WebControls
         {
             var box = (CheckBox) sender;
             var container = (DataGridItem) box.NamingContainer;
-            if (!String.IsNullOrEmpty(DataField) && ItemType != ListItemType.Header)
+            if (!String.IsNullOrEmpty(this.DataField) && this.ItemType != ListItemType.Header)
             {
-                if (DesignMode)
+                if (this.DesignMode)
                 {
                     box.Checked = false;
                 }
                 else
                 {
-                    box.Checked = Convert.ToBoolean(DataBinder.Eval(container.DataItem, DataField));
+                    box.Checked = Convert.ToBoolean(DataBinder.Eval(container.DataItem, this.DataField));
                 }
             }
             else
             {
-                box.Checked = Checked;
+                box.Checked = this.Checked;
             }
-            if (!String.IsNullOrEmpty(EnabledField))
+            if (!String.IsNullOrEmpty(this.EnabledField))
             {
-                if (DesignMode)
+                if (this.DesignMode)
                 {
                     box.Enabled = false;
                 }
                 else
                 {
-                    box.Enabled = Convert.ToBoolean(DataBinder.Eval(container.DataItem, EnabledField));
+                    box.Enabled = Convert.ToBoolean(DataBinder.Eval(container.DataItem, this.EnabledField));
                 }
             }
             else
             {
-                box.Enabled = Enabled;
+                box.Enabled = this.Enabled;
             }
         }
 
@@ -259,15 +259,15 @@ namespace DotNetNuke.UI.WebControls
             DNNDataGridCheckChangedEventArgs evntArgs;
             if (container.ItemIndex == Null.NullInteger)
             {
-                evntArgs = new DNNDataGridCheckChangedEventArgs(container, box.Checked, DataField, true);
+                evntArgs = new DNNDataGridCheckChangedEventArgs(container, box.Checked, this.DataField, true);
             }
             else
             {
-                evntArgs = new DNNDataGridCheckChangedEventArgs(container, box.Checked, DataField, false);
+                evntArgs = new DNNDataGridCheckChangedEventArgs(container, box.Checked, this.DataField, false);
             }
-            if (CheckedChanged != null)
+            if (this.CheckedChanged != null)
             {
-                CheckedChanged(sender, evntArgs);
+                this.CheckedChanged(sender, evntArgs);
             }
         }
     }

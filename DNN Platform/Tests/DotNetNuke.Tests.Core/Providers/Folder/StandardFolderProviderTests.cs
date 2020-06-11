@@ -56,35 +56,35 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [SetUp]
         public void Setup()
         {
-            _sfp = new StandardFolderProvider();
-            _folderInfo = new Mock<IFolderInfo>();
-            _fileInfo = new Mock<IFileInfo>();
-            _fileWrapper = new Mock<IFile>();
-            _directoryWrapper = new Mock<IDirectory>();
-            _folderManager = new Mock<IFolderManager>();
-            _fileManager = new Mock<IFileManager>();
-            _pathUtils = new Mock<IPathUtils>();
-            _portalControllerMock = new Mock<IPortalController>();
-            _portalControllerMock.Setup(p => p.GetPortalSettings(Constants.CONTENT_ValidPortalId))
-                .Returns(GetPortalSettingsDictionaryMock());
-            _portalControllerMock.Setup(p => p.GetCurrentPortalSettings()).Returns(GetPortalSettingsMock());
-            _cryptographyProviderMock = new Mock<CryptographyProvider>();
-            _cryptographyProviderMock.Setup(c => c.EncryptParameter(It.IsAny<string>(), It.IsAny<string>()))
+            this._sfp = new StandardFolderProvider();
+            this._folderInfo = new Mock<IFolderInfo>();
+            this._fileInfo = new Mock<IFileInfo>();
+            this._fileWrapper = new Mock<IFile>();
+            this._directoryWrapper = new Mock<IDirectory>();
+            this._folderManager = new Mock<IFolderManager>();
+            this._fileManager = new Mock<IFileManager>();
+            this._pathUtils = new Mock<IPathUtils>();
+            this._portalControllerMock = new Mock<IPortalController>();
+            this._portalControllerMock.Setup(p => p.GetPortalSettings(Constants.CONTENT_ValidPortalId))
+                .Returns(this.GetPortalSettingsDictionaryMock());
+            this._portalControllerMock.Setup(p => p.GetCurrentPortalSettings()).Returns(this.GetPortalSettingsMock());
+            this._cryptographyProviderMock = new Mock<CryptographyProvider>();
+            this._cryptographyProviderMock.Setup(c => c.EncryptParameter(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(Guid.NewGuid().ToString("N"));
-            _localeControllerMock = new Mock<ILocaleController>();
-            _localeControllerMock.Setup(l => l.GetLocales(Constants.CONTENT_ValidPortalId)).Returns(new Dictionary<string,Locale>
+            this._localeControllerMock = new Mock<ILocaleController>();
+            this._localeControllerMock.Setup(l => l.GetLocales(Constants.CONTENT_ValidPortalId)).Returns(new Dictionary<string,Locale>
             {
                 {"en-us", new Locale()}
             });
 
-            FileWrapper.RegisterInstance(_fileWrapper.Object);
-            DirectoryWrapper.RegisterInstance(_directoryWrapper.Object);
-            FolderManager.RegisterInstance(_folderManager.Object);
-            FileManager.RegisterInstance(_fileManager.Object);
-            PathUtils.RegisterInstance(_pathUtils.Object);
-            PortalController.SetTestableInstance(_portalControllerMock.Object);
-            ComponentFactory.RegisterComponentInstance<CryptographyProvider>("CryptographyProviderMock", _cryptographyProviderMock.Object);
-            LocaleController.RegisterInstance(_localeControllerMock.Object);
+            FileWrapper.RegisterInstance(this._fileWrapper.Object);
+            DirectoryWrapper.RegisterInstance(this._directoryWrapper.Object);
+            FolderManager.RegisterInstance(this._folderManager.Object);
+            FileManager.RegisterInstance(this._fileManager.Object);
+            PathUtils.RegisterInstance(this._pathUtils.Object);
+            PortalController.SetTestableInstance(this._portalControllerMock.Object);
+            ComponentFactory.RegisterComponentInstance<CryptographyProvider>("CryptographyProviderMock", this._cryptographyProviderMock.Object);
+            LocaleController.RegisterInstance(this._localeControllerMock.Object);
         }
 
         private Dictionary<string, string> GetPortalSettingsDictionaryMock()
@@ -124,7 +124,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var stream = new Mock<Stream>();
 
-            _sfp.AddFile(null, Constants.FOLDER_ValidFileName, stream.Object);
+            this._sfp.AddFile(null, Constants.FOLDER_ValidFileName, stream.Object);
         }
 
         [Test]
@@ -135,14 +135,14 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var stream = new Mock<Stream>();
 
-            _sfp.AddFile(_folderInfo.Object, fileName, stream.Object);
+            this._sfp.AddFile(this._folderInfo.Object, fileName, stream.Object);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void AddFile_Throws_On_Null_Content()
         {
-            _sfp.AddFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, null);
+            this._sfp.AddFile(this._folderInfo.Object, Constants.FOLDER_ValidFileName, null);
         }
 
         #endregion
@@ -153,7 +153,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [ExpectedException(typeof(ArgumentNullException))]
         public void DeleteFile_Throws_On_Null_File()
         {
-            _sfp.DeleteFile(null);
+            this._sfp.DeleteFile(null);
         }
 
         //[Test]
@@ -188,34 +188,34 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [ExpectedException(typeof(ArgumentNullException))]
         public void ExistsFile_Throws_On_Null_Folder()
         {
-            _sfp.FileExists(null, Constants.FOLDER_ValidFileName);
+            this._sfp.FileExists(null, Constants.FOLDER_ValidFileName);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ExistsFile_Throws_On_Null_FileName()
         {
-            _sfp.FileExists(_folderInfo.Object, null);
+            this._sfp.FileExists(this._folderInfo.Object, null);
         }
 
         [Test]
         public void ExistsFile_Calls_FileWrapper_Exists()
         {
-            _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
+            this._folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
 
-            _sfp.FileExists(_folderInfo.Object, Constants.FOLDER_ValidFileName);
+            this._sfp.FileExists(this._folderInfo.Object, Constants.FOLDER_ValidFileName);
 
-            _fileWrapper.Verify(fw => fw.Exists(Constants.FOLDER_ValidFilePath), Times.Once());
+            this._fileWrapper.Verify(fw => fw.Exists(Constants.FOLDER_ValidFilePath), Times.Once());
         }
 
         [Test]
         public void ExistsFile_Returns_True_When_File_Exists()
         {
-            _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
+            this._folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
 
-            _fileWrapper.Setup(fw => fw.Exists(Constants.FOLDER_ValidFilePath)).Returns(true);
+            this._fileWrapper.Setup(fw => fw.Exists(Constants.FOLDER_ValidFilePath)).Returns(true);
 
-            var result = _sfp.FileExists(_folderInfo.Object, Constants.FOLDER_ValidFileName);
+            var result = this._sfp.FileExists(this._folderInfo.Object, Constants.FOLDER_ValidFileName);
 
             Assert.IsTrue(result);
         }
@@ -223,11 +223,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void ExistsFile_Returns_False_When_File_Does_Not_Exist()
         {
-            _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
+            this._folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
 
-            _fileWrapper.Setup(fw => fw.Exists(Constants.FOLDER_ValidFilePath)).Returns(false);
+            this._fileWrapper.Setup(fw => fw.Exists(Constants.FOLDER_ValidFilePath)).Returns(false);
 
-            var result = _sfp.FileExists(_folderInfo.Object, Constants.FOLDER_ValidFileName);
+            var result = this._sfp.FileExists(this._folderInfo.Object, Constants.FOLDER_ValidFileName);
 
             Assert.IsFalse(result);
         }
@@ -240,7 +240,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [ExpectedException(typeof(ArgumentNullException))]
         public void ExistsFolder_Throws_On_Null_FolderMapping()
         {
-            _sfp.FolderExists(Constants.FOLDER_ValidFolderPath, null);
+            this._sfp.FolderExists(Constants.FOLDER_ValidFolderPath, null);
         }
 
         [Test]
@@ -249,7 +249,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var folderMapping = new FolderMappingInfo();
 
-            _sfp.FolderExists(null, folderMapping);
+            this._sfp.FolderExists(null, folderMapping);
         }
 
         [Test]
@@ -257,11 +257,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var folderMapping = new FolderMappingInfo { PortalID = Constants.CONTENT_ValidPortalId };
 
-            _pathUtils.Setup(pu => pu.GetPhysicalPath(folderMapping.PortalID, Constants.FOLDER_ValidFolderRelativePath)).Returns(Constants.FOLDER_ValidFolderPath);
+            this._pathUtils.Setup(pu => pu.GetPhysicalPath(folderMapping.PortalID, Constants.FOLDER_ValidFolderRelativePath)).Returns(Constants.FOLDER_ValidFolderPath);
 
-            _sfp.FolderExists(Constants.FOLDER_ValidFolderRelativePath, folderMapping);
+            this._sfp.FolderExists(Constants.FOLDER_ValidFolderRelativePath, folderMapping);
 
-            _directoryWrapper.Verify(dw => dw.Exists(Constants.FOLDER_ValidFolderPath), Times.Once());
+            this._directoryWrapper.Verify(dw => dw.Exists(Constants.FOLDER_ValidFolderPath), Times.Once());
         }
 
         [Test]
@@ -269,11 +269,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var folderMapping = new FolderMappingInfo { PortalID = Constants.CONTENT_ValidPortalId };
 
-            _pathUtils.Setup(pu => pu.GetPhysicalPath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(Constants.FOLDER_ValidFolderPath);
+            this._pathUtils.Setup(pu => pu.GetPhysicalPath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(Constants.FOLDER_ValidFolderPath);
 
-            _directoryWrapper.Setup(dw => dw.Exists(Constants.FOLDER_ValidFolderPath)).Returns(true);
+            this._directoryWrapper.Setup(dw => dw.Exists(Constants.FOLDER_ValidFolderPath)).Returns(true);
 
-            var result = _sfp.FolderExists(Constants.FOLDER_ValidFolderRelativePath, folderMapping);
+            var result = this._sfp.FolderExists(Constants.FOLDER_ValidFolderRelativePath, folderMapping);
 
             Assert.IsTrue(result);
         }
@@ -283,11 +283,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var folderMapping = new FolderMappingInfo { PortalID = Constants.CONTENT_ValidPortalId };
 
-            _pathUtils.Setup(pu => pu.GetPhysicalPath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(Constants.FOLDER_ValidFolderPath);
+            this._pathUtils.Setup(pu => pu.GetPhysicalPath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(Constants.FOLDER_ValidFolderPath);
 
-            _directoryWrapper.Setup(dw => dw.Exists(Constants.FOLDER_ValidFolderPath)).Returns(false);
+            this._directoryWrapper.Setup(dw => dw.Exists(Constants.FOLDER_ValidFolderPath)).Returns(false);
 
-            var result = _sfp.FolderExists(Constants.FOLDER_ValidFolderRelativePath, folderMapping);
+            var result = this._sfp.FolderExists(Constants.FOLDER_ValidFolderRelativePath, folderMapping);
 
             Assert.IsFalse(result);
         }
@@ -300,7 +300,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetFileAttributes_Throws_On_Null_File()
         {
-            _sfp.GetFileAttributes(null);
+            this._sfp.GetFileAttributes(null);
         }
 
         //[Test]
@@ -330,11 +330,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void GetFileAttributes_Returns_Null_When_File_Does_Not_Exist()
         {
-            _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
+            this._fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
 
-            _fileWrapper.Setup(fw => fw.GetAttributes(Constants.FOLDER_ValidFilePath)).Throws<FileNotFoundException>();
+            this._fileWrapper.Setup(fw => fw.GetAttributes(Constants.FOLDER_ValidFilePath)).Throws<FileNotFoundException>();
 
-            var result = _sfp.GetFileAttributes(_fileInfo.Object);
+            var result = this._sfp.GetFileAttributes(this._fileInfo.Object);
 
             Assert.IsNull(result);
         }
@@ -347,29 +347,29 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetFiles_Throws_On_Null_Folder()
         {
-            _sfp.GetFiles(null);
+            this._sfp.GetFiles(null);
         }
 
         [Test]
         public void GetFiles_Calls_DirectoryWrapper_GetFiles()
         {
-            _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
+            this._folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
 
-            _sfp.GetFiles(_folderInfo.Object);
+            this._sfp.GetFiles(this._folderInfo.Object);
 
-            _directoryWrapper.Verify(dw => dw.GetFiles(Constants.FOLDER_ValidFolderPath));
+            this._directoryWrapper.Verify(dw => dw.GetFiles(Constants.FOLDER_ValidFolderPath));
         }
 
         [Test]
         public void GetFiles_Count_Equals_DirectoryWrapper_GetFiles_Count()
         {
-            _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
+            this._folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
 
             var filesReturned = new[] { "", "", "" };
 
-            _directoryWrapper.Setup(dw => dw.GetFiles(Constants.FOLDER_ValidFolderPath)).Returns(filesReturned);
+            this._directoryWrapper.Setup(dw => dw.GetFiles(Constants.FOLDER_ValidFolderPath)).Returns(filesReturned);
 
-            var files = _sfp.GetFiles(_folderInfo.Object);
+            var files = this._sfp.GetFiles(this._folderInfo.Object);
 
             Assert.AreEqual(filesReturned.Length, files.Length);
         }
@@ -377,14 +377,14 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void GetFiles_Returns_Valid_FileNames_When_Folder_Contains_Files()
         {
-            _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
+            this._folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
 
             var filesReturned = new[] { "C:\\folder\\file1.txt", "C:\\folder\\file2.txt", "C:\\folder\\file3.txt" };
             var expectedValues = new[] { "file1.txt", "file2.txt", "file3.txt" };
 
-            _directoryWrapper.Setup(dw => dw.GetFiles(Constants.FOLDER_ValidFolderPath)).Returns(filesReturned);
+            this._directoryWrapper.Setup(dw => dw.GetFiles(Constants.FOLDER_ValidFolderPath)).Returns(filesReturned);
 
-            var files = _sfp.GetFiles(_folderInfo.Object);
+            var files = this._sfp.GetFiles(this._folderInfo.Object);
 
             CollectionAssert.AreEqual(expectedValues, files);
         }
@@ -397,24 +397,24 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetFileStream_Throws_On_Null_Folder()
         {
-            _sfp.GetFileStream(null, Constants.FOLDER_ValidFileName);
+            this._sfp.GetFileStream(null, Constants.FOLDER_ValidFileName);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void GetFileStream_Throws_On_Null_FileName()
         {
-            _sfp.GetFileStream(_folderInfo.Object, null);
+            this._sfp.GetFileStream(this._folderInfo.Object, null);
         }
 
         [Test]
         public void GetFileStream_Calls_FileWrapper_OpenRead()
         {
-            _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
+            this._folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
 
-            _sfp.GetFileStream(_folderInfo.Object, Constants.FOLDER_ValidFileName);
+            this._sfp.GetFileStream(this._folderInfo.Object, Constants.FOLDER_ValidFileName);
 
-            _fileWrapper.Verify(fw => fw.OpenRead(Constants.FOLDER_ValidFilePath), Times.Once());
+            this._fileWrapper.Verify(fw => fw.OpenRead(Constants.FOLDER_ValidFilePath), Times.Once());
         }
 
         [Test]
@@ -423,11 +423,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var validFileBytes = new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             var memoryStream = new MemoryStream(validFileBytes);
 
-            _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
+            this._folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
 
-            _fileWrapper.Setup(fw => fw.OpenRead(Constants.FOLDER_ValidFilePath)).Returns(memoryStream);
+            this._fileWrapper.Setup(fw => fw.OpenRead(Constants.FOLDER_ValidFilePath)).Returns(memoryStream);
 
-            var result = _sfp.GetFileStream(_folderInfo.Object, Constants.FOLDER_ValidFileName);
+            var result = this._sfp.GetFileStream(this._folderInfo.Object, Constants.FOLDER_ValidFileName);
 
             byte[] resultBytes;
             var buffer = new byte[16 * 1024];
@@ -447,11 +447,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void GetFileStream_Returns_Null_When_File_Does_Not_Exist()
         {
-            _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
+            this._folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
 
-            _fileWrapper.Setup(fw => fw.OpenRead(Constants.FOLDER_ValidFilePath)).Throws<FileNotFoundException>();
+            this._fileWrapper.Setup(fw => fw.OpenRead(Constants.FOLDER_ValidFilePath)).Throws<FileNotFoundException>();
 
-            var result = _sfp.GetFileStream(_folderInfo.Object, Constants.FOLDER_ValidFileName);
+            var result = this._sfp.GetFileStream(this._folderInfo.Object, Constants.FOLDER_ValidFileName);
 
             Assert.IsNull(result);
         }
@@ -466,7 +466,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var iconControllerWrapper = new Mock<IIconController>();
             IconControllerWrapper.RegisterInstance(iconControllerWrapper.Object);
 
-            _sfp.GetFolderProviderIconPath();
+            this._sfp.GetFolderProviderIconPath();
 
             iconControllerWrapper.Verify(icw => icw.IconURL("FolderStandard", "32x32"), Times.Once());
         }
@@ -479,7 +479,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetLastModificationTime_Throws_On_Null_File()
         {
-            _sfp.GetLastModificationTime(null);
+            this._sfp.GetLastModificationTime(null);
         }
 
         //[Test]
@@ -511,11 +511,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var expectedDate = Null.NullDate;
 
-            _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
+            this._fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
 
-            _fileWrapper.Setup(fw => fw.GetLastWriteTime(Constants.FOLDER_ValidFilePath)).Throws<FileNotFoundException>();
+            this._fileWrapper.Setup(fw => fw.GetLastWriteTime(Constants.FOLDER_ValidFilePath)).Throws<FileNotFoundException>();
 
-            var result = _sfp.GetLastModificationTime(_fileInfo.Object);
+            var result = this._sfp.GetLastModificationTime(this._fileInfo.Object);
 
             Assert.AreEqual(expectedDate, result);
         }
@@ -528,7 +528,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetSubFolders_Throws_On_Null_FolderMapping()
         {
-            _sfp.GetSubFolders(Constants.FOLDER_ValidFolderPath, null).ToList();
+            this._sfp.GetSubFolders(Constants.FOLDER_ValidFolderPath, null).ToList();
         }
 
         [Test]
@@ -537,7 +537,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var folderMapping = new FolderMappingInfo();
 
-            _sfp.GetSubFolders(null, folderMapping).ToList();
+            this._sfp.GetSubFolders(null, folderMapping).ToList();
         }
 
         [Test]
@@ -545,11 +545,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var folderMapping = new FolderMappingInfo { PortalID = Constants.CONTENT_ValidPortalId };
 
-            _pathUtils.Setup(pu => pu.GetPhysicalPath(folderMapping.PortalID, Constants.FOLDER_ValidFolderRelativePath)).Returns(Constants.FOLDER_ValidFolderPath);
+            this._pathUtils.Setup(pu => pu.GetPhysicalPath(folderMapping.PortalID, Constants.FOLDER_ValidFolderRelativePath)).Returns(Constants.FOLDER_ValidFolderPath);
 
-            _sfp.GetSubFolders(Constants.FOLDER_ValidFolderRelativePath, folderMapping).ToList();
+            this._sfp.GetSubFolders(Constants.FOLDER_ValidFolderRelativePath, folderMapping).ToList();
 
-            _directoryWrapper.Verify(dw => dw.GetDirectories(Constants.FOLDER_ValidFolderPath), Times.Once());
+            this._directoryWrapper.Verify(dw => dw.GetDirectories(Constants.FOLDER_ValidFolderPath), Times.Once());
         }
 
         [Test]
@@ -557,18 +557,18 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var folderMapping = new FolderMappingInfo { PortalID = Constants.CONTENT_ValidPortalId };
 
-            _pathUtils.Setup(pu => pu.GetPhysicalPath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(Constants.FOLDER_ValidFolderPath);
-            _pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidSubFolderPath)).Returns(Constants.FOLDER_ValidSubFolderRelativePath);
-            _pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_OtherValidSubFolderPath)).Returns(Constants.FOLDER_OtherValidSubFolderRelativePath);
+            this._pathUtils.Setup(pu => pu.GetPhysicalPath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(Constants.FOLDER_ValidFolderPath);
+            this._pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidSubFolderPath)).Returns(Constants.FOLDER_ValidSubFolderRelativePath);
+            this._pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_OtherValidSubFolderPath)).Returns(Constants.FOLDER_OtherValidSubFolderRelativePath);
 
             var subFolders = new[] {
                 Constants.FOLDER_ValidSubFolderPath,
                 Constants.FOLDER_OtherValidSubFolderPath
             };
 
-            _directoryWrapper.Setup(dw => dw.GetDirectories(Constants.FOLDER_ValidFolderPath)).Returns(subFolders);
+            this._directoryWrapper.Setup(dw => dw.GetDirectories(Constants.FOLDER_ValidFolderPath)).Returns(subFolders);
 
-            var result = _sfp.GetSubFolders(Constants.FOLDER_ValidFolderRelativePath, folderMapping).ToList();
+            var result = this._sfp.GetSubFolders(Constants.FOLDER_ValidFolderRelativePath, folderMapping).ToList();
 
             Assert.AreEqual(subFolders.Length, result.Count);
         }
@@ -583,18 +583,18 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var folderMapping = new FolderMappingInfo { PortalID = Constants.CONTENT_ValidPortalId };
 
-            _pathUtils.Setup(pu => pu.GetPhysicalPath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(Constants.FOLDER_ValidFolderPath);
-            _pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidSubFolderPath)).Returns(Constants.FOLDER_ValidSubFolderRelativePath);
-            _pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_OtherValidSubFolderPath)).Returns(Constants.FOLDER_OtherValidSubFolderRelativePath);
+            this._pathUtils.Setup(pu => pu.GetPhysicalPath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(Constants.FOLDER_ValidFolderPath);
+            this._pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidSubFolderPath)).Returns(Constants.FOLDER_ValidSubFolderRelativePath);
+            this._pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_OtherValidSubFolderPath)).Returns(Constants.FOLDER_OtherValidSubFolderRelativePath);
 
             var subFolders = new[] {
                 Constants.FOLDER_ValidSubFolderPath,
                 Constants.FOLDER_OtherValidSubFolderPath
             };
 
-            _directoryWrapper.Setup(dw => dw.GetDirectories(Constants.FOLDER_ValidFolderPath)).Returns(subFolders);
+            this._directoryWrapper.Setup(dw => dw.GetDirectories(Constants.FOLDER_ValidFolderPath)).Returns(subFolders);
 
-            var result = _sfp.GetSubFolders(Constants.FOLDER_ValidFolderRelativePath, folderMapping).ToList();
+            var result = this._sfp.GetSubFolders(Constants.FOLDER_ValidFolderRelativePath, folderMapping).ToList();
 
             CollectionAssert.AreEqual(expectedSubFolders, result);
         }
@@ -611,13 +611,13 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             //Arrange
             var sfp = new Mock<StandardFolderProvider> { CallBase = true };
-            var portalSettingsMock = GetPortalSettingsMock();
+            var portalSettingsMock = this.GetPortalSettingsMock();
             sfp.Setup(fp => fp.GetPortalSettings(Constants.CONTENT_ValidPortalId)).Returns(portalSettingsMock);
-            _fileInfo.Setup(f => f.FileName).Returns($"MyFileName {fileNameChar} Copy");
-            _fileInfo.Setup(f => f.PortalId).Returns(Constants.CONTENT_ValidPortalId);
+            this._fileInfo.Setup(f => f.FileName).Returns($"MyFileName {fileNameChar} Copy");
+            this._fileInfo.Setup(f => f.PortalId).Returns(Constants.CONTENT_ValidPortalId);
             
             //Act
-            var fileUrl = sfp.Object.GetFileUrl(_fileInfo.Object);
+            var fileUrl = sfp.Object.GetFileUrl(this._fileInfo.Object);
 
             //Assert
             Assert.IsFalse(fileUrl.ToLowerInvariant().Contains("linkclick"));
@@ -638,13 +638,13 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             //Arrange
             var sfp = new Mock<StandardFolderProvider> { CallBase = true };
-            var portalSettingsMock = GetPortalSettingsMock();
+            var portalSettingsMock = this.GetPortalSettingsMock();
             sfp.Setup(fp => fp.GetPortalSettings(Constants.CONTENT_ValidPortalId)).Returns(portalSettingsMock);
-            _fileInfo.Setup(f => f.FileName).Returns($"MyFileName {fileNameChar} Copy");
-            _fileInfo.Setup(f => f.PortalId).Returns(Constants.CONTENT_ValidPortalId);
+            this._fileInfo.Setup(f => f.FileName).Returns($"MyFileName {fileNameChar} Copy");
+            this._fileInfo.Setup(f => f.PortalId).Returns(Constants.CONTENT_ValidPortalId);
 
             //Act
-            var fileUrl = sfp.Object.GetFileUrl(_fileInfo.Object);
+            var fileUrl = sfp.Object.GetFileUrl(this._fileInfo.Object);
 
             //Assert
             Assert.IsTrue(fileUrl.ToLowerInvariant().Contains("linkclick"));
@@ -657,18 +657,18 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [ExpectedException(typeof(ArgumentNullException))]
         public void IsInSync_Throws_On_Null_File()
         {
-            _sfp.IsInSync(null);
+            this._sfp.IsInSync(null);
         }
 
         [Test]
         public void IsInSync_Returns_True_When_File_Is_In_Sync()
         {
-            _fileInfo.Setup(fi => fi.SHA1Hash).Returns(Constants.FOLDER_UnmodifiedFileHash);
+            this._fileInfo.Setup(fi => fi.SHA1Hash).Returns(Constants.FOLDER_UnmodifiedFileHash);
 
             var sfp = new Mock<StandardFolderProvider> { CallBase = true };
-            sfp.Setup(fp => fp.GetHash(_fileInfo.Object)).Returns(Constants.FOLDER_UnmodifiedFileHash);
+            sfp.Setup(fp => fp.GetHash(this._fileInfo.Object)).Returns(Constants.FOLDER_UnmodifiedFileHash);
 
-            var result = sfp.Object.IsInSync(_fileInfo.Object);
+            var result = sfp.Object.IsInSync(this._fileInfo.Object);
 
             Assert.IsTrue(result);
         }
@@ -676,12 +676,12 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void IsInSync_Returns_True_When_File_Is_Not_In_Sync()
         {
-            _fileInfo.Setup(fi => fi.SHA1Hash).Returns(Constants.FOLDER_UnmodifiedFileHash);
+            this._fileInfo.Setup(fi => fi.SHA1Hash).Returns(Constants.FOLDER_UnmodifiedFileHash);
 
             var sfp = new Mock<StandardFolderProvider> { CallBase = true };
-            sfp.Setup(fp => fp.GetHash(_fileInfo.Object)).Returns(Constants.FOLDER_ModifiedFileHash);
+            sfp.Setup(fp => fp.GetHash(this._fileInfo.Object)).Returns(Constants.FOLDER_ModifiedFileHash);
 
-            var result = sfp.Object.IsInSync(_fileInfo.Object);
+            var result = sfp.Object.IsInSync(this._fileInfo.Object);
 
             Assert.IsTrue(result);
         }
@@ -694,7 +694,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [ExpectedException(typeof(ArgumentNullException))]
         public void RenameFile_Throws_On_Null_File()
         {
-            _sfp.RenameFile(null, Constants.FOLDER_ValidFileName);
+            this._sfp.RenameFile(null, Constants.FOLDER_ValidFileName);
         }
 
         [Test]
@@ -703,32 +703,32 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [ExpectedException(typeof(ArgumentException))]
         public void RenameFile_Throws_On_NullOrEmpty_NewFileName(string newFileName)
         {
-            _sfp.RenameFile(_fileInfo.Object, newFileName);
+            this._sfp.RenameFile(this._fileInfo.Object, newFileName);
         }
 
         [Test]
         public void RenameFile_Calls_FileWrapper_Move_When_FileNames_Are_Not_Equal()
         {
-            _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
-            _fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
-            _fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
-            _folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(_folderInfo.Object);
-            _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
+            this._fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
+            this._fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
+            this._fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
+            this._folderManager.Setup(fm => fm.GetFolder(Constants.FOLDER_ValidFolderId)).Returns(this._folderInfo.Object);
+            this._folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
 
-            _sfp.RenameFile(_fileInfo.Object, Constants.FOLDER_OtherValidFileName);
+            this._sfp.RenameFile(this._fileInfo.Object, Constants.FOLDER_OtherValidFileName);
 
-            _fileWrapper.Verify(fw => fw.Move(Constants.FOLDER_ValidFilePath, Constants.FOLDER_OtherValidFilePath), Times.Once());
+            this._fileWrapper.Verify(fw => fw.Move(Constants.FOLDER_ValidFilePath, Constants.FOLDER_OtherValidFilePath), Times.Once());
         }
 
         [Test]
         public void RenameFile_Does_Not_Call_FileWrapper_Move_When_FileNames_Are_Equal()
         {
-            _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
-            _fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
+            this._fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
+            this._fileInfo.Setup(fi => fi.FileName).Returns(Constants.FOLDER_ValidFileName);
 
-            _sfp.RenameFile(_fileInfo.Object, Constants.FOLDER_ValidFileName);
+            this._sfp.RenameFile(this._fileInfo.Object, Constants.FOLDER_ValidFileName);
 
-            _fileWrapper.Verify(fw => fw.Move(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
+            this._fileWrapper.Verify(fw => fw.Move(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
         }
 
         #endregion
@@ -739,7 +739,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [ExpectedException(typeof(ArgumentNullException))]
         public void SetFileAttributes_Throws_On_Null_File()
         {
-            _sfp.SetFileAttributes(null, FileAttributes.Archive);
+            this._sfp.SetFileAttributes(null, FileAttributes.Archive);
         }
 
         //[Test]
@@ -761,7 +761,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void SupportsFileAttributes_Returns_True()
         {
-            var result = _sfp.SupportsFileAttributes();
+            var result = this._sfp.SupportsFileAttributes();
 
             Assert.IsTrue(result);
         }
@@ -776,7 +776,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var stream = new Mock<Stream>();
 
-            _sfp.UpdateFile(null, Constants.FOLDER_ValidFileName, stream.Object);
+            this._sfp.UpdateFile(null, Constants.FOLDER_ValidFileName, stream.Object);
         }
 
         [Test]
@@ -787,42 +787,42 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var stream = new Mock<Stream>();
 
-            _sfp.UpdateFile(_folderInfo.Object, fileName, stream.Object);
+            this._sfp.UpdateFile(this._folderInfo.Object, fileName, stream.Object);
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void UpdateFile_Throws_On_Null_Content()
         {
-            _sfp.UpdateFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, null);
+            this._sfp.UpdateFile(this._folderInfo.Object, Constants.FOLDER_ValidFileName, null);
         }
 
         [Test]
         public void UpdateFile_Calls_FileWrapper_Delete_When_File_Exists()
         {
-            _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
+            this._folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
 
-            _fileWrapper.Setup(fw => fw.Exists(Constants.FOLDER_ValidFilePath)).Returns(true);
+            this._fileWrapper.Setup(fw => fw.Exists(Constants.FOLDER_ValidFilePath)).Returns(true);
 
             var stream = new Mock<Stream>();
 
-            _sfp.UpdateFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, stream.Object);
+            this._sfp.UpdateFile(this._folderInfo.Object, Constants.FOLDER_ValidFileName, stream.Object);
 
-            _fileWrapper.Verify(fw => fw.Delete(Constants.FOLDER_ValidFilePath), Times.Once());
+            this._fileWrapper.Verify(fw => fw.Delete(Constants.FOLDER_ValidFilePath), Times.Once());
         }
 
         [Test]
         public void UpdateFile_Calls_FileWrapper_Create()
         {
-            _folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
+            this._folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
 
-            _fileWrapper.Setup(fw => fw.Exists(Constants.FOLDER_ValidFilePath)).Returns(false);
+            this._fileWrapper.Setup(fw => fw.Exists(Constants.FOLDER_ValidFilePath)).Returns(false);
 
             var stream = new Mock<Stream>();
 
-            _sfp.UpdateFile(_folderInfo.Object, Constants.FOLDER_ValidFileName, stream.Object);
+            this._sfp.UpdateFile(this._folderInfo.Object, Constants.FOLDER_ValidFileName, stream.Object);
 
-            _fileWrapper.Verify(fw => fw.Create(Constants.FOLDER_ValidFilePath), Times.Once());
+            this._fileWrapper.Verify(fw => fw.Create(Constants.FOLDER_ValidFilePath), Times.Once());
         }
 
         #endregion

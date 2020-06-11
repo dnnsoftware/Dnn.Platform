@@ -59,7 +59,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                string widgetPath = Path.Combine("Resources\\Widgets\\User", BasePath);
+                string widgetPath = Path.Combine("Resources\\Widgets\\User", this.BasePath);
                 return Path.Combine(Globals.ApplicationMapPath, widgetPath);
             }
         }

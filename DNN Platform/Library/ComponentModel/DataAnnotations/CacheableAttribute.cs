@@ -18,8 +18,8 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
         /// </summary>
         public CacheableAttribute()
         {
-            CachePriority = CacheItemPriority.Default;
-            CacheTimeOut = 20;
+            this.CachePriority = CacheItemPriority.Default;
+            this.CacheTimeOut = 20;
         }
 
         /// <summary>
@@ -43,9 +43,9 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
         /// <param name="timeOut">The timeout multiplier used to cache the item</param>
         public CacheableAttribute(string cacheKey, CacheItemPriority priority, int timeOut)
         {
-            CacheKey = cacheKey;
-            CachePriority = priority;
-            CacheTimeOut = timeOut;
+            this.CacheKey = cacheKey;
+            this.CachePriority = priority;
+            this.CacheTimeOut = timeOut;
         }
 
         /// <summary>

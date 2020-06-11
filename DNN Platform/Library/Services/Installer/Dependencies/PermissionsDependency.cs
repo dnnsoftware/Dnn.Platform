@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
         {
             get
             {
-                return Util.INSTALL_Permissions + " - " + Localization.Localization.GetString(Permission, Localization.Localization.GlobalResourceFile);
+                return Util.INSTALL_Permissions + " - " + Localization.Localization.GetString(this.Permission, Localization.Localization.GlobalResourceFile);
             }
         }
 
@@ -38,13 +38,13 @@ namespace DotNetNuke.Services.Installer.Dependencies
         {
             get
             {
-                return SecurityPolicy.HasPermissions(Permissions, ref Permission);
+                return SecurityPolicy.HasPermissions(this.Permissions, ref this.Permission);
             }
         }
 
         public override void ReadManifest(XPathNavigator dependencyNav)
         {
-            Permissions = dependencyNav.Value;
+            this.Permissions = dependencyNav.Value;
         }
     }
 }

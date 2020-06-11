@@ -71,17 +71,17 @@ namespace log4net.Util.PatternStringConverters
 		/// </remarks>
 		public void ActivateOptions()
 		{
-			if (SystemInfo.EqualsIgnoringCase(Option, "DOS"))
+			if (SystemInfo.EqualsIgnoringCase(this.Option, "DOS"))
 			{
-				Option = "\r\n";
+				this.Option = "\r\n";
 			}
-			else if (SystemInfo.EqualsIgnoringCase(Option, "UNIX"))
+			else if (SystemInfo.EqualsIgnoringCase(this.Option, "UNIX"))
 			{
-				Option = "\n";
+				this.Option = "\n";
 			}
 			else
 			{
-				Option = SystemInfo.NewLine;
+				this.Option = SystemInfo.NewLine;
 			}
 		}
 

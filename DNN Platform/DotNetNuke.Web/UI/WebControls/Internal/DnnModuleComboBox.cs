@@ -40,7 +40,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             get
             {
-                return _moduleCombo.Items.Count;
+                return this._moduleCombo.Items.Count;
             }
         }
 
@@ -48,7 +48,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             get
             {
-                return _moduleCombo.SelectedValue;
+                return this._moduleCombo.SelectedValue;
             }
         }
 
@@ -56,18 +56,18 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             get
             {
-                return _moduleCombo.ClientID;
+                return this._moduleCombo.ClientID;
             }
         }
 
         public override bool Enabled {
             get
             {
-                return _moduleCombo.Enabled;
+                return this._moduleCombo.Enabled;
             }
             set
             {
-                _moduleCombo.Enabled = value;
+                this._moduleCombo.Enabled = value;
             }
         }
 
@@ -78,7 +78,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         private Dictionary<int, string> GetPortalDesktopModules()
         {
             IOrderedEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> portalModulesList;
-            if (Filter == null)
+            if (this.Filter == null)
             {
                 portalModulesList = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
                     .Where((kvp) => kvp.Value.DesktopModule.Category == "Uncategorised" || String.IsNullOrEmpty(kvp.Value.DesktopModule.Category))
@@ -87,7 +87,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             else
             {
                 portalModulesList = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
-                    .Where(Filter)
+                    .Where(this.Filter)
                     .OrderBy(c => c.Key);
             }
 
@@ -163,34 +163,34 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            _moduleCombo = new DnnComboBox();
-            _moduleCombo.DataValueField = "key";
-            _moduleCombo.DataTextField = "value";
-            Controls.Add(_moduleCombo);
+            this._moduleCombo = new DnnComboBox();
+            this._moduleCombo.DataValueField = "key";
+            this._moduleCombo.DataTextField = "value";
+            this.Controls.Add(this._moduleCombo);
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            _originalValue = SelectedValue;
+            this._originalValue = this.SelectedValue;
         }
 
         protected virtual void OnItemChanged()
         {
-            if (ItemChanged != null)
+            if (this.ItemChanged != null)
             {
-                ItemChanged(this, new EventArgs());
+                this.ItemChanged(this, new EventArgs());
             }
         }
 
         protected override void OnPreRender(EventArgs e)
         {
-            if (_moduleCombo.FindItemByValue(_originalValue) != null)
+            if (this._moduleCombo.FindItemByValue(this._originalValue) != null)
             {
-                _moduleCombo.FindItemByValue(_originalValue).Selected = true;
+                this._moduleCombo.FindItemByValue(this._originalValue).Selected = true;
             }
 
-            _moduleCombo.Width = Width;
+            this._moduleCombo.Width = this.Width;
             base.OnPreRender(e);
         }
 
@@ -200,23 +200,23 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         public void BindAllPortalDesktopModules()
         {
-            _moduleCombo.SelectedValue = null;
-            _moduleCombo.DataSource = GetPortalDesktopModules();
-            _moduleCombo.DataBind();
-            BindPortalDesktopModuleImages();
+            this._moduleCombo.SelectedValue = null;
+            this._moduleCombo.DataSource = this.GetPortalDesktopModules();
+            this._moduleCombo.DataBind();
+            this.BindPortalDesktopModuleImages();
         }
 
         public void BindTabModulesByTabID(int tabID)
         {
-            _moduleCombo.SelectedValue = null;
-            _moduleCombo.DataSource = GetTabModules(tabID);
-            _moduleCombo.DataBind();
-            BindTabModuleImages(tabID);
+            this._moduleCombo.SelectedValue = null;
+            this._moduleCombo.DataSource = GetTabModules(tabID);
+            this._moduleCombo.DataBind();
+            this.BindTabModuleImages(tabID);
         }
 
         public void SetModule(string code)
         {
-            _moduleCombo.SelectedIndex = _moduleCombo.FindItemIndexByValue(code);
+            this._moduleCombo.SelectedIndex = this._moduleCombo.FindItemIndexByValue(code);
         }
 
         #endregion

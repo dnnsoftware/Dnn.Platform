@@ -29,12 +29,12 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public DnnFormEditor()
         {
-            Items = new List<DnnFormItemBase>();
-            Sections = new List<DnnFormSection>();
-            Tabs = new List<DnnFormTab>();
+            this.Items = new List<DnnFormItemBase>();
+            this.Sections = new List<DnnFormSection>();
+            this.Tabs = new List<DnnFormTab>();
 
-            FormMode = DnnFormMode.Long;
-            ViewStateMode = ViewStateMode.Disabled;
+            this.FormMode = DnnFormMode.Long;
+            this.ViewStateMode = ViewStateMode.Disabled;
         }
 
         protected string LocalResourceFile
@@ -57,16 +57,16 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _dataSource;
+                return this._dataSource;
             }
             set
             {
-                if (_dataSource != value)
+                if (this._dataSource != value)
                 {
-                    _dataSource = value;
-                    if (Page.IsPostBack)
+                    this._dataSource = value;
+                    if (this.Page.IsPostBack)
                     {
-                        DataBindItems(false);
+                        this.DataBindItems(false);
                     }
                 }
             }
@@ -81,7 +81,7 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 bool isValid = true;
-                foreach (var item in GetAllItems())
+                foreach (var item in this.GetAllItems())
                 {
                     item.CheckIsValid();
                     if(!item.IsValid)
@@ -108,7 +108,7 @@ namespace DotNetNuke.Web.UI.WebControls
             var items = new List<DnnFormItemBase>();
 
             //iterate over pages
-            foreach (DnnFormTab page in Tabs)
+            foreach (DnnFormTab page in this.Tabs)
             {
                 foreach (DnnFormSection section in page.Sections)
                 {
@@ -118,13 +118,13 @@ namespace DotNetNuke.Web.UI.WebControls
             }
 
             //iterate over section
-            foreach (DnnFormSection section in Sections)
+            foreach (DnnFormSection section in this.Sections)
             {
                 items.AddRange(section.Items);
             }
 
             //Add base items
-            items.AddRange(Items);
+            items.AddRange(this.Items);
 
             return items;
         }
@@ -164,23 +164,23 @@ namespace DotNetNuke.Web.UI.WebControls
                     {
                         resourceKey = section.ID;
                     }
-                    panel.Text = Localization.GetString(resourceKey, LocalResourceFile);
+                    panel.Text = Localization.GetString(resourceKey, this.LocalResourceFile);
                     panel.Expanded = section.Expanded;
 
-                    SetUpItems(section.Items, panel, LocalResourceFile, EncryptIds);
+                    SetUpItems(section.Items, panel, this.LocalResourceFile, this.EncryptIds);
                 }
             }
         }
 
         private void SetUpTabs()
         {
-            if (Tabs.Count > 0)
+            if (this.Tabs.Count > 0)
             {
                 var tabStrip = new DnnFormTabStrip {CssClass = "dnnAdminTabNav dnnClear"};
-                Controls.Add(tabStrip);
+                this.Controls.Add(tabStrip);
                 tabStrip.Items.Clear();
 
-                foreach (DnnFormTab formTab in Tabs)
+                foreach (DnnFormTab formTab in this.Tabs)
                 {
                     var resourceKey = formTab.ResourceKey;
                     if (String.IsNullOrEmpty(resourceKey))
@@ -189,7 +189,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
 
                     var tab = new Panel {CssClass = formTab.ID + " dnnClear", ID = "tab_" + formTab.ID};
-                    Controls.Add(tab);
+                    this.Controls.Add(tab);
 
                     if (formTab.IncludeExpandAll)
                     {
@@ -204,18 +204,18 @@ namespace DotNetNuke.Web.UI.WebControls
                         formTab.ExpandAllScript += "\t\t\t\ttargetArea: '#" + tab.ClientID + "' });\r\n";
                     }
 
-                    tabStrip.Items.Add(new ListItem(Localization.GetString(resourceKey, LocalResourceFile), "#" + tab.ClientID));
+                    tabStrip.Items.Add(new ListItem(Localization.GetString(resourceKey, this.LocalResourceFile), "#" + tab.ClientID));
 
                     if (formTab.Sections.Count > 0)
                     {
-                        SetUpSections(formTab.Sections, tab);
+                        this.SetUpSections(formTab.Sections, tab);
                     }
                     else
                     {
                         tab.CssClass += " dnnFormNoSections";
                     }
 
-                    SetUpItems(formTab.Items, tab, LocalResourceFile, EncryptIds);
+                    SetUpItems(formTab.Items, tab, this.LocalResourceFile, this.EncryptIds);
                 }
             }
         }
@@ -229,61 +229,61 @@ namespace DotNetNuke.Web.UI.WebControls
             // CreateChildControls re-creates the children (the items)
             // using the saved view state.
             // First clear any existing child controls.
-            Controls.Clear();
+            this.Controls.Clear();
 
             // Create the items only if there is view state
             // corresponding to the children.
-            if (_itemCount > 0)
+            if (this._itemCount > 0)
             {
-                CreateControlHierarchy(false);
+                this.CreateControlHierarchy(false);
             }
         }
 
         private void DataBindItems(bool useDataSource)
         {
-            var items = GetAllItems();
+            var items = this.GetAllItems();
 
             foreach (DnnFormItemBase item in items)
             {
                 if (String.IsNullOrEmpty(item.LocalResourceFile))
                 {
-                    item.LocalResourceFile = LocalResourceFile;
+                    item.LocalResourceFile = this.LocalResourceFile;
                 }
                 if (item.FormMode == DnnFormMode.Inherit)
                 {
-                    item.FormMode = FormMode;
+                    item.FormMode = this.FormMode;
                 }
 
-                if (DataSource != null)
+                if (this.DataSource != null)
                 {
-                    item.DataSource = DataSource;
+                    item.DataSource = this.DataSource;
                     item.DataBindItem(useDataSource);
                 }
             }
-            _itemCount = GetAllItems().Count;
+            this._itemCount = this.GetAllItems().Count;
         }
 
         protected virtual void CreateControlHierarchy(bool useDataSource)
         {
-        	CssClass = string.IsNullOrEmpty(CssClass) ? "dnnForm" : CssClass.Contains("dnnForm") ? CssClass : string.Format("dnnForm {0}", CssClass);
+        	this.CssClass = string.IsNullOrEmpty(this.CssClass) ? "dnnForm" : this.CssClass.Contains("dnnForm") ? this.CssClass : string.Format("dnnForm {0}", this.CssClass);
 
-        	SetUpTabs();
+        	this.SetUpTabs();
 
-            SetUpSections(Sections, this);
+            this.SetUpSections(this.Sections, this);
 
-            SetUpItems(Items, this, LocalResourceFile, EncryptIds);
+            SetUpItems(this.Items, this, this.LocalResourceFile, this.EncryptIds);
 
-            DataBindItems(useDataSource);
+            this.DataBindItems(useDataSource);
         }
 
         public override void DataBind()
         {
             base.OnDataBinding(EventArgs.Empty);
-            Controls.Clear();
-            ClearChildViewState();
-            TrackViewState();
-            CreateControlHierarchy(true);
-            ChildControlsCreated = true;
+            this.Controls.Clear();
+            this.ClearChildViewState();
+            this.TrackViewState();
+            this.CreateControlHierarchy(true);
+            this.ChildControlsCreated = true;
         }
 
         #endregion
@@ -294,13 +294,13 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             if (state != null)
             {
-                _itemCount = (int) state;
+                this._itemCount = (int) state;
             }
         }
 
         protected override void OnInit(EventArgs e)
         {
-            Page.RegisterRequiresControlState(this);
+            this.Page.RegisterRequiresControlState(this);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             base.OnInit(e);
         }
@@ -309,21 +309,21 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnPreRender(e);
 
-            if(Tabs.Count > 0)
+            if(this.Tabs.Count > 0)
             {
                 const string scriptName = "FormEditorjQuery";
-                ClientScriptManager cs = Page.ClientScript;
+                ClientScriptManager cs = this.Page.ClientScript;
 
 
-                if (!cs.IsClientScriptBlockRegistered(GetType(), scriptName))
+                if (!cs.IsClientScriptBlockRegistered(this.GetType(), scriptName))
                 {
                     //Render Script
                     var scriptBuilder = new StringBuilder();
                     scriptBuilder.Append("<script language=\"javascript\" type=\"text/javascript\">\r\n");
                     scriptBuilder.Append("\t(function ($, Sys) {\r\n");
                     scriptBuilder.Append("\t\tfunction setupFormEditor() {\r\n");
-                    scriptBuilder.Append("\t\t\t$('#" + ClientID + "').dnnTabs().dnnPanels();\r\n");
-                    foreach (DnnFormTab formTab in Tabs)
+                    scriptBuilder.Append("\t\t\t$('#" + this.ClientID + "').dnnTabs().dnnPanels();\r\n");
+                    foreach (DnnFormTab formTab in this.Tabs)
                     {
                         if (formTab.IncludeExpandAll)
                         {
@@ -342,14 +342,14 @@ namespace DotNetNuke.Web.UI.WebControls
                     scriptBuilder.Append("\t} (jQuery, window.Sys));\r\n");
 
                     scriptBuilder.Append("</script>\r\n");
-                    cs.RegisterClientScriptBlock(GetType(), scriptName, scriptBuilder.ToString());
+                    cs.RegisterClientScriptBlock(this.GetType(), scriptName, scriptBuilder.ToString());
                 }
             }
         }
 
         protected override object SaveControlState()
         {
-            return _itemCount > 0 ? (object) _itemCount : null;
+            return this._itemCount > 0 ? (object) this._itemCount : null;
         }
 
         #endregion

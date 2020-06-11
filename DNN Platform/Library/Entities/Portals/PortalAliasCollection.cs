@@ -21,11 +21,11 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return (PortalAliasInfo) Dictionary[key];
+                return (PortalAliasInfo) this.Dictionary[key];
             }
             set
             {
-                Dictionary[key] = value;
+                this.Dictionary[key] = value;
             }
         }
 
@@ -36,7 +36,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return Dictionary.Keys.Count > 0;
+                return this.Dictionary.Keys.Count > 0;
             }
         }
 
@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return Dictionary.Keys;
+                return this.Dictionary.Keys;
             }
         }
 
@@ -52,13 +52,13 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return Dictionary.Values;
+                return this.Dictionary.Values;
             }
         }
 
         public bool Contains(String key)
         {
-            return Dictionary.Contains(key);
+            return this.Dictionary.Contains(key);
         }
 
 		/// <summary>
@@ -66,7 +66,7 @@ namespace DotNetNuke.Entities.Portals
 		/// </summary>
         public void Add(String key, PortalAliasInfo value)
         {
-            Dictionary.Add(key, value);
+            this.Dictionary.Add(key, value);
         }
     }
 }

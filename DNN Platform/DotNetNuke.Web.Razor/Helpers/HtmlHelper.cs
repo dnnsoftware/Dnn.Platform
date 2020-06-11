@@ -22,20 +22,20 @@ namespace DotNetNuke.Web.Razor.Helpers
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public HtmlHelper(ModuleInstanceContext context, string resourcefile)
         {
-            _context = context;
-            _resourceFile = resourcefile;
+            this._context = context;
+            this._resourceFile = resourcefile;
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public object GetLocalizedString(string key)
         {
-            return Localization.GetString(key, _resourceFile);
+            return Localization.GetString(key, this._resourceFile);
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public object GetLocalizedString(string key, string culture)
         {
-            return Localization.GetString(key, _resourceFile, culture);
+            return Localization.GetString(key, this._resourceFile, culture);
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]

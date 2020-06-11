@@ -30,7 +30,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         /// -----------------------------------------------------------------------------
         public void FollowUser(UserInfo targetUser)
         {
-            FollowUser(UserController.Instance.GetCurrentUserInfo(), targetUser);
+            this.FollowUser(UserController.Instance.GetCurrentUserInfo(), targetUser);
         }
 
         /// -----------------------------------------------------------------------------

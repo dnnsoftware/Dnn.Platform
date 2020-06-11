@@ -24,17 +24,17 @@ namespace DotNetNuke.Services.Installer.Writers
     {
         public ContainerPackageWriter(PackageInfo package) : base(package)
         {
-            BasePath = "Portals\\_default\\Containers\\" + SkinPackage.SkinName;
+            this.BasePath = "Portals\\_default\\Containers\\" + this.SkinPackage.SkinName;
         }
 
         public ContainerPackageWriter(SkinPackageInfo skinPackage, PackageInfo package) : base(skinPackage, package)
         {
-            BasePath = "Portals\\_default\\Containers\\" + skinPackage.SkinName;
+            this.BasePath = "Portals\\_default\\Containers\\" + skinPackage.SkinName;
         }
 
         protected override void WriteFilesToManifest(XmlWriter writer)
         {
-            var containerFileWriter = new ContainerComponentWriter(SkinPackage.SkinName, BasePath, Files, Package);
+            var containerFileWriter = new ContainerComponentWriter(this.SkinPackage.SkinName, this.BasePath, this.Files, this.Package);
             containerFileWriter.WriteManifest(writer);
         }
     }

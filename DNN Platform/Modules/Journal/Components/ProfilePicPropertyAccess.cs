@@ -17,7 +17,7 @@ namespace DotNetNuke.Modules.Journal.Components
 
         public ProfilePicPropertyAccess(int userId)
         {
-            _userId = userId;
+            this._userId = userId;
         }
 
         public CacheLevel Cacheability => CacheLevel.notCacheable;
@@ -29,9 +29,9 @@ namespace DotNetNuke.Modules.Journal.Components
             {
                 int size;
                 if (int.TryParse(format, out size)) {
-                    Size = size;
+                    this.Size = size;
                 }
-                return UserController.Instance.GetUserProfilePictureUrl(_userId, Size, Size);
+                return UserController.Instance.GetUserProfilePictureUrl(this._userId, this.Size, this.Size);
             }
             propertyNotFound = true;
             return string.Empty;

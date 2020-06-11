@@ -16,7 +16,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
         public CheckResult Execute()
         {
-            var result = new CheckResult(SeverityEnum.Unverified, Id);
+            var result = new CheckResult(SeverityEnum.Unverified, this.Id);
             var invalidFolders = new List<string>();
             var investigatefiles = Utility.FindUnexpectedExtensions(invalidFolders).ToList();
             if (investigatefiles.Count > 0)

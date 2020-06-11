@@ -15,7 +15,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
         public CheckResult Execute()
         {
-            var result = new CheckResult(SeverityEnum.Unverified, Id);
+            var result = new CheckResult(SeverityEnum.Unverified, this.Id);
             try
             {
                 var investigatefiles = Utility.FineHiddenSystemFiles();

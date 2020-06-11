@@ -17,12 +17,12 @@ namespace DotNetNuke.Web.Api
 
         protected DnnApiController()
         {
-            _activeModule = new Lazy<ModuleInfo>(InitModuleInfo);
+            this._activeModule = new Lazy<ModuleInfo>(this.InitModuleInfo);
         }
 
         private ModuleInfo InitModuleInfo()
         {
-            return Request.FindModuleInfo();
+            return this.Request.FindModuleInfo();
         }
 
         /// <summary>
@@ -39,14 +39,14 @@ namespace DotNetNuke.Web.Api
         /// <summary>
         /// UserInfo for the current user
         /// </summary>
-        public UserInfo UserInfo { get { return PortalSettings.UserInfo; } }
+        public UserInfo UserInfo { get { return this.PortalSettings.UserInfo; } }
 
         /// <summary>
         /// ModuleInfo for the current module
         /// <remarks>Will be null unless a valid pair of module and tab ids were provided in the request</remarks>
         /// </summary>
         public ModuleInfo ActiveModule { 
-            get { return _activeModule.Value; } 
+            get { return this._activeModule.Value; } 
         }
     }
 }

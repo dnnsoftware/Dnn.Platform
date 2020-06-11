@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Cache
             DNNCacheDependency d = dependency;
 
             //if web farm is enabled
-            if (IsWebFarm())
+            if (this.IsWebFarm())
             {
                 //get hashed file name
                 var f = new string[1];
@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Cache
         public override string PurgeCache()
         {
             //called by scheduled job to remove cache files which are no longer active
-            return PurgeCacheFiles(Globals.HostMapPath + CachingDirectory);
+            return this.PurgeCacheFiles(Globals.HostMapPath + CachingDirectory);
         }
 
         public override void Remove(string Key)
@@ -69,7 +69,7 @@ namespace DotNetNuke.Services.Cache
             base.Remove(Key);
 
             //if web farm is enabled in config file
-            if (IsWebFarm())
+            if (this.IsWebFarm())
             {
                 //get hashed filename
                 string f = GetFileName(Key);

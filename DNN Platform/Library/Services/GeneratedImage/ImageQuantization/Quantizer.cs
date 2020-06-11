@@ -25,8 +25,8 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// </remarks>
         public Quantizer(bool singlePass)
         {
-            _singlePass = singlePass;
-            _pixelSize = Marshal.SizeOf(typeof (Color32));
+            this._singlePass = singlePass;
+            this._pixelSize = Marshal.SizeOf(typeof (Color32));
         }
 
         /// <summary>
@@ -73,16 +73,16 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 // Call the FirstPass function if not a single pass algorithm.
                 // For something like an octree quantizer, this will run through
                 // all image pixels, build a data structure, and create a palette.
-                if (!_singlePass)
-                    FirstPass(sourceData, width, height);
+                if (!this._singlePass)
+                    this.FirstPass(sourceData, width, height);
 
                 // Then set the color palette on the output bitmap. I'm passing in the current palette 
                 // as there's no way to construct a new, empty palette.
-                output.Palette = GetPalette(output.Palette);
+                output.Palette = this.GetPalette(output.Palette);
 
 
                 // Then call the second pass which actually does the conversion
-                SecondPass(sourceData, output, width, height, bounds);
+                this.SecondPass(sourceData, output, width, height, bounds);
             }
             finally
             {
@@ -115,8 +115,8 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 // And loop through each column
                 for (int col = 0; col < width; col++)
                 {            
-                    InitialQuantizePixel(new Color32(pSourcePixel)); 
-                    pSourcePixel = (IntPtr)((Int64)pSourcePixel + _pixelSize);
+                    this.InitialQuantizePixel(new Color32(pSourcePixel)); 
+                    pSourcePixel = (IntPtr)((Int64)pSourcePixel + this._pixelSize);
                 }	// Now I have the pixel, call the FirstPassQuantize function...
 
                 // Add the stride to the source row
@@ -153,7 +153,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 
                 // And convert the first pixel, so that I have values going into the loop
 
-                byte pixelValue = QuantizePixel(new Color32(pSourcePixel));
+                byte pixelValue = this.QuantizePixel(new Color32(pSourcePixel));
 
                 // Assign the value of the first pixel
                 Marshal.WriteByte(pDestinationPixel, pixelValue);
@@ -175,7 +175,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                         if (Marshal.ReadByte(pPreviousPixel) != Marshal.ReadByte(pSourcePixel))
                         {
                             // Quantize the pixel
-                            pixelValue = QuantizePixel(new Color32(pSourcePixel));
+                            pixelValue = this.QuantizePixel(new Color32(pSourcePixel));
 
                             // And setup the previous pointer
                             pPreviousPixel = pSourcePixel;
@@ -184,7 +184,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                         // And set the pixel in the output
                         Marshal.WriteByte(pDestinationPixel, pixelValue);
 
-                        pSourcePixel = (IntPtr)((long)pSourcePixel + _pixelSize);
+                        pSourcePixel = (IntPtr)((long)pSourcePixel + this._pixelSize);
                         pDestinationPixel = (IntPtr)((long)pDestinationPixel + 1);
 
                     }
@@ -285,7 +285,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             /// </summary>
             public Color Color
             {
-                get { return Color.FromArgb(Alpha, Red, Green, Blue); }
+                get { return Color.FromArgb(this.Alpha, this.Red, this.Green, this.Blue); }
             }
         }
     }

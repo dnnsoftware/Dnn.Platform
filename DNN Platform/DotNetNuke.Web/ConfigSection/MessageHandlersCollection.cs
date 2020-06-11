@@ -12,15 +12,15 @@ namespace DotNetNuke.Web.ConfigSection
         {
             get
             {
-                return BaseGet(index) as MessageHandlerEntry;
+                return this.BaseGet(index) as MessageHandlerEntry;
             }
             set
             {
-                if (BaseGet(index) != null)
+                if (this.BaseGet(index) != null)
                 {
-                    BaseRemoveAt(index);
+                    this.BaseRemoveAt(index);
                 }
-                BaseAdd(index, value);
+                this.BaseAdd(index, value);
             }
         }
 

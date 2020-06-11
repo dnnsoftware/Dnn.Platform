@@ -32,40 +32,40 @@ namespace DotNetNuke.Modules.MemberDirectory
             JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
             JavaScript.RequestRegistration(CommonJs.Knockout);
 
-            ClientResourceManager.RegisterScript(Page, "~/DesktopModules/MemberDirectory/Scripts/MemberDirectory.js");
-            AddIe7StyleSheet();
+            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/MemberDirectory/Scripts/MemberDirectory.js");
+            this.AddIe7StyleSheet();
 
-            searchBar.Visible = DisplaySearch != "None";
-	        advancedSearchBar.Visible = DisplaySearch == "Both";
-            popUpPanel.Visible = EnablePopUp;
-            loadMore.Visible = !DisablePaging;
+            this.searchBar.Visible = this.DisplaySearch != "None";
+	        this.advancedSearchBar.Visible = this.DisplaySearch == "Both";
+            this.popUpPanel.Visible = this.EnablePopUp;
+            this.loadMore.Visible = !this.DisablePaging;
 
             base.OnInit(e);
         }
 
         protected string AlternateItemTemplate
         {
-            get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "AlternateItemTemplate", Settings.DefaultAlternateItemTemplate); }
+            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "AlternateItemTemplate", Settings.DefaultAlternateItemTemplate); }
         }
 
         protected bool DisablePaging
         {
-            get { return bool.Parse(GetSetting(ModuleContext.Configuration.TabModuleSettings, "DisablePaging", "false")); }
+            get { return bool.Parse(this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "DisablePaging", "false")); }
         }
 
         protected string DisplaySearch
         {
-            get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "DisplaySearch", "Both"); }
+            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "DisplaySearch", "Both"); }
         }
 
         protected bool EnablePopUp
         {
-            get { return bool.Parse(GetSetting(ModuleContext.Configuration.TabModuleSettings, "EnablePopUp", "false")); }
+            get { return bool.Parse(this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "EnablePopUp", "false")); }
         }
 
         protected string FilterBy
         {
-            get { return GetSetting(ModuleContext.Configuration.ModuleSettings, "FilterBy", "None"); }
+            get { return this.GetSetting(this.ModuleContext.Configuration.ModuleSettings, "FilterBy", "None"); }
         }
 
         protected int GroupId
@@ -73,9 +73,9 @@ namespace DotNetNuke.Modules.MemberDirectory
             get
             {
                 int groupId = Null.NullInteger;
-                if (!string.IsNullOrEmpty(Request.Params["GroupId"]))
+                if (!string.IsNullOrEmpty(this.Request.Params["GroupId"]))
                 {
-                    groupId = Int32.Parse(Request.Params["GroupId"]);
+                    groupId = Int32.Parse(this.Request.Params["GroupId"]);
                 }
                 return groupId;
             }
@@ -83,27 +83,27 @@ namespace DotNetNuke.Modules.MemberDirectory
 
         protected string ItemTemplate
         {
-            get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "ItemTemplate", Settings.DefaultItemTemplate); }
+            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "ItemTemplate", Settings.DefaultItemTemplate); }
         }
 
         protected int PageSize
         {
             get
             {
-                return GetSettingAsInt32(ModuleContext.Configuration.TabModuleSettings, "PageSize", Settings.DefaultPageSize);
+                return this.GetSettingAsInt32(this.ModuleContext.Configuration.TabModuleSettings, "PageSize", Settings.DefaultPageSize);
             }
         }
 
         protected string PopUpTemplate
         {
-            get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "PopUpTemplate", Settings.DefaultPopUpTemplate); }
+            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "PopUpTemplate", Settings.DefaultPopUpTemplate); }
         }
 
         public override bool DisplayModule
         {
             get
             {
-                return !(ProfileUserId == ModuleContext.PortalSettings.UserId && FilterBy == "User") && ModuleContext.PortalSettings.UserId > -1;
+                return !(this.ProfileUserId == this.ModuleContext.PortalSettings.UserId && this.FilterBy == "User") && this.ModuleContext.PortalSettings.UserId > -1;
             }
         }
 
@@ -122,29 +122,29 @@ namespace DotNetNuke.Modules.MemberDirectory
 
         protected string SearchField1
         {
-            get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "SearchField1", "DisplayName"); }
+            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "SearchField1", "DisplayName"); }
         }
 
         protected string SearchField2
         {
-            get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "SearchField2", "Email"); }
+            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "SearchField2", "Email"); }
         }
 
         protected string SearchField3
         {
-            get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "SearchField3", "City"); }
+            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "SearchField3", "City"); }
         }
 
         protected string SearchField4
         {
-            get { return GetSetting(ModuleContext.Configuration.TabModuleSettings, "SearchField4", "Country"); }
+            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "SearchField4", "Country"); }
         }
 
         protected string ViewProfileUrl
         {
             get
             {
-                return NavigationManager.NavigateURL(ModuleContext.PortalSettings.UserTabId, "", "userId=PROFILEUSER");
+                return this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.UserTabId, "", "userId=PROFILEUSER");
             }
         }
 
@@ -152,8 +152,8 @@ namespace DotNetNuke.Modules.MemberDirectory
 		{
 			get
 			{
-				return PortalSettings.DisablePrivateMessage && !UserInfo.IsSuperUser
-					&& !UserInfo.IsInRole(PortalSettings.AdministratorRoleName);
+				return this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser
+					&& !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
 
 			}
 		}
@@ -172,11 +172,11 @@ namespace DotNetNuke.Modules.MemberDirectory
 
         private void AddIe7StyleSheet()
         {
-            var browser = Request.Browser;
+            var browser = this.Request.Browser;
             if (browser.Type == "IE" || browser.MajorVersion < 8)
             {
                 const string cssLink = @"<link href=""/DesktopModules/MemberDirectory/ie-member-directory.css"" rel=""stylesheet"" type=""text/css"" />";
-                Page.Header.Controls.Add(new LiteralControl(cssLink));
+                this.Page.Header.Controls.Add(new LiteralControl(cssLink));
             }
         }
 

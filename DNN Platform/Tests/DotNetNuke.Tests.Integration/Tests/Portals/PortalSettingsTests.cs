@@ -24,36 +24,36 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
         [SetUp]
         public void Setup()
         {
-            _settingName = "NameToCheckFor";
+            this._settingName = "NameToCheckFor";
             // we need different value so when we save we force going to database
-            _settingValue = "ValueToCheckFor_" + new Random().Next(1, 100);
+            this._settingValue = "ValueToCheckFor_" + new Random().Next(1, 100);
         }
 
         [Test]
         public void Saving_Non_Secure_Value_Doesnt_Encrypt_It()
         {
             //Act
-            PortalController.UpdatePortalSetting(PortalId, _settingName, _settingValue, true, null, false);
-            var result = PortalController.GetPortalSetting(_settingName, PortalId, "");
+            PortalController.UpdatePortalSetting(this.PortalId, this._settingName, this._settingValue, true, null, false);
+            var result = PortalController.GetPortalSetting(this._settingName, this.PortalId, "");
 
             //Assert
             Assert.AreNotEqual(result, "");
-            Assert.AreEqual(_settingValue, result);
+            Assert.AreEqual(this._settingValue, result);
         }
 
         [Test]
         public void Saving_Secure_Value_Encrypts_It()
         {
             //Act
-            PortalController.UpdatePortalSetting(PortalId, _settingName, _settingValue, true, null, true);
+            PortalController.UpdatePortalSetting(this.PortalId, this._settingName, this._settingValue, true, null, true);
 
-            var result = PortalController.GetPortalSetting(_settingName, PortalId, "");
+            var result = PortalController.GetPortalSetting(this._settingName, this.PortalId, "");
             var decrypted = DotNetNuke.Security.FIPSCompliant.DecryptAES(result, Config.GetDecryptionkey(), Host.GUID);
 
             //Assert
             Assert.AreNotEqual(result, "");
-            Assert.AreNotEqual(_settingValue, result);
-            Assert.AreEqual(decrypted, _settingValue);
+            Assert.AreNotEqual(this._settingValue, result);
+            Assert.AreEqual(decrypted, this._settingValue);
         }
     }
 }

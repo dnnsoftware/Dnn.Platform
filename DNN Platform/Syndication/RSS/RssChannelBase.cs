@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _items;
+                return this._items;
             }
         }
 
@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _url;
+                return this._url;
             }
         }
 
@@ -44,10 +44,10 @@ namespace DotNetNuke.Services.Syndication
             RssChannelDom dom = RssDownloadManager.GetChannel(url);
 
             // create the channel
-            LoadFromDom(dom);
+            this.LoadFromDom(dom);
 
             // remember the url
-            _url = url;
+            this._url = url;
         }
 
         protected void LoadFromXml(XmlDocument doc)
@@ -56,20 +56,20 @@ namespace DotNetNuke.Services.Syndication
             RssChannelDom dom = RssXmlHelper.ParseChannelXml(doc);
 
             // create the channel
-            LoadFromDom(dom);
+            this.LoadFromDom(dom);
         }
 
         internal void LoadFromDom(RssChannelDom dom)
         {
             // channel attributes
-            SetAttributes(dom.Channel);
+            this.SetAttributes(dom.Channel);
 
             // image attributes
             if (dom.Image != null)
             {
                 var image = new RssImageType();
                 image.SetAttributes(dom.Image);
-                _image = image;
+                this._image = image;
             }
 
             // items
@@ -77,13 +77,13 @@ namespace DotNetNuke.Services.Syndication
             {
                 var item = new RssItemType();
                 item.SetAttributes(i);
-                _items.Add(item);
+                this._items.Add(item);
             }
         }
 
         public XmlDocument SaveAsXml()
         {
-            return SaveAsXml(RssXmlHelper.CreateEmptyRssXml());
+            return this.SaveAsXml(RssXmlHelper.CreateEmptyRssXml());
         }
 
         public XmlDocument SaveAsXml(XmlDocument EmptyRssXml)
@@ -91,12 +91,12 @@ namespace DotNetNuke.Services.Syndication
             XmlDocument doc = EmptyRssXml;
             XmlNode channelNode = RssXmlHelper.SaveRssElementAsXml(doc.DocumentElement, this, "channel");
 
-            if (_image != null)
+            if (this._image != null)
             {
-                RssXmlHelper.SaveRssElementAsXml(channelNode, _image, "image");
+                RssXmlHelper.SaveRssElementAsXml(channelNode, this._image, "image");
             }
 
-            foreach (RssItemType item in _items)
+            foreach (RssItemType item in this._items)
             {
                 RssXmlHelper.SaveRssElementAsXml(channelNode, item, "item");
             }
@@ -106,12 +106,12 @@ namespace DotNetNuke.Services.Syndication
 
         protected RssImageType GetImage()
         {
-            if (_image == null)
+            if (this._image == null)
             {
-                _image = new RssImageType();
+                this._image = new RssImageType();
             }
 
-            return _image;
+            return this._image;
         }
     }
 }

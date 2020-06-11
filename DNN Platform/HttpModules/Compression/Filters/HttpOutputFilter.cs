@@ -17,14 +17,14 @@ namespace DotNetNuke.HttpModules.Compression
 
         protected HttpOutputFilter(Stream baseStream)
         {
-            _sink = baseStream;
+            this._sink = baseStream;
         }
 
         protected Stream BaseStream
         {
             get
             {
-                return _sink;
+                return this._sink;
             }
         }
 
@@ -48,7 +48,7 @@ namespace DotNetNuke.HttpModules.Compression
         {
             get
             {
-                return _sink.CanWrite;
+                return this._sink.CanWrite;
             }
         }
 
@@ -84,12 +84,12 @@ namespace DotNetNuke.HttpModules.Compression
 
         public override void Close()
         {
-            _sink.Close();
+            this._sink.Close();
         }
 
         public override void Flush()
         {
-            _sink.Flush();
+            this._sink.Flush();
         }
 
         public override int Read(byte[] buffer, int offset, int count)

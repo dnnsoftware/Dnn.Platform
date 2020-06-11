@@ -28,8 +28,8 @@ namespace DotNetNuke.Entities.Tabs
 
         public TabWorkflowSettings()
         {
-            _tabController = TabController.Instance;
-            _systemWorkflowManager = SystemWorkflowManager.Instance;
+            this._tabController = TabController.Instance;
+            this._systemWorkflowManager = SystemWorkflowManager.Instance;
         }
         #endregion
 
@@ -39,7 +39,7 @@ namespace DotNetNuke.Entities.Tabs
             var workflowId = PortalController.GetPortalSettingAsInteger(DefaultTabWorkflowKey, portalId, Null.NullInteger);
             if (workflowId == Null.NullInteger)
             {
-                var workflow = _systemWorkflowManager.GetDirectPublishWorkflow(portalId);
+                var workflow = this._systemWorkflowManager.GetDirectPublishWorkflow(portalId);
                 workflowId = (workflow != null) ? workflow.WorkflowID : Null.NullInteger;
                 if (workflowId != Null.NullInteger)
                 {
@@ -65,20 +65,20 @@ namespace DotNetNuke.Entities.Tabs
         {
             Requires.NotNegative("tabId", tabId);
 
-            _tabController.UpdateTabSetting(tabId, TabWorkflowEnableKey, enabled.ToString(CultureInfo.InvariantCulture));
+            this._tabController.UpdateTabSetting(tabId, TabWorkflowEnableKey, enabled.ToString(CultureInfo.InvariantCulture));
         }
 
         public bool IsWorkflowEnabled(int portalId, int tabId)
         {
-            if (!IsWorkflowEnabled(portalId))
+            if (!this.IsWorkflowEnabled(portalId))
             {
                 return false;
             }
 
-            var tabInfo = _tabController.GetTab(tabId, portalId);
-            var settings = _tabController.GetTabSettings(tabId);
+            var tabInfo = this._tabController.GetTab(tabId, portalId);
+            var settings = this._tabController.GetTabSettings(tabId);
 
-            return !_tabController.IsHostOrAdminPage(tabInfo) && (settings[TabWorkflowEnableKey] == null || Convert.ToBoolean(settings[TabWorkflowEnableKey]));
+            return !this._tabController.IsHostOrAdminPage(tabInfo) && (settings[TabWorkflowEnableKey] == null || Convert.ToBoolean(settings[TabWorkflowEnableKey]));
         }
 
         public bool IsWorkflowEnabled(int portalId)

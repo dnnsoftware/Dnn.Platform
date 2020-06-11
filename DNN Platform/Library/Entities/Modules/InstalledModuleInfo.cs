@@ -27,10 +27,10 @@ namespace DotNetNuke.Entities.Modules
             //Write start of main elemenst 
             writer.WriteStartElement("module");
 
-            writer.WriteElementString("moduleName", ModuleName);
-            writer.WriteElementString("friendlyName", FriendlyName);
-            writer.WriteElementString("version", Version);
-            writer.WriteElementString("instances", Instances.ToString());
+            writer.WriteElementString("moduleName", this.ModuleName);
+            writer.WriteElementString("friendlyName", this.FriendlyName);
+            writer.WriteElementString("version", this.Version);
+            writer.WriteElementString("instances", this.Instances.ToString());
 
             //Write end of Host Info 
             writer.WriteEndElement();

@@ -44,10 +44,10 @@ namespace DotNetNuke.Services.Search
 
         public SearchConfig(Dictionary<string, string> settings)
         {
-            _SearchIncludeCommon = GetSettingAsBoolean("SearchIncludeCommon", settings, Host.SearchIncludeCommon);
-            _SearchIncludeNumeric = GetSettingAsBoolean("SearchIncludeNumeric", settings, Host.SearchIncludeNumeric);
-            _SearchMaxWordlLength = GetSettingAsInteger("MaxSearchWordLength", settings, Host.SearchMaxWordlLength);
-            _SearchMinWordlLength = GetSettingAsInteger("MinSearchWordLength", settings, Host.SearchMinWordlLength);
+            this._SearchIncludeCommon = this.GetSettingAsBoolean("SearchIncludeCommon", settings, Host.SearchIncludeCommon);
+            this._SearchIncludeNumeric = this.GetSettingAsBoolean("SearchIncludeNumeric", settings, Host.SearchIncludeNumeric);
+            this._SearchMaxWordlLength = this.GetSettingAsInteger("MaxSearchWordLength", settings, Host.SearchMaxWordlLength);
+            this._SearchMinWordlLength = this.GetSettingAsInteger("MinSearchWordLength", settings, Host.SearchMinWordlLength);
         }
 		
 		#endregion
@@ -64,7 +64,7 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _SearchIncludeCommon;
+                return this._SearchIncludeCommon;
             }
         }
 
@@ -78,7 +78,7 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _SearchIncludeNumeric;
+                return this._SearchIncludeNumeric;
             }
         }
 
@@ -92,7 +92,7 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _SearchMaxWordlLength;
+                return this._SearchMaxWordlLength;
             }
         }
 
@@ -106,7 +106,7 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return _SearchMinWordlLength;
+                return this._SearchMinWordlLength;
             }
         }
 		

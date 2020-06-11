@@ -24,18 +24,18 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             try
             {
-                ClientAPI.AddButtonConfirm(cmdLoadDefault, Localization.GetString("LoadDefault.Confirm", LocalResourceFile));
-                cmdLoadDefault.ToolTip = Localization.GetString("LoadDefault.Help", LocalResourceFile);
+                ClientAPI.AddButtonConfirm(this.cmdLoadDefault, Localization.GetString("LoadDefault.Confirm", this.LocalResourceFile));
+                this.cmdLoadDefault.ToolTip = Localization.GetString("LoadDefault.Help", this.LocalResourceFile);
 
-                if (!Page.IsPostBack)
+                if (!this.Page.IsPostBack)
                 {
-                    if (!string.IsNullOrEmpty((string) TabModuleSettings["ProfileTemplate"]))
+                    if (!string.IsNullOrEmpty((string) this.TabModuleSettings["ProfileTemplate"]))
                     {
-                        txtTemplate.Text = (string) TabModuleSettings["ProfileTemplate"];
+                        this.txtTemplate.Text = (string) this.TabModuleSettings["ProfileTemplate"];
                     }
-                    if (Settings.ContainsKey("IncludeButton"))
+                    if (this.Settings.ContainsKey("IncludeButton"))
                     {
-                        IncludeButton.Checked = Convert.ToBoolean(Settings["IncludeButton"]);
+                        this.IncludeButton.Checked = Convert.ToBoolean(this.Settings["IncludeButton"]);
                     }
                 }
             }
@@ -49,15 +49,15 @@ namespace DotNetNuke.Modules.Admin.Users
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            cmdLoadDefault.Click += cmdLoadDefault_Click;
+            this.cmdLoadDefault.Click += this.cmdLoadDefault_Click;
         }
 
         public override void UpdateSettings()
         {
             try
             {
-                ModuleController.Instance.UpdateTabModuleSetting(TabModuleId, "ProfileTemplate", txtTemplate.Text);
-                ModuleController.Instance.UpdateTabModuleSetting(TabModuleId, "IncludeButton", IncludeButton.Checked.ToString(CultureInfo.InvariantCulture));
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, "ProfileTemplate", this.txtTemplate.Text);
+                ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, "IncludeButton", this.IncludeButton.Checked.ToString(CultureInfo.InvariantCulture));
             }
             catch (Exception exc)
             {
@@ -70,7 +70,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         protected void cmdLoadDefault_Click(object sender, EventArgs e)
         {
-            txtTemplate.Text = Localization.GetString("DefaultTemplate", LocalResourceFile);
+            this.txtTemplate.Text = Localization.GetString("DefaultTemplate", this.LocalResourceFile);
         }
     }
 }

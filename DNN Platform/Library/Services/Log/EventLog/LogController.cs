@@ -191,7 +191,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     }
 
                     //Check if Log Type exists
-                    if (!GetLogTypeInfoDictionary().ContainsKey(logInfo.LogTypeKey))
+                    if (!this.GetLogTypeInfoDictionary().ContainsKey(logInfo.LogTypeKey))
                     {
                         //Add new Log Type
                         var logType = new LogTypeInfo()
@@ -202,7 +202,7 @@ namespace DotNetNuke.Services.Log.EventLog
                                                 LogTypeCSSClass = "GeneralAdminOperation",
                                                 LogTypeDescription = string.Empty
                                             };
-                        AddLogType(logType);
+                        this.AddLogType(logType);
 
                         var logTypeConfigInfo = new LogTypeConfigInfo()
                                             {
@@ -217,7 +217,7 @@ namespace DotNetNuke.Services.Log.EventLog
                                                 MailFromAddress = String.Empty,
                                                 MailToAddress = String.Empty
                                             };
-                        AddLogTypeConfigInfo(logTypeConfigInfo);
+                        this.AddLogTypeConfigInfo(logTypeConfigInfo);
                     }
 
 	                if (LoggingProvider.Instance() != null)
@@ -273,7 +273,7 @@ namespace DotNetNuke.Services.Log.EventLog
                                                      LogTypeCSSClass = typeInfo.Attributes["LogTypeCSSClass"].Value,
                                                      LogTypeOwner = typeInfo.Attributes["LogTypeOwner"].Value
                                                  };
-                        AddLogType(objLogTypeInfo);
+                        this.AddLogType(objLogTypeInfo);
                     }
                 }
             }
@@ -300,7 +300,7 @@ namespace DotNetNuke.Services.Log.EventLog
                                                             (LogTypeConfigInfo.NotificationThresholdTimeTypes)
                                                             Enum.Parse(typeof(LogTypeConfigInfo.NotificationThresholdTimeTypes), typeConfigInfo.Attributes["NotificationThresholdTimeType"].Value)
                                                     };
-                        AddLogTypeConfigInfo(logTypeConfigInfo);
+                        this.AddLogTypeConfigInfo(logTypeConfigInfo);
                     }
                 }
             }

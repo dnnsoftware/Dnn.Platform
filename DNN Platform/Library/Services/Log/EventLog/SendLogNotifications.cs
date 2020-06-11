@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.Log.EventLog
     {
         public SendLogNotifications(ScheduleHistoryItem objScheduleHistoryItem)
         {
-            ScheduleHistoryItem = objScheduleHistoryItem;
+            this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
         public override void DoWork()
@@ -24,16 +24,16 @@ namespace DotNetNuke.Services.Log.EventLog
             try
             {
 				//notification that the event is progressing
-                Progressing(); //OPTIONAL
+                this.Progressing(); //OPTIONAL
                 LoggingProvider.Instance().SendLogNotifications();
-                ScheduleHistoryItem.Succeeded = true; //REQUIRED
-                ScheduleHistoryItem.AddLogNote("Sent log notifications successfully"); //OPTIONAL
+                this.ScheduleHistoryItem.Succeeded = true; //REQUIRED
+                this.ScheduleHistoryItem.AddLogNote("Sent log notifications successfully"); //OPTIONAL
             }
             catch (Exception exc) //REQUIRED
             {
-                ScheduleHistoryItem.Succeeded = false; //REQUIRED
-                ScheduleHistoryItem.AddLogNote("EXCEPTION: " + exc); //OPTIONAL
-                Errored(ref exc); //REQUIRED
+                this.ScheduleHistoryItem.Succeeded = false; //REQUIRED
+                this.ScheduleHistoryItem.AddLogNote("EXCEPTION: " + exc); //OPTIONAL
+                this.Errored(ref exc); //REQUIRED
                 //log the exception
                 Exceptions.Exceptions.LogException(exc); //OPTIONAL
             }

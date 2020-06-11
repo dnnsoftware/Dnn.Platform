@@ -30,7 +30,7 @@ namespace Dnn.EditBar.UI.Services
         [AllowAnonymous]
         public HttpResponseMessage CheckAuthorized()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, new { success = IsPageEditor() });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { success = this.IsPageEditor() });
         }
 
         [HttpGet]
@@ -38,12 +38,12 @@ namespace Dnn.EditBar.UI.Services
         public HttpResponseMessage GetUserSetting(string key)
         {
             var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-            var personalization = personalizationController.LoadProfile(UserInfo.UserID, PortalSettings.PortalId);
-            var value = personalization.Profile[key + PortalSettings.PortalId];
+            var personalization = personalizationController.LoadProfile(this.UserInfo.UserID, this.PortalSettings.PortalId);
+            var value = personalization.Profile[key + this.PortalSettings.PortalId];
 
             if (value == null)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new { Value = false });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Value = false });
             }
 
             var userSetting = new UserSetting
@@ -52,7 +52,7 @@ namespace Dnn.EditBar.UI.Services
                 Value = value
             };
 
-            return Request.CreateResponse(HttpStatusCode.OK, userSetting);
+            return this.Request.CreateResponse(HttpStatusCode.OK, userSetting);
         }
 
         [HttpPost]
@@ -61,17 +61,17 @@ namespace Dnn.EditBar.UI.Services
         public HttpResponseMessage SetUserSetting(UserSetting setting)
         {
             var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-            var personalization = personalizationController.LoadProfile(UserInfo.UserID, PortalSettings.PortalId);
-            personalization.Profile[setting.Key + PortalSettings.PortalId] = setting.Value;
+            var personalization = personalizationController.LoadProfile(this.UserInfo.UserID, this.PortalSettings.PortalId);
+            personalization.Profile[setting.Key + this.PortalSettings.PortalId] = setting.Value;
             personalization.IsModified = true;
             personalizationController.SaveProfile(personalization);
 
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return this.Request.CreateResponse(HttpStatusCode.OK);
         }
 
         private bool IsPageEditor()
         {
-            return PagePermissionsAttributesHelper.HasTabPermission("EDIT,CONTENT,MANAGE") || IsModuleAdmin(PortalSettings);
+            return PagePermissionsAttributesHelper.HasTabPermission("EDIT,CONTENT,MANAGE") || this.IsModuleAdmin(this.PortalSettings);
         }
 
         private bool IsModuleAdmin(PortalSettings portalSettings)

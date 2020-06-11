@@ -97,8 +97,8 @@ namespace log4net.Appender
 		[Obsolete("Instead use the default constructor and set the Layout & Target properties. Scheduled removal in v10.0.0.")]
 		public ConsoleAppender(ILayout layout, bool writeToErrorStream) 
 		{
-			Layout = layout;
-			m_writeToErrorStream = writeToErrorStream;
+			this.Layout = layout;
+			this.m_writeToErrorStream = writeToErrorStream;
 		}
 
 		#endregion Public Instance Constructors
@@ -121,18 +121,18 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual public string Target
 		{
-			get { return m_writeToErrorStream ? ConsoleError : ConsoleOut; }
+			get { return this.m_writeToErrorStream ? ConsoleError : ConsoleOut; }
 			set
 			{
 				string v = value.Trim();
 
 				if (SystemInfo.EqualsIgnoringCase(ConsoleError, v))
 				{
-					m_writeToErrorStream = true;
+					this.m_writeToErrorStream = true;
 				} 
 				else 
 				{
-					m_writeToErrorStream = false;
+					this.m_writeToErrorStream = false;
 				}
 			}
 		}
@@ -159,15 +159,15 @@ namespace log4net.Appender
 			// Write to the output stream
 			Console.Write(RenderLoggingEvent(loggingEvent));
 #else
-			if (m_writeToErrorStream)
+			if (this.m_writeToErrorStream)
 			{
 				// Write to the error stream
-				Console.Error.Write(RenderLoggingEvent(loggingEvent));
+				Console.Error.Write(this.RenderLoggingEvent(loggingEvent));
 			}
 			else
 			{
 				// Write to the output stream
-				Console.Write(RenderLoggingEvent(loggingEvent));
+				Console.Write(this.RenderLoggingEvent(loggingEvent));
 			}
 #endif
 		}

@@ -48,7 +48,7 @@ namespace log4net.Core
 		/// </remarks>
 		protected LoggerWrapperImpl(ILogger logger) 
 		{
-			m_logger = logger;
+			this.m_logger = logger;
 		}
 
 		#endregion Public Instance Constructors
@@ -73,7 +73,7 @@ namespace log4net.Core
 		/// </remarks>
 		virtual public ILogger Logger
 		{
-			get { return m_logger; }
+			get { return this.m_logger; }
 		}
 
 		#endregion

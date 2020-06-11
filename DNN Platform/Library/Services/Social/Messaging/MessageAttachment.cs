@@ -38,11 +38,11 @@ namespace DotNetNuke.Services.Social.Messaging
         {
             get
             {
-                return _messageattachmentID;
+                return this._messageattachmentID;
             }
             set
             {
-                _messageattachmentID = value;
+                this._messageattachmentID = value;
             }
         }
 
@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.Social.Messaging
             this.FileID = Convert.ToInt32(dr["FileID"]);
             
             //add audit column data
-            FillInternal(dr);
+            this.FillInternal(dr);
             
         }
     }

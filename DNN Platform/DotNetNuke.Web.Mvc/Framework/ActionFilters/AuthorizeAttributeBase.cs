@@ -18,25 +18,25 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
         private void CacheValidateHandler(HttpContext context, object data, ref HttpValidationStatus validationStatus)
         {
-            validationStatus = OnCacheAuthorization(new HttpContextWrapper(context));
+            validationStatus = this.OnCacheAuthorization(new HttpContextWrapper(context));
         }
 
         public virtual void OnAuthorization(AuthorizationContext filterContext)
         {
             Requires.NotNull("filterContext", filterContext);
 
-            if (SkipAuthorization(filterContext))
+            if (this.SkipAuthorization(filterContext))
             {
                 return;
             }
 
-            if (AuthorizeCore(filterContext.HttpContext))
+            if (this.AuthorizeCore(filterContext.HttpContext))
             {
-                HandleAuthorizedRequest(filterContext);
+                this.HandleAuthorizedRequest(filterContext);
             }
             else
             {
-                HandleUnauthorizedRequest(filterContext);
+                this.HandleUnauthorizedRequest(filterContext);
             }
         }
 
@@ -44,7 +44,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         {
             HttpCachePolicyBase cachePolicy = filterContext.HttpContext.Response.Cache;
             cachePolicy.SetProxyMaxAge(new TimeSpan(0));
-            cachePolicy.AddValidationCallback(CacheValidateHandler, null /* data */);
+            cachePolicy.AddValidationCallback(this.CacheValidateHandler, null /* data */);
         }
 
         protected virtual void HandleUnauthorizedRequest(AuthorizationContext filterContext)
@@ -59,7 +59,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         {
             Requires.NotNull("httpContext", httpContext);
 
-            bool isAuthorized = AuthorizeCore(httpContext);
+            bool isAuthorized = this.AuthorizeCore(httpContext);
             return (isAuthorized) ? HttpValidationStatus.Valid : HttpValidationStatus.IgnoreThisRequest;
         }
 

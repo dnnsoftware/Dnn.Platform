@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.Installer.Installers
             XPathNavigator libraryNav = nav.SelectSingleNode("libraryFolderName");
             if (libraryNav != null)
             {
-                BasePath = String.Format("Resources\\Libraries\\{0}\\{1}", libraryNav.Value, Globals.FormatVersion(Package.Version, "00", 3, "_"));
+                this.BasePath = String.Format("Resources\\Libraries\\{0}\\{1}", libraryNav.Value, Globals.FormatVersion(this.Package.Version, "00", 3, "_"));
             }
         }
 

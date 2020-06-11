@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Installer.Packages
         /// -----------------------------------------------------------------------------
         public PackageInfo(InstallerInfo info) : this()
         {
-            AttachInstallerInfo(info);
+            this.AttachInstallerInfo(info);
         }
 
         /// <summary>
@@ -47,11 +47,11 @@ namespace DotNetNuke.Services.Installer.Packages
         /// -----------------------------------------------------------------------------
         public PackageInfo()
         {
-            PackageID = Null.NullInteger;
-            PortalID = Null.NullInteger;
-            Version = new Version(0, 0, 0);
-            IsValid = true;
-            InstalledVersion = new Version(0, 0, 0);
+            this.PackageID = Null.NullInteger;
+            this.PortalID = Null.NullInteger;
+            this.Version = new Version(0, 0, 0);
+            this.IsValid = true;
+            this.InstalledVersion = new Version(0, 0, 0);
         }
 
         /// <summary>Gets the direct dependencies of this package.</summary>
@@ -60,9 +60,9 @@ namespace DotNetNuke.Services.Installer.Packages
         { 
             get
             {
-                return _dependencies ?? (_dependencies = (PackageID == -1) 
+                return this._dependencies ?? (this._dependencies = (this.PackageID == -1) 
                                         ? new List<PackageDependencyInfo>() 
-                                        : PackageController.Instance.GetPackageDependencies(p => p.PackageId == PackageID));
+                                        : PackageController.Instance.GetPackageDependencies(p => p.PackageId == this.PackageID));
             }
         }
 
@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             get
             {
-                return InstallerInfo.Files;
+                return this.InstallerInfo.Files;
             }
         }
 
@@ -156,7 +156,7 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             get
             {
-                return InstallerInfo.InstallMode;
+                return this.InstallerInfo.InstallMode;
             }
         }
 
@@ -196,7 +196,7 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             get
             {
-                return InstallerInfo.Log;
+                return this.InstallerInfo.Log;
             }
         }
 
@@ -288,7 +288,7 @@ namespace DotNetNuke.Services.Installer.Packages
         /// -----------------------------------------------------------------------------
         public void AttachInstallerInfo(InstallerInfo installer)
         {
-            InstallerInfo = installer;
+            this.InstallerInfo = installer;
         }
 
         /// <summary>
@@ -299,27 +299,27 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             return new PackageInfo
                    {
-                       PackageID = PackageID,
-                       PortalID = PortalID,
-                       PackageType = PackageType,
-                       InstallerInfo = InstallerInfo,
-                       Name = Name,
-                       FriendlyName = FriendlyName,
-                       Manifest = Manifest,
-                       Email = Email,
-                       Description = Description,
-                       FolderName = FolderName,
-                       FileName = FileName,
-                       IconFile = IconFile,
-                       IsSystemPackage = IsSystemPackage,
-                       IsValid = IsValid,
-                       Organization = Organization,
-                       Owner = Owner,
-                       License = License,
-                       ReleaseNotes = ReleaseNotes,
-                       Url = Url,
-                       Version = Version,
-                       InstalledVersion = InstalledVersion
+                       PackageID = this.PackageID,
+                       PortalID = this.PortalID,
+                       PackageType = this.PackageType,
+                       InstallerInfo = this.InstallerInfo,
+                       Name = this.Name,
+                       FriendlyName = this.FriendlyName,
+                       Manifest = this.Manifest,
+                       Email = this.Email,
+                       Description = this.Description,
+                       FolderName = this.FolderName,
+                       FileName = this.FileName,
+                       IconFile = this.IconFile,
+                       IsSystemPackage = this.IsSystemPackage,
+                       IsValid = this.IsValid,
+                       Organization = this.Organization,
+                       Owner = this.Owner,
+                       License = this.License,
+                       ReleaseNotes = this.ReleaseNotes,
+                       Url = this.Url,
+                       Version = this.Version,
+                       InstalledVersion = this.InstalledVersion
                    };
         }
     }

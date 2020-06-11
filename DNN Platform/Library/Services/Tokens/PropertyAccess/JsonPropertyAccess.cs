@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.Tokens
 
             var deserializedObject = JsonConvert.DeserializeObject<TModel>(json);
 
-            return ProcessToken(deserializedObject, accessingUser, accessLevel);
+            return this.ProcessToken(deserializedObject, accessingUser, accessLevel);
         }
 
         protected abstract string ProcessToken(TModel model, UserInfo accessingUser, Scope accessLevel);

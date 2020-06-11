@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 if (!fileContent.CanSeek)
                 {
-                    using (var seekableStream = GetSeekableStream(fileContent))
+                    using (var seekableStream = this.GetSeekableStream(fileContent))
                     {
                         provider.AddFile(destinationFolder, fileName, seekableStream);
                     }
@@ -167,7 +167,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             try
             {
-                using (var image = GetImageFromStream(content))
+                using (var image = this.GetImageFromStream(content))
                 {
                     if (!image.PropertyIdList.Any(x => x == 274)) return;
 
@@ -286,7 +286,7 @@ namespace DotNetNuke.Services.FileSystem
         public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent)
         {
 
-            return AddFile(folder, fileName, fileContent, true, false, false, GetContentType(Path.GetExtension(fileName)), GetCurrentUserID());
+            return this.AddFile(folder, fileName, fileContent, true, false, false, this.GetContentType(Path.GetExtension(fileName)), this.GetCurrentUserID());
         }
 
         /// <summary>
@@ -299,7 +299,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
         public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite)
         {
-            return AddFile(folder, fileName, fileContent, overwrite, false, false, GetContentType(Path.GetExtension(fileName)), GetCurrentUserID());
+            return this.AddFile(folder, fileName, fileContent, overwrite, false, false, this.GetContentType(Path.GetExtension(fileName)), this.GetCurrentUserID());
         }
 
         /// <summary>
@@ -319,7 +319,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
         public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite, bool checkPermissions, string contentType)
         {
-            return AddFile(folder, fileName, fileContent, overwrite, checkPermissions, false, contentType, GetCurrentUserID());
+            return this.AddFile(folder, fileName, fileContent, overwrite, checkPermissions, false, contentType, this.GetCurrentUserID());
         }
 
         /// <summary>
@@ -340,7 +340,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
         public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite, bool checkPermissions, string contentType, int createdByUserID)
         {
-            return AddFile(folder, fileName, fileContent, overwrite, checkPermissions, false, contentType, createdByUserID);
+            return this.AddFile(folder, fileName, fileContent, overwrite, checkPermissions, false, contentType, createdByUserID);
         }
 
         /// <summary>
@@ -365,10 +365,10 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("fileName", fileName);
 
-            CheckFileAddingRestrictions(folder, fileName, checkPermissions, ignoreWhiteList);
+            this.CheckFileAddingRestrictions(folder, fileName, checkPermissions, ignoreWhiteList);
 
             //DNN-2949 If IgnoreWhiteList is set to true , then file should be copied and info logged into Event Viewer
-            if (!IsAllowedExtension(fileName) && ignoreWhiteList)
+            if (!this.IsAllowedExtension(fileName) && ignoreWhiteList)
             {
                 var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
                 log.LogProperties.Add(new LogDetailInfo("Following file was imported/uploaded, but is not an authorized filetype: ", fileName));
@@ -378,16 +378,16 @@ namespace DotNetNuke.Services.FileSystem
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
 
-            bool fileExists = FileExists(folder, fileName, true);
+            bool fileExists = this.FileExists(folder, fileName, true);
             bool needToWriteFile = fileContent != null && (overwrite || !folderProvider.FileExists(folder, fileName));
             bool usingSeekableStream = false;
 
-            if (fileContent != null && !needToWriteFile && FileExists(folder, fileName))
+            if (fileContent != null && !needToWriteFile && this.FileExists(folder, fileName))
             {
-                return GetFile(folder, fileName);
+                return this.GetFile(folder, fileName);
             }
 
-            var oldFile = fileExists ? GetFile(folder, fileName, true) : null;
+            var oldFile = fileExists ? this.GetFile(folder, fileName, true) : null;
 
             var now = DateTime.Now;
             var extension = Path.GetExtension(fileName);
@@ -418,47 +418,47 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     if (!fileContent.CanSeek)
                     {
-                        fileContent = GetSeekableStream(fileContent);
+                        fileContent = this.GetSeekableStream(fileContent);
                         usingSeekableStream = true;
                     }
 
-                    CheckFileWritingRestrictions(folder, fileName, fileContent, oldFile, createdByUserID);
+                    this.CheckFileWritingRestrictions(folder, fileName, fileContent, oldFile, createdByUserID);
 
                     // Retrieve Metadata
-                    SetInitialFileMetadata(ref fileContent, file, folderProvider);
+                    this.SetInitialFileMetadata(ref fileContent, file, folderProvider);
 
                     // Workflow
                     folderWorkflow = WorkflowManager.Instance.GetWorkflow(folder.WorkflowID);
                     if (folderWorkflow != null)
                     {
-                        SetContentItem(file);
+                        this.SetContentItem(file);
 
                         file.FileId = oldFile != null ? oldFile.FileId : Null.NullInteger;
                         if (folderWorkflow.WorkflowID == SystemWorkflowManager.Instance.GetDirectPublishWorkflow(folderWorkflow.PortalID).WorkflowID)
                         {
                             if (file.FileId == Null.NullInteger)
                             {
-                                AddFile(file, createdByUserID);
+                                this.AddFile(file, createdByUserID);
                                 fileExists = true;
                             }
                             else
                             {
                                 //File Events for updating will be not fired. Only events for adding nust be fired
-                                UpdateFile(file, true, false);
+                                this.UpdateFile(file, true, false);
                             }
-                            contentFileName = ProcessVersioning(folder, oldFile, file, createdByUserID);
+                            contentFileName = this.ProcessVersioning(folder, oldFile, file, createdByUserID);
                         }
                         else
                         {
-                            contentFileName = UpdateWhileApproving(folder, createdByUserID, file, oldFile, fileContent);
+                            contentFileName = this.UpdateWhileApproving(folder, createdByUserID, file, oldFile, fileContent);
                             //This case will be to overwrite an existing file or initial file workflow
-                            ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file);
+                            this.ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file);
                         }
                     }
                     // Versioning
                     else
                     {
-                        contentFileName = ProcessVersioning(folder, oldFile, file, createdByUserID);
+                        contentFileName = this.ProcessVersioning(folder, oldFile, file, createdByUserID);
                     }
                 }
                 else
@@ -477,7 +477,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         if (folderWorkflow == null || !fileExists)
                         {
-                            ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file);
+                            this.ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file);
                         }
 
                         if (needToWriteFile)
@@ -494,7 +494,7 @@ namespace DotNetNuke.Services.FileSystem
 
                         if (folderWorkflow == null || !fileExists)
                         {
-                            ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file);
+                            this.ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file);
                         }
                     }
 
@@ -532,10 +532,10 @@ namespace DotNetNuke.Services.FileSystem
                 }
 
                 DataCache.RemoveCache("GetFileById" + file.FileId);
-                ClearFolderCache(folder.PortalID);
-                var addedFile = GetFile(file.FileId, true); //The file could be pending to be approved, but it should be returned
+                this.ClearFolderCache(folder.PortalID);
+                var addedFile = this.GetFile(file.FileId, true); //The file could be pending to be approved, but it should be returned
 
-                NotifyFileAddingEvents(folder, createdByUserID, fileExists, folderWorkflow, addedFile);
+                this.NotifyFileAddingEvents(folder, createdByUserID, fileExists, folderWorkflow, addedFile);
 
                 return addedFile;
             }
@@ -557,7 +557,7 @@ namespace DotNetNuke.Services.FileSystem
                     "Permissions are not met. The file has not been added."));
             }
 
-            if (!IsAllowedExtension(fileName) && !(UserController.Instance.GetCurrentUserInfo().IsSuperUser && ignoreWhiteList))
+            if (!this.IsAllowedExtension(fileName) && !(UserController.Instance.GetCurrentUserInfo().IsSuperUser && ignoreWhiteList))
             {
                 throw new InvalidFileExtensionException(
                     string.Format(
@@ -565,7 +565,7 @@ namespace DotNetNuke.Services.FileSystem
                             "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(fileName)));
             }
 
-            if (!IsValidFilename(fileName))
+            if (!this.IsValidFilename(fileName))
             {
                 throw new InvalidFilenameException(
                     string.Format(
@@ -580,12 +580,12 @@ namespace DotNetNuke.Services.FileSystem
             if (fileExists &&
                 (folderWorkflow == null || folderWorkflow.WorkflowID == SystemWorkflowManager.Instance.GetDirectPublishWorkflow(folderWorkflow.PortalID).WorkflowID))
             {
-                OnFileOverwritten(file, createdByUserID);
+                this.OnFileOverwritten(file, createdByUserID);
             }
 
             if (!fileExists)
             {
-                OnFileAdded(file, folder, createdByUserID);
+                this.OnFileAdded(file, folder, createdByUserID);
             }
         }
 
@@ -594,7 +594,7 @@ namespace DotNetNuke.Services.FileSystem
             // Create Content Item if does not exists
             if (file.ContentItemID == Null.NullInteger)
             {
-                file.ContentItemID = CreateFileContentItem().ContentItemId;
+                file.ContentItemID = this.CreateFileContentItem().ContentItemId;
             }
         }
 
@@ -608,10 +608,10 @@ namespace DotNetNuke.Services.FileSystem
             file.Width = 0;
             file.Height = 0;
 
-            if (IsImageFile(file))
+            if (this.IsImageFile(file))
             {
-                RotateFlipImage(ref fileContent);
-                SetImageProperties(file, fileContent);
+                this.RotateFlipImage(ref fileContent);
+                this.SetImageProperties(file, fileContent);
             }
         }
 
@@ -619,7 +619,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             try
             {
-                using (var image = GetImageFromStream(fileContent))
+                using (var image = this.GetImageFromStream(fileContent))
                 {
                     file.Width = image.Width;
                     file.Height = image.Height;
@@ -664,14 +664,14 @@ namespace DotNetNuke.Services.FileSystem
         {
             if (folderWorkflow == null || !fileExists)
             {
-                AddFile(file, createdByUserID);
+                this.AddFile(file, createdByUserID);
             }
             else
             {
                 //File Events for updating will not be fired. Only events for adding nust be fired
-                UpdateFile(file, true, false);
+                this.UpdateFile(file, true, false);
             }
-            if (folderWorkflow != null && StartWorkflow(createdByUserID, folderWorkflow, fileExists, file.ContentItemID))
+            if (folderWorkflow != null && this.StartWorkflow(createdByUserID, folderWorkflow, fileExists, file.ContentItemID))
             {
                 if (!fileExists) //if file exists it could have been published. So We don't have to update the field
                 {
@@ -744,10 +744,10 @@ namespace DotNetNuke.Services.FileSystem
                 {
 
                     //check for existing file
-                    var existingFile = GetFile(destinationFolder, file.FileName, true);
+                    var existingFile = this.GetFile(destinationFolder, file.FileName, true);
                     if (existingFile != null)
                     {
-                        DeleteFile(existingFile);
+                        this.DeleteFile(existingFile);
                     }
 
                     var folder = FolderManager.Instance.GetFolder(file.FolderId);
@@ -760,7 +760,7 @@ namespace DotNetNuke.Services.FileSystem
                 }
 
                 // copy Content Item
-                var contentItemID = CopyContentItem(file.ContentItemID);
+                var contentItemID = this.CopyContentItem(file.ContentItemID);
 
                 var fileId = DataProvider.Instance().AddFile(
                     file.PortalId,
@@ -774,7 +774,7 @@ namespace DotNetNuke.Services.FileSystem
                     file.ContentType,
                     destinationFolder.FolderPath,
                     destinationFolder.FolderID,
-                    GetCurrentUserID(),
+                    this.GetCurrentUserID(),
                     file.SHA1Hash,
                     DateTime.Now,
                     file.Title,
@@ -784,24 +784,24 @@ namespace DotNetNuke.Services.FileSystem
                     file.EnablePublishPeriod,
                     contentItemID);
 
-                var copiedFile = GetFile(fileId, true);
+                var copiedFile = this.GetFile(fileId, true);
 
                 // Notify added file event
-                OnFileAdded(copiedFile, destinationFolder, GetCurrentUserID());
+                this.OnFileAdded(copiedFile, destinationFolder, this.GetCurrentUserID());
 
                 return copiedFile;
             }
 
-            using (var fileContent = GetFileContent(file))
+            using (var fileContent = this.GetFileContent(file))
             {
                 //check for existing file
-                var existingFile = GetFile(destinationFolder, file.FileName, true);
+                var existingFile = this.GetFile(destinationFolder, file.FileName, true);
                 if (existingFile != null)
                 {
-                    DeleteFile(existingFile);
+                    this.DeleteFile(existingFile);
                 }
 
-                return AddFile(destinationFolder, file.FileName, fileContent, true, true, file.ContentType);
+                return this.AddFile(destinationFolder, file.FileName, fileContent, true, true, file.ContentType);
             }
         }
 
@@ -815,9 +815,9 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("file", file);
             FileDeletionController.Instance.DeleteFile(file);
-            ClearFolderCache(file.PortalId);
+            this.ClearFolderCache(file.PortalId);
             // Notify File Delete Event
-            OnFileDeleted(file, GetCurrentUserID());
+            this.OnFileDeleted(file, this.GetCurrentUserID());
         }
 
         /// <summary>
@@ -832,7 +832,7 @@ namespace DotNetNuke.Services.FileSystem
 
             foreach (var file in files)
             {
-                DeleteFile(file);
+                this.DeleteFile(file);
             }
         }
 
@@ -847,7 +847,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
         public virtual bool FileExists(IFolderInfo folder, string fileName)
         {
-            return FileExists(folder, fileName, false);
+            return this.FileExists(folder, fileName, false);
         }
 
         /// <summary>
@@ -866,7 +866,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("fileName", fileName);
 
-            var file = GetFile(folder, fileName, retrieveUnpublishedFiles);
+            var file = this.GetFile(folder, fileName, retrieveUnpublishedFiles);
             var existsFile = file != null;
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
 
@@ -902,7 +902,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
         public virtual IFileInfo GetFile(int fileID)
         {
-            return GetFile(fileID, false);
+            return this.GetFile(fileID, false);
         }
 
         /// <summary>
@@ -925,7 +925,7 @@ namespace DotNetNuke.Services.FileSystem
                 file = CBO.Instance.FillObject<FileInfo>(DataProvider.Instance().GetFileById(fileID, retrieveUnpublishedFiles));
                 if (file != null)
                 {
-                    var intCacheTimeout = 20 * Convert.ToInt32(GetPerformanceSetting());
+                    var intCacheTimeout = 20 * Convert.ToInt32(this.GetPerformanceSetting());
                     DataCache.SetCache(strCacheKey, file, TimeSpan.FromMinutes(intCacheTimeout));
                 }
             }
@@ -940,7 +940,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
         public virtual IFileInfo GetFile(IFolderInfo folder, string fileName)
         {
-            return GetFile(folder, fileName, false);
+            return this.GetFile(folder, fileName, false);
         }
 
         /// <summary>
@@ -968,7 +968,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
         public virtual IFileInfo GetFile(int portalId, string relativePath)
         {
-            return GetFile(portalId, relativePath, false);
+            return this.GetFile(portalId, relativePath, false);
         }
 
         /// <summary>
@@ -999,7 +999,7 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             var fileName = relativePath.Substring(folderPath.Length);
-            return GetFile(folderInfo, fileName, retrieveUnpublishedFiles);
+            return this.GetFile(folderInfo, fileName, retrieveUnpublishedFiles);
         }
 
         /// <summary>
@@ -1046,7 +1046,7 @@ namespace DotNetNuke.Services.FileSystem
 
             if (stream.CanSeek) return stream;
 
-            var folderPath = GetHostMapPath();
+            var folderPath = this.GetHostMapPath();
             string filePath;
 
             do
@@ -1054,7 +1054,7 @@ namespace DotNetNuke.Services.FileSystem
                 filePath = Path.Combine(folderPath, Path.GetRandomFileName()) + ".resx";
             } while (File.Exists(filePath));
 
-            var fileStream = GetAutoDeleteFileStream(filePath);
+            var fileStream = this.GetAutoDeleteFileStream(filePath);
 
             var array = new byte[BufferSize];
 
@@ -1134,10 +1134,10 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             //check for existing file
-            var existingFile = GetFile(destinationFolder, file.FileName, true);
+            var existingFile = this.GetFile(destinationFolder, file.FileName, true);
             if (existingFile != null)
             {
-                DeleteFile(existingFile);
+                this.DeleteFile(existingFile);
             }
 
             var destinationFolderMapping = FolderMappingController.Instance.GetFolderMapping(destinationFolder.PortalID, destinationFolder.FolderMappingID);
@@ -1154,7 +1154,7 @@ namespace DotNetNuke.Services.FileSystem
             else
             {
                 //Implement Copy/Delete
-                using (var fileContent = GetFileContent(file))
+                using (var fileContent = this.GetFileContent(file))
                 {
                     if (destinationFolderMapping.MappingName == "Database")
                     {
@@ -1162,15 +1162,15 @@ namespace DotNetNuke.Services.FileSystem
                     }
                     else
                     {
-                        AddFileToFolderProvider(fileContent, file.FileName, destinationFolder, destinationFolderProvider);
+                        this.AddFileToFolderProvider(fileContent, file.FileName, destinationFolder, destinationFolderProvider);
                     }
                 }
-                DeleteFileFromFolderProvider(file, sourceFolderProvider);
+                this.DeleteFileFromFolderProvider(file, sourceFolderProvider);
             }
 
             if (file.FolderMappingID == destinationFolder.FolderMappingID)
             {
-                MoveVersions(file, destinationFolder, sourceFolderProvider, destinationFolderProvider);
+                this.MoveVersions(file, destinationFolder, sourceFolderProvider, destinationFolderProvider);
             }
             else
             {
@@ -1181,10 +1181,10 @@ namespace DotNetNuke.Services.FileSystem
             file.FolderId = destinationFolder.FolderID;
             file.Folder = destinationFolder.FolderPath;
             file.FolderMappingID = destinationFolder.FolderMappingID;
-            file = UpdateFile(file);
+            file = this.UpdateFile(file);
 
             // Notify File Moved event
-            OnFileMoved(file, oldFilePath, GetCurrentUserID());
+            this.OnFileMoved(file, oldFilePath, this.GetCurrentUserID());
 
             return file;
         }
@@ -1205,19 +1205,19 @@ namespace DotNetNuke.Services.FileSystem
 
             if (file.FileName == newFileName) return file;
 
-            if (!IsAllowedExtension(newFileName))
+            if (!this.IsAllowedExtension(newFileName))
             {
                 throw new InvalidFileExtensionException(string.Format(Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed", "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(newFileName)));
             }
 
-            if (!IsValidFilename(newFileName))
+            if (!this.IsValidFilename(newFileName))
             {
                 throw new InvalidFilenameException(string.Format(Localization.Localization.GetExceptionMessage("AddFilenameNotAllowed", "The file name '{0}' is not allowed. The file has not been added."), newFileName));
             }
 
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
-            if (FileExists(folder, newFileName))
+            if (this.FileExists(folder, newFileName))
             {
                 throw new FileAlreadyExistsException(Localization.Localization.GetExceptionMessage("RenameFileAlreadyExists", "This folder already contains a file with the same name. The file has not been renamed."));
             }
@@ -1241,10 +1241,10 @@ namespace DotNetNuke.Services.FileSystem
             {
                 file.Extension = Path.GetExtension(newFileName).Replace(".", "");
             }
-            var renamedFile = UpdateFile(file);
+            var renamedFile = this.UpdateFile(file);
 
             // Notify File Renamed event
-            OnFileRenamed(renamedFile, oldfileName, GetCurrentUserID());
+            this.OnFileRenamed(renamedFile, oldfileName, this.GetCurrentUserID());
 
             return renamedFile;
         }
@@ -1286,7 +1286,7 @@ namespace DotNetNuke.Services.FileSystem
 
             var destinationFolder = FolderManager.Instance.GetFolder(file.FolderId);
 
-            UnzipFile(file, destinationFolder);
+            this.UnzipFile(file, destinationFolder);
         }
 
         /// <summary>
@@ -1299,7 +1299,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="System.ArgumentNullException">Thrown when file or destination folder are null.</exception>
         public virtual void UnzipFile(IFileInfo file, IFolderInfo destinationFolder)
         {
-            UnzipFile(file, destinationFolder, null);
+            this.UnzipFile(file, destinationFolder, null);
         }
 
         /// <summary>
@@ -1323,7 +1323,7 @@ namespace DotNetNuke.Services.FileSystem
                 throw new ArgumentException(Localization.Localization.GetExceptionMessage("InvalidZipFile", "The file specified is not a zip compressed file."));
             }
 
-            return ExtractFiles(file, destinationFolder, invalidFiles);
+            return this.ExtractFiles(file, destinationFolder, invalidFiles);
         }
 
         /// <summary>
@@ -1342,7 +1342,7 @@ namespace DotNetNuke.Services.FileSystem
                 throw new InvalidMetadataValuesException(message);
             }
 
-            return UpdateFile(file, true);
+            return this.UpdateFile(file, true);
         }
 
         /// <summary>
@@ -1358,13 +1358,13 @@ namespace DotNetNuke.Services.FileSystem
 
             if (fileContent != null)
             {
-                if (IsImageFile(file))
+                if (this.IsImageFile(file))
                 {
                     Image image = null;
 
                     try
                     {
-                        image = GetImageFromStream(fileContent);
+                        image = this.GetImageFromStream(fileContent);
 
                         file.Width = image.Width;
                         file.Height = image.Height;
@@ -1401,7 +1401,7 @@ namespace DotNetNuke.Services.FileSystem
                 Logger.Error(ex);
             }
 
-            return UpdateFile(file);
+            return this.UpdateFile(file);
         }
 
         /// <summary>
@@ -1416,7 +1416,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("file", file);
             Requires.NotNull("stream", stream);
 
-            using (var srcStream = GetFileContent(file))
+            using (var srcStream = this.GetFileContent(file))
             {
                 const int bufferSize = 4096;
                 var buffer = new byte[bufferSize];
@@ -1448,12 +1448,12 @@ namespace DotNetNuke.Services.FileSystem
                 throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("WriteFileToResponsePermissionsNotMet", "Permissions are not met. The file cannot be downloaded."));
             }
 
-            if (IsFileAutoSyncEnabled())
+            if (this.IsFileAutoSyncEnabled())
             {
-                AutoSyncFile(file);
+                this.AutoSyncFile(file);
             }
 
-            WriteFileToHttpContext(file, contentDisposition);
+            this.WriteFileToHttpContext(file, contentDisposition);
         }
 
         #endregion
@@ -1465,7 +1465,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             if (contentItemId == Null.NullInteger) return Null.NullInteger;
 
-            var newContentItem = CreateFileContentItem();
+            var newContentItem = this.CreateFileContentItem();
 
             // Clone terms
             var termController = new TermController();
@@ -1519,7 +1519,7 @@ namespace DotNetNuke.Services.FileSystem
                     // This scenario is when the file is in the Database Folder Provider
                     if (fileContent == null) continue;
 
-                    AddFileToFolderProvider(fileContent, version.FileName, destinationFolder, destinationFolderProvider);
+                    this.AddFileToFolderProvider(fileContent, version.FileName, destinationFolder, destinationFolderProvider);
                 }
 
                 var fileVersion = new FileInfo
@@ -1530,7 +1530,7 @@ namespace DotNetNuke.Services.FileSystem
                     PortalId = folder.PortalID
                 };
 
-                DeleteFileFromFolderProvider(fileVersion, sourceFolderProvider);
+                this.DeleteFileFromFolderProvider(fileVersion, sourceFolderProvider);
             }
         }
 
@@ -1575,7 +1575,7 @@ namespace DotNetNuke.Services.FileSystem
                 return isDatabaseMapping ? FileVersionController.Instance.AddFileVersion(file, createdByUserID, false, false, content) : FileVersionController.Instance.AddFileVersion(file, createdByUserID, false);
             }
 
-            if (CanUpdateWhenApproving(folder, contentController.GetContentItem(file.ContentItemID), createdByUserID))
+            if (this.CanUpdateWhenApproving(folder, contentController.GetContentItem(file.ContentItemID), createdByUserID))
             {
                 //Update the Unpublished version
                 var versions = FileVersionController.Instance.GetFileVersions(file).ToArray();
@@ -1605,15 +1605,15 @@ namespace DotNetNuke.Services.FileSystem
                 var newFileSize = folderProvider.GetFileSize(file);
                 if (file.Size != newFileSize)
                 {
-                    using (var fileContent = GetFileContent(file))
+                    using (var fileContent = this.GetFileContent(file))
                     {
-                        UpdateFile(file, fileContent);
+                        this.UpdateFile(file, fileContent);
                     }
                 }
             }
             else
             {
-                DeleteFile(file);
+                this.DeleteFile(file);
             }
         }
 
@@ -1632,7 +1632,7 @@ namespace DotNetNuke.Services.FileSystem
 
             try
             {
-                using (var fileContent = GetFileContent(file))
+                using (var fileContent = this.GetFileContent(file))
                 {
                     zipInputStream = new ZipInputStream(fileContent);
 
@@ -1646,7 +1646,7 @@ namespace DotNetNuke.Services.FileSystem
                             exactFilesCount++;
                             var fileName = Path.GetFileName(zipEntry.Name);
 
-                            EnsureZipFolder(zipEntry.Name, destinationFolder);
+                            this.EnsureZipFolder(zipEntry.Name, destinationFolder);
 
                             IFolderInfo parentFolder;
                             if (zipEntry.Name.IndexOf("/") == -1)
@@ -1661,7 +1661,7 @@ namespace DotNetNuke.Services.FileSystem
 
                             try
                             {
-                                AddFile(parentFolder, fileName, zipInputStream, true);
+                                this.AddFile(parentFolder, fileName, zipInputStream, true);
                             }
                             catch (PermissionsNotMetException exc)
                             {
@@ -1809,7 +1809,7 @@ namespace DotNetNuke.Services.FileSystem
             //regex is meant to block files like "foo.asp;.png" which can take advantage
             //of a vulnerability in IIS6 which treasts such files as .asp, not .png
             return !string.IsNullOrEmpty(extension)
-                   && WhiteList.IsAllowedExtension(extension)
+                   && this.WhiteList.IsAllowedExtension(extension)
                    && !Globals.FileExtensionRegex.IsMatch(fileName);
         }
 
@@ -1851,13 +1851,13 @@ namespace DotNetNuke.Services.FileSystem
 
             // Do not send negative Content-Length (file.Size could be negative due to integer overflow for files > 2GB)
             if (file.Size >= 0) objResponse.AppendHeader("Content-Length", file.Size.ToString(CultureInfo.InvariantCulture));
-            objResponse.ContentType = GetContentType(file.Extension.Replace(".", ""));
+            objResponse.ContentType = this.GetContentType(file.Extension.Replace(".", ""));
 
             try
             {
-                using (var fileContent = GetFileContent(file))
+                using (var fileContent = this.GetFileContent(file))
                 {
-                    WriteStream(objResponse, fileContent);
+                    this.WriteStream(objResponse, fileContent);
                 }
             }
             catch (Exception ex)
@@ -1917,7 +1917,7 @@ namespace DotNetNuke.Services.FileSystem
         internal virtual IFileInfo UpdateFile(IFileInfo file, bool updateLazyload)
         {
             //By default File Events will be fired
-            return UpdateFile(file, updateLazyload, true);
+            return this.UpdateFile(file, updateLazyload, true);
         }
 
 
@@ -1941,7 +1941,7 @@ namespace DotNetNuke.Services.FileSystem
                                                updateLazyload ? file.Height : Null.NullInteger,
                                                file.ContentType,
                                                file.FolderId,
-                                               GetCurrentUserID(),
+                                               this.GetCurrentUserID(),
                                                updateLazyload ? file.SHA1Hash : Null.NullString,
                                                file.LastModificationTime,
                                                file.Title,
@@ -1952,12 +1952,12 @@ namespace DotNetNuke.Services.FileSystem
                                                file.ContentItemID);
 
             DataCache.RemoveCache("GetFileById" + file.FileId);
-            ClearFolderCache(file.PortalId);
-            var updatedFile = GetFile(file.FileId);
+            this.ClearFolderCache(file.PortalId);
+            var updatedFile = this.GetFile(file.FileId);
 
             if (fireEvent)
             {
-                OnFileMetadataChanged(updatedFile ?? GetFile(file.FileId, true), GetCurrentUserID());
+                this.OnFileMetadataChanged(updatedFile ?? this.GetFile(file.FileId, true), this.GetCurrentUserID());
             }
             return updatedFile;
         }

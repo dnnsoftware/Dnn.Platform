@@ -50,7 +50,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <returns>content item id.</returns>
         public int AddContentItem(ContentItem contentItem, int createdByUserId)
         {
-            return _provider.ExecuteScalar<int>("AddContentItem",
+            return this._provider.ExecuteScalar<int>("AddContentItem",
                                                contentItem.Content,
                                                contentItem.ContentTypeId,
                                                contentItem.TabID,
@@ -58,7 +58,7 @@ namespace DotNetNuke.Entities.Content.Data
                                                contentItem.ContentKey,
                                                contentItem.Indexed,
                                                createdByUserId,
-                                               _provider.GetNull(contentItem.StateID));
+                                               this._provider.GetNull(contentItem.StateID));
         }
 
 		/// <summary>
@@ -67,7 +67,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <param name="contentItemId">The content item ID.</param>
         public void DeleteContentItem(int contentItemId)
         {
-            _provider.ExecuteNonQuery("DeleteContentItem", contentItemId);
+            this._provider.ExecuteNonQuery("DeleteContentItem", contentItemId);
         }
 
 		/// <summary>
@@ -77,7 +77,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <returns>data reader.</returns>
         public IDataReader GetContentItem(int contentItemId)
         {
-            return _provider.ExecuteReader("GetContentItem", contentItemId);
+            return this._provider.ExecuteReader("GetContentItem", contentItemId);
         }
 
         /// <summary>
@@ -89,9 +89,9 @@ namespace DotNetNuke.Entities.Content.Data
         /// <returns>data reader.</returns>
         public IDataReader GetContentItems(int contentTypeId, int tabId, int moduleId)
         {
-            return _provider.ExecuteReader("GetContentItems", _provider.GetNull(contentTypeId), 
-                                                            _provider.GetNull(tabId), 
-                                                            _provider.GetNull(moduleId));
+            return this._provider.ExecuteReader("GetContentItems", this._provider.GetNull(contentTypeId), 
+                                                            this._provider.GetNull(tabId), 
+                                                            this._provider.GetNull(moduleId));
         }
      
 		/// <summary>
@@ -101,7 +101,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <returns>data reader.</returns>
         public IDataReader GetContentItemsByTerm(string term)
         {
-            return _provider.ExecuteReader("GetContentItemsByTerm", term);
+            return this._provider.ExecuteReader("GetContentItemsByTerm", term);
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace DotNetNuke.Entities.Content.Data
         /// <param name="contentTypeId">The type of content items you are searching for</param>
 	    public IDataReader GetContentItemsByContentType(int contentTypeId)
         {
-            return _provider.ExecuteReader("GetContentItemsByContentType", contentTypeId);
+            return this._provider.ExecuteReader("GetContentItemsByContentType", contentTypeId);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace DotNetNuke.Entities.Content.Data
         /// <param name="tabId">The TabID (or "Page ID") that the content items are associated with</param>
         public IDataReader GetContentItemsByTabId(int tabId)
         {
-            return _provider.ExecuteReader("GetContentItemsByTabId", tabId);
+            return this._provider.ExecuteReader("GetContentItemsByTabId", tabId);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace DotNetNuke.Entities.Content.Data
         /// </summary>
         public IDataReader GetContentItemsByModuleId(int moduleId)
         {
-            return _provider.ExecuteReader("GetContentItemsByModuleId", moduleId);
+            return this._provider.ExecuteReader("GetContentItemsByModuleId", moduleId);
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace DotNetNuke.Entities.Content.Data
         /// </summary>
         public IDataReader GetContentItemsByVocabularyId(int vocabularyId)
         {
-            return _provider.ExecuteReader("GetContentItemsByVocabularyId", vocabularyId);
+            return this._provider.ExecuteReader("GetContentItemsByVocabularyId", vocabularyId);
         }
 
 	    /// <summary>
@@ -144,7 +144,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <returns>data reader.</returns>
         public IDataReader GetUnIndexedContentItems()
         {
-            return _provider.ExecuteReader("GetUnIndexedContentItems");
+            return this._provider.ExecuteReader("GetUnIndexedContentItems");
         }
 
 		/// <summary>
@@ -154,7 +154,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <param name="createdByUserId">The created by user id.</param>
         public void UpdateContentItem(ContentItem contentItem, int createdByUserId)
         {
-            _provider.ExecuteNonQuery("UpdateContentItem",
+            this._provider.ExecuteNonQuery("UpdateContentItem",
                                      contentItem.ContentItemId,
                                      contentItem.Content,
                                      contentItem.ContentTypeId,
@@ -163,7 +163,7 @@ namespace DotNetNuke.Entities.Content.Data
                                      contentItem.ContentKey,
                                      contentItem.Indexed,
                                      createdByUserId,
-                                     _provider.GetNull(contentItem.StateID));
+                                     this._provider.GetNull(contentItem.StateID));
         }
 
         #endregion
@@ -178,7 +178,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <param name="value">The value.</param>
         public void AddMetaData(ContentItem contentItem, string name, string value)
         {
-            _provider.ExecuteNonQuery("AddMetaData", contentItem.ContentItemId, name, value);
+            this._provider.ExecuteNonQuery("AddMetaData", contentItem.ContentItemId, name, value);
         }
         
         public void SynchronizeMetaData(ContentItem contentItem, IEnumerable<KeyValuePair<string,string>> added, IEnumerable<KeyValuePair<string,string>> deleted)
@@ -214,12 +214,12 @@ namespace DotNetNuke.Entities.Content.Data
 #else
             foreach (var item in deleted)
             {
-                DeleteMetaData(contentItem, item.Key, item.Value);
+                this.DeleteMetaData(contentItem, item.Key, item.Value);
             }
 
             foreach (var item in added)
             {
-                AddMetaData(contentItem, item.Key, item.Value);
+                this.AddMetaData(contentItem, item.Key, item.Value);
             }
 #endif
         }
@@ -232,7 +232,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <param name="value">The value.</param>
         public void DeleteMetaData(ContentItem contentItem, string name, string value)
         {
-            _provider.ExecuteNonQuery("DeleteMetaData", contentItem.ContentItemId, name, value);
+            this._provider.ExecuteNonQuery("DeleteMetaData", contentItem.ContentItemId, name, value);
         }
 
 		/// <summary>
@@ -242,7 +242,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <returns>data reader.</returns>
         public IDataReader GetMetaData(int contentItemId)
         {
-            return _provider.ExecuteReader("GetMetaData", contentItemId);
+            return this._provider.ExecuteReader("GetMetaData", contentItemId);
         }
 
         #endregion
@@ -256,12 +256,12 @@ namespace DotNetNuke.Entities.Content.Data
         /// <returns>content type id.</returns>
         public int AddContentType(ContentType contentType)
         {
-            return _provider.ExecuteScalar<int>("AddContentType", contentType.ContentType);
+            return this._provider.ExecuteScalar<int>("AddContentType", contentType.ContentType);
         }
 
         public void DeleteContentType(ContentType contentType)
         {
-            _provider.ExecuteNonQuery("DeleteContentType", contentType.ContentTypeId);
+            this._provider.ExecuteNonQuery("DeleteContentType", contentType.ContentTypeId);
         }
 
         /// <summary>
@@ -270,7 +270,7 @@ namespace DotNetNuke.Entities.Content.Data
         /// <returns>data reader.</returns>
         public IDataReader GetContentTypes()
         {
-            return _provider.ExecuteReader("GetContentTypes");
+            return this._provider.ExecuteReader("GetContentTypes");
         }
 
         /// <summary>
@@ -279,7 +279,7 @@ namespace DotNetNuke.Entities.Content.Data
         /// <param name="contentType">Type of the content.</param>
         public void UpdateContentType(ContentType contentType)
         {
-            _provider.ExecuteNonQuery("UpdateContentType", contentType.ContentTypeId, contentType.ContentType);
+            this._provider.ExecuteNonQuery("UpdateContentType", contentType.ContentTypeId, contentType.ContentType);
         }
 
         #endregion
@@ -293,7 +293,7 @@ namespace DotNetNuke.Entities.Content.Data
         /// <returns>scope type id.</returns>
         public int AddScopeType(ScopeType scopeType)
         {
-            return _provider.ExecuteScalar<int>("AddScopeType", scopeType.ScopeType);
+            return this._provider.ExecuteScalar<int>("AddScopeType", scopeType.ScopeType);
         }
 
 		/// <summary>
@@ -302,7 +302,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <param name="scopeType">Type of the scope.</param>
         public void DeleteScopeType(ScopeType scopeType)
         {
-            _provider.ExecuteNonQuery("DeleteScopeType", scopeType.ScopeTypeId);
+            this._provider.ExecuteNonQuery("DeleteScopeType", scopeType.ScopeTypeId);
         }
 
 		/// <summary>
@@ -311,7 +311,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <returns>data reader.</returns>
         public IDataReader GetScopeTypes()
         {
-            return _provider.ExecuteReader("GetScopeTypes");
+            return this._provider.ExecuteReader("GetScopeTypes");
         }
 
 		/// <summary>
@@ -320,7 +320,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <param name="scopeType">Type of the scope.</param>
         public void UpdateScopeType(ScopeType scopeType)
         {
-            _provider.ExecuteNonQuery("UpdateScopeType", scopeType.ScopeTypeId, scopeType.ScopeType);
+            this._provider.ExecuteNonQuery("UpdateScopeType", scopeType.ScopeTypeId, scopeType.ScopeType);
         }
 
         #endregion
@@ -335,7 +335,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <returns>term id.</returns>
         public int AddHeirarchicalTerm(Term term, int createdByUserId)
         {
-            return _provider.ExecuteScalar<int>("AddHeirarchicalTerm", term.VocabularyId, term.ParentTermId, term.Name, term.Description, term.Weight, createdByUserId);
+            return this._provider.ExecuteScalar<int>("AddHeirarchicalTerm", term.VocabularyId, term.ParentTermId, term.Name, term.Description, term.Weight, createdByUserId);
         }
 
 		/// <summary>
@@ -346,12 +346,12 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <returns>term id.</returns>
         public int AddSimpleTerm(Term term, int createdByUserId)
         {
-            return _provider.ExecuteScalar<int>("AddSimpleTerm", term.VocabularyId, term.Name, term.Description, term.Weight, createdByUserId);
+            return this._provider.ExecuteScalar<int>("AddSimpleTerm", term.VocabularyId, term.Name, term.Description, term.Weight, createdByUserId);
         }
 
         public void AddTermToContent(Term term, ContentItem contentItem)
         {
-            _provider.ExecuteNonQuery("AddTermToContent", term.TermId, contentItem.ContentItemId);
+            this._provider.ExecuteNonQuery("AddTermToContent", term.TermId, contentItem.ContentItemId);
         }
 
 		/// <summary>
@@ -360,7 +360,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <param name="term">The term.</param>
         public void DeleteSimpleTerm(Term term)
         {
-            _provider.ExecuteNonQuery("DeleteSimpleTerm", term.TermId);
+            this._provider.ExecuteNonQuery("DeleteSimpleTerm", term.TermId);
         }
 
 		/// <summary>
@@ -369,7 +369,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <param name="term">The term.</param>
         public void DeleteHeirarchicalTerm(Term term)
         {
-            _provider.ExecuteNonQuery("DeleteHeirarchicalTerm", term.TermId);
+            this._provider.ExecuteNonQuery("DeleteHeirarchicalTerm", term.TermId);
         }
 
 		/// <summary>
@@ -379,7 +379,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <returns>data reader.</returns>
         public IDataReader GetTerm(int termId)
         {
-            return _provider.ExecuteReader("GetTerm", termId);
+            return this._provider.ExecuteReader("GetTerm", termId);
         }
 
         /// <summary>
@@ -387,7 +387,7 @@ namespace DotNetNuke.Entities.Content.Data
         /// </summary>
 	    public IDataReader GetTermUsage(int termId)
         {
-            return _provider.ExecuteReader("GetTermUsage", termId);
+            return this._provider.ExecuteReader("GetTermUsage", termId);
         }
 
 	    /// <summary>
@@ -397,7 +397,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <returns>data reader.</returns>
         public IDataReader GetTermsByContent(int contentItemId)
         {
-            return _provider.ExecuteReader("GetTermsByContent", contentItemId);
+            return this._provider.ExecuteReader("GetTermsByContent", contentItemId);
         }
 
 		/// <summary>
@@ -407,7 +407,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <returns>data reader.</returns>
         public IDataReader GetTermsByVocabulary(int vocabularyId)
         {
-            return _provider.ExecuteReader("GetTermsByVocabulary", vocabularyId);
+            return this._provider.ExecuteReader("GetTermsByVocabulary", vocabularyId);
         }
 
 		/// <summary>
@@ -416,7 +416,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <param name="contentItem">The content item.</param>
         public void RemoveTermsFromContent(ContentItem contentItem)
         {
-            _provider.ExecuteNonQuery("RemoveTermsFromContent", contentItem.ContentItemId);
+            this._provider.ExecuteNonQuery("RemoveTermsFromContent", contentItem.ContentItemId);
         }
 
 		/// <summary>
@@ -426,7 +426,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <param name="lastModifiedByUserId">The last modified by user id.</param>
         public void UpdateHeirarchicalTerm(Term term, int lastModifiedByUserId)
         {
-            _provider.ExecuteNonQuery("UpdateHeirarchicalTerm", term.TermId, term.VocabularyId, term.ParentTermId, term.Name, term.Description, term.Weight, lastModifiedByUserId);
+            this._provider.ExecuteNonQuery("UpdateHeirarchicalTerm", term.TermId, term.VocabularyId, term.ParentTermId, term.Name, term.Description, term.Weight, lastModifiedByUserId);
         }
 
 		/// <summary>
@@ -436,7 +436,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <param name="lastModifiedByUserId">The last modified by user id.</param>
         public void UpdateSimpleTerm(Term term, int lastModifiedByUserId)
         {
-            _provider.ExecuteNonQuery("UpdateSimpleTerm", term.TermId, term.VocabularyId, term.Name, term.Description, term.Weight, lastModifiedByUserId);
+            this._provider.ExecuteNonQuery("UpdateSimpleTerm", term.TermId, term.VocabularyId, term.Name, term.Description, term.Weight, lastModifiedByUserId);
         }
 
         #endregion
@@ -451,12 +451,12 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <returns>Vocabulary id.</returns>
         public int AddVocabulary(Vocabulary vocabulary, int createdByUserId)
         {
-            return _provider.ExecuteScalar<int>("AddVocabulary",
+            return this._provider.ExecuteScalar<int>("AddVocabulary",
                                                vocabulary.Type,
                                                vocabulary.Name,
                                                vocabulary.Description,
                                                vocabulary.Weight,
-                                               _provider.GetNull(vocabulary.ScopeId),
+                                               this._provider.GetNull(vocabulary.ScopeId),
                                                vocabulary.ScopeTypeId,
                                                createdByUserId);
         }
@@ -467,7 +467,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <param name="vocabulary">The vocabulary.</param>
         public void DeleteVocabulary(Vocabulary vocabulary)
         {
-            _provider.ExecuteNonQuery("DeleteVocabulary", vocabulary.VocabularyId);
+            this._provider.ExecuteNonQuery("DeleteVocabulary", vocabulary.VocabularyId);
         }
 
 		/// <summary>
@@ -476,7 +476,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <returns>data reader.</returns>
         public IDataReader GetVocabularies()
         {
-            return _provider.ExecuteReader("GetVocabularies");
+            return this._provider.ExecuteReader("GetVocabularies");
         }
 
 		/// <summary>
@@ -486,7 +486,7 @@ namespace DotNetNuke.Entities.Content.Data
 		/// <param name="lastModifiedByUserId">The last modified by user id.</param>
         public void UpdateVocabulary(Vocabulary vocabulary, int lastModifiedByUserId)
         {
-            _provider.ExecuteNonQuery("UpdateVocabulary",
+            this._provider.ExecuteNonQuery("UpdateVocabulary",
                                      vocabulary.VocabularyId,
                                      vocabulary.Type,
                                      vocabulary.Name,

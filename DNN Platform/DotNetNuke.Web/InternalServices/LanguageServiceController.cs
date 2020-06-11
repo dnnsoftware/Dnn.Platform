@@ -24,7 +24,7 @@ namespace DotNetNuke.Web.InternalServices
         protected INavigationManager NavigationManager { get; }
         public LanguageServiceController(INavigationManager navigationManager)
         {
-            NavigationManager = navigationManager;
+            this.NavigationManager = navigationManager;
         }
 
         public class PageDto
@@ -35,7 +35,7 @@ namespace DotNetNuke.Web.InternalServices
         }
         private bool IsDefaultLanguage(string code)
         {
-            return code == PortalSettings.DefaultLanguage;
+            return code == this.PortalSettings.DefaultLanguage;
         }
 
         [HttpGet]
@@ -45,21 +45,21 @@ namespace DotNetNuke.Web.InternalServices
            var locale = new LocaleController().GetLocale(languageCode);
 
             List<PageDto> pages = new List<PageDto>();
-            if (!IsDefaultLanguage(locale.Code))
+            if (!this.IsDefaultLanguage(locale.Code))
             {
                 TabController ctl = new TabController();
-                var nonTranslated = (from t in ctl.GetTabsByPortal(PortalSettings.PortalId).WithCulture(locale.Code, false).Values where !t.IsTranslated && !t.IsDeleted select t);
+                var nonTranslated = (from t in ctl.GetTabsByPortal(this.PortalSettings.PortalId).WithCulture(locale.Code, false).Values where !t.IsTranslated && !t.IsDeleted select t);
                 foreach (TabInfo page in nonTranslated)
                 {
                     pages.Add(new PageDto()
                     {
                         Name = page.TabName,
-                        ViewUrl = NavigationManager.NavigateURL(page.TabID),
-                        EditUrl = NavigationManager.NavigateURL(page.TabID, "Tab", "action=edit", "returntabid=" + PortalSettings.ActiveTab.TabID)
+                        ViewUrl = this.NavigationManager.NavigateURL(page.TabID),
+                        EditUrl = this.NavigationManager.NavigateURL(page.TabID, "Tab", "action=edit", "returntabid=" + this.PortalSettings.ActiveTab.TabID)
                     });
                 }
             }
-            return Request.CreateResponse(HttpStatusCode.OK, pages);
+            return this.Request.CreateResponse(HttpStatusCode.OK, pages);
         }
     }
 }

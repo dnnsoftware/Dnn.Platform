@@ -33,13 +33,13 @@ namespace DotNetNuke.Services.Authentication
 
         public AuthenticationConfigBase()
         {
-            DependencyProvider = Globals.DependencyProvider;
+            this.DependencyProvider = Globals.DependencyProvider;
         }
 
         protected AuthenticationConfigBase(int portalID)
             : this()
         {
-            PortalID = portalID;
+            this.PortalID = portalID;
         }
 
         [Browsable(false)]

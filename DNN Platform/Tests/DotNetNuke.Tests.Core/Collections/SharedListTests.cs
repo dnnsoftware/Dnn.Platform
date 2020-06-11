@@ -21,7 +21,7 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             const string value = "value";
 
-            var sharedList = new SharedList<string>(LockingStrategy);
+            var sharedList = new SharedList<string>(this.LockingStrategy);
 
             bool doInsert = false;
             using (ISharedCollectionLock l = sharedList.GetReadLock())
@@ -49,19 +49,19 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test, ExpectedException(typeof (WriteLockRequiredException)), TestCaseSource("GetWriteMethods")]
         public void WriteRequiresLock(Action<SharedList<string>> writeAction)
         {
-            writeAction.Invoke(InitSharedList("value"));
+            writeAction.Invoke(this.InitSharedList("value"));
         }
 
         [Test, ExpectedException(typeof (ReadLockRequiredException)), TestCaseSource("GetReadMethods")]
         public void ReadRequiresLock(Action<SharedList<string>> readAction)
         {
-            readAction.Invoke(InitSharedList("value"));
+            readAction.Invoke(this.InitSharedList("value"));
         }
 
         [Test, ExpectedException(typeof (ReadLockRequiredException))]
         public void DisposedReadLockDeniesRead()
         {
-            var d = new SharedList<string>(LockingStrategy);
+            var d = new SharedList<string>(this.LockingStrategy);
 
             ISharedCollectionLock l = d.GetReadLock();
             l.Dispose();
@@ -72,7 +72,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test, ExpectedException(typeof (ReadLockRequiredException))]
         public void DisposedWriteLockDeniesRead()
         {
-            var d = new SharedList<string>(LockingStrategy);
+            var d = new SharedList<string>(this.LockingStrategy);
 
             ISharedCollectionLock l = d.GetWriteLock();
             l.Dispose();
@@ -83,7 +83,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test, ExpectedException(typeof (WriteLockRequiredException))]
         public void DisposedWriteLockDeniesWrite()
         {
-            var sharedList = new SharedList<string>(LockingStrategy);
+            var sharedList = new SharedList<string>(this.LockingStrategy);
 
             ISharedCollectionLock l = sharedList.GetWriteLock();
             l.Dispose();
@@ -94,7 +94,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test]
         public void WriteLockEnablesRead()
         {
-            var sharedList = InitSharedList("value");
+            var sharedList = this.InitSharedList("value");
 
             string actualValue = null;
             using (ISharedCollectionLock l = sharedList.GetWriteLock())
@@ -108,7 +108,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test]
         public void CanGetAnotherLockAfterDisposingLock()
         {
-            var d = new SharedList<string>(LockingStrategy);
+            var d = new SharedList<string>(this.LockingStrategy);
             ISharedCollectionLock l = d.GetReadLock();
             l.Dispose();
 
@@ -119,7 +119,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test]
         public void DoubleDispose()
         {
-            var d = new SharedList<string>(LockingStrategy);
+            var d = new SharedList<string>(this.LockingStrategy);
 
             d.Dispose();
             d.Dispose();
@@ -129,7 +129,7 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCaseSource("GetObjectDisposedExceptionMethods")]
         public void MethodsThrowAfterDisposed(Action<SharedList<string>> methodCall)
         {
-            var d = new SharedList<string>(LockingStrategy);
+            var d = new SharedList<string>(this.LockingStrategy);
 
             d.Dispose();
             methodCall.Invoke(d);
@@ -155,8 +155,8 @@ namespace DotNetNuke.Tests.Core.Collections
         {
             var list = new List<Action<SharedList<string>>> {(SharedList<string> l) => l.GetReadLock(), (SharedList<string> l) => l.GetWriteLock()};
 
-            list.AddRange(GetReadMethods());
-            list.AddRange(GetWriteMethods());
+            list.AddRange(this.GetReadMethods());
+            list.AddRange(this.GetWriteMethods());
 
             return list;
         }
@@ -190,7 +190,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
         private SharedList<T> InitSharedList<T>(T value)
         {
-            var list = new SharedList<T>(LockingStrategy);
+            var list = new SharedList<T>(this.LockingStrategy);
             list.BackingList.Add(value);
             return list;
         }

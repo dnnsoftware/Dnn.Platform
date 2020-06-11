@@ -30,12 +30,12 @@ namespace DotNetNuke.Services.Mobile
 		{
 			get
 			{
-				return _id;
+				return this._id;
 			}
 			set
 			{
-				_id = value;
-				_matchRules = null;
+				this._id = value;
+				this._matchRules = null;
 			}
 		}
 
@@ -82,24 +82,24 @@ namespace DotNetNuke.Services.Mobile
 		{
 			get
 			{
-				if (_matchRules == null)
+				if (this._matchRules == null)
 				{
-					if (_id == Null.NullInteger)
+					if (this._id == Null.NullInteger)
 					{
-						_matchRules = new List<IMatchRule>();
+						this._matchRules = new List<IMatchRule>();
 					}
 					else
 					{
 						//get from database
-						_matchRules = CBO.FillCollection<MatchRule>(DataProvider.Instance().GetRedirectionRules(this.Id)).Cast<IMatchRule>().ToList();
+						this._matchRules = CBO.FillCollection<MatchRule>(DataProvider.Instance().GetRedirectionRules(this.Id)).Cast<IMatchRule>().ToList();
 					}
 				}
 
-				return _matchRules;
+				return this._matchRules;
 			}
 			set
 			{
-				_matchRules = value;
+				this._matchRules = value;
 			}
 		}
 

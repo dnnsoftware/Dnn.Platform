@@ -21,11 +21,11 @@ namespace DotNetNuke.Services.OutputCache
 
         public OutputCacheResponseFilter(Stream filterChain, string cacheKey, TimeSpan cacheDuration, int maxVaryByCount)
         {
-            ChainedStream = filterChain;
-            CacheKey = cacheKey;
-            CacheDuration = cacheDuration;
-            MaxVaryByCount = maxVaryByCount;
-            _captureStream = CaptureStream;
+            this.ChainedStream = filterChain;
+            this.CacheKey = cacheKey;
+            this.CacheDuration = cacheDuration;
+            this.MaxVaryByCount = maxVaryByCount;
+            this._captureStream = this.CaptureStream;
         }
 
         #endregion
@@ -40,11 +40,11 @@ namespace DotNetNuke.Services.OutputCache
         {
             get
             {
-                return _captureStream;
+                return this._captureStream;
             }
             set
             {
-                _captureStream = value;
+                this._captureStream = value;
             }
         }
 
@@ -104,27 +104,27 @@ namespace DotNetNuke.Services.OutputCache
 
         public override void Flush()
         {
-            ChainedStream.Flush();
-            if (HasErrored)
+            this.ChainedStream.Flush();
+            if (this.HasErrored)
             {
                 return;
             }
-            if ((((_captureStream) != null)))
+            if ((((this._captureStream) != null)))
             {
-                _captureStream.Flush();
+                this._captureStream.Flush();
             }
         }
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            ChainedStream.Write(buffer, offset, count);
-            if (HasErrored)
+            this.ChainedStream.Write(buffer, offset, count);
+            if (this.HasErrored)
             {
                 return;
             }
-            if ((((_captureStream) != null)))
+            if ((((this._captureStream) != null)))
             {
-                _captureStream.Write(buffer, offset, count);
+                this._captureStream.Write(buffer, offset, count);
             }
         }
 
@@ -155,25 +155,25 @@ namespace DotNetNuke.Services.OutputCache
 
         public virtual byte[] StopFiltering(int itemId, bool deleteData)
         {
-            if (HasErrored)
+            if (this.HasErrored)
             {
                 return null;
             }
 
-            if ((((CaptureStream) != null)))
+            if ((((this.CaptureStream) != null)))
             {
-                CaptureStream.Position = 0;
-                using (var reader = new StreamReader(CaptureStream, Encoding.Default))
+                this.CaptureStream.Position = 0;
+                using (var reader = new StreamReader(this.CaptureStream, Encoding.Default))
                 {
                     string output = reader.ReadToEnd();
-                    AddItemToCache(itemId, output);
+                    this.AddItemToCache(itemId, output);
                 }
-                CaptureStream.Close();
-                CaptureStream = null;
+                this.CaptureStream.Close();
+                this.CaptureStream = null;
             }
             if (deleteData)
             {
-                RemoveItemFromCache(itemId);
+                this.RemoveItemFromCache(itemId);
             }
             return null;
         }

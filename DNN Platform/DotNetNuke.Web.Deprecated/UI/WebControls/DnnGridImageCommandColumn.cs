@@ -30,8 +30,8 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <value>A String</value>
         public ImageCommandColumnEditMode EditMode
         {
-            get { return _editMode; }
-            set { _editMode = value; }
+            get { return this._editMode; }
+            set { this._editMode = value; }
         }
 
 
@@ -43,14 +43,14 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (!string.IsNullOrEmpty(_imageURL))
+                if (!string.IsNullOrEmpty(this._imageURL))
                 {
-                    return _imageURL;
+                    return this._imageURL;
                 }
 
-                return IconController.IconURL(IconKey, IconSize, IconStyle);
+                return IconController.IconURL(this.IconKey, this.IconSize, this.IconStyle);
             }
-            set { _imageURL = value; }
+            set { this._imageURL = value; }
         }
 
 
@@ -110,8 +110,8 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <value>A Boolean</value>
         public bool ShowImage
         {
-            get { return _showImage; }
-            set { _showImage = value; }
+            get { return this._showImage; }
+            set { this._showImage = value; }
         }
 
 
@@ -139,22 +139,22 @@ namespace DotNetNuke.Web.UI.WebControls
             var template = new DnnGridImageCommandColumnTemplate(type);
             if (type != GridItemType.Header)
             {
-                template.ImageURL = ImageURL;
+                template.ImageURL = this.ImageURL;
                 if (!isDesignMode)
                 {
-                    template.CommandName = CommandName;
-                    template.VisibleField = VisibleField;
-                    template.KeyField = KeyField;
+                    template.CommandName = this.CommandName;
+                    template.VisibleField = this.VisibleField;
+                    template.KeyField = this.KeyField;
                 }
             }
-            template.EditMode = EditMode;
-            template.NavigateURL = NavigateURL;
-            template.NavigateURLFormatString = NavigateURLFormatString;
-            template.OnClickJs = OnClickJs;
-            template.ShowImage = ShowImage;
-            template.Visible = Visible;
+            template.EditMode = this.EditMode;
+            template.NavigateURL = this.NavigateURL;
+            template.NavigateURLFormatString = this.NavigateURLFormatString;
+            template.OnClickJs = this.OnClickJs;
+            template.ShowImage = this.ShowImage;
+            template.Visible = this.Visible;
 
-            template.Text = type == GridItemType.Header ? HeaderText : Text;
+            template.Text = type == GridItemType.Header ? this.HeaderText : this.Text;
 
             //Set Design Mode to True
             template.DesignMode = isDesignMode;
@@ -167,18 +167,18 @@ namespace DotNetNuke.Web.UI.WebControls
         /// </summary>
         public override void Initialize()
         {
-            ItemTemplate = CreateTemplate(GridItemType.Item);
-            EditItemTemplate = CreateTemplate(GridItemType.EditItem);
-            HeaderTemplate = CreateTemplate(GridItemType.Header);
+            this.ItemTemplate = this.CreateTemplate(GridItemType.Item);
+            this.EditItemTemplate = this.CreateTemplate(GridItemType.EditItem);
+            this.HeaderTemplate = this.CreateTemplate(GridItemType.Header);
 
             if (HttpContext.Current == null)
             {
-                HeaderStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
-                HeaderStyle.Font.Size = new FontUnit("10pt");
-                HeaderStyle.Font.Bold = true;
+                this.HeaderStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
+                this.HeaderStyle.Font.Size = new FontUnit("10pt");
+                this.HeaderStyle.Font.Bold = true;
             }
-            ItemStyle.HorizontalAlign = HorizontalAlign.Center;
-            HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
+            this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
         }
     }
 }

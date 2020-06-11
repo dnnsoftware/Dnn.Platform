@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.InternalServices
 
             try
             {
-                var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, UserInfo.UserID);
+                var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, this.UserInfo.UserID);
                 if (recipient != null)
                 {
                     var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.InternalServices
                         var userRelationship = RelationshipController.Instance.GetUserRelationship(userRelationshipId);
                         if (userRelationship != null)
                         {
-                            var friend = UserController.GetUserById(PortalSettings.PortalId, userRelationship.UserId);
+                            var friend = UserController.GetUserById(this.PortalSettings.PortalId, userRelationship.UserId);
                             FriendsController.Instance.AcceptFriend(friend);
                             success = true;
                         }
@@ -53,10 +53,10 @@ namespace DotNetNuke.Web.InternalServices
             
             if(success)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
             }
 
-            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
         }
 
 
@@ -68,14 +68,14 @@ namespace DotNetNuke.Web.InternalServices
 
             try
             {
-                var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, UserInfo.UserID);
+                var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, this.UserInfo.UserID);
                 if (recipient != null)
                 {
                     var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
                     int targetUserId;
                     if (int.TryParse(notification.Context, out targetUserId))
                     {
-                        var targetUser = UserController.GetUserById(PortalSettings.PortalId, targetUserId);
+                        var targetUser = UserController.GetUserById(this.PortalSettings.PortalId, targetUserId);
 
                         if (targetUser == null)
                         {
@@ -84,11 +84,11 @@ namespace DotNetNuke.Web.InternalServices
                                 Message = Localization.GetExceptionMessage("UserDoesNotExist",
                                     "The user you are trying to follow no longer exists.")
                             };
-                            return Request.CreateResponse(HttpStatusCode.InternalServerError, response);
+                            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, response);
                         }
 
                         FollowersController.Instance.FollowUser(targetUser);
-                        NotificationsController.Instance.DeleteNotificationRecipient(postData.NotificationId, UserInfo.UserID);
+                        NotificationsController.Instance.DeleteNotificationRecipient(postData.NotificationId, this.UserInfo.UserID);
 
                         success = true;
                     }
@@ -102,20 +102,20 @@ namespace DotNetNuke.Web.InternalServices
                     Message = Localization.GetExceptionMessage("AlreadyFollowingUser",
                         "You are already following this user.")
                 };
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, response);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
             }
 
             if (success)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
 
-            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
         }
     }
 }

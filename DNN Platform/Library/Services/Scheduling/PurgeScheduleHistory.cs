@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Scheduling
     {
         public PurgeScheduleHistory(ScheduleHistoryItem objScheduleHistoryItem)
         {
-            ScheduleHistoryItem = objScheduleHistoryItem;
+            this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
         public override void DoWork()
@@ -22,22 +22,22 @@ namespace DotNetNuke.Services.Scheduling
             try
             {
                 //notification that the event is progressing
-                Progressing();
+                this.Progressing();
 
                 SchedulingProvider.Instance().PurgeScheduleHistory();
 
                 //update the result to success since no exception was thrown
-                ScheduleHistoryItem.Succeeded = true;
-                ScheduleHistoryItem.AddLogNote("Schedule history purged.");
+                this.ScheduleHistoryItem.Succeeded = true;
+                this.ScheduleHistoryItem.AddLogNote("Schedule history purged.");
             }
             catch (Exception exc)
             {
-                ScheduleHistoryItem.Succeeded = false;
-                ScheduleHistoryItem.AddLogNote("Schedule history purge failed." + exc);
-                ScheduleHistoryItem.Succeeded = false;
+                this.ScheduleHistoryItem.Succeeded = false;
+                this.ScheduleHistoryItem.AddLogNote("Schedule history purge failed." + exc);
+                this.ScheduleHistoryItem.Succeeded = false;
 
                 //notification that we have errored
-                Errored(ref exc);
+                this.Errored(ref exc);
 				
 				//log the exception
                 Exceptions.Exceptions.LogException(exc);

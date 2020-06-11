@@ -18,27 +18,27 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         /// </summary>
         public override void Execute()
         {
-            Status = StepStatus.Running;
+            this.Status = StepStatus.Running;
 
-            Details = Localization.Localization.GetString("CheckingIIS", LocalInstallResourceFile);
+            this.Details = Localization.Localization.GetString("CheckingIIS", this.LocalInstallResourceFile);
 
             // Checks for integrated pipeline mode.
             if (!HttpRuntime.UsingIntegratedPipeline)
             {
-                Errors.Add(Localization.Localization.GetString("IISVerificationFail", LocalInstallResourceFile));
-                Status = StepStatus.Abort;
+                this.Errors.Add(Localization.Localization.GetString("IISVerificationFail", this.LocalInstallResourceFile));
+                this.Status = StepStatus.Abort;
                 return;
             }
 
             // Check for .Net Framework 4.7.2
             if (!IsDotNetVersionAtLeast(461808))
             {
-                Errors.Add(Localization.Localization.GetString("DotNetVersion472Required", LocalInstallResourceFile));
-                Status = StepStatus.Abort;
+                this.Errors.Add(Localization.Localization.GetString("DotNetVersion472Required", this.LocalInstallResourceFile));
+                this.Status = StepStatus.Abort;
                 return;
             }
 
-            Status = StepStatus.Done;
+            this.Status = StepStatus.Done;
         }
 
         private static bool IsDotNetVersionAtLeast(int version)

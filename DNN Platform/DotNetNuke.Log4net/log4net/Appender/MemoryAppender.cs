@@ -72,7 +72,7 @@ namespace log4net.Appender
 		/// </remarks>
 		public MemoryAppender() : base()
 		{
-			m_eventsList = new ArrayList();
+			this.m_eventsList = new ArrayList();
 		}
 
 		#endregion Protected Instance Constructors
@@ -90,9 +90,9 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual public LoggingEvent[] GetEvents()
 		{
-            lock (m_eventsList.SyncRoot)
+            lock (this.m_eventsList.SyncRoot)
             {
-                return (LoggingEvent[]) m_eventsList.ToArray(typeof(LoggingEvent));
+                return (LoggingEvent[]) this.m_eventsList.ToArray(typeof(LoggingEvent));
             }
 		}
 
@@ -116,16 +116,16 @@ namespace log4net.Appender
 		[Obsolete("Use Fix property. Scheduled removal in v10.0.0.")]
 		virtual public bool OnlyFixPartialEventData
 		{
-			get { return (Fix == FixFlags.Partial); }
+			get { return (this.Fix == FixFlags.Partial); }
 			set 
 			{ 
 				if (value)
 				{
-					Fix = FixFlags.Partial;
+					this.Fix = FixFlags.Partial;
 				}
 				else
 				{
-					Fix = FixFlags.All;
+					this.Fix = FixFlags.All;
 				}
 			}
 		}
@@ -142,8 +142,8 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual public FixFlags Fix
 		{
-			get { return m_fixFlags; }
-			set { m_fixFlags = value; }
+			get { return this.m_fixFlags; }
+			set { this.m_fixFlags = value; }
 		}
 
 		#endregion Public Instance Properties
@@ -164,9 +164,9 @@ namespace log4net.Appender
 			// volatile data in the event.
 			loggingEvent.Fix = this.Fix;
 
-            lock (m_eventsList.SyncRoot)
+            lock (this.m_eventsList.SyncRoot)
             {
-                m_eventsList.Add(loggingEvent);
+                this.m_eventsList.Add(loggingEvent);
             }
 		} 
 
@@ -182,9 +182,9 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual public void Clear()
 		{
-            lock (m_eventsList.SyncRoot)
+            lock (this.m_eventsList.SyncRoot)
             {
-                m_eventsList.Clear();
+                this.m_eventsList.Clear();
             }
 		}
 
@@ -199,10 +199,10 @@ namespace log4net.Appender
         /// </remarks>
         virtual public LoggingEvent[] PopAllEvents()
         {
-            lock (m_eventsList.SyncRoot)
+            lock (this.m_eventsList.SyncRoot)
             {
-                LoggingEvent[] tmp = (LoggingEvent[]) m_eventsList.ToArray(typeof (LoggingEvent));
-                m_eventsList.Clear();
+                LoggingEvent[] tmp = (LoggingEvent[]) this.m_eventsList.ToArray(typeof (LoggingEvent));
+                this.m_eventsList.Clear();
                 return tmp;
             }
         }

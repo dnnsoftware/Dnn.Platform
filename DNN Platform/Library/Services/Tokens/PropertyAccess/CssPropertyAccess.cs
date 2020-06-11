@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.Tokens
 
         public CssPropertyAccess(Page page)
         {
-            _page = page;
+            this._page = page;
         }
 
         protected override string ProcessToken(StylesheetDto model, UserInfo accessingUser, Scope accessLevel)
@@ -45,11 +45,11 @@ namespace DotNetNuke.Services.Tokens
             }
             if (String.IsNullOrEmpty(model.Provider))
             {
-                ClientResourceManager.RegisterStyleSheet(_page, model.Path, model.Priority);
+                ClientResourceManager.RegisterStyleSheet(this._page, model.Path, model.Priority);
             }
             else
             {
-                ClientResourceManager.RegisterStyleSheet(_page, model.Path, model.Priority, model.Provider);
+                ClientResourceManager.RegisterStyleSheet(this._page, model.Path, model.Priority, model.Provider);
             }
 
             return String.Empty;

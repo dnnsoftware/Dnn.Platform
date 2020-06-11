@@ -16,15 +16,15 @@ namespace DotNetNuke.Entities.Urls
     {
         public ExtensionUrlProviderInfo()
         {
-            ExtensionUrlProviderId = -1;
-            Settings = new Dictionary<string, string>();
-            TabIds = new List<int>();
+            this.ExtensionUrlProviderId = -1;
+            this.Settings = new Dictionary<string, string>();
+            this.TabIds = new List<int>();
         }
 
         /// <summary>
         /// When true, the module provider will be used for all tabs in the current portal.  Including a specific tabid switches value to false.
         /// </summary>
-        public bool AllTabs { get { return TabIds.Count == 0; } }
+        public bool AllTabs { get { return this.TabIds.Count == 0; } }
 
         /// <summary>
         /// The DesktopModuleId is used to associate a particular Extension Url Provider with a specific DotNetNuke extension.
@@ -78,16 +78,16 @@ namespace DotNetNuke.Entities.Urls
 
         public void Fill(IDataReader dr)
         {
-            ExtensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderId"]);
-            PortalId = Null.SetNullInteger(dr["PortalId"]);
-            DesktopModuleId = Null.SetNullInteger(dr["DesktopModuleId"]);
-            ProviderName = Null.SetNullString(dr["ProviderName"]);
-            ProviderType = Null.SetNullString(dr["ProviderType"]);
-            SettingsControlSrc = Null.SetNullString(dr["SettingsControlSrc"]);
-            IsActive = Null.SetNullBoolean(dr["IsActive"]);
-            RewriteAllUrls = Null.SetNullBoolean(dr["RewriteAllUrls"]);
-            RedirectAllUrls = Null.SetNullBoolean(dr["RedirectAllUrls"]);
-            ReplaceAllUrls = Null.SetNullBoolean(dr["ReplaceAllUrls"]);
+            this.ExtensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderId"]);
+            this.PortalId = Null.SetNullInteger(dr["PortalId"]);
+            this.DesktopModuleId = Null.SetNullInteger(dr["DesktopModuleId"]);
+            this.ProviderName = Null.SetNullString(dr["ProviderName"]);
+            this.ProviderType = Null.SetNullString(dr["ProviderType"]);
+            this.SettingsControlSrc = Null.SetNullString(dr["SettingsControlSrc"]);
+            this.IsActive = Null.SetNullBoolean(dr["IsActive"]);
+            this.RewriteAllUrls = Null.SetNullBoolean(dr["RewriteAllUrls"]);
+            this.RedirectAllUrls = Null.SetNullBoolean(dr["RedirectAllUrls"]);
+            this.ReplaceAllUrls = Null.SetNullBoolean(dr["ReplaceAllUrls"]);
         }
 
     }

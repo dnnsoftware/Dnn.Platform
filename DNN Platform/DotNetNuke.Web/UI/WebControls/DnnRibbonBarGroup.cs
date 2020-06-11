@@ -20,14 +20,14 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public DnnRibbonBarGroup() : base("div")
         {
-            CssClass = "dnnRibbonGroup";
+            this.CssClass = "dnnRibbonGroup";
         }
 
         public override ControlCollection Controls
         {
             get
             {
-                EnsureChildControls();
+                this.EnsureChildControls();
                 return base.Controls;
             }
         }
@@ -42,17 +42,17 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _CheckToolVisibility;
+                return this._CheckToolVisibility;
             }
             set
             {
-                _CheckToolVisibility = value;
+                this._CheckToolVisibility = value;
             }
         }
 
         protected override void CreateChildControls()
         {
-            Controls.Clear();
+            this.Controls.Clear();
 
             HtmlGenericControl topLeft = new HtmlGenericControl("div");
             topLeft.Attributes.Add("class", "topLeft");
@@ -64,39 +64,39 @@ namespace DotNetNuke.Web.UI.WebControls
             HtmlGenericControl bottomRight = new HtmlGenericControl("div");
             bottomRight.Attributes.Add("class", "bottomRight");
 
-            _contentContainer = new HtmlGenericControl("div");
-            _contentContainer.Attributes.Add("class", "content");
+            this._contentContainer = new HtmlGenericControl("div");
+            this._contentContainer.Attributes.Add("class", "content");
 
             HtmlGenericControl footerContainer = new HtmlGenericControl("div");
             footerContainer.Attributes.Add("class", "footer");
 
-            Controls.Add(topLeft);
-            Controls.Add(topRight);
-            Controls.Add(_contentContainer);
-            Controls.Add(footerContainer);
-            Controls.Add(bottomLeft);
-            Controls.Add(bottomRight);
+            this.Controls.Add(topLeft);
+            this.Controls.Add(topRight);
+            this.Controls.Add(this._contentContainer);
+            this.Controls.Add(footerContainer);
+            this.Controls.Add(bottomLeft);
+            this.Controls.Add(bottomRight);
 
-            if (Content != null)
+            if (this.Content != null)
             {
-                Content.InstantiateIn(_contentContainer);
+                this.Content.InstantiateIn(this._contentContainer);
             }
 
-            if (Footer != null)
+            if (this.Footer != null)
             {
-                Footer.InstantiateIn(footerContainer);
+                this.Footer.InstantiateIn(footerContainer);
             }
         }
 
         private bool CheckVisibility()
         {
             bool returnValue = true;
-            if ((Visible && CheckToolVisibility))
+            if ((this.Visible && this.CheckToolVisibility))
             {
                 //Hide group if all tools are invisible
                 bool foundTool = false;
-                ControlCollection controls = _contentContainer.Controls;
-                returnValue = AreChildToolsVisible(ref controls, ref foundTool);
+                ControlCollection controls = this._contentContainer.Controls;
+                returnValue = this.AreChildToolsVisible(ref controls, ref foundTool);
             }
             return returnValue;
         }
@@ -119,7 +119,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 else
                 {
                     ControlCollection controls = ctrl.Controls;
-                    if ((AreChildToolsVisible(ref controls, ref foundTool)))
+                    if ((this.AreChildToolsVisible(ref controls, ref foundTool)))
                     {
                         if ((foundTool))
                         {
@@ -140,13 +140,13 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public override Control FindControl(string id)
         {
-            EnsureChildControls();
+            this.EnsureChildControls();
             return base.FindControl(id);
         }
 
         public override void RenderControl(HtmlTextWriter writer)
         {
-            if ((CheckVisibility()))
+            if ((this.CheckVisibility()))
             {
                 base.RenderBeginTag(writer);
                 base.RenderChildren(writer);

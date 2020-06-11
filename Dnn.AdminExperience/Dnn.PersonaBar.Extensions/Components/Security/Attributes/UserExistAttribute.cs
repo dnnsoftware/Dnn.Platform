@@ -27,7 +27,7 @@ namespace Dnn.PersonaBar.Security.Attributes
 
                 if (user != null)
                 {
-                    foreach (var roleName in RoleNames)
+                    foreach (var roleName in this.RoleNames)
                     {
                         if (!user.IsInRole(roleName))
                         {

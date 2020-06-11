@@ -43,17 +43,17 @@ namespace Dnn.PersonaBar.Library.Model
 
         public void Fill(IDataReader dr)
         {
-            ExtensionId = Convert.ToInt32(dr["ExtensionId"]);
-            Identifier = dr["Identifier"].ToString();
-            FolderName = Null.SetNullString(dr["FolderName"]);
-            MenuId = Convert.ToInt32(dr["MenuId"]);
-            Controller = dr["Controller"].ToString();
-            Container = dr["Container"].ToString();
-            Path = dr["Path"].ToString();
-            Order = Null.SetNullInteger(dr["Order"]);
-            Enabled = Convert.ToBoolean(dr["Enabled"]);
+            this.ExtensionId = Convert.ToInt32(dr["ExtensionId"]);
+            this.Identifier = dr["Identifier"].ToString();
+            this.FolderName = Null.SetNullString(dr["FolderName"]);
+            this.MenuId = Convert.ToInt32(dr["MenuId"]);
+            this.Controller = dr["Controller"].ToString();
+            this.Container = dr["Container"].ToString();
+            this.Path = dr["Path"].ToString();
+            this.Order = Null.SetNullInteger(dr["Order"]);
+            this.Enabled = Convert.ToBoolean(dr["Enabled"]);
         }
 
-        public int KeyID { get { return ExtensionId; } set { ExtensionId = value; } }
+        public int KeyID { get { return this.ExtensionId; } set { this.ExtensionId = value; } }
     }
 }

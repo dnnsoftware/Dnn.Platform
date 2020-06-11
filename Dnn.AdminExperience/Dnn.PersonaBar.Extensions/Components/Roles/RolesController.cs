@@ -40,7 +40,7 @@ namespace Dnn.PersonaBar.Roles.Components
         /// <returns></returns>
         public IEnumerable<RoleInfo> GetRoles(PortalSettings portalSettings, int groupId, string keyword, out int total, int startIndex, int pageSize)
         {
-            var isAdmin = IsAdmin(portalSettings);
+            var isAdmin = this.IsAdmin(portalSettings);
             var roles = (groupId < Null.NullInteger
                 ? RoleController.Instance.GetRoles(portalSettings.PortalId)
                 : RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.RoleGroupID == groupId))
@@ -64,7 +64,7 @@ namespace Dnn.PersonaBar.Roles.Components
         /// <returns>List of found Roles</returns>
         public IList<RoleInfo> GetRolesByNames(PortalSettings portalSettings, int groupId, IList<string> rolesFilter)
         {
-            var isAdmin = IsAdmin(portalSettings);
+            var isAdmin = this.IsAdmin(portalSettings);
 
             List<RoleInfo> foundRoles = null;
             if (rolesFilter.Count() > 0)
@@ -86,7 +86,7 @@ namespace Dnn.PersonaBar.Roles.Components
 
         public RoleInfo GetRole(PortalSettings portalSettings, int roleId)
         {
-            var isAdmin = IsAdmin(portalSettings);
+            var isAdmin = this.IsAdmin(portalSettings);
             var role = RoleController.Instance.GetRoleById(portalSettings.PortalId, roleId);
             if (!isAdmin && role.RoleID == portalSettings.AdministratorRoleId)
                 return null;
@@ -96,7 +96,7 @@ namespace Dnn.PersonaBar.Roles.Components
         public bool SaveRole(PortalSettings portalSettings, RoleDto roleDto, bool assignExistUsers, out KeyValuePair<HttpStatusCode, string> message)
         {
             message = new KeyValuePair<HttpStatusCode, string>();
-            if (!IsAdmin(portalSettings) && roleDto.Id == portalSettings.AdministratorRoleId)
+            if (!this.IsAdmin(portalSettings) && roleDto.Id == portalSettings.AdministratorRoleId)
             {
                 message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.BadRequest, Localization.GetString("InvalidRequest", Constants.LocalResourcesFile));
                 return false;
@@ -173,7 +173,7 @@ namespace Dnn.PersonaBar.Roles.Components
                 return string.Empty;
             }
 
-            if (role.RoleID == portalSettings.AdministratorRoleId && !IsAdmin(portalSettings))
+            if (role.RoleID == portalSettings.AdministratorRoleId && !this.IsAdmin(portalSettings))
             {
                 message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.BadRequest,
                     Localization.GetString("InvalidRequest", Constants.LocalResourcesFile));

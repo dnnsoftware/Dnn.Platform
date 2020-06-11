@@ -21,25 +21,25 @@ namespace DotNetNuke.Entities.Urls
         public void SetAliasDepth(string httpAlias)
         {
             int aliasPathDepth = httpAlias.Length - httpAlias.Replace("/", "").Length;
-            if (aliasPathDepth > MaxAliasDepth)
+            if (aliasPathDepth > this.MaxAliasDepth)
             {
-                MaxAliasDepth = aliasPathDepth;
+                this.MaxAliasDepth = aliasPathDepth;
             }
-            if (aliasPathDepth < MinAliasDepth)
+            if (aliasPathDepth < this.MinAliasDepth)
             {
-                MinAliasDepth = aliasPathDepth;
+                this.MinAliasDepth = aliasPathDepth;
             }
         }
 
         public void SetTabPathDepth(int tabPathDepth)
         {
-            if (tabPathDepth > MaxTabPathDepth)
+            if (tabPathDepth > this.MaxTabPathDepth)
             {
-                MaxTabPathDepth = tabPathDepth;
+                this.MaxTabPathDepth = tabPathDepth;
             }
-            if (tabPathDepth < MinTabPathDepth)
+            if (tabPathDepth < this.MinTabPathDepth)
             {
-                MinTabPathDepth = tabPathDepth;
+                this.MinTabPathDepth = tabPathDepth;
             }
         }
     }

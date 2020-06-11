@@ -46,8 +46,8 @@ namespace DotNetNuke.Services.Installer.Writers
         /// -----------------------------------------------------------------------------
         public LanguageComponentWriter(Locale language, string basePath, Dictionary<string, InstallFile> files, PackageInfo package) : base(basePath, files, package)
         {
-            _Language = language;
-            _PackageType = LanguagePackType.Core;
+            this._Language = language;
+            this._PackageType = LanguagePackType.Core;
         }
 
         /// -----------------------------------------------------------------------------
@@ -61,9 +61,9 @@ namespace DotNetNuke.Services.Installer.Writers
         /// -----------------------------------------------------------------------------
         public LanguageComponentWriter(LanguagePackInfo languagePack, string basePath, Dictionary<string, InstallFile> files, PackageInfo package) : base(basePath, files, package)
         {
-            _Language = LocaleController.Instance.GetLocale(languagePack.LanguageID);
-            _PackageType = languagePack.PackageType;
-            _DependentPackageID = languagePack.DependentPackageID;
+            this._Language = LocaleController.Instance.GetLocale(languagePack.LanguageID);
+            this._PackageType = languagePack.PackageType;
+            this._DependentPackageID = languagePack.DependentPackageID;
         }
 		
 		#endregion
@@ -95,7 +95,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             get
             {
-                if (_PackageType == LanguagePackType.Core)
+                if (this._PackageType == LanguagePackType.Core)
                 {
                     return "CoreLanguage";
                 }
@@ -129,15 +129,15 @@ namespace DotNetNuke.Services.Installer.Writers
         protected override void WriteCustomManifest(XmlWriter writer)
         {
 			//Write language Elements
-            writer.WriteElementString("code", _Language.Code);
-            if (_PackageType == LanguagePackType.Core)
+            writer.WriteElementString("code", this._Language.Code);
+            if (this._PackageType == LanguagePackType.Core)
             {
-                writer.WriteElementString("displayName", _Language.Text);
-                writer.WriteElementString("fallback", _Language.Fallback);
+                writer.WriteElementString("displayName", this._Language.Text);
+                writer.WriteElementString("fallback", this._Language.Fallback);
             }
             else
             {
-                PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == _DependentPackageID);
+                PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == this._DependentPackageID);
                 writer.WriteElementString("package", package.Name);
             }
         }

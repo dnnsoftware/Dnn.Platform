@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
 
         public void Refresh()
         {
-            Response.Redirect(Request.RawUrl, true);
+            this.Response.Redirect(this.Request.RawUrl, true);
         }
 
         protected override void OnInit(EventArgs e)
@@ -66,8 +66,8 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
             var currentUser = UserController.Instance.GetCurrentUserInfo();
             if (currentUser == null || !currentUser.IsSuperUser)
             {
-                LocalResourceFile = "/DesktopModules/Admin/HtmlEditorManager/App_LocalResources/ProviderConfiguration.ascx.resx";
-                Globals.Redirect(Globals.AccessDeniedURL(LocalizeString("CannotManageHTMLEditorProviders")), true);
+                this.LocalResourceFile = "/DesktopModules/Admin/HtmlEditorManager/App_LocalResources/ProviderConfiguration.ascx.resx";
+                Globals.Redirect(Globals.AccessDeniedURL(this.LocalizeString("CannotManageHTMLEditorProviders")), true);
             }
             base.OnInit(e);
         }        

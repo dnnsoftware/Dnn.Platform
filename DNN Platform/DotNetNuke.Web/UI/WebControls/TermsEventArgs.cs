@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public TermsEventArgs(Term selectedTerm)
         {
-            _SelectedTerm = selectedTerm;
+            this._SelectedTerm = selectedTerm;
         }
 
         #endregion
@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _SelectedTerm;
+                return this._SelectedTerm;
             }
         }
 

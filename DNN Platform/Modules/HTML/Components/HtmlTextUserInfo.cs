@@ -43,9 +43,9 @@ namespace DotNetNuke.Modules.Html
             get
             {
                 string _ModuleTitle = Null.NullString;
-                if (Module != null)
+                if (this.Module != null)
                 {
-                    _ModuleTitle = Module.ModuleTitle;
+                    _ModuleTitle = this.Module.ModuleTitle;
                 }
                 return _ModuleTitle;
             }
@@ -55,11 +55,11 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                if (_Module == null)
+                if (this._Module == null)
                 {
-                    _Module = ModuleController.Instance.GetModule(ModuleID, TabID, false);
+                    this._Module = ModuleController.Instance.GetModule(this.ModuleID, this.TabID, false);
                 }
-                return _Module;
+                return this._Module;
             }
         }
 

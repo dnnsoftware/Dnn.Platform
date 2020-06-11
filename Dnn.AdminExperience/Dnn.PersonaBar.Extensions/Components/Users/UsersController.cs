@@ -49,7 +49,7 @@ namespace Dnn.PersonaBar.Users.Components
 
         public IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract, bool isSuperUser, out int totalRecords)
         {
-            return GetUsersFromDb(usersContract, isSuperUser, out totalRecords) ?? new List<UserBasicDto>();
+            return this.GetUsersFromDb(usersContract, isSuperUser, out totalRecords) ?? new List<UserBasicDto>();
         }
 
         public IEnumerable<KeyValuePair<string, int>> GetUserFilters(bool isSuperUser = false)
@@ -65,7 +65,7 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.SuperUsers)));
             }
-            if (!PortalSettings.DataConsentActive)
+            if (!this.PortalSettings.DataConsentActive)
             {
                 userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.HasAgreedToTerms)));
                 userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.HasNotAgreedToTerms)));
@@ -147,8 +147,8 @@ namespace Dnn.PersonaBar.Users.Components
 
         public UserBasicDto UpdateUserBasicInfo(UserBasicDto userBasicDto, int requestPortalId = -1)
         {
-            int portalId = PortalSettings.PortalId;
-            PortalSettings requestPortalSettings = PortalSettings;
+            int portalId = this.PortalSettings.PortalId;
+            PortalSettings requestPortalSettings = this.PortalSettings;
 
             if (requestPortalId != -1)
             {
@@ -183,7 +183,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
             //either update the username or update the user details
 
-            if (CanUpdateUsername(user) && !requestPortalSettings.Registration.UseEmailAsUserName)
+            if (this.CanUpdateUsername(user) && !requestPortalSettings.Registration.UseEmailAsUserName)
             {
                 UserController.ChangeUsername(user.UserID, userBasicDto.Username);
                 user.Username = userBasicDto.Username;
@@ -212,11 +212,11 @@ namespace Dnn.PersonaBar.Users.Components
         public UserRoleDto SaveUserRole(int portalId, UserInfo currentUserInfo, UserRoleDto userRoleDto, bool notifyUser,
             bool isOwner)
         {
-            PortalSettings portalSettings = PortalSettings;
+            PortalSettings portalSettings = this.PortalSettings;
 
-            if (PortalSettings.PortalId != portalId)
+            if (this.PortalSettings.PortalId != portalId)
             {
-                portalSettings = GetPortalSettings(portalId);
+                portalSettings = this.GetPortalSettings(portalId);
             }
 
             if (!UserRoleDto.AllowExpiredRole(portalSettings, userRoleDto.UserId, userRoleDto.RoleId))
@@ -341,7 +341,7 @@ namespace Dnn.PersonaBar.Users.Components
                 message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, Localization.GetString("RoleNotFound", Constants.LocalResourcesFile));
                 return null;
             }
-            if (role.RoleID == PortalSettings.AdministratorRoleId && !IsAdmin(portalSettings))
+            if (role.RoleID == this.PortalSettings.AdministratorRoleId && !IsAdmin(portalSettings))
             {
                 message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.BadRequest, Localization.GetString("InvalidRequest", Constants.LocalResourcesFile));
                 return null;
@@ -362,17 +362,17 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 //Update User Roles if needed
                 if (!userInfo.IsSuperUser && userInfo.IsInRole("Unverified Users") &&
-                    PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
+                    this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
                 {
                     UserController.ApproveUser(userInfo);
                 }
 
-                Mail.SendMail(userInfo, MessageType.UserAuthorized, PortalSettings);
+                Mail.SendMail(userInfo, MessageType.UserAuthorized, this.PortalSettings);
             }
             else if (PortalController.GetPortalSettingAsBoolean("AlwaysSendUserUnAuthorizedEmail", portalId,
                     false))
             {
-                Mail.SendMail(userInfo, MessageType.UserUnAuthorized, PortalSettings);
+                Mail.SendMail(userInfo, MessageType.UserUnAuthorized, this.PortalSettings);
             }
         }
         public static bool IsAdmin(PortalSettings portalSettings)
@@ -397,31 +397,31 @@ namespace Dnn.PersonaBar.Users.Components
             switch (usersContract.Filter)
             {
                 case UserFilters.All:
-                    users = GetUsers(usersContract, null, null, isSuperUser ? null : (bool?)false, null, null, out totalRecords);
+                    users = this.GetUsers(usersContract, null, null, isSuperUser ? null : (bool?)false, null, null, out totalRecords);
                     break;
                 case UserFilters.Authorized:
-                    users = GetUsers(usersContract, true, false, isSuperUser ? null : (bool?)false, null, null, out totalRecords);
+                    users = this.GetUsers(usersContract, true, false, isSuperUser ? null : (bool?)false, null, null, out totalRecords);
                     break;
                 case UserFilters.SuperUsers:
                     if (isSuperUser)
                     {
-                        users = GetUsers(usersContract, null, null, true, null, null, out totalRecords);
+                        users = this.GetUsers(usersContract, null, null, true, null, null, out totalRecords);
                     }
                     break;
                 case UserFilters.UnAuthorized:
-                    users = GetUsers(usersContract, false, false, isSuperUser ? null : (bool?)false, null, null, out totalRecords);
+                    users = this.GetUsers(usersContract, false, false, isSuperUser ? null : (bool?)false, null, null, out totalRecords);
                     break;
                 case UserFilters.Deleted:
-                    users = GetUsers(usersContract, null, true, isSuperUser ? null : (bool?)false, null, null, out totalRecords);
+                    users = this.GetUsers(usersContract, null, true, isSuperUser ? null : (bool?)false, null, null, out totalRecords);
                     break;
                 case UserFilters.HasAgreedToTerms:
-                    users = GetUsers(usersContract, null, null, false, true, null, out totalRecords);
+                    users = this.GetUsers(usersContract, null, null, false, true, null, out totalRecords);
                     break;
                 case UserFilters.HasNotAgreedToTerms:
-                    users = GetUsers(usersContract, null, null, false, false, null, out totalRecords);
+                    users = this.GetUsers(usersContract, null, null, false, false, null, out totalRecords);
                     break;
                 case UserFilters.RequestedRemoval:
-                    users = GetUsers(usersContract, null, null, false, null, true, out totalRecords);
+                    users = this.GetUsers(usersContract, null, null, false, null, true, out totalRecords);
                     break;
                 case UserFilters.RegisteredUsers:
                     {
@@ -486,7 +486,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
 
             //if an admin, check if the user is only within this portal
-            if (UserController.Instance.GetCurrentUserInfo().IsInRole(PortalSettings.AdministratorRoleName))
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(this.PortalSettings.AdministratorRoleName))
             {
                 //only allow updates for non-superuser accounts
                 if (user.IsSuperUser)
@@ -514,7 +514,7 @@ namespace Dnn.PersonaBar.Users.Components
             usersContract.SearchText = string.Format("{0}*", parsedSearchText);
 
             List<UserBasicDto2> records = CBO.FillCollection<UserBasicDto2>(
-                CallGetUsersBySearchTerm(
+                this.CallGetUsersBySearchTerm(
                     usersContract,
                     includeAuthorized, 
                     includeDeleted, 

@@ -70,11 +70,11 @@ namespace log4net.Layout.Pattern
 		/// </remarks>
 		public void ActivateOptions()
 		{
-			m_precision = 0;
+			this.m_precision = 0;
 
-			if (Option != null) 
+			if (this.Option != null) 
 			{
-				string optStr = Option.Trim();
+				string optStr = this.Option.Trim();
 				if (optStr.Length > 0)
 				{
 					int precisionVal;
@@ -86,7 +86,7 @@ namespace log4net.Layout.Pattern
 						}
 						else
 						{
-							m_precision = precisionVal;
+							this.m_precision = precisionVal;
 						}
 					} 
 					else
@@ -126,8 +126,8 @@ namespace log4net.Layout.Pattern
 		/// </remarks>
 		sealed override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
 		{
-			string name = GetFullyQualifiedName(loggingEvent);
-			if (m_precision <= 0 || name == null || name.Length < 2)
+			string name = this.GetFullyQualifiedName(loggingEvent);
+			if (this.m_precision <= 0 || name == null || name.Length < 2)
 			{
 				writer.Write(name);
 			}
@@ -143,7 +143,7 @@ namespace log4net.Layout.Pattern
                 }
 
                 int end = name.LastIndexOf(DOT);
-				for(int i = 1; end > 0 && i < m_precision; i++) 
+				for(int i = 1; end > 0 && i < this.m_precision; i++) 
 				{
                     end = name.LastIndexOf('.', end - 1);
                 }

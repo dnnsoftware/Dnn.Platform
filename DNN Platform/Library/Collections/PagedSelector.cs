@@ -27,8 +27,8 @@ namespace DotNetNuke.Collections
         /// <param name = "pageSize">The size of each page</param>
         public PageSelector(IEnumerable<T> source, int pageSize)
         {
-            _source = source;
-            _pageSize = pageSize;
+            this._source = source;
+            this._pageSize = pageSize;
         }
 
         #endregion
@@ -45,7 +45,7 @@ namespace DotNetNuke.Collections
         /// </returns>
         public IPagedList<T> GetPage(int pageIndex)
         {
-            return new PagedList<T>(_source, pageIndex, _pageSize);
+            return new PagedList<T>(this._source, pageIndex, this._pageSize);
         }
 
         #endregion

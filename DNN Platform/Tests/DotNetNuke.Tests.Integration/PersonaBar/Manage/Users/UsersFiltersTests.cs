@@ -35,8 +35,8 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
                 int userId, fileId;
                 string userName;
                 WebApiTestHelper.PrepareNewUser(out userId, out userName, out fileId);
-                _userIds[i] = userId;
-                _userNames[i] = userName;
+                this._userIds[i] = userId;
+                this._userNames[i] = userName;
                 Console.WriteLine(@"Created test users => id: {0}, username: {1}", userId, userName);
             }
 
@@ -44,22 +44,22 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
             var userIdx = 0;
 
             // make first user as admin
-            var makeAdminItem = new { RoleId = 0, UserId = _userIds[userIdx] };
+            var makeAdminItem = new { RoleId = 0, UserId = this._userIds[userIdx] };
             var response = hostConnector.PostJson(MakeAdminApi, makeAdminItem).Content.ReadAsStringAsync().Result;
             var result = JsonConvert.DeserializeObject<dynamic>(response);
-            Assert.AreEqual(_userNames[userIdx], result.displayName.ToString());
+            Assert.AreEqual(this._userNames[userIdx], result.displayName.ToString());
 
             // Unauthorize the next 2 new users
             for (userIdx = 1; userIdx <= 2; userIdx++)
             {
-                var unauthorizeLink = string.Format(UnauthorizeApi, _userIds[userIdx]);
+                var unauthorizeLink = string.Format(UnauthorizeApi, this._userIds[userIdx]);
                 response = hostConnector.PostJson(unauthorizeLink, "").Content.ReadAsStringAsync().Result;
                 result = JsonConvert.DeserializeObject<dynamic>(response);
                 Assert.IsTrue(bool.Parse(result.Success.ToString()));
             }
 
             // soft delete the next new user
-            var deleteLink = string.Format(DeleteApi, _userIds[userIdx]);
+            var deleteLink = string.Format(DeleteApi, this._userIds[userIdx]);
             response = hostConnector.PostJson(deleteLink, "").Content.ReadAsStringAsync().Result;
             result = JsonConvert.DeserializeObject<dynamic>(response);
             Assert.IsTrue(bool.Parse(result.Success.ToString()));
@@ -94,7 +94,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
             // Arrange: all is done in TestFixtureSetUp()
 
             // Act
-            var adminConnector = WebApiTestHelper.LoginUser(_userNames[0]);
+            var adminConnector = WebApiTestHelper.LoginUser(this._userNames[0]);
             var response = adminConnector.GetContent(apiMethod, null).Content.ReadAsStringAsync().Result;
             var result = JsonConvert.DeserializeObject<dynamic>(response);
 

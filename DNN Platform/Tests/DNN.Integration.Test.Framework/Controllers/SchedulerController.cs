@@ -246,11 +246,11 @@ namespace DNN.Integration.Test.Framework.Controllers
         {
             try
             {
-                ScheduleId = Convert.ToInt32(queryResult["ScheduleId"]);
-                ScheduleHistoryId = Convert.ToInt32(queryResult["ScheduleHistoryId"]);
-                EndDate = Convert.ToDateTime(queryResult["EndDate"]);
-                Succeeded = Convert.ToBoolean(queryResult["Succeeded"]);
-                LogNotes = queryResult["LogNotes"].ToString();
+                this.ScheduleId = Convert.ToInt32(queryResult["ScheduleId"]);
+                this.ScheduleHistoryId = Convert.ToInt32(queryResult["ScheduleHistoryId"]);
+                this.EndDate = Convert.ToDateTime(queryResult["EndDate"]);
+                this.Succeeded = Convert.ToBoolean(queryResult["Succeeded"]);
+                this.LogNotes = queryResult["LogNotes"].ToString();
             }
             catch (Exception e)
             {
@@ -262,21 +262,21 @@ namespace DNN.Integration.Test.Framework.Controllers
 
         internal ScheduleHistoryInfo(int scheduleId, int scheduleHistoryID, DateTime endDate, bool succeeded)
         {
-            ScheduleId = scheduleId;
-            ScheduleHistoryId = scheduleHistoryID;
-            EndDate = endDate;
-            Succeeded = succeeded;
-            LogNotes = string.Empty;
+            this.ScheduleId = scheduleId;
+            this.ScheduleHistoryId = scheduleHistoryID;
+            this.EndDate = endDate;
+            this.Succeeded = succeeded;
+            this.LogNotes = string.Empty;
         }
 
         // clones another info with success as false
         internal ScheduleHistoryInfo(ScheduleHistoryInfo lastRunInfo)
         {
-            ScheduleId = lastRunInfo.ScheduleId;
-            ScheduleHistoryId = lastRunInfo.ScheduleHistoryId;
-            EndDate = lastRunInfo.EndDate;
-            Succeeded = false;
-            LogNotes = lastRunInfo.LogNotes;
+            this.ScheduleId = lastRunInfo.ScheduleId;
+            this.ScheduleHistoryId = lastRunInfo.ScheduleHistoryId;
+            this.EndDate = lastRunInfo.EndDate;
+            this.Succeeded = false;
+            this.LogNotes = lastRunInfo.LogNotes;
         }
     }
 }

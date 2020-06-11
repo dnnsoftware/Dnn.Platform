@@ -38,8 +38,8 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public WorkflowStatePermissionInfo()
         {
-            _WorkflowStatePermissionID = Null.NullInteger;
-            _StateID = Null.NullInteger;
+            this._WorkflowStatePermissionID = Null.NullInteger;
+            this._StateID = Null.NullInteger;
         }
 
         //New
@@ -52,11 +52,11 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public WorkflowStatePermissionInfo(PermissionInfo permission) : this()
         {
-            ModuleDefID = permission.ModuleDefID;
-            PermissionCode = permission.PermissionCode;
-            PermissionID = permission.PermissionID;
-            PermissionKey = permission.PermissionKey;
-            PermissionName = permission.PermissionName;
+            this.ModuleDefID = permission.ModuleDefID;
+            this.PermissionCode = permission.PermissionCode;
+            this.PermissionID = permission.PermissionID;
+            this.PermissionKey = permission.PermissionKey;
+            this.PermissionName = permission.PermissionName;
         }
 
         #endregion
@@ -73,11 +73,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _WorkflowStatePermissionID;
+                return this._WorkflowStatePermissionID;
             }
             set
             {
-                _WorkflowStatePermissionID = value;
+                this._WorkflowStatePermissionID = value;
             }
         }
 
@@ -91,11 +91,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _StateID;
+                return this._StateID;
             }
             set
             {
-                _StateID = value;
+                this._StateID = value;
             }
         }
 
@@ -131,7 +131,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return false;
             }
-            return Equals((WorkflowStatePermissionInfo)obj);
+            return this.Equals((WorkflowStatePermissionInfo)obj);
         }
 
         public bool Equals(WorkflowStatePermissionInfo other)
@@ -144,14 +144,14 @@ namespace DotNetNuke.Security.Permissions
             {
                 return true;
             }
-            return (AllowAccess == other.AllowAccess) && (StateID == other.StateID) && (RoleID == other.RoleID) && (PermissionID == other.PermissionID);
+            return (this.AllowAccess == other.AllowAccess) && (this.StateID == other.StateID) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
         }
         
         public override int GetHashCode()
         {
             unchecked
             {
-                return (_StateID*397) ^ _WorkflowStatePermissionID;
+                return (this._StateID*397) ^ this._WorkflowStatePermissionID;
             }
         }
 
@@ -170,8 +170,8 @@ namespace DotNetNuke.Security.Permissions
             //Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
 
-            WorkflowStatePermissionID = Null.SetNullInteger(dr["WorkflowStatePermissionID"]);
-            StateID = Null.SetNullInteger(dr["StateID"]);
+            this.WorkflowStatePermissionID = Null.SetNullInteger(dr["WorkflowStatePermissionID"]);
+            this.StateID = Null.SetNullInteger(dr["StateID"]);
         }
 
         /// -----------------------------------------------------------------------------
@@ -184,11 +184,11 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return WorkflowStatePermissionID;
+                return this.WorkflowStatePermissionID;
             }
             set
             {
-                WorkflowStatePermissionID = value;
+                this.WorkflowStatePermissionID = value;
             }
         }
 

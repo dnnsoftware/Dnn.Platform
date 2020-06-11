@@ -16,7 +16,7 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         public DnnFormSectionTemplate()
         {
-            Items = new List<DnnFormItemBase>();
+            this.Items = new List<DnnFormItemBase>();
         }
 
         public List<DnnFormItemBase> Items { get; private set; }
@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.UI.WebControls
             var webControl = container as WebControl;
             if (webControl != null)
             {
-                DnnFormEditor.SetUpItems(Items, webControl, LocalResourceFile, false);
+                DnnFormEditor.SetUpItems(this.Items, webControl, this.LocalResourceFile, false);
             }
         }
 

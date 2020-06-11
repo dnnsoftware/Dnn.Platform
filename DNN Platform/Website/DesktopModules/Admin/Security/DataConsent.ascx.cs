@@ -22,14 +22,14 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             get
             {
-                switch (PortalSettings.DataConsentUserDeleteAction)
+                switch (this.PortalSettings.DataConsentUserDeleteAction)
                 {
                     case PortalSettings.UserDeleteAction.Manual:
-                        return LocalizeString("ManualDelete.Confirm");
+                        return this.LocalizeString("ManualDelete.Confirm");
                     case PortalSettings.UserDeleteAction.DelayedHardDelete:
-                        return LocalizeString("DelayedHardDelete.Confirm");
+                        return this.LocalizeString("DelayedHardDelete.Confirm");
                     case PortalSettings.UserDeleteAction.HardDelete:
-                        return LocalizeString("HardDelete.Confirm");
+                        return this.LocalizeString("HardDelete.Confirm");
                 }
                 return "";
             }
@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.Admin.Users
         public event DataConsentEventHandler DataConsentCompleted;
         public void OnDataConsentComplete(DataConsentEventArgs e)
         {
-            DataConsentCompleted?.Invoke(this, e);
+            this.DataConsentCompleted?.Invoke(this, e);
         }
 
         #endregion
@@ -49,62 +49,62 @@ namespace DotNetNuke.Modules.Admin.Users
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            cmdCancel.Click += cmdCancel_Click;
-            cmdSubmit.Click += cmdSubmit_Click;
-            cmdDeleteMe.Click += cmdDeleteMe_Click;
-            cmdDeleteMe.Visible = PortalSettings.DataConsentUserDeleteAction != PortalSettings.UserDeleteAction.Off;
-            if (!Page.IsPostBack)
+            this.cmdCancel.Click += this.cmdCancel_Click;
+            this.cmdSubmit.Click += this.cmdSubmit_Click;
+            this.cmdDeleteMe.Click += this.cmdDeleteMe_Click;
+            this.cmdDeleteMe.Visible = this.PortalSettings.DataConsentUserDeleteAction != PortalSettings.UserDeleteAction.Off;
+            if (!this.Page.IsPostBack)
             {
-                chkAgree.Checked = false;
-                cmdSubmit.Enabled = false;
-                pnlNoAgreement.Visible = false;
+                this.chkAgree.Checked = false;
+                this.cmdSubmit.Enabled = false;
+                this.pnlNoAgreement.Visible = false;
             }
-            chkAgree.Attributes.Add("onclick", string.Format("document.getElementById('{0}').disabled = !this.checked;", cmdSubmit.ClientID));
-            cmdDeleteMe.Attributes.Add("onclick", string.Format("if (!confirm('{0}')) this.preventDefault();", DeleteMeConfirmString));
+            this.chkAgree.Attributes.Add("onclick", string.Format("document.getElementById('{0}').disabled = !this.checked;", this.cmdSubmit.ClientID));
+            this.cmdDeleteMe.Attributes.Add("onclick", string.Format("if (!confirm('{0}')) this.preventDefault();", this.DeleteMeConfirmString));
         }
         private void cmdCancel_Click(object sender, EventArgs e)
         {
-            OnDataConsentComplete(new DataConsentEventArgs(DataConsentStatus.Cancelled));
+            this.OnDataConsentComplete(new DataConsentEventArgs(DataConsentStatus.Cancelled));
         }
 
         private void cmdSubmit_Click(object sender, EventArgs e)
         {
-            if (chkAgree.Checked)
+            if (this.chkAgree.Checked)
             {
-                UserController.UserAgreedToTerms(User);
-                User.HasAgreedToTerms = true;
-                OnDataConsentComplete(new DataConsentEventArgs(DataConsentStatus.Consented));
+                UserController.UserAgreedToTerms(this.User);
+                this.User.HasAgreedToTerms = true;
+                this.OnDataConsentComplete(new DataConsentEventArgs(DataConsentStatus.Consented));
             }
         }
 
         private void cmdDeleteMe_Click(object sender, EventArgs e)
         {
             var success = false;
-            switch (PortalSettings.DataConsentUserDeleteAction)
+            switch (this.PortalSettings.DataConsentUserDeleteAction)
             {
                 case PortalSettings.UserDeleteAction.Manual:
-                    User.Membership.Approved = false;
-                    UserController.UpdateUser(PortalSettings.PortalId, User);
-                    UserController.UserRequestsRemoval(User, true);
+                    this.User.Membership.Approved = false;
+                    UserController.UpdateUser(this.PortalSettings.PortalId, this.User);
+                    UserController.UserRequestsRemoval(this.User, true);
                     success = true;
                     break;
                 case PortalSettings.UserDeleteAction.DelayedHardDelete:
-                    var user = User;
+                    var user = this.User;
                     success = UserController.DeleteUser(ref user, true, false);
-                    UserController.UserRequestsRemoval(User, true);
+                    UserController.UserRequestsRemoval(this.User, true);
                     break;
                 case PortalSettings.UserDeleteAction.HardDelete:
-                    success = UserController.RemoveUser(User);
+                    success = UserController.RemoveUser(this.User);
                     break;
             }
             if (success)
             {
                 PortalSecurity.Instance.SignOut();
-                OnDataConsentComplete(new DataConsentEventArgs(DataConsentStatus.RemovedAccount));
+                this.OnDataConsentComplete(new DataConsentEventArgs(DataConsentStatus.RemovedAccount));
             }
             else
             {
-                OnDataConsentComplete(new DataConsentEventArgs(DataConsentStatus.FailedToRemoveAccount));
+                this.OnDataConsentComplete(new DataConsentEventArgs(DataConsentStatus.FailedToRemoveAccount));
             }
         }
 
@@ -124,7 +124,7 @@ namespace DotNetNuke.Modules.Admin.Users
             /// <param name="status">The Data Consent Status</param>
             public DataConsentEventArgs(DataConsentStatus status)
             {
-                Status = status;
+                this.Status = status;
             }
 
             /// -----------------------------------------------------------------------------

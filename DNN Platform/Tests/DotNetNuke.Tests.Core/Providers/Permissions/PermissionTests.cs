@@ -320,7 +320,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
                 userRoles.Add(new UserRoleInfo() { RoleName = role, Status = RoleStatus.Approved });
             }
             mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == UserId), It.IsAny<bool>())).Returns(userRoles);
-            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator(WebsitePhysicalAppPath);
+            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator(this.WebsitePhysicalAppPath);
             simulator.SimulateRequest();
             HttpContextBase httpContextBase = new HttpContextWrapper(HttpContext.Current);
             HttpContextSource.RegisterInstance(httpContextBase);

@@ -35,9 +35,9 @@ namespace DotNetNuke.Tests.Web.Api
         {
             FakeServiceRouteMapper.RegistrationCalls = 0;
 
-            _mockPortalController = new Mock<IPortalController>();
-            _portalController = _mockPortalController.Object;
-            PortalController.SetTestableInstance(_portalController);
+            this._mockPortalController = new Mock<IPortalController>();
+            this._portalController = this._mockPortalController.Object;
+            PortalController.SetTestableInstance(this._portalController);
 
             var navigationManagerMock = new Mock<INavigationManager>();
             var services = new ServiceCollection();
@@ -63,7 +63,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             //including the assembly with object ensures that the assignabliity is done correctly
             var assembliesToReflect = new IAssembly[2];
-            assembliesToReflect[0] = new AssemblyWrapper(GetType().Assembly);
+            assembliesToReflect[0] = new AssemblyWrapper(this.GetType().Assembly);
             assembliesToReflect[1] = new AssemblyWrapper(typeof (Object).Assembly);
 
             assemblyLocator.Setup(x => x.Assemblies).Returns(assembliesToReflect);
@@ -144,7 +144,7 @@ namespace DotNetNuke.Tests.Web.Api
         public void UrlCanStartWithSlash()
         {
             //Arrange
-            _mockPortalController.Setup(x => x.GetPortals()).Returns(new ArrayList());
+            this._mockPortalController.Setup(x => x.GetPortals()).Returns(new ArrayList());
             
             //Act
             var srm = new ServicesRoutingManager(new RouteCollection());
@@ -158,7 +158,7 @@ namespace DotNetNuke.Tests.Web.Api
         {
             //Arrange
             var portalInfo = new ArrayList { new PortalInfo { PortalID = 0 } };
-            _mockPortalController.Setup(x => x.GetPortals()).Returns(portalInfo);
+            this._mockPortalController.Setup(x => x.GetPortals()).Returns(portalInfo);
             var mockPac = new Mock<IPortalAliasController>();
             mockPac.Setup(x => x.GetPortalAliasesByPortalId(0)).Returns(new[] { new PortalAliasInfo { HTTPAlias = "www.foo.com" } });
             PortalAliasController.SetTestableInstance(mockPac.Object);
@@ -179,7 +179,7 @@ namespace DotNetNuke.Tests.Web.Api
         {
             //Arrange
             var portalInfo = new ArrayList { new PortalInfo { PortalID = 0 } };
-            _mockPortalController.Setup(x => x.GetPortals()).Returns(portalInfo);
+            this._mockPortalController.Setup(x => x.GetPortals()).Returns(portalInfo);
             var mockPac = new Mock<IPortalAliasController>();
             mockPac.Setup(x => x.GetPortalAliasesByPortalId(0)).Returns(new[] { new PortalAliasInfo { HTTPAlias = "www.foo.com" } });
             PortalAliasController.SetTestableInstance(mockPac.Object);
@@ -203,7 +203,7 @@ namespace DotNetNuke.Tests.Web.Api
         {
             //Arrange
             var portalInfo = new ArrayList { new PortalInfo { PortalID = 0 } };
-            _mockPortalController.Setup(x => x.GetPortals()).Returns(portalInfo);
+            this._mockPortalController.Setup(x => x.GetPortals()).Returns(portalInfo);
             var mockPac = new Mock<IPortalAliasController>();
             mockPac.Setup(x => x.GetPortalAliasesByPortalId(0)).Returns(new[] { new PortalAliasInfo { HTTPAlias = "www.foo.com" } });
             PortalAliasController.SetTestableInstance(mockPac.Object);

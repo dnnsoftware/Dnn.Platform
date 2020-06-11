@@ -16,7 +16,7 @@ namespace Dnn.PersonaBar.UI.Services.DTO
     {
         public RoleGroupDto()
         {
-            Id = -2;
+            this.Id = -2;
         }
         [DataMember(Name = "id")]
         public int Id { get; set; }
@@ -45,9 +45,9 @@ namespace Dnn.PersonaBar.UI.Services.DTO
         {
             return new RoleGroupInfo()
             {
-                RoleGroupID = Id,
-                RoleGroupName = Name,
-                Description = Description ?? ""
+                RoleGroupID = this.Id,
+                RoleGroupName = this.Name,
+                Description = this.Description ?? ""
             };
         }
     }

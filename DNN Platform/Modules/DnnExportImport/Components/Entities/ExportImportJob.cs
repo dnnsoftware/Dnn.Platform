@@ -32,39 +32,39 @@ namespace Dnn.ExportImport.Components.Entities
 
         public int KeyID
         {
-            get { return JobId; }
-            set { JobId = value; }
+            get { return this.JobId; }
+            set { this.JobId = value; }
         }
 
         public void Fill(IDataReader dr)
         {
-            JobId = Null.SetNullInteger(dr[nameof(JobId)]);
-            PortalId = Null.SetNullInteger(dr[nameof(PortalId)]);
-            JobType = (JobType)Null.SetNullInteger(dr[nameof(JobType)]);
-            JobStatus = (JobStatus)Null.SetNullInteger(dr[nameof(JobStatus)]);
-            IsCancelled = Null.SetNullBoolean(dr[nameof(IsCancelled)]);
-            Name = Null.SetNullString(dr[nameof(Name)]);
-            Description = Null.SetNullString(dr[nameof(Description)]);
-            CreatedByUserId = Null.SetNullInteger(dr[nameof(CreatedByUserId)]);
-            CreatedOnDate = Null.SetNullDateTime(dr[nameof(CreatedOnDate)]);
-            LastModifiedOnDate = Null.SetNullDateTime(dr[nameof(LastModifiedOnDate)]);
-            CompletedOnDate = Null.SetNullDateTime(dr[nameof(CompletedOnDate)]);
-            Directory = Null.SetNullString(dr[nameof(Directory)]);
-            JobObject = Null.SetNullString(dr[nameof(JobObject)]);
+            this.JobId = Null.SetNullInteger(dr[nameof(this.JobId)]);
+            this.PortalId = Null.SetNullInteger(dr[nameof(this.PortalId)]);
+            this.JobType = (JobType)Null.SetNullInteger(dr[nameof(this.JobType)]);
+            this.JobStatus = (JobStatus)Null.SetNullInteger(dr[nameof(this.JobStatus)]);
+            this.IsCancelled = Null.SetNullBoolean(dr[nameof(this.IsCancelled)]);
+            this.Name = Null.SetNullString(dr[nameof(this.Name)]);
+            this.Description = Null.SetNullString(dr[nameof(this.Description)]);
+            this.CreatedByUserId = Null.SetNullInteger(dr[nameof(this.CreatedByUserId)]);
+            this.CreatedOnDate = Null.SetNullDateTime(dr[nameof(this.CreatedOnDate)]);
+            this.LastModifiedOnDate = Null.SetNullDateTime(dr[nameof(this.LastModifiedOnDate)]);
+            this.CompletedOnDate = Null.SetNullDateTime(dr[nameof(this.CompletedOnDate)]);
+            this.Directory = Null.SetNullString(dr[nameof(this.Directory)]);
+            this.JobObject = Null.SetNullString(dr[nameof(this.JobObject)]);
 
-            if (CreatedOnDate.Kind != DateTimeKind.Utc)
+            if (this.CreatedOnDate.Kind != DateTimeKind.Utc)
             {
-                CreatedOnDate = new DateTime(
-                    CreatedOnDate.Year, CreatedOnDate.Month, CreatedOnDate.Day,
-                    CreatedOnDate.Hour, CreatedOnDate.Minute, CreatedOnDate.Second,
-                    CreatedOnDate.Millisecond, DateTimeKind.Utc);
+                this.CreatedOnDate = new DateTime(
+                    this.CreatedOnDate.Year, this.CreatedOnDate.Month, this.CreatedOnDate.Day,
+                    this.CreatedOnDate.Hour, this.CreatedOnDate.Minute, this.CreatedOnDate.Second,
+                    this.CreatedOnDate.Millisecond, DateTimeKind.Utc);
             }
-            if (LastModifiedOnDate.Kind != DateTimeKind.Utc)
+            if (this.LastModifiedOnDate.Kind != DateTimeKind.Utc)
             {
-                LastModifiedOnDate = new DateTime(
-                    LastModifiedOnDate.Year, LastModifiedOnDate.Month, LastModifiedOnDate.Day,
-                    LastModifiedOnDate.Hour, LastModifiedOnDate.Minute, LastModifiedOnDate.Second,
-                    LastModifiedOnDate.Millisecond, DateTimeKind.Utc);
+                this.LastModifiedOnDate = new DateTime(
+                    this.LastModifiedOnDate.Year, this.LastModifiedOnDate.Month, this.LastModifiedOnDate.Day,
+                    this.LastModifiedOnDate.Hour, this.LastModifiedOnDate.Minute, this.LastModifiedOnDate.Second,
+                    this.LastModifiedOnDate.Millisecond, DateTimeKind.Utc);
             }
         }
     }

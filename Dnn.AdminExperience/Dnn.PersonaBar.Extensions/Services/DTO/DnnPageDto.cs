@@ -36,11 +36,11 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [JsonIgnore]
         public string LocalResourceFile { get; set; }
 
-        public bool TranslatedVisible => !Default && TabName != null;
+        public bool TranslatedVisible => !this.Default && this.TabName != null;
 
-        public bool PublishedVisible => !Default && IsTranslated;
+        public bool PublishedVisible => !this.Default && this.IsTranslated;
 
-        public bool Default => DefaultLanguageGuid == Null.NullGuid;
+        public bool Default => this.DefaultLanguageGuid == Null.NullGuid;
 
         public string LanguageStatus
         {
@@ -48,12 +48,12 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
             {
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
-                if (CultureCode == portalSettings.DefaultLanguage)
-                    return Localization.GetString("Default.Text", LocalResourceFile);
+                if (this.CultureCode == portalSettings.DefaultLanguage)
+                    return Localization.GetString("Default.Text", this.LocalResourceFile);
 
-                return IsLanguagePublished(portalSettings.PortalId, CultureCode)
+                return IsLanguagePublished(portalSettings.PortalId, this.CultureCode)
                     ? ""
-                    : Localization.GetString("NotActive.Text", LocalResourceFile);
+                    : Localization.GetString("NotActive.Text", this.LocalResourceFile);
             }
         }
 

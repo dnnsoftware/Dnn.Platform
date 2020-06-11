@@ -26,10 +26,10 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnLoad(e);
             if (!string.IsNullOrEmpty(this.CssClass))
-                aDnnLink.Attributes.Add("class",this.CssClass);
+                this.aDnnLink.Attributes.Add("class",this.CssClass);
 
-            if (!string.IsNullOrEmpty(Target))
-                aDnnLink.Target = this.Target;
+            if (!string.IsNullOrEmpty(this.Target))
+                this.aDnnLink.Target = this.Target;
             //set home page link to community URL
 
             string url = "http://www.dnnsoftware.com/community?utm_source=dnn-install&utm_medium=web-link&utm_content=gravity-skin-link&utm_campaign=dnn-install";
@@ -72,8 +72,8 @@ namespace DotNetNuke.UI.Skins.Controls
             }
             
 
-            aDnnLink.InnerText = linkText;
-            aDnnLink.HRef = HttpUtility.HtmlEncode(url + utmTerm);
+            this.aDnnLink.InnerText = linkText;
+            this.aDnnLink.HRef = HttpUtility.HtmlEncode(url + utmTerm);
 
         }
     }

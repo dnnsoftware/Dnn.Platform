@@ -47,36 +47,36 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             
-            UserId = GetFlagValue<int?>(FlagId, "User Id", null);
-            Email = GetFlagValue(FlagEmail, "Email", string.Empty);
-            Username = GetFlagValue(FlagUsername, "Username", string.Empty);
+            this.UserId = this.GetFlagValue<int?>(FlagId, "User Id", null);
+            this.Email = this.GetFlagValue(FlagEmail, "Email", string.Empty);
+            this.Username = this.GetFlagValue(FlagUsername, "Username", string.Empty);
 
             if (args.Length != 1)
             {
-                if (args.Length == 2 && !UserId.HasValue && string.IsNullOrEmpty(Email) && string.IsNullOrEmpty(Username))
+                if (args.Length == 2 && !this.UserId.HasValue && string.IsNullOrEmpty(this.Email) && string.IsNullOrEmpty(this.Username))
                 {
                     // only one value passed and it's not a flagged value. Try to interpret it.
                     if (args[1].Contains("@"))
                     {
-                        Email = args[1];
+                        this.Email = args[1];
                     }
                     else
                     {
                         int tmpId;
                         if (int.TryParse(args[1], out tmpId))
                         {
-                            UserId = tmpId;
+                            this.UserId = tmpId;
                         }
                         else
                         {
                             // assume it's a username
-                            Username = args[1];
+                            this.Username = args[1];
                         }
                     }
                 }
-                if (!UserId.HasValue && string.IsNullOrEmpty(Email) && string.IsNullOrEmpty(Username))
+                if (!this.UserId.HasValue && string.IsNullOrEmpty(this.Email) && string.IsNullOrEmpty(this.Username))
                 {
-                    AddMessage(LocalizeString("Prompt_SearchUserParameterRequired"));
+                    this.AddMessage(this.LocalizeString("Prompt_SearchUserParameterRequired"));
                 }
             }
         }
@@ -86,44 +86,44 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             var lst = new List<UserModel>();
 
             // if no argument, default to current user
-            if (Args.Length == 1)
+            if (this.Args.Length == 1)
             {
-                lst.Add(new UserModel(User));
+                lst.Add(new UserModel(this.User));
             }
             else
             {
                 var recCount = 0;
-                var userId = UserId;
-                if (!userId.HasValue && !string.IsNullOrEmpty(Username))
+                var userId = this.UserId;
+                if (!userId.HasValue && !string.IsNullOrEmpty(this.Username))
                 {
                     // do username lookup
-                    var searchTerm = Username.Replace("%", "").Replace("*", "%");
+                    var searchTerm = this.Username.Replace("%", "").Replace("*", "%");
                     
-                    userId = _userControllerWrapper.GetUsersByUserName(PortalId, searchTerm, -1, int.MaxValue, ref recCount, true, false) ?? UserIdZero;
+                    userId = this._userControllerWrapper.GetUsersByUserName(this.PortalId, searchTerm, -1, int.MaxValue, ref recCount, true, false) ?? UserIdZero;
                     // search against superusers if no regular user found
                     if (userId == UserIdZero)
                     {
                         //userId = (UserController.GetUsersByUserName(-1, searchTerm, -1, int.MaxValue, ref recCount, true, true).ToArray().FirstOrDefault() as UserInfo)?.UserID ?? UserIdZero;
-                        userId = _userControllerWrapper.GetUsersByUserName(-1, searchTerm, -1, int.MaxValue, ref recCount, true, true) ?? UserIdZero;
+                        userId = this._userControllerWrapper.GetUsersByUserName(-1, searchTerm, -1, int.MaxValue, ref recCount, true, true) ?? UserIdZero;
                     }
                 }
-                else if (!userId.HasValue && !string.IsNullOrEmpty(Email))
+                else if (!userId.HasValue && !string.IsNullOrEmpty(this.Email))
                 {
                     // must be email
-                    var searchTerm = Email.Replace("%", "").Replace("*", "%");
+                    var searchTerm = this.Email.Replace("%", "").Replace("*", "%");
                     
-                    userId = _userControllerWrapper.GetUsersByEmail(PortalId, searchTerm, -1, int.MaxValue, ref recCount, true, false) ?? UserIdZero;
+                    userId = this._userControllerWrapper.GetUsersByEmail(this.PortalId, searchTerm, -1, int.MaxValue, ref recCount, true, false) ?? UserIdZero;
 
                     // search against superusers if no regular user found
                     if (userId == UserIdZero)
                     {
-                        userId = _userControllerWrapper.GetUsersByEmail(-1, searchTerm, -1, int.MaxValue, ref recCount, true, true) ?? UserIdZero;
+                        userId = this._userControllerWrapper.GetUsersByEmail(-1, searchTerm, -1, int.MaxValue, ref recCount, true, true) ?? UserIdZero;
                     }
                 }
 
                 UserInfo userInfo;
                 ConsoleErrorResultModel errorResultModel =
-                    _userValidator.ValidateUser(userId, PortalSettings, User, out userInfo);
+                    this._userValidator.ValidateUser(userId, this.PortalSettings, this.User, out userInfo);
 
                 if (errorResultModel != null)
                 {

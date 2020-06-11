@@ -26,7 +26,7 @@ namespace Dnn.ExportImport.Components.Controllers
             var directory = dbTime.ToString("yyyy-MM-dd_HH-mm-ss");
             if (exportDto.ExportMode == ExportMode.Differential)
             {
-                exportDto.FromDateUtc = GetLastJobTime(exportDto.PortalId, JobType.Export);
+                exportDto.FromDateUtc = this.GetLastJobTime(exportDto.PortalId, JobType.Export);
             }
             var dataObject = JsonConvert.SerializeObject(exportDto);
             exportDto.IsDirty = false;//This should be set to false for new job.
@@ -37,7 +37,7 @@ namespace Dnn.ExportImport.Components.Controllers
             {
                 EntitiesController.Instance.RunSchedule();
             }
-            AddEventLog(exportDto.PortalId, userId, jobId, Constants.LogTypeSiteExport);
+            this.AddEventLog(exportDto.PortalId, userId, jobId, Constants.LogTypeSiteExport);
             return jobId;
         }
 

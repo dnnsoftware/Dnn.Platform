@@ -20,7 +20,7 @@ namespace DotNetNuke.Data
             //Argument Contract
             Requires.NotNull("dataContext", dataContext);
 
-            DataContext = dataContext;
+            this.DataContext = dataContext;
         }
 
         public void Add(TEntity entity)
@@ -28,9 +28,9 @@ namespace DotNetNuke.Data
             //Argument Contract
             Requires.NotNull(entity);
 
-            using (DataContext)
+            using (this.DataContext)
             {
-                var rep = DataContext.GetRepository<TEntity>();
+                var rep = this.DataContext.GetRepository<TEntity>();
 
                 rep.Insert(entity);
             }
@@ -45,9 +45,9 @@ namespace DotNetNuke.Data
             Requires.PropertyNotNull(entity, primaryKey);
             Requires.PropertyNotNegative(entity, primaryKey);
 
-            using (DataContext)
+            using (this.DataContext)
             {
-                var rep = DataContext.GetRepository<TEntity>();
+                var rep = this.DataContext.GetRepository<TEntity>();
 
                 rep.Delete(entity);
             }
@@ -56,9 +56,9 @@ namespace DotNetNuke.Data
         public IEnumerable<TEntity> Find(string sqlCondition, params object[] args)
         {
             IEnumerable<TEntity> entities;
-            using (DataContext)
+            using (this.DataContext)
             {
-                var rep = DataContext.GetRepository<TEntity>();
+                var rep = this.DataContext.GetRepository<TEntity>();
 
                 entities = rep.Find(sqlCondition, args);
             }
@@ -70,9 +70,9 @@ namespace DotNetNuke.Data
         public IEnumerable<TEntity> Get()
         {
             IEnumerable<TEntity> entities;
-            using (DataContext)
+            using (this.DataContext)
             {
-                var rep = DataContext.GetRepository<TEntity>();
+                var rep = this.DataContext.GetRepository<TEntity>();
 
                 entities = rep.Get();
             }
@@ -83,9 +83,9 @@ namespace DotNetNuke.Data
         public IEnumerable<TEntity> Get<TScope>(TScope scope)
         {
             IEnumerable<TEntity> contentTypes;
-            using (DataContext)
+            using (this.DataContext)
             {
-                var rep = DataContext.GetRepository<TEntity>();
+                var rep = this.DataContext.GetRepository<TEntity>();
 
                 contentTypes = rep.Get(scope);
             }
@@ -102,9 +102,9 @@ namespace DotNetNuke.Data
             Requires.PropertyNotNull(entity, primaryKey);
             Requires.PropertyNotNegative(entity, primaryKey);
 
-            using (DataContext)
+            using (this.DataContext)
             {
-                var rep = DataContext.GetRepository<TEntity>();
+                var rep = this.DataContext.GetRepository<TEntity>();
 
                 rep.Update(entity);
             }

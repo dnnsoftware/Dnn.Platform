@@ -25,11 +25,11 @@ namespace DotNetNuke.Services.Exceptions
 
         public ObjectHydrationException(string message, Exception innerException, Type type, IDataReader dr) : base(message, innerException)
         {
-            _Type = type;
-            _Columns = new List<string>();
+            this._Type = type;
+            this._Columns = new List<string>();
             foreach (DataRow row in dr.GetSchemaTable().Rows)
             {
-                _Columns.Add(row["ColumnName"].ToString());
+                this._Columns.Add(row["ColumnName"].ToString());
             }
         }
 
@@ -41,11 +41,11 @@ namespace DotNetNuke.Services.Exceptions
         {
             get
             {
-                return _Columns;
+                return this._Columns;
             }
             set
             {
-                _Columns = value;
+                this._Columns = value;
             }
         }
 
@@ -53,11 +53,11 @@ namespace DotNetNuke.Services.Exceptions
         {
             get
             {
-                return _Type;
+                return this._Type;
             }
             set
             {
-                _Type = value;
+                this._Type = value;
             }
         }
 
@@ -66,9 +66,9 @@ namespace DotNetNuke.Services.Exceptions
             get
             {
                 string _Message = base.Message;
-                _Message += " Expecting - " + Type + ".";
+                _Message += " Expecting - " + this.Type + ".";
                 _Message += " Returned - ";
-                foreach (string columnName in Columns)
+                foreach (string columnName in this.Columns)
                 {
                     _Message += columnName + ", ";
                 }

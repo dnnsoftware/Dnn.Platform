@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="value">A <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> with which to initialize the collection.</param>
         public SearchCriteriaCollection(SearchCriteriaCollection value)
         {
-            AddRange(value);
+            this.AddRange(value);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="value">An array of <see cref="SearchCriteria">SearchCriteria</see> objects with which to initialize the collection. </param>
         public SearchCriteriaCollection(SearchCriteria[] value)
         {
-            AddRange(value);
+            this.AddRange(value);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.Search
                     criterion.MustInclude = false;
                     criterion.MustExclude = false;
                     criterion.Criteria = word;
-                    Add(criterion);
+                    this.Add(criterion);
                 }
             }
             //Add all mandatory criteria
@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.Search
                     criterion.MustInclude = true;
                     criterion.MustExclude = false;
                     criterion.Criteria = word.Remove(0, 1);
-                    Add(criterion);
+                    this.Add(criterion);
                 }
             }
             //Add all excluded criteria
@@ -94,7 +94,7 @@ namespace DotNetNuke.Services.Search
                     criterion.MustInclude = false;
                     criterion.MustExclude = true;
                     criterion.Criteria = word.Remove(0, 1);
-                    Add(criterion);
+                    this.Add(criterion);
                 }
             }
         }
@@ -113,11 +113,11 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return (SearchCriteria) List[index];
+                return (SearchCriteria) this.List[index];
             }
             set
             {
-                List[index] = value;
+                this.List[index] = value;
             }
         }
 		
@@ -131,7 +131,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="value">An object of type <see cref="SearchCriteria">SearchCriteria</see> to add to the collection.</param>
         public int Add(SearchCriteria value)
         {
-            return List.Add(value);
+            return this.List.Add(value);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace DotNetNuke.Services.Search
         /// <returns>The index in the collection of the specified object, if found; otherwise, -1.</returns>
         public int IndexOf(SearchCriteria value)
         {
-            return List.IndexOf(value);
+            return this.List.IndexOf(value);
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="value">An object of type <see cref="SearchCriteria">SearchCriteria</see> to add to the collection.</param>
         public void Insert(int index, SearchCriteria value)
         {
-            List.Insert(index, value);
+            this.List.Insert(index, value);
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="value">An object of type <see cref="SearchCriteria">SearchCriteria</see> to remove to the collection.</param>
         public void Remove(SearchCriteria value)
         {
-            List.Remove(value);
+            this.List.Remove(value);
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace DotNetNuke.Services.Search
         /// <returns><b>true</b> if the collection contains the specified object; otherwise, <b>false</b>.</returns>
         public bool Contains(SearchCriteria value)
         {
-            return List.Contains(value);
+            return this.List.Contains(value);
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace DotNetNuke.Services.Search
         {
             for (int i = 0; i <= value.Length - 1; i++)
             {
-                Add(value[i]);
+                this.Add(value[i]);
             }
         }
 
@@ -193,7 +193,7 @@ namespace DotNetNuke.Services.Search
         {
             for (int i = 0; i <= value.Count - 1; i++)
             {
-                Add((SearchCriteria) value.List[i]);
+                this.Add((SearchCriteria) value.List[i]);
             }
         }
 
@@ -204,7 +204,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="index">The index of the array at which to begin inserting.</param>
         public void CopyTo(SearchCriteria[] array, int index)
         {
-            List.CopyTo(array, index);
+            this.List.CopyTo(array, index);
         }
 
         /// <summary>
@@ -213,8 +213,8 @@ namespace DotNetNuke.Services.Search
         /// <returns>Array of type SearchCriteria</returns>
         public SearchCriteria[] ToArray()
         {
-            var arr = new SearchCriteria[Count];
-            CopyTo(arr, 0);
+            var arr = new SearchCriteria[this.Count];
+            this.CopyTo(arr, 0);
             return arr;
         }
 		

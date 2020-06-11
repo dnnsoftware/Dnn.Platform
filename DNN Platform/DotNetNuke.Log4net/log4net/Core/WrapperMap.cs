@@ -84,10 +84,10 @@ namespace log4net.Core
 		/// </remarks>
 		public WrapperMap(WrapperCreationHandler createWrapperHandler) 
 		{
-			m_createWrapperHandler = createWrapperHandler;
+			this.m_createWrapperHandler = createWrapperHandler;
 
 			// Create the delegates for the event callbacks
-			m_shutdownHandler = new LoggerRepositoryShutdownEventHandler(ILoggerRepository_Shutdown);
+			this.m_shutdownHandler = new LoggerRepositoryShutdownEventHandler(this.ILoggerRepository_Shutdown);
 		}
 
 		#endregion Public Instance Constructors
@@ -120,7 +120,7 @@ namespace log4net.Core
 			lock(this)
 			{
 				// Lookup hierarchy in map.
-				Hashtable wrappersMap = (Hashtable)m_repositories[logger.Repository];
+				Hashtable wrappersMap = (Hashtable)this.m_repositories[logger.Repository];
 
 				if (wrappersMap == null)
 				{
@@ -128,10 +128,10 @@ namespace log4net.Core
 					// Must register with hierarchy
 
 					wrappersMap = new Hashtable();
-					m_repositories[logger.Repository] = wrappersMap;
+					this.m_repositories[logger.Repository] = wrappersMap;
 
 					// Register for config reset & shutdown on repository
-					logger.Repository.ShutdownEvent += m_shutdownHandler;
+					logger.Repository.ShutdownEvent += this.m_shutdownHandler;
 				}
 
 				// Look for the wrapper object in the map
@@ -142,7 +142,7 @@ namespace log4net.Core
 					// No wrapper object exists for the specified logger
 
 					// Create a new wrapper wrapping the logger
-					wrapperObject = CreateNewWrapperObject(logger);
+					wrapperObject = this.CreateNewWrapperObject(logger);
 					
 					// Store wrapper logger in map
 					wrappersMap[logger] = wrapperObject;
@@ -192,9 +192,9 @@ namespace log4net.Core
 		/// </remarks>
 		virtual protected ILoggerWrapper CreateNewWrapperObject(ILogger logger)
 		{
-			if (m_createWrapperHandler != null)
+			if (this.m_createWrapperHandler != null)
 			{
-				return m_createWrapperHandler(logger);
+				return this.m_createWrapperHandler(logger);
 			}
 			return null;
 		}
@@ -217,10 +217,10 @@ namespace log4net.Core
 			lock(this)
 			{
 				// Remove the repository from map
-				m_repositories.Remove(repository);
+				this.m_repositories.Remove(repository);
 
 				// Unhook events from the repository
-				repository.ShutdownEvent -= m_shutdownHandler;
+				repository.ShutdownEvent -= this.m_shutdownHandler;
 			}
 		}
 
@@ -235,7 +235,7 @@ namespace log4net.Core
 			if (repository != null)
 			{
 				// Remove all repository from map
-				RepositoryShutdown(repository);
+				this.RepositoryShutdown(repository);
 			}
 		}
 

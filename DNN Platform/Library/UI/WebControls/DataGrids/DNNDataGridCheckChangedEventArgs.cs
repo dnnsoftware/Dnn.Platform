@@ -32,9 +32,9 @@ namespace DotNetNuke.UI.WebControls
 
         public DNNDataGridCheckChangedEventArgs(DataGridItem item, bool isChecked, string field, bool isAll) : base(item)
         {
-            Checked = isChecked;
-            IsAll = isAll;
-            Field = field;
+            this.Checked = isChecked;
+            this.IsAll = isAll;
+            this.Field = field;
         }
 
         public bool Checked { get; set; }

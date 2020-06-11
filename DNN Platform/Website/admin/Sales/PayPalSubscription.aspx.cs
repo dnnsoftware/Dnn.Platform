@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.Admin.Sales
         {
             base.OnInit(e);
 
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.Admin.Sales
             {
                 UserInfo objUserInfo = null;
                 int intUserID = -1;
-                if (Request.IsAuthenticated)
+                if (this.Request.IsAuthenticated)
                 {
                     objUserInfo = UserController.Instance.GetCurrentUserInfo();
                     if (objUserInfo != null)
@@ -52,17 +52,17 @@ namespace DotNetNuke.Modules.Admin.Sales
                     }
                 }
                 int intRoleId = -1;
-                if (Request.QueryString["roleid"] != null)
+                if (this.Request.QueryString["roleid"] != null)
                 {
-                    intRoleId = int.Parse(Request.QueryString["roleid"]);
+                    intRoleId = int.Parse(this.Request.QueryString["roleid"]);
                 }
                 string strProcessorUserId = "";
-                PortalInfo objPortalInfo = PortalController.Instance.GetPortal(PortalSettings.PortalId);
+                PortalInfo objPortalInfo = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
                 if (objPortalInfo != null)
                 {
                     strProcessorUserId = objPortalInfo.ProcessorUserId;
                 }
-                Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(PortalSettings.PortalId);
+                Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(this.PortalSettings.PortalId);
                 string strPayPalURL;
                 if (intUserID != -1 && intRoleId != -1 && !String.IsNullOrEmpty(strProcessorUserId))
                 {
@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         strPayPalURL = "https://www.paypal.com/cgi-bin/webscr?";
                     }
 
-                    if (Request.QueryString["cancel"] != null)
+                    if (this.Request.QueryString["cancel"] != null)
                     {
 						//build the cancellation PayPal URL
                         strPayPalURL += "cmd=_subscr-find&alias=" + Globals.HTTPPOSTEncode(strProcessorUserId);
@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     else
                     {
                         strPayPalURL += "cmd=_ext-enter";
-                        RoleInfo objRole = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == intRoleId);
+                        RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == intRoleId);
                         if (objRole.RoleID != -1)
                         {
                             int intTrialPeriod = 1;
@@ -107,21 +107,21 @@ namespace DotNetNuke.Modules.Admin.Sales
 								//build the payment PayPal URL
                                 strPayPalURL += "&redirect_cmd=_xclick&business=" + Globals.HTTPPOSTEncode(strProcessorUserId);
                                 strPayPalURL += "&item_name=" +
-                                                Globals.HTTPPOSTEncode(PortalSettings.PortalName + " - " + objRole.RoleName + " ( " + objRole.ServiceFee.ToString("#.##") + " " +
-                                                                       PortalSettings.Currency + " )");
+                                                Globals.HTTPPOSTEncode(this.PortalSettings.PortalName + " - " + objRole.RoleName + " ( " + objRole.ServiceFee.ToString("#.##") + " " +
+                                                                       this.PortalSettings.Currency + " )");
                                 strPayPalURL += "&item_number=" + Globals.HTTPPOSTEncode(intRoleId.ToString());
                                 strPayPalURL += "&no_shipping=1&no_note=1";
                                 strPayPalURL += "&quantity=1";
                                 strPayPalURL += "&amount=" + Globals.HTTPPOSTEncode(strService);
-                                strPayPalURL += "&currency_code=" + Globals.HTTPPOSTEncode(PortalSettings.Currency);
+                                strPayPalURL += "&currency_code=" + Globals.HTTPPOSTEncode(this.PortalSettings.Currency);
                             }
                             else //recurring payments
                             {
 								//build the subscription PayPal URL
                                 strPayPalURL += "&redirect_cmd=_xclick-subscriptions&business=" + Globals.HTTPPOSTEncode(strProcessorUserId);
                                 strPayPalURL += "&item_name=" +
-                                                Globals.HTTPPOSTEncode(PortalSettings.PortalName + " - " + objRole.RoleName + " ( " + objRole.ServiceFee.ToString("#.##") + " " +
-                                                                       PortalSettings.Currency + " every " + intBillingPeriod + " " + GetBillingFrequencyText(objRole.BillingFrequency) + " )");
+                                                Globals.HTTPPOSTEncode(this.PortalSettings.PortalName + " - " + objRole.RoleName + " ( " + objRole.ServiceFee.ToString("#.##") + " " +
+                                                                       this.PortalSettings.Currency + " every " + intBillingPeriod + " " + this.GetBillingFrequencyText(objRole.BillingFrequency) + " )");
                                 strPayPalURL += "&item_number=" + Globals.HTTPPOSTEncode(intRoleId.ToString());
                                 strPayPalURL += "&no_shipping=1&no_note=1";
                                 if (objRole.TrialFrequency != "N")
@@ -134,7 +134,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                                 strPayPalURL += "&p3=" + Globals.HTTPPOSTEncode(intBillingPeriod.ToString());
                                 strPayPalURL += "&t3=" + Globals.HTTPPOSTEncode(objRole.BillingFrequency);
                                 strPayPalURL += "&src=1";
-                                strPayPalURL += "&currency_code=" + Globals.HTTPPOSTEncode(PortalSettings.Currency);
+                                strPayPalURL += "&currency_code=" + Globals.HTTPPOSTEncode(this.PortalSettings.Currency);
                             }
                         }
                         var ctlList = new ListController();
@@ -168,7 +168,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         }
                         else
                         {
-                            strPayPalURL += "&return=" + Globals.HTTPPOSTEncode(Globals.AddHTTP(Globals.GetDomainName(Request)));
+                            strPayPalURL += "&return=" + Globals.HTTPPOSTEncode(Globals.AddHTTP(Globals.GetDomainName(this.Request)));
                         }
 						
                         //Cancellation URL
@@ -178,7 +178,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         }
                         else
                         {
-                            strPayPalURL += "&cancel_return=" + Globals.HTTPPOSTEncode(Globals.AddHTTP(Globals.GetDomainName(Request)));
+                            strPayPalURL += "&cancel_return=" + Globals.HTTPPOSTEncode(Globals.AddHTTP(Globals.GetDomainName(this.Request)));
                         }
 						
                         //Instant Payment Notification URL
@@ -188,13 +188,13 @@ namespace DotNetNuke.Modules.Admin.Sales
                         }
                         else
                         {
-                            strPayPalURL += "&notify_url=" + Globals.HTTPPOSTEncode(Globals.AddHTTP(Globals.GetDomainName(Request)) + "/admin/Sales/PayPalIPN.aspx");
+                            strPayPalURL += "&notify_url=" + Globals.HTTPPOSTEncode(Globals.AddHTTP(Globals.GetDomainName(this.Request)) + "/admin/Sales/PayPalIPN.aspx");
                         }
                         strPayPalURL += "&sra=1"; //reattempt on failure
                     }
 					
 					//redirect to PayPal
-                    Response.Redirect(strPayPalURL, true);
+                    this.Response.Redirect(strPayPalURL, true);
                 }
                 else
                 {
@@ -204,11 +204,11 @@ namespace DotNetNuke.Modules.Admin.Sales
                     }
                     else
                     {
-                        strPayPalURL = Globals.AddHTTP(Globals.GetDomainName(Request));
+                        strPayPalURL = Globals.AddHTTP(Globals.GetDomainName(this.Request));
                     }
 					
 					//redirect to PayPal
-                    Response.Redirect(strPayPalURL, true);
+                    this.Response.Redirect(strPayPalURL, true);
                 }
             }
             catch (Exception exc) //Page failed to load

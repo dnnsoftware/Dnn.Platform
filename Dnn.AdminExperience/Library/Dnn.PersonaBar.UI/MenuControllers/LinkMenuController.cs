@@ -23,14 +23,14 @@ namespace Dnn.PersonaBar.UI.MenuControllers
         protected INavigationManager NavigationManager { get; }
         public LinkMenuController()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public void UpdateParameters(MenuItem menuItem)
         {
-            if (Visible(menuItem))
+            if (this.Visible(menuItem))
             {
-                var query = GetPathQuery(menuItem);
+                var query = this.GetPathQuery(menuItem);
 
                 int tabId, portalId;
                 if (query.ContainsKey("path"))
@@ -44,7 +44,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
                     tabId = Convert.ToInt32(query["tabId"]);
                 }
 
-                var tabUrl = NavigationManager.NavigateURL(tabId, portalId == Null.NullInteger);
+                var tabUrl = this.NavigationManager.NavigateURL(tabId, portalId == Null.NullInteger);
                 var alias = Globals.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias);
                 tabUrl = tabUrl.Replace(alias, string.Empty).TrimStart('/');
 
@@ -54,7 +54,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
 
         public bool Visible(MenuItem menuItem)
         {
-            var query = GetPathQuery(menuItem);
+            var query = this.GetPathQuery(menuItem);
             if (PortalSettings.Current == null || query == null)
             {
                 return false;

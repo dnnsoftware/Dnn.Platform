@@ -28,16 +28,16 @@ namespace DotNetNuke.Web.UI.WebControls
         public string ResourceKey { 
             get
             {
-                if (ViewState["ResourceKey"] != null)
+                if (this.ViewState["ResourceKey"] != null)
                 {
-                    return ViewState["ResourceKey"].ToString();
+                    return this.ViewState["ResourceKey"].ToString();
                 }
 
                 return string.Empty;
             }
             set
             {
-                ViewState["ResourceKey"] = value;
+                this.ViewState["ResourceKey"] = value;
             }
         }
 
@@ -45,12 +45,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnLoad(e);
 
-            if (!string.IsNullOrEmpty(ResourceKey))
+            if (!string.IsNullOrEmpty(this.ResourceKey))
             {
                 string resourceFile = Utilities.GetLocalResourceFile(this);
                 if (!string.IsNullOrEmpty(resourceFile))
                 {
-                    Text = Localization.GetString(ResourceKey, resourceFile);
+                    this.Text = Localization.GetString(this.ResourceKey, resourceFile);
                 }
             }
         }

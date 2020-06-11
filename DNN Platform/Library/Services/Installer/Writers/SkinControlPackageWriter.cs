@@ -30,34 +30,34 @@ namespace DotNetNuke.Services.Installer.Writers
 		
         public SkinControlPackageWriter(PackageInfo package) : base(package)
         {
-            SkinControl = SkinControlController.GetSkinControlByPackageID(package.PackageID);
-            BasePath = Path.Combine("DesktopModules", package.Name.ToLowerInvariant()).Replace("/", "\\");
-            AppCodePath = Path.Combine("App_Code", package.Name.ToLowerInvariant()).Replace("/", "\\");
+            this.SkinControl = SkinControlController.GetSkinControlByPackageID(package.PackageID);
+            this.BasePath = Path.Combine("DesktopModules", package.Name.ToLowerInvariant()).Replace("/", "\\");
+            this.AppCodePath = Path.Combine("App_Code", package.Name.ToLowerInvariant()).Replace("/", "\\");
         }
 
         public SkinControlPackageWriter(SkinControlInfo skinControl, PackageInfo package) : base(package)
         {
-            SkinControl = skinControl;
-            BasePath = Path.Combine("DesktopModules", package.Name.ToLowerInvariant()).Replace("/", "\\");
-            AppCodePath = Path.Combine("App_Code", package.Name.ToLowerInvariant()).Replace("/", "\\");
+            this.SkinControl = skinControl;
+            this.BasePath = Path.Combine("DesktopModules", package.Name.ToLowerInvariant()).Replace("/", "\\");
+            this.AppCodePath = Path.Combine("App_Code", package.Name.ToLowerInvariant()).Replace("/", "\\");
         }
 
         public SkinControlPackageWriter(XPathNavigator manifestNav, InstallerInfo installer)
         {
-            SkinControl = new SkinControlInfo();
+            this.SkinControl = new SkinControlInfo();
 
             //Create a Package
-            Package = new PackageInfo(installer);
+            this.Package = new PackageInfo(installer);
 
-            ReadLegacyManifest(manifestNav, true);
+            this.ReadLegacyManifest(manifestNav, true);
 
-            Package.Description = Null.NullString;
-            Package.Version = new Version(1, 0, 0);
-            Package.PackageType = "SkinObject";
-            Package.License = Util.PACKAGE_NoLicense;
+            this.Package.Description = Null.NullString;
+            this.Package.Version = new Version(1, 0, 0);
+            this.Package.PackageType = "SkinObject";
+            this.Package.License = Util.PACKAGE_NoLicense;
 
-            BasePath = Path.Combine("DesktopModules", Package.Name.ToLowerInvariant()).Replace("/", "\\");
-            AppCodePath = Path.Combine("App_Code", Package.Name.ToLowerInvariant()).Replace("/", "\\");
+            this.BasePath = Path.Combine("DesktopModules", this.Package.Name.ToLowerInvariant()).Replace("/", "\\");
+            this.AppCodePath = Path.Combine("App_Code", this.Package.Name.ToLowerInvariant()).Replace("/", "\\");
         }
 		
 		#endregion
@@ -80,18 +80,18 @@ namespace DotNetNuke.Services.Installer.Writers
 
             if (processModule)
             {
-                Package.Name = Util.ReadElement(folderNav, "name");
-                Package.FriendlyName = Package.Name;
+                this.Package.Name = Util.ReadElement(folderNav, "name");
+                this.Package.FriendlyName = this.Package.Name;
 
                 //Process legacy controls Node
                 foreach (XPathNavigator controlNav in folderNav.Select("modules/module/controls/control"))
                 {
-                    SkinControl.ControlKey = Util.ReadElement(controlNav, "key");
-                    SkinControl.ControlSrc = Path.Combine(Path.Combine("DesktopModules", Package.Name.ToLowerInvariant()), Util.ReadElement(controlNav, "src")).Replace("\\", "/");
+                    this.SkinControl.ControlKey = Util.ReadElement(controlNav, "key");
+                    this.SkinControl.ControlSrc = Path.Combine(Path.Combine("DesktopModules", this.Package.Name.ToLowerInvariant()), Util.ReadElement(controlNav, "src")).Replace("\\", "/");
                     string supportsPartialRendering = Util.ReadElement(controlNav, "supportspartialrendering");
                     if (!string.IsNullOrEmpty(supportsPartialRendering))
                     {
-                        SkinControl.SupportsPartialRendering = bool.Parse(supportsPartialRendering);
+                        this.SkinControl.SupportsPartialRendering = bool.Parse(supportsPartialRendering);
                     }
                 }
             }
@@ -102,13 +102,13 @@ namespace DotNetNuke.Services.Installer.Writers
                 string fileName = Util.ReadElement(fileNav, "name");
                 string filePath = Util.ReadElement(fileNav, "path");
 
-                AddFile(Path.Combine(filePath, fileName), fileName);
+                this.AddFile(Path.Combine(filePath, fileName), fileName);
             }
 			
             //Process resource file Node
             if (!string.IsNullOrEmpty(Util.ReadElement(folderNav, "resourcefile")))
             {
-                AddFile(Util.ReadElement(folderNav, "resourcefile"));
+                this.AddFile(Util.ReadElement(folderNav, "resourcefile"));
             }
         }
 
@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.Installer.Writers
             writer.WriteAttributeString("type", "SkinObject");
 
             //Write SkinControl Manifest
-            CBO.SerializeObject(SkinControl, writer);
+            CBO.SerializeObject(this.SkinControl, writer);
 
             //End component Element
             writer.WriteEndElement();

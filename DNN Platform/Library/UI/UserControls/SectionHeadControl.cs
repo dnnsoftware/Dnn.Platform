@@ -56,11 +56,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return lblTitle.CssClass;
+                return this.lblTitle.CssClass;
             }
             set
             {
-                lblTitle.CssClass = value;
+                this.lblTitle.CssClass = value;
             }
         }
 
@@ -77,11 +77,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return _includeRule;
+                return this._includeRule;
             }
             set
             {
-                _includeRule = value;
+                this._includeRule = value;
             }
         }
 
@@ -98,12 +98,12 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return DNNClientAPI.MinMaxContentVisibile(imgIcon, -1, !_isExpanded, DNNClientAPI.MinMaxPersistanceType.Page);
+                return DNNClientAPI.MinMaxContentVisibile(this.imgIcon, -1, !this._isExpanded, DNNClientAPI.MinMaxPersistanceType.Page);
             }
             set
             {
-                _isExpanded = value;
-                DNNClientAPI.MinMaxContentVisibile(imgIcon, -1, !_isExpanded, DNNClientAPI.MinMaxPersistanceType.Page, value);
+                this._isExpanded = value;
+                DNNClientAPI.MinMaxContentVisibile(this.imgIcon, -1, !this._isExpanded, DNNClientAPI.MinMaxPersistanceType.Page, value);
             }
         }
 
@@ -119,11 +119,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return _javaScript;
+                return this._javaScript;
             }
             set
             {
-                _javaScript = value;
+                this._javaScript = value;
             }
         }
 
@@ -140,11 +140,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return _maxImageUrl;
+                return this._maxImageUrl;
             }
             set
             {
-                _maxImageUrl = value;
+                this._maxImageUrl = value;
             }
         }
 
@@ -161,11 +161,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return _minImageUrl;
+                return this._minImageUrl;
             }
             set
             {
-                _minImageUrl = value;
+                this._minImageUrl = value;
             }
         }
 
@@ -203,11 +203,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return lblTitle.Text;
+                return this.lblTitle.Text;
             }
             set
             {
-                lblTitle.Text = value;
+                this.lblTitle.Text = value;
             }
         }
 
@@ -230,9 +230,9 @@ namespace DotNetNuke.UI.UserControls
             try
             {
 				//set the resourcekey attribute to the label
-                if (!String.IsNullOrEmpty(ResourceKey))
+                if (!String.IsNullOrEmpty(this.ResourceKey))
                 {
-                    lblTitle.Attributes["resourcekey"] = ResourceKey;
+                    this.lblTitle.Attributes["resourcekey"] = this.ResourceKey;
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -255,16 +255,16 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-                var ctl = (HtmlControl) Parent.FindControl(Section);
+                var ctl = (HtmlControl) this.Parent.FindControl(this.Section);
                 if (ctl != null)
                 {
-                    lblTitle.Attributes.Add("onclick", imgIcon.ClientID + ".click();");
-                    lblTitle.Attributes.Add("style", "cursor: pointer");
-                    DNNClientAPI.EnableMinMax(imgIcon, ctl, !IsExpanded, Page.ResolveUrl(MinImageUrl), Page.ResolveUrl(MaxImageUrl), DNNClientAPI.MinMaxPersistanceType.Page);
+                    this.lblTitle.Attributes.Add("onclick", this.imgIcon.ClientID + ".click();");
+                    this.lblTitle.Attributes.Add("style", "cursor: pointer");
+                    DNNClientAPI.EnableMinMax(this.imgIcon, ctl, !this.IsExpanded, this.Page.ResolveUrl(this.MinImageUrl), this.Page.ResolveUrl(this.MaxImageUrl), DNNClientAPI.MinMaxPersistanceType.Page);
                 }
 				
                 //optionlly show hr
-                pnlRule.Visible = _includeRule;
+                this.pnlRule.Visible = this._includeRule;
             }
             catch (Exception exc) //Module failed to load
             {
@@ -274,10 +274,10 @@ namespace DotNetNuke.UI.UserControls
 
         protected void imgIcon_Click(object sender, ImageClickEventArgs e)
         {
-            var ctl = (HtmlControl) Parent.FindControl(Section);
+            var ctl = (HtmlControl) this.Parent.FindControl(this.Section);
             if (ctl != null)
             {
-                IsExpanded = !IsExpanded;
+                this.IsExpanded = !this.IsExpanded;
             }
         }
 		

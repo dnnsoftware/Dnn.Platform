@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
         protected INavigationManager NavigationManager { get; }
         public CoreLanguagePackageEditor()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
@@ -34,7 +34,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             {
                 Locales = Utility.GetAllLanguagesList(),
                 LanguageId = languagePack.LanguageID,
-                EditUrlFormat = NavigationManager.NavigateURL(languagesTab, "", "Locale={0}")
+                EditUrlFormat = this.NavigationManager.NavigateURL(languagesTab, "", "Locale={0}")
             };
 
             if (languagePack.PackageType == LanguagePackType.Extension)

@@ -19,35 +19,35 @@ namespace DotNetNuke.Web.UI
 
         public MessageWindowParameters(string message)
         {
-            _Message = message;
+            this._Message = message;
         }
 
         public MessageWindowParameters(string message, string title)
         {
-            _Message = message;
-            _Title = title;
+            this._Message = message;
+            this._Title = title;
         }
 
         public MessageWindowParameters(string message, string title, string windowWidth, string windowHeight)
         {
-            _Message = message;
-            _Title = title;
-            _WindowWidth = Unit.Parse(windowWidth);
-            _WindowHeight = Unit.Parse(windowHeight);
+            this._Message = message;
+            this._Title = title;
+            this._WindowWidth = Unit.Parse(windowWidth);
+            this._WindowHeight = Unit.Parse(windowHeight);
         }
 
         public string Message
         {
             get
             {
-                return _Message;
+                return this._Message;
             }
             set
             {
                 //todo: javascript encode for onclick events
-                _Message = value;
-                _Message = _Message.Replace("'", "\\'");
-                _Message = _Message.Replace("\"", "\\\"");
+                this._Message = value;
+                this._Message = this._Message.Replace("'", "\\'");
+                this._Message = this._Message.Replace("\"", "\\\"");
             }
         }
 
@@ -55,14 +55,14 @@ namespace DotNetNuke.Web.UI
         {
             get
             {
-                return _Title;
+                return this._Title;
             }
             set
             {
                 //todo: javascript encode for onclick events
-                _Title = value;
-                _Title = _Title.Replace("'", "\\'");
-                _Title = _Title.Replace("\"", "\\\"");
+                this._Title = value;
+                this._Title = this._Title.Replace("'", "\\'");
+                this._Title = this._Title.Replace("\"", "\\\"");
             }
         }
 
@@ -70,11 +70,11 @@ namespace DotNetNuke.Web.UI
         {
             get
             {
-                return _WindowWidth;
+                return this._WindowWidth;
             }
             set
             {
-                _WindowWidth = value;
+                this._WindowWidth = value;
             }
         }
 
@@ -82,11 +82,11 @@ namespace DotNetNuke.Web.UI
         {
             get
             {
-                return _WindowHeight;
+                return this._WindowHeight;
             }
             set
             {
-                _WindowHeight = value;
+                this._WindowHeight = value;
             }
         }
     }

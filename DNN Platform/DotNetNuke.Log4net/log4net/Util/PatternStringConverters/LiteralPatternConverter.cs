@@ -64,7 +64,7 @@ namespace log4net.Util.PatternStringConverters
 			if (literalPc != null)
 			{
 				// Combine the two adjacent literals together
-				Option = Option + literalPc.Option;
+				this.Option = this.Option + literalPc.Option;
 
 				// We are the next converter now
 				return this;
@@ -90,7 +90,7 @@ namespace log4net.Util.PatternStringConverters
 		/// </remarks>
 		override public void Format(TextWriter writer, object state) 
 		{
-			writer.Write(Option);
+			writer.Write(this.Option);
 		}
 
 		/// <summary>

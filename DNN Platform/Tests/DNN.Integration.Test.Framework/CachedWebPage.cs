@@ -12,9 +12,9 @@ namespace DNN.Integration.Test.Framework
 
         public CachedWebPage(string token, string[] fields)
         {
-            FetchDateTime = DateTime.Now;
-            VerificationToken = token;
-            InputFields = fields;
+            this.FetchDateTime = DateTime.Now;
+            this.VerificationToken = token;
+            this.InputFields = fields;
         }
 
         public DateTime FetchDateTime { get; private set; } // when was this loaded
@@ -22,8 +22,8 @@ namespace DNN.Integration.Test.Framework
 
         public string[] InputFields
         {
-            get { return _inputFields.Clone() as string[]; }
-            private set { _inputFields = value; }
+            get { return this._inputFields.Clone() as string[]; }
+            private set { this._inputFields = value; }
         }
     }
 }

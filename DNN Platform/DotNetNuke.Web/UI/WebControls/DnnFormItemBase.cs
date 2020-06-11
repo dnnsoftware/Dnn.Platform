@@ -30,10 +30,10 @@ namespace DotNetNuke.Web.UI.WebControls
         
         protected DnnFormItemBase()
         {
-            FormMode = DnnFormMode.Inherit;
-            IsValid = true;
+            this.FormMode = DnnFormMode.Inherit;
+            this.IsValid = true;
 
-            Validators = new List<IValidator>();
+            this.Validators = new List<IValidator>();
         }
 
         #region Protected Properties
@@ -42,9 +42,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                Type type = Property.PropertyType;
+                Type type = this.Property.PropertyType;
                 IList<PropertyInfo> props = new List<PropertyInfo>(type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static));
-                return props.SingleOrDefault(p => p.Name == DataField);
+                return props.SingleOrDefault(p => p.Name == this.DataField);
             }
         }
 
@@ -57,11 +57,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                Type type = DataSource.GetType();
+                Type type = this.DataSource.GetType();
                 IList<PropertyInfo> props = new List<PropertyInfo>(type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static));
-                return !String.IsNullOrEmpty(DataMember) 
-                           ? props.SingleOrDefault(p => p.Name == DataMember) 
-                           : props.SingleOrDefault(p => p.Name == DataField);
+                return !String.IsNullOrEmpty(this.DataMember) 
+                           ? props.SingleOrDefault(p => p.Name == this.DataMember) 
+                           : props.SingleOrDefault(p => p.Name == this.DataField);
             }
         }
 
@@ -75,8 +75,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public object Value
         {
-            get { return _value; }
-            set { _value = value; }
+            get { return this._value; }
+            set { this._value = value; }
         }
 
         #endregion
@@ -105,11 +105,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _requiredMessageSuffix;
+                return this._requiredMessageSuffix;
             }
             set
             {
-                _requiredMessageSuffix = value;
+                this._requiredMessageSuffix = value;
             }
         }
 
@@ -117,11 +117,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _validationMessageSuffix;
+                return this._validationMessageSuffix;
             }
             set
             {
-                _validationMessageSuffix = value;
+                this._validationMessageSuffix = value;
             }
         }
 
@@ -136,58 +136,58 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void AddValidators(string controlId)
         {
-            var value = Value as String;
-            Validators.Clear();
+            var value = this.Value as String;
+            this.Validators.Clear();
 
             //Add Validators
-            if (Required)
+            if (this.Required)
             {
                 var requiredValidator = new RequiredFieldValidator
                                             {
-                                                ID = ID + "_Required", 
-                                                ErrorMessage = ResourceKey + RequiredMessageSuffix
+                                                ID = this.ID + "_Required", 
+                                                ErrorMessage = this.ResourceKey + this.RequiredMessageSuffix
                                             };
-                Validators.Add(requiredValidator);
+                this.Validators.Add(requiredValidator);
             }
 
-            if (!String.IsNullOrEmpty(ValidationExpression))
+            if (!String.IsNullOrEmpty(this.ValidationExpression))
             {
                 var regexValidator = new RegularExpressionValidator
                                          {
-                                             ID = ID + "_RegEx", 
-                                             ErrorMessage = ResourceKey + ValidationMessageSuffix, 
-                                             ValidationExpression = ValidationExpression
+                                             ID = this.ID + "_RegEx", 
+                                             ErrorMessage = this.ResourceKey + this.ValidationMessageSuffix, 
+                                             ValidationExpression = this.ValidationExpression
                                          };
                 if (!String.IsNullOrEmpty(value))
                 {
-                    regexValidator.IsValid = Regex.IsMatch(value, ValidationExpression);
-                    IsValid = regexValidator.IsValid;
+                    regexValidator.IsValid = Regex.IsMatch(value, this.ValidationExpression);
+                    this.IsValid = regexValidator.IsValid;
                 }
-                Validators.Add(regexValidator);
+                this.Validators.Add(regexValidator);
             }
 
-            if (Validators.Count > 0)
+            if (this.Validators.Count > 0)
             {
-                foreach (BaseValidator validator in Validators)
+                foreach (BaseValidator validator in this.Validators)
                 {
                     validator.ControlToValidate = controlId;
                     validator.Display = ValidatorDisplay.Dynamic;
-                    validator.ErrorMessage = LocalizeString(validator.ErrorMessage);
+                    validator.ErrorMessage = this.LocalizeString(validator.ErrorMessage);
                     validator.CssClass = "dnnFormMessage dnnFormError";                   
-                    Controls.Add(validator);
+                    this.Controls.Add(validator);
                 }
             }
         }
 
         public void CheckIsValid()
         {
-            IsValid = true;
-            foreach (BaseValidator validator in Validators)
+            this.IsValid = true;
+            foreach (BaseValidator validator in this.Validators)
             {
                 validator.Validate();
                 if (!validator.IsValid)
                 {
-                    IsValid = false;
+                    this.IsValid = false;
                     break;
                 }
             }
@@ -196,33 +196,33 @@ namespace DotNetNuke.Web.UI.WebControls
         protected virtual void CreateControlHierarchy()
         {
             //Load Item Style
-            CssClass = "dnnFormItem";
-            CssClass += (FormMode == DnnFormMode.Long) ? "" : " dnnFormShort";
+            this.CssClass = "dnnFormItem";
+            this.CssClass += (this.FormMode == DnnFormMode.Long) ? "" : " dnnFormShort";
 
-            if (String.IsNullOrEmpty(ResourceKey))
+            if (String.IsNullOrEmpty(this.ResourceKey))
             {
-                ResourceKey = DataField;
+                this.ResourceKey = this.DataField;
             }
 
             //Add Label
             var label = new DnnFormLabel 
                                 {
-                                    LocalResourceFile = LocalResourceFile, 
-                                    ResourceKey = ResourceKey + ".Text", 
-                                    ToolTipKey = ResourceKey + ".Help",
+                                    LocalResourceFile = this.LocalResourceFile, 
+                                    ResourceKey = this.ResourceKey + ".Text", 
+                                    ToolTipKey = this.ResourceKey + ".Help",
                                     ViewStateMode = ViewStateMode.Disabled
                                 };
 
-            if (Required) {
+            if (this.Required) {
 
                 label.RequiredField = true;
             }
 
-            Controls.Add(label);
+            this.Controls.Add(label);
 
-            WebControl inputControl = CreateControlInternal(this);
+            WebControl inputControl = this.CreateControlInternal(this);
             label.AssociatedControlID = inputControl.ID;
-            AddValidators(inputControl.ID);
+            this.AddValidators(inputControl.ID);
         }
 
         /// <summary>
@@ -240,14 +240,14 @@ namespace DotNetNuke.Web.UI.WebControls
             // CreateChildControls re-creates the children (the items)
             // using the saved view state.
             // First clear any existing child controls.
-            Controls.Clear();
+            this.Controls.Clear();
 
-            CreateControlHierarchy();
+            this.CreateControlHierarchy();
         }
 
         protected void DataBindInternal(string dataField, ref object value)
         {
-            var dictionary = DataSource as IDictionary;
+            var dictionary = this.DataSource as IDictionary;
             if (dictionary != null)
             {
                 if (!String.IsNullOrEmpty(dataField) && dictionary.Contains(dataField))
@@ -259,24 +259,24 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 if (!String.IsNullOrEmpty(dataField))
                 {
-                    if (String.IsNullOrEmpty(DataMember))
+                    if (String.IsNullOrEmpty(this.DataMember))
                     {
-                        if (Property != null && Property.GetValue(DataSource, null) != null)
+                        if (this.Property != null && this.Property.GetValue(this.DataSource, null) != null)
                         {
                             // ReSharper disable PossibleNullReferenceException
-                            value = Property.GetValue(DataSource, null);
+                            value = this.Property.GetValue(this.DataSource, null);
                             // ReSharper restore PossibleNullReferenceException
                         } 
                     }
                     else
                     {
-                        if (Property != null && Property.GetValue(DataSource, null) != null)
+                        if (this.Property != null && this.Property.GetValue(this.DataSource, null) != null)
                         {
                             // ReSharper disable PossibleNullReferenceException
-                            object parentValue = Property.GetValue(DataSource, null);
-                            if (ChildProperty != null && ChildProperty.GetValue(parentValue, null) != null)
+                            object parentValue = this.Property.GetValue(this.DataSource, null);
+                            if (this.ChildProperty != null && this.ChildProperty.GetValue(parentValue, null) != null)
                             {
-                                value = ChildProperty.GetValue(parentValue, null);
+                                value = this.ChildProperty.GetValue(parentValue, null);
                             }
                             // ReSharper restore PossibleNullReferenceException
                         }
@@ -287,7 +287,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected virtual void DataBindInternal()
         {
-            DataBindInternal(DataField, ref _value);
+            this.DataBindInternal(this.DataField, ref this._value);
         }
 
         public void DataBindItem(bool useDataSource)
@@ -295,65 +295,65 @@ namespace DotNetNuke.Web.UI.WebControls
             if (useDataSource)
             {
                 base.OnDataBinding(EventArgs.Empty);
-                Controls.Clear();
-                ClearChildViewState();
-                TrackViewState();
+                this.Controls.Clear();
+                this.ClearChildViewState();
+                this.TrackViewState();
 
-                DataBindInternal();
+                this.DataBindInternal();
 
-                CreateControlHierarchy();
-                ChildControlsCreated = true;
+                this.CreateControlHierarchy();
+                this.ChildControlsCreated = true;
             }
             else
             {
-                if (!String.IsNullOrEmpty(DataField))
+                if (!String.IsNullOrEmpty(this.DataField))
                 {
-                    UpdateDataSourceInternal(null, _value, DataField);
+                    this.UpdateDataSourceInternal(null, this._value, this.DataField);
                 }
             }
         }
 
         private void UpdateDataSourceInternal(object oldValue, object newValue, string dataField)
         {
-            if (DataSource != null)
+            if (this.DataSource != null)
             {
-                if (DataSource is IDictionary<string, string>)
+                if (this.DataSource is IDictionary<string, string>)
                 {
-                    var dictionary = DataSource as IDictionary<string, string>;
+                    var dictionary = this.DataSource as IDictionary<string, string>;
                     if (dictionary.ContainsKey(dataField) && !ReferenceEquals(newValue, oldValue))
                     {
                         dictionary[dataField] = newValue as string;
                     }
                 }
-                else if(DataSource is IIndexable)
+                else if(this.DataSource is IIndexable)
                 {
-                    var indexer = DataSource as IIndexable;
+                    var indexer = this.DataSource as IIndexable;
                     indexer[dataField] = newValue;
                 }
                 else
                 {
-                    if (String.IsNullOrEmpty(DataMember))
+                    if (String.IsNullOrEmpty(this.DataMember))
                     {
-                        if (Property != null)
+                        if (this.Property != null)
                         {
                             if (!ReferenceEquals(newValue, oldValue))
                             {
-                                if (Property.PropertyType.IsEnum)
+                                if (this.Property.PropertyType.IsEnum)
                                 {
-                                    Property.SetValue(DataSource, Enum.Parse(Property.PropertyType, newValue.ToString()), null);
+                                    this.Property.SetValue(this.DataSource, Enum.Parse(this.Property.PropertyType, newValue.ToString()), null);
                                 }
                                 else
                                 {
-                                    Property.SetValue(DataSource, Convert.ChangeType(newValue, Property.PropertyType), null);
+                                    this.Property.SetValue(this.DataSource, Convert.ChangeType(newValue, this.Property.PropertyType), null);
                                 }
                             }
                         }
                     }
                     else
                     {
-                        if (Property != null)
+                        if (this.Property != null)
                         {
-                            object parentValue = Property.GetValue(DataSource, null);
+                            object parentValue = this.Property.GetValue(this.DataSource, null);
                             if (parentValue != null)
                             {
                                 if (parentValue is IDictionary<string, string>)
@@ -369,15 +369,15 @@ namespace DotNetNuke.Web.UI.WebControls
                                     var indexer = parentValue as IIndexable;
                                     indexer[dataField] = newValue;
                                 }
-                                else if (ChildProperty != null)
+                                else if (this.ChildProperty != null)
                                 {
-                                    if (Property.PropertyType.IsEnum)
+                                    if (this.Property.PropertyType.IsEnum)
                                     {
-                                        ChildProperty.SetValue(parentValue, Enum.Parse(ChildProperty.PropertyType, newValue.ToString()), null);
+                                        this.ChildProperty.SetValue(parentValue, Enum.Parse(this.ChildProperty.PropertyType, newValue.ToString()), null);
                                     }
                                     else
                                     {
-                                        ChildProperty.SetValue(parentValue, Convert.ChangeType(newValue, ChildProperty.PropertyType), null);
+                                        this.ChildProperty.SetValue(parentValue, Convert.ChangeType(newValue, this.ChildProperty.PropertyType), null);
                                     }
                                 }
                             }
@@ -389,11 +389,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected void UpdateDataSource(object oldValue, object newValue, string dataField)
         {
-            CheckIsValid();
+            this.CheckIsValid();
 
-            _value = newValue;
+            this._value = newValue;
 
-            UpdateDataSourceInternal(oldValue, newValue, dataField);
+            this.UpdateDataSourceInternal(oldValue, newValue, dataField);
         }
 
         #endregion
@@ -402,23 +402,23 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void LoadControlState(object state)
         {
-            _value = state;
+            this._value = state;
         }
 
         protected string LocalizeString(string key)
         {
-            return Localization.GetString(key, LocalResourceFile);
+            return Localization.GetString(key, this.LocalResourceFile);
         }
 
         protected override void OnInit(EventArgs e)
         {
-            Page.RegisterRequiresControlState(this);
+            this.Page.RegisterRequiresControlState(this);
             base.OnInit(e);
         }
 
         protected override object SaveControlState()
         {
-            return _value;
+            return this._value;
         }
 
         #endregion

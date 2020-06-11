@@ -34,7 +34,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public VocabularyController(IDataService dataService)
         {
-            _DataService = dataService;
+            this._DataService = dataService;
         }
 
         #endregion
@@ -43,7 +43,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         private object GetVocabulariesCallBack(CacheItemArgs cacheItemArgs)
         {
-            return CBO.FillQueryable<Vocabulary>(_DataService.GetVocabularies()).ToList();
+            return CBO.FillQueryable<Vocabulary>(this._DataService.GetVocabularies()).ToList();
         }
 
         #endregion
@@ -57,7 +57,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.PropertyNotNullOrEmpty("vocabulary", "Name", vocabulary.Name);
             Requires.PropertyNotNegative("vocabulary", "ScopeTypeId", vocabulary.ScopeTypeId);
 
-            vocabulary.VocabularyId = _DataService.AddVocabulary(vocabulary, UserController.Instance.GetCurrentUserInfo().UserID);
+            vocabulary.VocabularyId = this._DataService.AddVocabulary(vocabulary, UserController.Instance.GetCurrentUserInfo().UserID);
 
             //Refresh Cache
             DataCache.RemoveCache(DataCache.VocabularyCacheKey);
@@ -76,7 +76,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.NotNull("vocabulary", vocabulary);
             Requires.PropertyNotNegative("vocabulary", "VocabularyId", vocabulary.VocabularyId);
 
-            _DataService.DeleteVocabulary(vocabulary);
+            this._DataService.DeleteVocabulary(vocabulary);
 
             //Refresh Cache
             DataCache.RemoveCache(DataCache.VocabularyCacheKey);
@@ -84,7 +84,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public IQueryable<Vocabulary> GetVocabularies()
         {
-            return CBO.GetCachedObject<List<Vocabulary>>(new CacheItemArgs(DataCache.VocabularyCacheKey, _CacheTimeOut), GetVocabulariesCallBack).AsQueryable();
+            return CBO.GetCachedObject<List<Vocabulary>>(new CacheItemArgs(DataCache.VocabularyCacheKey, _CacheTimeOut), this.GetVocabulariesCallBack).AsQueryable();
         }
 
         public void UpdateVocabulary(Vocabulary vocabulary)
@@ -97,7 +97,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             //Refresh Cache
             DataCache.RemoveCache(DataCache.VocabularyCacheKey);
 
-            _DataService.UpdateVocabulary(vocabulary, UserController.Instance.GetCurrentUserInfo().UserID);
+            this._DataService.UpdateVocabulary(vocabulary, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         #endregion

@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Search
             const int saveThreshold = BatchSize;
             var totalIndexed = 0;
             var checkpointModified = false;
-            startDateLocal = GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
+            startDateLocal = this.GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
             var searchDocuments = new Dictionary<string, SearchDocument>();
 
             var needReindex = PortalController.GetPortalSettingAsBoolean(UserIndexResetFlag, portalId, false);
@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.Search
             try
             {
                 int startUserId;
-                var checkpointData = GetLastCheckpointData(portalId, schedule.ScheduleID);
+                var checkpointData = this.GetLastCheckpointData(portalId, schedule.ScheduleID);
                 if (string.IsNullOrEmpty(checkpointData) || !int.TryParse(checkpointData, out startUserId))
                 {
                     startUserId = Null.NullInteger;
@@ -111,9 +111,9 @@ namespace DotNetNuke.Services.Search
                         //remove existing indexes
                         DeleteDocuments(portalId, indexedUsers);
                         var values = searchDocuments.Values;
-                        totalIndexed += IndexCollectedDocs(indexer, values);
-                        SetLastCheckpointData(portalId, schedule.ScheduleID, startUserId.ToString());
-                        SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, values.Last().ModifiedTimeUtc.ToLocalTime());
+                        totalIndexed += this.IndexCollectedDocs(indexer, values);
+                        this.SetLastCheckpointData(portalId, schedule.ScheduleID, startUserId.ToString());
+                        this.SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, values.Last().ModifiedTimeUtc.ToLocalTime());
                         searchDocuments.Clear();
                         checkpointModified = true;
                     }
@@ -124,7 +124,7 @@ namespace DotNetNuke.Services.Search
                     //remove existing indexes
                     DeleteDocuments(portalId, indexedUsers);
                     var values = searchDocuments.Values;
-                    totalIndexed += IndexCollectedDocs(indexer, values);
+                    totalIndexed += this.IndexCollectedDocs(indexer, values);
                     checkpointModified = true;
                 }
 
@@ -142,8 +142,8 @@ namespace DotNetNuke.Services.Search
             if (checkpointModified)
             {
                 // at last reset start user pointer
-                SetLastCheckpointData(portalId, schedule.ScheduleID, Null.NullInteger.ToString());
-                SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, DateTime.Now);
+                this.SetLastCheckpointData(portalId, schedule.ScheduleID, Null.NullInteger.ToString());
+                this.SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, DateTime.Now);
             }
             return totalIndexed;
         }

@@ -17,7 +17,7 @@ namespace Dnn.PersonaBar.UI.Services
         public void RegisterRoutes(IMapRoute routeManager)
         {
             //get all persona bar services from persona bar modules.
-            var services = FindPersonaBarServices();
+            var services = this.FindPersonaBarServices();
 
             if (services.Count > 0)
             {

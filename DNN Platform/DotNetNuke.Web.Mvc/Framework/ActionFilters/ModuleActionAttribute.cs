@@ -18,7 +18,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
     {
         public ModuleActionAttribute()
         {
-            SecurityAccessLevel = SecurityAccessLevel.Edit;
+            this.SecurityAccessLevel = SecurityAccessLevel.Edit;
         }
 
         /// <summary>
@@ -61,13 +61,13 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             }
 
             controller.ModuleActions.Add(-1,
-                                (!String.IsNullOrEmpty(TitleKey)) ? controller.LocalizeString(TitleKey) : Title,
+                                (!String.IsNullOrEmpty(this.TitleKey)) ? controller.LocalizeString(this.TitleKey) : this.Title,
                                 ModuleActionType.AddContent,
                                 "",
-                                Icon,
-                                controller.ModuleContext.EditUrl(ControlKey),
+                                this.Icon,
+                                controller.ModuleContext.EditUrl(this.ControlKey),
                                 false,
-                                SecurityAccessLevel,
+                                this.SecurityAccessLevel,
                                 true,
                                 false);
         }

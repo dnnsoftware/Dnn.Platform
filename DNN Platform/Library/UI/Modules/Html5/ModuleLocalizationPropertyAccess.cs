@@ -27,8 +27,8 @@ namespace DotNetNuke.UI.Modules.Html5
 
         public ModuleLocalizationPropertyAccess(ModuleInstanceContext moduleContext, string html5File)
         {
-            _html5File = html5File;
-            _moduleContext = moduleContext;
+            this._html5File = html5File;
+            this._moduleContext = moduleContext;
         }
 
         protected override string ProcessToken(ModuleLocalizationDto model, UserInfo accessingUser, Scope accessLevel)
@@ -38,8 +38,8 @@ namespace DotNetNuke.UI.Modules.Html5
             string resourceFile = model.LocalResourceFile;
             if (String.IsNullOrEmpty(resourceFile))
             {
-                var fileName = Path.GetFileName(_html5File);
-                var path = _html5File.Replace(fileName, "");
+                var fileName = Path.GetFileName(this._html5File);
+                var path = this._html5File.Replace(fileName, "");
                 resourceFile = Path.Combine(path, Localization.LocalResourceDirectory + "/", Path.ChangeExtension(fileName, "resx"));
             }
             if (!String.IsNullOrEmpty(model.Key))

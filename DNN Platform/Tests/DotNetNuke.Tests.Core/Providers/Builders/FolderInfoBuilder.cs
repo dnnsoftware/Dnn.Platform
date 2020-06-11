@@ -20,12 +20,12 @@ namespace DotNetNuke.Tests.Core.Providers.Builders
         
         internal FolderInfoBuilder()
         {
-            portalId = Constants.CONTENT_ValidPortalId;
-            folderPath = Constants.FOLDER_ValidFolderRelativePath;
-            physicalPath = Constants.FOLDER_ValidFolderPath;
-            folderMappingID = Constants.FOLDER_ValidFolderMappingID;
-            folderId = Constants.FOLDER_ValidFolderId;
-            physicalPath = "";
+            this.portalId = Constants.CONTENT_ValidPortalId;
+            this.folderPath = Constants.FOLDER_ValidFolderRelativePath;
+            this.physicalPath = Constants.FOLDER_ValidFolderPath;
+            this.folderMappingID = Constants.FOLDER_ValidFolderMappingID;
+            this.folderId = Constants.FOLDER_ValidFolderId;
+            this.physicalPath = "";
         }
         internal FolderInfoBuilder WithPhysicalPath(string phisicalPath)
         {
@@ -42,11 +42,11 @@ namespace DotNetNuke.Tests.Core.Providers.Builders
         internal IFolderInfo Build()
         {
             var mock = new Mock<IFolderInfo>();            
-            mock.Setup(f => f.FolderID).Returns(folderId);
-            mock.Setup(f => f.PortalID).Returns(portalId);
-            mock.Setup(f => f.FolderPath).Returns(folderPath);
-            mock.Setup(f => f.PhysicalPath).Returns(physicalPath);
-            mock.Setup(f => f.FolderMappingID).Returns(folderMappingID);
+            mock.Setup(f => f.FolderID).Returns(this.folderId);
+            mock.Setup(f => f.PortalID).Returns(this.portalId);
+            mock.Setup(f => f.FolderPath).Returns(this.folderPath);
+            mock.Setup(f => f.PhysicalPath).Returns(this.physicalPath);
+            mock.Setup(f => f.FolderMappingID).Returns(this.folderMappingID);
             
             return mock.Object;
         }

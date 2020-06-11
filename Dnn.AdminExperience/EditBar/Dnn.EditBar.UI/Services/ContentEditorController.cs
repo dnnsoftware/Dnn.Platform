@@ -50,13 +50,13 @@ namespace Dnn.EditBar.UI.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteModule([FromUri]int moduleId)
         {
-            var module = ModuleController.Instance.GetModule(moduleId, PortalSettings.ActiveTab.TabID, false);
+            var module = ModuleController.Instance.GetModule(moduleId, this.PortalSettings.ActiveTab.TabID, false);
             if (module == null)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new { Status = 1, Message = LocalizeString("Service_ModuleNotExist") });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 1, Message = this.LocalizeString("Service_ModuleNotExist") });
             }
 
-            var tabId = PortalSettings.ActiveTab.TabID;
+            var tabId = this.PortalSettings.ActiveTab.TabID;
             ModuleController.Instance.DeleteTabModule(tabId, moduleId, false);
 
             //remove related modules
@@ -67,21 +67,21 @@ namespace Dnn.EditBar.UI.Services
                     ModuleController.Instance.DeleteTabModule(tabId, m.ModuleID, false);
                 });
 
-            return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
         [HttpGet]
         public HttpResponseMessage GetRecommendedModules()
         {
             var recommendedModuleNames = new List<string> ();
-            var filteredList = DesktopModuleController.GetPortalDesktopModules(PortalSettings.PortalId)
+            var filteredList = DesktopModuleController.GetPortalDesktopModules(this.PortalSettings.PortalId)
                                         .Where(kvp => kvp.Value.DesktopModule.Category == "Recommended");
 
             var result = filteredList.Select(kvp => new ControlBarController.ModuleDefDTO
             {
                 ModuleID = kvp.Value.DesktopModuleID,
                 ModuleName = kvp.Key,
-                ModuleImage = GetDeskTopModuleImage(kvp.Value.DesktopModuleID),
+                ModuleImage = this.GetDeskTopModuleImage(kvp.Value.DesktopModuleID),
                 Bookmarked = true,
                 ExistsInBookmarkCategory = true
             }).ToList();
@@ -94,14 +94,14 @@ namespace Dnn.EditBar.UI.Services
                     {
                         ModuleID = Null.NullInteger,
                         ModuleName = moduleName,
-                        ModuleImage = GetDeskTopModuleImage(Null.NullInteger),
+                        ModuleImage = this.GetDeskTopModuleImage(Null.NullInteger),
                         Bookmarked = true,
                         ExistsInBookmarkCategory = true
                     });
                 }
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, result.OrderBy(m => recommendedModuleNames.IndexOf(m.ModuleName)));
+            return this.Request.CreateResponse(HttpStatusCode.OK, result.OrderBy(m => recommendedModuleNames.IndexOf(m.ModuleName)));
         }
 
 
@@ -131,7 +131,7 @@ namespace Dnn.EditBar.UI.Services
                 moduleStylePath = string.Empty;
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, new { Script = moduleScriptContent, StyleFile = moduleStylePath });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Script = moduleScriptContent, StyleFile = moduleStylePath });
         }
 
         #endregion
@@ -140,13 +140,13 @@ namespace Dnn.EditBar.UI.Services
 
         private string LocalizeString(string key)
         {
-            return Localization.GetString(key, LocalResourcesFile);
+            return Localization.GetString(key, this.LocalResourcesFile);
         }
 
         private string GetDeskTopModuleImage(int moduleId)
         {
-            var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.PortalId);
-            var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.PortalId);
+            var portalDesktopModules = DesktopModuleController.GetDesktopModules(this.PortalSettings.PortalId);
+            var packages = PackageController.Instance.GetExtensionPackages(this.PortalSettings.PortalId);
 
             string imageUrl =
                     (from pkgs in packages

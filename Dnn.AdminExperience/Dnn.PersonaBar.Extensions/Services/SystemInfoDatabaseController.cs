@@ -25,8 +25,8 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             try
             {
-                var dbInfo = _databaseController.GetDbInfo();
-                var dbBackups = _databaseController.GetDbBackups().Select(b => new
+                var dbInfo = this._databaseController.GetDbInfo();
+                var dbBackups = this._databaseController.GetDbBackups().Select(b => new
                 {
                     name = b.Name,
                     startDate = b.StartDate,
@@ -34,7 +34,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     size = b.Size,
                     backupType = b.BackupType
                 });
-                var dbFileInfo = _databaseController.GetDbFileInfo().Select(f => new
+                var dbFileInfo = this._databaseController.GetDbFileInfo().Select(f => new
                 {
                     name = f.Name,
                     size = f.Megabytes,
@@ -42,7 +42,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     fileName = f.ShortFileName
                 });
 
-                return Request.CreateResponse(HttpStatusCode.OK, new
+                return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     productVersion = dbInfo.ProductVersion,
                     servicePack = dbInfo.ServicePack,
@@ -55,7 +55,7 @@ namespace Dnn.PersonaBar.Servers.Services
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
     }

@@ -22,14 +22,14 @@ namespace DotNetNuke.Services.Installer.Dependencies
         /// <param name="ErrorMessage">The error message to display.</param>
         public InvalidDependency(string ErrorMessage)
         {
-            _ErrorMessage = ErrorMessage;
+            this._ErrorMessage = ErrorMessage;
         }
 
         public override string ErrorMessage
         {
             get
             {
-                return _ErrorMessage;
+                return this._ErrorMessage;
             }
         }
 

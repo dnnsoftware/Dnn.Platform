@@ -82,24 +82,24 @@ namespace DotNetNuke.Entities.Users.Membership
         public MembershipPasswordSettings(int portalId)
         {
             //portalId not used currently - left in place for potential site specific settings
-            PortalId = portalId;
+            this.PortalId = portalId;
 
             if (HttpContext.Current != null && !IsInstallRequest(HttpContext.Current.Request))
             {
-                EnableBannedList = Host.Host.EnableBannedList;
-                EnableStrengthMeter = Host.Host.EnableStrengthMeter;
-                EnableIPChecking = Host.Host.EnableIPChecking;
-                EnablePasswordHistory = Host.Host.EnablePasswordHistory;
+                this.EnableBannedList = Host.Host.EnableBannedList;
+                this.EnableStrengthMeter = Host.Host.EnableStrengthMeter;
+                this.EnableIPChecking = Host.Host.EnableIPChecking;
+                this.EnablePasswordHistory = Host.Host.EnablePasswordHistory;
 
-                ResetLinkValidity = Host.Host.MembershipResetLinkValidity;
-                NumberOfPasswordsStored = Host.Host.MembershipNumberPasswords;
-                NumberOfDaysBeforePasswordReuse = Host.Host.MembershipDaysBeforePasswordReuse;
+                this.ResetLinkValidity = Host.Host.MembershipResetLinkValidity;
+                this.NumberOfPasswordsStored = Host.Host.MembershipNumberPasswords;
+                this.NumberOfDaysBeforePasswordReuse = Host.Host.MembershipDaysBeforePasswordReuse;
             }
             else //setup default values during install process.
             {
-                EnableStrengthMeter = true;
-                EnableBannedList = true;
-                EnablePasswordHistory = true;
+                this.EnableStrengthMeter = true;
+                this.EnableBannedList = true;
+                this.EnablePasswordHistory = true;
             }
         }
 

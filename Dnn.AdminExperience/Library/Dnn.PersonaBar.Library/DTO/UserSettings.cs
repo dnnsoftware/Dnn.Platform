@@ -48,10 +48,10 @@ namespace Dnn.PersonaBar.Library.DTO
             switch (reader.Name)
             {
                 case "data":
-                    ReadSettings(reader);
+                    this.ReadSettings(reader);
                     break;
                 default:
-                    ReadLegacySettings(reader);
+                    this.ReadLegacySettings(reader);
                     break;
 
             }

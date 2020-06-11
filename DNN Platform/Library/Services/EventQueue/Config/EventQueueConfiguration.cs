@@ -25,8 +25,8 @@ namespace DotNetNuke.Services.EventQueue.Config
 		
         internal EventQueueConfiguration()
         {
-            PublishedEvents = new Dictionary<string, PublishedEvent>();
-            EventQueueSubscribers = new Dictionary<string, SubscriberInfo>();
+            this.PublishedEvents = new Dictionary<string, PublishedEvent>();
+            this.EventQueueSubscribers = new Dictionary<string, SubscriberInfo>();
         }
 		
 		#endregion
@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.EventQueue.Config
                     var oPublishedEvent = new PublishedEvent();
                     oPublishedEvent.EventName = xmlItem.SelectSingleNode("EventName").InnerText;
                     oPublishedEvent.Subscribers = xmlItem.SelectSingleNode("Subscribers").InnerText;
-                    PublishedEvents.Add(oPublishedEvent.EventName, oPublishedEvent);
+                    this.PublishedEvents.Add(oPublishedEvent.EventName, oPublishedEvent);
                 }
                 foreach (XmlElement xmlItem in xmlDoc.SelectNodes("/EventQueueConfig/EventQueueSubscribers/Subscriber"))
                 {
@@ -62,7 +62,7 @@ namespace DotNetNuke.Services.EventQueue.Config
                     oSubscriberInfo.Address = xmlItem.SelectSingleNode("Address").InnerText;
                     oSubscriberInfo.Description = xmlItem.SelectSingleNode("Description").InnerText;
                     oSubscriberInfo.PrivateKey = xmlItem.SelectSingleNode("PrivateKey").InnerText;
-                    EventQueueSubscribers.Add(oSubscriberInfo.ID, oSubscriberInfo);
+                    this.EventQueueSubscribers.Add(oSubscriberInfo.ID, oSubscriberInfo);
                 }
             }
         }
@@ -94,27 +94,27 @@ namespace DotNetNuke.Services.EventQueue.Config
                 writer.WriteStartElement("EventQueueConfig");
 
                 writer.WriteStartElement("PublishedEvents");
-                foreach (string key in PublishedEvents.Keys)
+                foreach (string key in this.PublishedEvents.Keys)
                 {
                     writer.WriteStartElement("Event");
 
-                    writer.WriteElementString("EventName", PublishedEvents[key].EventName);
-                    writer.WriteElementString("Subscribers", PublishedEvents[key].Subscribers);
+                    writer.WriteElementString("EventName", this.PublishedEvents[key].EventName);
+                    writer.WriteElementString("Subscribers", this.PublishedEvents[key].Subscribers);
 
                     writer.WriteEndElement();
                 }
                 writer.WriteEndElement();
 
                 writer.WriteStartElement("EventQueueSubscribers");
-                foreach (string key in EventQueueSubscribers.Keys)
+                foreach (string key in this.EventQueueSubscribers.Keys)
                 {
                     writer.WriteStartElement("Subscriber");
 
-                    writer.WriteElementString("ID", EventQueueSubscribers[key].ID);
-                    writer.WriteElementString("Name", EventQueueSubscribers[key].Name);
-                    writer.WriteElementString("Address", EventQueueSubscribers[key].Address);
-                    writer.WriteElementString("Description", EventQueueSubscribers[key].Description);
-                    writer.WriteElementString("PrivateKey", EventQueueSubscribers[key].PrivateKey);
+                    writer.WriteElementString("ID", this.EventQueueSubscribers[key].ID);
+                    writer.WriteElementString("Name", this.EventQueueSubscribers[key].Name);
+                    writer.WriteElementString("Address", this.EventQueueSubscribers[key].Address);
+                    writer.WriteElementString("Description", this.EventQueueSubscribers[key].Description);
+                    writer.WriteElementString("PrivateKey", this.EventQueueSubscribers[key].PrivateKey);
                     writer.WriteEndElement();
                 }
                 writer.WriteEndElement();

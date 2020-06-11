@@ -40,7 +40,7 @@ namespace DotNetNuke.Common.Controls
 
             //CODEGEN: This method call is required by the Web Form Designer
 			//Do not modify it using the code editor.
-			InitializeComponent();
+			this.InitializeComponent();
         }
 
 		/// -----------------------------------------------------------------------------
@@ -56,9 +56,9 @@ namespace DotNetNuke.Common.Controls
             base.OnLoad(e);
             try
             {
-                if (!Page.IsPostBack)
+                if (!this.Page.IsPostBack)
                 {
-                    lblPrivacy.Text = Localization.GetSystemMessage(PortalSettings, "MESSAGE_PORTAL_PRIVACY");
+                    this.lblPrivacy.Text = Localization.GetSystemMessage(this.PortalSettings, "MESSAGE_PORTAL_PRIVACY");
                 }
             }
             catch (Exception exc) //Module failed to load

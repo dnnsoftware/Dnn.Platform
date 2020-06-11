@@ -47,7 +47,7 @@ namespace DotNetNuke.Services.Search
             Requires.NotNull("indexer", indexer);
             const int saveThreshold = 1024;
             var totalIndexed = 0;
-            startDateLocal = GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
+            startDateLocal = this.GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
             var searchDocuments = new List<SearchDocument>();
             var tabs = (
                 from t in TabController.Instance.GetTabsByPortal(portalId).AsList()
@@ -67,7 +67,7 @@ namespace DotNetNuke.Services.Search
 
                         if (searchDocuments.Count >= saveThreshold)
                         {
-                            totalIndexed += IndexCollectedDocs(indexer, searchDocuments, portalId, schedule.ScheduleID);
+                            totalIndexed += this.IndexCollectedDocs(indexer, searchDocuments, portalId, schedule.ScheduleID);
                         }
                     }
                     catch (Exception ex)
@@ -78,7 +78,7 @@ namespace DotNetNuke.Services.Search
 
                 if (searchDocuments.Count > 0)
                 {
-                    totalIndexed += IndexCollectedDocs(indexer, searchDocuments, portalId, schedule.ScheduleID);
+                    totalIndexed += this.IndexCollectedDocs(indexer, searchDocuments, portalId, schedule.ScheduleID);
                 }
             }
 
@@ -123,7 +123,7 @@ namespace DotNetNuke.Services.Search
         {
             indexer.Invoke(searchDocuments);
             var total = searchDocuments.Count;
-            SetLocalTimeOfLastIndexedItem(portalId, scheduleId, searchDocuments.Last().ModifiedTimeUtc);
+            this.SetLocalTimeOfLastIndexedItem(portalId, scheduleId, searchDocuments.Last().ModifiedTimeUtc);
             searchDocuments.Clear();
             return total;
         }

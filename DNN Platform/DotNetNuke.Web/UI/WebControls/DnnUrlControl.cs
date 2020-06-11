@@ -72,16 +72,16 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (ViewState["FileFilter"] != null)
+                if (this.ViewState["FileFilter"] != null)
                 {
-                    return ViewState["FileFilter"].ToString();
+                    return this.ViewState["FileFilter"].ToString();
                 }
 
                 return string.Empty;
             }
             set
             {
-                ViewState["FileFilter"] = value;
+                this.ViewState["FileFilter"] = value;
             }
         }
 
@@ -89,9 +89,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (ViewState["IncludeActiveTab"] != null)
+                if (this.ViewState["IncludeActiveTab"] != null)
                 {
-                    return Convert.ToBoolean(ViewState["IncludeActiveTab"]);
+                    return Convert.ToBoolean(this.ViewState["IncludeActiveTab"]);
                 }
                 else
                 {
@@ -100,10 +100,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             set
             {
-                ViewState["IncludeActiveTab"] = value;
-                if (IsTrackingViewState)
+                this.ViewState["IncludeActiveTab"] = value;
+                if (this.IsTrackingViewState)
                 {
-                    _doRenderTypeControls = true;
+                    this._doRenderTypeControls = true;
                 }
             }
         }
@@ -113,19 +113,19 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 string fileRoot;
-                if (String.IsNullOrEmpty(_localResourceFile))
+                if (String.IsNullOrEmpty(this._localResourceFile))
                 {
-                    fileRoot = TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/URLControl.ascx";
+                    fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/URLControl.ascx";
                 }
                 else
                 {
-                    fileRoot = _localResourceFile;
+                    fileRoot = this._localResourceFile;
                 }
                 return fileRoot;
             }
             set
             {
-                _localResourceFile = value;
+                this._localResourceFile = value;
             }
         }
 
@@ -133,9 +133,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (chkLog.Visible)
+                if (this.chkLog.Visible)
                 {
-                    return chkLog.Checked;
+                    return this.chkLog.Checked;
                 }
                 else
                 {
@@ -149,19 +149,19 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 int myMid = -2;
-                if (ViewState["ModuleId"] != null)
+                if (this.ViewState["ModuleId"] != null)
                 {
-                    myMid = Convert.ToInt32(ViewState["ModuleId"]);
+                    myMid = Convert.ToInt32(this.ViewState["ModuleId"]);
                 }
-                else if (Request.QueryString["mid"] != null)
+                else if (this.Request.QueryString["mid"] != null)
                 {
-                    Int32.TryParse(Request.QueryString["mid"], out myMid);
+                    Int32.TryParse(this.Request.QueryString["mid"], out myMid);
                 }
                 return myMid;
             }
             set
             {
-                ViewState["ModuleId"] = value;
+                this.ViewState["ModuleId"] = value;
             }
         }
 
@@ -169,11 +169,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get 
             {
-                return chkNewWindow.Visible && chkNewWindow.Checked;
+                return this.chkNewWindow.Visible && this.chkNewWindow.Checked;
             }
             set 
             {
-                chkNewWindow.Checked = chkNewWindow.Visible && value;
+                this.chkNewWindow.Checked = this.chkNewWindow.Visible && value;
             }
         }
 
@@ -181,9 +181,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (ViewState["Required"] != null)
+                if (this.ViewState["Required"] != null)
                 {
-                    return Convert.ToBoolean(ViewState["Required"]);
+                    return Convert.ToBoolean(this.ViewState["Required"]);
                 }
                 else
                 {
@@ -192,10 +192,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             set
             {
-                ViewState["Required"] = value;
-                if (IsTrackingViewState)
+                this.ViewState["Required"] = value;
+                if (this.IsTrackingViewState)
                 {
-                    _doRenderTypeControls = true;
+                    this._doRenderTypeControls = true;
                 }
             }
         }
@@ -204,9 +204,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (ViewState["ShowFiles"] != null)
+                if (this.ViewState["ShowFiles"] != null)
                 {
-                    return Convert.ToBoolean(ViewState["ShowFiles"]);
+                    return Convert.ToBoolean(this.ViewState["ShowFiles"]);
                 }
                 else
                 {
@@ -215,10 +215,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             set
             {
-                ViewState["ShowFiles"] = value;
-                if (IsTrackingViewState)
+                this.ViewState["ShowFiles"] = value;
+                if (this.IsTrackingViewState)
                 {
-                    _doRenderTypes = true;
+                    this._doRenderTypes = true;
                 }
             }
         }
@@ -227,9 +227,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (ViewState["ShowImages"] != null)
+                if (this.ViewState["ShowImages"] != null)
                 {
-                    return Convert.ToBoolean(ViewState["ShowImages"]);
+                    return Convert.ToBoolean(this.ViewState["ShowImages"]);
                 }
                 else
                 {
@@ -238,10 +238,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             set
             {
-                ViewState["ShowImages"] = value;
-                if (IsTrackingViewState)
+                this.ViewState["ShowImages"] = value;
+                if (this.IsTrackingViewState)
                 {
-                    _doRenderTypes = true;
+                    this._doRenderTypes = true;
                 }
             }
         }
@@ -250,11 +250,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return chkLog.Visible;
+                return this.chkLog.Visible;
             }
             set
             {
-                chkLog.Visible = value;
+                this.chkLog.Visible = value;
             }
         }
 
@@ -262,11 +262,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return chkNewWindow.Visible;
+                return this.chkNewWindow.Visible;
             }
             set
             {
-                chkNewWindow.Visible = value;
+                this.chkNewWindow.Visible = value;
             }
         }
 
@@ -274,9 +274,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (ViewState["ShowNone"] != null)
+                if (this.ViewState["ShowNone"] != null)
                 {
-                    return Convert.ToBoolean(ViewState["ShowNone"]);
+                    return Convert.ToBoolean(this.ViewState["ShowNone"]);
                 }
                 else
                 {
@@ -285,10 +285,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             set
             {
-                ViewState["ShowNone"] = value;
-                if (IsTrackingViewState)
+                this.ViewState["ShowNone"] = value;
+                if (this.IsTrackingViewState)
                 {
-                    _doRenderTypes = true;
+                    this._doRenderTypes = true;
                 }
             }
         }
@@ -297,9 +297,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (ViewState["ShowTabs"] != null)
+                if (this.ViewState["ShowTabs"] != null)
                 {
-                    return Convert.ToBoolean(ViewState["ShowTabs"]);
+                    return Convert.ToBoolean(this.ViewState["ShowTabs"]);
                 }
                 else
                 {
@@ -308,10 +308,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             set
             {
-                ViewState["ShowTabs"] = value;
-                if (IsTrackingViewState)
+                this.ViewState["ShowTabs"] = value;
+                if (this.IsTrackingViewState)
                 {
-                    _doRenderTypes = true;
+                    this._doRenderTypes = true;
                 }
             }
         }
@@ -320,11 +320,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return chkTrack.Visible;
+                return this.chkTrack.Visible;
             }
             set
             {
-                chkTrack.Visible = value;
+                this.chkTrack.Visible = value;
             }
         }
 
@@ -332,9 +332,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (ViewState["ShowUpLoad"] != null)
+                if (this.ViewState["ShowUpLoad"] != null)
                 {
-                    return Convert.ToBoolean(ViewState["ShowUpLoad"]);
+                    return Convert.ToBoolean(this.ViewState["ShowUpLoad"]);
                 }
                 else
                 {
@@ -343,10 +343,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             set
             {
-                ViewState["ShowUpLoad"] = value;
-                if (IsTrackingViewState)
+                this.ViewState["ShowUpLoad"] = value;
+                if (this.IsTrackingViewState)
                 {
-                    _doRenderTypeControls = true;
+                    this._doRenderTypeControls = true;
                 }
             }
         }
@@ -355,9 +355,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (ViewState["ShowUrls"] != null)
+                if (this.ViewState["ShowUrls"] != null)
                 {
-                    return Convert.ToBoolean(ViewState["ShowUrls"]);
+                    return Convert.ToBoolean(this.ViewState["ShowUrls"]);
                 }
                 else
                 {
@@ -366,10 +366,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             set
             {
-                ViewState["ShowUrls"] = value;
-                if (IsTrackingViewState)
+                this.ViewState["ShowUrls"] = value;
+                if (this.IsTrackingViewState)
                 {
-                    _doRenderTypes = true;
+                    this._doRenderTypes = true;
                 }
             }
         }
@@ -378,9 +378,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (ViewState["ShowUsers"] != null)
+                if (this.ViewState["ShowUsers"] != null)
                 {
-                    return Convert.ToBoolean(ViewState["ShowUsers"]);
+                    return Convert.ToBoolean(this.ViewState["ShowUsers"]);
                 }
                 else
                 {
@@ -389,10 +389,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             set
             {
-                ViewState["ShowUsers"] = value;
-                if (IsTrackingViewState)
+                this.ViewState["ShowUsers"] = value;
+                if (this.IsTrackingViewState)
                 {
-                    _doRenderTypes = true;
+                    this._doRenderTypes = true;
                 }
             }
         }
@@ -401,9 +401,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (chkTrack.Visible)
+                if (this.chkTrack.Visible)
                 {
-                    return chkTrack.Checked;
+                    return this.chkTrack.Checked;
                 }
                 else
                 {
@@ -418,30 +418,30 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 string r = "";
                 string strCurrentType = "";
-                if (optType.Items.Count > 0 && optType.SelectedIndex >= 0)
+                if (this.optType.Items.Count > 0 && this.optType.SelectedIndex >= 0)
                 {
-                    strCurrentType = optType.SelectedItem.Value;
+                    strCurrentType = this.optType.SelectedItem.Value;
                 }
                 switch (strCurrentType)
                 {
                     case "I":
-                        if (cboImages.SelectedItem != null)
+                        if (this.cboImages.SelectedItem != null)
                         {
-                            r = cboImages.SelectedItem.Value;
+                            r = this.cboImages.SelectedItem.Value;
                         }
                         break;
                     case "U":
-                        if (cboUrls.Visible)
+                        if (this.cboUrls.Visible)
                         {
-                            if (cboUrls.SelectedItem != null)
+                            if (this.cboUrls.SelectedItem != null)
                             {
-                                r = cboUrls.SelectedItem.Value;
-                                txtUrl.Text = r;
+                                r = this.cboUrls.SelectedItem.Value;
+                                this.txtUrl.Text = r;
                             }
                         }
                         else
                         {
-                            string mCustomUrl = txtUrl.Text;
+                            string mCustomUrl = this.txtUrl.Text;
                             if (mCustomUrl.Equals("http://", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 r = "";
@@ -454,9 +454,9 @@ namespace DotNetNuke.Web.UI.WebControls
                         break;
                     case "T":
                         string strTab = "";
-                        if (cboTabs.SelectedItem != null)
+                        if (this.cboTabs.SelectedItem != null)
                         {
-                            strTab = cboTabs.SelectedItem.Value;
+                            strTab = this.cboTabs.SelectedItem.Value;
                             int id;
                             if (int.TryParse(strTab,out id) && id >= 0)
                             {
@@ -465,9 +465,9 @@ namespace DotNetNuke.Web.UI.WebControls
                         }
                         break;
                     case "F":
-                        if (ctlFile.FileID > Null.NullInteger)
+                        if (this.ctlFile.FileID > Null.NullInteger)
                         {
-                            r = "FileID=" + ctlFile.FileID;
+                            r = "FileID=" + this.ctlFile.FileID;
                         }
                         else
                         {
@@ -475,18 +475,18 @@ namespace DotNetNuke.Web.UI.WebControls
                         }
                         break;
                     case "M":
-                        if (!String.IsNullOrEmpty(txtUser.Text))
+                        if (!String.IsNullOrEmpty(this.txtUser.Text))
                         {
-                            UserInfo objUser = UserController.GetCachedUser(_objPortal.PortalID, txtUser.Text);
+                            UserInfo objUser = UserController.GetCachedUser(this._objPortal.PortalID, this.txtUser.Text);
                             if (objUser != null)
                             {
                                 r = "UserID=" + objUser.UserID;
                             }
                             else
                             {
-                                lblMessage.Text = Localization.GetString("NoUser", LocalResourceFile);
-                                ErrorRow.Visible = true;
-                                txtUser.Text = "";
+                                this.lblMessage.Text = Localization.GetString("NoUser", this.LocalResourceFile);
+                                this.ErrorRow.Visible = true;
+                                this.txtUser.Text = "";
                             }
                         }
                         break;
@@ -495,12 +495,12 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             set
             {
-                ViewState["Url"] = value;
-				txtUrl.Text = string.Empty;
+                this.ViewState["Url"] = value;
+				this.txtUrl.Text = string.Empty;
 
-                if (IsTrackingViewState)
+                if (this.IsTrackingViewState)
                 {
-                    _doChangeURL = true;
+                    this._doChangeURL = true;
                 }
             }
         }
@@ -509,16 +509,16 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return Convert.ToString(ViewState["UrlType"]);
+                return Convert.ToString(this.ViewState["UrlType"]);
             }
             set
             {
                 if (value != null && !String.IsNullOrEmpty(value.Trim()))
                 {
-                    ViewState["UrlType"] = value;
-                    if (IsTrackingViewState)
+                    this.ViewState["UrlType"] = value;
+                    if (this.IsTrackingViewState)
                     {
-                        _doChangeURL = true;
+                        this._doChangeURL = true;
                     }
                 }
             }
@@ -528,18 +528,18 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return Convert.ToString(ViewState["SkinControlWidth"]);
+                return Convert.ToString(this.ViewState["SkinControlWidth"]);
             }
             set
             {
                 if (!String.IsNullOrEmpty(value))
                 {
-                    cboUrls.Width = Unit.Parse(value);
-                    txtUrl.Width = Unit.Parse(value);
-                    cboImages.Width = Unit.Parse(value);
-                    cboTabs.Width = Unit.Parse(value);
-                    txtUser.Width = Unit.Parse(value);
-                    ViewState["SkinControlWidth"] = value;
+                    this.cboUrls.Width = Unit.Parse(value);
+                    this.txtUrl.Width = Unit.Parse(value);
+                    this.cboImages.Width = Unit.Parse(value);
+                    this.cboTabs.Width = Unit.Parse(value);
+                    this.txtUser.Width = Unit.Parse(value);
+                    this.ViewState["SkinControlWidth"] = value;
                 }
             }
         }
@@ -551,26 +551,26 @@ namespace DotNetNuke.Web.UI.WebControls
         private void LoadUrls()
         {
             var objUrls = new UrlController();
-            cboUrls.Items.Clear();
-            cboUrls.DataSource = objUrls.GetUrls(_objPortal.PortalID);
-            cboUrls.DataBind();
+            this.cboUrls.Items.Clear();
+            this.cboUrls.DataSource = objUrls.GetUrls(this._objPortal.PortalID);
+            this.cboUrls.DataBind();
         }
 
         private void DoChangeURL()
         {
-            string _Url = Convert.ToString(ViewState["Url"]);
-            string _Urltype = Convert.ToString(ViewState["UrlType"]);
+            string _Url = Convert.ToString(this.ViewState["Url"]);
+            string _Urltype = Convert.ToString(this.ViewState["UrlType"]);
             if (!String.IsNullOrEmpty(_Url))
             {
                 var objUrls = new UrlController();
                 string TrackingUrl = _Url;
 
                 _Urltype = Globals.GetURLType(_Url).ToString("g").Substring(0, 1);
-                if (_Urltype == "U" && (_Url.StartsWith("~/" + PortalSettings.DefaultIconLocation, StringComparison.InvariantCultureIgnoreCase)))
+                if (_Urltype == "U" && (_Url.StartsWith("~/" + this.PortalSettings.DefaultIconLocation, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     _Urltype = "I";
                 }
-                ViewState["UrlType"] = _Urltype;
+                this.ViewState["UrlType"] = _Urltype;
                 if (_Urltype == "F")
                 {
                     if (_Url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase))
@@ -587,7 +587,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         //to handle legacy scenarios before the introduction of the FileServerHandler
                         var fileName = Path.GetFileName(_Url);
                         var folderPath = _Url.Substring(0, _Url.LastIndexOf(fileName));
-                        var folder = FolderManager.Instance.GetFolder(_objPortal.PortalID, folderPath);
+                        var folder = FolderManager.Instance.GetFolder(this._objPortal.PortalID, folderPath);
                         var fileId = -1;
                         if (folder != null)
                         {
@@ -604,241 +604,241 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     if (_Url.StartsWith("userid=", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        UserInfo objUser = UserController.GetUserById(_objPortal.PortalID, int.Parse(_Url.Substring(7)));
+                        UserInfo objUser = UserController.GetUserById(this._objPortal.PortalID, int.Parse(_Url.Substring(7)));
                         if (objUser != null)
                         {
                             _Url = objUser.Username;
                         }
                     }
                 }
-                UrlTrackingInfo objUrlTracking = objUrls.GetUrlTracking(_objPortal.PortalID, TrackingUrl, ModuleID);
+                UrlTrackingInfo objUrlTracking = objUrls.GetUrlTracking(this._objPortal.PortalID, TrackingUrl, this.ModuleID);
                 if (objUrlTracking != null)
                 {
-                    chkNewWindow.Checked = objUrlTracking.NewWindow;
-                    chkTrack.Checked = objUrlTracking.TrackClicks;
-                    chkLog.Checked = objUrlTracking.LogActivity;
+                    this.chkNewWindow.Checked = objUrlTracking.NewWindow;
+                    this.chkTrack.Checked = objUrlTracking.TrackClicks;
+                    this.chkLog.Checked = objUrlTracking.LogActivity;
                 }
                 else //the url does not exist in the tracking table
                 {
-                    chkTrack.Checked = false;
-                    chkLog.Checked = false;
+                    this.chkTrack.Checked = false;
+                    this.chkLog.Checked = false;
                 }
-                ViewState["Url"] = _Url;
+                this.ViewState["Url"] = _Url;
             }
             else
             {
                 if (!String.IsNullOrEmpty(_Urltype))
                 {
-                    optType.ClearSelection();
-                    if (optType.Items.FindByValue(_Urltype) != null)
+                    this.optType.ClearSelection();
+                    if (this.optType.Items.FindByValue(_Urltype) != null)
                     {
-                        optType.Items.FindByValue(_Urltype).Selected = true;
+                        this.optType.Items.FindByValue(_Urltype).Selected = true;
                     }
                     else
                     {
-                        optType.Items[0].Selected = true;
+                        this.optType.Items[0].Selected = true;
                     }
                 }
                 else
                 {
-                    if (optType.Items.Count > 0)
+                    if (this.optType.Items.Count > 0)
                     {
-                        optType.ClearSelection();
-                        optType.Items[0].Selected = true;
+                        this.optType.ClearSelection();
+                        this.optType.Items[0].Selected = true;
                     }
                 }
-                chkNewWindow.Checked = false; //Need check
-                chkTrack.Checked = false; //Need check
-                chkLog.Checked = false; //Need check
+                this.chkNewWindow.Checked = false; //Need check
+                this.chkTrack.Checked = false; //Need check
+                this.chkLog.Checked = false; //Need check
             }
 
             //Url type changed, then we must draw the controlos for that type
-            _doRenderTypeControls = true;
+            this._doRenderTypeControls = true;
         }
 
         private void DoRenderTypes()
         {
             //We must clear the list to keep the same item order
             string strCurrent = "";
-            if (optType.SelectedIndex >= 0)
+            if (this.optType.SelectedIndex >= 0)
             {
-                strCurrent = optType.SelectedItem.Value; //Save current selected value
+                strCurrent = this.optType.SelectedItem.Value; //Save current selected value
             }
-            optType.Items.Clear();
-            if (ShowNone)
+            this.optType.Items.Clear();
+            if (this.ShowNone)
             {
-                if (optType.Items.FindByValue("N") == null)
+                if (this.optType.Items.FindByValue("N") == null)
                 {
-                    optType.Items.Add(new ListItem(Localization.GetString("NoneType", LocalResourceFile), "N"));
+                    this.optType.Items.Add(new ListItem(Localization.GetString("NoneType", this.LocalResourceFile), "N"));
                 }
             }
             else
             {
-                if (optType.Items.FindByValue("N") != null)
+                if (this.optType.Items.FindByValue("N") != null)
                 {
-                    optType.Items.Remove(optType.Items.FindByValue("N"));
+                    this.optType.Items.Remove(this.optType.Items.FindByValue("N"));
                 }
             }
-            if (ShowUrls)
+            if (this.ShowUrls)
             {
-                if (optType.Items.FindByValue("U") == null)
+                if (this.optType.Items.FindByValue("U") == null)
                 {
-                    optType.Items.Add(new ListItem(Localization.GetString("URLType", LocalResourceFile), "U"));
+                    this.optType.Items.Add(new ListItem(Localization.GetString("URLType", this.LocalResourceFile), "U"));
                 }
             }
             else
             {
-                if (optType.Items.FindByValue("U") != null)
+                if (this.optType.Items.FindByValue("U") != null)
                 {
-                    optType.Items.Remove(optType.Items.FindByValue("U"));
+                    this.optType.Items.Remove(this.optType.Items.FindByValue("U"));
                 }
             }
-            if (ShowTabs)
+            if (this.ShowTabs)
             {
-                if (optType.Items.FindByValue("T") == null)
+                if (this.optType.Items.FindByValue("T") == null)
                 {
-                    optType.Items.Add(new ListItem(Localization.GetString("TabType", LocalResourceFile), "T"));
+                    this.optType.Items.Add(new ListItem(Localization.GetString("TabType", this.LocalResourceFile), "T"));
                 }
             }
             else
             {
-                if (optType.Items.FindByValue("T") != null)
+                if (this.optType.Items.FindByValue("T") != null)
                 {
-                    optType.Items.Remove(optType.Items.FindByValue("T"));
+                    this.optType.Items.Remove(this.optType.Items.FindByValue("T"));
                 }
             }
-            if (ShowFiles)
+            if (this.ShowFiles)
             {
-                if (optType.Items.FindByValue("F") == null)
+                if (this.optType.Items.FindByValue("F") == null)
                 {
-                    optType.Items.Add(new ListItem(Localization.GetString("FileType", LocalResourceFile), "F"));
+                    this.optType.Items.Add(new ListItem(Localization.GetString("FileType", this.LocalResourceFile), "F"));
                 }
             }
             else
             {
-                if (optType.Items.FindByValue("F") != null)
+                if (this.optType.Items.FindByValue("F") != null)
                 {
-                    optType.Items.Remove(optType.Items.FindByValue("F"));
+                    this.optType.Items.Remove(this.optType.Items.FindByValue("F"));
                 }
             }
-            if (ShowImages)
+            if (this.ShowImages)
             {
-                if (optType.Items.FindByValue("I") == null)
+                if (this.optType.Items.FindByValue("I") == null)
                 {
-                    optType.Items.Add(new ListItem(Localization.GetString("ImageType", LocalResourceFile), "I"));
+                    this.optType.Items.Add(new ListItem(Localization.GetString("ImageType", this.LocalResourceFile), "I"));
                 }
             }
             else
             {
-                if (optType.Items.FindByValue("I") != null)
+                if (this.optType.Items.FindByValue("I") != null)
                 {
-                    optType.Items.Remove(optType.Items.FindByValue("I"));
+                    this.optType.Items.Remove(this.optType.Items.FindByValue("I"));
                 }
             }
-            if (ShowUsers)
+            if (this.ShowUsers)
             {
-                if (optType.Items.FindByValue("M") == null)
+                if (this.optType.Items.FindByValue("M") == null)
                 {
-                    optType.Items.Add(new ListItem(Localization.GetString("UserType", LocalResourceFile), "M"));
+                    this.optType.Items.Add(new ListItem(Localization.GetString("UserType", this.LocalResourceFile), "M"));
                 }
             }
             else
             {
-                if (optType.Items.FindByValue("M") != null)
+                if (this.optType.Items.FindByValue("M") != null)
                 {
-                    optType.Items.Remove(optType.Items.FindByValue("M"));
+                    this.optType.Items.Remove(this.optType.Items.FindByValue("M"));
                 }
             }
-            if (optType.Items.Count > 0)
+            if (this.optType.Items.Count > 0)
             {
                 if (!String.IsNullOrEmpty(strCurrent))
                 {
-                    if (optType.Items.FindByValue(strCurrent) != null)
+                    if (this.optType.Items.FindByValue(strCurrent) != null)
                     {
-                        optType.Items.FindByValue(strCurrent).Selected = true;
+                        this.optType.Items.FindByValue(strCurrent).Selected = true;
                     }
                     else
                     {
-                        optType.Items[0].Selected = true;
-                        _doRenderTypeControls = true; //Type changed, re-draw
+                        this.optType.Items[0].Selected = true;
+                        this._doRenderTypeControls = true; //Type changed, re-draw
                     }
                 }
                 else
                 {
-                    optType.Items[0].Selected = true;
-                    _doRenderTypeControls = true; //Type changed, re-draw
+                    this.optType.Items[0].Selected = true;
+                    this._doRenderTypeControls = true; //Type changed, re-draw
                 }
-                TypeRow.Visible = optType.Items.Count > 1;
+                this.TypeRow.Visible = this.optType.Items.Count > 1;
             }
             else
             {
-                TypeRow.Visible = false;
+                this.TypeRow.Visible = false;
             }
         }
 
         private void DoCorrectRadioButtonList()
         {
-            string _Urltype = Convert.ToString(ViewState["UrlType"]);
+            string _Urltype = Convert.ToString(this.ViewState["UrlType"]);
 
-            if (optType.Items.Count > 0)
+            if (this.optType.Items.Count > 0)
             {
-                optType.ClearSelection();
+                this.optType.ClearSelection();
                 if (!String.IsNullOrEmpty(_Urltype))
                 {
-                    if (optType.Items.FindByValue(_Urltype) != null)
+                    if (this.optType.Items.FindByValue(_Urltype) != null)
                     {
-                        optType.Items.FindByValue(_Urltype).Selected = true;
+                        this.optType.Items.FindByValue(_Urltype).Selected = true;
                     }
                     else
                     {
-                        optType.Items[0].Selected = true;
-                        _Urltype = optType.Items[0].Value;
-                        ViewState["UrlType"] = _Urltype;
+                        this.optType.Items[0].Selected = true;
+                        _Urltype = this.optType.Items[0].Value;
+                        this.ViewState["UrlType"] = _Urltype;
                     }
                 }
                 else
                 {
-                    optType.Items[0].Selected = true;
-                    _Urltype = optType.Items[0].Value;
-                    ViewState["UrlType"] = _Urltype;
+                    this.optType.Items[0].Selected = true;
+                    _Urltype = this.optType.Items[0].Value;
+                    this.ViewState["UrlType"] = _Urltype;
                 }
             }
         }
 
         private void DoRenderTypeControls()
         {
-            string _Url = Convert.ToString(ViewState["Url"]);
-            string _Urltype = Convert.ToString(ViewState["UrlType"]);
+            string _Url = Convert.ToString(this.ViewState["Url"]);
+            string _Urltype = Convert.ToString(this.ViewState["UrlType"]);
             var objUrls = new UrlController();
             if (!String.IsNullOrEmpty(_Urltype))
             {
                 //load listitems
-                switch (optType.SelectedItem.Value)
+                switch (this.optType.SelectedItem.Value)
                 {
                     case "N": //None
-                        URLRow.Visible = false;
-                        TabRow.Visible = false;
-                        FileRow.Visible = false;
-                        UserRow.Visible = false;
-                        ImagesRow.Visible = false;
+                        this.URLRow.Visible = false;
+                        this.TabRow.Visible = false;
+                        this.FileRow.Visible = false;
+                        this.UserRow.Visible = false;
+                        this.ImagesRow.Visible = false;
                         break;
                     case "I": //System Image
-                        URLRow.Visible = false;
-                        TabRow.Visible = false;
-                        FileRow.Visible = false;
-                        UserRow.Visible = false;
-                        ImagesRow.Visible = true;
+                        this.URLRow.Visible = false;
+                        this.TabRow.Visible = false;
+                        this.FileRow.Visible = false;
+                        this.UserRow.Visible = false;
+                        this.ImagesRow.Visible = true;
 
-                        cboImages.Items.Clear();
+                        this.cboImages.Items.Clear();
 
-                        string strImagesFolder = Path.Combine(Globals.ApplicationMapPath, PortalSettings.DefaultIconLocation.Replace('/', '\\'));
+                        string strImagesFolder = Path.Combine(Globals.ApplicationMapPath, this.PortalSettings.DefaultIconLocation.Replace('/', '\\'));
                         foreach (string strImage in Directory.GetFiles(strImagesFolder))
                         {
                             string img = strImage.Replace(strImagesFolder, "").Trim('/').Trim('\\');
-                            cboImages.Items.Add(new ListItem(img, string.Format("~/{0}/{1}", PortalSettings.DefaultIconLocation, img).ToLowerInvariant()));
+                            this.cboImages.Items.Add(new ListItem(img, string.Format("~/{0}/{1}", this.PortalSettings.DefaultIconLocation, img).ToLowerInvariant()));
                         }
 
-                        ListItem selecteItem = cboImages.Items.FindByValue(_Url.ToLowerInvariant());
+                        ListItem selecteItem = this.cboImages.Items.FindByValue(_Url.ToLowerInvariant());
                         if (selecteItem != null)
                         {
                             selecteItem.Selected = true;
@@ -846,54 +846,54 @@ namespace DotNetNuke.Web.UI.WebControls
                         break;
 
                     case "U": //Url
-                        URLRow.Visible = true;
-                        TabRow.Visible = false;
-                        FileRow.Visible = false;
-                        UserRow.Visible = false;
-                        ImagesRow.Visible = false;
-                        if (String.IsNullOrEmpty(txtUrl.Text))
+                        this.URLRow.Visible = true;
+                        this.TabRow.Visible = false;
+                        this.FileRow.Visible = false;
+                        this.UserRow.Visible = false;
+                        this.ImagesRow.Visible = false;
+                        if (String.IsNullOrEmpty(this.txtUrl.Text))
                         {
-                            txtUrl.Text = _Url;
+                            this.txtUrl.Text = _Url;
                         }
-                        if (String.IsNullOrEmpty(txtUrl.Text))
+                        if (String.IsNullOrEmpty(this.txtUrl.Text))
                         {
-                            txtUrl.Text = "http://";
+                            this.txtUrl.Text = "http://";
                         }
-                        txtUrl.Visible = true;
+                        this.txtUrl.Visible = true;
 
-                        cmdSelect.Visible = true;
+                        this.cmdSelect.Visible = true;
 
-                        cboUrls.Visible = false;
-                        cmdAdd.Visible = false;
-                        cmdDelete.Visible = false;
+                        this.cboUrls.Visible = false;
+                        this.cmdAdd.Visible = false;
+                        this.cmdDelete.Visible = false;
                         break;
                     case "T": //tab
-                        URLRow.Visible = false;
-                        TabRow.Visible = true;
-                        FileRow.Visible = false;
-                        UserRow.Visible = false;
-                        ImagesRow.Visible = false;
+                        this.URLRow.Visible = false;
+                        this.TabRow.Visible = true;
+                        this.FileRow.Visible = false;
+                        this.UserRow.Visible = false;
+                        this.ImagesRow.Visible = false;
 
-                        cboTabs.IncludeAllTabTypes = false;
-                        cboTabs.IncludeActiveTab = IncludeActiveTab;
-                        cboTabs.IncludeDisabledTabs = true;
-                        cboTabs.DisabledNotSelectable = true;
-                        cboTabs.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
+                        this.cboTabs.IncludeAllTabTypes = false;
+                        this.cboTabs.IncludeActiveTab = this.IncludeActiveTab;
+                        this.cboTabs.IncludeDisabledTabs = true;
+                        this.cboTabs.DisabledNotSelectable = true;
+                        this.cboTabs.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
 
                         if (!string.IsNullOrEmpty(_Url))
                         {
                             PortalSettings _settings = PortalController.Instance.GetCurrentPortalSettings();
                             var tabId = Int32.Parse(_Url);
                             var page = TabController.Instance.GetTab(tabId, _settings.PortalId);
-                            cboTabs.SelectedPage = page;
+                            this.cboTabs.SelectedPage = page;
                         }
                         break;
                     case "F": //file
-                        URLRow.Visible = false;
-                        TabRow.Visible = false;
-                        FileRow.Visible = true;
-                        UserRow.Visible = false;
-                        ImagesRow.Visible = false;
+                        this.URLRow.Visible = false;
+                        this.TabRow.Visible = false;
+                        this.FileRow.Visible = true;
+                        this.UserRow.Visible = false;
+                        this.ImagesRow.Visible = false;
 
                         //select folder
                         //We Must check if selected folder has changed because of a property change (Secure, Database)
@@ -902,13 +902,13 @@ namespace DotNetNuke.Web.UI.WebControls
                         string LastFileName = string.Empty;
                         string LastFolderPath = string.Empty;
                         //Let's try to remember last selection
-                        if (ViewState["LastFolderPath"] != null)
+                        if (this.ViewState["LastFolderPath"] != null)
                         {
-                            LastFolderPath = Convert.ToString(ViewState["LastFolderPath"]);
+                            LastFolderPath = Convert.ToString(this.ViewState["LastFolderPath"]);
                         }
-                        if (ViewState["LastFileName"] != null)
+                        if (this.ViewState["LastFileName"] != null)
                         {
-                            LastFileName = Convert.ToString(ViewState["LastFileName"]);
+                            LastFileName = Convert.ToString(this.ViewState["LastFileName"]);
                         }
                         if (_Url != string.Empty)
                         {
@@ -923,30 +923,30 @@ namespace DotNetNuke.Web.UI.WebControls
                             FolderPath = LastFolderPath;
                         }
 
-                        ctlFile.FilePath = FolderPath + FileName;
+                        this.ctlFile.FilePath = FolderPath + FileName;
 
-                        txtUrl.Visible = false;
+                        this.txtUrl.Visible = false;
                         break;
                     case "M": //membership users
-                        URLRow.Visible = false;
-                        TabRow.Visible = false;
-                        FileRow.Visible = false;
-                        UserRow.Visible = true;
-                        ImagesRow.Visible = false;
-                        if (String.IsNullOrEmpty(txtUser.Text))
+                        this.URLRow.Visible = false;
+                        this.TabRow.Visible = false;
+                        this.FileRow.Visible = false;
+                        this.UserRow.Visible = true;
+                        this.ImagesRow.Visible = false;
+                        if (String.IsNullOrEmpty(this.txtUser.Text))
                         {
-                            txtUser.Text = _Url;
+                            this.txtUser.Text = _Url;
                         }
                         break;
                 }
             }
             else
             {
-                URLRow.Visible = false;
-                ImagesRow.Visible = false;
-                TabRow.Visible = false;
-                FileRow.Visible = false;
-                UserRow.Visible = false;
+                this.URLRow.Visible = false;
+                this.ImagesRow.Visible = false;
+                this.TabRow.Visible = false;
+                this.FileRow.Visible = false;
+                this.UserRow.Visible = false;
             }
         }
 
@@ -959,9 +959,9 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnInit(e);
 
             //prevent unauthorized access
-            if (Request.IsAuthenticated == false)
+            if (this.Request.IsAuthenticated == false)
             {
-                Visible = false;
+                this.Visible = false;
             }
 
             ClientResourceManager.EnableAsyncPostBackHandler();
@@ -971,32 +971,32 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnLoad(e);
 
-            optType.SelectedIndexChanged += optType_SelectedIndexChanged;
-            cmdAdd.Click += cmdAdd_Click;
-            cmdDelete.Click += cmdDelete_Click;
-            cmdSelect.Click += cmdSelect_Click;
+            this.optType.SelectedIndexChanged += this.optType_SelectedIndexChanged;
+            this.cmdAdd.Click += this.cmdAdd_Click;
+            this.cmdDelete.Click += this.cmdDelete_Click;
+            this.cmdSelect.Click += this.cmdSelect_Click;
 
-            ErrorRow.Visible = false;
+            this.ErrorRow.Visible = false;
 
             try
             {
-                if ((Request.QueryString["pid"] != null) && (Globals.IsHostTab(PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
+                if ((this.Request.QueryString["pid"] != null) && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
-                    _objPortal = PortalController.Instance.GetPortal(Int32.Parse(Request.QueryString["pid"]));
+                    this._objPortal = PortalController.Instance.GetPortal(Int32.Parse(this.Request.QueryString["pid"]));
                 }
                 else
                 {
-                    _objPortal = PortalController.Instance.GetPortal(PortalSettings.PortalId);
+                    this._objPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
                 }
-                if (ViewState["IsUrlControlLoaded"] == null)
+                if (this.ViewState["IsUrlControlLoaded"] == null)
                 {
                     //If Not Page.IsPostBack Then
                     //let's make at least an initialization
                     //The type radio button must be initialized
                     //The url must be initialized no matter its value
-                    _doRenderTypes = true;
-                    _doChangeURL = true;
-                    ClientAPI.AddButtonConfirm(cmdDelete, Localization.GetString("DeleteItem"));
+                    this._doRenderTypes = true;
+                    this._doChangeURL = true;
+                    ClientAPI.AddButtonConfirm(this.cmdDelete, Localization.GetString("DeleteItem"));
                     //The following line was mover to the pre-render event to ensure render for the first time
                     //ViewState("IsUrlControlLoaded") = "Loaded"
                 }
@@ -1013,24 +1013,24 @@ namespace DotNetNuke.Web.UI.WebControls
 
             try
             {
-                if (_doRenderTypes)
+                if (this._doRenderTypes)
                 {
-                    DoRenderTypes();
+                    this.DoRenderTypes();
                 }
-                if (_doChangeURL)
+                if (this._doChangeURL)
                 {
-                    DoChangeURL();
+                    this.DoChangeURL();
                 }
-                DoCorrectRadioButtonList();
+                this.DoCorrectRadioButtonList();
 
-                if (_doRenderTypeControls)
+                if (this._doRenderTypeControls)
                 {
-                    DoRenderTypeControls();
+                    this.DoRenderTypeControls();
                 }
-                ViewState["Url"] = null;
-                ViewState["IsUrlControlLoaded"] = "Loaded";
+                this.ViewState["Url"] = null;
+                this.ViewState["IsUrlControlLoaded"] = "Loaded";
 
-                ctlFile.FileFilter = FileFilter;
+                this.ctlFile.FileFilter = this.FileFilter;
             }
             catch (Exception exc)
             {
@@ -1041,52 +1041,52 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected void cmdAdd_Click(object sender, EventArgs e)
         {
-            cboUrls.Visible = false;
-            cmdSelect.Visible = true;
-            txtUrl.Visible = true;
-            cmdAdd.Visible = false;
-            cmdDelete.Visible = false;
-            _doRenderTypeControls = false; //Must not render on this postback
-            _doRenderTypes = false;
-            _doChangeURL = false;
+            this.cboUrls.Visible = false;
+            this.cmdSelect.Visible = true;
+            this.txtUrl.Visible = true;
+            this.cmdAdd.Visible = false;
+            this.cmdDelete.Visible = false;
+            this._doRenderTypeControls = false; //Must not render on this postback
+            this._doRenderTypes = false;
+            this._doChangeURL = false;
         }
 
         protected void cmdDelete_Click(object sender, EventArgs e)
         {
-            if (cboUrls.SelectedItem != null)
+            if (this.cboUrls.SelectedItem != null)
             {
                 var objUrls = new UrlController();
-                objUrls.DeleteUrl(_objPortal.PortalID, cboUrls.SelectedItem.Value);
-                LoadUrls(); //we must reload the url list
+                objUrls.DeleteUrl(this._objPortal.PortalID, this.cboUrls.SelectedItem.Value);
+                this.LoadUrls(); //we must reload the url list
             }
-            _doRenderTypeControls = false; //Must not render on this postback
-            _doRenderTypes = false;
-            _doChangeURL = false;
+            this._doRenderTypeControls = false; //Must not render on this postback
+            this._doRenderTypes = false;
+            this._doChangeURL = false;
         }
 
         protected void cmdSelect_Click(object sender, EventArgs e)
         {
-            cboUrls.Visible = true;
-            cmdSelect.Visible = false;
-            txtUrl.Visible = false;
-            cmdAdd.Visible = true;
-            cmdDelete.Visible = PortalSecurity.IsInRole(_objPortal.AdministratorRoleName);
-            LoadUrls();
-            if (cboUrls.Items.FindByValue(txtUrl.Text) != null)
+            this.cboUrls.Visible = true;
+            this.cmdSelect.Visible = false;
+            this.txtUrl.Visible = false;
+            this.cmdAdd.Visible = true;
+            this.cmdDelete.Visible = PortalSecurity.IsInRole(this._objPortal.AdministratorRoleName);
+            this.LoadUrls();
+            if (this.cboUrls.Items.FindByValue(this.txtUrl.Text) != null)
             {
-                cboUrls.ClearSelection();
-                cboUrls.Items.FindByValue(txtUrl.Text).Selected = true;
+                this.cboUrls.ClearSelection();
+                this.cboUrls.Items.FindByValue(this.txtUrl.Text).Selected = true;
             }
-            _doRenderTypeControls = false; //Must not render on this postback
-            _doRenderTypes = false;
-            _doChangeURL = false;
+            this._doRenderTypeControls = false; //Must not render on this postback
+            this._doRenderTypes = false;
+            this._doChangeURL = false;
         }
 
         protected void optType_SelectedIndexChanged(Object sender, EventArgs e)
         {
             //Type changed, render the correct control set
-            ViewState["UrlType"] = optType.SelectedItem.Value;
-            _doRenderTypeControls = true;
+            this.ViewState["UrlType"] = this.optType.SelectedItem.Value;
+            this._doRenderTypeControls = true;
         }
 
         #endregion

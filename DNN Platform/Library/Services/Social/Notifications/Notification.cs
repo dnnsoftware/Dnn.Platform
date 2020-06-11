@@ -41,11 +41,11 @@ namespace DotNetNuke.Services.Social.Notifications
         {
             get
             {
-                return _notificationID;
+                return this._notificationID;
             }
             set
             {
-                _notificationID = value;
+                this._notificationID = value;
             }
         }
 
@@ -99,11 +99,11 @@ namespace DotNetNuke.Services.Social.Notifications
         {
             get
             {
-                if (string.IsNullOrEmpty(_displayDate))
+                if (string.IsNullOrEmpty(this._displayDate))
                 {
-                    _displayDate = DateUtils.CalculateDateForDisplay(CreatedOnDate);
+                    this._displayDate = DateUtils.CalculateDateForDisplay(this.CreatedOnDate);
                 }
-                return _displayDate;
+                return this._displayDate;
             }
         }
 
@@ -121,11 +121,11 @@ namespace DotNetNuke.Services.Social.Notifications
         {
             get
             {
-                return NotificationID;
+                return this.NotificationID;
             }
             set
             {
-                NotificationID = value;
+                this.NotificationID = value;
             }
         }
 
@@ -150,7 +150,7 @@ namespace DotNetNuke.Services.Social.Notifications
         /// </summary>
         public Notification()
         {
-            SendToast = true;
+            this.SendToast = true;
         }
 
         #endregion
@@ -163,32 +163,32 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {
-            NotificationID = Convert.ToInt32(dr["MessageID"]);
-            NotificationTypeID = Convert.ToInt32(dr["NotificationTypeID"]);
-            To = Null.SetNullString(dr["To"]);
-            From = Null.SetNullString(dr["From"]);
-            Subject = Null.SetNullString(dr["Subject"]);
-            Body = Null.SetNullString(dr["Body"]);
-            Context = Null.SetNullString(dr["Context"]);
-            SenderUserID = Convert.ToInt32(dr["SenderUserID"]);
-            ExpirationDate = Null.SetNullDateTime(dr["ExpirationDate"]);
-            IncludeDismissAction = Null.SetNullBoolean(dr["IncludeDismissAction"]);
+            this.NotificationID = Convert.ToInt32(dr["MessageID"]);
+            this.NotificationTypeID = Convert.ToInt32(dr["NotificationTypeID"]);
+            this.To = Null.SetNullString(dr["To"]);
+            this.From = Null.SetNullString(dr["From"]);
+            this.Subject = Null.SetNullString(dr["Subject"]);
+            this.Body = Null.SetNullString(dr["Body"]);
+            this.Context = Null.SetNullString(dr["Context"]);
+            this.SenderUserID = Convert.ToInt32(dr["SenderUserID"]);
+            this.ExpirationDate = Null.SetNullDateTime(dr["ExpirationDate"]);
+            this.IncludeDismissAction = Null.SetNullBoolean(dr["IncludeDismissAction"]);
 
 			var schema = dr.GetSchemaTable();
 			if (schema != null)
 			{
 				if (schema.Select("ColumnName = 'SendToast'").Length > 0)
 				{
-					SendToast = Null.SetNullBoolean(dr["SendToast"]);
+					this.SendToast = Null.SetNullBoolean(dr["SendToast"]);
 				}
 				else
 				{
-                    SendToast = false;
+                    this.SendToast = false;
 				}
 			}
 
             //add audit column data
-            FillInternal(dr);
+            this.FillInternal(dr);
         }
 
         #endregion

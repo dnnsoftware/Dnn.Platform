@@ -33,18 +33,18 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
         /// </summary>        
         public override void Execute()
         {
-            Percentage = 0;
-            Status = StepStatus.Running;
+            this.Percentage = 0;
+            this.Status = StepStatus.Running;
 
-            Details = Localization.Localization.GetString("InitHostSetting", LocalInstallResourceFile);
+            this.Details = Localization.Localization.GetString("InitHostSetting", this.LocalInstallResourceFile);
             var installConfig = InstallController.Instance.GetInstallConfig();
 
             //if any super user (even deleted) is found - exit
             var superUsers = UserController.GetUsers(true, true, Null.NullInteger);
             if (superUsers != null && superUsers.Count > 0)
             {
-                Details = "...";
-                Status = StepStatus.Done;
+                this.Details = "...";
+                this.Status = StepStatus.Done;
                 return;
             }
 
@@ -79,7 +79,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             //Synchronise Host Folder
             FolderManager.Instance.Synchronize(Null.NullInteger, "", true, true);
 
-            Status = StepStatus.Done;
+            this.Status = StepStatus.Done;
         }
 
         #endregion

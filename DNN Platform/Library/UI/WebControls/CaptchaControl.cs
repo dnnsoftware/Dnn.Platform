@@ -84,9 +84,9 @@ namespace DotNetNuke.UI.WebControls
 
 		public CaptchaControl()
 		{
-			ErrorMessage = Localization.GetString("InvalidCaptcha", Localization.SharedResourceFile);
-			Text = Localization.GetString("CaptchaText.Text", Localization.SharedResourceFile);
-		    _Expiration = HostController.Instance.GetInteger("EXPIRATION_DEFAULT", EXPIRATION_DEFAULT);
+			this.ErrorMessage = Localization.GetString("InvalidCaptcha", Localization.SharedResourceFile);
+			this.Text = Localization.GetString("CaptchaText.Text", Localization.SharedResourceFile);
+		    this._Expiration = HostController.Instance.GetInteger("EXPIRATION_DEFAULT", EXPIRATION_DEFAULT);
 		}
 		
 		#endregion
@@ -113,11 +113,11 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				return _BackGroundColor;
+				return this._BackGroundColor;
 			}
 			set
 			{
-				_BackGroundColor = value;
+				this._BackGroundColor = value;
 			}
 		}
 
@@ -129,11 +129,11 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				return _BackGroundImage;
+				return this._BackGroundImage;
 			}
 			set
 			{
-				_BackGroundImage = value;
+				this._BackGroundImage = value;
 			}
 		}
 
@@ -145,11 +145,11 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				return _CaptchaChars;
+				return this._CaptchaChars;
 			}
 			set
 			{
-				_CaptchaChars = value;
+				this._CaptchaChars = value;
 			}
 		}
 
@@ -161,11 +161,11 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				return _CaptchaHeight;
+				return this._CaptchaHeight;
 			}
 			set
 			{
-				_CaptchaHeight = value;
+				this._CaptchaHeight = value;
 			}
 		}
 
@@ -177,11 +177,11 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				return _CaptchaLength;
+				return this._CaptchaLength;
 			}
 			set
 			{
-				_CaptchaLength = value;
+				this._CaptchaLength = value;
 			}
 		}
 
@@ -193,11 +193,11 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				return _CaptchaWidth;
+				return this._CaptchaWidth;
 			}
 			set
 			{
-				_CaptchaWidth = value;
+				this._CaptchaWidth = value;
 			}
 		}
 
@@ -232,7 +232,7 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				return _ErrorStyle;
+				return this._ErrorStyle;
 			}
 		}
 
@@ -244,11 +244,11 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				return _Expiration;
+				return this._Expiration;
 			}
 			set
 			{
-				_Expiration = value;
+				this._Expiration = value;
 			}
 		}
 
@@ -260,7 +260,7 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				return _IsValid;
+				return this._IsValid;
 			}
 		}
 
@@ -272,11 +272,11 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				return _RenderUrl;
+				return this._RenderUrl;
 			}
 			set
 			{
-				_RenderUrl = value;
+				this._RenderUrl = value;
 			}
 		}
 
@@ -295,7 +295,7 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				return _TextBoxStyle;
+				return this._TextBoxStyle;
 			}
 		}
 
@@ -310,11 +310,11 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
 		{
-			_UserText = postCollection[postDataKey];
-			Validate(_UserText);
-			if (!_IsValid && !string.IsNullOrEmpty(_UserText))
+			this._UserText = postCollection[postDataKey];
+			this.Validate(this._UserText);
+			if (!this._IsValid && !string.IsNullOrEmpty(this._UserText))
 			{
-				_CaptchaText = GetNextCaptcha();
+				this._CaptchaText = this.GetNextCaptcha();
 			}
 			return false;
 		}
@@ -346,8 +346,8 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		private string GetUrl()
 		{
-			var url = ResolveUrl(RenderUrl);
-			url += "?" + KEY + "=" + Encrypt(EncodeTicket(), DateTime.Now.AddSeconds(Expiration));
+			var url = this.ResolveUrl(this.RenderUrl);
+			url += "?" + KEY + "=" + Encrypt(this.EncodeTicket(), DateTime.Now.AddSeconds(this.Expiration));
 
 			//Append the Alias to the url so that it doesn't lose track of the alias it's currently on
 			var _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -362,10 +362,10 @@ namespace DotNetNuke.UI.WebControls
 		{
 			var sb = new StringBuilder();
 
-			sb.Append(CaptchaWidth.Value.ToString());
-			sb.Append(_Separator + CaptchaHeight.Value);
-			sb.Append(_Separator + _CaptchaText);
-			sb.Append(_Separator + BackGroundImage);
+			sb.Append(this.CaptchaWidth.Value.ToString());
+			sb.Append(_Separator + this.CaptchaHeight.Value);
+			sb.Append(_Separator + this._CaptchaText);
+			sb.Append(_Separator + this.BackGroundImage);
 
 			return sb.ToString();
 		}
@@ -655,12 +655,12 @@ namespace DotNetNuke.UI.WebControls
 		{
 			base.CreateChildControls();
 
-			if ((CaptchaWidth.IsEmpty || CaptchaWidth.Type != UnitType.Pixel || CaptchaHeight.IsEmpty || CaptchaHeight.Type != UnitType.Pixel))
+			if ((this.CaptchaWidth.IsEmpty || this.CaptchaWidth.Type != UnitType.Pixel || this.CaptchaHeight.IsEmpty || this.CaptchaHeight.Type != UnitType.Pixel))
 			{
 				throw new InvalidOperationException("Must specify size of control in pixels.");
 			}
-			_image = new Image {BorderColor = BorderColor, BorderStyle = BorderStyle, BorderWidth = BorderWidth, ToolTip = ToolTip, EnableViewState = false};
-			Controls.Add(_image);
+			this._image = new Image {BorderColor = this.BorderColor, BorderStyle = this.BorderStyle, BorderWidth = this.BorderWidth, ToolTip = this.ToolTip, EnableViewState = false};
+			this.Controls.Add(this._image);
 		}
 
 		/// <summary>
@@ -672,11 +672,11 @@ namespace DotNetNuke.UI.WebControls
 			var sb = new StringBuilder();
 			var rand = new Random();
 			int n;
-			var intMaxLength = CaptchaChars.Length;
+			var intMaxLength = this.CaptchaChars.Length;
 
-			for (n = 0; n <= CaptchaLength - 1; n++)
+			for (n = 0; n <= this.CaptchaLength - 1; n++)
 			{
-				sb.Append(CaptchaChars.Substring(rand.Next(intMaxLength), 1));
+				sb.Append(this.CaptchaChars.Substring(rand.Next(intMaxLength), 1));
 			}
 		    var challenge = sb.ToString();
 
@@ -685,7 +685,7 @@ namespace DotNetNuke.UI.WebControls
             // with a single server or web-farm, the cache might be cleared
             // which will cause a problem in such case unless sticky sessions are used.
             var cacheKey = string.Format(DataCache.CaptchaCacheKey, challenge);
-            DataCache.SetCache(cacheKey, challenge, (DNNCacheDependency)null, DateTime.Now.AddSeconds(_Expiration + 1),
+            DataCache.SetCache(cacheKey, challenge, (DNNCacheDependency)null, DateTime.Now.AddSeconds(this._Expiration + 1),
                 Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, null);
 			return challenge;
 		}
@@ -710,7 +710,7 @@ namespace DotNetNuke.UI.WebControls
                 //Load the CAPTCHA Text from the ViewState
                 if (myState[1] != null)
                 {
-                    _CaptchaText = Convert.ToString(myState[1]);
+                    this._CaptchaText = Convert.ToString(myState[1]);
                 }
             }
             //var cacheKey = string.Format(DataCache.CaptchaCacheKey, masterPortalId);
@@ -724,10 +724,10 @@ namespace DotNetNuke.UI.WebControls
 		protected override void OnPreRender(EventArgs e)
 		{
 			//Generate Random Challenge Text
-			_CaptchaText = GetNextCaptcha();
+			this._CaptchaText = this.GetNextCaptcha();
 
 			//Enable Viewstate Encryption
-			Page.RegisterRequiresViewStateEncryption();
+			this.Page.RegisterRequiresViewStateEncryption();
 
 			//Call Base Class method
 			base.OnPreRender(e);
@@ -735,7 +735,7 @@ namespace DotNetNuke.UI.WebControls
 
         protected virtual void OnUserValidated(ServerValidateEventArgs e)
         {
-            ServerValidateEventHandler handler = UserValidated;
+            ServerValidateEventHandler handler = this.UserValidated;
             if (handler != null)
             {
                 handler(this, e);
@@ -748,18 +748,18 @@ namespace DotNetNuke.UI.WebControls
 		/// <param name="writer">An Html Text Writer</param>
 		protected override void Render(HtmlTextWriter writer)
 		{
-			ControlStyle.AddAttributesToRender(writer);
+			this.ControlStyle.AddAttributesToRender(writer);
 
 			//Render outer <div> Tag
 			writer.AddAttribute("class", "dnnLeft");
 			writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
 			//Render image <img> Tag
-			writer.AddAttribute(HtmlTextWriterAttribute.Src, GetUrl());
+			writer.AddAttribute(HtmlTextWriterAttribute.Src, this.GetUrl());
 			writer.AddAttribute(HtmlTextWriterAttribute.Border, "0");
-			if (!String.IsNullOrEmpty(ToolTip))
+			if (!String.IsNullOrEmpty(this.ToolTip))
 			{
-				writer.AddAttribute(HtmlTextWriterAttribute.Alt, ToolTip);
+				writer.AddAttribute(HtmlTextWriterAttribute.Alt, this.ToolTip);
 			}
 			else
 			{
@@ -769,34 +769,34 @@ namespace DotNetNuke.UI.WebControls
 			writer.RenderEndTag();
 			
 			//Render Help Text
-			if (!String.IsNullOrEmpty(Text))
+			if (!String.IsNullOrEmpty(this.Text))
 			{
 				writer.RenderBeginTag(HtmlTextWriterTag.Div);
-				writer.Write(Text);
+				writer.Write(this.Text);
 				writer.RenderEndTag();
 			}
 			
 			//Render text box <input> Tag
-			TextBoxStyle.AddAttributesToRender(writer);
+			this.TextBoxStyle.AddAttributesToRender(writer);
 			writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
-			writer.AddAttribute(HtmlTextWriterAttribute.Style, "width:" + Width);
-			writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, _CaptchaText.Length.ToString());
-			writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
-			if (!String.IsNullOrEmpty(AccessKey))
+			writer.AddAttribute(HtmlTextWriterAttribute.Style, "width:" + this.Width);
+			writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, this._CaptchaText.Length.ToString());
+			writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
+			if (!String.IsNullOrEmpty(this.AccessKey))
 			{
-				writer.AddAttribute(HtmlTextWriterAttribute.Accesskey, AccessKey);
+				writer.AddAttribute(HtmlTextWriterAttribute.Accesskey, this.AccessKey);
 			}
-			if (!Enabled)
+			if (!this.Enabled)
 			{
 				writer.AddAttribute(HtmlTextWriterAttribute.Disabled, "disabled");
 			}
-			if (TabIndex > 0)
+			if (this.TabIndex > 0)
 			{
-				writer.AddAttribute(HtmlTextWriterAttribute.Tabindex, TabIndex.ToString());
+				writer.AddAttribute(HtmlTextWriterAttribute.Tabindex, this.TabIndex.ToString());
 			}
-			if (_UserText == _CaptchaText)
+			if (this._UserText == this._CaptchaText)
 			{
-				writer.AddAttribute(HtmlTextWriterAttribute.Value, _UserText);
+				writer.AddAttribute(HtmlTextWriterAttribute.Value, this._UserText);
 			}
 			else
 			{
@@ -806,11 +806,11 @@ namespace DotNetNuke.UI.WebControls
 			writer.RenderEndTag();
 
 			//Render error message
-			if (!IsValid && Page.IsPostBack && !string.IsNullOrEmpty(_UserText))
+			if (!this.IsValid && this.Page.IsPostBack && !string.IsNullOrEmpty(this._UserText))
 			{
-				ErrorStyle.AddAttributesToRender(writer);
+				this.ErrorStyle.AddAttributesToRender(writer);
 				writer.RenderBeginTag(HtmlTextWriterTag.Span);
-				writer.Write(ErrorMessage);
+				writer.Write(this.ErrorMessage);
 				writer.RenderEndTag();
 			}
 			
@@ -826,11 +826,11 @@ namespace DotNetNuke.UI.WebControls
 			var baseState = base.SaveViewState();
 			var allStates = new object[2];
 			allStates[0] = baseState;
-			if (string.IsNullOrEmpty(_CaptchaText))
+			if (string.IsNullOrEmpty(this._CaptchaText))
 			{
-				_CaptchaText = GetNextCaptcha();
+				this._CaptchaText = this.GetNextCaptcha();
 			}
-			allStates[1] = _CaptchaText;
+			allStates[1] = this._CaptchaText;
      
 			return allStates;
 		}
@@ -850,16 +850,16 @@ namespace DotNetNuke.UI.WebControls
 
 		    if (cacheObj == null)
 		    {
-                _IsValid = false;
+                this._IsValid = false;
 		    }
 		    else
 		    {
-                _IsValid = true;
+                this._IsValid = true;
                 DataCache.RemoveCache(cacheKey);
 		    }
             
-            OnUserValidated(new ServerValidateEventArgs(_CaptchaText, _IsValid));
-			return _IsValid;
+            this.OnUserValidated(new ServerValidateEventArgs(this._CaptchaText, this._IsValid));
+			return this._IsValid;
 		}
 		
 		#endregion

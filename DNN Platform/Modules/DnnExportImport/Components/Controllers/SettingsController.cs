@@ -31,7 +31,7 @@ namespace Dnn.ExportImport.Components.Controllers
 
         public ExportImportSetting GetSetting(string settingName)
         {
-            return GetAllSettings().ToList().FirstOrDefault(x => x.SettingName == settingName);
+            return this.GetAllSettings().ToList().FirstOrDefault(x => x.SettingName == settingName);
         }
 
         public void AddSetting(ExportImportSetting exportImportSetting)

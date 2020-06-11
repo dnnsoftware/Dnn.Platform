@@ -18,7 +18,7 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         public DnnFormSection()
         {
-            Items = new List<DnnFormItemBase>();
+            this.Items = new List<DnnFormItemBase>();
         }
 
         public bool Expanded { get; set; }

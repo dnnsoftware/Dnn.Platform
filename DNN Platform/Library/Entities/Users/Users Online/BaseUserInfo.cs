@@ -40,11 +40,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return _PortalID;
+                return this._PortalID;
             }
             set
             {
-                _PortalID = value;
+                this._PortalID = value;
             }
         }
 
@@ -58,11 +58,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return _TabID;
+                return this._TabID;
             }
             set
             {
-                _TabID = value;
+                this._TabID = value;
             }
         }
 
@@ -76,11 +76,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return _CreationDate;
+                return this._CreationDate;
             }
             set
             {
-                _CreationDate = value;
+                this._CreationDate = value;
             }
         }
 
@@ -94,11 +94,11 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return _LastActiveDate;
+                return this._LastActiveDate;
             }
             set
             {
-                _LastActiveDate = value;
+                this._LastActiveDate = value;
             }
         }
     }

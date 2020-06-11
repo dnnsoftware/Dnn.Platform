@@ -28,7 +28,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
         {
             foreach (PermissionInfo permission in PermissionController.GetPermissionsByPortalDesktopModule())
             {
-                PermissionDefinitions.Add(new Permission()
+                this.PermissionDefinitions.Add(new Permission()
                 {
                     PermissionId = permission.PermissionID,
                     PermissionName = permission.PermissionName,

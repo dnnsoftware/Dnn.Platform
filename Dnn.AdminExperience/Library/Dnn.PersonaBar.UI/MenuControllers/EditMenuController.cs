@@ -24,7 +24,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
 
         public bool Visible(MenuItem menuItem)
         {
-            return IsPageAdmin() || IsModuleAdmin();
+            return this.IsPageAdmin() || this.IsModuleAdmin();
         }
 
         public IDictionary<string, object> GetSettings(MenuItem menuItem)

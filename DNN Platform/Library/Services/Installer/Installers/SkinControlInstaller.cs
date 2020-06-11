@@ -62,16 +62,16 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
 				//Attempt to get the SkinControl
-                SkinControlInfo skinControl = SkinControlController.GetSkinControlByPackageID(Package.PackageID);
+                SkinControlInfo skinControl = SkinControlController.GetSkinControlByPackageID(this.Package.PackageID);
                 if (skinControl != null)
                 {
                     SkinControlController.DeleteSkinControl(skinControl);
                 }
-                Log.AddInfo(string.Format(Util.MODULE_UnRegistered, skinControl.ControlKey));
+                this.Log.AddInfo(string.Format(Util.MODULE_UnRegistered, skinControl.ControlKey));
             }
             catch (Exception ex)
             {
-                Log.AddFailure(ex);
+                this.Log.AddFailure(ex);
             }
         }
 		
@@ -99,23 +99,23 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
 				//Attempt to get the SkinControl
-                InstalledSkinControl = SkinControlController.GetSkinControlByKey(SkinControl.ControlKey);
+                this.InstalledSkinControl = SkinControlController.GetSkinControlByKey(this.SkinControl.ControlKey);
 
-                if (InstalledSkinControl != null)
+                if (this.InstalledSkinControl != null)
                 {
-                    SkinControl.SkinControlID = InstalledSkinControl.SkinControlID;
+                    this.SkinControl.SkinControlID = this.InstalledSkinControl.SkinControlID;
                 }
 				
                 //Save SkinControl
-                SkinControl.PackageID = Package.PackageID;
-                SkinControl.SkinControlID = SkinControlController.SaveSkinControl(SkinControl);
+                this.SkinControl.PackageID = this.Package.PackageID;
+                this.SkinControl.SkinControlID = SkinControlController.SaveSkinControl(this.SkinControl);
 
-                Completed = true;
-                Log.AddInfo(string.Format(Util.MODULE_Registered, SkinControl.ControlKey));
+                this.Completed = true;
+                this.Log.AddInfo(string.Format(Util.MODULE_Registered, this.SkinControl.ControlKey));
             }
             catch (Exception ex)
             {
-                Log.AddFailure(ex);
+                this.Log.AddFailure(ex);
             }
         }
 
@@ -127,11 +127,11 @@ namespace DotNetNuke.Services.Installer.Installers
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             //Load the SkinControl from the manifest
-            SkinControl = CBO.DeserializeObject<SkinControlInfo>(new StringReader(manifestNav.InnerXml));
+            this.SkinControl = CBO.DeserializeObject<SkinControlInfo>(new StringReader(manifestNav.InnerXml));
 
-            if (Log.Valid)
+            if (this.Log.Valid)
             {
-                Log.AddInfo(Util.MODULE_ReadSuccess);
+                this.Log.AddInfo(Util.MODULE_ReadSuccess);
             }
         }
 
@@ -144,15 +144,15 @@ namespace DotNetNuke.Services.Installer.Installers
         public override void Rollback()
         {
 			//If Temp SkinControl exists then we need to update the DataStore with this 
-            if (InstalledSkinControl == null)
+            if (this.InstalledSkinControl == null)
             {
 				//No Temp SkinControl - Delete newly added SkinControl
-                DeleteSkinControl();
+                this.DeleteSkinControl();
             }
             else
             {
 				//Temp SkinControl - Rollback to Temp
-                SkinControlController.SaveSkinControl(InstalledSkinControl);
+                SkinControlController.SaveSkinControl(this.InstalledSkinControl);
             }
         }
 
@@ -163,7 +163,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {
-            DeleteSkinControl();
+            this.DeleteSkinControl();
         }
 		
 		#endregion

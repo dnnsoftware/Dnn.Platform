@@ -31,11 +31,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return _theme;
+                return this._theme;
             }
             set
             {
-                _theme = value;
+                this._theme = value;
             }
         }
 
@@ -51,18 +51,18 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if ((_styleSheetUrl.StartsWith("~")))
+                if ((this._styleSheetUrl.StartsWith("~")))
                 {
-                    return Globals.ResolveUrl(_styleSheetUrl);
+                    return Globals.ResolveUrl(this._styleSheetUrl);
                 }
                 else
                 {
-                    return _styleSheetUrl;
+                    return this._styleSheetUrl;
                 }
             }
             set
             {
-                _styleSheetUrl = value;
+                this._styleSheetUrl = value;
             }
         }
 
@@ -70,7 +70,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-            	return Globals.IsHostTab(PortalSettings.ActiveTab.TabID);
+            	return Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
             }
         }
 
@@ -99,7 +99,7 @@ namespace DotNetNuke.UI.WebControls
 
         protected override void RenderContents(HtmlTextWriter output)
         {
-            output.Write(HtmlOutput);
+            output.Write(this.HtmlOutput);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Search.Entities
         /// <summary>
         /// Time when Content was last modified (in friendly format)
         /// </summary>
-        public string DisplayModifiedTime { get { return DateUtils.CalculateDateForDisplay(ModifiedTimeUtc); } }
+        public string DisplayModifiedTime { get { return DateUtils.CalculateDateForDisplay(this.ModifiedTimeUtc); } }
 
         /// <summary>
         /// Highlighted snippet from document
@@ -61,10 +61,10 @@ namespace DotNetNuke.Services.Search.Entities
         /// </summary>
         public SearchResult()
         {
-            Tags = new string[0];
-            NumericKeys = new Dictionary<string, int>();
-            Keywords = new Dictionary<string, string>();
-            SearchContext = new Dictionary<string, string>();
+            this.Tags = new string[0];
+            this.NumericKeys = new Dictionary<string, int>();
+            this.Keywords = new Dictionary<string, string>();
+            this.SearchContext = new Dictionary<string, string>();
         }
     }
 }

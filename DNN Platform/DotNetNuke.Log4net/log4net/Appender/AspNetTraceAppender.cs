@@ -98,11 +98,11 @@ namespace log4net.Appender
 				{
 					if (loggingEvent.Level >= Level.Warn) 
 					{
-                        HttpContext.Current.Trace.Warn(m_category.Format(loggingEvent), RenderLoggingEvent(loggingEvent));
+                        HttpContext.Current.Trace.Warn(this.m_category.Format(loggingEvent), this.RenderLoggingEvent(loggingEvent));
 					}
 					else 
 					{
-                        HttpContext.Current.Trace.Write(m_category.Format(loggingEvent), RenderLoggingEvent(loggingEvent));
+                        HttpContext.Current.Trace.Write(this.m_category.Format(loggingEvent), this.RenderLoggingEvent(loggingEvent));
 					}
 				}
 			}
@@ -139,8 +139,8 @@ namespace log4net.Appender
         /// </remarks>
         public PatternLayout Category
         {
-            get { return m_category; }
-            set { m_category = value; }
+            get { return this.m_category; }
+            set { this.m_category = value; }
         }
 
 	    #endregion

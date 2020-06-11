@@ -20,7 +20,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         #region Constructor
         public WorkflowLogger()
         {
-            _workflowLogRepository = WorkflowLogRepository.Instance;
+            this._workflowLogRepository = WorkflowLogRepository.Instance;
         }
         #endregion
 
@@ -37,7 +37,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 User = userId,
                 Date = DateTime.UtcNow
             };
-            _workflowLogRepository.AddWorkflowLog(workflowLog);
+            this._workflowLogRepository.AddWorkflowLog(workflowLog);
         }
 
         private string GetWorkflowActionText(WorkflowLogType logType)
@@ -50,18 +50,18 @@ namespace DotNetNuke.Entities.Content.Workflow
         #region Public Methods
         public IEnumerable<WorkflowLog> GetWorkflowLogs(int contentItemId, int workflowId)
         {
-            return _workflowLogRepository.GetWorkflowLogs(contentItemId, workflowId);
+            return this._workflowLogRepository.GetWorkflowLogs(contentItemId, workflowId);
         }
 
 
         public void AddWorkflowLog(int contentItemId, int workflowId, WorkflowLogType type, string comment, int userId)
         {
-            AddWorkflowLog(contentItemId, workflowId, type, GetWorkflowActionText(type), comment, userId);
+            this.AddWorkflowLog(contentItemId, workflowId, type, this.GetWorkflowActionText(type), comment, userId);
         }
 
         public void AddWorkflowLog(int contentItemId, int workflowId, string action, string comment, int userId)
         {
-            AddWorkflowLog(contentItemId, workflowId, WorkflowLogType.CommentProvided, action, comment, userId);
+            this.AddWorkflowLog(contentItemId, workflowId, WorkflowLogType.CommentProvided, action, comment, userId);
         }
         #endregion
 

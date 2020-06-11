@@ -28,11 +28,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ViewState["ConfirmMessage"] == null ? string.Empty : (string) ViewState["ConfirmMessage"];
+                return this.ViewState["ConfirmMessage"] == null ? string.Empty : (string) this.ViewState["ConfirmMessage"];
             }
             set
             {
-                ViewState["ConfirmMessage"] = value;
+                this.ViewState["ConfirmMessage"] = value;
             }
         }
 
@@ -44,11 +44,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ViewState["CssClass"] == null ? string.Empty : (string) ViewState["CssClass"];
+                return this.ViewState["CssClass"] == null ? string.Empty : (string) this.ViewState["CssClass"];
             }
             set
             {
-                ViewState["CssClass"] = value;
+                this.ViewState["CssClass"] = value;
             }
         }
 
@@ -60,11 +60,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ViewState["DisabledCssClass"] == null ? string.Empty : (string) ViewState["DisabledCssClass"];
+                return this.ViewState["DisabledCssClass"] == null ? string.Empty : (string) this.ViewState["DisabledCssClass"];
             }
             set
             {
-                ViewState["DisabledCssClass"] = value;
+                this.ViewState["DisabledCssClass"] = value;
             }
         }
 
@@ -76,11 +76,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ViewState["Text"] == null ? string.Empty : (string) ViewState["Text"];
+                return this.ViewState["Text"] == null ? string.Empty : (string) this.ViewState["Text"];
             }
             set
             {
-                ViewState["Text"] = value;
+                this.ViewState["Text"] = value;
             }
         }
 
@@ -90,17 +90,17 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnPreRender(e);
 
-            LocalResourceFile = Utilities.GetLocalResourceFile(this);
+            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
         }
 
         protected override void Render(HtmlTextWriter writer)
         {
-            LocalizeStrings();
-            if (!Enabled && !string.IsNullOrEmpty(DisabledCssClass))
+            this.LocalizeStrings();
+            if (!this.Enabled && !string.IsNullOrEmpty(this.DisabledCssClass))
             {
-                CssClass = DisabledCssClass;
+                this.CssClass = this.DisabledCssClass;
             }
-            writer.AddAttribute("class", CssClass.Trim());
+            writer.AddAttribute("class", this.CssClass.Trim());
             base.Render(writer);
         }
 
@@ -110,11 +110,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _localize;
+                return this._localize;
             }
             set
             {
-                _localize = value;
+                this._localize = value;
             }
         }
 
@@ -122,25 +122,25 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public virtual void LocalizeStrings()
         {
-            if ((Localize))
+            if ((this.Localize))
             {
-                if ((!string.IsNullOrEmpty(ToolTip)))
+                if ((!string.IsNullOrEmpty(this.ToolTip)))
                 {
-                    ToolTip = Localization.GetString(ToolTip, LocalResourceFile);
+                    this.ToolTip = Localization.GetString(this.ToolTip, this.LocalResourceFile);
                 }
 
-                if ((!string.IsNullOrEmpty(Text)))
+                if ((!string.IsNullOrEmpty(this.Text)))
                 {
-                    Text = Localization.GetString(Text, LocalResourceFile);
+                    this.Text = Localization.GetString(this.Text, this.LocalResourceFile);
 
-                    if ((string.IsNullOrEmpty(ToolTip)))
+                    if ((string.IsNullOrEmpty(this.ToolTip)))
                     {
-                        ToolTip = Localization.GetString(string.Format("{0}.ToolTip", Text), LocalResourceFile);
+                        this.ToolTip = Localization.GetString(string.Format("{0}.ToolTip", this.Text), this.LocalResourceFile);
                     }
 
-                    if ((string.IsNullOrEmpty(ToolTip)))
+                    if ((string.IsNullOrEmpty(this.ToolTip)))
                     {
-                        ToolTip = Text;
+                        this.ToolTip = this.Text;
                     }
                 }
             }

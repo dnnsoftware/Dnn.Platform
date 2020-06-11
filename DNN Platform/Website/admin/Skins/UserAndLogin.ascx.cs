@@ -31,19 +31,19 @@ namespace DotNetNuke.UI.Skins.Controls
         private const string MyFileName = "UserAndLogin.ascx";
         private readonly INavigationManager _navigationManager;
 
-        protected string AvatarImageUrl => UserController.Instance.GetUserProfilePictureUrl(PortalSettings.UserId, 32, 32);
+        protected string AvatarImageUrl => UserController.Instance.GetUserProfilePictureUrl(this.PortalSettings.UserId, 32, 32);
 
         public UserAndLogin()
         {
-            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         protected bool CanRegister
         {
             get
             {
-                return ((PortalSettings.UserRegistration != (int) Globals.PortalRegistrationType.NoRegistration)
-                    && (PortalSettings.Users < PortalSettings.UserQuota || PortalSettings.UserQuota == 0));
+                return ((this.PortalSettings.UserRegistration != (int) Globals.PortalRegistrationType.NoRegistration)
+                    && (this.PortalSettings.Users < this.PortalSettings.UserQuota || this.PortalSettings.UserQuota == 0));
             }
         }
 
@@ -51,7 +51,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return PortalSettings.UserInfo.DisplayName;
+                return this.PortalSettings.UserInfo.DisplayName;
             }
         }
 
@@ -59,7 +59,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return Request.IsAuthenticated;
+                return this.Request.IsAuthenticated;
             }
         }
 
@@ -74,7 +74,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
                 returnUrl = HttpUtility.UrlEncode(returnUrl);
 
-                return Globals.LoginURL(returnUrl, (Request.QueryString["override"] != null));
+                return Globals.LoginURL(returnUrl, (this.Request.QueryString["override"] != null));
             }
         }
 
@@ -82,11 +82,11 @@ namespace DotNetNuke.UI.Skins.Controls
 		{
 			get
 			{
-				var url = LoginUrl;
+				var url = this.LoginUrl;
 
-				if (UsePopUp)
+				if (this.UsePopUp)
 				{
-					return "return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(LoginUrl), this, PortalSettings, true, false, 300, 650);
+					return "return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(this.LoginUrl), this, this.PortalSettings, true, false, 300, 650);
 				}
 
 				return string.Empty;
@@ -97,8 +97,8 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return PortalSettings.EnablePopUps
-                    && PortalSettings.LoginTabId == Null.NullInteger
+                return this.PortalSettings.EnablePopUps
+                    && this.PortalSettings.LoginTabId == Null.NullInteger
                     && !AuthenticationController.HasSocialAuthenticationEnabled(this);
             }
         }
@@ -107,7 +107,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return Globals.RegisterURL(HttpUtility.UrlEncode(_navigationManager.NavigateURL()), Null.NullString);
+                return Globals.RegisterURL(HttpUtility.UrlEncode(this._navigationManager.NavigateURL()), Null.NullString);
             }
         }
 
@@ -115,9 +115,9 @@ namespace DotNetNuke.UI.Skins.Controls
 		{
 			get
 			{
-				if (UsePopUp)
+				if (this.UsePopUp)
 				{
-					return "return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(RegisterUrl), this, PortalSettings, true, false, 600, 950);
+					return "return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(this.RegisterUrl), this, this.PortalSettings, true, false, 600, 950);
 				}
 
 				return string.Empty;
@@ -128,7 +128,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return Globals.UserProfileURL(PortalSettings.UserInfo.UserID); ;
+                return Globals.UserProfileURL(this.PortalSettings.UserInfo.UserID); ;
             }
         }
 
@@ -146,73 +146,73 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnInit(e);
 
-            Visible = !PortalSettings.InErrorPageRequest() || ShowInErrorPage;
+            this.Visible = !this.PortalSettings.InErrorPageRequest() || this.ShowInErrorPage;
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            registerLink.NavigateUrl = RegisterUrl;
-            loginLink.NavigateUrl = LoginUrl;
+            this.registerLink.NavigateUrl = this.RegisterUrl;
+            this.loginLink.NavigateUrl = this.LoginUrl;
 
-            if (PortalSettings.UserId > 0)
+            if (this.PortalSettings.UserId > 0)
             {
-                viewProfileLink.NavigateUrl = Globals.UserProfileURL(PortalSettings.UserId);
-                viewProfileImageLink.NavigateUrl = Globals.UserProfileURL(PortalSettings.UserId);
-                logoffLink.NavigateUrl = _navigationManager.NavigateURL(PortalSettings.ActiveTab.TabID, "Logoff");
-                editProfileLink.NavigateUrl = _navigationManager.NavigateURL(PortalSettings.UserTabId, "Profile", "userId=" + PortalSettings.UserId, "pageno=2");
-                accountLink.NavigateUrl = _navigationManager.NavigateURL(PortalSettings.UserTabId, "Profile", "userId=" + PortalSettings.UserId, "pageno=1");
-                messagesLink.NavigateUrl = _navigationManager.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", PortalSettings.UserId));
-                notificationsLink.NavigateUrl = _navigationManager.NavigateURL(GetMessageTab(), "", string.Format("userId={0}", PortalSettings.UserId), "view=notifications", "action=notifications");
+                this.viewProfileLink.NavigateUrl = Globals.UserProfileURL(this.PortalSettings.UserId);
+                this.viewProfileImageLink.NavigateUrl = Globals.UserProfileURL(this.PortalSettings.UserId);
+                this.logoffLink.NavigateUrl = this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Logoff");
+                this.editProfileLink.NavigateUrl = this._navigationManager.NavigateURL(this.PortalSettings.UserTabId, "Profile", "userId=" + this.PortalSettings.UserId, "pageno=2");
+                this.accountLink.NavigateUrl = this._navigationManager.NavigateURL(this.PortalSettings.UserTabId, "Profile", "userId=" + this.PortalSettings.UserId, "pageno=1");
+                this.messagesLink.NavigateUrl = this._navigationManager.NavigateURL(this.GetMessageTab(), "", string.Format("userId={0}", this.PortalSettings.UserId));
+                this.notificationsLink.NavigateUrl = this._navigationManager.NavigateURL(this.GetMessageTab(), "", string.Format("userId={0}", this.PortalSettings.UserId), "view=notifications", "action=notifications");
 
-                var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(PortalSettings.UserId, PortalSettings.PortalId);
-                var unreadAlerts = NotificationsController.Instance.CountNotifications(PortalSettings.UserId, PortalSettings.PortalId);
+                var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(this.PortalSettings.UserId, this.PortalSettings.PortalId);
+                var unreadAlerts = NotificationsController.Instance.CountNotifications(this.PortalSettings.UserId, this.PortalSettings.PortalId);
 
                 if (unreadMessages > 0)
                 {
-                    messageCount.Text = unreadMessages.ToString(CultureInfo.InvariantCulture);
-                    messageCount.Visible = true;
+                    this.messageCount.Text = unreadMessages.ToString(CultureInfo.InvariantCulture);
+                    this.messageCount.Visible = true;
 
-                    messages.Text = unreadMessages.ToString(CultureInfo.InvariantCulture);
-                    messages.ToolTip = unreadMessages == 1
-                                        ? LocalizeString("OneMessage")
-                                        : String.Format(LocalizeString("MessageCount"), unreadMessages);
-                    messages.Visible = true;
+                    this.messages.Text = unreadMessages.ToString(CultureInfo.InvariantCulture);
+                    this.messages.ToolTip = unreadMessages == 1
+                                        ? this.LocalizeString("OneMessage")
+                                        : String.Format(this.LocalizeString("MessageCount"), unreadMessages);
+                    this.messages.Visible = true;
                 }
 
                 if (unreadAlerts > 0)
                 {
-                    notificationCount.Text = unreadAlerts.ToString(CultureInfo.InvariantCulture);
-                    notificationCount.Visible = true;
+                    this.notificationCount.Text = unreadAlerts.ToString(CultureInfo.InvariantCulture);
+                    this.notificationCount.Visible = true;
                 }
 
-                profilePicture.ImageUrl = AvatarImageUrl;
-                profilePicture.AlternateText = Localization.GetString("ProfilePicture", Localization.GetResourceFile(this, MyFileName));
+                this.profilePicture.ImageUrl = this.AvatarImageUrl;
+                this.profilePicture.AlternateText = Localization.GetString("ProfilePicture", Localization.GetResourceFile(this, MyFileName));
 
-                if (AlwaysShowCount())
+                if (this.AlwaysShowCount())
                 {
-                    messageCount.Visible = notificationCount.Visible = true;
+                    this.messageCount.Visible = this.notificationCount.Visible = true;
                 }
             }
 
-            if (UsePopUp)
+            if (this.UsePopUp)
             {
-                registerLink.Attributes.Add("onclick", RegisterUrlForClickEvent);
-                loginLink.Attributes.Add("onclick", LoginUrlForClickEvent);
+                this.registerLink.Attributes.Add("onclick", this.RegisterUrlForClickEvent);
+                this.loginLink.Attributes.Add("onclick", this.LoginUrlForClickEvent);
             }
 
         }
 
         private int GetMessageTab()
         {
-            var cacheKey = string.Format("MessageCenterTab:{0}:{1}", PortalSettings.PortalId, PortalSettings.CultureCode);
+            var cacheKey = string.Format("MessageCenterTab:{0}:{1}", this.PortalSettings.PortalId, this.PortalSettings.CultureCode);
             var messageTabId = DataCache.GetCache<int>(cacheKey);
             if (messageTabId > 0)
                 return messageTabId;
 
             //Find the Message Tab
-            messageTabId = FindMessageTab();
+            messageTabId = this.FindMessageTab();
 
             //save in cache
             //NOTE - This cache is not being cleared. There is no easy way to clear this, except Tools->Clear Cache
@@ -225,7 +225,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             //On brand new install the new Message Center Module is on the child page of User Profile Page
             //On Upgrade to 6.2.0, the Message Center module is on the User Profile Page
-            var profileTab = TabController.Instance.GetTab(PortalSettings.UserTabId, PortalSettings.PortalId, false);
+            var profileTab = TabController.Instance.GetTab(this.PortalSettings.UserTabId, this.PortalSettings.PortalId, false);
             if (profileTab != null)
             {
                 var childTabs = TabController.Instance.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
@@ -243,7 +243,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
 
             //default to User Profile Page
-            return PortalSettings.UserTabId;
+            return this.PortalSettings.UserTabId;
         }
 
         private bool AlwaysShowCount()
@@ -251,7 +251,7 @@ namespace DotNetNuke.UI.Skins.Controls
             const string SettingKey = "UserAndLogin_AlwaysShowCount";
             var alwaysShowCount = false;
 
-            var portalSetting = PortalController.GetPortalSetting(SettingKey, PortalSettings.PortalId, string.Empty);
+            var portalSetting = PortalController.GetPortalSetting(SettingKey, this.PortalSettings.PortalId, string.Empty);
             if (!string.IsNullOrEmpty(portalSetting) && bool.TryParse(portalSetting, out alwaysShowCount))
             {
                 return alwaysShowCount;

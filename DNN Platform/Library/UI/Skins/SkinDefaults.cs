@@ -33,20 +33,20 @@ namespace DotNetNuke.UI.Skins
             var dnndoc = new XmlDocument { XmlResolver = null };
             dnndoc.Load(filePath);
             XmlNode defaultElement = dnndoc.SelectSingleNode("/configuration/skinningdefaults/" + nodename);
-            _folder = defaultElement.Attributes["folder"].Value;
-            _defaultName = defaultElement.Attributes["default"].Value;
-            _adminDefaultName = defaultElement.Attributes["admindefault"].Value;
+            this._folder = defaultElement.Attributes["folder"].Value;
+            this._defaultName = defaultElement.Attributes["default"].Value;
+            this._adminDefaultName = defaultElement.Attributes["admindefault"].Value;
         }
 
         public string AdminDefaultName
         {
             get
             {
-                return _adminDefaultName;
+                return this._adminDefaultName;
             }
             set
             {
-                _adminDefaultName = value;
+                this._adminDefaultName = value;
             }
         }
 
@@ -54,11 +54,11 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _defaultName;
+                return this._defaultName;
             }
             set
             {
-                _defaultName = value;
+                this._defaultName = value;
             }
         }
 
@@ -66,11 +66,11 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _folder;
+                return this._folder;
             }
             set
             {
-                _folder = value;
+                this._folder = value;
             }
         }
 

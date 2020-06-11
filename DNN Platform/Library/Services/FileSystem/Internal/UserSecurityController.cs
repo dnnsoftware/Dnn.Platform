@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
     {
         public bool IsHostAdminUser(int portalId)
         {
-            return IsHostAdminUser(portalId, UserController.Instance.GetCurrentUserInfo().UserID);
+            return this.IsHostAdminUser(portalId, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         public bool IsHostAdminUser(int portalId, int userId)

@@ -46,11 +46,11 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (_ModuleActions == null)
+                if (this._ModuleActions == null)
                 {
-                    _ModuleActions = ModuleControl.ModuleContext.Actions.GetActionsByCommandName(CommandName);
+                    this._ModuleActions = this.ModuleControl.ModuleContext.Actions.GetActionsByCommandName(this.CommandName);
                 }
-                return _ModuleActions;
+                return this._ModuleActions;
             }
         }
 		
@@ -68,11 +68,11 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return _buttonSeparator;
+                return this._buttonSeparator;
             }
             set
             {
-                _buttonSeparator = value;
+                this._buttonSeparator = value;
             }
         }
 
@@ -86,11 +86,11 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return _commandName;
+                return this._commandName;
             }
             set
             {
-                _commandName = value;
+                this._commandName = value;
             }
         }
 
@@ -112,11 +112,11 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return _displayLink;
+                return this._displayLink;
             }
             set
             {
-                _displayLink = value;
+                this._displayLink = value;
             }
         }
 
@@ -141,11 +141,11 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (_ActionManager == null)
+                if (this._ActionManager == null)
                 {
-                    _ActionManager = new ActionManager(this);
+                    this._ActionManager = new ActionManager(this);
                 }
-                return _ActionManager;
+                return this._ActionManager;
             }
         }
 
@@ -168,9 +168,9 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         protected virtual void OnAction(ActionEventArgs e)
         {
-            if (Action != null)
+            if (this.Action != null)
             {
-                Action(this, e);
+                this.Action(this, e);
             }
         }
 
@@ -186,31 +186,31 @@ namespace DotNetNuke.UI.Containers
                 return;
             }
 
-            foreach (ModuleAction action in ModuleActions)
+            foreach (ModuleAction action in this.ModuleActions)
             {
-                if (action != null && ActionManager.IsVisible(action))
+                if (action != null && this.ActionManager.IsVisible(action))
                 {
 					//Create a new ActionCommandButton
                     var actionButton = new ActionCommandButton();
 
                     //Set all the properties
                     actionButton.ModuleAction = action;
-                    actionButton.ModuleControl = ModuleControl;
-                    actionButton.CommandName = CommandName;
-                    actionButton.CssClass = CssClass;
-                    actionButton.DisplayLink = DisplayLink;
-                    actionButton.DisplayIcon = DisplayIcon;
-                    actionButton.ImageUrl = ImageURL;
+                    actionButton.ModuleControl = this.ModuleControl;
+                    actionButton.CommandName = this.CommandName;
+                    actionButton.CssClass = this.CssClass;
+                    actionButton.DisplayLink = this.DisplayLink;
+                    actionButton.DisplayIcon = this.DisplayIcon;
+                    actionButton.ImageUrl = this.ImageURL;
 
                     //Add a handler for the Action Event
-                    actionButton.Action += ActionButtonClick;
+                    actionButton.Action += this.ActionButtonClick;
 
-                    Controls.Add(actionButton);
+                    this.Controls.Add(actionButton);
 
-                    Controls.Add(new LiteralControl(ButtonSeparator));
+                    this.Controls.Add(new LiteralControl(this.ButtonSeparator));
                 }
             }
-            Visible = (Controls.Count > 0);
+            this.Visible = (this.Controls.Count > 0);
         }
 		
 		#endregion
@@ -223,7 +223,7 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         private void ActionButtonClick(object sender, ActionEventArgs e)
         {
-            OnAction(e);
+            this.OnAction(e);
         }
 		
 		#endregion

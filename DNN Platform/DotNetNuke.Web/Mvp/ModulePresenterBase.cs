@@ -33,20 +33,20 @@ namespace DotNetNuke.Web.Mvp
             var control = view as Control;
             if (control != null && control.Page != null)
             {
-                IsPostBack = control.Page.IsPostBack;
+                this.IsPostBack = control.Page.IsPostBack;
             }
 
             //Try and cast view to IModuleControl to get the Context
             var moduleControl = view as IModuleControl;
             if (moduleControl != null)
             {
-                LocalResourceFile = moduleControl.LocalResourceFile;
-                ModuleContext = moduleControl.ModuleContext;
+                this.LocalResourceFile = moduleControl.LocalResourceFile;
+                this.ModuleContext = moduleControl.ModuleContext;
             }
-            Validator = new Validator(new DataAnnotationsObjectValidator());
+            this.Validator = new Validator(new DataAnnotationsObjectValidator());
 
-            view.Initialize += InitializeInternal;
-            view.Load += LoadInternal;
+            view.Initialize += this.InitializeInternal;
+            view.Load += this.LoadInternal;
         }
 
         #endregion
@@ -105,15 +105,15 @@ namespace DotNetNuke.Web.Mvp
 
         private void InitializeInternal(object sender, EventArgs e)
         {
-            LoadFromContext();
-            OnInit();
+            this.LoadFromContext();
+            this.OnInit();
         }
 
         private void LoadInternal(object sender, EventArgs e)
         {
-            if (CheckAuthPolicy())
+            if (this.CheckAuthPolicy())
             {
-                OnLoad();
+                this.OnLoad();
             }
         }
 
@@ -123,15 +123,15 @@ namespace DotNetNuke.Web.Mvp
 
         protected internal virtual bool CheckAuthPolicy()
         {
-            if ((UserId == Null.NullInteger && !AllowAnonymousAccess))
+            if ((this.UserId == Null.NullInteger && !this.AllowAnonymousAccess))
             {
-                OnNoCurrentUser();
+                this.OnNoCurrentUser();
                 return false;
             }
 
-            if ((!IsUserAuthorized))
+            if ((!this.IsUserAuthorized))
             {
-                OnUnauthorizedUser();
+                this.OnUnauthorizedUser();
                 return false;
             }
 
@@ -140,29 +140,29 @@ namespace DotNetNuke.Web.Mvp
 
         protected virtual void LoadFromContext()
         {
-            if (ModuleContext != null)
+            if (this.ModuleContext != null)
             {
-                ModuleInfo = ModuleContext.Configuration;
-                IsEditable = ModuleContext.IsEditable;
-                IsSuperUser = ModuleContext.PortalSettings.UserInfo.IsSuperUser;
-                ModuleId = ModuleContext.ModuleId;
-                PortalId = ModuleContext.PortalId;
-                Settings = new Dictionary<string, string>();
-                foreach (object key in ModuleContext.Settings.Keys)
+                this.ModuleInfo = this.ModuleContext.Configuration;
+                this.IsEditable = this.ModuleContext.IsEditable;
+                this.IsSuperUser = this.ModuleContext.PortalSettings.UserInfo.IsSuperUser;
+                this.ModuleId = this.ModuleContext.ModuleId;
+                this.PortalId = this.ModuleContext.PortalId;
+                this.Settings = new Dictionary<string, string>();
+                foreach (object key in this.ModuleContext.Settings.Keys)
                 {
-                    Settings[key.ToString()] = (string) ModuleContext.Settings[key];
+                    this.Settings[key.ToString()] = (string) this.ModuleContext.Settings[key];
                 }
-                TabId = ModuleContext.TabId;
-                UserId = ModuleContext.PortalSettings.UserInfo.UserID;
+                this.TabId = this.ModuleContext.TabId;
+                this.UserId = this.ModuleContext.PortalSettings.UserInfo.UserID;
             }
         }
 
         protected virtual string LocalizeString(string key)
         {
             string localizedString;
-            if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(LocalResourceFile))
+            if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(this.LocalResourceFile))
             {
-                localizedString = Localization.GetString(key, LocalResourceFile);
+                localizedString = Localization.GetString(key, this.LocalResourceFile);
             }
             else
             {
@@ -181,47 +181,47 @@ namespace DotNetNuke.Web.Mvp
 
         protected virtual void OnNoCurrentUser()
         {
-            RedirectToLogin();
+            this.RedirectToLogin();
         }
 
         protected virtual void OnUnauthorizedUser()
         {
-            RedirectToAccessDenied();
+            this.RedirectToAccessDenied();
         }
 
         protected void RedirectToAccessDenied()
         {
-            Response.Redirect(TestableGlobals.Instance.AccessDeniedURL(), true);
+            this.Response.Redirect(TestableGlobals.Instance.AccessDeniedURL(), true);
         }
 
         protected void RedirectToCurrentPage()
         {
-            Response.Redirect(TestableGlobals.Instance.NavigateURL(), true);
+            this.Response.Redirect(TestableGlobals.Instance.NavigateURL(), true);
         }
 
         protected void RedirectToLogin()
         {
-            Response.Redirect(TestableGlobals.Instance.LoginURL(Request.RawUrl, false), true);
+            this.Response.Redirect(TestableGlobals.Instance.LoginURL(this.Request.RawUrl, false), true);
         }
 
         protected void ProcessModuleLoadException(Exception ex)
         {
-            View.ProcessModuleLoadException(ex);
+            this.View.ProcessModuleLoadException(ex);
         }
 
         protected void ShowMessage(string messageHeader, string message, ModuleMessage.ModuleMessageType messageType)
         {
-            ShowMessage(messageHeader, message, messageType, true);
+            this.ShowMessage(messageHeader, message, messageType, true);
         }
 
         protected void ShowMessage(string message, ModuleMessage.ModuleMessageType messageType)
         {
-            ShowMessage(message, messageType, true);
+            this.ShowMessage(message, messageType, true);
         }
 
         protected void ShowMessage(string message, ModuleMessage.ModuleMessageType messageType, bool localize)
         {
-            ShowMessage(string.Empty, message, messageType, localize);
+            this.ShowMessage(string.Empty, message, messageType, localize);
         }
 
         protected void ShowMessage(string messageHeader, string message, ModuleMessage.ModuleMessageType messageType, bool localize)
@@ -230,10 +230,10 @@ namespace DotNetNuke.Web.Mvp
             {
                 if (localize)
                 {
-                    messageHeader = LocalizeString(messageHeader);
-                    message = LocalizeString(message);
+                    messageHeader = this.LocalizeString(messageHeader);
+                    message = this.LocalizeString(message);
                 }
-                View.ShowMessage(messageHeader, message, messageType);
+                this.View.ShowMessage(messageHeader, message, messageType);
             }
         }
 

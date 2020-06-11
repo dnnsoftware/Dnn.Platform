@@ -18,14 +18,14 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions
         #region Constructor
         public WorkflowActionManager()
         {
-            _workflowActionRepository = WorkflowActionRepository.Instance;
+            this._workflowActionRepository = WorkflowActionRepository.Instance;
         }
         #endregion
 
         #region Public Methods
         public IWorkflowAction GetWorkflowActionInstance(int contentTypeId, WorkflowActionTypes actionType)
         {
-            var action = _workflowActionRepository.GetWorkflowAction(contentTypeId, actionType.ToString());
+            var action = this._workflowActionRepository.GetWorkflowAction(contentTypeId, actionType.ToString());
             if (action == null)
             {
                 return null;
@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions
                 throw new ArgumentException("The specified ActionSource does not implement the IWorkflowAction interface");
             }
 
-            _workflowActionRepository.AddWorkflowAction(workflowAction);
+            this._workflowActionRepository.AddWorkflowAction(workflowAction);
         }
         #endregion
 

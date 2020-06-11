@@ -31,10 +31,10 @@ namespace DotNetNuke.Entities.Modules
     {
         public ModuleControlInfo()
         {
-            ModuleControlID = Null.NullInteger;
-            ModuleDefID = Null.NullInteger;
-            ControlType = SecurityAccessLevel.Anonymous;
-            SupportsPopUps = false;
+            this.ModuleControlID = Null.NullInteger;
+            this.ModuleDefID = Null.NullInteger;
+            this.ControlType = SecurityAccessLevel.Anonymous;
+            this.SupportsPopUps = false;
         }
 
         /// -----------------------------------------------------------------------------
@@ -111,15 +111,15 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
-            ModuleControlID = Null.SetNullInteger(dr["ModuleControlID"]);
-            FillInternal(dr);
-            ModuleDefID = Null.SetNullInteger(dr["ModuleDefID"]);
-            ControlTitle = Null.SetNullString(dr["ControlTitle"]);
-            IconFile = Null.SetNullString(dr["IconFile"]);
-            HelpURL = Null.SetNullString(dr["HelpUrl"]);
-            ControlType = (SecurityAccessLevel) Enum.Parse(typeof (SecurityAccessLevel), Null.SetNullString(dr["ControlType"]));
-            ViewOrder = Null.SetNullInteger(dr["ViewOrder"]);
-            SupportsPopUps = Null.SetNullBoolean(dr["SupportsPopUps"]);
+            this.ModuleControlID = Null.SetNullInteger(dr["ModuleControlID"]);
+            this.FillInternal(dr);
+            this.ModuleDefID = Null.SetNullInteger(dr["ModuleDefID"]);
+            this.ControlTitle = Null.SetNullString(dr["ControlTitle"]);
+            this.IconFile = Null.SetNullString(dr["IconFile"]);
+            this.HelpURL = Null.SetNullString(dr["HelpUrl"]);
+            this.ControlType = (SecurityAccessLevel) Enum.Parse(typeof (SecurityAccessLevel), Null.SetNullString(dr["ControlType"]));
+            this.ViewOrder = Null.SetNullInteger(dr["ViewOrder"]);
+            this.SupportsPopUps = Null.SetNullBoolean(dr["SupportsPopUps"]);
 			//Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
         }
@@ -134,11 +134,11 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return ModuleControlID;
+                return this.ModuleControlID;
             }
             set
             {
-                ModuleControlID = value;
+                this.ModuleControlID = value;
             }
         }
 
@@ -174,29 +174,29 @@ namespace DotNetNuke.Entities.Modules
                 {
                     continue;
                 }
-                ReadXmlInternal(reader);
+                this.ReadXmlInternal(reader);
                 switch (reader.Name)
                 {
                     case "controlTitle":
-                        ControlTitle = reader.ReadElementContentAsString();
+                        this.ControlTitle = reader.ReadElementContentAsString();
                         break;
                     case "controlType":
-                        ControlType = (SecurityAccessLevel) Enum.Parse(typeof (SecurityAccessLevel), reader.ReadElementContentAsString());
+                        this.ControlType = (SecurityAccessLevel) Enum.Parse(typeof (SecurityAccessLevel), reader.ReadElementContentAsString());
                         break;
                     case "iconFile":
-                        IconFile = reader.ReadElementContentAsString();
+                        this.IconFile = reader.ReadElementContentAsString();
                         break;
                     case "helpUrl":
-                        HelpURL = reader.ReadElementContentAsString();
+                        this.HelpURL = reader.ReadElementContentAsString();
                         break;
                     case "supportsPopUps":
-                        SupportsPopUps = Boolean.Parse(reader.ReadElementContentAsString());
+                        this.SupportsPopUps = Boolean.Parse(reader.ReadElementContentAsString());
                         break;
                     case "viewOrder":
                         string elementvalue = reader.ReadElementContentAsString();
                         if (!string.IsNullOrEmpty(elementvalue))
                         {
-                            ViewOrder = int.Parse(elementvalue);
+                            this.ViewOrder = int.Parse(elementvalue);
                         }
                         break;
                     default:
@@ -221,15 +221,15 @@ namespace DotNetNuke.Entities.Modules
             writer.WriteStartElement("moduleControl");
 
             //write out properties
-            WriteXmlInternal(writer);
-            writer.WriteElementString("controlTitle", ControlTitle);
-            writer.WriteElementString("controlType", ControlType.ToString());
-            writer.WriteElementString("iconFile", IconFile);
-            writer.WriteElementString("helpUrl", HelpURL);
-            writer.WriteElementString("supportsPopUps", SupportsPopUps.ToString());
-            if (ViewOrder > Null.NullInteger)
+            this.WriteXmlInternal(writer);
+            writer.WriteElementString("controlTitle", this.ControlTitle);
+            writer.WriteElementString("controlType", this.ControlType.ToString());
+            writer.WriteElementString("iconFile", this.IconFile);
+            writer.WriteElementString("helpUrl", this.HelpURL);
+            writer.WriteElementString("supportsPopUps", this.SupportsPopUps.ToString());
+            if (this.ViewOrder > Null.NullInteger)
             {
-                writer.WriteElementString("viewOrder", ViewOrder.ToString());
+                writer.WriteElementString("viewOrder", this.ViewOrder.ToString());
             }
             //Write end of main element
             writer.WriteEndElement();

@@ -70,9 +70,9 @@ namespace log4net.Layout.Pattern
 
 			if (request != null)
 			{
-				if (Option != null)
+				if (this.Option != null)
 				{
-					WriteObject(writer, loggingEvent.Repository, httpContext.Request.Params[Option]);
+					WriteObject(writer, loggingEvent.Repository, httpContext.Request.Params[this.Option]);
 				}
 				else
 				{

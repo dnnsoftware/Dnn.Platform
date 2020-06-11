@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.ModuleCache
 
         public override int GetItemCount(int tabModuleId)
         {
-            return GetCacheKeys(tabModuleId).Count;
+            return this.GetCacheKeys(tabModuleId).Count;
         }
 
         public override byte[] GetModule(int tabModuleId, string cacheKey)

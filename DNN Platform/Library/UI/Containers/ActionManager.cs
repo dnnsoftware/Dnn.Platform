@@ -55,7 +55,7 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         public ActionManager(IActionControl actionControl)
         {
-            ActionControl = actionControl;
+            this.ActionControl = actionControl;
         }
 		
 		#endregion
@@ -81,7 +81,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return ActionControl.ModuleControl.ModuleContext;
+                return this.ActionControl.ModuleControl.ModuleContext;
             }
         }
 
@@ -92,15 +92,15 @@ namespace DotNetNuke.UI.Containers
         private void ClearCache(ModuleAction Command)
         {
 			//synchronize cache
-            ModuleController.SynchronizeModule(ModuleContext.ModuleId);
+            ModuleController.SynchronizeModule(this.ModuleContext.ModuleId);
 
             //Redirect to the same page to pick up changes
-            Response.Redirect(Request.RawUrl, true);
+            this.Response.Redirect(this.Request.RawUrl, true);
         }
 
         private void Delete(ModuleAction Command)
         {
-            var module = ModuleController.Instance.GetModule(int.Parse(Command.CommandArgument), ModuleContext.TabId, true);
+            var module = ModuleController.Instance.GetModule(int.Parse(Command.CommandArgument), this.ModuleContext.TabId, true);
 
             //Check if this is the owner instance of a shared module.
             var user = UserController.Instance.GetCurrentUserInfo();
@@ -112,38 +112,38 @@ namespace DotNetNuke.UI.Containers
                     {
                         //HARD Delete Shared Instance
                         ModuleController.Instance.DeleteTabModule(instance.TabID, instance.ModuleID, false);
-                        EventLogController.Instance.AddLog(instance, PortalSettings, user.UserID, "", EventLogController.EventLogType.MODULE_DELETED);
+                        EventLogController.Instance.AddLog(instance, this.PortalSettings, user.UserID, "", EventLogController.EventLogType.MODULE_DELETED);
                     }
                 }
             }
 
-            ModuleController.Instance.DeleteTabModule(ModuleContext.TabId, int.Parse(Command.CommandArgument), true);
-            EventLogController.Instance.AddLog(module, PortalSettings, user.UserID, "", EventLogController.EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
+            ModuleController.Instance.DeleteTabModule(this.ModuleContext.TabId, int.Parse(Command.CommandArgument), true);
+            EventLogController.Instance.AddLog(module, this.PortalSettings, user.UserID, "", EventLogController.EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
 
             //Redirect to the same page to pick up changes
-            Response.Redirect(Request.RawUrl, true);
+            this.Response.Redirect(this.Request.RawUrl, true);
         }
 
         private void DoAction(ModuleAction Command)
         {
             if (Command.NewWindow)
             {
-                UrlUtils.OpenNewWindow(ActionControl.ModuleControl.Control.Page, GetType(), Command.Url);
+                UrlUtils.OpenNewWindow(this.ActionControl.ModuleControl.Control.Page, this.GetType(), Command.Url);
             }
             else
             {
-                Response.Redirect(Command.Url, true);
+                this.Response.Redirect(Command.Url, true);
             }
         }
 
         private void Localize(ModuleAction Command)
         {
-            ModuleInfo sourceModule = ModuleController.Instance.GetModule(ModuleContext.ModuleId, ModuleContext.TabId, false);
+            ModuleInfo sourceModule = ModuleController.Instance.GetModule(this.ModuleContext.ModuleId, this.ModuleContext.TabId, false);
 
             switch (Command.CommandName)
             {
                 case ModuleActionType.LocalizeModule:
-                    ModuleController.Instance.LocalizeModule(sourceModule, LocaleController.Instance.GetCurrentLocale(ModuleContext.PortalId));
+                    ModuleController.Instance.LocalizeModule(sourceModule, LocaleController.Instance.GetCurrentLocale(this.ModuleContext.PortalId));
                     break;
                 case ModuleActionType.DeLocalizeModule:
                     ModuleController.Instance.DeLocalizeModule(sourceModule);
@@ -151,12 +151,12 @@ namespace DotNetNuke.UI.Containers
             }
 
             // Redirect to the same page to pick up changes
-            Response.Redirect(Request.RawUrl, true);
+            this.Response.Redirect(this.Request.RawUrl, true);
         }
 
         private void Translate(ModuleAction Command)
         {
-            ModuleInfo sourceModule = ModuleController.Instance.GetModule(ModuleContext.ModuleId, ModuleContext.TabId, false);
+            ModuleInfo sourceModule = ModuleController.Instance.GetModule(this.ModuleContext.ModuleId, this.ModuleContext.TabId, false);
             switch (Command.CommandName)
             {
                 case ModuleActionType.TranslateModule:
@@ -168,16 +168,16 @@ namespace DotNetNuke.UI.Containers
             }
 
             // Redirect to the same page to pick up changes
-            Response.Redirect(Request.RawUrl, true);
+            this.Response.Redirect(this.Request.RawUrl, true);
         }
 
         private void MoveToPane(ModuleAction Command)
         {
-            ModuleController.Instance.UpdateModuleOrder(ModuleContext.TabId, ModuleContext.ModuleId, -1, Command.CommandArgument);
-            ModuleController.Instance.UpdateTabModuleOrder(ModuleContext.TabId);
+            ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, -1, Command.CommandArgument);
+            ModuleController.Instance.UpdateTabModuleOrder(this.ModuleContext.TabId);
 
             //Redirect to the same page to pick up changes
-            Response.Redirect(Request.RawUrl, true);
+            this.Response.Redirect(this.Request.RawUrl, true);
         }
 
         private void MoveUpDown(ModuleAction Command)
@@ -185,22 +185,22 @@ namespace DotNetNuke.UI.Containers
             switch (Command.CommandName)
             {
                 case ModuleActionType.MoveTop:
-                    ModuleController.Instance.UpdateModuleOrder(ModuleContext.TabId, ModuleContext.ModuleId, 0, Command.CommandArgument);
+                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, 0, Command.CommandArgument);
                     break;
                 case ModuleActionType.MoveUp:
-                    ModuleController.Instance.UpdateModuleOrder(ModuleContext.TabId, ModuleContext.ModuleId, ModuleContext.Configuration.ModuleOrder - 3, Command.CommandArgument);
+                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, this.ModuleContext.Configuration.ModuleOrder - 3, Command.CommandArgument);
                     break;
                 case ModuleActionType.MoveDown:
-                    ModuleController.Instance.UpdateModuleOrder(ModuleContext.TabId, ModuleContext.ModuleId, ModuleContext.Configuration.ModuleOrder + 3, Command.CommandArgument);
+                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, this.ModuleContext.Configuration.ModuleOrder + 3, Command.CommandArgument);
                     break;
                 case ModuleActionType.MoveBottom:
-                    ModuleController.Instance.UpdateModuleOrder(ModuleContext.TabId, ModuleContext.ModuleId, (ModuleContext.Configuration.PaneModuleCount * 2) + 1, Command.CommandArgument);
+                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, (this.ModuleContext.Configuration.PaneModuleCount * 2) + 1, Command.CommandArgument);
                     break;
             }
-            ModuleController.Instance.UpdateTabModuleOrder(ModuleContext.TabId);
+            ModuleController.Instance.UpdateTabModuleOrder(this.ModuleContext.TabId);
 
             //Redirect to the same page to pick up changes
-            Response.Redirect(Request.RawUrl, true);
+            this.Response.Redirect(this.Request.RawUrl, true);
         }
 
 		#endregion
@@ -215,7 +215,7 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         public bool DisplayControl(DNNNodeCollection objNodes)
         {
-            if (objNodes != null && objNodes.Count > 0 && PortalSettings.UserMode != PortalSettings.Mode.View)
+            if (objNodes != null && objNodes.Count > 0 && this.PortalSettings.UserMode != PortalSettings.Mode.View)
             {
                 DNNNode objRootNode = objNodes[0];
                 if (objRootNode.HasNodes && objRootNode.DNNNodes.Count == 0)
@@ -247,7 +247,7 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         public ModuleAction GetAction(string commandName)
         {
-            return ActionControl.ModuleControl.ModuleContext.Actions.GetActionByCommandName(commandName);
+            return this.ActionControl.ModuleControl.ModuleContext.Actions.GetActionByCommandName(commandName);
         }
 
         /// -----------------------------------------------------------------------------
@@ -258,7 +258,7 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         public ModuleAction GetAction(int id)
         {
-            return ActionControl.ModuleControl.ModuleContext.Actions.GetActionByID(id);
+            return this.ActionControl.ModuleControl.ModuleContext.Actions.GetActionByID(id);
         }
 
         /// -----------------------------------------------------------------------------
@@ -293,9 +293,9 @@ namespace DotNetNuke.UI.Containers
         public bool IsVisible(ModuleAction action)
         {
             bool _IsVisible = false;
-            if (action.Visible && ModulePermissionController.HasModuleAccess(action.Secure, Null.NullString, ModuleContext.Configuration))
+            if (action.Visible && ModulePermissionController.HasModuleAccess(action.Secure, Null.NullString, this.ModuleContext.Configuration))
             {
-                if ((ModuleContext.PortalSettings.UserMode == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
+                if ((this.ModuleContext.PortalSettings.UserMode == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
                 {
                     _IsVisible = true;
                 }
@@ -323,7 +323,7 @@ namespace DotNetNuke.UI.Containers
             int nid = 0;
             if (Int32.TryParse(id, out nid))
             {
-                bProcessed = ProcessAction(ActionControl.ModuleControl.ModuleContext.Actions.GetActionByID(nid));
+                bProcessed = this.ProcessAction(this.ActionControl.ModuleControl.ModuleContext.Actions.GetActionByID(nid));
             }
             return bProcessed;
         }
@@ -340,49 +340,49 @@ namespace DotNetNuke.UI.Containers
             switch (action.CommandName)
             {
                 case ModuleActionType.ModuleHelp:
-                    DoAction(action);
+                    this.DoAction(action);
                     break;
                 case ModuleActionType.OnlineHelp:
-                    DoAction(action);
+                    this.DoAction(action);
                     break;
                 case ModuleActionType.ModuleSettings:
-                    DoAction(action);
+                    this.DoAction(action);
                     break;
                 case ModuleActionType.DeleteModule:
-                    Delete(action);
+                    this.Delete(action);
                     break;
                 case ModuleActionType.PrintModule:
                 case ModuleActionType.SyndicateModule:
-                    DoAction(action);
+                    this.DoAction(action);
                     break;
                 case ModuleActionType.ClearCache:
-                    ClearCache(action);
+                    this.ClearCache(action);
                     break;
                 case ModuleActionType.MovePane:
-                    MoveToPane(action);
+                    this.MoveToPane(action);
                     break;
                 case ModuleActionType.MoveTop:
                 case ModuleActionType.MoveUp:
                 case ModuleActionType.MoveDown:
                 case ModuleActionType.MoveBottom:
-                    MoveUpDown(action);
+                    this.MoveUpDown(action);
                     break;
                 case ModuleActionType.LocalizeModule:
-                    Localize(action);
+                    this.Localize(action);
                     break;
                 case ModuleActionType.DeLocalizeModule:
-                    Localize(action);
+                    this.Localize(action);
                     break;
                 case ModuleActionType.TranslateModule:
-                    Translate(action);
+                    this.Translate(action);
                     break;
                 case ModuleActionType.UnTranslateModule:
-                    Translate(action);
+                    this.Translate(action);
                     break;
                 default: //custom action
                     if (!String.IsNullOrEmpty(action.Url) && action.UseActionEvent == false)
                     {
-                        DoAction(action);
+                        this.DoAction(action);
                     }
                     else
                     {

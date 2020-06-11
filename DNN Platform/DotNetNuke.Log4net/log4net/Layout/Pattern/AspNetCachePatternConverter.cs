@@ -61,9 +61,9 @@ namespace log4net.Layout.Pattern
 		{
 			if (HttpRuntime.Cache != null)
 			{
-				if (Option != null)
+				if (this.Option != null)
 				{
-					WriteObject(writer, loggingEvent.Repository, HttpRuntime.Cache[Option]);
+					WriteObject(writer, loggingEvent.Repository, HttpRuntime.Cache[this.Option]);
 				}
 				else
 				{

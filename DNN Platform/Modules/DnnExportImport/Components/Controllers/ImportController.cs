@@ -35,7 +35,7 @@ namespace Dnn.ExportImport.Components.Controllers
             {
                 EntitiesController.Instance.RunSchedule();
             }
-            AddEventLog(importDto.PortalId, userId, jobId, Constants.LogTypeSiteImport);
+            this.AddEventLog(importDto.PortalId, userId, jobId, Constants.LogTypeSiteImport);
             return jobId;
         }
 
@@ -59,12 +59,12 @@ namespace Dnn.ExportImport.Components.Controllers
             var importPackagesList = importPackages as IList<ImportPackageInfo> ?? importPackages.ToList();
 
             importPackages = !string.IsNullOrEmpty(keyword)
-                ? importPackagesList.Where(GetImportPackageFilterFunc(keyword))
+                ? importPackagesList.Where(this.GetImportPackageFilterFunc(keyword))
                 : importPackagesList;
 
             total = importPackages.Count();
             string sortOrder;
-            var orderByFunc = GetImportPackageOrderByFunc(order, out sortOrder);
+            var orderByFunc = this.GetImportPackageOrderByFunc(order, out sortOrder);
             importPackages = sortOrder == "asc"
                 ? importPackages.OrderBy(orderByFunc)
                 : importPackages.OrderByDescending(orderByFunc);

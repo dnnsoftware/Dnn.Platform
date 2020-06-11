@@ -73,56 +73,56 @@ namespace DotNetNuke.Admin.Containers
         {
             base.OnInit(e);
 
-            ID = "ModuleActions";
+            this.ID = "ModuleActions";
 
-            actionButton.Click += actionButton_Click;
+            this.actionButton.Click += this.actionButton_Click;
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
-            ClientResourceManager.RegisterStyleSheet(Page, "~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
-            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css", FileOrder.Css.ModuleCss);
-            ClientResourceManager.RegisterScript(Page, "~/admin/menus/ModuleActions/ModuleActions.js");
+            ClientResourceManager.RegisterStyleSheet(this.Page, "~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
+            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css", FileOrder.Css.ModuleCss);
+            ClientResourceManager.RegisterScript(this.Page, "~/admin/menus/ModuleActions/ModuleActions.js");
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
 
         void actionButton_Click(object sender, EventArgs e)
         {
-            ProcessAction(Request.Params["__EVENTARGUMENT"]);
+            this.ProcessAction(this.Request.Params["__EVENTARGUMENT"]);
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            AdminActionsJSON = "[]";
-            CustomActionsJSON = "[]";
-            Panes = "[]";
+            this.AdminActionsJSON = "[]";
+            this.CustomActionsJSON = "[]";
+            this.Panes = "[]";
             try
             {
-                SupportsQuickSettings = false;
-                DisplayQuickSettings = false;
-                ModuleTitle = ModuleContext.Configuration.ModuleTitle;
-                var moduleDefinitionId = ModuleContext.Configuration.ModuleDefID;
+                this.SupportsQuickSettings = false;
+                this.DisplayQuickSettings = false;
+                this.ModuleTitle = this.ModuleContext.Configuration.ModuleTitle;
+                var moduleDefinitionId = this.ModuleContext.Configuration.ModuleDefID;
                 var quickSettingsControl = ModuleControlController.GetModuleControlByControlKey("QuickSettings", moduleDefinitionId);
 
                 if (quickSettingsControl != null)
                 {
-                    SupportsQuickSettings = true;
-                    var control  = ModuleControlFactory.LoadModuleControl(Page, ModuleContext.Configuration, "QuickSettings", quickSettingsControl.ControlSrc);
-                    control.ID += ModuleContext.ModuleId;
-                    quickSettings.Controls.Add(control);
+                    this.SupportsQuickSettings = true;
+                    var control  = ModuleControlFactory.LoadModuleControl(this.Page, this.ModuleContext.Configuration, "QuickSettings", quickSettingsControl.ControlSrc);
+                    control.ID += this.ModuleContext.ModuleId;
+                    this.quickSettings.Controls.Add(control);
 
-                    DisplayQuickSettings = ModuleContext.Configuration.ModuleSettings.GetValueOrDefault("QS_FirstLoad", true);
-                    ModuleController.Instance.UpdateModuleSetting(ModuleContext.ModuleId, "QS_FirstLoad", "False");
+                    this.DisplayQuickSettings = this.ModuleContext.Configuration.ModuleSettings.GetValueOrDefault("QS_FirstLoad", true);
+                    ModuleController.Instance.UpdateModuleSetting(this.ModuleContext.ModuleId, "QS_FirstLoad", "False");
 
-                    ClientResourceManager.RegisterScript(Page, "~/admin/menus/ModuleActions/dnnQuickSettings.js");
+                    ClientResourceManager.RegisterScript(this.Page, "~/admin/menus/ModuleActions/dnnQuickSettings.js");
                 }
 
-                if (ActionRoot.Visible)
+                if (this.ActionRoot.Visible)
                 {
                     //Add Menu Items
-                    foreach (ModuleAction rootAction in ActionRoot.Actions)
+                    foreach (ModuleAction rootAction in this.ActionRoot.Actions)
                     {
                         //Process Children
                         var actions = new List<ModuleAction>();
@@ -130,7 +130,7 @@ namespace DotNetNuke.Admin.Containers
                         {
                             if (action.Visible)
                             {
-                                if ((EditMode && Globals.IsAdminControl() == false) ||
+                                if ((this.EditMode && Globals.IsAdminControl() == false) ||
                                     (action.Secure != SecurityAccessLevel.Anonymous && action.Secure != SecurityAccessLevel.View))
                                 {
                                     if (!action.Icon.Contains("://")
@@ -148,7 +148,7 @@ namespace DotNetNuke.Admin.Containers
 
                                     if(String.IsNullOrEmpty(action.Url))
                                     {
-                                        validIDs.Add(action.ID);
+                                        this.validIDs.Add(action.ID);
                                     }
                                 }
                             }
@@ -158,24 +158,24 @@ namespace DotNetNuke.Admin.Containers
                         var oSerializer = new JavaScriptSerializer();
                         if (rootAction.Title == Localization.GetString("ModuleGenericActions.Action", Localization.GlobalResourceFile))
                         {
-                            AdminActionsJSON = oSerializer.Serialize(actions);
+                            this.AdminActionsJSON = oSerializer.Serialize(actions);
                         }
                         else
                         {
                             if (rootAction.Title == Localization.GetString("ModuleSpecificActions.Action", Localization.GlobalResourceFile))
                             {
-                                CustomActionsJSON = oSerializer.Serialize(actions);
+                                this.CustomActionsJSON = oSerializer.Serialize(actions);
                             }
                             else
                             {
-                                SupportsMove = (actions.Count > 0);
-                                Panes = oSerializer.Serialize(PortalSettings.ActiveTab.Panes);
+                                this.SupportsMove = (actions.Count > 0);
+                                this.Panes = oSerializer.Serialize(this.PortalSettings.ActiveTab.Panes);
                             }
                         }
                     }
-                    IsShared = ModuleContext.Configuration.AllTabs
-                        || PortalGroupController.Instance.IsModuleShared(ModuleContext.ModuleId, PortalController.Instance.GetPortal(PortalSettings.PortalId))
-                        || TabController.Instance.GetTabsByModuleID(ModuleContext.ModuleId).Count > 1;
+                    this.IsShared = this.ModuleContext.Configuration.AllTabs
+                        || PortalGroupController.Instance.IsModuleShared(this.ModuleContext.ModuleId, PortalController.Instance.GetPortal(this.PortalSettings.PortalId))
+                        || TabController.Instance.GetTabsByModuleID(this.ModuleContext.ModuleId).Count > 1;
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -188,9 +188,9 @@ namespace DotNetNuke.Admin.Containers
         {
             base.Render(writer);
 
-            foreach(int id in validIDs)
+            foreach(int id in this.validIDs)
             {
-                Page.ClientScript.RegisterForEventValidation(actionButton.UniqueID, id.ToString());
+                this.Page.ClientScript.RegisterForEventValidation(this.actionButton.UniqueID, id.ToString());
             }
         }
     }    

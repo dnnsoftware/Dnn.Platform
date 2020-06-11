@@ -55,7 +55,7 @@ namespace DotNetNuke.UI.WebControls
                 DateTime dteValue = Null.NullDate;
                 try
                 {
-                    var dteString = Convert.ToString(Value);
+                    var dteString = Convert.ToString(this.Value);
                     DateTime.TryParse(dteString, CultureInfo.InvariantCulture, DateTimeStyles.None, out dteValue);
                 }
                 catch (Exception exc)
@@ -94,10 +94,10 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                string _Format = DefaultFormat;
-                if (CustomAttributes != null)
+                string _Format = this.DefaultFormat;
+                if (this.CustomAttributes != null)
                 {
-                    foreach (Attribute attribute in CustomAttributes)
+                    foreach (Attribute attribute in this.CustomAttributes)
                     {
                         if (attribute is FormatAttribute)
                         {
@@ -125,7 +125,7 @@ namespace DotNetNuke.UI.WebControls
                 try
                 {
 					//Try and cast the value to an DateTime
-                    var dteString = OldValue as string;
+                    var dteString = this.OldValue as string;
                     dteValue = DateTime.Parse(dteString, CultureInfo.InvariantCulture);
                 }
                 catch (Exception exc)
@@ -145,15 +145,15 @@ namespace DotNetNuke.UI.WebControls
             get
             {
                 string _StringValue = Null.NullString;
-                if ((DateValue.ToUniversalTime().Date != DateTime.Parse("1754/01/01") && DateValue != Null.NullDate))
+                if ((this.DateValue.ToUniversalTime().Date != DateTime.Parse("1754/01/01") && this.DateValue != Null.NullDate))
                 {
-                    _StringValue = DateValue.ToString(Format);
+                    _StringValue = this.DateValue.ToString(this.Format);
                 }
                 return _StringValue;
             }
             set
             {
-                Value = DateTime.Parse(value);
+                this.Value = DateTime.Parse(value);
             }
         }
 		
@@ -163,37 +163,37 @@ namespace DotNetNuke.UI.WebControls
         {
             base.CreateChildControls();
 
-            dateField = new TextBox();
-            dateField.ControlStyle.CopyFrom(ControlStyle);
-            dateField.ID = ID + "date";
-            Controls.Add(dateField);
+            this.dateField = new TextBox();
+            this.dateField.ControlStyle.CopyFrom(this.ControlStyle);
+            this.dateField.ID = this.ID + "date";
+            this.Controls.Add(this.dateField);
 
-            Controls.Add(new LiteralControl("&nbsp;"));
+            this.Controls.Add(new LiteralControl("&nbsp;"));
 
-            linkCalendar = new HyperLink();
-            linkCalendar.CssClass = "CommandButton";
-            linkCalendar.Text = "<img src=\"" + Globals.ApplicationPath + "/images/calendar.png\" border=\"0\" />&nbsp;&nbsp;" + Localization.GetString("Calendar");
-            linkCalendar.NavigateUrl = Calendar.InvokePopupCal(dateField);
-            Controls.Add(linkCalendar);
+            this.linkCalendar = new HyperLink();
+            this.linkCalendar.CssClass = "CommandButton";
+            this.linkCalendar.Text = "<img src=\"" + Globals.ApplicationPath + "/images/calendar.png\" border=\"0\" />&nbsp;&nbsp;" + Localization.GetString("Calendar");
+            this.linkCalendar.NavigateUrl = Calendar.InvokePopupCal(this.dateField);
+            this.Controls.Add(this.linkCalendar);
         }
 
         protected virtual void LoadDateControls()
         {
-            if (DateValue != Null.NullDate)
+            if (this.DateValue != Null.NullDate)
             {
-                dateField.Text = DateValue.Date.ToString("d");
+                this.dateField.Text = this.DateValue.Date.ToString("d");
             }
         }
 
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
-            EnsureChildControls();
+            this.EnsureChildControls();
             bool dataChanged = false;
-            string presentValue = StringValue;
+            string presentValue = this.StringValue;
             string postedValue = postCollection[postDataKey + "date"];
             if (!presentValue.Equals(postedValue))
             {
-                Value = DateTime.Parse(postedValue).ToString(CultureInfo.InvariantCulture);
+                this.Value = DateTime.Parse(postedValue).ToString(CultureInfo.InvariantCulture);
                 dataChanged = true;
             }
 
@@ -206,10 +206,10 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="e">An EventArgs object</param>
         protected override void OnDataChanged(EventArgs e)
         {
-            var args = new PropertyEditorEventArgs(Name);
-            args.Value = DateValue;
-            args.OldValue = OldDateValue;
-            args.StringValue = DateValue.ToString(CultureInfo.InvariantCulture);
+            var args = new PropertyEditorEventArgs(this.Name);
+            args.Value = this.DateValue;
+            args.OldValue = this.OldDateValue;
+            args.StringValue = this.DateValue.ToString(CultureInfo.InvariantCulture);
             base.OnValueChanged(args);
         }
 
@@ -217,11 +217,11 @@ namespace DotNetNuke.UI.WebControls
         {
             base.OnPreRender(e);
 
-            LoadDateControls();
+            this.LoadDateControls();
 
-            if (Page != null && EditMode == PropertyEditorMode.Edit)
+            if (this.Page != null && this.EditMode == PropertyEditorMode.Edit)
             {
-                Page.RegisterRequiresPostBack(this);
+                this.Page.RegisterRequiresPostBack(this);
             }
         }
 
@@ -231,7 +231,7 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="writer"></param>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
-            RenderChildren(writer);
+            this.RenderChildren(writer);
         }
 
         /// -----------------------------------------------------------------------------
@@ -242,9 +242,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
-            ControlStyle.AddAttributesToRender(writer);
+            this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
-            writer.Write(StringValue);
+            writer.Write(this.StringValue);
             writer.RenderEndTag();
         }
     }

@@ -39,7 +39,7 @@ namespace DotNetNuke.Entities.Users
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public PurgeUsersOnline(ScheduleHistoryItem objScheduleHistoryItem)
         {
-            ScheduleHistoryItem = objScheduleHistoryItem;
+            this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
         /// -----------------------------------------------------------------------------
@@ -56,10 +56,10 @@ namespace DotNetNuke.Entities.Users
             if ((objUserOnlineController.IsEnabled()))
             {
                 //Update the Users Online records from Cache
-                Status = "Updating Users Online";
+                this.Status = "Updating Users Online";
                 objUserOnlineController.UpdateUsersOnline();
-                Status = "Update Users Online Successfully";
-                ScheduleHistoryItem.Succeeded = true;
+                this.Status = "Update Users Online Successfully";
+                this.ScheduleHistoryItem.Succeeded = true;
             }
         }
 
@@ -74,18 +74,18 @@ namespace DotNetNuke.Entities.Users
             try
             {
                 //notification that the event is progressing
-                Progressing(); //OPTIONAL
-                UpdateUsersOnline();
-                ScheduleHistoryItem.Succeeded = true; //REQUIRED
-                ScheduleHistoryItem.AddLogNote("UsersOnline purge completed.");
+                this.Progressing(); //OPTIONAL
+                this.UpdateUsersOnline();
+                this.ScheduleHistoryItem.Succeeded = true; //REQUIRED
+                this.ScheduleHistoryItem.AddLogNote("UsersOnline purge completed.");
             }
             catch (Exception exc) //REQUIRED
             {
-                ScheduleHistoryItem.Succeeded = false; //REQUIRED
-                ScheduleHistoryItem.AddLogNote("UsersOnline purge failed." + exc);
+                this.ScheduleHistoryItem.Succeeded = false; //REQUIRED
+                this.ScheduleHistoryItem.AddLogNote("UsersOnline purge failed." + exc);
 
                 //notification that we have errored
-                Errored(ref exc);
+                this.Errored(ref exc);
 
                 //log the exception
                 Exceptions.LogException(exc);

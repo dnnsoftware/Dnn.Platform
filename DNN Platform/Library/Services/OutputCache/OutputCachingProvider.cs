@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.OutputCache
             using (var sha256 = new SHA256CryptoServiceProvider())
             {
                 hash = sha256.ComputeHash(hash);
-                return string.Concat(tabId.ToString(), "_", ByteArrayToString(hash));
+                return string.Concat(tabId.ToString(), "_", this.ByteArrayToString(hash));
             }
         }
 
@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.OutputCache
                     }
                 }
             }
-            return GenerateCacheKeyHash(tabId, cacheKey.ToString());
+            return this.GenerateCacheKeyHash(tabId, cacheKey.ToString());
         }
 
         public virtual void PurgeCache(int portalId)

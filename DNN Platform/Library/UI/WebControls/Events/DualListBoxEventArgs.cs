@@ -33,7 +33,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public DualListBoxEventArgs(List<string> items)
         {
-            Items = items;
+            this.Items = items;
         }
 
         /// -----------------------------------------------------------------------------

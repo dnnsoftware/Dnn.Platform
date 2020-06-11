@@ -21,10 +21,10 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
 
         public TaskModelBase(ScheduleItem item)
         {
-            Enabled = item.Enabled;
-            FriendlyName = item.FriendlyName;
-            NextStart = item.NextStart.ToPromptShortDateAndTimeString();
-            ScheduleId = item.ScheduleID;
+            this.Enabled = item.Enabled;
+            this.FriendlyName = item.FriendlyName;
+            this.NextStart = item.NextStart.ToPromptShortDateAndTimeString();
+            this.ScheduleId = item.ScheduleID;
         }
         #endregion
 

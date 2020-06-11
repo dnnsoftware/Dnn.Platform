@@ -20,14 +20,14 @@ namespace DotNetNuke.Services.Tokens
 
         public ArrayListPropertyAccess(ArrayList list)
         {
-            custom = list;
+            this.custom = list;
         }
 
         #region IPropertyAccess Members
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
-            if (custom == null)
+            if (this.custom == null)
             {
                 return string.Empty;
             }
@@ -38,9 +38,9 @@ namespace DotNetNuke.Services.Tokens
                 OutputFormat = "g";
             }
             int intIndex = int.Parse(propertyName);
-            if ((custom != null) && custom.Count > intIndex)
+            if ((this.custom != null) && this.custom.Count > intIndex)
             {
-                valueObject = custom[intIndex].ToString();
+                valueObject = this.custom[intIndex].ToString();
             }
             if ((valueObject != null))
             {

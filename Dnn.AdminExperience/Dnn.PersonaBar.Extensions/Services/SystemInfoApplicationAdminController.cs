@@ -27,15 +27,15 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             try
             {
-                var friendlyUrlProvider = GetProviderConfiguration("friendlyUrl");
-                return Request.CreateResponse(HttpStatusCode.OK, new
+                var friendlyUrlProvider = this.GetProviderConfiguration("friendlyUrl");
+                return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     product = DotNetNukeContext.Current.Application.Description,
                     version = DotNetNukeContext.Current.Application.Version.ToString(3),
-                    htmlEditorProvider = GetProviderConfiguration("htmlEditor"),
-                    dataProvider = GetProviderConfiguration("data"),
-                    cachingProvider = GetProviderConfiguration("caching"),
-                    loggingProvider = GetProviderConfiguration("logging"),
+                    htmlEditorProvider = this.GetProviderConfiguration("htmlEditor"),
+                    dataProvider = this.GetProviderConfiguration("data"),
+                    cachingProvider = this.GetProviderConfiguration("caching"),
+                    loggingProvider = this.GetProviderConfiguration("logging"),
                     friendlyUrlProvider,
                     friendlyUrlsEnabled = DotNetNuke.Entities.Host.Host.UseFriendlyUrls.ToString(),
                     friendlyUrlType = GetFriendlyUrlType(friendlyUrlProvider),
@@ -47,7 +47,7 @@ namespace Dnn.PersonaBar.Servers.Services
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 

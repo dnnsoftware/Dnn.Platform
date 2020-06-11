@@ -37,11 +37,11 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return Value.ToString();
+                return this.Value.ToString();
             }
             set
             {
-                Value = new Version(value);
+                this.Value = new Version(value);
             }
         }
 
@@ -49,7 +49,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return Value as Version;
+                return this.Value as Version;
             }
         }
 		
@@ -59,7 +59,7 @@ namespace DotNetNuke.UI.WebControls
         {
             //Render the Select Tag
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID + "_" + type);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_" + type);
             writer.AddStyleAttribute("width", "60px");
             writer.RenderBeginTag(HtmlTextWriterTag.Select);
             for (int i = 0; i <= 99; i++)
@@ -92,10 +92,10 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
-            var args = new PropertyEditorEventArgs(Name);
-            args.Value = Value;
-            args.OldValue = OldValue;
-            args.StringValue = StringValue;
+            var args = new PropertyEditorEventArgs(this.Name);
+            args.Value = this.Value;
+            args.OldValue = this.OldValue;
+            args.StringValue = this.StringValue;
 
             base.OnValueChanged(args);
         }
@@ -110,9 +110,9 @@ namespace DotNetNuke.UI.WebControls
         {
             base.OnPreRender(e);
 
-            if (Page != null && EditMode == PropertyEditorMode.Edit)
+            if (this.Page != null && this.EditMode == PropertyEditorMode.Edit)
             {
-                Page.RegisterRequiresPostBack(this);
+                this.Page.RegisterRequiresPostBack(this);
             }
         }
 
@@ -125,21 +125,21 @@ namespace DotNetNuke.UI.WebControls
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             //Render a containing span Tag
-            ControlStyle.AddAttributesToRender(writer);
+            this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
             //Render Major
-            RenderDropDownList(writer, "Major", Version.Major);
+            this.RenderDropDownList(writer, "Major", this.Version.Major);
 
             writer.Write("&nbsp;");
 
             //Render Minor
-            RenderDropDownList(writer, "Minor", Version.Minor);
+            this.RenderDropDownList(writer, "Minor", this.Version.Minor);
 
             writer.Write("&nbsp;");
 
             //Render Build
-            RenderDropDownList(writer, "Build", Version.Build);
+            this.RenderDropDownList(writer, "Build", this.Version.Build);
 
             //Close Select Tag
             writer.RenderEndTag();
@@ -153,11 +153,11 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
-            ControlStyle.AddAttributesToRender(writer);
+            this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
-            if (Version != null)
+            if (this.Version != null)
             {
-                writer.Write(Version.ToString(3));
+                writer.Write(this.Version.ToString(3));
             }
             writer.RenderEndTag();
         }
@@ -168,11 +168,11 @@ namespace DotNetNuke.UI.WebControls
             string minorVersion = postCollection[postDataKey + "_Minor"];
             string buildVersion = postCollection[postDataKey + "_Build"];
             bool dataChanged = false;
-            Version presentValue = Version;
+            Version presentValue = this.Version;
             var postedValue = new Version(majorVersion + "." + minorVersion + "." + buildVersion);
             if (!postedValue.Equals(presentValue))
             {
-                Value = postedValue;
+                this.Value = postedValue;
                 dataChanged = true;
             }
             return dataChanged;

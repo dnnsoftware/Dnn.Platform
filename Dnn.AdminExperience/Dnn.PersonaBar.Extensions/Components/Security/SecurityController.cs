@@ -80,7 +80,7 @@ namespace Dnn.PersonaBar.Security.Components
                         ChildTabs = new List<TabDto>()
                     };
 
-                    AddChildNodes(node, portalInfo, cultureCode);
+                    this.AddChildNodes(node, portalInfo, cultureCode);
                     rootNode.ChildTabs.Add(node);
                 }
             }
@@ -114,7 +114,7 @@ namespace Dnn.PersonaBar.Security.Components
                 parentNode.ChildTabs.Clear();
                 int parentId;
                 int.TryParse(parentNode.TabId, out parentId);
-                var tabs = GetFilteredTabs(TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(cultureCode, true)).WithParentId(parentId);
+                var tabs = this.GetFilteredTabs(TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(cultureCode, true)).WithParentId(parentId);
 
                 foreach (var tab in tabs)
                 {
@@ -126,7 +126,7 @@ namespace Dnn.PersonaBar.Security.Components
                             TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
                             ParentTabId = tab.ParentId
                         };
-                        AddChildNodes(node, portal, cultureCode);
+                        this.AddChildNodes(node, portal, cultureCode);
                         parentNode.ChildTabs.Add(node);
                     }
                 }

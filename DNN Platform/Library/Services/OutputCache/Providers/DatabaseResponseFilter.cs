@@ -17,16 +17,16 @@ namespace DotNetNuke.Services.OutputCache.Providers
         {
             if (maxVaryByCount > -1 && DataProvider.Instance().GetOutputCacheItemCount(itemId) >= maxVaryByCount)
             {
-                HasErrored = true;
+                this.HasErrored = true;
                 return;
             }
 
-            CaptureStream = new MemoryStream();
+            this.CaptureStream = new MemoryStream();
         }
 
         protected override void AddItemToCache(int itemId, string output)
         {
-            DataProvider.Instance().AddOutputCacheItem(itemId, CacheKey, output, DateTime.UtcNow.Add(CacheDuration));
+            DataProvider.Instance().AddOutputCacheItem(itemId, this.CacheKey, output, DateTime.UtcNow.Add(this.CacheDuration));
         }
 
         protected override void RemoveItemFromCache(int itemId)

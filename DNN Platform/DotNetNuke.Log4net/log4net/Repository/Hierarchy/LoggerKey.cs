@@ -72,9 +72,9 @@ namespace log4net.Repository.Hierarchy
 			// NETCF: String.Intern causes Native Exception
 			m_name = name;
 #else
-			m_name = string.Intern(name);
+			this.m_name = string.Intern(name);
 #endif
-			m_hashCache = name.GetHashCode();
+			this.m_hashCache = name.GetHashCode();
 		}
 
 		#endregion Internal Instance Constructors
@@ -92,7 +92,7 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		override public int GetHashCode() 
 		{
-			return m_hashCache;
+			return this.m_hashCache;
 		}
 
 		/// <summary>
@@ -123,7 +123,7 @@ namespace log4net.Repository.Hierarchy
 				return ( m_name == objKey.m_name );
 #else
 				// Compare reference types rather than string's overloaded ==
-				return ( ((object)m_name) == ((object)objKey.m_name) );
+				return ( ((object)this.m_name) == ((object)objKey.m_name) );
 #endif
 			}
 			return false;

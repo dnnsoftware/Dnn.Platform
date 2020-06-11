@@ -62,10 +62,10 @@ namespace log4net.Layout.Pattern
 		/// </remarks>
 		public void ActivateOptions()
 		{
-			if (Option == null)
+			if (this.Option == null)
 				return;
 			
-			string optStr = Option.Trim();
+			string optStr = this.Option.Trim();
 			if (optStr.Length != 0)
 			{
 				int stackLevelVal;
@@ -77,7 +77,7 @@ namespace log4net.Layout.Pattern
 					}
 					else
 					{
-						m_stackFrameLevel = stackLevelVal;
+						this.m_stackFrameLevel = stackLevelVal;
 					}
 				} 
 				else
@@ -106,7 +106,7 @@ namespace log4net.Layout.Pattern
 				return;
 			}
 			
-			int stackFrameIndex = m_stackFrameLevel - 1;
+			int stackFrameIndex = this.m_stackFrameLevel - 1;
 			while (stackFrameIndex >= 0)
 			{
 				if (stackFrameIndex >= stackframes.Length)
@@ -116,7 +116,7 @@ namespace log4net.Layout.Pattern
 				}
 				
 				StackFrameItem stackFrame = stackframes[stackFrameIndex];
-                writer.Write("{0}.{1}", stackFrame.ClassName, GetMethodInformation(stackFrame.Method));
+                writer.Write("{0}.{1}", stackFrame.ClassName, this.GetMethodInformation(stackFrame.Method));
 				if (stackFrameIndex > 0)
 				{
                     // TODO: make this user settable?

@@ -26,12 +26,12 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
         protected override void OnPreRender(System.EventArgs e)
         {
-            foreach (var path in Paths)
+            foreach (var path in this.Paths)
             {
                 path.Name = path.Name.ToLowerInvariant();
             }
 
-            if (AsyncPostBackHandlerEnabled)
+            if (this.AsyncPostBackHandlerEnabled)
             {
                 const string handlerScript = @"
 var loadScriptInSingleMode = function(){
@@ -131,7 +131,7 @@ Sys._ScriptLoader.getInstance().loadScripts = function(){
 };
 }(jQuery));
 ";
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CRMHandler", handlerScript, true);
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "CRMHandler", handlerScript, true);
             }
 
             base.OnPreRender(e);

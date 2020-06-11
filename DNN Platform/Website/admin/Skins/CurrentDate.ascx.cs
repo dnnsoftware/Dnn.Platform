@@ -31,18 +31,18 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnInit(e);
 
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (!String.IsNullOrEmpty(CssClass))
+            if (!String.IsNullOrEmpty(this.CssClass))
             {
-                lblDate.CssClass = CssClass;
+                this.lblDate.CssClass = this.CssClass;
             }
             var user = UserController.Instance.GetCurrentUserInfo();
-            lblDate.Text = !String.IsNullOrEmpty(DateFormat) ? user.LocalTime().ToString(DateFormat) : user.LocalTime().ToLongDateString();
+            this.lblDate.Text = !String.IsNullOrEmpty(this.DateFormat) ? user.LocalTime().ToString(this.DateFormat) : user.LocalTime().ToLongDateString();
         }
     }
 }

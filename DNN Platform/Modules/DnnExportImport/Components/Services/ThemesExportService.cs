@@ -34,13 +34,13 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            if (CheckCancelled(exportJob)) return;
+            if (this.CheckCancelled(exportJob)) return;
             //Skip the export if all the folders have been processed already.
-            if (CheckPoint.Stage >= 1)
+            if (this.CheckPoint.Stage >= 1)
                 return;
 
-            _exportImportJob = exportJob;
-            _portalSettings = new PortalSettings(exportJob.PortalId);
+            this._exportImportJob = exportJob;
+            this._portalSettings = new PortalSettings(exportJob.PortalId);
 
             //Create Zip File to hold files
             var currentIndex = 0;
@@ -50,21 +50,21 @@ namespace Dnn.ExportImport.Components.Services
                 var packagesZipFileFormat = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipThemes}";
                 var packagesZipFile = string.Format(packagesZipFileFormat, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
 
-                if (CheckPoint.Stage == 0)
+                if (this.CheckPoint.Stage == 0)
                 {
                     //export skin packages.
-                    var exportThemes = GetExportThemes();
+                    var exportThemes = this.GetExportThemes();
                     var totalThemes = exportThemes.Count;
 
                     //Update the total items count in the check points. This should be updated only once.
-                    CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? totalThemes : CheckPoint.TotalItems;
-                    if (CheckPointStageCallback(this)) return;
+                    this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalThemes : this.CheckPoint.TotalItems;
+                    if (this.CheckPointStageCallback(this)) return;
 
                     using (var archive = CompressionUtil.OpenCreate(packagesZipFile))
                     {
                         foreach (var theme in exportThemes)
                         {
-                            var filePath = SkinController.FormatSkinSrc(theme, _portalSettings);
+                            var filePath = SkinController.FormatSkinSrc(theme, this._portalSettings);
                             var physicalPath = Path.Combine(Globals.ApplicationMapPath, filePath.TrimStart('/'));
                             if (Directory.Exists(physicalPath))
                             {
@@ -76,48 +76,48 @@ namespace Dnn.ExportImport.Components.Services
                                 totalThemesExported += 1;
                             }
 
-                            CheckPoint.ProcessedItems++;
-                            CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / totalThemes;
+                            this.CheckPoint.ProcessedItems++;
+                            this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalThemes;
                             currentIndex++;
                             //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
-                            if (currentIndex % 10 == 0 && CheckPointStageCallback(this)) return;
+                            if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this)) return;
                         }
                     }
 
-                    CheckPoint.Stage++;
-                    CheckPoint.Completed = true;
-                    CheckPoint.Progress = 100;
+                    this.CheckPoint.Stage++;
+                    this.CheckPoint.Completed = true;
+                    this.CheckPoint.Progress = 100;
                 }
             }
             finally
             {
-                CheckPointStageCallback(this);
-                Result.AddSummary("Exported Themes", totalThemesExported.ToString());
+                this.CheckPointStageCallback(this);
+                this.Result.AddSummary("Exported Themes", totalThemesExported.ToString());
             }
         }
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (CheckCancelled(importJob)) return;
+            if (this.CheckCancelled(importJob)) return;
             //Skip the export if all the templates have been processed already.
-            if (CheckPoint.Stage >= 1 || CheckPoint.Completed)
+            if (this.CheckPoint.Stage >= 1 || this.CheckPoint.Completed)
                 return;
 
-            _exportImportJob = importJob;
+            this._exportImportJob = importJob;
 
-            var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{_exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipThemes}";
+            var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{this._exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipThemes}";
             var tempFolder = $"{Path.GetDirectoryName(packageZipFile)}\\{DateTime.Now.Ticks}";
             if (File.Exists(packageZipFile))
             {
                 CompressionUtil.UnZipArchive(packageZipFile, tempFolder);
                 var exporeFiles = Directory.Exists(tempFolder) ? Directory.GetFiles(tempFolder, "*.*", SearchOption.AllDirectories) : new string[0];
                 var portalSettings = new PortalSettings(importDto.PortalId);
-                _importCount = exporeFiles.Length;
+                this._importCount = exporeFiles.Length;
 
-                CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? exporeFiles.Length : CheckPoint.TotalItems;
-                if (CheckPointStageCallback(this)) return;
+                this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? exporeFiles.Length : this.CheckPoint.TotalItems;
+                if (this.CheckPointStageCallback(this)) return;
 
-                if (CheckPoint.Stage == 0)
+                if (this.CheckPoint.Stage == 0)
                 {
                     try
                     {
@@ -155,38 +155,38 @@ namespace Dnn.ExportImport.Components.Services
                                     File.Copy(file, targetPath, true);
                                 }
 
-                                Result.AddLogEntry("Import Theme File completed", targetPath);
-                                CheckPoint.ProcessedItems++;
-                                CheckPoint.Progress = CheckPoint.ProcessedItems * 100.0 / exporeFiles.Length;
-                                CheckPointStageCallback(this); // just to update the counts without exit logic
+                                this.Result.AddLogEntry("Import Theme File completed", targetPath);
+                                this.CheckPoint.ProcessedItems++;
+                                this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / exporeFiles.Length;
+                                this.CheckPointStageCallback(this); // just to update the counts without exit logic
                             }
                             catch (Exception ex)
                             {
-                                Result.AddLogEntry("Import Theme error", file);
+                                this.Result.AddLogEntry("Import Theme error", file);
                                 Logger.Error(ex);
                             }
                         }
-                        CheckPoint.Stage++;
-                        CheckPoint.Completed = true;
+                        this.CheckPoint.Stage++;
+                        this.CheckPoint.Completed = true;
                     }
                     finally
                     {
-                        CheckPointStageCallback(this);
+                        this.CheckPointStageCallback(this);
                         FileSystemUtils.DeleteFolderRecursive(tempFolder);
                     }
                 }
             }
             else
             {
-                CheckPoint.Completed = true;
-                CheckPointStageCallback(this);
-                Result.AddLogEntry("ThemesFileNotFound", "Themes file not found. Skipping themes import", ReportLevel.Warn);
+                this.CheckPoint.Completed = true;
+                this.CheckPointStageCallback(this);
+                this.Result.AddLogEntry("ThemesFileNotFound", "Themes file not found. Skipping themes import", ReportLevel.Warn);
             }
         }
 
         public override int GetImportTotal()
         {
-            return _importCount;
+            return this._importCount;
         }
 
         private IList<string> GetExportThemes()
@@ -194,21 +194,21 @@ namespace Dnn.ExportImport.Components.Services
             var exportThemes = new List<string>();
 
             //get site level themes
-            exportThemes.Add(_portalSettings.DefaultPortalSkin);
-            exportThemes.Add(_portalSettings.DefaultPortalContainer);
+            exportThemes.Add(this._portalSettings.DefaultPortalSkin);
+            exportThemes.Add(this._portalSettings.DefaultPortalContainer);
 
-            if (!exportThemes.Contains(_portalSettings.DefaultAdminSkin))
+            if (!exportThemes.Contains(this._portalSettings.DefaultAdminSkin))
             {
-                exportThemes.Add(_portalSettings.DefaultAdminSkin);
+                exportThemes.Add(this._portalSettings.DefaultAdminSkin);
             }
 
-            if (!exportThemes.Contains(_portalSettings.DefaultAdminContainer))
+            if (!exportThemes.Contains(this._portalSettings.DefaultAdminContainer))
             {
-                exportThemes.Add(_portalSettings.DefaultAdminContainer);
+                exportThemes.Add(this._portalSettings.DefaultAdminContainer);
             }
 
-            exportThemes.AddRange(LoadExportThemesForPages());
-            exportThemes.AddRange(LoadExportContainersForModules());
+            exportThemes.AddRange(this.LoadExportThemesForPages());
+            exportThemes.AddRange(this.LoadExportContainersForModules());
 
             //get the theme packages
             var themePackages = new List<string>();
@@ -228,7 +228,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var exportThemes = new List<string>();
 
-            foreach (var exportTab in Repository.GetAllItems<ExportTab>())
+            foreach (var exportTab in this.Repository.GetAllItems<ExportTab>())
             {
                 if (!string.IsNullOrEmpty(exportTab.SkinSrc) && !exportThemes.Contains(exportTab.SkinSrc))
                 {
@@ -248,7 +248,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var exportThemes = new List<string>();
 
-            foreach (var module in Repository.GetAllItems<ExportTabModule>())
+            foreach (var module in this.Repository.GetAllItems<ExportTabModule>())
             {
                 if (!string.IsNullOrEmpty(module.ContainerSrc) && !exportThemes.Contains(module.ContainerSrc))
                 {

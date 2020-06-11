@@ -165,13 +165,13 @@ namespace Dnn.PersonaBar.Themes.Components
                             .Replace("/", string.Empty);
             var themeLevel = GetThemeLevel(filePath);
 
-            var themeInfo = (type == ThemeType.Skin ? GetLayouts(portalSettings, ThemeLevel.All)
-                                                    : GetContainers(portalSettings, ThemeLevel.All))
+            var themeInfo = (type == ThemeType.Skin ? this.GetLayouts(portalSettings, ThemeLevel.All)
+                                                    : this.GetContainers(portalSettings, ThemeLevel.All))
                             .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase) && t.Level == themeLevel);
 
             if (themeInfo != null)
             {
-                return GetThemeFiles(portalSettings, themeInfo).FirstOrDefault(f => (f.Path + ".ascx").Equals(filePath, StringComparison.OrdinalIgnoreCase));
+                return this.GetThemeFiles(portalSettings, themeInfo).FirstOrDefault(f => (f.Path + ".ascx").Equals(filePath, StringComparison.OrdinalIgnoreCase));
             }
 
             return null;
@@ -222,25 +222,25 @@ namespace Dnn.PersonaBar.Themes.Components
         /// <param name="level"></param>
         public void ApplyDefaultTheme(PortalSettings portalSettings, string themeName, ThemeLevel level)
         {
-            var skin = GetLayouts(portalSettings, ThemeLevel.All)
+            var skin = this.GetLayouts(portalSettings, ThemeLevel.All)
                 .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase) && t.Level == level);
             if (skin != null)
             {
-                var skinFile = GetThemeFiles(portalSettings, skin).FirstOrDefault(t => t.Path == skin.DefaultThemeFile);
+                var skinFile = this.GetThemeFiles(portalSettings, skin).FirstOrDefault(t => t.Path == skin.DefaultThemeFile);
                 if (skinFile != null)
                 {
-                    ApplyTheme(portalSettings.PortalId, skinFile, ApplyThemeScope.Site | ApplyThemeScope.Edit);
+                    this.ApplyTheme(portalSettings.PortalId, skinFile, ApplyThemeScope.Site | ApplyThemeScope.Edit);
                 }
             }
 
-            var container = GetContainers(portalSettings, ThemeLevel.All)
+            var container = this.GetContainers(portalSettings, ThemeLevel.All)
                 .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase) && t.Level == level);
             if (container != null)
             {
-                var containerFile = GetThemeFiles(portalSettings, container).FirstOrDefault(t => t.Path == container.DefaultThemeFile);
+                var containerFile = this.GetThemeFiles(portalSettings, container).FirstOrDefault(t => t.Path == container.DefaultThemeFile);
                 if (containerFile != null)
                 {
-                    ApplyTheme(portalSettings.PortalId, containerFile, ApplyThemeScope.Site | ApplyThemeScope.Edit);
+                    this.ApplyTheme(portalSettings.PortalId, containerFile, ApplyThemeScope.Site | ApplyThemeScope.Edit);
                 }
             }
         }
@@ -346,7 +346,7 @@ namespace Dnn.PersonaBar.Themes.Components
                 objStream.WriteLine(strSkin);
                 objStream.Close();
 
-                UpdateManifest(portalSettings, updateTheme);
+                this.UpdateManifest(portalSettings, updateTheme);
             }
         }
 

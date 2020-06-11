@@ -44,7 +44,7 @@ namespace DotNetNuke.Common.Lists
 					Name = text
 				};
 				c.NormalizedFullName = c.FullName.NormalizeString();
-				Add(li.Value, c);
+				this.Add(li.Value, c);
 			}
 
 		}

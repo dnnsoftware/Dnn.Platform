@@ -25,26 +25,26 @@ namespace DotNetNuke.ComponentModel
         /// <param name="type">The type of the component</param>
         public SingletonComponentBuilder(string name, Type type)
         {
-            _Name = name;
-            _Type = type;
+            this._Name = name;
+            this._Type = type;
         }
 
         #region IComponentBuilder Members
 
         public object BuildComponent()
         {
-            if (_Instance == null)
+            if (this._Instance == null)
             {
-                CreateInstance();
+                this.CreateInstance();
             }
-            return _Instance;
+            return this._Instance;
         }
 
         public string Name
         {
             get
             {
-                return _Name;
+                return this._Name;
             }
         }
 
@@ -52,7 +52,7 @@ namespace DotNetNuke.ComponentModel
 
         private void CreateInstance()
         {
-            _Instance = Reflection.CreateObject(_Type);
+            this._Instance = Reflection.CreateObject(this._Type);
         }
     }
 }

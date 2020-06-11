@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.Groups
 
         public ModerationServiceController(INavigationManager navigationManager)
         {
-            NavigationManager = navigationManager;
+            this.NavigationManager = navigationManager;
         }
 
         public class NotificationDTO
@@ -51,37 +51,37 @@ namespace DotNetNuke.Modules.Groups
         {
             try
             {
-                var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, UserInfo.UserID);
-                if (recipient == null) return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate recipient");
+                var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, this.UserInfo.UserID);
+                if (recipient == null) return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate recipient");
 
                 var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
-                ParseKey(notification.Context);
-                if (_roleInfo == null)
+                this.ParseKey(notification.Context);
+                if (this._roleInfo == null)
                 {
-                    return  Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate role");
+                    return  this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate role");
                 }
-                if (!IsMod())
+                if (!this.IsMod())
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Not Authorized!");
+                    return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Not Authorized!");
                 }
-                _roleInfo.Status = RoleStatus.Approved;
-                RoleController.Instance.UpdateRole(_roleInfo);
-                var roleCreator = UserController.GetUserById(PortalSettings.PortalId, _roleInfo.CreatedByUserID);
+                this._roleInfo.Status = RoleStatus.Approved;
+                RoleController.Instance.UpdateRole(this._roleInfo);
+                var roleCreator = UserController.GetUserById(this.PortalSettings.PortalId, this._roleInfo.CreatedByUserID);
                 //Update the original creator's role
-                RoleController.Instance.UpdateUserRole(PortalSettings.PortalId, roleCreator.UserID, _roleInfo.RoleID, RoleStatus.Approved, true, false);
-                GroupUtilities.CreateJournalEntry(_roleInfo, roleCreator);
+                RoleController.Instance.UpdateUserRole(this.PortalSettings.PortalId, roleCreator.UserID, this._roleInfo.RoleID, RoleStatus.Approved, true, false);
+                GroupUtilities.CreateJournalEntry(this._roleInfo, roleCreator);
 
                 var notifications = new Notifications();
-                var siteAdmin = UserController.GetUserById(PortalSettings.PortalId, PortalSettings.AdministratorId);
-                notifications.AddGroupNotification(Constants.GroupApprovedNotification, _tabId, _moduleId, _roleInfo, siteAdmin, new List<RoleInfo> { _roleInfo });
+                var siteAdmin = UserController.GetUserById(this.PortalSettings.PortalId, this.PortalSettings.AdministratorId);
+                notifications.AddGroupNotification(Constants.GroupApprovedNotification, this._tabId, this._moduleId, this._roleInfo, siteAdmin, new List<RoleInfo> { this._roleInfo });
                 NotificationsController.Instance.DeleteAllNotificationRecipients(postData.NotificationId);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -91,33 +91,33 @@ namespace DotNetNuke.Modules.Groups
         {
             try
             {
-                var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, UserInfo.UserID);
-                if (recipient == null) return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate recipient");
+                var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, this.UserInfo.UserID);
+                if (recipient == null) return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate recipient");
 
                 var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
-                ParseKey(notification.Context);
-                if (_roleInfo == null)
+                this.ParseKey(notification.Context);
+                if (this._roleInfo == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate role");
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate role");
                 }
-                if (!IsMod())
+                if (!this.IsMod())
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Not Authorized!");
+                    return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Not Authorized!");
                 }
                 var notifications = new Notifications();
-                var roleCreator = UserController.GetUserById(PortalSettings.PortalId, _roleInfo.CreatedByUserID);
-                var siteAdmin = UserController.GetUserById(PortalSettings.PortalId, PortalSettings.AdministratorId);
-                notifications.AddGroupNotification(Constants.GroupRejectedNotification, _tabId, _moduleId, _roleInfo, siteAdmin, new List<RoleInfo> { _roleInfo }, roleCreator);
+                var roleCreator = UserController.GetUserById(this.PortalSettings.PortalId, this._roleInfo.CreatedByUserID);
+                var siteAdmin = UserController.GetUserById(this.PortalSettings.PortalId, this.PortalSettings.AdministratorId);
+                notifications.AddGroupNotification(Constants.GroupRejectedNotification, this._tabId, this._moduleId, this._roleInfo, siteAdmin, new List<RoleInfo> { this._roleInfo }, roleCreator);
 
-                var role = RoleController.Instance.GetRole(PortalSettings.PortalId, r => r.RoleID == _roleId);
+                var role = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == this._roleId);
                 RoleController.Instance.DeleteRole(role);
                 NotificationsController.Instance.DeleteAllNotificationRecipients(postData.NotificationId);
-                return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -129,33 +129,33 @@ namespace DotNetNuke.Modules.Groups
         {
             try
             {
-                if (UserInfo.UserID >= 0 && postData.RoleId > -1)
+                if (this.UserInfo.UserID >= 0 && postData.RoleId > -1)
                 {
-                    _roleInfo = RoleController.Instance.GetRoleById(PortalSettings.PortalId, postData.RoleId);
-                    if (_roleInfo != null)
+                    this._roleInfo = RoleController.Instance.GetRoleById(this.PortalSettings.PortalId, postData.RoleId);
+                    if (this._roleInfo != null)
                     {
 
                         var requireApproval = false;
 
-                        if(_roleInfo.Settings.ContainsKey("ReviewMembers"))
-                            requireApproval = Convert.ToBoolean(_roleInfo.Settings["ReviewMembers"]);
+                        if(this._roleInfo.Settings.ContainsKey("ReviewMembers"))
+                            requireApproval = Convert.ToBoolean(this._roleInfo.Settings["ReviewMembers"]);
 
 
-                        if ((_roleInfo.IsPublic || UserInfo.IsInRole(PortalSettings.AdministratorRoleName)) && !requireApproval)
+                        if ((this._roleInfo.IsPublic || this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName)) && !requireApproval)
                         {
-                            RoleController.Instance.AddUserRole(PortalSettings.PortalId, UserInfo.UserID, _roleInfo.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
-                            RoleController.Instance.UpdateRole(_roleInfo);
+                            RoleController.Instance.AddUserRole(this.PortalSettings.PortalId, this.UserInfo.UserID, this._roleInfo.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+                            RoleController.Instance.UpdateRole(this._roleInfo);
 
-                            var url = NavigationManager.NavigateURL(postData.GroupViewTabId, "", new[] { "groupid=" + _roleInfo.RoleID });
-                            return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", URL = url });
+                            var url = this.NavigationManager.NavigateURL(postData.GroupViewTabId, "", new[] { "groupid=" + this._roleInfo.RoleID });
+                            return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", URL = url });
                         
                         }
-                        if (_roleInfo.IsPublic && requireApproval)
+                        if (this._roleInfo.IsPublic && requireApproval)
                         {
-                            RoleController.Instance.AddUserRole(PortalSettings.PortalId, UserInfo.UserID, _roleInfo.RoleID, RoleStatus.Pending, false, Null.NullDate, Null.NullDate);
+                            RoleController.Instance.AddUserRole(this.PortalSettings.PortalId, this.UserInfo.UserID, this._roleInfo.RoleID, RoleStatus.Pending, false, Null.NullDate, Null.NullDate);
                             var notifications = new Notifications();
-                            notifications.AddGroupOwnerNotification(Constants.MemberPendingNotification, _tabId, _moduleId, _roleInfo, UserInfo);
-                            return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", URL = string.Empty });
+                            notifications.AddGroupOwnerNotification(Constants.MemberPendingNotification, this._tabId, this._moduleId, this._roleInfo, this.UserInfo);
+                            return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", URL = string.Empty });
                         }
                     }
                 }
@@ -163,10 +163,10 @@ namespace DotNetNuke.Modules.Groups
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
 
-            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unknown Error");
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unknown Error");
         }
 
         public class RoleDTO
@@ -185,15 +185,15 @@ namespace DotNetNuke.Modules.Groups
 
             try
             {
-                if (UserInfo.UserID >= 0 && postData.RoleId > 0)
+                if (this.UserInfo.UserID >= 0 && postData.RoleId > 0)
                 {
-                    _roleInfo = RoleController.Instance.GetRoleById(PortalSettings.PortalId, postData.RoleId);
+                    this._roleInfo = RoleController.Instance.GetRoleById(this.PortalSettings.PortalId, postData.RoleId);
 
-                    if (_roleInfo != null)
+                    if (this._roleInfo != null)
                     {
-                        if (UserInfo.IsInRole(_roleInfo.RoleName))
+                        if (this.UserInfo.IsInRole(this._roleInfo.RoleName))
                         {
-                            RoleController.DeleteUserRole(UserInfo, _roleInfo, PortalSettings, false);
+                            RoleController.DeleteUserRole(this.UserInfo, this._roleInfo, this.PortalSettings, false);
                         }
                         success = true;
                     }
@@ -202,15 +202,15 @@ namespace DotNetNuke.Modules.Groups
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
 
             if(success)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
             }
             
-            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unknown Error");
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unknown Error");
         }
        
         [HttpPost]
@@ -219,43 +219,43 @@ namespace DotNetNuke.Modules.Groups
         {
             try
             {
-                var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, UserInfo.UserID);
-                if (recipient == null) return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate recipient");
+                var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, this.UserInfo.UserID);
+                if (recipient == null) return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate recipient");
 
                 var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
-                ParseKey(notification.Context);
-                if (_memberId <= 0)
+                this.ParseKey(notification.Context);
+                if (this._memberId <= 0)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate Member");
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate Member");
                 }
 
-                if (_roleInfo == null)
+                if (this._roleInfo == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate Role");
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate Role");
                 }
 
-                var member = UserController.GetUserById(PortalSettings.PortalId, _memberId);
+                var member = UserController.GetUserById(this.PortalSettings.PortalId, this._memberId);
 
                 if (member != null)
                 {
-                    var memberRoleInfo = RoleController.Instance.GetUserRole(PortalSettings.PortalId, _memberId, _roleInfo.RoleID);
+                    var memberRoleInfo = RoleController.Instance.GetUserRole(this.PortalSettings.PortalId, this._memberId, this._roleInfo.RoleID);
                     memberRoleInfo.Status = RoleStatus.Approved;
-                    RoleController.Instance.UpdateUserRole(PortalSettings.PortalId, _memberId, _roleInfo.RoleID, RoleStatus.Approved, false, false);
+                    RoleController.Instance.UpdateUserRole(this.PortalSettings.PortalId, this._memberId, this._roleInfo.RoleID, RoleStatus.Approved, false, false);
                     
                     var notifications = new Notifications();
-                    var groupOwner = UserController.GetUserById(PortalSettings.PortalId, _roleInfo.CreatedByUserID);
-                    notifications.AddMemberNotification(Constants.MemberApprovedNotification, _tabId, _moduleId, _roleInfo, groupOwner, member);
+                    var groupOwner = UserController.GetUserById(this.PortalSettings.PortalId, this._roleInfo.CreatedByUserID);
+                    notifications.AddMemberNotification(Constants.MemberApprovedNotification, this._tabId, this._moduleId, this._roleInfo, groupOwner, member);
                     NotificationsController.Instance.DeleteAllNotificationRecipients(postData.NotificationId);
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
                 }
             } catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
 
-            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unknown Error");
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unknown Error");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -263,70 +263,70 @@ namespace DotNetNuke.Modules.Groups
         {
             try
             {
-                var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, UserInfo.UserID);
-                if (recipient == null) return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate recipient");
+                var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, this.UserInfo.UserID);
+                if (recipient == null) return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate recipient");
 
                 var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
-                ParseKey(notification.Context);
-                if (_memberId <= 0)
+                this.ParseKey(notification.Context);
+                if (this._memberId <= 0)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate Member");
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate Member");
                 }
-                if (_roleInfo == null)
+                if (this._roleInfo == null)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate Role");
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate Role");
                 }
 
-                var member = UserController.GetUserById(PortalSettings.PortalId, _memberId);
+                var member = UserController.GetUserById(this.PortalSettings.PortalId, this._memberId);
 
 
 
                 if (member != null)
                 {
-                    RoleController.DeleteUserRole(member, _roleInfo, PortalSettings, false) ;
+                    RoleController.DeleteUserRole(member, this._roleInfo, this.PortalSettings, false) ;
                     var notifications = new Notifications();
-                    var groupOwner = UserController.GetUserById(PortalSettings.PortalId, _roleInfo.CreatedByUserID);
-                    notifications.AddMemberNotification(Constants.MemberRejectedNotification, _tabId, _moduleId, _roleInfo, groupOwner, member);
+                    var groupOwner = UserController.GetUserById(this.PortalSettings.PortalId, this._roleInfo.CreatedByUserID);
+                    notifications.AddMemberNotification(Constants.MemberRejectedNotification, this._tabId, this._moduleId, this._roleInfo, groupOwner, member);
                     NotificationsController.Instance.DeleteAllNotificationRecipients(postData.NotificationId);
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
                 }
             } catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
 
-            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unknown Error");
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unknown Error");
         }
         
         private void ParseKey(string key)
         {
-            _tabId = -1;
-            _moduleId = -1;
-            _roleId = -1;
-            _memberId = -1;
-            _roleInfo = null;
+            this._tabId = -1;
+            this._moduleId = -1;
+            this._roleId = -1;
+            this._memberId = -1;
+            this._roleInfo = null;
             if (!String.IsNullOrEmpty(key))
             {
                 string[] keys = key.Split(':');
-                _tabId = Convert.ToInt32(keys[0]);
-                _moduleId = Convert.ToInt32(keys[1]);
-                _roleId = Convert.ToInt32(keys[2]);
+                this._tabId = Convert.ToInt32(keys[0]);
+                this._moduleId = Convert.ToInt32(keys[1]);
+                this._roleId = Convert.ToInt32(keys[2]);
                 if (keys.Length > 3)
                 {
-                    _memberId = Convert.ToInt32(keys[3]);
+                    this._memberId = Convert.ToInt32(keys[3]);
                 }
             }
-            if (_roleId > 0)
+            if (this._roleId > 0)
             {
-                _roleInfo = RoleController.Instance.GetRoleById(PortalSettings.PortalId, _roleId);
+                this._roleInfo = RoleController.Instance.GetRoleById(this.PortalSettings.PortalId, this._roleId);
             }
         }
 
         private bool IsMod()
         {
-            var objModulePermissions = new ModulePermissionCollection(CBO.FillCollection(DataProvider.Instance().GetModulePermissionsByModuleID(_moduleId, -1), typeof(ModulePermissionInfo)));
+            var objModulePermissions = new ModulePermissionCollection(CBO.FillCollection(DataProvider.Instance().GetModulePermissionsByModuleID(this._moduleId, -1), typeof(ModulePermissionInfo)));
             return ModulePermissionController.HasModulePermission(objModulePermissions, "MODGROUP");
         }
     }

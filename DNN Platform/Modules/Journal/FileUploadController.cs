@@ -31,14 +31,14 @@ namespace DotNetNuke.Modules.Journal
             try
             {
                 //todo can we eliminate the HttpContext here
-                UploadWholeFile(HttpContextSource.Current, statuses);
+                this.UploadWholeFile(HttpContextSource.Current, statuses);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
             }
 
-            return IframeSafeJson(statuses);
+            return this.IframeSafeJson(statuses);
         }
 
         private HttpResponseMessage IframeSafeJson(List<FilesStatus> statuses)
@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.Journal
                 
                 try
                 {
-                    var fileInfo = JournalController.Instance.SaveJourmalFile(ActiveModule, UserInfo, fileName, file.InputStream);
+                    var fileInfo = JournalController.Instance.SaveJourmalFile(this.ActiveModule, this.UserInfo, fileName, file.InputStream);
                     var fileIcon = Entities.Icons.IconController.IconURL("Ext" + fileInfo.Extension, "32x32");
                     if (!File.Exists(context.Server.MapPath(fileIcon)))
                     {

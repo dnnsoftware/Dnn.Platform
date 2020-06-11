@@ -85,11 +85,11 @@ namespace DotNetNuke.UI.UserControls
 		{
 			get
 			{
-				return lblHelp.Text;
+				return this.lblHelp.Text;
 			}
 			set
 			{
-				lblHelp.Text = value;
+				this.lblHelp.Text = value;
 			}
 		}
 
@@ -97,11 +97,11 @@ namespace DotNetNuke.UI.UserControls
 		{
 			get
 			{
-				return lblNoHelpLabel.Text;
+				return this.lblNoHelpLabel.Text;
 			}
 			set
 			{
-				lblNoHelpLabel.Text = value;
+				this.lblNoHelpLabel.Text = value;
 			}
 		}
 
@@ -131,11 +131,11 @@ namespace DotNetNuke.UI.UserControls
 		{
 			get
 			{
-				return lblLabel.Text;
+				return this.lblLabel.Text;
 			}
 			set
 			{
-				lblLabel.Text = value;
+				this.lblLabel.Text = value;
 			}
 		}
 
@@ -149,11 +149,11 @@ namespace DotNetNuke.UI.UserControls
 		{
 			get
 			{
-				return lblLabel.Width;
+				return this.lblLabel.Width;
 			}
 			set
 			{
-				lblLabel.Width = value;
+				this.lblLabel.Width = value;
 			}
 		}
 
@@ -171,7 +171,7 @@ namespace DotNetNuke.UI.UserControls
 			base.OnLoad(e);
 			try
 			{
-				RegisterClientDependencies();
+				this.RegisterClientDependencies();
 			}
 			catch (Exception exc) //Module failed to load
 			{
@@ -184,65 +184,65 @@ namespace DotNetNuke.UI.UserControls
 			base.OnPreRender(e);
 
 			//get the localised text
-			if (String.IsNullOrEmpty(ResourceKey))
+			if (String.IsNullOrEmpty(this.ResourceKey))
 			{
 				//Set Resource Key to the ID of the control
-				ResourceKey = ID;
+				this.ResourceKey = this.ID;
 			}
-			if ((!string.IsNullOrEmpty(ResourceKey)))
+			if ((!string.IsNullOrEmpty(this.ResourceKey)))
 			{
-				var localText = Localization.GetString(ResourceKey, this);
+				var localText = Localization.GetString(this.ResourceKey, this);
 				if (!string.IsNullOrEmpty(localText))
 				{
-					Text = localText + Suffix;
+					this.Text = localText + this.Suffix;
 					//NoHelpLabelText = Text;
 				}
 				else
 				{
-					Text += Suffix;
+					this.Text += this.Suffix;
 					//NoHelpLabelText = Text;
 				}
 			}
 
 			//Set Help Key to the Resource Key plus ".Help"
-			if (String.IsNullOrEmpty(HelpKey))
+			if (String.IsNullOrEmpty(this.HelpKey))
 			{
-				HelpKey = ResourceKey + ".Help";
+				this.HelpKey = this.ResourceKey + ".Help";
 			}
 
-			var helpText = Localization.GetString(HelpKey, this);
-			if ((!string.IsNullOrEmpty(helpText)) || (string.IsNullOrEmpty(HelpText)))
+			var helpText = Localization.GetString(this.HelpKey, this);
+			if ((!string.IsNullOrEmpty(helpText)) || (string.IsNullOrEmpty(this.HelpText)))
 			{
-				HelpText = helpText;
+				this.HelpText = helpText;
 			}
 
-			if (string.IsNullOrEmpty(HelpText))
+			if (string.IsNullOrEmpty(this.HelpText))
 			{
-				pnlHelp.Visible = cmdHelp.Visible = false;
+				this.pnlHelp.Visible = this.cmdHelp.Visible = false;
                 //lblHelp.Visible = false;
                 //lblNoHelpLabel.Visible = true;
 			}
 
-			if (!string.IsNullOrEmpty(CssClass))
+			if (!string.IsNullOrEmpty(this.CssClass))
 			{
-				lblLabel.CssClass = CssClass;
+				this.lblLabel.CssClass = this.CssClass;
 			}
 
 			//find the reference control in the parents Controls collection
-			if (!String.IsNullOrEmpty(ControlName))
+			if (!String.IsNullOrEmpty(this.ControlName))
 			{
-				var c = Parent.FindControl(ControlName);
-			    var clientId = ControlName;
+				var c = this.Parent.FindControl(this.ControlName);
+			    var clientId = this.ControlName;
 				if (c != null)
 				{
 					clientId = c.ClientID;
 				}
 
-                if (!string.IsNullOrEmpty(AssociateFormat))
+                if (!string.IsNullOrEmpty(this.AssociateFormat))
                 {
-                    clientId = string.Format(AssociateFormat, clientId);
+                    clientId = string.Format(this.AssociateFormat, clientId);
                 }
-                label.Attributes["for"] = clientId;
+                this.label.Attributes["for"] = clientId;
             }
 		}
 

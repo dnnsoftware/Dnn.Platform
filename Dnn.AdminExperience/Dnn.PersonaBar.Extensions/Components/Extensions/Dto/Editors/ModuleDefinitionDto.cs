@@ -40,15 +40,15 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 
         public ModuleDefinitionDto(ModuleDefinitionInfo definition)
         {
-            Id = definition.ModuleDefID;
-            DesktopModuleId = definition.DesktopModuleID;
-            Name = definition.DefinitionName;
-            FriendlyName = definition.FriendlyName;
-            CacheTime = definition.DefaultCacheTime;
+            this.Id = definition.ModuleDefID;
+            this.DesktopModuleId = definition.DesktopModuleID;
+            this.Name = definition.DefinitionName;
+            this.FriendlyName = definition.FriendlyName;
+            this.CacheTime = definition.DefaultCacheTime;
 
             foreach (var moduleControlInfo in definition.ModuleControls.Values)
             {
-                Controls.Add(new ModuleControlDto(moduleControlInfo));
+                this.Controls.Add(new ModuleControlDto(moduleControlInfo));
             }
         }
 
@@ -56,11 +56,11 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
         {
             return new ModuleDefinitionInfo
             {
-                ModuleDefID = Id,
-                DesktopModuleID = DesktopModuleId,
-                DefinitionName = Name,
-                FriendlyName = FriendlyName,
-                DefaultCacheTime = CacheTime
+                ModuleDefID = this.Id,
+                DesktopModuleID = this.DesktopModuleId,
+                DefinitionName = this.Name,
+                FriendlyName = this.FriendlyName,
+                DefaultCacheTime = this.CacheTime
             };
         }
     }

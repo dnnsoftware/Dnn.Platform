@@ -38,18 +38,18 @@ namespace DotNetNuke.Services.Syndication
 
         public Opml()
         {
-            _outlines = new OpmlOutlines();
+            this._outlines = new OpmlOutlines();
         }
 
         public DateTime UtcExpiry
         {
             get
             {
-                return _utcExpiry;
+                return this._utcExpiry;
             }
             set
             {
-                _utcExpiry = value;
+                this._utcExpiry = value;
             }
         }
 
@@ -57,11 +57,11 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _title;
+                return this._title;
             }
             set
             {
-                _title = value;
+                this._title = value;
             }
         }
 
@@ -69,11 +69,11 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _dateCreated;
+                return this._dateCreated;
             }
             set
             {
-                _dateCreated = value;
+                this._dateCreated = value;
             }
         }
 
@@ -81,11 +81,11 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _dateModified;
+                return this._dateModified;
             }
             set
             {
-                _dateModified = value;
+                this._dateModified = value;
             }
         }
 
@@ -93,11 +93,11 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _ownerName;
+                return this._ownerName;
             }
             set
             {
-                _ownerName = value;
+                this._ownerName = value;
             }
         }
 
@@ -105,11 +105,11 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _ownerEmail;
+                return this._ownerEmail;
             }
             set
             {
-                _ownerEmail = value;
+                this._ownerEmail = value;
             }
         }
 
@@ -117,11 +117,11 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _ownerId;
+                return this._ownerId;
             }
             set
             {
-                _ownerId = value;
+                this._ownerId = value;
             }
         }
 
@@ -129,11 +129,11 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _docs;
+                return this._docs;
             }
             set
             {
-                _docs = value;
+                this._docs = value;
             }
         }
 
@@ -141,11 +141,11 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _expansionState;
+                return this._expansionState;
             }
             set
             {
-                _expansionState = value;
+                this._expansionState = value;
             }
         }
 
@@ -153,11 +153,11 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _vertScrollState;
+                return this._vertScrollState;
             }
             set
             {
-                _vertScrollState = value;
+                this._vertScrollState = value;
             }
         }
 
@@ -165,11 +165,11 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _windowTop;
+                return this._windowTop;
             }
             set
             {
-                _windowTop = value;
+                this._windowTop = value;
             }
         }
 
@@ -177,11 +177,11 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _windowLeft;
+                return this._windowLeft;
             }
             set
             {
-                _windowLeft = value;
+                this._windowLeft = value;
             }
         }
 
@@ -189,11 +189,11 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _windowBottom;
+                return this._windowBottom;
             }
             set
             {
-                _windowBottom = value;
+                this._windowBottom = value;
             }
         }
 
@@ -201,11 +201,11 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _windowRight;
+                return this._windowRight;
             }
             set
             {
-                _windowRight = value;
+                this._windowRight = value;
             }
         }
 
@@ -213,22 +213,22 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _outlines;
+                return this._outlines;
             }
             set
             {
-                _outlines = value;
+                this._outlines = value;
             }
         }
 
         public void AddOutline(OpmlOutline item)
         {
-            _outlines.Add(item);
+            this._outlines.Add(item);
         }
 
         public void AddOutline(string text, string type, Uri xmlUrl, string category)
         {
-            AddOutline(text, type, xmlUrl, category, null);
+            this.AddOutline(text, type, xmlUrl, category, null);
         }
 
         public void AddOutline(string text, string type, Uri xmlUrl, string category, OpmlOutlines outlines)
@@ -239,100 +239,100 @@ namespace DotNetNuke.Services.Syndication
             item.XmlUrl = xmlUrl;
             item.Category = category;
             item.Outlines = outlines;
-            _outlines.Add(item);
+            this._outlines.Add(item);
         }
 
         public string GetXml()
         {
-            return opmlDoc.OuterXml;
+            return this.opmlDoc.OuterXml;
         }
 
         public void Save(string fileName)
         {
-            opmlDoc = new XmlDocument { XmlResolver = null };
-            XmlElement opml = opmlDoc.CreateElement("opml");
+            this.opmlDoc = new XmlDocument { XmlResolver = null };
+            XmlElement opml = this.opmlDoc.CreateElement("opml");
             opml.SetAttribute("version", "2.0");
-            opmlDoc.AppendChild(opml);
+            this.opmlDoc.AppendChild(opml);
 
             // create head    
-            XmlElement head = opmlDoc.CreateElement("head");
+            XmlElement head = this.opmlDoc.CreateElement("head");
             opml.AppendChild(head);
 
             // set Title
-            XmlElement title = opmlDoc.CreateElement("title");
-            title.InnerText = Title;
+            XmlElement title = this.opmlDoc.CreateElement("title");
+            title.InnerText = this.Title;
             head.AppendChild(title);
 
             // set date created
-            XmlElement dateCreated = opmlDoc.CreateElement("dateCreated");
-            dateCreated.InnerText = DateCreated != DateTime.MinValue ? DateCreated.ToString("r", null) : DateTime.Now.ToString("r", null);
+            XmlElement dateCreated = this.opmlDoc.CreateElement("dateCreated");
+            dateCreated.InnerText = this.DateCreated != DateTime.MinValue ? this.DateCreated.ToString("r", null) : DateTime.Now.ToString("r", null);
             head.AppendChild(dateCreated);
 
             // set date modified
-            XmlElement dateModified = opmlDoc.CreateElement("dateModified");
-            dateCreated.InnerText = DateModified != DateTime.MinValue ? DateModified.ToString("r", null) : DateTime.Now.ToString("r", null);
+            XmlElement dateModified = this.opmlDoc.CreateElement("dateModified");
+            dateCreated.InnerText = this.DateModified != DateTime.MinValue ? this.DateModified.ToString("r", null) : DateTime.Now.ToString("r", null);
             head.AppendChild(dateModified);
 
             // set owner email
-            XmlElement ownerEmail = opmlDoc.CreateElement("ownerEmail");
-            ownerEmail.InnerText = OwnerEmail;
+            XmlElement ownerEmail = this.opmlDoc.CreateElement("ownerEmail");
+            ownerEmail.InnerText = this.OwnerEmail;
             head.AppendChild(ownerEmail);
 
             // set owner name
-            XmlElement ownerName = opmlDoc.CreateElement("ownerName");
-            ownerName.InnerText = OwnerName;
+            XmlElement ownerName = this.opmlDoc.CreateElement("ownerName");
+            ownerName.InnerText = this.OwnerName;
             head.AppendChild(ownerName);
 
             // set owner id
-            XmlElement ownerId = opmlDoc.CreateElement("ownerId");
-            ownerId.InnerText = OwnerId;
+            XmlElement ownerId = this.opmlDoc.CreateElement("ownerId");
+            ownerId.InnerText = this.OwnerId;
             head.AppendChild(ownerId);
 
             // set docs
-            XmlElement docs = opmlDoc.CreateElement("docs");
-            docs.InnerText = Docs;
+            XmlElement docs = this.opmlDoc.CreateElement("docs");
+            docs.InnerText = this.Docs;
             head.AppendChild(docs);
 
             // set expansionState
-            XmlElement expansionState = opmlDoc.CreateElement("expansionState");
-            expansionState.InnerText = ExpansionState;
+            XmlElement expansionState = this.opmlDoc.CreateElement("expansionState");
+            expansionState.InnerText = this.ExpansionState;
             head.AppendChild(expansionState);
 
             // set vertScrollState
-            XmlElement vertScrollState = opmlDoc.CreateElement("vertScrollState");
-            vertScrollState.InnerText = VertScrollState;
+            XmlElement vertScrollState = this.opmlDoc.CreateElement("vertScrollState");
+            vertScrollState.InnerText = this.VertScrollState;
             head.AppendChild(vertScrollState);
 
             // set windowTop
-            XmlElement windowTop = opmlDoc.CreateElement("windowTop");
-            windowTop.InnerText = WindowTop;
+            XmlElement windowTop = this.opmlDoc.CreateElement("windowTop");
+            windowTop.InnerText = this.WindowTop;
             head.AppendChild(windowTop);
 
             // set windowLeft
-            XmlElement windowLeft = opmlDoc.CreateElement("windowLeft");
-            windowLeft.InnerText = WindowLeft;
+            XmlElement windowLeft = this.opmlDoc.CreateElement("windowLeft");
+            windowLeft.InnerText = this.WindowLeft;
             head.AppendChild(windowLeft);
 
             // set windowBottom
-            XmlElement windowBottom = opmlDoc.CreateElement("windowBottom");
-            windowBottom.InnerText = WindowBottom;
+            XmlElement windowBottom = this.opmlDoc.CreateElement("windowBottom");
+            windowBottom.InnerText = this.WindowBottom;
             head.AppendChild(windowBottom);
 
             // set windowRight
-            XmlElement windowRight = opmlDoc.CreateElement("windowRight");
-            windowRight.InnerText = WindowRight;
+            XmlElement windowRight = this.opmlDoc.CreateElement("windowRight");
+            windowRight.InnerText = this.WindowRight;
             head.AppendChild(windowRight);
 
             // create body
-            XmlElement opmlBody = opmlDoc.CreateElement("body");
+            XmlElement opmlBody = this.opmlDoc.CreateElement("body");
             opml.AppendChild(opmlBody);
 
-            foreach (OpmlOutline outline in _outlines)
+            foreach (OpmlOutline outline in this._outlines)
             {
                 opmlBody.AppendChild(outline.ToXml);
             }
 
-            opmlDoc.Save(fileName);
+            this.opmlDoc.Save(fileName);
         }
 
         public static Opml LoadFromUrl(Uri uri)

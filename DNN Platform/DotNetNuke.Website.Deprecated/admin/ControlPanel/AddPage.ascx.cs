@@ -34,7 +34,7 @@ namespace DotNetNuke.UI.ControlPanel
         private readonly INavigationManager _navigationManager;
         public AddPage()
         {
-            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region "Event Handlers"
@@ -43,24 +43,24 @@ namespace DotNetNuke.UI.ControlPanel
         {
             base.OnLoad(e);
 
-            cmdAddPage.Click += CmdAddPageClick;
+            this.cmdAddPage.Click += this.CmdAddPageClick;
 
             try
             {
                 if (PortalSettings.Pages < PortalSettings.PageQuota || UserController.Instance.GetCurrentUserInfo().IsSuperUser || PortalSettings.PageQuota == 0)
                 {
-                    cmdAddPage.Enabled = true;
+                    this.cmdAddPage.Enabled = true;
                 }
                 else
                 {
-                    cmdAddPage.Enabled = false;
-                    cmdAddPage.ToolTip = Localization.GetString("ExceededQuota", LocalResourceFile);
+                    this.cmdAddPage.Enabled = false;
+                    this.cmdAddPage.ToolTip = Localization.GetString("ExceededQuota", this.LocalResourceFile);
                 }
-                if (!IsPostBack)
+                if (!this.IsPostBack)
                 {
-                    if ((Visible))
+                    if ((this.Visible))
                     {
-                        LoadAllLists();
+                        this.LoadAllLists();
                     }
                 }
             }
@@ -72,23 +72,23 @@ namespace DotNetNuke.UI.ControlPanel
 
         protected void CmdAddPageClick(object sender, EventArgs e)
         {
-            int selectedTabID = Int32.Parse(PageLst.SelectedValue);
+            int selectedTabID = Int32.Parse(this.PageLst.SelectedValue);
             TabInfo selectedTab = TabController.Instance.GetTab(selectedTabID, PortalSettings.ActiveTab.PortalID, false);
-            var tabLocation = (TabRelativeLocation) Enum.Parse(typeof (TabRelativeLocation), LocationLst.SelectedValue);
+            var tabLocation = (TabRelativeLocation) Enum.Parse(typeof (TabRelativeLocation), this.LocationLst.SelectedValue);
             TabInfo newTab = RibbonBarManager.InitTabInfoObject(selectedTab, tabLocation);
 
-            newTab.TabName = Name.Text;
-            newTab.IsVisible = IncludeInMenu.Checked;
+            newTab.TabName = this.Name.Text;
+            newTab.IsVisible = this.IncludeInMenu.Checked;
 
             string errMsg = string.Empty;
             try
             {
-				RibbonBarManager.SaveTabInfoObject(newTab, selectedTab, tabLocation, TemplateLst.SelectedValue);
+				RibbonBarManager.SaveTabInfoObject(newTab, selectedTab, tabLocation, this.TemplateLst.SelectedValue);
             }
             catch (DotNetNukeException ex)
             {
                 Exceptions.LogException(ex);
-                errMsg = (ex.ErrorCode != DotNetNukeErrorCode.NotSet) ? GetString("Err." + ex.ErrorCode) : ex.Message;
+                errMsg = (ex.ErrorCode != DotNetNukeErrorCode.NotSet) ? this.GetString("Err." + ex.ErrorCode) : ex.Message;
             }
             catch (Exception ex)
             {
@@ -108,12 +108,12 @@ namespace DotNetNuke.UI.ControlPanel
 
             if ((string.IsNullOrEmpty(errMsg)))
             {
-                Response.Redirect(_navigationManager.NavigateURL(newTab.TabID));
+                this.Response.Redirect(this._navigationManager.NavigateURL(newTab.TabID));
             }
             else
             {
-                errMsg = string.Format("<p>{0}</p><p>{1}</p>", GetString("Err.Header"), errMsg);
-                Web.UI.Utilities.RegisterAlertOnPageLoad(this, new MessageWindowParameters(errMsg) { Title = GetString("Err.Title")});
+                errMsg = string.Format("<p>{0}</p><p>{1}</p>", this.GetString("Err.Header"), errMsg);
+                Web.UI.Utilities.RegisterAlertOnPageLoad(this, new MessageWindowParameters(errMsg) { Title = this.GetString("Err.Title")});
             }
         }
 
@@ -155,11 +155,11 @@ namespace DotNetNuke.UI.ControlPanel
         {
             get
             {
-                if (((_newTabObject == null)))
+                if (((this._newTabObject == null)))
                 {
-                    _newTabObject = RibbonBarManager.InitTabInfoObject(PortalSettings.ActiveTab);
+                    this._newTabObject = RibbonBarManager.InitTabInfoObject(PortalSettings.ActiveTab);
                 }
-                return _newTabObject;
+                return this._newTabObject;
             }
         }
 
@@ -167,7 +167,7 @@ namespace DotNetNuke.UI.ControlPanel
         {
             get
             {
-                return string.Format("{0}/{1}/{2}.ascx.resx", TemplateSourceDirectory, Localization.LocalResourceDirectory, GetType().BaseType.Name);
+                return string.Format("{0}/{1}/{2}.ascx.resx", this.TemplateSourceDirectory, Localization.LocalResourceDirectory, this.GetType().BaseType.Name);
             }
         }
 
@@ -181,58 +181,58 @@ namespace DotNetNuke.UI.ControlPanel
 
         private void LoadAllLists()
         {
-            LoadLocationList();
-            LoadTemplateList();
-            LoadPageList();
+            this.LoadLocationList();
+            this.LoadTemplateList();
+            this.LoadPageList();
         }
 
         private void LoadTemplateList()
         {
-            TemplateLst.ClearSelection();
-            TemplateLst.Items.Clear();
+            this.TemplateLst.ClearSelection();
+            this.TemplateLst.Items.Clear();
 
             //Get Templates Folder
             ArrayList templateFiles = Globals.GetFileList(PortalSettings.PortalId, "page.template", false, "Templates/");
             foreach (FileItem dnnFile in templateFiles)
             {
                 var item = new DnnComboBoxItem(dnnFile.Text.Replace(".page.template", ""), dnnFile.Value);
-                TemplateLst.Items.Add(item);
+                this.TemplateLst.Items.Add(item);
                 if (item.Text == "Default")
                 {
                     item.Selected = true;
                 }
             }
 
-            TemplateLst.InsertItem(0, GetString("NoTemplate"), "");
+            this.TemplateLst.InsertItem(0, this.GetString("NoTemplate"), "");
         }
 
         private void LoadLocationList()
         {
-            LocationLst.ClearSelection();
-            LocationLst.Items.Clear();
+            this.LocationLst.ClearSelection();
+            this.LocationLst.Items.Clear();
 
             //LocationLst.Items.Add(new ListItem(GetString("Before"), "BEFORE"));
             //LocationLst.Items.Add(new ListItem(GetString("After"), "AFTER"));
             //LocationLst.Items.Add(new ListItem(GetString("Child"), "CHILD"));
 
-            LocationLst.AddItem(GetString("Before"), "BEFORE");
-            LocationLst.AddItem(GetString("After"), "AFTER");
-            LocationLst.AddItem(GetString("Child"), "CHILD");
+            this.LocationLst.AddItem(this.GetString("Before"), "BEFORE");
+            this.LocationLst.AddItem(this.GetString("After"), "AFTER");
+            this.LocationLst.AddItem(this.GetString("Child"), "CHILD");
 
-            LocationLst.SelectedIndex = (!PortalSecurity.IsInRole("Administrators")) ? 2 : 1;
+            this.LocationLst.SelectedIndex = (!PortalSecurity.IsInRole("Administrators")) ? 2 : 1;
         }
 
         private void LoadPageList()
         {
-            PageLst.ClearSelection();
-            PageLst.Items.Clear();
+            this.PageLst.ClearSelection();
+            this.PageLst.Items.Clear();
 
-            PageLst.DataTextField = "IndentedTabName";
-            PageLst.DataValueField = "TabID";
-            PageLst.DataSource = RibbonBarManager.GetPagesList();
-            PageLst.DataBind();
+            this.PageLst.DataTextField = "IndentedTabName";
+            this.PageLst.DataValueField = "TabID";
+            this.PageLst.DataSource = RibbonBarManager.GetPagesList();
+            this.PageLst.DataBind();
 
-            var item = PageLst.FindItemByValue(PortalSettings.ActiveTab.TabID.ToString());
+            var item = this.PageLst.FindItemByValue(PortalSettings.ActiveTab.TabID.ToString());
             if (((item != null)))
             {
                 item.Selected = true;
@@ -241,7 +241,7 @@ namespace DotNetNuke.UI.ControlPanel
 
         private string GetString(string key)
         {
-            return Localization.GetString(key, LocalResourceFile);
+            return Localization.GetString(key, this.LocalResourceFile);
         }
 
         #endregion

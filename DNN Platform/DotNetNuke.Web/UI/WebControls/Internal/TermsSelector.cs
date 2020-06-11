@@ -36,11 +36,11 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             get
             {
                 var terms = new List<Term>();
-                if (!string.IsNullOrEmpty(Value))
+                if (!string.IsNullOrEmpty(this.Value))
                 {
                     var termRep = Util.GetTermController();
 
-                    var termIds = Value.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
+                    var termIds = this.Value.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var i in termIds)
                     {
                         if (!string.IsNullOrEmpty(i.Trim()))
@@ -59,10 +59,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
             set
             {
-                Value = string.Join(",", value.Select(t => t.TermId.ToString()));
+                this.Value = string.Join(",", value.Select(t => t.TermId.ToString()));
 
-                Items.Clear();
-                value.Select(t => new ListItem(t.Name, t.TermId.ToString()) {Selected = true}).ToList().ForEach(Items.Add);
+                this.Items.Clear();
+                value.Select(t => new ListItem(t.Name, t.TermId.ToString()) {Selected = true}).ToList().ForEach(this.Items.Add);
             }
         }
 
@@ -76,27 +76,27 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             base.OnInit(e);
 
-            if (!string.IsNullOrEmpty(CssClass))
+            if (!string.IsNullOrEmpty(this.CssClass))
             {
-                CssClass = string.Format("{0} TermsSelector", CssClass);
+                this.CssClass = string.Format("{0} TermsSelector", this.CssClass);
             }
             else
             {
-                CssClass = "TermsSelector";
+                this.CssClass = "TermsSelector";
             }
 
-            var includeSystem = IncludeSystemVocabularies.ToString().ToLowerInvariant();
-            var includeTags = IncludeTags.ToString().ToLowerInvariant();
+            var includeSystem = this.IncludeSystemVocabularies.ToString().ToLowerInvariant();
+            var includeTags = this.IncludeTags.ToString().ToLowerInvariant();
             var apiPath = Globals.ResolveUrl($"~/API/InternalServices/ItemListService/GetTerms?includeSystem={includeSystem}&includeTags={includeTags}&q=");
 
-            Options.Preload = "focus";
-            Options.Plugins.Add("remove_button");
-            Options.Render = new RenderOption
+            this.Options.Preload = "focus";
+            this.Options.Plugins.Add("remove_button");
+            this.Options.Render = new RenderOption
                 {
                     Option = "function(item, escape) {return '<div>' + item.text + '</div>';}"
                 };
 
-            Options.Load = $@"function(query, callback) {{
+            this.Options.Load = $@"function(query, callback) {{
                                 $.ajax({{
                                         url: '{apiPath}' + encodeURIComponent(query),
                                     type: 'GET',

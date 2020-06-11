@@ -31,7 +31,7 @@ namespace DotNetNuke.Tests.Web.Api
         [TestCase("foo=fee; {0}={1}")] //no terminating semi-colon
         public void LocateCookies(string cookieFormat)
         {
-            LocatesCookie(cookieFormat, "__RequestVerificationToken_thiscanbemany_characters_in_some_cases", "some text goes here");
+            this.LocatesCookie(cookieFormat, "__RequestVerificationToken_thiscanbemany_characters_in_some_cases", "some text goes here");
         }
 
 

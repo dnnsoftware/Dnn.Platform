@@ -17,11 +17,11 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return Convert.ToString(ViewState["CommandArgument"]);
+                return Convert.ToString(this.ViewState["CommandArgument"]);
             }
             set
             {
-                ViewState["CommandArgument"] = value;
+                this.ViewState["CommandArgument"] = value;
             }
         }
     }

@@ -32,10 +32,10 @@ namespace Dnn.ExportImport.Components.Services
         {
             var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
             var toDate = exportDto.ToDateUtc.ToLocalTime();
-            if (CheckPoint.Stage > 1) return;
-            if (CheckCancelled(exportJob)) return;
+            if (this.CheckPoint.Stage > 1) return;
+            if (this.CheckCancelled(exportJob)) return;
             List<ExportPortalLanguage> portalLanguages = null;
-            if (CheckPoint.Stage == 0)
+            if (this.CheckPoint.Stage == 0)
             {
                 var portalSettings = new List<ExportPortalSetting>();
                 var settingToMigrate =
@@ -50,70 +50,70 @@ namespace Dnn.ExportImport.Components.Services
                         portalSettings.Where(x => settingToMigrate.Any(setting => setting.Trim().Equals(x.SettingName, StringComparison.InvariantCultureIgnoreCase))).ToList();
 
                     //Update the total items count in the check points. This should be updated only once.
-                    CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? portalSettings.Count : CheckPoint.TotalItems;
-                    if (CheckPoint.TotalItems == portalSettings.Count)
+                    this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? portalSettings.Count : this.CheckPoint.TotalItems;
+                    if (this.CheckPoint.TotalItems == portalSettings.Count)
                     {
                         portalLanguages =
                             CBO.FillCollection<ExportPortalLanguage>(
                                 DataProvider.Instance().GetPortalLanguages(exportJob.PortalId, toDate, fromDate));
-                        CheckPoint.TotalItems += portalLanguages.Count;
+                        this.CheckPoint.TotalItems += portalLanguages.Count;
                     }
-                    CheckPointStageCallback(this);
+                    this.CheckPointStageCallback(this);
 
-                    Repository.CreateItems(portalSettings);
+                    this.Repository.CreateItems(portalSettings);
                 }
-                Result.AddSummary("Exported Portal Settings", portalSettings.Count.ToString());
+                this.Result.AddSummary("Exported Portal Settings", portalSettings.Count.ToString());
 
-                CheckPoint.Progress = 50;
-                CheckPoint.ProcessedItems = portalSettings.Count;
-                CheckPoint.Stage++;
-                if (CheckPointStageCallback(this)) return;
+                this.CheckPoint.Progress = 50;
+                this.CheckPoint.ProcessedItems = portalSettings.Count;
+                this.CheckPoint.Stage++;
+                if (this.CheckPointStageCallback(this)) return;
             }
 
-            if (CheckPoint.Stage == 1)
+            if (this.CheckPoint.Stage == 1)
             {
-                if (CheckCancelled(exportJob)) return;
+                if (this.CheckCancelled(exportJob)) return;
                 if (portalLanguages == null)
                     portalLanguages = CBO.FillCollection<ExportPortalLanguage>(DataProvider.Instance()
                         .GetPortalLanguages(exportJob.PortalId, toDate, fromDate));
 
-                Repository.CreateItems(portalLanguages);
-                Result.AddSummary("Exported Portal Languages", portalLanguages.Count.ToString());
-                CheckPoint.Progress = 100;
-                CheckPoint.Completed = true;
-                CheckPoint.Stage++;
-                CheckPoint.ProcessedItems += portalLanguages.Count;
-                CheckPointStageCallback(this);
+                this.Repository.CreateItems(portalLanguages);
+                this.Result.AddSummary("Exported Portal Languages", portalLanguages.Count.ToString());
+                this.CheckPoint.Progress = 100;
+                this.CheckPoint.Completed = true;
+                this.CheckPoint.Stage++;
+                this.CheckPoint.ProcessedItems += portalLanguages.Count;
+                this.CheckPointStageCallback(this);
             }
         }
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             //Update the total items count in the check points. This should be updated only once.
-            CheckPoint.TotalItems = CheckPoint.TotalItems = CheckPoint.TotalItems <= 0 ? GetImportTotal() : CheckPoint.TotalItems;
-            if (CheckPointStageCallback(this)) return;
-            if (CheckPoint.Stage > 1) return;
-            if (CheckPoint.Stage == 0)
+            this.CheckPoint.TotalItems = this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? this.GetImportTotal() : this.CheckPoint.TotalItems;
+            if (this.CheckPointStageCallback(this)) return;
+            if (this.CheckPoint.Stage > 1) return;
+            if (this.CheckPoint.Stage == 0)
             {
-                var portalSettings = Repository.GetAllItems<ExportPortalSetting>().ToList();
-                ProcessPortalSettings(importJob, importDto, portalSettings);
-                CheckPoint.TotalItems = GetImportTotal();
-                Result.AddSummary("Imported Portal Settings", portalSettings.Count.ToString());
-                CheckPoint.Progress += 50;
-                CheckPoint.Stage++;
-                CheckPoint.ProcessedItems = portalSettings.Count;
-                if (CheckPointStageCallback(this)) return;
+                var portalSettings = this.Repository.GetAllItems<ExportPortalSetting>().ToList();
+                this.ProcessPortalSettings(importJob, importDto, portalSettings);
+                this.CheckPoint.TotalItems = this.GetImportTotal();
+                this.Result.AddSummary("Imported Portal Settings", portalSettings.Count.ToString());
+                this.CheckPoint.Progress += 50;
+                this.CheckPoint.Stage++;
+                this.CheckPoint.ProcessedItems = portalSettings.Count;
+                if (this.CheckPointStageCallback(this)) return;
             }
-            if (CheckPoint.Stage == 1)
+            if (this.CheckPoint.Stage == 1)
             {
-                var portalLanguages = Repository.GetAllItems<ExportPortalLanguage>().ToList();
-                ProcessPortalLanguages(importJob, importDto, portalLanguages);
-                Result.AddSummary("Imported Portal Languages", portalLanguages.Count.ToString());
-                CheckPoint.Progress += 50;
-                CheckPoint.Completed = true;
-                CheckPoint.Stage++;
-                CheckPoint.ProcessedItems += portalLanguages.Count;
-                CheckPointStageCallback(this);
+                var portalLanguages = this.Repository.GetAllItems<ExportPortalLanguage>().ToList();
+                this.ProcessPortalLanguages(importJob, importDto, portalLanguages);
+                this.Result.AddSummary("Imported Portal Languages", portalLanguages.Count.ToString());
+                this.CheckPoint.Progress += 50;
+                this.CheckPoint.Completed = true;
+                this.CheckPoint.Stage++;
+                this.CheckPoint.ProcessedItems += portalLanguages.Count;
+                this.CheckPointStageCallback(this);
             }
             /*
             ProgressPercentage = 0;
@@ -126,7 +126,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override int GetImportTotal()
         {
-            return Repository.GetCount<ExportPortalSetting>() + Repository.GetCount<ExportPortalLanguage>();
+            return this.Repository.GetCount<ExportPortalSetting>() + this.Repository.GetCount<ExportPortalLanguage>();
         }
 
         private void ProcessPortalSettings(ExportImportJob importJob, ImportDto importDto,
@@ -137,7 +137,7 @@ namespace Dnn.ExportImport.Components.Services
                 CBO.FillCollection<ExportPortalSetting>(DataProvider.Instance().GetPortalSettings(portalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null));
             foreach (var exportPortalSetting in portalSettings)
             {
-                if (CheckCancelled(importJob)) return;
+                if (this.CheckCancelled(importJob)) return;
 
                 var existingPortalSetting =
                     localPortalSettings.FirstOrDefault(
@@ -155,7 +155,7 @@ namespace Dnn.ExportImport.Components.Services
                             isUpdate = true;
                             break;
                         case CollisionResolution.Ignore:
-                            Result.AddLogEntry("Ignored portal settings", exportPortalSetting.SettingName);
+                            this.Result.AddLogEntry("Ignored portal settings", exportPortalSetting.SettingName);
                             continue;
                         default:
                             throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
@@ -170,7 +170,7 @@ namespace Dnn.ExportImport.Components.Services
                     DotNetNuke.Data.DataProvider.Instance()
                         .UpdatePortalSetting(importJob.PortalId, exportPortalSetting.SettingName,
                             exportPortalSetting.SettingValue, modifiedBy, exportPortalSetting.CultureCode, exportPortalSetting.IsSecure);
-                    Result.AddLogEntry("Updated portal settings", exportPortalSetting.SettingName);
+                    this.Result.AddLogEntry("Updated portal settings", exportPortalSetting.SettingName);
                 }
                 else
                 {
@@ -180,7 +180,7 @@ namespace Dnn.ExportImport.Components.Services
                         .UpdatePortalSetting(importJob.PortalId, exportPortalSetting.SettingName,
                             exportPortalSetting.SettingValue, createdBy, exportPortalSetting.CultureCode, exportPortalSetting.IsSecure);
 
-                    Result.AddLogEntry("Added portal settings", exportPortalSetting.SettingName);
+                    this.Result.AddLogEntry("Added portal settings", exportPortalSetting.SettingName);
                 }
             }
         }
@@ -194,7 +194,7 @@ namespace Dnn.ExportImport.Components.Services
             var localLanguages = CBO.FillCollection<Locale>(DotNetNuke.Data.DataProvider.Instance().GetLanguages());
             foreach (var exportPortalLanguage in portalLanguages)
             {
-                if (CheckCancelled(importJob)) return;
+                if (this.CheckCancelled(importJob)) return;
 
                 var createdBy = Util.GetUserIdByName(importJob, exportPortalLanguage.CreatedByUserId, exportPortalLanguage.CreatedByUserName);
                 var modifiedBy = Util.GetUserIdByName(importJob, exportPortalLanguage.LastModifiedByUserId, exportPortalLanguage.LastModifiedByUserName);
@@ -225,7 +225,7 @@ namespace Dnn.ExportImport.Components.Services
                             isUpdate = true;
                             break;
                         case CollisionResolution.Ignore:
-                            Result.AddLogEntry("Ignored portal language", exportPortalLanguage.CultureCode);
+                            this.Result.AddLogEntry("Ignored portal language", exportPortalLanguage.CultureCode);
                             continue;
                         default:
                             throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
@@ -237,14 +237,14 @@ namespace Dnn.ExportImport.Components.Services
                         .UpdatePortalLanguage(importJob.PortalId, localLanguageId.GetValueOrDefault(exportPortalLanguage.LanguageId),
                             exportPortalLanguage.IsPublished, modifiedBy);
 
-                    Result.AddLogEntry("Updated portal language", exportPortalLanguage.CultureCode);
+                    this.Result.AddLogEntry("Updated portal language", exportPortalLanguage.CultureCode);
                 }
                 else
                 {
                     exportPortalLanguage.PortalLanguageId = DotNetNuke.Data.DataProvider.Instance()
                         .AddPortalLanguage(importJob.PortalId, localLanguageId.GetValueOrDefault(exportPortalLanguage.LanguageId),
                             exportPortalLanguage.IsPublished, createdBy);
-                    Result.AddLogEntry("Added portal language", exportPortalLanguage.CultureCode);
+                    this.Result.AddLogEntry("Added portal language", exportPortalLanguage.CultureCode);
                 }
             }
         }

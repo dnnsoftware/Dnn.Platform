@@ -38,7 +38,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         private PortalInfo Portal
         {
-            get { return PortalId == Null.NullInteger ? null : PortalController.Instance.GetPortal(PortalId); }
+            get { return this.PortalId == Null.NullInteger ? null : PortalController.Instance.GetPortal(this.PortalId); }
         }
 
         #endregion
@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         public DnnSkinComboBox()
         {
-            PortalId = Null.NullInteger;
+            this.PortalId = Null.NullInteger;
         }
 
         #endregion
@@ -58,41 +58,41 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             base.OnLoad(e);
 
-            DataTextField = "Key";
-            DataValueField = "Value";
+            this.DataTextField = "Key";
+            this.DataValueField = "Value";
 
-            if (!Page.IsPostBack && !string.IsNullOrEmpty(RootPath))
+            if (!this.Page.IsPostBack && !string.IsNullOrEmpty(this.RootPath))
             {
-                DataSource = SkinController.GetSkins(Portal, RootPath, Scope)
+                this.DataSource = SkinController.GetSkins(this.Portal, this.RootPath, this.Scope)
                                            .ToDictionary(skin => skin.Key, skin => skin.Value);
 
-                if (string.IsNullOrEmpty(SelectedValue))
+                if (string.IsNullOrEmpty(this.SelectedValue))
                 {
-                    DataBind();
+                    this.DataBind();
                 }
                 else
                 {
-                    DataBind(SelectedValue);
+                    this.DataBind(this.SelectedValue);
                 }
 
-                if (IncludeNoneSpecificItem)
+                if (this.IncludeNoneSpecificItem)
                 {
-                    InsertItem(0, NoneSpecificText, string.Empty);
+                    this.InsertItem(0, this.NoneSpecificText, string.Empty);
                 }
             }
 
-            AttachEvents();
+            this.AttachEvents();
         }
 
         protected override void PerformDataBinding(IEnumerable dataSource)
         {
             //do not select item during data binding, item will select later
-            var selectedValue = SelectedValue;
-            SelectedValue = null;
+            var selectedValue = this.SelectedValue;
+            this.SelectedValue = null;
 
             base.PerformDataBinding(dataSource);
 
-            SelectedValue = selectedValue;
+            this.SelectedValue = selectedValue;
         }
 
         #endregion
@@ -106,8 +106,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 return;
             }
 
-            Attributes.Add("PortalPath", Portal != null ? Portal.HomeDirectory : string.Empty);
-            Attributes.Add("HostPath", Globals.HostPath);
+            this.Attributes.Add("PortalPath", this.Portal != null ? this.Portal.HomeDirectory : string.Empty);
+            this.Attributes.Add("HostPath", Globals.HostPath);
 
             //OnClientSelectedIndexChanged = "selectedIndexChangedMethod";
             var indexChangedMethod = @"function selectedIndexChangedMethod(sender, eventArgs){
@@ -116,7 +116,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     value = value.replace('[G]', sender.get_attributes().getAttribute('HostPath'));
     sender.get_inputDomElement().title = value;
 }";
-            Page.ClientScript.RegisterClientScriptBlock(GetType(), "OnClientSelectedIndexChanged", indexChangedMethod, true);
+            this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "OnClientSelectedIndexChanged", indexChangedMethod, true);
 
             //foreach (var item in Items)
             //{

@@ -23,7 +23,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return Utilities.GetLocalResourceFile(Owner.OwnerGrid.Parent);
+                return Utilities.GetLocalResourceFile(this.Owner.OwnerGrid.Parent);
             }
         }
 
@@ -35,7 +35,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             var dnnGridColumn = new DnnGridColumn();
             dnnGridColumn.CopyBaseProperties(this);
-            dnnGridColumn.setHeaderText = HeaderText;
+            dnnGridColumn.setHeaderText = this.HeaderText;
             return dnnGridColumn;
         }
 
@@ -46,12 +46,12 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 if (String.IsNullOrEmpty(base.HeaderText))
-                    base.HeaderText = Localization.GetString(string.Format("{0}.Header", _HeaderText), DotNetNuke.Web.UI.Utilities.GetLocalResourceFile(Owner.OwnerGrid.Parent));
+                    base.HeaderText = Localization.GetString(string.Format("{0}.Header", this._HeaderText), DotNetNuke.Web.UI.Utilities.GetLocalResourceFile(this.Owner.OwnerGrid.Parent));
                 return base.HeaderText;
             }
             set
             {
-                _HeaderText = value;
+                this._HeaderText = value;
                 base.HeaderText = "";
             }
         }

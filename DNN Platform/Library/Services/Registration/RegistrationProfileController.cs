@@ -24,16 +24,16 @@ namespace DotNetNuke.Services.Registration
                                         .Cast<ProfilePropertyDefinition>()
                                         .Where(definition => definition.DataType != imageType.EntryID))
             {
-                AddProperty(results, definition.PropertyName, searchTerm);
+                this.AddProperty(results, definition.PropertyName, searchTerm);
             }
 
-            AddProperty(results, "Email", searchTerm);
-            AddProperty(results, "DisplayName", searchTerm);
-            AddProperty(results, "Username", searchTerm);
-            AddProperty(results, "Password", searchTerm);
-            AddProperty(results, "PasswordConfirm", searchTerm);
-            AddProperty(results, "PasswordQuestion", searchTerm);
-            AddProperty(results, "PasswordAnswer", searchTerm);
+            this.AddProperty(results, "Email", searchTerm);
+            this.AddProperty(results, "DisplayName", searchTerm);
+            this.AddProperty(results, "Username", searchTerm);
+            this.AddProperty(results, "Password", searchTerm);
+            this.AddProperty(results, "PasswordConfirm", searchTerm);
+            this.AddProperty(results, "PasswordQuestion", searchTerm);
+            this.AddProperty(results, "PasswordAnswer", searchTerm);
 
             return results;            
         }

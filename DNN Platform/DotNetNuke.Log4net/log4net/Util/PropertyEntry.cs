@@ -51,8 +51,8 @@ namespace log4net.Util
         /// </remarks>
         public string Key
         {
-            get { return m_key; }
-            set { m_key = value; }
+            get { return this.m_key; }
+            set { this.m_key = value; }
         }
 
         /// <summary>
@@ -68,8 +68,8 @@ namespace log4net.Util
         /// </remarks>
         public object Value
         {
-            get { return m_value; }
-            set { m_value = value; }
+            get { return this.m_value; }
+            set { this.m_value = value; }
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace log4net.Util
         /// <returns>string info about this object</returns>
         public override string ToString()
         {
-            return "PropertyEntry(Key=" + m_key + ", Value=" + m_value + ")";
+            return "PropertyEntry(Key=" + this.m_key + ", Value=" + this.m_value + ")";
         }
     }
 }

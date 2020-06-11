@@ -61,7 +61,7 @@ namespace DotNetNuke.Entities.Modules
         
         public PortalModuleBase()
         {
-            DependencyProvider = Globals.DependencyProvider;
+            this.DependencyProvider = Globals.DependencyProvider;
         }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -69,11 +69,11 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return ModuleContext.Actions;
+                return this.ModuleContext.Actions;
             }
             set
             {
-                ModuleContext.Actions = value;
+                this.ModuleContext.Actions = value;
             }
         }
 
@@ -82,7 +82,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return Globals.FindControlRecursive(this, "ctr" + ModuleId);
+                return Globals.FindControlRecursive(this, "ctr" + this.ModuleId);
             }
         }
 
@@ -99,7 +99,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return ModuleContext.EditMode;
+                return this.ModuleContext.EditMode;
             }
         }
 
@@ -107,11 +107,11 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return ModuleContext.HelpURL;
+                return this.ModuleContext.HelpURL;
             }
             set
             {
-                ModuleContext.HelpURL = value;
+                this.ModuleContext.HelpURL = value;
             }
         }
 
@@ -120,7 +120,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return ModuleContext.IsEditable;
+                return this.ModuleContext.IsEditable;
             }
         }
 
@@ -129,11 +129,11 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return ModuleContext.Configuration;
+                return this.ModuleContext.Configuration;
             }
             set
             {
-                ModuleContext.Configuration = value;
+                this.ModuleContext.Configuration = value;
             }
         }
 
@@ -142,7 +142,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return ModuleContext.PortalId;
+                return this.ModuleContext.PortalId;
             }
         }
 
@@ -151,7 +151,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return ModuleContext.TabId;
+                return this.ModuleContext.TabId;
             }
         }
 
@@ -160,11 +160,11 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return ModuleContext.TabModuleId;
+                return this.ModuleContext.TabModuleId;
             }
             set
             {
-                ModuleContext.TabModuleId = value;
+                this.ModuleContext.TabModuleId = value;
             }
         }
 
@@ -173,11 +173,11 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return ModuleContext.ModuleId;
+                return this.ModuleContext.ModuleId;
             }
             set
             {
-                ModuleContext.ModuleId = value;
+                this.ModuleContext.ModuleId = value;
             }
         }
 
@@ -186,7 +186,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return PortalSettings.UserInfo;
+                return this.PortalSettings.UserInfo;
             }
         }
 
@@ -195,7 +195,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return PortalSettings.UserId;
+                return this.PortalSettings.UserId;
             }
         }
 
@@ -204,7 +204,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return PortalSettings.PortalAlias;
+                return this.PortalSettings.PortalAlias;
             }
         }
 
@@ -213,7 +213,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return ModuleContext.Settings;
+                return this.ModuleContext.Settings;
             }
         }
 
@@ -243,7 +243,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return TemplateSourceDirectory + "/";
+                return this.TemplateSourceDirectory + "/";
             }
         }
 
@@ -257,7 +257,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return GetType().Name.Replace("_", ".");
+                return this.GetType().Name.Replace("_", ".");
             }
         }
 
@@ -272,19 +272,19 @@ namespace DotNetNuke.Entities.Modules
             get
             {
                 string fileRoot;
-                if (string.IsNullOrEmpty(_localResourceFile))
+                if (string.IsNullOrEmpty(this._localResourceFile))
                 {
-                    fileRoot = Path.Combine(ControlPath, Localization.LocalResourceDirectory + "/" + ID);
+                    fileRoot = Path.Combine(this.ControlPath, Localization.LocalResourceDirectory + "/" + this.ID);
                 }
                 else
                 {
-                    fileRoot = _localResourceFile;
+                    fileRoot = this._localResourceFile;
                 }
                 return fileRoot;
             }
             set
             {
-                _localResourceFile = value;
+                this._localResourceFile = value;
             }
         }
 
@@ -298,11 +298,11 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (_moduleContext == null)
+                if (this._moduleContext == null)
                 {
-                    _moduleContext = new ModuleInstanceContext(this);
+                    this._moduleContext = new ModuleInstanceContext(this);
                 }
-                return _moduleContext;
+                return this._moduleContext;
             }
         }
 
@@ -310,55 +310,55 @@ namespace DotNetNuke.Entities.Modules
 
         protected override void OnInit(EventArgs e)
         {
-            if (_tracelLogger.IsDebugEnabled)
-                _tracelLogger.Debug($"PortalModuleBase.OnInit Start (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
+            if (this._tracelLogger.IsDebugEnabled)
+                this._tracelLogger.Debug($"PortalModuleBase.OnInit Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
             base.OnInit(e);
-            if (_tracelLogger.IsDebugEnabled)
-                _tracelLogger.Debug($"PortalModuleBase.OnInit End (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
+            if (this._tracelLogger.IsDebugEnabled)
+                this._tracelLogger.Debug($"PortalModuleBase.OnInit End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
         }
         protected override void OnLoad(EventArgs e)
         {
-            if (_tracelLogger.IsDebugEnabled)
-                _tracelLogger.Debug($"PortalModuleBase.OnLoad Start (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
+            if (this._tracelLogger.IsDebugEnabled)
+                this._tracelLogger.Debug($"PortalModuleBase.OnLoad Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
             base.OnLoad(e);
-            if (_tracelLogger.IsDebugEnabled)
-                _tracelLogger.Debug($"PortalModuleBase.OnLoad End (TabId:{PortalSettings.ActiveTab.TabID},ModuleId:{ModuleId}): {GetType()}");
+            if (this._tracelLogger.IsDebugEnabled)
+                this._tracelLogger.Debug($"PortalModuleBase.OnLoad End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
         }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl()
         {
-            return ModuleContext.EditUrl();
+            return this.ModuleContext.EditUrl();
         }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl(string ControlKey)
         {
-            return ModuleContext.EditUrl(ControlKey);
+            return this.ModuleContext.EditUrl(ControlKey);
         }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl(string KeyName, string KeyValue)
         {
-            return ModuleContext.EditUrl(KeyName, KeyValue);
+            return this.ModuleContext.EditUrl(KeyName, KeyValue);
         }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl(string KeyName, string KeyValue, string ControlKey)
         {
-            return ModuleContext.EditUrl(KeyName, KeyValue, ControlKey);
+            return this.ModuleContext.EditUrl(KeyName, KeyValue, ControlKey);
         }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl(string KeyName, string KeyValue, string ControlKey, params string[] AdditionalParameters)
         {
-            return ModuleContext.EditUrl(KeyName, KeyValue, ControlKey, AdditionalParameters);
+            return this.ModuleContext.EditUrl(KeyName, KeyValue, ControlKey, AdditionalParameters);
         }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl(int TabID, string ControlKey, bool PageRedirect, params string[] AdditionalParameters)
         {
-            return ModuleContext.NavigateUrl(TabID, ControlKey, PageRedirect, AdditionalParameters);
+            return this.ModuleContext.NavigateUrl(TabID, ControlKey, PageRedirect, AdditionalParameters);
         }
 
         /// -----------------------------------------------------------------------------
@@ -374,24 +374,24 @@ namespace DotNetNuke.Entities.Modules
             UI.Skins.Skin ParentSkin = UI.Skins.Skin.GetParentSkin(this);
             if (ParentSkin != null)
             {
-                ParentSkin.RegisterModuleActionEvent(ModuleId, e);
+                ParentSkin.RegisterModuleActionEvent(this.ModuleId, e);
             }
         }
 
         protected string LocalizeString(string key)
         {
-            return Localization.GetString(key, LocalResourceFile);
+            return Localization.GetString(key, this.LocalResourceFile);
         }
 
         protected string LocalizeSafeJsString(string key)
         {
-            return Localization.GetSafeJSString(key, LocalResourceFile);
+            return Localization.GetSafeJSString(key, this.LocalResourceFile);
         }
 
 
         public int GetNextActionID()
         {
-            return ModuleContext.GetNextActionID();
+            return this.ModuleContext.GetNextActionID();
         }
 
         #region "Obsolete methods"
@@ -428,7 +428,7 @@ namespace DotNetNuke.Entities.Modules
             get
             {
                 string strCacheKey = "TabModule:";
-                strCacheKey += TabModuleId + ":";
+                strCacheKey += this.TabModuleId + ":";
                 strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
                 return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + "\\" + Globals.CleanFileName(strCacheKey) + ".resources";
             }
@@ -440,7 +440,7 @@ namespace DotNetNuke.Entities.Modules
             get
             {
                 string strCacheKey = "TabModule:";
-                strCacheKey += TabModuleId + ":";
+                strCacheKey += this.TabModuleId + ":";
                 strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
                 return strCacheKey;
             }
@@ -467,7 +467,7 @@ namespace DotNetNuke.Entities.Modules
         [Obsolete("This method is deprecated.  Plaese use ModuleController.SynchronizeModule(ModuleId). Scheduled removal in v11.0.0.")]
         public void SynchronizeModule()
         {
-            ModuleController.SynchronizeModule(ModuleId);
+            ModuleController.SynchronizeModule(this.ModuleId);
         }
 
         #endregion

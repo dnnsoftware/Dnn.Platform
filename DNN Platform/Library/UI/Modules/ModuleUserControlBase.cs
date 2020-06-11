@@ -31,12 +31,12 @@ namespace DotNetNuke.UI.Modules
 
         protected string LocalizeString(string key)
         {
-            return Localization.GetString(key, LocalResourceFile);
+            return Localization.GetString(key, this.LocalResourceFile);
         }
 
 		protected string LocalizeSafeJsString(string key)
 		{
-			return Localization.GetSafeJSString(key, LocalResourceFile);
+			return Localization.GetSafeJSString(key, this.LocalResourceFile);
 		}
 
         #region IModuleControl Members
@@ -65,7 +65,7 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-                return TemplateSourceDirectory + "/";
+                return this.TemplateSourceDirectory + "/";
             }
         }
 
@@ -79,7 +79,7 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-                return GetType().Name.Replace("_", ".");
+                return this.GetType().Name.Replace("_", ".");
             }
         }
 
@@ -94,19 +94,19 @@ namespace DotNetNuke.UI.Modules
             get
             {
                 string fileRoot;
-                if (string.IsNullOrEmpty(_localResourceFile))
+                if (string.IsNullOrEmpty(this._localResourceFile))
                 {
-                    fileRoot = Path.Combine(ControlPath, Localization.LocalResourceDirectory + "/" + ID);
+                    fileRoot = Path.Combine(this.ControlPath, Localization.LocalResourceDirectory + "/" + this.ID);
                 }
                 else
                 {
-                    fileRoot = _localResourceFile;
+                    fileRoot = this._localResourceFile;
                 }
                 return fileRoot;
             }
             set
             {
-                _localResourceFile = value;
+                this._localResourceFile = value;
             }
         }
 
@@ -120,11 +120,11 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-                if (_moduleContext == null)
+                if (this._moduleContext == null)
                 {
-                    _moduleContext = new ModuleInstanceContext(this);
+                    this._moduleContext = new ModuleInstanceContext(this);
                 }
-                return _moduleContext;
+                return this._moduleContext;
             }
         }
 

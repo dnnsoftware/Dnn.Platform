@@ -54,7 +54,7 @@ namespace DotNetNuke.Entities.Portals
             adminUser.Membership.Approved = true;
             adminUser.Profile.FirstName = firstName;
             adminUser.Profile.LastName = lastName;
-            return CreatePortal(portalName, adminUser, description, keyWords, templatePath, templateFile, homeDirectory, portalAlias, serverPath, childPath, isChildPortal);
+            return this.CreatePortal(portalName, adminUser, description, keyWords, templatePath, templateFile, homeDirectory, portalAlias, serverPath, childPath, isChildPortal);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -63,9 +63,9 @@ namespace DotNetNuke.Entities.Portals
                         string templateFile, string homeDirectory, string portalAlias,
                         string serverPath, string childPath, bool isChildPortal)
         {
-            var template = GetPortalTemplate(Path.Combine(templatePath, templateFile), null);
+            var template = this.GetPortalTemplate(Path.Combine(templatePath, templateFile), null);
 
-            return CreatePortal(portalName, adminUser, description, keyWords, template, homeDirectory, portalAlias,
+            return this.CreatePortal(portalName, adminUser, description, keyWords, template, homeDirectory, portalAlias,
                                 serverPath, childPath, isChildPortal);
         }
 
@@ -101,28 +101,28 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the alternate overloads. Scheduled removal in v10.0.0.")]
         public void ParseTemplate(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
-            ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal);
+            this.ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the other overloads. Scheduled removal in v10.0.0.")]
         public void ParseTemplate(int portalId, string templatePath, string templateFile, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal, out LocaleCollection localeCollection)
         {
-            ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal, out localeCollection);
+            this.ParseTemplateInternal(portalId, templatePath, templateFile, administratorId, mergeTabs, isNewPortal, out localeCollection);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.3. Replaced by UpdatePortalExpiry(int, string). Scheduled removal in v10.0.0.")]
         public void UpdatePortalExpiry(int portalId)
         {
-            UpdatePortalExpiry(portalId, GetActivePortalLanguage(portalId));
+            this.UpdatePortalExpiry(portalId, GetActivePortalLanguage(portalId));
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the alternate overloads. Scheduled removal in v10.0.0.")]
         public void UpdatePortalInfo(PortalInfo portal, bool clearCache)
         {
-            UpdatePortalInternal(portal, clearCache);
+            this.UpdatePortalInternal(portal, clearCache);
         }
  	}
 }

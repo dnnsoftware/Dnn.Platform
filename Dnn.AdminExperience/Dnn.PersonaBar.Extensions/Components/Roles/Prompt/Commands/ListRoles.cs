@@ -33,23 +33,23 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             
-            Page = GetFlagValue(FlagPage, "Page", 1);
-            Max = GetFlagValue(FlagMax, "Max", 10);
+            this.Page = this.GetFlagValue(FlagPage, "Page", 1);
+            this.Max = this.GetFlagValue(FlagMax, "Max", 10);
         }
 
         public override ConsoleResultModel Run()
         {
-            var max = Max <= 0 ? 10 : (Max > 500 ? 500 : Max);
+            var max = this.Max <= 0 ? 10 : (this.Max > 500 ? 500 : this.Max);
 
             var roles = new List<RoleModelBase>();
             try
             {
                 int total;
-                var results = RolesController.Instance.GetRoles(PortalSettings, -1, string.Empty, out total,
-                    (Page > 0 ? Page - 1 : 0) * max, max);
+                var results = RolesController.Instance.GetRoles(this.PortalSettings, -1, string.Empty, out total,
+                    (this.Page > 0 ? this.Page - 1 : 0) * max, max);
                 roles.AddRange(results.Select(role => new RoleModelBase(role)));
                 var totalPages = total / max + (total % max == 0 ? 0 : 1);
-                var pageNo = Page > 0 ? Page : 1;
+                var pageNo = this.Page > 0 ? this.Page : 1;
                 return new ConsoleResultModel
                 {
                     Data = roles,
@@ -60,14 +60,14 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                         PageSize = max
                     },
                     Records = roles.Count,
-                    Output = roles.Count == 0 ? LocalizeString("Prompt_NoRoles") : ""
+                    Output = roles.Count == 0 ? this.LocalizeString("Prompt_NoRoles") : ""
                 };
 
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return new ConsoleErrorResultModel(LocalizeString("Prompt_ListRolesFailed"));
+                return new ConsoleErrorResultModel(this.LocalizeString("Prompt_ListRolesFailed"));
             }
         }
     }

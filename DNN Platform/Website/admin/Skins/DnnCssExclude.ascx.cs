@@ -17,7 +17,7 @@ namespace DotNetNuke.UI.Skins.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            ctlExclude.Name = Name;
+            this.ctlExclude.Name = this.Name;
         }
     }
 }

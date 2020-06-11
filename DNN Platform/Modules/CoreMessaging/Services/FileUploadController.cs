@@ -32,14 +32,14 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 //todo can we eliminate the HttpContext here
-                UploadWholeFile(HttpContextSource.Current, statuses);
+                this.UploadWholeFile(HttpContextSource.Current, statuses);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
             }
 
-            return IframeSafeJson(statuses);
+            return this.IframeSafeJson(statuses);
         }
 
         private HttpResponseMessage IframeSafeJson(List<FilesStatus> statuses)
@@ -63,10 +63,10 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
                 try
                 {
-                    var userFolder = _folderManager.GetUserFolder(UserInfo);
+                    var userFolder = this._folderManager.GetUserFolder(this.UserInfo);
 
                     //todo: deal with the case where the exact file name already exists.
-                    var fileInfo = _fileManager.AddFile(userFolder, fileName, file.InputStream, true);
+                    var fileInfo = this._fileManager.AddFile(userFolder, fileName, file.InputStream, true);
                     var fileIcon = Entities.Icons.IconController.IconURL("Ext" + fileInfo.Extension, "32x32");
                     if (!File.Exists(context.Server.MapPath(fileIcon)))
                     {

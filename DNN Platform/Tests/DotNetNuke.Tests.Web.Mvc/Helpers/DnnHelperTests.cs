@@ -23,34 +23,34 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
         [SetUp]
         public void SetUp()
         {
-            _mockController = new Mock<ControllerBase>();
-            _viewContext = new ViewContext();
+            this._mockController = new Mock<ControllerBase>();
+            this._viewContext = new ViewContext();
 
-            _mockViewDataContainer = new Mock<IViewDataContainer>();
+            this._mockViewDataContainer = new Mock<IViewDataContainer>();
         }
 
         [Test]
         public void Constructor_Throws_On_Null_ViewContext()
         {
             //Act,Assert
-            Assert.Throws<ArgumentNullException>(() => new DnnHelper(null, _mockViewDataContainer.Object));
+            Assert.Throws<ArgumentNullException>(() => new DnnHelper(null, this._mockViewDataContainer.Object));
         }
 
         [Test]
         public void Constructor_Throws_On_Null_ViewDataContainer()
         {
             //Act,Assert
-            Assert.Throws<ArgumentNullException>(() => new DnnHelper(null, _mockViewDataContainer.Object));
+            Assert.Throws<ArgumentNullException>(() => new DnnHelper(null, this._mockViewDataContainer.Object));
         }
 
         [Test]
         public void Constructor_Throws_On_Invalid_Controller_Property()
         {
             //Arrange
-            _viewContext.Controller = _mockController.Object;
+            this._viewContext.Controller = this._mockController.Object;
 
             //Act,Assert
-            Assert.Throws<InvalidOperationException>(() => new DnnHelper(_viewContext, _mockViewDataContainer.Object));
+            Assert.Throws<InvalidOperationException>(() => new DnnHelper(this._viewContext, this._mockViewDataContainer.Object));
         }
 
         [Test]
@@ -58,12 +58,12 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
         {
             //Arrange
             var expectedContext = new ModuleInstanceContext();
-            var mockDnnController = _mockController.As<IDnnController>();
+            var mockDnnController = this._mockController.As<IDnnController>();
             mockDnnController.Setup(c => c.ModuleContext).Returns(expectedContext);
-            _viewContext.Controller = _mockController.Object;
+            this._viewContext.Controller = this._mockController.Object;
 
             //Act
-            var helper = new DnnHelper(_viewContext, _mockViewDataContainer.Object);
+            var helper = new DnnHelper(this._viewContext, this._mockViewDataContainer.Object);
 
             //Assert
             Assert.AreEqual(expectedContext, helper.ModuleContext);

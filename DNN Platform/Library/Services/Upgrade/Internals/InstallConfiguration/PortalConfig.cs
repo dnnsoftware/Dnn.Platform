@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
    
         public PortalConfig()
         {
-            PortAliases = new List<string>();
+            this.PortAliases = new List<string>();
         }
     }
 }

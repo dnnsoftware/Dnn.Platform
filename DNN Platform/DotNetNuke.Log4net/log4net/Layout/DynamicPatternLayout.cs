@@ -110,12 +110,12 @@ namespace log4net.Layout
 		{
 			get
 			{
-				return m_headerPatternString.Format();
+				return this.m_headerPatternString.Format();
 			}
 			set
 			{
 				base.Header = value;
-				m_headerPatternString = new PatternString(value);
+				this.m_headerPatternString = new PatternString(value);
 			}
 		}		/* property DynamicPatternLayout Header */
 
@@ -134,12 +134,12 @@ namespace log4net.Layout
 		{
 			get
 			{
-				return m_footerPatternString.Format();
+				return this.m_footerPatternString.Format();
 			}
 			set
 			{
 				base.Footer = value;
-				m_footerPatternString = new PatternString(value);
+				this.m_footerPatternString = new PatternString(value);
 			}
 		}		/* property DynamicPatternLayout Footer */
 		#endregion

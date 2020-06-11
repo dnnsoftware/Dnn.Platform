@@ -27,15 +27,15 @@ namespace DotNetNuke.UI.Skins.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            string strText = ShowText;
+            string strText = this.ShowText;
 			
 			//load resources
-            if (!String.IsNullOrEmpty(ResourceKey))
+            if (!String.IsNullOrEmpty(this.ResourceKey))
             {
 				//localization
-                string strFile = Path.GetFileName(Server.MapPath(PortalSettings.ActiveTab.SkinSrc));
-                strFile = PortalSettings.ActiveTab.SkinPath + Localization.LocalResourceDirectory + "/" + strFile;
-                string strLocalization = Localization.GetString(ResourceKey, strFile);
+                string strFile = Path.GetFileName(this.Server.MapPath(this.PortalSettings.ActiveTab.SkinSrc));
+                strFile = this.PortalSettings.ActiveTab.SkinPath + Localization.LocalResourceDirectory + "/" + strFile;
+                string strLocalization = Localization.GetString(this.ResourceKey, strFile);
                 if (!String.IsNullOrEmpty(strLocalization))
                 {
                     strText = strLocalization;
@@ -45,20 +45,20 @@ namespace DotNetNuke.UI.Skins.Controls
             //If no value is found then use the value set the the Text attribute
             if (string.IsNullOrEmpty(strText))
             {
-                strText = ShowText;
+                strText = this.ShowText;
             }
 			
 			//token replace
-            if (ReplaceTokens)
+            if (this.ReplaceTokens)
             {
                 var tr = new TokenReplace();
-                tr.AccessingUser = PortalSettings.UserInfo;
+                tr.AccessingUser = this.PortalSettings.UserInfo;
                 strText = tr.ReplaceEnvironmentTokens(strText);
             }
-            lblText.Text = strText;
-            if (!String.IsNullOrEmpty(CssClass))
+            this.lblText.Text = strText;
+            if (!String.IsNullOrEmpty(this.CssClass))
             {
-                lblText.CssClass = CssClass;
+                this.lblText.CssClass = this.CssClass;
             }
         }
     }

@@ -197,8 +197,8 @@ namespace log4net.Appender
 		[Obsolete("Instead use the default constructor and set the Layout & Target properties. Scheduled removal in v10.0.0.")]
 		public ColoredConsoleAppender(ILayout layout, bool writeToErrorStream) 
 		{
-			Layout = layout;
-			m_writeToErrorStream = writeToErrorStream;
+			this.Layout = layout;
+			this.m_writeToErrorStream = writeToErrorStream;
 		}
 
 		#endregion // Public Instance Constructors
@@ -221,18 +221,18 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual public string Target
 		{
-			get { return m_writeToErrorStream ? ConsoleError : ConsoleOut; }
+			get { return this.m_writeToErrorStream ? ConsoleError : ConsoleOut; }
 			set
 			{
 				string v = value.Trim();
 				
 				if (string.Compare(ConsoleError, v, true, CultureInfo.InvariantCulture) == 0) 
 				{
-					m_writeToErrorStream = true;
+					this.m_writeToErrorStream = true;
 				} 
 				else 
 				{
-					m_writeToErrorStream = false;
+					this.m_writeToErrorStream = false;
 				}
 			}
 		}
@@ -250,7 +250,7 @@ namespace log4net.Appender
 		/// </remarks>
 		public void AddMapping(LevelColors mapping)
 		{
-			m_levelMapping.Add(mapping);
+			this.m_levelMapping.Add(mapping);
 		}
 
 		#endregion // Public Instance Properties
@@ -275,10 +275,10 @@ namespace log4net.Appender
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand, UnmanagedCode = true)]
         override protected void Append(log4net.Core.LoggingEvent loggingEvent) 
 		{
-			if (m_consoleOutputWriter != null)
+			if (this.m_consoleOutputWriter != null)
 			{
 				IntPtr consoleHandle = IntPtr.Zero;
-				if (m_writeToErrorStream)
+				if (this.m_writeToErrorStream)
 				{
 					// Write to the error stream
 					consoleHandle = GetStdHandle(STD_ERROR_HANDLE);
@@ -293,14 +293,14 @@ namespace log4net.Appender
 				ushort colorInfo = (ushort)Colors.White;
 
 				// see if there is a specified lookup
-				LevelColors levelColors = m_levelMapping.Lookup(loggingEvent.Level) as LevelColors;
+				LevelColors levelColors = this.m_levelMapping.Lookup(loggingEvent.Level) as LevelColors;
 				if (levelColors != null)
 				{
 					colorInfo = levelColors.CombinedColor;
 				}
 
 				// Render the event to a string
-				string strLoggingMessage = RenderLoggingEvent(loggingEvent);
+				string strLoggingMessage = this.RenderLoggingEvent(loggingEvent);
 
 				// get the current console color - to restore later
 				CONSOLE_SCREEN_BUFFER_INFO bufferInfo;
@@ -401,7 +401,7 @@ namespace log4net.Appender
 				}
 
 				// Write to the output stream
-				m_consoleOutputWriter.Write(messageCharArray, 0, arrayLength);
+				this.m_consoleOutputWriter.Write(messageCharArray, 0, arrayLength);
 
 				// Restore the console back to its previous color scheme
 				SetConsoleTextAttribute(consoleHandle, bufferInfo.wAttributes);
@@ -409,7 +409,7 @@ namespace log4net.Appender
 				if (appendNewline)
 				{
 					// Write the newline, after changing the color scheme
-					m_consoleOutputWriter.Write(s_windowsNewline, 0, 2);
+					this.m_consoleOutputWriter.Write(s_windowsNewline, 0, 2);
 				}
 			}
 		}
@@ -445,12 +445,12 @@ namespace log4net.Appender
         public override void ActivateOptions()
 		{
 			base.ActivateOptions();
-			m_levelMapping.ActivateOptions();
+			this.m_levelMapping.ActivateOptions();
 
 			System.IO.Stream consoleOutputStream = null;
 
 			// Use the Console methods to open a Stream over the console std handle
-			if (m_writeToErrorStream)
+			if (this.m_writeToErrorStream)
 			{
 				// Write to the error stream
 				consoleOutputStream = Console.OpenStandardError();
@@ -465,15 +465,15 @@ namespace log4net.Appender
 			System.Text.Encoding consoleEncoding = System.Text.Encoding.GetEncoding(GetConsoleOutputCP());
 
 			// Create a writer around the console stream
-			m_consoleOutputWriter = new System.IO.StreamWriter(consoleOutputStream, consoleEncoding, 0x100);
+			this.m_consoleOutputWriter = new System.IO.StreamWriter(consoleOutputStream, consoleEncoding, 0x100);
 
-			m_consoleOutputWriter.AutoFlush = true;
+			this.m_consoleOutputWriter.AutoFlush = true;
 
 			// SuppressFinalize on m_consoleOutputWriter because all it will do is flush
 			// and close the file handle. Because we have set AutoFlush the additional flush
 			// is not required. The console file handle should not be closed, so we don't call
 			// Dispose, Close or the finalizer.
-			GC.SuppressFinalize(m_consoleOutputWriter);
+			GC.SuppressFinalize(this.m_consoleOutputWriter);
 		}
 
 		#endregion // Override implementation of AppenderSkeleton
@@ -617,8 +617,8 @@ namespace log4net.Appender
 			/// </remarks>
 			public Colors ForeColor
 			{
-				get { return m_foreColor; }
-				set { m_foreColor = value; }
+				get { return this.m_foreColor; }
+				set { this.m_foreColor = value; }
 			}
 
 			/// <summary>
@@ -632,8 +632,8 @@ namespace log4net.Appender
 			/// </remarks>
 			public Colors BackColor
 			{
-				get { return m_backColor; }
-				set { m_backColor = value; }
+				get { return this.m_backColor; }
+				set { this.m_backColor = value; }
 			}
 
 			/// <summary>
@@ -647,7 +647,7 @@ namespace log4net.Appender
 			public override void ActivateOptions()
 			{
 				base.ActivateOptions();
-				m_combinedColor = (ushort)( (int)m_foreColor + (((int)m_backColor) << 4) );
+				this.m_combinedColor = (ushort)( (int)this.m_foreColor + (((int)this.m_backColor) << 4) );
 			}
 
 			/// <summary>
@@ -656,7 +656,7 @@ namespace log4net.Appender
 			/// </summary>
 			internal ushort CombinedColor
 			{
-				get { return m_combinedColor; }
+				get { return this.m_combinedColor; }
 			}
 		}
 

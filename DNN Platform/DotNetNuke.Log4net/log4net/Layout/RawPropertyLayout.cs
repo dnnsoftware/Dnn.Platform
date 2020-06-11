@@ -66,8 +66,8 @@ namespace log4net.Layout
 		/// </remarks>
 		public string Key
 		{
-			get { return m_key; }
-			set { m_key = value; }
+			get { return this.m_key; }
+			set { this.m_key = value; }
 		}
   
 		#region Implementation of IRawLayout
@@ -86,7 +86,7 @@ namespace log4net.Layout
 		/// </remarks>
 		public virtual object Format(LoggingEvent loggingEvent)
 		{
-			return loggingEvent.LookupProperty(m_key);
+			return loggingEvent.LookupProperty(this.m_key);
 		}
 
 		#endregion

@@ -21,18 +21,18 @@ namespace DotNetNuke.Authentication.Facebook.Components
         public FacebookClient(int portalId, AuthMode mode) 
             : base(portalId, mode, "Facebook")
         {
-            TokenEndpoint = new Uri("https://graph.facebook.com/oauth/access_token");
-            TokenMethod = HttpMethod.GET;
-            AuthorizationEndpoint = new Uri("https://graph.facebook.com/oauth/authorize");
-            MeGraphEndpoint = new Uri("https://graph.facebook.com/me?fields=id,name,email,first_name,last_name,link,birthday,gender,locale,timezone,updated_time");
+            this.TokenEndpoint = new Uri("https://graph.facebook.com/oauth/access_token");
+            this.TokenMethod = HttpMethod.GET;
+            this.AuthorizationEndpoint = new Uri("https://graph.facebook.com/oauth/authorize");
+            this.MeGraphEndpoint = new Uri("https://graph.facebook.com/me?fields=id,name,email,first_name,last_name,link,birthday,gender,locale,timezone,updated_time");
 
-            Scope = "email";
+            this.Scope = "email";
 
-            AuthTokenName = "FacebookUserToken";
+            this.AuthTokenName = "FacebookUserToken";
 
-            OAuthVersion = "2.0";
+            this.OAuthVersion = "2.0";
 
-            LoadTokenCookie(String.Empty);
+            this.LoadTokenCookie(String.Empty);
         }
 
         #endregion

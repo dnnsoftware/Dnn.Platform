@@ -23,12 +23,12 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
 
         public IEnumerable<KeyValuePair<string, string>> GetModuleCacheProviders()
         {
-            return GetFilteredProviders(ModuleCachingProvider.GetProviderList(), "ModuleCachingProvider");
+            return this.GetFilteredProviders(ModuleCachingProvider.GetProviderList(), "ModuleCachingProvider");
         }
 
         public IEnumerable<KeyValuePair<string, string>> GetPageCacheProviders()
         {
-            return GetFilteredProviders(OutputCachingProvider.GetProviderList(), "OutputCachingProvider");
+            return this.GetFilteredProviders(OutputCachingProvider.GetProviderList(), "OutputCachingProvider");
         }
 
         public IEnumerable<KeyValuePair<string, string>> GetCachingProviderOptions()

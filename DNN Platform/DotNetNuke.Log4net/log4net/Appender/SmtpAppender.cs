@@ -114,8 +114,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string To
 		{
-			get { return m_to; }
-			set { m_to = MaybeTrimSeparators(value); }
+			get { return this.m_to; }
+			set { this.m_to = MaybeTrimSeparators(value); }
 		}
 
         /// <summary>
@@ -140,8 +140,8 @@ namespace log4net.Appender
         /// </remarks>
         public string Cc
         {
-            get { return m_cc; }
-            set { m_cc = MaybeTrimSeparators(value); }
+            get { return this.m_cc; }
+            set { this.m_cc = MaybeTrimSeparators(value); }
         }
 
         /// <summary>
@@ -158,8 +158,8 @@ namespace log4net.Appender
         /// </remarks>
         public string Bcc
         {
-            get { return m_bcc; }
-            set { m_bcc = MaybeTrimSeparators(value); }
+            get { return this.m_bcc; }
+            set { this.m_bcc = MaybeTrimSeparators(value); }
         }
 
 		/// <summary>
@@ -175,8 +175,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string From 
 		{
-			get { return m_from; }
-			set { m_from = value; }
+			get { return this.m_from; }
+			set { this.m_from = value; }
 		}
 
 		/// <summary>
@@ -192,8 +192,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string Subject 
 		{
-			get { return m_subject; }
-			set { m_subject = value; }
+			get { return this.m_subject; }
+			set { this.m_subject = value; }
 		}
   
 		/// <summary>
@@ -212,8 +212,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string SmtpHost
 		{
-			get { return m_smtpHost; }
-			set { m_smtpHost = value; }
+			get { return this.m_smtpHost; }
+			set { this.m_smtpHost = value; }
 		}
 
 		/// <summary>
@@ -251,8 +251,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public SmtpAuthentication Authentication
 		{
-			get { return m_authentication; }
-			set { m_authentication = value; }
+			get { return this.m_authentication; }
+			set { this.m_authentication = value; }
 		}
 
 		/// <summary>
@@ -268,8 +268,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string Username
 		{
-			get { return m_username; }
-			set { m_username = value; }
+			get { return this.m_username; }
+			set { this.m_username = value; }
 		}
 
 		/// <summary>
@@ -285,8 +285,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string Password
 		{
-			get { return m_password; }
-			set { m_password = value; }
+			get { return this.m_password; }
+			set { this.m_password = value; }
 		}
 
 		/// <summary>
@@ -302,8 +302,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public int Port
 		{
-			get { return m_port; }
-			set { m_port = value; }
+			get { return this.m_port; }
+			set { this.m_port = value; }
 		}
 
 		/// <summary>
@@ -324,8 +324,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public MailPriority Priority
 		{
-			get { return m_mailPriority; }
-			set { m_mailPriority = value; }
+			get { return this.m_mailPriority; }
+			set { this.m_mailPriority = value; }
 		}
 
 #if NET_2_0 || MONO_2_0
@@ -337,8 +337,8 @@ namespace log4net.Appender
         /// </remarks>
         public bool EnableSsl
         {
-            get { return m_enableSsl; }
-            set { m_enableSsl = value; }
+            get { return this.m_enableSsl; }
+            set { this.m_enableSsl = value; }
         }
 
         /// <summary>
@@ -349,8 +349,8 @@ namespace log4net.Appender
         /// </remarks>
         public string ReplyTo
         {
-            get { return m_replyTo; }
-            set { m_replyTo = value; }
+            get { return this.m_replyTo; }
+            set { this.m_replyTo = value; }
         }
 #endif
 
@@ -362,8 +362,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public Encoding SubjectEncoding
 		{
-			get { return m_subjectEncoding; }
-			set { m_subjectEncoding = value; }
+			get { return this.m_subjectEncoding; }
+			set { this.m_subjectEncoding = value; }
 		}
 
 		/// <summary>
@@ -374,8 +374,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public Encoding BodyEncoding
 		{
-			get { return m_bodyEncoding; }
-			set { m_bodyEncoding = value; }
+			get { return this.m_bodyEncoding; }
+			set { this.m_bodyEncoding = value; }
 		}
 
 		#endregion // Public Instance Properties
@@ -394,7 +394,7 @@ namespace log4net.Appender
 			{	  
 				StringWriter writer = new StringWriter(System.Globalization.CultureInfo.InvariantCulture);
 
-				string t = Layout.Header;
+				string t = this.Layout.Header;
 				if (t != null)
 				{
 					writer.Write(t);
@@ -403,20 +403,20 @@ namespace log4net.Appender
 				for(int i = 0; i < events.Length; i++) 
 				{
 					// Render the event and append the text to the buffer
-					RenderLoggingEvent(writer, events[i]);
+					this.RenderLoggingEvent(writer, events[i]);
 				}
 
-				t = Layout.Footer;
+				t = this.Layout.Footer;
 				if (t != null)
 				{
 					writer.Write(t);
 				}
 
-				SendEmail(writer.ToString());
+				this.SendEmail(writer.ToString());
 			} 
 			catch(Exception e) 
 			{
-				ErrorHandler.Error("Error occurred while sending e-mail notification.", e);
+				this.ErrorHandler.Error("Error occurred while sending e-mail notification.", e);
 			}
 		}
 
@@ -455,20 +455,20 @@ namespace log4net.Appender
 
 			// Create and configure the smtp client
 			SmtpClient smtpClient = new SmtpClient();
-			if (!String.IsNullOrEmpty(m_smtpHost))
+			if (!String.IsNullOrEmpty(this.m_smtpHost))
 			{
-				smtpClient.Host = m_smtpHost;
+				smtpClient.Host = this.m_smtpHost;
 			}
-			smtpClient.Port = m_port;
+			smtpClient.Port = this.m_port;
 			smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtpClient.EnableSsl = m_enableSsl;
+            smtpClient.EnableSsl = this.m_enableSsl;
 
-			if (m_authentication == SmtpAuthentication.Basic)
+			if (this.m_authentication == SmtpAuthentication.Basic)
 			{
 				// Perform basic authentication
-				smtpClient.Credentials = new System.Net.NetworkCredential(m_username, m_password);
+				smtpClient.Credentials = new System.Net.NetworkCredential(this.m_username, this.m_password);
 			}
-			else if (m_authentication == SmtpAuthentication.Ntlm)
+			else if (this.m_authentication == SmtpAuthentication.Ntlm)
 			{
 				// Perform integrated authentication (NTLM)
 				smtpClient.Credentials = System.Net.CredentialCache.DefaultNetworkCredentials;
@@ -477,30 +477,30 @@ namespace log4net.Appender
             using (MailMessage mailMessage = new MailMessage())
             {
                 mailMessage.Body = messageBody;
-				mailMessage.BodyEncoding = m_bodyEncoding;
-                mailMessage.From = new MailAddress(m_from);
-                mailMessage.To.Add(m_to);
-                if (!String.IsNullOrEmpty(m_cc))
+				mailMessage.BodyEncoding = this.m_bodyEncoding;
+                mailMessage.From = new MailAddress(this.m_from);
+                mailMessage.To.Add(this.m_to);
+                if (!String.IsNullOrEmpty(this.m_cc))
                 {
-                    mailMessage.CC.Add(m_cc);
+                    mailMessage.CC.Add(this.m_cc);
                 }
-                if (!String.IsNullOrEmpty(m_bcc))
+                if (!String.IsNullOrEmpty(this.m_bcc))
                 {
-                    mailMessage.Bcc.Add(m_bcc);
+                    mailMessage.Bcc.Add(this.m_bcc);
                 }
-                if (!String.IsNullOrEmpty(m_replyTo))
+                if (!String.IsNullOrEmpty(this.m_replyTo))
                 {
                     // .NET 4.0 warning CS0618: 'System.Net.Mail.MailMessage.ReplyTo' is obsolete:
                     // 'ReplyTo is obsoleted for this type.  Please use ReplyToList instead which can accept multiple addresses. http://go.microsoft.com/fwlink/?linkid=14202'
 #if !NET_4_0 && !MONO_4_0
                     mailMessage.ReplyTo = new MailAddress(m_replyTo);
 #else
-                    mailMessage.ReplyToList.Add(new MailAddress(m_replyTo));
+                    mailMessage.ReplyToList.Add(new MailAddress(this.m_replyTo));
 #endif
                 }
-                mailMessage.Subject = m_subject;
-				mailMessage.SubjectEncoding = m_subjectEncoding;
-                mailMessage.Priority = m_mailPriority;
+                mailMessage.Subject = this.m_subject;
+				mailMessage.SubjectEncoding = this.m_subjectEncoding;
+                mailMessage.Priority = this.m_mailPriority;
 
                 // TODO: Consider using SendAsync to send the message without blocking. This would be a change in
                 // behaviour compared to .NET 1.x. We would need a SendCompletedCallback to log errors.

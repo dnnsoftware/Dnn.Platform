@@ -17,14 +17,14 @@ namespace DotNetNuke.Services.Localization
 
         public CultureInfoComparer(string compareBy)
         {
-            _compare = compareBy;
+            this._compare = compareBy;
         }
 
         #region IComparer Members
 
         public int Compare(object x, object y)
         {
-            switch (_compare.ToUpperInvariant())
+            switch (this._compare.ToUpperInvariant())
             {
                 case "ENGLISH":
                     return ((CultureInfo) x).EnglishName.CompareTo(((CultureInfo) y).EnglishName);

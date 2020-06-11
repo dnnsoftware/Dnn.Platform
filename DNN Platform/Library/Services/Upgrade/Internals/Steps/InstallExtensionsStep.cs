@@ -32,13 +32,13 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             var packages = Upgrade.GetInstallPackages();
             if (packages.Count == 0)
             {
-                Percentage = 100;
-                Status = StepStatus.Done;
+                this.Percentage = 100;
+                this.Status = StepStatus.Done;
                 return;
             }
 
-            Percentage = 0;
-            Status = StepStatus.Running;
+            this.Percentage = 0;
+            this.Status = StepStatus.Running;
 
             var percentForEachStep = 100 / packages.Count;
             var counter = 0;
@@ -46,18 +46,18 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             {
                 var file = package.Key;
                 var packageType = package.Value.PackageType;
-                var message = string.Format(Localization.Localization.GetString("InstallingExtension", LocalInstallResourceFile), packageType, Path.GetFileName(file));
-                Details = message;
-                Logger.Trace(Details);
+                var message = string.Format(Localization.Localization.GetString("InstallingExtension", this.LocalInstallResourceFile), packageType, Path.GetFileName(file));
+                this.Details = message;
+                Logger.Trace(this.Details);
                 var success = Upgrade.InstallPackage(file, packageType, false);
                 if (!success)
                 {
-                    Errors.Add(message);
+                    this.Errors.Add(message);
                     break;
                 }
-                Percentage = percentForEachStep * counter++;
+                this.Percentage = percentForEachStep * counter++;
             }
-			Status = Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
+			this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
         }
 
         #endregion

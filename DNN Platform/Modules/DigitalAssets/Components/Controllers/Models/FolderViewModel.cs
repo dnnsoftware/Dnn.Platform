@@ -10,7 +10,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models
     {
         public FolderViewModel()
         {
-            Attributes = new List<KeyValuePair<string, object>>(); 
+            this.Attributes = new List<KeyValuePair<string, object>>(); 
         }
         
         public int FolderID { get; set; }

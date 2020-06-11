@@ -39,9 +39,9 @@ namespace DotNetNuke.Entities.Portals
 
             if (activeTab == null || activeTab.TabID == Null.NullInteger) return;
 
-            UpdateSkinSettings(activeTab, portalSettings);
+            this.UpdateSkinSettings(activeTab, portalSettings);
 
-            activeTab.BreadCrumbs = new ArrayList(GetBreadcrumbs(activeTab.TabID, portalSettings.PortalId));
+            activeTab.BreadCrumbs = new ArrayList(this.GetBreadcrumbs(activeTab.TabID, portalSettings.PortalId));
         }
 
         public virtual TabInfo GetActiveTab(int tabId, PortalSettings portalSettings)

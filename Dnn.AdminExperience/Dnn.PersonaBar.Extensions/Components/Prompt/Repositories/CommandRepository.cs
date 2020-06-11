@@ -70,7 +70,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
             var cacheKey = (string.Join("_", command.Args) + "_" + PortalController.Instance.GetCurrentPortalSettings()?.DefaultLanguage).Replace("-", "_");
             cacheKey = $"{cacheKey}_{(showSyntax ? "1" : "0")}_{(showLearn ? "1" : "0")}}}";
             return DataCache.GetCachedData<CommandHelp>(new CacheItemArgs(cacheKey, CacheItemPriority.Low),
-                c => GetCommandHelpInternal(consoleCommand, showSyntax, showLearn));
+                c => this.GetCommandHelpInternal(consoleCommand, showSyntax, showLearn));
         }
 
         private CommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand, bool showSyntax = false, bool showLearn = false)

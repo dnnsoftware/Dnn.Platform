@@ -34,19 +34,19 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return _basePath;
+                return this._basePath;
             }
         }
 
         public FileSystemPermissionVerifier(string basePath)
         {
-			_basePath = basePath;
+			this._basePath = basePath;
         }
 
 		public FileSystemPermissionVerifier(string basePath, int retryTimes) : this(basePath)
 		{
 
-			_retryTimes = retryTimes;
+			this._retryTimes = retryTimes;
 		}
 
         /// -----------------------------------------------------------------------------
@@ -56,13 +56,13 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         private bool VerifyFileCreate()
         {
-            string verifyPath = Path.Combine(_basePath, "Verify\\Verify.txt");
+            string verifyPath = Path.Combine(this._basePath, "Verify\\Verify.txt");
             bool verified = true;
 
             //Attempt to create the File
             try
             {
-                Try(() => FileCreateAction(verifyPath), "Creating verification file");
+                this.Try(() => FileCreateAction(verifyPath), "Creating verification file");
             }
             catch (Exception exc)
             {
@@ -93,13 +93,13 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         private bool VerifyFileDelete()
         {
-            string verifyPath = Path.Combine(_basePath, "Verify\\Verify.txt");
+            string verifyPath = Path.Combine(this._basePath, "Verify\\Verify.txt");
             bool verified = true;
 
             //Attempt to delete the File
             try
             {
-                Try(() => File.Delete(verifyPath), "Deleting verification file");
+                this.Try(() => File.Delete(verifyPath), "Deleting verification file");
             }
             catch (Exception exc)
             {
@@ -117,13 +117,13 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         private bool VerifyFolderCreate()
         {
-            string verifyPath = Path.Combine(_basePath, "Verify");
+            string verifyPath = Path.Combine(this._basePath, "Verify");
             bool verified = true;
 
             //Attempt to create the Directory
             try
             {
-				Try(() => FolderCreateAction(verifyPath), "Creating verification folder");
+				this.Try(() => FolderCreateAction(verifyPath), "Creating verification folder");
             }
             catch (Exception exc)
             {
@@ -151,13 +151,13 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         private bool VerifyFolderDelete()
         {
-            string verifyPath = Path.Combine(_basePath, "Verify");
+            string verifyPath = Path.Combine(this._basePath, "Verify");
             bool verified = true;
 
             //Attempt to delete the Directory
             try
             {
-                Try(() => Directory.Delete(verifyPath, true), "Deleting verification folder");
+                this.Try(() => Directory.Delete(verifyPath, true), "Deleting verification folder");
             }
             catch (Exception exc)
             {
@@ -173,16 +173,16 @@ namespace DotNetNuke.Common.Utilities
             lock (typeof(FileSystemPermissionVerifier))
             {
                 // All these steps must be executed in this sequence as one unit
-                return VerifyFolderCreate() &&
-                       VerifyFileCreate() &&
-                       VerifyFileDelete() &&
-                       VerifyFolderDelete();
+                return this.VerifyFolderCreate() &&
+                       this.VerifyFileCreate() &&
+                       this.VerifyFileDelete() &&
+                       this.VerifyFolderDelete();
             }
         }
 
 		private void Try(Action action, string description)
 		{
-			new RetryableAction(action, description, _retryTimes, TimeSpan.FromSeconds(1)).TryIt();
+			new RetryableAction(action, description, this._retryTimes, TimeSpan.FromSeconds(1)).TryIt();
 		}
     }
 }

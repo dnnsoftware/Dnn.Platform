@@ -27,16 +27,16 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             get
             {
-                return PageIndex;
+                return this.PageIndex;
                 
             }
-            set { PageIndex = value; }
+            set { this.PageIndex = value; }
         }
 
-        public TableItemStyle ItemStyle => RowStyle;
-        public TableItemStyle AlternatingItemStyle => AlternatingRowStyle;
-        public TableItemStyle EditItemStyle => EditRowStyle;
-        public TableItemStyle SelectedItemStyle => SelectedRowStyle;
+        public TableItemStyle ItemStyle => this.RowStyle;
+        public TableItemStyle AlternatingItemStyle => this.AlternatingRowStyle;
+        public TableItemStyle EditItemStyle => this.EditRowStyle;
+        public TableItemStyle SelectedItemStyle => this.SelectedRowStyle;
 
 
         #endregion
@@ -53,8 +53,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             base.OnPreRender(e);
 
-            AlternatingRowStyle.CssClass = "alter-row";
-            Style.Remove("border-collapse");
+            this.AlternatingRowStyle.CssClass = "alter-row";
+            this.Style.Remove("border-collapse");
         }
     }
 }

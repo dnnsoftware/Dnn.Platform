@@ -107,7 +107,7 @@ namespace log4net.Appender
 		{
 			get
 			{
-				return m_listeningPort;
+				return this.m_listeningPort;
 			}
 			set
 			{
@@ -121,7 +121,7 @@ namespace log4net.Appender
 				}
 				else
 				{
-					m_listeningPort = value;
+					this.m_listeningPort = value;
 				}
 			}
 		}
@@ -140,10 +140,10 @@ namespace log4net.Appender
 		{
 			base.OnClose();
 
-			if (m_handler != null)
+			if (this.m_handler != null)
 			{
-				m_handler.Dispose();
-				m_handler = null;
+				this.m_handler.Dispose();
+				this.m_handler = null;
 			}
 		}
 
@@ -185,8 +185,8 @@ namespace log4net.Appender
 			base.ActivateOptions();
 			try 
 			{
-				LogLog.Debug(declaringType, "Creating SocketHandler to listen on port ["+m_listeningPort+"]");
-				m_handler = new SocketHandler(m_listeningPort);
+				LogLog.Debug(declaringType, "Creating SocketHandler to listen on port ["+this.m_listeningPort+"]");
+				this.m_handler = new SocketHandler(this.m_listeningPort);
 			}
 			catch(Exception ex) 
 			{
@@ -206,9 +206,9 @@ namespace log4net.Appender
 		/// </remarks>
 		protected override void Append(LoggingEvent loggingEvent) 
 		{
-			if (m_handler != null && m_handler.HasConnections)
+			if (this.m_handler != null && this.m_handler.HasConnections)
 			{
-				m_handler.Send(RenderLoggingEvent(loggingEvent));
+				this.m_handler.Send(this.RenderLoggingEvent(loggingEvent));
 			}
 		}
 
@@ -257,15 +257,15 @@ namespace log4net.Appender
 				/// </remarks>
 				public SocketClient(Socket socket)
 				{
-					m_socket = socket;
+					this.m_socket = socket;
 
 					try
 					{
-						m_writer = new StreamWriter(new NetworkStream(socket));
+						this.m_writer = new StreamWriter(new NetworkStream(socket));
 					}
 					catch
 					{
-						Dispose();
+						this.Dispose();
 						throw;
 					}
 				}
@@ -281,8 +281,8 @@ namespace log4net.Appender
 				/// </remarks>
 				public void Send(String message)
 				{
-					m_writer.Write(message);
-					m_writer.Flush();
+					this.m_writer.Write(message);
+					this.m_writer.Flush();
 				}
 
 				#region IDisposable Members
@@ -299,29 +299,29 @@ namespace log4net.Appender
 				{
 					try
 					{
-						if (m_writer != null)
+						if (this.m_writer != null)
 						{
-							m_writer.Close();
-							m_writer = null;
+							this.m_writer.Close();
+							this.m_writer = null;
 						}
 					}
 					catch { }
 
-					if (m_socket != null)
+					if (this.m_socket != null)
 					{
 						try
 						{
-							m_socket.Shutdown(SocketShutdown.Both);
+							this.m_socket.Shutdown(SocketShutdown.Both);
 						}
 						catch { }
 
 						try
 						{
-							m_socket.Close();
+							this.m_socket.Close();
 						}
 						catch { }
 
-						m_socket = null;
+						this.m_socket = null;
 					}
 				}
 
@@ -339,11 +339,11 @@ namespace log4net.Appender
 			/// </remarks>
 			public SocketHandler(int port)
 			{
-				m_serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+				this.m_serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-				m_serverSocket.Bind(new IPEndPoint(IPAddress.Any, port));
-				m_serverSocket.Listen(5);
-				AcceptConnection();
+				this.m_serverSocket.Bind(new IPEndPoint(IPAddress.Any, port));
+				this.m_serverSocket.Listen(5);
+				this.AcceptConnection();
 			}
 
 			private void AcceptConnection()
@@ -351,7 +351,7 @@ namespace log4net.Appender
 #if NETSTANDARD1_3
 				m_serverSocket.AcceptAsync().ContinueWith(OnConnect, TaskScheduler.Default);
 #else
-				m_serverSocket.BeginAccept(new AsyncCallback(OnConnect), null);
+				this.m_serverSocket.BeginAccept(new AsyncCallback(this.OnConnect), null);
 #endif
 			}
 
@@ -366,7 +366,7 @@ namespace log4net.Appender
 			/// </remarks>
 			public void Send(String message)
 			{
-				ArrayList localClients = m_clients;
+				ArrayList localClients = this.m_clients;
 
 				foreach (SocketClient client in localClients)
 				{
@@ -378,7 +378,7 @@ namespace log4net.Appender
 					{
 						// The client has closed the connection, remove it from our list
 						client.Dispose();
-						RemoveClient(client);
+						this.RemoveClient(client);
 					}
 				}
 			}
@@ -391,9 +391,9 @@ namespace log4net.Appender
 			{
 				lock(this)
 				{
-					ArrayList clientsCopy = (ArrayList)m_clients.Clone();
+					ArrayList clientsCopy = (ArrayList)this.m_clients.Clone();
 					clientsCopy.Add(client);
-					m_clients = clientsCopy;
+					this.m_clients = clientsCopy;
 				}
 			}
 
@@ -405,9 +405,9 @@ namespace log4net.Appender
 			{
 				lock(this)
 				{
-					ArrayList clientsCopy = (ArrayList)m_clients.Clone();
+					ArrayList clientsCopy = (ArrayList)this.m_clients.Clone();
 					clientsCopy.Remove(client);
-					m_clients = clientsCopy;
+					this.m_clients = clientsCopy;
 				}
 			}
 
@@ -428,7 +428,7 @@ namespace log4net.Appender
 			{
 				get
 				{
-					ArrayList localClients = m_clients;
+					ArrayList localClients = this.m_clients;
 
 					return (localClients != null && localClients.Count > 0);
 				}
@@ -457,18 +457,18 @@ namespace log4net.Appender
 					Socket socket = acceptTask.GetAwaiter().GetResult();
 #else
 					// Block until a client connects
-					Socket socket = m_serverSocket.EndAccept(asyncResult);
+					Socket socket = this.m_serverSocket.EndAccept(asyncResult);
 #endif
 					LogLog.Debug(declaringType, "Accepting connection from ["+socket.RemoteEndPoint.ToString()+"]");
 					SocketClient client = new SocketClient(socket);
 
-					int currentActiveConnectionsCount = m_clients.Count;
+					int currentActiveConnectionsCount = this.m_clients.Count;
 					if (currentActiveConnectionsCount < MAX_CONNECTIONS) 
 					{
 						try
 						{
 							client.Send("TelnetAppender v1.0 (" + (currentActiveConnectionsCount + 1) + " active connections)\r\n\r\n");
-							AddClient(client);
+							this.AddClient(client);
 						}
 						catch
 						{
@@ -486,9 +486,9 @@ namespace log4net.Appender
 				}
 				finally
 				{
-					if (m_serverSocket != null)
+					if (this.m_serverSocket != null)
 					{
-						AcceptConnection();
+						this.AcceptConnection();
 					}
 				}
 			}
@@ -505,16 +505,16 @@ namespace log4net.Appender
 			/// </remarks>
 			public void Dispose()
 			{
-				ArrayList localClients = m_clients;
+				ArrayList localClients = this.m_clients;
 
 				foreach (SocketClient client in localClients)
 				{
 					client.Dispose();
 				}
-				m_clients.Clear();
+				this.m_clients.Clear();
 
-				Socket localSocket = m_serverSocket;
-				m_serverSocket = null;
+				Socket localSocket = this.m_serverSocket;
+				this.m_serverSocket = null;
 				try 
 				{
 					localSocket.Shutdown(SocketShutdown.Both);

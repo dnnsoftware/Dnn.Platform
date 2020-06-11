@@ -30,13 +30,13 @@ namespace DotNetNuke.UI.ControlPanel
         {
             base.OnLoad(e);
 
-            cmdSwitch.Click += CmdSwitchClick;
+            this.cmdSwitch.Click += this.CmdSwitchClick;
 
             try
             {
-                if (Visible && !IsPostBack)
+                if (this.Visible && !this.IsPostBack)
                 {
-                    LoadPortalsList();
+                    this.LoadPortalsList();
                 }
             }
             catch (Exception exc)
@@ -49,14 +49,14 @@ namespace DotNetNuke.UI.ControlPanel
         {
             try
             {
-                if ((!string.IsNullOrEmpty(SitesLst.SelectedValue)))
+                if ((!string.IsNullOrEmpty(this.SitesLst.SelectedValue)))
                 {
-                    int selectedPortalID = int.Parse(SitesLst.SelectedValue);
+                    int selectedPortalID = int.Parse(this.SitesLst.SelectedValue);
                     var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(selectedPortalID).ToList();
 
                     if ((portalAliases.Count > 0 && (portalAliases[0] != null)))
                     {
-                        Response.Redirect(Globals.AddHTTP(((PortalAliasInfo) portalAliases[0]).HTTPAlias));
+                        this.Response.Redirect(Globals.AddHTTP(((PortalAliasInfo) portalAliases[0]).HTTPAlias));
                     }
                 }
             }
@@ -110,16 +110,16 @@ namespace DotNetNuke.UI.ControlPanel
         {
             var portals = PortalController.Instance.GetPortals();
 
-            SitesLst.ClearSelection();
-            SitesLst.Items.Clear();
+            this.SitesLst.ClearSelection();
+            this.SitesLst.Items.Clear();
 
-            SitesLst.DataSource = portals;
-            SitesLst.DataTextField = "PortalName";
-            SitesLst.DataValueField = "PortalID";
-            SitesLst.DataBind();
+            this.SitesLst.DataSource = portals;
+            this.SitesLst.DataTextField = "PortalName";
+            this.SitesLst.DataValueField = "PortalID";
+            this.SitesLst.DataBind();
 
             //SitesLst.Items.Insert(0, new ListItem(string.Empty));
-            SitesLst.InsertItem(0, string.Empty, string.Empty);
+            this.SitesLst.InsertItem(0, string.Empty, string.Empty);
         }
 
         #endregion

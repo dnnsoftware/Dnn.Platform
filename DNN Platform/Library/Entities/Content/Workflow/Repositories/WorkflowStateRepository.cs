@@ -56,7 +56,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 rep.Insert(state);
             }
 
-            CacheWorkflowState(state);
+            this.CacheWorkflowState(state);
         }
         
         public void UpdateWorkflowState(WorkflowState state)
@@ -78,7 +78,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
             DataCache.RemoveCache(GetWorkflowStateKey(state.StateID));
             DataCache.RemoveCache(WorkflowRepository.GetWorkflowItemKey(state.WorkflowID));
-            CacheWorkflowState(state);
+            this.CacheWorkflowState(state);
         }
 
         public void DeleteWorkflowState(WorkflowState state)

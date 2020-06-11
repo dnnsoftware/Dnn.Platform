@@ -13,18 +13,18 @@ namespace DotNetNuke.ExtensionPoints.Filters
 
         public CompositeFilter()
         {
-            filters = new List<IExtensionPointFilter>();
+            this.filters = new List<IExtensionPointFilter>();
         }
 
         public CompositeFilter And(IExtensionPointFilter filter)
         {
-            filters.Add(filter);
+            this.filters.Add(filter);
             return this;
         }
 
         public bool Condition(IExtensionPointData m)
         {
-            return filters.All(f => f.Condition(m));
+            return this.filters.All(f => f.Condition(m));
         }
     }
 }

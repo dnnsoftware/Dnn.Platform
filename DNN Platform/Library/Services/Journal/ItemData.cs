@@ -32,13 +32,13 @@ namespace DotNetNuke.Services.Journal {
                 propertyName = propertyName.ToLowerInvariant();
                 switch (propertyName) {
                     case "url":
-                        return PropertyAccess.FormatString(Url, format);
+                        return PropertyAccess.FormatString(this.Url, format);
                     case "title":
-                        return PropertyAccess.FormatString(Title, format);
+                        return PropertyAccess.FormatString(this.Title, format);
                     case "description":
-                        return PropertyAccess.FormatString(Description, format);
+                        return PropertyAccess.FormatString(this.Description, format);
                     case "imageurl":
-                        return PropertyAccess.FormatString(ImageUrl, format);
+                        return PropertyAccess.FormatString(this.ImageUrl, format);
 
 
                 }

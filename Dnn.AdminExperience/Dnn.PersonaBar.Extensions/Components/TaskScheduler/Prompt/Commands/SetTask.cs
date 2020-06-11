@@ -32,26 +32,26 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             
-            TaskId = GetFlagValue(FlagId, "Task Id", -1, true, true, true);
-            Enabled = GetFlagValue(FlagEnabled, "Enabled", true,true);
+            this.TaskId = this.GetFlagValue(FlagId, "Task Id", -1, true, true, true);
+            this.Enabled = this.GetFlagValue(FlagEnabled, "Enabled", true,true);
         }
 
         public override ConsoleResultModel Run()
         {
             try
             {
-                var taskToUpdate = SchedulingProvider.Instance().GetSchedule(TaskId);
+                var taskToUpdate = SchedulingProvider.Instance().GetSchedule(this.TaskId);
                 var tasks = new List<TaskModel>();
 
                 if (taskToUpdate == null)
-                    return new ConsoleErrorResultModel(string.Format(LocalizeString("Prompt_TaskNotFound"), TaskId));
-                if (taskToUpdate.Enabled == Enabled)
-                    return new ConsoleErrorResultModel(LocalizeString(Enabled ? "Prompt_TaskAlreadyEnabled" : "Prompt_TaskAlreadyDisabled"));
+                    return new ConsoleErrorResultModel(string.Format(this.LocalizeString("Prompt_TaskNotFound"), this.TaskId));
+                if (taskToUpdate.Enabled == this.Enabled)
+                    return new ConsoleErrorResultModel(this.LocalizeString(this.Enabled ? "Prompt_TaskAlreadyEnabled" : "Prompt_TaskAlreadyDisabled"));
 
-                taskToUpdate.Enabled = Enabled;
+                taskToUpdate.Enabled = this.Enabled;
                 SchedulingProvider.Instance().UpdateSchedule(taskToUpdate);
                 tasks.Add(new TaskModel(taskToUpdate));
-                return new ConsoleResultModel(LocalizeString("Prompt_TaskUpdated"))
+                return new ConsoleResultModel(this.LocalizeString("Prompt_TaskUpdated"))
                 {
                     Records = tasks.Count,
                     Data = tasks
@@ -60,7 +60,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return new ConsoleErrorResultModel(LocalizeString("Prompt_TaskUpdateFailed"));
+                return new ConsoleErrorResultModel(this.LocalizeString("Prompt_TaskUpdateFailed"));
             }
         }
 

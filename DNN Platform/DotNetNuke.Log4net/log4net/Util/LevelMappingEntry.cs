@@ -72,8 +72,8 @@ namespace log4net.Util
 		/// </remarks>
 		public Level Level
 		{
-			get { return m_level; }
-			set { m_level = value; }
+			get { return this.m_level; }
+			set { this.m_level = value; }
 		}
 
 		#endregion // Public Instance Properties

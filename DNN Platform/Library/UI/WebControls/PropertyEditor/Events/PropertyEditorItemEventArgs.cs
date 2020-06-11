@@ -32,7 +32,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public PropertyEditorItemEventArgs(EditorInfo editor)
         {
-            Editor = editor;
+            this.Editor = editor;
         }
 
         /// -----------------------------------------------------------------------------

@@ -70,8 +70,8 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
             CheckSettings(folderMapping);
 
-            var accountName = GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountName);
-            var accountKey = GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountKey);
+            var accountName = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountName);
+            var accountKey = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountKey);
             var container = GetSetting(folderMapping, Constants.Container);
             var useHttps = GetBooleanSetting(folderMapping, Constants.UseHttps);
 
@@ -85,34 +85,34 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
         protected override void CopyFileInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri)
         {
-            var container = GetContainer(folderMapping);
+            var container = this.GetContainer(folderMapping);
 
             var sourceBlob = container.GetBlobReference(sourceUri);
             var newBlob = container.GetBlobReference(newUri);
 
             newBlob.StartCopy(sourceBlob.Uri);
 
-            ClearCache(folderMapping.FolderMappingID);
+            this.ClearCache(folderMapping.FolderMappingID);
         }
 
         protected override void DeleteFileInternal(FolderMappingInfo folderMapping, string uri)
         {
-            var container = GetContainer(folderMapping);
+            var container = this.GetContainer(folderMapping);
             var blob = container.GetBlobReference(uri);
 
             blob.DeleteIfExists();
 
-            ClearCache(folderMapping.FolderMappingID);
+            this.ClearCache(folderMapping.FolderMappingID);
         }
 
         protected override void DeleteFolderInternal(FolderMappingInfo folderMapping, IFolderInfo folder)
         {
-            DeleteFileInternal(folderMapping, folder.MappedPath + Constants.PlaceHolderFileName);
+            this.DeleteFileInternal(folderMapping, folder.MappedPath + Constants.PlaceHolderFileName);
         }
 
         protected override Stream GetFileStreamInternal(FolderMappingInfo folderMapping, string uri)
         {
-            var container = GetContainer(folderMapping);
+            var container = this.GetContainer(folderMapping);
             var blob = container.GetBlockBlobReference(uri);
 
             var memoryStream = new MemoryStream();
@@ -124,15 +124,15 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
         protected override IList<IRemoteStorageItem> GetObjectList(FolderMappingInfo folderMapping)
         {
-            var cacheKey = string.Format(ListObjectsCacheKey, folderMapping.FolderMappingID);
+            var cacheKey = string.Format(this.ListObjectsCacheKey, folderMapping.FolderMappingID);
 
             return CBO.GetCachedObject<IList<IRemoteStorageItem>>(new CacheItemArgs(cacheKey,
-                                                                        ListObjectsCacheTimeout,
+                                                                        this.ListObjectsCacheTimeout,
                                                                         CacheItemPriority.Default,
                                                                         folderMapping.FolderMappingID),
                                         c =>
                                         {
-                                            var container = GetContainer(folderMapping);
+                                            var container = this.GetContainer(folderMapping);
                                             var synchBatchSize = GetIntegerSetting(folderMapping, Constants.SyncBatchSize, Constants.DefaultSyncBatchSize);
 
                                             BlobContinuationToken continuationToken = null;
@@ -161,7 +161,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
         protected override void MoveFileInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri)
         {
-            var container = GetContainer(folderMapping);
+            var container = this.GetContainer(folderMapping);
 
             var sourceBlob = container.GetBlobReference(sourceUri);
             var newBlob = container.GetBlobReference(newUri);
@@ -169,12 +169,12 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             newBlob.StartCopy(sourceBlob.Uri);
             sourceBlob.Delete();
 
-            ClearCache(folderMapping.FolderMappingID);
+            this.ClearCache(folderMapping.FolderMappingID);
         }
 
         protected override void MoveFolderInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri)
         {
-            var container = GetContainer(folderMapping);
+            var container = this.GetContainer(folderMapping);
             var directory = container.GetDirectoryReference(sourceUri);
             var blobs = directory.ListBlobs(true);
 
@@ -186,12 +186,12 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                 blob.Delete();
             }
 
-            ClearCache(folderMapping.FolderMappingID);
+            this.ClearCache(folderMapping.FolderMappingID);
         }
 
         protected override void UpdateFileInternal(Stream stream, FolderMappingInfo folderMapping, string uri)
         {
-            var container = GetContainer(folderMapping);
+            var container = this.GetContainer(folderMapping);
             var blob = container.GetBlockBlobReference(uri);
 
             stream.Seek(0, SeekOrigin.Begin);
@@ -201,7 +201,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             blob.Properties.ContentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(uri));
 			blob.SetProperties();
 
-            ClearCache(folderMapping.FolderMappingID);
+            this.ClearCache(folderMapping.FolderMappingID);
         }
 
         #region FolderProvider Methods
@@ -215,7 +215,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             Requires.NotNull("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
-            UpdateFileInternal(new MemoryStream(), folderMapping, mappedPath + Constants.PlaceHolderFileName);
+            this.UpdateFileInternal(new MemoryStream(), folderMapping, mappedPath + Constants.PlaceHolderFileName);
         }
 
         /// <summary>
@@ -233,10 +233,10 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 	            var folder = FolderManager.Instance.GetFolder(file.FolderId);
                 var uri = folder.MappedPath + file.FileName;
 
-		        var container = GetContainer(folderMapping);
+		        var container = this.GetContainer(folderMapping);
 		        var blob = container.GetBlobReference(uri);
                 var absuri = blob.Uri.AbsoluteUri;
-                var customDomain = GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.CustomDomain);
+                var customDomain = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.CustomDomain);
 
                 if (!string.IsNullOrEmpty(customDomain))
                 {
@@ -305,8 +305,8 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
         public List<string> GetAllContainers(FolderMappingInfo folderMapping)
         {
             List<string> containers = new List<string>();
-            var accountName = GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountName);
-            var accountKey = GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountKey);
+            var accountName = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountName);
+            var accountKey = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountKey);
             var useHttps = GetBooleanSetting(folderMapping, Constants.UseHttps);
 
             var sc = new StorageCredentials(accountName, accountKey);

@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         public Register()
         {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
 		#region Protected Properties
@@ -61,11 +61,11 @@ namespace DotNetNuke.Modules.Admin.Users
 		{
 			get
 			{
-				return ViewState.GetValue("AuthenticationType", Null.NullString);
+				return this.ViewState.GetValue("AuthenticationType", Null.NullString);
 			}
 			set
 			{
-				ViewState.SetValue("AuthenticationType", value, Null.NullString);
+				this.ViewState.SetValue("AuthenticationType", value, Null.NullString);
 			}
 		}
 
@@ -76,9 +76,9 @@ namespace DotNetNuke.Modules.Admin.Users
 			get
 			{
 				string regex = String.Empty;
-				if (!String.IsNullOrEmpty(PortalSettings.Registration.ExcludeTerms))
+				if (!String.IsNullOrEmpty(this.PortalSettings.Registration.ExcludeTerms))
 				{
-					regex = @"^(?:(?!" + PortalSettings.Registration.ExcludeTerms.Replace(" ", "").Replace(",", "|") + @").)*$\r?\n?";
+					regex = @"^(?:(?!" + this.PortalSettings.Registration.ExcludeTerms.Replace(" ", "").Replace(",", "|") + @").)*$\r?\n?";
 				}
 				return regex;
 			}
@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.Admin.Users
 		{
 			get
 			{
-				return Validate();
+				return this.Validate();
 			}
 		}
 
@@ -96,11 +96,11 @@ namespace DotNetNuke.Modules.Admin.Users
 		{
 			get
 			{
-				return ViewState.GetValue("UserToken", string.Empty);
+				return this.ViewState.GetValue("UserToken", string.Empty);
 			}
 			set
 			{
-				ViewState.SetValue("UserToken", value, string.Empty);
+				this.ViewState.SetValue("UserToken", value, string.Empty);
 			}
 		}
 
@@ -116,67 +116,67 @@ namespace DotNetNuke.Modules.Admin.Users
 
 			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
-			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-			ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
-			ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
+			ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+			ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
+			ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
-			if (PortalSettings.Registration.RegistrationFormType == 0)
+			if (this.PortalSettings.Registration.RegistrationFormType == 0)
 			{
 				//DisplayName
-				if (String.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
+				if (String.IsNullOrEmpty(this.PortalSettings.Registration.DisplayNameFormat))
 				{
-					AddField("DisplayName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
+					this.AddField("DisplayName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
 				}
 				else
 				{
-					AddField("FirstName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
-					AddField("LastName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
+					this.AddField("FirstName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
+					this.AddField("LastName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
 				}
 
 				//Email
-				AddField("Email", String.Empty, true, PortalSettings.Registration.EmailValidator, TextBoxMode.SingleLine);
+				this.AddField("Email", String.Empty, true, this.PortalSettings.Registration.EmailValidator, TextBoxMode.SingleLine);
 
 				//UserName
-				if (!PortalSettings.Registration.UseEmailAsUserName)
+				if (!this.PortalSettings.Registration.UseEmailAsUserName)
 				{
 
-					AddField("Username", String.Empty, true,
-							String.IsNullOrEmpty(PortalSettings.Registration.UserNameValidator) ? ExcludeTerms : PortalSettings.Registration.UserNameValidator,
+					this.AddField("Username", String.Empty, true,
+							String.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator) ? this.ExcludeTerms : this.PortalSettings.Registration.UserNameValidator,
 							TextBoxMode.SingleLine);
 				}
 
 				//Password
-				if (!PortalSettings.Registration.RandomPassword)
+				if (!this.PortalSettings.Registration.RandomPassword)
 				{
-					AddPasswordStrengthField("Password", "Membership", true);
+					this.AddPasswordStrengthField("Password", "Membership", true);
 
-					if (PortalSettings.Registration.RequirePasswordConfirm)
+					if (this.PortalSettings.Registration.RequirePasswordConfirm)
 					{
-						AddPasswordConfirmField("PasswordConfirm", "Membership", true);
+						this.AddPasswordConfirmField("PasswordConfirm", "Membership", true);
 					}
 				}
 
 				//Password Q&A
 				if (MembershipProviderConfig.RequiresQuestionAndAnswer)
 				{
-					AddField("PasswordQuestion", "Membership", true, String.Empty, TextBoxMode.SingleLine);
-					AddField("PasswordAnswer", "Membership", true, String.Empty, TextBoxMode.SingleLine);
+					this.AddField("PasswordQuestion", "Membership", true, String.Empty, TextBoxMode.SingleLine);
+					this.AddField("PasswordAnswer", "Membership", true, String.Empty, TextBoxMode.SingleLine);
 				}
 
-				if (PortalSettings.Registration.RequireValidProfile)
+				if (this.PortalSettings.Registration.RequireValidProfile)
 				{
-					foreach (ProfilePropertyDefinition property in User.Profile.ProfileProperties)
+					foreach (ProfilePropertyDefinition property in this.User.Profile.ProfileProperties)
 					{
 						if (property.Required)
 						{
-							AddProperty(property);
+							this.AddProperty(property);
 						}
 					}
 				}
 			}
 			else
 			{
-				var fields = PortalSettings.Registration.RegistrationFields.Split(',').ToList();
+				var fields = this.PortalSettings.Registration.RegistrationFields.Split(',').ToList();
 				//append question/answer field when RequiresQuestionAndAnswer is enabled in config.
 				if (MembershipProviderConfig.RequiresQuestionAndAnswer)
 				{
@@ -196,31 +196,31 @@ namespace DotNetNuke.Modules.Admin.Users
 					switch (trimmedField)
 					{
 						case "Username":
-							AddField("Username", String.Empty, true, String.IsNullOrEmpty(PortalSettings.Registration.UserNameValidator)
-																? ExcludeTerms : PortalSettings.Registration.UserNameValidator,
+							this.AddField("Username", String.Empty, true, String.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator)
+																? this.ExcludeTerms : this.PortalSettings.Registration.UserNameValidator,
 																		TextBoxMode.SingleLine);
 							break;
 						case "DisplayName":
-							AddField(trimmedField, String.Empty, true, ExcludeTerms, TextBoxMode.SingleLine);
+							this.AddField(trimmedField, String.Empty, true, this.ExcludeTerms, TextBoxMode.SingleLine);
 							break;	
 						case "Email":
-							AddField("Email", String.Empty, true, PortalSettings.Registration.EmailValidator, TextBoxMode.SingleLine);
+							this.AddField("Email", String.Empty, true, this.PortalSettings.Registration.EmailValidator, TextBoxMode.SingleLine);
 							break;
 						case "Password":
-							AddPasswordStrengthField(trimmedField, "Membership", true);
+							this.AddPasswordStrengthField(trimmedField, "Membership", true);
 							break;
 						case "PasswordConfirm":
-							AddPasswordConfirmField(trimmedField, "Membership", true);
+							this.AddPasswordConfirmField(trimmedField, "Membership", true);
 							break;
 						case "PasswordQuestion":
 						case "PasswordAnswer":
-							AddField(trimmedField, "Membership", true, String.Empty, TextBoxMode.SingleLine);
+							this.AddField(trimmedField, "Membership", true, String.Empty, TextBoxMode.SingleLine);
 							break;
 						default:
-							ProfilePropertyDefinition property = User.Profile.GetProperty(trimmedField);
+							ProfilePropertyDefinition property = this.User.Profile.GetProperty(trimmedField);
 							if (property != null)
 							{
-								AddProperty(property);
+								this.AddProperty(property);
 							}
 							break;
 					}
@@ -228,11 +228,11 @@ namespace DotNetNuke.Modules.Admin.Users
 			}
 
 			//Verify that the current user has access to this page
-			if (PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration && Request.IsAuthenticated == false)
+			if (this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration && this.Request.IsAuthenticated == false)
 			{
 			    try
 			    {
-			        Response.Redirect(_navigationManager.NavigateURL("Access Denied"), true);
+			        this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
 			    }
 			    catch (ThreadAbortException)
 			    {
@@ -240,27 +240,27 @@ namespace DotNetNuke.Modules.Admin.Users
 			    }
 			}
 
-			cancelLink.NavigateUrl = closeLink.NavigateUrl = GetRedirectUrl(false);
-			registerButton.Click += registerButton_Click;
+			this.cancelLink.NavigateUrl = this.closeLink.NavigateUrl = this.GetRedirectUrl(false);
+			this.registerButton.Click += this.registerButton_Click;
 
-			if (PortalSettings.Registration.UseAuthProviders)
+			if (this.PortalSettings.Registration.UseAuthProviders)
 			{
 				List<AuthenticationInfo> authSystems = AuthenticationController.GetEnabledAuthenticationServices();
 				foreach (AuthenticationInfo authSystem in authSystems)
 				{
 					try
 					{
-						var authLoginControl = (AuthenticationLoginBase)LoadControl("~/" + authSystem.LoginControlSrc);
+						var authLoginControl = (AuthenticationLoginBase)this.LoadControl("~/" + authSystem.LoginControlSrc);
 						if (authSystem.AuthenticationType != "DNN")
 						{
-							BindLoginControl(authLoginControl, authSystem);
+							this.BindLoginControl(authLoginControl, authSystem);
 							//Check if AuthSystem is Enabled
 							if (authLoginControl.Enabled && authLoginControl.SupportsRegistration)
 							{
 								authLoginControl.Mode = AuthMode.Register;
 
 								//Add Login Control to List
-								_loginControls.Add(authLoginControl);
+								this._loginControls.Add(authLoginControl);
 							}
 						}
 					}
@@ -276,59 +276,59 @@ namespace DotNetNuke.Modules.Admin.Users
 		{
 			base.OnLoad(e);
 
-			if (Request.IsAuthenticated)
+			if (this.Request.IsAuthenticated)
 			{
 				//if a Login Page has not been specified for the portal
 				if (Globals.IsAdminControl())
 				{
 					//redirect to current page
-					Response.Redirect(_navigationManager.NavigateURL(), true);
+					this.Response.Redirect(this._navigationManager.NavigateURL(), true);
 				}
 				else //make module container invisible if user is not a page admin
 				{
 					if (!TabPermissionController.CanAdminPage())
 					{
-						ContainerControl.Visible = false;
+						this.ContainerControl.Visible = false;
 					}
 				}
 			}
 
-			if (PortalSettings.Registration.UseCaptcha)
+			if (this.PortalSettings.Registration.UseCaptcha)
 			{
-				captchaRow.Visible = true;
-				ctlCaptcha.ErrorMessage = Localization.GetString("InvalidCaptcha", LocalResourceFile);
-				ctlCaptcha.Text = Localization.GetString("CaptchaText", LocalResourceFile);
+				this.captchaRow.Visible = true;
+				this.ctlCaptcha.ErrorMessage = Localization.GetString("InvalidCaptcha", this.LocalResourceFile);
+				this.ctlCaptcha.Text = Localization.GetString("CaptchaText", this.LocalResourceFile);
 			}
 
-			if (PortalSettings.Registration.UseAuthProviders && String.IsNullOrEmpty(AuthenticationType))
+			if (this.PortalSettings.Registration.UseAuthProviders && String.IsNullOrEmpty(this.AuthenticationType))
 			{
-				foreach (AuthenticationLoginBase authLoginControl in _loginControls)
+				foreach (AuthenticationLoginBase authLoginControl in this._loginControls)
 				{
-					socialLoginControls.Controls.Add(authLoginControl);
+					this.socialLoginControls.Controls.Add(authLoginControl);
 				}
 			}
 
 			//Display relevant message
-			userHelpLabel.Text = Localization.GetSystemMessage(PortalSettings, "MESSAGE_REGISTRATION_INSTRUCTIONS");
-			switch (PortalSettings.UserRegistration)
+			this.userHelpLabel.Text = Localization.GetSystemMessage(this.PortalSettings, "MESSAGE_REGISTRATION_INSTRUCTIONS");
+			switch (this.PortalSettings.UserRegistration)
 			{
 				case (int)Globals.PortalRegistrationType.PrivateRegistration:
-					userHelpLabel.Text += Localization.GetString("PrivateMembership", Localization.SharedResourceFile);
+					this.userHelpLabel.Text += Localization.GetString("PrivateMembership", Localization.SharedResourceFile);
 					break;
 				case (int)Globals.PortalRegistrationType.PublicRegistration:
-					userHelpLabel.Text += Localization.GetString("PublicMembership", Localization.SharedResourceFile);
+					this.userHelpLabel.Text += Localization.GetString("PublicMembership", Localization.SharedResourceFile);
 					break;
 				case (int)Globals.PortalRegistrationType.VerifiedRegistration:
-					userHelpLabel.Text += Localization.GetString("VerifiedMembership", Localization.SharedResourceFile);
+					this.userHelpLabel.Text += Localization.GetString("VerifiedMembership", Localization.SharedResourceFile);
 					break;
 			}
-			userHelpLabel.Text += Localization.GetString("Required", LocalResourceFile);
-			userHelpLabel.Text += Localization.GetString("RegisterWarning", LocalResourceFile);
+			this.userHelpLabel.Text += Localization.GetString("Required", this.LocalResourceFile);
+			this.userHelpLabel.Text += Localization.GetString("RegisterWarning", this.LocalResourceFile);
 
-			userForm.DataSource = User;
-			if (!Page.IsPostBack)
+			this.userForm.DataSource = this.User;
+			if (!this.Page.IsPostBack)
 			{
-				userForm.DataBind();
+				this.userForm.DataBind();
 			}
 		}
 
@@ -348,14 +348,14 @@ namespace DotNetNuke.Modules.Admin.Users
 			var optionsAsJsonString = Json.Serialize(confirmPasswordOptions);
 			var script = string.Format("dnn.initializePasswordComparer({0});{1}", optionsAsJsonString, Environment.NewLine);
 
-			if (ScriptManager.GetCurrent(Page) != null)
+			if (ScriptManager.GetCurrent(this.Page) != null)
 			{
 				// respect MS AJAX
-				ScriptManager.RegisterStartupScript(Page, GetType(), "ConfirmPassword", script, true);
+				ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "ConfirmPassword", script, true);
 			}
 			else
 			{
-				Page.ClientScript.RegisterStartupScript(GetType(), "ConfirmPassword", script, true);
+				this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ConfirmPassword", script, true);
 			}
 
 		}
@@ -366,7 +366,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		private void AddField(string dataField, string dataMember, bool required, string regexValidator, TextBoxMode textMode)
 		{
-			if (userForm.Items.Any(i => i.ID == dataField))
+			if (this.userForm.Items.Any(i => i.ID == dataField))
 			{
 				return;
 			}
@@ -384,7 +384,7 @@ namespace DotNetNuke.Modules.Admin.Users
 			{
 				formItem.ValidationExpression = regexValidator;
 			}
-			userForm.Items.Add(formItem);
+			this.userForm.Items.Add(formItem);
 		}
 
 		private void AddPasswordStrengthField(string dataField, string dataMember, bool required)
@@ -414,7 +414,7 @@ namespace DotNetNuke.Modules.Admin.Users
 			formItem.Visible = true;
 			formItem.Required = required;
 
-			userForm.Items.Add(formItem);
+			this.userForm.Items.Add(formItem);
 
 		}
 
@@ -433,13 +433,13 @@ namespace DotNetNuke.Modules.Admin.Users
 				ClearContentInPasswordMode = true,
                 MaxLength = 39
 			};
-			userForm.Items.Add(formItem);
+			this.userForm.Items.Add(formItem);
 
 		}
 
 		private void AddProperty(ProfilePropertyDefinition property)
 		{
-			if (userForm.Items.Any(i => i.ID == property.PropertyName))
+			if (this.userForm.Items.Any(i => i.ID == property.PropertyName))
 			{
 				return;
 			}
@@ -469,7 +469,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				{
 					formItem.ValidationExpression = property.ValidationExpression;
 				}
-				userForm.Items.Add(formItem);
+				this.userForm.Items.Add(formItem);
 			}
 
 		}
@@ -482,52 +482,52 @@ namespace DotNetNuke.Modules.Admin.Users
 			authLoginControl.ID = Path.GetFileNameWithoutExtension(authSystem.LoginControlSrc) + "_" + authSystem.AuthenticationType;
 			authLoginControl.LocalResourceFile = authLoginControl.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" +
 												 Path.GetFileNameWithoutExtension(authSystem.LoginControlSrc);
-			authLoginControl.RedirectURL = GetRedirectUrl();
-			authLoginControl.ModuleConfiguration = ModuleConfiguration;
+			authLoginControl.RedirectURL = this.GetRedirectUrl();
+			authLoginControl.ModuleConfiguration = this.ModuleConfiguration;
 
-			authLoginControl.UserAuthenticated += UserAuthenticated;
+			authLoginControl.UserAuthenticated += this.UserAuthenticated;
 		}
 
 		private void CreateUser()
 		{
 			//Update DisplayName to conform to Format
-			UpdateDisplayName();
+			this.UpdateDisplayName();
 
-			User.Membership.Approved = PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PublicRegistration;
-			var user = User;
-			CreateStatus = UserController.CreateUser(ref user);
+			this.User.Membership.Approved = this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PublicRegistration;
+			var user = this.User;
+			this.CreateStatus = UserController.CreateUser(ref user);
 
-            DataCache.ClearPortalUserCountCache(PortalId);
+            DataCache.ClearPortalUserCountCache(this.PortalId);
 
             try
 			{
-				if (CreateStatus == UserCreateStatus.Success)
+				if (this.CreateStatus == UserCreateStatus.Success)
 				{
 					//hide the succesful captcha
-					captchaRow.Visible = false;
+					this.captchaRow.Visible = false;
 
 					//Assocate alternate Login with User and proceed with Login
-					if (!String.IsNullOrEmpty(AuthenticationType))
+					if (!String.IsNullOrEmpty(this.AuthenticationType))
 					{
-						AuthenticationController.AddUserAuthentication(User.UserID, AuthenticationType, UserToken);
+						AuthenticationController.AddUserAuthentication(this.User.UserID, this.AuthenticationType, this.UserToken);
 					}
 
-					string strMessage = CompleteUserCreation(CreateStatus, user, true, IsRegister);
+					string strMessage = this.CompleteUserCreation(this.CreateStatus, user, true, this.IsRegister);
 
 					if ((string.IsNullOrEmpty(strMessage)))
 					{
-						Response.Redirect(GetRedirectUrl(), true);
+						this.Response.Redirect(this.GetRedirectUrl(), true);
 					}
 					else
 					{
-						RegistrationForm.Visible = false;
-						registerButton.Visible = false;
-					    closeLink.Visible = true;
+						this.RegistrationForm.Visible = false;
+						this.registerButton.Visible = false;
+					    this.closeLink.Visible = true;
 					}
 				}
 				else
 				{
-					AddLocalizedModuleMessage(UserController.GetUserCreateStatus(CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
+					this.AddLocalizedModuleMessage(UserController.GetUserCreateStatus(this.CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
 				}
 			}
 			catch (Exception exc) //Module failed to load
@@ -539,227 +539,227 @@ namespace DotNetNuke.Modules.Admin.Users
 		private void UpdateDisplayName()
 		{
 			//Update DisplayName to conform to Format
-			if (!string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
+			if (!string.IsNullOrEmpty(this.PortalSettings.Registration.DisplayNameFormat))
 			{
-				User.UpdateDisplayName(PortalSettings.Registration.DisplayNameFormat);
+				this.User.UpdateDisplayName(this.PortalSettings.Registration.DisplayNameFormat);
 			}
 		}
 
 		private bool Validate()
 		{
-		    if (!string.IsNullOrEmpty(gotcha.Value))
+		    if (!string.IsNullOrEmpty(this.gotcha.Value))
 		    {
 		        return false;
 		    }
 
-			CreateStatus = UserCreateStatus.AddUser;
+			this.CreateStatus = UserCreateStatus.AddUser;
 			var portalSecurity = PortalSecurity.Instance;
 
             //Check User Editor
-            bool _IsValid = userForm.IsValid;
+            bool _IsValid = this.userForm.IsValid;
 
 		    if (_IsValid)
             {
                 var filterFlags = PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup;
-                var name = User.Username ?? User.Email;
+                var name = this.User.Username ?? this.User.Email;
                 var cleanUsername = PortalSecurity.Instance.InputFilter(name, filterFlags);
                 if (!cleanUsername.Equals(name))
                 {
-                    CreateStatus = UserCreateStatus.InvalidUserName;
+                    this.CreateStatus = UserCreateStatus.InvalidUserName;
                 }
 		        var valid = UserController.Instance.IsValidUserName(name);
 
                 if (!valid)
                 {
-                    CreateStatus = UserCreateStatus.InvalidUserName;
+                    this.CreateStatus = UserCreateStatus.InvalidUserName;
                 }
 
-                var cleanEmail = PortalSecurity.Instance.InputFilter(User.Email, filterFlags);
-                if (!cleanEmail.Equals(User.Email))
+                var cleanEmail = PortalSecurity.Instance.InputFilter(this.User.Email, filterFlags);
+                if (!cleanEmail.Equals(this.User.Email))
                 {
-                    CreateStatus = UserCreateStatus.InvalidEmail;
+                    this.CreateStatus = UserCreateStatus.InvalidEmail;
                 }
 
-                var cleanFirstName = PortalSecurity.Instance.InputFilter(User.FirstName, filterFlags);
-                if (!cleanFirstName.Equals(User.FirstName))
+                var cleanFirstName = PortalSecurity.Instance.InputFilter(this.User.FirstName, filterFlags);
+                if (!cleanFirstName.Equals(this.User.FirstName))
                 {
-                    CreateStatus = UserCreateStatus.InvalidFirstName;
+                    this.CreateStatus = UserCreateStatus.InvalidFirstName;
                 }
 
-                var cleanLastName = PortalSecurity.Instance.InputFilter(User.LastName, filterFlags);
-                if (!cleanLastName.Equals(User.LastName))
+                var cleanLastName = PortalSecurity.Instance.InputFilter(this.User.LastName, filterFlags);
+                if (!cleanLastName.Equals(this.User.LastName))
                 {
-                    CreateStatus = UserCreateStatus.InvalidLastName;
+                    this.CreateStatus = UserCreateStatus.InvalidLastName;
                 }
-				if (string.IsNullOrEmpty(PortalSettings.Registration.DisplayNameFormat))
+				if (string.IsNullOrEmpty(this.PortalSettings.Registration.DisplayNameFormat))
 				{
-					var cleanDisplayName = PortalSecurity.Instance.InputFilter(User.DisplayName, filterFlags);
-					if (!cleanDisplayName.Equals(User.DisplayName))
+					var cleanDisplayName = PortalSecurity.Instance.InputFilter(this.User.DisplayName, filterFlags);
+					if (!cleanDisplayName.Equals(this.User.DisplayName))
 					{
-						CreateStatus = UserCreateStatus.InvalidDisplayName;
+						this.CreateStatus = UserCreateStatus.InvalidDisplayName;
 					}
 				}
             }
 
-            if (PortalSettings.Registration.RegistrationFormType == 0)
+            if (this.PortalSettings.Registration.RegistrationFormType == 0)
 			{
 				//Update UserName
-				if (PortalSettings.Registration.UseEmailAsUserName)
+				if (this.PortalSettings.Registration.UseEmailAsUserName)
 				{
-					User.Username = User.Email;
-					if (String.IsNullOrEmpty(User.DisplayName))
+					this.User.Username = this.User.Email;
+					if (String.IsNullOrEmpty(this.User.DisplayName))
 					{
-						User.DisplayName = User.Email.Substring(0, User.Email.IndexOf("@", StringComparison.Ordinal));
+						this.User.DisplayName = this.User.Email.Substring(0, this.User.Email.IndexOf("@", StringComparison.Ordinal));
 					}
 				}
 
 				//Check Password is valid
-				if (!PortalSettings.Registration.RandomPassword)
+				if (!this.PortalSettings.Registration.RandomPassword)
 				{
 					//Check Password is Valid
-					if (CreateStatus == UserCreateStatus.AddUser && !UserController.ValidatePassword(User.Membership.Password))
+					if (this.CreateStatus == UserCreateStatus.AddUser && !UserController.ValidatePassword(this.User.Membership.Password))
 					{
-						CreateStatus = UserCreateStatus.InvalidPassword;
+						this.CreateStatus = UserCreateStatus.InvalidPassword;
 					}
 
-					if (PortalSettings.Registration.RequirePasswordConfirm && String.IsNullOrEmpty(AuthenticationType))
+					if (this.PortalSettings.Registration.RequirePasswordConfirm && String.IsNullOrEmpty(this.AuthenticationType))
 					{
-						if (User.Membership.Password != User.Membership.PasswordConfirm)
+						if (this.User.Membership.Password != this.User.Membership.PasswordConfirm)
 						{
-							CreateStatus = UserCreateStatus.PasswordMismatch;
+							this.CreateStatus = UserCreateStatus.PasswordMismatch;
 						}
 					}
 				}
 				else
 				{
 					//Generate a random password for the user
-					User.Membership.Password = UserController.GeneratePassword();
-					User.Membership.PasswordConfirm = User.Membership.Password;
+					this.User.Membership.Password = UserController.GeneratePassword();
+					this.User.Membership.PasswordConfirm = this.User.Membership.Password;
 				}
 
 			}
 			else
 			{
 				//Set Username to Email
-				if (String.IsNullOrEmpty(User.Username))
+				if (String.IsNullOrEmpty(this.User.Username))
 				{
-					User.Username = User.Email;
+					this.User.Username = this.User.Email;
 				}
 
 				//Set DisplayName
-				if (String.IsNullOrEmpty(User.DisplayName))
+				if (String.IsNullOrEmpty(this.User.DisplayName))
 				{
-					User.DisplayName = String.IsNullOrEmpty(User.FirstName + " " + User.LastName)
-										   ? User.Email.Substring(0, User.Email.IndexOf("@", StringComparison.Ordinal))
-										   : User.FirstName + " " + User.LastName;
+					this.User.DisplayName = String.IsNullOrEmpty(this.User.FirstName + " " + this.User.LastName)
+										   ? this.User.Email.Substring(0, this.User.Email.IndexOf("@", StringComparison.Ordinal))
+										   : this.User.FirstName + " " + this.User.LastName;
 				}
 
 				//Random Password
-				if (String.IsNullOrEmpty(User.Membership.Password))
+				if (String.IsNullOrEmpty(this.User.Membership.Password))
 				{
 					//Generate a random password for the user
-					User.Membership.Password = UserController.GeneratePassword();
+					this.User.Membership.Password = UserController.GeneratePassword();
 				}
 
 				//Password Confirm
-				if (!String.IsNullOrEmpty(User.Membership.PasswordConfirm))
+				if (!String.IsNullOrEmpty(this.User.Membership.PasswordConfirm))
 				{
-					if (User.Membership.Password != User.Membership.PasswordConfirm)
+					if (this.User.Membership.Password != this.User.Membership.PasswordConfirm)
 					{
-						CreateStatus = UserCreateStatus.PasswordMismatch;
+						this.CreateStatus = UserCreateStatus.PasswordMismatch;
 					}
 				}
 			}
 
 			//Validate banned password
-			var settings = new MembershipPasswordSettings(User.PortalID);
+			var settings = new MembershipPasswordSettings(this.User.PortalID);
 
 			if (settings.EnableBannedList)
 			{
 				var m = new MembershipPasswordController();
-				if (m.FoundBannedPassword(User.Membership.Password) || User.Username == User.Membership.Password)
+				if (m.FoundBannedPassword(this.User.Membership.Password) || this.User.Username == this.User.Membership.Password)
 				{
-					CreateStatus = UserCreateStatus.BannedPasswordUsed;
+					this.CreateStatus = UserCreateStatus.BannedPasswordUsed;
 				}
 
 			}
 			//Validate Profanity
-			if (PortalSettings.Registration.UseProfanityFilter)
+			if (this.PortalSettings.Registration.UseProfanityFilter)
 			{
-				if (!portalSecurity.ValidateInput(User.Username, PortalSecurity.FilterFlag.NoProfanity))
+				if (!portalSecurity.ValidateInput(this.User.Username, PortalSecurity.FilterFlag.NoProfanity))
 				{
-					CreateStatus = UserCreateStatus.InvalidUserName;
+					this.CreateStatus = UserCreateStatus.InvalidUserName;
 				}
-				if (!String.IsNullOrEmpty(User.DisplayName))
+				if (!String.IsNullOrEmpty(this.User.DisplayName))
 				{
-					if (!portalSecurity.ValidateInput(User.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
+					if (!portalSecurity.ValidateInput(this.User.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
 					{
-						CreateStatus = UserCreateStatus.InvalidDisplayName;
+						this.CreateStatus = UserCreateStatus.InvalidDisplayName;
 					}
 				}
 			}
 
 			//Validate Unique User Name
-			UserInfo user = UserController.GetUserByName(PortalId, User.Username);
+			UserInfo user = UserController.GetUserByName(this.PortalId, this.User.Username);
 			if (user != null)
 			{
-				if (PortalSettings.Registration.UseEmailAsUserName)
+				if (this.PortalSettings.Registration.UseEmailAsUserName)
 				{
-					CreateStatus = UserCreateStatus.DuplicateEmail;
+					this.CreateStatus = UserCreateStatus.DuplicateEmail;
 				}
 				else
 				{
-					CreateStatus = UserCreateStatus.DuplicateUserName;
+					this.CreateStatus = UserCreateStatus.DuplicateUserName;
 					int i = 1;
 					string userName = null;
 					while (user != null)
 					{
-						userName = User.Username + "0" + i.ToString(CultureInfo.InvariantCulture);
-						user = UserController.GetUserByName(PortalId, userName);
+						userName = this.User.Username + "0" + i.ToString(CultureInfo.InvariantCulture);
+						user = UserController.GetUserByName(this.PortalId, userName);
 						i++;
 					}
-					User.Username = userName;
+					this.User.Username = userName;
 				}
 			}
 
 			//Validate Unique Display Name
-			if (CreateStatus == UserCreateStatus.AddUser && PortalSettings.Registration.RequireUniqueDisplayName)
+			if (this.CreateStatus == UserCreateStatus.AddUser && this.PortalSettings.Registration.RequireUniqueDisplayName)
 			{
-				user = UserController.Instance.GetUserByDisplayname(PortalId, User.DisplayName);
+				user = UserController.Instance.GetUserByDisplayname(this.PortalId, this.User.DisplayName);
 				if (user != null)
 				{
-					CreateStatus = UserCreateStatus.DuplicateDisplayName;
+					this.CreateStatus = UserCreateStatus.DuplicateDisplayName;
 					int i = 1;
 					string displayName = null;
 					while (user != null)
 					{
-						displayName = User.DisplayName + " 0" + i.ToString(CultureInfo.InvariantCulture);
-						user = UserController.Instance.GetUserByDisplayname(PortalId, displayName);
+						displayName = this.User.DisplayName + " 0" + i.ToString(CultureInfo.InvariantCulture);
+						user = UserController.Instance.GetUserByDisplayname(this.PortalId, displayName);
 						i++;
 					}
-					User.DisplayName = displayName;
+					this.User.DisplayName = displayName;
 				}
 			}
 
 			//Check Question/Answer
-			if (CreateStatus == UserCreateStatus.AddUser && MembershipProviderConfig.RequiresQuestionAndAnswer)
+			if (this.CreateStatus == UserCreateStatus.AddUser && MembershipProviderConfig.RequiresQuestionAndAnswer)
 			{
-				if (string.IsNullOrEmpty(User.Membership.PasswordQuestion))
+				if (string.IsNullOrEmpty(this.User.Membership.PasswordQuestion))
 				{
 					//Invalid Question
-					CreateStatus = UserCreateStatus.InvalidQuestion;
+					this.CreateStatus = UserCreateStatus.InvalidQuestion;
 				}
-				if (CreateStatus == UserCreateStatus.AddUser)
+				if (this.CreateStatus == UserCreateStatus.AddUser)
 				{
-					if (string.IsNullOrEmpty(User.Membership.PasswordAnswer))
+					if (string.IsNullOrEmpty(this.User.Membership.PasswordAnswer))
 					{
 						//Invalid Question
-						CreateStatus = UserCreateStatus.InvalidAnswer;
+						this.CreateStatus = UserCreateStatus.InvalidAnswer;
 					}
 				}
 			}
 
-			if (CreateStatus != UserCreateStatus.AddUser)
+			if (this.CreateStatus != UserCreateStatus.AddUser)
 			{
 				_IsValid = false;
 			}
@@ -769,17 +769,17 @@ namespace DotNetNuke.Modules.Admin.Users
         private string GetRedirectUrl(bool checkSetting = true)
 		{
 			var redirectUrl = "";
-			var redirectAfterRegistration = PortalSettings.Registration.RedirectAfterRegistration;
+			var redirectAfterRegistration = this.PortalSettings.Registration.RedirectAfterRegistration;
 			if (checkSetting && redirectAfterRegistration > 0) //redirect to after registration page
 			{
-				redirectUrl = _navigationManager.NavigateURL(redirectAfterRegistration);
+				redirectUrl = this._navigationManager.NavigateURL(redirectAfterRegistration);
 			}
 			else
 			{
-				if (Request.QueryString["returnurl"] != null)
+				if (this.Request.QueryString["returnurl"] != null)
 				{
 					//return to the url passed to register
-					redirectUrl = HttpUtility.UrlDecode(Request.QueryString["returnurl"]);
+					redirectUrl = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
 
                     //clean the return url to avoid possible XSS attack.
                     redirectUrl = UrlUtils.ValidReturnUrl(redirectUrl);
@@ -797,7 +797,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				if (String.IsNullOrEmpty(redirectUrl))
 				{
 					//redirect to current page
-					redirectUrl = _navigationManager.NavigateURL();
+					redirectUrl = this._navigationManager.NavigateURL();
 				}
 			}
 
@@ -806,21 +806,21 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		private void registerButton_Click(object sender, EventArgs e)
 		{
-			if ((PortalSettings.Registration.UseCaptcha && ctlCaptcha.IsValid) || !PortalSettings.Registration.UseCaptcha)
+			if ((this.PortalSettings.Registration.UseCaptcha && this.ctlCaptcha.IsValid) || !this.PortalSettings.Registration.UseCaptcha)
 			{
-				if (IsValid)
+				if (this.IsValid)
 				{
-                    if (PortalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
+                    if (this.PortalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
                     {
-                        CreateUser();
+                        this.CreateUser();
                     }
 
 				}
 				else
 				{
-					if (CreateStatus != UserCreateStatus.AddUser)
+					if (this.CreateStatus != UserCreateStatus.AddUser)
 					{
-						AddLocalizedModuleMessage(UserController.GetUserCreateStatus(CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
+						this.AddLocalizedModuleMessage(UserController.GetUserCreateStatus(this.CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
 					}
 				}
 			}
@@ -830,47 +830,47 @@ namespace DotNetNuke.Modules.Admin.Users
 		{
 			NameValueCollection profileProperties = e.Profile;
 
-			User.Username = e.UserToken;
-			AuthenticationType = e.AuthenticationType;
-			UserToken = e.UserToken;
+			this.User.Username = e.UserToken;
+			this.AuthenticationType = e.AuthenticationType;
+			this.UserToken = e.UserToken;
 
 			foreach (string key in profileProperties)
 			{
 				switch (key)
 				{
 					case "FirstName":
-						User.FirstName = profileProperties[key];
+						this.User.FirstName = profileProperties[key];
 						break;
 					case "LastName":
-						User.LastName = profileProperties[key];
+						this.User.LastName = profileProperties[key];
 						break;
 					case "Email":
-						User.Email = profileProperties[key];
+						this.User.Email = profileProperties[key];
 						break;
 					case "DisplayName":
-						User.DisplayName = profileProperties[key];
+						this.User.DisplayName = profileProperties[key];
 						break;
 					default:
-						User.Profile.SetProfileProperty(key, profileProperties[key]);
+						this.User.Profile.SetProfileProperty(key, profileProperties[key]);
 						break;
 				}
 			}
 
 			//Generate a random password for the user
-			User.Membership.Password = UserController.GeneratePassword();
+			this.User.Membership.Password = UserController.GeneratePassword();
 
-			if (!String.IsNullOrEmpty(User.Email))
+			if (!String.IsNullOrEmpty(this.User.Email))
 			{
-				CreateUser();
+				this.CreateUser();
 			}
 			else
 			{
-				AddLocalizedModuleMessage(LocalizeString("NoEmail"), ModuleMessage.ModuleMessageType.RedError, true);
-				foreach (DnnFormItemBase formItem in userForm.Items)
+				this.AddLocalizedModuleMessage(this.LocalizeString("NoEmail"), ModuleMessage.ModuleMessageType.RedError, true);
+				foreach (DnnFormItemBase formItem in this.userForm.Items)
 				{
 					formItem.Visible = formItem.DataField == "Email";
 				}
-				userForm.DataBind();
+				this.userForm.DataBind();
 			}
 		}
 

@@ -51,7 +51,7 @@ namespace log4net.Layout.Pattern
 			}
 			else
 			{
-				Convert(writer, loggingEvent, HttpContext.Current);
+				this.Convert(writer, loggingEvent, HttpContext.Current);
 			}
 		}
 

@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
             if (!string.IsNullOrEmpty(providerPath))
             {
-                BasePath = providerPath.Replace("~/", "").Replace("/", "\\");
+                this.BasePath = providerPath.Replace("~/", "").Replace("/", "\\");
             }
         }
 

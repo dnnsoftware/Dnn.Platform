@@ -355,8 +355,8 @@ namespace log4net.Util
 		/// </remarks>
 		public PatternString(string pattern)
 		{
-			m_pattern = pattern;
-			ActivateOptions();
+			this.m_pattern = pattern;
+			this.ActivateOptions();
 		}
 
 		#endregion
@@ -376,8 +376,8 @@ namespace log4net.Util
 		/// </remarks>
 		public string ConversionPattern
 		{
-			get { return m_pattern;	}
-			set { m_pattern = value; }
+			get { return this.m_pattern;	}
+			set { this.m_pattern = value; }
 		}
 
 		#region Implementation of IOptionHandler
@@ -400,7 +400,7 @@ namespace log4net.Util
 		/// </remarks>
 		virtual public void ActivateOptions() 
 		{
-			m_head = CreatePatternParser(m_pattern).Parse();
+			this.m_head = this.CreatePatternParser(this.m_pattern).Parse();
 		}
 
 		#endregion
@@ -430,7 +430,7 @@ namespace log4net.Util
                 patternParser.PatternConverters.Add(entry.Key, converterInfo);
 			}
 			// Add the instance patterns
-			foreach(DictionaryEntry entry in m_instanceRulesRegistry)
+			foreach(DictionaryEntry entry in this.m_instanceRulesRegistry)
 			{
 				patternParser.PatternConverters[entry.Key] = entry.Value;
 			}
@@ -454,7 +454,7 @@ namespace log4net.Util
 				throw new ArgumentNullException("writer");
 			}
 
-			PatternConverter c = m_head;
+			PatternConverter c = this.m_head;
 
 			// loop through the chain of pattern converters
 			while(c != null) 
@@ -476,7 +476,7 @@ namespace log4net.Util
 		public string Format() 
 		{
 			StringWriter writer = new StringWriter(System.Globalization.CultureInfo.InvariantCulture);
-			Format(writer);
+			this.Format(writer);
 			return writer.ToString();
 		}
 
@@ -498,7 +498,7 @@ namespace log4net.Util
             {
                 throw new ArgumentException("The converter type specified [" + converterInfo.Type + "] must be a subclass of log4net.Util.PatternConverter", "converterInfo");
             }
-            m_instanceRulesRegistry[converterInfo.Name] = converterInfo;
+            this.m_instanceRulesRegistry[converterInfo.Name] = converterInfo;
 		}
 
 		/// <summary>
@@ -520,7 +520,7 @@ namespace log4net.Util
             converterInfo.Name = name;
             converterInfo.Type = type;
 
-            AddConverter(converterInfo);
+            this.AddConverter(converterInfo);
 		}
 	}
 }

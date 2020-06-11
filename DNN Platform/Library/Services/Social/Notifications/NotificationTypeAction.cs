@@ -34,11 +34,11 @@ namespace DotNetNuke.Services.Social.Notifications
         {
             get
             {
-                return _notificationTypeActionId;
+                return this._notificationTypeActionId;
             }
             set
             {
-                _notificationTypeActionId = value;
+                this._notificationTypeActionId = value;
             }
         }
 
@@ -86,8 +86,8 @@ namespace DotNetNuke.Services.Social.Notifications
         [XmlIgnore]
         public int KeyID
         {
-            get { return NotificationTypeActionId; }
-            set { NotificationTypeActionId = value; }
+            get { return this.NotificationTypeActionId; }
+            set { this.NotificationTypeActionId = value; }
         }
 
         /// <summary>
@@ -96,16 +96,16 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {
-            NotificationTypeActionId = Convert.ToInt32(dr["NotificationTypeActionID"]);
-            NotificationTypeId = Convert.ToInt32(dr["NotificationTypeID"]);
-            NameResourceKey = dr["NameResourceKey"].ToString();
-            DescriptionResourceKey = Null.SetNullString(dr["DescriptionResourceKey"]);
-            ConfirmResourceKey = Null.SetNullString(dr["ConfirmResourceKey"]);
-            Order = Convert.ToInt32(dr["Order"]);
-            APICall = dr["APICall"].ToString();
+            this.NotificationTypeActionId = Convert.ToInt32(dr["NotificationTypeActionID"]);
+            this.NotificationTypeId = Convert.ToInt32(dr["NotificationTypeID"]);
+            this.NameResourceKey = dr["NameResourceKey"].ToString();
+            this.DescriptionResourceKey = Null.SetNullString(dr["DescriptionResourceKey"]);
+            this.ConfirmResourceKey = Null.SetNullString(dr["ConfirmResourceKey"]);
+            this.Order = Convert.ToInt32(dr["Order"]);
+            this.APICall = dr["APICall"].ToString();
 
             //add audit column data
-            FillInternal(dr);
+            this.FillInternal(dr);
         }
 
         #endregion

@@ -16,9 +16,9 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint
 
         public virtual void ItemUpdated()
         {
-            if (OnItemUpdated != null)
+            if (this.OnItemUpdated != null)
             {
-                OnItemUpdated();
+                this.OnItemUpdated();
             }
         }
 

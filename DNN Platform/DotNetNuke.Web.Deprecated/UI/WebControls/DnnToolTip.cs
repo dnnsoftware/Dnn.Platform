@@ -19,7 +19,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
       protected override void Render(HtmlTextWriter writer)
       {
-         LocalizeStrings();
+         this.LocalizeStrings();
          base.Render(writer);
       }
 
@@ -34,11 +34,11 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                return false;
             }
-            return _localize;
+            return this._localize;
          }
          set
          {
-            _localize = value;
+            this._localize = value;
          }
       }
 

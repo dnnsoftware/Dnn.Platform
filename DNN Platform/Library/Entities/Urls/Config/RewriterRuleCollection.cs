@@ -18,17 +18,17 @@ namespace DotNetNuke.Entities.Urls.Config
         {
             get
             {
-                return (RewriterRule) List[index];
+                return (RewriterRule) this.List[index];
             }
             set
             {
-                List[index] = value;
+                this.List[index] = value;
             }
         }
 
         public void Add(RewriterRule r)
         {
-            InnerList.Add(r);
+            this.InnerList.Add(r);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnInit(e);
 
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -39,12 +39,12 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnLoad(e);
             try
             {
-                if (!String.IsNullOrEmpty(CssClass))
+                if (!String.IsNullOrEmpty(this.CssClass))
                 {
-                    hypHostName.CssClass = CssClass;
+                    this.hypHostName.CssClass = this.CssClass;
                 }
-                hypHostName.Text = Host.HostTitle;
-                hypHostName.NavigateUrl = Globals.AddHTTP(Host.HostURL);
+                this.hypHostName.Text = Host.HostTitle;
+                this.hypHostName.NavigateUrl = Globals.AddHTTP(Host.HostURL);
             }
             catch (Exception exc)
             {

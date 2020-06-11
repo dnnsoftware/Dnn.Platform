@@ -62,7 +62,7 @@ namespace Dnn.PersonaBar.Library.Data
             int userId, bool allowAccees, int currentUserId)
         {
             return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarMenuPermission", DataProvider.GetNull(portalId), menuId, permissionId,
-                GetRoleNull(roleId), DataProvider.GetNull(userId), allowAccees, currentUserId);
+                this.GetRoleNull(roleId), DataProvider.GetNull(userId), allowAccees, currentUserId);
         }
 
         public IDataReader GetPersonbaBarMenuPermissionsByPortal(int portalId)

@@ -199,7 +199,7 @@ namespace DotNetNuke.Web.Common.Internal
                 return;
             }
 
-            if (IsInstallInProgress(app))
+            if (this.IsInstallInProgress(app))
             {
                 return;
             }

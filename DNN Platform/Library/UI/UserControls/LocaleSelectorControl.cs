@@ -38,7 +38,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                switch (ViewType)
+                switch (this.ViewType)
                 {
                     case "NATIVE":
                         return CultureDropDownTypes.NativeName;
@@ -54,15 +54,15 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                if (string.IsNullOrEmpty(_ViewType))
+                if (string.IsNullOrEmpty(this._ViewType))
                 {
-                    _ViewType = Convert.ToString(Personalization.GetProfile("LanguageEnabler", string.Format("ViewType{0}", PortalSettings.PortalId)));
+                    this._ViewType = Convert.ToString(Personalization.GetProfile("LanguageEnabler", string.Format("ViewType{0}", this.PortalSettings.PortalId)));
                 }
-                if (string.IsNullOrEmpty(_ViewType))
+                if (string.IsNullOrEmpty(this._ViewType))
                 {
-                    _ViewType = "NATIVE";
+                    this._ViewType = "NATIVE";
                 }
-                return _ViewType;
+                return this._ViewType;
             }
         }
 
@@ -70,9 +70,9 @@ namespace DotNetNuke.UI.UserControls
 
         public void BindDefaultLanguageSelector()
         {
-            if (Page.IsPostBack == false)
+            if (this.Page.IsPostBack == false)
             {
-                Localization.LoadCultureDropDownList(ddlPortalDefaultLanguage, DisplayType, PortalSettings.DefaultLanguage, true);
+                Localization.LoadCultureDropDownList(this.ddlPortalDefaultLanguage, this.DisplayType, this.PortalSettings.DefaultLanguage, true);
             }
         }
 
@@ -84,7 +84,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return ddlPortalDefaultLanguage.SelectedValue;
+                return this.ddlPortalDefaultLanguage.SelectedValue;
             }
         }
 
@@ -96,21 +96,21 @@ namespace DotNetNuke.UI.UserControls
         {
             base.OnLoad(e);
 
-            rbViewType.SelectedIndexChanged += rbViewType_SelectedIndexChanged;
+            this.rbViewType.SelectedIndexChanged += this.rbViewType_SelectedIndexChanged;
 
-            if (!Page.IsPostBack)
+            if (!this.Page.IsPostBack)
             {
                 ListItem item = default(ListItem);
 
-                item = new ListItem(Localization.GetString("NativeName.Text", Localization.GetResourceFile(this, MyFileName)), "NATIVE");
-                rbViewType.Items.Add(item);
-                if (ViewType == "NATIVE")
+                item = new ListItem(Localization.GetString("NativeName.Text", Localization.GetResourceFile(this, this.MyFileName)), "NATIVE");
+                this.rbViewType.Items.Add(item);
+                if (this.ViewType == "NATIVE")
                 {
                     item.Selected = true;
                 }
-                item = new ListItem(Localization.GetString("EnglishName.Text", Localization.GetResourceFile(this, MyFileName)), "ENGLISH");
-                rbViewType.Items.Add(item);
-                if (ViewType == "ENGLISH")
+                item = new ListItem(Localization.GetString("EnglishName.Text", Localization.GetResourceFile(this, this.MyFileName)), "ENGLISH");
+                this.rbViewType.Items.Add(item);
+                if (this.ViewType == "ENGLISH")
                 {
                     item.Selected = true;
                 }
@@ -121,15 +121,15 @@ namespace DotNetNuke.UI.UserControls
         {
             base.OnPreRender(e);
 
-            if (Visible)
+            if (this.Visible)
             {
-                BindDefaultLanguageSelector();
+                this.BindDefaultLanguageSelector();
             }
         }
 
         private void rbViewType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _ViewType = rbViewType.SelectedValue;
+            this._ViewType = this.rbViewType.SelectedValue;
         }
 
         #endregion

@@ -55,16 +55,16 @@ namespace Dnn.PersonaBar.UI.Services
                     ProductVersion = "v. " + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, true),
                     FrameworkVersion = isHost ? Globals.NETFrameworkVersion.ToString(2) : string.Empty,
                     ServerName = isHost ? Globals.ServerName : string.Empty,
-                    LicenseVisible = isHost && GetVisibleSetting("LicenseVisible"),
-                    DocCenterVisible = GetVisibleSetting("DocCenterVisible"),
+                    LicenseVisible = isHost && this.GetVisibleSetting("LicenseVisible"),
+                    DocCenterVisible = this.GetVisibleSetting("DocCenterVisible"),
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception ex)
             {
                 Exceptions.LogException(ex);
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
             }
         }
 
@@ -72,14 +72,14 @@ namespace Dnn.PersonaBar.UI.Services
         public HttpResponseMessage GetUpdateLink()
         {
             UpdateType updateType;
-            var url = NeedUpdate(out updateType) ? Upgrade.UpgradeRedirect() : string.Empty;
+            var url = this.NeedUpdate(out updateType) ? Upgrade.UpgradeRedirect() : string.Empty;
 
-            return Request.CreateResponse(HttpStatusCode.OK, new {Url = url, Type = updateType});
+            return this.Request.CreateResponse(HttpStatusCode.OK, new {Url = url, Type = updateType});
         }
 
         private bool GetVisibleSetting(string settingName)
         {
-            var portalSettings = PortalController.Instance.GetPortalSettings(PortalId);
+            var portalSettings = PortalController.Instance.GetPortalSettings(this.PortalId);
             return !portalSettings.ContainsKey(settingName)
                    || string.IsNullOrEmpty(portalSettings[settingName])
                    || portalSettings[settingName] == "true";
@@ -89,7 +89,7 @@ namespace Dnn.PersonaBar.UI.Services
         {
             updateType = UpdateType.None;
             
-            if (HttpContext.Current == null || !Host.CheckUpgrade || !UserInfo.IsSuperUser)
+            if (HttpContext.Current == null || !Host.CheckUpgrade || !this.UserInfo.IsSuperUser)
             {
                 return false;
             }

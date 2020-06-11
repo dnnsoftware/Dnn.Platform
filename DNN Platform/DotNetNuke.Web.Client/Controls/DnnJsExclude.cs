@@ -10,7 +10,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     {
         public DnnJsExclude()
         {
-            DependencyType = ClientDependency.Core.ClientDependencyType.Javascript;
+            this.DependencyType = ClientDependency.Core.ClientDependencyType.Javascript;
         }
     }
 }

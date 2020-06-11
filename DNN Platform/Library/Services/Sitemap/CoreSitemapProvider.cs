@@ -47,9 +47,9 @@ namespace DotNetNuke.Services.Sitemap
             SitemapUrl pageUrl = null;
             var urls = new List<SitemapUrl>();
 
-            useLevelBasedPagePriority = bool.Parse(PortalController.GetPortalSetting("SitemapLevelMode", portalId, "False"));
-            minPagePriority = float.Parse(PortalController.GetPortalSetting("SitemapMinPriority", portalId, "0.1"), CultureInfo.InvariantCulture);
-            includeHiddenPages = bool.Parse(PortalController.GetPortalSetting("SitemapIncludeHidden", portalId, "True"));
+            this.useLevelBasedPagePriority = bool.Parse(PortalController.GetPortalSetting("SitemapLevelMode", portalId, "False"));
+            this.minPagePriority = float.Parse(PortalController.GetPortalSetting("SitemapMinPriority", portalId, "0.1"), CultureInfo.InvariantCulture);
+            this.includeHiddenPages = bool.Parse(PortalController.GetPortalSetting("SitemapIncludeHidden", portalId, "True"));
 
             var currentLanguage = ps.CultureCode;
             if (string.IsNullOrEmpty(currentLanguage))
@@ -66,13 +66,13 @@ namespace DotNetNuke.Services.Sitemap
 	            {
 	                if (!tab.IsDeleted && !tab.DisableLink && tab.TabType == TabType.Normal &&
 	                    (Null.IsNull(tab.StartDate) || tab.StartDate < DateTime.Now) &&
-	                    (Null.IsNull(tab.EndDate) || tab.EndDate > DateTime.Now) && IsTabPublic(tab.TabPermissions))
+	                    (Null.IsNull(tab.EndDate) || tab.EndDate > DateTime.Now) && this.IsTabPublic(tab.TabPermissions))
 	                {
-	                    if ((includeHiddenPages || tab.IsVisible) && tab.HasBeenPublished)
+	                    if ((this.includeHiddenPages || tab.IsVisible) && tab.HasBeenPublished)
 	                    {
 							try
 							{
-								pageUrl = GetPageUrl(tab, currentLanguage, ps);
+								pageUrl = this.GetPageUrl(tab, currentLanguage, ps);
 								urls.Add(pageUrl);
 							}
 							catch (Exception)
@@ -110,7 +110,7 @@ namespace DotNetNuke.Services.Sitemap
                 url = "https://" + url.Substring("http://".Length);
             }
             pageUrl.Url = url;
-            pageUrl.Priority = GetPriority(objTab);
+            pageUrl.Priority = this.GetPriority(objTab);
             pageUrl.LastModified = objTab.LastModifiedOnDate;
             foreach (ModuleInfo m in ModuleController.Instance.GetTabModules(objTab.TabID).Values)
             {
@@ -135,8 +135,8 @@ namespace DotNetNuke.Services.Sitemap
                     if ((!localized.IsDeleted && !localized.DisableLink && localized.TabType == TabType.Normal) &&
                         (Null.IsNull(localized.StartDate) || localized.StartDate < DateTime.Now) &&
                         (Null.IsNull(localized.EndDate) || localized.EndDate > DateTime.Now) &&
-                        (IsTabPublic(localized.TabPermissions)) &&
-                        (includeHiddenPages || localized.IsVisible) && localized.HasBeenPublished)
+                        (this.IsTabPublic(localized.TabPermissions)) &&
+                        (this.includeHiddenPages || localized.IsVisible) && localized.HasBeenPublished)
                     {
                         string alternateUrl = TestableGlobals.Instance.NavigateURL(localized.TabID, localized.IsSuperTab, ps, "", localized.CultureCode);
                         alternates.Add(new AlternateUrl()
@@ -177,7 +177,7 @@ namespace DotNetNuke.Services.Sitemap
         {
             float priority = objTab.SiteMapPriority;
 
-            if (useLevelBasedPagePriority)
+            if (this.useLevelBasedPagePriority)
             {
                 if (objTab.Level >= 9)
                 {
@@ -188,9 +188,9 @@ namespace DotNetNuke.Services.Sitemap
                     priority = Convert.ToSingle(1 - (objTab.Level * 0.1));
                 }
 
-                if (priority < minPagePriority)
+                if (priority < this.minPagePriority)
                 {
-                    priority = minPagePriority;
+                    priority = this.minPagePriority;
                 }
             }
 

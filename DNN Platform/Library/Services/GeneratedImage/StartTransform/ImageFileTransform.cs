@@ -33,14 +33,14 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// <summary>
         /// Provides an Unique String for the image transformation
         /// </summary>
-        public override string UniqueString => base.UniqueString + "-" +  ImageFilePath + ImageUrl;
+        public override string UniqueString => base.UniqueString + "-" +  this.ImageFilePath + this.ImageUrl;
 
         public ImageFileTransform()
 		{
-            InterpolationMode = InterpolationMode.HighQualityBicubic;
-            SmoothingMode = SmoothingMode.HighQuality;
-            PixelOffsetMode = PixelOffsetMode.HighQuality;
-            CompositingQuality = CompositingQuality.HighQuality;
+            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            this.SmoothingMode = SmoothingMode.HighQuality;
+            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            this.CompositingQuality = CompositingQuality.HighQuality;
 		}
 
         /// <summary>
@@ -51,30 +51,30 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// <returns>Image result after file image transformation</returns>
         public override Image ProcessImage(Image image)
         {
-            return !string.IsNullOrEmpty(ImageUrl) ? 
-                ProcessImageFromUrl() : 
-                ProcessImageFilePath();
+            return !string.IsNullOrEmpty(this.ImageUrl) ? 
+                this.ProcessImageFromUrl() : 
+                this.ProcessImageFilePath();
         }
 
         private Image ProcessImageFilePath()
         {
             try
             {
-                using (var stream = new FileStream(ImageFilePath, FileMode.Open))
+                using (var stream = new FileStream(this.ImageFilePath, FileMode.Open))
                 {
-                    return CopyImage(stream);
+                    return this.CopyImage(stream);
                 }
             }
             catch (Exception ex)
             {
                 Exceptions.Exceptions.LogException(ex);
-                return EmptyImage;
+                return this.EmptyImage;
             }
         }
 
         private Image ProcessImageFromUrl()
         {
-            var httpWebRequest = (HttpWebRequest) WebRequest.Create(ImageUrl);
+            var httpWebRequest = (HttpWebRequest) WebRequest.Create(this.ImageUrl);
 
             try
             {
@@ -82,14 +82,14 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
                 {
                     using (var stream = httpWebReponse.GetResponseStream())
                     {
-                        return CopyImage(stream);
+                        return this.CopyImage(stream);
                     }
                 }
             }
             catch (Exception ex)
             {
                 Exceptions.Exceptions.LogException(ex);
-                return EmptyImage;
+                return this.EmptyImage;
             }
         }
 	}

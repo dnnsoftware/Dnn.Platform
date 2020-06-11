@@ -40,11 +40,11 @@ namespace DotNetNuke.HttpModules.Config
         {
             get
             {
-                return _analyticsEngines;
+                return this._analyticsEngines;
             }
             set
             {
-                _analyticsEngines = value;
+                this._analyticsEngines = value;
             }
         }
 

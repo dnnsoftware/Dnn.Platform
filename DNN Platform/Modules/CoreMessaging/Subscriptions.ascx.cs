@@ -33,10 +33,10 @@ namespace DotNetNuke.Modules.CoreMessaging
 
         public ModuleInfo ModuleConfiguration
         {
-            get { return ModuleContext != null ? ModuleContext.Configuration : null; }
+            get { return this.ModuleContext != null ? this.ModuleContext.Configuration : null; }
             set
             {
-                ModuleContext.Configuration = value;
+                this.ModuleContext.Configuration = value;
             }
         }
 
@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.CoreMessaging
 
         protected string LocalizeString(string key)
         {
-            return Localization.GetString(key, LocalResourceFile);
+            return Localization.GetString(key, this.LocalResourceFile);
         }
 
         #endregion
@@ -57,8 +57,8 @@ namespace DotNetNuke.Modules.CoreMessaging
 
         public string GetSettingsAsJson()
         {
-            var settings = GetModuleSettings(PortalSettings.Current, ModuleConfiguration, Null.NullInteger);
-            foreach (DictionaryEntry entry in GetViewSettings())
+            var settings = GetModuleSettings(PortalSettings.Current, this.ModuleConfiguration, Null.NullInteger);
+            foreach (DictionaryEntry entry in this.GetViewSettings())
             {
                 if (settings.ContainsKey(entry.Key))
                 {
@@ -83,16 +83,16 @@ namespace DotNetNuke.Modules.CoreMessaging
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            if (Request.IsAuthenticated)
+            if (this.Request.IsAuthenticated)
             {
-                ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/LocalizationController.js");
-                ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/SubscriptionsViewModel.js");
-                ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/Subscription.js");
-                ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/CoreMessaging/subscriptions.css");
+                ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/CoreMessaging/Scripts/LocalizationController.js");
+                ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/CoreMessaging/Scripts/SubscriptionsViewModel.js");
+                ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/CoreMessaging/Scripts/Subscription.js");
+                ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/CoreMessaging/subscriptions.css");
             }
             else
             {
-                Response.Redirect(Globals.AccessDeniedURL(), false);
+                this.Response.Redirect(Globals.AccessDeniedURL(), false);
             }
         }
 
@@ -121,7 +121,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             
             return new Hashtable
                    {
-                       { "moduleScope", string.Format("#{0}", ScopeWrapper.ClientID) },
+                       { "moduleScope", string.Format("#{0}", this.ScopeWrapper.ClientID) },
                        { "pageSize", 25 },
                        { "notifyFrequency", userPreference != null ? (int)userPreference.NotificationsEmailFrequency : notifyFrequency },
                        { "msgFrequency", userPreference != null ? (int)userPreference.MessagesEmailFrequency : messageFrequency }                

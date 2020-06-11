@@ -48,11 +48,11 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _PackageID;
+                return this._PackageID;
             }
             set
             {
-                _PackageID = value;
+                this._PackageID = value;
             }
         }
 
@@ -60,11 +60,11 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _SkinPackageID;
+                return this._SkinPackageID;
             }
             set
             {
-                _SkinPackageID = value;
+                this._SkinPackageID = value;
             }
         }
 
@@ -72,11 +72,11 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _PortalID;
+                return this._PortalID;
             }
             set
             {
-                _PortalID = value;
+                this._PortalID = value;
             }
         }
 
@@ -84,11 +84,11 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _SkinName;
+                return this._SkinName;
             }
             set
             {
-                _SkinName = value;
+                this._SkinName = value;
             }
         }
 
@@ -97,11 +97,11 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _Skins;
+                return this._Skins;
             }
             set
             {
-                _Skins = value;
+                this._Skins = value;
             }
         }
 
@@ -109,11 +109,11 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _SkinType;
+                return this._SkinType;
             }
             set
             {
-                _SkinType = value;
+                this._SkinType = value;
             }
         }
 		
@@ -123,10 +123,10 @@ namespace DotNetNuke.UI.Skins
 
         public void Fill(IDataReader dr)
         {
-            SkinPackageID = Null.SetNullInteger(dr["SkinPackageID"]);
-            PackageID = Null.SetNullInteger(dr["PackageID"]);
-            SkinName = Null.SetNullString(dr["SkinName"]);
-            SkinType = Null.SetNullString(dr["SkinType"]);
+            this.SkinPackageID = Null.SetNullInteger(dr["SkinPackageID"]);
+            this.PackageID = Null.SetNullInteger(dr["PackageID"]);
+            this.SkinName = Null.SetNullString(dr["SkinName"]);
+            this.SkinType = Null.SetNullString(dr["SkinType"]);
             //Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
 
@@ -137,7 +137,7 @@ namespace DotNetNuke.UI.Skins
                     int skinID = Null.SetNullInteger(dr["SkinID"]);
                     if (skinID > Null.NullInteger)
                     {
-                        _Skins[skinID] = Null.SetNullString(dr["SkinSrc"]);
+                        this._Skins[skinID] = Null.SetNullString(dr["SkinSrc"]);
                     }
                 }
             }
@@ -147,11 +147,11 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return SkinPackageID;
+                return this.SkinPackageID;
             }
             set
             {
-                SkinPackageID = value;
+                this.SkinPackageID = value;
             }
         }
 

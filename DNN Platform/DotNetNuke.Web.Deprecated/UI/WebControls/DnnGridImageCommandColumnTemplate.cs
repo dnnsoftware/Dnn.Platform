@@ -28,7 +28,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public DnnGridImageCommandColumnTemplate(GridItemType itemType)
         {
-            ItemType = itemType;
+            this.ItemType = itemType;
         }
 
 
@@ -52,8 +52,8 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <value>A String</value>
         public ImageCommandColumnEditMode EditMode
         {
-            get { return _editMode; }
-            set { _editMode = value; }
+            get { return this._editMode; }
+            set { this._editMode = value; }
         }
 
 
@@ -70,8 +70,8 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <value>A String</value>
         public GridItemType ItemType
         {
-            get { return _itemType; }
-            set { _itemType = value; }
+            get { return this._itemType; }
+            set { this._itemType = value; }
         }
 
 
@@ -110,8 +110,8 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <value>A Boolean</value>
         public bool ShowImage
         {
-            get { return _showImage; }
-            set { _showImage = value; }
+            get { return this._showImage; }
+            set { this._showImage = value; }
         }
 
 
@@ -130,8 +130,8 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <value>A Boolean</value>
         public bool Visible
         {
-            get { return _visible; }
-            set { _visible = value; }
+            get { return this._visible; }
+            set { this._visible = value; }
         }
 
 
@@ -151,59 +151,59 @@ namespace DotNetNuke.Web.UI.WebControls
         ///	<param name="container">The parent container (DataGridItem)</param>
         public void InstantiateIn(Control container)
         {
-            switch (ItemType)
+            switch (this.ItemType)
             {
                 case GridItemType.Item:
                 case GridItemType.AlternatingItem:
                 case GridItemType.SelectedItem:
                 case GridItemType.EditItem:
-                    if (EditMode == ImageCommandColumnEditMode.URL)
+                    if (this.EditMode == ImageCommandColumnEditMode.URL)
                     {
-                        var hypLink = new HyperLink {ToolTip = Text};
-                        if (!String.IsNullOrEmpty(ImageURL) && ShowImage)
+                        var hypLink = new HyperLink {ToolTip = this.Text};
+                        if (!String.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                         {
-                            var img = new Image {ImageUrl = DesignMode ? ImageURL.Replace("~/", "../../") : ImageURL};
+                            var img = new Image {ImageUrl = this.DesignMode ? this.ImageURL.Replace("~/", "../../") : this.ImageURL};
                             hypLink.Controls.Add(img);
-                            img.ToolTip = Text;
+                            img.ToolTip = this.Text;
                         }
                         else
                         {
-                            hypLink.Text = Text;
+                            hypLink.Text = this.Text;
                         }
-                        hypLink.DataBinding += ItemDataBinding;
+                        hypLink.DataBinding += this.ItemDataBinding;
                         container.Controls.Add(hypLink);
                     }
                     else
                     {
-                        if (!String.IsNullOrEmpty(ImageURL) && ShowImage)
+                        if (!String.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                         {
                             var colIcon = new ImageButton
-                                {ImageUrl = DesignMode ? ImageURL.Replace("~/", "../../") : ImageURL, ToolTip = Text};
-                            if (!String.IsNullOrEmpty(OnClickJs))
+                                {ImageUrl = this.DesignMode ? this.ImageURL.Replace("~/", "../../") : this.ImageURL, ToolTip = this.Text};
+                            if (!String.IsNullOrEmpty(this.OnClickJs))
                             {
-                                ClientAPI.AddButtonConfirm(colIcon, OnClickJs);
+                                ClientAPI.AddButtonConfirm(colIcon, this.OnClickJs);
                             }
-                            colIcon.CommandName = CommandName;
-                            colIcon.DataBinding += ItemDataBinding;
+                            colIcon.CommandName = this.CommandName;
+                            colIcon.DataBinding += this.ItemDataBinding;
                             container.Controls.Add(colIcon);
                         }
-                        if (!String.IsNullOrEmpty(Text) && !ShowImage)
+                        if (!String.IsNullOrEmpty(this.Text) && !this.ShowImage)
                         {
-                            var colLink = new LinkButton {ToolTip = Text};
-                            if (!String.IsNullOrEmpty(OnClickJs))
+                            var colLink = new LinkButton {ToolTip = this.Text};
+                            if (!String.IsNullOrEmpty(this.OnClickJs))
                             {
-                                ClientAPI.AddButtonConfirm(colLink, OnClickJs);
+                                ClientAPI.AddButtonConfirm(colLink, this.OnClickJs);
                             }
-                            colLink.CommandName = CommandName;
-                            colLink.Text = Text;
-                            colLink.DataBinding += ItemDataBinding;
+                            colLink.CommandName = this.CommandName;
+                            colLink.Text = this.Text;
+                            colLink.DataBinding += this.ItemDataBinding;
                             container.Controls.Add(colLink);
                         }
                     }
                     break;
                 case GridItemType.Footer:
                 case GridItemType.Header:
-                    container.Controls.Add(new LiteralControl(Text));
+                    container.Controls.Add(new LiteralControl(this.Text));
                     break;
             }
         }
@@ -223,12 +223,12 @@ namespace DotNetNuke.Web.UI.WebControls
         ///	<param name="container">The parent container (DataGridItem)</param>
         private bool GetIsVisible(GridItem container)
         {
-            if (!String.IsNullOrEmpty(VisibleField))
+            if (!String.IsNullOrEmpty(this.VisibleField))
             {
-                return Convert.ToBoolean(DataBinder.Eval(container.DataItem, VisibleField));
+                return Convert.ToBoolean(DataBinder.Eval(container.DataItem, this.VisibleField));
             }
 
-            return Visible;
+            return this.Visible;
         }
 
 
@@ -239,9 +239,9 @@ namespace DotNetNuke.Web.UI.WebControls
         private int GetValue(GridItem container)
         {
             int keyValue = Null.NullInteger;
-            if (!String.IsNullOrEmpty(KeyField))
+            if (!String.IsNullOrEmpty(this.KeyField))
             {
-                keyValue = Convert.ToInt32(DataBinder.Eval(container.DataItem, KeyField));
+                keyValue = Convert.ToInt32(DataBinder.Eval(container.DataItem, this.KeyField));
             }
             return keyValue;
         }
@@ -258,14 +258,14 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             GridItem container;
             int keyValue;
-            if (EditMode == ImageCommandColumnEditMode.URL)
+            if (this.EditMode == ImageCommandColumnEditMode.URL)
             {
                 var hypLink = (HyperLink) sender;
                 container = (GridItem) hypLink.NamingContainer;
-                keyValue = GetValue(container);
-                if (!String.IsNullOrEmpty(NavigateURLFormatString))
+                keyValue = this.GetValue(container);
+                if (!String.IsNullOrEmpty(this.NavigateURLFormatString))
                 {
-                    hypLink.NavigateUrl = string.Format(NavigateURLFormatString, keyValue);
+                    hypLink.NavigateUrl = string.Format(this.NavigateURLFormatString, keyValue);
                 }
                 else
                 {
@@ -275,22 +275,22 @@ namespace DotNetNuke.Web.UI.WebControls
             else
             {
                 //Bind Image Button
-                if (!String.IsNullOrEmpty(ImageURL) && ShowImage)
+                if (!String.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                 {
                     var colIcon = (ImageButton) sender;
                     container = (GridItem) colIcon.NamingContainer;
-                    keyValue = GetValue(container);
+                    keyValue = this.GetValue(container);
                     colIcon.CommandArgument = keyValue.ToString(CultureInfo.InvariantCulture);
-                    colIcon.Visible = GetIsVisible(container);
+                    colIcon.Visible = this.GetIsVisible(container);
                 }
-                if (!String.IsNullOrEmpty(Text) && !ShowImage)
+                if (!String.IsNullOrEmpty(this.Text) && !this.ShowImage)
                 {
                     //Bind Link Button
                     var colLink = (LinkButton) sender;
                     container = (GridItem) colLink.NamingContainer;
-                    keyValue = GetValue(container);
+                    keyValue = this.GetValue(container);
                     colLink.CommandArgument = keyValue.ToString(CultureInfo.InvariantCulture);
-                    colLink.Visible = GetIsVisible(container);
+                    colLink.Visible = this.GetIsVisible(container);
                 }
             }
         }

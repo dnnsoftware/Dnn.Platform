@@ -18,15 +18,15 @@ namespace DotNetNuke.Entities.Modules.Communications
 
         public ModuleCommunicationEventArgs(string text)
         {
-            Text = text;
+            this.Text = text;
         }
 
         public ModuleCommunicationEventArgs(string type, object value, string sender, string target)
         {
-            Type = type;
-            Value = value;
-            Sender = sender;
-            Target = target;
+            this.Type = type;
+            this.Value = value;
+            this.Sender = sender;
+            this.Target = target;
         }
 
         public string Sender { get; set; }

@@ -44,11 +44,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return Convert.ToString(ViewState[ClientID + "_ListBoxWidth"]);
+                return Convert.ToString(this.ViewState[this.ClientID + "_ListBoxWidth"]);
             }
             set
             {
-                _ListBoxWidth = value;
+                this._ListBoxWidth = value;
             }
         }
 
@@ -56,11 +56,11 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return Convert.ToString(ViewState[ClientID + "_ListBoxHeight"]);
+                return Convert.ToString(this.ViewState[this.ClientID + "_ListBoxHeight"]);
             }
             set
             {
-                _ListBoxHeight = value;
+                this._ListBoxHeight = value;
             }
         }
 
@@ -69,7 +69,7 @@ namespace DotNetNuke.UI.UserControls
             get
             {
                 var objList = new ArrayList();
-                foreach (ListItem objListItem in lstAvailable.Items)
+                foreach (ListItem objListItem in this.lstAvailable.Items)
                 {
                     objList.Add(objListItem);
                 }
@@ -77,7 +77,7 @@ namespace DotNetNuke.UI.UserControls
             }
             set
             {
-                _Available = value;
+                this._Available = value;
             }
         }
 
@@ -86,7 +86,7 @@ namespace DotNetNuke.UI.UserControls
             get
             {
                 var objList = new ArrayList();
-                foreach (ListItem objListItem in lstAssigned.Items)
+                foreach (ListItem objListItem in this.lstAssigned.Items)
                 {
                     objList.Add(objListItem);
                 }
@@ -94,7 +94,7 @@ namespace DotNetNuke.UI.UserControls
             }
             set
             {
-                _Assigned = value;
+                this._Assigned = value;
             }
         }
 
@@ -102,7 +102,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                _DataTextField = value;
+                this._DataTextField = value;
             }
         }
 
@@ -110,7 +110,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                _DataValueField = value;
+                this._DataValueField = value;
             }
         }
 
@@ -118,7 +118,7 @@ namespace DotNetNuke.UI.UserControls
         {
             set
             {
-                _Enabled = value;
+                this._Enabled = value;
             }
         }
 		
@@ -131,56 +131,56 @@ namespace DotNetNuke.UI.UserControls
         {
             base.OnLoad(e);
 
-            cmdAdd.Click += cmdAdd_Click;
-            cmdAddAll.Click += cmdAddAll_Click;
-            cmdRemove.Click += cmdRemove_Click;
-            cmdRemoveAll.Click += cmdRemoveAll_Click;
+            this.cmdAdd.Click += this.cmdAdd_Click;
+            this.cmdAddAll.Click += this.cmdAddAll_Click;
+            this.cmdRemove.Click += this.cmdRemove_Click;
+            this.cmdRemoveAll.Click += this.cmdRemoveAll_Click;
 
             try
             {
                 //Localization
-                Label1.Text = Localization.GetString("Available", Localization.GetResourceFile(this, MyFileName));
-                Label2.Text = Localization.GetString("Assigned", Localization.GetResourceFile(this, MyFileName));
-                cmdAdd.ToolTip = Localization.GetString("Add", Localization.GetResourceFile(this, MyFileName));
-                cmdAddAll.ToolTip = Localization.GetString("AddAll", Localization.GetResourceFile(this, MyFileName));
-                cmdRemove.ToolTip = Localization.GetString("Remove", Localization.GetResourceFile(this, MyFileName));
-                cmdRemoveAll.ToolTip = Localization.GetString("RemoveAll", Localization.GetResourceFile(this, MyFileName));
+                this.Label1.Text = Localization.GetString("Available", Localization.GetResourceFile(this, this.MyFileName));
+                this.Label2.Text = Localization.GetString("Assigned", Localization.GetResourceFile(this, this.MyFileName));
+                this.cmdAdd.ToolTip = Localization.GetString("Add", Localization.GetResourceFile(this, this.MyFileName));
+                this.cmdAddAll.ToolTip = Localization.GetString("AddAll", Localization.GetResourceFile(this, this.MyFileName));
+                this.cmdRemove.ToolTip = Localization.GetString("Remove", Localization.GetResourceFile(this, this.MyFileName));
+                this.cmdRemoveAll.ToolTip = Localization.GetString("RemoveAll", Localization.GetResourceFile(this, this.MyFileName));
 
-                if (!Page.IsPostBack)
+                if (!this.Page.IsPostBack)
                 {
 					//set dimensions of control
-                    if (!String.IsNullOrEmpty(_ListBoxWidth))
+                    if (!String.IsNullOrEmpty(this._ListBoxWidth))
                     {
-                        lstAvailable.Width = Unit.Parse(_ListBoxWidth);
-                        lstAssigned.Width = Unit.Parse(_ListBoxWidth);
+                        this.lstAvailable.Width = Unit.Parse(this._ListBoxWidth);
+                        this.lstAssigned.Width = Unit.Parse(this._ListBoxWidth);
                     }
-                    if (!String.IsNullOrEmpty(_ListBoxHeight))
+                    if (!String.IsNullOrEmpty(this._ListBoxHeight))
                     {
-                        lstAvailable.Height = Unit.Parse(_ListBoxHeight);
-                        lstAssigned.Height = Unit.Parse(_ListBoxHeight);
+                        this.lstAvailable.Height = Unit.Parse(this._ListBoxHeight);
+                        this.lstAssigned.Height = Unit.Parse(this._ListBoxHeight);
                     }
 					
                     //load available
-                    lstAvailable.DataTextField = _DataTextField;
-                    lstAvailable.DataValueField = _DataValueField;
-                    lstAvailable.DataSource = _Available;
-                    lstAvailable.DataBind();
-                    Sort(lstAvailable);
+                    this.lstAvailable.DataTextField = this._DataTextField;
+                    this.lstAvailable.DataValueField = this._DataValueField;
+                    this.lstAvailable.DataSource = this._Available;
+                    this.lstAvailable.DataBind();
+                    this.Sort(this.lstAvailable);
 
                     //load selected
-                    lstAssigned.DataTextField = _DataTextField;
-                    lstAssigned.DataValueField = _DataValueField;
-                    lstAssigned.DataSource = _Assigned;
-                    lstAssigned.DataBind();
-                    Sort(lstAssigned);
+                    this.lstAssigned.DataTextField = this._DataTextField;
+                    this.lstAssigned.DataValueField = this._DataValueField;
+                    this.lstAssigned.DataSource = this._Assigned;
+                    this.lstAssigned.DataBind();
+                    this.Sort(this.lstAssigned);
 
                     //set enabled
-                    lstAvailable.Enabled = _Enabled;
-                    lstAssigned.Enabled = _Enabled;
+                    this.lstAvailable.Enabled = this._Enabled;
+                    this.lstAssigned.Enabled = this._Enabled;
 
                     //save persistent values
-                    ViewState[ClientID + "_ListBoxWidth"] = _ListBoxWidth;
-                    ViewState[ClientID + "_ListBoxHeight"] = _ListBoxHeight;
+                    this.ViewState[this.ClientID + "_ListBoxWidth"] = this._ListBoxWidth;
+                    this.ViewState[this.ClientID + "_ListBoxHeight"] = this._ListBoxHeight;
                 }
             }
             catch (Exception exc) //Module failed to load
@@ -192,7 +192,7 @@ namespace DotNetNuke.UI.UserControls
         private void cmdAdd_Click(object sender, EventArgs e)
         {
             var objList = new ArrayList();
-            foreach (ListItem objListItem in lstAvailable.Items)
+            foreach (ListItem objListItem in this.lstAvailable.Items)
             {
                 objList.Add(objListItem);
             }
@@ -200,19 +200,19 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (objListItem.Selected)
                 {
-                    lstAvailable.Items.Remove(objListItem);
-                    lstAssigned.Items.Add(objListItem);
+                    this.lstAvailable.Items.Remove(objListItem);
+                    this.lstAssigned.Items.Add(objListItem);
                 }
             }
-            lstAvailable.ClearSelection();
-            lstAssigned.ClearSelection();
-            Sort(lstAssigned);
+            this.lstAvailable.ClearSelection();
+            this.lstAssigned.ClearSelection();
+            this.Sort(this.lstAssigned);
         }
 
         private void cmdRemove_Click(object sender, EventArgs e)
         {
             var objList = new ArrayList();
-            foreach (ListItem objListItem in lstAssigned.Items)
+            foreach (ListItem objListItem in this.lstAssigned.Items)
             {
                 objList.Add(objListItem);
             }
@@ -220,37 +220,37 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (objListItem.Selected)
                 {
-                    lstAssigned.Items.Remove(objListItem);
-                    lstAvailable.Items.Add(objListItem);
+                    this.lstAssigned.Items.Remove(objListItem);
+                    this.lstAvailable.Items.Add(objListItem);
                 }
             }
-            lstAvailable.ClearSelection();
-            lstAssigned.ClearSelection();
-            Sort(lstAvailable);
+            this.lstAvailable.ClearSelection();
+            this.lstAssigned.ClearSelection();
+            this.Sort(this.lstAvailable);
         }
 
         private void cmdAddAll_Click(object sender, EventArgs e)
         {
-            foreach (ListItem objListItem in lstAvailable.Items)
+            foreach (ListItem objListItem in this.lstAvailable.Items)
             {
-                lstAssigned.Items.Add(objListItem);
+                this.lstAssigned.Items.Add(objListItem);
             }
-            lstAvailable.Items.Clear();
-            lstAvailable.ClearSelection();
-            lstAssigned.ClearSelection();
-            Sort(lstAssigned);
+            this.lstAvailable.Items.Clear();
+            this.lstAvailable.ClearSelection();
+            this.lstAssigned.ClearSelection();
+            this.Sort(this.lstAssigned);
         }
 
         private void cmdRemoveAll_Click(object sender, EventArgs e)
         {
-            foreach (ListItem objListItem in lstAssigned.Items)
+            foreach (ListItem objListItem in this.lstAssigned.Items)
             {
-                lstAvailable.Items.Add(objListItem);
+                this.lstAvailable.Items.Add(objListItem);
             }
-            lstAssigned.Items.Clear();
-            lstAvailable.ClearSelection();
-            lstAssigned.ClearSelection();
-            Sort(lstAvailable);
+            this.lstAssigned.Items.Clear();
+            this.lstAvailable.ClearSelection();
+            this.lstAssigned.ClearSelection();
+            this.Sort(this.lstAvailable);
         }
 		
 		#endregion

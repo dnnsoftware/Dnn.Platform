@@ -59,10 +59,10 @@ namespace log4net.Util.PatternStringConverters
         {
             try
             {
-                if (Option != null && Option.Length > 0)
+                if (this.Option != null && this.Option.Length > 0)
                 {
                     Environment.SpecialFolder specialFolder =
-                        (Environment.SpecialFolder)Enum.Parse(typeof(Environment.SpecialFolder), Option, true);
+                        (Environment.SpecialFolder)Enum.Parse(typeof(Environment.SpecialFolder), this.Option, true);
 
                     string envFolderPathValue = Environment.GetFolderPath(specialFolder);
                     if (envFolderPathValue != null && envFolderPathValue.Length > 0)

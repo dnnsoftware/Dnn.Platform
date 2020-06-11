@@ -50,16 +50,16 @@ namespace DotNetNuke.Services.FileSystem
             for (var i = 0; i < fileNames.Length; i++)
             {
                 var fileName = Path.GetFileName(fileNames[i]);
-                if (!fileName.EndsWith(ProtectedExtension, StringComparison.InvariantCultureIgnoreCase))
+                if (!fileName.EndsWith(this.ProtectedExtension, StringComparison.InvariantCultureIgnoreCase))
 				{
-                    var destFileName = fileNames[i] + ProtectedExtension;
+                    var destFileName = fileNames[i] + this.ProtectedExtension;
                     if (FileWrapper.Instance.Exists(destFileName))
                         FileWrapper.Instance.Delete(destFileName);
 					FileWrapper.Instance.Move(fileNames[i], destFileName);
 				}
 				else
 				{
-                    fileName = fileName.Substring(0, fileName.LastIndexOf(ProtectedExtension, StringComparison.InvariantCultureIgnoreCase));
+                    fileName = fileName.Substring(0, fileName.LastIndexOf(this.ProtectedExtension, StringComparison.InvariantCultureIgnoreCase));
 				}
 
                 fileNames[i] = fileName;
@@ -83,17 +83,17 @@ namespace DotNetNuke.Services.FileSystem
         #region Protected Methods
         protected override string GetActualPath(FolderMappingInfo folderMapping, string folderPath, string fileName)
         {
-            return base.GetActualPath(folderMapping, folderPath, fileName) + ProtectedExtension;
+            return base.GetActualPath(folderMapping, folderPath, fileName) + this.ProtectedExtension;
         }
 
         protected override string GetActualPath(IFileInfo file)
         {
-            return base.GetActualPath(file) + ProtectedExtension;
+            return base.GetActualPath(file) + this.ProtectedExtension;
         }
 
         protected override string GetActualPath(IFolderInfo folder, string fileName)
         {
-            return base.GetActualPath(folder, fileName) + ProtectedExtension;
+            return base.GetActualPath(folder, fileName) + this.ProtectedExtension;
         }
 
         #endregion

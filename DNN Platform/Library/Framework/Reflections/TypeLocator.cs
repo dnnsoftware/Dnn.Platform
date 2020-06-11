@@ -19,13 +19,13 @@ namespace DotNetNuke.Framework.Reflections
 
         internal IAssemblyLocator AssemblyLocator
         {
-            get { return _assemblyLocator ?? (_assemblyLocator = this); }
-            set { _assemblyLocator = value; }
+            get { return this._assemblyLocator ?? (this._assemblyLocator = this); }
+            set { this._assemblyLocator = value; }
         }
 
         public IEnumerable<Type> GetAllMatchingTypes(Predicate<Type> predicate)
         {
-            foreach (var assembly in AssemblyLocator.Assemblies)
+            foreach (var assembly in this.AssemblyLocator.Assemblies)
             {
                 Type[] types;
                 try
@@ -116,7 +116,7 @@ namespace DotNetNuke.Framework.Reflections
             get
             {
                 return (from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                    where CanScan(assembly)
+                    where this.CanScan(assembly)
                     select new AssemblyWrapper(assembly));
             }
         }

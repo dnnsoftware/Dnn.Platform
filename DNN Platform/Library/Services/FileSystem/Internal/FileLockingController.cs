@@ -32,7 +32,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
                 }
             }
 
-            var outOfPublishPeriod = IsFileOutOfPublishPeriod(file);
+            var outOfPublishPeriod = this.IsFileOutOfPublishPeriod(file);
             if (outOfPublishPeriod)
             {
                 lockReasonKey = "FileLockedOutOfPublishPeriodError";
@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             {
                 return false;
             }
-            return IsFileOutOfPublishPeriod(file);
+            return this.IsFileOutOfPublishPeriod(file);
         }
 
         private bool IsFileOutOfPublishPeriod(IFileInfo file)

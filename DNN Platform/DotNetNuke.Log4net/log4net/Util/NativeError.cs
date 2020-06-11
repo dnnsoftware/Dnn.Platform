@@ -62,8 +62,8 @@ namespace log4net.Util
 		/// </remarks>
 		private NativeError(int number, string message) 
 		{
-			m_number = number;
-			m_message = message;
+			this.m_number = number;
+			this.m_message = message;
 		}
 
 		#endregion // Protected Instance Constructors
@@ -83,7 +83,7 @@ namespace log4net.Util
 		/// </remarks>
 		public int Number 
 		{
-			get { return m_number; }
+			get { return this.m_number; }
 		}
 
 		/// <summary>
@@ -99,7 +99,7 @@ namespace log4net.Util
 		/// </remarks>
 		public string Message 
 		{
-			get { return m_message; }
+			get { return this.m_message; }
 		}
 
 		#endregion // Public Instance Properties

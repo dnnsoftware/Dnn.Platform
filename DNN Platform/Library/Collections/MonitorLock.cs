@@ -16,7 +16,7 @@ namespace DotNetNuke.Collections.Internal
 
         public MonitorLock(ExclusiveLockStrategy lockStrategy)
         {
-            _lockStrategy = lockStrategy;
+            this._lockStrategy = lockStrategy;
         }
 
         #region "IDisposable Support"
@@ -28,21 +28,21 @@ namespace DotNetNuke.Collections.Internal
         public void Dispose()
         {
             // Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!_isDisposed)
+            if (!this._isDisposed)
             {
                 if (disposing)
                 {
-                    _lockStrategy.Exit();
-                    _lockStrategy = null;
+                    this._lockStrategy.Exit();
+                    this._lockStrategy = null;
                 }
             }
-            _isDisposed = true;
+            this._isDisposed = true;
         }
 
         #endregion

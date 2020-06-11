@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="value">A <see cref="SearchContentModuleInfoCollection">SearchContentModuleInfoCollection</see> with which to initialize the collection.</param>
         public SearchContentModuleInfoCollection(SearchContentModuleInfoCollection value)
         {
-            AddRange(value);
+            this.AddRange(value);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="value">An array of <see cref="SearchContentModuleInfo">SearchContentModuleInfo</see> objects with which to initialize the collection. </param>
         public SearchContentModuleInfoCollection(SearchContentModuleInfo[] value)
         {
-            AddRange(value);
+            this.AddRange(value);
         }
 		
 		#endregion
@@ -65,11 +65,11 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return (SearchContentModuleInfo) List[index];
+                return (SearchContentModuleInfo) this.List[index];
             }
             set
             {
-                List[index] = value;
+                this.List[index] = value;
             }
         }
 		
@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="value">An object of type <see cref="SearchContentModuleInfo">SearchContentModuleInfo</see> to add to the collection.</param>
         public int Add(SearchContentModuleInfo value)
         {
-            return List.Add(value);
+            return this.List.Add(value);
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.Search
         /// <returns>The index in the collection of the specified object, if found; otherwise, -1.</returns>
         public int IndexOf(SearchContentModuleInfo value)
         {
-            return List.IndexOf(value);
+            return this.List.IndexOf(value);
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="value">An object of type <see cref="SearchContentModuleInfo">SearchContentModuleInfo</see> to add to the collection.</param>
         public void Insert(int index, SearchContentModuleInfo value)
         {
-            List.Insert(index, value);
+            this.List.Insert(index, value);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="value">An object of type <see cref="SearchContentModuleInfo">SearchContentModuleInfo</see> to remove to the collection.</param>
         public void Remove(SearchContentModuleInfo value)
         {
-            List.Remove(value);
+            this.List.Remove(value);
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace DotNetNuke.Services.Search
         public bool Contains(SearchContentModuleInfo value)
         {
 			//If value is not of type SearchContentModuleInfo, this will return false.
-            return List.Contains(value);
+            return this.List.Contains(value);
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace DotNetNuke.Services.Search
         {
             for (int i = 0; i <= value.Length - 1; i++)
             {
-                Add(value[i]);
+                this.Add(value[i]);
             }
         }
 
@@ -146,7 +146,7 @@ namespace DotNetNuke.Services.Search
         {
             for (int i = 0; i <= value.Count - 1; i++)
             {
-                Add((SearchContentModuleInfo) value.List[i]);
+                this.Add((SearchContentModuleInfo) value.List[i]);
             }
         }
 
@@ -157,7 +157,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="index">The index of the array at which to begin inserting.</param>
         public void CopyTo(SearchContentModuleInfo[] array, int index)
         {
-            List.CopyTo(array, index);
+            this.List.CopyTo(array, index);
         }
 
         /// <summary>
@@ -166,8 +166,8 @@ namespace DotNetNuke.Services.Search
         /// <returns>Array of type SearchContentModuleInfo</returns>
         public SearchContentModuleInfo[] ToArray()
         {
-            var arr = new SearchContentModuleInfo[Count];
-            CopyTo(arr, 0);
+            var arr = new SearchContentModuleInfo[this.Count];
+            this.CopyTo(arr, 0);
             return arr;
         }
 		

@@ -21,8 +21,8 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
         public override void Execute()
         {
-            Percentage = 0;
-            Status = StepStatus.Running;
+            this.Percentage = 0;
+            this.Status = StepStatus.Running;
 
             var databaseVersion = DataProvider.Instance().GetInstallVersion();
 
@@ -30,11 +30,11 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
             if (!string.IsNullOrEmpty(strError))
             {
-                Errors.Add(Localization.Localization.GetString("InstallVersion", LocalInstallResourceFile) + ": " + strError);
+                this.Errors.Add(Localization.Localization.GetString("InstallVersion", this.LocalInstallResourceFile) + ": " + strError);
                 Logger.TraceFormat("Adding InstallVersion : {0}", strError);
             }
 
-            Status = Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
+            this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
         }
     }
 }

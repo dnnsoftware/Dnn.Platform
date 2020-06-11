@@ -81,7 +81,7 @@ namespace DotNetNuke.Entities.Portals
         /// </remarks>
         public PortalInfo()
         {
-            Users = Null.NullInteger;
+            this.Users = Null.NullInteger;
         }
 
         #endregion
@@ -279,7 +279,7 @@ namespace DotNetNuke.Entities.Portals
         /// <remarks><seealso cref="HomeSystemDirectoryMapPath"></seealso></remarks>
         [XmlElement("homesystemdirectory")]
         public string HomeSystemDirectory {
-            get { return String.Format("{0}-System", HomeDirectory); }
+            get { return String.Format("{0}-System", this.HomeDirectory); }
         }
 
         /// <summary>
@@ -622,13 +622,13 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                if (_users < 0)
+                if (this._users < 0)
                 {
-                    _users = UserController.GetUserCountByPortal(PortalID);
+                    this._users = UserController.GetUserCountByPortal(this.PortalID);
                 }
-                return _users;
+                return this._users;
             }
-            set { _users = value; }
+            set { this._users = value; }
         }
 
         /// <summary>
@@ -656,20 +656,20 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                if (_administratorRoleName == Null.NullString && AdministratorRoleId > Null.NullInteger)
+                if (this._administratorRoleName == Null.NullString && this.AdministratorRoleId > Null.NullInteger)
                 {
 					//Get Role Name
-                    RoleInfo adminRole = RoleController.Instance.GetRole(PortalID, r => r.RoleID == AdministratorRoleId);
+                    RoleInfo adminRole = RoleController.Instance.GetRole(this.PortalID, r => r.RoleID == this.AdministratorRoleId);
                     if (adminRole != null)
                     {
-                        _administratorRoleName = adminRole.RoleName;
+                        this._administratorRoleName = adminRole.RoleName;
                     }
                 }
-                return _administratorRoleName;
+                return this._administratorRoleName;
             }
             set
             {
-                _administratorRoleName = value;
+                this._administratorRoleName = value;
             }
         }
 
@@ -684,7 +684,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return String.Format("{0}\\{1}\\", Globals.ApplicationMapPath, HomeDirectory.Replace("/", "\\"));
+                return String.Format("{0}\\{1}\\", Globals.ApplicationMapPath, this.HomeDirectory.Replace("/", "\\"));
             }
         }
 
@@ -699,7 +699,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return String.Format("{0}\\{1}\\", Globals.ApplicationMapPath, HomeSystemDirectory.Replace("/", "\\"));
+                return String.Format("{0}\\{1}\\", Globals.ApplicationMapPath, this.HomeSystemDirectory.Replace("/", "\\"));
             }
         }
 
@@ -714,15 +714,15 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                if (_pages < 0)
+                if (this._pages < 0)
                 {
-                    _pages = TabController.Instance.GetUserTabsByPortal(PortalID).Count;
+                    this._pages = TabController.Instance.GetUserTabsByPortal(this.PortalID).Count;
                 }
-                return _pages;
+                return this._pages;
             }
             set
             {
-                _pages = value;
+                this._pages = value;
             }
         }
 
@@ -738,20 +738,20 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                if (_registeredRoleName == Null.NullString && RegisteredRoleId > Null.NullInteger)
+                if (this._registeredRoleName == Null.NullString && this.RegisteredRoleId > Null.NullInteger)
                 {
 					//Get Role Name
-                    RoleInfo regUsersRole = RoleController.Instance.GetRole(PortalID, r => r.RoleID == RegisteredRoleId);
+                    RoleInfo regUsersRole = RoleController.Instance.GetRole(this.PortalID, r => r.RoleID == this.RegisteredRoleId);
                     if (regUsersRole != null)
                     {
-                        _registeredRoleName = regUsersRole.RoleName;
+                        this._registeredRoleName = regUsersRole.RoleName;
                     }
                 }
-                return _registeredRoleName;
+                return this._registeredRoleName;
             }
             set
             {
-                _registeredRoleName = value;
+                this._registeredRoleName = value;
             }
         }
 
@@ -771,11 +771,11 @@ namespace DotNetNuke.Entities.Portals
         /// <seealso cref="KeyID"></seealso></remarks>
         public void Fill(IDataReader dr)
         {
-            PortalID = Null.SetNullInteger(dr["PortalID"]);
+            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
 
             try
             {
-                PortalGroupID = Null.SetNullInteger(dr["PortalGroupID"]);
+                this.PortalGroupID = Null.SetNullInteger(dr["PortalGroupID"]);
             }
             catch (IndexOutOfRangeException)
             {
@@ -788,77 +788,77 @@ namespace DotNetNuke.Entities.Portals
                 //else swallow the error
             }
             
-            PortalName = Null.SetNullString(dr["PortalName"]);
-            LogoFile = Null.SetNullString(dr["LogoFile"]);
-            FooterText = Null.SetNullString(dr["FooterText"]);
-            ExpiryDate = Null.SetNullDateTime(dr["ExpiryDate"]);
-            UserRegistration = Null.SetNullInteger(dr["UserRegistration"]);
-            BannerAdvertising = Null.SetNullInteger(dr["BannerAdvertising"]);
-            AdministratorId = Null.SetNullInteger(dr["AdministratorID"]);
-            Email = Null.SetNullString(dr["Email"]);
-            Currency = Null.SetNullString(dr["Currency"]);
-            HostFee = Null.SetNullInteger(dr["HostFee"]);
-            HostSpace = Null.SetNullInteger(dr["HostSpace"]);
-            PageQuota = Null.SetNullInteger(dr["PageQuota"]);
-            UserQuota = Null.SetNullInteger(dr["UserQuota"]);
-            AdministratorRoleId = Null.SetNullInteger(dr["AdministratorRoleID"]);
-            RegisteredRoleId = Null.SetNullInteger(dr["RegisteredRoleID"]);
-            Description = Null.SetNullString(dr["Description"]);
-            KeyWords = Null.SetNullString(dr["KeyWords"]);
-            BackgroundFile = Null.SetNullString(dr["BackGroundFile"]);
-            GUID = new Guid(Null.SetNullString(dr["GUID"]));
-            PaymentProcessor = Null.SetNullString(dr["PaymentProcessor"]);
-            ProcessorUserId = Null.SetNullString(dr["ProcessorUserId"]);
+            this.PortalName = Null.SetNullString(dr["PortalName"]);
+            this.LogoFile = Null.SetNullString(dr["LogoFile"]);
+            this.FooterText = Null.SetNullString(dr["FooterText"]);
+            this.ExpiryDate = Null.SetNullDateTime(dr["ExpiryDate"]);
+            this.UserRegistration = Null.SetNullInteger(dr["UserRegistration"]);
+            this.BannerAdvertising = Null.SetNullInteger(dr["BannerAdvertising"]);
+            this.AdministratorId = Null.SetNullInteger(dr["AdministratorID"]);
+            this.Email = Null.SetNullString(dr["Email"]);
+            this.Currency = Null.SetNullString(dr["Currency"]);
+            this.HostFee = Null.SetNullInteger(dr["HostFee"]);
+            this.HostSpace = Null.SetNullInteger(dr["HostSpace"]);
+            this.PageQuota = Null.SetNullInteger(dr["PageQuota"]);
+            this.UserQuota = Null.SetNullInteger(dr["UserQuota"]);
+            this.AdministratorRoleId = Null.SetNullInteger(dr["AdministratorRoleID"]);
+            this.RegisteredRoleId = Null.SetNullInteger(dr["RegisteredRoleID"]);
+            this.Description = Null.SetNullString(dr["Description"]);
+            this.KeyWords = Null.SetNullString(dr["KeyWords"]);
+            this.BackgroundFile = Null.SetNullString(dr["BackGroundFile"]);
+            this.GUID = new Guid(Null.SetNullString(dr["GUID"]));
+            this.PaymentProcessor = Null.SetNullString(dr["PaymentProcessor"]);
+            this.ProcessorUserId = Null.SetNullString(dr["ProcessorUserId"]);
             var p = Null.SetNullString(dr["ProcessorPassword"]);
             try
             {
-                ProcessorPassword = string.IsNullOrEmpty(p)
+                this.ProcessorPassword = string.IsNullOrEmpty(p)
                     ? p
                     : Security.FIPSCompliant.DecryptAES(p, Config.GetDecryptionkey(), Host.Host.GUID);
             }
             catch (Exception ex) when (ex is FormatException || ex is CryptographicException)
             {
                 // for backward compatibility
-                ProcessorPassword = p;
+                this.ProcessorPassword = p;
             }
-            SplashTabId = Null.SetNullInteger(dr["SplashTabID"]);
-            HomeTabId = Null.SetNullInteger(dr["HomeTabID"]);
-            LoginTabId = Null.SetNullInteger(dr["LoginTabID"]);
-            RegisterTabId = Null.SetNullInteger(dr["RegisterTabID"]);
-            UserTabId = Null.SetNullInteger(dr["UserTabID"]);
-            SearchTabId = Null.SetNullInteger(dr["SearchTabID"]);
+            this.SplashTabId = Null.SetNullInteger(dr["SplashTabID"]);
+            this.HomeTabId = Null.SetNullInteger(dr["HomeTabID"]);
+            this.LoginTabId = Null.SetNullInteger(dr["LoginTabID"]);
+            this.RegisterTabId = Null.SetNullInteger(dr["RegisterTabID"]);
+            this.UserTabId = Null.SetNullInteger(dr["UserTabID"]);
+            this.SearchTabId = Null.SetNullInteger(dr["SearchTabID"]);
 
-            Custom404TabId = Custom500TabId = Null.NullInteger;
+            this.Custom404TabId = this.Custom500TabId = Null.NullInteger;
             var schema = dr.GetSchemaTable();
             if (schema != null)
             {
                 if (schema.Select("ColumnName = 'Custom404TabId'").Length > 0)
                 {
-                    Custom404TabId = Null.SetNullInteger(dr["Custom404TabId"]);
+                    this.Custom404TabId = Null.SetNullInteger(dr["Custom404TabId"]);
                 }
                 if (schema.Select("ColumnName = 'Custom500TabId'").Length > 0)
                 {
-                    Custom500TabId = Null.SetNullInteger(dr["Custom500TabId"]);
+                    this.Custom500TabId = Null.SetNullInteger(dr["Custom500TabId"]);
                 }
             }
-            TermsTabId = Null.SetNullInteger(dr["TermsTabId"]);
-            PrivacyTabId = Null.SetNullInteger(dr["PrivacyTabId"]);
+            this.TermsTabId = Null.SetNullInteger(dr["TermsTabId"]);
+            this.PrivacyTabId = Null.SetNullInteger(dr["PrivacyTabId"]);
 
-            DefaultLanguage = Null.SetNullString(dr["DefaultLanguage"]);
+            this.DefaultLanguage = Null.SetNullString(dr["DefaultLanguage"]);
 #pragma warning disable 612,618 //needed for upgrades and backwards compatibility
-            TimeZoneOffset = Null.SetNullInteger(dr["TimeZoneOffset"]);
+            this.TimeZoneOffset = Null.SetNullInteger(dr["TimeZoneOffset"]);
 #pragma warning restore 612,618
-            AdminTabId = Null.SetNullInteger(dr["AdminTabID"]);
-            HomeDirectory = Null.SetNullString(dr["HomeDirectory"]);
-            SuperTabId = Null.SetNullInteger(dr["SuperTabId"]);
-            CultureCode = Null.SetNullString(dr["CultureCode"]);
+            this.AdminTabId = Null.SetNullInteger(dr["AdminTabID"]);
+            this.HomeDirectory = Null.SetNullString(dr["HomeDirectory"]);
+            this.SuperTabId = Null.SetNullInteger(dr["SuperTabId"]);
+            this.CultureCode = Null.SetNullString(dr["CultureCode"]);
 
-            FillInternal(dr);
-            AdministratorRoleName = Null.NullString;
-            RegisteredRoleName = Null.NullString;
+            this.FillInternal(dr);
+            this.AdministratorRoleName = Null.NullString;
+            this.RegisteredRoleName = Null.NullString;
 
-            Users = Null.NullInteger;
-            Pages = Null.NullInteger;
+            this.Users = Null.NullInteger;
+            this.Pages = Null.NullInteger;
         }
 
         /// <summary>
@@ -870,11 +870,11 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return PortalID;
+                return this.PortalID;
             }
             set
             {
-                PortalID = value;
+                this.PortalID = value;
             }
         }
 

@@ -40,18 +40,18 @@ namespace DotNetNuke.Modules.Journal
                 if(notification != null && notification.Context != null && notification.Context.Contains("_"))
                 {
                     //Dismiss the notification
-                    NotificationsController.Instance.DeleteNotificationRecipient(postData.NotificationId, UserInfo.UserID);
+                    NotificationsController.Instance.DeleteNotificationRecipient(postData.NotificationId, this.UserInfo.UserID);
 
                     var context = notification.Context.Split('_');
                     var userId = Convert.ToInt32(context[0]);
                     var journalId = Convert.ToInt32(context[1]);
-                    var ji = JournalController.Instance.GetJournalItem(PortalSettings.PortalId, userId, journalId);
+                    var ji = JournalController.Instance.GetJournalItem(this.PortalSettings.PortalId, userId, journalId);
                     if (ji.ProfileId != Null.NullInteger)
                     {
-                        return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Link = Globals.UserProfileURL(ji.ProfileId) });
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Link = Globals.UserProfileURL(ji.ProfileId) });
                     }
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Link = Globals.UserProfileURL(userId) });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Link = Globals.UserProfileURL(userId) });
                 }
             }
             catch (Exception exc)
@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.Journal
                 Logger.Error(exc);
             }
 
-            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
         }
 
     }

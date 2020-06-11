@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         public int SaveMessage(Message message, int portalId, int createUpdateUserId)
         {
             //need to fix groupmail
-            return _provider.ExecuteScalar<int>("CoreMessaging_SaveMessage", message.MessageID, portalId ,message.To, message.From, message.Subject, message.Body, message.ConversationId, message.ReplyAllAllowed, message.SenderUserID, createUpdateUserId);
+            return this._provider.ExecuteScalar<int>("CoreMessaging_SaveMessage", message.MessageID, portalId ,message.To, message.From, message.Subject, message.Body, message.ConversationId, message.ReplyAllAllowed, message.SenderUserID, createUpdateUserId);
         }
 
 		/// <summary>Gets the message.</summary>
@@ -43,7 +43,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
 		/// <returns>A <see cref="IDataReader"/> containing the message data</returns>
         public IDataReader GetMessage(int messageId)
         {
-            return _provider.ExecuteReader("CoreMessaging_GetMessage", messageId);
+            return this._provider.ExecuteReader("CoreMessaging_GetMessage", messageId);
         }
 
         /// <summary>Gets the last sent message.</summary>
@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>A <see cref="IDataReader"/> containing the last sent message data</returns>
         public IDataReader GetLastSentMessage(int userId, int portalId)
         {
-            return _provider.ExecuteReader("CoreMessaging_GetLastSentMessage", userId, portalId);
+            return this._provider.ExecuteReader("CoreMessaging_GetLastSentMessage", userId, portalId);
         }
 
         /// <summary>Gets the messages by sender.</summary>
@@ -61,14 +61,14 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>A <see cref="IDataReader"/> containing the messages for a given portal Id</returns>
         public IDataReader GetMessagesBySender(int messageId, int portalId)
         {
-            return _provider.ExecuteReader("CoreMessaging_GetMessagesBySender", messageId, portalId);
+            return this._provider.ExecuteReader("CoreMessaging_GetMessagesBySender", messageId, portalId);
         }
 
         /// <summary>Deletes the message.</summary>
         /// <param name="messageId">The message identifier.</param>
         public void DeleteMessage(int messageId)
         {
-            _provider.ExecuteNonQuery("CoreMessaging_DeleteMessage", messageId);
+            this._provider.ExecuteNonQuery("CoreMessaging_DeleteMessage", messageId);
         }
 
         /// <summary>Deletes the user from conversation.</summary>
@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <param name="userId">The user identifier.</param>
         public void DeleteUserFromConversation(int conversationId, int userId)
         {
-            _provider.ExecuteNonQuery("CoreMessaging_DeleteUserFromConversation", conversationId, userId);
+            this._provider.ExecuteNonQuery("CoreMessaging_DeleteUserFromConversation", conversationId, userId);
         }
 
         /// <summary>Creates a message reply.</summary>
@@ -89,7 +89,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The id of the reply created</returns>
         public int CreateMessageReply(int conversationId, int portalId, string body, int senderUserId, string fromName, int createUpdateUserId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CreateMessageReply", conversationId, portalId, body, senderUserId, fromName, createUpdateUserId);
+            return this._provider.ExecuteScalar<int>("CoreMessaging_CreateMessageReply", conversationId, portalId, body, senderUserId, fromName, createUpdateUserId);
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The count of recipients</returns>
         public int CheckReplyHasRecipients(int conversationId, int userId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CheckReplyHasRecipients", conversationId, userId);
+            return this._provider.ExecuteScalar<int>("CoreMessaging_CheckReplyHasRecipients", conversationId, userId);
         }
 
         /// <summary>Gets the in box view.</summary>
@@ -150,7 +150,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
                     break;
             }
 
-            return _provider.ExecuteReader("CoreMessaging_GetMessageConversations", userId, portalId , afterMessageId, numberOfRecords, sortColumn, sortAscending, read, archived, sent);
+            return this._provider.ExecuteReader("CoreMessaging_GetMessageConversations", userId, portalId , afterMessageId, numberOfRecords, sortColumn, sortAscending, read, archived, sent);
         }
 
         /// <summary>Gets the sent box view.</summary>
@@ -163,7 +163,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>A <see cref="IDataReader"/> containing the sent message box data</returns>
         public IDataReader GetSentBoxView(int userId, int portalId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending)
         {
-            return _provider.ExecuteReader("CoreMessaging_GetSentBox", userId, portalId, afterMessageId, numberOfRecords, sortColumn, sortAscending);            
+            return this._provider.ExecuteReader("CoreMessaging_GetSentBox", userId, portalId, afterMessageId, numberOfRecords, sortColumn, sortAscending);            
         }
 
         /// <summary>Gets the archive box view.</summary>
@@ -176,7 +176,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>A <see cref="IDataReader"/> containing the archived messages data</returns>
         public IDataReader GetArchiveBoxView(int userId, int portalId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending)
         {
-            return _provider.ExecuteReader("CoreMessaging_GetArchiveBox", userId, portalId, afterMessageId, numberOfRecords, sortColumn, sortAscending);
+            return this._provider.ExecuteReader("CoreMessaging_GetArchiveBox", userId, portalId, afterMessageId, numberOfRecords, sortColumn, sortAscending);
         }
 
         /// <summary>Gets the message thread.</summary>
@@ -190,7 +190,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>A <see cref="IDataReader"/> containing the message thread data</returns>
         public IDataReader GetMessageThread(int conversationId, int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool @sortAscending, ref int totalRecords)
         {            
-            return _provider.ExecuteReader("CoreMessaging_GetMessageThread", conversationId, userId, afterMessageId, numberOfRecords, sortColumn, sortAscending);
+            return this._provider.ExecuteReader("CoreMessaging_GetMessageThread", conversationId, userId, afterMessageId, numberOfRecords, sortColumn, sortAscending);
         }
 
         /// <summary>Updates the message read status for a given conversation.</summary>
@@ -199,7 +199,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <param name="read">if read is set to <c>true</c> otherwise false.</param>
         public void UpdateMessageReadStatus(int conversationId, int userId, bool read)
         {
-            _provider.ExecuteNonQuery("CoreMessaging_UpdateMessageReadStatus", conversationId, userId, read);
+            this._provider.ExecuteNonQuery("CoreMessaging_UpdateMessageReadStatus", conversationId, userId, read);
         }
 
         /// <summary>Updates the message archived status.</summary>
@@ -208,7 +208,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <param name="archived">if set to <c>true</c> archived.</param>
         public void UpdateMessageArchivedStatus(int conversationId, int userId, bool archived)
         {
-            _provider.ExecuteNonQuery("CoreMessaging_UpdateMessageArchivedStatus", conversationId, userId, archived);
+            this._provider.ExecuteNonQuery("CoreMessaging_UpdateMessageArchivedStatus", conversationId, userId, archived);
         }
 
         /// <summary>Counts the new threads.</summary>
@@ -217,7 +217,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The count of new threads for a given user</returns>
         public int CountNewThreads(int userId, int portalId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CountNewThreads", userId, portalId);
+            return this._provider.ExecuteScalar<int>("CoreMessaging_CountNewThreads", userId, portalId);
         }
 
         /// <summary>Counts the total conversations.</summary>
@@ -226,7 +226,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The count of new conversations for a given user</returns>
         public int CountTotalConversations(int userId, int portalId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CountTotalConversations", userId, portalId);
+            return this._provider.ExecuteScalar<int>("CoreMessaging_CountTotalConversations", userId, portalId);
         }
 
         /// <summary>Counts the messages by conversation.</summary>
@@ -234,7 +234,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The count of new messages for a given conversation</returns>
         public int CountMessagesByConversation(int conversationId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CountMessagesByConversation", conversationId);
+            return this._provider.ExecuteScalar<int>("CoreMessaging_CountMessagesByConversation", conversationId);
         }
 
         /// <summary>Counts the archived messages by conversation.</summary>
@@ -242,7 +242,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The count of archived messages for a given conversation</returns>
         public int CountArchivedMessagesByConversation(int conversationId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedMessagesByConversation", conversationId);
+            return this._provider.ExecuteScalar<int>("CoreMessaging_CountArchivedMessagesByConversation", conversationId);
         }
 
         /// <summary>Counts the sent messages.</summary>
@@ -251,7 +251,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The count of messages sent for a given user</returns>
         public int CountSentMessages(int userId, int portalId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CountSentMessages", userId, portalId);
+            return this._provider.ExecuteScalar<int>("CoreMessaging_CountSentMessages", userId, portalId);
         }
 
         /// <summary>Counts the archived messages.</summary>
@@ -260,7 +260,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The count of archived messages for a given user</returns>
         public int CountArchivedMessages(int userId, int portalId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedMessages", userId, portalId);
+            return this._provider.ExecuteScalar<int>("CoreMessaging_CountArchivedMessages", userId, portalId);
         }
 
         /// <summary>Counts the sent conversations.</summary>
@@ -269,7 +269,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The count of sent conversations for a given user</returns>
         public int CountSentConversations(int userId, int portalId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CountSentConversations", userId, portalId);
+            return this._provider.ExecuteScalar<int>("CoreMessaging_CountSentConversations", userId, portalId);
         }
 
         /// <summary>Counts the archived conversations.</summary>
@@ -278,7 +278,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The count of archived conversations for a given user</returns>
         public int CountArchivedConversations(int userId, int portalId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_CountArchivedConversations", userId, portalId);
+            return this._provider.ExecuteScalar<int>("CoreMessaging_CountArchivedConversations", userId, portalId);
         }
 
         #endregion
@@ -291,7 +291,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The new message recipient Id.</returns>
         public int SaveMessageRecipient(MessageRecipient messageRecipient, int createUpdateUserId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_SaveMessageRecipient", messageRecipient.RecipientID, messageRecipient.MessageID, messageRecipient.UserID, messageRecipient.Read, messageRecipient.Archived, createUpdateUserId);
+            return this._provider.ExecuteScalar<int>("CoreMessaging_SaveMessageRecipient", messageRecipient.RecipientID, messageRecipient.MessageID, messageRecipient.UserID, messageRecipient.Read, messageRecipient.Archived, createUpdateUserId);
         }
 
         /// <summary>Creates the message recipients for role.</summary>
@@ -300,7 +300,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <param name="createUpdateUserId">The create update user identifier.</param>
         public void CreateMessageRecipientsForRole(int messageId, string roleIds, int createUpdateUserId)
         {
-            _provider.ExecuteNonQuery("CoreMessaging_CreateMessageRecipientsForRole", messageId, roleIds, createUpdateUserId);
+            this._provider.ExecuteNonQuery("CoreMessaging_CreateMessageRecipientsForRole", messageId, roleIds, createUpdateUserId);
         }
 
         /// <summary>Gets the message recipient.</summary>
@@ -308,7 +308,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>A <see cref="IDataReader" /> containing the message recipient data</returns>
         public IDataReader GetMessageRecipient(int messageRecipientId)
         {
-            return _provider.ExecuteReader("CoreMessaging_GetMessageRecipient", messageRecipientId);
+            return this._provider.ExecuteReader("CoreMessaging_GetMessageRecipient", messageRecipientId);
         }
 
         /// <summary>Gets the message recipients by user.</summary>
@@ -316,7 +316,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>A <see cref="IDataReader" /> containing the message recipient data</returns>
         public IDataReader GetMessageRecipientsByUser(int userId)
         {
-            return _provider.ExecuteReader("CoreMessaging_GetMessageRecipientsByUser", userId);
+            return this._provider.ExecuteReader("CoreMessaging_GetMessageRecipientsByUser", userId);
         }
 
         /// <summary>Gets the message recipients by message.</summary>
@@ -324,7 +324,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>A <see cref="IDataReader" /> containing the message recipient data</returns>
         public IDataReader GetMessageRecipientsByMessage(int messageId)
         {
-            return _provider.ExecuteReader("CoreMessaging_GetMessageRecipientsByMessage", messageId);
+            return this._provider.ExecuteReader("CoreMessaging_GetMessageRecipientsByMessage", messageId);
         }
 
         /// <summary>Gets the message recipient by message and user.</summary>
@@ -333,14 +333,14 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>A <see cref="IDataReader" /> containing the message recipient data</returns>
         public IDataReader GetMessageRecipientByMessageAndUser(int messageId, int userId)
         {
-            return _provider.ExecuteReader("CoreMessaging_GetMessageRecipientsByMessageAndUser", messageId, userId);
+            return this._provider.ExecuteReader("CoreMessaging_GetMessageRecipientsByMessageAndUser", messageId, userId);
         }
 
         /// <summary>Deletes the message recipient.</summary>
         /// <param name="messageRecipientId">The message recipient identifier.</param>
         public void DeleteMessageRecipient(int messageRecipientId)
         {
-            _provider.ExecuteNonQuery("CoreMessaging_DeleteMessageRecipient", messageRecipientId);
+            this._provider.ExecuteNonQuery("CoreMessaging_DeleteMessageRecipient", messageRecipientId);
         }
 
         /// <summary>Deletes the message recipient by message and user.</summary>
@@ -348,7 +348,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <param name="userId">The user identifier.</param>
         public void DeleteMessageRecipientByMessageAndUser(int messageId, int userId)
         {
-            _provider.ExecuteNonQuery("CoreMessaging_DeleteMessageRecipientByMessageAndUser", messageId, userId);
+            this._provider.ExecuteNonQuery("CoreMessaging_DeleteMessageRecipientByMessageAndUser", messageId, userId);
         }
 
         #endregion
@@ -361,7 +361,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The message attachment Id</returns>
         public int SaveMessageAttachment(MessageAttachment messageAttachment, int createUpdateUserId)
         {
-            return _provider.ExecuteScalar<int>("CoreMessaging_SaveMessageAttachment", messageAttachment.MessageAttachmentID, messageAttachment.MessageID, messageAttachment.FileID, createUpdateUserId);
+            return this._provider.ExecuteScalar<int>("CoreMessaging_SaveMessageAttachment", messageAttachment.MessageAttachmentID, messageAttachment.MessageID, messageAttachment.FileID, createUpdateUserId);
         }
 
         /// <summary>Gets the message attachment.</summary>
@@ -369,7 +369,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>A <see cref="IDataReader" /> containing the message attachment data</returns>
         public IDataReader GetMessageAttachment(int messageAttachmentId)
         {
-            return _provider.ExecuteReader("CoreMessaging_GetMessageAttachment", messageAttachmentId);
+            return this._provider.ExecuteReader("CoreMessaging_GetMessageAttachment", messageAttachmentId);
         }
 
         /// <summary>Gets the message attachments by message id.</summary>
@@ -378,7 +378,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         public IList<MessageFileView> GetMessageAttachmentsByMessage(int messageId)
         {
             var attachments = new List<MessageFileView>();
-            var dr = _provider.ExecuteReader("CoreMessaging_GetMessageAttachmentsByMessage", messageId);
+            var dr = this._provider.ExecuteReader("CoreMessaging_GetMessageAttachmentsByMessage", messageId);
 
             try
             {
@@ -412,7 +412,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <param name="messageAttachmentId">The message attachment identifier.</param>
         public void DeleteMessageAttachment(int messageAttachmentId)
         {
-            _provider.ExecuteNonQuery("CoreMessaging_DeleteMessageAttachment", messageAttachmentId);
+            this._provider.ExecuteNonQuery("CoreMessaging_DeleteMessageAttachment", messageAttachmentId);
         }
 
         #endregion
@@ -424,14 +424,14 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <param name="pageSize">Size of the page.</param>
         public void ConvertLegacyMessages(int pageIndex, int pageSize)
         {
-            _provider.ExecuteNonQuery("CoreMessaging_ConvertLegacyMessages", pageIndex, pageSize);
+            this._provider.ExecuteNonQuery("CoreMessaging_ConvertLegacyMessages", pageIndex, pageSize);
         }
 
         /// <summary>Counts the legacy messages.</summary>
         /// <returns>A <see cref="IDataReader" /> containing the messages data</returns>
         public IDataReader CountLegacyMessages()
         {
-            return _provider.ExecuteReader("CoreMessaging_CountLegacyMessages");
+            return this._provider.ExecuteReader("CoreMessaging_CountLegacyMessages");
         }
 
         #endregion    
@@ -444,7 +444,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>A <see cref="IDataReader" /> containing the messages data</returns>
         public IDataReader GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize)
         {
-            return _provider.ExecuteReader("CoreMessaging_GetNextMessagesForInstantDispatch", schedulerInstance,batchSize);
+            return this._provider.ExecuteReader("CoreMessaging_GetNextMessagesForInstantDispatch", schedulerInstance,batchSize);
         }
 
         /// <summary>Gets the next messages for digest dispatch.</summary>
@@ -454,7 +454,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>A <see cref="IDataReader" /> containing the messages data</returns>
         public IDataReader GetNextMessagesForDigestDispatch(int frequecy, Guid schedulerInstance, int batchSize)
         {
-            return _provider.ExecuteReader("CoreMessaging_GetNextMessagesForDigestDispatch", frequecy, schedulerInstance, batchSize);
+            return this._provider.ExecuteReader("CoreMessaging_GetNextMessagesForDigestDispatch", frequecy, schedulerInstance, batchSize);
         }
 
         /// <summary>Marks the message as dispatched.</summary>
@@ -462,7 +462,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <param name="recipientId">The recipient identifier.</param>
         public void MarkMessageAsDispatched(int messageId, int recipientId)
         {
-            _provider.ExecuteNonQuery("CoreMessaging_MarkMessageAsDispatched", messageId, recipientId);
+            this._provider.ExecuteNonQuery("CoreMessaging_MarkMessageAsDispatched", messageId, recipientId);
         }
 
         /// <summary>Marks the message as sent.</summary>
@@ -470,7 +470,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <param name="recipientId">The recipient identifier.</param>
         public void MarkMessageAsSent(int messageId, int recipientId)
         {
-            _provider.ExecuteNonQuery("CoreMessaging_MarkMessageAsSent", messageId, recipientId);
+            this._provider.ExecuteNonQuery("CoreMessaging_MarkMessageAsSent", messageId, recipientId);
         }
 
         #endregion
@@ -483,7 +483,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>A <see cref="IDataReader" /> containing the user data</returns>
         public IDataReader GetUserPreference(int portalId, int userId)
         {
-            return _provider.ExecuteReader("CoreMessaging_GetUserPreference", portalId, userId);
+            return this._provider.ExecuteReader("CoreMessaging_GetUserPreference", portalId, userId);
         }
 
         /// <summary>Sets the user preference.</summary>
@@ -493,7 +493,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <param name="notificationsEmailFrequency">The notifications email frequency.</param>
         public void SetUserPreference(int portalId, int userId, int messagesEmailFrequency, int notificationsEmailFrequency)
         {
-            _provider.ExecuteNonQuery("CoreMessaging_SetUserPreference", portalId, userId, messagesEmailFrequency, notificationsEmailFrequency);
+            this._provider.ExecuteNonQuery("CoreMessaging_SetUserPreference", portalId, userId, messagesEmailFrequency, notificationsEmailFrequency);
         }
 
         #endregion

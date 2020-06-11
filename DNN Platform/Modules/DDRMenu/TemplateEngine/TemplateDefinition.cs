@@ -279,13 +279,13 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
 		public TemplateDefinition Clone()
 		{
-			return (TemplateDefinition)MemberwiseClone();
+			return (TemplateDefinition)this.MemberwiseClone();
 		}
 
 		public void Reset()
 		{
-			ClientOptions = new List<ClientOption>(DefaultClientOptions);
-			TemplateArguments = new List<TemplateArgument>(DefaultTemplateArguments);
+			this.ClientOptions = new List<ClientOption>(this.DefaultClientOptions);
+			this.TemplateArguments = new List<TemplateArgument>(this.DefaultTemplateArguments);
 		}
 
 		public void AddClientOptions(List<ClientOption> options, bool replace)
@@ -297,11 +297,11 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 					var option1 = option;
 					if (replace)
 					{
-						ClientOptions.RemoveAll(o => o.Name == option1.Name);
+						this.ClientOptions.RemoveAll(o => o.Name == option1.Name);
 					}
-					if (!ClientOptions.Exists(o => o.Name == option1.Name))
+					if (!this.ClientOptions.Exists(o => o.Name == option1.Name))
 					{
-						ClientOptions.Add(option);
+						this.ClientOptions.Add(option);
 					}
 				}
 			}
@@ -316,11 +316,11 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 					var arg1 = arg;
 					if (replace)
 					{
-						TemplateArguments.RemoveAll(a => a.Name == arg1.Name);
+						this.TemplateArguments.RemoveAll(a => a.Name == arg1.Name);
 					}
-					if (!TemplateArguments.Exists(a => a.Name == arg1.Name))
+					if (!this.TemplateArguments.Exists(a => a.Name == arg1.Name))
 					{
-						TemplateArguments.Add(arg);
+						this.TemplateArguments.Add(arg);
 					}
 				}
 			}
@@ -330,17 +330,17 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 		{
 			var page = DNNContext.Current.Page;
 
-			foreach (var stylesheet in StyleSheets)
+			foreach (var stylesheet in this.StyleSheets)
 			{
 				ClientResourceManager.RegisterStyleSheet(page, stylesheet);
 			}
 
-			foreach (var scriptUrl in ScriptUrls)
+			foreach (var scriptUrl in this.ScriptUrls)
 			{
 				ClientResourceManager.RegisterScript(page, scriptUrl);
 			}
 
-			foreach (var libraryInfo in ScriptLibraries)
+			foreach (var libraryInfo in this.ScriptLibraries)
 			{
 				var libraryName = libraryInfo.Key;
 				var parameters = libraryInfo.Value;
@@ -360,23 +360,23 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 				}
 			}
 
-			foreach (var scriptKey in ScriptKeys)
+			foreach (var scriptKey in this.ScriptKeys)
 			{
 				var clientScript = page.ClientScript;
 				if (!clientScript.IsClientScriptBlockRegistered(typeof(TemplateDefinition), scriptKey))
 				{
-					clientScript.RegisterClientScriptBlock(typeof(TemplateDefinition), scriptKey, Scripts[scriptKey], false);
+					clientScript.RegisterClientScriptBlock(typeof(TemplateDefinition), scriptKey, this.Scripts[scriptKey], false);
 				}
 			}
 
-			var headContent = String.IsNullOrEmpty(TemplateHeadPath) ? "" : Utilities.CachedFileContent(TemplateHeadPath);
+			var headContent = String.IsNullOrEmpty(this.TemplateHeadPath) ? "" : Utilities.CachedFileContent(this.TemplateHeadPath);
 			var expandedHead = RegexLinks.Replace(headContent, "$1" + DNNContext.Current.ActiveTab.SkinPath + "$3");
 			page.Header.Controls.Add(new LiteralControl(expandedHead));
 		}
 
 		internal void Render(object source, HtmlTextWriter htmlWriter)
 		{
-			Processor.Render(source, htmlWriter, this);
+			this.Processor.Render(source, htmlWriter, this);
 		}
 	}
 }

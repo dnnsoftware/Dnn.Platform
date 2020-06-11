@@ -27,7 +27,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
         public CheckResult Execute()
         {
-            var result = new CheckResult(SeverityEnum.Unverified, Id);
+            var result = new CheckResult(SeverityEnum.Unverified, this.Id);
             IList<string> checkList = new List<string>()
             {
                 "SysAdmin",
@@ -43,7 +43,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                 if (!VerifyScript(name))
                 {
                     result.Severity = SeverityEnum.Warning;
-                    result.Notes.Add(Localization.GetString(name + ".Error", LocalResourceFile));
+                    result.Notes.Add(Localization.GetString(name + ".Error", this.LocalResourceFile));
                 }
             }
             return result;

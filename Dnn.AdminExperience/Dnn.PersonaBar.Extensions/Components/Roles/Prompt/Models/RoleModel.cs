@@ -19,15 +19,15 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
         }
         public RoleModel(RoleInfo role) : base(role)
         {
-            ModifiedDate = role.LastModifiedOnDate.ToPromptLongDateString();
-            CreatedDate = role.CreatedOnDate.ToPromptLongDateString();
-            CreatedBy = role.CreatedByUserID;
-            Description = role.Description;
+            this.ModifiedDate = role.LastModifiedOnDate.ToPromptLongDateString();
+            this.CreatedDate = role.CreatedOnDate.ToPromptLongDateString();
+            this.CreatedBy = role.CreatedByUserID;
+            this.Description = role.Description;
         }
         #endregion
 
         #region Command Links
-        public string __CreatedBy => $"get-user {CreatedBy}";
+        public string __CreatedBy => $"get-user {this.CreatedBy}";
 
         #endregion
     }

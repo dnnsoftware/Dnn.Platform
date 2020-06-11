@@ -83,23 +83,23 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				if (ViewState["SelectionMode"] == null)
+				if (this.ViewState["SelectionMode"] == null)
 				{
 					return LanguageSelectionMode.Single;
 				}
 				else
 				{
-					return (LanguageSelectionMode) ViewState["SelectionMode"];
+					return (LanguageSelectionMode) this.ViewState["SelectionMode"];
 				}
 			}
 			set
 			{
-				if (SelectionMode != value)
+				if (this.SelectionMode != value)
 				{
-					ViewState["SelectionMode"] = value;
-					if (Controls.Count > 0)
+					this.ViewState["SelectionMode"] = value;
+					if (this.Controls.Count > 0)
 					{
-						CreateChildControls(); //Recreate if already created
+						this.CreateChildControls(); //Recreate if already created
 					}
 				}
 			}
@@ -112,23 +112,23 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				if (ViewState["SelectionObject"] == null)
+				if (this.ViewState["SelectionObject"] == null)
 				{
 					return LanguageSelectionObject.SpecificCulture;
 				}
 				else
 				{
-					return (LanguageSelectionObject) ViewState["SelectionObject"];
+					return (LanguageSelectionObject) this.ViewState["SelectionObject"];
 				}
 			}
 			set
 			{
-				if ((int) SelectionMode != (int) value)
+				if ((int) this.SelectionMode != (int) value)
 				{
-					ViewState["SelectionObject"] = value;
-					if (Controls.Count > 0)
+					this.ViewState["SelectionObject"] = value;
+					if (this.Controls.Count > 0)
 					{
-						CreateChildControls(); //Recreate if already created 
+						this.CreateChildControls(); //Recreate if already created 
 					}
 				}
 			}
@@ -141,23 +141,23 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				if (ViewState["ItemStyle"] == null)
+				if (this.ViewState["ItemStyle"] == null)
 				{
 					return LanguageItemStyle.FlagAndCaption;
 				}
 				else
 				{
-					return (LanguageItemStyle) ViewState["ItemStyle"];
+					return (LanguageItemStyle) this.ViewState["ItemStyle"];
 				}
 			}
 			set
 			{
-				if (ItemStyle != value)
+				if (this.ItemStyle != value)
 				{
-					ViewState["ItemStyle"] = value;
-					if (Controls.Count > 0)
+					this.ViewState["ItemStyle"] = value;
+					if (this.Controls.Count > 0)
 					{
-						CreateChildControls(); //Recreate if already created 
+						this.CreateChildControls(); //Recreate if already created 
 					}
 				}
 			}
@@ -170,23 +170,23 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				if (ViewState["ListDirection"] == null)
+				if (this.ViewState["ListDirection"] == null)
 				{
 					return LanguageListDirection.Vertical;
 				}
 				else
 				{
-					return (LanguageListDirection) ViewState["ListDirection"];
+					return (LanguageListDirection) this.ViewState["ListDirection"];
 				}
 			}
 			set
 			{
-				if (ListDirection != value)
+				if (this.ListDirection != value)
 				{
-					ViewState["ListDirection"] = value;
-					if (Controls.Count > 0)
+					this.ViewState["ListDirection"] = value;
+					if (this.Controls.Count > 0)
 					{
-						CreateChildControls(); //Recreate if already created 
+						this.CreateChildControls(); //Recreate if already created 
 					}
 				}
 			}
@@ -199,9 +199,9 @@ namespace DotNetNuke.UI.WebControls
 		{
 			get
 			{
-				EnsureChildControls();
+				this.EnsureChildControls();
 				var a = new ArrayList();
-				if (GetCultures(SelectionObject == LanguageSelectionObject.SpecificCulture).Length < 2)
+				if (this.GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture).Length < 2)
 				{
 					//return single language
 					PortalSettings _Settings = PortalController.Instance.GetCurrentPortalSettings();
@@ -213,18 +213,18 @@ namespace DotNetNuke.UI.WebControls
 				else
 				{
 					//create list of selected languages
-					foreach (CultureInfo c in GetCultures(SelectionObject == LanguageSelectionObject.SpecificCulture))
+					foreach (CultureInfo c in this.GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture))
 					{
-						if (SelectionMode == LanguageSelectionMode.Single)
+						if (this.SelectionMode == LanguageSelectionMode.Single)
 						{
-							if (((RadioButton) pnlControl.FindControl("opt" + c.Name)).Checked)
+							if (((RadioButton) this.pnlControl.FindControl("opt" + c.Name)).Checked)
 							{
 								a.Add(c.Name);
 							}
 						}
 						else
 						{
-							if (((CheckBox) pnlControl.FindControl("chk" + c.Name)).Checked)
+							if (((CheckBox) this.pnlControl.FindControl("chk" + c.Name)).Checked)
 							{
 								a.Add(c.Name);
 							}
@@ -235,27 +235,27 @@ namespace DotNetNuke.UI.WebControls
 			}
 			set
 			{
-				EnsureChildControls();
-				if (SelectionMode == LanguageSelectionMode.Single && value.Length > 1)
+				this.EnsureChildControls();
+				if (this.SelectionMode == LanguageSelectionMode.Single && value.Length > 1)
 				{
 					throw new ArgumentException("Selection mode 'single' cannot have more than one selected item.");
 				}
-				foreach (CultureInfo c in GetCultures(SelectionObject == LanguageSelectionObject.SpecificCulture))
+				foreach (CultureInfo c in this.GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture))
 				{
-					if (SelectionMode == LanguageSelectionMode.Single)
+					if (this.SelectionMode == LanguageSelectionMode.Single)
 					{
-						((RadioButton) pnlControl.FindControl("opt" + c.Name)).Checked = false;
+						((RadioButton) this.pnlControl.FindControl("opt" + c.Name)).Checked = false;
 					}
 					else
 					{
-						((CheckBox) pnlControl.FindControl("chk" + c.Name)).Checked = false;
+						((CheckBox) this.pnlControl.FindControl("chk" + c.Name)).Checked = false;
 					}
 				}
 				foreach (string strLocale in value)
 				{
-					if (SelectionMode == LanguageSelectionMode.Single)
+					if (this.SelectionMode == LanguageSelectionMode.Single)
 					{
-						Control ctl = pnlControl.FindControl("opt" + strLocale);
+						Control ctl = this.pnlControl.FindControl("opt" + strLocale);
 						if (ctl != null)
 						{
 							((RadioButton) ctl).Checked = true;
@@ -263,7 +263,7 @@ namespace DotNetNuke.UI.WebControls
 					}
 					else
 					{
-						Control ctl = pnlControl.FindControl("chk" + strLocale);
+						Control ctl = this.pnlControl.FindControl("chk" + strLocale);
 						if (ctl != null)
 						{
 							((CheckBox) ctl).Checked = true;
@@ -282,59 +282,59 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		protected override void CreateChildControls()
 		{
-			Controls.Clear();
-			pnlControl = new Panel();
-			pnlControl.CssClass = "dnnLangSelector";
+			this.Controls.Clear();
+			this.pnlControl = new Panel();
+			this.pnlControl.CssClass = "dnnLangSelector";
 
-			Controls.Add(pnlControl);
-			pnlControl.Controls.Add(new LiteralControl("<ul>"));
+			this.Controls.Add(this.pnlControl);
+			this.pnlControl.Controls.Add(new LiteralControl("<ul>"));
 
-			foreach (var c in GetCultures(SelectionObject == LanguageSelectionObject.SpecificCulture))
+			foreach (var c in this.GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture))
 			{
-				pnlControl.Controls.Add(new LiteralControl("<li>"));
+				this.pnlControl.Controls.Add(new LiteralControl("<li>"));
 
 				var lblLocale = new HtmlGenericControl("label");
-				if (SelectionMode == LanguageSelectionMode.Single)
+				if (this.SelectionMode == LanguageSelectionMode.Single)
 				{
 					var optLocale = new RadioButton();
 					optLocale.ID = "opt" + c.Name;
-					optLocale.GroupName = pnlControl.ID + "_Locale";
+					optLocale.GroupName = this.pnlControl.ID + "_Locale";
 					if (c.Name == Localization.SystemLocale)
 					{
 						optLocale.Checked = true;
 					}
-					pnlControl.Controls.Add(optLocale);
+					this.pnlControl.Controls.Add(optLocale);
 					lblLocale.Attributes["for"] = optLocale.ClientID;
 				}
 				else
 				{
 					var chkLocale = new CheckBox();
 					chkLocale.ID = "chk" + c.Name;
-					pnlControl.Controls.Add(chkLocale);
+					this.pnlControl.Controls.Add(chkLocale);
 					lblLocale.Attributes["for"] = chkLocale.ClientID;
 				}
 
-				pnlControl.Controls.Add(lblLocale);
-				if (ItemStyle != LanguageItemStyle.CaptionOnly)
+				this.pnlControl.Controls.Add(lblLocale);
+				if (this.ItemStyle != LanguageItemStyle.CaptionOnly)
 				{
 					var imgLocale = new Image();
-					imgLocale.ImageUrl = ResolveUrl("~/images/Flags/" + c.Name + ".gif");
+					imgLocale.ImageUrl = this.ResolveUrl("~/images/Flags/" + c.Name + ".gif");
 					imgLocale.AlternateText = c.DisplayName;
 					imgLocale.Style["vertical-align"] = "middle";
 					lblLocale.Controls.Add(imgLocale);
 				}
-				if (ItemStyle != LanguageItemStyle.FlagOnly)
+				if (this.ItemStyle != LanguageItemStyle.FlagOnly)
 				{
 					lblLocale.Controls.Add(new LiteralControl("&nbsp;" + c.DisplayName));
 				}
-				pnlControl.Controls.Add(new LiteralControl("</li>"));
+				this.pnlControl.Controls.Add(new LiteralControl("</li>"));
 			}
-			pnlControl.Controls.Add(new LiteralControl("</ul>"));
+			this.pnlControl.Controls.Add(new LiteralControl("</ul>"));
 
 			//Hide if not more than one language
-			if (GetCultures(SelectionObject == LanguageSelectionObject.SpecificCulture).Length < 2)
+			if (this.GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture).Length < 2)
 			{
-				Visible = false;
+				this.Visible = false;
 			}
 		}
 		

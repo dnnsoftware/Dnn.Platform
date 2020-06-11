@@ -58,8 +58,8 @@ namespace Dnn.PersonaBar.Security.Services
             IPortalAliasController portalAliasController
             )
         {
-            _controller = controller;
-            _portalAliasController = portalAliasController;
+            this._controller = controller;
+            this._portalAliasController = portalAliasController;
         }
 
         #region Login Settings
@@ -77,35 +77,35 @@ namespace Dnn.PersonaBar.Security.Services
             try
             {
                 cultureCode = string.IsNullOrEmpty(cultureCode)
-                    ? LocaleController.Instance.GetCurrentLocale(PortalId).Code
+                    ? LocaleController.Instance.GetCurrentLocale(this.PortalId).Code
                     : cultureCode;
 
-                var portal = PortalController.Instance.GetPortal(PortalId, cultureCode);
+                var portal = PortalController.Instance.GetPortal(this.PortalId, cultureCode);
                 var portalSettings = new PortalSettings(portal);
 
                 dynamic settings = new ExpandoObject();
-                settings.DefaultAuthProvider = PortalController.GetPortalSetting("DefaultAuthProvider", PortalId, "DNN");
+                settings.DefaultAuthProvider = PortalController.GetPortalSetting("DefaultAuthProvider", this.PortalId, "DNN");
                 settings.PrimaryAdministratorId = PortalSettings.Current.AdministratorId;
-                settings.RedirectAfterLoginTabId = ValidateTabId(portalSettings.Registration.RedirectAfterLogin);
-                settings.RedirectAfterLoginTabName = GetTabName(portalSettings.Registration.RedirectAfterLogin);
-                settings.RedirectAfterLoginTabPath = GetTabPath(portalSettings.Registration.RedirectAfterLogin);
-                settings.RedirectAfterLogoutTabId = ValidateTabId(portalSettings.Registration.RedirectAfterLogout);
-                settings.RedirectAfterLogoutTabName = GetTabName(portalSettings.Registration.RedirectAfterLogout);
-                settings.RedirectAfterLogoutTabPath = GetTabPath(portalSettings.Registration.RedirectAfterLogout);
-                settings.RequireValidProfileAtLogin = PortalController.GetPortalSettingAsBoolean("Security_RequireValidProfileAtLogin", PortalId, true);
-                settings.CaptchaLogin = PortalController.GetPortalSettingAsBoolean("Security_CaptchaLogin", PortalId, false);
-                settings.CaptchaRetrivePassword = PortalController.GetPortalSettingAsBoolean("Security_CaptchaRetrivePassword", PortalId, false);
-                settings.CaptchaChangePassword = PortalController.GetPortalSettingAsBoolean("Security_CaptchaChangePassword", PortalId, false);
-                settings.HideLoginControl = PortalSettings.HideLoginControl;
+                settings.RedirectAfterLoginTabId = this.ValidateTabId(portalSettings.Registration.RedirectAfterLogin);
+                settings.RedirectAfterLoginTabName = this.GetTabName(portalSettings.Registration.RedirectAfterLogin);
+                settings.RedirectAfterLoginTabPath = this.GetTabPath(portalSettings.Registration.RedirectAfterLogin);
+                settings.RedirectAfterLogoutTabId = this.ValidateTabId(portalSettings.Registration.RedirectAfterLogout);
+                settings.RedirectAfterLogoutTabName = this.GetTabName(portalSettings.Registration.RedirectAfterLogout);
+                settings.RedirectAfterLogoutTabPath = this.GetTabPath(portalSettings.Registration.RedirectAfterLogout);
+                settings.RequireValidProfileAtLogin = PortalController.GetPortalSettingAsBoolean("Security_RequireValidProfileAtLogin", this.PortalId, true);
+                settings.CaptchaLogin = PortalController.GetPortalSettingAsBoolean("Security_CaptchaLogin", this.PortalId, false);
+                settings.CaptchaRetrivePassword = PortalController.GetPortalSettingAsBoolean("Security_CaptchaRetrivePassword", this.PortalId, false);
+                settings.CaptchaChangePassword = PortalController.GetPortalSettingAsBoolean("Security_CaptchaChangePassword", this.PortalId, false);
+                settings.HideLoginControl = this.PortalSettings.HideLoginControl;
                 settings.cultureCode = cultureCode;
 
-                var authProviders = _controller.GetAuthenticationProviders().Select(v => new
+                var authProviders = this._controller.GetAuthenticationProviders().Select(v => new
                 {
                     Name = v,
                     Value = v
                 }).ToList();
 
-                var adminUsers = _controller.GetAdminUsers(PortalId).Select(v => new
+                var adminUsers = this._controller.GetAdminUsers(this.PortalId).Select(v => new
                 {
                     v.UserID,
                     v.FullName
@@ -122,12 +122,12 @@ namespace Dnn.PersonaBar.Security.Services
                     }
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -142,36 +142,36 @@ namespace Dnn.PersonaBar.Security.Services
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView + "&" + Components.Constants.BasicLoginSettingsEdit)]
         public HttpResponseMessage UpdateBasicLoginSettings(UpdateBasicLoginSettingsRequest request)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
             }
 
             try
             {
                 var cultureCode = string.IsNullOrEmpty(request.CultureCode)
-                    ? LocaleController.Instance.GetCurrentLocale(PortalId).Code
+                    ? LocaleController.Instance.GetCurrentLocale(this.PortalId).Code
                     : request.CultureCode;
 
-                var portalInfo = PortalController.Instance.GetPortal(PortalId);
+                var portalInfo = PortalController.Instance.GetPortal(this.PortalId);
                 portalInfo.AdministratorId = Convert.ToInt32(request.PrimaryAdministratorId);
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
 
-                PortalController.UpdatePortalSetting(PortalId, "DefaultAuthProvider", request.DefaultAuthProvider);
-                PortalController.UpdatePortalSetting(PortalId, "Redirect_AfterLogin", request.RedirectAfterLoginTabId.ToString(), cultureCode);
-                PortalController.UpdatePortalSetting(PortalId, "Redirect_AfterLogout", request.RedirectAfterLogoutTabId.ToString(), cultureCode);
-                PortalController.UpdatePortalSetting(PortalId, "Security_RequireValidProfile", request.RequireValidProfileAtLogin.ToString(), false);
-                PortalController.UpdatePortalSetting(PortalId, "Security_CaptchaLogin", request.CaptchaLogin.ToString(), false);
-                PortalController.UpdatePortalSetting(PortalId, "Security_CaptchaRetrivePassword", request.CaptchaRetrivePassword.ToString(), false);
-                PortalController.UpdatePortalSetting(PortalId, "Security_CaptchaChangePassword", request.CaptchaChangePassword.ToString(), false);
-                PortalController.UpdatePortalSetting(PortalId, "HideLoginControl", request.HideLoginControl.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "DefaultAuthProvider", request.DefaultAuthProvider);
+                PortalController.UpdatePortalSetting(this.PortalId, "Redirect_AfterLogin", request.RedirectAfterLoginTabId.ToString(), cultureCode);
+                PortalController.UpdatePortalSetting(this.PortalId, "Redirect_AfterLogout", request.RedirectAfterLogoutTabId.ToString(), cultureCode);
+                PortalController.UpdatePortalSetting(this.PortalId, "Security_RequireValidProfile", request.RequireValidProfileAtLogin.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Security_CaptchaLogin", request.CaptchaLogin.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Security_CaptchaRetrivePassword", request.CaptchaRetrivePassword.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Security_CaptchaChangePassword", request.CaptchaChangePassword.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "HideLoginControl", request.HideLoginControl.ToString(), false);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -207,12 +207,12 @@ namespace Dnn.PersonaBar.Security.Services
                     }
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -241,12 +241,12 @@ namespace Dnn.PersonaBar.Security.Services
                     }
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -270,12 +270,12 @@ namespace Dnn.PersonaBar.Security.Services
 
                 if ((ipf.IPAddress == "127.0.0.1" || ipf.IPAddress == "localhost" || ipf.IPAddress == "::1" || ipf.IPAddress == "*") && ipf.RuleType == 2)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("CannotDeleteLocalhost.Text", Components.Constants.LocalResourcesFile)));
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("CannotDeleteLocalhost.Text", Components.Constants.LocalResourcesFile)));
                 }
 
                 if (IPFilterController.Instance.IsAllowableDeny(HttpContext.Current.Request.UserHostAddress, ipf) == false)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("CannotDeleteIPInUse.Text", Components.Constants.LocalResourcesFile)));
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("CannotDeleteIPInUse.Text", Components.Constants.LocalResourcesFile)));
                 }
 
                 if (request.IPFilterID > 0)
@@ -287,17 +287,17 @@ namespace Dnn.PersonaBar.Security.Services
                 {
                     IPFilterController.Instance.AddIPFilter(ipf);
                 }
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (ArgumentException exc)
             {
                 Logger.Info(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -319,20 +319,20 @@ namespace Dnn.PersonaBar.Security.Services
 
                 if (IPFilterController.Instance.CanIPStillAccess(HttpContext.Current.Request.UserHostAddress, currentWithDeleteRemoved) == false)
                 {
-                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("CannotDelete.Text", Components.Constants.LocalResourcesFile)));
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("CannotDelete.Text", Components.Constants.LocalResourcesFile)));
                 }
                 else
                 {
                     var ipf = new IPFilterInfo();
                     ipf.IPFilterID = filterId;
                     IPFilterController.Instance.DeleteIPFilter(ipf);
-                    return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                 }
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -373,12 +373,12 @@ namespace Dnn.PersonaBar.Security.Services
                     }
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -407,12 +407,12 @@ namespace Dnn.PersonaBar.Security.Services
                 HostController.Instance.Update("PasswordExpiryReminder", request.PasswordExpiryReminder.ToString());
                 HostController.Instance.Update("ForceLogoutAfterPasswordChanged", request.ForceLogoutAfterPasswordChanged ? "Y" : "N", false);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -430,8 +430,8 @@ namespace Dnn.PersonaBar.Security.Services
                 List<KeyValuePair<string, int>> userRegistrationOptions = RegistrationSettingsHelper.GetUserRegistrationOptions();
                 List<KeyValuePair<string, int>> registrationFormTypeOptions = RegistrationSettingsHelper.GetRegistrationFormOptions();
 
-                var activeLanguage = LocaleController.Instance.GetDefaultLocale(PortalId).Code;
-                var portal = PortalController.Instance.GetPortal(PortalId, activeLanguage);
+                var activeLanguage = LocaleController.Instance.GetDefaultLocale(this.PortalId).Code;
+                var portal = PortalController.Instance.GetPortal(this.PortalId, activeLanguage);
 
                 var response = new
                 {
@@ -441,24 +441,24 @@ namespace Dnn.PersonaBar.Security.Services
                         Settings = new
                         {
                             portal.UserRegistration,
-                            EnableRegisterNotification = PortalController.GetPortalSettingAsBoolean("EnableRegisterNotification", PortalId, true),
-                            UseAuthenticationProviders = PortalController.GetPortalSettingAsBoolean("Registration_UseAuthProviders", PortalId, false),
-                            ExcludedTerms = PortalController.GetPortalSetting("Registration_ExcludeTerms", PortalId, string.Empty),
-                            UseProfanityFilter = PortalController.GetPortalSettingAsBoolean("Registration_UseProfanityFilter", PortalId, false),
-                            PortalSettings.Registration.RegistrationFormType,
-                            PortalSettings.Registration.RegistrationFields,
-                            UseEmailAsUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", PortalId, false),
-                            RequireUniqueDisplayName = PortalController.GetPortalSettingAsBoolean("Registration_RequireUniqueDisplayName", PortalId, false),
-                            DisplayNameFormat = PortalController.GetPortalSetting("Security_DisplayNameFormat", PortalId, string.Empty),
-                            UserNameValidation = PortalController.GetPortalSetting("Security_UserNameValidation", PortalId, Globals.glbUserNameRegEx),
-                            EmailAddressValidation = PortalController.GetPortalSetting("Security_EmailValidation", PortalId, Globals.glbEmailRegEx),
-                            UseRandomPassword = PortalController.GetPortalSettingAsBoolean("Registration_RandomPassword", PortalId, false),
-                            RequirePasswordConfirmation = PortalController.GetPortalSettingAsBoolean("Registration_RequireConfirmPassword", PortalId, true),
-                            RequireValidProfile = PortalController.GetPortalSettingAsBoolean("Security_RequireValidProfile", PortalId, false),
-                            UseCaptchaRegister = PortalController.GetPortalSettingAsBoolean("Security_CaptchaRegister", PortalId, false),
-                            RedirectAfterRegistrationTabId = ValidateTabId(PortalSettings.Registration.RedirectAfterRegistration),
-                            RedirectAfterRegistrationTabName = GetTabName(PortalSettings.Registration.RedirectAfterRegistration),
-                            RedirectAfterRegistrationTabPath = GetTabPath(PortalSettings.Registration.RedirectAfterRegistration),
+                            EnableRegisterNotification = PortalController.GetPortalSettingAsBoolean("EnableRegisterNotification", this.PortalId, true),
+                            UseAuthenticationProviders = PortalController.GetPortalSettingAsBoolean("Registration_UseAuthProviders", this.PortalId, false),
+                            ExcludedTerms = PortalController.GetPortalSetting("Registration_ExcludeTerms", this.PortalId, string.Empty),
+                            UseProfanityFilter = PortalController.GetPortalSettingAsBoolean("Registration_UseProfanityFilter", this.PortalId, false),
+                            this.PortalSettings.Registration.RegistrationFormType,
+                            this.PortalSettings.Registration.RegistrationFields,
+                            UseEmailAsUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false),
+                            RequireUniqueDisplayName = PortalController.GetPortalSettingAsBoolean("Registration_RequireUniqueDisplayName", this.PortalId, false),
+                            DisplayNameFormat = PortalController.GetPortalSetting("Security_DisplayNameFormat", this.PortalId, string.Empty),
+                            UserNameValidation = PortalController.GetPortalSetting("Security_UserNameValidation", this.PortalId, Globals.glbUserNameRegEx),
+                            EmailAddressValidation = PortalController.GetPortalSetting("Security_EmailValidation", this.PortalId, Globals.glbEmailRegEx),
+                            UseRandomPassword = PortalController.GetPortalSettingAsBoolean("Registration_RandomPassword", this.PortalId, false),
+                            RequirePasswordConfirmation = PortalController.GetPortalSettingAsBoolean("Registration_RequireConfirmPassword", this.PortalId, true),
+                            RequireValidProfile = PortalController.GetPortalSettingAsBoolean("Security_RequireValidProfile", this.PortalId, false),
+                            UseCaptchaRegister = PortalController.GetPortalSettingAsBoolean("Security_CaptchaRegister", this.PortalId, false),
+                            RedirectAfterRegistrationTabId = this.ValidateTabId(this.PortalSettings.Registration.RedirectAfterRegistration),
+                            RedirectAfterRegistrationTabName = this.GetTabName(this.PortalSettings.Registration.RedirectAfterRegistration),
+                            RedirectAfterRegistrationTabPath = this.GetTabPath(this.PortalSettings.Registration.RedirectAfterRegistration),
                             RequiresUniqueEmail = MembershipProviderConfig.RequiresUniqueEmail.ToString(CultureInfo.InvariantCulture),
                             PasswordFormat = MembershipProviderConfig.PasswordFormat.ToString(),
                             PasswordRetrievalEnabled = MembershipProviderConfig.PasswordRetrievalEnabled.ToString(CultureInfo.InvariantCulture),
@@ -475,18 +475,18 @@ namespace Dnn.PersonaBar.Security.Services
                     }
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
         private int ValidateTabId(int tabId)
         {
-            var tab = TabController.Instance.GetTab(tabId, PortalId);
+            var tab = TabController.Instance.GetTab(tabId, this.PortalId);
             return tab?.TabID ?? Null.NullInteger;
         }
 
@@ -498,7 +498,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             else
             {
-                var tab = TabController.Instance.GetTab(tabId, PortalId);
+                var tab = TabController.Instance.GetTab(tabId, this.PortalId);
                 return tab != null ? tab.TabName : "";
             }
         }
@@ -511,7 +511,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             else
             {
-                var tab = TabController.Instance.GetTab(tabId, PortalId);
+                var tab = TabController.Instance.GetTab(tabId, this.PortalId);
                 return tab != null ? tab.TabPath : "";
             }
         }
@@ -527,42 +527,42 @@ namespace Dnn.PersonaBar.Security.Services
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RegistrationSettingsView + "&" + Components.Constants.RegistrationSettingsEdit)]
         public HttpResponseMessage UpdateRegistrationSettings(UpdateRegistrationSettingsRequest request)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, this.ModelState);
             }
 
             try
             {
                 var setting = request.RegistrationFields;
-                PortalController.UpdatePortalSetting(PortalId, "Registration_RegistrationFields", setting);
-                PortalController.UpdatePortalSetting(PortalId, "Registration_RegistrationFormType", request.RegistrationFormType.ToString(), false);
-                PortalController.UpdatePortalSetting(PortalId, "Registration_UseEmailAsUserName", request.UseEmailAsUsername.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Registration_RegistrationFields", setting);
+                PortalController.UpdatePortalSetting(this.PortalId, "Registration_RegistrationFormType", request.RegistrationFormType.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Registration_UseEmailAsUserName", request.UseEmailAsUsername.ToString(), false);
 
-                var portalInfo = PortalController.Instance.GetPortal(PortalId);
+                var portalInfo = PortalController.Instance.GetPortal(this.PortalId);
                 portalInfo.UserRegistration = Convert.ToInt32(request.UserRegistration);
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
 
-                PortalController.UpdatePortalSetting(PortalId, "EnableRegisterNotification", request.EnableRegisterNotification.ToString(), false);
-                PortalController.UpdatePortalSetting(PortalId, "Registration_UseAuthProviders", request.UseAuthenticationProviders.ToString(), false);
-                PortalController.UpdatePortalSetting(PortalId, "Registration_ExcludeTerms", request.ExcludedTerms, false);
-                PortalController.UpdatePortalSetting(PortalId, "Registration_UseProfanityFilter", request.UseProfanityFilter.ToString(), false);
-                PortalController.UpdatePortalSetting(PortalId, "Registration_RequireUniqueDisplayName", request.RequireUniqueDisplayName.ToString(), false);
-                PortalController.UpdatePortalSetting(PortalId, "Security_DisplayNameFormat", request.DisplayNameFormat, false);
-                PortalController.UpdatePortalSetting(PortalId, "Security_UserNameValidation", request.UserNameValidation, false);
-                PortalController.UpdatePortalSetting(PortalId, "Security_EmailValidation", request.EmailAddressValidation, false);
-                PortalController.UpdatePortalSetting(PortalId, "Registration_RandomPassword", request.UseRandomPassword.ToString(), false);
-                PortalController.UpdatePortalSetting(PortalId, "Registration_RequireConfirmPassword", request.RequirePasswordConfirmation.ToString(), true);
-                PortalController.UpdatePortalSetting(PortalId, "Security_RequireValidProfile", request.RequireValidProfile.ToString(), false);
-                PortalController.UpdatePortalSetting(PortalId, "Security_CaptchaRegister", request.UseCaptchaRegister.ToString(), false);
-                PortalController.UpdatePortalSetting(PortalId, "Redirect_AfterRegistration", request.RedirectAfterRegistrationTabId.ToString(), LocaleController.Instance.GetCurrentLocale(PortalId).Code);
+                PortalController.UpdatePortalSetting(this.PortalId, "EnableRegisterNotification", request.EnableRegisterNotification.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Registration_UseAuthProviders", request.UseAuthenticationProviders.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Registration_ExcludeTerms", request.ExcludedTerms, false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Registration_UseProfanityFilter", request.UseProfanityFilter.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Registration_RequireUniqueDisplayName", request.RequireUniqueDisplayName.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Security_DisplayNameFormat", request.DisplayNameFormat, false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Security_UserNameValidation", request.UserNameValidation, false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Security_EmailValidation", request.EmailAddressValidation, false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Registration_RandomPassword", request.UseRandomPassword.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Registration_RequireConfirmPassword", request.RequirePasswordConfirmation.ToString(), true);
+                PortalController.UpdatePortalSetting(this.PortalId, "Security_RequireValidProfile", request.RequireValidProfile.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Security_CaptchaRegister", request.UseCaptchaRegister.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "Redirect_AfterRegistration", request.RedirectAfterRegistrationTabId.ToString(), LocaleController.Instance.GetCurrentLocale(this.PortalId).Code);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -582,12 +582,12 @@ namespace Dnn.PersonaBar.Security.Services
             try
             {
                 dynamic settings = new ExpandoObject();
-                settings.SSLEnabled = PortalController.GetPortalSettingAsBoolean("SSLEnabled", PortalId, false);
-                settings.SSLEnforced = PortalController.GetPortalSettingAsBoolean("SSLEnforced", PortalId, false);
-                settings.SSLURL = PortalController.GetPortalSetting("SSLURL", PortalId, Null.NullString);
-                settings.STDURL = PortalController.GetPortalSetting("STDURL", PortalId, Null.NullString);
+                settings.SSLEnabled = PortalController.GetPortalSettingAsBoolean("SSLEnabled", this.PortalId, false);
+                settings.SSLEnforced = PortalController.GetPortalSettingAsBoolean("SSLEnforced", this.PortalId, false);
+                settings.SSLURL = PortalController.GetPortalSetting("SSLURL", this.PortalId, Null.NullString);
+                settings.STDURL = PortalController.GetPortalSetting("STDURL", this.PortalId, Null.NullString);
 
-                if (UserInfo.IsSuperUser)
+                if (this.UserInfo.IsSuperUser)
                 {
                     settings.SSLOffloadHeader = HostController.Instance.GetString("SSLOffloadHeader", "");
                 }
@@ -601,12 +601,12 @@ namespace Dnn.PersonaBar.Security.Services
                     }
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -623,24 +623,24 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                PortalController.UpdatePortalSetting(PortalId, "SSLEnabled", request.SSLEnabled.ToString(), false);
-                PortalController.UpdatePortalSetting(PortalId, "SSLEnforced", request.SSLEnforced.ToString(), false);
-                PortalController.UpdatePortalSetting(PortalId, "SSLURL", AddPortalAlias(request.SSLURL, PortalId), false);
-                PortalController.UpdatePortalSetting(PortalId, "STDURL", AddPortalAlias(request.STDURL, PortalId), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "SSLEnabled", request.SSLEnabled.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "SSLEnforced", request.SSLEnforced.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "SSLURL", this.AddPortalAlias(request.SSLURL, this.PortalId), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "STDURL", this.AddPortalAlias(request.STDURL, this.PortalId), false);
 
-                if (UserInfo.IsSuperUser)
+                if (this.UserInfo.IsSuperUser)
                 {
                     HostController.Instance.Update("SSLOffloadHeader", request.SSLOffloadHeader);
                 }
 
-                DataCache.ClearPortalCache(PortalId, false);
+                DataCache.ClearPortalCache(this.PortalId, false);
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -680,13 +680,13 @@ namespace Dnn.PersonaBar.Security.Services
                 catch (Exception oExc)
                 {
                     // connectivity issues
-                    if (PortalSecurity.IsInRoles(PortalSettings.AdministratorRoleId.ToString()))
+                    if (PortalSecurity.IsInRoles(this.PortalSettings.AdministratorRoleId.ToString()))
                     {
-                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("RequestFailed_Admin.Text", Components.Constants.LocalResourcesFile), sRequest));
+                        return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format(Localization.GetString("RequestFailed_Admin.Text", Components.Constants.LocalResourcesFile), sRequest));
                     }
                     else
                     {
-                        return Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("RequestFailed_User.Text", Components.Constants.LocalResourcesFile) + oExc.Message);
+                        return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("RequestFailed_User.Text", Components.Constants.LocalResourcesFile) + oExc.Message);
                     }
                 }
 
@@ -718,12 +718,12 @@ namespace Dnn.PersonaBar.Security.Services
                     }
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -762,12 +762,12 @@ namespace Dnn.PersonaBar.Security.Services
                     }
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -808,12 +808,12 @@ namespace Dnn.PersonaBar.Security.Services
 
                 DataCache.ClearCache();
 
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -840,12 +840,12 @@ namespace Dnn.PersonaBar.Security.Services
                     Results = results
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -868,12 +868,12 @@ namespace Dnn.PersonaBar.Security.Services
                     Result = result
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -895,9 +895,9 @@ namespace Dnn.PersonaBar.Security.Services
                     u.LastName,
                     u.DisplayName,
                     u.Email,
-                    CreatedDate = DisplayDate(u.Membership.CreatedDate),
-                    LastLoginDate = DisplayDate(u.Membership.LastLoginDate),
-                    LastActivityDate = DisplayDate(u.Membership.LastActivityDate)
+                    CreatedDate = this.DisplayDate(u.Membership.CreatedDate),
+                    LastLoginDate = this.DisplayDate(u.Membership.LastLoginDate),
+                    LastActivityDate = this.DisplayDate(u.Membership.LastActivityDate)
                 }).ToList();
 
                 var response = new
@@ -909,12 +909,12 @@ namespace Dnn.PersonaBar.Security.Services
                     }
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -946,12 +946,12 @@ namespace Dnn.PersonaBar.Security.Services
                     }
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -968,13 +968,13 @@ namespace Dnn.PersonaBar.Security.Services
             {
                 var highRiskFiles = Components.Utility.GetLastModifiedExecutableFiles().Select(f => new
                 {
-                    FilePath = GetFilePath(f.FullName),
-                    LastWriteTime = DisplayDate(f.LastWriteTime)
+                    FilePath = this.GetFilePath(f.FullName),
+                    LastWriteTime = this.DisplayDate(f.LastWriteTime)
                 });
                 var lowRiskFiles = Components.Utility.GetLastModifiedFiles().Select(f => new
                 {
-                    FilePath = GetFilePath(f.FullName),
-                    LastWriteTime = DisplayDate(f.LastWriteTime)
+                    FilePath = this.GetFilePath(f.FullName),
+                    LastWriteTime = this.DisplayDate(f.LastWriteTime)
                 });
                 var response = new
                 {
@@ -986,12 +986,12 @@ namespace Dnn.PersonaBar.Security.Services
                     }
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -1006,7 +1006,7 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var settings = _controller.GetModifiedSettings();
+                var settings = this._controller.GetModifiedSettings();
                 var portalSettings = (from DataRow dr in settings[0].Rows
                                       select new SettingsDto
                                       {
@@ -1014,7 +1014,7 @@ namespace Dnn.PersonaBar.Security.Services
                                           SettingName = Convert.ToString(dr["SettingName"]),
                                           SettingValue = Convert.ToString(dr["SettingValue"]),
                                           LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"]),
-                                          LastModifiedOnDate = DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"]))
+                                          LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"]))
                                       }).ToList();
 
                 var hostSettings = (from DataRow dr in settings[1].Rows
@@ -1023,7 +1023,7 @@ namespace Dnn.PersonaBar.Security.Services
                                         SettingName = Convert.ToString(dr["SettingName"]),
                                         SettingValue = Convert.ToString(dr["SettingValue"]),
                                         LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"]),
-                                        LastModifiedOnDate = DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"]))
+                                        LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"]))
                                     }).ToList();
 
                 var tabSettings = (from DataRow dr in settings[2].Rows
@@ -1034,7 +1034,7 @@ namespace Dnn.PersonaBar.Security.Services
                                        SettingName = Convert.ToString(dr["SettingName"]),
                                        SettingValue = Convert.ToString(dr["SettingValue"]),
                                        LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"]),
-                                       LastModifiedOnDate = DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"]))
+                                       LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"]))
                                    }).ToList();
 
                 var moduleSettings = (from DataRow dr in settings[3].Rows
@@ -1046,7 +1046,7 @@ namespace Dnn.PersonaBar.Security.Services
                                           SettingName = Convert.ToString(dr["SettingName"]),
                                           SettingValue = Convert.ToString(dr["SettingValue"]),
                                           LastModifiedByUserId = Convert.ToInt32(dr["LastModifiedByUserID"]),
-                                          LastModifiedOnDate = DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"]))
+                                          LastModifiedOnDate = this.DisplayDate(Convert.ToDateTime(dr["LastModifiedOnDate"]))
                                       }).ToList();
 
                 var response = new
@@ -1061,12 +1061,12 @@ namespace Dnn.PersonaBar.Security.Services
                     }
                 };
 
-                return Request.CreateResponse(HttpStatusCode.OK, response);
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
@@ -1083,11 +1083,11 @@ namespace Dnn.PersonaBar.Security.Services
                 {
                     portalAlias = portalAlias.Remove(0, portalAlias.IndexOf("://", StringComparison.Ordinal) + 3);
                 }
-                var alias = _portalAliasController.GetPortalAlias(portalAlias, portalId);
+                var alias = this._portalAliasController.GetPortalAlias(portalAlias, portalId);
                 if (alias == null)
                 {
                     alias = new PortalAliasInfo { PortalID = portalId, HTTPAlias = portalAlias };
-                    _portalAliasController.AddPortalAlias(alias);
+                    this._portalAliasController.AddPortalAlias(alias);
                 }
             }
             return portalAlias;

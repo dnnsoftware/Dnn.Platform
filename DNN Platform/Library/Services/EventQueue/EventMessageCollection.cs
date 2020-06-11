@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.EventQueue
 
         public void Add(EventMessage message)
         {
-            InnerList.Add(message);
+            this.InnerList.Add(message);
         }
     }
 }

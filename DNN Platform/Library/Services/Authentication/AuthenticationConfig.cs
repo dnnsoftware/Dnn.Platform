@@ -28,19 +28,19 @@ namespace DotNetNuke.Services.Authentication
 
         protected AuthenticationConfig(int portalID) : base(portalID)
         {
-            UseCaptcha = Null.NullBoolean;
-            Enabled = true;
+            this.UseCaptcha = Null.NullBoolean;
+            this.Enabled = true;
             try
             {
                 string setting = Null.NullString;
                 if (PortalController.Instance.GetPortalSettings(portalID).TryGetValue("DNN_Enabled", out setting))
                 {
-                    Enabled = bool.Parse(setting);
+                    this.Enabled = bool.Parse(setting);
                 }
                 setting = Null.NullString;
                 if (PortalController.Instance.GetPortalSettings(portalID).TryGetValue("DNN_UseCaptcha", out setting))
                 {
-                    UseCaptcha = bool.Parse(setting);
+                    this.UseCaptcha = bool.Parse(setting);
                 }
             }
 			catch (Exception ex)

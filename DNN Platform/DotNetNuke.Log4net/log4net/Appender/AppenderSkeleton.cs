@@ -60,7 +60,7 @@ namespace log4net.Appender
 		/// </remarks>
 		protected AppenderSkeleton()
 		{
-			m_errorHandler = new OnlyOnceErrorHandler(this.GetType().Name);
+			this.m_errorHandler = new OnlyOnceErrorHandler(this.GetType().Name);
 		}
 
 		#endregion Protected Instance Constructors
@@ -81,10 +81,10 @@ namespace log4net.Appender
 		{
 			// An appender might be closed then garbage collected. 
 			// There is no point in closing twice.
-			if (!m_closed) 
+			if (!this.m_closed) 
 			{
-				LogLog.Debug(declaringType, "Finalizing appender named ["+m_name+"].");
-				Close();
+				LogLog.Debug(declaringType, "Finalizing appender named ["+this.m_name+"].");
+				this.Close();
 			}
 		}
 
@@ -111,8 +111,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public Level Threshold 
 		{
-			get { return m_threshold; }
-			set { m_threshold = value; }
+			get { return this.m_threshold; }
+			set { this.m_threshold = value; }
 		}
 
 		/// <summary>
@@ -140,7 +140,7 @@ namespace log4net.Appender
 					} 
 					else 
 					{
-						m_errorHandler = value;
+						this.m_errorHandler = value;
 					}
 				}
 			}
@@ -158,7 +158,7 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual public IFilter FilterHead
 		{
-			get { return m_headFilter; }
+			get { return this.m_headFilter; }
 		}
 
 		/// <summary>
@@ -173,8 +173,8 @@ namespace log4net.Appender
 		/// <seealso cref="RequiresLayout"/>
 		virtual public ILayout Layout 
 		{
-			get { return m_layout; }
-			set { m_layout = value; }
+			get { return this.m_layout; }
+			set { this.m_layout = value; }
 		}
 
 		#endregion
@@ -216,8 +216,8 @@ namespace log4net.Appender
 		/// </remarks>
 		public string Name 
 		{
-			get { return m_name; }
-			set { m_name = value; }
+			get { return this.m_name; }
+			set { this.m_name = value; }
 		}
 
 		/// <summary>
@@ -242,10 +242,10 @@ namespace log4net.Appender
 			// This lock prevents the appender being closed while it is still appending
 			lock(this)
 			{
-				if (!m_closed)
+				if (!this.m_closed)
 				{
-					OnClose();
-					m_closed = true;
+					this.OnClose();
+					this.m_closed = true;
 				}
 			}
 		}
@@ -300,30 +300,30 @@ namespace log4net.Appender
 
 			lock(this)
 			{
-				if (m_closed)
+				if (this.m_closed)
 				{
-					ErrorHandler.Error("Attempted to append to closed appender named ["+m_name+"].");
+					this.ErrorHandler.Error("Attempted to append to closed appender named ["+this.m_name+"].");
 					return;
 				}
 
 				// prevent re-entry
-				if (m_recursiveGuard)
+				if (this.m_recursiveGuard)
 				{
 					return;
 				}
 
 				try
 				{
-					m_recursiveGuard = true;
+					this.m_recursiveGuard = true;
 
-					if (FilterEvent(loggingEvent) && PreAppendCheck())
+					if (this.FilterEvent(loggingEvent) && this.PreAppendCheck())
 					{
 						this.Append(loggingEvent);
 					}
 				}
 				catch(Exception ex)
 				{
-					ErrorHandler.Error("Failed in DoAppend", ex);
+					this.ErrorHandler.Error("Failed in DoAppend", ex);
 				}
 #if !MONO && !NET_2_0 && !NETSTANDARD1_3
 				// on .NET 2.0 (and higher) and Mono (all profiles), 
@@ -338,7 +338,7 @@ namespace log4net.Appender
 #endif
 				finally
 				{
-					m_recursiveGuard = false;
+					this.m_recursiveGuard = false;
 				}
 			}
 		}
@@ -397,40 +397,40 @@ namespace log4net.Appender
 
 			lock(this)
 			{
-				if (m_closed)
+				if (this.m_closed)
 				{
-					ErrorHandler.Error("Attempted to append to closed appender named ["+m_name+"].");
+					this.ErrorHandler.Error("Attempted to append to closed appender named ["+this.m_name+"].");
 					return;
 				}
 
 				// prevent re-entry
-				if (m_recursiveGuard)
+				if (this.m_recursiveGuard)
 				{
 					return;
 				}
 
 				try
 				{
-					m_recursiveGuard = true;
+					this.m_recursiveGuard = true;
 
 					ArrayList filteredEvents = new ArrayList(loggingEvents.Length);
 
 					foreach(LoggingEvent loggingEvent in loggingEvents)
 					{
-						if (FilterEvent(loggingEvent))
+						if (this.FilterEvent(loggingEvent))
 						{
 							filteredEvents.Add(loggingEvent);
 						}
 					}
 
-					if (filteredEvents.Count > 0 && PreAppendCheck())
+					if (filteredEvents.Count > 0 && this.PreAppendCheck())
 					{
 						this.Append((LoggingEvent[])filteredEvents.ToArray(typeof(LoggingEvent)));
 					}
 				}
 				catch(Exception ex)
 				{
-					ErrorHandler.Error("Failed in Bulk DoAppend", ex);
+					this.ErrorHandler.Error("Failed in Bulk DoAppend", ex);
 				}
 #if !MONO && !NET_2_0 && !NETSTANDARD1_3
 				// on .NET 2.0 (and higher) and Mono (all profiles), 
@@ -445,7 +445,7 @@ namespace log4net.Appender
 #endif
 				finally
 				{
-					m_recursiveGuard = false;
+					this.m_recursiveGuard = false;
 				}
 			}
 		}
@@ -485,7 +485,7 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual protected bool FilterEvent(LoggingEvent loggingEvent)
 		{
-			if (!IsAsSevereAsThreshold(loggingEvent.Level)) 
+			if (!this.IsAsSevereAsThreshold(loggingEvent.Level)) 
 			{
 				return false;
 			}
@@ -534,14 +534,14 @@ namespace log4net.Appender
 				throw new ArgumentNullException("filter param must not be null");
 			}
 
-			if (m_headFilter == null) 
+			if (this.m_headFilter == null) 
 			{
-				m_headFilter = m_tailFilter = filter;
+				this.m_headFilter = this.m_tailFilter = filter;
 			} 
 			else 
 			{
-				m_tailFilter.Next = filter;
-				m_tailFilter = filter;	
+				this.m_tailFilter.Next = filter;
+				this.m_tailFilter = filter;	
 			}
 		}
 
@@ -555,7 +555,7 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual public void ClearFilters()
 		{
-			m_headFilter = m_tailFilter = null;
+			this.m_headFilter = this.m_tailFilter = null;
 		}
 
 		#endregion Public Instance Methods
@@ -577,7 +577,7 @@ namespace log4net.Appender
 		/// </returns>
 		virtual protected bool IsAsSevereAsThreshold(Level level) 
 		{
-			return ((m_threshold == null) || level >= m_threshold);
+			return ((this.m_threshold == null) || level >= this.m_threshold);
 		}
 
 		/// <summary>
@@ -636,7 +636,7 @@ namespace log4net.Appender
 		{
 			foreach(LoggingEvent loggingEvent in loggingEvents)
 			{
-				Append(loggingEvent);
+				this.Append(loggingEvent);
 			}
 		}
 
@@ -660,9 +660,9 @@ namespace log4net.Appender
 		/// <returns><c>true</c> if the call to <see cref="M:Append(LoggingEvent)"/> should proceed.</returns>
 		virtual protected bool PreAppendCheck()
 		{
-			if ((m_layout == null) && RequiresLayout)
+			if ((this.m_layout == null) && this.RequiresLayout)
 			{
-				ErrorHandler.Error("AppenderSkeleton: No layout set for the appender named ["+m_name+"].");
+				this.ErrorHandler.Error("AppenderSkeleton: No layout set for the appender named ["+this.m_name+"].");
 				return false;
 			}
 
@@ -696,18 +696,18 @@ namespace log4net.Appender
 		protected string RenderLoggingEvent(LoggingEvent loggingEvent)
 		{
 			// Create the render writer on first use
-			if (m_renderWriter == null)
+			if (this.m_renderWriter == null)
 			{
-				m_renderWriter = new ReusableStringWriter(System.Globalization.CultureInfo.InvariantCulture);
+				this.m_renderWriter = new ReusableStringWriter(System.Globalization.CultureInfo.InvariantCulture);
 			}
 
-            lock (m_renderWriter)
+            lock (this.m_renderWriter)
             {
                 // Reset the writer so we can reuse it
-                m_renderWriter.Reset(c_renderBufferMaxCapacity, c_renderBufferSize);
+                this.m_renderWriter.Reset(c_renderBufferMaxCapacity, c_renderBufferSize);
 
-                RenderLoggingEvent(m_renderWriter, loggingEvent);
-                return m_renderWriter.ToString();
+                this.RenderLoggingEvent(this.m_renderWriter, loggingEvent);
+                return this.m_renderWriter.ToString();
             }
 		}
 
@@ -736,30 +736,30 @@ namespace log4net.Appender
 		/// </remarks>
 		protected void RenderLoggingEvent(TextWriter writer, LoggingEvent loggingEvent)
 		{
-			if (m_layout == null) 
+			if (this.m_layout == null) 
 			{
 				throw new InvalidOperationException("A layout must be set");
 			}
 
-			if (m_layout.IgnoresException) 
+			if (this.m_layout.IgnoresException) 
 			{
 				string exceptionStr = loggingEvent.GetExceptionString();
 				if (exceptionStr != null && exceptionStr.Length > 0) 
 				{
 					// render the event and the exception
-					m_layout.Format(writer, loggingEvent);
+					this.m_layout.Format(writer, loggingEvent);
 					writer.WriteLine(exceptionStr);
 				}
 				else 
 				{
 					// there is no exception to render
-					m_layout.Format(writer, loggingEvent);
+					this.m_layout.Format(writer, loggingEvent);
 				}
 			}
 			else 
 			{
 				// The layout will render the exception
-				m_layout.Format(writer, loggingEvent);
+				this.m_layout.Format(writer, loggingEvent);
 			}
 		}
 

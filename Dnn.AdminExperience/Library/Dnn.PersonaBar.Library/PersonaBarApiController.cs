@@ -11,6 +11,6 @@ namespace Dnn.PersonaBar.Library
     /// </summary>
     public abstract class PersonaBarApiController : DnnApiController
     {
-        public int PortalId => PortalSettings.PortalId;
+        public int PortalId => this.PortalSettings.PortalId;
     }
 }

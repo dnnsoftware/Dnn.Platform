@@ -20,15 +20,15 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         /// <summary>
         /// Provides an Unique String for this transformation
         /// </summary>
-        public override string UniqueString => base.UniqueString + "-" + RotateFlip;
+        public override string UniqueString => base.UniqueString + "-" + this.RotateFlip;
 
 	    public ImageRotateFlipTransform()
 		{
-            InterpolationMode = InterpolationMode.HighQualityBicubic;
-            SmoothingMode = SmoothingMode.HighQuality;
-            PixelOffsetMode = PixelOffsetMode.HighQuality;
-            CompositingQuality = CompositingQuality.HighQuality;
-			RotateFlip = RotateFlipType.RotateNoneFlipNone;
+            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            this.SmoothingMode = SmoothingMode.HighQuality;
+            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            this.CompositingQuality = CompositingQuality.HighQuality;
+			this.RotateFlip = RotateFlipType.RotateNoneFlipNone;
 		}
         
         /// <summary>
@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 		{
 			var temp = (Bitmap)image;
 			var bmap = (Bitmap)temp.Clone();
-			bmap.RotateFlip(RotateFlip);
+			bmap.RotateFlip(this.RotateFlip);
 			return (Bitmap)bmap.Clone();
 		}
 	}

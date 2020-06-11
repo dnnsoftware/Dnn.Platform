@@ -78,7 +78,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     string errorMessage = null;
                     if (oTab.Level == 0)
                     {
-                        oTab.TabID = CreateTabFromParent(portalSettings, rootTab, oTab, parentId, validateOnly, out errorMessage);
+                        oTab.TabID = this.CreateTabFromParent(portalSettings, rootTab, oTab, parentId, validateOnly, out errorMessage);
                     }
                     else if (validateOnly)
                     {
@@ -89,7 +89,7 @@ namespace Dnn.PersonaBar.Pages.Components
                         var parentTabId = GetParentTabId(tabs, currentIndex, oTab.Level - 1);
                         if (parentTabId != Null.NullInteger)
                         {
-                            oTab.TabID = CreateTabFromParent(portalSettings, rootTab, oTab, parentTabId, validateOnly, out errorMessage);
+                            oTab.TabID = this.CreateTabFromParent(portalSettings, rootTab, oTab, parentTabId, validateOnly, out errorMessage);
                         }
                     }
                     bulkPageItems.Add(ToBulkPageResponseItem(oTab, errorMessage));
@@ -179,7 +179,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             //Validate Tab Path
-            if (!IsValidTabPath(tab, tab.TabPath, out errorMessage))
+            if (!this.IsValidTabPath(tab, tab.TabPath, out errorMessage))
             {
                 return Null.NullInteger;
             }
@@ -227,7 +227,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 return -1;
 
             tab.TabID = TabController.Instance.AddTab(tab);
-            ApplyDefaultTabTemplate(tab);
+            this.ApplyDefaultTabTemplate(tab);
 
             //create localized tabs if content localization is enabled
             if (portalSettings.ContentLocalizationEnabled)

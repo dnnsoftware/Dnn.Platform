@@ -51,7 +51,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return ModuleContext.Actions;
+                return this.ModuleContext.Actions;
             }
         }
 
@@ -64,11 +64,11 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (_ActionRoot == null)
+                if (this._ActionRoot == null)
                 {
-                    _ActionRoot = new ModuleAction(ModuleContext.GetNextActionID(), Localization.GetString("Manage.Text", Localization.GlobalResourceFile), string.Empty, string.Empty, "manage-icn.png");
+                    this._ActionRoot = new ModuleAction(this.ModuleContext.GetNextActionID(), Localization.GetString("Manage.Text", Localization.GlobalResourceFile), string.Empty, string.Empty, "manage-icn.png");
                 }
-                return _ActionRoot;
+                return this._ActionRoot;
             }
         }
 
@@ -81,7 +81,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return ModuleControl.ModuleContext;
+                return this.ModuleControl.ModuleContext;
             }
         }
 
@@ -94,7 +94,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return ModuleControl.ModuleContext.PortalSettings;
+                return this.ModuleControl.ModuleContext.PortalSettings;
             }
         }
 		
@@ -106,7 +106,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return ModuleContext.PortalSettings.UserMode != PortalSettings.Mode.View;
+                return this.ModuleContext.PortalSettings.UserMode != PortalSettings.Mode.View;
             }
         }
 
@@ -114,7 +114,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                return m_supportsIcons;
+                return this.m_supportsIcons;
             }
         }
 		
@@ -133,11 +133,11 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (_ActionManager == null)
+                if (this._ActionManager == null)
                 {
-                    _ActionManager = new ActionManager(this);
+                    this._ActionManager = new ActionManager(this);
                 }
-                return _ActionManager;
+                return this._ActionManager;
             }
         }
 
@@ -158,7 +158,7 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         protected bool DisplayControl(DNNNodeCollection objNodes)
         {
-            return ActionManager.DisplayControl(objNodes);
+            return this.ActionManager.DisplayControl(objNodes);
         }
 
         /// -----------------------------------------------------------------------------
@@ -167,9 +167,9 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         protected virtual void OnAction(ActionEventArgs e)
         {
-            if (Action != null)
+            if (this.Action != null)
             {
-                Action(this, e);
+                this.Action(this, e);
             }
         }
 
@@ -182,12 +182,12 @@ namespace DotNetNuke.UI.Containers
             int output;
             if (Int32.TryParse(ActionID, out output))
             {
-                ModuleAction action = Actions.GetActionByID(output);
+                ModuleAction action = this.Actions.GetActionByID(output);
                 if (action != null)
                 {
-                    if (!ActionManager.ProcessAction(action))
+                    if (!this.ActionManager.ProcessAction(action))
                     {
-                        OnAction(new ActionEventArgs(action, ModuleContext.Configuration));
+                        this.OnAction(new ActionEventArgs(action, this.ModuleContext.Configuration));
                     }
                 }
             }
@@ -208,7 +208,7 @@ namespace DotNetNuke.UI.Containers
                     return;
                 }
 
-                ActionRoot.Actions.AddRange(Actions);
+                this.ActionRoot.Actions.AddRange(this.Actions);
             }
             catch (Exception exc)
             {

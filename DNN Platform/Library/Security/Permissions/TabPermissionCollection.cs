@@ -36,12 +36,12 @@ namespace DotNetNuke.Security.Permissions
 
         public TabPermissionCollection(ArrayList tabPermissions)
         {
-            AddRange(tabPermissions);
+            this.AddRange(tabPermissions);
         }
 
         public TabPermissionCollection(TabPermissionCollection tabPermissions)
         {
-            AddRange(tabPermissions);
+            this.AddRange(tabPermissions);
         }
 
         public TabPermissionCollection(ArrayList tabPermissions, int TabId)
@@ -50,7 +50,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 if (permission.TabID == TabId)
                 {
-                    Add(permission);
+                    this.Add(permission);
                 }
             }
         }
@@ -59,17 +59,17 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return (TabPermissionInfo) List[index];
+                return (TabPermissionInfo) this.List[index];
             }
             set
             {
-                List[index] = value;
+                this.List[index] = value;
             }
         }
 
         public int Add(TabPermissionInfo value)
         {
-            return List.Add(value);
+            return this.List.Add(value);
         }
 
         public int Add(TabPermissionInfo value, bool checkForDuplicates)
@@ -78,12 +78,12 @@ namespace DotNetNuke.Security.Permissions
 
             if (!checkForDuplicates)
             {
-                id = Add(value);
+                id = this.Add(value);
             }
             else
             {
                 bool isMatch = false;
-                foreach (PermissionInfoBase permission in List)
+                foreach (PermissionInfoBase permission in this.List)
                 {
                     if (permission.PermissionID == value.PermissionID && permission.UserID == value.UserID && permission.RoleID == value.RoleID)
                     {
@@ -93,7 +93,7 @@ namespace DotNetNuke.Security.Permissions
                 }
                 if (!isMatch)
                 {
-                    id = Add(value);
+                    id = this.Add(value);
                 }
             }
 
@@ -104,7 +104,7 @@ namespace DotNetNuke.Security.Permissions
         {
             foreach (TabPermissionInfo permission in tabPermissions)
             {
-                Add(permission);
+                this.Add(permission);
             }
         }
 
@@ -112,7 +112,7 @@ namespace DotNetNuke.Security.Permissions
         {
             foreach (TabPermissionInfo permission in tabPermissions)
             {
-                Add(permission);
+                this.Add(permission);
             }
         }
 
@@ -120,19 +120,19 @@ namespace DotNetNuke.Security.Permissions
         {
             foreach (TabPermissionInfo permission in tabPermissions)
             {
-                Add(permission);
+                this.Add(permission);
             }
         }
 
         public bool CompareTo(TabPermissionCollection objTabPermissionCollection)
         {
-            if (objTabPermissionCollection.Count != Count)
+            if (objTabPermissionCollection.Count != this.Count)
             {
                 return false;
             }
-            InnerList.Sort(new CompareTabPermissions());
+            this.InnerList.Sort(new CompareTabPermissions());
             objTabPermissionCollection.InnerList.Sort(new CompareTabPermissions());
-            for (int i = 0; i <= Count - 1; i++)
+            for (int i = 0; i <= this.Count - 1; i++)
             {
                 if (objTabPermissionCollection[i].TabPermissionID != this[i].TabPermissionID
                         || objTabPermissionCollection[i].PermissionID != this[i].PermissionID
@@ -148,31 +148,31 @@ namespace DotNetNuke.Security.Permissions
 
         public bool Contains(TabPermissionInfo value)
         {
-            return List.Contains(value);
+            return this.List.Contains(value);
         }
 
         public int IndexOf(TabPermissionInfo value)
         {
-            return List.IndexOf(value);
+            return this.List.IndexOf(value);
         }
 
         public void Insert(int index, TabPermissionInfo value)
         {
-            List.Insert(index, value);
+            this.List.Insert(index, value);
         }
 
         public void Remove(TabPermissionInfo value)
         {
-            List.Remove(value);
+            this.List.Remove(value);
         }
 
         public void Remove(int permissionID, int roleID, int userID)
         {
-            foreach (PermissionInfoBase permission in List)
+            foreach (PermissionInfoBase permission in this.List)
             {
                 if (permission.PermissionID == permissionID && permission.UserID == userID && permission.RoleID == roleID)
                 {
-                    List.Remove(permission);
+                    this.List.Remove(permission);
                     break;
                 }
             }
@@ -181,7 +181,7 @@ namespace DotNetNuke.Security.Permissions
         public List<PermissionInfoBase> ToList()
         {
             var list = new List<PermissionInfoBase>();
-            foreach (PermissionInfoBase permission in List)
+            foreach (PermissionInfoBase permission in this.List)
             {
                 list.Add(permission);
             }
@@ -190,7 +190,7 @@ namespace DotNetNuke.Security.Permissions
 
         public string ToString(string key)
         {
-            return PermissionController.BuildPermissions(List, key);
+            return PermissionController.BuildPermissions(this.List, key);
         }
 
         public IEnumerable<TabPermissionInfo> Where(Func<TabPermissionInfo, bool> predicate)

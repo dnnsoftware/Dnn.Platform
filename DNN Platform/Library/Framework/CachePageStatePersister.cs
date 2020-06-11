@@ -46,7 +46,7 @@ namespace DotNetNuke.Framework
         public override void Load()
         {
             //Get the cache key from the web form data
-            string key = Page.Request.Params[VIEW_STATE_CACHEKEY];
+            string key = this.Page.Request.Params[VIEW_STATE_CACHEKEY];
 
             //Abort if cache key is not available or valid
             if (string.IsNullOrEmpty(key) || !key.StartsWith("VS_"))
@@ -57,11 +57,11 @@ namespace DotNetNuke.Framework
             if (state != null)
             {
                 //Set view state and control state
-                ViewState = state.First;
-                ControlState = state.Second;
+                this.ViewState = state.First;
+                this.ControlState = state.Second;
             }
             //Remove this ViewState from the cache as it has served its purpose
-            if (!Page.IsCallback)
+            if (!this.Page.IsCallback)
             {
                 DataCache.RemoveCache(key);
             }
@@ -75,7 +75,7 @@ namespace DotNetNuke.Framework
         public override void Save()
         {
 			//No processing needed if no states available
-            if (ViewState == null && ControlState == null)
+            if (this.ViewState == null && this.ControlState == null)
             {
                 return;
             }
@@ -84,20 +84,20 @@ namespace DotNetNuke.Framework
             var key = new StringBuilder();
             {
                 key.Append("VS_");
-                key.Append(Page.Session == null ? Guid.NewGuid().ToString() : Page.Session.SessionID);
+                key.Append(this.Page.Session == null ? Guid.NewGuid().ToString() : this.Page.Session.SessionID);
                 key.Append("_");
                 key.Append(DateTime.Now.Ticks.ToString());
             }
 			
             //Save view state and control state separately
-            var state = new Pair(ViewState, ControlState);
+            var state = new Pair(this.ViewState, this.ControlState);
 
             //Add view state and control state to cache
             DNNCacheDependency objDependency = null;
-            DataCache.SetCache(key.ToString(), state, objDependency, DateTime.Now.AddMinutes(Page.Session.Timeout), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
+            DataCache.SetCache(key.ToString(), state, objDependency, DateTime.Now.AddMinutes(this.Page.Session.Timeout), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
 
             //Register hidden field to store cache key in
-            Page.ClientScript.RegisterHiddenField(VIEW_STATE_CACHEKEY, key.ToString());
+            this.Page.ClientScript.RegisterHiddenField(VIEW_STATE_CACHEKEY, key.ToString());
         }
     }
 }

@@ -30,19 +30,19 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
 
         public void Failed(string message)
         {
-            Success = false;
-            Message = message;
+            this.Success = false;
+            this.Message = message;
         }
 
         public void Succeed()
         {
-            Success = true;
-            Message = string.Empty;
+            this.Success = true;
+            this.Message = string.Empty;
         }
 
         public void AddLogs(IEnumerable<LogEntry> logs)
         {
-            Logs = logs?.Select(
+            this.Logs = logs?.Select(
                 l => new InstallerLogEntry
                 {
                     Type = l.Type.ToString(),

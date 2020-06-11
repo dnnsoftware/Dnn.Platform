@@ -13,8 +13,8 @@ namespace DotNetNuke.Web.Api
     {
         public AuthFilterContext(HttpActionContext actionContext, string authFailureMessage)
         {
-            ActionContext = actionContext;
-            AuthFailureMessage = authFailureMessage;
+            this.ActionContext = actionContext;
+            this.AuthFailureMessage = authFailureMessage;
         }
 
         public HttpActionContext ActionContext { get; private set; }
@@ -26,7 +26,7 @@ namespace DotNetNuke.Web.Api
         /// </summary>
         public virtual void HandleUnauthorizedRequest()
         {
-            ActionContext.Response = ActionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
+            this.ActionContext.Response = this.ActionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, this.AuthFailureMessage);
         }
     }
 }

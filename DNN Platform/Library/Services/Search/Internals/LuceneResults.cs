@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Search.Internals
 
         public LuceneResults()
         {
-            Results = new List<LuceneResult>();
+            this.Results = new List<LuceneResult>();
         }
     }
 }

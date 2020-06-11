@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.Html
         private readonly INavigationManager _navigationManager;
         public HtmlModule()
         {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         #region "Private Methods"
@@ -60,14 +60,14 @@ namespace DotNetNuke.Modules.Html
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            lblContent.UpdateLabel += lblContent_UpdateLabel;
-            EditorEnabled = PortalSettings.InlineEditorEnabled;
+            this.lblContent.UpdateLabel += this.lblContent_UpdateLabel;
+            this.EditorEnabled = this.PortalSettings.InlineEditorEnabled;
             try
             {
-                WorkflowID = new HtmlTextController().GetWorkflow(ModuleId, TabId, PortalId).Value;
+                this.WorkflowID = new HtmlTextController().GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
 
                 //Add an Action Event Handler to the Skin
-                AddActionHandler(ModuleAction_Click);
+                this.AddActionHandler(this.ModuleAction_Click);
             }
             catch (Exception exc)
             {
@@ -90,20 +90,20 @@ namespace DotNetNuke.Modules.Html
                 var objHTML = new HtmlTextController();
 
                 // edit in place
-                if (EditorEnabled && IsEditable && PortalSettings.UserMode == PortalSettings.Mode.Edit)
+                if (this.EditorEnabled && this.IsEditable && this.PortalSettings.UserMode == PortalSettings.Mode.Edit)
                 {
-                    EditorEnabled = true;
+                    this.EditorEnabled = true;
                 }
                 else
                 {
-                    EditorEnabled = false;
+                    this.EditorEnabled = false;
                 }
 
                 // get content
                 HtmlTextInfo htmlTextInfo = null;
                 string contentString = "";
 
-                htmlTextInfo = objHTML.GetTopHtmlText(ModuleId, !IsEditable, WorkflowID);
+                htmlTextInfo = objHTML.GetTopHtmlText(this.ModuleId, !this.IsEditable, this.WorkflowID);
 
                 if ((htmlTextInfo != null))
                 {
@@ -113,61 +113,61 @@ namespace DotNetNuke.Modules.Html
                 else
                 {
                     // get default content from resource file
-                    if (PortalSettings.UserMode == PortalSettings.Mode.Edit)
+                    if (this.PortalSettings.UserMode == PortalSettings.Mode.Edit)
                     {
-                        if (EditorEnabled)
+                        if (this.EditorEnabled)
                         {
-                            contentString = Localization.GetString("AddContentFromToolBar.Text", LocalResourceFile);
+                            contentString = Localization.GetString("AddContentFromToolBar.Text", this.LocalResourceFile);
                         }
                         else
                         {
-                            contentString = Localization.GetString("AddContentFromActionMenu.Text", LocalResourceFile);
+                            contentString = Localization.GetString("AddContentFromActionMenu.Text", this.LocalResourceFile);
                         }
                     }
                     else
                     {
                         // hide the module if no content and in view mode
-                        ContainerControl.Visible = false;
+                        this.ContainerControl.Visible = false;
                     }
                 }
 
                 // token replace
-                EditorEnabled = EditorEnabled && !Settings.ReplaceTokens;
+                this.EditorEnabled = this.EditorEnabled && !this.Settings.ReplaceTokens;
 
                 // localize toolbar
-                if (EditorEnabled)
+                if (this.EditorEnabled)
                 {
-                    foreach (DNNToolBarButton button in editorDnnToobar.Buttons)
+                    foreach (DNNToolBarButton button in this.editorDnnToobar.Buttons)
                     {
-                        button.ToolTip = Localization.GetString(button.ToolTip + ".ToolTip", LocalResourceFile);
+                        button.ToolTip = Localization.GetString(button.ToolTip + ".ToolTip", this.LocalResourceFile);
                     }
                 }
                 else
                 {
-                    editorDnnToobar.Visible = false;
+                    this.editorDnnToobar.Visible = false;
                 }
 
-                lblContent.EditEnabled = EditorEnabled;
+                this.lblContent.EditEnabled = this.EditorEnabled;
 
                 // add content to module
-                lblContent.Controls.Add(new LiteralControl(HtmlTextController.FormatHtmlText(ModuleId, contentString, Settings, PortalSettings, Page)));
+                this.lblContent.Controls.Add(new LiteralControl(HtmlTextController.FormatHtmlText(this.ModuleId, contentString, this.Settings, this.PortalSettings, this.Page)));
 
                 //set normalCheckBox on the content wrapper to prevent form decoration if its disabled.
-                if (!Settings.UseDecorate)
+                if (!this.Settings.UseDecorate)
                 {
-                    lblContent.CssClass = string.Format("{0} normalCheckBox", lblContent.CssClass);
+                    this.lblContent.CssClass = string.Format("{0} normalCheckBox", this.lblContent.CssClass);
                 }
 
-                if (IsPostBack && AJAX.IsEnabled() && AJAX.GetScriptManager(Page).IsInAsyncPostBack)
+                if (this.IsPostBack && AJAX.IsEnabled() && AJAX.GetScriptManager(this.Page).IsInAsyncPostBack)
                 {
                     var resetScript = $@"
 if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof dnn.controls.controls !== 'undefined'){{
-    var control = dnn.controls.controls['{lblContent.ClientID}'];
-    if(control && control.container !== $get('{lblContent.ClientID}')){{
-        dnn.controls.controls['{lblContent.ClientID}'] = null;
+    var control = dnn.controls.controls['{this.lblContent.ClientID}'];
+    if(control && control.container !== $get('{this.lblContent.ClientID}')){{
+        dnn.controls.controls['{this.lblContent.ClientID}'] = null;
     }}
 }};";
-                    ScriptManager.RegisterClientScriptBlock(Page, Page.GetType(), $"ResetHtmlModule{ClientID}", resetScript, true);
+                    ScriptManager.RegisterClientScriptBlock(this.Page, this.Page.GetType(), $"ResetHtmlModule{this.ClientID}", resetScript, true);
                 }
             }
             catch (Exception exc)
@@ -192,12 +192,12 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                 {
                     throw new SecurityException();
                 }
-                else if (EditorEnabled && IsEditable && PortalSettings.UserMode == PortalSettings.Mode.Edit)
+                else if (this.EditorEnabled && this.IsEditable && this.PortalSettings.UserMode == PortalSettings.Mode.Edit)
                 {
                     // get content
                     var objHTML = new HtmlTextController();
                     var objWorkflow = new WorkflowStateController();
-                    HtmlTextInfo objContent = objHTML.GetTopHtmlText(ModuleId, false, WorkflowID);
+                    HtmlTextInfo objContent = objHTML.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
                     if (objContent == null)
                     {
                         objContent = new HtmlTextInfo();
@@ -205,13 +205,13 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                     }
 
                     // set content attributes
-                    objContent.ModuleID = ModuleId;
-                    objContent.Content = Server.HtmlEncode(e.Text);
-                    objContent.WorkflowID = WorkflowID;
-                    objContent.StateID = objWorkflow.GetFirstWorkflowStateID(WorkflowID);
+                    objContent.ModuleID = this.ModuleId;
+                    objContent.Content = this.Server.HtmlEncode(e.Text);
+                    objContent.WorkflowID = this.WorkflowID;
+                    objContent.StateID = objWorkflow.GetFirstWorkflowStateID(this.WorkflowID);
 
                     // save the content
-                    objHTML.UpdateHtmlText(objContent, objHTML.GetMaximumVersionHistory(PortalId));
+                    objHTML.UpdateHtmlText(objContent, objHTML.GetMaximumVersionHistory(this.PortalId));
                 }
                 else
                 {
@@ -238,23 +238,23 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                 if (e.Action.CommandArgument == "publish")
                 {
                     // verify security
-                    if (IsEditable && PortalSettings.UserMode == PortalSettings.Mode.Edit)
+                    if (this.IsEditable && this.PortalSettings.UserMode == PortalSettings.Mode.Edit)
                     {
                         // get content
                         var objHTML = new HtmlTextController();
-                        HtmlTextInfo objContent = objHTML.GetTopHtmlText(ModuleId, false, WorkflowID);
+                        HtmlTextInfo objContent = objHTML.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
 
                         var objWorkflow = new WorkflowStateController();
-                        if (objContent.StateID == objWorkflow.GetFirstWorkflowStateID(WorkflowID))
+                        if (objContent.StateID == objWorkflow.GetFirstWorkflowStateID(this.WorkflowID))
                         {
                             // publish content
                             objContent.StateID = objWorkflow.GetNextWorkflowStateID(objContent.WorkflowID, objContent.StateID);
 
                             // save the content
-                            objHTML.UpdateHtmlText(objContent, objHTML.GetMaximumVersionHistory(PortalId));
+                            objHTML.UpdateHtmlText(objContent, objHTML.GetMaximumVersionHistory(this.PortalId));
 
                             // refresh page
-                            Response.Redirect(_navigationManager.NavigateURL(), true);
+                            this.Response.Redirect(this._navigationManager.NavigateURL(), true);
                         }
                     }
                 }
@@ -282,12 +282,12 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
             {
                 // add the Edit Text action
                 var Actions = new ModuleActionCollection();
-                Actions.Add(GetNextActionID(),
-                            Localization.GetString(ModuleActionType.AddContent, LocalResourceFile),
+                Actions.Add(this.GetNextActionID(),
+                            Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
                             ModuleActionType.AddContent,
                             "",
                             "",
-                            EditUrl(),
+                            this.EditUrl(),
                             false,
                             SecurityAccessLevel.Edit,
                             true,
@@ -296,20 +296,20 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                 // get the content
                 var objHTML = new HtmlTextController();
                 var objWorkflow = new WorkflowStateController();
-                WorkflowID = objHTML.GetWorkflow(ModuleId, TabId, PortalId).Value;
+                this.WorkflowID = objHTML.GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
 
-                HtmlTextInfo objContent = objHTML.GetTopHtmlText(ModuleId, false, WorkflowID);
+                HtmlTextInfo objContent = objHTML.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
                 if ((objContent != null))
                 {
                     // if content is in the first state
-                    if (objContent.StateID == objWorkflow.GetFirstWorkflowStateID(WorkflowID))
+                    if (objContent.StateID == objWorkflow.GetFirstWorkflowStateID(this.WorkflowID))
                     {
                         // if not direct publish workflow
-                        if (objWorkflow.GetWorkflowStates(WorkflowID).Count > 1)
+                        if (objWorkflow.GetWorkflowStates(this.WorkflowID).Count > 1)
                         {
                             // add publish action
-                            Actions.Add(GetNextActionID(),
-                                        Localization.GetString("PublishContent.Action", LocalResourceFile),
+                            Actions.Add(this.GetNextActionID(),
+                                        Localization.GetString("PublishContent.Action", this.LocalResourceFile),
                                         ModuleActionType.AddContent,
                                         "publish",
                                         "grant.gif",
@@ -323,28 +323,28 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                     else
                     {
                         // if the content is not in the last state of the workflow then review is required
-                        if (objContent.StateID != objWorkflow.GetLastWorkflowStateID(WorkflowID))
+                        if (objContent.StateID != objWorkflow.GetLastWorkflowStateID(this.WorkflowID))
                         {
                             // if the user has permissions to review the content
                             if (WorkflowStatePermissionController.HasWorkflowStatePermission(WorkflowStatePermissionController.GetWorkflowStatePermissions(objContent.StateID), "REVIEW"))
                             {
                                 // add approve and reject actions
-                                Actions.Add(GetNextActionID(),
-                                            Localization.GetString("ApproveContent.Action", LocalResourceFile),
+                                Actions.Add(this.GetNextActionID(),
+                                            Localization.GetString("ApproveContent.Action", this.LocalResourceFile),
                                             ModuleActionType.AddContent,
                                             "",
                                             "grant.gif",
-                                            EditUrl("action", "approve", "Review"),
+                                            this.EditUrl("action", "approve", "Review"),
                                             false,
                                             SecurityAccessLevel.Edit,
                                             true,
                                             false);
-                                Actions.Add(GetNextActionID(),
-                                            Localization.GetString("RejectContent.Action", LocalResourceFile),
+                                Actions.Add(this.GetNextActionID(),
+                                            Localization.GetString("RejectContent.Action", this.LocalResourceFile),
                                             ModuleActionType.AddContent,
                                             "",
                                             "deny.gif",
-                                            EditUrl("action", "reject", "Review"),
+                                            this.EditUrl("action", "reject", "Review"),
                                             false,
                                             SecurityAccessLevel.Edit,
                                             true,
@@ -355,12 +355,12 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                 }
 
                 // add mywork to action menu
-                Actions.Add(GetNextActionID(),
-                            Localization.GetString("MyWork.Action", LocalResourceFile),
+                Actions.Add(this.GetNextActionID(),
+                            Localization.GetString("MyWork.Action", this.LocalResourceFile),
                             "MyWork.Action",
                             "",
                             "view.gif",
-                            EditUrl("MyWork"),
+                            this.EditUrl("MyWork"),
                             false,
                             SecurityAccessLevel.Edit,
                             true,

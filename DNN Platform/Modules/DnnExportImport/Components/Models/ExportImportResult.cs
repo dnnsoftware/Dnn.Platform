@@ -17,17 +17,17 @@ namespace Dnn.ExportImport.Components.Models
 
         public IList<LogItem> Summary
         {
-            get { return CompleteLog.Where(item => item.ReportLevel >= ReportLevel.Info).ToList(); }
+            get { return this.CompleteLog.Where(item => item.ReportLevel >= ReportLevel.Info).ToList(); }
         }
 
         public ExportImportResult()
         {
-            CompleteLog = CompleteLog = new List<LogItem>();
+            this.CompleteLog = this.CompleteLog = new List<LogItem>();
         }
 
         public LogItem AddSummary(string name, string value)
         {
-            return AddLogEntry(name, value, ReportLevel.Info);
+            return this.AddLogEntry(name, value, ReportLevel.Info);
         }
 
         public LogItem AddLogEntry(string name, string value, ReportLevel level = ReportLevel.Verbose)
@@ -40,7 +40,7 @@ namespace Dnn.ExportImport.Components.Models
                 CreatedOnDate = DateUtils.GetDatabaseUtcTime(),
             };
 
-            CompleteLog.Add(item);
+            this.CompleteLog.Add(item);
             return item;
         }
     }

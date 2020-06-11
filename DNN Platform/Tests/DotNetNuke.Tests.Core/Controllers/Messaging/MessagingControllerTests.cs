@@ -76,43 +76,43 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
 
             ComponentFactory.Container = new SimpleContainer();
-            _mockDataService = new Mock<IDataService>();
-            _dataProvider = MockComponentProvider.CreateDataProvider();
-            _mockRoleProvider = MockComponentProvider.CreateRoleProvider();
-            _mockCacheProvider = MockComponentProvider.CreateDataCacheProvider();
+            this._mockDataService = new Mock<IDataService>();
+            this._dataProvider = MockComponentProvider.CreateDataProvider();
+            this._mockRoleProvider = MockComponentProvider.CreateRoleProvider();
+            this._mockCacheProvider = MockComponentProvider.CreateDataCacheProvider();
             MockComponentProvider.CreateEventLogController();
 
-            _mockLocalizationProvider = MockComponentProvider.CreateLocalizationProvider();
-            _mockLocalizationProvider.Setup(l => l.GetString(It.IsAny<string>(), It.IsAny<string>())).Returns("{0}_{1}");
+            this._mockLocalizationProvider = MockComponentProvider.CreateLocalizationProvider();
+            this._mockLocalizationProvider.Setup(l => l.GetString(It.IsAny<string>(), It.IsAny<string>())).Returns("{0}_{1}");
 
-            _messagingController = new MessagingController(_mockDataService.Object);
-            _internalMessagingController = new InternalMessagingControllerImpl(_mockDataService.Object);
-            _mockMessagingController = new Mock<MessagingController> { CallBase = true };
-            _mockInternalMessagingController = new Mock<InternalMessagingControllerImpl> { CallBase = true };
+            this._messagingController = new MessagingController(this._mockDataService.Object);
+            this._internalMessagingController = new InternalMessagingControllerImpl(this._mockDataService.Object);
+            this._mockMessagingController = new Mock<MessagingController> { CallBase = true };
+            this._mockInternalMessagingController = new Mock<InternalMessagingControllerImpl> { CallBase = true };
 
-            _portalController = new Mock<IPortalController>();
-            _portalController.Setup(c => c.GetPortalSettings(It.IsAny<int>())).Returns(new Dictionary<string, string>());
-            PortalController.SetTestableInstance(_portalController.Object);
+            this._portalController = new Mock<IPortalController>();
+            this._portalController.Setup(c => c.GetPortalSettings(It.IsAny<int>())).Returns(new Dictionary<string, string>());
+            PortalController.SetTestableInstance(this._portalController.Object);
 
-            DataService.RegisterInstance(_mockDataService.Object);
+            DataService.RegisterInstance(this._mockDataService.Object);
 
-            _folderManager = new Mock<IFolderManager>();
-            _fileManager = new Mock<IFileManager>();
-            _folderPermissionController = new Mock<IFolderPermissionController>();
+            this._folderManager = new Mock<IFolderManager>();
+            this._fileManager = new Mock<IFileManager>();
+            this._folderPermissionController = new Mock<IFolderPermissionController>();
 
-            FolderManager.RegisterInstance(_folderManager.Object);
-            FileManager.RegisterInstance(_fileManager.Object);
-            FolderPermissionController.SetTestableInstance(_folderPermissionController.Object);
+            FolderManager.RegisterInstance(this._folderManager.Object);
+            FileManager.RegisterInstance(this._fileManager.Object);
+            FolderPermissionController.SetTestableInstance(this._folderPermissionController.Object);
 
-            SetupDataProvider();
-            SetupRoleProvider();
-            SetupDataTables();
-            SetupUsers();
-            SetupPortalSettings();
-            SetupCachingProvider();
-            SetupFileControllers();
+            this.SetupDataProvider();
+            this.SetupRoleProvider();
+            this.SetupDataTables();
+            this.SetupUsers();
+            this.SetupPortalSettings();
+            this.SetupCachingProvider();
+            this.SetupFileControllers();
 
-            _mockInternalMessagingController.Setup(m => m.GetLastSentMessage(It.IsAny<UserInfo>())).Returns((Message)null);
+            this._mockInternalMessagingController.Setup(m => m.GetLastSentMessage(It.IsAny<UserInfo>())).Returns((Message)null);
         }
 
         [TearDown]
@@ -125,7 +125,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private void SetupDataProvider()
         {
             //Standard DataProvider Path for Logging
-            _dataProvider.Setup(d => d.GetProviderPath()).Returns("");
+            this._dataProvider.Setup(d => d.GetProviderPath()).Returns("");
 
             var dataTable = new DataTable("Languages");
             var pkId = dataTable.Columns.Add("LanguageID", typeof(int));
@@ -139,15 +139,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             dataTable.PrimaryKey = new[] { pkId };
             dataTable.Rows.Add(1, "en-US", "English (United States)", null, -1, "2011-05-04 09:42:11.530", -1, "2011-05-04 09:42:11.530");
 
-            _dataProvider.Setup(x => x.GetLanguages()).Returns(dataTable.CreateDataReader());
+            this._dataProvider.Setup(x => x.GetLanguages()).Returns(dataTable.CreateDataReader());
         }
 
         private void SetupUsers()
         {
-            _adminUserInfo = new UserInfo { DisplayName = Constants.UserDisplayName_Admin, UserID = Constants.UserID_Admin, Roles = new[] { Constants.RoleName_Administrators } };
-            _hostUserInfo = new UserInfo { DisplayName = Constants.UserDisplayName_Host, UserID = Constants.UserID_Host, IsSuperUser = true };
-            _user12UserInfo = new UserInfo { DisplayName = Constants.UserDisplayName_User12, UserID = Constants.UserID_User12 };
-            _groupOwnerUserInfo = new UserInfo { DisplayName = Constants.UserDisplayName_FirstSocialGroupOwner, UserID = Constants.UserID_FirstSocialGroupOwner };
+            this._adminUserInfo = new UserInfo { DisplayName = Constants.UserDisplayName_Admin, UserID = Constants.UserID_Admin, Roles = new[] { Constants.RoleName_Administrators } };
+            this._hostUserInfo = new UserInfo { DisplayName = Constants.UserDisplayName_Host, UserID = Constants.UserID_Host, IsSuperUser = true };
+            this._user12UserInfo = new UserInfo { DisplayName = Constants.UserDisplayName_User12, UserID = Constants.UserID_User12 };
+            this._groupOwnerUserInfo = new UserInfo { DisplayName = Constants.UserDisplayName_FirstSocialGroupOwner, UserID = Constants.UserID_FirstSocialGroupOwner };
         }
 
         private void SetupPortalSettings()
@@ -157,12 +157,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                         AdministratorRoleName = Constants.RoleName_Administrators
                                     };
 
-            _portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
+            this._portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
         }
 
         private void SetupCachingProvider()
         {
-            _mockCacheProvider.Setup(c => c.GetItem(It.IsAny<string>())).Returns<string>((key =>
+            this._mockCacheProvider.Setup(c => c.GetItem(It.IsAny<string>())).Returns<string>((key =>
             {
                 if (key.Contains("Portal-1_"))
                 {
@@ -187,16 +187,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var user12RoleInfoforRegisteredUsers = new UserRoleInfo { RoleName = Constants.RoleName_RegisteredUsers, RoleID = Constants.RoleID_RegisteredUsers, UserID = Constants.UserID_User12 };
             var userFirstSocialGroupOwner = new UserRoleInfo { RoleName = Constants.RoleName_FirstSocialGroup, RoleID = Constants.RoleID_FirstSocialGroup, UserID = Constants.UserID_FirstSocialGroupOwner, IsOwner = true };
 
-            _mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == Constants.UserID_Admin), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { adminRoleInfoForAdministrators, adminRoleInfoforRegisteredUsers });
-            _mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == Constants.UserID_User12), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { user12RoleInfoforRegisteredUsers });
-            _mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == Constants.UserID_FirstSocialGroupOwner), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { userFirstSocialGroupOwner });
+            this._mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == Constants.UserID_Admin), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { adminRoleInfoForAdministrators, adminRoleInfoforRegisteredUsers });
+            this._mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == Constants.UserID_User12), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { user12RoleInfoforRegisteredUsers });
+            this._mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == Constants.UserID_FirstSocialGroupOwner), It.IsAny<bool>())).Returns(new List<UserRoleInfo> { userFirstSocialGroupOwner });
         }
 
         private void SetupFileControllers()
         {
-            _folderManager.Setup(f => f.GetFolder(It.IsAny<int>())).Returns(new FolderInfo());
-            _fileManager.Setup(f => f.GetFile(It.IsAny<int>())).Returns(new FileInfo());
-            _folderPermissionController.Setup(f => f.CanViewFolder(It.IsAny<IFolderInfo>())).Returns(true);
+            this._folderManager.Setup(f => f.GetFolder(It.IsAny<int>())).Returns(new FolderInfo());
+            this._fileManager.Setup(f => f.GetFile(It.IsAny<int>())).Returns(new FileInfo());
+            this._folderPermissionController.Setup(f => f.CanViewFolder(It.IsAny<IFolderInfo>())).Returns(true);
         }
 
         #endregion
@@ -221,24 +221,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void AttachmentsAllowed_Returns_True_When_MessagingAllowAttachments_Setting_Is_YES()
         {
-            _mockMessagingController.Setup(mc => mc.GetPortalSetting("MessagingAllowAttachments", Constants.CONTENT_ValidPortalId, "YES")).Returns("YES");
-            var result = _mockInternalMessagingController.Object.AttachmentsAllowed(Constants.CONTENT_ValidPortalId);
+            this._mockMessagingController.Setup(mc => mc.GetPortalSetting("MessagingAllowAttachments", Constants.CONTENT_ValidPortalId, "YES")).Returns("YES");
+            var result = this._mockInternalMessagingController.Object.AttachmentsAllowed(Constants.CONTENT_ValidPortalId);
             Assert.IsTrue(result);
         }
 
         [Test]
         public void IncludeAttachments_Returns_True_When_MessagingIncludeAttachments_Setting_Is_YES()
         {
-            _mockMessagingController.Setup(mc => mc.GetPortalSetting("MessagingAllowAttachments", Constants.CONTENT_ValidPortalId, "YES")).Returns("YES");
-            var result = _mockInternalMessagingController.Object.IncludeAttachments(Constants.CONTENT_ValidPortalId);
+            this._mockMessagingController.Setup(mc => mc.GetPortalSetting("MessagingAllowAttachments", Constants.CONTENT_ValidPortalId, "YES")).Returns("YES");
+            var result = this._mockInternalMessagingController.Object.IncludeAttachments(Constants.CONTENT_ValidPortalId);
             Assert.IsTrue(result);
         }
 
         [Test]
         public void AttachmentsAllowed_Returns_False_When_MessagingAllowAttachments_Setting_Is_Not_YES()
         {
-            _mockInternalMessagingController.Setup(mc => mc.GetPortalSetting("MessagingAllowAttachments", Constants.CONTENT_ValidPortalId, "YES")).Returns("NO");
-            var result = _mockInternalMessagingController.Object.AttachmentsAllowed(Constants.CONTENT_ValidPortalId);
+            this._mockInternalMessagingController.Setup(mc => mc.GetPortalSetting("MessagingAllowAttachments", Constants.CONTENT_ValidPortalId, "YES")).Returns("NO");
+            var result = this._mockInternalMessagingController.Object.AttachmentsAllowed(Constants.CONTENT_ValidPortalId);
             Assert.IsFalse(result);
         }
 
@@ -249,15 +249,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void GetArchivedMessages_Calls_DataService_GetArchiveBoxView_With_Default_Values()
         {
-            DataService.RegisterInstance(_mockDataService.Object);
+            DataService.RegisterInstance(this._mockDataService.Object);
 
-            _user12UserInfo.PortalID = Constants.PORTAL_Zero;
+            this._user12UserInfo.PortalID = Constants.PORTAL_Zero;
 
-            _mockInternalMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(_user12UserInfo);
+            this._mockInternalMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(this._user12UserInfo);
 
-            _dtMessageConversationView.Clear();
+            this._dtMessageConversationView.Clear();
 
-            _mockDataService
+            this._mockDataService
                 .Setup(ds => ds.GetArchiveBoxView(
                     Constants.UserID_User12,
                     Constants.PORTAL_Zero,
@@ -265,12 +265,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                     It.IsAny<int>(),
                     It.IsAny<string>(),
                     It.IsAny<bool>()))
-                .Returns(_dtMessageConversationView.CreateDataReader())
+                .Returns(this._dtMessageConversationView.CreateDataReader())
                 .Verifiable();
 
-            _mockInternalMessagingController.Object.GetArchivedMessages(Constants.UserID_User12, 0, 0);
+            this._mockInternalMessagingController.Object.GetArchivedMessages(Constants.UserID_User12, 0, 0);
 
-            _mockInternalMessagingController.Verify();
+            this._mockInternalMessagingController.Verify();
         }
 
         #endregion
@@ -282,26 +282,26 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             var totalRecords = 0;
 
-            DataService.RegisterInstance(_mockDataService.Object);
+            DataService.RegisterInstance(this._mockDataService.Object);
 
-            _dtMessageThreadsView.Clear();
+            this._dtMessageThreadsView.Clear();
 
-            _mockDataService.Setup(ds => ds.GetMessageThread(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), ref totalRecords)).Returns(_dtMessageThreadsView.CreateDataReader()).Verifiable();
-            _mockInternalMessagingController.Object.GetMessageThread(0, 0, 0, 0, "", false, ref totalRecords);
-            _mockDataService.Verify();
+            this._mockDataService.Setup(ds => ds.GetMessageThread(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), ref totalRecords)).Returns(this._dtMessageThreadsView.CreateDataReader()).Verifiable();
+            this._mockInternalMessagingController.Object.GetMessageThread(0, 0, 0, 0, "", false, ref totalRecords);
+            this._mockDataService.Verify();
         }
 
         [Test]
         public void GetMessageThread_Calls_Overload_With_Default_Values()
         {
             int[] totalRecords = { 0 };
-            _mockInternalMessagingController
+            this._mockInternalMessagingController
                 .Setup(mc => mc.GetMessageThread(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), MessagingController.ConstSortColumnDate, !MessagingController.ConstAscending, ref totalRecords[0]))
                 .Verifiable();
 
-            _mockInternalMessagingController.Object.GetMessageThread(0, 0, 0, 0, ref totalRecords[0]);
+            this._mockInternalMessagingController.Object.GetMessageThread(0, 0, 0, 0, ref totalRecords[0]);
 
-            _mockInternalMessagingController.Verify();
+            this._mockInternalMessagingController.Verify();
         }
 
         #endregion
@@ -311,25 +311,25 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void GetRecentSentbox_Calls_Overload_With_Default_Values()
         {
-            _mockInternalMessagingController
+            this._mockInternalMessagingController
                 .Setup(mc => mc.GetRecentSentbox(Constants.UserID_User12, MessagingController.ConstDefaultPageIndex, MessagingController.ConstDefaultPageSize))
                 .Verifiable();
 
-            _mockInternalMessagingController.Object.GetRecentSentbox(Constants.UserID_User12);
+            this._mockInternalMessagingController.Object.GetRecentSentbox(Constants.UserID_User12);
 
-            _mockInternalMessagingController.Verify();
+            this._mockInternalMessagingController.Verify();
         }
 
         [Test]
         public void GetRecentSentbox_Calls_GetSentbox_With_Default_Values()
         {
-            _mockInternalMessagingController
+            this._mockInternalMessagingController
                 .Setup(mc => mc.GetSentbox(Constants.UserID_User12, It.IsAny<int>(), It.IsAny<int>(), MessagingController.ConstSortColumnDate, !MessagingController.ConstAscending))
                 .Verifiable();
 
-            _mockInternalMessagingController.Object.GetRecentSentbox(Constants.UserID_User12);
+            this._mockInternalMessagingController.Object.GetRecentSentbox(Constants.UserID_User12);
 
-            _mockInternalMessagingController.Verify();
+            this._mockInternalMessagingController.Verify();
         }
 
         #endregion
@@ -339,15 +339,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void GetSentbox_Calls_DataService_GetSentBoxView_With_Default_Values()
         {
-            DataService.RegisterInstance(_mockDataService.Object);
+            DataService.RegisterInstance(this._mockDataService.Object);
 
-            _user12UserInfo.PortalID = Constants.PORTAL_Zero;
+            this._user12UserInfo.PortalID = Constants.PORTAL_Zero;
 
-            _mockInternalMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(_user12UserInfo);
+            this._mockInternalMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(this._user12UserInfo);
 
-            _dtMessageConversationView.Clear();
+            this._dtMessageConversationView.Clear();
 
-            _mockDataService
+            this._mockDataService
                 .Setup(ds => ds.GetSentBoxView(
                     Constants.UserID_User12,
                     Constants.PORTAL_Zero,
@@ -355,10 +355,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                     It.IsAny<int>(),
                     It.IsAny<string>(),
                     It.IsAny<bool>()))
-                .Returns(_dtMessageConversationView.CreateDataReader())
+                .Returns(this._dtMessageConversationView.CreateDataReader())
                 .Verifiable();
 
-            _mockInternalMessagingController.Object.GetSentbox(
+            this._mockInternalMessagingController.Object.GetSentbox(
                 Constants.UserID_User12,
                 0,
                 0,
@@ -367,19 +367,19 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 MessageReadStatus.Any,
                 MessageArchivedStatus.Any);
 
-            _mockDataService.Verify();
+            this._mockDataService.Verify();
         }
 
         [Test]
         public void GetSentbox_Calls_Overload_With_Default_Values()
         {
-            _mockInternalMessagingController
+            this._mockInternalMessagingController
                 .Setup(mc => mc.GetSentbox(Constants.UserID_User12, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), MessageReadStatus.Any, MessageArchivedStatus.UnArchived))
                 .Verifiable();
 
-            _mockInternalMessagingController.Object.GetSentbox(Constants.UserID_User12, 0, 0, "", false);
+            this._mockInternalMessagingController.Object.GetSentbox(Constants.UserID_User12, 0, 0, "", false);
 
-            _mockInternalMessagingController.Verify();
+            this._mockInternalMessagingController.Verify();
         }
 
         #endregion
@@ -390,11 +390,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         public void RecipientLimit_Returns_MessagingRecipientLimit_Setting()
         {
             const int expected = 10;
-            _mockInternalMessagingController
+            this._mockInternalMessagingController
                 .Setup(mc => mc.GetPortalSettingAsInteger("MessagingRecipientLimit", Constants.CONTENT_ValidPortalId, It.IsAny<int>()))
                 .Returns(expected);
 
-            var actual = _mockInternalMessagingController.Object.RecipientLimit(Constants.CONTENT_ValidPortalId);
+            var actual = this._mockInternalMessagingController.Object.RecipientLimit(Constants.CONTENT_ValidPortalId);
 
             Assert.AreEqual(expected, actual);
         }
@@ -408,7 +408,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         public void MessagingController_CreateMessage_Throws_On_Null_Message()
         {
             //Act, Assert
-            _messagingController.SendMessage(null, new List<RoleInfo>(), new List<UserInfo>(), new List<int>(), _user12UserInfo);
+            this._messagingController.SendMessage(null, new List<RoleInfo>(), new List<UserInfo>(), new List<int>(), this._user12UserInfo);
         }
 
         [Test]
@@ -416,7 +416,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         public void MessagingController_CreateMessage_Throws_On_Null_Body_And_Subject()
         {
             //Act, Assert
-            _messagingController.SendMessage(new Message(), new List<RoleInfo>(), new List<UserInfo>(), new List<int>(), _user12UserInfo);
+            this._messagingController.SendMessage(new Message(), new List<RoleInfo>(), new List<UserInfo>(), new List<int>(), this._user12UserInfo);
         }
 
         [Test]
@@ -427,7 +427,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var message = new Message { Subject = "subject", Body = "body" };
 
             //Act, Assert
-            _messagingController.SendMessage(message, null, null, null, _user12UserInfo);
+            this._messagingController.SendMessage(message, null, null, null, this._user12UserInfo);
         }
 
         [Test]
@@ -438,7 +438,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var message = new Message { Subject = "subject", Body = "body" };
 
             //Act, Assert
-            _messagingController.SendMessage(message, new List<RoleInfo>(), new List<UserInfo>(), null, _user12UserInfo);
+            this._messagingController.SendMessage(message, new List<RoleInfo>(), new List<UserInfo>(), null, this._user12UserInfo);
         }
 
         [Test]
@@ -449,7 +449,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var message = new Message { Subject = "subject", Body = "body" };
 
             //Act, Assert
-            _messagingController.SendMessage(message, new List<RoleInfo> { new RoleInfo() }, new List<UserInfo> { new UserInfo() }, null, _user12UserInfo);
+            this._messagingController.SendMessage(message, new List<RoleInfo> { new RoleInfo() }, new List<UserInfo> { new UserInfo() }, null, this._user12UserInfo);
         }
 
         [Test]
@@ -467,7 +467,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var message = new Message { Subject = subject.ToString(), Body = "body" };
 
             //Act, Assert
-            _messagingController.SendMessage(message, new List<RoleInfo> { new RoleInfo() }, new List<UserInfo> { new UserInfo() }, null, _user12UserInfo);
+            this._messagingController.SendMessage(message, new List<RoleInfo> { new RoleInfo() }, new List<UserInfo> { new UserInfo() }, null, this._user12UserInfo);
         }
 
         [Test]
@@ -486,7 +486,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             }
 
             //Act, Assert
-            _messagingController.SendMessage(message, roles, users, null, _user12UserInfo);
+            this._messagingController.SendMessage(message, roles, users, null, this._user12UserInfo);
         }
 
         [Test]
@@ -499,7 +499,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var role = new RoleInfo { RoleName = "role1" };
 
             //Act
-            _messagingController.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, null);
+            this._messagingController.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, null);
         }
 
         [Test]
@@ -513,7 +513,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var sender = new UserInfo { DisplayName = "user11" };
 
             //Act
-            _messagingController.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, sender);
+            this._messagingController.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, sender);
         }
 
         [Test]
@@ -528,11 +528,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var mockDataService = new Mock<IDataService>();
             var messagingController = new MessagingController(mockDataService.Object);
 
-            _dtMessageRecipients.Clear();
-            mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), It.IsAny<int>())).Returns(_dtMessageRecipients.CreateDataReader());
+            this._dtMessageRecipients.Clear();
+            mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), It.IsAny<int>())).Returns(this._dtMessageRecipients.CreateDataReader());
 
             //Act
-            messagingController.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, _user12UserInfo);
+            messagingController.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, this._user12UserInfo);
         }
 
         //[Test]
@@ -547,17 +547,17 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var messagingController = new MessagingController(mockDataService.Object);
 
             //disable caching
-            _mockCacheProvider.Setup(mc => mc.GetItem(It.IsAny<string>())).Returns(null);
+            this._mockCacheProvider.Setup(mc => mc.GetItem(It.IsAny<string>())).Returns(null);
 
-            _dtPortalSettings.Clear();
-            _dtPortalSettings.Rows.Add(Constants.PORTALSETTING_MessagingAllowAttachments_Name, Constants.PORTALSETTING_MessagingAllowAttachments_Value_NO, Constants.CULTURE_EN_US);
-            _dataProvider.Setup(d => d.GetPortalSettings(It.IsAny<int>(), It.IsAny<string>())).Returns(_dtPortalSettings.CreateDataReader());
+            this._dtPortalSettings.Clear();
+            this._dtPortalSettings.Rows.Add(Constants.PORTALSETTING_MessagingAllowAttachments_Name, Constants.PORTALSETTING_MessagingAllowAttachments_Value_NO, Constants.CULTURE_EN_US);
+            this._dataProvider.Setup(d => d.GetPortalSettings(It.IsAny<int>(), It.IsAny<string>())).Returns(this._dtPortalSettings.CreateDataReader());
 
-            _dtMessageRecipients.Clear();
-            mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), It.IsAny<int>())).Returns(_dtMessageRecipients.CreateDataReader());
+            this._dtMessageRecipients.Clear();
+            mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), It.IsAny<int>())).Returns(this._dtMessageRecipients.CreateDataReader());
 
             //Act
-            messagingController.SendMessage(message, null, new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, _user12UserInfo);
+            messagingController.SendMessage(message, null, new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, this._user12UserInfo);
         }
 
         [Test]
@@ -568,27 +568,27 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var user = new UserInfo { DisplayName = "user1", UserID = Constants.USER_TenId };
             var role = new RoleInfo { RoleName = "role1" };
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), _adminUserInfo.UserID))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), this._adminUserInfo.UserID))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(true);
+            this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(true);
 
-            InternalMessagingController.SetTestableInstance(_mockInternalMessagingController.Object);
-            _mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
+            InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
+            this._mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
 
             //Act
-            _mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, _adminUserInfo);
+            this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, this._adminUserInfo);
 
             //Assert
-            _mockDataService.Verify(ds => ds.SaveMessage(It.Is<Message>(v => v.PortalID == Constants.PORTAL_Zero && v.Subject == "subject"
+            this._mockDataService.Verify(ds => ds.SaveMessage(It.Is<Message>(v => v.PortalID == Constants.PORTAL_Zero && v.Subject == "subject"
                                                                              && v.Body == "body"
                                                                              && v.To == "role1,user1"
-                                                                             && v.SenderUserID == _adminUserInfo.UserID)
+                                                                             && v.SenderUserID == this._adminUserInfo.UserID)
                                                                , It.IsAny<int>()
                                                                , It.IsAny<int>()));
         }
@@ -601,23 +601,23 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var role = new RoleInfo { RoleName = "role1" };
             var message = new Message { Subject = "subject", Body = "body" };
 
-            _dtMessageRecipients.Clear();
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), It.IsAny<int>())).Returns(_dtMessageRecipients.CreateDataReader());
+            this._dtMessageRecipients.Clear();
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), It.IsAny<int>())).Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockMessagingController
+            this._mockMessagingController
                 .Setup(mc => mc.GetPortalSetting("MessagingProfanityFilters", It.IsAny<int>(), It.IsAny<string>()))
                 .Returns("YES");
 
-            _mockMessagingController.Setup(mc => mc.InputFilter("subject")).Returns("subject_filtered");
-            _mockMessagingController.Setup(mc => mc.InputFilter("body")).Returns("body_filtered");
-            _mockInternalMessagingController.Setup(mc => mc.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>()));
-            _mockMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(true);
+            this._mockMessagingController.Setup(mc => mc.InputFilter("subject")).Returns("subject_filtered");
+            this._mockMessagingController.Setup(mc => mc.InputFilter("body")).Returns("body_filtered");
+            this._mockInternalMessagingController.Setup(mc => mc.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>()));
+            this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(true);
 
-            InternalMessagingController.SetTestableInstance(_mockInternalMessagingController.Object);
-            _mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
+            InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
+            this._mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
 
             //Act
-            _mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, _adminUserInfo);
+            this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, this._adminUserInfo);
 
             //Assert
             Assert.AreEqual("subject_filtered", message.Subject);
@@ -632,28 +632,28 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var role = new RoleInfo { RoleName = "role1" };
             var message = new Message { Subject = "subject", Body = "body" };
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), _adminUserInfo.UserID))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), this._adminUserInfo.UserID))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
             //this pattern is based on: http://dpwhelan.com/blog/software-development/moq-sequences/
             var callingSequence = 0;
 
             //Arrange for Assert
-            _mockDataService.Setup(ds => ds.CreateMessageRecipientsForRole(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>())).Callback(() => Assert.That(callingSequence++, Is.EqualTo(0)));
-            _mockDataService.Setup(ds => ds.SaveMessageRecipient(It.IsAny<MessageRecipient>(), It.IsAny<int>())).Callback(() => Assert.That(callingSequence++, Is.GreaterThan(0)));
+            this._mockDataService.Setup(ds => ds.CreateMessageRecipientsForRole(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>())).Callback(() => Assert.That(callingSequence++, Is.EqualTo(0)));
+            this._mockDataService.Setup(ds => ds.SaveMessageRecipient(It.IsAny<MessageRecipient>(), It.IsAny<int>())).Callback(() => Assert.That(callingSequence++, Is.GreaterThan(0)));
 
-            _mockMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(true);
+            this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(true);
 
-            InternalMessagingController.SetTestableInstance(_mockInternalMessagingController.Object);
-            _mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
+            InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
+            this._mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
 
             //Act
-            _mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, _adminUserInfo);
+            this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, this._adminUserInfo);
 
             //SaveMessageRecipient is called twice, one for sent message and second for receive                        
         }
@@ -668,18 +668,18 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var mockDataService = new Mock<IDataService>();
             var messagingController = new MessagingController(mockDataService.Object);
 
-            _mockInternalMessagingController.Setup(mc => mc.GetPortalSettingAsDouble(It.IsAny<string>(), _user12UserInfo.PortalID, It.IsAny<double>())).Returns(0);
+            this._mockInternalMessagingController.Setup(mc => mc.GetPortalSettingAsDouble(It.IsAny<string>(), this._user12UserInfo.PortalID, It.IsAny<double>())).Returns(0);
 
             mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
             mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_ElevenId))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            InternalMessagingController.SetTestableInstance(_mockInternalMessagingController.Object);
-            _mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
+            InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
+            this._mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
 
             //Act
             messagingController.SendMessage(message, new List<RoleInfo>(), new List<UserInfo> { user }, null, sender);
@@ -699,18 +699,18 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var mockDataService = new Mock<IDataService>();
             var messagingController = new MessagingController(mockDataService.Object);
 
-            _mockInternalMessagingController.Setup(mc => mc.GetPortalSettingAsDouble(It.IsAny<string>(), _user12UserInfo.PortalID, It.IsAny<double>())).Returns(0);
+            this._mockInternalMessagingController.Setup(mc => mc.GetPortalSettingAsDouble(It.IsAny<string>(), this._user12UserInfo.PortalID, It.IsAny<double>())).Returns(0);
 
-            _dtMessageRecipients.Clear();
+            this._dtMessageRecipients.Clear();
             var recipientId = 0;
             //_dtMessageRecipients.Rows.Add(Constants.Messaging_RecipientId_2, Constants.USER_Null, Constants.Messaging_UnReadMessage, Constants.Messaging_UnArchivedMessage);
 
             mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), It.IsAny<int>()))
-                .Callback(() => _dtMessageRecipients.Rows.Add(recipientId++, Constants.USER_Null, Constants.Messaging_UnReadMessage, Constants.Messaging_UnArchivedMessage))
-                .Returns(() => _dtMessageRecipients.CreateDataReader());
+                .Callback(() => this._dtMessageRecipients.Rows.Add(recipientId++, Constants.USER_Null, Constants.Messaging_UnReadMessage, Constants.Messaging_UnArchivedMessage))
+                .Returns(() => this._dtMessageRecipients.CreateDataReader());
 
-            InternalMessagingController.SetTestableInstance(_mockInternalMessagingController.Object);
-            _mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
+            InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
+            this._mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
 
             //Act
             messagingController.SendMessage(message, new List<RoleInfo>(), new List<UserInfo> { user10, user11 }, null, sender);
@@ -726,13 +726,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var message = new Message { Subject = "subject", Body = "body" };
             var role = new RoleInfo { RoleName = Constants.RoleName_Administrators };
 
-            _dtMessageRecipients.Clear();
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), It.IsAny<int>())).Returns(_dtMessageRecipients.CreateDataReader());
+            this._dtMessageRecipients.Clear();
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), It.IsAny<int>())).Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(true);
+            this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(true);
 
             //Act
-            _mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo>(), null, _adminUserInfo);
+            this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo>(), null, this._adminUserInfo);
 
             //Assert
             Assert.AreEqual(message.To, Constants.RoleName_Administrators);
@@ -746,13 +746,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var role1 = new RoleInfo { RoleName = Constants.RoleName_Administrators };
             var role2 = new RoleInfo { RoleName = Constants.RoleName_Subscribers };
 
-            _dtMessageRecipients.Clear();
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), It.IsAny<int>())).Returns(_dtMessageRecipients.CreateDataReader());
+            this._dtMessageRecipients.Clear();
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), It.IsAny<int>())).Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(true);
+            this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(true);
 
             //Act
-            _mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role1, role2 }, new List<UserInfo>(), null, _adminUserInfo);
+            this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role1, role2 }, new List<UserInfo>(), null, this._adminUserInfo);
 
             //Assert
             Assert.AreEqual(message.To, Constants.RoleName_Administrators + "," + Constants.RoleName_Subscribers);
@@ -766,50 +766,50 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var user = new UserInfo { DisplayName = "user1", UserID = Constants.USER_TenId };
             var role = new RoleInfo { RoleName = "role1" };
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), _adminUserInfo.UserID))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), this._adminUserInfo.UserID))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(true);
+            this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(true);
 
-            InternalMessagingController.SetTestableInstance(_mockInternalMessagingController.Object);
-            _mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
+            InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
+            this._mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
 
             //Act
-            _mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, _adminUserInfo);
+            this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, this._adminUserInfo);
 
             //Assert
-            _mockDataService.Verify(ds => ds.SaveMessageAttachment(It.Is<MessageAttachment>(v => v.MessageID == message.MessageID), It.IsAny<int>()));
+            this._mockDataService.Verify(ds => ds.SaveMessageAttachment(It.Is<MessageAttachment>(v => v.MessageID == message.MessageID), It.IsAny<int>()));
         }
 
         [Test]
         public void MessagingController_CreateMessage_Calls_DataService_CreateSocialMessageRecipientsForRole_On_Passing_Role_ByAdmin()
         {
-            InternalMessagingController.SetTestableInstance(_mockInternalMessagingController.Object);
+            InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
 
             //Arrange
             var message = new Message { Subject = "subject", Body = "body" };
             var role = new RoleInfo { RoleName = Constants.RoleName_RegisteredUsers, RoleID = Constants.RoleID_RegisteredUsers };
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), _user12UserInfo.UserID))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), this._user12UserInfo.UserID))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), _adminUserInfo.UserID))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), this._adminUserInfo.UserID))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(true);
+            this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(true);
 
             //Act
-            _mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { _user12UserInfo }, new List<int> { Constants.FOLDER_ValidFileId }, _adminUserInfo);
+            this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { this._user12UserInfo }, new List<int> { Constants.FOLDER_ValidFileId }, this._adminUserInfo);
 
             //Assert
-            _mockDataService.Verify(ds => ds.CreateMessageRecipientsForRole(message.MessageID, Constants.RoleID_RegisteredUsers.ToString(), It.IsAny<int>()));
+            this._mockDataService.Verify(ds => ds.CreateMessageRecipientsForRole(message.MessageID, Constants.RoleID_RegisteredUsers.ToString(), It.IsAny<int>()));
         }
 
         [Test]
@@ -822,19 +822,19 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var mockDataService = new Mock<IDataService>();
             var messagingController = new MessagingController(mockDataService.Object);
 
-            mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), _user12UserInfo.UserID))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), this._user12UserInfo.UserID))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), _hostUserInfo.UserID))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), this._hostUserInfo.UserID))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            InternalMessagingController.SetTestableInstance(_mockInternalMessagingController.Object);
-            _mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
+            InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
+            this._mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
 
             //Act
-            messagingController.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { _user12UserInfo }, new List<int> { Constants.FOLDER_ValidFileId }, _hostUserInfo);
+            messagingController.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { this._user12UserInfo }, new List<int> { Constants.FOLDER_ValidFileId }, this._hostUserInfo);
 
             //Assert
             mockDataService.Verify(ds => ds.CreateMessageRecipientsForRole(message.MessageID, Constants.RoleID_RegisteredUsers.ToString(), It.IsAny<int>()));
@@ -849,24 +849,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var role1 = new RoleInfo { RoleName = "role1", RoleID = Constants.RoleID_RegisteredUsers };
             var role2 = new RoleInfo { RoleName = "role2", RoleID = Constants.RoleID_Administrators };
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), _adminUserInfo.UserID))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), this._adminUserInfo.UserID))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(true);
+            this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(true);
 
-            InternalMessagingController.SetTestableInstance(_mockInternalMessagingController.Object);
-            _mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
+            InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
+            this._mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
 
             //Act
-            _mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role1, role2 }, new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, _adminUserInfo);
+            this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role1, role2 }, new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, this._adminUserInfo);
 
             //Assert
-            _mockDataService.Verify(ds => ds.CreateMessageRecipientsForRole(message.MessageID, Constants.RoleID_RegisteredUsers + "," + Constants.RoleID_Administrators, It.IsAny<int>()));
+            this._mockDataService.Verify(ds => ds.CreateMessageRecipientsForRole(message.MessageID, Constants.RoleID_RegisteredUsers + "," + Constants.RoleID_Administrators, It.IsAny<int>()));
         }
 
         [Test]
@@ -877,24 +877,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var user = new UserInfo { DisplayName = "user1", UserID = Constants.USER_TenId };
             var role = new RoleInfo { RoleName = Constants.RoleName_FirstSocialGroup, RoleID = Constants.RoleID_FirstSocialGroup };
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), _adminUserInfo.UserID))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), this._adminUserInfo.UserID))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockInternalMessagingController.Setup(mc => mc.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>()));
+            this._mockInternalMessagingController.Setup(mc => mc.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>()));
 
-            InternalMessagingController.SetTestableInstance(_mockInternalMessagingController.Object);
-            _mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
+            InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
+            this._mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
 
             //Act
-            _mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, _groupOwnerUserInfo);
+            this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, this._groupOwnerUserInfo);
 
             //Assert
-            _mockDataService.Verify(ds => ds.CreateMessageRecipientsForRole(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>()));
+            this._mockDataService.Verify(ds => ds.CreateMessageRecipientsForRole(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>()));
         }
 
         [Test]
@@ -905,24 +905,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var user = new UserInfo { DisplayName = "user1", UserID = Constants.USER_TenId };
             var role = new RoleInfo { RoleName = "role1" };
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), _adminUserInfo.UserID))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), this._adminUserInfo.UserID))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(true);
+            this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(true);
 
-            InternalMessagingController.SetTestableInstance(_mockInternalMessagingController.Object);
-            _mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
+            InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
+            this._mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
 
             //Act
-            _mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, _adminUserInfo);
+            this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, this._adminUserInfo);
 
             //Assert
-            _mockDataService.Verify(ds => ds.SaveMessageRecipient(It.Is<MessageRecipient>(v => v.MessageID == message.MessageID && v.UserID == user.UserID), It.IsAny<int>()));
+            this._mockDataService.Verify(ds => ds.SaveMessageRecipient(It.Is<MessageRecipient>(v => v.MessageID == message.MessageID && v.UserID == user.UserID), It.IsAny<int>()));
         }
 
         [Test]
@@ -933,21 +933,21 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var user = new UserInfo { DisplayName = "user1", UserID = Constants.USER_TenId };
             var role = new RoleInfo { RoleName = "role1", RoleID = Constants.RoleID_RegisteredUsers };
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), _adminUserInfo.UserID))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), this._adminUserInfo.UserID))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(true);
+            this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(true);
 
-            InternalMessagingController.SetTestableInstance(_mockInternalMessagingController.Object);
-            _mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
+            InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
+            this._mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
 
             //Act
-            _mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, _adminUserInfo);
+            this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, this._adminUserInfo);
 
             //Assert
             Assert.AreEqual(message.ReplyAllAllowed, false);
@@ -963,18 +963,18 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var messagingController = new MessagingController(mockDataService.Object);
 
             mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), _adminUserInfo.UserID))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), this._adminUserInfo.UserID))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            InternalMessagingController.SetTestableInstance(_mockInternalMessagingController.Object);
-            _mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
+            InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
+            this._mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
 
             //Act
-            messagingController.SendMessage(message, new List<RoleInfo>(), new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, _adminUserInfo);
+            messagingController.SendMessage(message, new List<RoleInfo>(), new List<UserInfo> { user }, new List<int> { Constants.FOLDER_ValidFileId }, this._adminUserInfo);
 
             //Assert
             Assert.AreEqual(message.ReplyAllAllowed, true);
@@ -988,24 +988,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var user = new UserInfo { DisplayName = "user1", UserID = Constants.USER_TenId };
             var role = new RoleInfo { RoleName = "role1" };
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), _adminUserInfo.UserID))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), this._adminUserInfo.UserID))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(true);
+            this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(true);
 
-            InternalMessagingController.SetTestableInstance(_mockInternalMessagingController.Object);
-            _mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
+            InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
+            this._mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
 
             //Act
-            _mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, _adminUserInfo);
+            this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, this._adminUserInfo);
 
             //Assert
-            _mockDataService.Verify(ds => ds.SaveMessageRecipient(It.Is<MessageRecipient>(v => v.MessageID == message.MessageID && v.UserID == _adminUserInfo.UserID), It.IsAny<int>()));
+            this._mockDataService.Verify(ds => ds.SaveMessageRecipient(It.Is<MessageRecipient>(v => v.MessageID == message.MessageID && v.UserID == this._adminUserInfo.UserID), It.IsAny<int>()));
         }
 
         [Test]
@@ -1016,26 +1016,26 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var user = new UserInfo { DisplayName = "user1", UserID = Constants.USER_TenId };
             var role = new RoleInfo { RoleName = "role1" };
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), _adminUserInfo.UserID))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), this._adminUserInfo.UserID))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(true);
+            this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(true);
 
-            InternalMessagingController.SetTestableInstance(_mockInternalMessagingController.Object);
-            _mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
+            InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
+            this._mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
 
-            _mockDataService.Setup(ds => ds.SaveMessageRecipient(It.Is<MessageRecipient>(mr => mr.UserID == _adminUserInfo.UserID), It.IsAny<int>())).Returns(Constants.Messaging_RecipientId_1);
+            this._mockDataService.Setup(ds => ds.SaveMessageRecipient(It.Is<MessageRecipient>(mr => mr.UserID == this._adminUserInfo.UserID), It.IsAny<int>())).Returns(Constants.Messaging_RecipientId_1);
 
             //Act
-            _mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, _adminUserInfo);
+            this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, this._adminUserInfo);
 
             //Assert
-            _mockInternalMessagingController.Verify(imc => imc.MarkMessageAsDispatched(It.IsAny<int>(), Constants.Messaging_RecipientId_1));
+            this._mockInternalMessagingController.Verify(imc => imc.MarkMessageAsDispatched(It.IsAny<int>(), Constants.Messaging_RecipientId_1));
         }
 
         [Test]
@@ -1046,26 +1046,26 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var user = new UserInfo { DisplayName = "user1", UserID = Constants.USER_TenId };
             var role = new RoleInfo { RoleName = "role1" };
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), Constants.USER_TenId))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), _adminUserInfo.UserID))
-                .Callback(SetupDataTables)
-                .Returns(_dtMessageRecipients.CreateDataReader());
+            this._mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), this._adminUserInfo.UserID))
+                .Callback(this.SetupDataTables)
+                .Returns(this._dtMessageRecipients.CreateDataReader());
 
-            _mockMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(true);
+            this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(true);
 
-            InternalMessagingController.SetTestableInstance(_mockInternalMessagingController.Object);
-            _mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
+            InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
+            this._mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
 
-            _mockDataService.Setup(ds => ds.SaveMessageRecipient(It.Is<MessageRecipient>(mr => mr.UserID == _adminUserInfo.UserID), It.IsAny<int>())).Returns(Constants.Messaging_RecipientId_1);
+            this._mockDataService.Setup(ds => ds.SaveMessageRecipient(It.Is<MessageRecipient>(mr => mr.UserID == this._adminUserInfo.UserID), It.IsAny<int>())).Returns(Constants.Messaging_RecipientId_1);
 
             //Act
-            _mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user, _adminUserInfo }, null, _adminUserInfo);
+            this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user, this._adminUserInfo }, null, this._adminUserInfo);
 
             //Assert
-            _mockInternalMessagingController.Verify(imc => imc.MarkMessageAsDispatched(It.IsAny<int>(), Constants.Messaging_RecipientId_1), Times.Never());
+            this._mockInternalMessagingController.Verify(imc => imc.MarkMessageAsDispatched(It.IsAny<int>(), Constants.Messaging_RecipientId_1), Times.Never());
         }
 
         #endregion
@@ -1079,7 +1079,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             //Arrange
 
             //Act
-            _internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, "body", null, null);
+            this._internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, "body", null, null);
         }
 
         [Test]
@@ -1090,7 +1090,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var sender = new UserInfo { DisplayName = "user11" };
 
             //Act            
-            _internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, "body", null, sender);
+            this._internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, "body", null, sender);
         }
 
         [Test]
@@ -1101,7 +1101,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var sender = new UserInfo { DisplayName = "user11", UserID = Constants.USER_TenId };
 
             //Act, Assert
-            _internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, null, null, sender);
+            this._internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, null, null, sender);
         }
 
         [Test]
@@ -1112,7 +1112,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var sender = new UserInfo { DisplayName = "user11", UserID = Constants.USER_TenId };
 
             //Act, Assert
-            _internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, "", null, sender);
+            this._internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, "", null, sender);
         }
 
         [Test]
@@ -1122,11 +1122,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             //Arrange
             var sender = new UserInfo { DisplayName = "user11", UserID = Constants.USER_TenId, PortalID = Constants.PORTAL_Zero };
 
-            InternalMessagingController.SetTestableInstance(_mockInternalMessagingController.Object);
-            _mockInternalMessagingController.Setup(imc => imc.AttachmentsAllowed(Constants.PORTAL_Zero)).Returns(false);
+            InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
+            this._mockInternalMessagingController.Setup(imc => imc.AttachmentsAllowed(Constants.PORTAL_Zero)).Returns(false);
 
             //Act, Assert
-            _internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, "body", new List<int> { Constants.FOLDER_ValidFileId }, sender);
+            this._internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, "body", new List<int> { Constants.FOLDER_ValidFileId }, sender);
         }
 
         [Test]
@@ -1135,20 +1135,20 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             //Arrange
             var sender = new UserInfo { DisplayName = "user11", UserID = Constants.USER_TenId, PortalID = Constants.PORTAL_Zero };
 
-            DataService.RegisterInstance(_mockDataService.Object);
+            DataService.RegisterInstance(this._mockDataService.Object);
 
-            _mockMessagingController.Setup(mc => mc.InputFilter("body")).Returns("body_filtered");
-            _mockMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(new UserInfo());
+            this._mockMessagingController.Setup(mc => mc.InputFilter("body")).Returns("body_filtered");
+            this._mockMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(new UserInfo());
 
-            _mockMessagingController
+            this._mockMessagingController
                 .Setup(mc => mc.GetPortalSetting("MessagingProfanityFilters", It.IsAny<int>(), It.IsAny<string>()))
                 .Returns("YES");
 
-            _mockInternalMessagingController.Setup(imc => imc.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns(new MessageRecipient());
+            this._mockInternalMessagingController.Setup(imc => imc.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns(new MessageRecipient());
 
-            _mockInternalMessagingController.Object.ReplyMessage(0, "body", null, sender);
+            this._mockInternalMessagingController.Object.ReplyMessage(0, "body", null, sender);
 
-            _mockDataService.Verify(ds => ds.CreateMessageReply(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>()));
+            this._mockDataService.Verify(ds => ds.CreateMessageReply(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>()));
         }
 
         [Test]
@@ -1158,18 +1158,18 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             //Arrange
             var sender = new UserInfo { DisplayName = "user11", UserID = Constants.USER_TenId, PortalID = Constants.PORTAL_Zero };
 
-            DataService.RegisterInstance(_mockDataService.Object);
+            DataService.RegisterInstance(this._mockDataService.Object);
 
-            _mockMessagingController.Setup(mc => mc.InputFilter("body")).Returns("body_filtered");
-            _mockMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(new UserInfo());
+            this._mockMessagingController.Setup(mc => mc.InputFilter("body")).Returns("body_filtered");
+            this._mockMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(new UserInfo());
 
-            _mockMessagingController
+            this._mockMessagingController
                 .Setup(mc => mc.GetPortalSetting("MessagingProfanityFilters", It.IsAny<int>(), It.IsAny<string>()))
                 .Returns("NO");
 
-            _mockDataService.Setup(ds => ds.CreateMessageReply(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>())).Returns(-1);
+            this._mockDataService.Setup(ds => ds.CreateMessageReply(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>())).Returns(-1);
 
-            _mockInternalMessagingController.Object.ReplyMessage(0, "body", null, sender);
+            this._mockInternalMessagingController.Object.ReplyMessage(0, "body", null, sender);
         }
 
         [Test]
@@ -1178,20 +1178,20 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             //Arrange
             var sender = new UserInfo { DisplayName = "user11", UserID = Constants.USER_TenId, PortalID = Constants.PORTAL_Zero };
 
-            DataService.RegisterInstance(_mockDataService.Object);
+            DataService.RegisterInstance(this._mockDataService.Object);
 
-            _mockMessagingController.Setup(mc => mc.InputFilter("body")).Returns("body_filtered");
-            _mockMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(new UserInfo());
+            this._mockMessagingController.Setup(mc => mc.InputFilter("body")).Returns("body_filtered");
+            this._mockMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(new UserInfo());
 
-            _mockMessagingController
+            this._mockMessagingController
                 .Setup(mc => mc.GetPortalSetting("MessagingProfanityFilters", It.IsAny<int>(), It.IsAny<string>()))
                 .Returns("NO");
 
-            _mockInternalMessagingController.Setup(imc => imc.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns(new MessageRecipient());
+            this._mockInternalMessagingController.Setup(imc => imc.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns(new MessageRecipient());
 
-            _mockInternalMessagingController.Object.ReplyMessage(0, "body", null, sender);
+            this._mockInternalMessagingController.Object.ReplyMessage(0, "body", null, sender);
 
-            _mockInternalMessagingController.Verify(imc => imc.MarkRead(It.IsAny<int>(), sender.UserID));
+            this._mockInternalMessagingController.Verify(imc => imc.MarkRead(It.IsAny<int>(), sender.UserID));
         }
 
         [Test]
@@ -1200,20 +1200,20 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             //Arrange
             var sender = new UserInfo { DisplayName = "user11", UserID = Constants.USER_TenId, PortalID = Constants.PORTAL_Zero };
 
-            DataService.RegisterInstance(_mockDataService.Object);
+            DataService.RegisterInstance(this._mockDataService.Object);
 
-            _mockMessagingController.Setup(mc => mc.InputFilter("body")).Returns("body_filtered");
-            _mockMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(new UserInfo());
+            this._mockMessagingController.Setup(mc => mc.InputFilter("body")).Returns("body_filtered");
+            this._mockMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(new UserInfo());
 
-            _mockMessagingController
+            this._mockMessagingController
                 .Setup(mc => mc.GetPortalSetting("MessagingProfanityFilters", It.IsAny<int>(), It.IsAny<string>()))
                 .Returns("NO");
 
-            _mockInternalMessagingController.Setup(imc => imc.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns(new MessageRecipient { RecipientID = Constants.Messaging_RecipientId_1 });
+            this._mockInternalMessagingController.Setup(imc => imc.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns(new MessageRecipient { RecipientID = Constants.Messaging_RecipientId_1 });
 
-            _mockInternalMessagingController.Object.ReplyMessage(0, "body", null, sender);
+            this._mockInternalMessagingController.Object.ReplyMessage(0, "body", null, sender);
 
-            _mockInternalMessagingController.Verify(imc => imc.MarkMessageAsDispatched(It.IsAny<int>(), Constants.Messaging_RecipientId_1));
+            this._mockInternalMessagingController.Verify(imc => imc.MarkMessageAsDispatched(It.IsAny<int>(), Constants.Messaging_RecipientId_1));
         }
 
         #endregion
@@ -1228,10 +1228,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var user = new UserInfo { DisplayName = "user1", UserID = Constants.USER_TenId };
 
             //Act
-            _internalMessagingController.MarkRead(messageInstance.ConversationId, user.UserID);
+            this._internalMessagingController.MarkRead(messageInstance.ConversationId, user.UserID);
 
             //Assert
-            _mockDataService.Verify(ds => ds.UpdateMessageReadStatus(messageInstance.ConversationId, user.UserID, true));
+            this._mockDataService.Verify(ds => ds.UpdateMessageReadStatus(messageInstance.ConversationId, user.UserID, true));
         }
 
         [Test]
@@ -1242,10 +1242,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var user = new UserInfo { DisplayName = "user1", UserID = Constants.USER_TenId };
 
             //Act
-            _internalMessagingController.MarkUnRead(messageInstance.ConversationId, user.UserID);
+            this._internalMessagingController.MarkUnRead(messageInstance.ConversationId, user.UserID);
 
             //Assert
-            _mockDataService.Verify(ds => ds.UpdateMessageReadStatus(messageInstance.ConversationId, user.UserID, false));
+            this._mockDataService.Verify(ds => ds.UpdateMessageReadStatus(messageInstance.ConversationId, user.UserID, false));
         }
 
         [Test]
@@ -1256,10 +1256,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var user = new UserInfo { DisplayName = "user1", UserID = Constants.USER_TenId };
 
             //Act
-            _internalMessagingController.MarkArchived(messageInstance.ConversationId, user.UserID);
+            this._internalMessagingController.MarkArchived(messageInstance.ConversationId, user.UserID);
 
             //Assert
-            _mockDataService.Verify(ds => ds.UpdateMessageArchivedStatus(messageInstance.ConversationId, user.UserID, true));
+            this._mockDataService.Verify(ds => ds.UpdateMessageArchivedStatus(messageInstance.ConversationId, user.UserID, true));
         }
 
         [Test]
@@ -1270,10 +1270,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var user = new UserInfo { DisplayName = "user1", UserID = Constants.USER_TenId };
 
             //Act
-            _internalMessagingController.MarkUnArchived(messageInstance.ConversationId, user.UserID);
+            this._internalMessagingController.MarkUnArchived(messageInstance.ConversationId, user.UserID);
 
             //Assert
-            _mockDataService.Verify(ds => ds.UpdateMessageArchivedStatus(messageInstance.ConversationId, user.UserID, false));
+            this._mockDataService.Verify(ds => ds.UpdateMessageArchivedStatus(messageInstance.ConversationId, user.UserID, false));
         }
 
         #endregion
@@ -1283,15 +1283,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void GetSocialMessageRecipient_Calls_DataService_GetSocialMessageRecipientByMessageAndUser()
         {
-            _dtMessageRecipients.Clear();
-            _mockDataService
+            this._dtMessageRecipients.Clear();
+            this._mockDataService
                 .Setup(ds => ds.GetMessageRecipientByMessageAndUser(Constants.Messaging_MessageId_1, Constants.UserID_User12))
-                .Returns(_dtMessageRecipients.CreateDataReader())
+                .Returns(this._dtMessageRecipients.CreateDataReader())
                 .Verifiable();
 
-            _internalMessagingController.GetMessageRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12);
+            this._internalMessagingController.GetMessageRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12);
 
-            _mockDataService.Verify();
+            this._mockDataService.Verify();
         }
 
         #endregion
@@ -1302,16 +1302,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [ExpectedException(typeof(ArgumentNullException))]
         public void WaitTimeForNextMessage_Throws_On_Null_Sender()
         {
-            _internalMessagingController.WaitTimeForNextMessage(null);
+            this._internalMessagingController.WaitTimeForNextMessage(null);
         }
 
         [Test]
         public void WaitTimeForNextMessage_Returns_Zero_When_MessagingThrottlingInterval_Is_Zero()
         {
-            _user12UserInfo.PortalID = Constants.CONTENT_ValidPortalId;
-            _mockMessagingController.Setup(mc => mc.GetPortalSettingAsDouble(It.IsAny<string>(), _user12UserInfo.PortalID, 0.5)).Returns(0.5);
+            this._user12UserInfo.PortalID = Constants.CONTENT_ValidPortalId;
+            this._mockMessagingController.Setup(mc => mc.GetPortalSettingAsDouble(It.IsAny<string>(), this._user12UserInfo.PortalID, 0.5)).Returns(0.5);
 
-            var result = _mockInternalMessagingController.Object.WaitTimeForNextMessage(_user12UserInfo);
+            var result = this._mockInternalMessagingController.Object.WaitTimeForNextMessage(this._user12UserInfo);
 
             Assert.AreEqual(0, result);
         }
@@ -1319,12 +1319,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void WaitTimeForNextMessage_Returns_Zero_When_Sender_Is_Admin_Or_Host()
         {
-            _adminUserInfo.PortalID = Constants.CONTENT_ValidPortalId;
+            this._adminUserInfo.PortalID = Constants.CONTENT_ValidPortalId;
 
-            _mockMessagingController.Setup(mc => mc.GetPortalSettingAsInteger(It.IsAny<string>(), _adminUserInfo.PortalID, Null.NullInteger)).Returns(1);
-            _mockMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(true);
+            this._mockMessagingController.Setup(mc => mc.GetPortalSettingAsInteger(It.IsAny<string>(), this._adminUserInfo.PortalID, Null.NullInteger)).Returns(1);
+            this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(true);
 
-            var result = _mockInternalMessagingController.Object.WaitTimeForNextMessage(_adminUserInfo);
+            var result = this._mockInternalMessagingController.Object.WaitTimeForNextMessage(this._adminUserInfo);
 
             Assert.AreEqual(0, result);
         }
@@ -1332,14 +1332,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void WaitTimeForNextMessage_Returns_Zero_When_The_User_Has_No_Previous_Conversations()
         {
-            _user12UserInfo.PortalID = Constants.CONTENT_ValidPortalId;
+            this._user12UserInfo.PortalID = Constants.CONTENT_ValidPortalId;
 
-            _mockMessagingController.Setup(mc => mc.GetPortalSettingAsInteger(It.IsAny<string>(), _user12UserInfo.PortalID, Null.NullInteger)).Returns(1);
-            _mockMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(false);
+            this._mockMessagingController.Setup(mc => mc.GetPortalSettingAsInteger(It.IsAny<string>(), this._user12UserInfo.PortalID, Null.NullInteger)).Returns(1);
+            this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(false);
 
-            _mockInternalMessagingController.Setup(mc => mc.GetLastSentMessage(_user12UserInfo)).Returns((Message) null);
+            this._mockInternalMessagingController.Setup(mc => mc.GetLastSentMessage(this._user12UserInfo)).Returns((Message) null);
 
-            var result = _mockInternalMessagingController.Object.WaitTimeForNextMessage(_user12UserInfo);
+            var result = this._mockInternalMessagingController.Object.WaitTimeForNextMessage(this._user12UserInfo);
 
             Assert.AreEqual(0, result);
         }
@@ -1353,16 +1353,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var culture = CultureInfo.GetCultureInfo("en-US");
             var actualDate = DateTime.Parse(actualDateString, culture);
             var lastMessageDate = DateTime.Parse(lastMessageDateString, culture);
-            _user12UserInfo.PortalID = Constants.CONTENT_ValidPortalId;
-            _mockInternalMessagingController.Setup(mc => mc.GetPortalSettingAsDouble(It.IsAny<string>(), _user12UserInfo.PortalID, It.IsAny<double>())).Returns(throttlingInterval);
-            _mockInternalMessagingController.Setup(mc => mc.IsAdminOrHost(_adminUserInfo)).Returns(false);
-            _dtMessages.Clear();
-            _dtMessages.Rows.Add(-1, 1, 1, "", "", "", "", -1, -1, -1, -1, lastMessageDate, -1, Null.NullDate);
-            var dr = _dtMessages.CreateDataReader();
+            this._user12UserInfo.PortalID = Constants.CONTENT_ValidPortalId;
+            this._mockInternalMessagingController.Setup(mc => mc.GetPortalSettingAsDouble(It.IsAny<string>(), this._user12UserInfo.PortalID, It.IsAny<double>())).Returns(throttlingInterval);
+            this._mockInternalMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(false);
+            this._dtMessages.Clear();
+            this._dtMessages.Rows.Add(-1, 1, 1, "", "", "", "", -1, -1, -1, -1, lastMessageDate, -1, Null.NullDate);
+            var dr = this._dtMessages.CreateDataReader();
             var message = CBO.FillObject<Message>(dr);
-            _mockInternalMessagingController.Setup(mc => mc.GetLastSentMessage(It.IsAny<UserInfo>())).Returns(message);
-            _mockInternalMessagingController.Setup(mc => mc.GetDateTimeNow()).Returns(actualDate);
-            var result = _mockInternalMessagingController.Object.WaitTimeForNextMessage(_user12UserInfo);
+            this._mockInternalMessagingController.Setup(mc => mc.GetLastSentMessage(It.IsAny<UserInfo>())).Returns(message);
+            this._mockInternalMessagingController.Setup(mc => mc.GetDateTimeNow()).Returns(actualDate);
+            var result = this._mockInternalMessagingController.Object.WaitTimeForNextMessage(this._user12UserInfo);
 
             Assert.AreEqual(expected, result);
         }
@@ -1374,28 +1374,28 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void GetInbox_Calls_DataService_GetMessageBoxView()
         {
-            DataService.RegisterInstance(_mockDataService.Object);
+            DataService.RegisterInstance(this._mockDataService.Object);
 
-            _dtMessageConversationView.Clear();
+            this._dtMessageConversationView.Clear();
 
-            _user12UserInfo.PortalID = Constants.PORTAL_Zero;
+            this._user12UserInfo.PortalID = Constants.PORTAL_Zero;
 
-            _mockInternalMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(_user12UserInfo);
-            _mockDataService.Setup(ds => ds.GetInBoxView(It.IsAny<int>(), Constants.PORTAL_Zero, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), MessageReadStatus.Any, MessageArchivedStatus.Any, MessageSentStatus.Received)).Returns(_dtMessageConversationView.CreateDataReader()).Verifiable();
-            _mockInternalMessagingController.Object.GetInbox(0, 0, 0, "", false, MessageReadStatus.Any, MessageArchivedStatus.Any);
-            _mockDataService.Verify();
+            this._mockInternalMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(this._user12UserInfo);
+            this._mockDataService.Setup(ds => ds.GetInBoxView(It.IsAny<int>(), Constants.PORTAL_Zero, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), MessageReadStatus.Any, MessageArchivedStatus.Any, MessageSentStatus.Received)).Returns(this._dtMessageConversationView.CreateDataReader()).Verifiable();
+            this._mockInternalMessagingController.Object.GetInbox(0, 0, 0, "", false, MessageReadStatus.Any, MessageArchivedStatus.Any);
+            this._mockDataService.Verify();
         }
 
         [Test]
         public void GetInbox_Calls_Overload_With_Default_Values()
         {
-            _mockInternalMessagingController
+            this._mockInternalMessagingController
                 .Setup(mc => mc.GetInbox(Constants.UserID_User12, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), MessageReadStatus.Any, MessageArchivedStatus.UnArchived))
                 .Verifiable();
 
-            _mockInternalMessagingController.Object.GetInbox(Constants.UserID_User12, 0, 0, "", false);
+            this._mockInternalMessagingController.Object.GetInbox(Constants.UserID_User12, 0, 0, "", false);
 
-            _mockInternalMessagingController.Verify();
+            this._mockInternalMessagingController.Verify();
         }
 
         #endregion
@@ -1405,25 +1405,25 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void GetRecentInbox_Calls_GetInbox_With_Default_Values()
         {
-            _mockInternalMessagingController
+            this._mockInternalMessagingController
                 .Setup(mc => mc.GetInbox(Constants.UserID_User12, It.IsAny<int>(), It.IsAny<int>(), MessagingController.ConstSortColumnDate, !MessagingController.ConstAscending))
                 .Verifiable();
 
-            _mockInternalMessagingController.Object.GetRecentInbox(Constants.UserID_User12, 0, 0);
+            this._mockInternalMessagingController.Object.GetRecentInbox(Constants.UserID_User12, 0, 0);
 
-            _mockInternalMessagingController.Verify();
+            this._mockInternalMessagingController.Verify();
         }
 
         [Test]
         public void GetRecentInbox_Calls_Overload_With_Default_Values()
         {
-            _mockInternalMessagingController
+            this._mockInternalMessagingController
                 .Setup(mc => mc.GetRecentInbox(Constants.UserID_User12, MessagingController.ConstDefaultPageIndex, MessagingController.ConstDefaultPageSize))
                 .Verifiable();
 
-            _mockInternalMessagingController.Object.GetRecentInbox(Constants.UserID_User12);
+            this._mockInternalMessagingController.Object.GetRecentInbox(Constants.UserID_User12);
 
-            _mockInternalMessagingController.Verify();
+            this._mockInternalMessagingController.Verify();
         }
 
         #endregion
@@ -1433,9 +1433,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void CountArchivedMessagesByConversation_Calls_DataService_CountArchivedMessagesByConversation()
         {
-            _mockDataService.Setup(ds => ds.CountArchivedMessagesByConversation(It.IsAny<int>())).Verifiable();
-            _internalMessagingController.CountArchivedMessagesByConversation(1);
-            _mockDataService.Verify();
+            this._mockDataService.Setup(ds => ds.CountArchivedMessagesByConversation(It.IsAny<int>())).Verifiable();
+            this._internalMessagingController.CountArchivedMessagesByConversation(1);
+            this._mockDataService.Verify();
         }
 
         #endregion
@@ -1445,9 +1445,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void CountMessagesByConversation_Calls_DataService_CountMessagesByConversation()
         {
-            _mockDataService.Setup(ds => ds.CountMessagesByConversation(It.IsAny<int>())).Verifiable();
-            _internalMessagingController.CountMessagesByConversation(1);
-            _mockDataService.Verify();
+            this._mockDataService.Setup(ds => ds.CountMessagesByConversation(It.IsAny<int>())).Verifiable();
+            this._internalMessagingController.CountMessagesByConversation(1);
+            this._mockDataService.Verify();
         }
 
         #endregion
@@ -1457,9 +1457,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void CountConversations_Calls_DataService_CountTotalConversations()
         {
-            _mockDataService.Setup(ds => ds.CountTotalConversations(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
-            _internalMessagingController.CountConversations(Constants.UserID_User12, Constants.PORTAL_Zero);
-            _mockDataService.Verify();
+            this._mockDataService.Setup(ds => ds.CountTotalConversations(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+            this._internalMessagingController.CountConversations(Constants.UserID_User12, Constants.PORTAL_Zero);
+            this._mockDataService.Verify();
         }
 
         #endregion
@@ -1469,9 +1469,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void CountUnreadMessages_Calls_DataService_CountNewThreads()
         {
-            _mockDataService.Setup(ds => ds.CountNewThreads(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
-            _internalMessagingController.CountUnreadMessages(Constants.UserID_User12, Constants.PORTAL_Zero);
-            _mockDataService.Verify();
+            this._mockDataService.Setup(ds => ds.CountNewThreads(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+            this._internalMessagingController.CountUnreadMessages(Constants.UserID_User12, Constants.PORTAL_Zero);
+            this._mockDataService.Verify();
         }
 
         #endregion
@@ -1481,9 +1481,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void CountSentMessages_Calls_DataService_CountSentMessages()
         {
-            _mockDataService.Setup(ds => ds.CountSentMessages(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
-            _internalMessagingController.CountSentMessages(Constants.UserID_User12, Constants.PORTAL_Zero);
-            _mockDataService.Verify();
+            this._mockDataService.Setup(ds => ds.CountSentMessages(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+            this._internalMessagingController.CountSentMessages(Constants.UserID_User12, Constants.PORTAL_Zero);
+            this._mockDataService.Verify();
         }
 
         #endregion
@@ -1493,9 +1493,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void CountArchivedMessages_Calls_DataService_CountArchivedMessages()
         {
-            _mockDataService.Setup(ds => ds.CountArchivedMessages(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
-            _internalMessagingController.CountArchivedMessages(Constants.UserID_User12, Constants.PORTAL_Zero);
-            _mockDataService.Verify();
+            this._mockDataService.Setup(ds => ds.CountArchivedMessages(It.IsAny<int>(), It.IsAny<int>())).Verifiable();
+            this._internalMessagingController.CountArchivedMessages(Constants.UserID_User12, Constants.PORTAL_Zero);
+            this._mockDataService.Verify();
         }
 
         #endregion
@@ -1505,9 +1505,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void DeleteMessageRecipient_Calls_DataService_DeleteMessageRecipientByMessageAndUser()
         {
-            _mockDataService.Setup(ds => ds.DeleteMessageRecipientByMessageAndUser(Constants.Messaging_MessageId_1, Constants.UserID_User12)).Verifiable();
-            _internalMessagingController.DeleteMessageRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12);
-            _mockDataService.Verify();
+            this._mockDataService.Setup(ds => ds.DeleteMessageRecipientByMessageAndUser(Constants.Messaging_MessageId_1, Constants.UserID_User12)).Verifiable();
+            this._internalMessagingController.DeleteMessageRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12);
+            this._mockDataService.Verify();
         }
 
         #endregion
@@ -1517,14 +1517,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void GetMessageRecipients_Calls_DataService_GetMessageRecipientsByMessage()
         {
-            _dtMessageRecipients.Clear();
+            this._dtMessageRecipients.Clear();
 
-            _mockDataService
+            this._mockDataService
                 .Setup(ds => ds.GetMessageRecipientsByMessage(Constants.Messaging_MessageId_1))
-                .Returns(_dtMessageRecipients.CreateDataReader())
+                .Returns(this._dtMessageRecipients.CreateDataReader())
                 .Verifiable();
-            _internalMessagingController.GetMessageRecipients(Constants.Messaging_MessageId_1);
-            _mockDataService.Verify();
+            this._internalMessagingController.GetMessageRecipients(Constants.Messaging_MessageId_1);
+            this._mockDataService.Verify();
         }
 
         #endregion
@@ -1551,81 +1551,81 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private void SetupDataTables()
         {
             //Messages
-            _dtMessages = new DataTable("Messages");
-            var pkMessagesMessageID = _dtMessages.Columns.Add("MessageID", typeof(int));
-            _dtMessages.Columns.Add("PortalId", typeof(int));
-            _dtMessages.Columns.Add("NotificationTypeID", typeof(int));
-            _dtMessages.Columns.Add("To", typeof(string));
-            _dtMessages.Columns.Add("From", typeof(string));
-            _dtMessages.Columns.Add("Subject", typeof(string));
-            _dtMessages.Columns.Add("Body", typeof(string));
-            _dtMessages.Columns.Add("ConversationId", typeof(int));
-            _dtMessages.Columns.Add("ReplyAllAllowed", typeof(bool));
-            _dtMessages.Columns.Add("SenderUserID", typeof(int));
-            _dtMessages.Columns.Add("CreatedByUserID", typeof(int));
-            _dtMessages.Columns.Add("CreatedOnDate", typeof(DateTime));
-            _dtMessages.Columns.Add("LastModifiedByUserID", typeof(int));
-            _dtMessages.Columns.Add("LastModifiedOnDate", typeof(DateTime));
-            _dtMessages.PrimaryKey = new[] { pkMessagesMessageID };
+            this._dtMessages = new DataTable("Messages");
+            var pkMessagesMessageID = this._dtMessages.Columns.Add("MessageID", typeof(int));
+            this._dtMessages.Columns.Add("PortalId", typeof(int));
+            this._dtMessages.Columns.Add("NotificationTypeID", typeof(int));
+            this._dtMessages.Columns.Add("To", typeof(string));
+            this._dtMessages.Columns.Add("From", typeof(string));
+            this._dtMessages.Columns.Add("Subject", typeof(string));
+            this._dtMessages.Columns.Add("Body", typeof(string));
+            this._dtMessages.Columns.Add("ConversationId", typeof(int));
+            this._dtMessages.Columns.Add("ReplyAllAllowed", typeof(bool));
+            this._dtMessages.Columns.Add("SenderUserID", typeof(int));
+            this._dtMessages.Columns.Add("CreatedByUserID", typeof(int));
+            this._dtMessages.Columns.Add("CreatedOnDate", typeof(DateTime));
+            this._dtMessages.Columns.Add("LastModifiedByUserID", typeof(int));
+            this._dtMessages.Columns.Add("LastModifiedOnDate", typeof(DateTime));
+            this._dtMessages.PrimaryKey = new[] { pkMessagesMessageID };
 
             //MessageRecipients
-            _dtMessageRecipients = new DataTable("MessageRecipients");
-            var pkMessageRecipientID = _dtMessageRecipients.Columns.Add("RecipientID", typeof(int));
-            _dtMessageRecipients.Columns.Add("MessageID", typeof(int));
-            _dtMessageRecipients.Columns.Add("UserID", typeof(int));
-            _dtMessageRecipients.Columns.Add("Read", typeof(bool));
-            _dtMessageRecipients.Columns.Add("Archived", typeof(bool));
-            _dtMessageRecipients.Columns.Add("CreatedByUserID", typeof(int));
-            _dtMessageRecipients.Columns.Add("CreatedOnDate", typeof(DateTime));
-            _dtMessageRecipients.Columns.Add("LastModifiedByUserID", typeof(int));
-            _dtMessageRecipients.Columns.Add("LastModifiedOnDate", typeof(DateTime));
-            _dtMessageRecipients.PrimaryKey = new[] { pkMessageRecipientID };
+            this._dtMessageRecipients = new DataTable("MessageRecipients");
+            var pkMessageRecipientID = this._dtMessageRecipients.Columns.Add("RecipientID", typeof(int));
+            this._dtMessageRecipients.Columns.Add("MessageID", typeof(int));
+            this._dtMessageRecipients.Columns.Add("UserID", typeof(int));
+            this._dtMessageRecipients.Columns.Add("Read", typeof(bool));
+            this._dtMessageRecipients.Columns.Add("Archived", typeof(bool));
+            this._dtMessageRecipients.Columns.Add("CreatedByUserID", typeof(int));
+            this._dtMessageRecipients.Columns.Add("CreatedOnDate", typeof(DateTime));
+            this._dtMessageRecipients.Columns.Add("LastModifiedByUserID", typeof(int));
+            this._dtMessageRecipients.Columns.Add("LastModifiedOnDate", typeof(DateTime));
+            this._dtMessageRecipients.PrimaryKey = new[] { pkMessageRecipientID };
 
             //MessageAttachments
-            _dtMessageAttachment = new DataTable("MessageAttachments");
-            var pkMessageAttachmentID = _dtMessageAttachment.Columns.Add("MessageAttachmentID", typeof(int));
-            _dtMessageAttachment.Columns.Add("MessageID", typeof(int));
-            _dtMessageAttachment.Columns.Add("FileID", typeof(int));
-            _dtMessageAttachment.Columns.Add("CreatedByUserID", typeof(int));
-            _dtMessageAttachment.Columns.Add("CreatedOnDate", typeof(DateTime));
-            _dtMessageAttachment.Columns.Add("LastModifiedByUserID", typeof(int));
-            _dtMessageAttachment.Columns.Add("LastModifiedOnDate", typeof(DateTime));
-            _dtMessageAttachment.PrimaryKey = new[] { pkMessageAttachmentID };
+            this._dtMessageAttachment = new DataTable("MessageAttachments");
+            var pkMessageAttachmentID = this._dtMessageAttachment.Columns.Add("MessageAttachmentID", typeof(int));
+            this._dtMessageAttachment.Columns.Add("MessageID", typeof(int));
+            this._dtMessageAttachment.Columns.Add("FileID", typeof(int));
+            this._dtMessageAttachment.Columns.Add("CreatedByUserID", typeof(int));
+            this._dtMessageAttachment.Columns.Add("CreatedOnDate", typeof(DateTime));
+            this._dtMessageAttachment.Columns.Add("LastModifiedByUserID", typeof(int));
+            this._dtMessageAttachment.Columns.Add("LastModifiedOnDate", typeof(DateTime));
+            this._dtMessageAttachment.PrimaryKey = new[] { pkMessageAttachmentID };
 
             //Portal Settings
-            _dtPortalSettings = new DataTable("PortalSettings");
-            _dtPortalSettings.Columns.Add("SettingName", typeof(string));
-            _dtPortalSettings.Columns.Add("SettingValue", typeof(string));
-            _dtPortalSettings.Columns.Add("CultureCode", typeof(string));
-            _dtPortalSettings.Columns.Add("CreatedByUserID", typeof(int));
-            _dtPortalSettings.Columns.Add("CreatedOnDate", typeof(DateTime));
-            _dtPortalSettings.Columns.Add("LastModifiedByUserID", typeof(int));
-            _dtPortalSettings.Columns.Add("LastModifiedOnDate", typeof(DateTime));
+            this._dtPortalSettings = new DataTable("PortalSettings");
+            this._dtPortalSettings.Columns.Add("SettingName", typeof(string));
+            this._dtPortalSettings.Columns.Add("SettingValue", typeof(string));
+            this._dtPortalSettings.Columns.Add("CultureCode", typeof(string));
+            this._dtPortalSettings.Columns.Add("CreatedByUserID", typeof(int));
+            this._dtPortalSettings.Columns.Add("CreatedOnDate", typeof(DateTime));
+            this._dtPortalSettings.Columns.Add("LastModifiedByUserID", typeof(int));
+            this._dtPortalSettings.Columns.Add("LastModifiedOnDate", typeof(DateTime));
 
             //Message Conversation
-            _dtMessageConversationView = new DataTable();
-            _dtMessageConversationView.Columns.Add("RowNumber", typeof(int));
-            _dtMessageConversationView.Columns.Add("AttachmentCount", typeof(int));
-            _dtMessageConversationView.Columns.Add("NewThreadCount", typeof(int));
-            _dtMessageConversationView.Columns.Add("ThreadCount", typeof(int));
-            _dtMessageConversationView.Columns.Add("MessageID", typeof(int));
-            _dtMessageConversationView.Columns.Add("To", typeof(string));
-            _dtMessageConversationView.Columns.Add("From", typeof(string));
-            _dtMessageConversationView.Columns.Add("Subject", typeof(string));
-            _dtMessageConversationView.Columns.Add("Body", typeof(string));
-            _dtMessageConversationView.Columns.Add("ConversationID", typeof(int));
-            _dtMessageConversationView.Columns.Add("ReplyAllAllowed", typeof(bool));
-            _dtMessageConversationView.Columns.Add("SenderUserID", typeof(int));
-            _dtMessageConversationView.Columns.Add("CreatedByUserID", typeof(int));
-            _dtMessageConversationView.Columns.Add("CreatedOnDate", typeof(DateTime));
-            _dtMessageConversationView.Columns.Add("LastModifiedByUserID", typeof(int));
-            _dtMessageConversationView.Columns.Add("LastModifiedOnDate", typeof(DateTime));
+            this._dtMessageConversationView = new DataTable();
+            this._dtMessageConversationView.Columns.Add("RowNumber", typeof(int));
+            this._dtMessageConversationView.Columns.Add("AttachmentCount", typeof(int));
+            this._dtMessageConversationView.Columns.Add("NewThreadCount", typeof(int));
+            this._dtMessageConversationView.Columns.Add("ThreadCount", typeof(int));
+            this._dtMessageConversationView.Columns.Add("MessageID", typeof(int));
+            this._dtMessageConversationView.Columns.Add("To", typeof(string));
+            this._dtMessageConversationView.Columns.Add("From", typeof(string));
+            this._dtMessageConversationView.Columns.Add("Subject", typeof(string));
+            this._dtMessageConversationView.Columns.Add("Body", typeof(string));
+            this._dtMessageConversationView.Columns.Add("ConversationID", typeof(int));
+            this._dtMessageConversationView.Columns.Add("ReplyAllAllowed", typeof(bool));
+            this._dtMessageConversationView.Columns.Add("SenderUserID", typeof(int));
+            this._dtMessageConversationView.Columns.Add("CreatedByUserID", typeof(int));
+            this._dtMessageConversationView.Columns.Add("CreatedOnDate", typeof(DateTime));
+            this._dtMessageConversationView.Columns.Add("LastModifiedByUserID", typeof(int));
+            this._dtMessageConversationView.Columns.Add("LastModifiedOnDate", typeof(DateTime));
 
             //Thread View
-            _dtMessageThreadsView = new DataTable();
-            _dtMessageThreadsView.Columns.Add("TotalThreads", typeof(int));
-            _dtMessageThreadsView.Columns.Add("TotalNewThreads", typeof(int));
-            _dtMessageThreadsView.Columns.Add("TotalArchivedThreads", typeof(int));
+            this._dtMessageThreadsView = new DataTable();
+            this._dtMessageThreadsView.Columns.Add("TotalThreads", typeof(int));
+            this._dtMessageThreadsView.Columns.Add("TotalNewThreads", typeof(int));
+            this._dtMessageThreadsView.Columns.Add("TotalArchivedThreads", typeof(int));
         }
 
         #endregion

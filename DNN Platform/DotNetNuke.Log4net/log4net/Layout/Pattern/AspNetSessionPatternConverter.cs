@@ -61,9 +61,9 @@ namespace log4net.Layout.Pattern
 		{
 			if (httpContext.Session != null)
 			{
-				if (Option != null)
+				if (this.Option != null)
 				{
-					WriteObject(writer, loggingEvent.Repository, httpContext.Session.Contents[Option]);
+					WriteObject(writer, loggingEvent.Repository, httpContext.Session.Contents[this.Option]);
 				}
 				else
 				{

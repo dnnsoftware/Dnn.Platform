@@ -24,18 +24,18 @@ namespace Dnn.ExportImport.Components.Entities
 
         public int KeyID
         {
-            get { return JobLogId; }
-            set { JobLogId = value; }
+            get { return this.JobLogId; }
+            set { this.JobLogId = value; }
         }
 
         public void Fill(IDataReader dr)
         {
-            JobLogId = Null.SetNullInteger(dr[nameof(JobLogId)]);
-            JobId = Null.SetNullInteger(dr[nameof(JobId)]);
-            Name = Null.SetNullString(dr[nameof(Name)]);
-            Value = Null.SetNullString(dr[nameof(Value)]);
-            Level = Null.SetNullInteger(dr[nameof(Level)]);
-            CreatedOnDate = Null.SetNullDateTime(dr[nameof(CreatedOnDate)]);
+            this.JobLogId = Null.SetNullInteger(dr[nameof(this.JobLogId)]);
+            this.JobId = Null.SetNullInteger(dr[nameof(this.JobId)]);
+            this.Name = Null.SetNullString(dr[nameof(this.Name)]);
+            this.Value = Null.SetNullString(dr[nameof(this.Value)]);
+            this.Level = Null.SetNullInteger(dr[nameof(this.Level)]);
+            this.CreatedOnDate = Null.SetNullDateTime(dr[nameof(this.CreatedOnDate)]);
         }
     }
 }

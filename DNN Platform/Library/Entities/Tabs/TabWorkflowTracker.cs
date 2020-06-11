@@ -27,10 +27,10 @@ namespace DotNetNuke.Entities.Tabs
         
         public TabWorkflowTracker()
         {
-            _tabController = TabController.Instance;
-            _workflowEngine = WorkflowEngine.Instance;
-            _workflowManager = WorkflowManager.Instance;
-            _tabWorkflowSettings = TabWorkflowSettings.Instance;
+            this._tabController = TabController.Instance;
+            this._workflowEngine = WorkflowEngine.Instance;
+            this._workflowManager = WorkflowManager.Instance;
+            this._tabWorkflowSettings = TabWorkflowSettings.Instance;
         }
 
         protected override Func<ITabChangeTracker> GetFactory()
@@ -47,7 +47,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="userId">User Id related with the workflow instance</param>  
         public void TrackModuleAddition(ModuleInfo module, int moduleVersion, int userId)
         {
-            NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
+            this.NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
         }
         
         /// <summary>
@@ -58,7 +58,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="userId">User Id related with the workflow instance</param>  
         public void TrackModuleModification(ModuleInfo module, int moduleVersion, int userId)
         {
-            NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
+            this.NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
         }
 
 
@@ -70,7 +70,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="userId">User Id related with the workflow instance</param>  
         public void TrackModuleDeletion(ModuleInfo module, int moduleVersion, int userId)
         {
-            NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
+            this.NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="userId">User Id related with the workflow instance</param>  
         public void TrackModuleCopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
         {
-            TrackModuleAddition(module, moduleVersion, userId);
+            this.TrackModuleAddition(module, moduleVersion, userId);
         }
 
 
@@ -95,7 +95,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="userId">User Id related with the workflow instance</param> 
         public void TrackModuleUncopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
         {
-            TrackModuleDeletion(module, moduleVersion, userId);
+            this.TrackModuleDeletion(module, moduleVersion, userId);
         }
 
         #region Private Statics Methods
@@ -103,18 +103,18 @@ namespace DotNetNuke.Entities.Tabs
         {
             try
             {
-                var tabInfo = _tabController.GetTab(tabId, portalId);
-				if (tabInfo!= null && !tabInfo.IsDeleted && _workflowEngine.IsWorkflowCompleted(tabInfo))
+                var tabInfo = this._tabController.GetTab(tabId, portalId);
+				if (tabInfo!= null && !tabInfo.IsDeleted && this._workflowEngine.IsWorkflowCompleted(tabInfo))
                 {
-                    var workflow = GetCurrentOrDefaultWorkflow(tabInfo, portalId);
+                    var workflow = this.GetCurrentOrDefaultWorkflow(tabInfo, portalId);
                     if (workflow == null)
                     {
                         Logger.Warn("Current Workflow and Default workflow are not found on NotifyWorkflowAboutChanges");
                         return;
                     }
 
-                    _workflowEngine.StartWorkflow(workflow.WorkflowID, tabInfo.ContentItemId, userId);
-                    _tabController.RefreshCache(portalId, tabId);
+                    this._workflowEngine.StartWorkflow(workflow.WorkflowID, tabInfo.ContentItemId, userId);
+                    this._tabController.RefreshCache(portalId, tabId);
                 }
             }
             catch (Exception ex)
@@ -128,11 +128,11 @@ namespace DotNetNuke.Entities.Tabs
         {
             if (item.StateID != Null.NullInteger)
             {
-                return _workflowManager.GetWorkflow(item);
+                return this._workflowManager.GetWorkflow(item);
             }
 
-            var defaultWorkflow = _tabWorkflowSettings.GetDefaultTabWorkflowId(portalId);
-            return _workflowManager.GetWorkflow(defaultWorkflow);
+            var defaultWorkflow = this._tabWorkflowSettings.GetDefaultTabWorkflowId(portalId);
+            return this._workflowManager.GetWorkflow(defaultWorkflow);
         }
         #endregion
     }

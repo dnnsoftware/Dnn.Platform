@@ -38,7 +38,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         public long GetResxTimeStamp(string resourceFile, Dto.Localization localization)
         {
-            return GetLastModifiedTime(resourceFile, CultureName, localization).Ticks;
+            return this.GetLastModifiedTime(resourceFile, this.CultureName, localization).Ticks;
         }
 
         public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture, Dto.Localization localization)
@@ -71,7 +71,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             var cacheKey = string.Format(localization.ResxModifiedDateCacheKey, culture);
             var cachedData = DataCache.GetCache(cacheKey);
             if (cachedData is DateTime) return (DateTime)DataCache.GetCache(cacheKey);
-            var lastModifiedDate = GetLastModifiedTimeInternal(resourceFile, culture);
+            var lastModifiedDate = this.GetLastModifiedTimeInternal(resourceFile, culture);
 
 
             DataCache.SetCache(cacheKey, lastModifiedDate, (DNNCacheDependency)null,

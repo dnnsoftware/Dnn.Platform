@@ -44,9 +44,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public PropertyEditorEventArgs(string name, object newValue, object oldValue)
         {
-            Name = name;
-            Value = newValue;
-            OldValue = oldValue;
+            this.Name = name;
+            this.Value = newValue;
+            this.OldValue = oldValue;
         }
 
         /// -----------------------------------------------------------------------------

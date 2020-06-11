@@ -20,13 +20,13 @@ namespace DotNetNuke.Authentication.Facebook.Components
 
         public override string FirstName
         {
-            get { return FacebookFirstName; }
+            get { return this.FacebookFirstName; }
             set { }
         }
 
         public override string LastName
         {
-            get { return FacebookLastName; }
+            get { return this.FacebookLastName; }
             set { }
         }
 

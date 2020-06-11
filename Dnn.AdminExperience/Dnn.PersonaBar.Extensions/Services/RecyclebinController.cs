@@ -33,14 +33,14 @@ namespace Dnn.PersonaBar.Recyclebin.Services
             var totalRecords = 0;
             var tabs = Components.RecyclebinController.Instance.GetDeletedTabs(out totalRecords, pageIndex, pageSize);
             var deletedtabs = from t in tabs
-                              select ConvertToPageItem(t, tabs);
+                              select this.ConvertToPageItem(t, tabs);
             var response = new
             {
                 Success = true,
                 Results = deletedtabs,
                 TotalResults = totalRecords
             };
-            return Request.CreateResponse(HttpStatusCode.OK, response);
+            return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         [HttpGet]
@@ -49,14 +49,14 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         {
             var totalRecords = 0;
             var mods = Components.RecyclebinController.Instance.GetDeletedModules(out totalRecords, pageIndex, pageSize);
-            var deletedmodules = from t in mods select ConvertToModuleItem(t);
+            var deletedmodules = from t in mods select this.ConvertToModuleItem(t);
             var response = new
             {
                 Success = true,
                 Results = deletedmodules,
                 TotalResults = totalRecords
             };
-            return Request.CreateResponse(HttpStatusCode.OK, response);
+            return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         [HttpGet]
@@ -65,14 +65,14 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         {
             var totalRecords = 0;
             var users = Components.RecyclebinController.Instance.GetDeletedUsers(out totalRecords, pageIndex, pageSize);
-            var deletedusers = from t in users select ConvertToUserItem(t);
+            var deletedusers = from t in users select this.ConvertToUserItem(t);
             var response = new
             {
                 Success = true,
                 Results = deletedusers,
                 TotalResults = totalRecords
             };
-            return Request.CreateResponse(HttpStatusCode.OK, response);
+            return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         [HttpPost]
@@ -86,7 +86,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
 
             if (errors.Length > 0)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new
+                return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Status = 1,
                     Message =
@@ -96,7 +96,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                 });
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
         [HttpPost]
@@ -110,7 +110,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
 
             if (errors.Length > 0)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new
+                return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Status = 1,
                     Message =
@@ -120,7 +120,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                 });
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
         [HttpPost]
@@ -134,7 +134,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
 
             if (errors.Length > 0)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new
+                return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Status = 1,
                     Message =
@@ -143,7 +143,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                 });
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
         [HttpPost]
@@ -155,11 +155,11 @@ namespace Dnn.PersonaBar.Recyclebin.Services
             if (pages != null && pages.Any())
             {
                 foreach (
-                    var tab in pages.Select(page => TabController.Instance.GetTab(page.Id, PortalSettings.PortalId)))
+                    var tab in pages.Select(page => TabController.Instance.GetTab(page.Id, this.PortalSettings.PortalId)))
                 {
                     if (tab == null)
                     {
-                        return Request.CreateResponse(HttpStatusCode.NotFound);
+                        return this.Request.CreateResponse(HttpStatusCode.NotFound);
                     }
                     string resultmessage;
                     Components.RecyclebinController.Instance.RestoreTab(tab, out resultmessage);
@@ -167,7 +167,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                 }
             }
             return errors.Length > 0
-                ? Request.CreateResponse(HttpStatusCode.OK,
+                ? this.Request.CreateResponse(HttpStatusCode.OK,
                     new
                     {
                         Status = 1,
@@ -176,7 +176,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                                 Components.RecyclebinController.Instance.LocalizeString("Service_RestoreTabModuleError"),
                                 errors)
                     })
-                : Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
+                : this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
         [HttpPost]
@@ -191,10 +191,10 @@ namespace Dnn.PersonaBar.Recyclebin.Services
             {
                 foreach (var module in modules)
                 {
-                    var tab = TabController.Instance.GetTab(module.TabID, PortalSettings.PortalId);
+                    var tab = TabController.Instance.GetTab(module.TabID, this.PortalSettings.PortalId);
                     if (tab == null)
                     {
-                        return Request.CreateResponse(HttpStatusCode.NotFound);
+                        return this.Request.CreateResponse(HttpStatusCode.NotFound);
                     }
                     string resultmessage;
                     result = Components.RecyclebinController.Instance.RestoreModule(module.Id, module.TabID,
@@ -205,9 +205,9 @@ namespace Dnn.PersonaBar.Recyclebin.Services
             }
             if (!result)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new { Status = 1, Message = errors });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 1, Message = errors });
             }
-            return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
         [HttpPost]
@@ -219,11 +219,11 @@ namespace Dnn.PersonaBar.Recyclebin.Services
             if (users != null && users.Any())
             {
                 foreach (
-                    var user in users.Select(u => UserController.Instance.GetUserById(PortalSettings.PortalId, u.Id)))
+                    var user in users.Select(u => UserController.Instance.GetUserById(this.PortalSettings.PortalId, u.Id)))
                 {
                     if (user == null)
                     {
-                        return Request.CreateResponse(HttpStatusCode.NotFound);
+                        return this.Request.CreateResponse(HttpStatusCode.NotFound);
                     }
                     string resultmessage;
                     Components.RecyclebinController.Instance.RestoreUser(user, out resultmessage);
@@ -231,7 +231,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                 }
             }
             return errors.Length > 0
-                ? Request.CreateResponse(HttpStatusCode.OK,
+                ? this.Request.CreateResponse(HttpStatusCode.OK,
                     new
                     {
                         Status = 1,
@@ -240,7 +240,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                                 Components.RecyclebinController.Instance.LocalizeString("Service_RestoreTabModuleError"),
                                 errors)
                     })
-                : Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
+                : this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
         [HttpGet]
@@ -265,7 +265,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
 
             if (errors.Length > 0)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new
+                return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Status = 1,
                     Message =
@@ -275,7 +275,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                 });
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
         #region Private Methods
@@ -292,7 +292,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                 Status = Components.RecyclebinController.Instance.GetTabStatus(tab),
                 ParentId = tab.ParentId,
                 Level = tab.Level,
-                IsSpecial = TabController.IsSpecialTab(tab.TabID, PortalSettings),
+                IsSpecial = TabController.IsSpecialTab(tab.TabID, this.PortalSettings),
                 TabPath = tab.TabPath.Replace("//", "/"),
                 LastModifiedOnDate =
                     tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt",
@@ -300,19 +300,19 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                 FriendlyLastModifiedOnDate =
                     tab.LastModifiedOnDate.ToString("MM/dd/yyyy h:mm:ss tt",
                         CultureInfo.CreateSpecificCulture(tab.CultureCode ?? "en-US")),
-                UseDefaultSkin = UseDefaultSkin(tab)
+                UseDefaultSkin = this.UseDefaultSkin(tab)
             };
         }
 
         private bool UseDefaultSkin(TabInfo tab)
         {
             return !string.IsNullOrEmpty(tab.SkinSrc) &&
-                   tab.SkinSrc.Equals(PortalSettings.DefaultPortalSkin, StringComparison.OrdinalIgnoreCase);
+                   tab.SkinSrc.Equals(this.PortalSettings.DefaultPortalSkin, StringComparison.OrdinalIgnoreCase);
         }
 
         private ModuleItem ConvertToModuleItem(ModuleInfo mod)
         {
-            var tab = TabController.Instance.GetTab(mod.TabID, PortalSettings.PortalId);
+            var tab = TabController.Instance.GetTab(mod.TabID, this.PortalSettings.PortalId);
             return new ModuleItem
             {
                 Id = mod.ModuleID,

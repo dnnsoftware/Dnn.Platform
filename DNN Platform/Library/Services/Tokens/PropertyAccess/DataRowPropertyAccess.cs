@@ -20,18 +20,18 @@ namespace DotNetNuke.Services.Tokens
 
         public DataRowPropertyAccess(DataRow row)
         {
-            dr = row;
+            this.dr = row;
         }
 
         #region IPropertyAccess Members
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
-            if (dr == null)
+            if (this.dr == null)
             {
                 return string.Empty;
             }
-            object valueObject = dr[propertyName];
+            object valueObject = this.dr[propertyName];
             string OutputFormat = format;
             if (string.IsNullOrEmpty(format))
             {

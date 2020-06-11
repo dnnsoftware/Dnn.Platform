@@ -28,8 +28,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         {
             get
             {
-                var dac = controllers.SingleOrDefault(c => c.Metadata.Edition == "PE");
-                return dac != null ? dac.Value : controllers.Single(c => c.Metadata.Edition == "CE").Value;
+                var dac = this.controllers.SingleOrDefault(c => c.Metadata.Edition == "PE");
+                return dac != null ? dac.Value : this.controllers.Single(c => c.Metadata.Edition == "CE").Value;
             }
         }
     }
