@@ -47,6 +47,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         [JsonProperty("packageIcon")]
         public string PackageIcon { get; set; }
 
+        [JsonProperty("url")]
+        public string Url { get; set; }
+
         [JsonProperty("canDelete")]
         public bool CanDelete { get; set; }
 
@@ -70,6 +73,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
             UpgradeUrl = ExtensionsController.UpgradeRedirect(package.Version, package.PackageType, package.Name);
             UpgradeIndicator = ExtensionsController.UpgradeIndicator(package.Version, package.PackageType, package.Name);
             PackageIcon = ExtensionsController.GetPackageIcon(package);
+            Url = package.Url;
             CanDelete = package.PackageID != Null.NullInteger && !package.IsSystemPackage && PackageController.CanDeletePackage(package, PortalSettings.Current);
 
             if (package.PackageID != Null.NullInteger)
