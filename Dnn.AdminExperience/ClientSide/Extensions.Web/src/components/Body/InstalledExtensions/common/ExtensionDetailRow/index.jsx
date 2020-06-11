@@ -35,13 +35,6 @@ class ExtensionDetailRow extends Component {
         }
     }
 
-    getUpgradeDisplay() {
-        const {props} = this;
-        if (props._package.upgradeIndicator !== null) {
-            return <div className="upgrade-possible" onClick={() => window.open(props._package.url, "_blank", "noopener,noreferrer")}>Check</div>;
-        }
-    }
-
     /* eslint-disable react/no-danger */
     render() {
         const {props, state} = this;
@@ -62,7 +55,9 @@ class ExtensionDetailRow extends Component {
                         {this.getInUseDisplay(props._package.friendlyName, props._package.packageId)}
                     </GridCell>
                     <GridCell columnSize={ColumnSizes[4]}>
-                        {this.getUpgradeDisplay()}
+                        <a href={props._package.url} target="_blank" rel="noopener noreferrer" aria-label="Update">
+                            <img src={props._package.upgradeIndicator} alt="Update"/>
+                        </a>
                     </GridCell>
                     <GridCell columnSize={ColumnSizes[5]} style={{ paddingRight: 0 }}>
                         {(props._package.canDelete && props.isHost) && <div className="extension-action" dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }} onClick={props.onDelete}></div>}
