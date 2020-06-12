@@ -66,7 +66,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             {
                 { "minDate", this.MinDate > DateTime.MinValue ? $"$new Date('{this.MinDate.ToString(this.Format, CultureInfo.InvariantCulture)}')$" : string.Empty },
                 { "maxDate", this.MaxDate > DateTime.MinValue ? $"$new Date('{this.MaxDate.ToString(this.Format, CultureInfo.InvariantCulture)}')$" : string.Empty },
-                { "format", this.ClientFormat }
+                { "format", this.ClientFormat },
             };
         }
 

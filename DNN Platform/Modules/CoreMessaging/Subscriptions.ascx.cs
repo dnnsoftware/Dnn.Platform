@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.CoreMessaging
                        { "moduleScope", string.Format("#{0}", this.ScopeWrapper.ClientID) },
                        { "pageSize", 25 },
                        { "notifyFrequency", userPreference != null ? (int)userPreference.NotificationsEmailFrequency : notifyFrequency },
-                       { "msgFrequency", userPreference != null ? (int)userPreference.MessagesEmailFrequency : messageFrequency }
+                       { "msgFrequency", userPreference != null ? (int)userPreference.MessagesEmailFrequency : messageFrequency },
                    };
         }
 
@@ -205,7 +205,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             return new Dictionary<string, string>
                 {
                     { "ExceptionTitle", Localization.GetString("ExceptionTitle", SharedResources) },
-                    { "ExceptionMessage", Localization.GetString("ExceptionMessage", SharedResources) }
+                    { "ExceptionMessage", Localization.GetString("ExceptionMessage", SharedResources) },
                 };
         }
 

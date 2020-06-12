@@ -387,7 +387,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
                                              Name = file.FileName,
                                              Size = file.Size.ToString(CultureInfo.InvariantCulture),
                                              Url = FileManager.Instance.GetUrl(file),
-                                             FileId = fileId
+                                             FileId = fileId,
                                          };
 
                     attachments.Add(attachment);

@@ -16,7 +16,7 @@ namespace Dnn.PersonaBar.Library.Helper
                 Id = userTimeZone.Id,
                 DisplayName = userTimeZone.DisplayName,
                 BaseUtcOffset = FormatOffset(userTimeZone.BaseUtcOffset),
-                CurrentUtcOffset = FormatOffset(userTimeZone.GetUtcOffset(DateTime.UtcNow))
+                CurrentUtcOffset = FormatOffset(userTimeZone.GetUtcOffset(DateTime.UtcNow)),
             };
         }
 

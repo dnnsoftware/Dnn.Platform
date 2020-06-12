@@ -149,7 +149,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 PageIndex = searchQuery.PageIndex,
                 PageSize = searchQuery.PageSize,
                 TitleSnippetLength = searchQuery.TitleSnippetLength,
-                BodySnippetLength = searchQuery.BodySnippetLength
+                BodySnippetLength = searchQuery.BodySnippetLength,
             };
 
             return this.GetSecurityTrimmedResults(searchQuery, luceneQuery);
@@ -412,7 +412,7 @@ namespace DotNetNuke.Services.Search.Controllers
                     {
                         LuceneQuery = luceneQuery,
                         SearchQuery = searchQuery,
-                        SecurityCheckerDelegate = this.HasPermissionToViewDoc
+                        SecurityCheckerDelegate = this.HasPermissionToViewDoc,
                     });
                 results = luceneResults.Results.Select(this.GetSearchResultFromLuceneResult).ToList();
                 totalHits = luceneResults.TotalHits;

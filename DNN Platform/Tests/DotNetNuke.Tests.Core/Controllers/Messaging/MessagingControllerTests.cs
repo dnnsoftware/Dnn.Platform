@@ -146,7 +146,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             var portalSettings = new PortalSettings
                                     {
-                                        AdministratorRoleName = Constants.RoleName_Administrators
+                                        AdministratorRoleName = Constants.RoleName_Administrators,
                                     };
 
             this._portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
@@ -1440,7 +1440,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 ConversationId = 1,
                 ReplyAllAllowed = false,
                 SenderUserID = 1,
-                NotificationTypeID = 1
+                NotificationTypeID = 1,
             };
             return message;
         }

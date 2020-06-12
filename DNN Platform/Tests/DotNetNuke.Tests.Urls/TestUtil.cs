@@ -27,7 +27,7 @@ namespace DotNetNuke.Tests.Urls
                     Username = userName,
                     Email = userName + "@changeme.invalid",
                     VanityUrl = vanityUrl,
-                    Membership = { Password = password, Approved = true }
+                    Membership = { Password = password, Approved = true },
                 };
                 UserController.CreateUser(ref user);
             }

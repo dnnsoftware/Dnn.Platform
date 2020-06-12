@@ -213,7 +213,7 @@ namespace log4net.Util
 
         private static readonly string[] SPACES = { " ", "  ", "    ", "        ",          // 1,2,4,8 spaces
                                                     "                ",                     // 16 spaces
-                                                    "                                " };   // 32 spaces
+                                                    "                                ", };   // 32 spaces
 
         /// <summary>
         /// Fast space padding method.

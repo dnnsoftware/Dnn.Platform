@@ -334,7 +334,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 SecondElementSelector = "." + ConfirmPasswordTextBoxCssClass,
                 ContainerSelector = ".dnnRegistrationForm",
                 UnmatchedCssClass = "unmatched",
-                MatchedCssClass = "matched"
+                MatchedCssClass = "matched",
             };
 
             var optionsAsJsonString = Json.Serialize(confirmPasswordOptions);
@@ -366,7 +366,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 DataMember = dataMember,
                 Visible = true,
                 Required = required,
-                TextMode = textMode
+                TextMode = textMode,
             };
             if (!string.IsNullOrEmpty(regexValidator))
             {
@@ -384,7 +384,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 formItem = new DnnFormPasswordItem
                 {
                     TextBoxCssClass = PasswordStrengthTextBoxCssClass,
-                    ContainerCssClass = "password-strength-container"
+                    ContainerCssClass = "password-strength-container",
                 };
             }
             else
@@ -419,7 +419,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 TextMode = TextBoxMode.Password,
                 TextBoxCssClass = ConfirmPasswordTextBoxCssClass,
                 ClearContentInPasswordMode = true,
-                MaxLength = 39
+                MaxLength = 39,
             };
             this.userForm.Items.Add(formItem);
 
@@ -446,7 +446,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     DataMember = "Profile",
                     DataField = property.PropertyName,
                     Visible = property.Visible,
-                    Required = property.Required
+                    Required = property.Required,
                 };
                 // To check if the property has a deafult value
                 if (!string.IsNullOrEmpty(property.DefaultValue))

@@ -127,7 +127,7 @@ namespace DotNetNuke.Entities.Tabs
                             PermissionName = permission.PermissionName,
                             RoleID = roleID,
                             UserID = Null.NullInteger,
-                            AllowAccess = true
+                            AllowAccess = true,
                         };
             return tabPermission;
         }

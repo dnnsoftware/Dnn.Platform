@@ -69,7 +69,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 Success = true,
                 Items = this.GetPageDescendantsInternal(portalId, parentId, sortOrder, searchText,
-                    includeDisabled, includeAllTypes, includeActive, includeHostPages, roles, disabledNotSelectable)
+                    includeDisabled, includeAllTypes, includeActive, includeHostPages, roles, disabledNotSelectable),
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -84,7 +84,7 @@ namespace DotNetNuke.Web.InternalServices
                 Success = true,
                 Tree = this.GetTreePathForPageInternal(portalId, itemId, sortOrder, false,
                     includeDisabled, includeAllTypes, includeActive, includeHostPages, roles),
-                IgnoreRoot = true
+                IgnoreRoot = true,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -99,7 +99,7 @@ namespace DotNetNuke.Web.InternalServices
                 Success = true,
                 Tree = string.IsNullOrEmpty(searchText) ? this.SortPagesInternal(portalId, treeAsJson, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles)
                             : this.SearchPagesInternal(portalId, searchText, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles),
-                IgnoreRoot = true
+                IgnoreRoot = true,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -114,7 +114,7 @@ namespace DotNetNuke.Web.InternalServices
                 Success = true,
                 Tree = string.IsNullOrEmpty(searchText) ? this.SortPagesInPortalGroupInternal(treeAsJson, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles)
                         : this.SearchPagesInPortalGroupInternal(treeAsJson, searchText, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles),
-                IgnoreRoot = true
+                IgnoreRoot = true,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -128,7 +128,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 Success = true,
                 Tree = this.GetPagesInternal(portalId, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles, disabledNotSelectable),
-                IgnoreRoot = true
+                IgnoreRoot = true,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -140,7 +140,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 Success = true,
                 Tree = GetPagesInPortalGroupInternal(sortOrder),
-                IgnoreRoot = true
+                IgnoreRoot = true,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -155,7 +155,7 @@ namespace DotNetNuke.Web.InternalServices
                 Success = true,
                 Tree = string.IsNullOrEmpty(searchText) ? this.GetPagesInternal(portalId, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles, false)
                             : this.SearchPagesInternal(portalId, searchText, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles),
-                IgnoreRoot = true
+                IgnoreRoot = true,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -168,7 +168,7 @@ namespace DotNetNuke.Web.InternalServices
             var response = new
             {
                 Success = true,
-                Items = this.GetPageDescendantsInPortalGroupInternal(parentId, sortOrder, searchText, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles)
+                Items = this.GetPageDescendantsInPortalGroupInternal(parentId, sortOrder, searchText, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles),
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -182,7 +182,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 Success = true,
                 Tree = this.GetTreePathForPageInternal(itemId, sortOrder, true, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles),
-                IgnoreRoot = true
+                IgnoreRoot = true,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -197,7 +197,7 @@ namespace DotNetNuke.Web.InternalServices
                 Success = true,
                 Tree = string.IsNullOrEmpty(searchText) ? GetPagesInPortalGroupInternal(sortOrder)
                         : this.SearchPagesInPortalGroupInternal(searchText, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles),
-                IgnoreRoot = true
+                IgnoreRoot = true,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -208,7 +208,7 @@ namespace DotNetNuke.Web.InternalServices
             var response = new
             {
                 Success = true,
-                Items = this.GetFolderDescendantsInternal(portalId, parentId, sortOrder, searchText, permission)
+                Items = this.GetFolderDescendantsInternal(portalId, parentId, sortOrder, searchText, permission),
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -220,7 +220,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 Success = true,
                 Tree = this.GetFoldersInternal(portalId, sortOrder, permission),
-                IgnoreRoot = true
+                IgnoreRoot = true,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -232,7 +232,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 Success = true,
                 Tree = string.IsNullOrEmpty(searchText) ? this.SortFoldersInternal(portalId, treeAsJson, sortOrder, permission) : this.SearchFoldersInternal(portalId, searchText, sortOrder, permission),
-                IgnoreRoot = true
+                IgnoreRoot = true,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -244,7 +244,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 Success = true,
                 Tree = this.GetTreePathForFolderInternal(itemId, sortOrder, permission),
-                IgnoreRoot = true
+                IgnoreRoot = true,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -256,7 +256,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 Success = true,
                 Tree = string.IsNullOrEmpty(searchText) ? this.GetFoldersInternal(portalId, sortOrder, permission) : this.SearchFoldersInternal(portalId, searchText, sortOrder, permission),
-                IgnoreRoot = true
+                IgnoreRoot = true,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -268,7 +268,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 Success = true,
                 Tree = this.GetFilesInternal(portalId, parentId, filter, string.Empty, sortOrder, permission),
-                IgnoreRoot = true
+                IgnoreRoot = true,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -280,7 +280,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 Success = true,
                 Tree = string.IsNullOrEmpty(searchText) ? this.SortFilesInternal(portalId, parentId, filter, sortOrder, permission) : this.GetFilesInternal(portalId, parentId, filter, searchText, sortOrder, permission),
-                IgnoreRoot = true
+                IgnoreRoot = true,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -292,7 +292,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 Success = true,
                 Tree = this.GetFilesInternal(portalId, parentId, filter, searchText, sortOrder, permission),
-                IgnoreRoot = true
+                IgnoreRoot = true,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
@@ -435,7 +435,7 @@ namespace DotNetNuke.Web.InternalServices
                 Key = tab.TabID.ToString(CultureInfo.InvariantCulture),
                 Value = tab.LocalizedTabName,
                 HasChildren = tab.HasChildren,
-                Selectable = filterTabs.Contains(tab.TabID)
+                Selectable = filterTabs.Contains(tab.TabID),
             });
 
             return ApplySort(pages, sortOrder);
@@ -513,7 +513,7 @@ namespace DotNetNuke.Web.InternalServices
                 Key = tab.TabID.ToString(CultureInfo.InvariantCulture),
                 Value = tab.LocalizedTabName,
                 HasChildren = false,
-                Selectable = filterTabs.Contains(tab.TabID)
+                Selectable = filterTabs.Contains(tab.TabID),
             });
 
             tree.Children = ApplySort(pages, sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
@@ -566,7 +566,7 @@ namespace DotNetNuke.Web.InternalServices
                 Key = tab.TabID.ToString(CultureInfo.InvariantCulture),
                 Value = tab.LocalizedTabName,
                 HasChildren = tab.HasChildren,
-                Selectable = filterTabs == null || filterTabs.Contains(tab.TabID)
+                Selectable = filterTabs == null || filterTabs.Contains(tab.TabID),
             }).ToList();
         }
 
@@ -786,7 +786,7 @@ namespace DotNetNuke.Web.InternalServices
                     Value = page.LocalizedTabName,
                     HasChildren = page.HasChildren,
                     Selectable = true
-                }
+                },
             };
 
             var parentId = page.ParentId;
@@ -819,9 +819,9 @@ namespace DotNetNuke.Web.InternalServices
                         Key = parentId.ToString(CultureInfo.InvariantCulture),
                         Value = parentTab.LocalizedTabName,
                         HasChildren = true,
-                        Selectable = true
+                        Selectable = true,
                     },
-                    Children = siblingTabsTree
+                    Children = siblingTabsTree,
                 };
 
                 parentId = parentTab.ParentId;
@@ -854,7 +854,7 @@ namespace DotNetNuke.Web.InternalServices
                             Value = portal.PortalName,
                             HasChildren = true,
                             Selectable = false
-                        }
+                        },
                     }).ToList();
 
                 foreach (var node in portalTree)
@@ -880,7 +880,7 @@ namespace DotNetNuke.Web.InternalServices
                 Key = PortalPrefix + p.PortalID.ToString(CultureInfo.InvariantCulture),
                 Value = p.PortalName,
                 HasChildren = true,
-                Selectable = false
+                Selectable = false,
             }).ToList();
             return ApplySort(portals, sortOrder);
         }
@@ -991,7 +991,7 @@ namespace DotNetNuke.Web.InternalServices
                     Value = portalId == -1 ? DynamicSharedConstants.HostRootFolder : DynamicSharedConstants.RootFolder,
                     HasChildren = this.HasChildren(parentFolder, permission),
                     Selectable = true
-                } };
+                }, };
 
             var childrenFolders = this.GetFolderDescendants(parentFolder, searchText, permission);
 
@@ -1000,7 +1000,7 @@ namespace DotNetNuke.Web.InternalServices
                 Key = folder.FolderID.ToString(CultureInfo.InvariantCulture),
                 Value = folder.FolderName,
                 HasChildren = this.HasChildren(folder, permission),
-                Selectable = true
+                Selectable = true,
             });
 
             return ApplySort(folders, sortOrder);
@@ -1028,7 +1028,7 @@ namespace DotNetNuke.Web.InternalServices
                 Key = f.FolderID.ToString(CultureInfo.InvariantCulture),
                 Value = f.FolderName,
                 HasChildren = false,
-                Selectable = true
+                Selectable = true,
             });
             tree.Children = ApplySort(folders, sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
             return tree;
@@ -1068,7 +1068,7 @@ namespace DotNetNuke.Web.InternalServices
                     Value = folder.FolderName,
                     HasChildren = this.HasChildren(folder, permission),
                     Selectable = true
-                }
+                },
             };
             var parentId = folder.ParentID;
             var parentFolder = parentId > 0 ? FolderManager.Instance.GetFolder(parentId) : null;
@@ -1082,7 +1082,7 @@ namespace DotNetNuke.Web.InternalServices
                         Key = folderInfo.FolderID.ToString(CultureInfo.InvariantCulture),
                         Value = folderInfo.FolderName,
                         HasChildren = this.HasChildren(folderInfo, permission),
-                        Selectable = true
+                        Selectable = true,
                     }).ToList();
                 siblingFolders = ApplySort(siblingFolders, sortOrder).ToList();
 
@@ -1108,9 +1108,9 @@ namespace DotNetNuke.Web.InternalServices
                         Key = parentId.ToString(CultureInfo.InvariantCulture),
                         Value = parentFolder.FolderName,
                         HasChildren = true,
-                        Selectable = true
+                        Selectable = true,
                     },
-                    Children = siblingFoldersTree
+                    Children = siblingFoldersTree,
                 };
 
                 parentId = parentFolder.ParentID;
@@ -1233,7 +1233,7 @@ namespace DotNetNuke.Web.InternalServices
                 Key = f.FileId.ToString(CultureInfo.InvariantCulture),
                 Value = f.FileName,
                 HasChildren = false,
-                Selectable = true
+                Selectable = true,
             }).ToList();
 
             var sortedList = ApplySort(filesDto, sortOrder);
@@ -1323,7 +1323,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 terms.AddRange(new[] { from t in termRep.GetTermsByVocabulary(v.VocabularyId)
                                       where string.IsNullOrEmpty(q) || t.Name.IndexOf(q, StringComparison.InvariantCultureIgnoreCase) > -1
-                                        select new { text = t.Name, value = t.TermId } });
+                                        select new { text = t.Name, value = t.TermId }, });
             }
 
             return this.Request.CreateResponse(HttpStatusCode.OK, terms);

@@ -242,7 +242,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 ModuleVersion = moduleVersion,
                 ModuleOrder = module.ModuleOrder,
                 PaneName = module.PaneName,
-                Action = action
+                Action = action,
             };
         }
 
@@ -256,7 +256,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 ModuleVersion = moduleVersion,
                 ModuleOrder = moduleOrder,
                 PaneName = paneName,
-                Action = action
+                Action = action,
             };
         }
 

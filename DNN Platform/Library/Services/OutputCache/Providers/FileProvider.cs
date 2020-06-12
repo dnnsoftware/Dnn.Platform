@@ -238,7 +238,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                                 PropertyValue =
                                     string.Format(
                                         "Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}",
-                                        i, filesNotDeleted)
+                                        i, filesNotDeleted),
                             };
                             var properties = new LogProperties { logDetail };
                             log.LogProperties = properties;

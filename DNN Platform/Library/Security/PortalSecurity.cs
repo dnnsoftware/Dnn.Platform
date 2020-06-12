@@ -108,7 +108,7 @@ namespace DotNetNuke.Security
             NoScripting = 4,
             NoSQL = 8,
             NoAngleBrackets = 16,
-            NoProfanity = 32
+            NoProfanity = 32,
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace DotNetNuke.Security
         public enum ConfigType
         {
             ListController,
-            ExternalFile
+            ExternalFile,
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace DotNetNuke.Security
         {
             SystemList,
             PortalList,
-            SystemAndPortalList
+            SystemAndPortalList,
         }
 
         private enum RoleType
@@ -136,7 +136,7 @@ namespace DotNetNuke.Security
             Security,
             Friend,
             Follower,
-            Owner
+            Owner,
         }
 
         private static void ProcessRole(UserInfo user, PortalSettings settings, string roleName, out bool? roleAllowed)
@@ -622,7 +622,7 @@ namespace DotNetNuke.Security
                     Expires = authenticationTicket.Expiration,
                     Domain = GetCookieDomain(user.PortalID),
                     Path = FormsAuthentication.FormsCookiePath,
-                    Secure = FormsAuthentication.RequireSSL
+                    Secure = FormsAuthentication.RequireSSL,
                 };
 
                 if (HttpContext.Current.Response.Cookies[FormsAuthentication.FormsCookieName] != null)
@@ -639,7 +639,7 @@ namespace DotNetNuke.Security
                         Expires = authenticationTicket.Expiration,
                         Domain = domain,
                         Path = FormsAuthentication.FormsCookiePath,
-                        Secure = FormsAuthentication.RequireSSL
+                        Secure = FormsAuthentication.RequireSSL,
                     };
 
                     HttpContext.Current.Response.Cookies.Set(siteGroupCookie);
@@ -707,7 +707,7 @@ namespace DotNetNuke.Security
                     Expires = OldExpiryTime,
                     Domain = domain,
                     Path = FormsAuthentication.FormsCookiePath,
-                    Secure = FormsAuthentication.RequireSSL
+                    Secure = FormsAuthentication.RequireSSL,
                 };
 
                 HttpContext.Current.Response.Cookies.Set(authCookie);
@@ -717,7 +717,7 @@ namespace DotNetNuke.Security
                     Expires = OldExpiryTime,
                     Domain = domain,
                     Path = FormsAuthentication.FormsCookiePath,
-                    Secure = FormsAuthentication.RequireSSL
+                    Secure = FormsAuthentication.RequireSSL,
                 };
 
                 HttpContext.Current.Response.Cookies.Set(siteGroupCookie);

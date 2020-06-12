@@ -168,7 +168,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             var route = new Route(url, new DnnMvcRouteHandler())
             {
                 Defaults = CreateRouteValueDictionaryUncached(defaults),
-                Constraints = CreateRouteValueDictionaryUncached(constraints)
+                Constraints = CreateRouteValueDictionaryUncached(constraints),
             };
             if (route.DataTokens == null)
             {

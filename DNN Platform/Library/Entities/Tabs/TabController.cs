@@ -339,7 +339,7 @@ namespace DotNetNuke.Entities.Tabs
                         QueryString = string.Empty,
                         CultureCode = tab.CultureCode,
                         HttpStatus = "301",
-                        IsSystem = true
+                        IsSystem = true,
                     };
 
                     this.SaveTabUrl(tabUrl, tab.PortalID, false);
@@ -422,7 +422,7 @@ namespace DotNetNuke.Entities.Tabs
                             PermissionID = permissionID,
                             RoleID = roleID,
                             UserID = Null.NullInteger,
-                            AllowAccess = allowAccess
+                            AllowAccess = allowAccess,
                         };
 
                     bool canAdd = !tab.TabPermissions.Cast<TabPermissionInfo>()
@@ -729,7 +729,7 @@ namespace DotNetNuke.Entities.Tabs
             // queue remove tab/page from search index
             var document = new SearchDocumentToDelete
             {
-                TabId = tabId
+                TabId = tabId,
             };
 
             DataProvider.Instance().AddSearchDeletedItems(document);
@@ -1586,7 +1586,7 @@ namespace DotNetNuke.Entities.Tabs
                             {
                                 RoleID = role.RoleID,
                                 AllowAccess = true,
-                                RoleName = roleName
+                                RoleName = roleName,
                             };
                             localizedTab.TabPermissions.Add(tabTranslatePermission);
                             this.UpdateTab(localizedTab);

@@ -8,6 +8,6 @@ namespace DotNetNuke.Services.Assets
     {
         ExcludeSubfolders,
         IncludeSubfoldersFilesOnly,
-        IncludeSubfoldersFolderStructure
+        IncludeSubfoldersFolderStructure,
     }
 }

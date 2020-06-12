@@ -193,7 +193,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             var timeZoneProfileProperty = new ProfilePropertyDefinition(Constants.PORTAL_Zero)
                                               {
                                                   PropertyName = "PreferredTimeZone",
-                                                  PropertyValue = timeZoneId
+                                                  PropertyValue = timeZoneId,
                                               };
             var userProfile = new UserProfile();
             userProfile.ProfileProperties.Add(timeZoneProfileProperty);

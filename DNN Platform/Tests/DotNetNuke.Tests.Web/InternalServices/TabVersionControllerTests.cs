@@ -103,7 +103,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         private UserInfo GetMockedUser(string timeZoneId)
         {
             var profile = new UserProfile() {
-                PreferredTimeZone = this.GetMockedUserTimeZone(timeZoneId)
+                PreferredTimeZone = this.GetMockedUserTimeZone(timeZoneId),
             };
 
             profile.ProfileProperties.Add(new Entities.Profile.ProfilePropertyDefinition(99)
@@ -112,13 +112,13 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 PropertyDefinitionId = 20,
                 PropertyCategory = "Preferences",
                 PropertyName = "PreferredTimeZone",
-                PropertyValue = this.GetMockedUserTimeZone(timeZoneId).Id
+                PropertyValue = this.GetMockedUserTimeZone(timeZoneId).Id,
             });
             var user = new UserInfo()
             {
                 Profile = profile,
                 UserID = UserID,
-                PortalID = 99
+                PortalID = 99,
             };
 
             return user;
@@ -137,7 +137,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 TabId = TabID,
                 TabVersionId = 1,
                 Version = 1,
-                CreatedByUserID = UserID
+                CreatedByUserID = UserID,
             };
             tabVersion.GetType().BaseType.GetProperty("CreatedOnDate").SetValue(tabVersion, this.ServerCreateOnDate, null);
 
@@ -148,7 +148,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         {
             return new List<TabVersion>()
             {
-                this.GetMockedTabVersion()
+                this.GetMockedTabVersion(),
             };
         }
 

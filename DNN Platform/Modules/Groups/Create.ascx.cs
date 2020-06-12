@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.Groups
                 Description = this.txtDescription.Text,
                 SecurityMode = SecurityMode.SocialGroup,
                 Status = RoleStatus.Approved,
-                IsPublic = this.rdAccessTypePublic.Checked
+                IsPublic = this.rdAccessTypePublic.Checked,
             };
             var userRoleStatus = RoleStatus.Pending;
             if (this.GroupModerationEnabled)

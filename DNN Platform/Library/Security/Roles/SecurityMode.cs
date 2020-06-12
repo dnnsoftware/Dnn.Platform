@@ -10,6 +10,6 @@ namespace DotNetNuke.Security.Roles
     {
         SecurityRole = 0,
         SocialGroup = 1,
-        Both = 2
+        Both = 2,
     }
 }

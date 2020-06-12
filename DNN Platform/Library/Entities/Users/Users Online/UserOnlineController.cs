@@ -151,7 +151,7 @@ namespace DotNetNuke.Entities.Users
                 cookie = new HttpCookie(cookieName, userID)
                 {
                     Expires = DateTime.Now.AddMinutes(20),
-                    Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/"
+                    Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
                 };
                 context.Response.Cookies.Add(cookie);
 
@@ -162,7 +162,7 @@ namespace DotNetNuke.Entities.Users
                     PortalID = portalSettings.PortalId,
                     TabID = portalSettings.ActiveTab.TabID,
                     CreationDate = DateTime.Now,
-                    LastActiveDate = DateTime.Now
+                    LastActiveDate = DateTime.Now,
                 };
 
                 // Add the user
@@ -202,7 +202,7 @@ namespace DotNetNuke.Entities.Users
                 cookie = new HttpCookie(cookieName, userID)
                 {
                     Expires = DateTime.Now.AddMinutes(20),
-                    Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/"
+                    Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
                 };
                 context.Response.Cookies.Add(cookie);
             }

@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
                 var stringFormat = new StringFormat
                 {
                     Alignment = StringAlignment.Center,
-                    LineAlignment = StringAlignment.Center
+                    LineAlignment = StringAlignment.Center,
                 };
 
                 var rectangle = new Rectangle(5, 5, this.Width - 10, this.Height - 10);

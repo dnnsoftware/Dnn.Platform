@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.Journal {
         public enum JournalMode {
             Auto = 0,
             Profile = 1,
-            Group = 2
+            Group = 2,
         }
         public JournalMode FilterMode {
             get {

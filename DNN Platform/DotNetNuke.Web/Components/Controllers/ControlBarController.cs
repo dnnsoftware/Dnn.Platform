@@ -105,7 +105,7 @@ namespace DotNetNuke.Web.Components.Controllers
                 WebAction = "location.href='" + navigateUrl + "'; return false;",
                 AltText = alt,
                 ToolTip = toolTip,
-                CssClass = string.Empty
+                CssClass = string.Empty,
             };
         }
 
@@ -116,7 +116,7 @@ namespace DotNetNuke.Web.Components.Controllers
                 ID = Path.GetFileNameWithoutExtension(userControlExtensionPoint.UserControlSrc),
                 Text = userControlExtensionPoint.Text,
                 Source = userControlExtensionPoint.UserControlSrc,
-                Order = userControlExtensionPoint.Order
+                Order = userControlExtensionPoint.Order,
             };
         }
 

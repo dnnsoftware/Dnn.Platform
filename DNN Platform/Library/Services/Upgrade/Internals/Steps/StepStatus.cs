@@ -42,6 +42,6 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         /// <summary>
         /// Step resulted in Application Restart. You should redirect to the same page.
         /// </summary>
-        AppRestart = 5
+        AppRestart = 5,
     }
 }

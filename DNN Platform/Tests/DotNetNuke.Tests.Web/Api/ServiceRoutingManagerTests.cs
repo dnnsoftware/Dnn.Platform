@@ -79,7 +79,7 @@ namespace DotNetNuke.Tests.Web.Api
                         typeof(FakeServiceRouteMapper),
                         typeof(ReflectedServiceRouteMappers.EmbeddedServiceRouteMapper),
                         typeof(ExceptionOnCreateInstanceServiceRouteMapper),
-                        typeof(ExceptionOnRegisterServiceRouteMapper)
+                        typeof(ExceptionOnRegisterServiceRouteMapper),
                     }, types);
         }
 
@@ -102,7 +102,7 @@ namespace DotNetNuke.Tests.Web.Api
                                                           {
                                                               typeof(ExceptionOnRegisterServiceRouteMapper),
                                                               typeof(ExceptionOnCreateInstanceServiceRouteMapper),
-                                                              typeof(FakeServiceRouteMapper)
+                                                              typeof(FakeServiceRouteMapper),
                                                           });
             var al = new Mock<IAssemblyLocator>();
             al.Setup(x => x.Assemblies).Returns(new[] { assembly.Object });

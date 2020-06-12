@@ -80,7 +80,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
                 EnableBrowserLanguage = true,
                 AllowUserUICulture = false,
                 CultureCode = "en-US",
-                AllowContentLocalization = enabled
+                AllowContentLocalization = enabled,
             };
 
             connector.PostJson("API/PersonaBar/SiteSettings/UpdateLanguageSettings", postData);

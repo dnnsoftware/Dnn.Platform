@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.Admin.Users
             Consented,
             Cancelled,
             RemovedAccount,
-            FailedToRemoveAccount
+            FailedToRemoveAccount,
         }
     }
 }

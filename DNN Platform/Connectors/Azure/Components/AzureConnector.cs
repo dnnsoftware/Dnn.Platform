@@ -399,7 +399,7 @@ namespace Dnn.AzureConnector.Components
                     string.IsNullOrEmpty(mappingName)
                         ? $"{DefaultDisplayName}_{DateTime.Now.Ticks}"
                         : mappingName,
-                FolderProviderType = Constants.FolderProviderType
+                FolderProviderType = Constants.FolderProviderType,
             };
             folderMapping.FolderMappingID = FolderMappingController.Instance.AddFolderMapping(folderMapping);
             return folderMapping;

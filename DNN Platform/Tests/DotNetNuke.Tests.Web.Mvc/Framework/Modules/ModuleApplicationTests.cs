@@ -249,7 +249,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
                         {
                             HttpContext = MockHelper.CreateMockHttpContext("http://localhost/Portal/Page/ModuleRoute"),
                             RouteData = routeData,
-                            ModuleContext = moduleContext
+                            ModuleContext = moduleContext,
                         };
         }
 

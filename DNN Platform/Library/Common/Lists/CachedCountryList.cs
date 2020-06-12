@@ -35,7 +35,7 @@ namespace DotNetNuke.Common.Lists
                     Id = li.EntryID,
                     Code = li.Value,
                     FullName = string.Format("{0} ({1})", text, li.Value),
-                    Name = text
+                    Name = text,
                 };
                 c.NormalizedFullName = c.FullName.NormalizeString();
                 this.Add(li.Value, c);

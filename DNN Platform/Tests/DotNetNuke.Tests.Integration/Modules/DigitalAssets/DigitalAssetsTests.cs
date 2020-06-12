@@ -66,7 +66,7 @@ namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets
                 FolderName = Guid.NewGuid().ToString(),
                 ParentFolderId = rootFolderId,
                 FolderMappingId = this.GetStandardFolderMappingId(),
-                MappedName = string.Empty
+                MappedName = string.Empty,
             };
 
             var response = connector.PostJson(apiUrl, postData, this.GetRequestHeaders());
@@ -79,7 +79,7 @@ namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets
             var postData = new
             {
                 folderId = folderId,
-                newFolderName = newFolderName
+                newFolderName = newFolderName,
             };
 
             connector.PostJson(apiUrl, postData, this.GetRequestHeaders());

@@ -72,7 +72,7 @@ namespace DotNetNuke.Web.Mvc
                                                 DefaultControllerName = defaultActionName,
                                                 DefaultNamespaces = defaultNamespaces,
                                                 ModuleName = desktopModule.ModuleName,
-                                                FolderPath = desktopModule.FolderName
+                                                FolderPath = desktopModule.FolderName,
                                             };
             }
 
@@ -136,7 +136,7 @@ namespace DotNetNuke.Web.Mvc
                                                 HttpContext = httpContext,
                                                 ModuleContext = this.ModuleContext,
                                                 ModuleApplication = moduleApplication,
-                                                RouteData = routeData
+                                                RouteData = routeData,
                                             };
 
             return moduleRequestContext;

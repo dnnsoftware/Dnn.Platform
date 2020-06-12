@@ -96,7 +96,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 FileInfo = fileInfo,
                 UserId = userId,
-                IsCascadeDeleting = false
+                IsCascadeDeleting = false,
             });
         }
 
@@ -106,7 +106,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 FileInfo = fileInfo,
                 UserId = userId,
-                OldFileName = oldFileName
+                OldFileName = oldFileName,
             });
         }
 
@@ -116,7 +116,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 FileInfo = fileInfo,
                 UserId = userId,
-                OldFilePath = oldFilePath
+                OldFilePath = oldFilePath,
             });
         }
 
@@ -125,7 +125,7 @@ namespace DotNetNuke.Services.FileSystem
             EventManager.Instance.OnFileOverwritten(new FileChangedEventArgs
             {
                 FileInfo = fileInfo,
-                UserId = userId
+                UserId = userId,
             });
         }
 
@@ -134,7 +134,7 @@ namespace DotNetNuke.Services.FileSystem
             EventManager.Instance.OnFileMetadataChanged(new FileChangedEventArgs
             {
                 FileInfo = fileInfo,
-                UserId = userId
+                UserId = userId,
             });
         }
 
@@ -144,7 +144,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 FileInfo = fileInfo,
                 UserId = userId,
-                FolderInfo = folderInfo
+                FolderInfo = folderInfo,
             });
         }
 
@@ -394,7 +394,7 @@ namespace DotNetNuke.Services.FileSystem
                 EnablePublishPeriod = false,
                 ContentItemID = oldFile != null ? oldFile.ContentItemID : Null.NullInteger,
                 Title = oldFile != null ? oldFile.Title : Null.NullString,
-                SHA1Hash = oldFile != null ? oldFile.SHA1Hash : string.Empty
+                SHA1Hash = oldFile != null ? oldFile.SHA1Hash : string.Empty,
             };
 
             try
@@ -1514,7 +1514,7 @@ namespace DotNetNuke.Services.FileSystem
                     FileName = version.FileName,
                     Folder = file.Folder,
                     FolderMappingID = file.FolderMappingID,
-                    PortalId = folder.PortalID
+                    PortalId = folder.PortalID,
                 };
 
                 this.DeleteFileFromFolderProvider(fileVersion, sourceFolderProvider);

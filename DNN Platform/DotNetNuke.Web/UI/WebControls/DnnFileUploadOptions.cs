@@ -192,7 +192,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 ReplaceButtonText = Utilities.GetLocalizedString("FileUpload.ReplaceButton.Text"),
                 UnzipFilePromptTitle = Utilities.GetLocalizedString("FileUpload.UnzipFilePromptTitle.Text"),
                 UnzipFileFailedPromptBody = Utilities.GetLocalizedString("FileUpload.UnzipFileFailedPromptBody.Text"),
-                UnzipFileSuccessPromptBody = Utilities.GetLocalizedString("FileUpload.UnzipFileSuccessPromptBody.Text")
+                UnzipFileSuccessPromptBody = Utilities.GetLocalizedString("FileUpload.UnzipFileSuccessPromptBody.Text"),
             };
         }
     }

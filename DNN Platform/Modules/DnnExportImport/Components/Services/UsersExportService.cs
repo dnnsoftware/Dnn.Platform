@@ -443,7 +443,7 @@ namespace Dnn.ExportImport.Components.Services
             new Tuple<string, Type>("FailedPasswordAnswerAttemptCount", typeof(int)),
             new Tuple<string, Type>("Comment", typeof(string)),
             new Tuple<string, Type>("AuthenticationType", typeof(string)),
-            new Tuple<string, Type>("AuthenticationToken", typeof(string))
+            new Tuple<string, Type>("AuthenticationToken", typeof(string)),
         };
     }
 }

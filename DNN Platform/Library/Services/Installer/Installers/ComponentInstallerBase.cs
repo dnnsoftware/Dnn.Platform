@@ -129,7 +129,7 @@ namespace DotNetNuke.Services.Installer.Installers
                                         SentDate = DateTime.Now,
                                         Body = string.Empty,
                                         ProcessorType = Util.ReadElement(eventMessageNav, "processorType", this.Log, Util.EVENTMESSAGE_TypeMissing),
-                                        ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", this.Log, Util.EVENTMESSAGE_CommandMissing)
+                                        ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", this.Log, Util.EVENTMESSAGE_CommandMissing),
                                     };
                 foreach (XPathNavigator attributeNav in eventMessageNav.Select("attributes/*"))
                 {

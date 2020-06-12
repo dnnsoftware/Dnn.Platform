@@ -11,6 +11,6 @@ namespace DotNetNuke.Services.Mail
     {
         Normal,
         Low,
-        High
+        High,
     }
 }

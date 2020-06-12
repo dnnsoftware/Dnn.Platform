@@ -79,7 +79,7 @@ namespace DotNetNuke.Services.Assets
             {
                 Folder = folder,
                 Items = content.ToList(),
-                TotalCount = folders.Count() + files.Count()
+                TotalCount = folders.Count() + files.Count(),
             };
         }
 
@@ -98,7 +98,7 @@ namespace DotNetNuke.Services.Assets
             {
                 Folder = folder,
                 Items = content.ToList(),
-                TotalCount = sortedFiles.Count()
+                TotalCount = sortedFiles.Count(),
             };
         }
 

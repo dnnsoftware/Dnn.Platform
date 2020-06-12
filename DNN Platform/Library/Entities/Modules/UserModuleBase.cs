@@ -33,13 +33,13 @@ namespace DotNetNuke.Entities.Modules
     {
         All = 0,
         FirstLetter = 1,
-        None = 2
+        None = 2,
     }
 
     public enum UsersControl
     {
         Combo = 0,
-        TextBox = 1
+        TextBox = 1,
     }
 
     /// <summary>
@@ -493,7 +493,7 @@ namespace DotNetNuke.Entities.Modules
                 SenderUserID = portalSettings.AdministratorId,
                 Subject = this.GetNotificationSubject(locale, newUser, portalSettings),
                 Body = this.GetNotificationBody(locale, newUser, portalSettings),
-                Context = newUser.UserID.ToString(CultureInfo.InvariantCulture)
+                Context = newUser.UserID.ToString(CultureInfo.InvariantCulture),
             };
             var adminrole = RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.AdministratorRoleId);
             var roles = new List<RoleInfo> { adminrole };

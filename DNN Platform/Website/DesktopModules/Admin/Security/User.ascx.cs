@@ -457,7 +457,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 SecondElementSelector = ".password-confirm",
                 ContainerSelector = ".dnnFormPassword",
                 UnmatchedCssClass = "unmatched",
-                MatchedCssClass = "matched"
+                MatchedCssClass = "matched",
             };
 
             var confirmOptionsAsJsonString = Json.Serialize(confirmPasswordOptions);

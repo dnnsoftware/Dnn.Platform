@@ -300,7 +300,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                             PermissionID = permission.PermissionId,
                             RoleID = roleId,
                             UserID = Null.NullInteger,
-                            AllowAccess = true
+                            AllowAccess = true,
                         };
 
                         SaveMenuPermissions(portalId, menuItem, menuPermissionInfo);

@@ -178,7 +178,7 @@ namespace DotNetNuke.Services.Log.EventLog
             WEBSERVER_DISABLED,
             WEBSERVER_ENABLED,
             WEBSERVER_PINGFAILED,
-            FOLDER_MOVED
+            FOLDER_MOVED,
         }
 
         protected override Func<IEventLogController> GetFactory()
@@ -212,7 +212,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     LogUserID = userID,
                     LogTypeKey = logTypeKey,
                     LogProperties = properties,
-                    BypassBuffering = bypassBuffering
+                    BypassBuffering = bypassBuffering,
                 };
             if (portalSettings != null)
             {

@@ -41,7 +41,7 @@ namespace DotNetNuke.Entities.Groups {
                 Indexed = false,
                 ContentKey = "GroupId=" + objItem.RoleID,
                 ModuleID = -1,
-                TabID = tabId
+                TabID = tabId,
             };
 
             objContent.ContentItemId = Util.GetContentController().AddContentItem(objContent);

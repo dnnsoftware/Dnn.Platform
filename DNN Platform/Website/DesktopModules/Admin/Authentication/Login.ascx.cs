@@ -906,7 +906,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     HttpContext.Current.Response.Cookies.Set(new HttpCookie("returnurl", string.Empty)
                     {
                         Expires = DateTime.Now.AddDays(-1),
-                        Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/"
+                        Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
                     });
 
                     this.Response.Redirect(redirectUrl, true);
@@ -1298,7 +1298,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         ToUserID = this.PortalSettings.AdministratorId,
                         Subject = Localization.GetSystemMessage(this.PortalSettings, "EMAIL_USER_LOCKOUT_SUBJECT", Localization.GlobalResourceFile, Custom),
                         Body = Localization.GetSystemMessage(this.PortalSettings, "EMAIL_USER_LOCKOUT_BODY", Localization.GlobalResourceFile, Custom),
-                        Status = MessageStatusType.Unread
+                        Status = MessageStatusType.Unread,
                     };
                     // _messagingController.SaveMessage(_message);
 
@@ -1400,7 +1400,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 LogUserID = userId,
                 LogUserName = username,
                 LogPortalID = portalId,
-                LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()
+                LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
             };
             log.AddProperty(propertyName, propertyValue);
             LogController.Instance.AddLog(log);

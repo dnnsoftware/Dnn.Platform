@@ -190,7 +190,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
 
             var activeModuleRequest = new ModuleRequestResult
                                             {
-                                                ModuleApplication = mockApp.Object
+                                                ModuleApplication = mockApp.Object,
                                             };
 
             context.HttpContext.SetModuleRequestResult(activeModuleRequest);

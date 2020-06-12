@@ -21,14 +21,14 @@ namespace DotNetNuke.UI.WebControls
     public enum EditorDisplayMode
     {
         Div,
-        Table
+        Table,
     }
 
     public enum HelpDisplayMode
     {
         Never,
         EditOnly,
-        Always
+        Always,
     }
 
     /// -----------------------------------------------------------------------------
@@ -647,7 +647,7 @@ namespace DotNetNuke.UI.WebControls
                                      ID = "_visibility",
                                      Name = editInfo.Name,
                                      User = this.User,
-                                     Value = editInfo.ProfileVisibility
+                                     Value = editInfo.ProfileVisibility,
                                  };
                 visControl.ControlStyle.CopyFrom(this.VisibilityStyle);
                 visControl.VisibilityChanged += this.VisibilityChanged;

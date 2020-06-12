@@ -21,6 +21,6 @@ namespace DotNetNuke.Entities.Modules
     {
         IsPortable = 1,
         IsSearchable = 2,
-        IsUpgradeable = 4
+        IsUpgradeable = 4,
     }
 }

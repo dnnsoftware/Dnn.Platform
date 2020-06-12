@@ -116,7 +116,7 @@ namespace Dnn.PersonaBar.UI.Components
                             PermissionID = editPermission.PermissionId,
                             RoleID = p.RoleID,
                             UserID = p.UserID,
-                            AllowAccess = p.AllowAccess
+                            AllowAccess = p.AllowAccess,
                         };
 
                         MenuPermissionController.SaveMenuPermissions(portalId, menuItem, menuPermissionInfo);
@@ -148,7 +148,7 @@ namespace Dnn.PersonaBar.UI.Components
                 "Dnn.PersonaBar.TaskScheduler",
                 "Dnn.PersonaBar.Themes",
                 "Dnn.PersonaBar.Users",
-                "Dnn.PersonaBar.Vocabularies"
+                "Dnn.PersonaBar.Vocabularies",
             };
 
             foreach (string assemblyName in assemblies)

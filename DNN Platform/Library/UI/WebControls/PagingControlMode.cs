@@ -19,6 +19,6 @@ namespace DotNetNuke.UI.WebControls
     public enum PagingControlMode
     {
         PostBack,
-        URL
+        URL,
     }
 }

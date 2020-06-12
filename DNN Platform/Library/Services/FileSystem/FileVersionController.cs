@@ -244,7 +244,7 @@ namespace DotNetNuke.Services.FileSystem
             EventManager.Instance.OnFileChanged(new FileChangedEventArgs
                                                         {
                                                             FileInfo = fileInfo,
-                                                            UserId = userId
+                                                            UserId = userId,
                                                         });
         }
 

@@ -117,7 +117,7 @@ namespace DotNetNuke.Common
             /// <summary>
             /// Caching for a long time
             /// </summary>
-            HeavyCaching = 6
+            HeavyCaching = 6,
         }
 
 
@@ -153,7 +153,7 @@ namespace DotNetNuke.Common
             /// <summary>
             /// Account will be available by verify code.
             /// </summary>
-            VerifiedRegistration = 3
+            VerifiedRegistration = 3,
         }
 
 
@@ -183,7 +183,7 @@ namespace DotNetNuke.Common
             /// The application status is unknown,
             /// </summary>
             /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
-            Unknown
+            Unknown,
         }
 
 

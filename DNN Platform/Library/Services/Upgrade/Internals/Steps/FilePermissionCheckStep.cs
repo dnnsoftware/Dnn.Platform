@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             var verifiers = new List<FileSystemPermissionVerifier>
                                 {
                                     new FileSystemPermissionVerifier(HttpContext.Current.Server.MapPath("~")),
-                                    new FileSystemPermissionVerifier(HttpContext.Current.Server.MapPath("~/App_Data"))
+                                    new FileSystemPermissionVerifier(HttpContext.Current.Server.MapPath("~/App_Data")),
                                 };
 
             this.Details = Localization.Localization.GetString("FolderCreateCheck", this.LocalInstallResourceFile)

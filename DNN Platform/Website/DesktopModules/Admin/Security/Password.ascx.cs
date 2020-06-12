@@ -285,7 +285,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 SecondElementSelector = ".password-confirm",
                 ContainerSelector = ".dnnPassword",
                 UnmatchedCssClass = "unmatched",
-                MatchedCssClass = "matched"
+                MatchedCssClass = "matched",
             };
 
             var confirmOptionsAsJsonString = Json.Serialize(confirmPasswordOptions);
@@ -409,7 +409,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 LogPortalID = this.PortalSettings.PortalId,
                 LogPortalName = this.PortalSettings.PortalName,
                 LogUserID = this.UserId,
-                LogUserName = portalSecurity.InputFilter(this.User.Username, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup)
+                LogUserName = portalSecurity.InputFilter(this.User.Username, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup),
             };
 
             if (string.IsNullOrEmpty(message))

@@ -280,7 +280,7 @@ namespace DotNetNuke.Common
             var log = new LogInfo
             {
                 BypassBuffering = true,
-                LogTypeKey = EventLogController.EventLogType.APPLICATION_START.ToString()
+                LogTypeKey = EventLogController.EventLogType.APPLICATION_START.ToString(),
             };
             LogController.Instance.AddLog(log);
         }
@@ -347,7 +347,7 @@ namespace DotNetNuke.Common
                 var log = new LogInfo
                 {
                     BypassBuffering = true,
-                    LogTypeKey = EventLogController.EventLogType.APPLICATION_SHUTTING_DOWN.ToString()
+                    LogTypeKey = EventLogController.EventLogType.APPLICATION_SHUTTING_DOWN.ToString(),
                 };
                 log.AddProperty("Shutdown Details", shutdownDetail);
                 LogController.Instance.AddLog(log);
@@ -468,7 +468,7 @@ namespace DotNetNuke.Common
                 var newThread = new Thread(scheduler.Start)
                 {
                     IsBackground = true,
-                    Name = "Scheduler Thread"
+                    Name = "Scheduler Thread",
                 };
                 newThread.Start();
             }

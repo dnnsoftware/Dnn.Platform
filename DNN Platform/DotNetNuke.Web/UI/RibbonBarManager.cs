@@ -60,7 +60,7 @@ namespace DotNetNuke.Web.UI
                 DisableLink = false,
                 IsDeleted = false,
                 IsSecure = false,
-                PermanentRedirect = false
+                PermanentRedirect = false,
             };
 
             TabInfo parentTab = GetParentTab(relativeToTab, location);
@@ -462,7 +462,7 @@ namespace DotNetNuke.Web.UI
                         TabID = tab.TabID,
                         PermissionID = permissionId,
                         RoleID = roleId,
-                        AllowAccess = allowAccess
+                        AllowAccess = allowAccess,
                     };
 
                     tab.TabPermissions.Add(tabPermission);
@@ -528,7 +528,7 @@ namespace DotNetNuke.Web.UI
         ParentTabInvalid,
         PageEditorPermissionError,
         HostBeforeAfterError,
-        DuplicateWithAlias
+        DuplicateWithAlias,
     }
 
     public enum TabRelativeLocation
@@ -536,6 +536,6 @@ namespace DotNetNuke.Web.UI
         NOTSET,
         BEFORE,
         AFTER,
-        CHILD
+        CHILD,
     }
 }

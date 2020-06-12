@@ -125,7 +125,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             {
                 DisplayName = Constants.UserDisplayName_User12,
                 UserID = Constants.UserID_User12,
-                PortalID = Constants.PORTAL_ValidPortalId
+                PortalID = Constants.PORTAL_ValidPortalId,
             };
         }
     }

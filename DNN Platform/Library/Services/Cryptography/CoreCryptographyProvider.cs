@@ -130,7 +130,7 @@ namespace DotNetNuke.Services.Cryptography
                 {
                     Key = tdesKey,
                     Mode = CipherMode.ECB,
-                    Padding = PaddingMode.PKCS7
+                    Padding = PaddingMode.PKCS7,
                 };
 
                 byte[] dataToEncrypt = utf8.GetBytes(message);
@@ -172,7 +172,7 @@ namespace DotNetNuke.Services.Cryptography
                 {
                     Key = tdesKey,
                     Mode = CipherMode.ECB,
-                    Padding = PaddingMode.PKCS7
+                    Padding = PaddingMode.PKCS7,
                 };
 
 

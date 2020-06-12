@@ -10,6 +10,6 @@ namespace DotNetNuke.Security.Roles
     {
         Pending = -1,
         Disabled = 0,
-        Approved = 1
+        Approved = 1,
     }
 }

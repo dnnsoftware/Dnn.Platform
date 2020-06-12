@@ -138,7 +138,7 @@ namespace DotNetNuke.Common.Utilities
                 var reader = new XmlTextReader(new StringReader(xmlItem.InnerXml))
                 {
                     XmlResolver = null,
-                    DtdProcessing = DtdProcessing.Prohibit
+                    DtdProcessing = DtdProcessing.Prohibit,
                 };
 
                 // Use the Deserialize method to restore the object's state, and store it
@@ -171,7 +171,7 @@ namespace DotNetNuke.Common.Utilities
                         var reader = new XmlTextReader(new StringReader(xmlItem.InnerXml))
                         {
                             XmlResolver = null,
-                            DtdProcessing = DtdProcessing.Prohibit
+                            DtdProcessing = DtdProcessing.Prohibit,
                         };
 
                         // Use the Deserialize method to restore the object's state, and store it
@@ -814,7 +814,7 @@ namespace DotNetNuke.Common.Utilities
             var objXmlReader = new XmlTextReader(result.GetResponseStream())
             {
                 XmlResolver = null,
-                DtdProcessing = DtdProcessing.Prohibit
+                DtdProcessing = DtdProcessing.Prohibit,
             };
             functionReturnValue.Load(objXmlReader);
             return functionReturnValue;

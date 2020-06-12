@@ -209,7 +209,7 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         Code = exportPortalLanguage.CultureCode,
                         Fallback = Localization.SystemLocale,
-                        Text = CultureInfo.GetCultureInfo(exportPortalLanguage.CultureCode).NativeName
+                        Text = CultureInfo.GetCultureInfo(exportPortalLanguage.CultureCode).NativeName,
                     };
                     Localization.SaveLanguage(locale);
                     localLanguageId = locale.LanguageId;

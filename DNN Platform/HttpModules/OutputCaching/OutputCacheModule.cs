@@ -247,7 +247,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
         private enum IncludeExcludeType
         {
             IncludeByDefault,
-            ExcludeByDefault
+            ExcludeByDefault,
         }
     }
 }

@@ -12,6 +12,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         Added,
         Modified,
         Deleted,
-        Reset
+        Reset,
     }
 }

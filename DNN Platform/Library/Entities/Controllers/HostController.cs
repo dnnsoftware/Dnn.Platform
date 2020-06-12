@@ -374,7 +374,7 @@ namespace DotNetNuke.Entities.Controllers
                                      {
                                          Key = key,
                                          IsSecure = Convert.ToBoolean(dr[2]),
-                                         Value = dr.IsDBNull(1) ? string.Empty : dr.GetString(1)
+                                         Value = dr.IsDBNull(1) ? string.Empty : dr.GetString(1),
                                      };
 
                     dicSettings.Add(key, config);

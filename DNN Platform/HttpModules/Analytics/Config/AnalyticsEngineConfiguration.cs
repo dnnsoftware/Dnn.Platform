@@ -71,7 +71,7 @@ namespace DotNetNuke.HttpModules.Config
                                                       EngineType = nav.SelectSingleNode("EngineType").Value,
                                                       ElementId = nav.SelectSingleNode("ElementId").Value,
                                                       InjectTop = Convert.ToBoolean(nav.SelectSingleNode("InjectTop").Value),
-                                                      ScriptTemplate = nav.SelectSingleNode("ScriptTemplate").Value
+                                                      ScriptTemplate = nav.SelectSingleNode("ScriptTemplate").Value,
                                                   };
                         config.AnalyticsEngines.Add(analyticsEngine);
                     }

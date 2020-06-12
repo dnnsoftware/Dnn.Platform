@@ -100,7 +100,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                     { "PlatformVersion", 70 },
                     { "ScreenPixelsWidth", 65 },
                     { "ScreenPixelsHeight", 60 },
-                    { "HardwareVendor", 55 }
+                    { "HardwareVendor", 55 },
                 });
             }
         }

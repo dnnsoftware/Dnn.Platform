@@ -33,6 +33,6 @@ namespace DotNetNuke.Services.Tokens
         /// <summary>
         /// internal debugging, error messages, logs
         /// </summary>
-        Debug = 4
+        Debug = 4,
     }
 }

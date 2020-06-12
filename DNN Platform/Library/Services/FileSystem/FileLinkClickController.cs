@@ -22,14 +22,14 @@ namespace DotNetNuke.Services.FileSystem
                 return new LinkClickPortalSettings
                     {
                         PortalGUID = Host.GUID,
-                        EnableUrlLanguage = Host.EnableUrlLanguage
+                        EnableUrlLanguage = Host.EnableUrlLanguage,
                     };
             }
             var portalSettings = new PortalSettings(portalId);
             return new LinkClickPortalSettings
                 {
                     PortalGUID = portalSettings.GUID.ToString(),
-                    EnableUrlLanguage = portalSettings.EnableUrlLanguage
+                    EnableUrlLanguage = portalSettings.EnableUrlLanguage,
                 };
         }
 

@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             // return json but label it as plain text
             return new HttpResponseMessage
             {
-                Content = new StringContent(JsonConvert.SerializeObject(statuses))
+                Content = new StringContent(JsonConvert.SerializeObject(statuses)),
             };
         }
 
@@ -92,7 +92,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                     {
                         success = false,
                         name = fileName,
-                        message = "File type not allowed."
+                        message = "File type not allowed.",
                     });
                 }
             }

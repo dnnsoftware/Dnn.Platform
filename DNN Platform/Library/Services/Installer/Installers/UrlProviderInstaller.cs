@@ -113,7 +113,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     IsActive = true,
                     RedirectAllUrls = Convert.ToBoolean(Util.ReadElement(manifestNav, "urlProvider/redirectAllUrls", "false")),
                     ReplaceAllUrls = Convert.ToBoolean(Util.ReadElement(manifestNav, "urlProvider/replaceAllUrls", "false")),
-                    RewriteAllUrls = Convert.ToBoolean(Util.ReadElement(manifestNav, "urlProvider/rewriteAllUrls", "false"))
+                    RewriteAllUrls = Convert.ToBoolean(Util.ReadElement(manifestNav, "urlProvider/rewriteAllUrls", "false")),
                 };
 
             this._desktopModuleName = Util.ReadElement(manifestNav, "urlProvider/desktopModule");

@@ -54,7 +54,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 Name = exportJob.Name,
                 Description = exportJob.Description,
                 ExporTime = exportJob.CreatedOnDate,
-                PortalName = portal?.PortalName
+                PortalName = portal?.PortalName,
             };
             Util.WriteJson(filePath, packageInfo);
         }

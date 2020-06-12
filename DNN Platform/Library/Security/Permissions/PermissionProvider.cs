@@ -443,7 +443,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 RoleController.Instance.GetRoleById(
                     portalId,
-                    PortalController.Instance.GetPortal(portalId).AdministratorRoleId)
+                    PortalController.Instance.GetPortal(portalId).AdministratorRoleId),
             };
         }
 
@@ -588,7 +588,7 @@ namespace DotNetNuke.Security.Permissions
             return CBO.GetCachedObject<FolderPermissionCollection>(
                 new CacheItemArgs(cacheKey, DataCache.FolderPermissionCacheTimeOut, DataCache.FolderPermissionCachePriority)
                 {
-                    CacheDependency = GetCacheDependency(PortalID)
+                    CacheDependency = GetCacheDependency(PortalID),
                 },
                 _ =>
                 {
@@ -664,7 +664,7 @@ namespace DotNetNuke.Security.Permissions
                                                     FolderID = folderPermission.FolderID,
                                                     RoleID = folderPermission.RoleID,
                                                     UserID = folderPermission.UserID,
-                                                    AllowAccess = true
+                                                    AllowAccess = true,
                                                 };
 
                         additionalPermissions.Add(newFolderPerm);
@@ -675,7 +675,7 @@ namespace DotNetNuke.Security.Permissions
                                                 FolderID = folderPermission.FolderID,
                                                 RoleID = folderPermission.RoleID,
                                                 UserID = folderPermission.UserID,
-                                                AllowAccess = true
+                                                AllowAccess = true,
                                             };
 
                         additionalPermissions.Add(newFolderPerm);

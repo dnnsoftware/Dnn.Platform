@@ -32,7 +32,7 @@ namespace Dnn.PersonaBar.Library.Controllers
         {
             return new UserSettings
             {
-                ExpandPersonaBar = false
+                ExpandPersonaBar = false,
             };
         }
 

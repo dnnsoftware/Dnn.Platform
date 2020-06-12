@@ -31,7 +31,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                                                                                         { "TemplateFilePath", DefaultPath },
                                                                                         { "LanguageFilePath", DefaultDePath },
                                                                                         { "CultureCode", "de-DE" },
-                                                                                        { "Description", DefaultDeDescription }
+                                                                                        { "Description", DefaultDeDescription },
                                                                                     };
 
         private static readonly string DefaultUsPath = MakePath(DefaultName, "en-US");
@@ -52,7 +52,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                                                                                         { "Name", StaticName },
                                                                                         { "TemplateFilePath", StaticPath },
                                                                                         { "Description", StaticDescription },
-                                                                                        { "CultureCode", CultureCode }
+                                                                                        { "CultureCode", CultureCode },
                                                                                     };
 
         private const string AlternateName = "Alternate";
@@ -75,7 +75,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                                                                                         { "Name", ResourceName },
                                                                                         { "TemplateFilePath", ResourcePath },
                                                                                         { "ResourceFilePath", ResourceFilePath },
-                                                                                        { "CultureCode", CultureCode }
+                                                                                        { "CultureCode", CultureCode },
                                                                                     };
 
         [SetUp]

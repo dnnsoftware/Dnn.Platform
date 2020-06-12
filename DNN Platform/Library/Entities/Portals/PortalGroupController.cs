@@ -65,7 +65,7 @@ namespace DotNetNuke.Entities.Portals
                 UserNo = 0,
                 UserName = string.Empty,
                 PortalName = portal.PortalName,
-                Stage = "starting"
+                Stage = "starting",
             };
             callback(args);
         }
@@ -79,7 +79,7 @@ namespace DotNetNuke.Entities.Portals
                 TotalUsers = totalUsers,
                 UserNo = currentUserNumber,
                 UserName = currentUser.Username,
-                PortalName = portal.PortalName
+                PortalName = portal.PortalName,
             };
             callback(args);
         }
@@ -94,7 +94,7 @@ namespace DotNetNuke.Entities.Portals
                 UserNo = totalUsers,
                 UserName = string.Empty,
                 PortalName = portal.PortalName,
-                Stage = "finalizing"
+                Stage = "finalizing",
             };
             callback(args);
         }
@@ -110,7 +110,7 @@ namespace DotNetNuke.Entities.Portals
                 UserName = string.Empty,
                 PortalName = portal.PortalName,
                 Stage = "finished",
-                PortalGroupId = portalGroup.PortalGroupId
+                PortalGroupId = portalGroup.PortalGroupId,
             };
             callback(args);
         }
@@ -122,7 +122,7 @@ namespace DotNetNuke.Entities.Portals
                 var log = new LogInfo
                 {
                     BypassBuffering = true,
-                    LogTypeKey = eventType.ToString()
+                    LogTypeKey = eventType.ToString(),
                 };
                 log.LogProperties.Add(new LogDetailInfo("PortalGroup:", portalGroup.PortalGroupName));
                 log.LogProperties.Add(new LogDetailInfo("PortalGroupID:", portalGroup.PortalGroupId.ToString()));
@@ -331,7 +331,7 @@ namespace DotNetNuke.Entities.Portals
                 UserNo = 0,
                 UserName = string.Empty,
                 PortalName = portal.PortalName,
-                Stage = "startingremove"
+                Stage = "startingremove",
             };
             callback(args);
 
@@ -359,7 +359,7 @@ namespace DotNetNuke.Entities.Portals
                         TotalUsers = users.Count,
                         UserNo = userNo,
                         UserName = masterUser.Username,
-                        PortalName = portal.PortalName
+                        PortalName = portal.PortalName,
                     };
 
                     callback(args);
@@ -381,7 +381,7 @@ namespace DotNetNuke.Entities.Portals
                         TotalUsers = 1,
                         UserNo = ++userNo,
                         UserName = user.Username,
-                        PortalName = portal.PortalName
+                        PortalName = portal.PortalName,
                     };
 
                     callback(args);
@@ -395,7 +395,7 @@ namespace DotNetNuke.Entities.Portals
                 UserName = string.Empty,
                 PortalName = portal.PortalName,
                 Stage = "finishedremove",
-                PortalGroupId = portalGroup.PortalGroupId
+                PortalGroupId = portalGroup.PortalGroupId,
             };
             callback(args);
         }

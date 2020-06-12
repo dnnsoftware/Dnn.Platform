@@ -109,7 +109,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 PortalId = portalId,
                 PortalName = portal.PortalName,
                 TotalJobs = count,
-                Jobs = jobs?.Select(ToJobItem)
+                Jobs = jobs?.Select(ToJobItem),
             };
         }
 
@@ -157,7 +157,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 ExportMode = exportDto.ExportMode,
                 ExportFileInfo = job.JobType == JobType.Export
                     ? GetExportFileInfo(Path.Combine(ExportFolder, job.Directory, Constants.ExportManifestName))
-                    : JsonConvert.DeserializeObject<ImportDto>(job.JobObject).ExportFileInfo
+                    : JsonConvert.DeserializeObject<ImportDto>(job.JobObject).ExportFileInfo,
             };
 
             var checkpoints = EntitiesController.Instance.GetJobChekpoints(jobId);
@@ -171,7 +171,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 ProgressPercentage = Convert.ToInt32(checkpoint.Progress),
                 Category = checkpoint.Category,
                 Order = implementors.FirstOrDefault(x => x.Category == checkpoint.Category)?.Priority ?? 0,
-                Completed = checkpoint.Completed
+                Completed = checkpoint.Completed,
             }));
             importExportSummary.SummaryItems = summaryItems;
             return importExportSummary;
@@ -190,7 +190,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 {
                     TotalItems = implementor.GetImportTotal(),
                     Category = implementor.Category,
-                    Order = implementor.Priority
+                    Order = implementor.Priority,
                 });
             }
 
@@ -238,7 +238,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 Description = job.Description,
                 CreatedOn = job.CreatedOnDate,
                 CompletedOn = job.CompletedOnDate,
-                ExportFile = job.CompletedOnDate.HasValue ? job.Directory : null
+                ExportFile = job.CompletedOnDate.HasValue ? job.Directory : null,
             };
         }
 

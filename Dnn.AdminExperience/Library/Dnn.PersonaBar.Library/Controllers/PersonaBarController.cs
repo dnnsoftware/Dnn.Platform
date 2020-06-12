@@ -99,7 +99,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                         IconFile = menuItem.IconFile,
                         AllowHost = menuItem.AllowHost,
                         Order = menuItem.Order,
-                        ParentId = menuItem.ParentId
+                        ParentId = menuItem.ParentId,
                     };
 
                     this.UpdateParamters(cloneItem);

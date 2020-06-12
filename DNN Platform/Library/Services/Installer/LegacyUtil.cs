@@ -276,7 +276,7 @@ namespace DotNetNuke.Services.Installer
                                     Description = Null.NullString,
                                     Version = new Version(1, 0, 0),
                                     PackageType = "CoreLanguagePack",
-                                    License = Util.PACKAGE_NoLicense
+                                    License = Util.PACKAGE_NoLicense,
                                 };
 
                             // Create a LanguagePackWriter
@@ -292,7 +292,7 @@ namespace DotNetNuke.Services.Installer
                                 {
                                     LanguageID = language.LanguageId,
                                     PackageID = package.PackageID,
-                                    DependentPackageID = -2
+                                    DependentPackageID = -2,
                                 };
                             LanguagePackController.SaveLanguagePack(languagePack);
                         }

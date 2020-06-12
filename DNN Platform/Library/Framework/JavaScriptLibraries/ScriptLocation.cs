@@ -11,6 +11,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     {
         PageHead,
         BodyTop,
-        BodyBottom
+        BodyBottom,
     }
 }

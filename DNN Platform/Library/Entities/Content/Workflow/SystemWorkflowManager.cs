@@ -32,7 +32,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 IsSystem = true,
                 SendNotification = true,
                 SendNotificationToAdministrators = false,
-                Order = order
+                Order = order,
             };
         }
 
@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 Description = Localization.GetString("DefaultDirectPublishWorkflowDescription"),
                 WorkflowKey = DirectPublishWorkflowKey,
                 IsSystem = true,
-                PortalID = portalId
+                PortalID = portalId,
             };
             this._workflowRepository.AddWorkflow(workflow);
             var publishedState = this.GetPublishedStateDefinition(1);
@@ -60,7 +60,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 Description = Localization.GetString("DefaultSaveDraftWorkflowDescription"),
                 WorkflowKey = SaveDraftWorkflowKey,
                 IsSystem = true,
-                PortalID = portalId
+                PortalID = portalId,
             };
             this._workflowRepository.AddWorkflow(workflow);
 
@@ -81,7 +81,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 Description = Localization.GetString("DefaultWorkflowDescription"),
                 WorkflowKey = ContentAprovalWorkflowKey,
                 IsSystem = true,
-                PortalID = portalId
+                PortalID = portalId,
             };
             this._workflowRepository.AddWorkflow(workflow);
 

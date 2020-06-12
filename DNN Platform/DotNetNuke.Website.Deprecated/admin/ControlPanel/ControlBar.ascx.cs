@@ -55,7 +55,7 @@ namespace DotNetNuke.UI.ControlPanels
         private readonly IList<string> _adminCommonTabs = new List<string> { "Site Settings",
                                                                             "Security Roles",
                                                                             "User Accounts",
-                                                                            "File Management" };
+                                                                            "File Management", };
 
         private readonly IList<string> _hostCommonTabs = new List<string> { "Host Settings",
                                                                             "Site Management",
@@ -65,7 +65,7 @@ namespace DotNetNuke.UI.ControlPanels
                                                                             "Health Monitoring",
                                                                             "Technical Support",
                                                                             "Knowledge Base",
-                                                                            "Software and Documentation" };
+                                                                            "Software and Documentation", };
 
         protected DnnFileUpload FileUploader;
 
@@ -241,13 +241,13 @@ namespace DotNetNuke.UI.ControlPanels
                     var topPane = new[] {
                         string.Format(this.GetString("Pane.AddTop.Text"), p),
                         p.ToString(),
-                        "TOP"
+                        "TOP",
                     };
 
                     var botPane = new[] {
                         string.Format(this.GetString("Pane.AddBottom.Text"), p),
                         p.ToString(),
-                        "BOTTOM"
+                        "BOTTOM",
                     };
 
                     resultPanes.Add(topPane);
@@ -262,7 +262,7 @@ namespace DotNetNuke.UI.ControlPanels
                     var botPane = new[] {
                         string.Format(this.GetString("Pane.Add.Text"), p),
                         p.ToString(),
-                        "BOTTOM"
+                        "BOTTOM",
                     };
 
                     resultPanes.Add(botPane);
@@ -632,7 +632,7 @@ namespace DotNetNuke.UI.ControlPanels
                     string[] p =
                     {
                         pi.PortalName,
-                        pi.PortalID.ToString("D")
+                        pi.PortalID.ToString("D"),
                     };
 
                     result.Add(p);
@@ -673,7 +673,7 @@ namespace DotNetNuke.UI.ControlPanels
                                      {
                                          cultureItem.Text,
                                          cultureItem.Value,
-                                         selected
+                                         selected,
                                      };
                     result.Add(p);
                 }

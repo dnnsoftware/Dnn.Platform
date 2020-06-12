@@ -226,7 +226,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 var notificationsViewModel = new NotificationsViewModel
                 {
                     TotalNotifications = NotificationsController.Instance.CountNotifications(this.UserInfo.UserID, portalId),
-                    Notifications = new List<NotificationViewModel>(notificationsDomainModel.Count)
+                    Notifications = new List<NotificationViewModel>(notificationsDomainModel.Count),
                 };
 
                 foreach (var notification in notificationsDomainModel)
@@ -244,7 +244,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                         SenderAvatar = UserController.Instance.GetUserProfilePictureUrl(notification.SenderUserID, 64, 64),
                         SenderProfileUrl = Globals.UserProfileURL(notification.SenderUserID),
                         SenderDisplayName = displayName,
-                        Actions = new List<NotificationActionViewModel>()
+                        Actions = new List<NotificationActionViewModel>(),
                     };
 
                     var notificationType = NotificationsController.Instance.GetNotificationType(notification.NotificationTypeID);
@@ -257,7 +257,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                             Name = this.LocalizeActionString(notificationTypeAction.NameResourceKey, notificationType.DesktopModuleId),
                             Description = this.LocalizeActionString(notificationTypeAction.DescriptionResourceKey, notificationType.DesktopModuleId),
                             Confirm = this.LocalizeActionString(notificationTypeAction.ConfirmResourceKey, notificationType.DesktopModuleId),
-                            APICall = notificationTypeAction.APICall
+                            APICall = notificationTypeAction.APICall,
                         };
 
                         notificationViewModel.Actions.Add(notificationActionViewModel);
@@ -270,7 +270,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                             Name = Localization.GetString("Dismiss.Text"),
                             Description = Localization.GetString("DismissNotification.Text"),
                             Confirm = string.Empty,
-                            APICall = "API/InternalServices/NotificationsService/Dismiss"
+                            APICall = "API/InternalServices/NotificationsService/Dismiss",
                         });
                     }
 
@@ -342,7 +342,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 var totalsViewModel = new TotalsViewModel
                 {
                     TotalUnreadMessages = InternalMessagingController.Instance.CountUnreadMessages(this.UserInfo.UserID, portalId),
-                    TotalNotifications = NotificationsController.Instance.CountNotifications(this.UserInfo.UserID, portalId)
+                    TotalNotifications = NotificationsController.Instance.CountNotifications(this.UserInfo.UserID, portalId),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, totalsViewModel);

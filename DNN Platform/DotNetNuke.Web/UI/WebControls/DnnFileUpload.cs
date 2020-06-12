@@ -121,7 +121,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 this.Options.FolderPicker.InitialState = new DnnDropDownListState
                 {
-                    SelectedItem = (folder != null) ? new SerializableKeyValuePair<string, string>(folder.FolderID.ToString(CultureInfo.InvariantCulture), rootFolder) : null
+                    SelectedItem = (folder != null) ? new SerializableKeyValuePair<string, string>(folder.FolderID.ToString(CultureInfo.InvariantCulture), rootFolder) : null,
                 };
             }
 

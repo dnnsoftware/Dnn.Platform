@@ -171,7 +171,7 @@ namespace DotNetNuke.Entities.Modules
                 RoleID = roleId,
                 UserID = userId,
                 PermissionKey = permission.PermissionKey,
-                AllowAccess = allowAccess
+                AllowAccess = allowAccess,
             };
 
             // add the permission to the collection
@@ -333,7 +333,7 @@ namespace DotNetNuke.Entities.Modules
                 Alignment = XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "alignment"),
                 IconFile = Globals.ImportFile(portalId, XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "iconfile")),
                 AllTabs = XmlUtils.GetNodeValueBoolean(nodeModule, "alltabs"),
-                CultureCode = XmlUtils.GetNodeValue(nodeModule, "cultureCode")
+                CultureCode = XmlUtils.GetNodeValue(nodeModule, "cultureCode"),
             };
 
             // Localization
@@ -428,7 +428,7 @@ namespace DotNetNuke.Entities.Modules
                             ModuleID = module.ModuleID,
                             PermissionID = permissionID,
                             RoleID = roleID,
-                            AllowAccess = Convert.ToBoolean(XmlUtils.GetNodeValue(node.CreateNavigator(), "allowaccess"))
+                            AllowAccess = Convert.ToBoolean(XmlUtils.GetNodeValue(node.CreateNavigator(), "allowaccess")),
                         };
 
                         // do not add duplicate ModulePermissions
@@ -1038,7 +1038,7 @@ namespace DotNetNuke.Entities.Modules
                 var log = new LogInfo
                 {
                     LogTypeKey = EventLogController.EventLogType.TABMODULE_CREATED.ToString(),
-                    LogPortalID = module.PortalID
+                    LogPortalID = module.PortalID,
                 };
                 log.LogProperties.Add(new LogDetailInfo("TabPath", module.ParentTab.TabPath));
                 log.LogProperties.Add(new LogDetailInfo("Module Type", module.ModuleDefinition.FriendlyName));
@@ -1332,7 +1332,7 @@ namespace DotNetNuke.Entities.Modules
             // queue remove module from search index
             var document = new SearchDocumentToDelete
             {
-                ModuleId = moduleId
+                ModuleId = moduleId,
             };
 
             DataProvider.Instance().AddSearchDeletedItems(document);
@@ -1385,7 +1385,7 @@ namespace DotNetNuke.Entities.Modules
             UpdateTabModuleVersion(tabModuleId);
             var log = new LogInfo
             {
-                LogTypeKey = EventLogController.EventLogType.TABMODULE_SETTING_DELETED.ToString()
+                LogTypeKey = EventLogController.EventLogType.TABMODULE_SETTING_DELETED.ToString(),
             };
             log.LogProperties.Add(new LogDetailInfo("TabModuleId", tabModuleId.ToString(CultureInfo.InvariantCulture)));
             log.LogProperties.Add(new LogDetailInfo("SettingName", settingName));

@@ -117,7 +117,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                             ItemID = this.folderViewModel.FolderID,
                             IsFolder = true,
                             PortalID = this.folderViewModel.PortalID,
-                            ItemName = this.folderViewModel.FolderName
+                            ItemName = this.folderViewModel.FolderName,
                         });
                     }
                 }

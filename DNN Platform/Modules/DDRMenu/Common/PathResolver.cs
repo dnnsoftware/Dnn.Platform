@@ -40,7 +40,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
                             { "[PORTAL]", RelativeTo.Portal },
                             { "[SKIN]", RelativeTo.Skin },
                             { "[CONTAINER]", RelativeTo.Container },
-                            { "[DNN]", RelativeTo.Dnn }
+                            { "[DNN]", RelativeTo.Dnn },
                            };
             foreach (var key in mappings.Keys)
             {

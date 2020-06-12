@@ -80,7 +80,7 @@ namespace DotNetNuke.Entities.Users
                 LogPortalID = portalId,
                 LogPortalName = portalName,
                 LogUserName = objSecurity.InputFilter(username, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup),
-                LogUserID = userId
+                LogUserID = userId,
             };
             log.AddProperty("IP", ip);
 
@@ -164,7 +164,7 @@ namespace DotNetNuke.Entities.Users
                             FolderID = userFolder.FolderID,
                             UserID = user.UserID,
                             RoleID = int.Parse(Globals.glbRoleNothing),
-                            AllowAccess = true
+                            AllowAccess = true,
                         };
 
                         userFolder.FolderPermissions.Add(folderPermission, true);
@@ -1082,7 +1082,7 @@ namespace DotNetNuke.Entities.Users
                 {
                     PortalId = portalId,
                     AuthorUserId = user.UserID,
-                    SearchTypeId = Services.Search.Internals.SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId
+                    SearchTypeId = Services.Search.Internals.SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId,
                 };
 
                 DataProvider.Instance().AddSearchDeletedItems(document);

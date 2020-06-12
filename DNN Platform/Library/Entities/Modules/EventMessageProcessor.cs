@@ -127,7 +127,7 @@ namespace DotNetNuke.Entities.Modules
                                            SentDate = DateTime.Now,
                                            Body = string.Empty,
                                            ProcessorType = "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke",
-                                           ProcessorCommand = "ImportModule"
+                                           ProcessorCommand = "ImportModule",
                                        };
 
             // Add custom Attributes for this message

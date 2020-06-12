@@ -25,7 +25,7 @@ namespace DotNetNuke.Entities.Urls
                 var rdr = new XmlTextReader(fileName)
                 {
                     XmlResolver = null,
-                    DtdProcessing = DtdProcessing.Prohibit
+                    DtdProcessing = DtdProcessing.Prohibit,
                 };
                 while (rdr.Read())
                 {
@@ -58,7 +58,7 @@ namespace DotNetNuke.Entities.Urls
                                             ReplaceWith = rdr.GetAttribute("replaceWith"),
                                             PortalId = portalId,
                                             Name = name,
-                                            TabId = tabId
+                                            TabId = tabId,
                                         };
                                         string changeToSiteRootRaw = rdr.GetAttribute("changeToSiteRoot");
                                         bool changeToSiteRoot;
@@ -116,7 +116,7 @@ namespace DotNetNuke.Entities.Urls
                 var rdr = new XmlTextReader(fileName)
                 {
                     XmlResolver = null,
-                    DtdProcessing = DtdProcessing.Prohibit
+                    DtdProcessing = DtdProcessing.Prohibit,
                 };
                 while (rdr.Read())
                 {
@@ -165,7 +165,7 @@ namespace DotNetNuke.Entities.Urls
                                             Name = name,
                                             Action = rdr.GetAttribute("action"),
                                             ChangeToSiteRoot = changeToSiteRoot,
-                                            TabId = tabId
+                                            TabId = tabId,
                                         };
                                         if (fromDefault)
                                         {
@@ -223,7 +223,7 @@ namespace DotNetNuke.Entities.Urls
                 var rdr = new XmlTextReader(fileName)
                 {
                     XmlResolver = null,
-                    DtdProcessing = DtdProcessing.Prohibit
+                    DtdProcessing = DtdProcessing.Prohibit,
                 };
                 while (rdr.Read())
                 {
@@ -257,7 +257,7 @@ namespace DotNetNuke.Entities.Urls
                                             LookFor = rdr.GetAttribute("lookFor"),
                                             RewriteTo = rdr.GetAttribute("rewriteTo"),
                                             Name = name,
-                                            TabId = tabId
+                                            TabId = tabId,
                                         };
                                         if (fromSiteRoot)
                                         {

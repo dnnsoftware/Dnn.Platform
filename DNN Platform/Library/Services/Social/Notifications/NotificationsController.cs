@@ -203,7 +203,7 @@ namespace DotNetNuke.Services.Social.Notifications
                                             MessageID = notification.NotificationID,
                                             UserID = user.UserID,
                                             Read = false,
-                                            RecipientID = Null.NullInteger
+                                            RecipientID = Null.NullInteger,
                                         };
 
             foreach (var recipient in recipients)

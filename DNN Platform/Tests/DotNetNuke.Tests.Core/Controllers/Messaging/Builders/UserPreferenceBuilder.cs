@@ -29,7 +29,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
                 UserId = this.userId,
                 PortalId = this.portalId,
                 MessagesEmailFrequency = this.messagesEmailFrequency,
-                NotificationsEmailFrequency = this.notificationsEmailFrequency
+                NotificationsEmailFrequency = this.notificationsEmailFrequency,
             };
         }
 

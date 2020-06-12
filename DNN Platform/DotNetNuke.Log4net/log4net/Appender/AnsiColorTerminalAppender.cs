@@ -160,7 +160,7 @@ namespace log4net.Appender
             /// <summary>
             /// text color is light
             /// </summary>
-            Light = 128
+            Light = 128,
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace log4net.Appender
             /// <summary>
             /// color is white
             /// </summary>
-            White   = 7
+            White   = 7,
         }
 
 

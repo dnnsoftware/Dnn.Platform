@@ -18,6 +18,6 @@ namespace DotNetNuke.Services.Search.Entities
         /// <summary>
         /// Sort by ascending order
         /// </summary>
-        Ascending = 1
+        Ascending = 1,
     }
 }

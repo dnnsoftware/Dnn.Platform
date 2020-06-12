@@ -14,6 +14,6 @@ namespace DotNetNuke.Services.ImprovementsProgram
         Admin = 2,
         CommunityManager = 4,
         ContentManager = 8,
-        ContentEditor = 16
+        ContentEditor = 16,
     }
 }

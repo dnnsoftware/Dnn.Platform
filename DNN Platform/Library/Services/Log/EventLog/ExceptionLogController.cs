@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Log.EventLog
             SCHEDULER_EXCEPTION,
             SECURITY_EXCEPTION,
             SEARCH_INDEXER_EXCEPTION,
-            DATA_EXCEPTION
+            DATA_EXCEPTION,
         }
 
         public void AddLog(Exception objException)

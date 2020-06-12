@@ -87,7 +87,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                     {
                         Success = true,
                         Results = sortedList.Skip(pageIndex * pageSize).Take(pageSize).ToList(),
-                        TotalResults = sortedList.Count()
+                        TotalResults = sortedList.Count(),
                     };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -111,7 +111,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                         PortalId = this.UserInfo.PortalID,
                         UserId = this.UserInfo.UserID,
                         MessagesEmailFrequency = (Frequency)post.MsgFreq,
-                        NotificationsEmailFrequency = (Frequency)post.NotifyFreq
+                        NotificationsEmailFrequency = (Frequency)post.NotifyFreq,
                     };
                 userPreferencesController.SetUserPreference(userPreference);
 

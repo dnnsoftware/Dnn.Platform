@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.Mail
 
             Send_TO = 1,
             Send_BCC = 2,
-            Send_Relay = 3
+            Send_Relay = 3,
         }
 
         // ReSharper restore InconsistentNaming
@@ -254,7 +254,7 @@ namespace DotNetNuke.Services.Mail
                                      DateTime.Now.ToString(CultureInfo.InvariantCulture),
                                      numErrors > 0 ? numErrors.ToString(CultureInfo.InvariantCulture) : string.Empty,
                                      mailErrors != string.Empty ? mailErrors : this._noError,
-                                     this.ReportRecipients ? recipientList : string.Empty
+                                     this.ReportRecipients ? recipientList : string.Empty,
                                  };
             this._tokenReplace.User = this._sendingUser;
             string body = this._tokenReplace.ReplaceEnvironmentTokens(this.BodyFormat == MailFormat.Html ? this._confirmBodyHTML : this._confirmBodyText, parameters, "Custom");

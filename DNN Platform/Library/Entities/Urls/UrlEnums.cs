@@ -10,7 +10,7 @@ namespace DotNetNuke.Entities.Urls
         {
             TabOK,
             TabRedirected,
-            TabDeleted
+            TabDeleted,
         }
     }
 }

@@ -17,6 +17,6 @@ namespace DotNetNuke.UI.Modules
     {
         Memory,
         Disk,
-        Database
+        Database,
     }
 }

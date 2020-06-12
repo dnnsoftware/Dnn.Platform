@@ -105,7 +105,7 @@ namespace DotNetNuke.Services.Search.Internals
                                 SearchTypeName = crawler.SearchTypeName,
                                 IsPrivate = crawler.IsPrivate,
                                 ModuleDefinitionId = def.ModuleDefID,
-                                LocalizedName = text
+                                LocalizedName = text,
                             };
 
                             results.Add(result);
@@ -125,7 +125,7 @@ namespace DotNetNuke.Services.Search.Internals
                             SearchTypeName = crawler.SearchTypeName,
                             IsPrivate = crawler.IsPrivate,
                             ModuleDefinitionId = 0,
-                            LocalizedName = localizedName
+                            LocalizedName = localizedName,
                         });
                         break;
                 }
@@ -338,7 +338,7 @@ namespace DotNetNuke.Services.Search.Internals
                 PortalId = portalId,
                 ModuleId = moduleId,
                 ModuleDefId = moduleDefId,
-                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId
+                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
             });
         }
 
@@ -349,7 +349,7 @@ namespace DotNetNuke.Services.Search.Internals
             this.DeleteSearchDocument(new SearchDocument
             {
                 PortalId = portalId,
-                SearchTypeId = searchTypeId
+                SearchTypeId = searchTypeId,
             });
         }
 

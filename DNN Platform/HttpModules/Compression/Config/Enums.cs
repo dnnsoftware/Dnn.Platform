@@ -12,6 +12,6 @@ namespace DotNetNuke.HttpModules.Compression
         Deflate = 2,
         GZip = 1,
         None = 0,
-        Default = -1
+        Default = -1,
     }
 }

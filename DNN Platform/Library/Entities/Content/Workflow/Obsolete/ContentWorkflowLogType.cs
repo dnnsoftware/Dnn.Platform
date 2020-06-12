@@ -21,6 +21,6 @@ namespace DotNetNuke.Entities.Content.Workflow
         WorkflowApproved = 5,
         WorkflowDiscarded = 6,
         CommentProvided = 10,
-        WorkflowError = 500
+        WorkflowError = 500,
     }
 }

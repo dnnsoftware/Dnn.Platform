@@ -135,7 +135,7 @@ namespace DNN.Connectors.GoogleAnalytics
                 { "AnonymizeIp", anonymizeIp },
                 { "TrackUserId", trackUserId },
                 { "DataConsent", this.HandleCustomBoolean(portalSettings.DataConsentActive.ToString()) },
-                { "isDeactivating", this.HandleCustomBoolean("false") }
+                { "isDeactivating", this.HandleCustomBoolean("false") },
             };
 
             return configItems;
@@ -208,37 +208,37 @@ namespace DNN.Connectors.GoogleAnalytics
 
                     var config = new AnalyticsConfiguration
                     {
-                        Settings = new AnalyticsSettingCollection()
+                        Settings = new AnalyticsSettingCollection(),
                     };
 
                     config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "TrackingId",
-                        SettingValue = trackingID
+                        SettingValue = trackingID,
                     });
 
                     config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "UrlParameter",
-                        SettingValue = urlParameter
+                        SettingValue = urlParameter,
                     });
 
                     config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "TrackForAdmin",
-                        SettingValue = trackForAdmin
+                        SettingValue = trackForAdmin,
                     });
 
                     config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "AnonymizeIp",
-                        SettingValue = anonymizeIp
+                        SettingValue = anonymizeIp,
                     });
 
                     config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "TrackUserId",
-                        SettingValue = trackUserId
+                        SettingValue = trackUserId,
                     });
 
                     AnalyticsConfiguration.SaveConfig("GoogleAnalytics", config);

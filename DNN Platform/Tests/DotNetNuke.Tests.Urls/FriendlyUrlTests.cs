@@ -70,7 +70,7 @@ namespace DotNetNuke.Tests.Urls
                                 alias = new PortalAliasInfo
                                                 {
                                                     HTTPAlias = fields[0],
-                                                    PortalID = this.PortalId
+                                                    PortalID = this.PortalId,
                                                 };
                                 PortalAliasController.Instance.AddPortalAlias(alias);
                             }
@@ -301,7 +301,7 @@ namespace DotNetNuke.Tests.Urls
                     PortalID = this.PortalId,
                     HTTPAlias = defaultAlias,
                     CultureCode = language,
-                    IsPrimary = true
+                    IsPrimary = true,
                 };
                 this._primaryAlias.PortalAliasID = PortalAliasController.Instance.AddPortalAlias(this._primaryAlias);
             }

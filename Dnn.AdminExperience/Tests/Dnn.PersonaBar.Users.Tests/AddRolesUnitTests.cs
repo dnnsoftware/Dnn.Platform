@@ -51,7 +51,7 @@ namespace Dnn.PersonaBar.Users.Tests
                             RoleID = 1,
                             PortalID = this.testPortalId,
                             IsPublic = true
-                        }
+                        },
                     });
 
             var total = 1;
@@ -66,7 +66,7 @@ namespace Dnn.PersonaBar.Users.Tests
                         {
                             RoleID = 1,
                             RoleName = "Tester"
-                        }
+                        },
                     });
 
             this._rolesControllerMock
@@ -119,7 +119,7 @@ namespace Dnn.PersonaBar.Users.Tests
                             RoleID = 1,
                             PortalID = this.testPortalId,
                             IsPublic = true
-                        }
+                        },
                     });
 
             var total = 1;
@@ -134,7 +134,7 @@ namespace Dnn.PersonaBar.Users.Tests
                         {
                             RoleID = 1,
                             RoleName = "Tester"
-                        }
+                        },
                     });
 
             this._rolesControllerMock

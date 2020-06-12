@@ -164,7 +164,7 @@ namespace Dnn.ExportImport.Components.Engines
                                     JobId = exportJob.JobId,
                                     Category = service.Category,
                                     AssemblyName = serviceAssembly,
-                                    StartDate = DateUtils.GetDatabaseUtcTime()
+                                    StartDate = DateUtils.GetDatabaseUtcTime(),
                                 };
 
                                 // persist the record in db
@@ -226,7 +226,7 @@ namespace Dnn.ExportImport.Components.Engines
                 var exportFileInfo = new ExportFileInfo
                 {
                     ExportPath = exportJob.Directory,
-                    ExportSize = Util.FormatSize(GetExportSize(Path.Combine(ExportFolder, exportJob.Directory)))
+                    ExportSize = Util.FormatSize(GetExportSize(Path.Combine(ExportFolder, exportJob.Directory))),
                 };
 
                 summary.ExportFileInfo = exportFileInfo;
@@ -344,7 +344,7 @@ namespace Dnn.ExportImport.Components.Engines
                                                      AssemblyName = serviceAssembly,
                                                      Category = service.Category,
                                                      Progress = 0,
-                                                     StartDate = DateUtils.GetDatabaseUtcTime()
+                                                     StartDate = DateUtils.GetDatabaseUtcTime(),
                                                  };
                             if (service.CheckPoint.StartDate == Null.NullDate)
                                 service.CheckPoint.StartDate = DateUtils.GetDatabaseUtcTime();
@@ -428,7 +428,7 @@ namespace Dnn.ExportImport.Components.Engines
                             JobId = jobId,
                             AssemblyName = serviceAssembly,
                             Category = service.Category,
-                            Progress = 0
+                            Progress = 0,
                         };
 
                         // persist the record in db
@@ -669,7 +669,7 @@ namespace Dnn.ExportImport.Components.Engines
             typeof(ExportUserAuthentication).Name,
             typeof(ExportUserPortal).Name,
             typeof(ExportUserProfile).Name,
-            typeof(ExportUserRole).Name
+            typeof(ExportUserRole).Name,
         };
 
         public void AddLogsToDatabase(int jobId, ICollection<LogItem> completeLog)

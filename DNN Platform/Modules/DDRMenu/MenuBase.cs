@@ -55,7 +55,7 @@ namespace DotNetNuke.Web.DDRMenu
                                                                           {
                                                                             { "rootonly", "*,0,0" },
                                                                             { "rootchildren", "+0" },
-                                                                            { "currentchildren", "." }
+                                                                            { "currentchildren", "." },
                                                                           };
 
         internal void ApplySettings(Settings settings)

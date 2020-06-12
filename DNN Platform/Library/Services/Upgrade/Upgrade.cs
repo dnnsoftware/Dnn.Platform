@@ -225,7 +225,7 @@ namespace DotNetNuke.Services.Upgrade
                     ViewOrder = viewOrder,
                     IconFile = iconFile,
                     HelpURL = helpURL,
-                    SupportsPartialRendering = supportsPartialRendering
+                    SupportsPartialRendering = supportsPartialRendering,
                 };
 
                 ModuleControlController.AddModuleControl(moduleControl);
@@ -285,7 +285,7 @@ namespace DotNetNuke.Services.Upgrade
                     Owner = "DNN",
                     Organization = ".NET Foundation",
                     Url = "https://dnncommunity.org",
-                    Email = "info@dnncommunity.org"
+                    Email = "info@dnncommunity.org",
                 };
                 if (desktopModuleName == "Extensions" || desktopModuleName == "Skin Designer")
                 {
@@ -307,7 +307,7 @@ namespace DotNetNuke.Services.Upgrade
                     Version = "01.00.00",
                     BusinessControllerClass = businessControllerClass,
                     IsPortable = isPortable,
-                    SupportedFeatures = 0
+                    SupportedFeatures = 0,
                 };
                 if (isPortable)
                 {
@@ -419,7 +419,7 @@ namespace DotNetNuke.Services.Upgrade
                     ParentId = parentId,
                     IconFile = tabIconFile,
                     IconFileLarge = tabIconFileLarge,
-                    IsDeleted = false
+                    IsDeleted = false,
                 };
                 tab.TabID = TabController.Instance.AddTab(tab, !isAdmin);
 
@@ -1577,7 +1577,7 @@ namespace DotNetNuke.Services.Upgrade
                     Url = "https://dnncommunity.org",
                     Email = "info@dnncommunity.org",
                     ReleaseNotes = "There are no release notes for this version.",
-                    IsSystemPackage = true
+                    IsSystemPackage = true,
                 };
                 PackageController.Instance.SaveExtensionPackage(package);
 
@@ -2565,7 +2565,7 @@ namespace DotNetNuke.Services.Upgrade
                 LogTypeFriendlyName = "HTTP Error Code 404 Page Not Found",
                 LogTypeDescription = string.Empty,
                 LogTypeCSSClass = "OperationFailure",
-                LogTypeOwner = "DotNetNuke.Logging.EventLogType"
+                LogTypeOwner = "DotNetNuke.Logging.EventLogType",
             };
             LogController.Instance.AddLogType(logTypeInfo);
 
@@ -2580,7 +2580,7 @@ namespace DotNetNuke.Services.Upgrade
                 NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
                 MailFromAddress = Null.NullString,
                 MailToAddress = Null.NullString,
-                LogTypePortalID = "*"
+                LogTypePortalID = "*",
             };
             LogController.Instance.AddLogTypeConfigInfo(logTypeConf);
 
@@ -2596,7 +2596,7 @@ namespace DotNetNuke.Services.Upgrade
                 LogTypeFriendlyName = "HTTP Error Code 403.6 forbidden ip address rejected",
                 LogTypeDescription = string.Empty,
                 LogTypeCSSClass = "OperationFailure",
-                LogTypeOwner = "DotNetNuke.Logging.EventLogType"
+                LogTypeOwner = "DotNetNuke.Logging.EventLogType",
             };
             LogController.Instance.AddLogType(logTypeFilterInfo);
 
@@ -2611,7 +2611,7 @@ namespace DotNetNuke.Services.Upgrade
                 NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
                 MailFromAddress = Null.NullString,
                 MailToAddress = Null.NullString,
-                LogTypePortalID = "*"
+                LogTypePortalID = "*",
             };
             LogController.Instance.AddLogTypeConfigInfo(logTypeFilterConf);
 
@@ -2640,7 +2640,7 @@ namespace DotNetNuke.Services.Upgrade
                 LogTypeFriendlyName = "TabURL created",
                 LogTypeDescription = string.Empty,
                 LogTypeCSSClass = "OperationSuccess",
-                LogTypeOwner = "DotNetNuke.Logging.EventLogType"
+                LogTypeOwner = "DotNetNuke.Logging.EventLogType",
             };
             LogController.Instance.AddLogType(logTypeInfo);
 
@@ -2799,7 +2799,7 @@ namespace DotNetNuke.Services.Upgrade
                     LogTypeFriendlyName = "Potential Paypal Payment Fraud",
                     LogTypeDescription = string.Empty,
                     LogTypeCSSClass = "OperationFailure",
-                    LogTypeOwner = "DotNetNuke.Logging.EventLogType"
+                    LogTypeOwner = "DotNetNuke.Logging.EventLogType",
                 };
                 LogController.Instance.AddLogType(logTypeInfo);
             }
@@ -2933,14 +2933,14 @@ namespace DotNetNuke.Services.Upgrade
                                       {
                                           NameResourceKey = "AuthorizeUser",
                                           DescriptionResourceKey = "AuthorizeUserDescription",
-                                          APICall = "API/InternalServices/NewUserNotificationService/Authorize"
+                                          APICall = "API/InternalServices/NewUserNotificationService/Authorize",
                                       },
                                   new NotificationTypeAction
                                       {
                                           NameResourceKey = "RejectUser",
                                           DescriptionResourceKey = "RejectUserDescription",
                                           APICall = "API/InternalServices/NewUserNotificationService/Reject"
-                                      }
+                                      },
                               };
 
             NotificationsController.Instance.SetNotificationTypeActions(actions, notificationType.NotificationTypeId);
@@ -3020,7 +3020,7 @@ namespace DotNetNuke.Services.Upgrade
                     ModuleDefID = md.ModuleDefID,
                     PermissionCode = "SECURITY_MODULE",
                     PermissionKey = "MANAGEUSER",
-                    PermissionName = "Manage User"
+                    PermissionName = "Manage User",
                 };
 
                 permCtl.AddPermission(pi);
@@ -3038,7 +3038,7 @@ namespace DotNetNuke.Services.Upgrade
                     ModuleDefID = md.ModuleDefID,
                     PermissionCode = "SECURITY_MODULE",
                     PermissionKey = "MANAGEUSERS",
-                    PermissionName = "Manage Users"
+                    PermissionName = "Manage Users",
                 };
 
                 permCtl.AddPermission(pi);
@@ -3056,7 +3056,7 @@ namespace DotNetNuke.Services.Upgrade
                     ModuleDefID = md.ModuleDefID,
                     PermissionCode = "SECURITY_MODULE",
                     PermissionKey = "MANAGEROLES",
-                    PermissionName = "Manage Roles"
+                    PermissionName = "Manage Roles",
                 };
 
                 permCtl.AddPermission(pi);
@@ -3237,7 +3237,7 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         NameResourceKey = "Accept",
                         DescriptionResourceKey = "AcceptFriend",
-                        APICall = "API/InternalServices/RelationshipService/AcceptFriend"
+                        APICall = "API/InternalServices/RelationshipService/AcceptFriend",
                     });
                     NotificationsController.Instance.CreateNotificationType(friendRequestType);
                     NotificationsController.Instance.SetNotificationTypeActions(friendRequestTypeActions, friendRequestType.NotificationTypeId);
@@ -3254,7 +3254,7 @@ namespace DotNetNuke.Services.Upgrade
                         NameResourceKey = "FollowBack",
                         DescriptionResourceKey = "FollowBack",
                         ConfirmResourceKey = string.Empty,
-                        APICall = "API/InternalServices/RelationshipService/FollowBack"
+                        APICall = "API/InternalServices/RelationshipService/FollowBack",
                     });
                     NotificationsController.Instance.CreateNotificationType(followBackRequestType);
                     NotificationsController.Instance.SetNotificationTypeActions(followBackRequestTypeActions, followBackRequestType.NotificationTypeId);
@@ -3279,7 +3279,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 NameResourceKey = "Accept",
                 DescriptionResourceKey = "AcceptFriend",
-                APICall = "API/InternalServices/RelationshipService/AcceptFriend"
+                APICall = "API/InternalServices/RelationshipService/AcceptFriend",
             });
             NotificationsController.Instance.CreateNotificationType(type);
             NotificationsController.Instance.SetNotificationTypeActions(actions, type.NotificationTypeId);
@@ -3296,7 +3296,7 @@ namespace DotNetNuke.Services.Upgrade
                 NameResourceKey = "FollowBack",
                 DescriptionResourceKey = "FollowBack",
                 ConfirmResourceKey = string.Empty,
-                APICall = "API/InternalServices/RelationshipService/FollowBack"
+                APICall = "API/InternalServices/RelationshipService/FollowBack",
             });
             NotificationsController.Instance.CreateNotificationType(type);
             NotificationsController.Instance.SetNotificationTypeActions(actions, type.NotificationTypeId);
@@ -3708,7 +3708,7 @@ namespace DotNetNuke.Services.Upgrade
                         AllTabs = false,
                         Visibility = VisibilityState.None,
                         InheritViewPermissions = inheritPermissions,
-                        DisplayTitle = displayTitle
+                        DisplayTitle = displayTitle,
                     };
 
                     ModuleController.Instance.InitialModulePermission(moduleInfo, moduleInfo.TabID, inheritPermissions ? 0 : 1);
@@ -3929,7 +3929,7 @@ namespace DotNetNuke.Services.Upgrade
                 DisplayName = firstName + " " + lastName,
                 Membership = { Password = password },
                 Email = email,
-                IsSuperUser = false
+                IsSuperUser = false,
             };
             adminUser.Membership.Approved = true;
             adminUser.Profile.FirstName = firstName;
@@ -4435,7 +4435,7 @@ namespace DotNetNuke.Services.Upgrade
                     DisplayName = firstName + " " + lastName,
                     Membership = { Password = password },
                     Email = email,
-                    IsSuperUser = true
+                    IsSuperUser = true,
                 };
                 superUser.Membership.Approved = true;
 
@@ -5177,7 +5177,7 @@ namespace DotNetNuke.Services.Upgrade
                 var log = new LogInfo
                 {
                     LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
-                    BypassBuffering = true
+                    BypassBuffering = true,
                 };
                 log.AddProperty("Upgraded DotNetNuke", "General");
                 log.AddProperty("Warnings", "Error: " + ex.Message + Environment.NewLine);
@@ -6004,7 +6004,7 @@ namespace DotNetNuke.Services.Upgrade
                 var log = new LogInfo
                 {
                     LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
-                    BypassBuffering = true
+                    BypassBuffering = true,
                 };
                 log.AddProperty("Upgraded DotNetNuke", "Version: " + Globals.FormatVersion(version));
                 if (exceptions.Length > 0)
@@ -6031,7 +6031,7 @@ namespace DotNetNuke.Services.Upgrade
                 var log = new LogInfo
                 {
                     LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
-                    BypassBuffering = true
+                    BypassBuffering = true,
                 };
                 log.AddProperty("Upgraded DotNetNuke", "Version: " + Globals.FormatVersion(version) + ", Iteration:" + version.Revision);
                 if (exceptions.Length > 0)

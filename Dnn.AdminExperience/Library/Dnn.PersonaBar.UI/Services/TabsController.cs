@@ -57,7 +57,7 @@ namespace Dnn.PersonaBar.UI.Services
                     Results =
                         this._controller.GetPortalTabs(this.UserInfo, portalId < 0 ? this.PortalId : portalId, cultureCode, isMultiLanguage,
                             excludeAdminTabs, roles,
-                            disabledNotSelectable, sortOrder, selectedTabId, validateTab, includeHostPages, includeDisabled, includeDeleted, includeDeletedChildren)
+                            disabledNotSelectable, sortOrder, selectedTabId, validateTab, includeHostPages, includeDisabled, includeDeleted, includeDeletedChildren),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -91,7 +91,7 @@ namespace Dnn.PersonaBar.UI.Services
                 {
                     Success = true,
                     Results =
-                        this._controller.SearchPortalTabs(this.UserInfo, searchText, portalId < 0 ? this.PortalId : portalId, roles, disabledNotSelectable, sortOrder, validateTab, includeHostPages, includeDisabled, includeDeleted)
+                        this._controller.SearchPortalTabs(this.UserInfo, searchText, portalId < 0 ? this.PortalId : portalId, roles, disabledNotSelectable, sortOrder, validateTab, includeHostPages, includeDisabled, includeDeleted),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -119,7 +119,7 @@ namespace Dnn.PersonaBar.UI.Services
                 var response = new
                 {
                     Success = true,
-                    Results = this._controller.GetTabByCulture(tabId, portalId < 0 ? this.PortalId : portalId, cultureCode)
+                    Results = this._controller.GetTabByCulture(tabId, portalId < 0 ? this.PortalId : portalId, cultureCode),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -157,7 +157,7 @@ namespace Dnn.PersonaBar.UI.Services
                     Success = true,
                     Results =
                         this._controller.GetTabsDescendants(portalId < 0 ? this.PortalId : portalId, parentId, cultureCode, isMultiLanguage, roles,
-                            disabledNotSelectable, sortOrder, validateTab, includeHostPages, includeDisabled, includeDeletedChildren)
+                            disabledNotSelectable, sortOrder, validateTab, includeHostPages, includeDisabled, includeDeletedChildren),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);

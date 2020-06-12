@@ -97,7 +97,7 @@ namespace DotNetNuke.Services.Search
                 CultureCode = tab.CultureCode,
                 ModifiedTimeUtc = tab.LastModifiedOnDate.ToUniversalTime(),
                 Body = string.Empty,
-                Description = tab.Description
+                Description = tab.Description,
             };
 
             searchDoc.Keywords.Add("keywords", tab.KeyWords);

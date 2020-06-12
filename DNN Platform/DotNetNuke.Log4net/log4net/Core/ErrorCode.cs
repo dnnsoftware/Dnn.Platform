@@ -68,6 +68,6 @@ namespace log4net.Core
         /// <summary>
         /// Failed to parse address
         /// </summary>
-        AddressParseFailure
+        AddressParseFailure,
     }
 }

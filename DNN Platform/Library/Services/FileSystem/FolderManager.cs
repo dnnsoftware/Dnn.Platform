@@ -364,7 +364,7 @@ namespace DotNetNuke.Services.FileSystem
                                                         {
                                                             FolderInfo = folderInfo,
                                                             UserId = userId,
-                                                            OldFolderPath = oldFolderPath
+                                                            OldFolderPath = oldFolderPath,
                                                         });
         }
 
@@ -374,7 +374,7 @@ namespace DotNetNuke.Services.FileSystem
                                                         {
                                                             FolderInfo = folderInfo,
                                                             UserId = userId,
-                                                            OldFolderName = oldFolderName
+                                                            OldFolderName = oldFolderName,
                                                         });
         }
 
@@ -384,7 +384,7 @@ namespace DotNetNuke.Services.FileSystem
                                                     {
                                                         FolderInfo = folderInfo,
                                                         UserId = userId,
-                                                        IsCascadeDeletng = isCascadeDeleting
+                                                        IsCascadeDeletng = isCascadeDeleting,
                                                     });
         }
 
@@ -393,7 +393,7 @@ namespace DotNetNuke.Services.FileSystem
             EventManager.Instance.OnFolderAdded(new FolderChangedEventArgs
                                                         {
                                                             FolderInfo = folderInfo,
-                                                            UserId = userId
+                                                            UserId = userId,
                                                         });
         }
 
@@ -403,7 +403,7 @@ namespace DotNetNuke.Services.FileSystem
                                                         {
                                                             FileInfo = fileInfo,
                                                             UserId = userId,
-                                                            IsCascadeDeleting = isCascadeDeleting
+                                                            IsCascadeDeleting = isCascadeDeleting,
                                                         });
         }
 
@@ -1072,7 +1072,7 @@ namespace DotNetNuke.Services.FileSystem
                     FolderID = folder.FolderID,
                     UserID = Null.NullInteger,
                     RoleID = roleId,
-                    AllowAccess = true
+                    AllowAccess = true,
                 };
 
                 folder.FolderPermissions.Add(folderPermission);
@@ -1099,7 +1099,7 @@ namespace DotNetNuke.Services.FileSystem
                     FolderID = folder.FolderID,
                     RoleID = objPermission.RoleID,
                     UserID = objPermission.UserID,
-                    AllowAccess = objPermission.AllowAccess
+                    AllowAccess = objPermission.AllowAccess,
                 };
                 folder.FolderPermissions.Add(folderPermission, true);
             }
@@ -1159,7 +1159,7 @@ namespace DotNetNuke.Services.FileSystem
                 PermissionID = permissionId,
                 RoleID = roleId,
                 UserID = userId,
-                AllowAccess = true
+                AllowAccess = true,
             };
 
             folder.FolderPermissions.Add(objFolderPermissionInfo, true);
@@ -1180,7 +1180,7 @@ namespace DotNetNuke.Services.FileSystem
                 var folderPermission = new FolderPermissionInfo(objPermission)
                 {
                     FolderID = folder.FolderID,
-                    RoleID = administratorRoleId
+                    RoleID = administratorRoleId,
                 };
 
                 folder.FolderPermissions.Add(folderPermission, true);
@@ -1264,7 +1264,7 @@ namespace DotNetNuke.Services.FileSystem
                             FolderID = folder.FolderID,
                             UserID = user.UserID,
                             RoleID = int.Parse(Globals.glbRoleNothing),
-                            AllowAccess = true
+                            AllowAccess = true,
                         };
 
                         folder.FolderPermissions.Add(folderPermission);
@@ -1372,7 +1372,7 @@ namespace DotNetNuke.Services.FileSystem
                                     IsProtected = isProtected,
                                     IsCached = false,
                                     FolderMappingID = folderMappingId,
-                                    LastUpdated = Null.NullDate
+                                    LastUpdated = Null.NullDate,
                                 };
 
             folder.FolderID = this.AddFolderInternal(folder);
@@ -1461,7 +1461,7 @@ namespace DotNetNuke.Services.FileSystem
                         FolderMappingID = folder.FolderMappingID,
                         FolderPath = folder.FolderPath,
                         ExistsInDatabase = true,
-                        MappedPath = folder.MappedPath
+                        MappedPath = folder.MappedPath,
                     };
 
                     databaseFolders.Add(relativePath, item);
@@ -1493,7 +1493,7 @@ namespace DotNetNuke.Services.FileSystem
                                     FolderMappingID = folderInfo.FolderMappingID,
                                     FolderPath = folderInfo.FolderPath,
                                     ExistsInDatabase = true,
-                                    MappedPath = folderInfo.MappedPath
+                                    MappedPath = folderInfo.MappedPath,
                                 };
 
                 if (!result.ContainsKey(item.FolderPath))
@@ -1533,7 +1533,7 @@ namespace DotNetNuke.Services.FileSystem
                         FolderMappingID = -1,
                         FolderPath = relativePath,
                         ExistsInFileSystem = true,
-                        MappedPath = string.Empty
+                        MappedPath = string.Empty,
                     };
 
                     fileSystemFolders.Add(relativePath, item);
@@ -1569,7 +1569,7 @@ namespace DotNetNuke.Services.FileSystem
                         FolderMappingID = -1,
                         FolderPath = PathUtils.Instance.GetRelativePath(portalId, dir),
                         ExistsInFileSystem = true,
-                        MappedPath = string.Empty
+                        MappedPath = string.Empty,
                     };
 
                     result.Add(item.FolderPath, item);
@@ -1635,7 +1635,7 @@ namespace DotNetNuke.Services.FileSystem
                         FolderMappingID = folderMapping.FolderMappingID,
                         FolderPath = folderPath,
                         ExistsInFolderMapping = true,
-                        MappedPath = mappedPath
+                        MappedPath = mappedPath,
                     };
 
                     if (!result.ContainsKey(item.FolderPath))

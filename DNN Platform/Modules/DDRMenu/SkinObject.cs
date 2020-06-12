@@ -58,7 +58,7 @@ namespace DotNetNuke.Web.DDRMenu
                             ExcludeNodes = this.ExcludeNodes,
                             NodeManipulator = this.NodeManipulator,
                             ClientOptions = this.ClientOptions,
-                            TemplateArguments = this.TemplateArguments
+                            TemplateArguments = this.TemplateArguments,
                         });
 
                     if (string.IsNullOrEmpty(this.NodeXmlPath))

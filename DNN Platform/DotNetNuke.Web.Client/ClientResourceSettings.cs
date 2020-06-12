@@ -280,7 +280,7 @@ namespace DotNetNuke.Web.Client
             /// The application status is unknown,
             /// </summary>
             /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
-            Unknown
+            Unknown,
         }
     }
 }

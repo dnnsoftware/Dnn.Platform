@@ -29,7 +29,7 @@ namespace DotNetNuke.Entities.Host
         private enum FilterType
         {
             Allow = 1,
-            Deny = 2
+            Deny = 2,
         }
 
         internal IPFilterController()
@@ -145,7 +145,7 @@ namespace DotNetNuke.Entities.Host
         {
             var log = new LogInfo
             {
-                LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString()
+                LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
             };
             log.LogProperties.Add(new LogDetailInfo("HostAddress", ipAddress));
             LogController.Instance.AddLog(log);

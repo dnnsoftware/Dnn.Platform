@@ -56,7 +56,7 @@ namespace DotNetNuke.Tests.Core.Common
                         ActiveTab = new TabInfo
                         {
                             TabID = TabID
-                        }
+                        },
                     };
 
                     return portalSettings;
@@ -72,7 +72,7 @@ namespace DotNetNuke.Tests.Core.Common
                     .Setup(x => x.GetTab(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
                     .Returns(new TabInfo
                     {
-                        CultureCode = "en-US"
+                        CultureCode = "en-US",
                     });
 
                 return mockTabController.Object;
@@ -85,7 +85,7 @@ namespace DotNetNuke.Tests.Core.Common
                     .Returns(new Dictionary<string, Locale>
                     {
                         { "en-US", new Locale() },
-                        { "TEST", new Locale() }
+                        { "TEST", new Locale() },
                     });
 
                 return mockLocaleController.Object;

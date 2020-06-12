@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.Groups.Components {
                                        Body = body,
                                        IncludeDismissAction = dismiss,
                                        SenderUserID = initiatingUser.UserID,
-                                       Context = string.Format("{0}:{1}:{2}", tabId, moduleId, group.RoleID)
+                                       Context = string.Format("{0}:{1}:{2}", tabId, moduleId, group.RoleID),
                                    };
             NotificationsController.Instance.SendNotification(notification, initiatingUser.PortalID, moderators, recipients);
 
@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.Groups.Components {
                 Body = body,
                 IncludeDismissAction = true,
                 SenderUserID = initiatingUser.UserID,
-                Context = string.Format("{0}:{1}:{2}:{3}", tabId, moduleId, group.RoleID, initiatingUser.UserID)
+                Context = string.Format("{0}:{1}:{2}:{3}", tabId, moduleId, group.RoleID, initiatingUser.UserID),
             };
             NotificationsController.Instance.SendNotification(notification, initiatingUser.PortalID, null, roleOwners);
 
@@ -114,7 +114,7 @@ namespace DotNetNuke.Modules.Groups.Components {
                 Body = body,
                 IncludeDismissAction = true,
                 SenderUserID = sender.UserID,
-                Context = string.Format("{0}:{1}:{2}", tabId, moduleId, group.RoleID)
+                Context = string.Format("{0}:{1}:{2}", tabId, moduleId, group.RoleID),
             };
             NotificationsController.Instance.SendNotification(notification, recipient.PortalID, null, new List<UserInfo> { recipient });
 

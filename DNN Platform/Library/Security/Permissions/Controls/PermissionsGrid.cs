@@ -471,7 +471,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             var nameColumn = new BoundColumn
                                 {
                                     HeaderText = permissionHeaderText,
-                                    DataField = nameColumnDataField
+                                    DataField = nameColumnDataField,
                                 };
             nameColumn.ItemStyle.CssClass = "permissionHeader";
             nameColumn.HeaderStyle.CssClass = "permissionHeader";
@@ -481,7 +481,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                                 {
                                     HeaderText = string.Empty,
                                     DataField = idColumnDataField,
-                                    Visible = false
+                                    Visible = false,
                                 };
             grid.Columns.Add(idColumn);
 
@@ -492,7 +492,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                                                 {
                                                     IsFullControl = this.IsFullControl(permission),
                                                     IsView = this.IsViewPermisison(permission),
-                                                    SupportDenyMode = this.SupportsDenyPermissions(permission)
+                                                    SupportDenyMode = this.SupportsDenyPermissions(permission),
                                                 };
                 templateCol.ItemTemplate = columnTemplate;
 
@@ -510,7 +510,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 IconKey = "Delete",
                 IconSize = "16x16",
                 IconStyle = "PermissionGrid",
-                HeaderText = Localization.GetString("PermissionActionsHeader.Text", PermissionProvider.Instance().LocalResourceFile)
+                HeaderText = Localization.GetString("PermissionActionsHeader.Text", PermissionProvider.Instance().LocalResourceFile),
             };
             grid.Columns.Add(actionsColumn);
             grid.ItemCommand += this.grid_ItemCommand;
@@ -618,7 +618,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 // TODO Remove DEBUG test
                 Text = "<br />" + (errorKey.StartsWith("DEBUG") ? errorKey : Localization.GetString(errorKey)),
-                CssClass = "NormalRed"
+                CssClass = "NormalRed",
             };
             this.pnlPermissions.Controls.Add(this.lblErrorMessage);
         }
@@ -711,7 +711,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 CellSpacing = 0,
                 CellPadding = 2,
                 GridLines = GridLines.None,
-                CssClass = "dnnPermissionsGrid"
+                CssClass = "dnnPermissionsGrid",
             };
             this.rolePermissionsGrid.FooterStyle.CssClass = "dnnGridFooter";
             this.rolePermissionsGrid.HeaderStyle.CssClass = "dnnGridHeader";
@@ -729,7 +729,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     AutoGenerateColumns = false,
                     CellSpacing = 0,
                     GridLines = GridLines.None,
-                    CssClass = "dnnPermissionsGrid"
+                    CssClass = "dnnPermissionsGrid",
                 };
                 this.userPermissionsGrid.FooterStyle.CssClass = "dnnGridFooter";
                 this.userPermissionsGrid.HeaderStyle.CssClass = "dnnGridHeader";
@@ -1252,7 +1252,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 role = new RoleInfo
                 {
                     RoleID = this.AllUsersRoleId,
-                    RoleName = Globals.glbRoleAllUsersName
+                    RoleName = Globals.glbRoleAllUsersName,
                 };
             }
             else if (selectedRoleId == this.UnAuthUsersRoleId)
@@ -1260,7 +1260,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 role = new RoleInfo
                 {
                     RoleID = this.UnAuthUsersRoleId,
-                    RoleName = Globals.glbRoleUnauthUserName
+                    RoleName = Globals.glbRoleUnauthUserName,
                 };
             }
             else

@@ -458,7 +458,7 @@ namespace DotNetNuke.UI.WebControls
                                  EditMode = this.EditMode,
                                  HelpDisplayMode = this.HelpDisplayMode,
                                  LabelMode = this.LabelMode,
-                                 LabelWidth = this.LabelWidth
+                                 LabelWidth = this.LabelWidth,
                              };
             this.AddEditorRow(editor, cell);
 
@@ -477,7 +477,7 @@ namespace DotNetNuke.UI.WebControls
                 EditMode = this.EditMode,
                 HelpDisplayMode = this.HelpDisplayMode,
                 LabelMode = this.LabelMode,
-                LabelWidth = this.LabelWidth
+                LabelWidth = this.LabelWidth,
             };
             this.AddEditorRow(editor, container);
 

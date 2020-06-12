@@ -71,7 +71,7 @@ namespace log4net.Util
             /// <summary>
             /// Revert this the thread to the credentials of the process
             /// </summary>
-            Process
+            Process,
         }
 
         private ImpersonationMode m_impersonationMode = ImpersonationMode.User;

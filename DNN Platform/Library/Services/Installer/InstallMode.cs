@@ -13,6 +13,6 @@ namespace DotNetNuke.Services.Installer
     {
         Install,
         ManifestOnly,
-        UnInstall
+        UnInstall,
     }
 }

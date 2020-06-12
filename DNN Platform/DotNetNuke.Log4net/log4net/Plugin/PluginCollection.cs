@@ -151,7 +151,7 @@ namespace log4net.Plugin
             /// <summary>
             /// A value
             /// </summary>
-            Default
+            Default,
         }
 
         /// <summary>

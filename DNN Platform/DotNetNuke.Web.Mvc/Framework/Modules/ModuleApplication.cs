@@ -138,7 +138,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                                     ControllerContext = moduleController.ControllerContext,
                                     ModuleActions = moduleController.ModuleActions,
                                     ModuleContext = context.ModuleContext,
-                                    ModuleApplication = this
+                                    ModuleApplication = this,
                                 };
             }
             finally
@@ -153,21 +153,21 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             string[] masterFormats =
             {
                 string.Format(CultureInfo.InvariantCulture, ControllerMasterFormat, prefix),
-                string.Format(CultureInfo.InvariantCulture, SharedMasterFormat, prefix)
+                string.Format(CultureInfo.InvariantCulture, SharedMasterFormat, prefix),
             };
             string[] viewFormats =
             {
                 string.Format(CultureInfo.InvariantCulture, ControllerViewFormat, prefix),
                 string.Format(CultureInfo.InvariantCulture, SharedViewFormat, prefix),
                 string.Format(CultureInfo.InvariantCulture, ControllerPartialFormat, prefix),
-                string.Format(CultureInfo.InvariantCulture, SharedPartialFormat, prefix)
+                string.Format(CultureInfo.InvariantCulture, SharedPartialFormat, prefix),
             };
 
             this.ViewEngines.Add(new RazorViewEngine
                                     {
                                         MasterLocationFormats = masterFormats,
                                         ViewLocationFormats = viewFormats,
-                                        PartialViewLocationFormats = viewFormats
+                                        PartialViewLocationFormats = viewFormats,
                                     });
         }
 

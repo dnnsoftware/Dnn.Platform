@@ -191,7 +191,7 @@ namespace DotNetNuke.Services.Search
                             PortalId = portalId,
                             CultureCode = module.CultureCode,
                             ModifiedTimeUtc = module.LastModifiedOnDate.ToUniversalTime(),
-                            Body = module.Header + " " + module.Footer
+                            Body = module.Header + " " + module.Footer,
                         };
 
                         if (module.Terms != null && module.Terms.Count > 0)
@@ -243,7 +243,7 @@ namespace DotNetNuke.Services.Search
                 CultureCode = module.CultureCode,
                 // Add Module MetaData
                 ModuleDefId = module.ModuleDefID,
-                ModuleId = module.ModuleID
+                ModuleId = module.ModuleID,
             };
 
             return searchDoc;

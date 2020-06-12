@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.EventQueue
     {
         High,
         Medium,
-        Low
+        Low,
     }
 
     [Serializable]

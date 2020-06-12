@@ -382,7 +382,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             this.Options.InitialState = new DnnDropDownListState
             {
-                SelectedItem = this.StateControl.TypedValue != null ? this.StateControl.TypedValue.SelectedItem : null
+                SelectedItem = this.StateControl.TypedValue != null ? this.StateControl.TypedValue.SelectedItem : null,
             };
 
             this.SelectedValue.InnerText = (this.SelectedItem != null) ? this.SelectedItem.Text : this.Options.SelectItemDefaultText;

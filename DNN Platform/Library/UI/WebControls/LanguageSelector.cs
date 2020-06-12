@@ -26,13 +26,13 @@ namespace DotNetNuke.UI.WebControls
         {
             FlagOnly = 1,
             FlagAndCaption = 2,
-            CaptionOnly = 3
+            CaptionOnly = 3,
         }
 
         public enum LanguageListDirection
         {
             Horizontal = 1,
-            Vertical = 2
+            Vertical = 2,
         }
 
 
@@ -43,7 +43,7 @@ namespace DotNetNuke.UI.WebControls
         public enum LanguageSelectionMode
         {
             Multiple = 1,
-            Single = 2
+            Single = 2,
         }
 
 
@@ -54,7 +54,7 @@ namespace DotNetNuke.UI.WebControls
         public enum LanguageSelectionObject
         {
             NeutralCulture = 1,
-            SpecificCulture = 2
+            SpecificCulture = 2,
         }
 
         private Panel pnlControl;

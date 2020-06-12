@@ -13,6 +13,6 @@ namespace DotNetNuke.Services.Localization
     {
         All,
         Supported,
-        Enabled
+        Enabled,
     }
 }

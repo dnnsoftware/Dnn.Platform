@@ -169,7 +169,7 @@ namespace log4net.Appender
             /// <summary>
             /// Roll files based on both the size and date of the file
             /// </summary>
-            Composite   = 3
+            Composite   = 3,
         }
 
 
@@ -217,7 +217,7 @@ namespace log4net.Appender
             /// <summary>
             /// Roll the log each month
             /// </summary>
-            TopOfMonth = 5
+            TopOfMonth = 5,
         }
 
 

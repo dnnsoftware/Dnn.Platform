@@ -82,7 +82,7 @@ namespace Dnn.PersonaBar.UI.Services
                     .Select(u => new SuggestionDto()
                     {
                         Value = u.UserID,
-                        Label = $"{u.DisplayName}"
+                        Label = $"{u.DisplayName}",
                     });
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, finalUsers.ToList().GroupBy(x => x.Value).Select(group => group.First()));
@@ -111,7 +111,7 @@ namespace Dnn.PersonaBar.UI.Services
                     .Select(r => new SuggestionDto()
                     {
                         Value = r.RoleID,
-                        Label = r.RoleName
+                        Label = r.RoleName,
                     });
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, matchedRoles);

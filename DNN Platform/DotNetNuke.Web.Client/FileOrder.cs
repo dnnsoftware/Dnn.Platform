@@ -83,7 +83,7 @@ namespace DotNetNuke.Web.Client
             /// <summary>
             /// jQuery Hover Intent JS File has the priority of 55
             /// </summary>
-            HoverIntent = 55
+            HoverIntent = 55,
         }
 
         /// <summary>

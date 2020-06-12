@@ -120,7 +120,7 @@ namespace DotNetNuke.Services.Journal
                 AuthorUserId = currentUserId,
                 UniqueKey = ji.ContentItemId.ToString("D"),
                 // QueryString = "journalid=" + journalId,
-                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId
+                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
             };
 
             if (groupId > 0)

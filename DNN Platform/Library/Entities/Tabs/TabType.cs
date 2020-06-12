@@ -10,6 +10,6 @@ namespace DotNetNuke.Entities.Tabs
         Normal,
         Tab,
         Url,
-        Member
+        Member,
     }
 }

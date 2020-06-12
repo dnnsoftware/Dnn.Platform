@@ -8,6 +8,6 @@ namespace DotNetNuke.Entities.Portals
     {
         Ignore,
         Merge,
-        Replace
+        Replace,
     }
 }

@@ -13,6 +13,6 @@ namespace DotNetNuke.Entities.Urls
         CheckFor301,
         Redirect302,
         Output404,
-        Output500
+        Output500,
     }
 }

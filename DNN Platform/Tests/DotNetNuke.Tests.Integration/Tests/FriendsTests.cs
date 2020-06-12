@@ -44,7 +44,7 @@ namespace DotNetNuke.Tests.Integration.Tests
                 { "type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke" },
                 { "connectionStringName", "SiteSqlServer" },
                 { "objectQualifier", ConfigurationManager.AppSettings["objectQualifier"] },
-                { "databaseOwner", "dbo." }
+                { "databaseOwner", "dbo." },
             });
             ComponentFactory.InstallComponents(new ProviderInstaller("caching", typeof(CachingProvider), typeof(FBCachingProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("members", typeof(MembershipProvider), typeof(AspNetMembershipProvider)));
@@ -68,7 +68,7 @@ namespace DotNetNuke.Tests.Integration.Tests
             var connector = WebApiTestHelper.LoginUser(userName1);
             connector.PostJson("API/MemberDirectory/MemberDirectory/AddFriend", new
             {
-                friendId = userId2
+                friendId = userId2,
             }, this.GetRequestHeaders());
 
             var notificationTitle = this.GetNotificationTitle(userId1);
@@ -106,7 +106,7 @@ namespace DotNetNuke.Tests.Integration.Tests
                 connector.PostJson($"API/PersonaBar/Extensions/InstallAvailablePackage", new
                 {
                     PackageType = "CoreLanguagePack",
-                    FileName = "installlanguage.resources"
+                    FileName = "installlanguage.resources",
                 });
 
                 var language = CBO.FillDictionary<string, Locale>("CultureCode", DataProvider.Instance().GetLanguages())[secondLanguage];
@@ -117,7 +117,7 @@ namespace DotNetNuke.Tests.Integration.Tests
                     Code = language.Code,
                     Enabled = true,
                     IsDefault = false,
-                    Roles = "Administrators"
+                    Roles = "Administrators",
                 });
             }
             return false;

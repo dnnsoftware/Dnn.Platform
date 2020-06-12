@@ -10,6 +10,6 @@ namespace DotNetNuke.Security.Membership
         AddUserRoles = -1,
         UsernameAlreadyExists = -2,
         UserAlreadyRegistered = -3,
-        UnexpectedError = -4
+        UnexpectedError = -4,
     }
 }

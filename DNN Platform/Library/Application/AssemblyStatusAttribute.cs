@@ -45,7 +45,7 @@ namespace DotNetNuke.Application
         /// <summary>
         /// Stable release version
         /// </summary>
-        Stable
+        Stable,
     }
 
     /// <summary>

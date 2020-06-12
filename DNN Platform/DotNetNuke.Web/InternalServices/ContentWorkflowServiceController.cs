@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.InternalServices
                                                ContentItemId = int.Parse(parameters[0]),
                                                CurrentStateId = int.Parse(parameters[2]),
                                                Message = new StateTransactionMessage(),
-                                               UserId = this.UserInfo.UserID
+                                               UserId = this.UserInfo.UserID,
                                            };
                     this._workflowEngine.DiscardState(stateTransiction);
 
@@ -83,7 +83,7 @@ namespace DotNetNuke.Web.InternalServices
                                                 ContentItemId = int.Parse(parameters[0]),
                                                 CurrentStateId = int.Parse(parameters[2]),
                                                 Message = new StateTransactionMessage(),
-                                                UserId = this.UserInfo.UserID
+                                                UserId = this.UserInfo.UserID,
                                             };
                     this._workflowEngine.CompleteState(stateTransiction);
 

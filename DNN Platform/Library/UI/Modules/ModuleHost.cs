@@ -131,7 +131,7 @@ namespace DotNetNuke.UI.Modules
                 var titleLabel = new Label
                                      {
                                          CssClass = "entry-title Hidden",
-                                         Text = !string.IsNullOrEmpty(this._moduleConfiguration.WebSliceTitle) ? this._moduleConfiguration.WebSliceTitle : this._moduleConfiguration.ModuleTitle
+                                         Text = !string.IsNullOrEmpty(this._moduleConfiguration.WebSliceTitle) ? this._moduleConfiguration.WebSliceTitle : this._moduleConfiguration.ModuleTitle,
                                      };
                 this.Controls.Add(titleLabel);
 
@@ -316,7 +316,7 @@ namespace DotNetNuke.UI.Modules
             var updatePanel = new UpdatePanel
                                   {
                                       UpdateMode = UpdatePanelUpdateMode.Conditional,
-                                      ID = this._control.ID + "_UP"
+                                      ID = this._control.ID + "_UP",
                                   };
 
             // get update panel content template
@@ -340,7 +340,7 @@ namespace DotNetNuke.UI.Modules
                                          AssociatedUpdatePanelID = updatePanel.ID,
                                          ID = updatePanel.ID + "_Prog",
 
-                                         ProgressTemplate = new LiteralTemplate(progressTemplate)
+                                         ProgressTemplate = new LiteralTemplate(progressTemplate),
                                      };
             this.Controls.Add(updateProgress);
         }

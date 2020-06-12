@@ -268,7 +268,7 @@ namespace DotNetNuke.Common.Utils
     public enum AddressType
     {
         IPv4,
-        IPv6
+        IPv6,
     }
 
 

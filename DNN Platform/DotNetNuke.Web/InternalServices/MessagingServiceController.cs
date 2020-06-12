@@ -101,7 +101,7 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         id = "user-" + user.UserID,
                         name = user.DisplayName,
-                        iconfile = UserController.Instance.GetUserProfilePictureUrl(user.UserID, 32, 32)
+                        iconfile = UserController.Instance.GetUserProfilePictureUrl(user.UserID, 32, 32),
                     }).ToList();
 
                 // Roles should be visible to Administrators or User in the Role.
@@ -116,7 +116,7 @@ namespace DotNetNuke.Web.InternalServices
                                         name = roleInfo.RoleName,
                                         iconfile = TestableGlobals.Instance.ResolveUrl(string.IsNullOrEmpty(roleInfo.IconFile)
                                                     ? "~/images/no_avatar.gif"
-                                                    : this.PortalSettings.HomeDirectory.TrimEnd('/') + "/" + roleInfo.IconFile)
+                                                    : this.PortalSettings.HomeDirectory.TrimEnd('/') + "/" + roleInfo.IconFile),
                                     });
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, results.OrderBy(sr => sr.name));

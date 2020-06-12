@@ -41,7 +41,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
                            SubscriptionTypeId = this.subscriptionTypeId,
                            SubscriptionName = this.subscriptionName,
                            DesktopModuleId = this.desktopModuleId,
-                           FriendlyName = this.friendlyName
+                           FriendlyName = this.friendlyName,
                        };
         }
     }

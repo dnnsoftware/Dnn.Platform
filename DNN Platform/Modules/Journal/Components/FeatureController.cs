@@ -163,7 +163,7 @@ namespace DotNetNuke.Modules.Journal.Components {
                                         { "TabModuleId", tabModuleId },
                                         { "ProfileId", profileId },
                                         { "GroupId", groupId }
-                                    }
+                                    },
                                 };
 
                                 searchDocuments.Add(key, searchDocument);

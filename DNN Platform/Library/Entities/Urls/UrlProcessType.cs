@@ -8,6 +8,6 @@ namespace DotNetNuke.Entities.Urls
     {
         Rewriting,
         Redirecting,
-        Replacing
+        Replacing,
     }
 }

@@ -24,26 +24,26 @@ namespace DotNetNuke.Modules.NavigationProvider
             Left,
             Right,
             Center,
-            Justify
+            Justify,
         }
 
         public enum HoverAction
         {
             Expand,
-            None
+            None,
         }
 
         public enum HoverDisplay
         {
             Highlight,
             Outset,
-            None
+            None,
         }
 
         public enum Orientation
         {
             Horizontal,
-            Vertical
+            Vertical,
         }
 
         public abstract Control NavigationControl { get; }

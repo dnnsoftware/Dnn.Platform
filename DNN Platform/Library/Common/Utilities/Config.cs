@@ -37,7 +37,7 @@ namespace DotNetNuke.Common.Utilities
             SiteAnalytics,
             Compression,
             SiteUrls,
-            SolutionsExplorer
+            SolutionsExplorer,
         }
 
         public enum FcnMode
@@ -45,7 +45,7 @@ namespace DotNetNuke.Common.Utilities
             Default,
             Disabled,
             NotSet,
-            Single
+            Single,
         }
 
 

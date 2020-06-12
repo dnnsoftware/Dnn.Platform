@@ -196,7 +196,7 @@ namespace DotNetNuke.Tests.Web.Api
             mockPortalAliasController.Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
                 {
                     new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir" },
-                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir/child" }
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir/child" },
                 });
             PortalAliasController.SetTestableInstance(mockPortalAliasController.Object);
 

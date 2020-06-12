@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
                     new Vocabulary(PageTagsVocabulary, string.Empty, VocabularyType.Simple)
                     {
                         ScopeTypeId = scopeType.ScopeTypeId,
-                        ScopeId = tabPortalId
+                        ScopeId = tabPortalId,
                     });
             }
             else

@@ -23,7 +23,7 @@ namespace Dnn.PersonaBar.Library.Helper
                 userPermission = new UserPermission
                                     {
                                         UserId = permissionInfo.UserID,
-                                        DisplayName = permissionInfo.DisplayName
+                                        DisplayName = permissionInfo.DisplayName,
                                     };
                 dto.UserPermissions.Add(userPermission);
             }
@@ -34,7 +34,7 @@ namespace Dnn.PersonaBar.Library.Helper
                                                     {
                                                         PermissionId = permissionInfo.PermissionID,
                                                         PermissionName = permissionInfo.PermissionName,
-                                                        AllowAccess = permissionInfo.AllowAccess
+                                                        AllowAccess = permissionInfo.AllowAccess,
                                                     });
             }
         }
@@ -47,7 +47,7 @@ namespace Dnn.PersonaBar.Library.Helper
                 rolePermission = new RolePermission
                                     {
                                         RoleId = permissionInfo.RoleID,
-                                        RoleName = permissionInfo.RoleName
+                                        RoleName = permissionInfo.RoleName,
                                     };
                 dto.RolePermissions.Add(rolePermission);
             }
@@ -58,7 +58,7 @@ namespace Dnn.PersonaBar.Library.Helper
                                                     {
                                                         PermissionId = permissionInfo.PermissionID,
                                                         PermissionName = permissionInfo.PermissionName,
-                                                        AllowAccess = permissionInfo.AllowAccess
+                                                        AllowAccess = permissionInfo.AllowAccess,
                                                     });
             }
         }
@@ -92,7 +92,7 @@ namespace Dnn.PersonaBar.Library.Helper
                                                 RoleId = role.RoleID,
                                                 RoleName = role.RoleName,
                                                 Locked = locked,
-                                                IsDefault = isDefault
+                                                IsDefault = isDefault,
                                             });
             }
         }

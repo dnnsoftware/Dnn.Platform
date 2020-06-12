@@ -227,7 +227,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                     var options = JsonConvert.SerializeObject(this.Options, Formatting.None,
                                     new JsonSerializerSettings
                                     {
-                                        NullValueHandling = NullValueHandling.Ignore
+                                        NullValueHandling = NullValueHandling.Ignore,
                                     });
 
                     var initScripts = $"$('#{this.ClientID}').dnnComboBox({options});";

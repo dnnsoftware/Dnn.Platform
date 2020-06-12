@@ -194,7 +194,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
                 Users = 2,
                 Pages = 5,
                 DefaultLanguage = Localization.SystemLocale,
-                HomeDirectory = "Portals/0"
+                HomeDirectory = "Portals/0",
             };
             var settings = new PortalSettings() { PortalId = ValidPortalId, CultureCode = Null.NullString };
 

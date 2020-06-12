@@ -48,7 +48,7 @@ namespace log4net.Repository.Hierarchy
         private enum ConfigUpdateMode
         {
             Merge,
-            Overwrite
+            Overwrite,
         }
 
 

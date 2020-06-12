@@ -49,6 +49,6 @@ namespace DotNetNuke.Services.Search.Entities
         /// Specify custom string filed for sorting. Field name should be specified in SearchQuery.CustomSortField
         /// </summary>
         /// <remarks>This option should be used when you can't any of the previous options, e.g. authorname or UniqueKey (key)</remarks>
-        CustomStringField = 7
+        CustomStringField = 7,
     }
 }

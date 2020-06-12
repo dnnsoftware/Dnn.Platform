@@ -196,7 +196,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             {
                 new FileInfo { FileName = string.Empty },
                 new FileInfo { FileName = string.Empty },
-                new FileInfo { FileName = string.Empty }
+                new FileInfo { FileName = string.Empty },
             };
 
             this._folderManager.Setup(fm => fm.GetFiles(this._folderInfo.Object)).Returns((IList<IFileInfo>)fileInfos);
@@ -215,7 +215,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             {
                 new FileInfo { FileName = string.Empty },
                 new FileInfo { FileName = string.Empty },
-                new FileInfo { FileName = string.Empty }
+                new FileInfo { FileName = string.Empty },
             };
 
             this._folderManager.Setup(fm => fm.GetFiles(this._folderInfo.Object)).Returns((IList<IFileInfo>)fileInfos);
@@ -234,7 +234,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             {
                 new FileInfo { FileName = "file1.txt" },
                 new FileInfo { FileName = "file2.txt" },
-                new FileInfo { FileName = "file3.txt" }
+                new FileInfo { FileName = "file3.txt" },
             };
 
             this._folderManager.Setup(fm => fm.GetFiles(this._folderInfo.Object)).Returns((IList<IFileInfo>)fileInfos);
@@ -379,7 +379,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var subFolders = new List<IFolderInfo>() {
                 new FolderInfo { FolderPath = Constants.FOLDER_ValidSubFolderRelativePath },
-                new FolderInfo { FolderPath = Constants.FOLDER_OtherValidSubFolderRelativePath }
+                new FolderInfo { FolderPath = Constants.FOLDER_OtherValidSubFolderRelativePath },
             };
 
             this._folderManager.Setup(fm => fm.GetFolder(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(this._folderInfo.Object);
@@ -395,7 +395,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var expectedResult = new List<string> {
                 Constants.FOLDER_ValidSubFolderRelativePath,
-                Constants.FOLDER_OtherValidSubFolderRelativePath
+                Constants.FOLDER_OtherValidSubFolderRelativePath,
             };
 
             var folderMapping = new FolderMappingInfo();
@@ -403,7 +403,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var subFolders = new List<IFolderInfo> {
                 new FolderInfo { FolderPath = Constants.FOLDER_ValidSubFolderRelativePath },
-                new FolderInfo { FolderPath = Constants.FOLDER_OtherValidSubFolderRelativePath }
+                new FolderInfo { FolderPath = Constants.FOLDER_OtherValidSubFolderRelativePath },
             };
 
             this._folderManager.Setup(fm => fm.GetFolder(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(this._folderInfo.Object);

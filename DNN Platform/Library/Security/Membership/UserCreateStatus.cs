@@ -28,6 +28,6 @@ namespace DotNetNuke.Security.Membership
         DuplicateDisplayName = 19,
         BannedPasswordUsed = 20,
         InvalidFirstName = 21,
-        InvalidLastName = 22
+        InvalidLastName = 22,
     }
 }

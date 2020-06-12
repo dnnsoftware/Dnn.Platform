@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
                     Description = basic.Description,
                     DocumentUrl = basic.DocumentUrl,
                     Attributes = basic.Attributes
-                }
+                },
             };
         }
     }

@@ -90,7 +90,7 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
                 Pane = "ContentPane",
                 AddExistingModule = false,
                 CopyModule = false,
-                Sort = -1
+                Sort = -1,
             };
             var headers = new Dictionary<string, string> { { "TabId", tabId.ToString() } };
             var response = connector.PostJson("API/internalservices/controlbar/AddModule", postData, headers)

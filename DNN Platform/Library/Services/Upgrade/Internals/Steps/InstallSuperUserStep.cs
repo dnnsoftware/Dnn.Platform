@@ -65,7 +65,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                                     DisplayName = installConfig.SuperUser.FirstName + " " + installConfig.SuperUser.LastName,
                                     Membership = { Password = installConfig.SuperUser.Password },
                                     Email = installConfig.SuperUser.Email,
-                                    IsSuperUser = true
+                                    IsSuperUser = true,
                                 };
                 superUser.Membership.Approved = true;
 

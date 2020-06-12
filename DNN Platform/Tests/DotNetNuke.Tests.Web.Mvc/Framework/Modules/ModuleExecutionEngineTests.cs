@@ -92,7 +92,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             var moduleRequestResult = new ModuleRequestResult
                                             {
                                                 ActionResult = actionResultMock.Object,
-                                                ControllerContext = controllerContext
+                                                ControllerContext = controllerContext,
                                             };
 
             // Act
@@ -117,7 +117,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             var moduleRequestResult = new ModuleRequestResult
                                             {
                                                 ActionResult = actionResultMock.Object,
-                                                ControllerContext = controllerContext
+                                                ControllerContext = controllerContext,
                                             };
 
             // Act

@@ -50,7 +50,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 ImageUrl = this.IconPortal,
                 TabId = Null.NullInteger.ToString(CultureInfo.InvariantCulture),
                 ChildTabs = new List<TabDto>(),
-                HasChildren = true
+                HasChildren = true,
             };
             var tabs = new List<TabInfo>();
 
@@ -107,7 +107,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                     ParentTabId = tab.ParentId,
                     HasChildren = tab.HasChildren,
                     Selectable = filterTabs.Contains(tab.TabID) && TabPermissionController.CanAddPage(tab),
-                    ChildTabs = new List<TabDto>()
+                    ChildTabs = new List<TabDto>(),
                 };
                 rootNode.ChildTabs.Add(node);
             }
@@ -126,7 +126,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 ImageUrl = this.IconPortal,
                 TabId = Null.NullInteger.ToString(CultureInfo.InvariantCulture),
                 ChildTabs = new List<TabDto>(),
-                HasChildren = true
+                HasChildren = true,
             };
             Func<TabInfo, bool> searchFunc;
             if (string.IsNullOrEmpty(searchText))
@@ -185,7 +185,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                     ImageUrl = nodeIcon,
                     ParentTabId = tab.ParentId,
                     HasChildren = false,
-                    Selectable = filterTabs.Contains(tab.TabID) && TabPermissionController.CanAddPage(tab)
+                    Selectable = filterTabs.Contains(tab.TabID) && TabPermissionController.CanAddPage(tab),
                 };
                 rootNode.ChildTabs.Add(node);
             }
@@ -314,7 +314,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 ParentTabId = tab.ParentId,
                 HasChildren = tab.HasChildren,
                 ChildTabs = new List<TabDto>(),
-                Selectable = TabPermissionController.CanAddPage(tab)
+                Selectable = TabPermissionController.CanAddPage(tab),
             };
         }
 
@@ -359,7 +359,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                     Tooltip = tooltip,
                     ParentTabId = tab.ParentId,
                     HasChildren = tab.HasChildren,
-                    Selectable = filterTabs.Contains(tab.TabID) && TabPermissionController.CanAddPage(tab)
+                    Selectable = filterTabs.Contains(tab.TabID) && TabPermissionController.CanAddPage(tab),
                 };
                 descendants.Add(node);
             }

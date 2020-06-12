@@ -55,7 +55,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
                 ParentId = PersonaBarRepository.Instance.GetMenuItem("Manage").MenuId,
                 Order = tab.IsSuperTab ? 300 : 200, // show host menus after admin menus
                 AllowHost = true,
-                Enabled = true
+                Enabled = true,
             };
 
             PersonaBarRepository.Instance.SaveMenuItem(menuItem);

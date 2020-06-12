@@ -77,7 +77,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         public enum TestingEnum
         {
             Value1,
-            Value2
+            Value2,
         }
 
         public readonly object[] SettingsCases =

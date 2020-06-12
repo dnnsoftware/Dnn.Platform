@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Localization
         {
             None = 0,
             Portal = 1,
-            Host = 2
+            Host = 2,
         }
 
         public string GetString(string key, string resourceFileRoot)

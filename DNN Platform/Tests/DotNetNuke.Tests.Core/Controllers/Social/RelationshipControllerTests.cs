@@ -117,7 +117,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipController = this.CreateRelationshipController(mockDataService);
             var relationshipType = new RelationshipType()
                                        {
-                                           RelationshipTypeId = Constants.SOCIAL_FollowerRelationshipTypeID
+                                           RelationshipTypeId = Constants.SOCIAL_FollowerRelationshipTypeID,
                                        };
 
             // Act
@@ -138,7 +138,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipType = new RelationshipType()
                                         {
                                             RelationshipTypeId = Constants.SOCIAL_FollowerRelationshipTypeID,
-                                            Name = Constants.SOCIAL_RelationshipTypeName
+                                            Name = Constants.SOCIAL_RelationshipTypeName,
                                         };
 
 
@@ -158,7 +158,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var cacheKey = CachingProvider.GetCacheKey(DataCache.RelationshipTypesCacheKey);
             var relationshipType = new RelationshipType()
                                         {
-                                            RelationshipTypeId = Constants.SOCIAL_FollowerRelationshipTypeID
+                                            RelationshipTypeId = Constants.SOCIAL_FollowerRelationshipTypeID,
                                         };
 
             // Act
@@ -245,7 +245,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipController = this.CreateRelationshipController(mockDataService);
             var relationshipType = new RelationshipType()
                                         {
-                                            RelationshipTypeId = Constants.SOCIAL_FollowerRelationshipTypeID
+                                            RelationshipTypeId = Constants.SOCIAL_FollowerRelationshipTypeID,
                                         };
 
             // Act
@@ -267,7 +267,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipType = new RelationshipType()
                                         {
                                             RelationshipTypeId = Constants.SOCIAL_FollowerRelationshipTypeID,
-                                            Name = Constants.SOCIAL_RelationshipTypeName
+                                            Name = Constants.SOCIAL_RelationshipTypeName,
                                         };
 
             // Act
@@ -286,7 +286,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var cacheKey = CachingProvider.GetCacheKey(DataCache.RelationshipTypesCacheKey);
             var relationshipType = new RelationshipType()
                                         {
-                                            RelationshipTypeId = Constants.SOCIAL_FollowerRelationshipTypeID
+                                            RelationshipTypeId = Constants.SOCIAL_FollowerRelationshipTypeID,
                                         };
 
             // Act
@@ -315,7 +315,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipController = this.CreateRelationshipController(mockDataService);
             var relationship = new Relationship()
                                         {
-                                            RelationshipId = Constants.SOCIAL_FollowerRelationshipID
+                                            RelationshipId = Constants.SOCIAL_FollowerRelationshipID,
                                         };
 
             // Act
@@ -337,7 +337,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationship = new Relationship()
                                     {
                                         RelationshipId = Constants.SOCIAL_FollowerRelationshipID,
-                                        Name = Constants.SOCIAL_RelationshipName
+                                        Name = Constants.SOCIAL_RelationshipName,
                                     };
 
             // Act
@@ -359,7 +359,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
                                     {
                                         RelationshipId = Constants.SOCIAL_FollowerRelationshipID,
                                         PortalId = portalId,
-                                        UserId = -1
+                                        UserId = -1,
                                     };
 
             // Act
@@ -544,7 +544,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipController = this.CreateRelationshipController(mockDataService);
             var relationship = new Relationship
                                         {
-                                            RelationshipId = Constants.SOCIAL_FollowerRelationshipID
+                                            RelationshipId = Constants.SOCIAL_FollowerRelationshipID,
                                         };
 
             // Act
@@ -566,7 +566,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationship = new Relationship
                                         {
                                             RelationshipId = Constants.SOCIAL_FollowerRelationshipID,
-                                            Name = Constants.SOCIAL_RelationshipName
+                                            Name = Constants.SOCIAL_RelationshipName,
                                         };
 
             // Act
@@ -585,7 +585,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var cacheKey = CachingProvider.GetCacheKey(DataCache.RelationshipTypesCacheKey);
             var relationshipType = new RelationshipType()
             {
-                RelationshipTypeId = Constants.SOCIAL_FollowerRelationshipTypeID
+                RelationshipTypeId = Constants.SOCIAL_FollowerRelationshipTypeID,
             };
 
             // Act
@@ -614,7 +614,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipController = this.CreateRelationshipController(mockDataService);
             var userRelationship = new UserRelationship()
                                     {
-                                        UserRelationshipId = Constants.SOCIAL_UserRelationshipIDUser10User11
+                                        UserRelationshipId = Constants.SOCIAL_UserRelationshipIDUser10User11,
                                     };
 
             // Act
@@ -637,7 +637,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
                                         {
                                             UserRelationshipId = Constants.SOCIAL_UserRelationshipIDUser10User11,
                                             UserId = Constants.USER_ElevenId,
-                                            RelatedUserId = Constants.USER_TenId
+                                            RelatedUserId = Constants.USER_TenId,
                                         };
 
 
@@ -746,7 +746,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipController = this.CreateRelationshipController(mockDataService);
             var userRelationship = new UserRelationship()
                                             {
-                                                UserRelationshipId = Constants.SOCIAL_UserRelationshipIDUser10User11
+                                                UserRelationshipId = Constants.SOCIAL_UserRelationshipIDUser10User11,
                                             };
 
             // Act
@@ -772,7 +772,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
                                             {
                                                 UserRelationshipId = Constants.SOCIAL_UserRelationshipIDUser10User11,
                                                 UserId = Constants.USER_ElevenId,
-                                                RelatedUserId = Constants.USER_TenId
+                                                RelatedUserId = Constants.USER_TenId,
                                             };
 
 
@@ -803,7 +803,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipController = this.CreateRelationshipController(mockDataService);
             var preference = new UserRelationshipPreference()
                                     {
-                                        PreferenceId = Constants.SOCIAL_PrefereceIDForUser11
+                                        PreferenceId = Constants.SOCIAL_PrefereceIDForUser11,
                                     };
 
             // Act
@@ -826,7 +826,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
                                         {
                                             PreferenceId = Constants.SOCIAL_PrefereceIDForUser11,
                                             UserId = Constants.USER_ElevenId,
-                                            RelationshipId = Constants.SOCIAL_FriendRelationshipID
+                                            RelationshipId = Constants.SOCIAL_FriendRelationshipID,
                                         };
 
             // Act
@@ -890,7 +890,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
                                     {
                                         PreferenceId = Constants.SOCIAL_PrefereceIDForUser11,
                                         UserId = Constants.USER_ElevenId,
-                                        RelationshipId = Constants.SOCIAL_FriendRelationshipID
+                                        RelationshipId = Constants.SOCIAL_FriendRelationshipID,
                                     };
 
             // Act
@@ -916,7 +916,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
                                             {
                                                 PreferenceId = Constants.SOCIAL_PrefereceIDForUser11,
                                                 UserId = Constants.USER_ElevenId,
-                                                RelationshipId = Constants.SOCIAL_FriendRelationshipID
+                                                RelationshipId = Constants.SOCIAL_FriendRelationshipID,
                                             };
 
             // Act
@@ -1261,7 +1261,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
                 PortalGroupId = portalGroupId,
                 MasterPortalId = masterPortalId,
                 PortalGroupName = Constants.PORTALGROUP_ValidName,
-                PortalGroupDescription = Constants.PORTALGROUP_ValidDescription
+                PortalGroupDescription = Constants.PORTALGROUP_ValidDescription,
             };
 
             return mockPortalGroupInfo;

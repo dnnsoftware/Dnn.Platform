@@ -84,13 +84,13 @@ namespace DotNetNuke.Modules.Groups.Components
                                 {
                                     NameResourceKey = "Approve",
                                     DescriptionResourceKey = "ApproveGroup",
-                                    APICall = "API/SocialGroups/ModerationService/ApproveGroup"
+                                    APICall = "API/SocialGroups/ModerationService/ApproveGroup",
                                 });
                 actions.Add(new NotificationTypeAction
                                 {
                                     NameResourceKey = "RejectGroup",
                                     DescriptionResourceKey = "RejectGroup",
-                                    APICall = "API/SocialGroups/ModerationService/RejectGroup"
+                                    APICall = "API/SocialGroups/ModerationService/RejectGroup",
                                 });
                 NotificationsController.Instance.CreateNotificationType(type);
                 NotificationsController.Instance.SetNotificationTypeActions(actions, type.NotificationTypeId);
@@ -113,7 +113,7 @@ namespace DotNetNuke.Modules.Groups.Components
                                     NameResourceKey = "RejectGroup",
                                     DescriptionResourceKey = "RejectGroup",
                                     ConfirmResourceKey = "DeleteItem",
-                                    APICall = "API/SocialGroups/ModerationService/RejectGroup"
+                                    APICall = "API/SocialGroups/ModerationService/RejectGroup",
                                 });
                 NotificationsController.Instance.CreateNotificationType(type);
                 NotificationsController.Instance.SetNotificationTypeActions(actions, type.NotificationTypeId);
@@ -136,13 +136,13 @@ namespace DotNetNuke.Modules.Groups.Components
                                     NameResourceKey = "Approve",
                                     DescriptionResourceKey = "ApproveGroupMember",
                                     ConfirmResourceKey = string.Empty,
-                                    APICall = "API/SocialGroups/ModerationService/ApproveMember"
+                                    APICall = "API/SocialGroups/ModerationService/ApproveMember",
                                 });
                 actions.Add(new NotificationTypeAction
                                 {
                                     NameResourceKey = "RejectMember",
                                     DescriptionResourceKey = "RejectGroupMember",
-                                    APICall = "API/SocialGroups/ModerationService/RejectMember"
+                                    APICall = "API/SocialGroups/ModerationService/RejectMember",
                                 });
                 NotificationsController.Instance.CreateNotificationType(type);
                 NotificationsController.Instance.SetNotificationTypeActions(actions, type.NotificationTypeId);

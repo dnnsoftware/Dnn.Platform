@@ -16,6 +16,6 @@ namespace DotNetNuke.UI.WebControls
     public enum GroupByMode
     {
         None = 0,
-        Section
+        Section,
     }
 }

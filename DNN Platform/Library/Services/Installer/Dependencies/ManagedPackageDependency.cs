@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             this.PackageDependency = new PackageDependencyInfo
             {
                 PackageName = dependencyNav.Value,
-                Version = new Version(Util.ReadAttribute(dependencyNav, "version"))
+                Version = new Version(Util.ReadAttribute(dependencyNav, "version")),
             };
         }
 

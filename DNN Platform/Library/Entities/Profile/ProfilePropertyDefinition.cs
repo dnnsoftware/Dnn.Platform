@@ -38,7 +38,7 @@ namespace DotNetNuke.Entities.Profile
         private int _portalId;
         private ProfileVisibility _profileVisibility = new ProfileVisibility
                                                             {
-                                                                VisibilityMode = UserVisibilityMode.AdminOnly
+                                                                VisibilityMode = UserVisibilityMode.AdminOnly,
                                                             };
         private string _propertyCategory;
         private string _propertyName;
@@ -483,7 +483,7 @@ namespace DotNetNuke.Entities.Profile
                                 DefaultVisibility = this.DefaultVisibility,
                                 ProfileVisibility = this.ProfileVisibility.Clone(),
                                 Visible = this.Visible,
-                                Deleted = this.Deleted
+                                Deleted = this.Deleted,
                             };
             clone.ClearIsDirty();
             return clone;

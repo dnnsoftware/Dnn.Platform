@@ -162,7 +162,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     {
                         LogUserID = PortalSettings.Current.UserId,
                         LogPortalID = PortalSettings.Current.PortalId,
-                        LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()
+                        LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
                     };
                     logInfo.AddProperty("DnnImageHandler", message);
                     logInfo.AddProperty("IP", ipAddress);
@@ -201,7 +201,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         {
                             LogUserID = PortalSettings.Current.UserId,
                             LogPortalID = PortalSettings.Current.PortalId,
-                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()
+                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
                         };
                         logInfo.AddProperty("DnnImageHandler", message);
                         logInfo.AddProperty("IP", ipAddress);
@@ -294,7 +294,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         {
                             LogUserID = PortalSettings.Current.UserId,
                             LogPortalID = PortalSettings.Current.PortalId,
-                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()
+                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
                         };
                         logInfo.AddProperty("DnnImageHandler", message);
                         logInfo.AddProperty("IP", ipAddress);
@@ -428,7 +428,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     var eps = new EncoderParameters(1)
                     {
-                        Param = { [0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, this.ImageCompression) }
+                        Param = { [0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, this.ImageCompression) },
                     };
                     var ici = GetEncoderInfo(GetImageMimeType(this.ContentType));
                     image?.Save(outStream, ici, eps);

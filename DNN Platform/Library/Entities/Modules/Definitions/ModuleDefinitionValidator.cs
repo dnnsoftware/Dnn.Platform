@@ -22,7 +22,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         V2 = 2,
         V2_Skin = 3,
         V2_Provider = 4,
-        V3 = 5
+        V3 = 5,
     }
 
     public class ModuleDefinitionValidator : XmlValidatorBase
@@ -68,7 +68,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
             var xmlReader = new XmlTextReader(xmlStream)
             {
                 XmlResolver = null,
-                DtdProcessing = DtdProcessing.Prohibit
+                DtdProcessing = DtdProcessing.Prohibit,
             };
             xmlReader.MoveToContent();
 

@@ -570,7 +570,7 @@ namespace DotNetNuke.Entities.Urls
                 ReplaceChars = settings.ReplaceChars,
                 ReplaceDoubleChars = settings.ReplaceDoubleChars,
                 ReplaceCharWithChar = settings.ReplaceCharacterDictionary,
-                PageExtension = settings.PageExtensionUsageType == PageExtensionUsageType.Never ? string.Empty : settings.PageExtension
+                PageExtension = settings.PageExtensionUsageType == PageExtensionUsageType.Never ? string.Empty : settings.PageExtension,
             };
         }
 

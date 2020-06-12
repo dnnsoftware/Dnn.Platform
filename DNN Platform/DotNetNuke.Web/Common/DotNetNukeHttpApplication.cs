@@ -176,7 +176,7 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static readonly string[] Endings =
             {
-                ".css", ".gif", ".jpeg", ".jpg", ".js", ".png", "scriptresource.axd", "webresource.axd"
+                ".css", ".gif", ".jpeg", ".jpg", ".js", ".png", "scriptresource.axd", "webresource.axd",
             };
 
         private void Application_BeginRequest(object sender, EventArgs e)

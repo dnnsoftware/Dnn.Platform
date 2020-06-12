@@ -43,7 +43,7 @@ namespace DotNetNuke.Entities.Urls
                     ReplaceCharWithChar = settings.ReplaceCharacterDictionary,
                     PageExtension = (settings.PageExtensionUsageType == PageExtensionUsageType.Never)
                                             ? string.Empty
-                                            : settings.PageExtension
+                                            : settings.PageExtension,
                 };
             return options;
         }
@@ -66,7 +66,7 @@ namespace DotNetNuke.Entities.Urls
                 ReplaceChars = options.ReplaceChars.Replace("/", string.Empty),
                 ReplaceDoubleChars = options.ReplaceDoubleChars,
                 ReplaceCharWithChar = options.ReplaceCharWithChar,
-                PageExtension = options.PageExtension
+                PageExtension = options.PageExtension,
             };
             return result;
         }
@@ -82,7 +82,7 @@ namespace DotNetNuke.Entities.Urls
             var log = new LogInfo
                 {
                     LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
-                    LogPortalID = (result.PortalAlias != null) ? result.PortalId : -1
+                    LogPortalID = (result.PortalAlias != null) ? result.PortalId : -1,
                 };
             log.LogProperties.Add(new LogDetailInfo("TabId", (result.TabId > 0) ? result.TabId.ToString() : string.Empty));
             log.LogProperties.Add(new LogDetailInfo("PortalAlias",  (result.PortalAlias != null) ? result.PortalAlias.HTTPAlias : string.Empty));

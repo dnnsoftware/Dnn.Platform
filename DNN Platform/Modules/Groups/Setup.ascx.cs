@@ -102,7 +102,7 @@ namespace DotNetNuke.Modules.Groups
                             TabID = -1,
                             TabPermissionID = -1,
                             UserID = t.UserID,
-                            Username = t.Username
+                            Username = t.Username,
                         };
                         newTab.TabPermissions.Add(tNew);
                     }

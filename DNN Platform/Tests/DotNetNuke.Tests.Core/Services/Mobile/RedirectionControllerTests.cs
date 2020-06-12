@@ -685,7 +685,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                             "PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate", "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
                             "HostSpace", "PageQuota", "UserQuota", "AdministratorRoleId", "RegisteredRoleId", "Description", "KeyWords", "BackgroundFile", "GUID", "PaymentProcessor", "ProcessorUserId",
                             "ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset", "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
-                            "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode"
+                            "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode",
                         };
 
             foreach (var col in cols)
@@ -710,7 +710,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
             var cols = new string[]
                         {
-                            "TabID", "UniqueId", "VersionGuid", "DefaultLanguageGuid", "LocalizedVersionGuid", "TabOrder", "PortalID", "TabName", "IsVisible", "ParentId", "Level", "IconFile", "IconFileLarge", "DisableLink", "Title", "Description", "KeyWords", "IsDeleted", "SkinSrc", "ContainerSrc", "TabPath", "StartDate", "EndDate", "Url", "HasChildren", "RefreshInterval", "PageHeadText", "IsSecure", "PermanentRedirect", "SiteMapPriority", "ContentItemID", "Content", "ContentTypeID", "ModuleID", "ContentKey", "Indexed", "CultureCode", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "StateID", "HasBeenPublished", "IsSystem"
+                            "TabID", "UniqueId", "VersionGuid", "DefaultLanguageGuid", "LocalizedVersionGuid", "TabOrder", "PortalID", "TabName", "IsVisible", "ParentId", "Level", "IconFile", "IconFileLarge", "DisableLink", "Title", "Description", "KeyWords", "IsDeleted", "SkinSrc", "ContainerSrc", "TabPath", "StartDate", "EndDate", "Url", "HasChildren", "RefreshInterval", "PageHeadText", "IsSecure", "PermanentRedirect", "SiteMapPriority", "ContentItemID", "Content", "ContentTypeID", "ModuleID", "ContentKey", "Indexed", "CultureCode", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "StateID", "HasBeenPublished", "IsSystem",
                         };
 
             foreach (var col in cols)
@@ -759,7 +759,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
             var cols = new string[]
                         {
-                            "PortalID", "TabID", "TabModuleID", "ModuleID", "ModuleDefID", "ModuleOrder", "PaneName", "ModuleTitle", "CacheTime", "CacheMethod", "Alignment", "Color", "Border", "IconFile", "AllTabs", "Visibility", "IsDeleted", "Header", "Footer", "StartDate", "EndDate", "ContainerSrc", "DisplayTitle", "DisplayPrint", "DisplaySyndicate", "IsWebSlice", "WebSliceTitle", "WebSliceExpiryDate", "WebSliceTTL", "InheritViewPermissions", "DesktopModuleID", "DefaultCacheTime", "ModuleControlID", "BusinessControllerClass", "IsAdmin", "SupportedFeatures", "ContentItemID", "Content", "ContentTypeID", "ContentKey", "Indexed", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "LastContentModifiedOnDate", "UniqueId", "VersionGuid", "DefaultLanguageGuid", "LocalizedVersionGuid", "CultureCode"
+                            "PortalID", "TabID", "TabModuleID", "ModuleID", "ModuleDefID", "ModuleOrder", "PaneName", "ModuleTitle", "CacheTime", "CacheMethod", "Alignment", "Color", "Border", "IconFile", "AllTabs", "Visibility", "IsDeleted", "Header", "Footer", "StartDate", "EndDate", "ContainerSrc", "DisplayTitle", "DisplayPrint", "DisplaySyndicate", "IsWebSlice", "WebSliceTitle", "WebSliceExpiryDate", "WebSliceTTL", "InheritViewPermissions", "DesktopModuleID", "DefaultCacheTime", "ModuleControlID", "BusinessControllerClass", "IsAdmin", "SupportedFeatures", "ContentItemID", "Content", "ContentTypeID", "ContentKey", "Indexed", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "LastContentModifiedOnDate", "UniqueId", "VersionGuid", "DefaultLanguageGuid", "LocalizedVersionGuid", "CultureCode",
                         };
 
             foreach (var col in cols)
@@ -781,7 +781,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
             var cols = new string[]
                         {
-                            "SettingName", "SettingValue", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode"
+                            "SettingName", "SettingValue", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode",
                         };
 
             foreach (var col in cols)
@@ -802,7 +802,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
             var cols = new string[]
                         {
-                            "PortalGroupID", "MasterPortalID", "PortalGroupName", "PortalGroupDescription", "AuthenticationDomain", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate"
+                            "PortalGroupID", "MasterPortalID", "PortalGroupName", "PortalGroupDescription", "AuthenticationDomain", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate",
                         };
 
             foreach (var col in cols)

@@ -35,7 +35,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             DocumentSearchTypeId,
             UrlSearchTypeId,
             OtherSearchTypeId,
-            UnknownSearchTypeId
+            UnknownSearchTypeId,
         }
 
         private const int ModuleSearchTypeId = (int)SearchTypeIds.ModuleSearchTypeId;
@@ -204,7 +204,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 "ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset", "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId",
                 "LoginTabId", "RegisterTabId",
                 "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID",
-                "LastModifiedOnDate", "CultureCode"
+                "LastModifiedOnDate", "CultureCode",
             };
 
             foreach (var col in cols)
@@ -250,7 +250,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 new SynonymsGroup { PortalId = 0, SynonymsGroupId = 1, SynonymsTags = string.Join(",", TermDNN, TermDotNetNuke) },
                 new SynonymsGroup { PortalId = 0, SynonymsGroupId = 2, SynonymsTags = string.Join(",", TermLaptop, TermNotebook) },
-                new SynonymsGroup { PortalId = 0, SynonymsGroupId = 3, SynonymsTags = string.Join(",", TermJump, TermLeap, TermHop) }
+                new SynonymsGroup { PortalId = 0, SynonymsGroupId = 3, SynonymsTags = string.Join(",", TermJump, TermLeap, TermHop) },
             };
 
             return groups;
@@ -324,9 +324,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 {
                     SearchTypeId = DocumentSearchTypeId,
                     SearchTypeName = DocumentSearchTypeName,
-                    SearchResultClass = NoPermissionFakeResultControllerClass
+                    SearchResultClass = NoPermissionFakeResultControllerClass,
                 },
-                new SearchType { SearchTypeId = UrlSearchTypeId, SearchTypeName = UrlSearchTypeName, SearchResultClass = FakeResultControllerClass }
+                new SearchType { SearchTypeId = UrlSearchTypeId, SearchTypeName = UrlSearchTypeName, SearchResultClass = FakeResultControllerClass },
             };
 
             return searchTypes;

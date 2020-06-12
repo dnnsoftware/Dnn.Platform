@@ -135,7 +135,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 var requiredValidator = new RequiredFieldValidator
                                             {
                                                 ID = this.ID + "_Required",
-                                                ErrorMessage = this.ResourceKey + this.RequiredMessageSuffix
+                                                ErrorMessage = this.ResourceKey + this.RequiredMessageSuffix,
                                             };
                 this.Validators.Add(requiredValidator);
             }
@@ -146,7 +146,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                          {
                                              ID = this.ID + "_RegEx",
                                              ErrorMessage = this.ResourceKey + this.ValidationMessageSuffix,
-                                             ValidationExpression = this.ValidationExpression
+                                             ValidationExpression = this.ValidationExpression,
                                          };
                 if (!string.IsNullOrEmpty(value))
                 {
@@ -200,7 +200,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                     LocalResourceFile = this.LocalResourceFile,
                                     ResourceKey = this.ResourceKey + ".Text",
                                     ToolTipKey = this.ResourceKey + ".Help",
-                                    ViewStateMode = ViewStateMode.Disabled
+                                    ViewStateMode = ViewStateMode.Disabled,
                                 };
 
             if (this.Required) {

@@ -37,7 +37,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
             var exceptionContext = new ExceptionContext
             {
                 Controller = new FakeDnnController(),
-                Exception = testException
+                Exception = testException,
             };
 
             var mockDnnHandleErrorAttribute = new Mock<DnnHandleErrorAttribute> { CallBase = true };

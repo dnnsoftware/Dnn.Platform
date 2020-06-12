@@ -16,6 +16,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// The document will be displayed automatically.
         /// </summary>
-        Inline
+        Inline,
     }
 }

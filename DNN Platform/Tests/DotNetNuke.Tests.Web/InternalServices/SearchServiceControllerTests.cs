@@ -492,7 +492,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                                "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
                                "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId",
                                "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate",
-                               "CultureCode"
+                               "CultureCode",
                            };
 
             foreach (var col in cols)
@@ -519,7 +519,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 SearchTypeName = UrlSearchTypeName,
                 SearchResultClass = FakeResultControllerClass,
                 LocalizedName = UserSearchTypeName,
-                ModuleDefinitionId = 0
+                ModuleDefinitionId = 0,
             };
             var results = this._searchServiceController.GetGroupedBasicViews(query, userSearchContentSource, PortalId0);
             return results;
@@ -564,7 +564,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             {
                 KeyWords = keyword,
                 SearchTypeIds = new[] { ModuleSearchTypeId, TabSearchTypeId, UserSearchTypeId },
-                RoleId = 731
+                RoleId = 731,
             };
 
             // Run
@@ -616,7 +616,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 SortField = 0,
                 TitleSnippetLength = 120,
                 BodySnippetLength = 300,
-                WildCardSearch = true
+                WildCardSearch = true,
             };
 
             // Run
@@ -658,7 +658,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 PortalId = PortalId0,
                 RoleId = RoleId731,
                 Keywords = { { "description", "mycontent" } },
-                NumericKeys = { { "points", 5 } }
+                NumericKeys = { { "points", 5 } },
             };
 
             this._internalSearchController.AddSearchDocument(originalDocument);
@@ -676,7 +676,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 PortalId = PortalId0,
                 RoleId = RoleId731,
                 Keywords = { { "description", "mycontent_modified" }, { "description2", "mycontent_modified" } },
-                NumericKeys = { { "points", 8 }, { "point2", 7 } }
+                NumericKeys = { { "points", 8 }, { "point2", 7 } },
             };
 
             this._internalSearchController.AddSearchDocument(modifiedDocument);
@@ -694,7 +694,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 SortField = 0,
                 TitleSnippetLength = 120,
                 BodySnippetLength = 300,
-                WildCardSearch = true
+                WildCardSearch = true,
             };
 
             // Run

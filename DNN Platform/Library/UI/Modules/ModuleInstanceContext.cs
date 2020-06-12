@@ -313,7 +313,7 @@ namespace DotNetNuke.UI.Modules
                                      Secure = SecurityAccessLevel.Edit,
                                      Visible = true,
                                      NewWindow = showInNewWindow,
-                                     UseActionEvent = true
+                                     UseActionEvent = true,
                                  };
             this._moduleGenericActions.Actions.Add(helpAction);
         }
@@ -337,7 +337,7 @@ namespace DotNetNuke.UI.Modules
                                  Secure = SecurityAccessLevel.Anonymous,
                                  UseActionEvent = true,
                                  Visible = true,
-                                 NewWindow = true
+                                 NewWindow = true,
                              };
             this._moduleGenericActions.Actions.Add(action);
         }
@@ -354,7 +354,7 @@ namespace DotNetNuke.UI.Modules
                                  Secure = SecurityAccessLevel.Anonymous,
                                  UseActionEvent = true,
                                  Visible = true,
-                                 NewWindow = true
+                                 NewWindow = true,
                              };
             this._moduleGenericActions.Actions.Add(action);
         }

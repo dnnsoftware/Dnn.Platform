@@ -44,7 +44,7 @@ namespace Dnn.PersonaBar.UI.Services
                 var availablePortals = portals.Select(v => new
                 {
                     v.PortalID,
-                    v.PortalName
+                    v.PortalName,
                 }).ToList();
 
                 if (addAll)
@@ -53,7 +53,7 @@ namespace Dnn.PersonaBar.UI.Services
                     {
                         PortalID = -1,
                         PortalName =
-                            DotNetNuke.Services.Localization.Localization.GetString("AllSites", Constants.SharedResources)
+                            DotNetNuke.Services.Localization.Localization.GetString("AllSites", Constants.SharedResources),
                     });
                 }
 
@@ -61,7 +61,7 @@ namespace Dnn.PersonaBar.UI.Services
                 {
                     Success = true,
                     Results = availablePortals,
-                    TotalResults = availablePortals.Count
+                    TotalResults = availablePortals.Count,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);

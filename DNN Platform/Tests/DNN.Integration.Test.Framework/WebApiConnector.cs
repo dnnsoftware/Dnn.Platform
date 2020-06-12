@@ -32,7 +32,7 @@ namespace DNN.Integration.Test.Framework
         {
             return new WebApiConnector(siteUrl)
             {
-                UserName = (userName ?? string.Empty).Replace("'", string.Empty)
+                UserName = (userName ?? string.Empty).Replace("'", string.Empty),
             };
         }
 
@@ -189,7 +189,7 @@ namespace DNN.Integration.Test.Framework
                     { fieldsPrefix + "$txtUsername", this.UserName },
                     { fieldsPrefix + "$txtPassword", password },
                     { "__EVENTTARGET", fieldsPrefix + "$cmdLogin" }, // most important field; button action
-                    { "__EVENTARGUMENT", string.Empty }
+                    { "__EVENTARGUMENT", string.Empty },
                 };
 
             var excludedInputPrefixes = new List<string>();
@@ -353,7 +353,7 @@ namespace DNN.Integration.Test.Framework
                 {
                     new KeyValuePair<string, string>("\"folder\"", portalFolder),
                     new KeyValuePair<string, string>("\"filter\"", FileFilters),
-                    new KeyValuePair<string, string>("\"overwrite\"", "true")
+                    new KeyValuePair<string, string>("\"overwrite\"", "true"),
                 };
 
                 foreach (var keyValuePair in values)
@@ -366,7 +366,7 @@ namespace DNN.Integration.Test.Framework
                 fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
                 {
                     FileName = fi.Name,
-                    Name = "\"postfile\""
+                    Name = "\"postfile\"",
                 };
 
                 content.Add(fileContent);
@@ -384,7 +384,7 @@ namespace DNN.Integration.Test.Framework
         {
             using (var clientHandler = new HttpClientHandler
             {
-                AllowAutoRedirect = false
+                AllowAutoRedirect = false,
             })
             using (var client = new HttpClient(clientHandler))
             {
@@ -416,7 +416,7 @@ namespace DNN.Integration.Test.Framework
                 fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
                 {
                     Name = "\"files[]\"",
-                    FileName = "\"" + fi.Name + "\""
+                    FileName = "\"" + fi.Name + "\"",
                 };
                 fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/png");
 
@@ -516,7 +516,7 @@ namespace DNN.Integration.Test.Framework
             var client = new HttpClient(clientHandler)
             {
                 BaseAddress = this.Domain,
-                Timeout = this.Timeout
+                Timeout = this.Timeout,
             };
 
             if (string.IsNullOrEmpty(this._inputFieldVerificationToken))
@@ -605,7 +605,7 @@ namespace DNN.Integration.Test.Framework
             using (var client = new HttpClient(clientHandler)
             {
                 BaseAddress = this.Domain,
-                Timeout = this.Timeout
+                Timeout = this.Timeout,
             })
             {
                 inputFields = this.GetPageInputFields(client, relativeUrl);

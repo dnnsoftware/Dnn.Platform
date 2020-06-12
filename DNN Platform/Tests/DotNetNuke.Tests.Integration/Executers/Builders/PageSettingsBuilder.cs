@@ -125,7 +125,7 @@ namespace DotNetNuke.Tests.Integration.Executers.Builders
                 permissions = this.GetOrDefault(p => p.permissions),
                 templateTabId = this.GetOrDefault(p => p.templateTabId),
                 modules = this.GetOrDefault(p => p.modules),
-                isSecure = this.GetOrDefault(p => p.isSecure)
+                isSecure = this.GetOrDefault(p => p.isSecure),
             };
             return pageSettings;
         }

@@ -191,7 +191,7 @@ namespace DotNetNuke.UI.WebControls
             // Set Visibility
             editInfo.ProfileVisibility = new ProfileVisibility
                                              {
-                                                 VisibilityMode = UserVisibilityMode.AllUsers
+                                                 VisibilityMode = UserVisibilityMode.AllUsers,
                                              };
 
             return editInfo;

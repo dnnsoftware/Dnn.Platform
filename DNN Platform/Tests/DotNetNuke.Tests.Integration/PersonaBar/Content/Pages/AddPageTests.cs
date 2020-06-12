@@ -30,7 +30,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
                 Tags = string.Empty,
                 IncludeInMenu = true,
                 StartDate = null,
-                EndDate = null
+                EndDate = null,
             };
 
             Console.WriteLine(@"Add bulk pages request = {0}", JsonConvert.SerializeObject(addPagesDto));

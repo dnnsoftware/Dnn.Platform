@@ -135,7 +135,7 @@ namespace DotNetNuke.Web.DDRMenu
                                     "IncludeHidden",
                                     "IncludeNodes",
                                     "ExcludeNodes",
-                                    "NodeManipulator"
+                                    "NodeManipulator",
                                    };
 
             foreach (var prop in

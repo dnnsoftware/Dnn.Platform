@@ -52,7 +52,7 @@ namespace DotNetNuke.Tests.Utilities
                                             Type = Constants.VOCABULARY_ValidType,
                                             ScopeTypeId = Constants.VOCABULARY_ValidScopeTypeId,
                                             ScopeId = Constants.VOCABULARY_ValidScopeId,
-                                            Weight = Constants.VOCABULARY_ValidWeight
+                                            Weight = Constants.VOCABULARY_ValidWeight,
                                         };
 
             return vocabulary;
@@ -87,7 +87,7 @@ namespace DotNetNuke.Tests.Utilities
                     StorageLocation = 0,
                     UniqueId = Guid.NewGuid(),
                     VersionGuid = Guid.NewGuid(),
-                    Width = 0
+                    Width = 0,
                 };
             }
         }

@@ -32,6 +32,6 @@ namespace DotNetNuke.Services.Social.Messaging
         /// <summary>
         /// Any Message Status - Both Sent and Received
         /// </summary>
-        Any = -1
+        Any = -1,
     }
 }

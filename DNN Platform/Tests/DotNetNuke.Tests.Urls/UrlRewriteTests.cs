@@ -176,7 +176,7 @@ namespace DotNetNuke.Tests.Urls
                                     alias = new PortalAliasInfo
                                     {
                                         HTTPAlias = fields[0],
-                                        PortalID = this.PortalId
+                                        PortalID = this.PortalId,
                                     };
                                     PortalAliasController.Instance.AddPortalAlias(alias);
                                 }
@@ -245,10 +245,10 @@ namespace DotNetNuke.Tests.Urls
                         Result = new UrlAction(request)
                                         {
                                             IsSecureConnection = request.IsSecureConnection,
-                                            RawUrl = request.RawUrl
+                                            RawUrl = request.RawUrl,
                                         },
                         RequestUri = new Uri(testurl),
-                        QueryStringCol = new NameValueCollection()
+                        QueryStringCol = new NameValueCollection(),
                     };
 
             this.ProcessRequest(settings, testHelper);
@@ -555,7 +555,7 @@ namespace DotNetNuke.Tests.Urls
                 {
                     HTTPAlias = defaultAlias,
                     PortalID = this.PortalId,
-                    IsPrimary = true
+                    IsPrimary = true,
                 };
                 if (!(string.IsNullOrEmpty(language) && string.IsNullOrEmpty(skin)))
                 {

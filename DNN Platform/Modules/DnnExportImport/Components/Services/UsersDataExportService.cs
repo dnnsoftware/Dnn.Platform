@@ -253,7 +253,7 @@ namespace Dnn.ExportImport.Components.Services
             new Tuple<string, Type>("PropertyText", typeof(string)),
             new Tuple<string, Type>("Visibility", typeof(int)),
             new Tuple<string, Type>("ExtendedVisibility", typeof(string)),
-            new Tuple<string, Type>("IsSuperUser", typeof(bool))
+            new Tuple<string, Type>("IsSuperUser", typeof(bool)),
         };
     }
 }

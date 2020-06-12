@@ -160,7 +160,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
                 ParentId = Null.NullInteger,
                 Order = Convert.ToInt32(Util.ReadElement(menuNavigator, "order", "0")),
                 AllowHost = Util.ReadElement(menuNavigator, "allowHost", "true").ToLowerInvariant() == "true",
-                Enabled = true
+                Enabled = true,
             };
 
             var parent = Util.ReadElement(menuNavigator, "parent", string.Empty);
@@ -187,7 +187,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
                 Container = Util.ReadElement(menuNavigator, "container"),
                 Path = Util.ReadElement(menuNavigator, "path"),
                 Order = Convert.ToInt32(Util.ReadElement(menuNavigator, "order", "0")),
-                Enabled = true
+                Enabled = true,
             };
 
             this._extensions.Add(extension);
@@ -200,7 +200,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             {
                 Identifier = Util.ReadElement(menuNavigator, "identifier"),
                 Key = Util.ReadElement(menuNavigator, "key"),
-                Name = Util.ReadElement(menuNavigator, "name")
+                Name = Util.ReadElement(menuNavigator, "name"),
             };
 
             this._permissionDefinitions.Add(permission);

@@ -30,7 +30,7 @@ namespace DotNetNuke.Entities.Tabs
                 PortalId = portalId,
                 TabId = tabId,
                 IsVersioningEnabledForTab = TabVersionSettings.Instance.IsVersioningEnabled(portalId, tabId),
-                IsWorkflowEnabledForTab = TabWorkflowSettings.Instance.IsWorkflowEnabled(portalId, tabId)
+                IsWorkflowEnabledForTab = TabWorkflowSettings.Instance.IsWorkflowEnabled(portalId, tabId),
             };
         }
 

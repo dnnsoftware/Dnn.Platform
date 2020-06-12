@@ -50,7 +50,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             return new Dictionary<string, string>
             {
                 { "TabId", tabId.ToString() },
-                { "ModuleId", moduleId.ToString() }
+                { "ModuleId", moduleId.ToString() },
             };
         }
 
@@ -97,7 +97,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
                 { registerFieldsPrefix + CodifyInputName("Email", "TextBox", encriptFieldsNames), email },
                 { "__EVENTTARGET", "dnn$ctr$Register$registerButton" },
                 { "__EVENTARGUMENT", string.Empty },
-                { "__ASYNCPOST", "true" }
+                { "__ASYNCPOST", "true" },
             };
 
             url = url ?? AppConfigHelper.SiteUrl;

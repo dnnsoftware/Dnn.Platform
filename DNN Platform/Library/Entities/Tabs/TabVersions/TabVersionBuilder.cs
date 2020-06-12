@@ -500,7 +500,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 TabVersionId = tabVersion.TabVersionId,
                 Action = TabVersionDetailAction.Reset,
                 ModuleId = Null.NullInteger,
-                ModuleVersion = Null.NullInteger
+                ModuleVersion = Null.NullInteger,
             };
         }
 
@@ -550,7 +550,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                                                                     ModuleOrder = tabVersionDetail.ModuleOrder,
                                                                     ModuleVersion = tabVersionDetail.ModuleVersion,
                                                                     PaneName = tabVersionDetail.PaneName,
-                                                                    Action = tabVersionDetail.Action
+                                                                    Action = tabVersionDetail.Action,
                                                                 }).ToList();
         }
 
@@ -808,7 +808,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                     ModuleOrder = module.ModuleOrder,
                     ModuleVersion = moduleVersion,
                     PaneName = module.PaneName,
-                    TabVersionId = tabVersion.TabVersionId
+                    TabVersionId = tabVersion.TabVersionId,
                 }, module.CreatedByUserID);
             }
         }

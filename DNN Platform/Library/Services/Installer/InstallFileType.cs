@@ -19,6 +19,6 @@ namespace DotNetNuke.Services.Installer
         Manifest,
         Other,
         Resources,
-        Script
+        Script,
     }
 }

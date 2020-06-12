@@ -402,7 +402,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                                                                Localization.GetString(
                                                                    "DefaultWorkflowState3.OnDiscardMessageBody")
                                                        }
-                                               }
+                                               },
             };
 
             this.AddWorkflow(worflow);
@@ -528,7 +528,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 Subject = subject,
                 Body = fullbody,
                 IncludeDismissAction = true,
-                SenderUserID = actionUserID
+                SenderUserID = actionUserID,
             };
 
             // append the context

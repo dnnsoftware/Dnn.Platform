@@ -56,7 +56,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Mocks
                 subscription.Description,
                 subscription.CreatedOnDate,
                 subscription.ModuleId,
-                subscription.TabId
+                subscription.TabId,
             });
         }
     }

@@ -55,7 +55,7 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         Name = page.TabName,
                         ViewUrl = this.NavigationManager.NavigateURL(page.TabID),
-                        EditUrl = this.NavigationManager.NavigateURL(page.TabID, "Tab", "action=edit", "returntabid=" + this.PortalSettings.ActiveTab.TabID)
+                        EditUrl = this.NavigationManager.NavigateURL(page.TabID, "Tab", "action=edit", "returntabid=" + this.PortalSettings.ActiveTab.TabID),
                     });
                 }
             }

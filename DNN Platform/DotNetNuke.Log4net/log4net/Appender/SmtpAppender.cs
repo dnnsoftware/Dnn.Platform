@@ -630,7 +630,7 @@ namespace log4net.Appender
             /// <remarks>
             /// Uses the Windows credentials from the current thread or process to authenticate.
             /// </remarks>
-            Ntlm
+            Ntlm,
         }
 
         private static readonly char[] ADDRESS_DELIMITERS = new char[] { ',', ';' };

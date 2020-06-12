@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Journal {
                 Indexed = false,
                 ContentKey = "journalid=" + objJournalItem.JournalId,
                 ModuleID = moduleId,
-                TabID = tabId
+                TabID = tabId,
             };
 
             objContent.ContentItemId = Util.GetContentController().AddContentItem(objContent);

@@ -260,7 +260,7 @@ namespace DotNetNuke.Services.Search.Internals
                         Searcher = searcher,
                         SecurityChecker = searchContext.SecurityCheckerDelegate,
                         LuceneQuery = searchContext.LuceneQuery,
-                        SearchQuery = searchContext.SearchQuery
+                        SearchQuery = searchContext.SearchQuery,
                     });
                     searcher.Search(searchContext.LuceneQuery.Query, null, searchSecurityTrimmer);
                     luceneResults.TotalHits = searchSecurityTrimmer.TotalHits;
@@ -286,7 +286,7 @@ namespace DotNetNuke.Services.Search.Internals
                             DescriptionSnippet = this.GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.DescriptionTag, searchContext.LuceneQuery.TitleSnippetLength),
                             TagSnippet = this.GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.Tag, searchContext.LuceneQuery.TitleSnippetLength),
                             AuthorSnippet = this.GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.AuthorNameTag, searchContext.LuceneQuery.TitleSnippetLength),
-                            ContentSnippet = this.GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.ContentTag, searchContext.LuceneQuery.TitleSnippetLength)
+                            ContentSnippet = this.GetHighlightedText(highlighter, fieldQuery, searcher, match, Constants.ContentTag, searchContext.LuceneQuery.TitleSnippetLength),
                         }).ToList();
                     break;
                 }
@@ -456,7 +456,7 @@ namespace DotNetNuke.Services.Search.Internals
                     TotalDeletedDocuments = searcher.IndexReader.NumDeletedDocs,
                     IndexLocation = this.IndexFolder,
                     LastModifiedOn = System.IO.Directory.GetLastWriteTimeUtc(this.IndexFolder),
-                    IndexDbSize = size
+                    IndexDbSize = size,
                 };
         }
 

@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.RazorHost
                             ControlSrc = "DesktopModules/RazorModules/RazorHost/EditScript.ascx",
                             ControlTitle = "Edit Script",
                             ControlType = SecurityAccessLevel.Host,
-                            ModuleDefID = moduleDefId
+                            ModuleDefID = moduleDefId,
                         };
             ModuleControlController.UpdateModuleControl(m);
         }

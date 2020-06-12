@@ -86,7 +86,7 @@ namespace DotNetNuke.Entities.Urls
                                         {
                                             IsSecureConnection = request.IsSecureConnection,
                                             IsSSLOffloaded = UrlUtils.IsSslOffloadEnabled(request),
-                                            RawUrl = request.RawUrl
+                                            RawUrl = request.RawUrl,
                                         };
                 this.ProcessRequest(
                     app.Context,
@@ -863,7 +863,7 @@ namespace DotNetNuke.Entities.Urls
                                                   {
                                                       PortalID = portalId,
                                                       HTTPAlias = result.DomainName,
-                                                      IsPrimary = isPrimary
+                                                      IsPrimary = isPrimary,
                                                   };
                         PortalAliasController.Instance.AddPortalAlias(portalAliasInfo);
 

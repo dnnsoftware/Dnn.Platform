@@ -15,6 +15,6 @@ namespace DotNetNuke.UI.Containers.EventListeners
         OnContainerInit,
         OnContainerLoad,
         OnContainerPreRender,
-        OnContainerUnLoad
+        OnContainerUnLoad,
     }
 }

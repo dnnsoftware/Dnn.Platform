@@ -205,7 +205,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                                             new QueryParameter(OAuthClientIdKey, this.APIKey),
                                             new QueryParameter(OAuthRedirectUriKey, HttpContext.Current.Server.UrlEncode(this.CallbackUri.ToString())),
                                             new QueryParameter("state", this.Service),
-                                            new QueryParameter("response_type", "code")
+                                            new QueryParameter("response_type", "code"),
                                         };
 
                 HttpContext.Current.Response.Redirect(this.AuthorizationEndpoint + "?" + parameters.ToNormalizedString(), false);
@@ -313,7 +313,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                                            new QueryParameter(OAuthSignatureMethodKey, HMACSHA1SignatureType),
                                            new QueryParameter(OAuthTimestampKey, timeStamp),
                                            new QueryParameter(OAuthTokenKey, this.AuthToken),
-                                           new QueryParameter(OAuthVersionKey, this.OAuthVersion)
+                                           new QueryParameter(OAuthVersionKey, this.OAuthVersion),
                                        };
             if (uri == this.TokenEndpoint)
             {
@@ -514,7 +514,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                                            new QueryParameter(OAuthSignatureKey, sig),
                                            new QueryParameter(OAuthSignatureMethodKey, HMACSHA1SignatureType),
                                            new QueryParameter(OAuthTimestampKey, timeStamp),
-                                           new QueryParameter(OAuthVersionKey, this.OAuthVersion)
+                                           new QueryParameter(OAuthVersionKey, this.OAuthVersion),
                                        };
 
             string ret = this.ExecuteWebRequest(this.RequestTokenMethod, new Uri(outUrl), string.Empty, headerParameters.ToAuthorizationString());
@@ -726,7 +726,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                                    Key = Encoding.ASCII.GetBytes(string.Format("{0}&{1}", UrlEncode(this.APISecret),
                                                                              string.IsNullOrEmpty(tokenSecret)
                                                                                  ? string.Empty
-                                                                                 : UrlEncode(tokenSecret)))
+                                                                                 : UrlEncode(tokenSecret))),
                                };
 
             return this.GenerateSignatureUsingHash(signatureBase, hmacsha1);
@@ -771,7 +771,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             var authTokenCookie = new HttpCookie(this.AuthTokenName)
             {
                 Expires = DateTime.Now.AddDays(-30),
-                Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/"
+                Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
             };
             HttpContext.Current.Response.SetCookie(authTokenCookie);
         }

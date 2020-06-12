@@ -21,6 +21,6 @@ namespace DotNetNuke.Services.Social.Messaging
         [EnumMember]
         Weekly = 3,
         [EnumMember]
-        Monthly = 4
+        Monthly = 4,
     }
 }

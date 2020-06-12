@@ -156,7 +156,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 RoleName = roleName,
                 AllowAccess = allowAccess,
                 UserID = userId,
-                DisplayName = displayName
+                DisplayName = displayName,
             };
             this.FolderPermissions.Add(objPermission, true);
 

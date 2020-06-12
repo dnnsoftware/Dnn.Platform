@@ -749,7 +749,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                     canUseMobileDevice = false;
                     var cookie = new HttpCookie(DisableMobileViewCookieName)
                     {
-                        Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/"
+                        Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
                     };
                     response.Cookies.Set(cookie);
                 }
@@ -763,7 +763,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                         cookie = new HttpCookie(DisableMobileViewCookieName)
                         {
                             Expires = DateTime.Now.AddMinutes(-1),
-                            Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/"
+                            Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
                         };
                         response.Cookies.Set(cookie);
                     }

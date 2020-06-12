@@ -15,6 +15,6 @@ namespace DotNetNuke.UI.Skins.EventListeners
         OnSkinInit,
         OnSkinLoad,
         OnSkinPreRender,
-        OnSkinUnLoad
+        OnSkinUnLoad,
     }
 }

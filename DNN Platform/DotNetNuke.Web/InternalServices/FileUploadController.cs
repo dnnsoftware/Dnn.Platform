@@ -206,7 +206,7 @@ namespace DotNetNuke.Web.InternalServices
                                 new
                                 {
                                     AlreadyExists = alreadyExists,
-                                    Message = string.Format(GetLocalizedString("ErrorMessage"), fileName, errorMessage)
+                                    Message = string.Format(GetLocalizedString("ErrorMessage"), fileName, errorMessage),
                                 }, mediaTypeFormatter, "text/plain");
                         }
 
@@ -713,7 +713,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 result = new FileUploadDto
                 {
-                    Message = ex.Message
+                    Message = ex.Message,
                 };
                 return this.Request.CreateResponse(
                     HttpStatusCode.OK,

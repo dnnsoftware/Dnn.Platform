@@ -132,7 +132,7 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
                     {
                         Approved = true,
                         Password = Constants.DefaultPassword
-                    }
+                    },
                 };
             }, "Make sure your connection string is set correctly in the App.config file");
 

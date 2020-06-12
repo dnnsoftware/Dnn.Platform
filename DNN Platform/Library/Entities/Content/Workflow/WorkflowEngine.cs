@@ -64,7 +64,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 ContentItemId = contentItemId,
                 CurrentStateId = stateId,
                 UserId = userId,
-                Message = new StateTransactionMessage()
+                Message = new StateTransactionMessage(),
             };
         }
 
@@ -278,7 +278,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 IncludeDismissAction = true,
                 SenderUserID = stateTransaction.UserId,
                 Context = workflowContext,
-                SendToast = message.SendToast
+                SendToast = message.SendToast,
             };
             return notification;
         }
@@ -296,7 +296,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             var reviewers = new ReviewersDto
                                              {
                                                  Roles = new List<RoleInfo>(),
-                                                 Users = new List<UserInfo>()
+                                                 Users = new List<UserInfo>(),
                                              };
             if (state.SendNotification)
             {

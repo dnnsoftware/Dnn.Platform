@@ -12,6 +12,6 @@ namespace DotNetNuke.Services.UserRequest
     public enum IPAddressFamily
     {
         IPv4,
-        IPv6
+        IPv6,
     }
 }

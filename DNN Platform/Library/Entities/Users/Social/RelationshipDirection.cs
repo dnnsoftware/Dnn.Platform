@@ -18,6 +18,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Two way relationship, e.g. Friend, where user 1 and user 2 are both friends and mutually following each other.
         /// </summary>
-        TwoWay = 2
+        TwoWay = 2,
     }
 }

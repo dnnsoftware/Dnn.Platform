@@ -875,7 +875,7 @@ namespace DotNetNuke.Entities.Tabs
                 PageHeadText = this.PageHeadText,
                 IsSecure = this.IsSecure,
                 PermanentRedirect = this.PermanentRedirect,
-                IsSystem = this.IsSystem
+                IsSystem = this.IsSystem,
             };
 
             if (this.BreadCrumbs != null)

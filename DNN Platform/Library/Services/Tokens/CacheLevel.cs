@@ -23,6 +23,6 @@ namespace DotNetNuke.Services.Tokens
         /// <summary>
         /// Caching of the text can be done without limitations or any risk
         /// </summary>
-        fullyCacheable = 10
+        fullyCacheable = 10,
     }
 }

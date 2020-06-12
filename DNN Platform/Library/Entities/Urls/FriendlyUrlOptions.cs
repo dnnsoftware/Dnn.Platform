@@ -92,7 +92,7 @@ namespace DotNetNuke.Entities.Urls
                     RegexMatch = this.RegexMatch,
                     ReplaceCharWithChar = this.ReplaceCharWithChar,
                     IllegalChars = this.IllegalChars,
-                    ReplaceChars = this.ReplaceChars
+                    ReplaceChars = this.ReplaceChars,
                 };
             return cloned;
         }

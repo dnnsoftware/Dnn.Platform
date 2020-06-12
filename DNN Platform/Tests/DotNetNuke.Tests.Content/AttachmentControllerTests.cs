@@ -124,7 +124,7 @@ namespace DotNetNuke.Tests.Content
                 {
                     ContentTestHelper.CreateValidFile(0),
                     ContentTestHelper.CreateValidFile(1),
-                    ContentTestHelper.CreateValidFile(2)
+                    ContentTestHelper.CreateValidFile(2),
                 };
 
             var dataService = DataServiceFactory();

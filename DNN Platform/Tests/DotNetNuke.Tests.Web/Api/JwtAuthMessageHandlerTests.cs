@@ -145,7 +145,7 @@ namespace DotNetNuke.Tests.Web.Api
                 "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
                 "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId",
                 "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate",
-                "CultureCode"
+                "CultureCode",
             };
 
             foreach (var col in cols)

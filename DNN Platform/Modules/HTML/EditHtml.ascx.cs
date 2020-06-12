@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.Html
         private enum WorkflowType
         {
             DirectPublish = 1,
-            ContentStaging = 2
+            ContentStaging = 2,
         }
 
         private int WorkflowID

@@ -14,6 +14,6 @@ namespace DotNetNuke.Entities.Tabs
         Default = 0,
         ChildPagesInherit = 1,
         ChildPagesDoNotInherit = 2,
-        InheritedFromParent = 3
+        InheritedFromParent = 3,
     }
 }

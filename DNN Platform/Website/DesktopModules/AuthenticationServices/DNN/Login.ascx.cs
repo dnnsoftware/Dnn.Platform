@@ -284,7 +284,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                                     {
                                         Authenticated = authenticated,
                                         Message = message,
-                                        RememberMe = this.chkCookie.Checked
+                                        RememberMe = this.chkCookie.Checked,
                                     };
                 this.OnUserAuthenticated(eventArgs);
             }

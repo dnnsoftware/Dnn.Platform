@@ -234,7 +234,7 @@ namespace DotNetNuke.Services.Search
                                     PortalId = portalId,
                                     ModifiedTimeUtc = modifiedTime,
                                     Description = userSearch.FirstName,
-                                    Title = userSearch.DisplayName
+                                    Title = userSearch.DisplayName,
                                 };
                                 searchDoc.Keywords.Add(propertyName, propertyValue);
                                 searchDoc.NumericKeys.Add("superuser", Convert.ToInt32(userSearch.SuperUser));
@@ -271,7 +271,7 @@ namespace DotNetNuke.Services.Search
                     ModifiedTimeUtc = userSearch.LastModifiedOnDate,
                     Body = string.Empty,
                     Description = userSearch.FirstName,
-                    Title = userSearch.DisplayName
+                    Title = userSearch.DisplayName,
                 };
                 searchDoc.NumericKeys.Add("superuser", Convert.ToInt32(userSearch.SuperUser));
                 searchDocuments.Add(searchDoc.UniqueKey, searchDoc);
@@ -297,7 +297,7 @@ namespace DotNetNuke.Services.Search
                     ModifiedTimeUtc = userSearch.LastModifiedOnDate,
                     Body = string.Empty,
                     Description = userSearch.FirstName,
-                    Title = userSearch.DisplayName
+                    Title = userSearch.DisplayName,
                 };
 
                 searchDoc.NumericKeys.Add("superuser", Convert.ToInt32(userSearch.SuperUser));
@@ -322,7 +322,7 @@ namespace DotNetNuke.Services.Search
                     UserName = reader["Username"].ToString(),
                     SuperUser = Convert.ToBoolean(reader["IsSuperUser"]),
                     LastModifiedOnDate = Convert.ToDateTime(modifiedOn).ToUniversalTime(),
-                    CreatedOnDate = Convert.ToDateTime(createdOn).ToUniversalTime()
+                    CreatedOnDate = Convert.ToDateTime(createdOn).ToUniversalTime(),
                 };
 
                 if (!string.IsNullOrEmpty(userSearch.FirstName) && userSearch.FirstName.Contains(ValueSplitFlag))
@@ -384,7 +384,7 @@ namespace DotNetNuke.Services.Search
                 {
                     NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, UserSearchTypeId, UserSearchTypeId, true, true),
                     Occur.MUST
-                }
+                },
             };
 
             var parserContent = new QueryParser(Constants.LuceneVersion, Constants.UniqueKeyTag,

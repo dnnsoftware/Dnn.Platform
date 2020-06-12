@@ -178,7 +178,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                                 LogPortalID = intPortalID,
                                 LogPortalName = this.PortalSettings.PortalName,
                                 LogUserID = intUserID,
-                                LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString()
+                                LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString(),
                             };
                             LogController.Instance.AddLog(log);
                         }
@@ -200,7 +200,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                                 LogPortalID = intPortalID,
                                 LogPortalName = this.PortalSettings.PortalName,
                                 LogUserID = intUserID,
-                                LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString()
+                                LogTypeKey = EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString(),
                             };
                             LogController.Instance.AddLog(log);
                         }

@@ -19,6 +19,6 @@ namespace DotNetNuke.UI.WebControls
         Left,
         Right,
         Top,
-        Bottom
+        Bottom,
     }
 }

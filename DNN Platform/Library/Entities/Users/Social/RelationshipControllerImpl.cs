@@ -376,7 +376,7 @@ namespace DotNetNuke.Entities.Users.Social
                                            UserId = initiatingUser.UserID,
                                            RelatedUserId = targetUser.UserID,
                                            RelationshipId = relationship.RelationshipId,
-                                           Status = status
+                                           Status = status,
                                        };
 
             this.SaveUserRelationship(userRelationship);
@@ -537,7 +537,7 @@ namespace DotNetNuke.Entities.Users.Social
                                                  UserId = Null.NullInteger,
                                                  DefaultResponse = RelationshipStatus.None,
                                                  // default response is None
-                                                 RelationshipTypeId = (int)DefaultRelationshipTypes.Friends
+                                                 RelationshipTypeId = (int)DefaultRelationshipTypes.Friends,
                                              };
                 this.SaveRelationship(friendRelationship);
             }
@@ -554,7 +554,7 @@ namespace DotNetNuke.Entities.Users.Social
                                                    UserId = Null.NullInteger,
                                                    DefaultResponse = RelationshipStatus.Accepted,
                                                    // default response is Accepted
-                                                   RelationshipTypeId = (int)DefaultRelationshipTypes.Followers
+                                                   RelationshipTypeId = (int)DefaultRelationshipTypes.Followers,
                                                };
                 this.SaveRelationship(followerRelationship);
             }

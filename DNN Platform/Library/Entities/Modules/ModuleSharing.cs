@@ -10,6 +10,6 @@ namespace DotNetNuke.Entities.Modules
     {
         Unknown,
         Unsupported,
-        Supported
+        Supported,
     }
 }

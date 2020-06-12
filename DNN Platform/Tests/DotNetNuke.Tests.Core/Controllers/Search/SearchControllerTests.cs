@@ -40,7 +40,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             DocumentSearchTypeId,
             UrlSearchTypeId,
             OtherSearchTypeId,
-            UnknownSearchTypeId
+            UnknownSearchTypeId,
         }
 
         private const int ModuleSearchTypeId = (int)SearchTypeIds.ModuleSearchTypeId;
@@ -248,7 +248,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                             "PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate", "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
                             "HostSpace", "PageQuota", "UserQuota", "AdministratorRoleId", "RegisteredRoleId", "Description", "KeyWords", "BackgroundFile", "GUID", "PaymentProcessor", "ProcessorUserId",
                             "ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset", "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
-                            "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode"
+                            "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode",
                         };
 
             foreach (var col in cols)
@@ -368,7 +368,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     new SearchType { SearchTypeId = TabSearchTypeId, SearchTypeName = TabSearchTypeName, SearchResultClass = FakeResultControllerClass },
                     new SearchType { SearchTypeId = OtherSearchTypeId, SearchTypeName = OtherSearchTypeName, SearchResultClass = FakeResultControllerClass },
                     new SearchType { SearchTypeId = DocumentSearchTypeId, SearchTypeName = DocumentSearchTypeName, SearchResultClass = NoPermissionFakeResultControllerClass },
-                    new SearchType { SearchTypeId = UrlSearchTypeId, SearchTypeName = UrlSearchTypeName, SearchResultClass = FakeResultControllerClass }
+                    new SearchType { SearchTypeId = UrlSearchTypeId, SearchTypeName = UrlSearchTypeName, SearchResultClass = FakeResultControllerClass },
                 };
 
             return searchTypes;
@@ -523,7 +523,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
                 PortalId = PortalId12,
-                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord1Value } }
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord1Value } },
             };
             var doc2 = new SearchDocument
             {
@@ -532,7 +532,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
                 PortalId = PortalId12,
-                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord2Value } }
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord2Value } },
             };
             var doc3 = new SearchDocument
             {
@@ -541,7 +541,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
                 PortalId = PortalId12,
-                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord3Value } }
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord3Value } },
             };
             var doc4 = new SearchDocument
             {
@@ -550,7 +550,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
                 PortalId = PortalId12,
-                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord4Value } }
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord4Value } },
             };
             var doc5 = new SearchDocument
             {
@@ -559,7 +559,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
                 PortalId = PortalId12,
-                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord5Value } }
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord5Value } },
             };
 
             var docs = new List<SearchDocument>() { doc1, doc2, doc3, doc4, doc5 };
@@ -579,7 +579,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                                                                Body = body,
                                                                SearchTypeId = OtherSearchTypeId,
                                                                ModifiedTimeUtc = DateTime.UtcNow,
-                                                               PortalId = PortalId12
+                                                               PortalId = PortalId12,
                                                            }))
             {
                 this._internalSearchController.AddSearchDocument(doc);
@@ -599,7 +599,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 Keywords = new Dictionary<string, string>() { { KeyWord1Name, keyword } },
                 SearchTypeId = OtherSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
-                PortalId = PortalId12
+                PortalId = PortalId12,
             }))
             {
                 this._internalSearchController.AddSearchDocument(doc);
@@ -621,7 +621,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                         Title = line,
                         UniqueKey = Guid.NewGuid().ToString(),
                         SearchTypeId = searchTypeId,
-                        ModifiedTimeUtc = now.AddSeconds(i++)
+                        ModifiedTimeUtc = now.AddSeconds(i++),
                     }).ToList());
         }
 
@@ -812,7 +812,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 Line2,
                 Line3,
                 Line4,
-                Line5
+                Line5,
                 };
 
             this.AddLinesAsSearchDocs(docs);
@@ -835,7 +835,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 Line2,
                 Line3,
                 Line4,
-                Line5
+                Line5,
                 };
 
             this.AddLinesAsSearchDocs(docs);
@@ -893,7 +893,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeId = ModuleSearchTypeId,
                 ModifiedTimeUtc = DateTime.UtcNow,
                 ModuleId = 1,
-                ModuleDefId = 1
+                ModuleDefId = 1,
             };
             this._internalSearchController.AddSearchDocument(doc);
 
@@ -958,7 +958,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PageIndex = 1,
                 PageSize = 4,
                 KeyWords = "fox",
-                SearchTypeIds = new[] { stype }
+                SearchTypeIds = new[] { stype },
             };
 
             var result = this._searchController.SiteSearch(query);
@@ -984,7 +984,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PageIndex = 1,
                 PageSize = 6,
                 KeyWords = "fox",
-                SearchTypeIds = new[] { stype }
+                SearchTypeIds = new[] { stype },
             };
 
             var result = this._searchController.SiteSearch(query);
@@ -1010,7 +1010,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PageIndex = 1,
                 PageSize = 8,
                 KeyWords = "fox",
-                SearchTypeIds = new[] { stype }
+                SearchTypeIds = new[] { stype },
             };
 
             var result = this._searchController.SiteSearch(query);
@@ -1036,7 +1036,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PageIndex = 1,
                 PageSize = 100,
                 KeyWords = "fox",
-                SearchTypeIds = new[] { stype }
+                SearchTypeIds = new[] { stype },
             };
 
             var result = this._searchController.SiteSearch(query);
@@ -1062,7 +1062,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PageIndex = 1,
                 PageSize = 10,
                 KeyWords = "fox",
-                SearchTypeIds = new[] { stype }
+                SearchTypeIds = new[] { stype },
             };
 
             var result = this._searchController.SiteSearch(query);
@@ -1088,7 +1088,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PageIndex = 10,
                 PageSize = 10,
                 KeyWords = "fox",
-                SearchTypeIds = new[] { stype }
+                SearchTypeIds = new[] { stype },
             };
 
             var result = this._searchController.SiteSearch(query);
@@ -1114,7 +1114,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PageIndex = 2,
                 PageSize = 5,
                 KeyWords = "fox",
-                SearchTypeIds = new[] { stype }
+                SearchTypeIds = new[] { stype },
             };
 
             var result = this._searchController.SiteSearch(query);
@@ -1140,7 +1140,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PageIndex = 2,
                 PageSize = 6,
                 KeyWords = "fox",
-                SearchTypeIds = new[] { stype }
+                SearchTypeIds = new[] { stype },
             };
 
             var result = this._searchController.SiteSearch(query);
@@ -1166,7 +1166,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PageIndex = 2,
                 PageSize = 8,
                 KeyWords = "fox",
-                SearchTypeIds = new[] { stype }
+                SearchTypeIds = new[] { stype },
             };
 
             var result = this._searchController.SiteSearch(query);
@@ -1192,7 +1192,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PageIndex = 3,
                 PageSize = 4,
                 KeyWords = "fox",
-                SearchTypeIds = new[] { stype }
+                SearchTypeIds = new[] { stype },
             };
 
             var result = this._searchController.SiteSearch(queryPg3);
@@ -1218,7 +1218,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PageIndex = 3,
                 PageSize = 5,
                 KeyWords = "fox",
-                SearchTypeIds = new[] { stype }
+                SearchTypeIds = new[] { stype },
             };
 
             var result = this._searchController.SiteSearch(queryPg3);
@@ -1244,7 +1244,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PageIndex = 3,
                 PageSize = 8,
                 KeyWords = "fox",
-                SearchTypeIds = new[] { stype }
+                SearchTypeIds = new[] { stype },
             };
 
             var result = this._searchController.SiteSearch(queryPg3);
@@ -1270,7 +1270,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PageIndex = 5,
                 PageSize = 8,
                 KeyWords = "fox",
-                SearchTypeIds = new[] { stype }
+                SearchTypeIds = new[] { stype },
             };
 
             var result = this._searchController.SiteSearch(queryPg3);
@@ -1308,7 +1308,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 QueryString = StandardQueryString,
                 Tags = tags,
                 NumericKeys = numericKeys,
-                Keywords = keywords
+                Keywords = keywords,
             };
             this._internalSearchController.AddSearchDocument(doc);
 
@@ -1387,7 +1387,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 Line2,
                 Line3,
                 Line4,
-                Line5
+                Line5,
                 };
             this.AddLinesAsSearchDocs(docs);
 
@@ -1403,7 +1403,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                   "quick <b>fox</b> jumps over the black dog - Italian",
                   "gold <b>fox</b> jumped over the lazy black dog",
                   "e red <b>fox</b> jumped over the lazy dark gray dog",
-                  "quick <b>fox</b> jumps over the white dog - los de el Espana"
+                  "quick <b>fox</b> jumps over the white dog - los de el Espana",
                 }.SequenceEqual(search.Results.Select(r => this.StipEllipses(r.Snippet))),
                 "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Snippet)));
         }
@@ -1437,7 +1437,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     UniqueKey = Guid.NewGuid().ToString(),
                     SearchTypeId = OtherSearchTypeId,
                     ModifiedTimeUtc = DateTime.UtcNow,
-                    CultureCode = cultureCode
+                    CultureCode = cultureCode,
                 });
             this._internalSearchController.Commit();
 
@@ -1473,7 +1473,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 SearchTypeIds = new List<int> { ModuleSearchTypeId },
                 BeginModifiedTimeUtc = DateTime.Now,
-                EndModifiedTimeUtc = DateTime.Now.AddSeconds(-1)
+                EndModifiedTimeUtc = DateTime.Now.AddSeconds(-1),
             };
             var search = this._searchController.SiteSearch(query);
 
@@ -1647,7 +1647,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var query = new SearchQuery
             {
                 SearchTypeIds = new List<int> { ModuleSearchTypeId },
-                SortField = SortFields.CustomNumericField
+                SortField = SortFields.CustomNumericField,
             };
 
             this._searchController.SiteSearch(query);
@@ -1661,7 +1661,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var query = new SearchQuery
             {
                 SearchTypeIds = new List<int> { ModuleSearchTypeId },
-                SortField = SortFields.CustomStringField
+                SortField = SortFields.CustomStringField,
             };
 
             this._searchController.SiteSearch(query);
@@ -1675,7 +1675,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var query = new SearchQuery
             {
                 SearchTypeIds = new List<int> { ModuleSearchTypeId },
-                SortField = SortFields.NumericKey
+                SortField = SortFields.NumericKey,
             };
 
             this._searchController.SiteSearch(query);
@@ -1689,7 +1689,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var query = new SearchQuery
             {
                 SearchTypeIds = new List<int> { ModuleSearchTypeId },
-                SortField = SortFields.Keyword
+                SortField = SortFields.Keyword,
             };
 
             this._searchController.SiteSearch(query);
@@ -1705,7 +1705,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var query = new SearchQuery
                 {
                     SearchTypeIds = new List<int> { ModuleSearchTypeId },
-                    SortField = SortFields.LastModified
+                    SortField = SortFields.LastModified,
                 };
             var search = this._searchController.SiteSearch(query);
 
@@ -1732,7 +1732,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 SearchTypeIds = new List<int> { ModuleSearchTypeId },
                 SortField = SortFields.LastModified,
-                SortDirection = SortDirections.Ascending
+                SortDirection = SortDirections.Ascending,
             };
             var search = this._searchController.SiteSearch(query);
 
@@ -1759,7 +1759,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new List<int> { OtherSearchTypeId },
                 SortField = SortFields.NumericKey,
                 SortDirection = SortDirections.Ascending,
-                CustomSortField = NumericKey1
+                CustomSortField = NumericKey1,
             };
             var search = this._searchController.SiteSearch(query);
 
@@ -1781,7 +1781,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new List<int> { OtherSearchTypeId },
                 SortField = SortFields.NumericKey,
                 SortDirection = SortDirections.Descending,
-                CustomSortField = NumericKey1
+                CustomSortField = NumericKey1,
             };
             var search = this._searchController.SiteSearch(query);
 
@@ -1804,7 +1804,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 KeyWords = "animal",
                 SearchTypeIds = new List<int> { OtherSearchTypeId },
                 SortField = SortFields.Title,
-                SortDirection = SortDirections.Ascending
+                SortDirection = SortDirections.Ascending,
             };
             var search = this._searchController.SiteSearch(query);
 
@@ -1831,7 +1831,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 KeyWords = "animal",
                 SearchTypeIds = new List<int> { OtherSearchTypeId },
                 SortField = SortFields.Title,
-                SortDirection = SortDirections.Descending
+                SortDirection = SortDirections.Descending,
             };
             var search = this._searchController.SiteSearch(query);
 
@@ -1859,7 +1859,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new List<int> { OtherSearchTypeId },
                 SortField = SortFields.Keyword,
                 SortDirection = SortDirections.Ascending,
-                CustomSortField = KeyWord1Name
+                CustomSortField = KeyWord1Name,
             };
             var search = this._searchController.SiteSearch(query);
 
@@ -1887,7 +1887,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new List<int> { OtherSearchTypeId },
                 SortField = SortFields.Keyword,
                 SortDirection = SortDirections.Descending,
-                CustomSortField = KeyWord1Name
+                CustomSortField = KeyWord1Name,
             };
             var search = this._searchController.SiteSearch(query);
 
@@ -1913,7 +1913,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new List<int> { ModuleSearchTypeId },
                 SortField = SortFields.CustomStringField,
                 SortDirection = SortDirections.Descending,
-                CustomSortField = "unknown"
+                CustomSortField = "unknown",
             };
             this._searchController.SiteSearch(query);
         }
@@ -1931,7 +1931,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new List<int> { ModuleSearchTypeId },
                 SortField = SortFields.CustomStringField,
                 SortDirection = SortDirections.Ascending,
-                CustomSortField = "unknown"
+                CustomSortField = "unknown",
             };
             this._searchController.SiteSearch(query);
         }
@@ -1948,7 +1948,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new List<int> { ModuleSearchTypeId },
                 SortField = SortFields.CustomNumericField,
                 SortDirection = SortDirections.Descending,
-                CustomSortField = "unknown"
+                CustomSortField = "unknown",
             };
             this._searchController.SiteSearch(query);
         }
@@ -1966,7 +1966,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new List<int> { ModuleSearchTypeId },
                 SortField = SortFields.CustomNumericField,
                 SortDirection = SortDirections.Ascending,
-                CustomSortField = "unknown"
+                CustomSortField = "unknown",
             };
             this._searchController.SiteSearch(query);
         }
@@ -1982,7 +1982,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 {
                     SearchTypeIds = new List<int> { ModuleSearchTypeId },
                     SortField = SortFields.Relevance,
-                    KeyWords = "brown OR fox"
+                    KeyWords = "brown OR fox",
                 };
             var search = this._searchController.SiteSearch(query);
 
@@ -2005,7 +2005,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 SearchTypeIds = new List<int> { ModuleSearchTypeId },
                 SortField = SortFields.Relevance,
-                KeyWords = "Hello"
+                KeyWords = "Hello",
             };
             var search = this._searchController.SiteSearch(query);
 
@@ -2027,7 +2027,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 SearchTypeIds = new List<int> { ModuleSearchTypeId },
                 SortField = SortFields.Relevance,
-                KeyWords = "Hello"
+                KeyWords = "Hello",
             };
             var search = this._searchController.SiteSearch(query);
 
@@ -2049,7 +2049,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 SearchTypeIds = new List<int> { ModuleSearchTypeId },
                 SortField = SortFields.Relevance,
-                KeyWords = "Hello"
+                KeyWords = "Hello",
             };
             var search = this._searchController.SiteSearch(query);
 
@@ -2071,7 +2071,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 SearchTypeIds = new List<int> { ModuleSearchTypeId },
                 SortField = SortFields.Relevance,
-                KeyWords = "Hello"
+                KeyWords = "Hello",
             };
             var search = this._searchController.SiteSearch(query);
 
@@ -2092,7 +2092,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 SearchTypeIds = new List<int> { ModuleSearchTypeId },
                 SortField = SortFields.Relevance,
                 SortDirection = SortDirections.Ascending,
-                KeyWords = "brown OR fox"
+                KeyWords = "brown OR fox",
             };
             var search = this._searchController.SiteSearch(query);
 
@@ -2112,7 +2112,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 {
                     SearchTypeIds = new List<int> { ModuleSearchTypeId },
                     SortField = SortFields.LastModified,
-                    CultureCode = CultureItIt
+                    CultureCode = CultureItIt,
                 };
             var search = this._searchController.SiteSearch(query);
 
@@ -2172,7 +2172,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 UniqueKey = Guid.NewGuid().ToString(),
                 SearchTypeId = OtherSearchTypeId,
-                ModifiedTimeUtc = DateTime.UtcNow
+                ModifiedTimeUtc = DateTime.UtcNow,
             };
 
             Assert.DoesNotThrow(() => this._internalSearchController.AddSearchDocument(doc));
@@ -2216,7 +2216,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             string[] lines = {
                 "zèbre or panthère",
                 "zebre without accent",
-                "panthere without accent"
+                "panthere without accent",
                 };
 
             this.AddLinesAsSearchDocs(lines);
@@ -2266,7 +2266,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 "I ride my bike to work",
                 "All team are riding their bikes",
                 "The boy rides his bike to school",
-                "This sentence is missing the bike ri... word"
+                "This sentence is missing the bike ri... word",
                 };
 
             this.AddLinesAsSearchDocs(lines);
@@ -2473,7 +2473,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                                 { "tuesday.jpg", "My<Images/" },
                                 { "wednesday.jpg", "My<Images/" },
                                 { "thursday.png", "My<Images/My<DNN/" },
-                                { "friday.gif", "My<Images/My<DNN/" }
+                                { "friday.gif", "My<Images/My<DNN/" },
                                };
 
 
@@ -2485,7 +2485,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     UniqueKey = Guid.NewGuid().ToString(),
                     SearchTypeId = OtherSearchTypeId,
                     ModifiedTimeUtc = DateTime.UtcNow,
-                    Keywords = new Dictionary<string, string> { { "folderName", file.Value.ToLowerInvariant() } }
+                    Keywords = new Dictionary<string, string> { { "folderName", file.Value.ToLowerInvariant() } },
                 };
                 this._internalSearchController.AddSearchDocument(doc);
             }
@@ -2845,7 +2845,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue50 } },
                 SearchTypeIds = new List<int> { OtherSearchTypeId },
-                WildCardSearch = false
+                WildCardSearch = false,
             };
             var search = this._searchController.SiteSearch(query);
 
@@ -2865,7 +2865,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 CustomKeywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord1Value } },
                 SearchTypeIds = new List<int> { OtherSearchTypeId },
-                WildCardSearch = false
+                WildCardSearch = false,
             };
             var search = this._searchController.SiteSearch(query);
 

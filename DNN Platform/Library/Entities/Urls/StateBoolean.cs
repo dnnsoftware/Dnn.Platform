@@ -8,6 +8,6 @@ namespace DotNetNuke.Entities.Urls
     {
         NotSet = -1,
         False = 0,
-        True = 1
+        True = 1,
     }
 }

@@ -450,7 +450,7 @@ namespace DotNetNuke.UI.ControlPanels
         protected enum ViewPermissionType
         {
             View = 0,
-            Edit = 1
+            Edit = 1,
         }
     }
 }

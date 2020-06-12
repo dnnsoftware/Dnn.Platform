@@ -306,7 +306,7 @@ namespace DotNetNuke.Modules.Html
                     AccessingUser = UserController.Instance.GetCurrentUserInfo(),
                     DebugMessages = portalSettings.UserMode != PortalSettings.Mode.View,
                     ModuleId = moduleId,
-                    PortalSettings = portalSettings
+                    PortalSettings = portalSettings,
                 };
                 content = tr.ReplaceEnvironmentTokens(content);
             }
@@ -787,7 +787,7 @@ namespace DotNetNuke.Modules.Html
                     Title = modInfo.ModuleTitle,
                     Description = description,
                     Body = strContent,
-                    ModifiedTimeUtc = htmlTextInfo.LastModifiedOnDate.ToUniversalTime()
+                    ModifiedTimeUtc = htmlTextInfo.LastModifiedOnDate.ToUniversalTime(),
                 };
 
                 if (modInfo.Terms != null && modInfo.Terms.Count > 0)

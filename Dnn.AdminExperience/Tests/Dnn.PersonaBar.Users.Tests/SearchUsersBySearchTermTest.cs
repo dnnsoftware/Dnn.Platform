@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.Users.Tests
                 SortColumn = "displayname",
                 SortAscending = true,
                 PortalId = 0,
-                Filter = UserFilters.All
+                Filter = UserFilters.All,
             };
 
             this.usersCtrl = new UsersControllerTestable();

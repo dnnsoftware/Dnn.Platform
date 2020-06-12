@@ -33,21 +33,21 @@ namespace DotNetNuke.Entities.Portals
         public enum ControlPanelPermission
         {
             TabEditor,
-            ModuleEditor
+            ModuleEditor,
         }
 
         public enum Mode
         {
             View,
             Edit,
-            Layout
+            Layout,
         }
 
         public enum PortalAliasMapping
         {
             None,
             CanonicalUrl,
-            Redirect
+            Redirect,
         }
 
         public enum UserDeleteAction
@@ -55,7 +55,7 @@ namespace DotNetNuke.Entities.Portals
             Off = 0,
             Manual = 1,
             DelayedHardDelete = 2,
-            HardDelete = 3
+            HardDelete = 3,
         }
 
         public PortalSettings()

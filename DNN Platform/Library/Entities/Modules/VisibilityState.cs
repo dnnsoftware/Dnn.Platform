@@ -17,6 +17,6 @@ namespace DotNetNuke.Entities.Modules
     {
         Maximized,
         Minimized,
-        None
+        None,
     }
 }

@@ -82,7 +82,7 @@ namespace DotNetNuke.Web.Services
                 SiteName = this.PortalSettings.PortalName,
                 DnnVersion = this._dnnVersion,
                 IsHost = this.UserInfo.IsSuperUser,
-                IsAdmin = this.UserInfo.IsInRole("Administrators")
+                IsAdmin = this.UserInfo.IsInRole("Administrators"),
             };
 
             foreach (var moduleName in (moduleList ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
@@ -95,7 +95,7 @@ namespace DotNetNuke.Web.Services
                     var moduleDetail = new ModuleDetail
                     {
                         ModuleName = moduleName,
-                        ModuleVersion = tabmodule.ModuleVersion
+                        ModuleVersion = tabmodule.ModuleVersion,
                     };
 
                     moduleDetail.ModuleInstances.Add(new ModuleInstance
@@ -103,7 +103,7 @@ namespace DotNetNuke.Web.Services
                         TabId = tabmodule.TabInfo.TabID,
                         ModuleId = tabmodule.ModuleInfo.ModuleID,
                         PageName = tabmodule.TabInfo.TabName,
-                        PagePath = tabmodule.TabInfo.TabPath
+                        PagePath = tabmodule.TabInfo.TabPath,
                     });
                     siteDetails.Modules.Add(moduleDetail);
                 }
@@ -157,7 +157,7 @@ namespace DotNetNuke.Web.Services
                        {
                            TabInfo = tab,
                            ModuleInfo = childModule,
-                           ModuleVersion = desktopModule.Version
+                           ModuleVersion = desktopModule.Version,
                        }));
             }
 

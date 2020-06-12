@@ -392,7 +392,7 @@ namespace DotNetNuke.UI.ControlPanel
                 RoleID = roleId,
                 UserID = userId,
                 PermissionKey = permission.PermissionKey,
-                AllowAccess = allowAccess
+                AllowAccess = allowAccess,
             };
 
             // add the permission to the collection
@@ -808,7 +808,7 @@ namespace DotNetNuke.UI.ControlPanel
                                 { "TOP", this.GetString("Top") },
                                 { "ABOVE", this.GetString("Above") },
                                 { "BELOW", this.GetString("Below") },
-                                { "BOTTOM", this.GetString("Bottom") }
+                                { "BOTTOM", this.GetString("Bottom") },
                             };
 
             this.PositionLst.Items.Clear();

@@ -78,7 +78,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
             // queue remove module definition from search index
             var document = new SearchDocumentToDelete
             {
-                ModuleDefId = moduleDefinitionId
+                ModuleDefId = moduleDefinitionId,
             };
 
             DataProvider.Instance().AddSearchDeletedItems(document);

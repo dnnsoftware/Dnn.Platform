@@ -301,7 +301,7 @@ namespace DotNetNuke.Services.Mail
                         {
                             HttpContext.Current.Server.HtmlEncode(HttpContext.Current.Server.UrlEncode(user.Username)),
                             HttpContext.Current.Server.UrlEncode(user.GetProperty("verificationcode", string.Empty, null,
-                                user, Scope.SystemMessages, ref propertyNotFound))
+                                user, Scope.SystemMessages, ref propertyNotFound)),
                         };
                     }
                     break;
@@ -568,7 +568,7 @@ namespace DotNetNuke.Services.Mail
                         From =
                             new MailAddress(
                                 mailFrom,
-                                UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom).DisplayName)
+                                UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom).DisplayName),
                     }
                     : new MailMessage { From = new MailAddress(mailFrom) };
             }

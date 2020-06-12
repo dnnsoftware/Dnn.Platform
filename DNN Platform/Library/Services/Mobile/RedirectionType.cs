@@ -33,6 +33,6 @@ namespace DotNetNuke.Services.Mobile
         /// <summary>
         /// Redirect when request from a smart phone
         /// </summary>
-        SmartPhone = 5
+        SmartPhone = 5,
     }
 }

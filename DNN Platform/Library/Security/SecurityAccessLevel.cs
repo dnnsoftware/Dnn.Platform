@@ -19,6 +19,6 @@ namespace DotNetNuke.Security
         Edit = 1,
         Admin = 2,
         Host = 3,
-        ViewPermissions = 4
+        ViewPermissions = 4,
     }
 }

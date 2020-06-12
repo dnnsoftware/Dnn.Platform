@@ -98,7 +98,7 @@ namespace DotNetNuke.UI.WebControls
                                              ID = this.ID + "edit",
                                              Width = this.ControlStyle.Width.IsEmpty ? new Unit(300) : this.ControlStyle.Width,
                                              Height = this.ControlStyle.Height.IsEmpty ? new Unit(250) : this.ControlStyle.Height,
-                                             TextMode = TextBoxMode.MultiLine
+                                             TextMode = TextBoxMode.MultiLine,
                                          };
                     this._defaultTextEditor.Attributes.Add("aria-label", "editor");
                 }

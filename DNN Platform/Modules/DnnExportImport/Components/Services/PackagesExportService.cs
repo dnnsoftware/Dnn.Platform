@@ -283,7 +283,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var installer = new Installer(stream, Globals.ApplicationMapPath, false, false)
             {
-                InstallerInfo = { PortalID = Null.NullInteger }
+                InstallerInfo = { PortalID = Null.NullInteger },
             };
 
             // Read the manifest

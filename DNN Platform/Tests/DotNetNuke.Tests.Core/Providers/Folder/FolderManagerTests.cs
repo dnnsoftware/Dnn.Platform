@@ -167,7 +167,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var folderMapping = new FolderMappingInfo
             {
-                PortalID = Constants.CONTENT_ValidPortalId
+                PortalID = Constants.CONTENT_ValidPortalId,
             };
 
             this._mockFolderManager.Setup(mfm => mfm.FolderExists(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidSubFolderRelativePath)).Returns(true);
@@ -183,7 +183,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             // arrange
             var folderMapping = new FolderMappingInfo
             {
-                PortalID = Constants.CONTENT_ValidPortalId
+                PortalID = Constants.CONTENT_ValidPortalId,
             };
 
             this._mockFolderManager
@@ -293,7 +293,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var subfolders = new List<IFolderInfo>
                 {
                     subfolder1,
-                    subfolder2
+                    subfolder2,
                 };
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
@@ -341,7 +341,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var subfolders = new List<IFolderInfo>
                 {
                     subfolder1,
-                    subfolder2
+                    subfolder2,
                 };
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
@@ -386,7 +386,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var files = new List<IFileInfo>
                 {
                     fileInfo1,
-                    fileInfo2
+                    fileInfo2,
                 };
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
@@ -598,7 +598,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var filesList = new List<FileInfo>
                                 {
                                     new FileInfo { FileName = Constants.FOLDER_ValidFileName },
-                                    new FileInfo { FileName = Constants.FOLDER_OtherValidFileName }
+                                    new FileInfo { FileName = Constants.FOLDER_OtherValidFileName },
                                 };
 
             this._cbo.Setup(cbo => cbo.FillCollection<FileInfo>(dr)).Returns(filesList);
@@ -766,7 +766,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var foldersSorted = new List<IFolderInfo>
                                     {
                                         new FolderInfo { FolderID = Constants.FOLDER_ValidFolderId, ParentID = Null.NullInteger },
-                                        new FolderInfo { FolderID = Constants.FOLDER_OtherValidFolderId, ParentID = Constants.FOLDER_ValidFolderId }
+                                        new FolderInfo { FolderID = Constants.FOLDER_OtherValidFolderId, ParentID = Constants.FOLDER_ValidFolderId },
                                     };
 
             this._mockFolderManager.Setup(mfm => mfm.GetFolders(Constants.CONTENT_ValidPortalId)).Returns(foldersSorted);
@@ -934,7 +934,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                                         { @"C:\folder\subfolder", "folder/subfolder/" },
                                         { @"C:\folder\subfolder2", "folder/subfolder2/" },
                                         { @"C:\folder\subfolder2\subsubfolder", "folder/subfolder2/subsubfolder/" },
-                                        { @"C:\folder\subfolder2\subsubfolder2", "folder/subfolder2/subsubfolder2/" }
+                                        { @"C:\folder\subfolder2\subsubfolder2", "folder/subfolder2/subsubfolder2/" },
                                     };
 
             this._pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, It.IsAny<string>()))
@@ -960,7 +960,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                                         { @"C:\folder\subfolder", "folder/subfolder/" },
                                         { @"C:\folder\subfolder2", "folder/subfolder2/" },
                                         { @"C:\folder\subfolder2\subsubfolder", "folder/subfolder2/subsubfolder/" },
-                                        { @"C:\folder\subfolder2\subsubfolder2", "folder/subfolder2/subsubfolder2/" }
+                                        { @"C:\folder\subfolder2\subsubfolder2", "folder/subfolder2/subsubfolder2/" },
                                     };
 
             this._pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, It.IsAny<string>()))
@@ -1041,7 +1041,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                                      new FolderInfo { FolderPath = "folder/subfolder/", FolderMappingID = Constants.FOLDER_ValidFolderMappingID },
                                      new FolderInfo { FolderPath = "folder/subfolder2/", FolderMappingID = Constants.FOLDER_ValidFolderMappingID },
                                      new FolderInfo { FolderPath = "folder/subfolder2/subsubfolder/", FolderMappingID = Constants.FOLDER_ValidFolderMappingID },
-                                     new FolderInfo { FolderPath = "folder/subfolder2/subsubfolder2/", FolderMappingID = Constants.FOLDER_ValidFolderMappingID }
+                                     new FolderInfo { FolderPath = "folder/subfolder2/subsubfolder2/", FolderMappingID = Constants.FOLDER_ValidFolderMappingID },
                                  };
 
             this._mockFolderManager.Setup(mfm => mfm.GetFolders(It.IsAny<IFolderInfo>()))
@@ -1066,7 +1066,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                                      new FolderInfo() { FolderPath = "folder/subfolder/", FolderMappingID = Constants.FOLDER_ValidFolderMappingID },
                                      new FolderInfo() { FolderPath = "folder/subfolder2/", FolderMappingID = Constants.FOLDER_ValidFolderMappingID },
                                      new FolderInfo() { FolderPath = "folder/subfolder2/subsubfolder/", FolderMappingID = Constants.FOLDER_ValidFolderMappingID },
-                                     new FolderInfo() { FolderPath = "folder/subfolder2/subsubfolder2/", FolderMappingID = Constants.FOLDER_ValidFolderMappingID }
+                                     new FolderInfo() { FolderPath = "folder/subfolder2/subsubfolder2/", FolderMappingID = Constants.FOLDER_ValidFolderMappingID },
                                  };
 
             this._mockFolderManager.Setup(mfm => mfm.GetFolders(It.IsAny<IFolderInfo>()))
@@ -1174,13 +1174,13 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var list1 = new SortedList<string, FolderManager.MergedTreeItem>
                             {
                                 { "folder1", new FolderManager.MergedTreeItem { FolderPath = "folder1" } },
-                                { "folder2", new FolderManager.MergedTreeItem { FolderPath = "folder2" } }
+                                { "folder2", new FolderManager.MergedTreeItem { FolderPath = "folder2" } },
                             };
 
             var list2 = new SortedList<string, FolderManager.MergedTreeItem>
                             {
                                 { "folder1", new FolderManager.MergedTreeItem { FolderPath = "folder1" } },
-                                { "folder3", new FolderManager.MergedTreeItem { FolderPath = "folder3" } }
+                                { "folder3", new FolderManager.MergedTreeItem { FolderPath = "folder3" } },
                             };
 
             var result = this._folderManager.MergeFolderLists(list1, list2);

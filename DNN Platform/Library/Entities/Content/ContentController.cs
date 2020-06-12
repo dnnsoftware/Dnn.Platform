@@ -72,7 +72,7 @@ namespace DotNetNuke.Entities.Content
                 UniqueKey = contentItem.ContentItemId.ToString("D"),
                 ModuleId = contentItem.ModuleID,
                 TabId = contentItem.TabID,
-                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId
+                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
             };
             DotNetNuke.Data.DataProvider.Instance().AddSearchDeletedItems(searrchDoc);
 

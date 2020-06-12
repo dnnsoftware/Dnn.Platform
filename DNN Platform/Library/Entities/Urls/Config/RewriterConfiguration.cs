@@ -63,7 +63,7 @@ namespace DotNetNuke.Entities.Urls.Config
                                 var rule = new RewriterRule
                                            {
                                                LookFor = nav.SelectSingleNode("LookFor").Value,
-                                               SendTo = nav.SelectSingleNode("SendTo").Value
+                                               SendTo = nav.SelectSingleNode("SendTo").Value,
                                            };
                                 config.Rules.Add(rule);
                             }

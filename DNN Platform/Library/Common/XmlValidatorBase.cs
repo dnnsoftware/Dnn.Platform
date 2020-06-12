@@ -104,7 +104,7 @@ namespace DotNetNuke.Common
             this._reader = new XmlTextReader(xmlStream)
             {
                 XmlResolver = null,
-                DtdProcessing = DtdProcessing.Prohibit
+                DtdProcessing = DtdProcessing.Prohibit,
             };
             return this.IsValid();
         }
@@ -119,7 +119,7 @@ namespace DotNetNuke.Common
             this._reader = new XmlTextReader(filename)
             {
                 XmlResolver = null,
-                DtdProcessing = DtdProcessing.Prohibit
+                DtdProcessing = DtdProcessing.Prohibit,
             };
             return this.IsValid();
         }

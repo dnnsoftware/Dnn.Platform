@@ -192,7 +192,7 @@ namespace DotNetNuke.Services.Log.EventLog
                                                 LogTypeFriendlyName = logInfo.LogTypeKey,
                                                 LogTypeOwner = "DotNetNuke.Logging.EventLogType",
                                                 LogTypeCSSClass = "GeneralAdminOperation",
-                                                LogTypeDescription = string.Empty
+                                                LogTypeDescription = string.Empty,
                                             };
                         this.AddLogType(logType);
 
@@ -207,7 +207,7 @@ namespace DotNetNuke.Services.Log.EventLog
                                                 NotificationThresholdTime = 1,
                                                 NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
                                                 MailFromAddress = string.Empty,
-                                                MailToAddress = string.Empty
+                                                MailToAddress = string.Empty,
                                             };
                         this.AddLogTypeConfigInfo(logTypeConfigInfo);
                     }
@@ -263,7 +263,7 @@ namespace DotNetNuke.Services.Log.EventLog
                                                      LogTypeFriendlyName = typeInfo.Attributes["LogTypeFriendlyName"].Value,
                                                      LogTypeDescription = typeInfo.Attributes["LogTypeDescription"].Value,
                                                      LogTypeCSSClass = typeInfo.Attributes["LogTypeCSSClass"].Value,
-                                                     LogTypeOwner = typeInfo.Attributes["LogTypeOwner"].Value
+                                                     LogTypeOwner = typeInfo.Attributes["LogTypeOwner"].Value,
                                                  };
                         this.AddLogType(objLogTypeInfo);
                     }
@@ -289,7 +289,7 @@ namespace DotNetNuke.Services.Log.EventLog
                                                         NotificationThreshold = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThreshold"].Value),
                                                         NotificationThresholdTime = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThresholdTime"].Value),
                                                         NotificationThresholdTimeType =
-                                                            (LogTypeConfigInfo.NotificationThresholdTimeTypes)Enum.Parse(typeof(LogTypeConfigInfo.NotificationThresholdTimeTypes), typeConfigInfo.Attributes["NotificationThresholdTimeType"].Value)
+                                                            (LogTypeConfigInfo.NotificationThresholdTimeTypes)Enum.Parse(typeof(LogTypeConfigInfo.NotificationThresholdTimeTypes), typeConfigInfo.Attributes["NotificationThresholdTimeType"].Value),
                                                     };
                         this.AddLogTypeConfigInfo(logTypeConfigInfo);
                     }

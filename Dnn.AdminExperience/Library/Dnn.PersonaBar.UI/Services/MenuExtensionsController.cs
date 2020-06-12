@@ -47,7 +47,7 @@ namespace Dnn.PersonaBar.UI.Services
                             folderName = t.FolderName,
                             container = t.Container,
                             path = this.GetExtensionPathByController(t),
-                            settings = this.GetExtensionSettings(t)
+                            settings = this.GetExtensionSettings(t),
                         });
 
                     return this.Request.CreateResponse(HttpStatusCode.OK, extensions);

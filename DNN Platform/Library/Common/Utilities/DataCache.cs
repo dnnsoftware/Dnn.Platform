@@ -27,7 +27,7 @@ namespace DotNetNuke.Common.Utilities
     {
         Host = 1,
         Portal = 2,
-        Tab = 3
+        Tab = 3,
     }
 
     /// -----------------------------------------------------------------------------

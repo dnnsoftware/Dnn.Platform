@@ -44,7 +44,7 @@ namespace DotNetNuke.Web.DDRMenu
                                         TemplateArguments =
                                             DDRMenu.Settings.TemplateArgumentsFromSettingString(this.GetStringSetting("TemplateArguments")),
                                         ClientOptions =
-                                            DDRMenu.Settings.ClientOptionsFromSettingString(this.GetStringSetting("ClientOptions"))
+                                            DDRMenu.Settings.ClientOptionsFromSettingString(this.GetStringSetting("ClientOptions")),
                                        };
 
                     MenuNode rootNode = null;

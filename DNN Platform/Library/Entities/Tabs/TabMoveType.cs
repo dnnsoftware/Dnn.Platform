@@ -21,6 +21,6 @@ namespace DotNetNuke.Entities.Tabs
         Top,
         Bottom,
         Promote,
-        Demote
+        Demote,
     }
 }

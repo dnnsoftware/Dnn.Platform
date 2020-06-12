@@ -55,7 +55,7 @@ namespace DotNetNuke.Web.InternalServices
                             Result = "warning",
                             Title = Localization.GetString("CleanWarningTitle", Localization.SharedResourceFile),
                             Message = Localization.GetString("ProfileUrlCleaned", Localization.SharedResourceFile),
-                            SuggestedUrl = cleanUrl
+                            SuggestedUrl = cleanUrl,
                         });
             }
 
@@ -72,7 +72,7 @@ namespace DotNetNuke.Web.InternalServices
                                                       Result = "warning",
                                                       Title = Localization.GetString("DuplicateUrlWarningTitle", Localization.SharedResourceFile),
                                                       Message = Localization.GetString("ProfileUrlNotUnique", Localization.SharedResourceFile),
-                                                      SuggestedUrl = uniqueUrl
+                                                      SuggestedUrl = uniqueUrl,
                                                   });
             }
 

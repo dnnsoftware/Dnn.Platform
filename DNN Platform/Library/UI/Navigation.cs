@@ -30,7 +30,7 @@ namespace DotNetNuke.UI
             IncludeParent = 2,
             IncludeSiblings = 4,
             MarkPendingNodes = 8,
-            IncludeHiddenNodes = 16
+            IncludeHiddenNodes = 16,
         }
 
         public enum ToolTipSource
@@ -38,7 +38,7 @@ namespace DotNetNuke.UI
             TabName,
             Title,
             Description,
-            None
+            None,
         }
 
 

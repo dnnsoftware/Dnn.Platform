@@ -389,7 +389,7 @@ namespace DotNetNuke.Security.Membership
                     DisplayName = Null.SetNullString(dr["DisplayName"]),
                     Username = Null.SetNullString(dr["Username"]),
                     Email = Null.SetNullString(dr["Email"]),
-                    AffiliateID = Null.SetNullInteger(dr["AffiliateID"])
+                    AffiliateID = Null.SetNullInteger(dr["AffiliateID"]),
                 };
                 user.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], user.AffiliateID));
 
@@ -472,7 +472,7 @@ namespace DotNetNuke.Security.Membership
                         IsSuperUser = Null.SetNullBoolean(dr["IsSuperUser"]),
                         UserID = Null.SetNullInteger(dr["UserID"]),
                         DisplayName = Null.SetNullString(dr["DisplayName"]),
-                        LastIPAddress = Null.SetNullString(dr["LastIPAddress"])
+                        LastIPAddress = Null.SetNullString(dr["LastIPAddress"]),
                     };
 
                     var schema = dr.GetSchemaTable();

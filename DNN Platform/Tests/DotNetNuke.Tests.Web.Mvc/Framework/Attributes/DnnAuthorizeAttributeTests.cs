@@ -123,7 +123,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
             var user = new UserInfo
             {
                 UserID = 1,
-                PortalID = 1
+                PortalID = 1,
             };
 
             var roles = new List<UserRoleInfo>
@@ -132,7 +132,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
                 {
                     RoleName = roleName,
                     Status = RoleStatus.Approved
-                }
+                },
             };
 
             this._mockRoleController.Setup(x => x.GetUserRoles(user, true)).Returns(roles);

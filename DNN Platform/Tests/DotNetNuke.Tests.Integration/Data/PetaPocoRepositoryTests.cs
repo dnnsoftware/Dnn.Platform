@@ -41,7 +41,7 @@ namespace DotNetNuke.Tests.Data
                 { "type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke" },
                 { "connectionStringName", "SiteSqlServer" },
                 { "objectQualifier", string.Empty },
-                { "databaseOwner", "dbo." }
+                { "databaseOwner", "dbo." },
             });
         }
 
@@ -277,7 +277,7 @@ namespace DotNetNuke.Tests.Data
             var dog = new Dog
                             {
                                 Age = Constants.PETAPOCO_InsertDogAge,
-                                Name = Constants.PETAPOCO_InsertDogName
+                                Name = Constants.PETAPOCO_InsertDogName,
                             };
 
             // Act
@@ -303,7 +303,7 @@ namespace DotNetNuke.Tests.Data
             var dog = new Dog
                             {
                                 Age = Constants.PETAPOCO_InsertDogAge,
-                                Name = Constants.PETAPOCO_InsertDogName
+                                Name = Constants.PETAPOCO_InsertDogName,
                             };
 
             // Act
@@ -329,7 +329,7 @@ namespace DotNetNuke.Tests.Data
             var dog = new Dog
                             {
                                 Age = Constants.PETAPOCO_InsertDogAge,
-                                Name = Constants.PETAPOCO_InsertDogName
+                                Name = Constants.PETAPOCO_InsertDogName,
                             };
 
             // Act
@@ -361,7 +361,7 @@ namespace DotNetNuke.Tests.Data
             var dog = new Dog
             {
                 Age = Constants.PETAPOCO_InsertDogAge,
-                Name = Constants.PETAPOCO_InsertDogName
+                Name = Constants.PETAPOCO_InsertDogName,
             };
 
             // Act
@@ -389,7 +389,7 @@ namespace DotNetNuke.Tests.Data
                             {
                                 ID = Constants.PETAPOCO_DeleteDogId,
                                 Age = Constants.PETAPOCO_DeleteDogAge,
-                                Name = Constants.PETAPOCO_DeleteDogName
+                                Name = Constants.PETAPOCO_DeleteDogName,
                             };
 
             // Act
@@ -416,7 +416,7 @@ namespace DotNetNuke.Tests.Data
                             {
                                 ID = Constants.PETAPOCO_DeleteDogId,
                                 Age = Constants.PETAPOCO_DeleteDogAge,
-                                Name = Constants.PETAPOCO_DeleteDogName
+                                Name = Constants.PETAPOCO_DeleteDogName,
                             };
 
             // Act
@@ -449,7 +449,7 @@ namespace DotNetNuke.Tests.Data
             {
                 ID = Constants.PETAPOCO_DeleteDogId,
                 Age = Constants.PETAPOCO_DeleteDogAge,
-                Name = Constants.PETAPOCO_DeleteDogName
+                Name = Constants.PETAPOCO_DeleteDogName,
             };
 
             // Act
@@ -477,7 +477,7 @@ namespace DotNetNuke.Tests.Data
                             {
                                 ID = Constants.PETAPOCO_InvalidDogId,
                                 Age = Constants.PETAPOCO_DeleteDogAge,
-                                Name = Constants.PETAPOCO_DeleteDogName
+                                Name = Constants.PETAPOCO_DeleteDogName,
                             };
 
             // Act
@@ -510,7 +510,7 @@ namespace DotNetNuke.Tests.Data
             {
                 ID = Constants.PETAPOCO_InvalidDogId,
                 Age = Constants.PETAPOCO_DeleteDogAge,
-                Name = Constants.PETAPOCO_DeleteDogName
+                Name = Constants.PETAPOCO_DeleteDogName,
             };
 
             // Act
@@ -707,7 +707,7 @@ namespace DotNetNuke.Tests.Data
                             {
                                 ID = Constants.PETAPOCO_UpdateDogId,
                                 Age = Constants.PETAPOCO_UpdateDogAge,
-                                Name = Constants.PETAPOCO_UpdateDogName
+                                Name = Constants.PETAPOCO_UpdateDogName,
                             };
 
             // Act
@@ -734,7 +734,7 @@ namespace DotNetNuke.Tests.Data
                             {
                                 ID = Constants.PETAPOCO_UpdateDogId,
                                 Age = Constants.PETAPOCO_UpdateDogAge,
-                                Name = Constants.PETAPOCO_UpdateDogName
+                                Name = Constants.PETAPOCO_UpdateDogName,
                             };
 
             // Act
@@ -771,7 +771,7 @@ namespace DotNetNuke.Tests.Data
             {
                 ID = Constants.PETAPOCO_UpdateDogId,
                 Age = Constants.PETAPOCO_UpdateDogAge,
-                Name = Constants.PETAPOCO_UpdateDogName
+                Name = Constants.PETAPOCO_UpdateDogName,
             };
 
             // Act

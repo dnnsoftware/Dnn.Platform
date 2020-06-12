@@ -41,7 +41,7 @@ namespace DotNetNuke.Security.Roles
         {
             add = 0,
             update = 1,
-            delete = 2
+            delete = 2,
         }
 
         protected override Func<IRoleController> GetFactory()
@@ -148,7 +148,7 @@ namespace DotNetNuke.Security.Roles
                     objUser,
                     Localization.GlobalResourceFile,
                     Custom),
-                Status = MessageStatusType.Unread
+                Status = MessageStatusType.Unread,
             };
 
             // _messagingController.SaveMessage(_message);
@@ -197,7 +197,7 @@ namespace DotNetNuke.Security.Roles
                     Status = status,
                     IsOwner = isOwner,
                     EffectiveDate = effectiveDate,
-                    ExpiryDate = expiryDate
+                    ExpiryDate = expiryDate,
                 };
                 provider.AddUserToRole(portalId, user, userRole);
                 EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_CREATED);
@@ -709,7 +709,7 @@ namespace DotNetNuke.Security.Roles
             var globalRoleGroup = new RoleGroupInfo(Null.NullInteger, portalID, true)
             {
                 RoleGroupName = "GlobalRoles",
-                Description = "A dummy role group that represents the Global roles"
+                Description = "A dummy role group that represents the Global roles",
             };
             CBO.SerializeObject(globalRoleGroup, writer);
             writer.WriteEndElement();

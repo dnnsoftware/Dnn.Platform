@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.UI.WebControls
             /// <summary>
             ///   The File Control is in the Preview mode
             /// </summary>
-            Preview
+            Preview,
         }
 
         private Panel _pnlContainer;
@@ -543,7 +543,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                                  folder.FolderPath == Null.NullString
                                                      ? Utilities.GetLocalizedString("PortalRoot")
                                                      : folder.DisplayPath,
-                                             Value = folder.FolderPath
+                                             Value = folder.FolderPath,
                                          };
                     this._cboFolders.Items.Add(folderItem);
                 }

@@ -241,7 +241,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     RoleName = roleName,
                     AllowAccess = allowAccess,
                     UserID = userId,
-                    DisplayName = displayName
+                    DisplayName = displayName,
                 };
             this._ModulePermissions.Add(objPermission, true);
 

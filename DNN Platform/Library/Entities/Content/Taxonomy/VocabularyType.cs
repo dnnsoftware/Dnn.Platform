@@ -16,6 +16,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         /// <summary>
         /// The Vocabulary can have parent or child nodes.
         /// </summary>
-        Hierarchy = 2
+        Hierarchy = 2,
     }
 }

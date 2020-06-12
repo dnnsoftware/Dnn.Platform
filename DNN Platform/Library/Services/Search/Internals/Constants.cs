@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.Search.Internals
                                                                 KeywordsPrefixTag + TitleTag,
                                                                 KeywordsPrefixTag + SubjectTag,
                                                                 KeywordsPrefixTag + CommentsTag,
-                                                                KeywordsPrefixTag + AuthorNameTag };
+                                                                KeywordsPrefixTag + AuthorNameTag, };
 
         // search index tokenizers word lengths
         internal const int MinimumMinLen = 1;

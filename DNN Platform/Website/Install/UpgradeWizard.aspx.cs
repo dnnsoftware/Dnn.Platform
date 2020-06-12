@@ -248,7 +248,7 @@ namespace DotNetNuke.Services.Install
                 progress = percentage,
                 details = status,
                 check0 = upgradeDatabase.Status.ToString() + (upgradeDatabase.Errors.Count == 0 ? string.Empty : " Errors " + upgradeDatabase.Errors.Count),
-                check1 = upgradeExtensions.Status.ToString() + (upgradeExtensions.Errors.Count == 0 ? string.Empty : " Errors " + upgradeExtensions.Errors.Count)
+                check1 = upgradeExtensions.Status.ToString() + (upgradeExtensions.Errors.Count == 0 ? string.Empty : " Errors " + upgradeExtensions.Errors.Count),
             };
 
             try
@@ -385,7 +385,7 @@ namespace DotNetNuke.Services.Install
                 { iisVerification, 1 },
                 { upgradeDatabase, 49 },
                 { upgradeExtensions, 49 },
-                { new InstallVersionStep(), 1 }
+                { new InstallVersionStep(), 1 },
             };
 
         static UpgradeWizard()

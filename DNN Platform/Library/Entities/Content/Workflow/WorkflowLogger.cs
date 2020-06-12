@@ -30,7 +30,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 Action = action,
                 Comment = comment,
                 User = userId,
-                Date = DateTime.UtcNow
+                Date = DateTime.UtcNow,
             };
             this._workflowLogRepository.AddWorkflowLog(workflowLog);
         }

@@ -170,7 +170,7 @@ namespace Dnn.ExportImport.Components.Services
                             Order = importState.Order,
                             IsSystem = importState.IsSystem,
                             SendNotification = importState.SendNotification,
-                            SendNotificationToAdministrators = importState.SendNotificationToAdministrators
+                            SendNotificationToAdministrators = importState.SendNotificationToAdministrators,
                         };
                         WorkflowStateManager.Instance.AddWorkflowState(workflowState);
                         this.Result.AddLogEntry("Added workflow state", workflowState.StateID.ToString());

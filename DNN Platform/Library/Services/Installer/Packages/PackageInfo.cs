@@ -318,7 +318,7 @@ namespace DotNetNuke.Services.Installer.Packages
                        ReleaseNotes = this.ReleaseNotes,
                        Url = this.Url,
                        Version = this.Version,
-                       InstalledVersion = this.InstalledVersion
+                       InstalledVersion = this.InstalledVersion,
                    };
         }
     }

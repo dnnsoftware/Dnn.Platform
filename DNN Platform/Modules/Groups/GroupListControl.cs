@@ -108,7 +108,7 @@ namespace DotNetNuke.Modules.Groups.Controls
         {
             var whereCls = new List<Func<RoleInfo, bool>>
             {
-                grp => grp.SecurityMode != SecurityMode.SecurityRole && grp.Status == RoleStatus.Approved
+                grp => grp.SecurityMode != SecurityMode.SecurityRole && grp.Status == RoleStatus.Approved,
             };
 
             if (this.RoleGroupId >= -1)

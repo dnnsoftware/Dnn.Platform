@@ -559,7 +559,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             {
                 UserID = Constants.UserID_Admin,
                 DisplayName = Constants.UserDisplayName_Admin,
-                PortalID = Constants.CONTENT_ValidPortalId
+                PortalID = Constants.CONTENT_ValidPortalId,
             };
 
             this._mockNotificationsController.Setup(nc => nc.GetAdminUser()).Returns(adminUser);
@@ -684,7 +684,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                 {
                                     UserID = Constants.UserID_Admin,
                                     DisplayName = Constants.UserDisplayName_Admin,
-                                    PortalID = Constants.PORTAL_Zero
+                                    PortalID = Constants.PORTAL_Zero,
                                 };
 
             this._mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(10);
@@ -698,7 +698,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                     {
                                         UserID = Constants.UserID_User12,
                                         DisplayName = Constants.UserDisplayName_User12
-                                    }
+                                    },
                             };
 
             this._mockDataService
@@ -729,7 +729,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             {
                 UserID = Constants.UserID_Admin,
                 DisplayName = Constants.UserDisplayName_Admin,
-                PortalID = Constants.PORTAL_Zero
+                PortalID = Constants.PORTAL_Zero,
             };
 
             this._mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(10);
@@ -747,7 +747,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                     {
                                         UserID = Constants.UserID_User12,
                                         DisplayName = Constants.UserDisplayName_User12
-                                    }
+                                    },
                             };
 
             this._mockDataService
@@ -777,7 +777,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             {
                 UserID = Constants.UserID_Admin,
                 DisplayName = Constants.UserDisplayName_Admin,
-                PortalID = Constants.PORTAL_Zero
+                PortalID = Constants.PORTAL_Zero,
             };
 
             this._mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(10);
@@ -790,7 +790,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                     {
                                         RoleID = Constants.RoleID_RegisteredUsers,
                                         RoleName = Constants.RoleName_RegisteredUsers
-                                    }
+                                    },
                             };
             var users = new List<UserInfo>();
 
@@ -829,7 +829,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             {
                 UserID = Constants.UserID_Admin,
                 DisplayName = Constants.UserDisplayName_Admin,
-                PortalID = Constants.PORTAL_Zero
+                PortalID = Constants.PORTAL_Zero,
             };
 
             this._mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(10);
@@ -843,7 +843,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                     {
                                         UserID = Constants.UserID_User12,
                                         DisplayName = Constants.UserDisplayName_User12
-                                    }
+                                    },
                             };
 
             this._mockDataService
@@ -892,7 +892,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             {
                 UserID = Constants.UserID_Admin,
                 DisplayName = Constants.UserDisplayName_Admin,
-                PortalID = Constants.PORTAL_Zero
+                PortalID = Constants.PORTAL_Zero,
             };
 
             this._mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(10);
@@ -907,7 +907,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                     {
                                         UserID = Constants.UserID_User12,
                                         DisplayName = Constants.UserDisplayName_User12
-                                    }
+                                    },
                             };
 
             this._mockDataService
@@ -957,7 +957,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             var messageRecipients = new List<MessageRecipient>
                                         {
-                                            new MessageRecipient()
+                                            new MessageRecipient(),
                                         };
 
             this._mockInternalMessagingController.Setup(mc => mc.GetMessageRecipients(Constants.Messaging_MessageId_1)).Returns(messageRecipients);
@@ -1044,7 +1044,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             var messageRecipients = new List<MessageRecipient>
                                         {
-                                            new MessageRecipient()
+                                            new MessageRecipient(),
                                         };
 
             this._mockInternalMessagingController.Setup(mc => mc.DeleteMessageRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12));
@@ -1069,7 +1069,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var recipients = new List<MessageRecipient>
                                  {
                                      new MessageRecipient { RecipientID = Constants.Messaging_RecipientId_1 },
-                                     new MessageRecipient { RecipientID = Constants.Messaging_RecipientId_2 }
+                                     new MessageRecipient { RecipientID = Constants.Messaging_RecipientId_2 },
                                  };
 
             this._mockInternalMessagingController.Setup(imc => imc.GetMessageRecipients(Constants.Messaging_MessageId_1)).Returns(recipients);
@@ -1098,7 +1098,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                            From = Constants.UserDisplayName_Admin,
                            SenderUserID = Constants.UserID_Admin,
                            Context = Constants.Messaging_NotificationContext,
-                           SendToast = false
+                           SendToast = false,
                        };
         }
 
@@ -1125,7 +1125,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 Description = Constants.Messaging_NotificationTypeDescription,
                 TimeToLive = new TimeSpan(0, Constants.Messaging_NotificationTypeTTL, 0),
                 DesktopModuleId = Constants.Messaging_NotificationTypeDesktopModuleId,
-                IsTask = false
+                IsTask = false,
             };
         }
 
@@ -1146,7 +1146,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                            APICall = Constants.Messaging_NotificationTypeActionAPICall,
                            ConfirmResourceKey = Constants.Messaging_NotificationTypeActionConfirmResourceKey,
                            DescriptionResourceKey = Constants.Messaging_NotificationTypeActionDescriptionResourceKey,
-                           NameResourceKey = Constants.Messaging_NotificationTypeActionNameResourceKey
+                           NameResourceKey = Constants.Messaging_NotificationTypeActionNameResourceKey,
                        };
         }
 
@@ -1163,7 +1163,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 PortalGroupId = portalGroupId,
                 MasterPortalId = masterPortalId,
                 PortalGroupName = Constants.PORTALGROUP_ValidName,
-                PortalGroupDescription = Constants.PORTALGROUP_ValidDescription
+                PortalGroupDescription = Constants.PORTALGROUP_ValidDescription,
             };
 
             return mockPortalGroupInfo;

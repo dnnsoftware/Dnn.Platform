@@ -26,7 +26,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
                 {
                     new DefaultMenuButtonItem("Refresh", string.Empty, "first permission_READ permission_BROWSE", LocalizationHelper.GetString("RefreshMenuItemExtensionPoint.Text"), "dnnModule.digitalAssets.refresFolderFromMenu()", string.Empty, 0, string.Empty),
                     new DefaultMenuButtonItem("Sync", string.Empty, "medium permission_MANAGE permission_WRITE", LocalizationHelper.GetString("SyncMenuItemExtensionPoint.Text"), "dnnModule.digitalAssets.syncFromMenu(false)", string.Empty, 0, string.Empty),
-                    new DefaultMenuButtonItem("SyncRecursively", string.Empty, "last permission_MANAGE permission_WRITE", LocalizationHelper.GetString("SyncRecursivelyMenuItemExtensionPoint.Text"), "dnnModule.digitalAssets.syncFromMenu(true)", string.Empty, 0, string.Empty)
+                    new DefaultMenuButtonItem("SyncRecursively", string.Empty, "last permission_MANAGE permission_WRITE", LocalizationHelper.GetString("SyncRecursivelyMenuItemExtensionPoint.Text"), "dnnModule.digitalAssets.syncFromMenu(true)", string.Empty, 0, string.Empty),
                 };
             }
         }

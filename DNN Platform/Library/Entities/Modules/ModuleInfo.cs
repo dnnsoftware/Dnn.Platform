@@ -988,7 +988,7 @@ namespace DotNetNuke.Entities.Modules
                                         VersionGuid = Guid.NewGuid(),
                                         DefaultLanguageGuid = this.DefaultLanguageGuid,
                                         LocalizedVersionGuid = this.LocalizedVersionGuid,
-                                        CultureCode = this.CultureCode
+                                        CultureCode = this.CultureCode,
                                     };
 
             // localized properties

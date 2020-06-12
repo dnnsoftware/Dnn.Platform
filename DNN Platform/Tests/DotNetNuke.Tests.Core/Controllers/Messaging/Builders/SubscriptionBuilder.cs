@@ -95,7 +95,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
                            PortalId = this.portalId,
                            TabId = this.tabId,
                            UserId = this.userId,
-                           ObjectData = this.objectData
+                           ObjectData = this.objectData,
                        };
 
         }

@@ -136,7 +136,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
             {
                 { "is_wireless_device", "IsMobile" },
                 { "resolution_width", "ScreenPixelsWidth" },
-                { "resolution_height", "ScreenPixelsHeight" }
+                { "resolution_height", "ScreenPixelsHeight" },
             };
 
             if (DotNetNukeContext.Current.Application.Name != "DNNCORP.CE")

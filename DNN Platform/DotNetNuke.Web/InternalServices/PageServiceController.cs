@@ -65,7 +65,7 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         Success = false,
                         ErrorMessage = Localization.GetString("CustomUrlPathCleaned.Error", Localization.GlobalResourceFile),
-                        SuggestedUrlPath = "/" + urlPath
+                        SuggestedUrlPath = "/" + urlPath,
                     });
             }
 
@@ -79,7 +79,7 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         Success = false,
                         ErrorMessage = Localization.GetString("UrlPathNotUnique.Error", Localization.GlobalResourceFile),
-                        SuggestedUrlPath = "/" + urlPath
+                        SuggestedUrlPath = "/" + urlPath,
                     });
             }
 
@@ -107,7 +107,7 @@ namespace DotNetNuke.Web.InternalServices
                                         Url = dto.Path.ValueOrEmpty(),
                                         CultureCode = cultureCode,
                                         HttpStatus = dto.StatusCodeKey.ToString(CultureInfo.InvariantCulture),
-                                        IsSystem = dto.IsSystem // false
+                                        IsSystem = dto.IsSystem, // false
                                     };
                     TabController.Instance.SaveTabUrl(tabUrl, this.PortalId, true);
                 }
@@ -138,7 +138,7 @@ namespace DotNetNuke.Web.InternalServices
                                         Url = dto.Path.ValueOrEmpty(),
                                         CultureCode = cultureCode,
                                         HttpStatus = dto.StatusCodeKey.ToString(CultureInfo.InvariantCulture),
-                                        IsSystem = dto.IsSystem // false
+                                        IsSystem = dto.IsSystem, // false
                                     };
                 TabController.Instance.SaveTabUrl(tabUrl, this.PortalId, true);
             }

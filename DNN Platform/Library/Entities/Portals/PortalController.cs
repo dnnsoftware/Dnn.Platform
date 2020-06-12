@@ -85,7 +85,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     FolderID = folder.FolderID,
                     RoleID = portal.AdministratorRoleId,
-                    AllowAccess = true
+                    AllowAccess = true,
                 };
 
                 folder.FolderPermissions.Add(folderPermission);
@@ -314,7 +314,7 @@ namespace DotNetNuke.Entities.Portals
                         {
                             PortalID = portalId,
                             SystemList = false,
-                            ListName = listName + "-" + portalId
+                            ListName = listName + "-" + portalId,
                         };
                         listController.AddListEntry(entry);
 
@@ -333,7 +333,7 @@ namespace DotNetNuke.Entities.Portals
                         {
                             PortalID = portalId,
                             SystemList = false,
-                            ListName = listName + "-" + portalId
+                            ListName = listName + "-" + portalId,
                         };
                         listController.AddListEntry(entry);
 
@@ -350,7 +350,7 @@ namespace DotNetNuke.Entities.Portals
                         var log = new LogInfo
                         {
                             BypassBuffering = true,
-                            LogTypeKey = EventLogController.EventLogType.PORTAL_CREATED.ToString()
+                            LogTypeKey = EventLogController.EventLogType.PORTAL_CREATED.ToString(),
                         };
                         log.LogProperties.Add(new LogDetailInfo("Install Portal:", portalName));
                         log.LogProperties.Add(new LogDetailInfo("FirstName:", adminUser.FirstName));
@@ -531,7 +531,7 @@ namespace DotNetNuke.Entities.Portals
                 var log = new LogInfo
                 {
                     BypassBuffering = true,
-                    LogTypeKey = EventLogController.EventLogType.PORTAL_DELETED.ToString()
+                    LogTypeKey = EventLogController.EventLogType.PORTAL_DELETED.ToString(),
                 };
                 log.LogProperties.Add(new LogDetailInfo("Delete Portal:", portal.PortalName));
                 log.LogProperties.Add(new LogDetailInfo("PortalID:", portal.PortalID.ToString()));
@@ -576,7 +576,7 @@ namespace DotNetNuke.Entities.Portals
                     LogTypeFriendlyName = "HTTP Error Code 404 Page Not Found",
                     LogTypeDescription = string.Empty,
                     LogTypeCSSClass = "OperationFailure",
-                    LogTypeOwner = "DotNetNuke.Logging.EventLogType"
+                    LogTypeOwner = "DotNetNuke.Logging.EventLogType",
                 };
                 LogController.Instance.AddLogType(logTypeInfo);
 
@@ -591,7 +591,7 @@ namespace DotNetNuke.Entities.Portals
                     NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
                     MailFromAddress = Null.NullString,
                     MailToAddress = Null.NullString,
-                    LogTypePortalID = "*"
+                    LogTypePortalID = "*",
                 };
                 LogController.Instance.AddLogTypeConfigInfo(logTypeConf);
             }
@@ -606,7 +606,7 @@ namespace DotNetNuke.Entities.Portals
                     LogTypeFriendlyName = "HTTP Error Code Forbidden IP address rejected",
                     LogTypeDescription = string.Empty,
                     LogTypeCSSClass = "OperationFailure",
-                    LogTypeOwner = "DotNetNuke.Logging.EventLogType"
+                    LogTypeOwner = "DotNetNuke.Logging.EventLogType",
                 };
                 LogController.Instance.AddLogType(logTypeFilterInfo);
 
@@ -621,7 +621,7 @@ namespace DotNetNuke.Entities.Portals
                     NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
                     MailFromAddress = Null.NullString,
                     MailToAddress = Null.NullString,
-                    LogTypePortalID = "*"
+                    LogTypePortalID = "*",
                 };
                 LogController.Instance.AddLogTypeConfigInfo(logTypeFilterConf);
             }
@@ -634,7 +634,7 @@ namespace DotNetNuke.Entities.Portals
                     LogTypeFriendlyName = "TabURL created",
                     LogTypeDescription = string.Empty,
                     LogTypeCSSClass = "OperationSuccess",
-                    LogTypeOwner = "DotNetNuke.Logging.EventLogType"
+                    LogTypeOwner = "DotNetNuke.Logging.EventLogType",
                 };
                 LogController.Instance.AddLogType(logTypeInfo);
 
@@ -657,7 +657,7 @@ namespace DotNetNuke.Entities.Portals
                     NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
                     MailFromAddress = Null.NullString,
                     MailToAddress = Null.NullString,
-                    LogTypePortalID = "*"
+                    LogTypePortalID = "*",
                 };
                 LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
 
@@ -677,7 +677,7 @@ namespace DotNetNuke.Entities.Portals
                     LogTypeFriendlyName = "Javscript library registration resolved script collision",
                     LogTypeDescription = string.Empty,
                     LogTypeCSSClass = "OperationFailure",
-                    LogTypeOwner = "DotNetNuke.Logging.EventLogType"
+                    LogTypeOwner = "DotNetNuke.Logging.EventLogType",
                 };
                 LogController.Instance.AddLogType(logTypeFilterInfo);
 
@@ -692,7 +692,7 @@ namespace DotNetNuke.Entities.Portals
                     NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
                     MailFromAddress = Null.NullString,
                     MailToAddress = Null.NullString,
-                    LogTypePortalID = "*"
+                    LogTypePortalID = "*",
                 };
                 LogController.Instance.AddLogTypeConfigInfo(logTypeFilterConf);
             }
@@ -774,7 +774,7 @@ namespace DotNetNuke.Entities.Portals
                         dicSettings[key] = dr.GetString(1);
                         var log = new LogInfo
                         {
-                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()
+                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
                         };
                         log.AddProperty("Duplicate PortalSettings Key", key);
                         LogController.Instance.AddLog(log);
@@ -825,7 +825,7 @@ namespace DotNetNuke.Entities.Portals
                     StartDate = DateTime.Now,
                     EndDate = Null.NullDate,
                     EnablePublishPeriod = false,
-                    ContentItemID = Null.NullInteger
+                    ContentItemID = Null.NullInteger,
                 };
 
                 // Save new File
@@ -892,7 +892,7 @@ namespace DotNetNuke.Entities.Portals
                         PermissionID = permissionId,
                         RoleID = roleId,
                         UserID = Null.NullInteger,
-                        AllowAccess = allowAccess
+                        AllowAccess = allowAccess,
                     };
 
                     bool canAdd = !folder.FolderPermissions.Cast<FolderPermissionInfo>()
@@ -1040,7 +1040,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 PortalID = portalId,
                 MappingName = node.Name,
-                FolderProviderType = node.Provider
+                FolderProviderType = node.Provider,
             };
 
             foreach (FolderTypeSettingConfig settingNode in node.Settings)
@@ -2076,7 +2076,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     PortalId = portalID,
                     SettingName = settingName,
-                    SettingValue = settingValue
+                    SettingValue = settingValue,
                 });
             }
         }

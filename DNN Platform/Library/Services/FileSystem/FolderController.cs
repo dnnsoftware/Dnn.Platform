@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             InsecureFileSystem = 0,
             SecureFileSystem = 1,
-            DatabaseSecure = 2
+            DatabaseSecure = 2,
         }
     }
 }

@@ -178,7 +178,7 @@ namespace DotNetNuke.Modules.Journal
                 SocialGroupId = postData.GroupId,
                 ProfileId = postData.ProfileId,
                 Summary = postData.Text ?? string.Empty,
-                SecuritySet = postData.SecuritySet
+                SecuritySet = postData.SecuritySet,
             };
             ji.Title = HttpUtility.HtmlDecode(HttpUtility.UrlDecode(ji.Title));
             ji.Summary = HttpUtility.HtmlDecode(HttpUtility.UrlDecode(ji.Summary));
@@ -492,7 +492,7 @@ namespace DotNetNuke.Modules.Journal
                                                 displayName = targetUser.DisplayName.Replace(" ", "-"),
                                                 userId = targetUser.UserID,
                                                 avatar = targetUser.Profile.PhotoURL,
-                                                key = keyword
+                                                key = keyword,
                                             });
                     }
                 }
@@ -559,7 +559,7 @@ namespace DotNetNuke.Modules.Journal
                     NotificationTypeID = notificationType.NotificationTypeId,
                     SenderUserID = this.UserInfo.UserID,
                     IncludeDismissAction = true,
-                    Context = string.Format("{0}_{1}", this.UserInfo.UserID, item.JournalId)
+                    Context = string.Format("{0}_{1}", this.UserInfo.UserID, item.JournalId),
                 };
 
                 Services.Social.Notifications.NotificationsController.Instance.SendNotification(notification, this.PortalSettings.PortalId, null, new List<UserInfo> { mentionUser });

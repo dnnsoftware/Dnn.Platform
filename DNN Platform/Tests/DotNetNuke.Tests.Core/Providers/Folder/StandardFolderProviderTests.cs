@@ -70,7 +70,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._localeControllerMock = new Mock<ILocaleController>();
             this._localeControllerMock.Setup(l => l.GetLocales(Constants.CONTENT_ValidPortalId)).Returns(new Dictionary<string, Locale>
             {
-                { "en-us", new Locale() }
+                { "en-us", new Locale() },
             });
 
             FileWrapper.RegisterInstance(this._fileWrapper.Object);
@@ -521,7 +521,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var subFolders = new[] {
                 Constants.FOLDER_ValidSubFolderPath,
-                Constants.FOLDER_OtherValidSubFolderPath
+                Constants.FOLDER_OtherValidSubFolderPath,
             };
 
             this._directoryWrapper.Setup(dw => dw.GetDirectories(Constants.FOLDER_ValidFolderPath)).Returns(subFolders);
@@ -536,7 +536,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var expectedSubFolders = new[] {
                 Constants.FOLDER_ValidSubFolderRelativePath,
-                Constants.FOLDER_OtherValidSubFolderRelativePath
+                Constants.FOLDER_OtherValidSubFolderRelativePath,
             };
 
             var folderMapping = new FolderMappingInfo { PortalID = Constants.CONTENT_ValidPortalId };
@@ -547,7 +547,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var subFolders = new[] {
                 Constants.FOLDER_ValidSubFolderPath,
-                Constants.FOLDER_OtherValidSubFolderPath
+                Constants.FOLDER_OtherValidSubFolderPath,
             };
 
             this._directoryWrapper.Setup(dw => dw.GetDirectories(Constants.FOLDER_ValidFolderPath)).Returns(subFolders);

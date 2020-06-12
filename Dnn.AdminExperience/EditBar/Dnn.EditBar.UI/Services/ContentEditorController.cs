@@ -73,7 +73,7 @@ namespace Dnn.EditBar.UI.Services
                 ModuleName = kvp.Key,
                 ModuleImage = this.GetDeskTopModuleImage(kvp.Value.DesktopModuleID),
                 Bookmarked = true,
-                ExistsInBookmarkCategory = true
+                ExistsInBookmarkCategory = true,
             }).ToList();
 
             foreach (var moduleName in recommendedModuleNames)
@@ -86,7 +86,7 @@ namespace Dnn.EditBar.UI.Services
                         ModuleName = moduleName,
                         ModuleImage = this.GetDeskTopModuleImage(Null.NullInteger),
                         Bookmarked = true,
-                        ExistsInBookmarkCategory = true
+                        ExistsInBookmarkCategory = true,
                     });
                 }
             }

@@ -36,7 +36,7 @@ namespace DotNetNuke.Web.Mvc.Framework
                     {
                         new Func<IViewEngine, ViewEngineResult>(
                             e => e.FindView(controllerContext, viewName, masterName, false)),
-                        false
+                        false,
                     });
 
                 return useCache ? CBO.GetCachedObject<ViewEngineResult>(cachArg, CallFind) : CallFind(cachArg);
@@ -61,7 +61,7 @@ namespace DotNetNuke.Web.Mvc.Framework
                     {
                         new Func<IViewEngine, ViewEngineResult>(
                             e => e.FindPartialView(controllerContext, partialViewName, false)),
-                        false
+                        false,
                     });
 
                 return useCache ? CBO.GetCachedObject<ViewEngineResult>(cachArg, CallFind) : CallFind(cachArg);

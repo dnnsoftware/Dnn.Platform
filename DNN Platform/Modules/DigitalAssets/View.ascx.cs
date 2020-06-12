@@ -197,7 +197,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                                         ReadOnly = columnExtension.ReadOnly,
                                         Reorderable = columnExtension.Reorderable,
                                         SortExpression = columnExtension.SortExpression,
-                                        HeaderTooltip = columnExtension.HeaderText
+                                        HeaderTooltip = columnExtension.HeaderText,
                                     };
                 column.HeaderStyle.Width = columnExtension.HeaderStyleWidth;
 
@@ -307,49 +307,49 @@ namespace DotNetNuke.Modules.DigitalAssets
                         Text = Localization.GetString("CreateFolder", this.LocalResourceFile),
                         Value = "NewFolder",
                         CssClass = "permission_ADD disabledIfFiltered",
-                        ImageUrl = IconController.IconURL("FolderCreate", "16x16", "Gray")
+                        ImageUrl = IconController.IconURL("FolderCreate", "16x16", "Gray"),
                     },
                 new DnnMenuItem
                     {
                         Text = Localization.GetString("RefreshFolder", this.LocalResourceFile),
                         Value = "RefreshFolder",
                         CssClass = "permission_BROWSE permission_READ",
-                        ImageUrl = IconController.IconURL("FolderRefreshSync", "16x16", "Gray")
+                        ImageUrl = IconController.IconURL("FolderRefreshSync", "16x16", "Gray"),
                     },
                 new DnnMenuItem
                     {
                         Text = Localization.GetString("RenameFolder", this.LocalResourceFile),
                         Value = "RenameFolder",
                         CssClass = "permission_MANAGE",
-                        ImageUrl = IconController.IconURL("FileRename", "16x16", "Black")
+                        ImageUrl = IconController.IconURL("FileRename", "16x16", "Black"),
                     },
                 new DnnMenuItem
                     {
                         Text = Localization.GetString("Move", this.LocalResourceFile),
                         Value = "Move",
                         CssClass = "permission_COPY",
-                        ImageUrl = IconController.IconURL("FileMove", "16x16", "Black")
+                        ImageUrl = IconController.IconURL("FileMove", "16x16", "Black"),
                     },
                 new DnnMenuItem
                     {
                         Text = Localization.GetString("DeleteFolder", this.LocalResourceFile),
                         Value = "DeleteFolder",
                         CssClass = "permission_DELETE",
-                        ImageUrl = IconController.IconURL("FileDelete", "16x16", "Black")
+                        ImageUrl = IconController.IconURL("FileDelete", "16x16", "Black"),
                     },
                 new DnnMenuItem
                     {
                         Text = Localization.GetString("UnlinkFolder", this.LocalResourceFile),
                         Value = "UnlinkFolder",
                         CssClass = "permission_DELETE",
-                        ImageUrl = IconController.IconURL("UnLink", "16x16", "Black")
+                        ImageUrl = IconController.IconURL("UnLink", "16x16", "Black"),
                     },
                 new DnnMenuItem
                     {
                         Text = Localization.GetString("ViewFolderProperties", this.LocalResourceFile),
                         Value = "Properties",
                         CssClass = "permission_READ",
-                        ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn")
+                        ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn"),
                     },
             });
 
@@ -361,7 +361,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                     Text = menuItem.Text,
                     Value = menuItem.Value,
                     CssClass = menuItem.CssClass,
-                    ImageUrl = menuItem.Icon
+                    ImageUrl = menuItem.Icon,
                 });
             }
         }
@@ -385,56 +385,56 @@ namespace DotNetNuke.Modules.DigitalAssets
                         Text = Localization.GetString("Download", this.LocalResourceFile),
                         Value = "Download",
                         CssClass = "permission_READ",
-                        ImageUrl = IconController.IconURL("FileDownload", "16x16", "Black")
+                        ImageUrl = IconController.IconURL("FileDownload", "16x16", "Black"),
                     },
                     new DnnMenuItem
                     {
                         Text = Localization.GetString("Rename", this.LocalResourceFile),
                         Value = "Rename",
                         CssClass = "permission_MANAGE singleItem",
-                        ImageUrl = IconController.IconURL("FileRename", "16x16", "Black")
+                        ImageUrl = IconController.IconURL("FileRename", "16x16", "Black"),
                     },
                     new DnnMenuItem
                     {
                         Text = Localization.GetString("Copy", this.LocalResourceFile),
                         Value = "Copy",
                         CssClass = "permission_COPY onlyFiles",
-                        ImageUrl = IconController.IconURL("FileCopy", "16x16", "Black")
+                        ImageUrl = IconController.IconURL("FileCopy", "16x16", "Black"),
                     },
                     new DnnMenuItem
                     {
                         Text = Localization.GetString("Move", this.LocalResourceFile),
                         Value = "Move",
                         CssClass = "permission_COPY disabledIfFiltered",
-                        ImageUrl = IconController.IconURL("FileMove", "16x16", "Black")
+                        ImageUrl = IconController.IconURL("FileMove", "16x16", "Black"),
                     },
                     new DnnMenuItem
                     {
                         Text = Localization.GetString("Delete", this.LocalResourceFile),
                         Value = "Delete",
                         CssClass = "permission_DELETE",
-                        ImageUrl = IconController.IconURL("FileDelete", "16x16", "Black")
+                        ImageUrl = IconController.IconURL("FileDelete", "16x16", "Black"),
                     },
                     new DnnMenuItem
                     {
                         Text = Localization.GetString("Unlink", this.LocalResourceFile),
                         Value = "Unlink",
                         CssClass = "permission_DELETE singleItem onlyFolders",
-                        ImageUrl = IconController.IconURL("UnLink", "16x16", "Black")
+                        ImageUrl = IconController.IconURL("UnLink", "16x16", "Black"),
                     },
                     new DnnMenuItem
                     {
                         Text = Localization.GetString("UnzipFile", this.LocalResourceFile),
                         Value = "UnzipFile",
                         CssClass = "permission_MANAGE singleItem onlyFiles",
-                        ImageUrl = IconController.IconURL("Unzip", "16x16", "Gray")
+                        ImageUrl = IconController.IconURL("Unzip", "16x16", "Gray"),
                     },
                     new DnnMenuItem
                     {
                         Text = Localization.GetString("ViewProperties", this.LocalResourceFile),
                         Value = "Properties",
                         CssClass = "permission_READ singleItem",
-                        ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn")
+                        ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn"),
                     },
                     new DnnMenuItem
                     {
@@ -442,7 +442,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                         Value = "GetUrl",
                         CssClass = "permission_READ singleItem onlyFiles",
                         ImageUrl = IconController.IconURL("FileLink", "16x16", "Black")
-                    }
+                    },
                 });
 
             // Dnn Menu Item Extension Point
@@ -453,7 +453,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                                            Text = menuItem.Text,
                                            Value = menuItem.Value,
                                            CssClass = menuItem.CssClass,
-                                           ImageUrl = menuItem.Icon
+                                           ImageUrl = menuItem.Icon,
                                        });
             }
         }
@@ -467,28 +467,28 @@ namespace DotNetNuke.Modules.DigitalAssets
                         Text = Localization.GetString("CreateFolder", this.LocalResourceFile),
                         Value = "NewFolder",
                         CssClass = "permission_ADD disabledIfFiltered",
-                        ImageUrl = IconController.IconURL("FolderCreate", "16x16", "Gray")
+                        ImageUrl = IconController.IconURL("FolderCreate", "16x16", "Gray"),
                     },
                 new DnnMenuItem
                     {
                         Text = Localization.GetString("RefreshFolder", this.LocalResourceFile),
                         Value = "RefreshFolder",
                         CssClass = "permission_READ permission_BROWSE",
-                        ImageUrl = IconController.IconURL("FolderRefreshSync", "16x16", "Gray")
+                        ImageUrl = IconController.IconURL("FolderRefreshSync", "16x16", "Gray"),
                     },
                 new DnnMenuItem
                     {
                         Text = Localization.GetString("UploadFiles.Title", this.LocalResourceFile),
                         Value = "UploadFiles",
                         CssClass = "permission_ADD",
-                        ImageUrl = IconController.IconURL("UploadFiles", "16x16", "Gray")
+                        ImageUrl = IconController.IconURL("UploadFiles", "16x16", "Gray"),
                     },
                 new DnnMenuItem
                     {
                         Text = Localization.GetString("ViewFolderProperties", this.LocalResourceFile),
                         Value = "Properties",
                         CssClass = "permission_READ",
-                        ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn")
+                        ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn"),
                     },
             });
         }
@@ -677,7 +677,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                     {
                         Text = Localization.GetString("All", this.LocalResourceFile),
                         Value = int.MaxValue.ToString(CultureInfo.InvariantCulture)
-                    }
+                    },
             };
 
             var dropDown = (RadComboBox)e.Item.FindControl("PageSizeComboBox");

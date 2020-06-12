@@ -157,7 +157,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 SecondElementSelector = ".password-confirm",
                 ContainerSelector = ".dnnPasswordReset",
                 UnmatchedCssClass = "unmatched",
-                MatchedCssClass = "matched"
+                MatchedCssClass = "matched",
             };
 
             optionsAsJsonString = Json.Serialize(confirmPasswordOptions);
@@ -340,7 +340,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 LogPortalID = this.PortalSettings.PortalId,
                 LogPortalName = this.PortalSettings.PortalName,
-                LogUserID = this.UserId
+                LogUserID = this.UserId,
             };
 
             if (string.IsNullOrEmpty(message))

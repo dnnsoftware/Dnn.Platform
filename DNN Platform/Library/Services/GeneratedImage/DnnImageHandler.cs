@@ -32,7 +32,7 @@ namespace DotNetNuke.Services.GeneratedImage
         private static readonly string[] WhiteListFolderPaths = {
             Globals.DesktopModulePath,
             Globals.ImagePath,
-            Globals.ApplicationPath + "/Portals/"
+            Globals.ApplicationPath + "/Portals/",
         };
 
         private static bool IsAllowedFilePathImage(string filePath)
@@ -170,7 +170,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         }
                         var uppTrans = new UserProfilePicTransform
                         {
-                            UserID = uid
+                            UserID = uid,
                         };
 
                         IFileInfo photoFile;
@@ -373,7 +373,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         Height = height,
                         MaxWidth = maxWidth,
                         MaxHeight = maxHeight,
-                        Border = border
+                        Border = border,
                     };
                     this.ImageTransforms.Add(resizeTrans);
                 }
@@ -452,7 +452,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             return new ImageInfo(this.EmptyImage)
             {
-                IsEmptyImage = true
+                IsEmptyImage = true,
             };
         }
 

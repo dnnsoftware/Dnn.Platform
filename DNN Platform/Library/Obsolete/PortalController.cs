@@ -45,7 +45,7 @@ namespace DotNetNuke.Entities.Portals
                 DisplayName = firstName + " " + lastName,
                 Membership = { Password = password },
                 Email = email,
-                IsSuperUser = false
+                IsSuperUser = false,
             };
             adminUser.Membership.Approved = true;
             adminUser.Profile.FirstName = firstName;

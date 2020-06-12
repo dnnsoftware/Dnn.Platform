@@ -44,7 +44,7 @@ namespace DotNetNuke.Web.InternalServices
                 res.Add(new Region
                 {
                     Text = r.Text,
-                    Value = r.EntryID.ToString()
+                    Value = r.EntryID.ToString(),
                 });
             }
             return this.Request.CreateResponse(HttpStatusCode.OK, res.OrderBy(r => r.Text));

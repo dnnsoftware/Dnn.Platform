@@ -57,7 +57,7 @@ namespace DotNetNuke.Web.Api
                 var response = new HttpResponseMessage
                 {
                     StatusCode = statusCode,
-                    ReasonPhrase = Localization.GetString(key, resourceFile)
+                    ReasonPhrase = Localization.GetString(key, resourceFile),
                 };
 
                 actionExecutedContext.Response = response;

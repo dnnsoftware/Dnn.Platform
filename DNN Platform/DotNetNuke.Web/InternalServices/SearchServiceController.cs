@@ -333,7 +333,7 @@ namespace DotNetNuke.Web.InternalServices
                         DisplayModifiedTime = result.DisplayModifiedTime,
                         Tags = result.Tags.ToList(),
                         AuthorProfileUrl = result.AuthorUserId > 0 ? Globals.UserProfileURL(result.AuthorUserId) : string.Empty,
-                        AuthorName = result.AuthorName
+                        AuthorName = result.AuthorName,
                     };
                     group.Results.Add(detail);
                 }
@@ -387,7 +387,7 @@ namespace DotNetNuke.Web.InternalServices
                             Snippet = preview.Snippet,
                             Description = preview.Description,
                             DocumentUrl = preview.DocumentUrl,
-                            Attributes = preview.Attributes
+                            Attributes = preview.Attributes,
                         });
                 }
                 else
@@ -422,7 +422,7 @@ namespace DotNetNuke.Web.InternalServices
                     DocumentTypeName = InternalSearchController.Instance.GetSearchDocumentTypeDisplayName(result),
                     DocumentUrl = result.Url,
                     Snippet = showSnippet ? result.Snippet : string.Empty,
-                    Description = showDescription ? description : string.Empty
+                    Description = showDescription ? description : string.Empty,
                 };
             });
         }
@@ -505,7 +505,7 @@ namespace DotNetNuke.Web.InternalServices
                     TitleSnippetLength = 40,
                     BodySnippetLength = 100,
                     CultureCode = culture,
-                    WildCardSearch = forceWild > 0
+                    WildCardSearch = forceWild > 0,
                 };
 
                 try
@@ -559,7 +559,7 @@ namespace DotNetNuke.Web.InternalServices
                         TitleSnippetLength = 120,
                         BodySnippetLength = 300,
                         CultureCode = culture,
-                        WildCardSearch = this.IsWildCardEnabledForModule()
+                        WildCardSearch = this.IsWildCardEnabledForModule(),
                     };
 
                 try

@@ -17,6 +17,6 @@ namespace DotNetNuke.Web.Api
         ///     <cref>http://tools.ietf.org/html/rfc4918</cref>
         /// </see>
         /// </summary>
-        UnprocessableEntity = 422
+        UnprocessableEntity = 422,
     }
 }

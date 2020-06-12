@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Log.EventLog
         public enum ReturnType
         {
             LogInfoObjects,
-            XML
+            XML,
         }
 
 

@@ -24,7 +24,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             var mockDnnController = mockController.As<IDnnController>();
             var viewContext = new ViewContext
                                     {
-                                        Controller = mockController.Object
+                                        Controller = mockController.Object,
                                     };
             mockViewPage.Object.ViewContext = viewContext;
 
@@ -45,7 +45,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             var mockDnnController = mockController.As<IDnnController>();
             var viewContext = new ViewContext
             {
-                Controller = mockController.Object
+                Controller = mockController.Object,
             };
             mockViewPage.Object.ViewContext = viewContext;
 
@@ -66,7 +66,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             var mockDnnController = mockController.As<IDnnController>();
             var viewContext = new ViewContext
             {
-                Controller = mockController.Object
+                Controller = mockController.Object,
             };
             mockViewPage.Object.ViewContext = viewContext;
 
@@ -87,7 +87,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             var mockDnnController = mockController.As<IDnnController>();
             var viewContext = new ViewContext
             {
-                Controller = mockController.Object
+                Controller = mockController.Object,
             };
             mockViewPage.Object.ViewContext = viewContext;
 

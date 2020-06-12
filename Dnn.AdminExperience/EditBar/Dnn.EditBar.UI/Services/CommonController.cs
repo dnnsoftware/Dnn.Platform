@@ -49,7 +49,7 @@ namespace Dnn.EditBar.UI.Services
             var userSetting = new UserSetting
             {
                 Key = key,
-                Value = value
+                Value = value,
             };
 
             return this.Request.CreateResponse(HttpStatusCode.OK, userSetting);

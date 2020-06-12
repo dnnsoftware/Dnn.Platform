@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             {
                 Id = folderMapping.FolderMappingID,
                 FolderTypeName = folderMapping.FolderProviderType,
-                Name = folderMapping.MappingName
+                Name = folderMapping.MappingName,
             };
         }
 
@@ -138,7 +138,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             var fields = new List<Field>
                              {
                                  this.GetFolderSizeField(folder),
-                                 this.GetTotalFilesField(folder)
+                                 this.GetTotalFilesField(folder),
                              };
             fields.AddRange(this.GetAuditFields((FolderInfo)folder, folder.PortalID));
             return fields;
@@ -166,21 +166,21 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                         DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.Created + ".DisplayName"),
                         Type = typeof(DateTime),
                         Value = item.CreatedOnDate,
-                        StringValue = item.CreatedOnDate.ToString(CultureInfo.CurrentCulture)
+                        StringValue = item.CreatedOnDate.ToString(CultureInfo.CurrentCulture),
                     },
                     new Field(DefaultMetadataNames.CreatedBy)
                     {
                         DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.CreatedBy + ".DisplayName"),
                         Type = typeof(int),
                         Value = item.CreatedByUserID,
-                        StringValue = createdByUser != null ? createdByUser.DisplayName : string.Empty
+                        StringValue = createdByUser != null ? createdByUser.DisplayName : string.Empty,
                     },
                     new Field(DefaultMetadataNames.Modified)
                     {
                         DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.Modified + ".DisplayName"),
                         Type = typeof(DateTime),
                         Value = item.LastModifiedOnDate,
-                        StringValue = item.LastModifiedOnDate.ToString(CultureInfo.CurrentCulture)
+                        StringValue = item.LastModifiedOnDate.ToString(CultureInfo.CurrentCulture),
                     },
                     new Field(DefaultMetadataNames.ModifiedBy)
                     {
@@ -188,7 +188,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                         Type = typeof(int),
                         Value = item.LastModifiedByUserID,
                         StringValue = lastModifiedByUser != null ? lastModifiedByUser.DisplayName : string.Empty
-                    }
+                    },
                 };
         }
 
@@ -227,7 +227,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 {
                     FolderMappingController.Instance.GetFolderMapping(portalId, "Standard"),
                     FolderMappingController.Instance.GetFolderMapping(portalId, "Secure"),
-                    FolderMappingController.Instance.GetFolderMapping(portalId, "Database")
+                    FolderMappingController.Instance.GetFolderMapping(portalId, "Database"),
                 };
         }
 
@@ -292,7 +292,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             {
                 Folder = this.GetFolderViewModel(page.Folder),
                 Items = page.Items.Select(this.GetItemViewModel).ToList(),
-                TotalCount = page.TotalCount
+                TotalCount = page.TotalCount,
             };
         }
 
@@ -318,7 +318,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             {
                 Folder = this.GetFolderViewModel(page.Folder),
                 Items = page.Items.Select(this.GetItemViewModel).ToList(),
-                TotalCount = page.TotalCount
+                TotalCount = page.TotalCount,
             };
         }
 
@@ -491,7 +491,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             EventManager.Instance.OnFileDownloaded(new FileDownloadedEventArgs()
                                                     {
                                                         FileInfo = file,
-                                                        UserId = UserController.Instance.GetCurrentUserInfo().UserID
+                                                        UserId = UserController.Instance.GetCurrentUserInfo().UserID,
                                                     });
             return content;
         }
@@ -611,7 +611,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 ItemId = folder.FolderID,
                 IsFolder = true,
                 PreviewImageUrl = this.GetFolderIconUrl(folder.PortalID, folder.FolderMappingID),
-                Fields = this.GetFolderPreviewFields(folder)
+                Fields = this.GetFolderPreviewFields(folder),
             };
         }
 
@@ -623,7 +623,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 ItemId = file.FileId,
                 IsFolder = false,
                 PreviewImageUrl = item.IconUrl,
-                Fields = this.GetFilePreviewFields(file)
+                Fields = this.GetFilePreviewFields(file),
             };
             return result;
         }
@@ -661,7 +661,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 IsFolder = true,
                 ItemID = folder.FolderID,
                 DisplayPath = folder.DisplayPath,
-                IconUrl = this.GetFolderIconUrl(folder.PortalID, folder.FolderMappingID)
+                IconUrl = this.GetFolderIconUrl(folder.PortalID, folder.FolderMappingID),
             };
         }
 
@@ -672,7 +672,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 IsFolder = false,
                 ItemID = file.FileId,
                 DisplayPath = file.RelativePath,
-                IconUrl = GetFileIconUrl(file.Extension)
+                IconUrl = GetFileIconUrl(file.Extension),
             };
         }
 
@@ -692,7 +692,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 LastModifiedOnDate = folder.LastModifiedOnDate.ToString("g"),
                 IconUrl = this.GetFolderIconUrl(folder.PortalID, folder.FolderMappingID),
                 Permissions = this.GetPermissionViewModelCollection(folder),
-                HasChildren = folder.HasChildren
+                HasChildren = folder.HasChildren,
             };
             folderViewModel.Attributes.Add(new KeyValuePair<string, object>("UnlinkAllowedStatus", this.GetUnlinkAllowedStatus(folder)));
             return folderViewModel;
@@ -731,7 +731,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 ParentFolderID = parentFolderId,
                 ParentFolder = parentFolderPath,
                 FolderMappingID = folder.FolderMappingID,
-                UnlinkAllowedStatus = this.GetUnlinkAllowedStatus(folder)
+                UnlinkAllowedStatus = this.GetUnlinkAllowedStatus(folder),
             };
         }
 
@@ -750,7 +750,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 ParentFolderID = folder.FolderID,
                 ParentFolder = folder.FolderPath,
                 Size = string.Format(new FileSizeFormatProvider(), "{0:fs}", file.Size),
-                UnlinkAllowedStatus = "false"
+                UnlinkAllowedStatus = "false",
             };
         }
 

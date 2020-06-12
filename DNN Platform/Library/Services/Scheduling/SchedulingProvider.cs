@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Scheduling
     {
         // do not add APPLICATION_END
         // it will not reliably complete
-        APPLICATION_START
+        APPLICATION_START,
     }
 
     public enum ScheduleSource
@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.Scheduling
         STARTED_FROM_SCHEDULE_CHANGE,
         STARTED_FROM_EVENT,
         STARTED_FROM_TIMER,
-        STARTED_FROM_BEGIN_REQUEST
+        STARTED_FROM_BEGIN_REQUEST,
     }
 
     public enum ScheduleStatus
@@ -42,14 +42,14 @@ namespace DotNetNuke.Services.Scheduling
         RUNNING_REQUEST_SCHEDULE,
         WAITING_FOR_REQUEST,
         SHUTTING_DOWN,
-        STOPPED
+        STOPPED,
     }
 
     public enum SchedulerMode
     {
         DISABLED = 0,
         TIMER_METHOD = 1,
-        REQUEST_METHOD = 2
+        REQUEST_METHOD = 2,
     }
     // ReSharper restore InconsistentNaming
 

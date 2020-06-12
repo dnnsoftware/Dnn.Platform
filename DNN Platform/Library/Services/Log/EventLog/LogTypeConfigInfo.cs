@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Log.EventLog
             Seconds = 1,
             Minutes = 2,
             Hours = 3,
-            Days = 4
+            Days = 4,
         }
 
         private string _mailFromAddress;

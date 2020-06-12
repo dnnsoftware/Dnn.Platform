@@ -571,7 +571,7 @@ namespace DotNetNuke.UI.Skins.Controls
             FolderClosed = 0,
             FolderOpen = 1,
             Page = 2,
-            GotoParent = 3
+            GotoParent = 3,
         }
     }
 }

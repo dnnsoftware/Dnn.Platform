@@ -86,7 +86,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             workflow.States = new List<WorkflowState>
                               {
                                   firstDefaultState,
-                                  lastDefaultState
+                                  lastDefaultState,
                               };
         }
 

@@ -26,7 +26,7 @@ namespace DotNetNuke.Common.Utilities
         public enum UserFolderElement
         {
             Root = 0,
-            SubFolder = 1
+            SubFolder = 1,
         }
 
 

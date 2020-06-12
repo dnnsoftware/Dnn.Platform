@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.Localization
         /// <summary>
         /// Displays the ISO 629-2 three letter code "&lt;languagefull&gt; (&lt;country/regionfull&gt;)
         /// </summary>
-        ThreeLetterIsoCode
+        ThreeLetterIsoCode,
     }
 
     /// <summary>
@@ -474,7 +474,7 @@ namespace DotNetNuke.Services.Localization
                             {
                                 IsPrimary = true,
                                 CultureCode = locale.Code,
-                                HTTPAlias = GetValidLanguageURL(portalId, httpAlias, locale.Code.ToLowerInvariant())
+                                HTTPAlias = GetValidLanguageURL(portalId, httpAlias, locale.Code.ToLowerInvariant()),
                             };
 
                         PortalAliasController.Instance.AddPortalAlias(newAlias);

@@ -493,7 +493,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                                         {
                                             PortalGroupName = Constants.PORTALGROUP_ValidName,
                                             PortalGroupDescription = Constants.PORTALGROUP_ValidDescription,
-                                            MasterPortalId = Constants.PORTAL_ValidPortalId
+                                            MasterPortalId = Constants.PORTAL_ValidPortalId,
                                         };
             return portalGroup;
         }
@@ -515,7 +515,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                                        name,
                                        description,
                                        domain,
-                                       userId
+                                       userId,
                                    });
             }
 

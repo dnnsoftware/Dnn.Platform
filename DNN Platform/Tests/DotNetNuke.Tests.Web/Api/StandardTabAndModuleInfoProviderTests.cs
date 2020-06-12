@@ -55,7 +55,7 @@ namespace DotNetNuke.Tests.Web.Api
             this._tabInfo = new TabInfo { TabID = ValidTabId };
             this._moduleInfo = new ModuleInfo
             {
-                TabModuleID = ValidTabModuleId, TabID = ValidTabId, ModuleID = ValidModuleId, PortalID = ValidPortalId
+                TabModuleID = ValidTabModuleId, TabID = ValidTabId, ModuleID = ValidModuleId, PortalID = ValidPortalId,
             };
 
             this._mockTabController.Setup(x => x.GetTab(ValidTabId, ValidPortalId)).Returns(this._tabInfo);
@@ -87,7 +87,7 @@ namespace DotNetNuke.Tests.Web.Api
                 "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
                 "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId",
                 "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate",
-                "CultureCode"
+                "CultureCode",
             };
 
             foreach (var col in cols)
@@ -339,7 +339,7 @@ namespace DotNetNuke.Tests.Web.Api
             // Arrange
             var request = new HttpRequestMessage
             {
-                RequestUri = new Uri(string.Format("http://foo.com?{0}={1}", paramName, ValidTabId))
+                RequestUri = new Uri(string.Format("http://foo.com?{0}={1}", paramName, ValidTabId)),
             };
 
             // Act
@@ -360,7 +360,7 @@ namespace DotNetNuke.Tests.Web.Api
             // Arrange
             var request = new HttpRequestMessage
             {
-                RequestUri = new Uri(string.Format("http://foo.com?{0}={1}", paramName, ValidModuleId))
+                RequestUri = new Uri(string.Format("http://foo.com?{0}={1}", paramName, ValidModuleId)),
             };
 
             // Act

@@ -44,7 +44,7 @@ namespace DotNetNuke.Framework
                                 {
                                     ID = "ScriptManager",
                                     EnableScriptGlobalization = true,
-                                    SupportsPartialRendering = true
+                                    SupportsPartialRendering = true,
                                 })
                         {
                             if (checkCdn)

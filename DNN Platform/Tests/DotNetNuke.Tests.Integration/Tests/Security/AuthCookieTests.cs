@@ -58,7 +58,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Security
             var client = new HttpClient(clientHandler)
             {
                 BaseAddress = domain,
-                Timeout = timeout
+                Timeout = timeout,
             };
 
             return client;

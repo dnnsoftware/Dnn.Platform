@@ -172,7 +172,7 @@ namespace DotNetNuke.Services.FileSystem
                                     EventManager.Instance.OnFileDownloaded(new FileDownloadedEventArgs()
                                     {
                                         FileInfo = file,
-                                        UserId = UserController.Instance.GetCurrentUserInfo().UserID
+                                        UserId = UserController.Instance.GetCurrentUserInfo().UserID,
                                     });
 
                                     if (directUrl.Contains("LinkClick") || (blnForceDownload && folderMapping.FolderProviderType == "StandardFolderProvider"))

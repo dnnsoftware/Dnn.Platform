@@ -119,7 +119,7 @@ namespace log4net.Appender
             /// <summary>
             /// debug-level messages
             /// </summary>
-            Debug = 7
+            Debug = 7,
         }
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace log4net.Appender
             /// <summary>
             /// reserved for local use
             /// </summary>
-            Local7 = 23
+            Local7 = 23,
         }
 
 

@@ -78,7 +78,7 @@ namespace DotNetNuke.UI.Modules.Html5
             {
                 Title = title,
                 Icon = model.Icon,
-                Secure = securityAccessLevel
+                Secure = securityAccessLevel,
             };
 
             if (string.IsNullOrEmpty(model.Script))

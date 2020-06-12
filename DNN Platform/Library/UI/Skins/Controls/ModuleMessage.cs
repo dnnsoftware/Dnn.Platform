@@ -24,7 +24,7 @@ namespace DotNetNuke.UI.Skins.Controls
             GreenSuccess,
             YellowWarning,
             RedError,
-            BlueInfo
+            BlueInfo,
         }
 
         protected Panel dnnSkinMessage;

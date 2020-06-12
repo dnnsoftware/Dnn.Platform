@@ -10,6 +10,6 @@ namespace DotNetNuke.Services.Mail
     public enum MailFormat
     {
         Text,
-        Html
+        Html,
     }
 }

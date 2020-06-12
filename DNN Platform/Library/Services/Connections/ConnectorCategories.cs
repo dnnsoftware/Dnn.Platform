@@ -10,6 +10,6 @@ namespace DotNetNuke.Services.Connections
         FileSystem,
         Analytics,
         Marketting,
-        Other
+        Other,
     }
 }

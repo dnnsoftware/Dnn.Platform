@@ -43,7 +43,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
                     LocaleKey = 1,
                     StatusCodeKey = 200,
                     SiteAliasUsage = 2
-                }
+                },
             };
             var response = connector.PostJson(CreateCustomUrlApi, postData, null).Content.ReadAsStringAsync().Result;
             var result = JsonConvert.DeserializeObject<dynamic>(response);
@@ -100,7 +100,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
                 languageSettings.EnableBrowserLanguage,
                 languageSettings.AllowUserUICulture,
                 languageSettings.CultureCode,
-                languageSettings.AllowContentLocalization
+                languageSettings.AllowContentLocalization,
             });
         }
 
@@ -110,7 +110,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
             {
                 LanguageId = 1,
                 Code = EnglishLanguageCode,
-                Enabled = enabled
+                Enabled = enabled,
             });
         }
 

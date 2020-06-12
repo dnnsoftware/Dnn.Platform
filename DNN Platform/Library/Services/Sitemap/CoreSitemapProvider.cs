@@ -141,7 +141,7 @@ namespace DotNetNuke.Services.Sitemap
                         alternates.Add(new AlternateUrl()
                         {
                             Url = alternateUrl,
-                            Language = localized.CultureCode
+                            Language = localized.CultureCode,
                         });
                     }
                 }
@@ -153,7 +153,7 @@ namespace DotNetNuke.Services.Sitemap
                     alternates.Add(new AlternateUrl()
                     {
                         Url = alternateUrl,
-                        Language = currentTab.CultureCode
+                        Language = currentTab.CultureCode,
                     });
 
                     pageUrl.AlternateUrls = alternates;

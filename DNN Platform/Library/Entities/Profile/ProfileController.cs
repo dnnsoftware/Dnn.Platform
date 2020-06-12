@@ -64,7 +64,7 @@ namespace DotNetNuke.Entities.Profile
                 ViewOrder = viewOrder,
                 Visible = true,
                 Length = length,
-                DefaultVisibility = defaultVisibility
+                DefaultVisibility = defaultVisibility,
             };
             AddPropertyDefinition(propertyDefinition);
         }
@@ -124,7 +124,7 @@ namespace DotNetNuke.Entities.Profile
                 definition.DefaultVisibility = (UserVisibilityMode)Convert.ToInt32(Null.SetNull(dr["DefaultVisibility"], definition.DefaultVisibility));
                 definition.ProfileVisibility = new ProfileVisibility
                 {
-                    VisibilityMode = definition.DefaultVisibility
+                    VisibilityMode = definition.DefaultVisibility,
                 };
                 definition.Deleted = Convert.ToBoolean(Null.SetNull(dr["Deleted"], definition.Deleted));
             }

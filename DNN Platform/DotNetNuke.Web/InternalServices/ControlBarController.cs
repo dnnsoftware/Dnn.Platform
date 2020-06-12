@@ -132,7 +132,7 @@ namespace DotNetNuke.Web.InternalServices
                 ModuleName = kvp.Key,
                 ModuleImage = this.GetDeskTopModuleImage(kvp.Value.DesktopModuleID),
                 Bookmarked = bookmarkedModules.Any(m => m.Key == kvp.Key),
-                ExistsInBookmarkCategory = bookmarkCategoryModules.Any(m => m.Key == kvp.Key)
+                ExistsInBookmarkCategory = bookmarkCategoryModules.Any(m => m.Key == kvp.Key),
             }).ToList();
             return this.Request.CreateResponse(HttpStatusCode.OK, result);
         }
@@ -749,7 +749,7 @@ namespace DotNetNuke.Web.InternalServices
                 RoleID = roleId,
                 UserID = userId,
                 PermissionKey = permission.PermissionKey,
-                AllowAccess = allowAccess
+                AllowAccess = allowAccess,
             };
 
             // add the permission to the collection
@@ -879,7 +879,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 this._nameDics = new Dictionary<string, string> { { "SearchCrawlerAdmin", "SearchCrawler Admin" },
                                                              { "SearchCrawlerInput", "SearchCrawler Input" },
-                                                             { "SearchCrawlerResults", "SearchCrawler Results" } };
+                                                             { "SearchCrawlerResults", "SearchCrawler Results" }, };
             }
 
             return this._nameDics.ContainsKey(moduleName) ? this._nameDics[moduleName] : moduleName;

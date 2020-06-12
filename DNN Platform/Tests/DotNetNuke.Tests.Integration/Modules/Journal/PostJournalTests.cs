@@ -58,7 +58,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}",
             };
 
 
@@ -80,7 +80,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}",
             };
 
             var exceptionThrown = false;
@@ -114,7 +114,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}",
             };
 
             var exceptionThrown = false;
@@ -155,7 +155,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId1}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId1}\"}}",
             };
 
             connector1.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
@@ -178,7 +178,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = groupId,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}",
             };
 
             connector.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
@@ -200,7 +200,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = groupId,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}",
             };
 
             var exceptionThrown = false;
@@ -234,7 +234,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"javascript:alert(1);\\\" onerror=\\\"alert(2);.png\",\"Url\":\"fileid={fileId}\"}}"
+                itemData = $"{{\"ImageUrl\":\"javascript:alert(1);\\\" onerror=\\\"alert(2);.png\",\"Url\":\"fileid={fileId}\"}}",
             };
 
             connector.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
@@ -262,7 +262,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"javascript:alert(1);\", \"Title\": \"Test.png\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"javascript:alert(1);\", \"Title\": \"Test.png\"}}",
             };
 
             connector.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
@@ -288,7 +288,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"http://www.dnnsoftware.com\", \"Title\": \"Test.png\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"http://www.dnnsoftware.com\", \"Title\": \"Test.png\"}}",
             };
 
             connector.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
@@ -315,7 +315,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}",
             };
 
             connector.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
@@ -345,7 +345,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "C",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId1}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId1}\"}}",
             };
 
             connector1.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
@@ -383,7 +383,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "F",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId1}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId1}\"}}",
             };
 
             connector1.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
@@ -411,7 +411,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "P",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}",
             };
 
             connector.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
@@ -446,7 +446,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 status = 1,
                 isPublic = true,
                 autoAssign = false,
-                isSystem = false
+                isSystem = false,
             });
 
             return DatabaseHelper.ExecuteScalar<int>($"SELECT RoleId FROM {{objectQualifier}}Roles WHERE RoleName = '{roleName}' AND PortalId = {this.PortalId}");
@@ -461,7 +461,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             {
                 userId = userId,
                 roleId = groupId,
-                isAdd = true
+                isAdd = true,
             });
         }
 

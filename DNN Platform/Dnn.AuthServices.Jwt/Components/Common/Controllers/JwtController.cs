@@ -155,7 +155,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 UserId = userInfo.UserID,
                 DisplayName = userInfo.DisplayName,
                 AccessToken = accessToken,
-                RenewalToken = renewalToken
+                RenewalToken = renewalToken,
             };
         }
 
@@ -251,7 +251,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 UserId = userInfo.UserID,
                 DisplayName = userInfo.DisplayName,
                 AccessToken = accessToken,
-                RenewalToken = renewalToken
+                RenewalToken = renewalToken,
             };
         }
 

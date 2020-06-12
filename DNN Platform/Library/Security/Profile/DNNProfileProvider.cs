@@ -129,7 +129,7 @@ namespace DotNetNuke.Security.Profile
                                 }
                                 profProperty.ProfileVisibility = new ProfileVisibility(portalId, extendedVisibility)
                                 {
-                                    VisibilityMode = (UserVisibilityMode)dr["Visibility"]
+                                    VisibilityMode = (UserVisibilityMode)dr["Visibility"],
                                 };
                             }
                         }

@@ -157,7 +157,7 @@ namespace log4net.Appender
             /// <summary>
             /// A value
             /// </summary>
-            Default
+            Default,
         }
 
         /// <summary>

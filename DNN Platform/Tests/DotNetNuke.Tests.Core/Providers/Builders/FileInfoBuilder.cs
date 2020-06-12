@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.Core.Providers.Builders
                     EndDate = this.endDate,
                     ContentItemID = this.contentItemId,
                     FolderMappingID = this.folderMappingID,
-                    FolderId = this.folderId
+                    FolderId = this.folderId,
                 };
         }
     }

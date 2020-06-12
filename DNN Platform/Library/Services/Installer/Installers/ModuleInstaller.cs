@@ -157,7 +157,7 @@ namespace DotNetNuke.Services.Installer.Installers
                                             SentDate = DateTime.Now,
                                             Body = string.Empty,
                                             ProcessorType = "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke",
-                                            ProcessorCommand = "UpdateSupportedFeatures"
+                                            ProcessorCommand = "UpdateSupportedFeatures",
                                         };
 
                 // Add custom Attributes for this message

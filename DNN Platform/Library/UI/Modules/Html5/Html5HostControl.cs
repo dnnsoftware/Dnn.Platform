@@ -67,7 +67,7 @@ namespace DotNetNuke.UI.Modules.Html5
             var cacheItemArgs = new CacheItemArgs(cacheKey, DataCache.SpaModulesHtmlFileTimeOut,
                 DataCache.SpaModulesHtmlFileCachePriority)
             {
-                CacheDependency = new DNNCacheDependency(absoluteFilePath)
+                CacheDependency = new DNNCacheDependency(absoluteFilePath),
             };
             return CBO.GetCachedObject<string>(cacheItemArgs, c => GetFileContentInternal(absoluteFilePath));
         }

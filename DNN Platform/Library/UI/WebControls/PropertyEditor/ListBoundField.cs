@@ -17,6 +17,6 @@ namespace DotNetNuke.UI.WebControls
     {
         Id,
         Value,
-        Text
+        Text,
     }
 }

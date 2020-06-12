@@ -35,13 +35,13 @@ namespace DotNetNuke.UI.Utilities
             None,
             Page,
             Cookie,
-            Personalization
+            Personalization,
         }
 
         public enum PageCallBackType
         {
             GetPersonalization = 0,
-            SetPersonalization = 1
+            SetPersonalization = 1,
         }
 
         private static readonly Hashtable m_objEnabledClientPersonalizationKeys = new Hashtable();
@@ -400,7 +400,7 @@ namespace DotNetNuke.UI.Utilities
                         var objModuleVisible = new HttpCookie("_Module" + intModuleId + "_Visible", value.ToString().ToLowerInvariant())
                         {
                             Expires = DateTime.MaxValue,
-                            Path = !string.IsNullOrEmpty(Common.Globals.ApplicationPath) ? Common.Globals.ApplicationPath : "/"
+                            Path = !string.IsNullOrEmpty(Common.Globals.ApplicationPath) ? Common.Globals.ApplicationPath : "/",
                         };
                         HttpContext.Current.Response.AppendCookie(objModuleVisible);
                         break;

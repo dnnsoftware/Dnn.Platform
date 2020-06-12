@@ -380,7 +380,7 @@ namespace DotNetNuke.Entities.Modules
                 SentDate = DateTime.Now,
                 Body = string.Empty,
                 ProcessorType = "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke",
-                ProcessorCommand = "UpdateSupportedFeatures"
+                ProcessorCommand = "UpdateSupportedFeatures",
             };
             oAppStartMessage.Attributes.Add("BusinessControllerClass", desktopModuleInfo.BusinessControllerClass);
             oAppStartMessage.Attributes.Add("DesktopModuleId", desktopModuleInfo.DesktopModuleID.ToString());

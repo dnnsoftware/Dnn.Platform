@@ -141,7 +141,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
                 Body = body,
                 IncludeDismissAction = true,
                 Context = userRelationship.UserRelationshipId.ToString(CultureInfo.InvariantCulture),
-                SenderUserID = initiatingUser.UserID
+                SenderUserID = initiatingUser.UserID,
             };
 
             NotificationsController.Instance.SendNotification(notification, initiatingUser.PortalID, null, new List<UserInfo> { targetUser });

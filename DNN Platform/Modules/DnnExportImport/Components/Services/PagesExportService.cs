@@ -522,7 +522,7 @@ namespace Dnn.ExportImport.Components.Services
                             PermissionKey = other.PermissionKey,
                             PermissionName = other.PermissionName,
                             AllowAccess = other.AllowAccess,
-                            PermissionID = permissionId.Value
+                            PermissionID = permissionId.Value,
                         };
                         if (other.UserID != null && other.UserID > 0 && !string.IsNullOrEmpty(other.Username))
                         {
@@ -719,7 +719,7 @@ namespace Dnn.ExportImport.Components.Services
                         IsShareableViewOnly = other.IsShareableViewOnly,
                         StartDate = otherModule.StartDate.GetValueOrDefault(DateTime.MinValue),
                         EndDate = otherModule.EndDate.GetValueOrDefault(DateTime.MinValue),
-                        PortalID = this._exportImportJob.PortalId
+                        PortalID = this._exportImportJob.PortalId,
                     };
 
                     // Logger.Error($"Local Tab ID={local.TabID}, ModuleID={local.ModuleID}, ModuleDefID={local.ModuleDefID}");
@@ -816,7 +816,7 @@ namespace Dnn.ExportImport.Components.Services
                                     InheritViewPermissions = other.InheritViewPermissions,
                                     IsShareable = other.IsShareable,
                                     IsShareableViewOnly = other.IsShareableViewOnly,
-                                    PortalID = this._exportImportJob.PortalId
+                                    PortalID = this._exportImportJob.PortalId,
                                 };
 
                                 // this will create up to 2 records:  Module (if it is not already there) and TabModule
@@ -1129,7 +1129,7 @@ namespace Dnn.ExportImport.Components.Services
                         PermissionKey = other.PermissionKey,
                         PermissionName = other.PermissionName,
                         AllowAccess = other.AllowAccess,
-                        PermissionID = permissionId.Value
+                        PermissionID = permissionId.Value,
                     };
                     if (other.UserID != null && other.UserID > 0 && !string.IsNullOrEmpty(other.Username))
                     {
@@ -1656,7 +1656,7 @@ namespace Dnn.ExportImport.Components.Services
                             PackageName = package.Name,
                             Version = package.Version,
                             PackageType = package.PackageType,
-                            PackageFileName = InstallerUtil.GetPackageBackupName(package)
+                            PackageFileName = InstallerUtil.GetPackageBackupName(package),
                         }, null);
 
                         this._exportedModuleDefinitions.Add(exportModule.ModuleDefID);
@@ -1784,7 +1784,7 @@ namespace Dnn.ExportImport.Components.Services
                 TabPath = tab.TabPath,
                 HasBeenPublished = tab.HasBeenPublished,
                 IsSystem = tab.IsSystem,
-                StateID = tab.StateID
+                StateID = tab.StateID,
             };
             this.Repository.CreateItem(exportPage, null);
             this.Result.AddLogEntry("Exported page", tab.TabName + " (" + tab.TabPath + ")");

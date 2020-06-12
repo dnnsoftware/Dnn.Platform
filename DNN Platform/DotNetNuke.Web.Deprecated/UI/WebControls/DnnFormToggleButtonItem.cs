@@ -18,7 +18,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             TrueFalse = 0,
             YN = 1,
-            YesNo = 2
+            YesNo = 2,
         }
 
 

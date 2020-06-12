@@ -57,7 +57,7 @@ namespace DotNetNuke.Web.DDRMenu
                             IncludeHidden = Convert.ToBoolean(moduleSettings["IncludeHidden"]),
                             ClientOptions = Settings.ClientOptionsFromSettingString(Convert.ToString(moduleSettings["ClientOptions"])),
                             TemplateArguments =
-                                Settings.TemplateArgumentsFromSettingString(Convert.ToString(moduleSettings["TemplateArguments"]))
+                                Settings.TemplateArgumentsFromSettingString(Convert.ToString(moduleSettings["TemplateArguments"])),
                            };
             return settings.ToXml();
         }

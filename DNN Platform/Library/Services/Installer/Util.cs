@@ -592,7 +592,7 @@ namespace DotNetNuke.Services.Installer
                         var autoResetEvent = new AutoResetEvent(true);
                         var fileSystemWatcher = new FileSystemWatcher(Path.GetDirectoryName(path))
                         {
-                            EnableRaisingEvents = true
+                            EnableRaisingEvents = true,
                         };
 
                         fileSystemWatcher.Changed +=

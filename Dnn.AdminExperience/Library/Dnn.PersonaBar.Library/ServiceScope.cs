@@ -20,6 +20,6 @@ namespace Dnn.PersonaBar.Library
         /// <summary>
         /// the service only available for host users.
         /// </summary>
-        Host
+        Host,
     }
 }

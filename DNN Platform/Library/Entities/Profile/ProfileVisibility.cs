@@ -67,7 +67,7 @@ namespace DotNetNuke.Entities.Profile
                          {
                              VisibilityMode = this.VisibilityMode,
                              RoleVisibilities = new List<RoleInfo>(this.RoleVisibilities),
-                             RelationshipVisibilities = new List<Relationship>(this.RelationshipVisibilities)
+                             RelationshipVisibilities = new List<Relationship>(this.RelationshipVisibilities),
                          };
             return pv;
         }

@@ -92,7 +92,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
             {
                 View = view,
                 ViewData = this.ViewData,
-                TempData = this.TempData
+                TempData = this.TempData,
             };
         }
 
@@ -109,7 +109,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
                 MasterName = masterName,
                 ViewData = this.ViewData,
                 TempData = this.TempData,
-                ViewEngineCollection = this.ViewEngineCollection
+                ViewEngineCollection = this.ViewEngineCollection,
             };
         }
 
@@ -125,7 +125,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
                 ViewName = viewName,
                 ViewData = this.ViewData,
                 TempData = this.TempData,
-                ViewEngineCollection = this.ViewEngineCollection
+                ViewEngineCollection = this.ViewEngineCollection,
             };
         }
 

@@ -149,7 +149,7 @@ namespace log4net.Core
             /// <summary>
             /// A value
             /// </summary>
-            Default
+            Default,
         }
 
         /// <summary>

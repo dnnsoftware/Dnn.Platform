@@ -152,7 +152,7 @@ namespace DotNetNuke.Services.Exceptions
             var log = new LogInfo
             {
                 BypassBuffering = true,
-                LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()
+                LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
             };
             log.LogProperties.Add(new LogDetailInfo(notFoundErrorString, "URL"));
             var context = HttpContext.Current;

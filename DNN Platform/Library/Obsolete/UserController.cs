@@ -104,7 +104,7 @@ namespace DotNetNuke.Entities.Users
                         UserID = Null.SetNullInteger(dr["UserID"]),
                         FirstName = Null.SetNullString(dr["FirstName"]),
                         LastName = Null.SetNullString(dr["LastName"]),
-                        DisplayName = Null.SetNullString(dr["DisplayName"])
+                        DisplayName = Null.SetNullString(dr["DisplayName"]),
                     };
                     objUserInfo.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], objUserInfo.AffiliateID));
                     objUserInfo.Username = Null.SetNullString(dr["Username"]);

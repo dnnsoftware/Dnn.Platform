@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.Groups
         {
             Setup = 0,
             List = 1,
-            View = 2
+            View = 2,
         }
 
         public GroupMode LoadView

@@ -91,7 +91,7 @@ namespace DotNetNuke.Services.Search.Entities
                 "Unique Key: " + this.UniqueKey,
                 "Last Modified: " + this.ModifiedTimeUtc.ToString("O"),
                 "Culture: " + this.CultureCode,
-                "Search Type: " + this.SearchTypeId
+                "Search Type: " + this.SearchTypeId,
             });
         }
     }

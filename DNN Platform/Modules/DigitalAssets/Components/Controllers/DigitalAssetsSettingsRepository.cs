@@ -131,12 +131,12 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
     {
         Normal,
         Group,
-        User
+        User,
     }
 
     public enum FilterCondition
     {
         NotSet,
-        FilterByFolder
+        FilterByFolder,
     }
 }

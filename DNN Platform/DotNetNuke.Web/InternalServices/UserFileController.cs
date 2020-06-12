@@ -50,7 +50,7 @@ namespace DotNetNuke.Web.InternalServices
                     children = this.GetChildren(userFolder, extensions),
                     folder = true,
                     id = userFolder.FolderID,
-                    name = Localization.GetString("UserFolderTitle.Text", Localization.SharedResourceFile)
+                    name = Localization.GetString("UserFolderTitle.Text", Localization.SharedResourceFile),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new List<Item> { folderStructure });
@@ -77,7 +77,7 @@ namespace DotNetNuke.Web.InternalServices
                     name = currentFolder.DisplayName ?? currentFolder.FolderName,
                     folder = true,
                     parentId = folder.FolderID,
-                    children = this.GetChildren(currentFolder, extensions)
+                    children = this.GetChildren(currentFolder, extensions),
                 });
             }
 
@@ -97,7 +97,7 @@ namespace DotNetNuke.Web.InternalServices
                         thumb_url = this.GetThumbUrl(file),
                         type = GetTypeName(file),
                         size = GetFileSize(file.Size),
-                        modified = GetModifiedTime(file.LastModificationTime)
+                        modified = GetModifiedTime(file.LastModificationTime),
                     });
                 }
             }

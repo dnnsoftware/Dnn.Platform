@@ -88,7 +88,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             var portalSettings = new PortalSettings
             {
                 AdministratorRoleName = Utilities.Constants.RoleName_Administrators,
-                ActiveTab = new TabInfo { ModuleID = 1, TabID = 1 }
+                ActiveTab = new TabInfo { ModuleID = 1, TabID = 1 },
             };
 
             this._portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
@@ -99,7 +99,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             var moduleInfo = new ModuleInfo
             {
                 ModuleID = 1,
-                PortalID = this._portalController.Object.GetCurrentPortalSettings().PortalId
+                PortalID = this._portalController.Object.GetCurrentPortalSettings().PortalId,
             };
 
             this._moduleController.Setup(mc => mc.GetModule(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
@@ -112,7 +112,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             {
                 UserID = 1,
                 Username = "admin",
-                PortalID = this._portalController.Object.GetCurrentPortalSettings().PortalId
+                PortalID = this._portalController.Object.GetCurrentPortalSettings().PortalId,
             };
             this._userController.Setup(uc => uc.GetUser(It.IsAny<int>(), It.IsAny<int>())).Returns(userInfo);
         }

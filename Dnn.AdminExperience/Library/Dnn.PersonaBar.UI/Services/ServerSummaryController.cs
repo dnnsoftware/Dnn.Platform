@@ -36,7 +36,7 @@ namespace Dnn.PersonaBar.UI.Services
         {
             None,
             Normal,
-            Critical
+            Critical,
         }
 
 

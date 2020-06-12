@@ -23,6 +23,6 @@ namespace DotNetNuke.Services.Mobile
         /// <summary>
         /// Redirect when request from some unknown device, should be determine by match rules;
         /// </summary>
-        Url = 3
+        Url = 3,
     }
 }
