@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         private readonly IDnnController _controller;
         public DnnUrlHelper(ViewContext viewContext) 
-            : this(viewContext , RouteTable.Routes)
+            : this(viewContext, RouteTable.Routes)
         {
         }
 

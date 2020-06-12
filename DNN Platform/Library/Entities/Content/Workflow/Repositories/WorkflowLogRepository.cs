@@ -11,7 +11,7 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.Entities.Content.Workflow.Repositories
 {
-    internal class WorkflowLogRepository : ServiceLocator<IWorkflowLogRepository, WorkflowLogRepository> , IWorkflowLogRepository
+    internal class WorkflowLogRepository : ServiceLocator<IWorkflowLogRepository, WorkflowLogRepository>, IWorkflowLogRepository
     {
         #region Public Methods
         public IEnumerable<WorkflowLog> GetWorkflowLogs(int contentItemId, int workflowId)

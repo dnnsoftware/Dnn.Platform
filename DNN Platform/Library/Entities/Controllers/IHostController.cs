@@ -90,7 +90,7 @@ namespace DotNetNuke.Entities.Controllers
         /// <param name="key">The setting key string</param>
         /// <param name="passPhrase">The passPhrase used to decrypt the setting value</param>
         /// <returns>The setting value as a <see cref="string"/></returns>
-        string GetEncryptedString(string key,string passPhrase);
+        string GetEncryptedString(string key, string passPhrase);
 
         /// <summary>
         /// Gets the setting value for a specific key

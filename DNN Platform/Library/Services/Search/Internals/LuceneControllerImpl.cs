@@ -84,7 +84,7 @@ namespace DotNetNuke.Services.Search.Internals
         private void CheckDisposed()
         {
             if (Thread.VolatileRead(ref this._isDisposed) == DISPOSED)
-                throw new ObjectDisposedException(Localization.Localization.GetExceptionMessage("LuceneControlerIsDisposed","LuceneController is disposed and cannot be used anymore"));
+                throw new ObjectDisposedException(Localization.Localization.GetExceptionMessage("LuceneControlerIsDisposed", "LuceneController is disposed and cannot be used anymore"));
         }
         #endregion
 
@@ -111,7 +111,7 @@ namespace DotNetNuke.Services.Search.Internals
                                 {
 #pragma warning disable 0618
                                     throw new SearchException(
-                                        Localization.Localization.GetExceptionMessage("UnableToCreateLuceneWriter","Unable to create Lucene writer (lock file is in use). Please recycle AppPool in IIS to release lock."),
+                                        Localization.Localization.GetExceptionMessage("UnableToCreateLuceneWriter", "Unable to create Lucene writer (lock file is in use). Please recycle AppPool in IIS to release lock."),
                                         e, new SearchItemInfo());
 #pragma warning restore 0618
                                 }
@@ -212,7 +212,7 @@ namespace DotNetNuke.Services.Search.Internals
         {
             if (!this.ValidateIndexFolder())
             {
-                throw new SearchIndexEmptyException(Localization.Localization.GetExceptionMessage("SearchIndexingDirectoryNoValid","Search indexing directory is either empty or does not exist"));
+                throw new SearchIndexEmptyException(Localization.Localization.GetExceptionMessage("SearchIndexingDirectoryNoValid", "Search indexing directory is either empty or does not exist"));
             }
         }
 

@@ -147,7 +147,7 @@ namespace DotNetNuke.Services.Install
             else
             {
                 _supportedLanguages = new string[1];
-                _supportedLanguages.SetValue("en-US",0);
+                _supportedLanguages.SetValue("en-US", 0);
             }
         }
 
@@ -228,8 +228,8 @@ namespace DotNetNuke.Services.Install
                     default:
                         if (_currentStep.Status != StepStatus.Done)
                         {
-                            CurrentStepActivity(string.Format(Localization.Localization.GetString("ErrorInStep", LocalResourceFile)
-                                                                                                  , _currentStep.Errors.Count > 0 ? string.Join(",", _currentStep.Errors.ToArray()) : _currentStep.Details));
+                            CurrentStepActivity(string.Format(Localization.Localization.GetString("ErrorInStep", LocalResourceFile),
+                                                                                                  _currentStep.Errors.Count > 0 ? string.Join(",", _currentStep.Errors.ToArray()) : _currentStep.Details));
                             _upgradeRunning = false;
                             return;
                         }

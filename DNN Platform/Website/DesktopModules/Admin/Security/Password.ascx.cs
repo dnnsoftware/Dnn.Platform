@@ -378,7 +378,7 @@ namespace DotNetNuke.Modules.Admin.Users
             try
             {
                 //send fresh resettoken copy
-                bool canSend = UserController.ResetPasswordToken(this.User,true);
+                bool canSend = UserController.ResetPasswordToken(this.User, true);
 
                 var message = String.Empty;
                 var moduleMessageType = ModuleMessage.ModuleMessageType.GreenSuccess;

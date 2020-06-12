@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         IDataReader GetMessageThread(int conversationId, int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending, ref int totalRecords);        
         void UpdateMessageReadStatus(int conversationId, int userId, bool read);
         void UpdateMessageArchivedStatus(int conversationId, int userId, bool archived);
-        int CreateMessageReply(int conversationId, int portalId,string body, int senderUserId, string from, int createUpdateUserId);
+        int CreateMessageReply(int conversationId, int portalId, string body, int senderUserId, string from, int createUpdateUserId);
         int CountNewThreads(int userId, int portalId);
         int CountTotalConversations(int userId, int portalId);
         int CountMessagesByConversation(int conversationId);
@@ -78,7 +78,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
 
         IDataReader GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize);
         IDataReader GetNextMessagesForDigestDispatch(int frequecy, Guid schedulerInstance, int batchSize);
-        void MarkMessageAsDispatched(int messageId,int recipientId);
+        void MarkMessageAsDispatched(int messageId, int recipientId);
         void MarkMessageAsSent(int messageId, int recipientId);
 
         #endregion

@@ -23,7 +23,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// An HTML label element and the property name of the property that is represented by the expression.
         /// </returns>
         /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the property to display.</param>
-        public static MvcHtmlString Label(this DnnHtmlHelper html,string expression)
+        public static MvcHtmlString Label(this DnnHtmlHelper html, string expression)
         {
             return html.HtmlHelper.Label(expression);
         }
@@ -36,7 +36,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// An HTML label element and the property name of the property that is represented by the expression.
         /// </returns>
         /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the property to display.</param><param name="labelText">The label text to display.</param>
-        public static MvcHtmlString Label(this DnnHtmlHelper html,string expression, string labelText)
+        public static MvcHtmlString Label(this DnnHtmlHelper html, string expression, string labelText)
         {
             return html.HtmlHelper.Label(expression, labelText);
         }
@@ -49,7 +49,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// An HTML label element and the property name of the property that is represented by the expression.
         /// </returns>
         /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the property to display.</param><param name="htmlAttributes">An object that contains the HTML attributes to set for the element.</param>
-        public static MvcHtmlString Label(this DnnHtmlHelper html,string expression, object htmlAttributes)
+        public static MvcHtmlString Label(this DnnHtmlHelper html, string expression, object htmlAttributes)
         {
             return html.HtmlHelper.Label(expression,  htmlAttributes);
         }
@@ -62,7 +62,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// An HTML label element and the property name of the property that is represented by the expression.
         /// </returns>
         /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the property to display.</param><param name="htmlAttributes">An object that contains the HTML attributes to set for the element.</param>
-        public static MvcHtmlString Label(this DnnHtmlHelper html,string expression, IDictionary<string, object> htmlAttributes)
+        public static MvcHtmlString Label(this DnnHtmlHelper html, string expression, IDictionary<string, object> htmlAttributes)
         {
             return html.HtmlHelper.Label(expression,  htmlAttributes);
         }
@@ -75,7 +75,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// An HTML label element and the property name of the property that is represented by the expression.
         /// </returns>
         /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the property to display.</param><param name="labelText">The label text.</param><param name="htmlAttributes">An object that contains the HTML attributes to set for the element.</param>
-        public static MvcHtmlString Label(this DnnHtmlHelper html,string expression, string labelText, object htmlAttributes)
+        public static MvcHtmlString Label(this DnnHtmlHelper html, string expression, string labelText, object htmlAttributes)
         {
             return html.HtmlHelper.Label(expression, labelText, htmlAttributes);
         }
@@ -88,7 +88,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// An HTML label element and the property name of the property that is represented by the expression.
         /// </returns>
         /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the property to display.</param><param name="labelText">The label text.</param><param name="htmlAttributes">An object that contains the HTML attributes to set for the element.</param>
-        public static MvcHtmlString Label(this DnnHtmlHelper html,string expression, string labelText, IDictionary<string, object> htmlAttributes)
+        public static MvcHtmlString Label(this DnnHtmlHelper html, string expression, string labelText, IDictionary<string, object> htmlAttributes)
         {
             return html.HtmlHelper.Label(expression, labelText, htmlAttributes);
         }

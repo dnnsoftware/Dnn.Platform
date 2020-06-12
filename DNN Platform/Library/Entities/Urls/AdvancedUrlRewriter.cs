@@ -1716,7 +1716,7 @@ namespace DotNetNuke.Entities.Urls
                                         string cultureCode = pi.DefaultLanguage;
                                         if (!string.IsNullOrEmpty(cultureCode))
                                         {
-                                            var primaryPortalAlias = portalAliases.GetAliasByPortalIdAndSettings(result.PortalId, result,cultureCode,settings);
+                                            var primaryPortalAlias = portalAliases.GetAliasByPortalIdAndSettings(result.PortalId, result, cultureCode, settings);
                                             if (primaryPortalAlias != null)
                                             {
                                                 httpAlias = primaryPortalAlias.HTTPAlias;
@@ -2731,9 +2731,9 @@ namespace DotNetNuke.Entities.Urls
                                             {
                                                 //an internal alias has been used.
                                                 //replace this in the comparison charts to do a 'fair' comparison
-                                                requestedPathNoScheme = requestedPathNoScheme.Replace(internalAlias,chosenAlias);
-                                                rawUrlWithHost = rawUrlWithHost.Replace(scheme + internalAlias,scheme + chosenAlias);
-                                                rawUrlWithHostNoScheme = rawUrlWithHostNoScheme.Replace(internalAlias,chosenAlias);
+                                                requestedPathNoScheme = requestedPathNoScheme.Replace(internalAlias, chosenAlias);
+                                                rawUrlWithHost = rawUrlWithHost.Replace(scheme + internalAlias, scheme + chosenAlias);
+                                                rawUrlWithHostNoScheme = rawUrlWithHostNoScheme.Replace(internalAlias, chosenAlias);
                                                 rawUrlLowerCase = rawUrlLowerCase.Replace(internalAlias, chosenAlias);
                                                 break;
                                             }

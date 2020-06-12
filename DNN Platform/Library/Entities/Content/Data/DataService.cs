@@ -181,7 +181,7 @@ namespace DotNetNuke.Entities.Content.Data
             this._provider.ExecuteNonQuery("AddMetaData", contentItem.ContentItemId, name, value);
         }
         
-        public void SynchronizeMetaData(ContentItem contentItem, IEnumerable<KeyValuePair<string,string>> added, IEnumerable<KeyValuePair<string,string>> deleted)
+        public void SynchronizeMetaData(ContentItem contentItem, IEnumerable<KeyValuePair<string, string>> added, IEnumerable<KeyValuePair<string, string>> deleted)
         {
 #if false
             //TODO: fixing the original code requires adding new DataProvider methods. Reason:

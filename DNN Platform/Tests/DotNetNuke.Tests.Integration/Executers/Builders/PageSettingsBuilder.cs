@@ -14,7 +14,7 @@ namespace DotNetNuke.Tests.Integration.Executers.Builders
         public PageSettingsBuilder()
         {
             this.WithTabId(0);
-            this.WithName("RB" + Guid.NewGuid().ToString().Replace("-",""));
+            this.WithName("RB" + Guid.NewGuid().ToString().Replace("-", ""));
             this.WithPageType(string.Empty);
             this.WithUrl(string.Empty);
             this.WithPermission(new TabPermissions());

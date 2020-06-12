@@ -9,7 +9,7 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.Entities.Content.Workflow.Actions
 {
-    public class WorkflowActionManager : ServiceLocator<IWorkflowActionManager, WorkflowActionManager> , IWorkflowActionManager
+    public class WorkflowActionManager : ServiceLocator<IWorkflowActionManager, WorkflowActionManager>, IWorkflowActionManager
     {
         #region Members
         private readonly IWorkflowActionRepository _workflowActionRepository;

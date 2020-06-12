@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.MemberDirectory
 
                 foreach (var rel in this.Model.Relationships)
                 {
-                    this.relationShipList.AddItem(Localization.GetString(rel.Name,Localization.SharedResourceFile),rel.RelationshipId.ToString());
+                    this.relationShipList.AddItem(Localization.GetString(rel.Name, Localization.SharedResourceFile), rel.RelationshipId.ToString());
                 }
 
 
@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.MemberDirectory
                 this.propertyList.DataBind();
 
                 //Insert custom properties to the Search field lists
-                propertiesCollection.Insert(0,new ListItem(Localization.GetString("Username",this.LocalResourceFile),"Username"));
+                propertiesCollection.Insert(0, new ListItem(Localization.GetString("Username", this.LocalResourceFile), "Username"));
                 propertiesCollection.Insert(1, new ListItem(Localization.GetString("DisplayName", this.LocalResourceFile), "DisplayName"));
                 propertiesCollection.Insert(2, new ListItem(Localization.GetString("Email", this.LocalResourceFile), "Email"));
 
@@ -182,7 +182,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             var result = new ListItemCollection();
             foreach (var property in this.Model.ProfileProperties)
             {
-                result.Add(new ListItem(this.GetLocalizeName(property.PropertyName,profileResourceFile),property.PropertyName));
+                result.Add(new ListItem(this.GetLocalizeName(property.PropertyName, profileResourceFile), property.PropertyName));
             }
             
             return result;

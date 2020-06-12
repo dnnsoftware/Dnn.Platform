@@ -8,7 +8,7 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.Common.Utilities
 {
-    public class JavaScriptUtils: ServiceLocator<IJavaScriptUtils,JavaScriptUtils>, IJavaScriptUtils
+    public class JavaScriptUtils: ServiceLocator<IJavaScriptUtils, JavaScriptUtils>, IJavaScriptUtils
     {
         public void RegisterJavascriptVariable(string variableName, object value, Page page, Type type)
         {

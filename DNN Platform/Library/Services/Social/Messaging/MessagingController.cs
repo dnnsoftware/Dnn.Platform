@@ -34,8 +34,8 @@ namespace DotNetNuke.Services.Social.Messaging
     /// <remarks>
     /// </remarks>
     public class MessagingController 
-                                : ServiceLocator<IMessagingController, MessagingController>
-                                , IMessagingController
+                                : ServiceLocator<IMessagingController, MessagingController>,
+                                IMessagingController
     {
         protected override Func<IMessagingController> GetFactory()
         {

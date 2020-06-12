@@ -175,7 +175,7 @@ namespace DotNetNuke.Services.Exceptions
 			str.Append("<p><strong>Message:</strong>" + WebUtility.HtmlEncode(this.Message) + "</p>");
 			str.Append("<p><strong>StackTrace:</strong><pre>" + WebUtility.HtmlEncode(this.StackTrace)?.Replace(") at ", ")<br/>at ") + "</pre></p>");
 			str.Append("<p><strong>InnerMessage:</strong>" + WebUtility.HtmlEncode(this.InnerMessage) + "</p>");
-			str.Append("<p><strong>InnerStackTrace:</strong><pre>" + WebUtility.HtmlEncode(this.InnerStackTrace)?.Replace(") at ",")<br/>at ") + "</pre></p>");
+			str.Append("<p><strong>InnerStackTrace:</strong><pre>" + WebUtility.HtmlEncode(this.InnerStackTrace)?.Replace(") at ", ")<br/>at ") + "</pre></p>");
 			str.Append("<p><strong>Source:</strong>" + WebUtility.HtmlEncode(this.Source) + "</p>");
 			str.Append("<p><strong>FileName:</strong>" + WebUtility.HtmlEncode(this.FileName) + "</p>");
 			str.Append("<p><strong>FileLineNumber:</strong>" + this.FileLineNumber + "</p>");

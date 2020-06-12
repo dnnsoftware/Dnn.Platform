@@ -256,7 +256,7 @@ namespace log4net.Layout
 			{
 				byte[] messageBytes = Encoding.UTF8.GetBytes(loggingEvent.RenderedMessage);
 				string base64Message = Convert.ToBase64String(messageBytes, 0, messageBytes.Length);
-				Transform.WriteEscapedXmlString(writer, base64Message,this.InvalidCharReplacement);
+				Transform.WriteEscapedXmlString(writer, base64Message, this.InvalidCharReplacement);
 			}
 			writer.WriteEndElement();
 
@@ -269,13 +269,13 @@ namespace log4net.Layout
 				foreach (System.Collections.DictionaryEntry entry in properties)
 				{
 					writer.WriteStartElement(this.m_elmData);
-					writer.WriteAttributeString(ATTR_NAME, Transform.MaskXmlInvalidCharacters((string)entry.Key,this.InvalidCharReplacement));
+					writer.WriteAttributeString(ATTR_NAME, Transform.MaskXmlInvalidCharacters((string)entry.Key, this.InvalidCharReplacement));
 
 					// Use an ObjectRenderer to convert the object to a string
 					string valueStr =null;
 					if (!this.Base64EncodeProperties)
 					{
-						valueStr = Transform.MaskXmlInvalidCharacters(loggingEvent.Repository.RendererMap.FindAndRender(entry.Value),this.InvalidCharReplacement);
+						valueStr = Transform.MaskXmlInvalidCharacters(loggingEvent.Repository.RendererMap.FindAndRender(entry.Value), this.InvalidCharReplacement);
 					}
 					else
 					{
@@ -294,7 +294,7 @@ namespace log4net.Layout
 			{
 				// Append the stack trace line
 				writer.WriteStartElement(this.m_elmException);
-				Transform.WriteEscapedXmlString(writer, exceptionStr,this.InvalidCharReplacement);
+				Transform.WriteEscapedXmlString(writer, exceptionStr, this.InvalidCharReplacement);
 				writer.WriteEndElement();
 			}
 

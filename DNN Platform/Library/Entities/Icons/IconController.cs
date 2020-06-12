@@ -144,7 +144,7 @@ namespace DotNetNuke.Entities.Icons
             string result = "";
             foreach (var iconDir in iconRootDir.EnumerateDirectories())
             {
-                string testFile = Path.Combine(iconDir.FullName,"About_16x16_Standard.png");
+                string testFile = Path.Combine(iconDir.FullName, "About_16x16_Standard.png");
                 if (File.Exists(testFile))
                     result += iconDir.Name + ",";
             }

@@ -702,11 +702,11 @@ namespace Dnn.ExportImport.Components.Engines
 
         private static readonly Tuple<string, Type>[] DatasetColumns =
         {
-            new Tuple<string,Type>("JobId", typeof(int)),
-            new Tuple<string,Type>("Name" , typeof(string)),
-            new Tuple<string,Type>("Value", typeof(string)),
-            new Tuple<string,Type>("Level", typeof(int)),
-            new Tuple<string,Type>("CreatedOnDate", typeof(DateTime)),
+            new Tuple<string, Type>("JobId", typeof(int)),
+            new Tuple<string, Type>("Name", typeof(string)),
+            new Tuple<string, Type>("Value", typeof(string)),
+            new Tuple<string, Type>("Level", typeof(int)),
+            new Tuple<string, Type>("CreatedOnDate", typeof(DateTime)),
         };
     }
 }

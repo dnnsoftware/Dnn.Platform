@@ -58,7 +58,7 @@ namespace DotNetNuke.Entities.Groups
                 return this.GetString("Street", string.Empty);
             }
             set {
-                this.SetString("Street",value);
+                this.SetString("Street", value);
             }
         }
         public string City {
@@ -75,7 +75,7 @@ namespace DotNetNuke.Entities.Groups
                 return this.GetString("Region", string.Empty);
             }
             set {
-                this.SetString("Region",value);
+                this.SetString("Region", value);
             }
         }
 
@@ -84,7 +84,7 @@ namespace DotNetNuke.Entities.Groups
                 return this.GetString("Country", string.Empty);
             }
             set {
-                this.SetString("Country",value);
+                this.SetString("Country", value);
             }
         }
 
@@ -93,7 +93,7 @@ namespace DotNetNuke.Entities.Groups
                 return this.GetString("PostalCode", string.Empty);
             }
             set {
-                this.SetString("PostalCode",value);
+                this.SetString("PostalCode", value);
             }
         }
 
@@ -102,14 +102,14 @@ namespace DotNetNuke.Entities.Groups
                 return this.GetString("Website", string.Empty);
             }
             set {
-                this.SetString("Website",value);
+                this.SetString("Website", value);
             }
         }
 
   
         public bool Featured {
             get {
-                return Convert.ToBoolean(this.GetString("Featured","false"));
+                return Convert.ToBoolean(this.GetString("Featured", "false"));
             }
             set {
                 this.SetString("Featured", value.ToString());

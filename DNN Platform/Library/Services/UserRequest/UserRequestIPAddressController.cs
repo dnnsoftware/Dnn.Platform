@@ -12,7 +12,7 @@ using System.Net.Sockets;
 
 namespace DotNetNuke.Services.UserRequest
 {
-    public class UserRequestIPAddressController : ServiceLocator<IUserRequestIPAddressController,UserRequestIPAddressController>, IUserRequestIPAddressController
+    public class UserRequestIPAddressController : ServiceLocator<IUserRequestIPAddressController, UserRequestIPAddressController>, IUserRequestIPAddressController
     {
         public string GetUserRequestIPAddress(HttpRequestBase request)
         {

@@ -167,7 +167,7 @@ namespace DotNetNuke.Entities.Host
         /// <param name="myip">IP address</param>
         /// <param name="filterList">list of IP filters</param>
         /// <returns>true if IP can access, false otherwise</returns>
-        public bool CanIPStillAccess(string myip,IList<IPFilterInfo> filterList)
+        public bool CanIPStillAccess(string myip, IList<IPFilterInfo> filterList)
         {
             var allowAllIPs = false;
             var globalAllow = (from p in filterList

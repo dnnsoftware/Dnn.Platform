@@ -47,7 +47,7 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
             MockComponentProvider.ResetContainer();
         }        
 
-        [TestCase("111.111.111.111","X-Forwarded-For")]
+        [TestCase("111.111.111.111", "X-Forwarded-For")]
         [TestCase("111.111.111.111,123.112.11.33", "X-Forwarded-For")]
         [TestCase("111.111.111.111", "X-ProxyUser-Ip")]
         [TestCase("111.111.111.111,23.112.11.33", "X-ProxyUser-Ip")]

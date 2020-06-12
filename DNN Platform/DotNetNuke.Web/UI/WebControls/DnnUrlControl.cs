@@ -458,7 +458,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         {
                             strTab = this.cboTabs.SelectedItem.Value;
                             int id;
-                            if (int.TryParse(strTab,out id) && id >= 0)
+                            if (int.TryParse(strTab, out id) && id >= 0)
                             {
                                 r = strTab;
                             }

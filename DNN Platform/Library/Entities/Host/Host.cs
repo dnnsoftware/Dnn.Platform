@@ -793,7 +793,7 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                return HostController.Instance.GetInteger("MessageSchedulerBatchSize",50);
+                return HostController.Instance.GetInteger("MessageSchedulerBatchSize", 50);
             }
         }
 

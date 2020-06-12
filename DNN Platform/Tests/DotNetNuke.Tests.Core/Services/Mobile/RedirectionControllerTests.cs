@@ -437,7 +437,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             var mobileUrlForPage3 = this._redirectionController.GetMobileSiteUrl(Portal0, Page3);
 
             //First Page returns link to first url
-            Assert.AreEqual(String.Format("{0}?nomo=0",redirectUrlPage1), mobileUrlForPage1);
+            Assert.AreEqual(String.Format("{0}?nomo=0", redirectUrlPage1), mobileUrlForPage1);
 
             //Second Page returns link to second url
             Assert.AreEqual(String.Format("{0}?nomo=0", redirectUrlPage2), mobileUrlForPage2);
@@ -742,7 +742,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
 			var cols = new string[]
 			           	{
-							"TabID","UniqueId","VersionGuid","DefaultLanguageGuid","LocalizedVersionGuid","TabOrder","PortalID","TabName","IsVisible","ParentId","Level","IconFile","IconFileLarge","DisableLink","Title","Description","KeyWords","IsDeleted","SkinSrc","ContainerSrc","TabPath","StartDate","EndDate","Url","HasChildren","RefreshInterval","PageHeadText","IsSecure","PermanentRedirect","SiteMapPriority","ContentItemID","Content","ContentTypeID","ModuleID","ContentKey","Indexed","CultureCode","CreatedByUserID","CreatedOnDate","LastModifiedByUserID","LastModifiedOnDate","StateID", "HasBeenPublished","IsSystem"
+							"TabID", "UniqueId", "VersionGuid", "DefaultLanguageGuid", "LocalizedVersionGuid", "TabOrder", "PortalID", "TabName", "IsVisible", "ParentId", "Level", "IconFile", "IconFileLarge", "DisableLink", "Title", "Description", "KeyWords", "IsDeleted", "SkinSrc", "ContainerSrc", "TabPath", "StartDate", "EndDate", "Url", "HasChildren", "RefreshInterval", "PageHeadText", "IsSecure", "PermanentRedirect", "SiteMapPriority", "ContentItemID", "Content", "ContentTypeID", "ModuleID", "ContentKey", "Indexed", "CultureCode", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "StateID", "HasBeenPublished", "IsSystem"
 			           	};
 
 			foreach (var col in cols)
@@ -791,7 +791,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
 			var cols = new string[]
 			           	{
-							"PortalID","TabID","TabModuleID","ModuleID","ModuleDefID","ModuleOrder","PaneName","ModuleTitle","CacheTime","CacheMethod","Alignment","Color","Border","IconFile","AllTabs","Visibility","IsDeleted","Header","Footer","StartDate","EndDate","ContainerSrc","DisplayTitle","DisplayPrint","DisplaySyndicate","IsWebSlice","WebSliceTitle","WebSliceExpiryDate","WebSliceTTL","InheritViewPermissions","DesktopModuleID","DefaultCacheTime","ModuleControlID","BusinessControllerClass","IsAdmin","SupportedFeatures","ContentItemID","Content","ContentTypeID","ContentKey","Indexed","CreatedByUserID","CreatedOnDate","LastModifiedByUserID","LastModifiedOnDate","LastContentModifiedOnDate","UniqueId","VersionGuid","DefaultLanguageGuid","LocalizedVersionGuid","CultureCode"
+							"PortalID", "TabID", "TabModuleID", "ModuleID", "ModuleDefID", "ModuleOrder", "PaneName", "ModuleTitle", "CacheTime", "CacheMethod", "Alignment", "Color", "Border", "IconFile", "AllTabs", "Visibility", "IsDeleted", "Header", "Footer", "StartDate", "EndDate", "ContainerSrc", "DisplayTitle", "DisplayPrint", "DisplaySyndicate", "IsWebSlice", "WebSliceTitle", "WebSliceExpiryDate", "WebSliceTTL", "InheritViewPermissions", "DesktopModuleID", "DefaultCacheTime", "ModuleControlID", "BusinessControllerClass", "IsAdmin", "SupportedFeatures", "ContentItemID", "Content", "ContentTypeID", "ContentKey", "Indexed", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "LastContentModifiedOnDate", "UniqueId", "VersionGuid", "DefaultLanguageGuid", "LocalizedVersionGuid", "CultureCode"
 			           	};
 
 			foreach (var col in cols)
@@ -813,7 +813,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
 			var cols = new string[]
 			           	{
-							"SettingName","SettingValue","CreatedByUserID","CreatedOnDate","LastModifiedByUserID","LastModifiedOnDate","CultureCode"
+							"SettingName", "SettingValue", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode"
 			           	};
 
 			foreach (var col in cols)
@@ -834,7 +834,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
 			var cols = new string[]
 			           	{
-							"PortalGroupID","MasterPortalID","PortalGroupName","PortalGroupDescription","AuthenticationDomain","CreatedByUserID","CreatedOnDate","LastModifiedByUserID","LastModifiedOnDate"
+							"PortalGroupID", "MasterPortalID", "PortalGroupName", "PortalGroupDescription", "AuthenticationDomain", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate"
 			           	};
 
 			foreach (var col in cols)

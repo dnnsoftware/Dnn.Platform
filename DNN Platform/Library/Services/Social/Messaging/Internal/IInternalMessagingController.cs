@@ -184,7 +184,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         #region Queued email API's
 
-        IList<MessageRecipient> GetNextMessagesForInstantDispatch(Guid schedulerInstance,int batchSize);
+        IList<MessageRecipient> GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize);
         IList<MessageRecipient> GetNextMessagesForDigestDispatch(Frequency frequency, Guid schedulerInstance, int batchSize);
         void MarkMessageAsDispatched(int messageId, int recipientId);
         void MarkMessageAsSent(int messageId, int recipientId);
@@ -193,7 +193,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         #region Counter APIs
 
-        int CheckReplyHasRecipients(int conversationId , int userId);
+        int CheckReplyHasRecipients(int conversationId, int userId);
 
         int CountUnreadMessages(int userId, int portalId);
 

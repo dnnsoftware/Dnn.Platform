@@ -1016,7 +1016,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         public void GetNotifications_Calls_DataService_GetNotifications()
         {
             this._mockDataService
-                .Setup(ds => ds.GetNotifications(Constants.UserID_User12, Constants.PORTAL_Zero,It.IsAny<int>(), It.IsAny<int>()))
+                .Setup(ds => ds.GetNotifications(Constants.UserID_User12, Constants.PORTAL_Zero, It.IsAny<int>(), It.IsAny<int>()))
                 .Returns(new DataTable().CreateDataReader())
                 .Verifiable();
 
@@ -1038,7 +1038,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Constants.PORTALGROUP_ValidPortalGroupId);
             this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
-            List<PortalGroupInfo> portalGroups = new List<PortalGroupInfo>(){CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId,Constants.PORTAL_Zero)}; // CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero);                
+            List<PortalGroupInfo> portalGroups = new List<PortalGroupInfo>(){CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero)}; // CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero);                
             this._portalGroupController.Setup(pgc => pgc.GetPortalGroups()).Returns(portalGroups);
 
             this._notificationsController.GetNotifications(Constants.UserID_User12, Constants.PORTAL_Zero, 0, 10);
@@ -1065,7 +1065,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         public void CountNotifications_Calls_DataService_CountNotifications()
         {
             this._mockDataService.Setup(ds => ds.CountNotifications(Constants.UserID_User12, Constants.PORTAL_Zero)).Verifiable();
-            this._notificationsController.CountNotifications(Constants.UserID_User12,Constants.PORTAL_Zero);
+            this._notificationsController.CountNotifications(Constants.UserID_User12, Constants.PORTAL_Zero);
             this._mockDataService.Verify();
         }
 

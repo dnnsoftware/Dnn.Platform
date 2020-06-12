@@ -853,9 +853,9 @@ namespace log4net.Appender
                         }
 #endif
                     }
-					LogLog.Debug(declaringType, "["+last.ToString(this.m_datePattern,System.Globalization.DateTimeFormatInfo.InvariantInfo)+"] vs. ["+this.m_now.ToString(this.m_datePattern,System.Globalization.DateTimeFormatInfo.InvariantInfo)+"]");
+					LogLog.Debug(declaringType, "["+last.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo)+"] vs. ["+this.m_now.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo)+"]");
 
-					if (!(last.ToString(this.m_datePattern,System.Globalization.DateTimeFormatInfo.InvariantInfo).Equals(this.m_now.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo)))) 
+					if (!(last.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo).Equals(this.m_now.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo)))) 
 					{
 						this.m_scheduledFilename = this.CombinePath(this.m_baseFileName, last.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo));
 						LogLog.Debug(declaringType, "Initial roll over to ["+this.m_scheduledFilename+"]");

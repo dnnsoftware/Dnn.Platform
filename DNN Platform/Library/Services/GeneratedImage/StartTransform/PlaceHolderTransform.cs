@@ -72,7 +72,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 			var bitmap = new Bitmap(this.Width, this.Height);
 			Brush backColorBrush = new SolidBrush(this.BackColor);
 			Brush colorBrush = new SolidBrush(this.Color);
-			var colorPen = new Pen(this.Color,2);
+			var colorPen = new Pen(this.Color, 2);
 			var text = string.IsNullOrEmpty(this.Text) ? $"{this.Width}x{this.Height}" : this.Text;
 
 			using (var objGraphics = Graphics.FromImage(bitmap))
@@ -84,10 +84,10 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
 				// Fill bitmap with backcolor
 				
-				objGraphics.FillRectangle(backColorBrush,0,0, this.Width,this.Height);
+				objGraphics.FillRectangle(backColorBrush, 0, 0, this.Width, this.Height);
 				
 				// Draw border
-				objGraphics.DrawRectangle(colorPen,1,1,this.Width-3,this.Height-3);
+				objGraphics.DrawRectangle(colorPen, 1, 1, this.Width-3, this.Height-3);
 
 				// Determine fontsize
 				var fontSize = 13;

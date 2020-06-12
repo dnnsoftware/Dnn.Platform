@@ -881,7 +881,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     var tbl = (Table) key.Value;
                     var icon = (Image) key.Key;
-                    DNNClientAPI.EnableMinMax(icon, tbl, false, IconController.IconURL("Minus", "12X15"), IconController.IconURL("Plus","12X15"), DNNClientAPI.MinMaxPersistanceType.Page);
+                    DNNClientAPI.EnableMinMax(icon, tbl, false, IconController.IconURL("Minus", "12X15"), IconController.IconURL("Plus", "12X15"), DNNClientAPI.MinMaxPersistanceType.Page);
                 }
             }
             base.OnPreRender(e);

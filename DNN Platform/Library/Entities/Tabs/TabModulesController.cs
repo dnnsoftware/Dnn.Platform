@@ -51,7 +51,7 @@ namespace DotNetNuke.Entities.Tabs
             return configuredModules;
         }
 
-        public Dictionary<int,string> GetTabModuleSettingsByName(string settingName)
+        public Dictionary<int, string> GetTabModuleSettingsByName(string settingName)
         {
             var portalId = PortalSettings.Current.PortalId;
             var dataProvider = DataProvider.Instance();

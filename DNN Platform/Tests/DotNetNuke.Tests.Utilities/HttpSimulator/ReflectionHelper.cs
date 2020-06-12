@@ -99,7 +99,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         {
             var field = source.GetType().GetField(memberName, BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance);
             if (field == null)
-                throw new ArgumentException(string.Format("Could not find the private instance field '{0}'",memberName));
+                throw new ArgumentException(string.Format("Could not find the private instance field '{0}'", memberName));
             
             field.SetValue(source, value);
         }

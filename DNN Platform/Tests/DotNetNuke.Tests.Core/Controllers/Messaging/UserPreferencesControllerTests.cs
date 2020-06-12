@@ -109,7 +109,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Build();
 
             var user = GetValidUser();
-            this.mockDataService.Setup(ds => ds.GetUserPreference(Constants.PORTAL_ValidPortalId,Constants.UserID_User12))
+            this.mockDataService.Setup(ds => ds.GetUserPreference(Constants.PORTAL_ValidPortalId, Constants.UserID_User12))
                 .Returns(UserPreferenceDataReaderMockHelper.CreateUserPreferenceReader(expectedUserPreference));
 
             //Act

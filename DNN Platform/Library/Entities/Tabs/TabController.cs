@@ -49,7 +49,7 @@ namespace DotNetNuke.Entities.Tabs
     /// Tabs will be a sitemap for a poatal, and every request at first need to check whether there is valid tab information
     /// include in the url, if not it will use default tab to display information.
     /// </remarks>
-    public partial class TabController : ServiceLocator<ITabController, TabController> , ITabController
+    public partial class TabController : ServiceLocator<ITabController, TabController>, ITabController
     {
         protected override Func<ITabController> GetFactory()
         {
@@ -2360,7 +2360,7 @@ namespace DotNetNuke.Entities.Tabs
                     {
                         //Parent node doesn't spcecify the path, search by name.
                         //Possible incoherence if tabname not unique
-                        TabInfo objParent = Instance.GetTabByName(XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "parent"),portalId);
+                        TabInfo objParent = Instance.GetTabByName(XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "parent"), portalId);
                         if (objParent != null)
                         {
                             tab.ParentId = objParent.TabID;

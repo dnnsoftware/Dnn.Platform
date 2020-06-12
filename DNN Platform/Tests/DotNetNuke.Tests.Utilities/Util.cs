@@ -88,7 +88,7 @@ namespace DotNetNuke.Tests.Utilities
         public static string ReadStream(string testFilesFolder, string fileName)
         {
             string text = String.Empty;
-            Stream stream = GetFileStream(testFilesFolder,fileName);
+            Stream stream = GetFileStream(testFilesFolder, fileName);
             if (stream != null)
             {
                 using (var reader = new StreamReader(GetFileStream(testFilesFolder, fileName)))

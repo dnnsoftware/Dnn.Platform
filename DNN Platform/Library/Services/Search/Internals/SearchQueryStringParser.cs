@@ -15,8 +15,8 @@ namespace DotNetNuke.Services.Search.Internals
     /// Class responsible to parse the Search Query String parameter
     /// </summary>
     public class SearchQueryStringParser
-                            : ServiceLocator<ISearchQueryStringParser, SearchQueryStringParser>
-                            , ISearchQueryStringParser
+                            : ServiceLocator<ISearchQueryStringParser, SearchQueryStringParser>,
+                            ISearchQueryStringParser
     {
         protected override Func<ISearchQueryStringParser> GetFactory()
         {

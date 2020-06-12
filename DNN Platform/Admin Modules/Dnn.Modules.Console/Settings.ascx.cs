@@ -216,7 +216,7 @@ namespace Dnn.Modules.Console
 	                    var tabPath = (item.FindControl("tabPath") as HiddenField).Value;
 						var visibility = (item.FindControl("tabVisibility") as DnnComboBox).SelectedValue;
 
-                        var key = String.Format("TabVisibility{0}", tabPath.Replace("//","-"));
+                        var key = String.Format("TabVisibility{0}", tabPath.Replace("//", "-"));
                         ModuleController.Instance.UpdateModuleSetting(this.ModuleId, key, visibility);
                     }
                 }

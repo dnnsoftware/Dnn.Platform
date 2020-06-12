@@ -156,7 +156,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         public void DeleteModule(PortalSettings portalSettings, int moduleId, int pageId, out KeyValuePair<HttpStatusCode, string> message)
         {         
-            var module = this.GetModule(portalSettings,moduleId,pageId,out message);
+            var module = this.GetModule(portalSettings, moduleId, pageId, out message);
 
             if (module != null)
             {               

@@ -39,7 +39,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
                 NotificationsController.Instance.GetNotificationType(FriendRequest).NotificationTypeId,
                 friendRelationship.UserRelationshipId.ToString(CultureInfo.InvariantCulture), initiatingUser.UserID);
 
-            EventManager.Instance.OnFriendshipAccepted(new RelationshipEventArgs(friendRelationship,initiatingUser.PortalID));
+            EventManager.Instance.OnFriendshipAccepted(new RelationshipEventArgs(friendRelationship, initiatingUser.PortalID));
         }
 
         /// -----------------------------------------------------------------------------

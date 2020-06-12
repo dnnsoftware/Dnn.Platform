@@ -105,7 +105,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.lblInfo.Text = Localization.GetString("ForcedResetInfo", this.LocalResourceFile);
             }
 
-			this.txtUsername.Attributes.Add("data-default",useEmailAsUserName ? this.LocalizeString("Email") : this.LocalizeString("Username"));
+			this.txtUsername.Attributes.Add("data-default", useEmailAsUserName ? this.LocalizeString("Email") : this.LocalizeString("Username"));
 			this.txtPassword.Attributes.Add("data-default", this.LocalizeString("Password"));
 			this.txtConfirmPassword.Attributes.Add("data-default", this.LocalizeString("Confirm"));
             this.txtAnswer.Attributes.Add("data-default", this.LocalizeString("Answer"));

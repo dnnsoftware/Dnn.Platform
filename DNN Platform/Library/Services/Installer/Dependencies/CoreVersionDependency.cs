@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
         {
             get
             {
-                return string.Format(Util.INSTALL_Compatibility,this.minVersion);
+                return string.Format(Util.INSTALL_Compatibility, this.minVersion);
             }
         }
 

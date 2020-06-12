@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 				}
 
 				// Now I have the color, pop it into the hashtable for next time
-				this._colorMap.Add ( colorHash , colorIndex ) ;
+				this._colorMap.Add ( colorHash, colorIndex ) ;
 			}
 
 			return colorIndex ;

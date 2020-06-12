@@ -201,7 +201,7 @@ namespace DotNetNuke.Framework
             foreach (Control c in controls)
             {
                 this.ProcessControl(c, affectedControls, true, resourceFileRoot);
-                this.LogDnnTrace("PageBase.IterateControls","Info", $"ControlId: {c.ID}");
+                this.LogDnnTrace("PageBase.IterateControls", "Info", $"ControlId: {c.ID}");
             }
         }
 

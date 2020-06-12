@@ -313,7 +313,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var settings = new PortalSettings(ValidTabId, (PortalInfo)null);
 
             //Assert
-            mockPortalSettingsController.Verify(c => c.GetActiveTab(ValidTabId,settings), Times.Never);
+            mockPortalSettingsController.Verify(c => c.GetActiveTab(ValidTabId, settings), Times.Never);
         }
 
         [Test]
@@ -333,7 +333,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var settings = new PortalSettings(ValidTabId, portalAlias);
 
             //Assert
-            mockPortalSettingsController.Verify(c => c.GetActiveTab(ValidTabId,settings), Times.Never);
+            mockPortalSettingsController.Verify(c => c.GetActiveTab(ValidTabId, settings), Times.Never);
         }
 
         [Test]

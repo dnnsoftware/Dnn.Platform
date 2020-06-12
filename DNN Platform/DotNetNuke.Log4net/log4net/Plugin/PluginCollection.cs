@@ -770,7 +770,7 @@ namespace log4net.Plugin
 
 			public override void CopyTo(IPlugin[] array, int start)
 			{
-				this.m_collection.CopyTo(array,start);
+				this.m_collection.CopyTo(array, start);
 			}
 			public override int Count
 			{

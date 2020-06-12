@@ -227,7 +227,7 @@ namespace DotNetNuke.Entities.Users
                         }
                         else
                         {
-                            result = IconController.IconURL("Spacer","1X1");
+                            result = IconController.IconURL("Spacer", "1X1");
                         }
                         break;
                     case "richtext":

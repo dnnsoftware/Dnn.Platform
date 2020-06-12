@@ -109,7 +109,7 @@ namespace DotNetNuke.Tests.Data
 
             //Assert
             Assert.IsInstanceOf<Dictionary<Type, IMapper>>(context.FluentMappers);
-            Assert.AreEqual(0,context.FluentMappers.Count);
+            Assert.AreEqual(0, context.FluentMappers.Count);
         }
 
         [Test]

@@ -210,7 +210,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
                     if (addedNewModule)
                     {
-                        this.Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleAdded, this._desktopModule.AdminPage,portal.PortalID));
+                        this.Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleAdded, this._desktopModule.AdminPage, portal.PortalID));
                     }
                 }
                

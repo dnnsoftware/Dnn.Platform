@@ -98,7 +98,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var cols = new string[]
                            {
-                            "SettingName","SettingValue","CreatedByUserID","CreatedOnDate","LastModifiedByUserID","LastModifiedOnDate","CultureCode"
+                            "SettingName", "SettingValue", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode"
                            };
 
             foreach (var col in cols)

@@ -40,8 +40,8 @@ namespace DotNetNuke.Services.Search.Internals
                             new LengthFilter(
                                 new StandardFilter(
                                     new StandardTokenizer(Constants.LuceneVersion, reader)
-                                )
-                            , wordLengthMinMax.Item1, wordLengthMinMax.Item2)
+                                ),
+                            wordLengthMinMax.Item1, wordLengthMinMax.Item2)
                         )
                     );
 

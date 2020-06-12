@@ -168,7 +168,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             this.notificationLink.Text = unreadAlerts > 0 ? string.Format(Localization.GetString("Notifications", Localization.GetResourceFile(this, MyFileName)), unreadAlerts) : Localization.GetString("NoNotifications", Localization.GetResourceFile(this, MyFileName));
 
                             this.messageLink.NavigateUrl = this._navigationManager.NavigateURL(this.GetMessageTab(), "", string.Format("userId={0}", userInfo.UserID));
-                            this.notificationLink.NavigateUrl = this._navigationManager.NavigateURL(this.GetMessageTab(), "", string.Format("userId={0}", userInfo.UserID),"view=notifications","action=notifications");
+                            this.notificationLink.NavigateUrl = this._navigationManager.NavigateURL(this.GetMessageTab(), "", string.Format("userId={0}", userInfo.UserID), "view=notifications", "action=notifications");
                             this.notificationLink.ToolTip = Localization.GetString("CheckNotifications", Localization.GetResourceFile(this, MyFileName));
                             this.messageLink.ToolTip = Localization.GetString("CheckMessages", Localization.GetResourceFile(this, MyFileName));
                             this.messageGroup.Visible = true;

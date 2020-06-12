@@ -72,7 +72,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._cryptographyProviderMock.Setup(c => c.EncryptParameter(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(Guid.NewGuid().ToString("N"));
             this._localeControllerMock = new Mock<ILocaleController>();
-            this._localeControllerMock.Setup(l => l.GetLocales(Constants.CONTENT_ValidPortalId)).Returns(new Dictionary<string,Locale>
+            this._localeControllerMock.Setup(l => l.GetLocales(Constants.CONTENT_ValidPortalId)).Returns(new Dictionary<string, Locale>
             {
                 {"en-us", new Locale()}
             });
@@ -89,7 +89,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
         private Dictionary<string, string> GetPortalSettingsDictionaryMock()
         {
-            var portalSettingsDictionary = new Dictionary<string,string>();
+            var portalSettingsDictionary = new Dictionary<string, string>();
             portalSettingsDictionary.Add("AddCachebusterToResourceUris", true.ToString());
 
             return portalSettingsDictionary;

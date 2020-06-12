@@ -26,7 +26,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnLoad(e);
             if (!string.IsNullOrEmpty(this.CssClass))
-                this.aDnnLink.Attributes.Add("class",this.CssClass);
+                this.aDnnLink.Attributes.Add("class", this.CssClass);
 
             if (!string.IsNullOrEmpty(this.Target))
                 this.aDnnLink.Target = this.Target;

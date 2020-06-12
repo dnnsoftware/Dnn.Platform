@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         public int SaveMessage(Message message, int portalId, int createUpdateUserId)
         {
             //need to fix groupmail
-            return this._provider.ExecuteScalar<int>("CoreMessaging_SaveMessage", message.MessageID, portalId ,message.To, message.From, message.Subject, message.Body, message.ConversationId, message.ReplyAllAllowed, message.SenderUserID, createUpdateUserId);
+            return this._provider.ExecuteScalar<int>("CoreMessaging_SaveMessage", message.MessageID, portalId, message.To, message.From, message.Subject, message.Body, message.ConversationId, message.ReplyAllAllowed, message.SenderUserID, createUpdateUserId);
         }
 
 		/// <summary>Gets the message.</summary>
@@ -150,7 +150,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
                     break;
             }
 
-            return this._provider.ExecuteReader("CoreMessaging_GetMessageConversations", userId, portalId , afterMessageId, numberOfRecords, sortColumn, sortAscending, read, archived, sent);
+            return this._provider.ExecuteReader("CoreMessaging_GetMessageConversations", userId, portalId, afterMessageId, numberOfRecords, sortColumn, sortAscending, read, archived, sent);
         }
 
         /// <summary>Gets the sent box view.</summary>
@@ -444,7 +444,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>A <see cref="IDataReader" /> containing the messages data</returns>
         public IDataReader GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize)
         {
-            return this._provider.ExecuteReader("CoreMessaging_GetNextMessagesForInstantDispatch", schedulerInstance,batchSize);
+            return this._provider.ExecuteReader("CoreMessaging_GetNextMessagesForInstantDispatch", schedulerInstance, batchSize);
         }
 
         /// <summary>Gets the next messages for digest dispatch.</summary>

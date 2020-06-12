@@ -16,7 +16,7 @@ using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Entities.Tabs
 {
-    public class TabPublishingController: ServiceLocator<ITabPublishingController,TabPublishingController>, ITabPublishingController
+    public class TabPublishingController: ServiceLocator<ITabPublishingController, TabPublishingController>, ITabPublishingController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabPublishingController));
 

@@ -199,7 +199,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var settings = new PortalSettings() { PortalId = ValidPortalId, CultureCode = Null.NullString };
 
             //Act
-            controller.LoadPortal(portal,settings);
+            controller.LoadPortal(portal, settings);
 
             //Assert
             Assert.AreEqual(portal.AdminTabId, settings.AdminTabId);

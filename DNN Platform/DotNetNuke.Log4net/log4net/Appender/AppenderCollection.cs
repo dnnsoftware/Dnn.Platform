@@ -782,7 +782,7 @@ namespace log4net.Appender
 
 			public override void CopyTo(IAppender[] array, int start)
 			{
-				this.m_collection.CopyTo(array,start);
+				this.m_collection.CopyTo(array, start);
 			}
 
 			void ICollection.CopyTo(Array array, int start)

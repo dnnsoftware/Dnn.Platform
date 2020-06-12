@@ -107,7 +107,7 @@ namespace DotNetNuke.Services.ClientCapability
         #region Public Methods    
         public bool IsValidSignature (string secretKey)
         {
-            return FacebookRequestController.IsValidSignature(this.RawSignedRequest,secretKey);
+            return FacebookRequestController.IsValidSignature(this.RawSignedRequest, secretKey);
         }
         #endregion        
     }

@@ -25,8 +25,8 @@ namespace DotNetNuke.Services.Social.Notifications
     /// Provides the methods to work with Notifications, NotificationTypes, NotificationTypeActions and NotificationActions.
     /// </summary>
     public class NotificationsController 
-                        : ServiceLocator<INotificationsController, NotificationsController>
-                        , INotificationsController
+                        : ServiceLocator<INotificationsController, NotificationsController>,
+                        INotificationsController
     {
         protected override Func<INotificationsController> GetFactory()
         {

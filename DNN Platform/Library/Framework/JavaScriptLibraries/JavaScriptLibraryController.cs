@@ -12,8 +12,8 @@ using DotNetNuke.Data;
 namespace DotNetNuke.Framework.JavaScriptLibraries
 {
     public class JavaScriptLibraryController 
-                        : ServiceLocator<IJavaScriptLibraryController, JavaScriptLibraryController>
-                        , IJavaScriptLibraryController
+                        : ServiceLocator<IJavaScriptLibraryController, JavaScriptLibraryController>,
+                        IJavaScriptLibraryController
     {
         private void ClearCache()
         {

@@ -275,7 +275,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             return new StringReader(xml);
         }
 
-        private static void AssertTemplateInfo(Dictionary<string, string> expectations , PortalController.PortalTemplateInfo templateInfo)
+        private static void AssertTemplateInfo(Dictionary<string, string> expectations, PortalController.PortalTemplateInfo templateInfo)
         {
             AssertTemplateField(expectations, "Name", templateInfo.Name);
             AssertTemplateField(expectations, "TemplateFilePath", templateInfo.TemplateFilePath);

@@ -385,7 +385,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             int id;
             id = int.TryParse(parentId, out id) ? id : Null.NullInteger;
-            return this.GetPageDescendantsInternal(portalId, id, sortOrder, searchText, includeDisabled , includeAllTypes, includeActive, includeHostPages, roles, disabledNotSelectable);
+            return this.GetPageDescendantsInternal(portalId, id, sortOrder, searchText, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles, disabledNotSelectable);
         }
 
         private IEnumerable<ItemDto> GetPageDescendantsInternal(int portalId, int parentId, int sortOrder, 

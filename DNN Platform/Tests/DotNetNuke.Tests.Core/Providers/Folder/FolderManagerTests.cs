@@ -795,7 +795,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var foldersSorted = new List<IFolderInfo>
                                     {
-                                        new FolderInfo { FolderID = Constants.FOLDER_ValidFolderId, ParentID = Null.NullInteger} ,
+                                        new FolderInfo { FolderID = Constants.FOLDER_ValidFolderId, ParentID = Null.NullInteger},
                                         new FolderInfo { FolderID = Constants.FOLDER_OtherValidFolderId, ParentID = Constants.FOLDER_ValidFolderId}
                                     };
 

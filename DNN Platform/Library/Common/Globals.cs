@@ -643,7 +643,7 @@ namespace DotNetNuke.Common
 
                     _status = tempStatus;
 
-                    Logger.Trace(string.Format("result of getting providerpath: {0}",strMessage));
+                    Logger.Trace(string.Format("result of getting providerpath: {0}", strMessage));
                     Logger.Trace("Application status is " + _status);
                 }
                 return _status;
@@ -658,7 +658,7 @@ namespace DotNetNuke.Common
             //If the provider path does not exist, then there can't be any log files
             if (!string.IsNullOrEmpty(providerpath))
             {
-                providerpath = HttpRuntime.AppDomainAppPath + providerpath.Replace("~","");
+                providerpath = HttpRuntime.AppDomainAppPath + providerpath.Replace("~", "");
                 if (Directory.Exists(providerpath))
                 {
                     var incrementalcount = Directory.GetFiles(providerpath, Upgrade.GetStringVersion(version) + ".*." + Upgrade.DefaultProvider).Length;
@@ -1189,7 +1189,7 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="version">The version.</param>
         /// <param name="increment">The increment.</param>
-       public static void UpdateDataBaseVersionIncrement(Version version,int increment)
+       public static void UpdateDataBaseVersionIncrement(Version version, int increment)
         {
             //update the version and increment
            DataProvider.Instance().UpdateDatabaseVersionIncrement(version.Major, version.Minor, version.Build, increment, DotNetNukeContext.Current.Application.Name);

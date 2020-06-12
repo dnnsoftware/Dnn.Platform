@@ -176,7 +176,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(It.IsAny<int>(), It.IsAny<int>())).Returns(false);
             
             //Act
-            var result = FileLockingController.Instance.IsFileOutOfPublishPeriod(fileInfo, It.IsAny<int>(),It.IsAny<int>());
+            var result = FileLockingController.Instance.IsFileOutOfPublishPeriod(fileInfo, It.IsAny<int>(), It.IsAny<int>());
 
             //Assert
             Assert.IsTrue(result);

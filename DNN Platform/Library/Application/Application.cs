@@ -85,7 +85,7 @@ namespace DotNetNuke.Application
         {
             get
             {
-                return string.Concat("DNN Platform is copyright 2002-", DateTime.Today.ToString("yyyy")," by .NET Foundation");
+                return string.Concat("DNN Platform is copyright 2002-", DateTime.Today.ToString("yyyy"), " by .NET Foundation");
             }
         }
 
