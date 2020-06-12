@@ -70,14 +70,14 @@ namespace DotNetNuke.Services.GeneratedImage
 
         public int IPCountMax
         {
-            set { IPCount.MaxCount = value; }
             get { return IPCount.MaxCount; }
+            set { IPCount.MaxCount = value; }
         }
 
         public TimeSpan IpCountPurgeInterval
         {
-            set { IPCount.PurgeInterval = value; }
             get { return IPCount.PurgeInterval; }
+            set { IPCount.PurgeInterval = value; }
         }
 
         public bool EnableClientCache { get; set; }
