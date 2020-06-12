@@ -8,8 +8,10 @@ using System;
 using System.IO;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
@@ -19,7 +21,6 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-using DotNetNuke.Entities.Host;
 
 namespace DotNetNuke.Web.UI.WebControls
 {

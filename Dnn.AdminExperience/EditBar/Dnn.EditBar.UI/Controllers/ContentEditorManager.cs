@@ -12,6 +12,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Collections;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
@@ -30,8 +31,9 @@ using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
-using Globals = DotNetNuke.Common.Globals;
 using Newtonsoft.Json;
+
+using Globals = DotNetNuke.Common.Globals;
 
 namespace Dnn.EditBar.UI.Controllers
 {

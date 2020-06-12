@@ -11,6 +11,7 @@ using System.Threading;
 
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization;
@@ -18,14 +19,11 @@ using DotNetNuke.Services.Search.Controllers;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Tests.Utilities.Mocks;
-
-using Moq;
-
-using NUnit.Framework;
-using Constants = DotNetNuke.Services.Search.Internals.Constants;
-using DotNetNuke.Entities.Controllers;
-
 using Lucene.Net.Documents;
+using Moq;
+using NUnit.Framework;
+
+using Constants = DotNetNuke.Services.Search.Internals.Constants;
 
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {

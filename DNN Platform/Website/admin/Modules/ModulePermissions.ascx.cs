@@ -6,17 +6,17 @@
 
 using System;
 using System.Web.UI;
-using Microsoft.Extensions.DependencyInjection;
 
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
-using Globals = DotNetNuke.Common.Globals;
-using DotNetNuke.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 
+using Globals = DotNetNuke.Common.Globals;
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Modules.Admin.Modules

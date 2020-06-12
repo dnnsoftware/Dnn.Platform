@@ -10,27 +10,28 @@ using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Hosting;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Portals.Data;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Tests.Utilities.Mocks;
-using Moq;
-
-using NUnit.Framework;
-using Constants = DotNetNuke.Services.Search.Internals.Constants;
-using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Web.Api;
 using DotNetNuke.Web.InternalServices;
 using DotNetNuke.Web.InternalServices.Views.Search;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Web.Api;
+using Moq;
+using NUnit.Framework;
+
+using Constants = DotNetNuke.Services.Search.Internals.Constants;
 
 namespace DotNetNuke.Tests.Web.InternalServices
 {
