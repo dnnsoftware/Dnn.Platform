@@ -15,7 +15,11 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     /// </summary>
     public class ImageResizeTransform : ImageTransform
     {
-        private int _width, _height, _border, _maxWidth, _maxHeight;
+        private int _width;
+        private int _height;
+        private int _border;
+        private int _maxWidth;
+        private int _maxHeight;
 
         /// <summary>
         /// Sets the resize mode. The default value is Fit.

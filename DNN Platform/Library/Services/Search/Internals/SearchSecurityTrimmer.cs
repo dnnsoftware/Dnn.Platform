@@ -23,7 +23,8 @@ namespace DotNetNuke.Services.Search.Internals
         private readonly IndexSearcher _searcher;
 
         private Scorer _scorer;
-        private int _docBase, _totalHits;
+        private int _docBase;
+        private int _totalHits;
         private readonly LuceneQuery _luceneQuery;
         private readonly SearchQuery _searchQuery;
         private readonly List<ScoreDoc> _hitDocs;
