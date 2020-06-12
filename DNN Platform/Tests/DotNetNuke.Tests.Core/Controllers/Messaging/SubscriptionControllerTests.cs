@@ -277,7 +277,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 subscription.SubscriptionTypeId,
                 subscription.ObjectKey,
                 It.IsAny<int>(),
-                It.IsAny<int>())).Returns(SubscriptionDataReaderMockHelper.CreateSubscriptionReader(new [] { subscription }));
+                It.IsAny<int>())).Returns(SubscriptionDataReaderMockHelper.CreateSubscriptionReader(new[] { subscription }));
 
             this.mockDataService.Setup(ds => ds.DeleteSubscription(It.IsAny<int>())).Verifiable();
             

@@ -95,25 +95,25 @@ namespace DotNetNuke.Tests.Core
         [Test]
         public void SingleElement()
         {
-            this.DoTest(new [] { "only item here" }, "only item here");
+            this.DoTest(new[] { "only item here" }, "only item here");
         }
 
         [Test]
         public void AllEscapeChars()
         {
-            this.DoTest(new [] { @"\", @"\\", @"\\\" }, @"\\,\\\\,\\\\\\");
+            this.DoTest(new[] { @"\", @"\\", @"\\\" }, @"\\,\\\\,\\\\\\");
         }
 
         [Test]
         public void AllSeperatorChars()
         {
-            this.DoTest(new [] { ",", ",,", ",,," }, @"\,,\,\,,\,\,\,");
+            this.DoTest(new[] { ",", ",,", ",,," }, @"\,,\,\,,\,\,\,");
         }
 
         [Test]
         public void AllEscapedSeperators()
         {
-            this.DoTest(new [] { @"\,", @"\,\,", @"\,\,\," }, @"\\\,,\\\,\\\,,\\\,\\\,\\\,");
+            this.DoTest(new[] { @"\,", @"\,\,", @"\,\,\," }, @"\\\,,\\\,\\\,,\\\,\\\,\\\,");
         }
 
         private void DoTest(IEnumerable enumerable, string s)

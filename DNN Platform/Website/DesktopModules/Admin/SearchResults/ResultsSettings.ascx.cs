@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.SearchResults
 
                     var scopeForRoles = 
                         PortalController.GetPortalSetting("SearchResult_ScopeForRoles", this.PortalId, string.Empty)
-                        .Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     var roles = RoleController.Instance.GetRoles(this.PortalId, r => !r.IsSystemRole || r.RoleName == "Registered Users");
                     roles.Insert(0, new RoleInfo() { RoleName = "Superusers" });
 
