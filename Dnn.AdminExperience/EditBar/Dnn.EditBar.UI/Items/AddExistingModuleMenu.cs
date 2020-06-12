@@ -37,7 +37,7 @@ namespace Dnn.EditBar.UI.Items
 
         public override string Template { get; } = "";
 
-        public override string Parent { get;} = Constants.LeftMenu;
+        public override string Parent { get; } = Constants.LeftMenu;
 
         public override string Loader { get; } = "AddExistingModule";
 

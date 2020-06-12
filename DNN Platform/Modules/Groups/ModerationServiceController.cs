@@ -283,7 +283,7 @@ namespace DotNetNuke.Modules.Groups
 
                 if (member != null)
                 {
-                    RoleController.DeleteUserRole(member, this._roleInfo, this.PortalSettings, false) ;
+                    RoleController.DeleteUserRole(member, this._roleInfo, this.PortalSettings, false);
                     var notifications = new Notifications();
                     var groupOwner = UserController.GetUserById(this.PortalSettings.PortalId, this._roleInfo.CreatedByUserID);
                     notifications.AddMemberNotification(Constants.MemberRejectedNotification, this._tabId, this._moduleId, this._roleInfo, groupOwner, member);

@@ -10,9 +10,9 @@ using System.Xml;
 using DotNetNuke.Services.Tokens;
 namespace DotNetNuke.Services.Journal {
     public class JournalEntity :IPropertyAccess  {
-        public int Id {get;set;}
-        public string Name {get;set;}
-        public string Vanity {get; set;}
+        public int Id {get; set; }
+        public string Name {get; set; }
+        public string Vanity {get; set; }
         public string Avatar { get; set; }
         public JournalEntity() {
         }

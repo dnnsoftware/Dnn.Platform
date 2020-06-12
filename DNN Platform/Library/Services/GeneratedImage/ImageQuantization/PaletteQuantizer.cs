@@ -24,10 +24,10 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		/// </remarks>
 		public PaletteQuantizer ( ArrayList palette ) : base ( true )
 		{
-			this._colorMap = new Hashtable ( ) ;
+			this._colorMap = new Hashtable ( );
 
-			this._colors = new Color[palette.Count] ;
-			palette.CopyTo ( this._colors ) ;
+			this._colors = new Color[palette.Count];
+			palette.CopyTo ( this._colors );
 		}
 
 		/// <summary>
@@ -37,12 +37,12 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		/// <returns>The quantized value</returns>
 		protected  override byte QuantizePixel ( Color32 pixel )
 		{
-			byte	colorIndex = 0 ;
-			int		colorHash = pixel.ARGB ;	
+			byte	colorIndex = 0;
+			int		colorHash = pixel.ARGB;	
 
 			// Check if the color is in the lookup table
 			if ( this._colorMap.ContainsKey ( colorHash ) )
-				colorIndex = (byte)this._colorMap[colorHash] ;
+				colorIndex = (byte)this._colorMap[colorHash];
 			else
 			{
 				// Not found - loop through the palette and find the nearest match.
@@ -50,53 +50,53 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 				if ( 0 == pixel.Alpha )
 				{
 					// Transparent. Lookup the first color with an alpha value of 0
-					for ( int index = 0 ; index < this._colors.Length ; index++ )
+					for ( int index = 0; index < this._colors.Length; index++ )
 					{
 						if ( 0 == this._colors[index].A )
 						{
-							colorIndex = (byte)index ;
-							break ;
+							colorIndex = (byte)index;
+							break;
 						}
 					}
 				}
 				else
 				{
 					// Not transparent...
-					int	leastDistance = int.MaxValue ;
-					int red = pixel.Red ;
+					int	leastDistance = int.MaxValue;
+					int red = pixel.Red;
 					int green = pixel.Green;
 					int blue = pixel.Blue;
 
 					// Loop through the entire palette, looking for the closest color match
-					for ( int index = 0 ; index < this._colors.Length ; index++ )
+					for ( int index = 0; index < this._colors.Length; index++ )
 					{
 						Color	paletteColor = this._colors[index];
 						
-						int	redDistance = paletteColor.R - red ;
-						int	greenDistance = paletteColor.G - green ;
-						int	blueDistance = paletteColor.B - blue ;
+						int	redDistance = paletteColor.R - red;
+						int	greenDistance = paletteColor.G - green;
+						int	blueDistance = paletteColor.B - blue;
 
 						int		distance = ( redDistance * redDistance ) + 
 										   ( greenDistance * greenDistance ) + 
-										   ( blueDistance * blueDistance ) ;
+										   ( blueDistance * blueDistance );
 
 						if ( distance < leastDistance )
 						{
-							colorIndex = (byte)index ;
-							leastDistance = distance ;
+							colorIndex = (byte)index;
+							leastDistance = distance;
 
 							// And if it's an exact match, exit the loop
 							if ( 0 == distance )
-								break ;
+								break;
 						}
 					}
 				}
 
 				// Now I have the color, pop it into the hashtable for next time
-				this._colorMap.Add ( colorHash, colorIndex ) ;
+				this._colorMap.Add ( colorHash, colorIndex );
 			}
 
-			return colorIndex ;
+			return colorIndex;
 		}
 
 		/// <summary>
@@ -106,20 +106,20 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		/// <returns>The new color palette</returns>
 		protected override ColorPalette GetPalette ( ColorPalette palette )
 		{
-			for ( int index = 0 ; index < this._colors.Length ; index++ )
-				palette.Entries[index] = this._colors[index] ;
+			for ( int index = 0; index < this._colors.Length; index++ )
+				palette.Entries[index] = this._colors[index];
 
-			return palette ;
+			return palette;
 		}
 
 		/// <summary>
 		/// Lookup table for colors
 		/// </summary>
-		private readonly Hashtable _colorMap ;
+		private readonly Hashtable _colorMap;
 
 		/// <summary>
 		/// List of all colors in the palette
 		/// </summary>
-		protected Color[] _colors ;
+		protected Color[] _colors;
 	}
 }

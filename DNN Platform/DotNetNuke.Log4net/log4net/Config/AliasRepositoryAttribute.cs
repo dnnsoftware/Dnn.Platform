@@ -91,7 +91,7 @@ namespace log4net.Config
 		public string Name
 		{
 			get { return this.m_name; }
-			set { this.m_name = value ; }
+			set { this.m_name = value; }
 		}
 
 		#endregion Public Instance Properties

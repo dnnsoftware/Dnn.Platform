@@ -175,7 +175,7 @@ namespace DotNetNuke.Services.FileSystem
                     if (orientation == null) return;
 
                     var flip = OrientationToFlipType(orientation.Value[0].ToString());
-                    if (flip == RotateFlipType.RotateNoneFlipNone) return;//No rotation or flip required
+                    if (flip == RotateFlipType.RotateNoneFlipNone) return; //No rotation or flip required
 
                     image.RotateFlip(flip);
                     var newOrientation = new byte[2];

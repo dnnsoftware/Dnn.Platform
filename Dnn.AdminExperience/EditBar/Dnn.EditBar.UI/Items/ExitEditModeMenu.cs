@@ -26,7 +26,7 @@ namespace Dnn.EditBar.UI.Items
 
         public override string Template { get; } = "";
 
-        public override string Parent { get;} = Constants.RightMenu;
+        public override string Parent { get; } = Constants.RightMenu;
 
         public override string Loader { get; } = "ExitEditMode";
 

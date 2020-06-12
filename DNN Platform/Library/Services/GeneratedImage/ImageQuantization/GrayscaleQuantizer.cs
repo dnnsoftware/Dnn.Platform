@@ -66,7 +66,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 			// byte value.
 			var colorIndex = (byte)(luminance +0.5);
 
-			return colorIndex ;
+			return colorIndex;
 		}
 
 	}

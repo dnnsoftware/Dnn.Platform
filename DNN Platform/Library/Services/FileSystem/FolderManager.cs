@@ -134,7 +134,7 @@ namespace DotNetNuke.Services.FileSystem
                 return true;
             }
             return (FolderProvider.Instance(FolderMappingController.Instance.GetFolderMapping(folder.FolderMappingID).FolderProviderType).SupportsMappedPaths &&
-                this.GetFolder(folder.ParentID).FolderMappingID != folder.FolderMappingID) ;
+                this.GetFolder(folder.ParentID).FolderMappingID != folder.FolderMappingID);
         }
 
         private void UnmapFolderInternal(IFolderInfo folder, bool isCascadeDeleting)

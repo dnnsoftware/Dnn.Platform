@@ -15,8 +15,8 @@ namespace DotNetNuke.Services.Authentication.OAuth
             this.Value = value;
         }
 
-        public string Name { get;private set; }
+        public string Name { get; private set; }
 
-        public string Value { get;private set; }
+        public string Value { get; private set; }
     }
 }

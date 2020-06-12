@@ -38,7 +38,7 @@ namespace Dnn.ExportImport.Components.Common
 
         internal static DateTime MinDbTime = new DateTime(1980, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         internal static DateTime MaxDbTime = new DateTime(3000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        internal static int MaxZipFilesMemory = 104857600;//100 MB
+        internal static int MaxZipFilesMemory = 104857600; //100 MB
 
         internal const string SharedResources = "/DesktopModules/SiteExportImport/App_LocalResources/ExportImport.resx";
 

@@ -82,7 +82,7 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                string result ;
+                string result;
                 var tab = TabController.Instance.GetTabByName("Advanced Settings", this.PortalSettings.PortalId);
                 var modules = ModuleController.Instance.GetTabModules(tab.TabID).Values;
 

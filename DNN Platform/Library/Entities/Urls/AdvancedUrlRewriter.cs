@@ -242,7 +242,7 @@ namespace DotNetNuke.Entities.Urls
                             result.SetRedirectAllowed(result.OriginalPath, settings);
                         }
                         result.PortalAlias = requestedAlias;
-                        result.PrimaryAlias = requestedAlias;//this is the primary alias
+                        result.PrimaryAlias = requestedAlias; //this is the primary alias
                         result.PortalId = requestedAlias.PortalID;
                         result.CultureCode = requestedAlias.CultureCode;
                         //get the portal alias mapping for this portal

@@ -114,7 +114,7 @@ namespace log4net.Util.TypeConverters
 		public string ConverterTypeName
 		{
 			get { return this.m_typeName; }
-			set { this.m_typeName = value ; }
+			set { this.m_typeName = value; }
 		}
 	}
 }

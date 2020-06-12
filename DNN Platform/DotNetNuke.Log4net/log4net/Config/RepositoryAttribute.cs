@@ -105,7 +105,7 @@ namespace log4net.Config
 		public string Name
 		{
 			get { return this.m_name; }
-			set { this.m_name = value ; }
+			set { this.m_name = value; }
 		}
 
 		/// <summary>
@@ -131,7 +131,7 @@ namespace log4net.Config
 		public Type RepositoryType
 		{
 			get { return this.m_repositoryType; }
-			set { this.m_repositoryType = value ; }
+			set { this.m_repositoryType = value; }
 		}
 
 		#endregion Public Instance Properties

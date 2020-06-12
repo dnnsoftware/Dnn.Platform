@@ -17,7 +17,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
     public class DnnHelperTests
     {
         private Mock<ControllerBase> _mockController;
-        private Mock<IViewDataContainer> _mockViewDataContainer ;
+        private Mock<IViewDataContainer> _mockViewDataContainer;
         private ViewContext _viewContext;
 
         [SetUp]
