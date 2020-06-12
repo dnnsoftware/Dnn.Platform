@@ -229,7 +229,6 @@ namespace DotNetNuke.Services.FileSystem
         /// Extracts the files and folders contained in the specified zip file to the folder where the file belongs.
         /// </summary>
         /// <param name="file">The file to unzip.</param>
-        /// <returns>Total files count in the zip file.</returns>
         void UnzipFile(IFileInfo file);
 
         /// <summary>
@@ -237,7 +236,6 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="file">The file to unzip.</param>
         /// <param name="destinationFolder">The folder to unzip to.</param>
-        /// <returns>Total files count in the zip file.</returns>
         void UnzipFile(IFileInfo file, IFolderInfo destinationFolder);
 
         /// <summary>

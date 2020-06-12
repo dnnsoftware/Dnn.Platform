@@ -222,8 +222,6 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="action">New action value for UrlAction object</param>
         /// <param name="reason">New redirect reason value for UrlAction object</param>
         /// <param name="newUrl">Url to used for rewrite process</param>
-        /// <returns>the new Url, with any replacements done.  Replacements occur when a reason token
-        /// was stored in the tab dictionary entry just to indicate a redirect reason.</returns>
         internal static void DetermineRedirectReasonAndAction(
             string rewrittenUrl,
             UrlAction result,

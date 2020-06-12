@@ -83,7 +83,6 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <param name="portalId">The portalId</param>
         /// <param name="roles">The list of roles to send the notification to. Leave it as null to send only to individual users.</param>
         /// <param name="users">The list of users to send the notification to. Leave it as null to send only to roles.</param>
-        /// <returns>The new notification.</returns>
         void SendNotification(Notification notification, int portalId, IList<RoleInfo> roles, IList<UserInfo> users);
 
         /// <summary>

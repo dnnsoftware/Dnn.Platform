@@ -38,7 +38,6 @@ namespace DotNetNuke.Common.Controls
         /// <summary>
         /// Page_Load runs when the control is loaded.
         /// </summary>
-        /// <returns></returns>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------

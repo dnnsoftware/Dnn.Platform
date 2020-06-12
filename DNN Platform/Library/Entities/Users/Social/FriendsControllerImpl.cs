@@ -27,7 +27,6 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         /// AcceptFriend - Current User accepts a Friend Request to the Target User
         /// </summary>
         /// <param name="targetUser">UserInfo for Target User</param>
-        /// <returns>UserRelationship object</returns>
         /// -----------------------------------------------------------------------------
         public void AcceptFriend(UserInfo targetUser)
         {
@@ -47,7 +46,6 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         /// AddFriend - Current User initiates a Friend Request to the Target User
         /// </summary>
         /// <param name="targetUser">UserInfo for Target User</param>
-        /// <returns>UserRelationship object</returns>
         /// <remarks>If the Friend Relationship is setup for auto-acceptance at the Portal level, the UserRelationship
         /// status is set as Accepted, otherwise it is set as Initiated.
         /// </remarks>
@@ -64,7 +62,6 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         /// </summary>
         /// <param name="initiatingUser">UserInfo for Initiating User</param>
         /// <param name="targetUser">UserInfo for Target User</param>
-        /// <returns>UserRelationship object</returns>
         /// <remarks>If the Friend Relationship is setup for auto-acceptance at the Portal level, the UserRelationship
         /// status is set as Accepted, otherwise it is set as Initiated.
         /// </remarks>

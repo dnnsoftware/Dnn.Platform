@@ -24,7 +24,6 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         /// FollowUser - Current User initiates a Follow Request to the Target User
         /// </summary>
         /// <param name="targetUser">UserInfo for Target User</param>
-        /// <returns>UserRelationship object</returns>
         /// <remarks>If the Follow Relationship is setup for auto-acceptance (default) at the Portal level, the UserRelationship
         /// status is set as Accepted, otherwise it is set as Initiated.
         /// </remarks>
@@ -40,7 +39,6 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         /// </summary>
         /// <param name="initiatingUser">UserInfo for Initiating User</param>
         /// <param name="targetUser">UserInfo for Target User</param>
-        /// <returns>UserRelationship object</returns>
         /// <remarks>If the Follow Relationship is setup for auto-acceptance (default) at the Portal level, the UserRelationship
         /// status is set as Accepted, otherwise it is set as Initiated.
         /// </remarks>

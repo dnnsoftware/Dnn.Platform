@@ -1313,7 +1313,6 @@ namespace DotNetNuke.Services.FileSystem
         /// Extracts the files and folders contained in the specified zip file to the folder where the file belongs.
         /// </summary>
         /// <param name="file">The file to unzip.</param>
-        /// <returns>Total files count in the zip file.</returns>
         /// <exception cref="System.ArgumentException">Thrown when file is not a zip compressed file.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when file or destination folder are null.</exception>
         public virtual void UnzipFile(IFileInfo file)
@@ -1330,7 +1329,6 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="file">The file to unzip.</param>
         /// <param name="destinationFolder">The folder to unzip to.</param>
-        /// <returns>Total files count in the zip file.</returns>
         /// <exception cref="System.ArgumentException">Thrown when file is not a zip compressed file.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when file or destination folder are null.</exception>
         public virtual void UnzipFile(IFileInfo file, IFolderInfo destinationFolder)

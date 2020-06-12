@@ -1268,7 +1268,6 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="isPhysicalResource"></param>
         /// <param name="checkFurtherForRewrite"></param>
         /// <param name="parentTraceId"></param>
-        /// <returns>true if a physical path, false if not</returns>
         internal static void IdentifyByPhysicalResource(
             string physicalPath,
             string fullUrl,

@@ -563,7 +563,6 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="folder">The folder to delete</param>
         /// <param name="notDeletedSubfolders">A collection with all not deleted subfolders after processiong the action</param>
-        /// <returns></returns>
         public void DeleteFolder(IFolderInfo folder, ICollection<IFolderInfo> notDeletedSubfolders)
         {
             this.DeleteFolderRecursive(folder, notDeletedSubfolders, true, this.GetOnlyUnmap(folder));

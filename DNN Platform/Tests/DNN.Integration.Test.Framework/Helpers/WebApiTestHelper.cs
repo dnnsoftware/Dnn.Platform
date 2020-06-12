@@ -287,7 +287,6 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
         /// <summary>
         /// Logs in as host and recycle the application
         /// </summary>
-        /// <returns>IWebApiConnector object to perform more actions</returns>
         public static void RecycleApplication()
         {
             var connector = LoginUser(AppConfigHelper.HostUserName);

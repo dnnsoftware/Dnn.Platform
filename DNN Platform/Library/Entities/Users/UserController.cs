@@ -2362,7 +2362,6 @@ namespace DotNetNuke.Entities.Users
         /// Tries to validate a verification code sent after a user is registered in a portal configured to use a verified registration.
         /// </summary>
         /// <param name="verificationCode">The verification code.</param>
-        /// <returns>An null string if the verification code has been validated and the user has been approved. An error message otherwise.</returns>
         /// <exception cref="DotNetNuke.Entities.Users.UserAlreadyVerifiedException">Thrown when provided verification code has been already used.</exception>
         /// <exception cref="DotNetNuke.Entities.Users.InvalidVerificationCodeException">Thrown when the provided verification code is invalid.</exception>
         /// <exception cref="DotNetNuke.Entities.Users.UserDoesNotExistException">Thrown when the user does not exist.</exception>
