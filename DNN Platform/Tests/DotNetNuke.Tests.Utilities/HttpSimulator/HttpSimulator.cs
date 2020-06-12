@@ -212,95 +212,95 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 		    private readonly HttpStaticObjectsCollection _staticObjects = new HttpStaticObjectsCollection();
 			private readonly object _syncRoot = new Object();
 
-			///<summary>
-			///Ends the current session.
-			///</summary>
+			/// <summary>
+			/// Ends the current session.
+			/// </summary>
 			///
 			public void Abandon()
 			{
 				this.BaseClear();	
 			}
 
-			///<summary>
-			///Adds a new item to the session-state collection.
-			///</summary>
+			/// <summary>
+			/// Adds a new item to the session-state collection.
+			/// </summary>
 			///
-			///<param name="name">The name of the item to add to the session-state collection. </param>
-			///<param name="value">The value of the item to add to the session-state collection. </param>
+			/// <param name="name">The name of the item to add to the session-state collection. </param>
+			/// <param name="value">The value of the item to add to the session-state collection. </param>
 			public void Add(string name, object value)
 			{
 				this.BaseAdd(name, value);
 			}
 
-			///<summary>
-			///Deletes an item from the session-state item collection.
-			///</summary>
+			/// <summary>
+			/// Deletes an item from the session-state item collection.
+			/// </summary>
 			///
-			///<param name="name">The name of the item to delete from the session-state item collection. </param>
+			/// <param name="name">The name of the item to delete from the session-state item collection. </param>
 			public void Remove(string name)
 			{
 				this.BaseRemove(name);
 			}
 
-			///<summary>
-			///Deletes an item at a specified index from the session-state item collection.
-			///</summary>
+			/// <summary>
+			/// Deletes an item at a specified index from the session-state item collection.
+			/// </summary>
 			///
-			///<param name="index">The index of the item to remove from the session-state collection. </param>
+			/// <param name="index">The index of the item to remove from the session-state collection. </param>
 			public void RemoveAt(int index)
 			{
 				this.BaseRemoveAt(index);
 			}
 
-			///<summary>
-			///Clears all values from the session-state item collection.
-			///</summary>
+			/// <summary>
+			/// Clears all values from the session-state item collection.
+			/// </summary>
 			///
 			public void Clear()
 			{
 				this.BaseClear();
 			}
 
-			///<summary>
-			///Clears all values from the session-state item collection.
-			///</summary>
+			/// <summary>
+			/// Clears all values from the session-state item collection.
+			/// </summary>
 			///
 			public void RemoveAll()
 			{
 				this.BaseClear();
 			}
 
-			///<summary>
-			///Copies the collection of session-state item values to a one-dimensional array, starting at the specified index in the array.
-			///</summary>
+			/// <summary>
+			/// Copies the collection of session-state item values to a one-dimensional array, starting at the specified index in the array.
+			/// </summary>
 			///
-			///<param name="array">The <see cref="T:System.Array"></see> that receives the session values. </param>
-			///<param name="index">The index in array where copying starts. </param>
+			/// <param name="array">The <see cref="T:System.Array"></see> that receives the session values. </param>
+			/// <param name="index">The index in array where copying starts. </param>
 			public void CopyTo(Array array, int index)
 			{
 				throw new NotImplementedException();
 			}
 
-			///<summary>
-			///Gets the unique session identifier for the session.
-			///</summary>
+			/// <summary>
+			/// Gets the unique session identifier for the session.
+			/// </summary>
 			///
-			///<returns>
-			///The session ID.
-			///</returns>
+			/// <returns>
+			/// The session ID.
+			/// </returns>
 			///
 			public string SessionID
 			{
 				get { return this._sessionId; }
 			}
 
-			///<summary>
-			///Gets and sets the time-out period (in minutes) allowed between requests before the session-state provider terminates the session.
-			///</summary>
+			/// <summary>
+			/// Gets and sets the time-out period (in minutes) allowed between requests before the session-state provider terminates the session.
+			/// </summary>
 			///
-			///<returns>
-			///The time-out period, in minutes.
-			///</returns>
+			/// <returns>
+			/// The time-out period, in minutes.
+			/// </returns>
 			///
 			public int Timeout
 			{
@@ -308,128 +308,128 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 				set { this._timeout = value; }
 			}
 
-			///<summary>
-			///Gets a value indicating whether the session was created with the current request.
-			///</summary>
+			/// <summary>
+			/// Gets a value indicating whether the session was created with the current request.
+			/// </summary>
 			///
-			///<returns>
-			///true if the session was created with the current request; otherwise, false.
-			///</returns>
+			/// <returns>
+			/// true if the session was created with the current request; otherwise, false.
+			/// </returns>
 			///
 			public bool IsNewSession
 			{
 				get { return _isNewSession; }
 			}
 
-			///<summary>
-			///Gets the current session-state mode.
-			///</summary>
+			/// <summary>
+			/// Gets the current session-state mode.
+			/// </summary>
 			///
-			///<returns>
-			///One of the <see cref="T:System.Web.SessionState.SessionStateMode"></see> values.
-			///</returns>
+			/// <returns>
+			/// One of the <see cref="T:System.Web.SessionState.SessionStateMode"></see> values.
+			/// </returns>
 			///
 			public SessionStateMode Mode
 			{
 				get { return SessionStateMode.InProc; }
 			}
 
-			///<summary>
-			///Gets a value indicating whether the session ID is embedded in the URL or stored in an HTTP cookie.
-			///</summary>
+			/// <summary>
+			/// Gets a value indicating whether the session ID is embedded in the URL or stored in an HTTP cookie.
+			/// </summary>
 			///
-			///<returns>
-			///true if the session is embedded in the URL; otherwise, false.
-			///</returns>
+			/// <returns>
+			/// true if the session is embedded in the URL; otherwise, false.
+			/// </returns>
 			///
 			public bool IsCookieless
 			{
 				get { return false; }
 			}
 
-			///<summary>
-			///Gets a value that indicates whether the application is configured for cookieless sessions.
-			///</summary>
+			/// <summary>
+			/// Gets a value that indicates whether the application is configured for cookieless sessions.
+			/// </summary>
 			///
-			///<returns>
-			///One of the <see cref="T:System.Web.HttpCookieMode"></see> values that indicate whether the application is configured for cookieless sessions. The default is <see cref="F:System.Web.HttpCookieMode.UseCookies"></see>.
-			///</returns>
+			/// <returns>
+			/// One of the <see cref="T:System.Web.HttpCookieMode"></see> values that indicate whether the application is configured for cookieless sessions. The default is <see cref="F:System.Web.HttpCookieMode.UseCookies"></see>.
+			/// </returns>
 			///
 			public HttpCookieMode CookieMode
 			{
 				get { return HttpCookieMode.UseCookies; }
 			}
 
-		    ///<summary>
-		    ///Gets or sets the locale identifier (LCID) of the current session.
-		    ///</summary>
+		    /// <summary>
+		    /// Gets or sets the locale identifier (LCID) of the current session.
+		    /// </summary>
 		    ///
-		    ///<returns>
-		    ///A <see cref="T:System.Globalization.CultureInfo"></see> instance that specifies the culture of the current session.
-		    ///</returns>
+		    /// <returns>
+		    /// A <see cref="T:System.Globalization.CultureInfo"></see> instance that specifies the culture of the current session.
+		    /// </returns>
 		    ///
 		    public int LCID { get; set; }
 
-		    ///<summary>
-		    ///Gets or sets the code-page identifier for the current session.
-		    ///</summary>
+		    /// <summary>
+		    /// Gets or sets the code-page identifier for the current session.
+		    /// </summary>
 		    ///
-		    ///<returns>
-		    ///The code-page identifier for the current session.
-		    ///</returns>
+		    /// <returns>
+		    /// The code-page identifier for the current session.
+		    /// </returns>
 		    ///
 		    public int CodePage { get; set; }
 
-		    ///<summary>
-			///Gets a collection of objects declared by &lt;object Runat="Server" Scope="Session"/&gt; tags within the ASP.NET application file Global.asax.
-			///</summary>
+		    /// <summary>
+			/// Gets a collection of objects declared by &lt;object Runat="Server" Scope="Session"/&gt; tags within the ASP.NET application file Global.asax.
+			/// </summary>
 			///
-			///<returns>
-			///An <see cref="T:System.Web.HttpStaticObjectsCollection"></see> containing objects declared in the Global.asax file.
-			///</returns>
+			/// <returns>
+			/// An <see cref="T:System.Web.HttpStaticObjectsCollection"></see> containing objects declared in the Global.asax file.
+			/// </returns>
 			///
 			public HttpStaticObjectsCollection StaticObjects
 			{
 				get { return this._staticObjects; }
 			}
 
-			///<summary>
-			///Gets or sets a session-state item value by name.
-			///</summary>
+			/// <summary>
+			/// Gets or sets a session-state item value by name.
+			/// </summary>
 			///
-			///<returns>
-			///The session-state item value specified in the name parameter.
-			///</returns>
+			/// <returns>
+			/// The session-state item value specified in the name parameter.
+			/// </returns>
 			///
-			///<param name="name">The key name of the session-state item value. </param>
+			/// <param name="name">The key name of the session-state item value. </param>
 			public object this[string name]
 			{
 				get { return this.BaseGet(name); }
 				set { this.BaseSet(name, value); }
 			}
 
-			///<summary>
-			///Gets or sets a session-state item value by numerical index.
-			///</summary>
+			/// <summary>
+			/// Gets or sets a session-state item value by numerical index.
+			/// </summary>
 			///
-			///<returns>
-			///The session-state item value specified in the index parameter.
-			///</returns>
+			/// <returns>
+			/// The session-state item value specified in the index parameter.
+			/// </returns>
 			///
-			///<param name="index">The numerical index of the session-state item value. </param>
+			/// <param name="index">The numerical index of the session-state item value. </param>
 			public object this[int index]
 			{
 				get { return this.BaseGet(index); }
 				set { this.BaseSet(index, value); }
 			}
 
-			///<summary>
-			///Gets an object that can be used to synchronize access to the collection of session-state values.
-			///</summary>
+			/// <summary>
+			/// Gets an object that can be used to synchronize access to the collection of session-state values.
+			/// </summary>
 			///
-			///<returns>
-			///An object that can be used to synchronize access to the collection.
-			///</returns>
+			/// <returns>
+			/// An object that can be used to synchronize access to the collection.
+			/// </returns>
 			///
 			public object SyncRoot
 			{
@@ -438,25 +438,25 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
 			
 
-			///<summary>
-			///Gets a value indicating whether access to the collection of session-state values is synchronized (thread safe).
-			///</summary>
-			///<returns>
-			///true if access to the collection is synchronized (thread safe); otherwise, false.
-			///</returns>
+			/// <summary>
+			/// Gets a value indicating whether access to the collection of session-state values is synchronized (thread safe).
+			/// </summary>
+			/// <returns>
+			/// true if access to the collection is synchronized (thread safe); otherwise, false.
+			/// </returns>
 			///
 			public bool IsSynchronized
 			{
 				get { return true; }
 			}
 
-			///<summary>
-			///Gets a value indicating whether the session is read-only.
-			///</summary>
+			/// <summary>
+			/// Gets a value indicating whether the session is read-only.
+			/// </summary>
 			///
-			///<returns>
-			///true if the session is read-only; otherwise, false.
-			///</returns>
+			/// <returns>
+			/// true if the session is read-only; otherwise, false.
+			/// </returns>
 			///
 			bool IHttpSessionState.IsReadOnly
 			{
@@ -735,10 +735,10 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             }
         }
 
-        ///<summary>
-        ///Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        ///</summary>
-        ///<filterpriority>2</filterpriority>
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
             HttpContext.Current = null;

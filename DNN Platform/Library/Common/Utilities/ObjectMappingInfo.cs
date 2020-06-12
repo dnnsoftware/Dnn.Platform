@@ -38,11 +38,11 @@ namespace DotNetNuke.Common.Utilities
         private string _PrimaryKey;
         private string _TableName;
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Constructs a new ObjectMappingInfo Object
         /// </summary>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         public ObjectMappingInfo()
         {
             this._Properties = new Dictionary<string, PropertyInfo>();

@@ -97,7 +97,7 @@ namespace DotNetNuke.Common
         /// update cache immediately after the data changed.</para>
         /// <para>default cache policy in core api will use cache timeout muitple Host Performance setting's value as cache time(unit: minutes):</para>
         /// <list type="bullet">
-        ///	<item>HostSettingsCacheTimeOut: 20</item>
+        /// 	<item>HostSettingsCacheTimeOut: 20</item>
         /// <item>PortalAliasCacheTimeOut: 200</item>
         /// <item>PortalSettingsCacheTimeOut: 20</item>
         /// <item>More cache timeout definitions see<see cref="DotNetNuke.Common.Utilities.DataCache"/></item>
@@ -1594,7 +1594,7 @@ namespace DotNetNuke.Common
         /// <remarks>
         /// This overload takes a the PortalId
         /// </remarks>
-        ///	<param name="PortalID">The Portal Id</param>
+        /// 	<param name="PortalID">The Portal Id</param>
         /// -----------------------------------------------------------------------------
         public static void SetApplicationName(int PortalID)
         {
@@ -1608,7 +1608,7 @@ namespace DotNetNuke.Common
         /// <remarks>
         /// This overload takes a the PortalId
         /// </remarks>
-        ///	<param name="ApplicationName">The Application Name to set</param>
+        /// 	<param name="ApplicationName">The Application Name to set</param>
         /// -----------------------------------------------------------------------------
         public static void SetApplicationName(string ApplicationName)
         {

@@ -41,12 +41,12 @@ namespace log4net.Config
 	/// Example of registering the log4net section handler :
 	/// <code lang="XML" escaped="true">
 	/// <configuration>
-	///		<configSections>
-	///			<section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net" />
-	///		</configSections>
-	///		<log4net>
-	///			log4net configuration XML goes here
-	///		</log4net>
+	/// 		<configSections>
+	/// 			<section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net" />
+	/// 		</configSections>
+	/// 		<log4net>
+	/// 			log4net configuration XML goes here
+	/// 		</log4net>
 	/// </configuration>
 	/// </code>
 	/// </example>

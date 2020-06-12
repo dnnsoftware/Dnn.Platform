@@ -14,9 +14,9 @@ using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Entities.Tabs
 {
-    ///<summary>
-    ///Class to represent a TabAliasSkinInfo object
-    ///</summary>
+    /// <summary>
+    /// Class to represent a TabAliasSkinInfo object
+    /// </summary>
     [Serializable]
     public class TabAliasSkinInfo : BaseEntityInfo, IHydratable
     {

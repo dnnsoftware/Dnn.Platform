@@ -84,69 +84,69 @@ namespace log4net.ObjectRenderer
 		/// The default renderer supports rendering objects to strings as follows:
 		/// </para>
 		/// <list type="table">
-		///		<listheader>
-		///			<term>Value</term>
-		///			<description>Rendered String</description>
-		///		</listheader>
-		///		<item>
-		///			<term><c>null</c></term>
-		///			<description>
-		///			<para>"(null)"</para>
-		///			</description>
-		///		</item>
-		///		<item>
-		///			<term><see cref="Array"/></term>
-		///			<description>
-		///			<para>
-		///			For a one dimensional array this is the
-		///			array type name, an open brace, followed by a comma
-		///			separated list of the elements (using the appropriate
-		///			renderer), followed by a close brace. 
-		///			</para>
-		///			<para>
-		///			For example: <c>int[] {1, 2, 3}</c>.
-		///			</para>
-		///			<para>
-		///			If the array is not one dimensional the 
-		///			<c>Array.ToString()</c> is returned.
-		///			</para>
-		///			</description>
-		///		</item>
-		///		<item>
-		///			<term><see cref="IEnumerable"/>, <see cref="ICollection"/> &amp; <see cref="IEnumerator"/></term>
-		///			<description>
-		///			<para>
-		///			Rendered as an open brace, followed by a comma
-		///			separated list of the elements (using the appropriate
-		///			renderer), followed by a close brace.
-		///			</para>
-		///			<para>
-		///			For example: <c>{a, b, c}</c>.
-		///			</para>
-		///			<para>
-		///			All collection classes that implement <see cref="ICollection"/> its subclasses, 
-		///			or generic equivalents all implement the <see cref="IEnumerable"/> interface.
-		///			</para>
-		///			</description>
-		///		</item>		
-		///		<item>
-		///			<term><see cref="DictionaryEntry"/></term>
-		///			<description>
-		///			<para>
-		///			Rendered as the key, an equals sign ('='), and the value (using the appropriate
-		///			renderer). 
-		///			</para>
-		///			<para>
-		///			For example: <c>key=value</c>.
-		///			</para>
-		///			</description>
-		///		</item>		
-		///		<item>
-		///			<term>other</term>
-		///			<description>
-		///			<para><c>Object.ToString()</c></para>
-		///			</description>
-		///		</item>
+		/// 		<listheader>
+		/// 			<term>Value</term>
+		/// 			<description>Rendered String</description>
+		/// 		</listheader>
+		/// 		<item>
+		/// 			<term><c>null</c></term>
+		/// 			<description>
+		/// 			<para>"(null)"</para>
+		/// 			</description>
+		/// 		</item>
+		/// 		<item>
+		/// 			<term><see cref="Array"/></term>
+		/// 			<description>
+		/// 			<para>
+		/// 			For a one dimensional array this is the
+		/// 			array type name, an open brace, followed by a comma
+		/// 			separated list of the elements (using the appropriate
+		/// 			renderer), followed by a close brace. 
+		/// 			</para>
+		/// 			<para>
+		/// 			For example: <c>int[] {1, 2, 3}</c>.
+		/// 			</para>
+		/// 			<para>
+		/// 			If the array is not one dimensional the 
+		/// 			<c>Array.ToString()</c> is returned.
+		/// 			</para>
+		/// 			</description>
+		/// 		</item>
+		/// 		<item>
+		/// 			<term><see cref="IEnumerable"/>, <see cref="ICollection"/> &amp; <see cref="IEnumerator"/></term>
+		/// 			<description>
+		/// 			<para>
+		/// 			Rendered as an open brace, followed by a comma
+		/// 			separated list of the elements (using the appropriate
+		/// 			renderer), followed by a close brace.
+		/// 			</para>
+		/// 			<para>
+		/// 			For example: <c>{a, b, c}</c>.
+		/// 			</para>
+		/// 			<para>
+		/// 			All collection classes that implement <see cref="ICollection"/> its subclasses, 
+		/// 			or generic equivalents all implement the <see cref="IEnumerable"/> interface.
+		/// 			</para>
+		/// 			</description>
+		/// 		</item>		
+		/// 		<item>
+		/// 			<term><see cref="DictionaryEntry"/></term>
+		/// 			<description>
+		/// 			<para>
+		/// 			Rendered as the key, an equals sign ('='), and the value (using the appropriate
+		/// 			renderer). 
+		/// 			</para>
+		/// 			<para>
+		/// 			For example: <c>key=value</c>.
+		/// 			</para>
+		/// 			</description>
+		/// 		</item>		
+		/// 		<item>
+		/// 			<term>other</term>
+		/// 			<description>
+		/// 			<para><c>Object.ToString()</c></para>
+		/// 			</description>
+		/// 		</item>
 		/// </list>
 		/// </remarks>
 		public void RenderObject(RendererMap rendererMap, object obj, TextWriter writer)
@@ -226,15 +226,15 @@ namespace log4net.ObjectRenderer
 		/// <remarks>
 		/// <para>
 		/// For a one dimensional array this is the
-		///	array type name, an open brace, followed by a comma
-		///	separated list of the elements (using the appropriate
-		///	renderer), followed by a close brace. For example:
-		///	<c>int[] {1, 2, 3}</c>.
-		///	</para>
-		///	<para>
-		///	If the array is not one dimensional the 
-		///	<c>Array.ToString()</c> is returned.
-		///	</para>
+		/// 	array type name, an open brace, followed by a comma
+		/// 	separated list of the elements (using the appropriate
+		/// 	renderer), followed by a close brace. For example:
+		/// 	<c>int[] {1, 2, 3}</c>.
+		/// 	</para>
+		/// 	<para>
+		/// 	If the array is not one dimensional the 
+		/// 	<c>Array.ToString()</c> is returned.
+		/// 	</para>
 		/// </remarks>
 		private void RenderArray(RendererMap rendererMap, Array array, TextWriter writer)
 		{
@@ -269,10 +269,10 @@ namespace log4net.ObjectRenderer
 		/// <remarks>
 		/// <para>
 		/// Rendered as an open brace, followed by a comma
-		///	separated list of the elements (using the appropriate
-		///	renderer), followed by a close brace. For example:
-		///	<c>{a, b, c}</c>.
-		///	</para>
+		/// 	separated list of the elements (using the appropriate
+		/// 	renderer), followed by a close brace. For example:
+		/// 	<c>{a, b, c}</c>.
+		/// 	</para>
 		/// </remarks>
 		private void RenderEnumerator(RendererMap rendererMap, IEnumerator enumerator, TextWriter writer)
 		{
@@ -301,8 +301,8 @@ namespace log4net.ObjectRenderer
 		/// <remarks>
 		/// <para>
 		/// Render the key, an equals sign ('='), and the value (using the appropriate
-		///	renderer). For example: <c>key=value</c>.
-		///	</para>
+		/// 	renderer). For example: <c>key=value</c>.
+		/// 	</para>
 		/// </remarks>
 		private void RenderDictionaryEntry(RendererMap rendererMap, DictionaryEntry entry, TextWriter writer)
 		{

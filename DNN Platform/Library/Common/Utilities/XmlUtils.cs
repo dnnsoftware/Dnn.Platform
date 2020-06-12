@@ -676,13 +676,13 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        ///-----------------------------------------------------------------------------
-        ///<summary>
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         ///  Xml Encodes HTML
-        ///</summary>
-        ///<param name = "html">The HTML to encode</param>
-        ///<returns></returns>
-        ///-----------------------------------------------------------------------------
+        /// </summary>
+        /// <param name = "html">The HTML to encode</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
         public static string XMLEncode(string html)
         {
             return "<![CDATA[" + html + "]]>";

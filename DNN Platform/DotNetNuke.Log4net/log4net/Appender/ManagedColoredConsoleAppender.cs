@@ -72,23 +72,23 @@ namespace log4net.Appender
 	/// specified to map logging levels to colors. For example:
 	/// </para>
 	/// <code lang="XML" escaped="true">
-	///	<mapping>
-	///		<level value="ERROR" />
-	///		<foreColor value="DarkRed" />
-	///		<backColor value="White" />
-	///	</mapping>
-	///	<mapping>
-	///		<level value="WARN" />
-	///		<foreColor value="Yellow" />
-	///	</mapping>
-	///	<mapping>
-	///		<level value="INFO" />
-	///		<foreColor value="White" />
-	///	</mapping>
-	///	<mapping>
-	///		<level value="DEBUG" />
-	///		<foreColor value="Blue" />
-	///	</mapping>
+	/// 	<mapping>
+	/// 		<level value="ERROR" />
+	/// 		<foreColor value="DarkRed" />
+	/// 		<backColor value="White" />
+	/// 	</mapping>
+	/// 	<mapping>
+	/// 		<level value="WARN" />
+	/// 		<foreColor value="Yellow" />
+	/// 	</mapping>
+	/// 	<mapping>
+	/// 		<level value="INFO" />
+	/// 		<foreColor value="White" />
+	/// 	</mapping>
+	/// 	<mapping>
+	/// 		<level value="DEBUG" />
+	/// 		<foreColor value="Blue" />
+	/// 	</mapping>
 	/// </code>
 	/// <para>
 	/// The Level is the standard log4net logging level while

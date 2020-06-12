@@ -77,21 +77,21 @@ namespace log4net.Layout.Pattern
 		/// Recognized values for the Option parameter are:
 		/// </para>
 		/// <list type="bullet">
-		///		<item>
-		///			<description>Message</description>
-		///		</item>
-		///		<item>
-		///			<description>Source</description>
-		///		</item>
-		///		<item>
-		///			<description>StackTrace</description>
-		///		</item>
-		///		<item>
-		///			<description>TargetSite</description>
-		///		</item>
-		///		<item>
-		///			<description>HelpLink</description>
-		///		</item>		
+		/// 		<item>
+		/// 			<description>Message</description>
+		/// 		</item>
+		/// 		<item>
+		/// 			<description>Source</description>
+		/// 		</item>
+		/// 		<item>
+		/// 			<description>StackTrace</description>
+		/// 		</item>
+		/// 		<item>
+		/// 			<description>TargetSite</description>
+		/// 		</item>
+		/// 		<item>
+		/// 			<description>HelpLink</description>
+		/// 		</item>		
 		/// </list>
 		/// </remarks>
 		override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)

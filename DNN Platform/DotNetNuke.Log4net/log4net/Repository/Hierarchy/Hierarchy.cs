@@ -814,29 +814,29 @@ namespace log4net.Repository.Hierarchy
 		/// <paramref name="log"/>. There 3 possible cases:
 		/// </para>
 		/// <list type="number">
-		///		<item>
-		///			<term>No entry for the potential parent of <paramref name="log"/> exists</term>
-		///			<description>
-		///			We create a ProvisionNode for this potential 
-		///			parent and insert <paramref name="log"/> in that provision node.
-		///			</description>
-		///		</item>
-		///		<item>
-		///			<term>The entry is of type Logger for the potential parent.</term>
-		///			<description>
-		///			The entry is <paramref name="log"/>'s nearest existing parent. We 
-		///			update <paramref name="log"/>'s parent field with this entry. We also break from 
-		///			he loop because updating our parent's parent is our parent's 
-		///			responsibility.
-		///			</description>
-		///		</item>
-		///		<item>
-		///			<term>The entry is of type ProvisionNode for this potential parent.</term>
-		///			<description>
-		///			We add <paramref name="log"/> to the list of children for this 
-		///			potential parent.
-		///			</description>
-		///		</item>
+		/// 		<item>
+		/// 			<term>No entry for the potential parent of <paramref name="log"/> exists</term>
+		/// 			<description>
+		/// 			We create a ProvisionNode for this potential 
+		/// 			parent and insert <paramref name="log"/> in that provision node.
+		/// 			</description>
+		/// 		</item>
+		/// 		<item>
+		/// 			<term>The entry is of type Logger for the potential parent.</term>
+		/// 			<description>
+		/// 			The entry is <paramref name="log"/>'s nearest existing parent. We 
+		/// 			update <paramref name="log"/>'s parent field with this entry. We also break from 
+		/// 			he loop because updating our parent's parent is our parent's 
+		/// 			responsibility.
+		/// 			</description>
+		/// 		</item>
+		/// 		<item>
+		/// 			<term>The entry is of type ProvisionNode for this potential parent.</term>
+		/// 			<description>
+		/// 			We add <paramref name="log"/> to the list of children for this 
+		/// 			potential parent.
+		/// 			</description>
+		/// 		</item>
 		/// </list>
 		/// </remarks>
 		private void UpdateParents(Logger log) 

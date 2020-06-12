@@ -20,9 +20,9 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 {
-    ///<summary>
+    /// <summary>
     /// Windows Azure Storage Folder Provider
-    ///</summary>
+    /// </summary>
     public class AzureFolderProvider : BaseRemoteStorageProvider
     {
 

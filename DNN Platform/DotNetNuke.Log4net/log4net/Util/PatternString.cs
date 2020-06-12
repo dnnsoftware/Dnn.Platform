@@ -123,10 +123,10 @@ namespace log4net.Util
 	///     <item>
 	///         <term>identity</term>
 	///         <description>
-	///				<para>
-	///				Used to output the user name for the currently active user
-	///				(Principal.Identity.Name).
-	///				</para>
+	/// 				<para>
+	/// 				Used to output the user name for the currently active user
+	/// 				(Principal.Identity.Name).
+	/// 				</para>
 	///         </description>
 	///     </item>
 	///     <item>
@@ -147,7 +147,7 @@ namespace log4net.Util
 	///         <term>processid</term>
 	///         <description>
 	///             <para>
-	///				Used to output the system process ID for the current process.
+	/// 				Used to output the system process ID for the current process.
 	///             </para>
 	///         </description>
 	///     </item>
@@ -204,10 +204,10 @@ namespace log4net.Util
 	///     <item>
 	///         <term>username</term>
 	///         <description>
-	///				<para>
-	///				Used to output the WindowsIdentity for the currently
-	///				active user.
-	///				</para>
+	/// 				<para>
+	/// 				Used to output the WindowsIdentity for the currently
+	/// 				active user.
+	/// 				</para>
 	///         </description>
 	///     </item>
 	///     <item>
@@ -241,14 +241,14 @@ namespace log4net.Util
 	/// 			</para>
 	///         </description>
 	///     </item>
-	///		<item>
-	///			<term>%</term>
-	///			<description>
+	/// 		<item>
+	/// 			<term>%</term>
+	/// 			<description>
 	/// 			<para>
 	/// 			The sequence %% outputs a single percent sign.
 	/// 			</para>
-	///			</description>
-	///		</item>
+	/// 			</description>
+	/// 		</item>
 	/// </list>
 	/// <para>
 	/// Additional pattern converters may be registered with a specific <see cref="PatternString"/>

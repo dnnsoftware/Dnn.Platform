@@ -48,7 +48,7 @@ namespace log4net.Layout
 	/// to perform the same as PatternLayout.</para>
 	/// <para>Please see <see cref="PatternLayout"/> for complete documentation.</para>
 	/// <example>
-	///	&lt;layout type="log4net.Layout.DynamicPatternLayout"&gt;
+	/// 	&lt;layout type="log4net.Layout.DynamicPatternLayout"&gt;
 	///   &lt;param name="Header" value="%newline**** Trace Opened     Local: %date{yyyy-MM-dd HH:mm:ss.fff}     UTC: %utcdate{yyyy-MM-dd HH:mm:ss.fff} ****%newline" /&gt;
 	///   &lt;param name="Footer" value="**** Trace Closed %date{yyyy-MM-dd HH:mm:ss.fff} ****%newline" /&gt;
 	/// &lt;/layout&gt;

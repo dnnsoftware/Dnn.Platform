@@ -205,7 +205,7 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///	<param name="container">The parent container (DataGridItem)</param>
+        /// 	<param name="container">The parent container (DataGridItem)</param>
         /// -----------------------------------------------------------------------------
         public void InstantiateIn(Control container)
         {
@@ -294,7 +294,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets whether theButton is visible
         /// </summary>
-        ///	<param name="container">The parent container (DataGridItem)</param>
+        /// 	<param name="container">The parent container (DataGridItem)</param>
         /// -----------------------------------------------------------------------------
         private bool GetIsVisible(DataGridItem container)
         {
@@ -314,7 +314,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets the value of the key
         /// </summary>
-        ///	<param name="container">The parent container (DataGridItem)</param>
+        /// 	<param name="container">The parent container (DataGridItem)</param>
         /// -----------------------------------------------------------------------------
         private int GetValue(DataGridItem container)
         {

@@ -195,8 +195,8 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return waitTime < 0 ? 0 : waitTime;
         }
 
-        ///<summary>Last message sent by the User</summary>
-        ///<returns>Message. Null when no message was sent</returns>
+        /// <summary>Last message sent by the User</summary>
+        /// <returns>Message. Null when no message was sent</returns>
         /// <param name="sender">Sender's UserInfo</param>        
         public virtual Message GetLastSentMessage(UserInfo sender)
         {
@@ -219,15 +219,15 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return this.GetPortalSetting("MessagingAllowAttachments", portalId, "YES") == "YES";
         }
 
-        ///<summary>Maximum number of Recipients allowed</summary>        
-        ///<returns>Count. Message to a Role is considered a single Recipient. Each User in the To list is counted as one User each.</returns>
+        /// <summary>Maximum number of Recipients allowed</summary>        
+        /// <returns>Count. Message to a Role is considered a single Recipient. Each User in the To list is counted as one User each.</returns>
         /// <param name="portalId">Portal Id</param>        
         public virtual int RecipientLimit(int portalId)
         {
             return this.GetPortalSettingAsInteger("MessagingRecipientLimit", portalId, 5);
         }
 
-		///<summary>Whether disable regular users to send message to user/group, default is false.</summary>        
+		/// <summary>Whether disable regular users to send message to user/group, default is false.</summary>        
 		/// <param name="portalId">Portal Id</param>        
 		public virtual bool DisablePrivateMessage(int portalId)
 		{

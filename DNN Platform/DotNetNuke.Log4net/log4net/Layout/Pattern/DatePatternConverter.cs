@@ -42,11 +42,11 @@ namespace log4net.Layout.Pattern
 	/// The value of the <see cref="log4net.Util.PatternConverter.Option"/> determines 
 	/// the formatting of the date. The following values are allowed:
 	/// <list type="definition">
-	///		<listheader>
+	/// 		<listheader>
 	/// 		<term>Option value</term>
 	/// 		<description>Output</description>
 	/// 	</listheader>
-	///		<item>
+	/// 		<item>
 	/// 		<term>ISO8601</term>
 	/// 		<description>
 	/// 		Uses the <see cref="Iso8601DateFormatter"/> formatter. 

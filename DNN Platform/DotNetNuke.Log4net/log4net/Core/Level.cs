@@ -59,27 +59,27 @@ namespace log4net.Core
 	/// Some of the predefined levels recognized by the system are:
 	/// </para>
 	/// <list type="bullet">
-	///		<item>
-	///			<description><see cref="Off"/>.</description>
-	///		</item>
-	///		<item>
-	///			<description><see cref="Fatal"/>.</description>
-	///		</item>
-	///		<item>
-	///			<description><see cref="Error"/>.</description>
-	///		</item>
-	///		<item>
-	///			<description><see cref="Warn"/>.</description>
-	///		</item>
-	///		<item>
-	///			<description><see cref="Info"/>.</description>
-	///		</item>
-	///		<item>
-	///			<description><see cref="Debug"/>.</description>
-	///		</item>
-	///		<item>
-	///			<description><see cref="All"/>.</description>
-	///		</item>
+	/// 		<item>
+	/// 			<description><see cref="Off"/>.</description>
+	/// 		</item>
+	/// 		<item>
+	/// 			<description><see cref="Fatal"/>.</description>
+	/// 		</item>
+	/// 		<item>
+	/// 			<description><see cref="Error"/>.</description>
+	/// 		</item>
+	/// 		<item>
+	/// 			<description><see cref="Warn"/>.</description>
+	/// 		</item>
+	/// 		<item>
+	/// 			<description><see cref="Info"/>.</description>
+	/// 		</item>
+	/// 		<item>
+	/// 			<description><see cref="Debug"/>.</description>
+	/// 		</item>
+	/// 		<item>
+	/// 			<description><see cref="All"/>.</description>
+	/// 		</item>
 	/// </list>
 	/// </remarks>
 	/// <author>Nicko Cadell</author>
@@ -267,26 +267,26 @@ namespace log4net.Core
 		/// A 32-bit signed integer that indicates the relative order of the 
 		/// values compared. The return value has these meanings:
 		/// <list type="table">
-		///		<listheader>
-		///			<term>Value</term>
-		///			<description>Meaning</description>
-		///		</listheader>
-		///		<item>
-		///			<term>Less than zero</term>
-		///			<description>This instance is less than <paramref name="r" />.</description>
-		///		</item>
-		///		<item>
-		///			<term>Zero</term>
-		///			<description>This instance is equal to <paramref name="r" />.</description>
-		///		</item>
-		///		<item>
-		///			<term>Greater than zero</term>
-		///			<description>
-		///				<para>This instance is greater than <paramref name="r" />.</para>
-		///				<para>-or-</para>
-		///				<para><paramref name="r" /> is <see langword="null" />.</para>
-		///				</description>
-		///		</item>
+		/// 		<listheader>
+		/// 			<term>Value</term>
+		/// 			<description>Meaning</description>
+		/// 		</listheader>
+		/// 		<item>
+		/// 			<term>Less than zero</term>
+		/// 			<description>This instance is less than <paramref name="r" />.</description>
+		/// 		</item>
+		/// 		<item>
+		/// 			<term>Zero</term>
+		/// 			<description>This instance is equal to <paramref name="r" />.</description>
+		/// 		</item>
+		/// 		<item>
+		/// 			<term>Greater than zero</term>
+		/// 			<description>
+		/// 				<para>This instance is greater than <paramref name="r" />.</para>
+		/// 				<para>-or-</para>
+		/// 				<para><paramref name="r" /> is <see langword="null" />.</para>
+		/// 				</description>
+		/// 		</item>
 		/// </list>
 		/// </returns>
 		/// <remarks>
@@ -450,22 +450,22 @@ namespace log4net.Core
 		/// A 32-bit signed integer that indicates the relative order of the 
 		/// two values compared. The return value has these meanings:
 		/// <list type="table">
-		///		<listheader>
-		///			<term>Value</term>
-		///			<description>Meaning</description>
-		///		</listheader>
-		///		<item>
-		///			<term>Less than zero</term>
-		///			<description><paramref name="l" /> is less than <paramref name="r" />.</description>
-		///		</item>
-		///		<item>
-		///			<term>Zero</term>
-		///			<description><paramref name="l" /> is equal to <paramref name="r" />.</description>
-		///		</item>
-		///		<item>
-		///			<term>Greater than zero</term>
-		///			<description><paramref name="l" /> is greater than <paramref name="r" />.</description>
-		///		</item>
+		/// 		<listheader>
+		/// 			<term>Value</term>
+		/// 			<description>Meaning</description>
+		/// 		</listheader>
+		/// 		<item>
+		/// 			<term>Less than zero</term>
+		/// 			<description><paramref name="l" /> is less than <paramref name="r" />.</description>
+		/// 		</item>
+		/// 		<item>
+		/// 			<term>Zero</term>
+		/// 			<description><paramref name="l" /> is equal to <paramref name="r" />.</description>
+		/// 		</item>
+		/// 		<item>
+		/// 			<term>Greater than zero</term>
+		/// 			<description><paramref name="l" /> is greater than <paramref name="r" />.</description>
+		/// 		</item>
 		/// </list>
 		/// </returns>
 		/// <remarks>

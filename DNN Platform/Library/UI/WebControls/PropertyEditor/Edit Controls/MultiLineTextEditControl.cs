@@ -11,7 +11,7 @@ using System.Web.UI;
 
 namespace DotNetNuke.UI.WebControls
 {
-    ///-----------------------------------------------------------------------------
+    /// -----------------------------------------------------------------------------
     /// <summary>
     /// The MultiLineTextEditControl control provides a standard UI component for editing
     /// string/text properties.

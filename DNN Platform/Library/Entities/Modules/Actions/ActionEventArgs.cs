@@ -10,41 +10,41 @@ using System;
 
 namespace DotNetNuke.Entities.Modules.Actions
 {
-    ///-----------------------------------------------------------------------------
+    /// -----------------------------------------------------------------------------
     /// Project		: DotNetNuke
     /// Namespace   : DotNetNuke.Entities.Modules.Actions
     /// Class		: ActionEventArgs
-    ///-----------------------------------------------------------------------------
+    /// -----------------------------------------------------------------------------
     /// <summary>
     /// ActionEventArgs provides a custom EventARgs class for Action Events
     /// </summary>
     /// <remarks></remarks>
-    ///-----------------------------------------------------------------------------
+    /// -----------------------------------------------------------------------------
     public class ActionEventArgs : EventArgs
     {
         private readonly ModuleAction _action;
         private readonly ModuleInfo _moduleConfiguration;
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// </summary>
         /// <param name="Action"></param>
         /// <param name="ModuleConfiguration"></param>
         /// <remarks></remarks>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         public ActionEventArgs(ModuleAction Action, ModuleInfo ModuleConfiguration)
         {
             this._action = Action;
             this._moduleConfiguration = ModuleConfiguration;
         }
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
         /// <remarks></remarks>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         public ModuleAction Action
         {
             get
@@ -53,13 +53,13 @@ namespace DotNetNuke.Entities.Modules.Actions
             }
         }
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
         /// <remarks></remarks>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         public ModuleInfo ModuleConfiguration
         {
             get

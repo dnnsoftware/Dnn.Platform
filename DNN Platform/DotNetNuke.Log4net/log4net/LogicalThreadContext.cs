@@ -67,16 +67,16 @@ namespace log4net
 	/// <example>Example of using the thread context properties to store a username.
 	/// <code lang="C#">
 	/// LogicalThreadContext.Properties["user"] = userName;
-	///	log.Info("This log message has a LogicalThreadContext Property called 'user'");
+	/// 	log.Info("This log message has a LogicalThreadContext Property called 'user'");
 	/// </code>
 	/// </example>
 	/// <example>Example of how to push a message into the context stack
 	/// <code lang="C#">
-	///	using(LogicalThreadContext.Stacks["LDC"].Push("my context message"))
-	///	{
-	///		log.Info("This log message has a LogicalThreadContext Stack message that includes 'my context message'");
-	///	
-	///	} // at the end of the using block the message is automatically popped 
+	/// 	using(LogicalThreadContext.Stacks["LDC"].Push("my context message"))
+	/// 	{
+	/// 		log.Info("This log message has a LogicalThreadContext Stack message that includes 'my context message'");
+	/// 	
+	/// 	} // at the end of the using block the message is automatically popped 
 	/// </code>
 	/// </example>
 	/// <threadsafety static="true" instance="true" />

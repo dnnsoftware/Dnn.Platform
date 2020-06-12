@@ -10,12 +10,12 @@ using System;
 
 namespace DotNetNuke.UI.Containers.EventListeners
 {
-    ///-----------------------------------------------------------------------------
+    /// -----------------------------------------------------------------------------
     /// <summary>
     /// ContainerEventArgs provides a custom EventARgs class for Container Events
     /// </summary>
     /// <remarks></remarks>
-    ///-----------------------------------------------------------------------------
+    /// -----------------------------------------------------------------------------
     public class ContainerEventArgs : EventArgs
     {
         private readonly Container _Container;

@@ -20,7 +20,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
 {
 
     /// -----------------------------------------------------------------------------
-    ///<summary>
+    /// <summary>
     /// The FeatureController class for the modules.
     /// </summary>
     /// <remarks>

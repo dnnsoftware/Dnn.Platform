@@ -6,9 +6,9 @@ using System;
 
 namespace DotNetNuke.Entities.Tabs
 {
-    ///<summary>
-    ///Class to represent a TabUrl object
-    ///</summary>
+    /// <summary>
+    /// Class to represent a TabUrl object
+    /// </summary>
     [Serializable] //584 support sql session state
     public class TabUrlInfo
     {

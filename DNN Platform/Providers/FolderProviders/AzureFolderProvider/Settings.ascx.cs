@@ -15,9 +15,9 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 {
-    ///<summary>
+    /// <summary>
     /// Windows Azure Storage Settings Control
-    ///</summary>
+    /// </summary>
     public partial class Settings : FolderMappingSettingsControlBase
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Settings));

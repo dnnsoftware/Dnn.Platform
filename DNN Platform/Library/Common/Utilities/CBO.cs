@@ -844,15 +844,15 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        ///<summary>
+        /// <summary>
         ///  Iterates items in a IDictionary object and generates XML nodes
-        ///</summary>
-        ///<param name = "dictionary">The IDictionary to iterate</param>
-        ///<param name = "document">The XML document the node should be added to</param>
-        ///<param name="targetPath">Path at which to serialize settings</param>
-        ///<param name = "elementName">The name of the new element created</param>
-        ///<remarks>
-        ///</remarks>
+        /// </summary>
+        /// <param name = "dictionary">The IDictionary to iterate</param>
+        /// <param name = "document">The XML document the node should be added to</param>
+        /// <param name="targetPath">Path at which to serialize settings</param>
+        /// <param name = "elementName">The name of the new element created</param>
+        /// <remarks>
+        /// </remarks>
         public static void SerializeSettings(IDictionary dictionary, XmlDocument document, string targetPath,
                                              string elementName)
         {

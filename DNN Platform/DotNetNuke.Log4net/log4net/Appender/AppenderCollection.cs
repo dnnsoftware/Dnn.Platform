@@ -246,9 +246,9 @@ namespace log4net.Appender
 		/// </summary>
 		/// <param name="index">The zero-based index of the element to get or set.</param>
 		/// <exception cref="ArgumentOutOfRangeException">
-		///		<para><paramref name="index"/> is less than zero</para>
-		///		<para>-or-</para>
-		///		<para><paramref name="index"/> is equal to or greater than <see cref="AppenderCollection.Count"/>.</para>
+		/// 		<para><paramref name="index"/> is less than zero</para>
+		/// 		<para>-or-</para>
+		/// 		<para><paramref name="index"/> is equal to or greater than <see cref="AppenderCollection.Count"/>.</para>
 		/// </exception>
 		public virtual IAppender this[int index]
 		{

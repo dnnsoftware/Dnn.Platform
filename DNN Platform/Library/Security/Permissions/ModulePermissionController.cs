@@ -167,7 +167,7 @@ namespace DotNetNuke.Security.Permissions
             return _provider.HasModulePermission(modulePermissions, permissionKey);
         }
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Determines if user has the necessary permissions to access an item with the
         /// designated AccessLevel.
@@ -180,7 +180,7 @@ namespace DotNetNuke.Security.Permissions
         /// function determines whether the user represented by UserName has sufficient permissions, as
         /// determined by the PortalSettings and ModuleSettings, to access a resource with the
         /// designated AccessLevel.</remarks>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         public static bool HasModuleAccess(SecurityAccessLevel accessLevel, string permissionKey, ModuleInfo moduleConfiguration)
         {
             return _provider.HasModuleAccess(accessLevel, permissionKey, moduleConfiguration);

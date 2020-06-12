@@ -4,10 +4,10 @@
 
 namespace DotNetNuke.Entities.Modules.Actions
 {
-    ///-----------------------------------------------------------------------------
+    /// -----------------------------------------------------------------------------
     /// Project		: DotNetNuke
     /// Class		: ModuleActionType
-    ///-----------------------------------------------------------------------------
+    /// -----------------------------------------------------------------------------
     /// <summary>
     /// Identifies common module action types
     /// </summary>
@@ -15,7 +15,7 @@ namespace DotNetNuke.Entities.Modules.Actions
     /// Common action types can be specified in the CommandName attribute of the
     /// ModuleAction class
     /// </remarks>
-    ///-----------------------------------------------------------------------------
+    /// -----------------------------------------------------------------------------
     public class ModuleActionType
     {
         /// <summary>An action to create new content</summary>

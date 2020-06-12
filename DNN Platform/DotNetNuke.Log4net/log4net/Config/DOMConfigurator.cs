@@ -176,10 +176,10 @@ namespace log4net.Config
 		/// </para>
 		/// <code lang="XML" escaped="true">
 		/// <configuration>
-		///		<appSettings>
-		///			<add key="log4net-config-file" value="log.config"/>
-		///		</appSettings>
-		///	</configuration>
+		/// 		<appSettings>
+		/// 			<add key="log4net-config-file" value="log.config"/>
+		/// 		</appSettings>
+		/// 	</configuration>
 		/// </code>
 		/// </remarks>
 		[Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure. Scheduled removal in v10.0.0.")]
@@ -249,10 +249,10 @@ namespace log4net.Config
 		/// </para>
 		/// <code lang="XML" escaped="true">
 		/// <configuration>
-		///		<appSettings>
-		///			<add key="log4net-config-file" value="log.config"/>
-		///		</appSettings>
-		///	</configuration>
+		/// 		<appSettings>
+		/// 			<add key="log4net-config-file" value="log.config"/>
+		/// 		</appSettings>
+		/// 	</configuration>
 		/// </code>
 		/// </remarks>
 		[Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure. Scheduled removal in v10.0.0.")]

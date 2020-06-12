@@ -599,7 +599,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// When it is determined that the client supports a rich interactivity the grdProfileProperties_ItemCreated
         /// event is responsible for disabling all the unneeded AutoPostBacks, along with assiging the appropriate
-        ///	client-side script for each event handler
+        /// 	client-side script for each event handler
         /// </summary>
         /// <remarks>
         /// </remarks>

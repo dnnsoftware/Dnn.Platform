@@ -1165,7 +1165,7 @@ namespace log4net.Core
 		/// <code lang="C#">
 		/// if (log.IsDebugEnabled())
 		/// { 
-		///	 log.Debug("This is entry number: " + i );
+		/// 	 log.Debug("This is entry number: " + i );
 		/// }
 		/// </code>
 		/// <para>

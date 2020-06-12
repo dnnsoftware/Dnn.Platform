@@ -439,15 +439,15 @@ namespace log4net.Appender
 		/// method) if one of the following conditions is met:
 		/// </para>
 		/// <list type="bullet">
-		///		<item>
-		///			<description>The cyclic buffer is full and this appender is
-		///			marked as not lossy (see <see cref="Lossy"/>)</description>
-		///		</item>
-		///		<item>
-		///			<description>An <see cref="Evaluator"/> is set and
-		///			it is triggered for the <paramref name="loggingEvent"/>
-		///			specified.</description>
-		///		</item>
+		/// 		<item>
+		/// 			<description>The cyclic buffer is full and this appender is
+		/// 			marked as not lossy (see <see cref="Lossy"/>)</description>
+		/// 		</item>
+		/// 		<item>
+		/// 			<description>An <see cref="Evaluator"/> is set and
+		/// 			it is triggered for the <paramref name="loggingEvent"/>
+		/// 			specified.</description>
+		/// 		</item>
 		/// </list>
 		/// <para>
 		/// Before the event is stored in the buffer it is fixed

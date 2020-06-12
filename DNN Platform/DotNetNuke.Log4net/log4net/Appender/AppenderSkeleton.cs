@@ -267,23 +267,23 @@ namespace log4net.Appender
 		/// </para>
 		/// <para>
 		/// <list type="bullet">
-		///		<item>
-		///			<description>
-		///			Checks that the severity of the <paramref name="loggingEvent"/>
-		///			is greater than or equal to the <see cref="Threshold"/> of this
-		///			appender.</description>
-		///		</item>
-		///		<item>
-		///			<description>
-		///			Checks that the <see cref="IFilter"/> chain accepts the 
-		///			<paramref name="loggingEvent"/>.
-		///			</description>
-		///		</item>
-		///		<item>
-		///			<description>
-		///			Calls <see cref="M:PreAppendCheck()"/> and checks that 
-		///			it returns <c>true</c>.</description>
-		///		</item>
+		/// 		<item>
+		/// 			<description>
+		/// 			Checks that the severity of the <paramref name="loggingEvent"/>
+		/// 			is greater than or equal to the <see cref="Threshold"/> of this
+		/// 			appender.</description>
+		/// 		</item>
+		/// 		<item>
+		/// 			<description>
+		/// 			Checks that the <see cref="IFilter"/> chain accepts the 
+		/// 			<paramref name="loggingEvent"/>.
+		/// 			</description>
+		/// 		</item>
+		/// 		<item>
+		/// 			<description>
+		/// 			Calls <see cref="M:PreAppendCheck()"/> and checks that 
+		/// 			it returns <c>true</c>.</description>
+		/// 		</item>
 		/// </list>
 		/// </para>
 		/// <para>
@@ -364,23 +364,23 @@ namespace log4net.Appender
 		/// </para>
 		/// <para>
 		/// <list type="bullet">
-		///		<item>
-		///			<description>
-		///			Checks that the severity of the <paramref name="loggingEvents"/>
-		///			is greater than or equal to the <see cref="Threshold"/> of this
-		///			appender.</description>
-		///		</item>
-		///		<item>
-		///			<description>
-		///			Checks that the <see cref="IFilter"/> chain accepts the 
-		///			<paramref name="loggingEvents"/>.
-		///			</description>
-		///		</item>
-		///		<item>
-		///			<description>
-		///			Calls <see cref="M:PreAppendCheck()"/> and checks that 
-		///			it returns <c>true</c>.</description>
-		///		</item>
+		/// 		<item>
+		/// 			<description>
+		/// 			Checks that the severity of the <paramref name="loggingEvents"/>
+		/// 			is greater than or equal to the <see cref="Threshold"/> of this
+		/// 			appender.</description>
+		/// 		</item>
+		/// 		<item>
+		/// 			<description>
+		/// 			Checks that the <see cref="IFilter"/> chain accepts the 
+		/// 			<paramref name="loggingEvents"/>.
+		/// 			</description>
+		/// 		</item>
+		/// 		<item>
+		/// 			<description>
+		/// 			Calls <see cref="M:PreAppendCheck()"/> and checks that 
+		/// 			it returns <c>true</c>.</description>
+		/// 		</item>
 		/// </list>
 		/// </para>
 		/// <para>
@@ -468,18 +468,18 @@ namespace log4net.Appender
 		/// </para>
 		/// <para>
 		/// <list type="bullet">
-		///		<item>
-		///			<description>
-		///			Checks that the severity of the <paramref name="loggingEvent"/>
-		///			is greater than or equal to the <see cref="Threshold"/> of this
-		///			appender.</description>
-		///		</item>
-		///		<item>
-		///			<description>
-		///			Checks that the <see cref="IFilter"/> chain accepts the 
-		///			<paramref name="loggingEvent"/>.
-		///			</description>
-		///		</item>
+		/// 		<item>
+		/// 			<description>
+		/// 			Checks that the severity of the <paramref name="loggingEvent"/>
+		/// 			is greater than or equal to the <see cref="Threshold"/> of this
+		/// 			appender.</description>
+		/// 		</item>
+		/// 		<item>
+		/// 			<description>
+		/// 			Checks that the <see cref="IFilter"/> chain accepts the 
+		/// 			<paramref name="loggingEvent"/>.
+		/// 			</description>
+		/// 		</item>
 		/// </list>
 		/// </para>
 		/// </remarks>

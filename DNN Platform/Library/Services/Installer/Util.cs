@@ -26,8 +26,8 @@ namespace DotNetNuke.Services.Installer
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The InstallerBase class is a Base Class for all Installer
-    ///	classes that need to use Localized Strings.  It provides these strings
-    ///	as localized Constants.
+    /// 	classes that need to use Localized Strings.  It provides these strings
+    /// 	as localized Constants.
     /// </summary>
     /// <remarks>
     /// </remarks>

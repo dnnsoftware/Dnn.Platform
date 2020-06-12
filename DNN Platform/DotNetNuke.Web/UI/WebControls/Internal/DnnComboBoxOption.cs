@@ -19,7 +19,7 @@ using DotNetNuke.Web.UI.WebControls.Extensions;
 
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
-    ///<remarks>
+    /// <remarks>
     /// This class is added only for internal use, please don't reference it in any other places as it may removed in future.
     /// </remarks>
     [DataContract]

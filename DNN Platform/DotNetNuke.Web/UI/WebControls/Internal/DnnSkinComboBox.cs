@@ -14,7 +14,7 @@ using DotNetNuke.UI.Skins;
 
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
-    ///<remarks>
+    /// <remarks>
     /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
     /// </remarks>
     [ToolboxData("<{0}:DnnSkinComboBox runat='server'></{0}:DnnSkinComboBox>")]

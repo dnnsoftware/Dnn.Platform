@@ -44,21 +44,21 @@ namespace DotNetNuke.Entities.Content
 	/// [Serializable]
     /// public class DesktopModuleInfo : ContentItem, IXmlSerializable
     /// {
-    ///		#region IHydratable Members
+    /// 		#region IHydratable Members
 	///
-    ///		public override void Fill(IDataReader dr)
-    ///		{
-    ///		    DesktopModuleID = Null.SetNullInteger(dr["DesktopModuleID"]);
-    ///		    PackageID = Null.SetNullInteger(dr["PackageID"]);
-    ///		    ModuleName = Null.SetNullString(dr["ModuleName"]);
-    ///		    FriendlyName = Null.SetNullString(dr["FriendlyName"]);
-    ///		    Description = Null.SetNullString(dr["Description"]);
-    ///		    FolderName = Null.SetNullString(dr["FolderName"]);
-    ///		    Version = Null.SetNullString(dr["Version"]);
-    ///		    base.FillInternal(dr);
-    ///		}
-	///		
-	///		#endregion
+    /// 		public override void Fill(IDataReader dr)
+    /// 		{
+    /// 		    DesktopModuleID = Null.SetNullInteger(dr["DesktopModuleID"]);
+    /// 		    PackageID = Null.SetNullInteger(dr["PackageID"]);
+    /// 		    ModuleName = Null.SetNullString(dr["ModuleName"]);
+    /// 		    FriendlyName = Null.SetNullString(dr["FriendlyName"]);
+    /// 		    Description = Null.SetNullString(dr["Description"]);
+    /// 		    FolderName = Null.SetNullString(dr["FolderName"]);
+    /// 		    Version = Null.SetNullString(dr["Version"]);
+    /// 		    base.FillInternal(dr);
+    /// 		}
+	/// 		
+	/// 		#endregion
     /// }
 	/// </code>
 	/// </example>

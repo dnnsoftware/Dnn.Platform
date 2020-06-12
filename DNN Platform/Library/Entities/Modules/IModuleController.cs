@@ -68,9 +68,9 @@ namespace DotNetNuke.Entities.Modules
         /// DeleteAllModules deletes all instances of a Module (from a collection).  This overload
         /// soft deletes the instances
         /// </summary>
-        ///	<param name="moduleId">The Id of the module to copy</param>
-        ///	<param name="tabId">The Id of the current tab</param>
-        ///	<param name="fromTabs">An ArrayList of TabItem objects</param>
+        /// 	<param name="moduleId">The Id of the module to copy</param>
+        /// 	<param name="tabId">The Id of the current tab</param>
+        /// 	<param name="fromTabs">An ArrayList of TabItem objects</param>
         void DeleteAllModules(int moduleId, int tabId, List<TabInfo> fromTabs, bool softDelete, bool includeCurrent, bool deleteBaseModule);
 
         /// <summary>
@@ -225,12 +225,12 @@ namespace DotNetNuke.Entities.Modules
 
         /// <summary>
         /// MoveModule moes a Module from one Tab to another including all the
-        ///	TabModule settings
+        /// 	TabModule settings
         /// </summary>
-        ///	<param name="moduleId">The Id of the module to move</param>
-        ///	<param name="fromTabId">The Id of the source tab</param>
-        ///	<param name="toTabId">The Id of the destination tab</param>
-        ///	<param name="toPaneName">The name of the Pane on the destination tab where the module will end up</param>
+        /// 	<param name="moduleId">The Id of the module to move</param>
+        /// 	<param name="fromTabId">The Id of the source tab</param>
+        /// 	<param name="toTabId">The Id of the destination tab</param>
+        /// 	<param name="toPaneName">The name of the Pane on the destination tab where the module will end up</param>
         void MoveModule(int moduleId, int fromTabId, int toTabId, string toPaneName);
 
         /// <summary>

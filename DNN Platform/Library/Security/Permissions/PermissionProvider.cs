@@ -834,7 +834,7 @@ namespace DotNetNuke.Security.Permissions
             return modulePermissions;
         }
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Determines if user has the necessary permissions to access an item with the
         /// designated AccessLevel.
@@ -847,7 +847,7 @@ namespace DotNetNuke.Security.Permissions
         /// function determines whether the user represented by UserName has sufficient permissions, as
         /// determined by the PortalSettings and ModuleSettings, to access a resource with the
         /// designated AccessLevel.</remarks>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         public virtual bool HasModuleAccess(SecurityAccessLevel accessLevel, string permissionKey, ModuleInfo moduleConfiguration)
         {
             bool isAuthorized = false;

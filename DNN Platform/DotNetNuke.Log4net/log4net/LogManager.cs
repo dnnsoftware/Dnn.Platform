@@ -51,7 +51,7 @@ namespace log4net
 	/// 
 	/// if (log.IsDebugEnabled)
 	/// {
-	///		log.Debug("This is another debug message");
+	/// 		log.Debug("This is another debug message");
 	/// }
 	/// </code>
 	/// </example>

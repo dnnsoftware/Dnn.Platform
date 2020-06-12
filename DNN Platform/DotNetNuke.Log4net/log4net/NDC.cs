@@ -59,11 +59,11 @@ namespace log4net
 	/// </remarks>
 	/// <example>How to push a message into the context
 	/// <code lang="C#">
-	///	using(NDC.Push("my context message"))
-	///	{
-	///		... all log calls will have 'my context message' included ...
-	///	
-	///	} // at the end of the using block the message is automatically removed 
+	/// 	using(NDC.Push("my context message"))
+	/// 	{
+	/// 		... all log calls will have 'my context message' included ...
+	/// 	
+	/// 	} // at the end of the using block the message is automatically removed 
 	/// </code>
 	/// </example>
 	/// <threadsafety static="true" instance="true" />
@@ -240,8 +240,8 @@ namespace log4net
 		/// <code lang="C#">
 		/// using(log4net.NDC.Push("NDC_Message"))
 		/// {
-		///		log.Warn("This should have an NDC message");
-		///	}
+		/// 		log.Warn("This should have an NDC message");
+		/// 	}
 		/// </code>
 		/// </example>
 		[Obsolete("NDC has been replaced by ThreadContext.Stacks. Scheduled removal in v10.0.0.")]
@@ -278,8 +278,8 @@ namespace log4net
 		/// var someValue = "ExampleContext"
 		/// using(log4net.NDC.PushFormat("NDC_Message {0}", someValue))
 		/// {
-		///		log.Warn("This should have an NDC message");
-		///	}
+		/// 		log.Warn("This should have an NDC message");
+		/// 	}
 		/// </code>
 		/// </example>
 		[Obsolete("NDC has been replaced by ThreadContext.Stacks. Scheduled removal in v10.0.0.")]

@@ -51,8 +51,8 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///	<param name="price">The price to format</param>
-        ///	<returns>The correctly formatted price</returns>
+        /// 	<param name="price">The price to format</param>
+        /// 	<returns>The correctly formatted price</returns>
         /// -----------------------------------------------------------------------------
         private string FormatPrice(float price)
         {
@@ -126,8 +126,8 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///	<param name="expiryDate">The date to format</param>
-        ///	<returns>The correctly formatted date</returns>
+        /// 	<param name="expiryDate">The date to format</param>
+        /// 	<returns>The correctly formatted date</returns>
         /// -----------------------------------------------------------------------------
         protected string FormatExpiryDate(DateTime expiryDate)
         {
@@ -159,10 +159,10 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///	<param name="price">The price to format</param>
+        /// 	<param name="price">The price to format</param>
         /// <param name="period">Period of price.</param>
         /// <param name="frequency">Frenquency of price.</param>
-        ///	<returns>The correctly formatted price</returns>
+        /// 	<returns>The correctly formatted price</returns>
         /// -----------------------------------------------------------------------------
         protected string FormatPrice(float price, int period, string frequency)
         {
@@ -196,10 +196,10 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///	<param name="price">The price to format</param>
+        /// 	<param name="price">The price to format</param>
         /// <param name="period">Period of price.</param>
         /// <param name="frequency">Frenquency of price.</param>
-        ///	<returns>The correctly formatted price</returns>
+        /// 	<returns>The correctly formatted price</returns>
         /// -----------------------------------------------------------------------------
         protected string FormatTrial(float price, int period, string frequency)
         {
@@ -236,7 +236,7 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///	<returns>The correctly formatted url</returns>
+        /// 	<returns>The correctly formatted url</returns>
         /// -----------------------------------------------------------------------------
         protected string FormatURL()
         {
@@ -263,9 +263,9 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///	<param name="subscribed">The service state</param>
-        ///	<param name="expiryDate">The service expiry date.</param>
-        ///	<returns>The correctly formatted text</returns>
+        /// 	<param name="subscribed">The service state</param>
+        /// 	<param name="expiryDate">The service expiry date.</param>
+        /// 	<returns>The correctly formatted text</returns>
         /// -----------------------------------------------------------------------------
         protected string ServiceText(bool subscribed, DateTime expiryDate)
         {

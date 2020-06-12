@@ -151,8 +151,8 @@ namespace log4net.Util
 		/// <code lang="C#">
 		/// using(log4net.ThreadContext.Stacks["NDC"].Push("Stack_Message"))
 		/// {
-		///		log.Warn("This should have an ThreadContext Stack message");
-		///	}
+		/// 		log.Warn("This should have an ThreadContext Stack message");
+		/// 	}
 		/// </code>
 		/// </example>
 		public IDisposable Push(string message) 

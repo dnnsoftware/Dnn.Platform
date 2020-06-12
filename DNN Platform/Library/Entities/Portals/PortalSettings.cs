@@ -100,8 +100,8 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///	<param name="tabId">The current tab</param>
-        ///	<param name="portalAliasInfo">The current portal</param>
+        /// 	<param name="tabId">The current tab</param>
+        /// 	<param name="portalAliasInfo">The current portal</param>
         /// -----------------------------------------------------------------------------
         public PortalSettings(int tabId, PortalAliasInfo portalAliasInfo)
         {

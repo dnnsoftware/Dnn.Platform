@@ -638,7 +638,7 @@ namespace log4net.Appender
 		/// </summary>
 		/// <remarks>
 		/// See ReportEvent API:
-		///		http://msdn.microsoft.com/en-us/library/aa363679(VS.85).aspx
+		/// 		http://msdn.microsoft.com/en-us/library/aa363679(VS.85).aspx
 		/// ReportEvent's lpStrings parameter:
 		/// "A pointer to a buffer containing an array of 
 		/// null-terminated strings that are merged into the message before Event Viewer 
@@ -652,7 +652,7 @@ namespace log4net.Appender
 		/// an event log using a length of 31877 on Windows 7).
 		/// 
 		/// The max size for Windows Vista or higher is documented here:
-		///		http://msdn.microsoft.com/en-us/library/xzwc042w(v=vs.100).aspx.
+		/// 		http://msdn.microsoft.com/en-us/library/xzwc042w(v=vs.100).aspx.
 		/// Going over this size may succeed a few times but the buffer will overrun and 
 		/// eventually corrupt the log (based on testing).
 		/// 

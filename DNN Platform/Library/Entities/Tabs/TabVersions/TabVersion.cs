@@ -6,9 +6,9 @@ using System;
 
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
-    ///<summary>
-    ///Class to represent a Tab Version object
-    ///</summary>    
+    /// <summary>
+    /// Class to represent a Tab Version object
+    /// </summary>    
     [Serializable]
     public class TabVersion : BaseEntityInfo
     {       

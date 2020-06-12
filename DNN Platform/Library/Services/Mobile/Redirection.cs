@@ -112,7 +112,7 @@ namespace DotNetNuke.Services.Mobile
 		/// <summary>
 		/// the redirection's target value, this value will determine by TargetType as:
 		/// <list type="bullet">
-		///	<item>TargetType.Portal: this value should be a portal id.</item>
+		/// 	<item>TargetType.Portal: this value should be a portal id.</item>
 		/// <item>TargetType.Tab: this value should be a tab id.</item>
 		/// <item>TargetType.Url: this value should be a valid url.</item>
 		/// </list>

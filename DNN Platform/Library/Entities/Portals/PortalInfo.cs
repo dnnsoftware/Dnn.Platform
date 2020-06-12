@@ -104,7 +104,7 @@ namespace DotNetNuke.Entities.Portals
         ///      If Not cboAdministratorId.Items.FindByValue(objPortal.AdministratorId.ToString) Is Nothing Then
         ///          cboAdministratorId.Items.FindByValue(objPortal.AdministratorId.ToString).Selected = True
         ///      End If
-        ///</code></example></remarks>
+        /// </code></example></remarks>
         [XmlElement("administratorid")]
         public int AdministratorId { get; set; }
 
@@ -360,7 +360,7 @@ namespace DotNetNuke.Entities.Portals
         /// <remarks><example><code lang="vbnet">
         ///  urlLogo.Url = objPortal.LogoFile
         ///  urlLogo.FileFilter = glbImageFileTypes
-        ///</code></example></remarks>
+        /// </code></example></remarks>
         [XmlElement("logofile")]
         public string LogoFile { get; set; }
 

@@ -23,7 +23,7 @@ namespace DotNetNuke.UI.Skins
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// SkinThumbNailControl is a user control that provides that displays the skins
-    ///	as a Radio ButtonList with Thumbnail Images where available
+    /// 	as a Radio ButtonList with Thumbnail Images where available
     /// </summary>
     /// <remarks>
     /// </remarks>

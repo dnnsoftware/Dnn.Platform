@@ -750,7 +750,7 @@ namespace log4net.Appender
 		#region Initialize Options
 
 		/// <summary>
-		///	Determines curSizeRollBackups (only within the current roll point)
+		/// 	Determines curSizeRollBackups (only within the current roll point)
 		/// </summary>
 		private void DetermineCurSizeRollBackups()
 		{
@@ -874,10 +874,10 @@ namespace log4net.Appender
 		/// Initializes based on existing conditions at time of <see cref="ActivateOptions"/>.
 		/// The following is done
 		/// <list type="bullet">
-		///	<item>determine curSizeRollBackups (only within the current roll point)</item>
-		///	<item>initiates a roll over if needed for crossing a date boundary since the last run.</item>
-		///	</list>
-		///	</para>
+		/// 	<item>determine curSizeRollBackups (only within the current roll point)</item>
+		/// 	<item>initiates a roll over if needed for crossing a date boundary since the last run.</item>
+		/// 	</list>
+		/// 	</para>
 		/// </remarks>
 		protected void ExistingInit() 
 		{

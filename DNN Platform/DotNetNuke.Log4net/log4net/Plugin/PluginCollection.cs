@@ -27,7 +27,7 @@ using System.Collections;
 namespace log4net.Plugin
 {
 	/// <summary>
-	///	A strongly-typed collection of <see cref="IPlugin"/> objects.
+	/// 	A strongly-typed collection of <see cref="IPlugin"/> objects.
 	/// </summary>
 	/// <author>Nicko Cadell</author>
 	public class PluginCollection : ICollection, IList, IEnumerable
@@ -44,24 +44,24 @@ namespace log4net.Plugin
 		public interface IPluginCollectionEnumerator
 		{
 			/// <summary>
-			///	Gets the current element in the collection.
+			/// 	Gets the current element in the collection.
 			/// </summary>
 			IPlugin Current { get; }
 
 			/// <summary>
-			///	Advances the enumerator to the next element in the collection.
+			/// 	Advances the enumerator to the next element in the collection.
 			/// </summary>
 			/// <returns>
-			///	<c>true</c> if the enumerator was successfully advanced to the next element; 
-			///	<c>false</c> if the enumerator has passed the end of the collection.
+			/// 	<c>true</c> if the enumerator was successfully advanced to the next element; 
+			/// 	<c>false</c> if the enumerator has passed the end of the collection.
 			/// </returns>
 			/// <exception cref="InvalidOperationException">
-			///	The collection was modified after the enumerator was created.
+			/// 	The collection was modified after the enumerator was created.
 			/// </exception>
 			bool MoveNext();
 
 			/// <summary>
-			///	Sets the enumerator to its initial position, before the first element in the collection.
+			/// 	Sets the enumerator to its initial position, before the first element in the collection.
 			/// </summary>
 			void Reset();
 		}
@@ -81,7 +81,7 @@ namespace log4net.Plugin
 		#region Static Wrappers
 
 		/// <summary>
-		///	Creates a read-only wrapper for a <c>PluginCollection</c> instance.
+		/// 	Creates a read-only wrapper for a <c>PluginCollection</c> instance.
 		/// </summary>
 		/// <param name="list">list to create a readonly wrapper arround</param>
 		/// <returns>
@@ -99,8 +99,8 @@ namespace log4net.Plugin
 		#region Constructors
 
 		/// <summary>
-		///	Initializes a new instance of the <c>PluginCollection</c> class
-		///	that is empty and has the default initial capacity.
+		/// 	Initializes a new instance of the <c>PluginCollection</c> class
+		/// 	that is empty and has the default initial capacity.
 		/// </summary>
 		public PluginCollection()
 		{
