@@ -2,11 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Web.Mvc;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-using System.Web.Routing;
-using DotNetNuke.Tests.Web.Mvc.Fakes.Filters;
 using System;
+using System.Web.Mvc;
+using System.Web.Routing;
+
+using DotNetNuke.Tests.Web.Mvc.Fakes.Filters;
+using DotNetNuke.Web.Mvc.Framework.Controllers;
 
 namespace DotNetNuke.Tests.Web.Mvc.Fakes
 {

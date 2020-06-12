@@ -5,9 +5,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using DotNetNuke.Entities.Profile;
 using System.ComponentModel.Composition;
+
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Profile;
 
 namespace DotNetNuke.Services.GeneratedImage
 {

@@ -5,7 +5,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Threading;
+
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Controllers;
@@ -15,11 +17,8 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Tests.Utilities.Mocks;
-
 using Moq;
-
 using NUnit.Framework;
-using System.IO;
 
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {

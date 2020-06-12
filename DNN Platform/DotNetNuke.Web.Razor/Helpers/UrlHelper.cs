@@ -4,10 +4,11 @@
 // See the LICENSE file in the project root for more information
 
 
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.UI.Modules;
 using System;
+
+using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
+using DotNetNuke.UI.Modules;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Web.Razor.Helpers

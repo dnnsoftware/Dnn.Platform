@@ -9,7 +9,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Xml.XPath;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Common.Utilities.Internal;
@@ -17,7 +19,6 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Services.Installer.Log;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.UI.Modules;
-using System.Threading;
 
 namespace DotNetNuke.Services.Installer
 {

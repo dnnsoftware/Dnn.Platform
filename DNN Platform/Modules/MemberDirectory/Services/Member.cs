@@ -4,15 +4,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Net;
+using System.Threading;
+using System.Web;
 
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Tokens;
-using System.Web;
 
 namespace DotNetNuke.Modules.MemberDirectory.Services
 {

@@ -5,11 +5,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer.Packages;
-using System.Reflection;
 
 namespace DotNetNuke.Services.Connections
 {

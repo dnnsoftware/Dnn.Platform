@@ -14,8 +14,10 @@
 '
 */
 
-using DotNetNuke.Modules.Journal.Components;
 using System;
+
+using DotNetNuke.Modules.Journal.Components;
+
 namespace DotNetNuke.Modules.Journal {
 
     public class JournalModuleBase : DotNetNuke.Entities.Modules.PortalModuleBase {

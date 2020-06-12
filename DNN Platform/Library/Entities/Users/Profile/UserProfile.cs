@@ -2,21 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Common.Internal;
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Xml.Serialization;
 
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
+using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Services.FileSystem;
-
-using System.Xml.Serialization;
-using DotNetNuke.Common.Lists;
-
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Users

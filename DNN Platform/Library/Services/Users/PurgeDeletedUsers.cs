@@ -4,10 +4,11 @@
 // See the LICENSE file in the project root for more information
 
 
+using System;
+
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Scheduling;
-using System;
 
 namespace DotNetNuke.Services.Users
 {

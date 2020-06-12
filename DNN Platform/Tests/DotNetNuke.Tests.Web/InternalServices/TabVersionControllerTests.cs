@@ -3,19 +3,18 @@
 // See the LICENSE file in the project root for more information
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-using NUnit.Framework;
-using Moq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Tests.Utilities.Mocks;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Common;
-using System.Collections;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Tabs.TabVersions;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Tests.Utilities.Mocks;
+using Moq;
+using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Web.InternalServices
 {

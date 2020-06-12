@@ -2,15 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
+using System.Collections.Specialized;
+using System.Web;
+
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.UserRequest;
+using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
 using NUnit.Framework;
-using DotNetNuke.Entities.Controllers;
-using System.Web;
-using DotNetNuke.Tests.Utilities;
-using System.Collections.Specialized;
-using DotNetNuke.Services.UserRequest;
 
 namespace DotNetNuke.Tests.Core.Services.UserRequest
 {

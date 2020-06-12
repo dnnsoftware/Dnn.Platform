@@ -4,10 +4,11 @@
 
 using System;
 using System.Collections.Generic;
-using DotNetNuke.Framework;
+using System.Linq;
+
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Entities.Profile;
-using System.Linq;
+using DotNetNuke.Framework;
 
 namespace DotNetNuke.Services.Registration
 {

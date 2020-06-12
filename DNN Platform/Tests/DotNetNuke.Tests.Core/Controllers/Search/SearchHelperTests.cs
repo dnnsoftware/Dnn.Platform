@@ -2,6 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
+using System;
+using System.Data;
+using System.Linq;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
@@ -10,9 +14,6 @@ using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Data;
-using System.Linq;
 
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {

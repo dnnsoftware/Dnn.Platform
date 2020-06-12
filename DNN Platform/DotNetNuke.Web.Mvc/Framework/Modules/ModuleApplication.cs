@@ -4,16 +4,17 @@
 
 using System;
 using System.Globalization;
+using System.Reflection;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-using System.Web;
-using System.Reflection;
-using DotNetNuke.Web.Mvc.Common;
-using Microsoft.Web.Infrastructure.DynamicValidationHelper;
+
 using DotNetNuke.Common;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Web.Mvc.Common;
+using DotNetNuke.Web.Mvc.Framework.Controllers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Web.Infrastructure.DynamicValidationHelper;
 
 namespace DotNetNuke.Web.Mvc.Framework.Modules
 {

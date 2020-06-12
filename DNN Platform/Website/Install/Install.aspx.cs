@@ -2,8 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Installer.Blocker;
 using System;
 using System.Data;
 using System.IO;
@@ -17,13 +15,14 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Installer.Blocker;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Upgrade.InternalController.Steps;
 using DotNetNuke.Services.Upgrade.Internals;
 using DotNetNuke.Services.Upgrade.Internals.Steps;
 using DotNetNuke.Web.Client.ClientResourceManagement;
-
 
 // ReSharper disable once CheckNamespace
 namespace DotNetNuke.Services.Install

@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
 using System.Net.Http;
 using System.Web.Http;
+
+using Dnn.PersonaBar.Library;
+using Dnn.PersonaBar.Library.Attributes;
 using Dnn.PersonaBar.UI.Services.DTO;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;

@@ -4,13 +4,14 @@
 // See the LICENSE file in the project root for more information
 
 
+using System;
+using System.Collections;
 using System.Xml;
 using System.Xml.Serialization;
-using DotNetNuke.Services.Tokens;
+
 using DotNetNuke.Security.Roles;
-using System.Collections;
 using DotNetNuke.Security.Roles.Internal;
-using System;
+using DotNetNuke.Services.Tokens;
 
 namespace DotNetNuke.Entities.Groups
 {

@@ -4,12 +4,13 @@
 // See the LICENSE file in the project root for more information
 
 
+using System;
+
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.UI.Modules;
-using System;
 
 namespace DotNetNuke.Web.Razor.Helpers
 {

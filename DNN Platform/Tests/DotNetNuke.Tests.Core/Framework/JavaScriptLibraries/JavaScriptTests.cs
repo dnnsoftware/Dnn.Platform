@@ -2,7 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Web;
+
 using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Framework.JavaScriptLibraries;
@@ -10,10 +15,6 @@ using DotNetNuke.Tests.Instance.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
 {

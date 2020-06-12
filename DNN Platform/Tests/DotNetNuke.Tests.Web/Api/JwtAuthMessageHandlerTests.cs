@@ -9,19 +9,20 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
+
 using Dnn.AuthServices.Jwt.Auth;
 using Dnn.AuthServices.Jwt.Components.Entity;
 using Dnn.AuthServices.Jwt.Data;
+using DotNetNuke.Data;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Membership;
 using DotNetNuke.Tests.Utilities.Mocks;
 using DotNetNuke.Web.ConfigSection;
 using Moq;
 using NUnit.Framework;
-using System.Text;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Data;
-using DotNetNuke.Security.Membership;
 
 namespace DotNetNuke.Tests.Web.Api
 {

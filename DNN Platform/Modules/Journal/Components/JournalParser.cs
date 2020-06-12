@@ -6,21 +6,21 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
+using System.Xml;
+
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Entities.Users;
-using System.Text;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
-using System.Text.RegularExpressions;
-using Microsoft.Extensions.DependencyInjection;
-
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Journal.Internal;
 using DotNetNuke.Services.Localization;
-using System.Xml;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Journal.Components
 {

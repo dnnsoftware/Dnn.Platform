@@ -5,9 +5,10 @@
 
 
 using System;
-using DotNetNuke.UI.WebControls;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
+using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.UI.WebControls.Extensions;
 
 namespace DotNetNuke.Web.UI.WebControls

@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Web;
+using System.Web.UI;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
@@ -21,7 +22,6 @@ using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Utilities;
 
 using Globals = DotNetNuke.Common.Globals;
-using System.Web.UI;
 
 namespace DotNetNuke.UI.Modules
 {

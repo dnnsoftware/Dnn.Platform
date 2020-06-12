@@ -1,12 +1,13 @@
-﻿using DotNetNuke.DependencyInjection.Extensions;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using DotNetNuke.DependencyInjection.Extensions;
+using DotNetNuke.Web.Mvc.Framework.Controllers;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace DotNetNuke.Web.Mvc.Extensions
 {

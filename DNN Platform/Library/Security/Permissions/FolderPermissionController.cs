@@ -5,12 +5,13 @@
 
 
 using System;
+using System.Collections.Generic;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
-using System.Collections.Generic;
 
 namespace DotNetNuke.Security.Permissions
 {

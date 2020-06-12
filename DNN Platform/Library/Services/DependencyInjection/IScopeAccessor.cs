@@ -1,8 +1,9 @@
-﻿using DotNetNuke.Common.Extensions;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections;
 using System.Web;
+
+using DotNetNuke.Common.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Services.DependencyInjection
 {

@@ -2,7 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
+using 
+/* Unmerged change from project 'DotNetNuke.ModulePipeline(net472)'
+Before:
 using System.IO;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Instrumentation;
@@ -12,9 +14,32 @@ using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Razor;
 using System.Collections.Generic;
 using DotNetNuke.Web.Mvc;
+After:
+using System.Collections.Generic;
+using System.IO;
+
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Modules;
+using DotNetNuke.Web.Modules.Html5;
+using DotNetNuke.Web.Mvc;
+using DotNetNuke.Web.Razor;
+*/
+DotNetNuke.Entities.Modules;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Modules;
+using DotNetNuke.UI.Modules.Html5;
+using DotNetNuke.Web.Mvc;
+using DotNetNuke.Web.Razor;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 #if NET472
 using System.Web.UI;
+
 #endif
 
 namespace DotNetNuke.ModulePipeline

@@ -6,12 +6,13 @@ namespace DotNetNuke.Web.Client.Providers
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
-    using System.Web.UI;
     using System.Linq;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI;
+
     using ClientDependency.Core;
     using ClientDependency.Core.Config;
-    using System.Web;
     using ClientDependency.Core.FileRegistration.Providers;
 
     /// <summary>

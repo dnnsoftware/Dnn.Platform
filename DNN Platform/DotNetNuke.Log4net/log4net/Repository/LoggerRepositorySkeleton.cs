@@ -22,11 +22,12 @@
 
 using System;
 using System.Collections;
-using log4net.ObjectRenderer;
-using log4net.Core;
-using log4net.Util;
-using log4net.Plugin;
 using System.Threading;
+
+using log4net.Core;
+using log4net.ObjectRenderer;
+using log4net.Plugin;
+using log4net.Util;
 
 namespace log4net.Repository
 {

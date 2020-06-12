@@ -4,13 +4,14 @@
 // See the LICENSE file in the project root for more information
 
 
+using System;
+using System.Web.UI;
+
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Log.EventLog;
-using System;
-using System.Web.UI;
 
 namespace DotNetNuke.Modules.Admin.Users
 {

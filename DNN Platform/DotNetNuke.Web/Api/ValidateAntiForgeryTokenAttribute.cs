@@ -5,10 +5,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DotNetNuke.Web.Api.Internal;
 using System.Threading;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
+
+using DotNetNuke.Web.Api.Internal;
 
 namespace DotNetNuke.Web.Api
 {

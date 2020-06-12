@@ -15,15 +15,14 @@
 */
 
 using System;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Modules.Journal.Components;
-using DotNetNuke.Services.Journal;
 using System.Web.UI.WebControls;
 
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Modules.Journal.Components;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Journal.Internal;
 using DotNetNuke.Services.Localization;
-
 
 namespace DotNetNuke.Modules.Journal {
 

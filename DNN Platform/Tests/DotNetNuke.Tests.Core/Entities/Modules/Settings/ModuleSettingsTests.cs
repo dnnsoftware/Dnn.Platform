@@ -5,11 +5,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Settings;
 using Moq;
 using NUnit.Framework;
-using System.Globalization;
 
 namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 {

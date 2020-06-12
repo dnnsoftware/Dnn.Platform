@@ -5,20 +5,21 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Services.Tokens;
-using System.IO;
-using System.Text.RegularExpressions;
-using DotNetNuke.Services.Localization;
 using DotNetNuke.Modules.Journal.Components;
+using DotNetNuke.Services.Journal;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Tokens;
 
 namespace DotNetNuke.Modules.Journal.Controls {
     [DefaultProperty("Text")]

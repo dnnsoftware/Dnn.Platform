@@ -6,17 +6,17 @@
 
 using System;
 using System.Data;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Security;
-using System.Xml;
-using System.Xml.Serialization;
-using DotNetNuke.Services.Tokens;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Web.Script.Serialization;
+using System.Xml;
+using System.Xml.Serialization;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Security;
+using DotNetNuke.Services.Tokens;
 
 namespace DotNetNuke.Services.Journal {
    public class JournalItem : IHydratable, IPropertyAccess {

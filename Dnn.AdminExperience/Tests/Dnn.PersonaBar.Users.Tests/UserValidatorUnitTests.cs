@@ -4,13 +4,14 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using Moq;
-using NUnit.Framework;
+using System.Net;
+
 using Dnn.PersonaBar.Library.Helper;
 using Dnn.PersonaBar.Users.Components;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
-using System.Net;
+using Moq;
+using NUnit.Framework;
 
 namespace Dnn.PersonaBar.Users.Tests
 {

@@ -5,17 +5,17 @@
 
 
 using System;
+using System.Collections.Generic;
+using System.Web.UI.WebControls;
 
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Modules.Groups.Components;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Roles.Internal;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
-using System.Web.UI.WebControls;
-using DotNetNuke.Modules.Groups.Components;
-using DotNetNuke.Entities.Tabs;
-using System.Collections.Generic;
-using DotNetNuke.Entities.Modules.Definitions;
 
 namespace DotNetNuke.Modules.Groups
 {

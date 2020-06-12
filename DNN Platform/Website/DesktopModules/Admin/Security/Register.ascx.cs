@@ -13,13 +13,17 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Web.UI;
-using Microsoft.Extensions.DependencyInjection;
+using System.Web.UI.WebControls;
 
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Users.Membership;
+using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
@@ -27,14 +31,10 @@ using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.Entities.Profile;
+using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
-using DotNetNuke.UI.WebControls;
-using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Users.Membership;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Admin.Users
 {

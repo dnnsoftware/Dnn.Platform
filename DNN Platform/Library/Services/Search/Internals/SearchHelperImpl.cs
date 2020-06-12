@@ -5,26 +5,27 @@
 
 
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Caching;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Search.Entities;
-using DotNetNuke.Entities.Controllers;
-using System.IO;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
-using Lucene.Net.Util;
 using Lucene.Net.Analysis.Tokenattributes;
+using Lucene.Net.Util;
 
 namespace DotNetNuke.Services.Search.Internals
 {

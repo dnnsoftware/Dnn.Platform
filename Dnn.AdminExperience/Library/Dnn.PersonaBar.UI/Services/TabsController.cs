@@ -5,10 +5,11 @@
 using System;
 using System.IO;
 using System.Net;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
 using System.Net.Http;
 using System.Web.Http;
+
+using Dnn.PersonaBar.Library;
+using Dnn.PersonaBar.Library.Attributes;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 

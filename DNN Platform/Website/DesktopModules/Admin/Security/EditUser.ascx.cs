@@ -4,8 +4,13 @@
 // See the LICENSE file in the project root for more information
 
 
-using DotNetNuke.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
 using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -21,11 +26,8 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using Microsoft.Extensions.DependencyInjection;
+
 using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
 namespace DotNetNuke.Modules.Admin.Users

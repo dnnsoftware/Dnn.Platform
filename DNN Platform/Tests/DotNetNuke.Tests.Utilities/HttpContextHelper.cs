@@ -4,10 +4,11 @@
 
 using System.Collections;
 using System.Collections.Specialized;
+using System.IO;
 using System.Web;
+
 using DotNetNuke.Common;
 using Moq;
-using System.IO;
 
 namespace DotNetNuke.Tests.Utilities
 {

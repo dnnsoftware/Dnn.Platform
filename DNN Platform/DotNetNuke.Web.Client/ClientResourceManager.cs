@@ -11,21 +11,18 @@ using System.Xml;
 using System.Xml.XPath;
 
 using ClientDependency.Core.CompositeFiles.Providers;
-
-using DotNetNuke;
-
 using ClientDependency.Core.Config;
-
+using DotNetNuke;
 using DotNetNuke.Instrumentation;
-
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
-    using System.IO;
-    using System.Web.UI;
-    using ClientDependency.Core;
     using System.Collections.Generic;
+    using System.IO;
     using System.Threading;
+    using System.Web.UI;
+
+    using ClientDependency.Core;
 
     /// <summary>
     /// Provides the ability to request that client resources (JavaScript and CSS) be loaded on the client browser.

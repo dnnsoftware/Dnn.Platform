@@ -5,12 +5,15 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Lists;
@@ -33,8 +36,6 @@ using DotNetNuke.Services.FileSystem.EventArgs;
 using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Log.EventLog;
 using ICSharpCode.SharpZipLib.Zip;
-using System.Drawing.Imaging;
-using System.Text;
 
 namespace DotNetNuke.Services.FileSystem
 {

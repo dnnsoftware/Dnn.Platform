@@ -2,6 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
+using System;
+using System.Linq;
+using System.Threading;
+
 using DotNetNuke.Abstractions;
 using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Common.Utilities;
@@ -9,9 +13,6 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Localization;
-using System;
-using System.Linq;
-using System.Threading;
 
 namespace DotNetNuke.Common
 {

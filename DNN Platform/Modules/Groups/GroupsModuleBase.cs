@@ -4,14 +4,15 @@
 // See the LICENSE file in the project root for more information
 
 
+using System;
+
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Modules.Groups.Components;
-using System;
-using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Security.Permissions;
-using DotNetNuke.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Groups
 {

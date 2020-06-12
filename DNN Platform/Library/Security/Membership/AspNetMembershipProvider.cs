@@ -4,6 +4,16 @@
 // See the LICENSE file in the project root for more information
 
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Configuration.Provider;
+using System.Data;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Web;
+using System.Web.Security;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -18,15 +28,6 @@ using DotNetNuke.Services.Exceptions;
 // DNN-4016
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Configuration.Provider;
-using System.Data;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Security;
 
 namespace DotNetNuke.Security.Membership
 {

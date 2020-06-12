@@ -10,34 +10,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
-using Microsoft.Extensions.DependencyInjection;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+
+using DotNetNuke.Abstractions;
 using DotNetNuke.Application;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Content.Common;
+using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.ImprovementsProgram;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Personalization;
 using DotNetNuke.UI.Utilities;
+using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.Common;
-using DotNetNuke.Web.UI.WebControls;
-using DotNetNuke.Services.Personalization;
-using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Components.Controllers;
 using DotNetNuke.Web.Components.Controllers.Models;
-using Globals = DotNetNuke.Common.Globals;
-using DotNetNuke.Abstractions;
+using DotNetNuke.Web.UI.WebControls;
+using Microsoft.Extensions.DependencyInjection;
 
+using Globals = DotNetNuke.Common.Globals;
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.UI.ControlPanels

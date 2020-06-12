@@ -8,7 +8,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Web.UI;
-using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -20,13 +19,14 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.Web.UI;
 using DotNetNuke.Web.UI.WebControls;
-
+using Microsoft.Extensions.DependencyInjection;
 using Telerik.Web.UI;
 
 namespace DotNetNuke.UI.ControlPanel
 {
-    using DotNetNuke.Abstractions;
     using System.Web.UI.WebControls;
+
+    using DotNetNuke.Abstractions;
 
     public partial class UpdatePage : UserControl, IDnnRibbonBarTool
     {

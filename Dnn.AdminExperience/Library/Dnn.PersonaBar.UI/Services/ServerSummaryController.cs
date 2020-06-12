@@ -9,7 +9,9 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using System.Web.Caching;
 using System.Web.Http;
+
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
 using DotNetNuke.Application;
@@ -18,10 +20,9 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Upgrade;
-using DotNetNuke.Services.Cache;
-using System.Web.Caching;
 
 namespace Dnn.PersonaBar.UI.Services
 {
