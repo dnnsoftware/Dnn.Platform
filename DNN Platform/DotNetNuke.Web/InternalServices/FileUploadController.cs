@@ -183,7 +183,7 @@ namespace DotNetNuke.Web.InternalServices
 
                             // The SynchronizationContext keeps the main thread context. Send method is synchronous
                             currentSynchronizationContext.Send(
-                                delegate
+                                state =>
                                     {
                                         returnFileDto = SaveFile(stream, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract, out alreadyExists, out errorMessage);
                                     }, null);
@@ -627,7 +627,7 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         // The SynchronizationContext keeps the main thread context. Send method is synchronous
                         currentSynchronizationContext.Send(
-                            delegate
+                            state =>
                             {
                                 result = UploadFile(stream, portalId, userInfo, folder, filter, fileName, overwrite, isHostPortal, extract, validationCode);
                             },

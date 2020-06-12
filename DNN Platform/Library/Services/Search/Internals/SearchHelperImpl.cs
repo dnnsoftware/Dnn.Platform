@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.Search.Internals
             var cachArg = new CacheItemArgs(SearchTypesCacheKey, 120, CacheItemPriority.Default);
             return CBO.GetCachedObject<IList<SearchType>>(
                 cachArg,
-                delegate
+                dataArgs =>
                 {
                     return CBO.FillCollection<SearchType>(DataProvider.Instance().GetAllSearchTypes());
                 });
