@@ -670,7 +670,7 @@ namespace DotNetNuke.Services.Journal
         }
 
         // Journal Comments
-        public IList<CommentInfo> GetCommentsByJournalIds(List <int> journalIdList)
+        public IList<CommentInfo> GetCommentsByJournalIds(List<int> journalIdList)
         {
             var journalIds = journalIdList.Aggregate("", (current, journalId) => current + journalId + ";");
             return CBO.FillCollection<CommentInfo>(this._dataService.Journal_Comment_ListByJournalIds(journalIds));

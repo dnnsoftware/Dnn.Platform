@@ -11,7 +11,7 @@ using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Services.FileSystem.Internal
 {
-    public class FileDeletionController : ServiceLocator< IFileDeletionController, FileDeletionController>, IFileDeletionController
+    public class FileDeletionController : ServiceLocator<IFileDeletionController, FileDeletionController>, IFileDeletionController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileDeletionController));
         public void DeleteFile(IFileInfo file)

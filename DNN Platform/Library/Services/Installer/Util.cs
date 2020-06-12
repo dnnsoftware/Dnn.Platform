@@ -579,7 +579,7 @@ namespace DotNetNuke.Services.Installer
         {
             var result = false;
             var dateTimeStart = DateTime.Now;
-            Tuple < AutoResetEvent, FileSystemWatcher > tuple = null;
+            Tuple<AutoResetEvent, FileSystemWatcher > tuple = null;
 
             while (true)
             {

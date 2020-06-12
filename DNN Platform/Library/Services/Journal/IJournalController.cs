@@ -228,7 +228,7 @@ namespace DotNetNuke.Services.Journal
         /// <param name="journalIdList">Id list of journal items.</param>
         /// <returns>CommentInfo object list.</returns>
         /// 
-        IList<CommentInfo> GetCommentsByJournalIds(List <int> journalIdList);
+        IList<CommentInfo> GetCommentsByJournalIds(List<int> journalIdList);
 
         /// <summary>
         /// Save a like on journal item.
