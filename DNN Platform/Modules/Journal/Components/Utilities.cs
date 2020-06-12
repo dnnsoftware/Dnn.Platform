@@ -17,10 +17,12 @@ using DotNetNuke.Entities.Users.Social;
 namespace DotNetNuke.Modules.Journal.Components {
     public class Utilities {
 
-        private static readonly Regex PageRegex = new Regex("<(title)[^>]*?>((?:.|\\n)*?)</\\s*\\1\\s*>",
+        private static readonly Regex PageRegex = new Regex(
+            "<(title)[^>]*?>((?:.|\\n)*?)</\\s*\\1\\s*>",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 
-        private static readonly Regex MetaRegex = new Regex("<meta\\s*(?:(?:\\b(\\w|-)+\\b\\s*(?:=\\s*(?:\"[^\"]*\"|'[^']*'|[^\"'<> ]+)\\s*)?)*)/?\\s*>",
+        private static readonly Regex MetaRegex = new Regex(
+            "<meta\\s*(?:(?:\\b(\\w|-)+\\b\\s*(?:=\\s*(?:\"[^\"]*\"|'[^']*'|[^\"'<> ]+)\\s*)?)*)/?\\s*>",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 
         private static readonly Regex MetaSubRegex = new Regex(

@@ -74,7 +74,8 @@ namespace DotNetNuke.Entities.Users.Social.Internal
             Requires.NotNull("user1", initiatingUser);
 
             // Check if the friendship has been requested first by target user
-            var targetUserRelationship = RelationshipController.Instance.GetFriendRelationship(targetUser,
+            var targetUserRelationship = RelationshipController.Instance.GetFriendRelationship(
+                targetUser,
                 initiatingUser);
             if (targetUserRelationship != null && targetUserRelationship.Status == RelationshipStatus.Pending)
             {
@@ -125,10 +126,12 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         {
             var notificationType = NotificationsController.Instance.GetNotificationType(FriendRequest);
             var language = GetUserPreferredLocale(targetUser)?.Name;
-            var subject = string.Format(Localization.GetString("AddFriendRequestSubject", Localization.GlobalResourceFile, language),
+            var subject = string.Format(
+                Localization.GetString("AddFriendRequestSubject", Localization.GlobalResourceFile, language),
                               initiatingUser.DisplayName);
 
-            var body = string.Format(Localization.GetString("AddFriendRequestBody", Localization.GlobalResourceFile, language),
+            var body = string.Format(
+                Localization.GetString("AddFriendRequestBody", Localization.GlobalResourceFile, language),
                               initiatingUser.DisplayName);
 
             var notification = new Notification

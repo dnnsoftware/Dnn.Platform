@@ -123,7 +123,8 @@ namespace Dnn.ExportImport.Components.Services
                                             this.Repository.GetRelatedItems<ExportUserProfile>(user.Id).ToList();
                                         foreach (var userProfile in userProfiles)
                                         {
-                                            var profileDefinitionId = Util.GetProfilePropertyId(importJob.PortalId,
+                                            var profileDefinitionId = Util.GetProfilePropertyId(
+                                                importJob.PortalId,
                                                 userProfile.PropertyDefinitionId, userProfile.PropertyName);
                                             if (profileDefinitionId == null || profileDefinitionId == -1) continue;
                                             var value = userProfile.PropertyValue;

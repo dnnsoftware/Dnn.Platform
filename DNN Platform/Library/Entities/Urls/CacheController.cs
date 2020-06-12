@@ -94,7 +94,8 @@ namespace DotNetNuke.Entities.Urls
         private static void SetPageCache(string key, object value, DNNCacheDependency dependency, FriendlyUrlSettings settings, CacheItemRemovedCallback callback)
         {
             DateTime absoluteExpiration = DateTime.Now.Add(settings.CacheTime);
-            DataCache.SetCache(key,
+            DataCache.SetCache(
+                key,
                                 value,
                                 dependency,
                                 absoluteExpiration,
@@ -113,7 +114,8 @@ namespace DotNetNuke.Entities.Urls
             // 857 : use cache dependency for portal alias cache
             if (settings != null)
             {
-                DataCache.SetCache(key,
+                DataCache.SetCache(
+                    key,
                                     value,
                                     new DNNCacheDependency(GetPortalsCacheDependency()),
                                     absoluteExpiration,
@@ -230,7 +232,8 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="customAliasTabs"></param>
         /// <remarks>
         /// </remarks>
-        internal void GetFriendlyUrlIndexFromCache(out SharedDictionary<int, SharedDictionary<string, string>> urlDict,
+        internal void GetFriendlyUrlIndexFromCache(
+            out SharedDictionary<int, SharedDictionary<string, string>> urlDict,
                                                    out ConcurrentBag<int> urlPortals,
                                                    out SharedDictionary<string, string> customAliasTabs)
         {
@@ -275,7 +278,8 @@ namespace DotNetNuke.Entities.Urls
             return result;
         }
 
-        internal void GetPageIndexFromCache(out SharedDictionary<string, string> dict,
+        internal void GetPageIndexFromCache(
+            out SharedDictionary<string, string> dict,
                                             out SharedDictionary<int, PathSizes> portalDepthInfo,
                                             FriendlyUrlSettings settings)
         {
@@ -420,7 +424,8 @@ namespace DotNetNuke.Entities.Urls
             return (raw != null) ? (OrderedDictionary)raw : null;
         }
 
-        internal static List<ExtensionUrlProvider> GetProvidersForTabAndPortal(int tabId,
+        internal static List<ExtensionUrlProvider> GetProvidersForTabAndPortal(
+            int tabId,
                                                         int portalId,
                                                         FriendlyUrlSettings settings,
                                                         out bool noSuchProvider,
@@ -507,7 +512,8 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="reason"></param>
         /// <remarks>
         /// </remarks>
-        internal void StoreFriendlyUrlIndexInCache(SharedDictionary<int, SharedDictionary<string, string>> urlDict,
+        internal void StoreFriendlyUrlIndexInCache(
+            SharedDictionary<int, SharedDictionary<string, string>> urlDict,
                                                 ConcurrentBag<int> urlPortals,
                                                 SharedDictionary<string, string> customAliasTabs,
                                                 FriendlyUrlSettings settings,
@@ -699,7 +705,8 @@ namespace DotNetNuke.Entities.Urls
         }
 
 
-        internal void StorePageIndexInCache(SharedDictionary<string, string> tabDictionary,
+        internal void StorePageIndexInCache(
+            SharedDictionary<string, string> tabDictionary,
                                              SharedDictionary<int, PathSizes> portalDepthInfo,
                                              FriendlyUrlSettings settings,
                                              string reason)
@@ -748,7 +755,8 @@ namespace DotNetNuke.Entities.Urls
 
         internal void StoreTabPathsInCache(int portalId, SharedDictionary<string, string> tabPathDictionary, FriendlyUrlSettings settings)
         {
-            SetPageCache(string.Format(TabPathsKey, portalId),
+            SetPageCache(
+                string.Format(TabPathsKey, portalId),
                         tabPathDictionary,
                         new DNNCacheDependency(this.GetTabsCacheDependency(new List<int> { portalId })),
                         settings,

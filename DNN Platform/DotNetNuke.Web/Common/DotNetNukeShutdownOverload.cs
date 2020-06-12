@@ -47,7 +47,8 @@ namespace DotNetNuke.Web.Common.Internal
                     Logger.Info("FCNMode = " + fcnVal + " (Modes: NotSet/Default=0, Disabled=1, Single=2)");
 
                     var dirMonCompletion = typeof(HttpRuntime).Assembly.GetType("System.Web.DirMonCompletion");
-                    var dirMonCount = (int)dirMonCompletion.InvokeMember("_activeDirMonCompletions",
+                    var dirMonCount = (int)dirMonCompletion.InvokeMember(
+                        "_activeDirMonCompletions",
                         BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
                         null, null, null);
                     Logger.Trace("DirMonCompletion count: " + dirMonCount);

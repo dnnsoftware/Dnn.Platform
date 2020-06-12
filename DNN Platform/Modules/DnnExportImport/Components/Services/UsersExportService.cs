@@ -395,10 +395,12 @@ namespace Dnn.ExportImport.Components.Services
         private Guid GetApplicationId()
         {
             using (var db =
-                new PetaPocoDataContext(DotNetNuke.Data.DataProvider.Instance().Settings["connectionStringName"],
+                new PetaPocoDataContext(
+                    DotNetNuke.Data.DataProvider.Instance().Settings["connectionStringName"],
                     "aspnet_"))
             {
-                return db.ExecuteScalar<Guid>(CommandType.Text,
+                return db.ExecuteScalar<Guid>(
+                    CommandType.Text,
                     "SELECT TOP 1 ApplicationId FROM aspnet_Applications");
             }
         }

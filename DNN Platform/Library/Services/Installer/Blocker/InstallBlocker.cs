@@ -40,7 +40,8 @@ namespace DotNetNuke.Services.Installer.Blocker
 
         public void RegisterInstallEnd()
         {
-            var retryable = new RetryableAction(() =>
+            var retryable = new RetryableAction(
+                () =>
             {
                 if (this.IsInstallInProgress() && this.fileCreated)
                 {

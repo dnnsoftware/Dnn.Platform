@@ -411,7 +411,8 @@ namespace DotNetNuke.UI.Skins
 
         public static void UpdateSkinPackage(SkinPackageInfo skinPackage)
         {
-            DataProvider.Instance().UpdateSkinPackage(skinPackage.SkinPackageID,
+            DataProvider.Instance().UpdateSkinPackage(
+                skinPackage.SkinPackageID,
                                                       skinPackage.PackageID,
                                                       skinPackage.PortalID,
                                                       skinPackage.SkinName,

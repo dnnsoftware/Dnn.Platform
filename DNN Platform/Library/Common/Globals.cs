@@ -2388,7 +2388,8 @@ namespace DotNetNuke.Common
             string returnValue = Null.NullString;
 
             // Regex is expensive so we will cache the results in a lookup table
-            var validClassLookupDictionary = CBO.GetCachedObject<SharedDictionary<string, string>>(new CacheItemArgs("ValidClassLookup", 200, CacheItemPriority.NotRemovable),
+            var validClassLookupDictionary = CBO.GetCachedObject<SharedDictionary<string, string>>(
+                new CacheItemArgs("ValidClassLookup", 200, CacheItemPriority.NotRemovable),
                                                                                                    (CacheItemArgs cacheItemArgs) => new SharedDictionary<string, string>());
 
             bool idFound = Null.NullBoolean;
@@ -2444,7 +2445,8 @@ namespace DotNetNuke.Common
             string returnValue = Null.NullString;
 
             // Regex is expensive so we will cache the results in a lookup table
-            var validIDLookupDictionary = CBO.GetCachedObject<SharedDictionary<string, string>>(new CacheItemArgs("ValidIDLookup", 200, CacheItemPriority.NotRemovable),
+            var validIDLookupDictionary = CBO.GetCachedObject<SharedDictionary<string, string>>(
+                new CacheItemArgs("ValidIDLookup", 200, CacheItemPriority.NotRemovable),
                                                                                                 (CacheItemArgs cacheItemArgs) => new SharedDictionary<string, string>());
 
             bool idFound = Null.NullBoolean;
@@ -3733,7 +3735,8 @@ namespace DotNetNuke.Common
             {
                 avatarUrl = HttpContext.Current.Request.Url.Host;
             }
-            avatarUrl = string.Format("{0}://{1}{2}",
+            avatarUrl = string.Format(
+                "{0}://{1}{2}",
                                       UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request) ? "https" : "http",
                                       avatarUrl,
                                       !HttpContext.Current.Request.Url.IsDefaultPort && !avatarUrl.Contains(":") ? ":" + HttpContext.Current.Request.Url.Port : string.Empty);

@@ -29,7 +29,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 return CBO.FillCollection<TabVersionDetail>(Provider.GetTabVersionDetails(tabVersionId));
             }
 
-            return CBO.GetCachedObject<List<TabVersionDetail>>(new CacheItemArgs(GetTabVersionDetailCacheKey(tabVersionId),
+            return CBO.GetCachedObject<List<TabVersionDetail>>(
+                new CacheItemArgs(
+                GetTabVersionDetailCacheKey(tabVersionId),
                                                                     DataCache.TabVersionDetailsCacheTimeOut,
                                                                     DataCache.TabVersionDetailsCachePriority),
                                                             c => CBO.FillCollection<TabVersionDetail>(Provider.GetTabVersionDetails(tabVersionId)));
@@ -52,7 +54,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         public void SaveTabVersionDetail(TabVersionDetail tabVersionDetail, int createdByUserID, int modifiedByUserID)
         {
-            tabVersionDetail.TabVersionDetailId = Provider.SaveTabVersionDetail(tabVersionDetail.TabVersionDetailId,
+            tabVersionDetail.TabVersionDetailId = Provider.SaveTabVersionDetail(
+                tabVersionDetail.TabVersionDetailId,
                 tabVersionDetail.TabVersionId, tabVersionDetail.ModuleId, tabVersionDetail.ModuleVersion,
                 tabVersionDetail.PaneName, tabVersionDetail.ModuleOrder, (int)tabVersionDetail.Action, createdByUserID,
                 modifiedByUserID);

@@ -436,7 +436,8 @@ namespace DotNetNuke.Entities.Portals
                     ? Convert.ToDateTime(Globals.GetMediumDate(DateTime.Now.AddDays(Host.Host.DemoPeriod).ToString(CultureInfo.InvariantCulture)))
                     : Null.NullDate;
 
-                PortalId = DataProvider.Instance().CreatePortal(portalName,
+                PortalId = DataProvider.Instance().CreatePortal(
+                    portalName,
                                                                 Host.Host.HostCurrency,
                                                                 datExpiryDate,
                                                                 Host.Host.HostFee,
@@ -926,7 +927,8 @@ namespace DotNetNuke.Entities.Portals
                 try
                 {
                     EnsureFolderProviderRegistration<FolderProvider>(folderTypeConfig, webConfig);
-                    FolderMappingController.Instance.AddFolderMapping(this.GetFolderMappingFromConfig(folderTypeConfig,
+                    FolderMappingController.Instance.AddFolderMapping(this.GetFolderMappingFromConfig(
+                        folderTypeConfig,
                         portalId));
                 }
                 catch (Exception ex)
@@ -1086,7 +1088,9 @@ namespace DotNetNuke.Entities.Portals
             if (dictionary == null)
             {
                 var cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId, cultureCode);
-                dictionary = CBO.GetCachedObject<Dictionary<string, string>>(new CacheItemArgs(cacheKey,
+                dictionary = CBO.GetCachedObject<Dictionary<string, string>>(
+                    new CacheItemArgs(
+                    cacheKey,
                                                                                 DataCache.PortalSettingsCacheTimeOut,
                                                                                 DataCache.PortalSettingsCachePriority, portalId, cultureCode),
                                                                             GetPortalSettingsDictionaryCallback,
@@ -1542,7 +1546,8 @@ namespace DotNetNuke.Entities.Portals
 
             // update portal setup
             var portal = this.GetPortal(portalID);
-            this.UpdatePortalSetup(portalID,
+            this.UpdatePortalSetup(
+                portalID,
                               administratorId,
                               administratorRoleId,
                               registeredRoleId,
@@ -1598,7 +1603,8 @@ namespace DotNetNuke.Entities.Portals
 
             // update portal setup
             var portal = this.GetPortal(portalID);
-            this.UpdatePortalSetup(portalID,
+            this.UpdatePortalSetup(
+                portalID,
                               administratorId,
                               administratorRoleId,
                               registeredRoleId,
@@ -1678,7 +1684,8 @@ namespace DotNetNuke.Entities.Portals
                         logType = "Custom500Tab";
                         break;
                 }
-                this.UpdatePortalSetup(portalId,
+                this.UpdatePortalSetup(
+                    portalId,
                                   portal.AdministratorId,
                                   portal.AdministratorRoleId,
                                   portal.RegisteredRoleId,
@@ -1694,7 +1701,8 @@ namespace DotNetNuke.Entities.Portals
                                   portal.PrivacyTabId,
                                   portal.AdminTabId,
                                   GetActivePortalLanguage(portalId));
-                EventLogController.Instance.AddLog(logType,
+                EventLogController.Instance.AddLog(
+                    logType,
                                    tab.TabID.ToString(),
                                    GetCurrentPortalSettingsInternal(),
                                    UserController.Instance.GetCurrentUserInfo().UserID,
@@ -1990,7 +1998,8 @@ namespace DotNetNuke.Entities.Portals
                 processorPassword = Security.FIPSCompliant.EncryptAES(processorPassword, Config.GetDecryptionkey(), Host.Host.GUID);
             }
 
-            DataProvider.Instance().UpdatePortalInfo(portal.PortalID,
+            DataProvider.Instance().UpdatePortalInfo(
+                portal.PortalID,
                                             portal.PortalGroupID,
                                             portal.PortalName,
                                             portal.LogoFile,
@@ -2077,7 +2086,8 @@ namespace DotNetNuke.Entities.Portals
         private void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId, int registeredRoleId, int splashTabId, int homeTabId, int loginTabId, int registerTabId,
                                        int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int termsTabId, int privacyTabId, int adminTabId, string cultureCode)
         {
-            DataProvider.Instance().UpdatePortalSetup(portalId,
+            DataProvider.Instance().UpdatePortalSetup(
+                portalId,
                                                       administratorId,
                                                       administratorRoleId,
                                                       registeredRoleId,
@@ -2442,7 +2452,8 @@ namespace DotNetNuke.Entities.Portals
         public List<PortalInfo> GetPortalList(string cultureCode)
         {
             string cacheKey = String.Format(DataCache.PortalCacheKey, Null.NullInteger, cultureCode);
-            return CBO.GetCachedObject<List<PortalInfo>>(new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority, cultureCode),
+            return CBO.GetCachedObject<List<PortalInfo>>(
+                new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority, cultureCode),
                                                                 c => CBO.FillCollection<PortalInfo>(DataProvider.Instance().GetPortals(cultureCode)));
         }
 

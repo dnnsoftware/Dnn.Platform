@@ -354,7 +354,8 @@ namespace DotNetNuke.Modules.SearchResults
                 this.SearchScopeList.Items.Add(item);
             }
 
-            this.SearchScopeList.Options.Localization["AllItemsChecked"] = Localization.GetString("AllFeaturesSelected",
+            this.SearchScopeList.Options.Localization["AllItemsChecked"] = Localization.GetString(
+                "AllFeaturesSelected",
                 Localization.GetResourceFile(this, MyFileName));
 
             var pageSizeItem = this.ResultsPerPageList.FindItemByValue(this.PageSize.ToString());

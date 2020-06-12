@@ -145,7 +145,8 @@ namespace DotNetNuke.Modules.Html
                 PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 if (objPortalSettings != null)
                 {
-                    string strResourceFile = string.Format("{0}/DesktopModules/{1}/{2}/{3}",
+                    string strResourceFile = string.Format(
+                        "{0}/DesktopModules/{1}/{2}/{3}",
                                                            Globals.ApplicationPath,
                                                            objModule.DesktopModule.FolderName,
                                                            Localization.LocalResourceDirectory,
@@ -573,7 +574,8 @@ namespace DotNetNuke.Modules.Html
             if (blnCreateNewVersion)
             {
                 // add content
-                htmlContent.ItemID = DataProvider.Instance().AddHtmlText(htmlContent.ModuleID,
+                htmlContent.ItemID = DataProvider.Instance().AddHtmlText(
+                    htmlContent.ModuleID,
                                                                          htmlContent.Content,
                                                                          htmlContent.Summary,
                                                                          htmlContent.StateID,

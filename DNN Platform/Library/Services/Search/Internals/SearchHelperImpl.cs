@@ -46,7 +46,8 @@ namespace DotNetNuke.Services.Search.Internals
         public IEnumerable<SearchType> GetSearchTypes()
         {
             var cachArg = new CacheItemArgs(SearchTypesCacheKey, 120, CacheItemPriority.Default);
-            return CBO.GetCachedObject<IList<SearchType>>(cachArg,
+            return CBO.GetCachedObject<IList<SearchType>>(
+                cachArg,
                 delegate
                 {
                     return CBO.FillCollection<SearchType>(DataProvider.Instance().GetAllSearchTypes());
@@ -327,7 +328,8 @@ namespace DotNetNuke.Services.Search.Internals
         /// </summary>
         public void SetLastSuccessfulIndexingDateTime(int scheduleId, DateTime startDateLocal)
         {
-            SchedulingProvider.Instance().AddScheduleItemSetting(scheduleId,
+            SchedulingProvider.Instance().AddScheduleItemSetting(
+                scheduleId,
                 Constants.SearchLastSuccessIndexName, startDateLocal.ToUniversalTime().ToString(Constants.ReindexDateTimeFormat));
         }
 

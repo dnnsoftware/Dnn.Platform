@@ -352,7 +352,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._mockData.Setup(
                 md =>
-                md.AddFile(It.IsAny<int>(),
+                md.AddFile(
+                    It.IsAny<int>(),
                            It.IsAny<Guid>(),
                            It.IsAny<Guid>(),
                            It.IsAny<string>(),
@@ -1053,7 +1054,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Parse(Constants.FOLDER_FileStartDate));
             this._mockFileManager.Object.UpdateFile(this._fileInfo.Object);
 
-            this._mockData.Verify(md => md.UpdateFile(
+            this._mockData.Verify(
+                md => md.UpdateFile(
                 It.IsAny<int>(),
                 It.IsAny<Guid>(),
                 It.IsAny<string>(),

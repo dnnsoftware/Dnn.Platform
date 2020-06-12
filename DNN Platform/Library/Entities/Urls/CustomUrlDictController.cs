@@ -35,7 +35,8 @@ namespace DotNetNuke.Entities.Urls
         ///    only one culture for the Url, it will be that culture.
         /// </remarks>
         /// <returns></returns>
-        private static SharedDictionary<int, SharedDictionary<string, string>> BuildUrlDictionary(SharedDictionary<int, SharedDictionary<string, string>> existingTabs,
+        private static SharedDictionary<int, SharedDictionary<string, string>> BuildUrlDictionary(
+            SharedDictionary<int, SharedDictionary<string, string>> existingTabs,
                                                     int portalId,
                                                     FriendlyUrlSettings settings,
                                                     ref SharedDictionary<string, string> customAliasTabs)
@@ -154,7 +155,8 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="customAliasForTabs"></param>
         /// <param name="parentTraceId"></param>
         /// <returns></returns>
-        internal static SharedDictionary<int, SharedDictionary<string, string>> FetchCustomUrlDictionary(int portalId,
+        internal static SharedDictionary<int, SharedDictionary<string, string>> FetchCustomUrlDictionary(
+            int portalId,
                                     bool forceRebuild,
                                     bool bypassCache,
                                     FriendlyUrlSettings settings,
@@ -185,7 +187,8 @@ namespace DotNetNuke.Entities.Urls
                     urlDict = BuildUrlDictionary(urlDict, portalId, settings, ref customAliasForTabs);
                     urlPortals.Add(portalId);
 
-                    cc.StoreFriendlyUrlIndexInCache(urlDict,
+                    cc.StoreFriendlyUrlIndexInCache(
+                        urlDict,
                                                 urlPortals,
                                                 customAliasForTabs, settings,
                                                 "Portal Id " + portalId.ToString() + " added to index.");

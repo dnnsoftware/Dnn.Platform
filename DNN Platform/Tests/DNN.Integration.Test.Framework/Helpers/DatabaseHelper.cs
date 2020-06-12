@@ -188,7 +188,8 @@ namespace DNN.Integration.Test.Framework.Helpers
         /// <remarks>If no record exists in the table, -1 is returned.</remarks>
         public static int GetLastRecordId(string tableOrViewName, string columnName, string whereCondition = null)
         {
-            var query = string.Format("SELECT COALESCE(MAX([{0}]), -1) FROM [{1}{2}]",
+            var query = string.Format(
+                "SELECT COALESCE(MAX([{0}]), -1) FROM [{1}{2}]",
                 columnName, QualifierPrefix, tableOrViewName);
 
             var queryString = ReplaceQueryQualifier(query);

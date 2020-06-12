@@ -146,7 +146,8 @@ namespace DotNetNuke.Modules.Admin.Users
             get
             {
                 var actions = new ModuleActionCollection();
-                actions.Add(this.GetNextActionID(),
+                actions.Add(
+                    this.GetNextActionID(),
                             Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
                             ModuleActionType.AddContent,
                             "",
@@ -156,7 +157,8 @@ namespace DotNetNuke.Modules.Admin.Users
                             SecurityAccessLevel.Admin,
                             true,
                             false);
-                actions.Add(this.GetNextActionID(),
+                actions.Add(
+                    this.GetNextActionID(),
                             Localization.GetString("Cancel.Action", this.LocalResourceFile),
                             ModuleActionType.AddContent,
                             "",

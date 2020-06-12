@@ -10,7 +10,8 @@ namespace Dnn.AzureConnector.Services
     {
         public void RegisterRoutes(IMapRoute routeManager)
         {
-            routeManager.MapHttpRoute("AzureConnector",
+            routeManager.MapHttpRoute(
+                "AzureConnector",
                                       "default",
                                       "{controller}/{action}",
                                       new[] { "Dnn.AzureConnector.Services" });

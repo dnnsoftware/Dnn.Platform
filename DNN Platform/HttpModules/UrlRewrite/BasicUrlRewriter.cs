@@ -447,7 +447,8 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 if ((objMatch.Success))
                 {
                     // create a new URL using the SendTo regex value
-                    sendTo = RewriterUtils.ResolveUrl(app.Context.Request.ApplicationPath,
+                    sendTo = RewriterUtils.ResolveUrl(
+                        app.Context.Request.ApplicationPath,
                                                       Regex.Replace(requestedPath, pattern, rules[ruleIndex].SendTo,
                                                                     RegexOptions.IgnoreCase));
 
@@ -463,7 +464,8 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         {
                             // ignore the page name
                             if (
-                                splitParameters[parameterIndex].IndexOf(".aspx",
+                                splitParameters[parameterIndex].IndexOf(
+                                    ".aspx",
                                                                         StringComparison.InvariantCultureIgnoreCase) ==
                                 -1)
                             {
@@ -473,9 +475,11 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 {
                                     // add parameter to SendTo if it does not exist already
                                     if (
-                                        sendTo.IndexOf("?" + parameterName + "=",
+                                        sendTo.IndexOf(
+                                            "?" + parameterName + "=",
                                                        StringComparison.InvariantCultureIgnoreCase) == -1 &&
-                                        sendTo.IndexOf("&" + parameterName + "=",
+                                        sendTo.IndexOf(
+                                            "&" + parameterName + "=",
                                                        StringComparison.InvariantCultureIgnoreCase) == -1)
                                     {
                                         // get parameter delimiter
@@ -602,14 +606,16 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         }
 
                         // Check to see if the tab exists (if localization is enable, check for the specified culture)
-                        int tabID = TabController.GetTabByTabPath(portalID,
+                        int tabID = TabController.GetTabByTabPath(
+                            portalID,
                                                                   tabPath.Replace("/", "//").Replace(".aspx", ""),
                                                                   cultureCode);
 
                         // Check to see if neutral culture tab exists
                         if ((tabID == Null.NullInteger && cultureCode.Length > 0))
                         {
-                            tabID = TabController.GetTabByTabPath(portalID,
+                            tabID = TabController.GetTabByTabPath(
+                                portalID,
                                                                   tabPath.Replace("/", "//").Replace(".aspx", ""), "");
                         }
                         // End of patch
@@ -649,13 +655,15 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             {
                                 if (!string.IsNullOrEmpty(requestQuery))
                                 {
-                                    RewriterUtils.RewriteUrl(app.Context,
+                                    RewriterUtils.RewriteUrl(
+                                        app.Context,
                                                              "~/" + Globals.glbDefaultPage + "?TabID=" +
                                                              portal.LoginTabId + "&" + requestQuery);
                                 }
                                 else
                                 {
-                                    RewriterUtils.RewriteUrl(app.Context,
+                                    RewriterUtils.RewriteUrl(
+                                        app.Context,
                                                              "~/" + Globals.glbDefaultPage + "?TabID=" +
                                                              portal.LoginTabId);
                                 }
@@ -664,14 +672,16 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             {
                                 if (!string.IsNullOrEmpty(requestQuery))
                                 {
-                                    RewriterUtils.RewriteUrl(app.Context,
+                                    RewriterUtils.RewriteUrl(
+                                        app.Context,
                                                              "~/" + Globals.glbDefaultPage + "?TabID=" +
                                                              portal.HomeTabId + "&portalid=" + portalID + "&ctl=login&" +
                                                              requestQuery);
                                 }
                                 else
                                 {
-                                    RewriterUtils.RewriteUrl(app.Context,
+                                    RewriterUtils.RewriteUrl(
+                                        app.Context,
                                                              "~/" + Globals.glbDefaultPage + "?TabID=" +
                                                              portal.HomeTabId + "&portalid=" + portalID + "&ctl=login");
                                 }
@@ -684,14 +694,16 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             {
                                 if (!string.IsNullOrEmpty(requestQuery))
                                 {
-                                    RewriterUtils.RewriteUrl(app.Context,
+                                    RewriterUtils.RewriteUrl(
+                                        app.Context,
                                                              "~/" + Globals.glbDefaultPage + "?TabID=" +
                                                              portal.RegisterTabId + "&portalid=" + portalID + "&" +
                                                              requestQuery);
                                 }
                                 else
                                 {
-                                    RewriterUtils.RewriteUrl(app.Context,
+                                    RewriterUtils.RewriteUrl(
+                                        app.Context,
                                                              "~/" + Globals.glbDefaultPage + "?TabID=" +
                                                              portal.RegisterTabId + "&portalid=" + portalID);
                                 }
@@ -700,14 +712,16 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             {
                                 if (!string.IsNullOrEmpty(requestQuery))
                                 {
-                                    RewriterUtils.RewriteUrl(app.Context,
+                                    RewriterUtils.RewriteUrl(
+                                        app.Context,
                                                              "~/" + Globals.glbDefaultPage + "?TabID=" +
                                                              portal.HomeTabId + "&portalid=" + portalID +
                                                              "&ctl=Register&" + requestQuery);
                                 }
                                 else
                                 {
-                                    RewriterUtils.RewriteUrl(app.Context,
+                                    RewriterUtils.RewriteUrl(
+                                        app.Context,
                                                              "~/" + Globals.glbDefaultPage + "?TabID=" +
                                                              portal.HomeTabId + "&portalid=" + portalID +
                                                              "&ctl=Register");
@@ -719,13 +733,15 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         {
                             if (!string.IsNullOrEmpty(requestQuery))
                             {
-                                RewriterUtils.RewriteUrl(app.Context,
+                                RewriterUtils.RewriteUrl(
+                                    app.Context,
                                                          "~/" + Globals.glbDefaultPage + "?TabID=" + portal.HomeTabId +
                                                          "&portalid=" + portalID + "&ctl=Terms&" + requestQuery);
                             }
                             else
                             {
-                                RewriterUtils.RewriteUrl(app.Context,
+                                RewriterUtils.RewriteUrl(
+                                    app.Context,
                                                          "~/" + Globals.glbDefaultPage + "?TabID=" + portal.HomeTabId +
                                                          "&portalid=" + portalID + "&ctl=Terms");
                             }
@@ -735,13 +751,15 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         {
                             if (!string.IsNullOrEmpty(requestQuery))
                             {
-                                RewriterUtils.RewriteUrl(app.Context,
+                                RewriterUtils.RewriteUrl(
+                                    app.Context,
                                                          "~/" + Globals.glbDefaultPage + "?TabID=" + portal.HomeTabId +
                                                          "&portalid=" + portalID + "&ctl=Privacy&" + requestQuery);
                             }
                             else
                             {
-                                RewriterUtils.RewriteUrl(app.Context,
+                                RewriterUtils.RewriteUrl(
+                                    app.Context,
                                                          "~/" + Globals.glbDefaultPage + "?TabID=" + portal.HomeTabId +
                                                          "&portalid=" + portalID + "&ctl=Privacy");
                             }
@@ -756,13 +774,15 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             {
                                 if ((!String.IsNullOrEmpty(app.Request.Url.Query)))
                                 {
-                                    RewriterUtils.RewriteUrl(app.Context,
+                                    RewriterUtils.RewriteUrl(
+                                        app.Context,
                                                              "~/" + Globals.glbDefaultPage + "?TabID=" + kvp.Value.TabID +
                                                              "&" + app.Request.Url.Query.TrimStart('?'));
                                 }
                                 else
                                 {
-                                    RewriterUtils.RewriteUrl(app.Context,
+                                    RewriterUtils.RewriteUrl(
+                                        app.Context,
                                                              "~/" + Globals.glbDefaultPage + "?TabID=" + kvp.Value.TabID);
                                 }
                                 return;

@@ -118,7 +118,8 @@ namespace DNN.Integration.Test.Framework
             if (!this.IsLoggedIn)
             {
                 Console.WriteLine(@"User not logged in yet");
-                throw new WebApiException(new HttpRequestException("User not logged in yet."),
+                throw new WebApiException(
+                    new HttpRequestException("User not logged in yet."),
                     new HttpResponseMessage(HttpStatusCode.Unauthorized));
             }
         }
@@ -435,7 +436,8 @@ namespace DNN.Integration.Test.Framework
 
         #region API requests / uploading content
 
-        public HttpResponseMessage PostJson(string relativeUrl,
+        public HttpResponseMessage PostJson(
+            string relativeUrl,
             object content, IDictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool ignoreLoggedIn = false)
         {
             if (!ignoreLoggedIn)
@@ -471,7 +473,8 @@ namespace DNN.Integration.Test.Framework
             }
         }
 
-        public HttpResponseMessage PutJson(string relativeUrl,
+        public HttpResponseMessage PutJson(
+            string relativeUrl,
             object content, IDictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool ignoreLoggedIn = false)
         {
             if (!ignoreLoggedIn)
@@ -592,7 +595,8 @@ namespace DNN.Integration.Test.Framework
 
         #region Multipart Form Data Post
 
-        private static readonly Regex HtmlFormInuts = new Regex(@"<input .*?/>",
+        private static readonly Regex HtmlFormInuts = new Regex(
+            @"<input .*?/>",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
         public HttpWebResponse PostUserForm(string relativeUrl, IDictionary<string, object> formFields,
@@ -796,7 +800,8 @@ namespace DNN.Integration.Test.Framework
                     var fileToUpload = value;
 
                     // Add just the first part of this param, since we will write the file data directly to the Stream
-                    var header = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n",
+                    var header = string.Format(
+                        "--{0}\r\nContent-Disposition: form-data; name=\"{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n",
                         boundary,
                         param.Key,
                         fileToUpload.FileName ?? param.Key,
@@ -809,7 +814,8 @@ namespace DNN.Integration.Test.Framework
                 }
                 else
                 {
-                    var postData = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"\r\n\r\n{2}",
+                    var postData = string.Format(
+                        "--{0}\r\nContent-Disposition: form-data; name=\"{1}\"\r\n\r\n{2}",
                         boundary,
                         param.Key,
                         param.Value);
@@ -827,7 +833,8 @@ namespace DNN.Integration.Test.Framework
             var len = formDataStream.Read(formData, 0, formData.Length);
             if (len != formDataStream.Length)
             {
-                Console.WriteLine(@"ERROR: not all form data was read from the stream. " +
+                Console.WriteLine(
+                    @"ERROR: not all form data was read from the stream. " +
                     @"Requested to read {0} bytes, but was read {1} bytes", formDataStream.Length, len);
             }
 

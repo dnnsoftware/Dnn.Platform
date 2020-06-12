@@ -54,7 +54,8 @@ namespace DotNetNuke.Entities.Urls.Config
         public Regex GetRuleRegex(string applicationPath)
         {
             return this._matchRx ?? (this._matchRx =
-                RegexUtils.GetCachedRegex("^" + RewriterUtils.ResolveUrl(applicationPath, this.LookFor) + "$",
+                RegexUtils.GetCachedRegex(
+                    "^" + RewriterUtils.ResolveUrl(applicationPath, this.LookFor) + "$",
                     RegexOptions.IgnoreCase | RegexOptions.CultureInvariant));
         }
     }

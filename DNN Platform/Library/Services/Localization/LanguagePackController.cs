@@ -44,7 +44,8 @@ namespace DotNetNuke.Services.Localization
             if (languagePack.LanguagePackID == Null.NullInteger)
             {
                 // Add Language Pack
-                languagePack.LanguagePackID = DataProvider.Instance().AddLanguagePack(languagePack.PackageID,
+                languagePack.LanguagePackID = DataProvider.Instance().AddLanguagePack(
+                    languagePack.PackageID,
                                                                                       languagePack.LanguageID,
                                                                                       languagePack.DependentPackageID,
                                                                                       UserController.Instance.GetCurrentUserInfo().UserID);
@@ -53,7 +54,8 @@ namespace DotNetNuke.Services.Localization
             else
             {
                 // Update LanguagePack
-                DataProvider.Instance().UpdateLanguagePack(languagePack.LanguagePackID,
+                DataProvider.Instance().UpdateLanguagePack(
+                    languagePack.LanguagePackID,
                                                            languagePack.PackageID,
                                                            languagePack.LanguageID,
                                                            languagePack.DependentPackageID,

@@ -18,7 +18,8 @@ namespace DotNetNuke.Entities.Portals.Data
 
         public int AddPortalGroup(PortalGroupInfo portalGroup, int createdByUserId)
         {
-            return this._provider.ExecuteScalar<int>("AddPortalGroup",
+            return this._provider.ExecuteScalar<int>(
+                "AddPortalGroup",
                                                portalGroup.PortalGroupName,
                                                portalGroup.PortalGroupDescription,
                                                portalGroup.MasterPortalId,
@@ -38,7 +39,8 @@ namespace DotNetNuke.Entities.Portals.Data
 
         public void UpdatePortalGroup(PortalGroupInfo portalGroup, int lastModifiedByUserId)
         {
-            this._provider.ExecuteNonQuery("UpdatePortalGroup",
+            this._provider.ExecuteNonQuery(
+                "UpdatePortalGroup",
                                             portalGroup.PortalGroupId,
                                             portalGroup.PortalGroupName,
                                             portalGroup.PortalGroupDescription,

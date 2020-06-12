@@ -171,7 +171,8 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 foreach (ProfilePropertyDefinition property in this.ProfileUser.Profile.ProfileProperties)
                 {
                     var displayDataType = ProfilePropertyAccess.DisplayDataType(property).ToLowerInvariant();
-                    string value = propertyAccess.GetProperty(property.PropertyName,
+                    string value = propertyAccess.GetProperty(
+                        property.PropertyName,
                                                               String.Empty,
                                                               Thread.CurrentThread.CurrentUICulture,
                                                               this.ModuleContext.PortalSettings.UserInfo,

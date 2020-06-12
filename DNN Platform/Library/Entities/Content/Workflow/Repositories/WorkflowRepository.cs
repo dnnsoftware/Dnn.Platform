@@ -64,7 +64,8 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
         public Entities.Workflow GetWorkflow(int workflowId)
         {
-            return CBO.GetCachedObject<Entities.Workflow>(new CacheItemArgs(
+            return CBO.GetCachedObject<Entities.Workflow>(
+                new CacheItemArgs(
                 GetWorkflowItemKey(workflowId), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
                 _ =>
                 {
@@ -155,7 +156,9 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
         {
             if (workflow.WorkflowID > 0)
             {
-                CBO.GetCachedObject<Entities.Workflow>(new CacheItemArgs(GetWorkflowItemKey(workflow.WorkflowID),
+                CBO.GetCachedObject<Entities.Workflow>(
+                    new CacheItemArgs(
+                    GetWorkflowItemKey(workflow.WorkflowID),
                     DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority), _ => workflow);
             }
         }

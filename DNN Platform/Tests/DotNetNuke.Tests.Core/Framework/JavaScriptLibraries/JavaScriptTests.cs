@@ -227,7 +227,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             // Arrange
             int lowerVersionJavaScriptLibraryId = this.libraryIdCounter++;
             int higherVersionJavaScriptLibraryId = this.libraryIdCounter++;
-            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
+            this.SetupJavaScriptLibraryController(
+                new JavaScriptLibrary
             {
                 JavaScriptLibraryID = lowerVersionJavaScriptLibraryId,
                 LibraryName = "Test",
@@ -253,7 +254,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             // Arrange
             int lowerVersionJavaScriptLibraryId = this.libraryIdCounter++;
             int higherVersionJavaScriptLibraryId = this.libraryIdCounter++;
-            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
+            this.SetupJavaScriptLibraryController(
+                new JavaScriptLibrary
             {
                 JavaScriptLibraryID = lowerVersionJavaScriptLibraryId,
                 LibraryName = "test",
@@ -317,7 +319,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             // Arrange
             int lowerVersionJavaScriptLibraryId = this.libraryIdCounter++;
             int higherVersionJavaScriptLibraryId = this.libraryIdCounter++;
-            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
+            this.SetupJavaScriptLibraryController(
+                new JavaScriptLibrary
             {
                 JavaScriptLibraryID = lowerVersionJavaScriptLibraryId,
                 LibraryName = "Test",
@@ -343,7 +346,8 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             // Arrange
             int lowerVersionJavaScriptLibraryId = this.libraryIdCounter++;
             int higherVersionJavaScriptLibraryId = this.libraryIdCounter++;
-            this.SetupJavaScriptLibraryController(new JavaScriptLibrary
+            this.SetupJavaScriptLibraryController(
+                new JavaScriptLibrary
             {
                 JavaScriptLibraryID = lowerVersionJavaScriptLibraryId,
                 LibraryName = "test",

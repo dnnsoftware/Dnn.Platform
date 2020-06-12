@@ -165,7 +165,8 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             DNNCacheDependency dep = null;
             this.mockCache.Verify(
                 cache =>
-                cache.Insert(this.GetDnnCacheKey(Constants.CACHEING_ValidKey),
+                cache.Insert(
+                    this.GetDnnCacheKey(Constants.CACHEING_ValidKey),
                              Constants.CACHEING_ValidValue,
                              dep,
                              Cache.NoAbsoluteExpiration,
@@ -199,7 +200,8 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             // Assert
             this.mockCache.Verify(
                 cache =>
-                cache.Insert(this.GetDnnCacheKey(Constants.CACHEING_ValidKey),
+                cache.Insert(
+                    this.GetDnnCacheKey(Constants.CACHEING_ValidKey),
                              Constants.CACHEING_ValidValue,
                              dep,
                              Cache.NoAbsoluteExpiration,
@@ -234,7 +236,8 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             DNNCacheDependency dep = null;
             this.mockCache.Verify(
                 cache =>
-                cache.Insert(this.GetDnnCacheKey(Constants.CACHEING_ValidKey),
+                cache.Insert(
+                    this.GetDnnCacheKey(Constants.CACHEING_ValidKey),
                              Constants.CACHEING_ValidValue,
                              dep,
                              absExpiry,
@@ -270,7 +273,8 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             DNNCacheDependency dep = null;
             this.mockCache.Verify(
                 cache =>
-                cache.Insert(this.GetDnnCacheKey(Constants.CACHEING_ValidKey),
+                cache.Insert(
+                    this.GetDnnCacheKey(Constants.CACHEING_ValidKey),
                              Constants.CACHEING_ValidValue,
                              dep,
                              Cache.NoAbsoluteExpiration,

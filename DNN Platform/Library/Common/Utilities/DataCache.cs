@@ -459,7 +459,8 @@ namespace DotNetNuke.Common.Utilities
 
         public static void ClearFolderPermissionsCache(int PortalId)
         {
-            PermissionProvider.ResetCacheDependency(PortalId,
+            PermissionProvider.ResetCacheDependency(
+                PortalId,
                 () => RemoveCache(String.Format(FolderPermissionCacheKey, PortalId)));
         }
 
@@ -537,7 +538,8 @@ namespace DotNetNuke.Common.Utilities
                         if (objObject != null && timeOut > 0)
                         {
                             // save the object in the cache
-                            SetCache(cacheItemArgs.CacheKey,
+                            SetCache(
+                                cacheItemArgs.CacheKey,
                                      objObject,
                                      cacheItemArgs.CacheDependency,
                                      Cache.NoAbsoluteExpiration,

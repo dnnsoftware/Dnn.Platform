@@ -69,7 +69,8 @@ namespace DotNetNuke.UI.Containers.Controls
             JavaScript.RequestRegistration(CommonJs.jQuery);
             JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
 
-            var toggleScript = string.Format("<script type=\"text/javascript\">(function($){{$(\"#{0}\").find(\"a.toggleHandler\").click(function(e){{$(\"#{1}\").slideToggle();$(this).toggleClass('collapsed');e.preventDefault();}});}})(jQuery);</script>",
+            var toggleScript = string.Format(
+                "<script type=\"text/javascript\">(function($){{$(\"#{0}\").find(\"a.toggleHandler\").click(function(e){{$(\"#{1}\").slideToggle();$(this).toggleClass('collapsed');e.preventDefault();}});}})(jQuery);</script>",
                                              this.ClientID,
                                              this.Target);
             this.Page.ClientScript.RegisterStartupScript(this.GetType(), this.ClientID, toggleScript);

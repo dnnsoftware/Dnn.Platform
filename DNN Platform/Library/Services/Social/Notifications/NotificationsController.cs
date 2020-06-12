@@ -97,7 +97,8 @@ namespace DotNetNuke.Services.Social.Notifications
 
             foreach (var action in actions)
             {
-                action.NotificationTypeActionId = this._dataService.AddNotificationTypeAction(notificationTypeId,
+                action.NotificationTypeActionId = this._dataService.AddNotificationTypeAction(
+                    notificationTypeId,
                                                                                          action.NameResourceKey,
                                                                                          action.DescriptionResourceKey,
                                                                                          action.ConfirmResourceKey,
@@ -245,7 +246,8 @@ namespace DotNetNuke.Services.Social.Notifications
                 notificationType.DesktopModuleId = Null.NullInteger;
             }
 
-            notificationType.NotificationTypeId = this._dataService.CreateNotificationType(notificationType.Name,
+            notificationType.NotificationTypeId = this._dataService.CreateNotificationType(
+                notificationType.Name,
                                                                                       notificationType.Description,
                                                                                       (int)notificationType.TimeToLive.TotalMinutes == 0 ? Null.NullInteger : (int)notificationType.TimeToLive.TotalMinutes,
                                                                                       notificationType.DesktopModuleId,

@@ -519,7 +519,8 @@ namespace DotNetNuke.Services.Mail
                             }
                             string recipient = this.AddressMethod == AddressMethods.Send_TO ? user.Email : this.RelayEmailAddress;
 
-                            string mailError = Mail.SendMail(this._sendingUser.Email,
+                            string mailError = Mail.SendMail(
+                                this._sendingUser.Email,
                                                                 recipient,
                                                                 "",
                                                                 "",
@@ -575,7 +576,8 @@ namespace DotNetNuke.Services.Mail
                                 body = this._body;
                                 subject = this.Subject;
                             }
-                            string mailError = Mail.SendMail(this._sendingUser.Email,
+                            string mailError = Mail.SendMail(
+                                this._sendingUser.Email,
                                                        this._sendingUser.Email,
                                                        "",
                                                        distributionList.ToString(0, distributionList.Length - 2),

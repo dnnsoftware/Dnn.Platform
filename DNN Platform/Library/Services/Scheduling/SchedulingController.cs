@@ -29,7 +29,8 @@ namespace DotNetNuke.Services.Scheduling
         public static int AddSchedule(string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum, string AttachToEvent,
                               bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName)
         {
-            return AddSchedule(TypeFullName,
+            return AddSchedule(
+                TypeFullName,
                                TimeLapse,
                                TimeLapseMeasurement,
                                RetryTimeLapse,
@@ -47,7 +48,8 @@ namespace DotNetNuke.Services.Scheduling
                                       bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName, DateTime ScheduleStartDate)
         {
             EventLogController.Instance.AddLog("TypeFullName", TypeFullName, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_CREATED);
-            return DataProvider.Instance().AddSchedule(TypeFullName,
+            return DataProvider.Instance().AddSchedule(
+                TypeFullName,
                                                        TimeLapse,
                                                        TimeLapseMeasurement,
                                                        RetryTimeLapse,
@@ -76,7 +78,8 @@ namespace DotNetNuke.Services.Scheduling
         public static void DeleteSchedule(int ScheduleID)
         {
             DataProvider.Instance().DeleteSchedule(ScheduleID);
-            EventLogController.Instance.AddLog("ScheduleID",
+            EventLogController.Instance.AddLog(
+                "ScheduleID",
                                ScheduleID.ToString(),
                                PortalController.Instance.GetCurrentPortalSettings(),
                                UserController.Instance.GetCurrentUserInfo().UserID,
@@ -174,7 +177,8 @@ namespace DotNetNuke.Services.Scheduling
         public static void UpdateSchedule(ScheduleItem scheduleItem)
         {
 #pragma warning disable 618
-            UpdateSchedule(scheduleItem.ScheduleID,
+            UpdateSchedule(
+                scheduleItem.ScheduleID,
                             scheduleItem.TypeFullName,
                             scheduleItem.TimeLapse,
                             scheduleItem.TimeLapseMeasurement,
@@ -195,7 +199,8 @@ namespace DotNetNuke.Services.Scheduling
                                   string AttachToEvent, bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName)
         {
 #pragma warning disable 618
-            UpdateSchedule(ScheduleID,
+            UpdateSchedule(
+                ScheduleID,
                             TypeFullName,
                             TimeLapse,
                             TimeLapseMeasurement,
@@ -216,7 +221,8 @@ namespace DotNetNuke.Services.Scheduling
         public static void UpdateSchedule(int ScheduleID, string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum,
                                           string AttachToEvent, bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName, DateTime ScheduleStartDate)
         {
-            DataProvider.Instance().UpdateSchedule(ScheduleID,
+            DataProvider.Instance().UpdateSchedule(
+                ScheduleID,
                                                    TypeFullName,
                                                    TimeLapse,
                                                    TimeLapseMeasurement,
@@ -236,7 +242,8 @@ namespace DotNetNuke.Services.Scheduling
 
         public static void UpdateScheduleHistory(ScheduleHistoryItem objScheduleHistoryItem)
         {
-            DataProvider.Instance().UpdateScheduleHistory(objScheduleHistoryItem.ScheduleHistoryID,
+            DataProvider.Instance().UpdateScheduleHistory(
+                objScheduleHistoryItem.ScheduleHistoryID,
                                                           objScheduleHistoryItem.EndDate,
                                                           objScheduleHistoryItem.Succeeded,
                                                           objScheduleHistoryItem.LogNotes,

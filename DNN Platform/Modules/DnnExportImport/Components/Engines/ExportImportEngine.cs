@@ -203,7 +203,8 @@ namespace Dnn.ExportImport.Components.Engines
 
             if (this.TimeIsUp)
             {
-                result.AddSummary($"Job time slot ({this._timeoutSeconds} sec) expired",
+                result.AddSummary(
+                    $"Job time slot ({this._timeoutSeconds} sec) expired",
                     "Job will resume in the next scheduler iteration");
             }
             else if (exportJob.JobStatus == JobStatus.InProgress)
@@ -376,7 +377,8 @@ namespace Dnn.ExportImport.Components.Engines
                 RemoveTokenFromCache(importJob);
                 if (this.TimeIsUp)
                 {
-                    result.AddSummary($"Job time slot ({this._timeoutSeconds} sec) expired",
+                    result.AddSummary(
+                        $"Job time slot ({this._timeoutSeconds} sec) expired",
                         "Job will resume in the next scheduler iteration");
                 }
                 else if (importJob.JobStatus == JobStatus.InProgress)
@@ -474,7 +476,8 @@ namespace Dnn.ExportImport.Components.Engines
             CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));
         }
 
-        private static HashSet<string> GetAllCategoriesToInclude(ExportDto exportDto,
+        private static HashSet<string> GetAllCategoriesToInclude(
+            ExportDto exportDto,
             List<BasePortableService> implementors)
         {
             // add all child items
@@ -622,7 +625,8 @@ namespace Dnn.ExportImport.Components.Engines
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("Unable to clear {0} while calling CleanupDatabaseIfDirty. Error: {1}",
+                    Logger.ErrorFormat(
+                        "Unable to clear {0} while calling CleanupDatabaseIfDirty. Error: {1}",
                         type.Name,
                         e.Message);
                 }

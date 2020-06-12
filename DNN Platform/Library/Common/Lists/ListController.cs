@@ -103,7 +103,9 @@ namespace DotNetNuke.Common.Lists
         private Dictionary<string, ListInfo> GetListInfoDictionary(int portalId)
         {
             string cacheKey = string.Format(DataCache.ListsCacheKey, portalId);
-            return CBO.GetCachedObject<Dictionary<string, ListInfo>>(new CacheItemArgs(cacheKey,
+            return CBO.GetCachedObject<Dictionary<string, ListInfo>>(
+                new CacheItemArgs(
+                cacheKey,
                                                                         DataCache.ListsCacheTimeOut,
                                                                         DataCache.ListsCachePriority),
                                                                 c => this.FillListInfoDictionary(DataProvider.Instance().GetLists(portalId)));
@@ -113,7 +115,9 @@ namespace DotNetNuke.Common.Lists
         {
 
             string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
-            return CBO.GetCachedObject<IEnumerable<ListEntryInfo>>(new CacheItemArgs(cacheKey,
+            return CBO.GetCachedObject<IEnumerable<ListEntryInfo>>(
+                new CacheItemArgs(
+                cacheKey,
                                                                         DataCache.ListsCacheTimeOut,
                                                                         DataCache.ListsCachePriority),
                 c => CBO.FillCollection<ListEntryInfo>(DataProvider.Instance().GetListEntriesByListName(listName, String.Empty, portalId)));
@@ -131,7 +135,8 @@ namespace DotNetNuke.Common.Lists
         {
             bool enableSortOrder = listEntry.SortOrder > 0;
             this.ClearListCache(listEntry.PortalID);
-            int entryId = DataProvider.Instance().AddListEntry(listEntry.ListName,
+            int entryId = DataProvider.Instance().AddListEntry(
+                listEntry.ListName,
                                                         listEntry.Value,
                                                         listEntry.TextNonLocalized,
                                                         listEntry.ParentID,

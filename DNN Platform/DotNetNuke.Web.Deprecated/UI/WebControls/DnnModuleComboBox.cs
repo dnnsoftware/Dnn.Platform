@@ -94,7 +94,8 @@ namespace DotNetNuke.Web.UI.WebControls
                     .OrderBy(c => c.Key);
             }
 
-            return portalModulesList.ToDictionary(portalModule => portalModule.Value.DesktopModuleID,
+            return portalModulesList.ToDictionary(
+                portalModule => portalModule.Value.DesktopModuleID,
                                                     portalModule => portalModule.Key);
         }
 

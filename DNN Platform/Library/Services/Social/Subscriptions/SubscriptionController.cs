@@ -74,7 +74,8 @@ namespace DotNetNuke.Services.Social.Subscriptions
             Requires.NotNegative("subscription.SubscriptionTypeId", subscription.SubscriptionTypeId);
             Requires.PropertyNotNull("subscription.ObjectKey", subscription.ObjectKey);
 
-            subscription.SubscriptionId = this.dataService.AddSubscription(subscription.UserId,
+            subscription.SubscriptionId = this.dataService.AddSubscription(
+                subscription.UserId,
                                                subscription.PortalId,
                                                subscription.SubscriptionTypeId,
                                                subscription.ObjectKey,

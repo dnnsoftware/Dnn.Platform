@@ -145,7 +145,8 @@ namespace DotNetNuke.Entities.Urls
         ///  : include new out parameter 'isCustomPath' to return whether the Url was generated from Url-Master custom url
         /// </remarks>
         /// <returns>The tab path as specified</returns>
-        internal static string GetTabPath(TabInfo tab,
+        internal static string GetTabPath(
+            TabInfo tab,
                                             FriendlyUrlSettings settings,
                                             FriendlyUrlOptions options,
                                             bool ignoreCustomRedirects,

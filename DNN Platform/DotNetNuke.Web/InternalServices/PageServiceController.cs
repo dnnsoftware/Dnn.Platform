@@ -59,7 +59,8 @@ namespace DotNetNuke.Web.InternalServices
             urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
             if (modified)
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK,
+                return this.Request.CreateResponse(
+                    HttpStatusCode.OK,
                     new
                     {
                         Success = false,
@@ -72,7 +73,8 @@ namespace DotNetNuke.Web.InternalServices
             urlPath = FriendlyUrlController.ValidateUrl(urlPath, -1, this.PortalSettings, out modified);
             if (modified)
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK,
+                return this.Request.CreateResponse(
+                    HttpStatusCode.OK,
                     new
                     {
                         Success = false,

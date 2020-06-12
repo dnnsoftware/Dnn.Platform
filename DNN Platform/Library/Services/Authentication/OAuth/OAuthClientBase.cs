@@ -302,7 +302,8 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             string verifier = (uri == this.TokenEndpoint) ? this.OAuthVerifier : String.Empty;
             // Generate Signature
-            string sig = this.GenerateSignature(uri,
+            string sig = this.GenerateSignature(
+                uri,
                                             this.AuthToken,
                                             this.TokenSecret,
                                             String.Empty,
@@ -503,7 +504,8 @@ namespace DotNetNuke.Services.Authentication.OAuth
             string nonce = this.GenerateNonce();
             string timeStamp = this.GenerateTimeStamp();
 
-            string sig = this.GenerateSignature(this.RequestTokenEndpoint,
+            string sig = this.GenerateSignature(
+                this.RequestTokenEndpoint,
                                             String.Empty,
                                             String.Empty,
                                             this.CallbackUri.OriginalString,

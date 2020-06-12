@@ -150,7 +150,8 @@ namespace DotNetNuke.Entities.Modules
         public void DeleteDesktopModule(int desktopModuleID)
         {
             DataProvider.DeleteDesktopModule(desktopModuleID);
-            EventLogController.Instance.AddLog("DesktopModuleID",
+            EventLogController.Instance.AddLog(
+                "DesktopModuleID",
                                desktopModuleID.ToString(),
                                PortalController.Instance.GetCurrentPortalSettings(),
                                UserController.Instance.GetCurrentUserInfo().UserID,
@@ -289,7 +290,8 @@ namespace DotNetNuke.Entities.Modules
             if (desktopModuleID == Null.NullInteger)
             {
                 CreateContentItem(desktopModule);
-                desktopModuleID = DataProvider.AddDesktopModule(desktopModule.PackageID,
+                desktopModuleID = DataProvider.AddDesktopModule(
+                    desktopModule.PackageID,
                                                                 desktopModule.ModuleName,
                                                                 desktopModule.FolderName,
                                                                 desktopModule.FriendlyName,
@@ -316,7 +318,8 @@ namespace DotNetNuke.Entities.Modules
                     CreateContentItem(desktopModule);
                 }
 
-                DataProvider.UpdateDesktopModule(desktopModule.DesktopModuleID,
+                DataProvider.UpdateDesktopModule(
+                    desktopModule.DesktopModuleID,
                                                  desktopModule.PackageID,
                                                  desktopModule.ModuleName,
                                                  desktopModule.FolderName,
@@ -435,7 +438,8 @@ namespace DotNetNuke.Entities.Modules
             if (portalDesktopModule == null)
             {
                 portalDesktopModuleID = DataProvider.Instance().AddPortalDesktopModule(portalId, desktopModuleId, UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog("PortalDesktopModuleID",
+                EventLogController.Instance.AddLog(
+                    "PortalDesktopModuleID",
                                    portalDesktopModuleID.ToString(),
                                    PortalController.Instance.GetCurrentPortalSettings(),
                                    UserController.Instance.GetCurrentUserInfo().UserID,
@@ -531,7 +535,8 @@ namespace DotNetNuke.Entities.Modules
         public static void RemoveDesktopModuleFromPortal(int portalId, int desktopModuleId, bool clearCache)
         {
             DataProvider.Instance().DeletePortalDesktopModules(portalId, desktopModuleId);
-            EventLogController.Instance.AddLog("DesktopModuleID",
+            EventLogController.Instance.AddLog(
+                "DesktopModuleID",
                                desktopModuleId.ToString(),
                                PortalController.Instance.GetCurrentPortalSettings(),
                                UserController.Instance.GetCurrentUserInfo().UserID,
@@ -545,7 +550,8 @@ namespace DotNetNuke.Entities.Modules
         public static void RemoveDesktopModuleFromPortals(int desktopModuleId)
         {
             DataProvider.Instance().DeletePortalDesktopModules(Null.NullInteger, desktopModuleId);
-            EventLogController.Instance.AddLog("DesktopModuleID",
+            EventLogController.Instance.AddLog(
+                "DesktopModuleID",
                                desktopModuleId.ToString(),
                                PortalController.Instance.GetCurrentPortalSettings(),
                                UserController.Instance.GetCurrentUserInfo().UserID,
@@ -556,7 +562,8 @@ namespace DotNetNuke.Entities.Modules
         public static void RemoveDesktopModulesFromPortal(int portalId)
         {
             DataProvider.Instance().DeletePortalDesktopModules(portalId, Null.NullInteger);
-            EventLogController.Instance.AddLog("PortalID",
+            EventLogController.Instance.AddLog(
+                "PortalID",
                                portalId.ToString(),
                                PortalController.Instance.GetCurrentPortalSettings(),
                                UserController.Instance.GetCurrentUserInfo().UserID,
@@ -598,7 +605,8 @@ namespace DotNetNuke.Entities.Modules
             {
                 if (portalId == Null.NullInteger)
                 {
-                    existTab = Upgrade.AddHostPage(pageName,
+                    existTab = Upgrade.AddHostPage(
+                        pageName,
                                                     desktopModule.Page.Description,
                                                     desktopModule.Page.Icon,
                                                     desktopModule.Page.LargeIcon,
@@ -606,7 +614,8 @@ namespace DotNetNuke.Entities.Modules
                 }
                 else
                 {
-                    existTab = Upgrade.AddAdminPage(PortalController.Instance.GetPortal(portalId),
+                    existTab = Upgrade.AddAdminPage(
+                        PortalController.Instance.GetPortal(portalId),
                                                         pageName,
                                                         desktopModule.Page.Description,
                                                         desktopModule.Page.Icon,
@@ -641,7 +650,8 @@ namespace DotNetNuke.Entities.Modules
             {
                 if (tabModules.All(m => m.ModuleDefinition.ModuleDefID != moduleDefinition.ModuleDefID))
                 {
-                    Upgrade.AddModuleToPage(tab,
+                    Upgrade.AddModuleToPage(
+                        tab,
                         moduleDefinition.ModuleDefID,
                         desktopModule.Page.Description,
                         desktopModule.Page.Icon,

@@ -81,7 +81,8 @@ namespace DotNetNuke.Web.InternalServices
                         {
                             var response = new
                             {
-                                Message = Localization.GetExceptionMessage("UserDoesNotExist",
+                                Message = Localization.GetExceptionMessage(
+                                    "UserDoesNotExist",
                                     "The user you are trying to follow no longer exists.")
                             };
                             return this.Request.CreateResponse(HttpStatusCode.InternalServerError, response);
@@ -99,7 +100,8 @@ namespace DotNetNuke.Web.InternalServices
                 Logger.Error(exc);
                 var response = new
                 {
-                    Message = Localization.GetExceptionMessage("AlreadyFollowingUser",
+                    Message = Localization.GetExceptionMessage(
+                        "AlreadyFollowingUser",
                         "You are already following this user.")
                 };
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError, response);

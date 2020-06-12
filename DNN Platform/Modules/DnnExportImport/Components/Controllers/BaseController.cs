@@ -43,7 +43,8 @@ namespace Dnn.ExportImport.Components.Controllers
             var objSecurity = PortalSecurity.Instance;
             var portalInfo = PortalController.Instance.GetPortal(portalId);
             var userInfo = UserController.Instance.GetUser(portalId, userId);
-            var username = objSecurity.InputFilter(userInfo.Username,
+            var username = objSecurity.InputFilter(
+                userInfo.Username,
                 PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
 
             var log = new LogInfo

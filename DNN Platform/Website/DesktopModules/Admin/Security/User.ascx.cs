@@ -446,7 +446,8 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 var options = new DnnPaswordStrengthOptions();
                 var optionsAsJsonString = Json.Serialize(options);
-                var passwordScript = string.Format("dnn.initializePasswordStrength('.{0}', {1});{2}",
+                var passwordScript = string.Format(
+                    "dnn.initializePasswordStrength('.{0}', {1});{2}",
                     "password-strength", optionsAsJsonString, Environment.NewLine);
 
                 if (ScriptManager.GetCurrent(this.Page) != null)

@@ -46,7 +46,8 @@ namespace DotNetNuke.Services.FileSystem
 
         public int AddFolderMapping(FolderMappingInfo objFolderMapping)
         {
-            objFolderMapping.FolderMappingID = dataProvider.AddFolderMapping(objFolderMapping.PortalID,
+            objFolderMapping.FolderMappingID = dataProvider.AddFolderMapping(
+                objFolderMapping.PortalID,
                                                                              objFolderMapping.MappingName,
                                                                              objFolderMapping.FolderProviderType,
                                                                              UserController.Instance.GetCurrentUserInfo().UserID);
@@ -111,7 +112,8 @@ namespace DotNetNuke.Services.FileSystem
 
         public void UpdateFolderMapping(FolderMappingInfo objFolderMapping)
         {
-            dataProvider.UpdateFolderMapping(objFolderMapping.FolderMappingID,
+            dataProvider.UpdateFolderMapping(
+                objFolderMapping.FolderMappingID,
                                              objFolderMapping.MappingName,
                                              objFolderMapping.Priority,
                                              UserController.Instance.GetCurrentUserInfo().UserID);
@@ -138,7 +140,9 @@ namespace DotNetNuke.Services.FileSystem
         public List<FolderMappingInfo> GetFolderMappings(int portalId)
         {
             var cacheKey = String.Format(DataCache.FolderMappingCacheKey, portalId);
-            return CBO.GetCachedObject<List<FolderMappingInfo>>(new CacheItemArgs(cacheKey,
+            return CBO.GetCachedObject<List<FolderMappingInfo>>(
+                new CacheItemArgs(
+                cacheKey,
                                                                     DataCache.FolderMappingCacheTimeOut,
                                                                     DataCache.FolderMappingCachePriority),
                                                                 (c) => CBO.FillCollection<FolderMappingInfo>(dataProvider.GetFolderMappings(portalId)));

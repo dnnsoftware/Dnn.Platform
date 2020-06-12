@@ -413,7 +413,8 @@ namespace DotNetNuke.Tests.Content
         {
             // Arrange
             var mockDataService = new Mock<IDataService>();
-            mockDataService.Setup(ds => ds.GetTermsByContent(Constants.TERM_ValidContent1)).Returns(MockHelper.CreateValidTermsReader(Constants.TERM_ValidCountForContent1,
+            mockDataService.Setup(ds => ds.GetTermsByContent(Constants.TERM_ValidContent1)).Returns(MockHelper.CreateValidTermsReader(
+                Constants.TERM_ValidCountForContent1,
                                                                                                                                       v => Constants.TERM_ValidVocabularyId,
                                                                                                                                       c => Constants.TERM_ValidContent1));
             var termController = new TermController(mockDataService.Object);
@@ -430,7 +431,8 @@ namespace DotNetNuke.Tests.Content
         {
             // Arrange
             var mockDataService = new Mock<IDataService>();
-            mockDataService.Setup(ds => ds.GetTermsByContent(Constants.TERM_ValidContent1)).Returns(MockHelper.CreateValidTermsReader(Constants.TERM_ValidCountForContent1,
+            mockDataService.Setup(ds => ds.GetTermsByContent(Constants.TERM_ValidContent1)).Returns(MockHelper.CreateValidTermsReader(
+                Constants.TERM_ValidCountForContent1,
                                                                                                                                       v => Constants.TERM_ValidVocabularyId,
                                                                                                                                       c => Constants.TERM_ValidContent1));
 
@@ -470,7 +472,8 @@ namespace DotNetNuke.Tests.Content
         {
             // Arrange
             var mockDataService = new Mock<IDataService>();
-            mockDataService.Setup(ds => ds.GetTermsByVocabulary(Constants.TERM_ValidVocabulary1)).Returns(MockHelper.CreateValidTermsReader(Constants.TERM_ValidCountForVocabulary1,
+            mockDataService.Setup(ds => ds.GetTermsByVocabulary(Constants.TERM_ValidVocabulary1)).Returns(MockHelper.CreateValidTermsReader(
+                Constants.TERM_ValidCountForVocabulary1,
                                                                                                                                             v => Constants.TERM_ValidVocabulary1,
                                                                                                                                             c => Constants.TERM_ValidContent1));
             MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(String.Empty);

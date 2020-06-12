@@ -98,7 +98,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
             var options = new DnnPaswordStrengthOptions();
             var optionsAsJsonString = Json.Serialize(options);
-            var script = string.Format("dnn.initializePasswordStrength('.{0}', {1});{2}",
+            var script = string.Format(
+                "dnn.initializePasswordStrength('.{0}', {1});{2}",
                 this.TextBoxCssClass, optionsAsJsonString, Environment.NewLine);
 
             if (ScriptManager.GetCurrent(this.Page) != null)

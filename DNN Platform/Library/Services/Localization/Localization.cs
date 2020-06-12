@@ -417,7 +417,8 @@ namespace DotNetNuke.Services.Localization
                     string cacheKey = string.Format(DataCache.LocalesCacheKey, portalID);
                     DataCache.RemoveCache(cacheKey);
 
-                    EventLogController.Instance.AddLog("portalID/languageID",
+                    EventLogController.Instance.AddLog(
+                        "portalID/languageID",
                                        portalID + "/" + languageID,
                                        PortalController.Instance.GetCurrentPortalSettings(),
                                        UserController.Instance.GetCurrentUserInfo().UserID,
@@ -1887,7 +1888,8 @@ namespace DotNetNuke.Services.Localization
                 }
 
                 DataProvider.Instance().DeletePortalLanguages(portalID, languageID);
-                EventLogController.Instance.AddLog("portalID/languageID",
+                EventLogController.Instance.AddLog(
+                    "portalID/languageID",
                                    portalID + "/" + languageID,
                                    PortalController.Instance.GetCurrentPortalSettings(),
                                    UserController.Instance.GetCurrentUserInfo().UserID,

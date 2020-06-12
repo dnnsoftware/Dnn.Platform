@@ -30,7 +30,9 @@ namespace DotNetNuke.Security.Permissions
 
         private static IEnumerable<PermissionInfo> GetPermissions()
         {
-            return CBO.GetCachedObject<IEnumerable<PermissionInfo>>(new CacheItemArgs(DataCache.PermissionsCacheKey,
+            return CBO.GetCachedObject<IEnumerable<PermissionInfo>>(
+                new CacheItemArgs(
+                DataCache.PermissionsCacheKey,
                                                                                 DataCache.PermissionsCacheTimeout,
                                                                                 DataCache.PermissionsCachePriority),
                                                                 c => CBO.FillCollection<PermissionInfo>(provider.ExecuteReader("GetPermissions")));
@@ -46,7 +48,8 @@ namespace DotNetNuke.Security.Permissions
         public int AddPermission(PermissionInfo permission)
         {
             EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PERMISSION_CREATED);
-            var permissionId = Convert.ToInt32(provider.AddPermission(permission.PermissionCode,
+            var permissionId = Convert.ToInt32(provider.AddPermission(
+                permission.PermissionCode,
                                                        permission.ModuleDefID,
                                                        permission.PermissionKey,
                                                        permission.PermissionName,
@@ -58,7 +61,8 @@ namespace DotNetNuke.Security.Permissions
 
         public void DeletePermission(int permissionID)
         {
-            EventLogController.Instance.AddLog("PermissionID",
+            EventLogController.Instance.AddLog(
+                "PermissionID",
                                permissionID.ToString(),
                                PortalController.Instance.GetCurrentPortalSettings(),
                                UserController.Instance.GetCurrentUserInfo().UserID,
@@ -93,7 +97,8 @@ namespace DotNetNuke.Security.Permissions
         public void UpdatePermission(PermissionInfo permission)
         {
             EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PERMISSION_UPDATED);
-            provider.UpdatePermission(permission.PermissionID,
+            provider.UpdatePermission(
+                permission.PermissionID,
                                       permission.PermissionCode,
                                       permission.ModuleDefID,
                                       permission.PermissionKey,

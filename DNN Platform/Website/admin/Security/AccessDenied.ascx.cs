@@ -28,7 +28,8 @@ namespace DotNetNuke.Modules.Admin.Security
                 message = HttpUtility.HtmlEncode(DataProvider.Instance().GetRedirectMessage(messageGuid));
             }
 
-            UI.Skins.Skin.AddModuleMessage(this,
+            UI.Skins.Skin.AddModuleMessage(
+                this,
                 !string.IsNullOrEmpty(message) ? message : Localization.GetString("AccessDenied", this.LocalResourceFile),
                 ModuleMessage.ModuleMessageType.YellowWarning);
         }

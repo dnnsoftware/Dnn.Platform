@@ -136,7 +136,8 @@ namespace DotNetNuke.Entities.Content
         {
             var union = new List<ContentItem>();
 
-            union = terms.Aggregate(union,
+            union = terms.Aggregate(
+                union,
                 (current, term) =>
                     !current.Any()
                         ? this.GetContentItemsByTerm(term).ToList()
@@ -272,7 +273,8 @@ namespace DotNetNuke.Entities.Content
             DataCache.RemoveCache(GetContentItemCacheKey(contentItem.ContentItemId)); // remove first to synch web-farm servers
             if (readdItem)
             {
-                CBO.GetCachedObject<ContentItem>(new CacheItemArgs(
+                CBO.GetCachedObject<ContentItem>(
+                    new CacheItemArgs(
                     GetContentItemCacheKey(contentItem.ContentItemId),
                    DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority), c => contentItem);
             }

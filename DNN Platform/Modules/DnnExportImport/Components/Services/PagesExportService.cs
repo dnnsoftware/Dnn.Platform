@@ -528,7 +528,8 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             if (userId == null)
                             {
-                                this.Result.AddLogEntry("Couldn't add tab permission; User is undefined!",
+                                this.Result.AddLogEntry(
+                                    "Couldn't add tab permission; User is undefined!",
                                     $"{other.PermissionKey} - {other.PermissionID}", ReportLevel.Warn);
                                 continue;
                             }
@@ -538,7 +539,8 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             if (roleId == null)
                             {
-                                this.Result.AddLogEntry("Couldn't add tab permission; Role is undefined!",
+                                this.Result.AddLogEntry(
+                                    "Couldn't add tab permission; Role is undefined!",
                                     $"{other.PermissionKey} - {other.PermissionID}", ReportLevel.Warn);
                                 continue;
                             }
@@ -554,7 +556,8 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     else
                     {
-                        this.Result.AddLogEntry("Couldn't add tab permission; Permission is undefined!",
+                        this.Result.AddLogEntry(
+                            "Couldn't add tab permission; Permission is undefined!",
                             $"{other.PermissionKey} - {other.PermissionID}", ReportLevel.Warn);
                     }
                 }
@@ -668,7 +671,8 @@ namespace Dnn.ExportImport.Components.Services
                 var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(other.FriendlyName);
                 if (moduleDefinition == null)
                 {
-                    this.Result.AddLogEntry("Error adding tab module, ModuleDef=" + other.FriendlyName,
+                    this.Result.AddLogEntry(
+                        "Error adding tab module, ModuleDef=" + other.FriendlyName,
                         "The modue definition is not present in the system", ReportLevel.Error);
                     continue; // the module is not installed, therefore ignore it
                 }
@@ -1204,7 +1208,8 @@ namespace Dnn.ExportImport.Components.Services
                                                 catch (Exception ex)
                                                 {
                                                     this.Result.AddLogEntry("Error importing module data, Module ID=" + localModule.ModuleID, ex.Message, ReportLevel.Error);
-                                                    Logger.ErrorFormat("ModuleContent: (Module ID={0}). Error: {1}{2}{3}",
+                                                    Logger.ErrorFormat(
+                                                        "ModuleContent: (Module ID={0}). Error: {1}{2}{3}",
                                                         localModule.ModuleID, ex, Environment.NewLine, moduleContent.XmlContent);
                                                 }
                                             }
@@ -1245,7 +1250,8 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        private void DisableVersioning(int tabId,
+        private void DisableVersioning(
+            int tabId,
             out bool versionEnabledPortalLevel,
             out bool versionEnabledTabLevel,
             out bool workflowEnabledPortalLevel,
@@ -1263,7 +1269,8 @@ namespace Dnn.ExportImport.Components.Services
             workflowSettings.SetWorkflowEnabled(portalId, tabId, false);
         }
 
-        private void RestoreVersioning(int tabId,
+        private void RestoreVersioning(
+            int tabId,
             bool versionEnabledPortalLevel,
             bool versionEnabledTabLevel,
             bool workflowEnabledPortalLevel,
@@ -1502,7 +1509,8 @@ namespace Dnn.ExportImport.Components.Services
             var isAllIncluded =
                 selectedPages.Any(p => p.TabId == -1 && p.CheckedState == TriCheckedState.CheckedWithAllChildren);
 
-            var allTabs = EntitiesController.Instance.GetPortalTabs(portalId,
+            var allTabs = EntitiesController.Instance.GetPortalTabs(
+                portalId,
                     this._exportDto.IncludeDeletions, this.IncludeSystem, toDate, fromDate) // ordered by TabID
                 .OrderBy(tab => tab.TabPath).ToArray();
 
@@ -1651,7 +1659,8 @@ namespace Dnn.ExportImport.Components.Services
                         var offset = Path.GetDirectoryName(filePath)?.Length + 1;
                         CompressionUtil.AddFileToArchive(filePath, packageZipFile, offset.GetValueOrDefault(0));
 
-                        this.Repository.CreateItem(new ExportPackage
+                        this.Repository.CreateItem(
+                            new ExportPackage
                         {
                             PackageName = package.Name,
                             Version = package.Version,
@@ -1709,7 +1718,8 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             try
                             {
-                                var businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass,
+                                var businessController = Reflection.CreateObject(
+                                    module.DesktopModule.BusinessControllerClass,
                                     module.DesktopModule.BusinessControllerClass);
                                 var controller = businessController as IPortable;
                                 var content = controller?.ExportModule(module.ModuleID);

@@ -245,7 +245,8 @@ namespace DotNetNuke.Tests.Content.Mocks
         internal static IDataReader CreateValidContentItemReader()
         {
             DataTable table = CreateContentItemTable();
-            AddContentItemToTable(table,
+            AddContentItemToTable(
+                table,
                                   Constants.CONTENT_ValidContentItemId,
                                   ContentTestHelper.GetContent(Constants.CONTENT_ValidContentItemId),
                                   ContentTestHelper.GetContentKey(Constants.CONTENT_ValidContentItemId),
@@ -260,7 +261,8 @@ namespace DotNetNuke.Tests.Content.Mocks
         {
             DataTable table = CreateContentItemTable();
 
-            AddContentItemToTable(table,
+            AddContentItemToTable(
+                table,
                                   contentItem.ContentItemId,
                                   ContentTestHelper.GetContent(contentItem.ContentItemId),
                                   ContentTestHelper.GetContentKey(contentItem.ContentItemId),
@@ -382,7 +384,8 @@ namespace DotNetNuke.Tests.Content.Mocks
         internal static IDataReader CreateValidTermReader()
         {
             DataTable table = CreateTermTable();
-            AddTermToTable(table,
+            AddTermToTable(
+                table,
                            Constants.TERM_ValidTermId,
                            Constants.TERM_ValidContent1,
                            Constants.TERM_ValidVocabulary1,

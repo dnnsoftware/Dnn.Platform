@@ -45,7 +45,8 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             var newVersion = DataProvider.Instance()
-                                             .AddFileVersion(file.FileId,
+                                             .AddFileVersion(
+                                                 file.FileId,
                                                              file.UniqueId,
                                                              file.VersionGuid,
                                                              file.FileName,

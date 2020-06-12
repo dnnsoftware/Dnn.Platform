@@ -91,7 +91,8 @@ namespace DotNetNuke.Services.Exceptions
 
             string localizedMessage;
             var security = PortalSecurity.Instance;
-            var status = security.InputFilter(this.Request.QueryString["status"],
+            var status = security.InputFilter(
+                this.Request.QueryString["status"],
                                                     PortalSecurity.FilterFlag.NoScripting |
                                                     PortalSecurity.FilterFlag.NoMarkup);
             if (!string.IsNullOrEmpty(status))

@@ -212,7 +212,8 @@ namespace DotNetNuke.Entities.Content.Workflow
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager. Scheduled removal in v10.0.0.")]
         public void AddWorkflowStatePermission(ContentWorkflowStatePermission permission, int lastModifiedByUserID)
         {
-            DataProvider.Instance().AddContentWorkflowStatePermission(permission.StateID,
+            DataProvider.Instance().AddContentWorkflowStatePermission(
+                permission.StateID,
                                                                        permission.PermissionID,
                                                                        permission.RoleID,
                                                                        permission.AllowAccess,
@@ -223,7 +224,8 @@ namespace DotNetNuke.Entities.Content.Workflow
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager. Scheduled removal in v10.0.0.")]
         public void UpdateWorkflowStatePermission(ContentWorkflowStatePermission permission, int lastModifiedByUserID)
         {
-            DataProvider.Instance().UpdateContentWorkflowStatePermission(permission.WorkflowStatePermissionID,
+            DataProvider.Instance().UpdateContentWorkflowStatePermission(
+                permission.WorkflowStatePermissionID,
                                                                             permission.StateID,
                                                                             permission.PermissionID,
                                                                             permission.RoleID,
@@ -250,7 +252,8 @@ namespace DotNetNuke.Entities.Content.Workflow
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager. Scheduled removal in v10.0.0.")]
         public void AddWorkflowState(ContentWorkflowState state)
         {
-            var id = DataProvider.Instance().AddContentWorkflowState(state.WorkflowID,
+            var id = DataProvider.Instance().AddContentWorkflowState(
+                state.WorkflowID,
                                                                 state.StateName,
                                                                 state.Order,
                                                                 state.IsActive,
@@ -267,7 +270,8 @@ namespace DotNetNuke.Entities.Content.Workflow
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager. Scheduled removal in v10.0.0.")]
         public void UpdateWorkflowState(ContentWorkflowState state)
         {
-            DataProvider.Instance().UpdateContentWorkflowState(state.StateID,
+            DataProvider.Instance().UpdateContentWorkflowState(
+                state.StateID,
                                                                 state.StateName,
                                                                 state.Order,
                                                                 state.IsActive,

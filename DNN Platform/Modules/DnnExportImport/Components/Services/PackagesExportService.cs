@@ -169,14 +169,16 @@ namespace Dnn.ExportImport.Components.Services
                 var packageName = exportPackage.PackageName;
                 var version = exportPackage.Version;
 
-                var existPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger,
+                var existPackage = PackageController.Instance.GetExtensionPackage(
+                    Null.NullInteger,
                     p => p.PackageType == packageType && p.Name == packageName);
                 if (existPackage != null &&
                     (existPackage.Version > version ||
                      (existPackage.Version == version &&
                       collisionResolution == CollisionResolution.Ignore)))
                 {
-                    this.Result.AddLogEntry("Import Package ignores",
+                    this.Result.AddLogEntry(
+                        "Import Package ignores",
                         $"{packageName} has higher version {existPackage.Version} installed, ignore import it");
                     return;
                 }
@@ -187,7 +189,8 @@ namespace Dnn.ExportImport.Components.Services
             }
             catch (Exception ex)
             {
-                this.Result.AddLogEntry("Import Package error",
+                this.Result.AddLogEntry(
+                    "Import Package error",
                     $"{exportPackage.PackageName} : {exportPackage.Version} - {ex.Message}");
                 Logger.Error(ex);
             }

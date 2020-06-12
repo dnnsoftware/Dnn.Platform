@@ -33,7 +33,8 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             get
             {
-                return string.Format("~/DesktopModules/{0}/App_LocalResources/",
+                return string.Format(
+                    "~/DesktopModules/{0}/App_LocalResources/",
                     DesktopModuleController.GetDesktopModuleByModuleName("DotNetNuke.Modules.CoreMessaging", this.PortalSettings.PortalId).FolderName);
             }
         }

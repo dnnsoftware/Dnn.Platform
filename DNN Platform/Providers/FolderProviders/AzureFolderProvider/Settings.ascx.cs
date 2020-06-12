@@ -205,7 +205,8 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                     switch (ex.RequestInformation.ExtendedErrorInformation.ErrorCode)
                     {
                         case "AccountNotFound":
-                            this.valContainerName.ErrorMessage = Localization.GetString("AccountNotFound.ErrorMessage",
+                            this.valContainerName.ErrorMessage = Localization.GetString(
+                                "AccountNotFound.ErrorMessage",
                                 this.LocalResourceFile);
                             break;
                         case "AuthenticationFailure":
@@ -213,14 +214,16 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                                 "AuthenticationFailure.ErrorMessage", this.LocalResourceFile);
                             break;
                         case "AccessDenied":
-                            this.valContainerName.ErrorMessage = Localization.GetString("AccessDenied.ErrorMessage",
+                            this.valContainerName.ErrorMessage = Localization.GetString(
+                                "AccessDenied.ErrorMessage",
                                 this.LocalResourceFile);
                             break;
                         case "ContainerAlreadyExists":
                             return true;
                         default:
                             Logger.Error(ex);
-                            this.valContainerName.ErrorMessage = Localization.GetString("NewContainer.ErrorMessage",
+                            this.valContainerName.ErrorMessage = Localization.GetString(
+                                "NewContainer.ErrorMessage",
                                 this.LocalResourceFile);
                             break;
                     }

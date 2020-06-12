@@ -117,7 +117,8 @@ namespace DotNetNuke.Entities.Modules
                 this.CreateContentItem(module);
 
                 // Add Module
-                module.ModuleID = dataProvider.AddModule(module.ContentItemId,
+                module.ModuleID = dataProvider.AddModule(
+                    module.ContentItemId,
                                                             module.PortalID,
                                                             module.ModuleDefID,
                                                             module.AllTabs,
@@ -572,7 +573,9 @@ namespace DotNetNuke.Entities.Modules
         {
             string cacheKey = String.Format(DataCache.ModuleSettingsCacheKey, tabId);
 
-            var moduleSettings = CBO.GetCachedObject<Dictionary<int, Hashtable>>(new CacheItemArgs(cacheKey,
+            var moduleSettings = CBO.GetCachedObject<Dictionary<int, Hashtable>>(
+                new CacheItemArgs(
+                cacheKey,
                                                                                     DataCache.ModuleCacheTimeOut,
                                                                                     DataCache.ModuleCachePriority),
                             c =>
@@ -609,7 +612,9 @@ namespace DotNetNuke.Entities.Modules
         {
             string cacheKey = String.Format(DataCache.TabModuleSettingsCacheKey, tabId);
 
-            var tabModuleSettings = CBO.GetCachedObject<Dictionary<int, Hashtable>>(new CacheItemArgs(cacheKey,
+            var tabModuleSettings = CBO.GetCachedObject<Dictionary<int, Hashtable>>(
+                new CacheItemArgs(
+                cacheKey,
                                                                                     DataCache.TabModuleCacheTimeOut,
                                                                                     DataCache.TabModuleCachePriority),
                             c =>
@@ -695,7 +700,8 @@ namespace DotNetNuke.Entities.Modules
 
                 // update tabmodule
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
-                dataProvider.UpdateTabModule(newModule.TabModuleID,
+                dataProvider.UpdateTabModule(
+                    newModule.TabModuleID,
                                              newModule.TabID,
                                              newModule.ModuleID,
                                              newModule.ModuleTitle,
@@ -774,7 +780,8 @@ namespace DotNetNuke.Entities.Modules
 
         private static void SetCloneModuleContext(bool cloneModuleContext)
         {
-            Thread.SetData(Thread.GetNamedDataSlot("CloneModuleContext"),
+            Thread.SetData(
+                Thread.GetNamedDataSlot("CloneModuleContext"),
                 cloneModuleContext ? bool.TrueString : bool.FalseString);
         }
 
@@ -808,14 +815,16 @@ namespace DotNetNuke.Entities.Modules
                 if (existValue == null)
                 {
                     dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
-                    EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_CREATED,
+                    EventLogController.AddSettingLog(
+                        EventLogController.EventLogType.MODULE_SETTING_CREATED,
                         "ModuleId", moduleId, settingName, settingValue,
                         currentUser.UserID);
                 }
                 else if (existValue != settingValue)
                 {
                     dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
-                    EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
+                    EventLogController.AddSettingLog(
+                        EventLogController.EventLogType.MODULE_SETTING_UPDATED,
                                                         "ModuleId", moduleId, settingName, settingValue,
                                                         currentUser.UserID);
                 }
@@ -1001,7 +1010,8 @@ namespace DotNetNuke.Entities.Modules
             else
             {
                 // add tabmodule
-                dataProvider.AddTabModule(module.TabID,
+                dataProvider.AddTabModule(
+                    module.TabID,
                                           module.ModuleID,
                                           module.ModuleTitle,
                                           module.Header,
@@ -1138,7 +1148,8 @@ namespace DotNetNuke.Entities.Modules
             {
                 var userId = UserController.Instance.GetCurrentUserInfo().UserID;
                 // Add a copy of the module to the bottom of the Pane for the new Tab
-                dataProvider.AddTabModule(destinationModule.TabID,
+                dataProvider.AddTabModule(
+                    destinationModule.TabID,
                                           destinationModule.ModuleID,
                                           destinationModule.ModuleTitle,
                                           destinationModule.Header,
@@ -1407,7 +1418,8 @@ namespace DotNetNuke.Entities.Modules
                 if (newModule.ModuleID != sourceModule.ModuleID)
                 {
                     // update tabmodule
-                    dataProvider.UpdateTabModule(newModule.TabModuleID,
+                    dataProvider.UpdateTabModule(
+                        newModule.TabModuleID,
                                                  newModule.TabID,
                                                  newModule.ModuleID,
                                                  newModule.ModuleTitle,
@@ -1734,7 +1746,9 @@ namespace DotNetNuke.Entities.Modules
         public Dictionary<int, ModuleInfo> GetTabModules(int tabId)
         {
             var cacheKey = string.Format(DataCache.TabModuleCacheKey, tabId);
-            return CBO.GetCachedObject<Dictionary<int, ModuleInfo>>(new CacheItemArgs(cacheKey,
+            return CBO.GetCachedObject<Dictionary<int, ModuleInfo>>(
+                new CacheItemArgs(
+                cacheKey,
                                                                             DataCache.TabModuleCacheTimeOut,
                                                                             DataCache.TabModuleCachePriority),
                                                                     c => this.GetModulesCurrentPage(tabId));
@@ -1939,7 +1953,8 @@ namespace DotNetNuke.Entities.Modules
             var currentUser = UserController.Instance.GetCurrentUserInfo();
 
             // update module
-            dataProvider.UpdateModule(module.ModuleID,
+            dataProvider.UpdateModule(
+                module.ModuleID,
                                       module.ModuleDefID,
                                       module.ContentItemId,
                                       module.AllTabs,
@@ -1972,7 +1987,8 @@ namespace DotNetNuke.Entities.Modules
                 var hasModuleOrderOrPaneChanged = this.HasModuleOrderOrPaneChanged(module);
 
                 // update tabmodule
-                dataProvider.UpdateTabModule(module.TabModuleID,
+                dataProvider.UpdateTabModule(
+                    module.TabModuleID,
                                              module.TabID,
                                              module.ModuleID,
                                              module.ModuleTitle,
@@ -2049,7 +2065,8 @@ namespace DotNetNuke.Entities.Modules
                             targetModule.VersionGuid = Guid.NewGuid();
                             targetModule.LocalizedVersionGuid = Guid.NewGuid();
 
-                            dataProvider.UpdateTabModule(targetModule.TabModuleID,
+                            dataProvider.UpdateTabModule(
+                                targetModule.TabModuleID,
                                                          targetModule.TabID,
                                                          targetModule.ModuleID,
                                                          targetModule.ModuleTitle,
@@ -2223,7 +2240,8 @@ namespace DotNetNuke.Entities.Modules
                     if (dr.GetString(1) != settingValue)
                     {
                         dataProvider.UpdateTabModuleSetting(tabModuleId, settingName, settingValue, currentUser.UserID);
-                        EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_UPDATED,
+                        EventLogController.AddSettingLog(
+                            EventLogController.EventLogType.MODULE_SETTING_UPDATED,
                                                         "TabModuleId", tabModuleId, settingName, settingValue,
                                                         currentUser.UserID);
                         UpdateTabModuleVersion(tabModuleId);
@@ -2232,7 +2250,8 @@ namespace DotNetNuke.Entities.Modules
                 else
                 {
                     dataProvider.UpdateTabModuleSetting(tabModuleId, settingName, settingValue, currentUser.UserID);
-                    EventLogController.AddSettingLog(EventLogController.EventLogType.TABMODULE_SETTING_CREATED,
+                    EventLogController.AddSettingLog(
+                        EventLogController.EventLogType.TABMODULE_SETTING_CREATED,
                                                     "TabModuleId", tabModuleId, settingName, settingValue,
                                                     currentUser.UserID);
                     UpdateTabModuleVersion(tabModuleId);

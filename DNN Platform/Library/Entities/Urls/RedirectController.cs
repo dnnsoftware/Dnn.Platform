@@ -59,7 +59,8 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="settings"></param>
         /// <param name="parentTraceId"></param>
         /// <returns></returns>
-        internal static bool CheckForModuleProviderRedirect(Uri requestUri,
+        internal static bool CheckForModuleProviderRedirect(
+            Uri requestUri,
                                                                 ref UrlAction result,
                                                                 NameValueCollection queryStringCol,
                                                                 FriendlyUrlSettings settings,
@@ -67,7 +68,8 @@ namespace DotNetNuke.Entities.Urls
         {
             var messages = new List<string>();
             string location;
-            bool redirected = ExtensionUrlProviderController.CheckForRedirect(requestUri,
+            bool redirected = ExtensionUrlProviderController.CheckForRedirect(
+                requestUri,
                                                                                 result,
                                                                                 queryStringCol,
                                                                                 settings,
@@ -87,7 +89,8 @@ namespace DotNetNuke.Entities.Urls
             return redirected;
         }
 
-        internal static bool CheckForParameterRedirect(Uri requestUri,
+        internal static bool CheckForParameterRedirect(
+            Uri requestUri,
                                                             ref UrlAction result,
                                                             NameValueCollection queryStringCol,
                                                             FriendlyUrlSettings settings)
@@ -163,7 +166,8 @@ namespace DotNetNuke.Entities.Urls
                             // regex test each replaced to see if there is a match between the parameter string
                             // and the parmRedirect
                             string compareWith = rewrittenUrl;
-                            var redirectRegex = RegexUtils.GetCachedRegex(parmRedirect.LookFor,
+                            var redirectRegex = RegexUtils.GetCachedRegex(
+                                parmRedirect.LookFor,
                                                           RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                             Match regexMatch = redirectRegex.Match(compareWith);
                             bool success = regexMatch.Success;
@@ -248,7 +252,8 @@ namespace DotNetNuke.Entities.Urls
                                         if (tab != null)
                                         {
                                             string path = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tab.TabID, "");
-                                            string friendlyUrlNoParms = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(tab,
+                                            string friendlyUrlNoParms = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(
+                                                tab,
                                                                                                 path,
                                                                                                 Globals.glbDefaultPage,
                                                                                                 result.HttpAlias,
@@ -315,7 +320,8 @@ namespace DotNetNuke.Entities.Urls
                                         if (settings.PageExtension != "/" &&
                                             string.IsNullOrEmpty(settings.PageExtension) == false)
                                         {
-                                            finalUrl = finalUrl.Replace(settings.PageExtension + "/",
+                                            finalUrl = finalUrl.Replace(
+                                                settings.PageExtension + "/",
                                                                         settings.PageExtension);
                                         }
                                     }
@@ -374,7 +380,8 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="parentTraceId"></param>
         /// <returns></returns>
         /// <remarks>823 : Moved from CheckForRedirects to allow call earlier in pipeline</remarks>
-        internal static string GetTabRedirectUrl(TabInfo tab,
+        internal static string GetTabRedirectUrl(
+            TabInfo tab,
                                                     FriendlyUrlSettings settings,
                                                     string cleanPath,
                                                     UrlAction result,
@@ -392,7 +399,8 @@ namespace DotNetNuke.Entities.Urls
                 if (redirectTab != null)
                 {
                     // now get the friendly url for that tab
-                    bestFriendlyUrl = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(redirectTab,
+                    bestFriendlyUrl = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(
+                        redirectTab,
                                                                                         cleanPath,
                                                                                         Globals.glbDefaultPage,
                                                                                         result.HttpAlias,

@@ -14,7 +14,8 @@ namespace DNN.Integration.Test.Framework.Helpers
         /// <returns>The string value of the setting</returns>
         public static string GetPortalSetting(string settingName, int portalId = 0)
         {
-            var query = string.Format(@"SELECT SettingValue 
+            var query = string.Format(
+                @"SELECT SettingValue 
                                         FROM {{objectQualifier}}PortalSettings 
                                         WHERE SettingName = '{0}' 
                                             AND PortalId = {1}", settingName, portalId);
@@ -31,7 +32,8 @@ namespace DNN.Integration.Test.Framework.Helpers
         /// <param name="isSecure">This flag specifies whether the value is encrypted or not, defaults to false.</param>
         public static void SetPortalSetting(string settingName, string settingValue, int portalId = 0, bool isSecure = false)
         {
-            var query = string.Format(@"MERGE INTO {{objectQualifier}}PortalSettings s
+            var query = string.Format(
+                @"MERGE INTO {{objectQualifier}}PortalSettings s
                     USING (SELECT {2} PortalId, '{0}' SettingName, '{1}' SettingValue, {3} Sec) AS v
                     ON s.SettingName = v.SettingName
                     WHEN MATCHED THEN UPDATE SET s.SettingValue = v.SettingValue, SettingIsSecure = v.Sec

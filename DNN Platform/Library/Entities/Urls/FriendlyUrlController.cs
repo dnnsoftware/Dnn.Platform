@@ -1063,7 +1063,8 @@ namespace DotNetNuke.Entities.Urls
                     if (tab.TabUrls.Count == 0)
                     {
                         var baseUrl = Globals.AddHTTP(settings.PortalAlias.HTTPAlias) + "/Default.aspx?TabId=" + tab.TabID;
-                        var path = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(tab,
+                        var path = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(
+                            tab,
                                                                                     baseUrl,
                                                                                     Globals.glbDefaultPage,
                                                                                     settings.PortalAlias.HTTPAlias,

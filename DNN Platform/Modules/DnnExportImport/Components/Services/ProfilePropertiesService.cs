@@ -100,7 +100,8 @@ namespace Dnn.ExportImport.Components.Services
             return this.Repository.GetCount<ExportProfileProperty>();
         }
 
-        private static void ProcessCreateProfileProperty(ExportImportJob importJob,
+        private static void ProcessCreateProfileProperty(
+            ExportImportJob importJob,
             ExportProfileProperty profileProperty, int createdById)
         {
             DotNetNuke.Data.DataProvider.Instance()
@@ -116,7 +117,8 @@ namespace Dnn.ExportImport.Components.Services
             int modifiedById)
         {
             DotNetNuke.Data.DataProvider.Instance()
-                .UpdatePropertyDefinition(existingProfileProperty.PropertyDefinitionId,
+                .UpdatePropertyDefinition(
+                    existingProfileProperty.PropertyDefinitionId,
                     profileProperty.DataType ?? Null.NullInteger,
                     profileProperty.DefaultValue, profileProperty.PropertyCategory, profileProperty.PropertyName,
                     profileProperty.ReadOnly, profileProperty.Required,

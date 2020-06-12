@@ -333,14 +333,16 @@ namespace DotNetNuke.Entities.Urls
                     {
                         if (!tab.IsNeutralCulture)
                         {
-                            friendlyPath = this.GetFriendlyAlias("~/" + tab.CultureCode + "/" + tab.TabPath.Replace("//", "/").TrimStart('/') + ".aspx",
+                            friendlyPath = this.GetFriendlyAlias(
+                                "~/" + tab.CultureCode + "/" + tab.TabPath.Replace("//", "/").TrimStart('/') + ".aspx",
                                                 portalAlias,
                                                 true)
                                                 .ToLowerInvariant();
                         }
                         else
                         {
-                            friendlyPath = this.GetFriendlyAlias("~/" + queryStringDic["language"] + "/" + tab.TabPath.Replace("//", "/").TrimStart('/') + ".aspx",
+                            friendlyPath = this.GetFriendlyAlias(
+                                "~/" + queryStringDic["language"] + "/" + tab.TabPath.Replace("//", "/").TrimStart('/') + ".aspx",
                                                 portalAlias,
                                                 true)
                                             .ToLowerInvariant();

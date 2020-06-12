@@ -54,13 +54,15 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static int AddDesktopModulePermission(DesktopModulePermissionInfo objDesktopModulePermission)
         {
-            int Id = DataProvider.Instance().AddDesktopModulePermission(objDesktopModulePermission.PortalDesktopModuleID,
+            int Id = DataProvider.Instance().AddDesktopModulePermission(
+                objDesktopModulePermission.PortalDesktopModuleID,
                                                          objDesktopModulePermission.PermissionID,
                                                          objDesktopModulePermission.RoleID,
                                                          objDesktopModulePermission.AllowAccess,
                                                          objDesktopModulePermission.UserID,
                                                          UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(objDesktopModulePermission,
+            EventLogController.Instance.AddLog(
+                objDesktopModulePermission,
                                PortalController.Instance.GetCurrentPortalSettings(),
                                UserController.Instance.GetCurrentUserInfo().UserID,
                                "",
@@ -78,7 +80,8 @@ namespace DotNetNuke.Security.Permissions
         public static void DeleteDesktopModulePermission(int DesktopModulePermissionID)
         {
             DataProvider.Instance().DeleteDesktopModulePermission(DesktopModulePermissionID);
-            EventLogController.Instance.AddLog("DesktopModulePermissionID",
+            EventLogController.Instance.AddLog(
+                "DesktopModulePermissionID",
                                DesktopModulePermissionID.ToString(CultureInfo.InvariantCulture),
                                PortalController.Instance.GetCurrentPortalSettings(),
                                UserController.Instance.GetCurrentUserInfo().UserID,
@@ -96,7 +99,8 @@ namespace DotNetNuke.Security.Permissions
         public static void DeleteDesktopModulePermissionsByPortalDesktopModuleID(int portalDesktopModuleID)
         {
             DataProvider.Instance().DeleteDesktopModulePermissionsByPortalDesktopModuleID(portalDesktopModuleID);
-            EventLogController.Instance.AddLog("PortalDesktopModuleID",
+            EventLogController.Instance.AddLog(
+                "PortalDesktopModuleID",
                                portalDesktopModuleID.ToString(CultureInfo.InvariantCulture),
                                PortalController.Instance.GetCurrentPortalSettings(),
                                UserController.Instance.GetCurrentUserInfo().UserID,
@@ -113,7 +117,8 @@ namespace DotNetNuke.Security.Permissions
         public static void DeleteDesktopModulePermissionsByUserID(UserInfo objUser)
         {
             DataProvider.Instance().DeleteDesktopModulePermissionsByUserID(objUser.UserID, objUser.PortalID);
-            EventLogController.Instance.AddLog("UserID",
+            EventLogController.Instance.AddLog(
+                "UserID",
                                objUser.UserID.ToString(CultureInfo.InvariantCulture),
                                PortalController.Instance.GetCurrentPortalSettings(),
                                UserController.Instance.GetCurrentUserInfo().UserID,
@@ -163,14 +168,16 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public static void UpdateDesktopModulePermission(DesktopModulePermissionInfo objDesktopModulePermission)
         {
-            DataProvider.Instance().UpdateDesktopModulePermission(objDesktopModulePermission.DesktopModulePermissionID,
+            DataProvider.Instance().UpdateDesktopModulePermission(
+                objDesktopModulePermission.DesktopModulePermissionID,
                                                    objDesktopModulePermission.PortalDesktopModuleID,
                                                    objDesktopModulePermission.PermissionID,
                                                    objDesktopModulePermission.RoleID,
                                                    objDesktopModulePermission.AllowAccess,
                                                    objDesktopModulePermission.UserID,
                                                    UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(objDesktopModulePermission,
+            EventLogController.Instance.AddLog(
+                objDesktopModulePermission,
                                PortalController.Instance.GetCurrentPortalSettings(),
                                UserController.Instance.GetCurrentUserInfo().UserID,
                                "",

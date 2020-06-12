@@ -212,7 +212,8 @@ namespace DotNetNuke.Security.Membership
             try
             {
                 user.UserID =
-                    Convert.ToInt32(this._dataProvider.AddUser(user.PortalID,
+                    Convert.ToInt32(this._dataProvider.AddUser(
+                        user.PortalID,
                                                           user.Username,
                                                           user.FirstName,
                                                           user.LastName,
@@ -240,18 +241,21 @@ namespace DotNetNuke.Security.Membership
         private static UserCreateStatus CreateMemberhipUser(UserInfo user)
         {
             var portalSecurity = PortalSecurity.Instance;
-            string userName = portalSecurity.InputFilter(user.Username,
+            string userName = portalSecurity.InputFilter(
+                user.Username,
                                                          PortalSecurity.FilterFlag.NoScripting |
                                                          PortalSecurity.FilterFlag.NoAngleBrackets |
                                                          PortalSecurity.FilterFlag.NoMarkup);
-            string email = portalSecurity.InputFilter(user.Email,
+            string email = portalSecurity.InputFilter(
+                user.Email,
                                                       PortalSecurity.FilterFlag.NoScripting |
                                                       PortalSecurity.FilterFlag.NoAngleBrackets |
                                                       PortalSecurity.FilterFlag.NoMarkup);
             MembershipCreateStatus status;
             if (MembershipProviderConfig.RequiresQuestionAndAnswer)
             {
-                System.Web.Security.Membership.CreateUser(userName,
+                System.Web.Security.Membership.CreateUser(
+                    userName,
                                                           user.Membership.Password,
                                                           email,
                                                           user.Membership.PasswordQuestion,
@@ -261,7 +265,8 @@ namespace DotNetNuke.Security.Membership
             }
             else
             {
-                System.Web.Security.Membership.CreateUser(userName,
+                System.Web.Security.Membership.CreateUser(
+                    userName,
                                                           user.Membership.Password,
                                                           email,
                                                           null,
@@ -621,7 +626,8 @@ namespace DotNetNuke.Security.Membership
         private static void UpdateUserMembership(UserInfo user)
         {
             var portalSecurity = PortalSecurity.Instance;
-            string email = portalSecurity.InputFilter(user.Email,
+            string email = portalSecurity.InputFilter(
+                user.Email,
                                                       PortalSecurity.FilterFlag.NoScripting |
                                                       PortalSecurity.FilterFlag.NoAngleBrackets |
                                                       PortalSecurity.FilterFlag.NoMarkup);
@@ -725,7 +731,8 @@ namespace DotNetNuke.Security.Membership
             Requires.NotNull("userId", userId);
             Requires.NotNullOrEmpty("newUsername", newUsername);
 
-            var userName = PortalSecurity.Instance.InputFilter(newUsername,
+            var userName = PortalSecurity.Instance.InputFilter(
+                newUsername,
                                                       PortalSecurity.FilterFlag.NoScripting |
                                                       PortalSecurity.FilterFlag.NoAngleBrackets |
                                                       PortalSecurity.FilterFlag.NoMarkup);
@@ -763,7 +770,8 @@ namespace DotNetNuke.Security.Membership
 
             this._dataProvider.ChangeUsername(userId, userName);
 
-            EventLogController.Instance.AddLog("userId",
+            EventLogController.Instance.AddLog(
+                "userId",
                                userId.ToString(),
                                portalSettings,
                                UserController.Instance.GetCurrentUserInfo().UserID,
@@ -1079,7 +1087,8 @@ namespace DotNetNuke.Security.Membership
 
         public override ArrayList GetUnAuthorizedUsers(int portalId, bool includeDeleted, bool superUsersOnly)
         {
-            return FillUserCollection(portalId,
+            return FillUserCollection(
+                portalId,
                                       this._dataProvider.GetUnAuthorizedUsers(portalId, includeDeleted, superUsersOnly));
         }
 
@@ -1130,7 +1139,8 @@ namespace DotNetNuke.Security.Membership
         public override UserInfo GetUserByUserName(int portalId, string username)
         {
             var objUserInfo = CBO.GetCachedObject<UserInfo>(
-                new CacheItemArgs(string.Format(DataCache.UserCacheKey, portalId, username),
+                new CacheItemArgs(
+                    string.Format(DataCache.UserCacheKey, portalId, username),
                     DataCache.UserCacheTimeOut, DataCache.UserCachePriority),
                 _ =>
                 {
@@ -1296,7 +1306,8 @@ namespace DotNetNuke.Security.Membership
                                                                bool sortAscending, string propertyNames,
                                                                string propertyValues)
         {
-            return FillUserList(portalId,
+            return FillUserList(
+                portalId,
                                 this._dataProvider.GetUsersAdvancedSearch(portalId, userId, filterUserId, filterRoleId,
                                                                      relationshipTypeId, isAdmin, pageIndex, pageSize,
                                                                      sortColumn, sortAscending, propertyNames,
@@ -1366,7 +1377,8 @@ namespace DotNetNuke.Security.Membership
                 pageSize = int.MaxValue;
             }
 
-            return FillUserCollection(portalId,
+            return FillUserCollection(
+                portalId,
                                       this._dataProvider.GetUsersByEmail(portalId, emailToMatch, pageIndex, pageSize,
                                                                     includeDeleted, superUsersOnly), ref totalRecords);
         }
@@ -1414,7 +1426,8 @@ namespace DotNetNuke.Security.Membership
                 pageSize = int.MaxValue;
             }
 
-            return FillUserCollection(portalId,
+            return FillUserCollection(
+                portalId,
                                       this._dataProvider.GetUsersByUsername(portalId, userNameToMatch, pageIndex, pageSize,
                                                                        includeDeleted, superUsersOnly), ref totalRecords);
         }
@@ -1443,7 +1456,8 @@ namespace DotNetNuke.Security.Membership
                 pageSize = int.MaxValue;
             }
 
-            return FillUserCollection(portalId,
+            return FillUserCollection(
+                portalId,
                                       this._dataProvider.GetUsersByDisplayname(portalId, nameToMatch, pageIndex, pageSize,
                                                                        includeDeleted, superUsersOnly), ref totalRecords);
         }
@@ -1497,7 +1511,8 @@ namespace DotNetNuke.Security.Membership
                 pageSize = int.MaxValue;
             }
 
-            return FillUserCollection(portalId,
+            return FillUserCollection(
+                portalId,
                                       this._dataProvider.GetUsersByProfileProperty(portalId, propertyName, propertyValue,
                                                                               pageIndex, pageSize, includeDeleted,
                                                                               superUsersOnly), ref totalRecords);
@@ -1708,19 +1723,23 @@ namespace DotNetNuke.Security.Membership
         public override void UpdateUser(UserInfo user)
         {
             var objSecurity = PortalSecurity.Instance;
-            string firstName = objSecurity.InputFilter(user.FirstName,
+            string firstName = objSecurity.InputFilter(
+                user.FirstName,
                                                        PortalSecurity.FilterFlag.NoScripting |
                                                        PortalSecurity.FilterFlag.NoAngleBrackets |
                                                        PortalSecurity.FilterFlag.NoMarkup);
-            string lastName = objSecurity.InputFilter(user.LastName,
+            string lastName = objSecurity.InputFilter(
+                user.LastName,
                                                       PortalSecurity.FilterFlag.NoScripting |
                                                       PortalSecurity.FilterFlag.NoAngleBrackets |
                                                       PortalSecurity.FilterFlag.NoMarkup);
-            string email = objSecurity.InputFilter(user.Email,
+            string email = objSecurity.InputFilter(
+                user.Email,
                                                    PortalSecurity.FilterFlag.NoScripting |
                                                    PortalSecurity.FilterFlag.NoAngleBrackets |
                                                    PortalSecurity.FilterFlag.NoMarkup);
-            string displayName = objSecurity.InputFilter(user.DisplayName,
+            string displayName = objSecurity.InputFilter(
+                user.DisplayName,
                                                          PortalSecurity.FilterFlag.NoScripting |
                                                          PortalSecurity.FilterFlag.NoAngleBrackets |
                                                          PortalSecurity.FilterFlag.NoMarkup);
@@ -1750,7 +1769,8 @@ namespace DotNetNuke.Security.Membership
             UpdateUserMembership(user);
 
             // Persist the DNN User to the Database
-            this._dataProvider.UpdateUser(user.UserID,
+            this._dataProvider.UpdateUser(
+                user.UserID,
                                      user.PortalID,
                                      firstName,
                                      lastName,

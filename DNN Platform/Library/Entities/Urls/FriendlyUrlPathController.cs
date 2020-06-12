@@ -28,7 +28,8 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="rawUserId"></param>
         /// <param name="remainingPath">The remaining path not associated with the user id</param>
         /// <param name="urlPath"></param>
-        private static void SplitUserIdFromFriendlyUrlPath(string urlPath,
+        private static void SplitUserIdFromFriendlyUrlPath(
+            string urlPath,
                                                                 string parmName,
                                                                 string otherParametersPath,
                                                                 out string rawUserId,
@@ -132,7 +133,8 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="changeToSiteRoot"></param>
         /// <param name="parentTraceId"></param>
         /// <returns></returns>
-        internal static bool CheckParameterRegexReplacement(string parameterPath,
+        internal static bool CheckParameterRegexReplacement(
+            string parameterPath,
                                                             TabInfo tab,
                                                             FriendlyUrlSettings settings,
                                                             int portalId,
@@ -182,7 +184,8 @@ namespace DotNetNuke.Entities.Urls
                         foreach (ParameterReplaceAction parmReplace in parmReplaces)
                         {
                             // do a regex on the 'lookFor' in the parameter path
-                            var parmRegex = RegexUtils.GetCachedRegex(parmReplace.LookFor,
+                            var parmRegex = RegexUtils.GetCachedRegex(
+                                parmReplace.LookFor,
                                                       RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                             if (parmRegex.IsMatch(parameterPath))
                             {
@@ -209,7 +212,8 @@ namespace DotNetNuke.Entities.Urls
             return replaced;
         }
 
-        internal static bool CheckUserProfileReplacement(string newPath,
+        internal static bool CheckUserProfileReplacement(
+            string newPath,
                                                             TabInfo tab,
                                                             PortalSettings portalSettings,
                                                             FriendlyUrlSettings settings,
@@ -240,7 +244,8 @@ namespace DotNetNuke.Entities.Urls
                 string rawUserId, remainingPath;
                 // split the userid and other profile parameters from the friendly url path,
                 // and return the userid and remaining parts as separate items
-                SplitUserIdFromFriendlyUrlPath(newPath,
+                SplitUserIdFromFriendlyUrlPath(
+                    newPath,
                                                 "UserId",
                                                 "",
                                                 out rawUserId,

@@ -120,7 +120,8 @@ namespace DotNetNuke.Common
 
             if (intValue < 0)
             {
-                throw new ArgumentOutOfRangeException(propertyName,
+                throw new ArgumentOutOfRangeException(
+                    propertyName,
                     Localization.GetExceptionMessage("PropertyCannotBeNegative", "The property '{1}' in object '{0}' cannot be negative.", typeof(T).Name, propertyName));
             }
         }
@@ -136,7 +137,8 @@ namespace DotNetNuke.Common
         {
             if (propertyValue < 0)
             {
-                throw new ArgumentOutOfRangeException(argName,
+                throw new ArgumentOutOfRangeException(
+                    argName,
                                                       Localization.GetExceptionMessage("PropertyCannotBeNegative", "The property '{1}' in object '{0}' cannot be negative.", argName, argProperty));
             }
         }
@@ -206,7 +208,8 @@ namespace DotNetNuke.Common
         {
             if (string.IsNullOrEmpty(propertyValue))
             {
-                throw new ArgumentException(argName,
+                throw new ArgumentException(
+                    argName,
                                             Localization.GetExceptionMessage("PropertyCannotBeNullOrEmpty", "The property '{1}' in object '{0}' cannot be null or empty.", argName, argProperty));
             }
         }

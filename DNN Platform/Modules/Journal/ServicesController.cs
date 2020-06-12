@@ -67,12 +67,14 @@ namespace DotNetNuke.Modules.Journal
 
             if (relativePath.Contains("?"))
             {
-                relativePath = relativePath.Substring(0,
+                relativePath = relativePath.Substring(
+                    0,
                     relativePath.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
             }
 
 
-            var extension = relativePath.Substring(relativePath.LastIndexOf(".",
+            var extension = relativePath.Substring(relativePath.LastIndexOf(
+                ".",
             StringComparison.Ordinal) + 1).ToLowerInvariant();
             return AcceptedFileExtensions.Contains(extension);
         }
@@ -525,7 +527,8 @@ namespace DotNetNuke.Modules.Journal
                                        RelationshipController.Instance.GetFriendRelationship(this.UserInfo, user);
                     if (relationship != null && relationship.Status == RelationshipStatus.Accepted)
                     {
-                        var userLink = string.Format("<a href=\"{0}\" class=\"userLink\" target=\"_blank\">{1}</a>",
+                        var userLink = string.Format(
+                            "<a href=\"{0}\" class=\"userLink\" target=\"_blank\">{1}</a>",
                                                      Globals.UserProfileURL(user.UserID),
                                                      MentionIdentityChar + user.DisplayName);
                         content = content.Replace(MentionIdentityChar + mention.DisplayName, userLink);

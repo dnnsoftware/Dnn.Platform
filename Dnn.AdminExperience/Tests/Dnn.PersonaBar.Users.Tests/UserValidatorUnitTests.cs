@@ -121,7 +121,8 @@ namespace Dnn.PersonaBar.Users.Tests
 
             this._userControllerWrapperMock
                 .Setup(
-                    u => u.GetUser(It.IsAny<int>(),
+                    u => u.GetUser(
+                        It.IsAny<int>(),
                     It.IsAny<PortalSettings>(),
                     It.IsAny<UserInfo>(),
                     out response))

@@ -106,7 +106,8 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.Page.ClientScript.RegisterClientScriptResource(this.GetType(), "DotNetNuke.Web.UI.WebControls.Resources.TermsSelector.js");
 
-                ClientResourceManager.RegisterStyleSheet(this.Page,
+                ClientResourceManager.RegisterStyleSheet(
+                    this.Page,
                     this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Web.UI.WebControls.Resources.TermsSelector.css"));
 
                 ClientAPI.RegisterClientVariable(this.Page, "TermsSelectorCallback",

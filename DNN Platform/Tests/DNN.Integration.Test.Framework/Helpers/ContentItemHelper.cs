@@ -31,7 +31,8 @@ namespace DNN.Integration.Test.Framework.Helpers
         /// <returns>the ContentItemId of the create content item</returns>
         public static int AddContentItem(int tabId)
         {
-            var query = string.Format(@"INSERT {{objectQualifier}}ContentItems(Content, ContentTypeID, TabID, ModuleID)
+            var query = string.Format(
+                @"INSERT {{objectQualifier}}ContentItems(Content, ContentTypeID, TabID, ModuleID)
                         VALUES ('test', (SELECT TOP 1 ContentTypeID FROM {{objectQualifier}}ContentTypes),{0}, -1);
                         SELECT SCOPE_IDENTITY()", tabId);
 
@@ -44,7 +45,8 @@ namespace DNN.Integration.Test.Framework.Helpers
         /// <param name="contentItemId">The id of the content item to remove</param>
         public static void RemoveContentItem(int contentItemId)
         {
-            var query = string.Format(@"DELETE
+            var query = string.Format(
+                @"DELETE
                             FROM {{objectQualifier}}ContentItems 
                             WHERE ContentItemId = '{0}'", contentItemId);
 

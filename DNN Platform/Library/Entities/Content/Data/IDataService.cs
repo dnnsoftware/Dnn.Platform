@@ -50,7 +50,8 @@ namespace DotNetNuke.Entities.Content.Data
 
         IDataReader GetMetaData(int contentItemId);
 
-        void SynchronizeMetaData(ContentItem contentItem,
+        void SynchronizeMetaData(
+            ContentItem contentItem,
                                  IEnumerable<KeyValuePair<string, string>> added,
                                  IEnumerable<KeyValuePair<string, string>> deleted);
 

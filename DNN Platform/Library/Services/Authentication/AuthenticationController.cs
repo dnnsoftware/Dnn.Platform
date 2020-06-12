@@ -62,7 +62,8 @@ namespace DotNetNuke.Services.Authentication
         public static int AddAuthentication(AuthenticationInfo authSystem)
         {
             EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_CREATED);
-            return provider.AddAuthentication(authSystem.PackageID,
+            return provider.AddAuthentication(
+                authSystem.PackageID,
                                               authSystem.AuthenticationType,
                                               authSystem.IsEnabled,
                                               authSystem.SettingsControlSrc,
@@ -85,7 +86,8 @@ namespace DotNetNuke.Services.Authentication
 
             if (userAuth == null || String.IsNullOrEmpty(userAuth.AuthenticationType))
             {
-                EventLogController.Instance.AddLog("userID/authenticationType",
+                EventLogController.Instance.AddLog(
+                    "userID/authenticationType",
                                    userID + "/" + authenticationType,
                                    PortalController.Instance.GetCurrentPortalSettings(),
                                    UserController.Instance.GetCurrentUserInfo().UserID,
@@ -95,7 +97,8 @@ namespace DotNetNuke.Services.Authentication
             else
             {
 
-                EventLogController.Instance.AddLog("userID/authenticationType already exists",
+                EventLogController.Instance.AddLog(
+                    "userID/authenticationType already exists",
                    userID + "/" + authenticationType,
                    PortalController.Instance.GetCurrentPortalSettings(),
                    UserController.Instance.GetCurrentUserInfo().UserID,
@@ -401,7 +404,8 @@ namespace DotNetNuke.Services.Authentication
         /// -----------------------------------------------------------------------------
         public static void UpdateAuthentication(AuthenticationInfo authSystem)
         {
-            provider.UpdateAuthentication(authSystem.AuthenticationID,
+            provider.UpdateAuthentication(
+                authSystem.AuthenticationID,
                                           authSystem.PackageID,
                                           authSystem.AuthenticationType,
                                           authSystem.IsEnabled,

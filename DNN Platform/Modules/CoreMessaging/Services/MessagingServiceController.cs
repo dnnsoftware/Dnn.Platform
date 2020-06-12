@@ -398,7 +398,8 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             {
                 var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, this.PortalSettings.PortalId);
 
-                var resourceFile = string.Format("~/DesktopModules/{0}/{1}/{2}",
+                var resourceFile = string.Format(
+                    "~/DesktopModules/{0}/{1}/{2}",
                     desktopModule.FolderName.Replace("\\", "/"),
                     Localization.LocalResourceDirectory,
                     Localization.LocalSharedResourceFile);

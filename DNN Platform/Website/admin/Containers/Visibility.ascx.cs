@@ -117,7 +117,8 @@ namespace DotNetNuke.UI.Containers
                 {
                     case VisibilityState.Maximized:
                     case VisibilityState.Minimized:
-                        return DNNClientAPI.MinMaxContentVisibile(this.cmdVisibility,
+                        return DNNClientAPI.MinMaxContentVisibile(
+                            this.cmdVisibility,
                                                                   this.ModuleControl.ModuleContext.ModuleId,
                                                                   this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,
                                                                   DNNClientAPI.MinMaxPersistanceType.Cookie);
@@ -127,7 +128,8 @@ namespace DotNetNuke.UI.Containers
             }
             set
             {
-                DNNClientAPI.MinMaxContentVisibile(this.cmdVisibility,
+                DNNClientAPI.MinMaxContentVisibile(
+                    this.cmdVisibility,
                                                    this.ModuleControl.ModuleContext.ModuleId,
                                                    this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,
                                                    DNNClientAPI.MinMaxPersistanceType.Cookie,
@@ -231,7 +233,8 @@ namespace DotNetNuke.UI.Containers
                 {
                     case VisibilityState.Maximized:
                     case VisibilityState.Minimized:
-                        DNNClientAPI.EnableMinMax(this.cmdVisibility,
+                        DNNClientAPI.EnableMinMax(
+                            this.cmdVisibility,
                                                   this.ModuleContent,
                                                   this.ModuleControl.ModuleContext.ModuleId,
                                                   this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,

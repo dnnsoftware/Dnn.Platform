@@ -201,7 +201,8 @@ namespace DotNetNuke.Services.Install
             _upgradeProgress = 0;
 
             // Output the current time for the user
-            CurrentStepActivity(string.Concat(Localization.Localization.GetString("UpgradeStarted", LocalResourceFile),
+            CurrentStepActivity(string.Concat(
+                Localization.Localization.GetString("UpgradeStarted", LocalResourceFile),
                 ":", DateTime.Now.ToString()));
 
             foreach (var step in _steps)
@@ -228,7 +229,8 @@ namespace DotNetNuke.Services.Install
                     default:
                         if (_currentStep.Status != StepStatus.Done)
                         {
-                            CurrentStepActivity(string.Format(Localization.Localization.GetString("ErrorInStep", LocalResourceFile),
+                            CurrentStepActivity(string.Format(
+                                Localization.Localization.GetString("ErrorInStep", LocalResourceFile),
                                                                                                   _currentStep.Errors.Count > 0 ? string.Join(",", _currentStep.Errors.ToArray()) : _currentStep.Details));
                             _upgradeRunning = false;
                             return;
@@ -312,7 +314,8 @@ namespace DotNetNuke.Services.Install
                     sslDomain = sslDomain.Substring(sslDomain.IndexOf("://") + 3);
                 }
 
-                var sslUrl = string.Format("https://{0}{1}",
+                var sslUrl = string.Format(
+                    "https://{0}{1}",
                     sslDomain, this.Request.RawUrl);
 
                 this.Response.Redirect(sslUrl, true);

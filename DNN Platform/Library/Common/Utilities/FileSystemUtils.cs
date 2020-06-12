@@ -192,7 +192,8 @@ namespace DotNetNuke.Common.Utilities
                 var len = fs.Read(buffer, 0, buffer.Length);
                 if (len != fs.Length)
                 {
-                    Logger.ErrorFormat("Reading from " + filePath + " didn't read all data in buffer. " +
+                    Logger.ErrorFormat(
+                        "Reading from " + filePath + " didn't read all data in buffer. " +
                                       "Requested to read {0} bytes, but was read {1} bytes", fs.Length, len);
                 }
 

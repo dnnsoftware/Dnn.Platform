@@ -90,7 +90,8 @@ namespace DotNetNuke.Services.Connections
 
         private bool IsPackageInstalled(Assembly assembly)
         {
-            return PackageController.Instance.GetExtensionPackages(-1,
+            return PackageController.Instance.GetExtensionPackages(
+                -1,
                 info => info.Name == assembly.GetName().Name && info.IsValid).Count > 0;
         }
 

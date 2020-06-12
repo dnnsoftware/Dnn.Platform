@@ -518,7 +518,8 @@ namespace DotNetNuke.Security.Permissions.Controls
                     {
                         addDelimiter = true;
                     }
-                    sb.Append(this.BuildKey(modulePermission.AllowAccess,
+                    sb.Append(this.BuildKey(
+                        modulePermission.AllowAccess,
                                        modulePermission.PermissionID,
                                        modulePermission.ModulePermissionID,
                                        modulePermission.RoleID,

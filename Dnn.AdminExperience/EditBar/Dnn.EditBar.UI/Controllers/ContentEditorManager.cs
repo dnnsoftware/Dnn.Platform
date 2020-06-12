@@ -247,7 +247,8 @@ namespace Dnn.EditBar.UI.Controllers
             ClientResourceManager.RegisterScript(this.Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ExistingModuleDialog.js"));
             ClientResourceManager.RegisterScript(this.Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleService.js"));
             ClientResourceManager.RegisterScript(this.Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ContentEditor.js"));
-            ClientResourceManager.RegisterStyleSheet(this.Page,
+            ClientResourceManager.RegisterStyleSheet(
+                this.Page,
                 Path.Combine(ControlFolder, "ContentEditorManager/Styles/ContentEditor.css"), CssFileOrder);
             ServicesFramework.Instance.RequestAjaxScriptSupport();
 
@@ -256,7 +257,8 @@ namespace Dnn.EditBar.UI.Controllers
             JavaScript.RequestRegistration(CommonJs.KnockoutMapping);
 
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
-            ClientResourceManager.RegisterStyleSheet(this.Page,
+            ClientResourceManager.RegisterStyleSheet(
+                this.Page,
                 "~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css");
         }
 
@@ -364,7 +366,8 @@ namespace Dnn.EditBar.UI.Controllers
             var panes = string.Join(",", this.PortalSettings.ActiveTab.Panes.Cast<string>());
             var panesClientIds = this.GetPanesClientIds(this.GetPaneClientIdCollection());
             const string scriptFormat = @"dnn.ContentEditorManager.init({{type: 'moduleManager', panes: '{0}', panesClientIds: '{2}', supportAjax: {1}}});";
-            var script = string.Format(scriptFormat,
+            var script = string.Format(
+                scriptFormat,
                                             panes,
                                             this.SupportAjax ? "true" : "false",
                                             panesClientIds);
@@ -419,7 +422,8 @@ namespace Dnn.EditBar.UI.Controllers
                                                                                     makeCopy: '{28}'
                                                                                 }};";
 
-            var script = string.Format(scriptFormat,
+            var script = string.Format(
+                scriptFormat,
                 Localization.GetSafeJSString("AddModule.Text", this.LocalResourcesFile),
                 Localization.GetSafeJSString("NoModules.Text", this.LocalResourcesFile),
                 Localization.GetSafeJSString("DragTip.Text", this.LocalResourcesFile),
@@ -500,7 +504,8 @@ namespace Dnn.EditBar.UI.Controllers
             ModuleController.Instance.DeleteTabModule(tabId, moduleId, false);
 
             // remove that module control
-            var moduleControl = ControlUtilities.FindFirstDescendent<Container>(this.Skin,
+            var moduleControl = ControlUtilities.FindFirstDescendent<Container>(
+                this.Skin,
                 c => c.ID == "ctr" + moduleId);
 
             if (moduleControl != null)
@@ -596,7 +601,8 @@ namespace Dnn.EditBar.UI.Controllers
             {
                 var methodInfo = typeof(ScriptManager).GetMethods(BindingFlags.NonPublic | BindingFlags.Instance)
                             .First(i => i.Name.Equals("System.Web.UI.IScriptManagerInternal.RegisterUpdatePanel"));
-                methodInfo.Invoke(ScriptManager.GetCurrent(this.Page),
+                methodInfo.Invoke(
+                    ScriptManager.GetCurrent(this.Page),
                     new[] { sender });
             }
             catch (Exception ex)

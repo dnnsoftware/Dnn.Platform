@@ -59,7 +59,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Login));
         private readonly INavigationManager _navigationManager;
 
-        private static readonly Regex UserLanguageRegex = new Regex("(.*)(&|\\?)(language=)([^&\\?]+)(.*)",
+        private static readonly Regex UserLanguageRegex = new Regex(
+            "(.*)(&|\\?)(language=)([^&\\?]+)(.*)",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         public Login()
@@ -470,7 +471,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     break;
                 case 1:
                     // We don't want the control to render with tabbed interface
-                    this.DisplayLoginControl(this._defaultauthLogin.Count == 1
+                    this.DisplayLoginControl(
+                        this._defaultauthLogin.Count == 1
                                             ? this._defaultauthLogin[0]
                                             : this._loginControls.Count == 1
                                                 ? this._loginControls[0]
@@ -1130,7 +1132,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
                 var userRequestIpAddressController = UserRequestIPAddressController.Instance;
                 var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
-                UserInfo objUser = UserController.ValidateUser(this.PortalId,
+                UserInfo objUser = UserController.ValidateUser(
+                    this.PortalId,
                                                                this.txtUsername.Text,
                                                                this.txtPassword.Text,
                                                                "DNN",

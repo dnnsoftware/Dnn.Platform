@@ -408,7 +408,8 @@ namespace DotNetNuke.Services.Mobile
                 redirection.SortOrder = this.GetRedirectionsByPortal(redirection.PortalId).Count + 1;
             }
 
-            int id = DataProvider.Instance().SaveRedirection(redirection.Id,
+            int id = DataProvider.Instance().SaveRedirection(
+                redirection.Id,
                                                     redirection.PortalId,
                                                     redirection.Name,
                                                     (int)redirection.Type,

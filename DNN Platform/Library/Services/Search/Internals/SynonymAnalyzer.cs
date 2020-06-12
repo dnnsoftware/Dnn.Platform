@@ -36,7 +36,8 @@ namespace DotNetNuke.Services.Search.Internals
                 new PorterStemFilter(// stemming filter
                     new ASCIIFoldingFilter(// accents filter
                         new SynonymFilter(
-                            new StopFilter(true,
+                            new StopFilter(
+                                true,
                                 new LowerCaseFilter(
                                     new LengthFilter(
                                         new StandardFilter(

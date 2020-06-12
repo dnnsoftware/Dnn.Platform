@@ -48,7 +48,8 @@ namespace Dnn.ExportImport.Components.Common
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("Unable to create {0} while calling BasePortableService implementors. {1}",
+                    Logger.ErrorFormat(
+                        "Unable to create {0} while calling BasePortableService implementors. {1}",
                         type.FullName, e.Message);
                     portable2Type = null;
                 }

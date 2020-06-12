@@ -533,7 +533,8 @@ namespace DotNetNuke.Services.Installer
                             changedNode = !string.Equals(oldContent, newContent, StringComparison.Ordinal);
                             break;
                         case "save":
-                            string commentHeaderText = string.Format(Localization.Localization.GetString("XMLMERGE_Upgrade", Localization.Localization.SharedResourceFile),
+                            string commentHeaderText = string.Format(
+                                Localization.Localization.GetString("XMLMERGE_Upgrade", Localization.Localization.SharedResourceFile),
                                                                      Environment.NewLine,
                                                                      this.Sender,
                                                                      this.Version,

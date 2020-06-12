@@ -75,10 +75,12 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         private static void AddFollowerRequestNotification(UserInfo initiatingUser, UserInfo targetUser)
         {
             var notificationType = NotificationsController.Instance.GetNotificationType(IsFollowing(targetUser, initiatingUser) ? FollowerRequest : FollowBackRequest);
-            var subject = string.Format(Localization.GetString("AddFollowerRequestSubject", Localization.GlobalResourceFile),
+            var subject = string.Format(
+                Localization.GetString("AddFollowerRequestSubject", Localization.GlobalResourceFile),
                               initiatingUser.DisplayName);
 
-            var body = string.Format(Localization.GetString("AddFollowerRequestBody", Localization.GlobalResourceFile),
+            var body = string.Format(
+                Localization.GetString("AddFollowerRequestBody", Localization.GlobalResourceFile),
                               initiatingUser.DisplayName);
 
             var notification = new Notification

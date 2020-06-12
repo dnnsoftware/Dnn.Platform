@@ -118,7 +118,8 @@ namespace DotNetNuke.Services.Search.Internals
                             }
 
                             this.CheckDisposed();
-                            var writer = new IndexWriter(FSDirectory.Open(this.IndexFolder),
+                            var writer = new IndexWriter(
+                                FSDirectory.Open(this.IndexFolder),
                                 this.GetCustomAnalyzer() ?? new SynonymAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
                             this._idxReader = writer.GetReader();
                             Thread.MemoryBarrier();

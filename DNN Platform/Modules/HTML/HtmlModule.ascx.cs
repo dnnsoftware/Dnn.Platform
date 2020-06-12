@@ -282,7 +282,8 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
             {
                 // add the Edit Text action
                 var Actions = new ModuleActionCollection();
-                Actions.Add(this.GetNextActionID(),
+                Actions.Add(
+                    this.GetNextActionID(),
                             Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
                             ModuleActionType.AddContent,
                             "",
@@ -308,7 +309,8 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                         if (objWorkflow.GetWorkflowStates(this.WorkflowID).Count > 1)
                         {
                             // add publish action
-                            Actions.Add(this.GetNextActionID(),
+                            Actions.Add(
+                                this.GetNextActionID(),
                                         Localization.GetString("PublishContent.Action", this.LocalResourceFile),
                                         ModuleActionType.AddContent,
                                         "publish",
@@ -329,7 +331,8 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                             if (WorkflowStatePermissionController.HasWorkflowStatePermission(WorkflowStatePermissionController.GetWorkflowStatePermissions(objContent.StateID), "REVIEW"))
                             {
                                 // add approve and reject actions
-                                Actions.Add(this.GetNextActionID(),
+                                Actions.Add(
+                                    this.GetNextActionID(),
                                             Localization.GetString("ApproveContent.Action", this.LocalResourceFile),
                                             ModuleActionType.AddContent,
                                             "",
@@ -339,7 +342,8 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                                             SecurityAccessLevel.Edit,
                                             true,
                                             false);
-                                Actions.Add(this.GetNextActionID(),
+                                Actions.Add(
+                                    this.GetNextActionID(),
                                             Localization.GetString("RejectContent.Action", this.LocalResourceFile),
                                             ModuleActionType.AddContent,
                                             "",
@@ -355,7 +359,8 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                 }
 
                 // add mywork to action menu
-                Actions.Add(this.GetNextActionID(),
+                Actions.Add(
+                    this.GetNextActionID(),
                             Localization.GetString("MyWork.Action", this.LocalResourceFile),
                             "MyWork.Action",
                             "",

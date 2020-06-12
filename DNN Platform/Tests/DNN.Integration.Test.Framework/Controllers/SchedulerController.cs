@@ -132,7 +132,8 @@ namespace DNN.Integration.Test.Framework.Controllers
                 // only OK is a successful POST in this case; all other codes are failures
                 if (resp.StatusCode != HttpStatusCode.OK)
                 {
-                    Console.WriteLine(@"Error running scheduler {0}. Status: {1} - {2}",
+                    Console.WriteLine(
+                        @"Error running scheduler {0}. Status: {1} - {2}",
                         schedulerName, resp.StatusCode, resp.StatusDescription);
                     return false;
                 }

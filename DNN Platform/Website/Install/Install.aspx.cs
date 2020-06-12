@@ -216,7 +216,8 @@ namespace DotNetNuke.Services.Install
 
         private void WriteInstallationInProgress()
         {
-            HtmlUtils.WriteFeedback(HttpContext.Current.Response,
+            HtmlUtils.WriteFeedback(
+                HttpContext.Current.Response,
                                     0,
                                     Localization.Localization.GetString("ThereIsAInstallationCurrentlyInProgress.Error", Localization.Localization.GlobalResourceFile) + "<br>");
             this.Response.Flush();
@@ -225,7 +226,8 @@ namespace DotNetNuke.Services.Install
         private bool CheckPermissions()
         {
             bool verified = new FileSystemPermissionVerifier(this.Server.MapPath("~")).VerifyAll();
-            HtmlUtils.WriteFeedback(HttpContext.Current.Response,
+            HtmlUtils.WriteFeedback(
+                HttpContext.Current.Response,
                                     0,
                                     "Checking File and Folder permissions " + (verified ? "<font color='green'>Success</font>" : "<font color='red'>Error!</font>") + "<br>");
             this.Response.Flush();

@@ -117,7 +117,8 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
 
             UserInfo user = null;
 
-            Assert.DoesNotThrow(() =>
+            Assert.DoesNotThrow(
+                () =>
             {
                 user = new UserInfo
                 {

@@ -103,7 +103,8 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                 var propertyAccess = new ProfilePropertyAccess(this._user);
                 foreach (ProfilePropertyDefinition property in this._user.Profile.ProfileProperties)
                 {
-                    string value = propertyAccess.GetProperty(property.PropertyName,
+                    string value = propertyAccess.GetProperty(
+                        property.PropertyName,
                                                              String.Empty,
                                                              Thread.CurrentThread.CurrentUICulture,
                                                              this._viewer,

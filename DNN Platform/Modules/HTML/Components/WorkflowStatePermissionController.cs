@@ -43,7 +43,8 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         private static Dictionary<int, WorkflowStatePermissionCollection> GetWorkflowStatePermissions()
         {
-            return CBO.GetCachedObject<Dictionary<int, WorkflowStatePermissionCollection>>(new CacheItemArgs(WorkflowStatePermissionCacheKey, WorkflowStatePermissionCachePriority),
+            return CBO.GetCachedObject<Dictionary<int, WorkflowStatePermissionCollection>>(
+                new CacheItemArgs(WorkflowStatePermissionCacheKey, WorkflowStatePermissionCachePriority),
                                                                                            GetWorkflowStatePermissionsCallBack);
         }
 
@@ -135,7 +136,8 @@ namespace DotNetNuke.Security.Permissions
             if (!bFound)
             {
                 // try the database
-                WorkflowStatePermissions = new WorkflowStatePermissionCollection(CBO.FillCollection(provider.GetWorkflowStatePermissionsByStateID(StateID), typeof(WorkflowStatePermissionInfo)),
+                WorkflowStatePermissions = new WorkflowStatePermissionCollection(
+                    CBO.FillCollection(provider.GetWorkflowStatePermissionsByStateID(StateID), typeof(WorkflowStatePermissionInfo)),
                                                                                  StateID);
             }
 

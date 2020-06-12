@@ -171,7 +171,8 @@ namespace DotNetNuke.Entities.Controllers
         public Dictionary<string, ConfigurationSetting> GetSettings()
         {
             return CBO.GetCachedObject<Dictionary<string, ConfigurationSetting>>(
-                                            new CacheItemArgs(DataCache.HostSettingsCacheKey,
+                                            new CacheItemArgs(
+                                                DataCache.HostSettingsCacheKey,
                                                     DataCache.HostSettingsCacheTimeOut,
                                                     DataCache.HostSettingsCachePriority),
                                             GetSettingsDictionaryCallBack,
@@ -275,7 +276,8 @@ namespace DotNetNuke.Entities.Controllers
                     if (currentconfig != null && currentconfig.Value != config.Value)
                     {
                         dbProvider.UpdateHostSetting(config.Key, config.Value, config.IsSecure, userId);
-                        EventLogController.Instance.AddLog(config.Key,
+                        EventLogController.Instance.AddLog(
+                            config.Key,
                                            config.Value,
                                            portalSettings,
                                            userId,
@@ -285,7 +287,8 @@ namespace DotNetNuke.Entities.Controllers
                 else
                 {
                     dbProvider.UpdateHostSetting(config.Key, config.Value, config.IsSecure, userId);
-                    EventLogController.Instance.AddLog(config.Key,
+                    EventLogController.Instance.AddLog(
+                        config.Key,
                                        config.Value,
                                        portalSettings,
                                        userId,

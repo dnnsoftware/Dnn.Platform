@@ -267,7 +267,8 @@ namespace DotNetNuke.Web.UI
                 {
                     if (((parentTab == null) || !TabPermissionController.HasTabPermission(parentTab.TabPermissions, permissionList)))
                     {
-                        throw new DotNetNukeException("You do not have permissions to add or move pages to this location. You can only add or move pages as children of pages you can edit.",
+                        throw new DotNetNukeException(
+                            "You do not have permissions to add or move pages to this location. You can only add or move pages as children of pages you can edit.",
                                                       DotNetNukeErrorCode.PageEditorPermissionError);
                     }
                 }

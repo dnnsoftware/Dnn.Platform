@@ -337,7 +337,8 @@ namespace log4net.Appender
             }
             catch (System.Security.SecurityException ex)
             {
-                this.ErrorHandler.Error("Caught a SecurityException trying to access the EventLog.  Most likely the event source "
+                this.ErrorHandler.Error(
+                    "Caught a SecurityException trying to access the EventLog.  Most likely the event source "
                     + this.m_applicationName
                     + " doesn't exist and must be created by a local administrator.  Will disable EventLogAppender."
                     + "  See http://logging.apache.org/log4net/release/faq.html#trouble-EventLog",

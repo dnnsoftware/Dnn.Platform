@@ -62,7 +62,8 @@ namespace DotNetNuke.Modules.Journal.Components
             if (string.IsNullOrEmpty(this.url)) {
                 this.url = HttpContext.Current.Request.Url.Host;
             }
-            this.url = string.Format("{0}://{1}{2}",
+            this.url = string.Format(
+                "{0}://{1}{2}",
                                 UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request) ? "https" : "http",
                                 this.url,
                                 !HttpContext.Current.Request.Url.IsDefaultPort && !this.url.Contains(":") ? ":" + HttpContext.Current.Request.Url.Port : string.Empty);

@@ -544,7 +544,8 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             this._dtRules.PrimaryKey = new[] { pkCol1 };
 
             this._dataProvider.Setup(d =>
-                                d.SaveRedirection(It.IsAny<int>(),
+                                d.SaveRedirection(
+                                    It.IsAny<int>(),
                                 It.IsAny<int>(),
                                 It.IsAny<string>(),
                                 It.IsAny<int>(),
@@ -613,7 +614,8 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                 }
             });
 
-            this._dataProvider.Setup(d => d.SaveRedirectionRule(It.IsAny<int>(),
+            this._dataProvider.Setup(d => d.SaveRedirectionRule(
+                It.IsAny<int>(),
                 It.IsAny<int>(),
                 It.IsAny<string>(),
                 It.IsAny<string>())).Callback<int, int, string, string>((id, rid, capbility, expression) =>

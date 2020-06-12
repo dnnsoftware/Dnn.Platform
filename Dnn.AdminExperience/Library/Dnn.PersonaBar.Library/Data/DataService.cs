@@ -15,7 +15,8 @@ namespace Dnn.PersonaBar.Library.Data
         public int SavePersonaBarMenu(string identifier, string moduleName, string folderName, string controller, string resourceKey, string path,
             string link, string cssClass, string iconFile, int parentId, int order, bool allowHost, bool enabled, int currentUserId)
         {
-            return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarMenu",
+            return DataProvider.ExecuteScalar<int>(
+                "PersonaBar_SavePersonaBarMenu",
                 identifier, moduleName, folderName, controller, resourceKey, path,
                 Null.GetNull(link, DBNull.Value), Null.GetNull(cssClass, DBNull.Value),
                 Null.GetNull(parentId, DBNull.Value), order, allowHost, enabled, currentUserId, Null.GetNull(iconFile, DBNull.Value));
@@ -82,7 +83,8 @@ namespace Dnn.PersonaBar.Library.Data
 
         public int SavePersonaBarPermission(int menuId, string permissionKey, string permissionName, int currentUserId)
         {
-            return DataProvider.ExecuteScalar<int>("PersonaBar_SavePersonaBarPermission",
+            return DataProvider.ExecuteScalar<int>(
+                "PersonaBar_SavePersonaBarPermission",
                 Null.GetNull(menuId, DBNull.Value), permissionKey, permissionName, currentUserId);
         }
 

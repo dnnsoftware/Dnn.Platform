@@ -246,7 +246,8 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             if ((this.UseCaptcha && this.ctlCaptcha.IsValid) || !this.UseCaptcha)
             {
                 var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-                string userName = PortalSecurity.Instance.InputFilter(this.txtUsername.Text,
+                string userName = PortalSecurity.Instance.InputFilter(
+                    this.txtUsername.Text,
                                         PortalSecurity.FilterFlag.NoScripting |
                                         PortalSecurity.FilterFlag.NoAngleBrackets |
                                         PortalSecurity.FilterFlag.NoMarkup);
@@ -321,7 +322,8 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
                     if (redirectUrl.Contains("?returnurl"))
                     {
-                        string baseURL = redirectUrl.Substring(0,
+                        string baseURL = redirectUrl.Substring(
+                            0,
                             redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal));
                         string returnURL =
                             redirectUrl.Substring(redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal) + 11);

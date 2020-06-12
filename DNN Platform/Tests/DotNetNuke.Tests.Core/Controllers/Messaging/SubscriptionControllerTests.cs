@@ -143,7 +143,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this.subscriptionController.IsSubscribed(subscription);
 
             // Assert
-            this.mockDataService.Verify(ds => ds.IsSubscribed(
+            this.mockDataService.Verify(
+                ds => ds.IsSubscribed(
                 subscription.PortalId,
                 subscription.UserId,
                 subscription.SubscriptionTypeId,
@@ -218,7 +219,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this.subscriptionController.AddSubscription(subscription);
 
             // Assert
-            this.mockDataService.Verify(ds => ds.AddSubscription(
+            this.mockDataService.Verify(
+                ds => ds.AddSubscription(
                 subscription.UserId,
                 subscription.PortalId,
                 subscription.SubscriptionTypeId,

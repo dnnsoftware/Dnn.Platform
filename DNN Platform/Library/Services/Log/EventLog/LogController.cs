@@ -312,7 +312,8 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public void AddLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
         {
-            LoggingProvider.Instance().AddLogTypeConfigInfo(logTypeConfig.ID,
+            LoggingProvider.Instance().AddLogTypeConfigInfo(
+                logTypeConfig.ID,
                                                             logTypeConfig.LoggingIsActive,
                                                             logTypeConfig.LogTypeKey,
                                                             logTypeConfig.LogTypePortalID,
@@ -378,7 +379,8 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public virtual void UpdateLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig)
         {
-            LoggingProvider.Instance().UpdateLogTypeConfigInfo(logTypeConfig.ID,
+            LoggingProvider.Instance().UpdateLogTypeConfigInfo(
+                logTypeConfig.ID,
                                                                logTypeConfig.LoggingIsActive,
                                                                logTypeConfig.LogTypeKey,
                                                                logTypeConfig.LogTypePortalID,

@@ -1428,7 +1428,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             Assert.AreEqual(docs.Length, search.Results.Count);
-            Assert.IsTrue(new[]
+            Assert.IsTrue(
+                new[]
                 {
                   "brown <b>fox</b> jumps over the lazy dog",
                   "quick <b>fox</b> jumps over the black dog - Italian",

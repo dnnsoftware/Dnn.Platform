@@ -19,7 +19,8 @@ namespace DotNetNuke.Web.Mvc.Common
         public static void RemoveFromDictionary<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, Func<KeyValuePair<TKey, TValue>, bool> removeCondition)
         {
             // Pass the delegate as the state to avoid a delegate and closure
-            dictionary.RemoveFromDictionary((entry, innerCondition) =>
+            dictionary.RemoveFromDictionary(
+                (entry, innerCondition) =>
             {
                 return innerCondition(entry);
             },

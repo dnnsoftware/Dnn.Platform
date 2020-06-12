@@ -579,7 +579,8 @@ namespace DotNetNuke.Entities.Content.Workflow
                 currentState.StateID == workflow.FirstState.StateID
                     ? WorkflowLogType.DraftCompleted
                     : WorkflowLogType.StateCompleted, stateTransaction.UserId);
-            this.AddWorkflowLog(contentItem,
+            this.AddWorkflowLog(
+                contentItem,
                 nextState.StateID == workflow.LastState.StateID
                     ? WorkflowLogType.WorkflowApproved
                     : WorkflowLogType.StateInitiated, stateTransaction.UserId);

@@ -30,7 +30,8 @@ namespace DotNetNuke.Entities.Tabs
         {
             if (ModuleController.Instance.IsSharedModule(module) && moduleVersion != Null.NullInteger)
             {
-                throw new InvalidOperationException(Localization.GetExceptionMessage("ModuleDoesNotBelongToPage",
+                throw new InvalidOperationException(Localization.GetExceptionMessage(
+                    "ModuleDoesNotBelongToPage",
                 "This module does not belong to the page. Please, move to its master page to change the module"));
             }
 

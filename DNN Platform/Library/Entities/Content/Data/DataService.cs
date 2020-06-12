@@ -50,7 +50,8 @@ namespace DotNetNuke.Entities.Content.Data
         /// <returns>content item id.</returns>
         public int AddContentItem(ContentItem contentItem, int createdByUserId)
         {
-            return this._provider.ExecuteScalar<int>("AddContentItem",
+            return this._provider.ExecuteScalar<int>(
+                "AddContentItem",
                                                contentItem.Content,
                                                contentItem.ContentTypeId,
                                                contentItem.TabID,
@@ -154,7 +155,8 @@ namespace DotNetNuke.Entities.Content.Data
         /// <param name="createdByUserId">The created by user id.</param>
         public void UpdateContentItem(ContentItem contentItem, int createdByUserId)
         {
-            this._provider.ExecuteNonQuery("UpdateContentItem",
+            this._provider.ExecuteNonQuery(
+                "UpdateContentItem",
                                      contentItem.ContentItemId,
                                      contentItem.Content,
                                      contentItem.ContentTypeId,
@@ -451,7 +453,8 @@ namespace DotNetNuke.Entities.Content.Data
         /// <returns>Vocabulary id.</returns>
         public int AddVocabulary(Vocabulary vocabulary, int createdByUserId)
         {
-            return this._provider.ExecuteScalar<int>("AddVocabulary",
+            return this._provider.ExecuteScalar<int>(
+                "AddVocabulary",
                                                vocabulary.Type,
                                                vocabulary.Name,
                                                vocabulary.Description,
@@ -486,7 +489,8 @@ namespace DotNetNuke.Entities.Content.Data
         /// <param name="lastModifiedByUserId">The last modified by user id.</param>
         public void UpdateVocabulary(Vocabulary vocabulary, int lastModifiedByUserId)
         {
-            this._provider.ExecuteNonQuery("UpdateVocabulary",
+            this._provider.ExecuteNonQuery(
+                "UpdateVocabulary",
                                      vocabulary.VocabularyId,
                                      vocabulary.Type,
                                      vocabulary.Name,

@@ -43,7 +43,8 @@ namespace DotNetNuke.Modules.RazorHost
             get
             {
                 var Actions = new ModuleActionCollection();
-                Actions.Add(this.ModuleContext.GetNextActionID(),
+                Actions.Add(
+                    this.ModuleContext.GetNextActionID(),
                             Localization.GetString(ModuleActionType.EditContent, this.LocalResourceFile),
                             ModuleActionType.AddContent,
                             "",
@@ -53,7 +54,8 @@ namespace DotNetNuke.Modules.RazorHost
                             SecurityAccessLevel.Host,
                             true,
                             false);
-                Actions.Add(this.ModuleContext.GetNextActionID(),
+                Actions.Add(
+                    this.ModuleContext.GetNextActionID(),
                             Localization.GetString("CreateModule.Action", this.LocalResourceFile),
                             ModuleActionType.AddContent,
                             "",

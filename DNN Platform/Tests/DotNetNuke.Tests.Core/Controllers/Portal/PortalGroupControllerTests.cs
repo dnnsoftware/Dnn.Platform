@@ -351,7 +351,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             mockCache.Setup(c => c.GetItem(CachingProvider.GetCacheKey(DataCache.PortalGroupsCacheKey))).Returns(null);
 
             Mock<IDataService> mockDataService = new Mock<IDataService>();
-            mockDataService.Setup(ds => ds.GetPortalGroups()).Returns(CreateValidPortalGroupsReader(Constants.PORTALGROUP_ValidPortalGroupCount,
+            mockDataService.Setup(ds => ds.GetPortalGroups()).Returns(CreateValidPortalGroupsReader(
+                Constants.PORTALGROUP_ValidPortalGroupCount,
                                                                                                         Constants.USER_ValidId));
 
             var mockPortalController = new Mock<IPortalController>();

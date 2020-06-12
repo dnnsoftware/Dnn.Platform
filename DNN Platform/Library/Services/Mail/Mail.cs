@@ -418,7 +418,8 @@ namespace DotNetNuke.Services.Mail
         public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body,
                                       string attachment, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
-            return SendMail(mailFrom,
+            return SendMail(
+                mailFrom,
                             mailTo,
                             cc,
                             bcc,
@@ -439,7 +440,8 @@ namespace DotNetNuke.Services.Mail
         public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body,
                                       string[] attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
-            return SendMail(mailFrom,
+            return SendMail(
+                mailFrom,
                             mailTo,
                             cc,
                             bcc,
@@ -502,7 +504,8 @@ namespace DotNetNuke.Services.Mail
                                   select new Attachment(attachment))
                                   .ToList();
 
-            return SendMail(mailFrom,
+            return SendMail(
+                mailFrom,
                             mailTo,
                             cc,
                             bcc,
@@ -523,7 +526,8 @@ namespace DotNetNuke.Services.Mail
         public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding,
                               string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
-            return SendMail(mailFrom,
+            return SendMail(
+                mailFrom,
                     string.Empty,
                     mailTo,
                     cc,
@@ -570,7 +574,8 @@ namespace DotNetNuke.Services.Mail
                     ? new MailMessage
                     {
                         From =
-                            new MailAddress(mailFrom,
+                            new MailAddress(
+                                mailFrom,
                                 UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom).DisplayName)
                     }
                     : new MailMessage { From = new MailAddress(mailFrom) };

@@ -42,7 +42,8 @@ namespace DotNetNuke.Services.Mobile
                 profile.SortOrder = this.GetProfilesByPortal(profile.PortalId, false).Count + 1;
             }
 
-            int id = DataProvider.Instance().SavePreviewProfile(profile.Id,
+            int id = DataProvider.Instance().SavePreviewProfile(
+                profile.Id,
                                                         profile.PortalId,
                                                         profile.Name,
                                                         profile.Width,

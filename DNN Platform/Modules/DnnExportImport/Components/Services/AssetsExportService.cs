@@ -26,7 +26,8 @@ namespace Dnn.ExportImport.Components.Services
     {
         private const string DefaultUsersFoldersPath = "Users";
 
-        private static readonly Regex UserFolderEx = new Regex(@"users/\d+/\d+/(\d+)/",
+        private static readonly Regex UserFolderEx = new Regex(
+            @"users/\d+/\d+/(\d+)/",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private readonly string _assetsFolder =

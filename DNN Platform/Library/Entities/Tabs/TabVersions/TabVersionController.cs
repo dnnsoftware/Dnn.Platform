@@ -32,7 +32,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 DataCache.RemoveCache(tabCacheKey);
             }
-            var tabVersions = CBO.Instance.GetCachedObject<List<TabVersion>>(new CacheItemArgs(tabCacheKey,
+            var tabVersions = CBO.Instance.GetCachedObject<List<TabVersion>>(
+                new CacheItemArgs(
+                tabCacheKey,
                                                                     DataCache.TabVersionsCacheTimeOut,
                                                                     DataCache.TabVersionsCachePriority),
                                                             c => CBO.FillCollection<TabVersion>(Provider.GetTabVersions(tabId)),

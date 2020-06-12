@@ -153,7 +153,8 @@ namespace Dnn.ExportImport.Components.Common
             var fileInfo = new FileInfo(file);
             if (fileInfo.Length < 1610612736)
             {
-                archive.CreateEntryFromFile(file,
+                archive.CreateEntryFromFile(
+                    file,
                     string.IsNullOrEmpty(folder) ? entryName : Path.Combine(folder, entryName), CompressionLevel.Fastest);
                 return true;
             }

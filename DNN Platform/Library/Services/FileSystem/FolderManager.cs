@@ -81,7 +81,8 @@ namespace DotNetNuke.Services.FileSystem
                 }
 
                 folder.FolderPath = PathUtils.Instance.FormatFolderPath(folder.FolderPath);
-                folder.FolderID = DataProvider.Instance().AddFolder(folder.PortalID,
+                folder.FolderID = DataProvider.Instance().AddFolder(
+                    folder.PortalID,
                                                                     folder.UniqueId,
                                                                     folder.VersionGuid,
                                                                     folder.FolderPath,
@@ -166,7 +167,8 @@ namespace DotNetNuke.Services.FileSystem
                 Logger.Error(ex);
 
                 throw new FolderProviderException(
-                    Localization.Localization.GetExceptionMessage("DeleteFolderUnderlyingSystemError",
+                    Localization.Localization.GetExceptionMessage(
+                        "DeleteFolderUnderlyingSystemError",
                                                                   "The underlying system threw an exception. The folder has not been deleted."),
                     ex);
             }
@@ -217,7 +219,8 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("folder", folder);
 
-            DataProvider.Instance().UpdateFolder(folder.PortalID,
+            DataProvider.Instance().UpdateFolder(
+                folder.PortalID,
                                                     folder.VersionGuid,
                                                     folder.FolderID,
                                                     PathUtils.Instance.FormatFolderPath(folder.FolderPath),
@@ -350,7 +353,8 @@ namespace DotNetNuke.Services.FileSystem
                     this.GetFolders(parentFolder.PortalID)
                         .Where(
                             f =>
-                                f.FolderPath.StartsWith(parentFolder.FolderPath,
+                                f.FolderPath.StartsWith(
+                                    parentFolder.FolderPath,
                                     StringComparison.InvariantCultureIgnoreCase));
 
                 return subFolders.Where(f => f.FolderID != parentFolder.FolderID);
@@ -457,7 +461,8 @@ namespace DotNetNuke.Services.FileSystem
             var parentFolder = this.GetParentFolder(folderMapping.PortalID, folderPath);
             if (parentFolder != null)
             {
-                var parentFolderMapping = FolderMappingController.Instance.GetFolderMapping(parentFolder.PortalID,
+                var parentFolderMapping = FolderMappingController.Instance.GetFolderMapping(
+                    parentFolder.PortalID,
                     parentFolder.FolderMappingID);
                 if (FolderProvider.Instance(parentFolderMapping.FolderProviderType).SupportsMappedPaths)
                 {
@@ -828,7 +833,8 @@ namespace DotNetNuke.Services.FileSystem
             if (this.FolderExists(folder.PortalID, newFolderPath))
             {
                 throw new InvalidOperationException(string.Format(
-                    Localization.Localization.GetExceptionMessage("CannotMoveFolderAlreadyExists",
+                    Localization.Localization.GetExceptionMessage(
+                        "CannotMoveFolderAlreadyExists",
                     "The folder with name '{0}' cannot be moved. A folder with that name already exists under the folder '{1}'.", folder.FolderName, destinationFolder.FolderName)));
             }
 
@@ -838,7 +844,8 @@ namespace DotNetNuke.Services.FileSystem
             if (!this.CanMoveBetweenFolderMappings(folderMapping, destinationFolderMapping))
             {
                 throw new InvalidOperationException(string.Format(
-                    Localization.Localization.GetExceptionMessage("CannotMoveFolderBetweenFolderType",
+                    Localization.Localization.GetExceptionMessage(
+                        "CannotMoveFolderBetweenFolderType",
                     "The folder with name '{0}' cannot be moved. Move Folder operation between this two folder types is not allowed", folder.FolderName)));
             }
 

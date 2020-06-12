@@ -64,7 +64,8 @@ namespace DotNetNuke.Services.Search
         /// </summary>
         /// <returns>Count of indexed records</returns>
         /// -----------------------------------------------------------------------------
-        public override int IndexSearchDocuments(int portalId,
+        public override int IndexSearchDocuments(
+            int portalId,
             ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             Requires.NotNull("indexer", indexer);

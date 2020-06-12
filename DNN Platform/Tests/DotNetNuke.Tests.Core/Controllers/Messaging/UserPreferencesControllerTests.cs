@@ -74,7 +74,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this.userPrefencesController.SetUserPreference(userPreference);
 
             // Assert
-            this.mockDataService.Verify(ds => ds.SetUserPreference(
+            this.mockDataService.Verify(
+                ds => ds.SetUserPreference(
                 userPreference.PortalId,
                 userPreference.UserId,
                 (int)userPreference.MessagesEmailFrequency,

@@ -256,7 +256,8 @@ namespace DotNetNuke.Security.Permissions
         private Dictionary<int, TabPermissionCollection> GetTabPermissions(int portalID)
         {
             string cacheKey = string.Format(DataCache.TabPermissionCacheKey, portalID);
-            return CBO.GetCachedObject<Dictionary<int, TabPermissionCollection>>(new CacheItemArgs(cacheKey, DataCache.TabPermissionCacheTimeOut, DataCache.TabPermissionCachePriority, portalID),
+            return CBO.GetCachedObject<Dictionary<int, TabPermissionCollection>>(
+                new CacheItemArgs(cacheKey, DataCache.TabPermissionCacheTimeOut, DataCache.TabPermissionCachePriority, portalID),
                                                                                  this.GetTabPermissionsCallBack);
         }
 
@@ -447,7 +448,8 @@ namespace DotNetNuke.Security.Permissions
         {
             return new List<RoleInfo>
             {
-                RoleController.Instance.GetRoleById(portalId,
+                RoleController.Instance.GetRoleById(
+                    portalId,
                     PortalController.Instance.GetPortal(portalId).AdministratorRoleId)
             };
         }
@@ -704,7 +706,8 @@ namespace DotNetNuke.Security.Permissions
                 this.dataProvider.DeleteFolderPermissionsByFolderPath(folder.PortalID, folder.FolderPath);
                 foreach (FolderPermissionInfo folderPermission in folder.FolderPermissions)
                 {
-                    this.dataProvider.AddFolderPermission(folder.FolderID,
+                    this.dataProvider.AddFolderPermission(
+                        folder.FolderID,
                                                         folderPermission.PermissionID,
                                                         folderPermission.RoleID,
                                                         folderPermission.AllowAccess,
@@ -967,7 +970,8 @@ namespace DotNetNuke.Security.Permissions
                         }
                         else
                         {
-                            this.dataProvider.AddModulePermission(module.ModuleID,
+                            this.dataProvider.AddModulePermission(
+                                module.ModuleID,
                                                              module.PortalID,
                                                              modulePermission.PermissionID,
                                                              modulePermission.RoleID,

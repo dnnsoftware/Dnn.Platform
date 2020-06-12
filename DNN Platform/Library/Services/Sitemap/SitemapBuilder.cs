@@ -134,7 +134,8 @@ namespace DotNetNuke.Services.Sitemap
                     }
                     catch (Exception ex)
                     {
-                        Services.Exceptions.Exceptions.LogException(new Exception(Localization.Localization.GetExceptionMessage("SitemapProviderError",
+                        Services.Exceptions.Exceptions.LogException(new Exception(Localization.Localization.GetExceptionMessage(
+                            "SitemapProviderError",
                             "URL sitemap provider '{0}' failed with error: {1}",
                             _provider.Name, ex.Message)));
                     }

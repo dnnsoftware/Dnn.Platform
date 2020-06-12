@@ -878,7 +878,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._mockFolderManager.Object.UpdateFolder(this._folderInfo.Object);
 
-            this._mockData.Verify(md => md.UpdateFolder(
+            this._mockData.Verify(
+                md => md.UpdateFolder(
                 It.IsAny<int>(),
                 It.IsAny<Guid>(),
                 It.IsAny<int>(),

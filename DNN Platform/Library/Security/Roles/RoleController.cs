@@ -53,7 +53,8 @@ namespace DotNetNuke.Security.Roles
 
         private void AddMessage(RoleInfo roleInfo, EventLogController.EventLogType logType)
         {
-            EventLogController.Instance.AddLog(roleInfo,
+            EventLogController.Instance.AddLog(
+                roleInfo,
                                 PortalController.Instance.GetCurrentPortalSettings(),
                                 UserController.Instance.GetCurrentUserInfo().UserID,
                                 "",
@@ -141,7 +142,8 @@ namespace DotNetNuke.Security.Roles
                                                   "EMAIL_ROLE_" +
                                                   UserRoleActionsCaption[(int)Action] +
                                                   "_SUBJECT", objUser),
-                Body = Localization.GetSystemMessage(objUser.Profile.PreferredLocale,
+                Body = Localization.GetSystemMessage(
+                    objUser.Profile.PreferredLocale,
                                                      PortalSettings,
                                                      "EMAIL_ROLE_" +
                                                      UserRoleActionsCaption[(int)Action] + "_BODY",
@@ -298,7 +300,8 @@ namespace DotNetNuke.Security.Roles
         public IList<RoleInfo> GetRoles(int portalId)
         {
             var cacheKey = String.Format(DataCache.RolesCacheKey, portalId);
-            return CBO.GetCachedObject<IList<RoleInfo>>(new CacheItemArgs(cacheKey, DataCache.RolesCacheTimeOut, DataCache.RolesCachePriority),
+            return CBO.GetCachedObject<IList<RoleInfo>>(
+                new CacheItemArgs(cacheKey, DataCache.RolesCacheTimeOut, DataCache.RolesCachePriority),
                                                                     c => provider.GetRoles(portalId).Cast<RoleInfo>().ToList());
         }
 
@@ -399,7 +402,8 @@ namespace DotNetNuke.Security.Roles
                 {
                     // Delete Role
                     DeleteUserRoleInternal(portalId, userId, roleId);
-                    EventLogController.Instance.AddLog("UserId",
+                    EventLogController.Instance.AddLog(
+                        "UserId",
                                        userId.ToString(CultureInfo.InvariantCulture),
                                        PortalController.Instance.GetCurrentPortalSettings(),
                                        UserController.Instance.GetCurrentUserInfo().UserID,

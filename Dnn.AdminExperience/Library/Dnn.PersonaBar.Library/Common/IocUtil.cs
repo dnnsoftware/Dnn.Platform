@@ -99,7 +99,8 @@ namespace Dnn.PersonaBar.Library.Common
             var instance = GetInstanceLocal<TContract>(name);
             if (instance == null)
             {
-                Logger.WarnFormat("No instance of type '{0}' and name '{1}' is registered in the IOC container.",
+                Logger.WarnFormat(
+                    "No instance of type '{0}' and name '{1}' is registered in the IOC container.",
                                   typeof(TContract).FullName, name ?? "<empty>");
             }
 

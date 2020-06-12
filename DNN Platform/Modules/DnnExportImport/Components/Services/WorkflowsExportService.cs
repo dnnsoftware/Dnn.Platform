@@ -218,7 +218,8 @@ namespace Dnn.ExportImport.Components.Services
                                 {
                                     if (userId == null)
                                     {
-                                        this.Result.AddLogEntry("Couldn't add tab permission; User is undefined!",
+                                        this.Result.AddLogEntry(
+                                            "Couldn't add tab permission; User is undefined!",
                                             $"{importPermission.PermissionKey} - {importPermission.PermissionID}", ReportLevel.Warn);
                                         continue;
                                     }
@@ -229,7 +230,8 @@ namespace Dnn.ExportImport.Components.Services
                                 {
                                     if (roleId == null)
                                     {
-                                        this.Result.AddLogEntry("Couldn't add tab permission; Role is undefined!",
+                                        this.Result.AddLogEntry(
+                                            "Couldn't add tab permission; Role is undefined!",
                                             $"{importPermission.PermissionKey} - {importPermission.PermissionID}", ReportLevel.Warn);
                                         continue;
                                     }
@@ -249,7 +251,8 @@ namespace Dnn.ExportImport.Components.Services
                                     {
                                         workflowStateManager.AddWorkflowStatePermission(permission, -1);
                                         importPermission.LocalId = permission.WorkflowStatePermissionID;
-                                        this.Result.AddLogEntry("Added workflow state permission",
+                                        this.Result.AddLogEntry(
+                                            "Added workflow state permission",
                                             permission.WorkflowStatePermissionID.ToString());
                                     }
                                     else

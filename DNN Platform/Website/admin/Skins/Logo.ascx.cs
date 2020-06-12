@@ -88,7 +88,8 @@ namespace DotNetNuke.UI.Skins.Controls
         private IFileInfo GetLogoFileInfo()
         {
             string cacheKey = String.Format(DataCache.PortalCacheKey, this.PortalSettings.PortalId, this.PortalSettings.CultureCode) + "LogoFile";
-            var file = CBO.GetCachedObject<FileInfo>(new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority),
+            var file = CBO.GetCachedObject<FileInfo>(
+                new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority),
                                                     this.GetLogoFileInfoCallBack);
 
             return file;

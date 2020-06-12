@@ -83,7 +83,8 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         public int SendNotification(Notification notification, int portalId)
         {
             var createdByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
-            return this._provider.ExecuteScalar<int>(GetFullyQualifiedName("SendNotification"),
+            return this._provider.ExecuteScalar<int>(
+                GetFullyQualifiedName("SendNotification"),
                                                 notification.NotificationTypeID,
                                                 portalId,
                                                 notification.To,
@@ -133,7 +134,8 @@ namespace DotNetNuke.Services.Social.Notifications.Data
 
         public bool IsToastPending(int notificationId)
         {
-            return this._provider.ExecuteScalar<bool>(GetFullyQualifiedName("IsToastPending"),
+            return this._provider.ExecuteScalar<bool>(
+                GetFullyQualifiedName("IsToastPending"),
                                                 notificationId);
         }
 

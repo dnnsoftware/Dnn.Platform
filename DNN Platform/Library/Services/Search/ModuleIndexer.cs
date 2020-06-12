@@ -80,7 +80,8 @@ namespace DotNetNuke.Services.Search
         /// <remarks>This replaces "GetSearchIndexItems" as a newer implementation of search.</remarks>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
-        public override int IndexSearchDocuments(int portalId,
+        public override int IndexSearchDocuments(
+            int portalId,
             ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             Requires.NotNull("indexer", indexer);
@@ -116,7 +117,8 @@ namespace DotNetNuke.Services.Search
 
                             if (Logger.IsTraceEnabled)
                             {
-                                Logger.TraceFormat("ModuleIndexer: {0} search documents found for module [{1} mid:{2}]",
+                                Logger.TraceFormat(
+                                    "ModuleIndexer: {0} search documents found for module [{1} mid:{2}]",
                                     searchItems.Count, module.DesktopModule.ModuleName, module.ModuleID);
                             }
 
@@ -291,7 +293,8 @@ namespace DotNetNuke.Services.Search
             try
             {
                 var message = string.Format(
-                        Localization.Localization.GetExceptionMessage("ErrorCreatingBusinessControllerClass",
+                        Localization.Localization.GetExceptionMessage(
+                            "ErrorCreatingBusinessControllerClass",
                             "Error Creating BusinessControllerClass '{0}' of module({1}) id=({2}) in tab({3}) and portal({4})"),
                         module.DesktopModule.BusinessControllerClass,
                         module.DesktopModule.ModuleName,

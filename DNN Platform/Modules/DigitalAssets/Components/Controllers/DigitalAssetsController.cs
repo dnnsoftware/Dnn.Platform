@@ -789,7 +789,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                         // Add tab to Admin Menu
                         if (mDef != null)
                         {
-                            var hostPage = Upgrade.AddHostPage("File Management",
+                            var hostPage = Upgrade.AddHostPage(
+                                "File Management",
                                                             "Manage assets.",
                                                             "~/Icons/Sigma/Files_16X16_Standard.png",
                                                             "~/Icons/Sigma/Files_32X32_Standard.png",
@@ -798,7 +799,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                             // Add module to page
                             Upgrade.AddModuleToPage(hostPage, mDef.ModuleDefID, "File Management", "~/Icons/Sigma/Files_32X32_Standard.png", true);
 
-                            Upgrade.AddAdminPages("File Management",
+                            Upgrade.AddAdminPages(
+                                "File Management",
                                                  "Manage assets within the portal",
                                                  "~/Icons/Sigma/Files_16X16_Standard.png",
                                                  "~/Icons/Sigma/Files_32X32_Standard.png",

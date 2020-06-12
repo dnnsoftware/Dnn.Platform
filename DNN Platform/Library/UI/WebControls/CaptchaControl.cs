@@ -388,7 +388,8 @@ namespace DotNetNuke.UI.WebControls
 
             g = Graphics.FromImage(bmp);
 
-            Brush b = new LinearGradientBrush(rect,
+            Brush b = new LinearGradientBrush(
+                rect,
                                               Color.FromArgb(_Rand.Next(224), _Rand.Next(224), _Rand.Next(224)),
                                               Color.FromArgb(_Rand.Next(224), _Rand.Next(224), _Rand.Next(224)),
                                               Convert.ToSingle(_Rand.NextDouble()) * 360,

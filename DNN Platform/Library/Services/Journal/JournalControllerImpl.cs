@@ -252,7 +252,8 @@ namespace DotNetNuke.Services.Journal
             if (journalItem.SocialGroupId > 0 && originalSecuritySet.Contains("U,"))
             {
                 var item = journalItem;
-                var role = RoleController.Instance.GetRole(journalItem.PortalId,
+                var role = RoleController.Instance.GetRole(
+                    journalItem.PortalId,
                     r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == item.SocialGroupId);
 
                 if (role != null && !role.IsPublic)
@@ -354,7 +355,8 @@ namespace DotNetNuke.Services.Journal
 
             this.PrepareSecuritySet(journalItem, currentUser);
 
-            journalItem.JournalId = this._dataService.Journal_Save(journalItem.PortalId,
+            journalItem.JournalId = this._dataService.Journal_Save(
+                journalItem.PortalId,
                                                      journalItem.UserId,
                                                      journalItem.ProfileId,
                                                      journalItem.SocialGroupId,
@@ -470,7 +472,8 @@ namespace DotNetNuke.Services.Journal
 
             this.PrepareSecuritySet(journalItem, currentUser);
 
-            journalItem.JournalId = this._dataService.Journal_Update(journalItem.PortalId,
+            journalItem.JournalId = this._dataService.Journal_Update(
+                journalItem.PortalId,
                                                      journalItem.UserId,
                                                      journalItem.ProfileId,
                                                      journalItem.SocialGroupId,
@@ -738,7 +741,8 @@ namespace DotNetNuke.Services.Journal
         public IEnumerable<JournalTypeInfo> GetJournalTypes(int portalId)
         {
             return CBO.GetCachedObject<IEnumerable<JournalTypeInfo>>(
-                                            new CacheItemArgs(String.Format(DataCache.JournalTypesCacheKey, portalId),
+                                            new CacheItemArgs(
+                                                String.Format(DataCache.JournalTypesCacheKey, portalId),
                                                                 DataCache.JournalTypesTimeOut,
                                                                 DataCache.JournalTypesCachePriority,
                                                                 portalId),

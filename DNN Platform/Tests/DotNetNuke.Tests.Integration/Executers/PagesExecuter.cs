@@ -18,7 +18,8 @@ namespace DotNetNuke.Tests.Integration.Executers
 
         public dynamic SavePageDetails(dynamic pageDetails)
         {
-            this.Responses.Add(this.Connector.PostJson("API/PersonaBar/Pages/SavePageDetails",
+            this.Responses.Add(this.Connector.PostJson(
+                "API/PersonaBar/Pages/SavePageDetails",
                 pageDetails));
             return this.GetLastDeserializeResponseMessage();
         }

@@ -168,7 +168,9 @@ namespace DotNetNuke.Services.Localization
         public Dictionary<string, string> GetCompiledResourceFile(PortalSettings portalSettings, string resourceFile, string locale)
         {
             return
-                CBO.GetCachedObject<Dictionary<string, string>>(new CacheItemArgs("Compiled-" + resourceFile + "-" + locale + "-" + portalSettings.PortalId,
+                CBO.GetCachedObject<Dictionary<string, string>>(
+                    new CacheItemArgs(
+                    "Compiled-" + resourceFile + "-" + locale + "-" + portalSettings.PortalId,
                         DataCache.ResourceFilesCacheTimeOut, DataCache.ResourceFilesCachePriority, resourceFile, locale,
                         portalSettings), GetCompiledResourceFileCallBack, true);
         }
@@ -337,7 +339,8 @@ namespace DotNetNuke.Services.Localization
 
         private static Dictionary<string, string> GetResourceFile(string resourceFile)
         {
-            return CBO.GetCachedObject<Dictionary<string, string>>(new CacheItemArgs(resourceFile, DataCache.ResourceFilesCacheTimeOut, DataCache.ResourceFilesCachePriority),
+            return CBO.GetCachedObject<Dictionary<string, string>>(
+                new CacheItemArgs(resourceFile, DataCache.ResourceFilesCacheTimeOut, DataCache.ResourceFilesCachePriority),
                                                                    GetResourceFileCallBack,
                                                                    true);
         }

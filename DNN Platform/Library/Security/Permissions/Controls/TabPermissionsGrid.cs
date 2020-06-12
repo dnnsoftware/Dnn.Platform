@@ -369,7 +369,8 @@ namespace DotNetNuke.Security.Permissions.Controls
                     {
                         addDelimiter = true;
                     }
-                    sb.Append(this.BuildKey(objTabPermission.AllowAccess,
+                    sb.Append(this.BuildKey(
+                        objTabPermission.AllowAccess,
                                        objTabPermission.PermissionID,
                                        objTabPermission.TabPermissionID,
                                        objTabPermission.RoleID,

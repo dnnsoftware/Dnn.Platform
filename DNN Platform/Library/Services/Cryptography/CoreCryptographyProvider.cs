@@ -90,7 +90,8 @@ namespace DotNetNuke.Services.Cryptography
                     // decrypt
                     using (var objDes = new DESCryptoServiceProvider())
                     using (var objMemoryStream = new MemoryStream())
-                    using (var objCryptoStream = new CryptoStream(objMemoryStream,
+                    using (var objCryptoStream = new CryptoStream(
+                        objMemoryStream,
                         objDes.CreateDecryptor(byteKey, byteVector), CryptoStreamMode.Write))
                     {
                         objCryptoStream.Write(byteData, 0, byteData.Length);

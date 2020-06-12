@@ -1765,7 +1765,8 @@ namespace DotNetNuke.Services.Upgrade
                 // attempt to remove "System.Web.Extensions" configuration section
                 string upgradeFile = string.Format("{0}\\Config\\SystemWebExtensions.config", Globals.InstallMapPath);
                 string message = UpdateConfig(upgradeFile, ApplicationVersion, "Remove System.Web.Extensions");
-                EventLogController.Instance.AddLog("UpgradeConfig",
+                EventLogController.Instance.AddLog(
+                    "UpgradeConfig",
                                           string.IsNullOrEmpty(message)
                                               ? "Remove System Web Extensions"
                                               : string.Format("Remove System Web Extensions failed. Error reported during attempt to update:{0}", message),
@@ -2255,7 +2256,8 @@ namespace DotNetNuke.Services.Upgrade
             ModuleDefinitionInfo mDef = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Lists");
             if (mDef != null)
             {
-                AddAdminPages("Lists",
+                AddAdminPages(
+                    "Lists",
                                 "Manage common lists",
                                 "~/Icons/Sigma/Lists_16X16_Standard.png",
                                 "~/Icons/Sigma/Lists_32X32_Standard.png",
@@ -2491,7 +2493,8 @@ namespace DotNetNuke.Services.Upgrade
             {
                 var moduleDefId = AddModuleDefinition("AdvancedSettings", "", "Advanced Settings");
                 AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/AdvancedSettings/AdvancedSettings.ascx", "", SecurityAccessLevel.Admin, 0);
-                AddAdminPages("Advanced Settings",
+                AddAdminPages(
+                    "Advanced Settings",
                             "",
                             "~/Icons/Sigma/AdvancedSettings_16X16_Standard.png",
                             "~/Icons/Sigma/AdvancedSettings_32X32_Standard.png",
@@ -2776,7 +2779,8 @@ namespace DotNetNuke.Services.Upgrade
 
                         if (userName != HttpUtility.HtmlDecode(userName))
                         {
-                            userName = portalSecurity.InputFilter(HttpUtility.HtmlDecode(userName),
+                            userName = portalSecurity.InputFilter(
+                                HttpUtility.HtmlDecode(userName),
                                                                  PortalSecurity.FilterFlag.NoScripting |
                                                                  PortalSecurity.FilterFlag.NoAngleBrackets |
                                                                  PortalSecurity.FilterFlag.NoMarkup);
@@ -3857,7 +3861,8 @@ namespace DotNetNuke.Services.Upgrade
 
 
                     // Create Portal
-                    portalId = PortalController.Instance.CreatePortal(portalName,
+                    portalId = PortalController.Instance.CreatePortal(
+                        portalName,
                                                              userInfo,
                                                              description,
                                                              keyWords,
@@ -4972,7 +4977,8 @@ namespace DotNetNuke.Services.Upgrade
                         // check whether have version conflict and remove old version.
                         var package = packages[file];
 
-                        var installedPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger,
+                        var installedPackage = PackageController.Instance.GetExtensionPackage(
+                            Null.NullInteger,
                             p => p.Name.Equals(package.Name, StringComparison.OrdinalIgnoreCase)
                                     && p.PackageType.Equals(package.PackageType, StringComparison.OrdinalIgnoreCase));
 
@@ -5141,7 +5147,8 @@ namespace DotNetNuke.Services.Upgrade
                         // Upgrade to .NET 4.0
                         string upgradeFile = string.Format("{0}\\Config\\Net40.config", Globals.InstallMapPath);
                         string strMessage = UpdateConfig(upgradeFile, ApplicationVersion, ".NET 4.0 Upgrade");
-                        EventLogController.Instance.AddLog("UpgradeNet",
+                        EventLogController.Instance.AddLog(
+                            "UpgradeNet",
                                                   string.IsNullOrEmpty(strMessage)
                                                       ? "Upgraded Site to .NET 4.0"
                                                       : string.Format("Upgrade to .NET 4.0 failed. Error reported during attempt to update:{0}", strMessage),
@@ -6118,7 +6125,8 @@ namespace DotNetNuke.Services.Upgrade
                     activationResult = licenseActivation.LicenseResult;
 
                     // Log Event to Event Log
-                    EventLogController.Instance.AddLog("License Activation",
+                    EventLogController.Instance.AddLog(
+                        "License Activation",
                                        "License Activated during install for: " + licenseConfig.AccountEmail + " | invoice: " + licenseConfig.InvoiceNumber,
                                        EventLogController.EventLogType.HOST_ALERT);
                 }
@@ -6273,11 +6281,13 @@ namespace DotNetNuke.Services.Upgrade
 
             try
             {
-                var languageFilePath = Path.Combine(Globals.HostMapPath,
+                var languageFilePath = Path.Combine(
+                    Globals.HostMapPath,
                     string.Format("Default Website.template.{0}.resx", cultureCode));
                 if (!File.Exists(languageFilePath))
                 {
-                    languageFilePath = Path.Combine(Globals.HostMapPath,
+                    languageFilePath = Path.Combine(
+                        Globals.HostMapPath,
                         string.Format("Default Website.template.{0}.resx", Localization.Localization.SystemLocale));
                 }
 

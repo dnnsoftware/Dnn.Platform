@@ -54,7 +54,8 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             this._dtProfiles.PrimaryKey = new[] { pkCol };
 
             this._dataProvider.Setup(d =>
-                                d.SavePreviewProfile(It.IsAny<int>(),
+                                d.SavePreviewProfile(
+                                    It.IsAny<int>(),
                                 It.IsAny<int>(),
                                 It.IsAny<string>(),
                                 It.IsAny<int>(),

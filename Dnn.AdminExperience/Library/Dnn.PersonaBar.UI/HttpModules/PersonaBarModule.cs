@@ -64,7 +64,8 @@ namespace Dnn.PersonaBar.UI.HttpModules
                 }
                 catch (Exception ex)
                 {
-                    Logger.ErrorFormat("{0}.Init threw an exception.  {1}\r\n{2}",
+                    Logger.ErrorFormat(
+                        "{0}.Init threw an exception.  {1}\r\n{2}",
                         instance.GetType().FullName, ex.Message, ex.StackTrace);
                 }
             });
@@ -80,7 +81,8 @@ namespace Dnn.PersonaBar.UI.HttpModules
                 }
                 catch (Exception ex)
                 {
-                    Logger.ErrorFormat("{0}.Load threw an exception.  {1}\r\n{2}",
+                    Logger.ErrorFormat(
+                        "{0}.Load threw an exception.  {1}\r\n{2}",
                         instance.GetType().FullName, ex.Message, ex.StackTrace);
                 }
             });
@@ -95,7 +97,8 @@ namespace Dnn.PersonaBar.UI.HttpModules
                 }
                 catch (Exception ex)
                 {
-                    Logger.ErrorFormat("{0}.PreRender threw an exception.  {1}\r\n{2}",
+                    Logger.ErrorFormat(
+                        "{0}.PreRender threw an exception.  {1}\r\n{2}",
                         instance.GetType().FullName, ex.Message, ex.StackTrace);
                 }
             });
@@ -111,7 +114,8 @@ namespace Dnn.PersonaBar.UI.HttpModules
                 }
                 catch (Exception ex)
                 {
-                    Logger.ErrorFormat("{0}.UnLoad threw an exception.  {1}\r\n{2}",
+                    Logger.ErrorFormat(
+                        "{0}.UnLoad threw an exception.  {1}\r\n{2}",
                         instance.GetType().FullName, ex.Message, ex.StackTrace);
                 }
             });

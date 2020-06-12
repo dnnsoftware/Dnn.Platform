@@ -20,7 +20,8 @@ namespace Dnn.ExportImport.Interfaces
         void CreateItems<T>(IEnumerable<T> items, int? referenceId = null)
             where T : BasicExportImportDto;
 
-        IEnumerable<T> GetItems<T>(Expression<Func<T, bool>> predicate,
+        IEnumerable<T> GetItems<T>(
+            Expression<Func<T, bool>> predicate,
             Func<T, object> orderKeySelector = null, bool asc = true, int? skip = null, int? max = null)
             where T : BasicExportImportDto;
 

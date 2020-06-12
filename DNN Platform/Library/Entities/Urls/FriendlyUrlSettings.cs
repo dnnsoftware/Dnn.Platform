@@ -237,7 +237,8 @@ namespace DotNetNuke.Entities.Urls
                 // 742 : was not reading and saving value when 'doNotIncludeInPathRegex' used
                 return this._doNotIncludeInPathRegex ??
                        (this._doNotIncludeInPathRegex =
-                           this.GetStringSetting(KeepInQueryStringRegexSetting,
+                           this.GetStringSetting(
+                               KeepInQueryStringRegexSetting,
                                @"/nomo/\d+|/runningDefault/[^/]+|/popup/(?:true|false)|/(?:page|category|sort|tags)/[^/]+|tou/[^/]+|(/utm[^/]+/[^/]+)+"));
             }
             internal set { this._doNotIncludeInPathRegex = value; }
@@ -248,7 +249,8 @@ namespace DotNetNuke.Entities.Urls
             get
             {
                 // 541 moved doNotRedirect and doNotRedirectRegex from under 'redirectUnfriendly' code
-                return this._doNotRedirectRegex ?? (this._doNotRedirectRegex = this.GetStringSetting(DoNotRedirectUrlRegexSetting,
+                return this._doNotRedirectRegex ?? (this._doNotRedirectRegex = this.GetStringSetting(
+                    DoNotRedirectUrlRegexSetting,
                     @"(\.axd)|/Rss\.aspx|/SiteMap\.aspx|\.ashx|/LinkClick\.aspx|/Providers/|/DesktopModules/|ctl=MobilePreview|/ctl/MobilePreview|/API/"));
             }
             internal set { this._doNotRedirectRegex = value; }
@@ -348,7 +350,8 @@ namespace DotNetNuke.Entities.Urls
             {
                 return this._ignoreRegex ??
                        (this._ignoreRegex =
-                           this.GetStringSetting(IgnoreRegexSetting,
+                           this.GetStringSetting(
+                               IgnoreRegexSetting,
                                @"(?<!linkclick\.aspx.+)(?:(?<!\?.+)(\.pdf$|\.gif$|\.png($|\?)|\.css($|\?)|\.js($|\?)|\.jpg$|\.axd($|\?)|\.swf$|\.flv$|\.ico$|\.xml($|\?)|\.txt$))"));
             }
             internal set { this._ignoreRegex = value; }
@@ -613,7 +616,8 @@ namespace DotNetNuke.Entities.Urls
             {
                 return this._useSiteUrlsRegex ??
                        (this._useSiteUrlsRegex =
-                           this.GetStringSetting(SiteUrlsOnlyRegexSetting,
+                           this.GetStringSetting(
+                               SiteUrlsOnlyRegexSetting,
                                @"/rss\.aspx|Telerik.RadUploadProgressHandler\.ashx|BannerClickThrough\.aspx|(?:/[^/]+)*/Tabid/\d+/.*default\.aspx"));
             }
             internal set { this._useSiteUrlsRegex = value; }

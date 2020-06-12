@@ -393,7 +393,8 @@ namespace DotNetNuke.Security.Permissions.Controls
                     {
                         addDelimiter = true;
                     }
-                    sb.Append(this.BuildKey(objFolderPermission.AllowAccess,
+                    sb.Append(this.BuildKey(
+                        objFolderPermission.AllowAccess,
                                        objFolderPermission.PermissionID,
                                        objFolderPermission.FolderPermissionID,
                                        objFolderPermission.RoleID,

@@ -234,7 +234,8 @@ namespace DotNetNuke.UI.Skins.Controls
 
                     if (changed)
                     {
-                        var newMatch = string.Format("{0}={1}{2}{3}",
+                        var newMatch = string.Format(
+                            "{0}={1}{2}{3}",
                                                         match.Groups[1].Value,
                                                         match.Groups[2].Value,
                                                         url,

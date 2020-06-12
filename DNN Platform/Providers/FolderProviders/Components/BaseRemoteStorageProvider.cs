@@ -31,7 +31,9 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         {
             var cacheKey = string.Format(this.ObjectCacheKey, folderMapping.FolderMappingID, key);
 
-            return CBO.GetCachedObject<IRemoteStorageItem>(new CacheItemArgs(cacheKey,
+            return CBO.GetCachedObject<IRemoteStorageItem>(
+                new CacheItemArgs(
+                cacheKey,
                 this.ObjectCacheTimeout,
                 CacheItemPriority.Default,
                 folderMapping.FolderMappingID),

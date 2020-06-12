@@ -96,7 +96,8 @@ namespace DotNetNuke.Entities.Modules
             if (skinControlID == Null.NullInteger)
             {
                 // Add new Skin Control
-                skinControlID = dataProvider.AddSkinControl(skinControl.PackageID,
+                skinControlID = dataProvider.AddSkinControl(
+                    skinControl.PackageID,
                                                             skinControl.ControlKey,
                                                             skinControl.ControlSrc,
                                                             skinControl.SupportsPartialRendering,
@@ -106,7 +107,8 @@ namespace DotNetNuke.Entities.Modules
             else
             {
                 // Upgrade Skin Control
-                dataProvider.UpdateSkinControl(skinControl.SkinControlID,
+                dataProvider.UpdateSkinControl(
+                    skinControl.SkinControlID,
                                                skinControl.PackageID,
                                                skinControl.ControlKey,
                                                skinControl.ControlSrc,

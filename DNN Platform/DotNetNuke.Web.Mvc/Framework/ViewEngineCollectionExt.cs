@@ -21,7 +21,8 @@ namespace DotNetNuke.Web.Mvc.Framework
     public static class ViewEngineCollectionExt
     {
         // Enable the call to ViewEngineCollection FindView method with useCache=false
-        public static ViewEngineResult FindView(this ViewEngineCollection viewEngineCollection,
+        public static ViewEngineResult FindView(
+            this ViewEngineCollection viewEngineCollection,
             ControllerContext controllerContext,
             string viewName, string masterName, bool useCache)
         {
@@ -46,7 +47,8 @@ namespace DotNetNuke.Web.Mvc.Framework
         }
 
         // Enable the call to ViewEngineCollection FindPartialView method with useCache=false
-        public static ViewEngineResult FindPartialView(this ViewEngineCollection viewEngineCollection,
+        public static ViewEngineResult FindPartialView(
+            this ViewEngineCollection viewEngineCollection,
             ControllerContext controllerContext, string partialViewName, bool useCache)
         {
             try
@@ -76,7 +78,8 @@ namespace DotNetNuke.Web.Mvc.Framework
             var target = cacheItem.Params[1];
             var parameters = cacheItem.Params[2] as object[];
             return
-                factoryType.InvokeMember(name,
+                factoryType.InvokeMember(
+                    name,
                     BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic, null, target, parameters)
                     as ViewEngineResult;
         }

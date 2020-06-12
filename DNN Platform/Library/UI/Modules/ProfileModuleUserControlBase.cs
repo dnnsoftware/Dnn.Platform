@@ -95,7 +95,8 @@ namespace DotNetNuke.UI.Modules
                 try
                 {
                     // Clicked on breadcrumb - don't know which user
-                    this.Response.Redirect(this.Request.IsAuthenticated
+                    this.Response.Redirect(
+                        this.Request.IsAuthenticated
                                           ? this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, "", "UserId=" + this.ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
                                           : this.GetRedirectUrl(), true);
                 }

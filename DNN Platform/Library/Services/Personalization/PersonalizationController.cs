@@ -43,7 +43,8 @@ namespace DotNetNuke.Services.Personalization
             if (userId > Null.NullInteger)
             {
                var cacheKey = string.Format(DataCache.UserPersonalizationCacheKey, portalId, userId);
-                profileData = CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey, DataCache.UserPersonalizationCacheTimeout,
+                profileData = CBO.GetCachedObject<string>(
+                    new CacheItemArgs(cacheKey, DataCache.UserPersonalizationCacheTimeout,
                     DataCache.UserPersonalizationCachePriority, portalId, userId), GetCachedUserPersonalizationCallback);
             }
             else
@@ -125,7 +126,9 @@ namespace DotNetNuke.Services.Personalization
                     // remove then re-add the updated one
                     var cacheKey = string.Format(DataCache.UserPersonalizationCacheKey, portalId, userId);
                     DataCache.RemoveCache(cacheKey);
-                    CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey,
+                    CBO.GetCachedObject<string>(
+                        new CacheItemArgs(
+                        cacheKey,
                         DataCache.UserPersonalizationCacheTimeout, DataCache.UserPersonalizationCachePriority), _ => profileData);
                 }
                 else

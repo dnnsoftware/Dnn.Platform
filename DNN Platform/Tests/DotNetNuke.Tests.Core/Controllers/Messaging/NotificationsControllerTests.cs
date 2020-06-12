@@ -368,7 +368,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 new[] { CreateNewNotificationTypeAction(), CreateNewNotificationTypeAction() },
                 Constants.Messaging_NotificationTypeId);
 
-            this._mockDataService.Verify(x => x.AddNotificationTypeAction(Constants.Messaging_NotificationTypeId,
+            this._mockDataService.Verify(
+                x => x.AddNotificationTypeAction(
+                Constants.Messaging_NotificationTypeId,
                     Constants.Messaging_NotificationTypeActionNameResourceKey,
                     Constants.Messaging_NotificationTypeActionDescriptionResourceKey,
                     Constants.Messaging_NotificationTypeActionConfirmResourceKey,

@@ -30,7 +30,8 @@ namespace DotNetNuke.Web.Api
             Requires.NotNull("configuration", configuration);
 
             this._configuration = configuration;
-            this._descriptorCache = new Lazy<ConcurrentDictionary<string, HttpControllerDescriptor>>(this.InitTypeCache,
+            this._descriptorCache = new Lazy<ConcurrentDictionary<string, HttpControllerDescriptor>>(
+                this.InitTypeCache,
                                                                                                 isThreadSafe: true);
         }
 
@@ -47,7 +48,8 @@ namespace DotNetNuke.Web.Api
             IEnumerable<string> namespaces = this.GetNameSpaces(request);
             if (namespaces == null || !namespaces.Any() || String.IsNullOrEmpty(controllerName))
             {
-                throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.NotFound,
+                throw new HttpResponseException(request.CreateErrorResponse(
+                    HttpStatusCode.NotFound,
                                                                             "Unable to locate a controller for " +
                                                                             request.RequestUri));
             }

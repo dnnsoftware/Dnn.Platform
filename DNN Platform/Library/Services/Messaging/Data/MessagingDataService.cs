@@ -36,7 +36,8 @@ namespace DotNetNuke.Services.Messaging.Data
 
         public long SaveMessage(Message objMessaging)
         {
-            return this.provider.ExecuteScalar<long>("Messaging_Save_Message",
+            return this.provider.ExecuteScalar<long>(
+                "Messaging_Save_Message",
                                                       objMessaging.PortalID,
                                                       objMessaging.FromUserID,
                                                       objMessaging.ToUserID,
@@ -68,7 +69,8 @@ namespace DotNetNuke.Services.Messaging.Data
 
         public void UpdateMessage(Message message)
         {
-            this.provider.ExecuteNonQuery("Messaging_UpdateMessage",
+            this.provider.ExecuteNonQuery(
+                "Messaging_UpdateMessage",
                                      message.MessageID,
                                      message.ToUserID,
                                      message.ToRoleID,

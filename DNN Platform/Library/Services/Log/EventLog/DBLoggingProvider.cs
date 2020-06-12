@@ -190,7 +190,8 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     LogInfo objLogInfo = logQueueItem.LogInfo;
                     string logProperties = objLogInfo.LogProperties.Serialize();
-                    DataProvider.Instance().AddLog(objLogInfo.LogGUID,
+                    DataProvider.Instance().AddLog(
+                        objLogInfo.LogGUID,
                                                    objLogInfo.LogTypeKey,
                                                    objLogInfo.LogUserID,
                                                    objLogInfo.LogUserName,
@@ -288,7 +289,8 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 intKeepMostRecent = Convert.ToInt32(keepMostRecent);
             }
-            DataProvider.Instance().AddLogTypeConfigInfo(loggingIsActive,
+            DataProvider.Instance().AddLogTypeConfigInfo(
+                loggingIsActive,
                                                          logTypeKey,
                                                          logTypePortalID,
                                                          intKeepMostRecent,
@@ -367,7 +369,8 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public override ArrayList GetLogTypeInfo()
         {
-            return CBO.GetCachedObject<ArrayList>(new CacheItemArgs(LogTypeCacheKey, 20, CacheItemPriority.Normal),
+            return CBO.GetCachedObject<ArrayList>(
+                new CacheItemArgs(LogTypeCacheKey, 20, CacheItemPriority.Normal),
                 c => CBO.FillCollection(DataProvider.Instance().GetLogTypeInfo(), typeof(LogTypeInfo)));
         }
 
@@ -511,7 +514,8 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 intKeepMostRecent = Convert.ToInt32(keepMostRecent);
             }
-            DataProvider.Instance().UpdateLogTypeConfigInfo(id,
+            DataProvider.Instance().UpdateLogTypeConfigInfo(
+                id,
                                                             loggingIsActive,
                                                             logTypeKey,
                                                             logTypePortalID,

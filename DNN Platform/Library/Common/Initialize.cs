@@ -354,7 +354,8 @@ namespace DotNetNuke.Common
                 LogController.Instance.AddLog(log);
 
                 // enhanced shutdown logging
-                var runtime = typeof(HttpRuntime).InvokeMember("_theRuntime",
+                var runtime = typeof(HttpRuntime).InvokeMember(
+                    "_theRuntime",
                     BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
                     null, null, null) as HttpRuntime;
 
@@ -364,11 +365,13 @@ namespace DotNetNuke.Common
                 }
                 else
                 {
-                    var shutDownMessage = runtime.GetType().InvokeMember("_shutDownMessage",
+                    var shutDownMessage = runtime.GetType().InvokeMember(
+                        "_shutDownMessage",
                         BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField,
                         null, runtime, null) as string;
 
-                    var shutDownStack = runtime.GetType().InvokeMember("_shutDownStack",
+                    var shutDownStack = runtime.GetType().InvokeMember(
+                        "_shutDownStack",
                         BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField,
                         null, runtime, null) as string;
 

@@ -186,7 +186,8 @@ namespace DotNetNuke.Services.FileSystem
             // check if a filename has a character that is not valid for urls
             if (fullPath.IndexOfAny(InvalidFileUrlChars) >= 0)
             {
-                return Globals.LinkClick($"fileid={file.FileId}",
+                return Globals.LinkClick(
+                    $"fileid={file.FileId}",
                     Null.NullInteger,
                     Null.NullInteger,
                     true,

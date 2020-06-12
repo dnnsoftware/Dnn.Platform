@@ -31,7 +31,8 @@ namespace DotNetNuke.Entities.Urls
     public class ExtensionUrlProviderController
     {
         private static readonly object providersBuildLock = new object();
-        private static readonly Regex RewrittenUrlRegex = new Regex(@"(?<tabid>(?:\?|&)tabid=\d+)(?<qs>&[^=]+=[^&]*)*",
+        private static readonly Regex RewrittenUrlRegex = new Regex(
+            @"(?<tabid>(?:\?|&)tabid=\d+)(?<qs>&[^=]+=[^&]*)*",
             RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
         #region Private Methods
@@ -59,7 +60,8 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="settings"></param>
         /// <param name="parentTraceId"></param>
         /// <returns></returns>
-        private static List<ExtensionUrlProvider> GetProvidersToCall(int tabId,
+        private static List<ExtensionUrlProvider> GetProvidersToCall(
+            int tabId,
                                                                     int portalId,
                                                                     FriendlyUrlSettings settings,
                                                                     Guid parentTraceId)
@@ -72,7 +74,8 @@ namespace DotNetNuke.Entities.Urls
                 bool definitelyNoProvider;
                 // 887 : use cached list of tabs instead of per-tab cache of provider
                 // get the list of providers to call based on the tab and the portal
-                var providersToCall = CacheController.GetProvidersForTabAndPortal(tabId,
+                var providersToCall = CacheController.GetProvidersForTabAndPortal(
+                    tabId,
                                                                                     portalId,
                                                                                     settings,
                                                                                     out definitelyNoProvider,
@@ -160,7 +163,8 @@ namespace DotNetNuke.Entities.Urls
             return checkForAlwaysCallResult;
         }
 
-        internal static bool CheckForRedirect(Uri requestUri,
+        internal static bool CheckForRedirect(
+            Uri requestUri,
                                                 UrlAction result,
                                                 NameValueCollection queryStringCol,
                                                 FriendlyUrlSettings settings,
@@ -226,7 +230,8 @@ namespace DotNetNuke.Entities.Urls
         }
 
 
-        internal static bool GetUrlFromExtensionUrlProviders(int portalId,
+        internal static bool GetUrlFromExtensionUrlProviders(
+            int portalId,
                                                                 TabInfo tab,
                                                                 FriendlyUrlSettings settings,
                                                                 string friendlyUrlPath,
@@ -255,7 +260,8 @@ namespace DotNetNuke.Entities.Urls
                     activeProvider = provider; // keep for exception purposes
                     bool useDnnPagePath;
                     // go through and call each provider to generate the friendly urls for the module
-                    string customPath = provider.ChangeFriendlyUrl(tab,
+                    string customPath = provider.ChangeFriendlyUrl(
+                        tab,
                                                                 friendlyUrlPath,
                                                                 options,
                                                                 cultureCode,
@@ -294,7 +300,8 @@ namespace DotNetNuke.Entities.Urls
             return wasChanged;
         }
 
-        internal static bool TransformFriendlyUrlPath(string newUrl,
+        internal static bool TransformFriendlyUrlPath(
+            string newUrl,
                                                         string tabKeyVal,
                                                         string[] urlParms,
                                                         bool isSiteRootMatch,
@@ -316,7 +323,8 @@ namespace DotNetNuke.Entities.Urls
                 {
                     tabId = RewriteController.SiteRootRewrite;
                 }
-                List<ExtensionUrlProvider> providersToCall = GetProvidersToCall(tabId,
+                List<ExtensionUrlProvider> providersToCall = GetProvidersToCall(
+                    tabId,
                                                                                 result.PortalId,
                                                                                 settings,
                                                                                 parentTraceId);
@@ -341,7 +349,8 @@ namespace DotNetNuke.Entities.Urls
                         // call down to specific providers and see if we get a rewrite
                         string location;
                         int status;
-                        string queryString = provider.TransformFriendlyUrlToQueryString(parms,
+                        string queryString = provider.TransformFriendlyUrlToQueryString(
+                            parms,
                                                                                         result.TabId,
                                                                                         result.PortalId,
                                                                                         options,
@@ -477,7 +486,9 @@ namespace DotNetNuke.Entities.Urls
         public static List<ExtensionUrlProvider> GetModuleProviders(int portalId)
         {
             var cacheKey = String.Format("ExtensionUrlProviders_{0}", portalId);
-            var moduleProviders = CBO.GetCachedObject<List<ExtensionUrlProvider>>(new CacheItemArgs(cacheKey,
+            var moduleProviders = CBO.GetCachedObject<List<ExtensionUrlProvider>>(
+                new CacheItemArgs(
+                cacheKey,
                                                                                 60,
                                                                                 CacheItemPriority.High,
                                                                                 portalId),
@@ -610,7 +621,8 @@ namespace DotNetNuke.Entities.Urls
                     // create a log event
                     string productVer = DotNetNukeContext.Current.Application.Version.ToString();
                     var log = new LogInfo { LogTypeKey = "GENERAL_EXCEPTION" };
-                    log.AddProperty("Url Rewriting Extension Url Provider Exception",
+                    log.AddProperty(
+                        "Url Rewriting Extension Url Provider Exception",
                                          "Exception in Url Rewriting Process");
                     log.AddProperty("Provider Name", moduleProviderName);
                     log.AddProperty("Provider Version", moduleProviderVersion);

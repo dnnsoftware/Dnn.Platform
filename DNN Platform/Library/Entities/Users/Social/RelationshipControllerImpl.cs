@@ -69,7 +69,8 @@ namespace DotNetNuke.Entities.Users.Social
 
             // log event
             string logContent =
-                string.Format(Localization.GetString("RelationshipType_Deleted", Localization.GlobalResourceFile),
+                string.Format(
+                    Localization.GetString("RelationshipType_Deleted", Localization.GlobalResourceFile),
                               relationshipType.Name, relationshipType.RelationshipTypeId);
             this.AddLog(logContent);
 
@@ -79,10 +80,12 @@ namespace DotNetNuke.Entities.Users.Social
 
         public IList<RelationshipType> GetAllRelationshipTypes()
         {
-            var cacheArgs = new CacheItemArgs(DataCache.RelationshipTypesCacheKey,
+            var cacheArgs = new CacheItemArgs(
+                DataCache.RelationshipTypesCacheKey,
                                               DataCache.RelationshipTypesCacheTimeOut,
                                               DataCache.RelationshipTypesCachePriority);
-            return CBO.GetCachedObject<IList<RelationshipType>>(cacheArgs,
+            return CBO.GetCachedObject<IList<RelationshipType>>(
+                cacheArgs,
                                                                 c =>
                                                                 CBO.FillCollection<RelationshipType>(
                                                                     this._dataService.GetAllRelationshipTypes()));
@@ -101,12 +104,14 @@ namespace DotNetNuke.Entities.Users.Social
                                          ? "RelationshipType_Added"
                                          : "RelationshipType_Updated";
 
-            relationshipType.RelationshipTypeId = this._dataService.SaveRelationshipType(relationshipType,
+            relationshipType.RelationshipTypeId = this._dataService.SaveRelationshipType(
+                relationshipType,
                                                                                     UserController.Instance.GetCurrentUserInfo().
                                                                                         UserID);
 
             // log event
-            string logContent = string.Format(Localization.GetString(localizationKey, Localization.GlobalResourceFile),
+            string logContent = string.Format(
+                Localization.GetString(localizationKey, Localization.GlobalResourceFile),
                                               relationshipType.Name);
             this.AddLog(logContent);
 
@@ -126,7 +131,8 @@ namespace DotNetNuke.Entities.Users.Social
 
             // log event
             string logContent =
-                string.Format(Localization.GetString("Relationship_Deleted", Localization.GlobalResourceFile),
+                string.Format(
+                    Localization.GetString("Relationship_Deleted", Localization.GlobalResourceFile),
                               relationship.Name, relationship.RelationshipId);
             this.AddLog(logContent);
 
@@ -151,11 +157,13 @@ namespace DotNetNuke.Entities.Users.Social
             {
                 pid = PortalController.GetEffectivePortalId(portalId);
             }
-            var cacheArgs = new CacheItemArgs(string.Format(DataCache.RelationshipByPortalIDCacheKey, pid),
+            var cacheArgs = new CacheItemArgs(
+                string.Format(DataCache.RelationshipByPortalIDCacheKey, pid),
                                               DataCache.RelationshipByPortalIDCacheTimeOut,
                                               DataCache.RelationshipByPortalIDCachePriority,
                                               pid);
-            return CBO.GetCachedObject<IList<Relationship>>(cacheArgs,
+            return CBO.GetCachedObject<IList<Relationship>>(
+                cacheArgs,
                                                             c =>
                                                             CBO.FillCollection<Relationship>(
                                                                 this._dataService.GetRelationshipsByPortalId(
@@ -170,11 +178,13 @@ namespace DotNetNuke.Entities.Users.Social
                                          ? "Relationship_Added"
                                          : "Relationship_Updated";
 
-            relationship.RelationshipId = this._dataService.SaveRelationship(relationship,
+            relationship.RelationshipId = this._dataService.SaveRelationship(
+                relationship,
                                                                         UserController.Instance.GetCurrentUserInfo().UserID);
 
             // log event
-            string logContent = string.Format(Localization.GetString(localizationKey, Localization.GlobalResourceFile),
+            string logContent = string.Format(
+                Localization.GetString(localizationKey, Localization.GlobalResourceFile),
                                               relationship.Name);
             this.AddLog(logContent);
 
@@ -194,7 +204,8 @@ namespace DotNetNuke.Entities.Users.Social
 
             // log event
             string logContent =
-                string.Format(Localization.GetString("UserRelationship_Deleted", Localization.GlobalResourceFile),
+                string.Format(
+                    Localization.GetString("UserRelationship_Deleted", Localization.GlobalResourceFile),
                               userRelationship.UserRelationshipId, userRelationship.UserId,
                               userRelationship.RelatedUserId);
             this.AddLog(logContent);
@@ -236,12 +247,14 @@ namespace DotNetNuke.Entities.Users.Social
                                          ? "UserRelationship_Added"
                                          : "UserRelationship_Updated";
 
-            userRelationship.UserRelationshipId = this._dataService.SaveUserRelationship(userRelationship,
+            userRelationship.UserRelationshipId = this._dataService.SaveUserRelationship(
+                userRelationship,
                                                                                     UserController.Instance.GetCurrentUserInfo().
                                                                                         UserID);
 
             // log event
-            string logContent = string.Format(Localization.GetString(localizationKey, Localization.GlobalResourceFile),
+            string logContent = string.Format(
+                Localization.GetString(localizationKey, Localization.GlobalResourceFile),
                                               userRelationship.UserRelationshipId, userRelationship.UserId,
                                               userRelationship.RelatedUserId);
             this.AddLog(logContent);
@@ -278,7 +291,8 @@ namespace DotNetNuke.Entities.Users.Social
         public UserRelationshipPreference GetUserRelationshipPreference(int userId, int relationshipId)
         {
             return
-                CBO.FillObject<UserRelationshipPreference>(this._dataService.GetUserRelationshipPreference(userId,
+                CBO.FillObject<UserRelationshipPreference>(this._dataService.GetUserRelationshipPreference(
+                    userId,
                                                                                                       relationshipId));
         }
 
@@ -291,11 +305,13 @@ namespace DotNetNuke.Entities.Users.Social
                                          : "UserRelationshipPreference_Updated";
 
             userRelationshipPreference.PreferenceId =
-                this._dataService.SaveUserRelationshipPreference(userRelationshipPreference,
+                this._dataService.SaveUserRelationshipPreference(
+                    userRelationshipPreference,
                                                             UserController.Instance.GetCurrentUserInfo().UserID);
 
             // log event
-            string logContent = string.Format(Localization.GetString(localizationKey, Localization.GlobalResourceFile),
+            string logContent = string.Format(
+                Localization.GetString(localizationKey, Localization.GlobalResourceFile),
                                               userRelationshipPreference.PreferenceId, userRelationshipPreference.UserId,
                                               userRelationshipPreference.RelationshipId);
             this.AddLog(logContent);
@@ -340,7 +356,8 @@ namespace DotNetNuke.Entities.Users.Social
             if (initiatingUser.UserID == targetUser.UserID)
             {
                 throw new UserRelationshipForSameUsersException(
-                    Localization.GetExceptionMessage("UserRelationshipForSameUsersError",
+                    Localization.GetExceptionMessage(
+                        "UserRelationshipForSameUsersError",
                                                      "Initiating and Target Users cannot have same UserID '{0}'.",
                                                      initiatingUser.UserID));
             }
@@ -349,7 +366,8 @@ namespace DotNetNuke.Entities.Users.Social
             if (initiatingUser.PortalID != targetUser.PortalID)
             {
                 throw new UserRelationshipForDifferentPortalException(
-                    Localization.GetExceptionMessage("UserRelationshipForDifferentPortalError",
+                    Localization.GetExceptionMessage(
+                        "UserRelationshipForDifferentPortalError",
                                                      "Portal ID '{0}' of Initiating User is different from Portal ID '{1}' of Target  User.",
                                                      initiatingUser.PortalID, targetUser.PortalID));
             }
@@ -371,7 +389,8 @@ namespace DotNetNuke.Entities.Users.Social
             RelationshipStatus status = relationship.DefaultResponse;
 
 
-            UserRelationshipPreference preference = this.GetUserRelationshipPreference(targetUser.UserID,
+            UserRelationshipPreference preference = this.GetUserRelationshipPreference(
+                targetUser.UserID,
                                                                                   relationship.RelationshipId);
             if (preference != null)
             {
@@ -668,7 +687,8 @@ namespace DotNetNuke.Entities.Users.Social
             if (userRelationship == null)
             {
                 throw new UserRelationshipDoesNotExistException(
-                    Localization.GetExceptionMessage("UserRelationshipDoesNotExistError",
+                    Localization.GetExceptionMessage(
+                        "UserRelationshipDoesNotExistError",
                                                      "UserRelationshipID '{0}' does not exist.", userRelationshipId));
             }
 

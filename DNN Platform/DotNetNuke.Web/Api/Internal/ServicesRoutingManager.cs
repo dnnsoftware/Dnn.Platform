@@ -48,7 +48,8 @@ namespace DotNetNuke.Web.Api.Internal
         {
             if (namespaces == null || namespaces.Length == 0 || String.IsNullOrEmpty(namespaces[0]))
             {
-                throw new ArgumentException(Localization.GetExceptionMessage("ArgumentCannotBeNullOrEmpty",
+                throw new ArgumentException(Localization.GetExceptionMessage(
+                    "ArgumentCannotBeNullOrEmpty",
                                                                              "The argument '{0}' cannot be null or empty.",
                                                                              "namespaces"));
             }

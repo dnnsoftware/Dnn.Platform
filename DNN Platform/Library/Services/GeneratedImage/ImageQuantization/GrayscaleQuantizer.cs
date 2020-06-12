@@ -42,7 +42,8 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 // Otherwise, use your favorite color reduction algorithm
                 // and an optimum palette for that algorithm generated here.
                 // For example, a color histogram, or a median cut palette.
-                this._colors[i] = Color.FromArgb((int)Alpha,
+                this._colors[i] = Color.FromArgb(
+                    (int)Alpha,
                     (int)intensity,
                     (int)intensity,
                     (int)intensity);

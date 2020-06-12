@@ -255,7 +255,8 @@ namespace DotNetNuke.Services.EventQueue
             {
                 for (int indx = 0; indx <= subscribers.Length - 1; indx++)
                 {
-                    intMessageID = DataProvider.Instance().AddEventMessage(eventName,
+                    intMessageID = DataProvider.Instance().AddEventMessage(
+                        eventName,
                                                                            (int)message.Priority,
                                                                            message.ProcessorType,
                                                                            message.ProcessorCommand,

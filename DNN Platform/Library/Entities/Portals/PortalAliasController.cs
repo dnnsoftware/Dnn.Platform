@@ -115,7 +115,8 @@ namespace DotNetNuke.Entities.Portals
                 {
                     // relate the PortalAlias to the default portal on a fresh database installation
                     DataProvider.Instance().UpdatePortalAlias(httpAlias.ToLowerInvariant().Trim('/'), UserController.Instance.GetCurrentUserInfo().UserID);
-                    EventLogController.Instance.AddLog("PortalAlias",
+                    EventLogController.Instance.AddLog(
+                        "PortalAlias",
                                        httpAlias,
                                        PortalController.Instance.GetCurrentPortalSettings(),
                                        UserController.Instance.GetCurrentUserInfo().UserID,
@@ -161,7 +162,8 @@ namespace DotNetNuke.Entities.Portals
         {
             // Add Alias
             var dataProvider = DataProvider.Instance();
-            int Id = dataProvider.AddPortalAlias(portalAlias.PortalID,
+            int Id = dataProvider.AddPortalAlias(
+                portalAlias.PortalID,
                                                  portalAlias.HTTPAlias.ToLowerInvariant().Trim('/'),
                                                  portalAlias.CultureCode,
                                                  portalAlias.Skin,
@@ -218,12 +220,15 @@ namespace DotNetNuke.Entities.Portals
 
         internal Dictionary<string, PortalAliasInfo> GetPortalAliasesInternal()
         {
-            return CBO.GetCachedObject<Dictionary<string, PortalAliasInfo>>(new CacheItemArgs(DataCache.PortalAliasCacheKey,
+            return CBO.GetCachedObject<Dictionary<string, PortalAliasInfo>>(
+                new CacheItemArgs(
+                DataCache.PortalAliasCacheKey,
                                                                                         DataCache.PortalAliasCacheTimeOut,
                                                                                         DataCache.PortalAliasCachePriority),
                                                                 c =>
                                                                 {
-                                                                    var dic = CBO.FillDictionary<string, PortalAliasInfo>("HTTPAlias",
+                                                                    var dic = CBO.FillDictionary<string, PortalAliasInfo>(
+                                                                        "HTTPAlias",
                                                                         DataProvider.Instance().GetPortalAliases());
                                                                     return dic.Keys.ToDictionary(key => key.ToLowerInvariant(), key => dic[key]);
                                                                 },
@@ -259,7 +264,8 @@ namespace DotNetNuke.Entities.Portals
         public void UpdatePortalAlias(PortalAliasInfo portalAlias)
         {
             // Update Alias
-            DataProvider.Instance().UpdatePortalAliasInfo(portalAlias.PortalAliasID,
+            DataProvider.Instance().UpdatePortalAliasInfo(
+                portalAlias.PortalAliasID,
                                                             portalAlias.PortalID,
                                                             portalAlias.HTTPAlias.ToLowerInvariant().Trim('/'),
                                                             portalAlias.CultureCode,

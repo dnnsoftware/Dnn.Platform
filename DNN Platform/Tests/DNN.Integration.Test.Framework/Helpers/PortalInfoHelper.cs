@@ -17,7 +17,8 @@ namespace DNN.Integration.Test.Framework.Helpers
 
         public static void UpdatePortalInfo(PortalInfo portal)
         {
-            DatabaseHelper.ExecuteStoredProcedure("UpdatePortalInfo",
+            DatabaseHelper.ExecuteStoredProcedure(
+                "UpdatePortalInfo",
                                                  portal.PortalID,
                                                  portal.PortalGroupID,
                                                  portal.PortalName,

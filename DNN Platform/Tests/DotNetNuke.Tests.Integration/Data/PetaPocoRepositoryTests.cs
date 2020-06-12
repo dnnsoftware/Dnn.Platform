@@ -298,7 +298,8 @@ namespace DotNetNuke.Tests.Data
             repository.Insert(dog);
 
             // Assert
-            int actualCount = DataUtil.GetRecordCount(Constants.PETAPOCO_DatabaseName,
+            int actualCount = DataUtil.GetRecordCount(
+                Constants.PETAPOCO_DatabaseName,
                                                       Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount + 1, actualCount);
         }
@@ -323,7 +324,8 @@ namespace DotNetNuke.Tests.Data
             repository.Insert(dog);
 
             // Assert
-            int newId = DataUtil.GetLastAddedRecordID(Constants.PETAPOCO_DatabaseName,
+            int newId = DataUtil.GetLastAddedRecordID(
+                Constants.PETAPOCO_DatabaseName,
                                                       Constants.PETAPOCO_DogTableName, Constants.TABLENAME_Key);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount + 1, newId);
         }
@@ -412,7 +414,8 @@ namespace DotNetNuke.Tests.Data
             repository.Delete(dog);
 
             // Assert
-            int actualCount = DataUtil.GetRecordCount(Constants.PETAPOCO_DatabaseName,
+            int actualCount = DataUtil.GetRecordCount(
+                Constants.PETAPOCO_DatabaseName,
                                                       Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount - 1, actualCount);
         }
@@ -500,7 +503,8 @@ namespace DotNetNuke.Tests.Data
 
             // Assert
             // Assert
-            int actualCount = DataUtil.GetRecordCount(Constants.PETAPOCO_DatabaseName,
+            int actualCount = DataUtil.GetRecordCount(
+                Constants.PETAPOCO_DatabaseName,
                                                       Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount, actualCount);
         }
@@ -532,7 +536,8 @@ namespace DotNetNuke.Tests.Data
 
             // Assert
             // Assert
-            int actualCount = DataUtil.GetRecordCount(Constants.PETAPOCO_DatabaseName,
+            int actualCount = DataUtil.GetRecordCount(
+                Constants.PETAPOCO_DatabaseName,
                                                       Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount, actualCount);
         }
@@ -556,7 +561,8 @@ namespace DotNetNuke.Tests.Data
             repository.Delete("WHERE ID = @0", Constants.PETAPOCO_DeleteDogId);
 
             // Assert
-            int actualCount = DataUtil.GetRecordCount(Constants.PETAPOCO_DatabaseName,
+            int actualCount = DataUtil.GetRecordCount(
+                Constants.PETAPOCO_DatabaseName,
                                                       Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount - 1, actualCount);
         }
@@ -598,7 +604,8 @@ namespace DotNetNuke.Tests.Data
             repository.Delete("WHERE ID = @0", Constants.PETAPOCO_InvalidDogId);
 
             // Assert
-            int actualCount = DataUtil.GetRecordCount(Constants.PETAPOCO_DatabaseName,
+            int actualCount = DataUtil.GetRecordCount(
+                Constants.PETAPOCO_DatabaseName,
                                                       Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount, actualCount);
         }
@@ -741,7 +748,8 @@ namespace DotNetNuke.Tests.Data
             repository.Update(dog);
 
             // Assert
-            int actualCount = DataUtil.GetRecordCount(Constants.PETAPOCO_DatabaseName,
+            int actualCount = DataUtil.GetRecordCount(
+                Constants.PETAPOCO_DatabaseName,
                                                       Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount, actualCount);
         }
@@ -834,7 +842,8 @@ namespace DotNetNuke.Tests.Data
             repository.Update("SET Age=@1, Name=@2 WHERE ID=@0", Constants.PETAPOCO_UpdateDogId, Constants.PETAPOCO_UpdateDogAge, Constants.PETAPOCO_UpdateDogName);
 
             // Assert
-            int actualCount = DataUtil.GetRecordCount(Constants.PETAPOCO_DatabaseName,
+            int actualCount = DataUtil.GetRecordCount(
+                Constants.PETAPOCO_DatabaseName,
                                                       Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount, actualCount);
         }

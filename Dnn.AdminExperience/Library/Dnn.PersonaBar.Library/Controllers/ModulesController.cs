@@ -72,7 +72,8 @@ namespace Dnn.PersonaBar.Library.Controllers
                     if (portalSettings.DefaultModuleId > Null.NullInteger &&
                         portalSettings.DefaultTabId > Null.NullInteger)
                     {
-                        var defaultModule = ModuleController.Instance.GetModule(portalSettings.DefaultModuleId,
+                        var defaultModule = ModuleController.Instance.GetModule(
+                            portalSettings.DefaultModuleId,
                             portalSettings.DefaultTabId, true);
                         if (defaultModule != null)
                         {

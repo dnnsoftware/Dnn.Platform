@@ -420,7 +420,8 @@ namespace log4net.Util
                     }
                     LogicalThreadContextStack ltcs = new LogicalThreadContextStack(this.m_logicalThreadContextStack.m_propertyKey, this.m_logicalThreadContextStack.m_registerNew);
                     ltcs.m_stack = stack;
-                    this.m_logicalThreadContextStack.m_registerNew(this.m_logicalThreadContextStack.m_propertyKey,
+                    this.m_logicalThreadContextStack.m_registerNew(
+                        this.m_logicalThreadContextStack.m_propertyKey,
                         ltcs);
                 }
             }

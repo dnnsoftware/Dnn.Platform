@@ -96,10 +96,12 @@ namespace DotNetNuke.Tests.Web.Mvc
             routeData.Values["controller"] = "Controller";
             routeData.Values["action"] = "Action";
             routeData.Values["id"] = "Id";
-            var controllerContext = new ControllerContext(CreateMockHttpContext(url),
+            var controllerContext = new ControllerContext(
+                CreateMockHttpContext(url),
                                                                         routeData,
                                                                         new Mock<ControllerBase>().Object);
-            return new ViewContext(controllerContext,
+            return new ViewContext(
+                controllerContext,
                                    new Mock<IView>().Object,
                                    new ViewDataDictionary(),
                                    new TempDataDictionary(),

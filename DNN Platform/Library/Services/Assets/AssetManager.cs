@@ -411,7 +411,8 @@ namespace DotNetNuke.Services.Assets
 
         private string GetInvalidCharsErrorText()
         {
-            throw new AssetManagerException(Localization.Localization.GetExceptionMessage("FolderFileNameHasInvalidcharacters",
+            throw new AssetManagerException(Localization.Localization.GetExceptionMessage(
+                "FolderFileNameHasInvalidcharacters",
                 FolderFileNameHasInvalidcharactersDefaultMessage, "\\:/*?\"<>|"));
         }
 

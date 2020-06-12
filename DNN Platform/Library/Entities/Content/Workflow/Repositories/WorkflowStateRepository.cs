@@ -28,7 +28,8 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
         public WorkflowState GetWorkflowStateByID(int stateId)
         {
-            return CBO.GetCachedObject<WorkflowState>(new CacheItemArgs(
+            return CBO.GetCachedObject<WorkflowState>(
+                new CacheItemArgs(
                 GetWorkflowStateKey(stateId), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
                 _ =>
                 {
@@ -115,7 +116,8 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
         {
             if (state.StateID > 0)
             {
-                CBO.GetCachedObject<WorkflowState>(new CacheItemArgs(
+                CBO.GetCachedObject<WorkflowState>(
+                    new CacheItemArgs(
                 GetWorkflowStateKey(state.StateID), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
                 _ => state);
             }

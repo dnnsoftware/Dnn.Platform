@@ -83,7 +83,8 @@ namespace DotNetNuke.Tests.Utilities
 
         public static void ThrowsArgNullOrEmpty(string paramName, Action act)
         {
-            Throws<ArgumentException>(String.Format("Argument cannot be null or an empty string{1}Parameter name: {0}", paramName, Environment.NewLine),
+            Throws<ArgumentException>(
+                String.Format("Argument cannot be null or an empty string{1}Parameter name: {0}", paramName, Environment.NewLine),
                                       act,
                                       ex => String.Equals(ex.ParamName, paramName, StringComparison.Ordinal));
         }

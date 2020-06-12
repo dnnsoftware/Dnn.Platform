@@ -138,7 +138,8 @@ namespace DotNetNuke.UI.Skins
                 // If the control is already in the hash table
                 if (this.m_ControlList.ContainsKey(Token))
                 {
-                    this.Message += SkinController.FormatMessage(string.Format(this.DUPLICATE_ERROR, Token),
+                    this.Message += SkinController.FormatMessage(
+                        string.Format(this.DUPLICATE_ERROR, Token),
                                                             string.Format(this.DUPLICATE_DETAIL, this.m_ControlList[Token], objSkinControl.ControlSrc),
                                                             2,
                                                             true);
@@ -507,7 +508,8 @@ namespace DotNetNuke.UI.Skins
                                 if (!String.IsNullOrEmpty(xmlSkinAttribute.SelectSingleNode("Value").InnerText))
                                 {
                                     // append the formatted attribute to the inner contents of the control statement
-                                    this.Messages += SkinController.FormatMessage(TOKEN_FORMAT,
+                                    this.Messages += SkinController.FormatMessage(
+                                        TOKEN_FORMAT,
                                                                              xmlSkinAttribute.SelectSingleNode("Name").InnerText + "=\"" + xmlSkinAttribute.SelectSingleNode("Value").InnerText + "\"",
                                                                              2,
                                                                              false);

@@ -225,7 +225,8 @@ namespace DotNetNuke.HttpModules.OutputCaching
                     int seconds = Convert.ToInt32(tabSettings["CacheDuration"].ToString());
                     var duration = new TimeSpan(0, 0, seconds);
 
-                    OutputCacheResponseFilter responseFilter = OutputCachingProvider.Instance(this._app.Context.Items[ContextKeyTabOutputCacheProvider].ToString()).GetResponseFilter(Convert.ToInt32(this._app.Context.Items[ContextKeyTabId]),
+                    OutputCacheResponseFilter responseFilter = OutputCachingProvider.Instance(this._app.Context.Items[ContextKeyTabOutputCacheProvider].ToString()).GetResponseFilter(
+                        Convert.ToInt32(this._app.Context.Items[ContextKeyTabId]),
                                                                                                                                                                                  maxCachedVariationsForTab,
                                                                                                                                                                                  this._app.Response.Filter,
                                                                                                                                                                                  cacheKey,

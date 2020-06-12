@@ -31,7 +31,8 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage Search(string q)
         {
             var results = RegistrationProfileController.Instance.Search(PortalController.GetEffectivePortalId(this.PortalSettings.PortalId), q);
-            return this.Request.CreateResponse(HttpStatusCode.OK,
+            return this.Request.CreateResponse(
+                HttpStatusCode.OK,
                         results.OrderBy(sr => sr)
                         .Select(field => new { id = field, name = field }));
         }
@@ -49,7 +50,8 @@ namespace DotNetNuke.Web.InternalServices
 
             if (modified)
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK,
+                return this.Request.CreateResponse(
+                    HttpStatusCode.OK,
                     new {
                             Result = "warning",
                             Title = Localization.GetString("CleanWarningTitle", Localization.SharedResourceFile),
@@ -64,7 +66,8 @@ namespace DotNetNuke.Web.InternalServices
 
             if (modified)
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK,
+                return this.Request.CreateResponse(
+                    HttpStatusCode.OK,
                                               new
                                                   {
                                                       Result = "warning",

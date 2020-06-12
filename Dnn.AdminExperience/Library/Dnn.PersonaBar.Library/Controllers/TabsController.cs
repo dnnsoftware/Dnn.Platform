@@ -286,7 +286,8 @@ namespace Dnn.PersonaBar.Library.Controllers
                         isMultiLanguage).ToList();
                 tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).IsOpen = true;
                 tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).ChildTabs =
-                    this.GetDescendantsForTabs(enumerable.Except(new List<int> { tabId }),
+                    this.GetDescendantsForTabs(
+                        enumerable.Except(new List<int> { tabId }),
                         tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).ChildTabs, selectedTabId,
                         portalId, cultureCode, isMultiLanguage).ToList();
             }

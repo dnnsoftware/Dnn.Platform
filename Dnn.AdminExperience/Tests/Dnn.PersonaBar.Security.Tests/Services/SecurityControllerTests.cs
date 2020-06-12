@@ -51,7 +51,8 @@ namespace Dnn.PersonaBar.Security.Tests.Services
             sut.AddPortalAlias(SslUrl, PortalId);
 
             // assert
-            portalAliasControllerMock.Verify(c =>
+            portalAliasControllerMock.Verify(
+                c =>
                 c.AddPortalAlias(It.Is<PortalAliasInfo>(match =>
                     match.HTTPAlias == SomeAlias && match.PortalID == PortalId)), Times.Never);
         }
@@ -71,7 +72,8 @@ namespace Dnn.PersonaBar.Security.Tests.Services
             sut.AddPortalAlias(SslUrl, PortalId);
 
             // assert
-            portalAliasControllerMock.Verify(c =>
+            portalAliasControllerMock.Verify(
+                c =>
                 c.AddPortalAlias(It.Is<PortalAliasInfo>(match =>
                     match.HTTPAlias == SomeAlias && match.PortalID == PortalId)), Times.Once);
         }

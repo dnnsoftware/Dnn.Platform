@@ -55,7 +55,8 @@ namespace DotNetNuke.Tests.Urls
         {
             var provider = new AdvancedUrlRewriter();
 
-            provider.ProcessTestRequestWithContext(HttpContext.Current,
+            provider.ProcessTestRequestWithContext(
+                HttpContext.Current,
                                     HttpContext.Current.Request.Url,
                                     true,
                                     testHelper.Result,

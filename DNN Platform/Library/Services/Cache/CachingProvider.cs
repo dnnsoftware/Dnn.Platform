@@ -195,7 +195,8 @@ namespace DotNetNuke.Services.Cache
             var folderUserCachePrefix = GetCacheKey(string.Format("Folders|{0}|", portalId));
             this.ClearCacheInternal(folderUserCachePrefix, clearRuntime);
 
-            PermissionProvider.ResetCacheDependency(portalId,
+            PermissionProvider.ResetCacheDependency(
+                portalId,
                 () => this.RemoveFormattedCacheKey(DataCache.FolderPermissionCacheKey, clearRuntime, portalId));
         }
 

@@ -27,7 +27,8 @@ namespace DNN.Integration.Test.Framework.Helpers
 
         public static void AddPortalAlias(PortalAliasInfo portal)
         {
-            DatabaseHelper.ExecuteStoredProcedure("AddPortalAlias",
+            DatabaseHelper.ExecuteStoredProcedure(
+                "AddPortalAlias",
                 portal.PortalID,
                 portal.HTTPAlias,
                 portal.CultureCode,

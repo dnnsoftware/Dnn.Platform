@@ -585,7 +585,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, this._adminUserInfo);
 
             // Assert
-            this._mockDataService.Verify(ds => ds.SaveMessage(It.Is<Message>(v => v.PortalID == Constants.PORTAL_Zero && v.Subject == "subject"
+            this._mockDataService.Verify(ds => ds.SaveMessage(
+                It.Is<Message>(v => v.PortalID == Constants.PORTAL_Zero && v.Subject == "subject"
                                                                              && v.Body == "body"
                                                                              && v.To == "role1,user1"
                                                                              && v.SenderUserID == this._adminUserInfo.UserID),

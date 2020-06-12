@@ -163,7 +163,8 @@ namespace DotNetNuke.Services.Installer.Installers
                                 writer.WriteStartElement("file");
 
                                 // Write path
-                                writer.WriteElementString("path",
+                                writer.WriteElementString(
+                                    "path",
                                     entry.Name.Substring(0, entry.Name.IndexOf(fileName)));
 
                                 // Write name
@@ -172,7 +173,8 @@ namespace DotNetNuke.Services.Installer.Installers
                                 var physicalPath = Path.Combine(this.PhysicalBasePath, entry.Name);
                                 if (File.Exists(physicalPath))
                                 {
-                                    Util.BackupFile(new InstallFile(entry.Name, this.Package.InstallerInfo),
+                                    Util.BackupFile(
+                                        new InstallFile(entry.Name, this.Package.InstallerInfo),
                                         this.PhysicalBasePath,
                                         this.Log);
                                 }

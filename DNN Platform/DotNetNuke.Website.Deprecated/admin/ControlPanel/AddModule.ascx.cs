@@ -441,7 +441,8 @@ namespace DotNetNuke.UI.ControlPanel
                     {
                         case ModuleSharing.Unsupported:
                             // Should never happen since the module should not be listed in the first place.
-                            throw new ApplicationException(string.Format("Module '{0}' does not support Shareable and should not be listed in Add Existing Module from a different source site",
+                            throw new ApplicationException(string.Format(
+                                "Module '{0}' does not support Shareable and should not be listed in Add Existing Module from a different source site",
                                                                          moduleInfo.DesktopModule.FriendlyName));
                         case ModuleSharing.Supported:
                             break;
@@ -519,7 +520,8 @@ namespace DotNetNuke.UI.ControlPanel
                     // Ensure the Portal Admin has View rights
                     var permissionController = new PermissionController();
                     ArrayList arrSystemModuleViewPermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
-                    AddModulePermission(newModule,
+                    AddModulePermission(
+                        newModule,
                                     (PermissionInfo)arrSystemModuleViewPermissions[0],
                                     PortalSettings.Current.AdministratorRoleId,
                                     Null.NullInteger,
@@ -538,7 +540,8 @@ namespace DotNetNuke.UI.ControlPanel
 
         private static void SetCloneModuleContext(bool cloneModuleContext)
         {
-            Thread.SetData(Thread.GetNamedDataSlot("CloneModuleContext"),
+            Thread.SetData(
+                Thread.GetNamedDataSlot("CloneModuleContext"),
                 cloneModuleContext ? bool.TrueString : bool.FalseString);
         }
 

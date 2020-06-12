@@ -34,7 +34,8 @@ namespace DNN.Integration.Test.Framework.Controllers
         /// <param name="portalId">PortalID to create the user under</param>
         /// <returns>Id of the created user</returns>
         /// <remarks>Username created is firstname.lastname</remarks>
-        public static int CreateRegisteredUser(string firstName = IntegrationConstants.RuFirstName,
+        public static int CreateRegisteredUser(
+            string firstName = IntegrationConstants.RuFirstName,
             string lastName = IntegrationConstants.RuLastName, int portalId = 0)
         {
             return CreateUser(new CreateUserParams { FirstName = firstName, LastName = lastName, PortalId = portalId });
@@ -61,7 +62,8 @@ namespace DNN.Integration.Test.Framework.Controllers
         /// <param name="portalId">PortalID to create the user under</param>
         /// <returns>Id of the created user</returns>
         /// <remarks>Username created is firstname.lastname</remarks>
-        public static int CreateAdministratorUser(string firstName = IntegrationConstants.AdminFirstName,
+        public static int CreateAdministratorUser(
+            string firstName = IntegrationConstants.AdminFirstName,
             string lastName = IntegrationConstants.AdminLastName, int portalId = 0)
         {
             return CreateUser(new CreateUserParams { FirstName = firstName, LastName = lastName, PortalId = portalId, Role = "Administrators" });

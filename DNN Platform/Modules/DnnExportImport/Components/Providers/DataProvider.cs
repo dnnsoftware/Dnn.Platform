@@ -148,7 +148,8 @@ namespace Dnn.ExportImport.Components.Providers
 
         public void UpsertJobChekpoint(ExportImportChekpoint checkpoint)
         {
-            this._dataProvider.ExecuteNonQuery("ExportImportCheckpoints_Upsert",
+            this._dataProvider.ExecuteNonQuery(
+                "ExportImportCheckpoints_Upsert",
                 checkpoint.JobId, checkpoint.AssemblyName, checkpoint.Category, checkpoint.Stage, checkpoint.StageData,
                 Null.SetNullInteger(Math.Floor(checkpoint.Progress)), checkpoint.TotalItems, checkpoint.ProcessedItems, this._dataProvider.GetNull(checkpoint.StartDate), checkpoint.Completed);
         }
@@ -263,7 +264,9 @@ namespace Dnn.ExportImport.Components.Providers
         public int? GetPermissionId(string permissionCode, string permissionKey, string permissionName)
         {
             return
-                CBO.GetCachedObject<IEnumerable<PermissionInfo>>(new CacheItemArgs(DataCache.PermissionsCacheKey,
+                CBO.GetCachedObject<IEnumerable<PermissionInfo>>(
+                    new CacheItemArgs(
+                    DataCache.PermissionsCacheKey,
                     DataCache.PermissionsCacheTimeout,
                     DataCache.PermissionsCachePriority),
                     c =>

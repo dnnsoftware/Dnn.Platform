@@ -526,7 +526,8 @@ namespace DotNetNuke.Services.FileSystem
                     }
 
                     throw new FolderProviderException(
-                        Localization.Localization.GetExceptionMessage("AddFileUnderlyingSystemError",
+                        Localization.Localization.GetExceptionMessage(
+                            "AddFileUnderlyingSystemError",
                                                                       "The underlying system threw an exception. The file has not been added."),
                                                                       ex);
                 }
@@ -553,7 +554,8 @@ namespace DotNetNuke.Services.FileSystem
         {
             if (checkPermissions && !FolderPermissionController.Instance.CanAddFolder(folder))
             {
-                throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("AddFilePermissionsNotMet",
+                throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage(
+                    "AddFilePermissionsNotMet",
                     "Permissions are not met. The file has not been added."));
             }
 
@@ -561,7 +563,8 @@ namespace DotNetNuke.Services.FileSystem
             {
                 throw new InvalidFileExtensionException(
                     string.Format(
-                        Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed",
+                        Localization.Localization.GetExceptionMessage(
+                            "AddFileExtensionNotAllowed",
                             "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(fileName)));
             }
 
@@ -569,7 +572,8 @@ namespace DotNetNuke.Services.FileSystem
             {
                 throw new InvalidFilenameException(
                     string.Format(
-                        Localization.Localization.GetExceptionMessage("AddFilenameNotAllowed",
+                        Localization.Localization.GetExceptionMessage(
+                            "AddFilenameNotAllowed",
                             "The file name '{0}' is not allowed. The file has not been added."), fileName));
             }
         }
@@ -640,7 +644,8 @@ namespace DotNetNuke.Services.FileSystem
             if (!PortalController.Instance.HasSpaceAvailable(folder.PortalID, fileContent.Length))
             {
                 throw new NoSpaceAvailableException(
-                    Localization.Localization.GetExceptionMessage("AddFileNoSpaceAvailable",
+                    Localization.Localization.GetExceptionMessage(
+                        "AddFileNoSpaceAvailable",
                                                                   "The portal has no space available to store the specified file. The file has not been added."));
             }
 
@@ -648,7 +653,8 @@ namespace DotNetNuke.Services.FileSystem
             if (oldFile != null && FileLockingController.Instance.IsFileOutOfPublishPeriod(oldFile, folder.PortalID, createdByUserId))
             {
                 throw new FileLockedException(
-                                Localization.Localization.GetExceptionMessage("FileLockedOutOfPublishPeriodError",
+                                Localization.Localization.GetExceptionMessage(
+                                    "FileLockedOutOfPublishPeriodError",
                                                                                 "File locked. The file cannot be updated because it is out of Publish Period"));
             }
 
@@ -683,7 +689,8 @@ namespace DotNetNuke.Services.FileSystem
 
         private void AddFile(IFileInfo file, int createdByUserID)
         {
-            file.FileId = DataProvider.Instance().AddFile(file.PortalId,
+            file.FileId = DataProvider.Instance().AddFile(
+                file.PortalId,
                                                     file.UniqueId,
                                                     file.VersionGuid,
                                                     file.FileName,
@@ -1587,7 +1594,8 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             throw new FileLockedException(
-                Localization.Localization.GetExceptionMessage("FileLockedRunningWorkflowError",
+                Localization.Localization.GetExceptionMessage(
+                    "FileLockedRunningWorkflowError",
                                                                 "File locked. The file cannot be updated because it has a running workflow"));
         }
         #endregion
@@ -1932,7 +1940,8 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("file", file);
 
-            DataProvider.Instance().UpdateFile(file.FileId,
+            DataProvider.Instance().UpdateFile(
+                file.FileId,
                                                file.VersionGuid,
                                                file.FileName,
                                                file.Extension,

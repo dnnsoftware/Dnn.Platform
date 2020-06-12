@@ -26,7 +26,8 @@ namespace DotNetNuke.Web.Mvc.Helpers
         {
             var htmlHelper = dnnHelper.HtmlHelper as HtmlHelper<TModel>;
 
-            return LabelHelper(htmlHelper,
+            return LabelHelper(
+                htmlHelper,
                                ModelMetadata.FromStringExpression(expression, htmlHelper.ViewData),
                                expression,
                                labelText,
@@ -78,7 +79,8 @@ namespace DotNetNuke.Web.Mvc.Helpers
         {
             var htmlHelper = dnnHelper.HtmlHelper as HtmlHelper<TModel>;
 
-            return LabelHelper(htmlHelper,
+            return LabelHelper(
+                htmlHelper,
                                ModelMetadata.FromLambdaExpression(expression, dnnHelper.ViewData),
                                ExpressionHelper.GetExpressionText(expression),
                                labelText,

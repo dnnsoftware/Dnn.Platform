@@ -105,12 +105,14 @@ namespace Dnn.ExportImport.Services
             }
 
             if (portal < 0)
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+                return this.Request.CreateErrorResponse(
+                    HttpStatusCode.BadRequest,
                     Localization.GetString("InvalidPortal", Constants.SharedResources));
 
             var controller = new BaseController();
             var lastTime = controller.GetLastJobTime(portal, jobType);
-            return this.Request.CreateResponse(HttpStatusCode.OK,
+            return this.Request.CreateResponse(
+                HttpStatusCode.OK,
                 new { lastTime = Util.GetDateTimeString(lastTime) });
         }
 
@@ -137,7 +139,8 @@ namespace Dnn.ExportImport.Services
             job?.ConvertToLocal(this.UserInfo);
             return job != null
                 ? this.Request.CreateResponse(HttpStatusCode.OK, job)
-                : this.Request.CreateResponse(HttpStatusCode.BadRequest,
+                : this.Request.CreateResponse(
+                    HttpStatusCode.BadRequest,
                     new { message = Localization.GetString("JobNotExist", Constants.SharedResources) });
         }
     }

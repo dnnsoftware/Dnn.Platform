@@ -183,7 +183,8 @@ namespace DotNetNuke.UI.ControlPanels
 
             if (objUser != null && objUser.IsSuperUser)
             {
-                var upgradeIndicator = ControlBarController.Instance.GetUpgradeIndicator(DotNetNukeContext.Current.Application.Version,
+                var upgradeIndicator = ControlBarController.Instance.GetUpgradeIndicator(
+                    DotNetNukeContext.Current.Application.Version,
                     this.Request.IsLocal, this.Request.IsSecureConnection);
                 if (upgradeIndicator == null)
                 {
@@ -213,13 +214,15 @@ namespace DotNetNuke.UI.ControlPanels
 
         private string GetUpgradeIndicatorButton(UpgradeIndicatorViewModel upgradeIndicator)
         {
-            return string.Format("<a id=\"{0}\" href=\"#\" onclick=\"{1}\" class=\"{2}\"><img src=\"{3}\" alt=\"{4}\" title=\"{5}\"/></a>",
+            return string.Format(
+                "<a id=\"{0}\" href=\"#\" onclick=\"{1}\" class=\"{2}\"><img src=\"{3}\" alt=\"{4}\" title=\"{5}\"/></a>",
                 upgradeIndicator.ID, upgradeIndicator.WebAction, upgradeIndicator.CssClass, this.ResolveClientUrl(upgradeIndicator.ImageUrl), upgradeIndicator.AltText, upgradeIndicator.ToolTip);
         }
 
         protected string PreviewPopup()
         {
-            var previewUrl = string.Format("{0}/Default.aspx?ctl={1}&previewTab={2}&TabID={2}",
+            var previewUrl = string.Format(
+                "{0}/Default.aspx?ctl={1}&previewTab={2}&TabID={2}",
                                         Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias),
                                         "MobilePreview",
                                         this.PortalSettings.ActiveTab.TabID);
@@ -511,14 +514,16 @@ namespace DotNetNuke.UI.ControlPanels
                 if (!isRemoveBookmark)
                 {
                     if (!isHideBookmark)
-                        return string.Format("<li data-tabname=\"{3}\"><a href=\"{0}\" {4}>{1}</a><a href=\"javascript:void(0)\" class=\"bookmark\" title=\"{2}\"><span></span></a></li>",
+                        return string.Format(
+                            "<li data-tabname=\"{3}\"><a href=\"{0}\" {4}>{1}</a><a href=\"javascript:void(0)\" class=\"bookmark\" title=\"{2}\"><span></span></a></li>",
                                              tab.FullUrl,
                                              name,
                                              ClientAPI.GetSafeJSString(this.GetString("Tool.AddToBookmarks.ToolTip")),
                                              ClientAPI.GetSafeJSString(tab.TabName),
                                              linkClass);
                     else
-                        return string.Format("<li data-tabname=\"{3}\"><a href=\"{0}\" {4}>{1}</a><a href=\"javascript:void(0)\" class=\"bookmark hideBookmark\" data-title=\"{2}\"><span></span></a></li>",
+                        return string.Format(
+                            "<li data-tabname=\"{3}\"><a href=\"{0}\" {4}>{1}</a><a href=\"javascript:void(0)\" class=\"bookmark hideBookmark\" data-title=\"{2}\"><span></span></a></li>",
                                             tab.FullUrl,
                                             name,
                                             ClientAPI.GetSafeJSString(this.GetString("Tool.AddToBookmarks.ToolTip")),
@@ -526,7 +531,8 @@ namespace DotNetNuke.UI.ControlPanels
                                             linkClass);
                 }
 
-                return string.Format("<li data-tabname=\"{3}\"><a href=\"{0}\" {4}>{1}</a><a href=\"javascript:void(0)\" class=\"removeBookmark\" title=\"{2}\"><span></span></a></li>",
+                return string.Format(
+                    "<li data-tabname=\"{3}\"><a href=\"{0}\" {4}>{1}</a><a href=\"javascript:void(0)\" class=\"removeBookmark\" title=\"{2}\"><span></span></a></li>",
                                         tab.FullUrl,
                                         name,
                                         ClientAPI.GetSafeJSString(this.GetString("Tool.RemoveFromBookmarks.ToolTip")),

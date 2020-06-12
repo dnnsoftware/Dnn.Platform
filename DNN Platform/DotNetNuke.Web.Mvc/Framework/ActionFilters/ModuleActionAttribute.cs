@@ -60,7 +60,8 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 controller.ModuleActions = new ModuleActionCollection();
             }
 
-            controller.ModuleActions.Add(-1,
+            controller.ModuleActions.Add(
+                -1,
                                 (!String.IsNullOrEmpty(this.TitleKey)) ? controller.LocalizeString(this.TitleKey) : this.Title,
                                 ModuleActionType.AddContent,
                                 "",

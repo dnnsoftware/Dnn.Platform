@@ -373,7 +373,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         private static void LogCollision(string collisionText)
         {
             // need to log an event
-            EventLogController.Instance.AddLog("Javascript Libraries",
+            EventLogController.Instance.AddLog(
+                "Javascript Libraries",
                                             collisionText,
                                             PortalController.Instance.GetCurrentPortalSettings(),
                                             UserController.Instance.GetCurrentUserInfo().UserID,
@@ -398,7 +399,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             // workaround to support IE specific script until we move to IE version that no longer requires this
             if (jsl.LibraryName == CommonJs.jQueryFileUpload)
             {
-                ClientResourceManager.RegisterScript(page,
+                ClientResourceManager.RegisterScript(
+                    page,
                     "~/Resources/Shared/Scripts/jquery/jquery.iframe-transport.js");
             }
 
@@ -523,22 +525,26 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
                         if (GetHighestVersionLibrary(CommonJs.HoverIntent) == null)
                         {
-                            ClientResourceManager.RegisterScript(page,
+                            ClientResourceManager.RegisterScript(
+                                page,
                                 "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js", FileOrder.Js.HoverIntent);
                         }
                         // no package for this - CRM will deduplicate
                         ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Scripts/dnn.jquery.js");
                         break;
                     case CommonJs.jQueryFileUpload:
-                        ClientResourceManager.RegisterScript(page,
+                        ClientResourceManager.RegisterScript(
+                            page,
                             "~/Resources/Shared/Scripts/jquery/jquery.iframe-transport.js");
-                        ClientResourceManager.RegisterScript(page,
+                        ClientResourceManager.RegisterScript(
+                            page,
                             "~/Resources/Shared/Scripts/jquery/jquery.fileupload.js");
                         break;
                     case CommonJs.HoverIntent:
                         if (GetHighestVersionLibrary(CommonJs.HoverIntent) == null)
                         {
-                            ClientResourceManager.RegisterScript(page,
+                            ClientResourceManager.RegisterScript(
+                                page,
                                 "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js", FileOrder.Js.HoverIntent);
                         }
                         break;

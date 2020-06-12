@@ -52,7 +52,8 @@ namespace DotNetNuke.Services.Installer.Packages
 
         private static void AddLog(PackageInfo package, EventLogController.EventLogType logType)
         {
-            EventLogController.Instance.AddLog(package,
+            EventLogController.Instance.AddLog(
+                package,
                         PortalController.Instance.GetCurrentPortalSettings(),
                         UserController.Instance.GetCurrentUserInfo().UserID,
                         "",
@@ -62,7 +63,8 @@ namespace DotNetNuke.Services.Installer.Packages
 
         private static void AddPackageInternal(PackageInfo package)
         {
-            package.PackageID = provider.AddPackage(package.PortalID,
+            package.PackageID = provider.AddPackage(
+                package.PortalID,
                                                 package.Name,
                                                 package.FriendlyName,
                                                 package.Description,
@@ -116,7 +118,9 @@ namespace DotNetNuke.Services.Installer.Packages
 
         private static IEnumerable<PackageDependencyInfo> GetPackageDependencies()
         {
-            return CBO.GetCachedObject<List<PackageDependencyInfo>>(new CacheItemArgs(DataCache.PackageDependenciesCacheKey,
+            return CBO.GetCachedObject<List<PackageDependencyInfo>>(
+                new CacheItemArgs(
+                DataCache.PackageDependenciesCacheKey,
                                                                             DataCache.PackagesCacheTimeout,
                                                                             DataCache.PackagesCachePriority),
                                                 c => CBO.FillCollection<PackageDependencyInfo>(provider.GetPackageDependencies()));
@@ -124,7 +128,8 @@ namespace DotNetNuke.Services.Installer.Packages
 
         private static void UpdatePackageInternal(PackageInfo package)
         {
-            provider.UpdatePackage(package.PackageID,
+            provider.UpdatePackage(
+                package.PackageID,
                                    package.PortalID,
                                    package.FriendlyName,
                                    package.Description,
@@ -223,7 +228,8 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             var cacheKey = string.Format(DataCache.PackagesCacheKey, portalId);
             var cacheItemArgs = new CacheItemArgs(cacheKey, DataCache.PackagesCacheTimeout, DataCache.PackagesCachePriority, portalId);
-            return CBO.GetCachedObject<List<PackageInfo>>(cacheItemArgs,
+            return CBO.GetCachedObject<List<PackageInfo>>(
+                cacheItemArgs,
                                                             c => CBO.FillCollection<PackageInfo>(provider.GetPackages(portalId)));
         }
 
@@ -255,7 +261,9 @@ namespace DotNetNuke.Services.Installer.Packages
 
         public IList<PackageType> GetExtensionPackageTypes()
         {
-            return CBO.GetCachedObject<List<PackageType>>(new CacheItemArgs(DataCache.PackageTypesCacheKey,
+            return CBO.GetCachedObject<List<PackageType>>(
+                new CacheItemArgs(
+                DataCache.PackageTypesCacheKey,
                                                                             DataCache.PackageTypesCacheTimeout,
                                                                             DataCache.PackageTypesCachePriority),
                                                             c => CBO.FillCollection<PackageType>(provider.GetPackageTypes()));
@@ -283,7 +291,8 @@ namespace DotNetNuke.Services.Installer.Packages
                     var dep = dependency;
 
                     // Check if there is an alternative package
-                    var packages = Instance.GetExtensionPackages(package.PortalID,
+                    var packages = Instance.GetExtensionPackages(
+                        package.PortalID,
                                                                  p => p.Name.Equals(dep.PackageName, StringComparison.OrdinalIgnoreCase)
                                                                         && p.Version >= dep.Version
                                                                         && p.PackageID != package.PackageID);

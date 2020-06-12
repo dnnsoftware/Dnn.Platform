@@ -94,7 +94,8 @@ namespace Dnn.ExportImport.Repository
             return this.InternalGetItems(predicate).FirstOrDefault();
         }
 
-        public IEnumerable<T> GetItems<T>(Expression<Func<T, bool>> predicate,
+        public IEnumerable<T> GetItems<T>(
+            Expression<Func<T, bool>> predicate,
             Func<T, object> orderKeySelector = null, bool asc = true, int? skip = null, int? max = null)
             where T : BasicExportImportDto
         {
@@ -125,7 +126,8 @@ namespace Dnn.ExportImport.Repository
             return this.InternalGetItems(null, orderKeySelector, asc, skip, max);
         }
 
-        private IEnumerable<T> InternalGetItems<T>(Expression<Func<T, bool>> predicate,
+        private IEnumerable<T> InternalGetItems<T>(
+            Expression<Func<T, bool>> predicate,
             Func<T, object> orderKeySelector = null, bool asc = true, int? skip = null, int? max = null)
             where T : BasicExportImportDto
         {

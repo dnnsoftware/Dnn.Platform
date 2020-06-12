@@ -497,7 +497,8 @@ namespace Dnn.Modules.Console
                     tabUrl = this._navigationManager.NavigateURL(tab.TabID, "", "GroupId=" + this.GroupId.ToString(CultureInfo.InvariantCulture));
                 }
 
-                returnValue += string.Format(sb.ToString(),
+                returnValue += string.Format(
+                    sb.ToString(),
                                              tabUrl,
                                              this.GetIconUrl(tab.IconFile, "IconFile"),
                                              this.GetIconUrl(tab.IconFileLarge, "IconFileLarge"),
@@ -514,7 +515,8 @@ namespace Dnn.Modules.Console
             {
                 tmid = this.TabModuleId.ToString(CultureInfo.InvariantCulture);
             }
-            return string.Format("allowIconSizeChange: {0}, allowDetailChange: {1}, selectedSize: '{2}', showDetails: '{3}', tabModuleID: {4}, showTooltip: {5}",
+            return string.Format(
+                "allowIconSizeChange: {0}, allowDetailChange: {1}, selectedSize: '{2}', showDetails: '{3}', tabModuleID: {4}, showTooltip: {5}",
                                  this.AllowSizeChange.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
                                  this.AllowViewChange.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
                                  this.DefaultSize,

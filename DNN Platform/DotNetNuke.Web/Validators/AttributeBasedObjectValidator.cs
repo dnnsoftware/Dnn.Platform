@@ -16,7 +16,8 @@ namespace DotNetNuke.Web.Validators
     {
         protected override ValidationResult ValidateProperty(object target, PropertyInfo targetProperty)
         {
-            return targetProperty.GetCustomAttributes(true).OfType<TAttribute>().Aggregate(ValidationResult.Successful,
+            return targetProperty.GetCustomAttributes(true).OfType<TAttribute>().Aggregate(
+                ValidationResult.Successful,
                                                                                            (result, attribute) =>
                                                                                            result.CombineWith(this.ValidateAttribute(target, targetProperty, attribute) ?? ValidationResult.Successful));
         }

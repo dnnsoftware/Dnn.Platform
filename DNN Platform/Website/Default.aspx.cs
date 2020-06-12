@@ -62,7 +62,8 @@ namespace DotNetNuke.Framework
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DefaultPage));
 
-        private static readonly Regex HeaderTextRegex = new Regex("<meta([^>])+name=('|\")robots('|\")",
+        private static readonly Regex HeaderTextRegex = new Regex(
+            "<meta([^>])+name=('|\")robots('|\")",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 
         protected INavigationManager NavigationManager { get; }
@@ -277,7 +278,8 @@ namespace DotNetNuke.Framework
                         case ".mvc":
                             var segments = slaveModule.ModuleControl.ControlSrc.Replace(".mvc", "").Split('/');
 
-                            control.LocalResourceFile = String.Format("~/DesktopModules/MVC/{0}/{1}/{2}.resx",
+                            control.LocalResourceFile = String.Format(
+                                "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
                                 slaveModule.DesktopModule.FolderName,
                                 Localization.LocalResourceDirectory,
                                 segments[0]);
@@ -530,7 +532,8 @@ namespace DotNetNuke.Framework
         private IFileInfo GetBackgroundFileInfo()
         {
             string cacheKey = String.Format(Common.Utilities.DataCache.PortalCacheKey, this.PortalSettings.PortalId, "BackgroundFile");
-            var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(new CacheItemArgs(cacheKey, Common.Utilities.DataCache.PortalCacheTimeOut, Common.Utilities.DataCache.PortalCachePriority),
+            var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(
+                new CacheItemArgs(cacheKey, Common.Utilities.DataCache.PortalCacheTimeOut, Common.Utilities.DataCache.PortalCachePriority),
                                                     this.GetBackgroundFileInfoCallBack);
 
             return file;

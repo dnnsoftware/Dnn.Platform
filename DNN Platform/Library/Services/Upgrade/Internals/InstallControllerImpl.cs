@@ -633,7 +633,8 @@ namespace DotNetNuke.Services.Upgrade.Internals
         private void GetLanguagePack(string downloadUrl, string installFolder)
         {
             string myfile = "";
-            WebResponse wr = Util.GetExternalRequest(downloadUrl,
+            WebResponse wr = Util.GetExternalRequest(
+                downloadUrl,
                                                      null,
                                                      null,
                                                      null,

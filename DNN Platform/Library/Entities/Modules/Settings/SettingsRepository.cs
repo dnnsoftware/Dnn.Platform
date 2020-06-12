@@ -278,7 +278,8 @@ namespace DotNetNuke.Entities.Modules.Settings
             catch (Exception exception)
             {
                 // TODO: Localize exception
-                throw new InvalidCastException(string.Format(CultureInfo.CurrentUICulture, "Could not cast {0} to property {1} of type {2}",
+                throw new InvalidCastException(
+                    string.Format(CultureInfo.CurrentUICulture, "Could not cast {0} to property {1} of type {2}",
                                                              propertyValue,
                                                              property.Name,
                                                              property.PropertyType), exception);

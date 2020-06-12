@@ -196,7 +196,8 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     if (!this.AddUser && !this.IsEdit)
                     {
-                        Actions.Add(this.GetNextActionID(),
+                        Actions.Add(
+                            this.GetNextActionID(),
                                     Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
                                     ModuleActionType.AddContent,
                                     "",
@@ -208,7 +209,8 @@ namespace DotNetNuke.Modules.Admin.Users
                                     false);
                         if (ProfileProviderConfig.CanEditProviderProperties)
                         {
-                            Actions.Add(this.GetNextActionID(),
+                            Actions.Add(
+                                this.GetNextActionID(),
                                         Localization.GetString("ManageProfile.Action", this.LocalResourceFile),
                                         ModuleActionType.AddContent,
                                         "",
@@ -219,7 +221,8 @@ namespace DotNetNuke.Modules.Admin.Users
                                         true,
                                         false);
                         }
-                        Actions.Add(this.GetNextActionID(),
+                        Actions.Add(
+                            this.GetNextActionID(),
                                     Localization.GetString("Cancel.Action", this.LocalResourceFile),
                                     ModuleActionType.AddContent,
                                     "",

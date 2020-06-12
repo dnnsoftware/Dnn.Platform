@@ -21,7 +21,8 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
         public int AddWorkflowStatePermission(WorkflowStatePermission permission, int lastModifiedByUserId)
         {
-            return DataProvider.Instance().AddContentWorkflowStatePermission(permission.StateID,
+            return DataProvider.Instance().AddContentWorkflowStatePermission(
+                permission.StateID,
                                                                        permission.PermissionID,
                                                                        permission.RoleID,
                                                                        permission.AllowAccess,

@@ -40,7 +40,9 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         private static Dictionary<int, ModuleControlInfo> GetModuleControls()
         {
-            return CBO.GetCachedObject<Dictionary<int, ModuleControlInfo>>(new CacheItemArgs(DataCache.ModuleControlsCacheKey,
+            return CBO.GetCachedObject<Dictionary<int, ModuleControlInfo>>(
+                new CacheItemArgs(
+                DataCache.ModuleControlsCacheKey,
                                                                                     DataCache.ModuleControlsCacheTimeOut,
                                                                                     DataCache.ModuleControlsCachePriority),
                                                                             GetModuleControlsCallBack);
@@ -137,7 +139,8 @@ namespace DotNetNuke.Entities.Modules
             if (moduleControlID == Null.NullInteger)
             {
                 // Add new Module Definition
-                moduleControlID = dataProvider.AddModuleControl(moduleControl.ModuleDefID,
+                moduleControlID = dataProvider.AddModuleControl(
+                    moduleControl.ModuleDefID,
                                                                 moduleControl.ControlKey,
                                                                 moduleControl.ControlTitle,
                                                                 moduleControl.ControlSrc,
@@ -152,7 +155,8 @@ namespace DotNetNuke.Entities.Modules
             else
             {
                 // Upgrade Module Control
-                dataProvider.UpdateModuleControl(moduleControl.ModuleControlID,
+                dataProvider.UpdateModuleControl(
+                    moduleControl.ModuleControlID,
                                                  moduleControl.ModuleDefID,
                                                  moduleControl.ControlKey,
                                                  moduleControl.ControlTitle,

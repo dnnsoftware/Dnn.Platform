@@ -239,12 +239,14 @@ namespace Dnn.AzureConnector.Components
             {
                 if (string.IsNullOrWhiteSpace(azureAccountName))
                 {
-                    throw new ConnectorArgumentException(Localization.GetString("AccountNameCannotBeEmpty.ErrorMessage",
+                    throw new ConnectorArgumentException(Localization.GetString(
+                        "AccountNameCannotBeEmpty.ErrorMessage",
                         Constants.LocalResourceFile));
                 }
                 if (string.IsNullOrWhiteSpace(azureAccountKey))
                 {
-                    throw new ConnectorArgumentException(Localization.GetString("AccountKeyCannotBeEmpty.ErrorMessage",
+                    throw new ConnectorArgumentException(Localization.GetString(
+                        "AccountKeyCannotBeEmpty.ErrorMessage",
                         Constants.LocalResourceFile));
                 }
                 StorageCredentials sc = new StorageCredentials(azureAccountName, azureAccountKey);
@@ -260,7 +262,8 @@ namespace Dnn.AzureConnector.Components
                     {
                         if (!containers.Any(container => container.Name == azureContainerName))
                         {
-                            throw new Exception(Localization.GetString("ErrorInvalidContainerName",
+                            throw new Exception(Localization.GetString(
+                                "ErrorInvalidContainerName",
                                 Constants.LocalResourceFile));
                         }
                         else
@@ -275,7 +278,8 @@ namespace Dnn.AzureConnector.Components
                 }
                 else
                 {
-                    throw new Exception(Localization.GetString("AccountNotFound.ErrorMessage",
+                    throw new Exception(Localization.GetString(
+                        "AccountNotFound.ErrorMessage",
                         Constants.LocalResourceFile));
                 }
             }
@@ -285,12 +289,14 @@ namespace Dnn.AzureConnector.Components
                 {
                     if (ex.RequestInformation.ExtendedErrorInformation.ErrorCode == "AccountNotFound")
                     {
-                        throw new Exception(Localization.GetString("AccountNotFound.ErrorMessage",
+                        throw new Exception(Localization.GetString(
+                            "AccountNotFound.ErrorMessage",
                             Constants.LocalResourceFile));
                     }
                     else if (ex.RequestInformation.ExtendedErrorInformation.ErrorCode == "AccessDenied")
                     {
-                        throw new Exception(Localization.GetString("AccessDenied.ErrorMessage",
+                        throw new Exception(Localization.GetString(
+                            "AccessDenied.ErrorMessage",
                             Constants.LocalResourceFile));
                     }
                     else
@@ -305,10 +311,12 @@ namespace Dnn.AzureConnector.Components
             {
                 if (ex.GetType() == typeof(UriFormatException))
                 {
-                    throw new ConnectorArgumentException(Localization.GetString("InvalidAccountName.ErrorMessage",
+                    throw new ConnectorArgumentException(Localization.GetString(
+                        "InvalidAccountName.ErrorMessage",
                         Constants.LocalResourceFile));
                 }
-                throw new ConnectorArgumentException(Localization.GetString("InvalidAccountKey.ErrorMessage",
+                throw new ConnectorArgumentException(Localization.GetString(
+                    "InvalidAccountKey.ErrorMessage",
                     Constants.LocalResourceFile));
             }
         }

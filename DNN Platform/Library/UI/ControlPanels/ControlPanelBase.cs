@@ -332,7 +332,8 @@ namespace DotNetNuke.UI.ControlPanels
                             // Only Page Editors get View permissions if "Page Editors Only"
                             continue;
                         }
-                        ModulePermissionInfo objModulePermission = this.AddModulePermission(objModule,
+                        ModulePermissionInfo objModulePermission = this.AddModulePermission(
+                            objModule,
                                                                                        objSystemModulePermission,
                                                                                        objTabPermission.RoleID,
                                                                                        objTabPermission.UserID,
@@ -341,7 +342,8 @@ namespace DotNetNuke.UI.ControlPanels
                         // ensure that every EDIT permission which allows access also provides VIEW permission
                         if (objModulePermission.PermissionKey == "EDIT" && objModulePermission.AllowAccess)
                         {
-                            ModulePermissionInfo objModuleViewperm = this.AddModulePermission(objModule,
+                            ModulePermissionInfo objModuleViewperm = this.AddModulePermission(
+                                objModule,
                                                                                          (PermissionInfo)arrSystemModuleViewPermissions[0],
                                                                                          objModulePermission.RoleID,
                                                                                          objModulePermission.UserID,

@@ -18,7 +18,8 @@ namespace DotNetNuke.Web.Components.Controllers
         /// <param name="category">Catenory name</param>
         /// <param name="searchTerm">Search term to filter modules</param>
         /// <returns>A list with all matched desktop modules</returns>
-        IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetCategoryDesktopModules(int portalId,
+        IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetCategoryDesktopModules(
+            int portalId,
             string category, string searchTerm = "");
 
         /// <summary>

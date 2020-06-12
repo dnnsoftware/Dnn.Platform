@@ -53,7 +53,8 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
                 for (var j = 0; j < bmap.Height; j++)
                 {
                     c = bmap.GetPixel(i, j);
-                    bmap.SetPixel(i, j, Color.FromArgb(gammaArray[c.R],
+                    bmap.SetPixel(i, j, Color.FromArgb(
+                        gammaArray[c.R],
                        gammaArray[c.G], gammaArray[c.B]));
                 }
             }

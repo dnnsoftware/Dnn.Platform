@@ -99,7 +99,8 @@ namespace Dnn.EditBar.UI.Controllers
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("Unable to create {0} while getting all edit bar menu items. {1}",
+                    Logger.ErrorFormat(
+                        "Unable to create {0} while getting all edit bar menu items. {1}",
                                        type.FullName, e.Message);
                     menuItem = null;
                 }

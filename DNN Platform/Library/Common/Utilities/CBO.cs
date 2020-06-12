@@ -299,7 +299,8 @@ namespace DotNetNuke.Common.Utilities
                                 // check if value is numeric and if not convert to integer ( supports databases like Oracle )
                                 if (Globals.NumberMatchRegex.IsMatch(coloumnValue.ToString()))
                                 {
-                                    objPropertyInfo.SetValue(hydratedObject,
+                                    objPropertyInfo.SetValue(
+                                        hydratedObject,
                                                              Enum.ToObject(propType, Convert.ToInt32(coloumnValue)),
                                                              null);
                                 }
@@ -311,7 +312,8 @@ namespace DotNetNuke.Common.Utilities
                             else if (propType == typeof(Guid))
                             {
                                 // guid is not a datatype common across all databases ( ie. Oracle )
-                                objPropertyInfo.SetValue(hydratedObject,
+                                objPropertyInfo.SetValue(
+                                    hydratedObject,
                                                          Convert.ChangeType(new Guid(coloumnValue.ToString()), propType),
                                                          null);
                             }

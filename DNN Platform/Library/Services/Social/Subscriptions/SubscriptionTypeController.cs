@@ -52,11 +52,13 @@ namespace DotNetNuke.Services.Social.Subscriptions
 
         public IEnumerable<SubscriptionType> GetSubscriptionTypes()
         {
-            var cacheArgs = new CacheItemArgs(DataCache.SubscriptionTypesCacheKey,
+            var cacheArgs = new CacheItemArgs(
+                DataCache.SubscriptionTypesCacheKey,
                                              DataCache.SubscriptionTypesTimeOut,
                                              DataCache.SubscriptionTypesCachePriority);
 
-            return CBO.GetCachedObject<IEnumerable<SubscriptionType>>(cacheArgs,
+            return CBO.GetCachedObject<IEnumerable<SubscriptionType>>(
+                cacheArgs,
                                                 c => CBO.FillCollection<SubscriptionType>(this.dataService.GetSubscriptionTypes()));
         }
 

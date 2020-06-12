@@ -126,7 +126,9 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
         {
             var cacheKey = string.Format(this.ListObjectsCacheKey, folderMapping.FolderMappingID);
 
-            return CBO.GetCachedObject<IList<IRemoteStorageItem>>(new CacheItemArgs(cacheKey,
+            return CBO.GetCachedObject<IList<IRemoteStorageItem>>(
+                new CacheItemArgs(
+                cacheKey,
                                                                         this.ListObjectsCacheTimeout,
                                                                         CacheItemPriority.Default,
                                                                         folderMapping.FolderMappingID),

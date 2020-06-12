@@ -256,7 +256,8 @@ namespace DotNetNuke.Entities.Profile
             {
                 definition.Visible = true;
             }
-            int intDefinition = _dataProvider.AddPropertyDefinition(portalId,
+            int intDefinition = _dataProvider.AddPropertyDefinition(
+                portalId,
                                                                definition.ModuleDefId,
                                                                definition.DataType,
                                                                definition.DefaultValue,
@@ -473,7 +474,8 @@ namespace DotNetNuke.Entities.Profile
             {
                 definition.Visible = true;
             }
-            _dataProvider.UpdatePropertyDefinition(definition.PropertyDefinitionId,
+            _dataProvider.UpdatePropertyDefinition(
+                definition.PropertyDefinitionId,
                                               definition.DataType,
                                               definition.DefaultValue,
                                               definition.PropertyCategory,

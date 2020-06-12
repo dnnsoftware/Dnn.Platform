@@ -71,7 +71,8 @@ namespace DotNetNuke.Security.Roles
             try
             {
                 role.RoleID =
-                    Convert.ToInt32(this.dataProvider.AddRole(role.PortalID,
+                    Convert.ToInt32(this.dataProvider.AddRole(
+                        role.PortalID,
                                                          role.RoleGroupID,
                                                          role.RoleName.Trim(),
                                                          (role.Description ?? "").Trim(),
@@ -119,7 +120,8 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override ArrayList GetRoles(int portalId)
         {
-            var arrRoles = CBO.FillCollection(portalId == Null.NullInteger
+            var arrRoles = CBO.FillCollection(
+                portalId == Null.NullInteger
                                         ? this.dataProvider.GetRoles()
                                         : this.dataProvider.GetPortalRoles(portalId), typeof(RoleInfo));
             return arrRoles;
@@ -150,7 +152,8 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override void UpdateRole(RoleInfo role)
         {
-            this.dataProvider.UpdateRole(role.RoleID,
+            this.dataProvider.UpdateRole(
+                role.RoleID,
                                     role.RoleGroupID,
                                     role.RoleName.Trim(),
                                     (role.Description ?? "").Trim(),
@@ -306,7 +309,8 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override void UpdateUserRole(UserRoleInfo userRole)
         {
-            this.dataProvider.UpdateUserRole(userRole.UserRoleID,
+            this.dataProvider.UpdateUserRole(
+                userRole.UserRoleID,
                                         (int)userRole.Status, userRole.IsOwner,
                                         userRole.EffectiveDate, userRole.ExpiryDate,
                                         UserController.Instance.GetCurrentUserInfo().UserID);
@@ -390,7 +394,8 @@ namespace DotNetNuke.Security.Roles
 
         private IEnumerable<RoleGroupInfo> GetRoleGroupsInternal(int portalId)
         {
-            var cacheArgs = new CacheItemArgs(this.GetRoleGroupsCacheKey(portalId),
+            var cacheArgs = new CacheItemArgs(
+                this.GetRoleGroupsCacheKey(portalId),
                                                 DataCache.RoleGroupsCacheTimeOut,
                                                 DataCache.RoleGroupsCachePriority);
 

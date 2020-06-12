@@ -106,7 +106,9 @@ namespace DotNetNuke.Entities.Content
         /// <returns>content type collection.</returns>
         public IQueryable<ContentType> GetContentTypes()
         {
-            return CBO.GetCachedObject<List<ContentType>>(new CacheItemArgs(DataCache.ContentTypesCacheKey,
+            return CBO.GetCachedObject<List<ContentType>>(
+                new CacheItemArgs(
+                DataCache.ContentTypesCacheKey,
                                                                             DataCache.ContentTypesCacheTimeOut,
                                                                             DataCache.ContentTypesCachePriority),
                                                                 c => CBO.FillQueryable<ContentType>(this._DataService.GetContentTypes()).ToList()).AsQueryable();

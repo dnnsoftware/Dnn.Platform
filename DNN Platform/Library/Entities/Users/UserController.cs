@@ -225,7 +225,8 @@ namespace DotNetNuke.Entities.Users
         {
             var masterPortalId = GetEffectivePortalId(portalId);
             var cacheKey = string.Format(DataCache.UserLookupCacheKey, masterPortalId);
-            return CBO.GetCachedObject<SharedDictionary<int, string>>(new CacheItemArgs(cacheKey, DataCache.UserLookupCacheTimeOut,
+            return CBO.GetCachedObject<SharedDictionary<int, string>>(
+                new CacheItemArgs(cacheKey, DataCache.UserLookupCacheTimeOut,
                                                             DataCache.UserLookupCachePriority), (c) => new SharedDictionary<int, string>(), true);
         }
 
@@ -452,7 +453,8 @@ namespace DotNetNuke.Entities.Users
             var message = new Message();
             message.FromUserID = portalSettings.AdministratorId;
             message.ToUserID = portalSettings.AdministratorId;
-            message.Subject = Localization.GetSystemMessage(user.Profile.PreferredLocale,
+            message.Subject = Localization.GetSystemMessage(
+                user.Profile.PreferredLocale,
                                                             portalSettings,
                                                             "EMAIL_USER_UNREGISTER_SUBJECT",
                                                             user,
@@ -460,7 +462,8 @@ namespace DotNetNuke.Entities.Users
                                                             null,
                                                             "",
                                                             portalSettings.AdministratorId);
-            message.Body = Localization.GetSystemMessage(user.Profile.PreferredLocale,
+            message.Body = Localization.GetSystemMessage(
+                user.Profile.PreferredLocale,
                                                          portalSettings,
                                                          "EMAIL_USER_UNREGISTER_BODY",
                                                          user,

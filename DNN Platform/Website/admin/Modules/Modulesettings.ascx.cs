@@ -365,12 +365,14 @@ namespace DotNetNuke.Modules.Admin.Modules
                         var settingsControl = this._control as ISettingsControl;
                         if (settingsControl != null)
                         {
-                            this.hlSpecificSettings.Text = Localization.GetString("ControlTitle_settings",
+                            this.hlSpecificSettings.Text = Localization.GetString(
+                                "ControlTitle_settings",
                                 settingsControl.LocalResourceFile);
                             if (String.IsNullOrEmpty(this.hlSpecificSettings.Text))
                             {
                                 this.hlSpecificSettings.Text =
-                                    String.Format(Localization.GetString("ControlTitle_settings", this.LocalResourceFile),
+                                    String.Format(
+                                        Localization.GetString("ControlTitle_settings", this.LocalResourceFile),
                                         this.Module.DesktopModule.FriendlyName);
                             }
                             this.pnlSpecific.Controls.Add(this._control);

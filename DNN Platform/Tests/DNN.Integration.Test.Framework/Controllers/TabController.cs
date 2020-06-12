@@ -37,7 +37,8 @@ namespace DNN.Integration.Test.Framework.Controllers
         public static int GetModuleIdInsidePage(int pageId)
         {
             return DatabaseHelper.ExecuteScalar<int>(
-                string.Format(@"
+                string.Format(
+                    @"
                     SELECT TOP(1) ModuleID FROM {{objectQualifier}}vw_TabModules
                     WHERE TabId = '{0}' AND PaneName='contentPane' AND ContainerSrc IS NULL AND ISNULL(PortalID,0)={1};",
                     pageId, PortalId));
@@ -59,7 +60,8 @@ namespace DNN.Integration.Test.Framework.Controllers
         /// <returns>List of all the modules on a page</returns>
         public static List<int> GetAllModuleIdInsidePage(int pageId)
         {
-            var squery = string.Format(@"
+            var squery = string.Format(
+                @"
                     SELECT ModuleID FROM {{objectQualifier}}vw_TabModules
                     WHERE TabId = '{0}' AND ISNULL(PortalID,0)={1};",
                     pageId, PortalId);
@@ -82,7 +84,8 @@ namespace DNN.Integration.Test.Framework.Controllers
         public static int GetModuleIdInsidePageAnyPane(int pageId)
         {
             return DatabaseHelper.ExecuteScalar<int>(
-                string.Format(@"
+                string.Format(
+                    @"
                     SELECT TOP(1) ModuleID FROM {{objectQualifier}}vw_TabModules
                     WHERE TabId = '{0}' AND ContainerSrc IS NULL AND ISNULL(PortalID,0)={1};",
                     pageId, PortalId));
@@ -90,7 +93,8 @@ namespace DNN.Integration.Test.Framework.Controllers
 
         public static int GetModuleIdInsidePage(int tabId, string moduleFriendlyName)
         {
-            var query1 = string.Format(@"
+            var query1 = string.Format(
+                @"
                 SELECT TOP(1) ModuleID FROM {{objectQualifier}}vw_TabModules tm
                 INNER JOIN {{objectQualifier}}DesktopModules dm ON dm.DesktopModuleId = tm.DesktopModuleId 
                 INNER JOIN {{objectQualifier}}ModuleDefinitions md ON md.ModuleDefID = tm.ModuleDefID 
@@ -127,7 +131,8 @@ namespace DNN.Integration.Test.Framework.Controllers
         public static int GetTabModuleId(int tabId, int moduledId)
         {
             return DatabaseHelper.ExecuteScalar<int>(
-               string.Format(@"
+               string.Format(
+                   @"
                     SELECT TOP(1) TabModuleID FROM {{objectQualifier}}TabModules
                     WHERE TabID = {0} AND ModuleID = {1};", tabId, moduledId));
         }
@@ -155,7 +160,8 @@ namespace DNN.Integration.Test.Framework.Controllers
         /// </summary>
         public static void AddTabSetting(int tabId, string settingName, string settingValue)
         {
-            DatabaseHelper.ExecuteStoredProcedure("UpdateTabSetting",
+            DatabaseHelper.ExecuteStoredProcedure(
+                "UpdateTabSetting",
                 tabId,
                 settingName,
                 settingValue,

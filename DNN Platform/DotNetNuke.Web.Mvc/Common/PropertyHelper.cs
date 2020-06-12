@@ -57,7 +57,8 @@ namespace DotNetNuke.Web.Mvc.Common
             return GetProperties(instance, CreateInstance, ReflectionCache);
         }
 
-        protected static PropertyHelper[] GetProperties(object instance,
+        protected static PropertyHelper[] GetProperties(
+            object instance,
                                                 Func<PropertyInfo, PropertyHelper> createPropertyHelper,
                                                 ConcurrentDictionary<Type, PropertyHelper[]> cache)
         {

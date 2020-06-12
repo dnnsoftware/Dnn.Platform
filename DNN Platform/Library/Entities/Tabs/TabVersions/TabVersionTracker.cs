@@ -181,7 +181,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                     .Where(tvd => tvd.ModuleId == module.ModuleID);
             foreach (var existingTabDetail in existingTabDetails)
             {
-                TabVersionDetailController.Instance.DeleteTabVersionDetail(existingTabDetail.TabVersionId,
+                TabVersionDetailController.Instance.DeleteTabVersionDetail(
+                    existingTabDetail.TabVersionId,
                     existingTabDetail.TabVersionDetailId);
             }
 
@@ -202,7 +203,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                     .SingleOrDefault(tvd => tvd.ModuleId == module.ModuleID);
             if (existingTabDetail != null)
             {
-                TabVersionDetailController.Instance.DeleteTabVersionDetail(existingTabDetail.TabVersionId,
+                TabVersionDetailController.Instance.DeleteTabVersionDetail(
+                    existingTabDetail.TabVersionId,
                     existingTabDetail.TabVersionDetailId);
 
                 // When a module is added in the same version, then we should do nothing with it

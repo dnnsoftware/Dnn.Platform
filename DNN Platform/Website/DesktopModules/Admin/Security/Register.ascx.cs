@@ -786,7 +786,8 @@ namespace DotNetNuke.Modules.Admin.Users
 
                     if (redirectUrl.Contains("?returnurl"))
                     {
-                        string baseURL = redirectUrl.Substring(0,
+                        string baseURL = redirectUrl.Substring(
+                            0,
                             redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal));
                         string returnURL =
                             redirectUrl.Substring(redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal) + 11);

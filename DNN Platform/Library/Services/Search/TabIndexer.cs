@@ -41,7 +41,8 @@ namespace DotNetNuke.Services.Search
         /// </summary>
         /// <remarks>This replaces "GetSearchIndexItems" as a newer implementation of search.</remarks>
         /// -----------------------------------------------------------------------------
-        public override int IndexSearchDocuments(int portalId,
+        public override int IndexSearchDocuments(
+            int portalId,
             ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             Requires.NotNull("indexer", indexer);
@@ -52,7 +53,8 @@ namespace DotNetNuke.Services.Search
             var tabs = (
                 from t in TabController.Instance.GetTabsByPortal(portalId).AsList()
                 where t.LastModifiedOnDate > startDateLocal && (t.TabSettings["AllowIndex"] == null ||
-                                                                "true".Equals(t.TabSettings["AllowIndex"].ToString(),
+                                                                "true".Equals(
+                                                                    t.TabSettings["AllowIndex"].ToString(),
                                                                     StringComparison.CurrentCultureIgnoreCase))
                 select t).OrderBy(t => t.LastModifiedOnDate).ThenBy(t => t.TabID).ToArray();
 
@@ -118,7 +120,8 @@ namespace DotNetNuke.Services.Search
             return searchDoc;
         }
 
-        private int IndexCollectedDocs(Action<IEnumerable<SearchDocument>> indexer,
+        private int IndexCollectedDocs(
+            Action<IEnumerable<SearchDocument>> indexer,
             ICollection<SearchDocument> searchDocuments, int portalId, int scheduleId)
         {
             indexer.Invoke(searchDocuments);

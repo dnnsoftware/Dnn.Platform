@@ -46,7 +46,8 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
         #region Subscriptions
         public int AddSubscription(int userId, int portalId, int subscriptionTypeId, string objectKey, string description, int moduleId, int tabId, string objectData)
         {
-            return this.provider.ExecuteScalar<int>("CoreMessaging_AddSubscription",
+            return this.provider.ExecuteScalar<int>(
+                "CoreMessaging_AddSubscription",
                 userId,
                 this.provider.GetNull(portalId),
                 subscriptionTypeId,
@@ -69,7 +70,8 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
 
         public IDataReader IsSubscribed(int portalId, int userId, int subscriptionTypeId, string objectKey, int moduleId, int tabId)
         {
-            return this.provider.ExecuteReader("CoreMessaging_IsSubscribed",
+            return this.provider.ExecuteReader(
+                "CoreMessaging_IsSubscribed",
                 this.provider.GetNull(portalId),
                 userId,
                 subscriptionTypeId,
@@ -85,7 +87,8 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
 
         public int UpdateSubscriptionDescription(string objectKey, int portalId, string newDescription)
         {
-            return this.provider.ExecuteScalar<int>("CoreMessaging_UpdateSubscriptionDescription",
+            return this.provider.ExecuteScalar<int>(
+                "CoreMessaging_UpdateSubscriptionDescription",
                 objectKey,
                 portalId,
                 newDescription);

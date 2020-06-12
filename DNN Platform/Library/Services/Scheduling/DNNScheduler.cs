@@ -43,7 +43,8 @@ namespace DotNetNuke.Services.Scheduling
             // Remove item from queue
             Scheduler.CoreScheduler.RemoveFromScheduleQueue(scheduleItem);
             // save item
-            scheduleItem.ScheduleID = SchedulingController.AddSchedule(scheduleItem.TypeFullName,
+            scheduleItem.ScheduleID = SchedulingController.AddSchedule(
+                scheduleItem.TypeFullName,
                                                                           scheduleItem.TimeLapse,
                                                                           scheduleItem.TimeLapseMeasurement,
                                                                           scheduleItem.RetryTimeLapse,

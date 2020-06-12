@@ -291,7 +291,8 @@ namespace DotNetNuke.Tests.Web.Api
 
 
             // Act
-            var result = new PortalAliasRouteManager().GetAllRouteValues(new PortalAliasInfo { HTTPAlias = "" },
+            var result = new PortalAliasRouteManager().GetAllRouteValues(
+                new PortalAliasInfo { HTTPAlias = "" },
                                                                new { value1 = 1, value2 = 2 });
 
             // Assert
@@ -307,7 +308,8 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Act
             var result =
-                new PortalAliasRouteManager().GetAllRouteValues(new PortalAliasInfo { HTTPAlias = "ce.lvh.me/child" },
+                new PortalAliasRouteManager().GetAllRouteValues(
+                    new PortalAliasInfo { HTTPAlias = "ce.lvh.me/child" },
                                                                    null);
 
             // Assert
@@ -323,7 +325,8 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Act
             var result =
-                new PortalAliasRouteManager().GetAllRouteValues(new PortalAliasInfo { HTTPAlias = "ce.lvh.me/child0/child1/child2/child3" },
+                new PortalAliasRouteManager().GetAllRouteValues(
+                    new PortalAliasInfo { HTTPAlias = "ce.lvh.me/child0/child1/child2/child3" },
                                                                    new { value1 = 1, value2 = 2 });
 
             // Assert

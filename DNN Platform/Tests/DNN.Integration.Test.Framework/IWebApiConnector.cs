@@ -28,7 +28,8 @@ namespace DNN.Integration.Test.Framework
 
         bool UploadCmsFile(string fileName, string portalFolder);
 
-        HttpResponseMessage PostJson(string relativeUrl,
+        HttpResponseMessage PostJson(
+            string relativeUrl,
             object content, IDictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool ignoreLoggedIn = false);
 
         HttpWebResponse PostUserForm(string relativeUrl, IDictionary<string, object> formFields,
@@ -40,7 +41,8 @@ namespace DNN.Integration.Test.Framework
         HttpResponseMessage GetContent(
             string relativeUrl, object parameters, Dictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool autoRedirect = true);
 
-        HttpResponseMessage GetContent(string relativeUrl,
+        HttpResponseMessage GetContent(
+            string relativeUrl,
             Dictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool autoRedirect = true);
 
         bool AvoidCaching { get; set; }

@@ -292,7 +292,8 @@ namespace DotNetNuke.Security.Permissions.Controls
                     {
                         addDelimiter = true;
                     }
-                    sb.Append(this.BuildKey(objDesktopModulePermission.AllowAccess,
+                    sb.Append(this.BuildKey(
+                        objDesktopModulePermission.AllowAccess,
                                        objDesktopModulePermission.PermissionID,
                                        objDesktopModulePermission.DesktopModulePermissionID,
                                        objDesktopModulePermission.RoleID,

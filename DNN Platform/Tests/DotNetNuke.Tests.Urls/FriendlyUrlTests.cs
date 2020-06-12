@@ -195,7 +195,8 @@ namespace DotNetNuke.Tests.Urls
             string testUrl;
             if (test == "Base")
             {
-                testUrl = AdvancedFriendlyUrlProvider.BaseFriendlyUrl(tab,
+                testUrl = AdvancedFriendlyUrlProvider.BaseFriendlyUrl(
+                    tab,
                                                                         baseUrl,
                                                                         customPage,
                                                                         httpAlias,
@@ -203,7 +204,8 @@ namespace DotNetNuke.Tests.Urls
             }
             else
             {
-                testUrl = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(tab,
+                testUrl = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(
+                    tab,
                                                                         baseUrl,
                                                                         customPage,
                                                                         httpAlias,

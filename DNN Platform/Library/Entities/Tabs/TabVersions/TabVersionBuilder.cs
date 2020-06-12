@@ -256,7 +256,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         public IEnumerable<ModuleInfo> GetCurrentModules(int tabId)
         {
             var cacheKey = string.Format(DataCache.PublishedTabModuleCacheKey, tabId);
-            return CBO.GetCachedObject<IEnumerable<ModuleInfo>>(new CacheItemArgs(cacheKey,
+            return CBO.GetCachedObject<IEnumerable<ModuleInfo>>(
+                new CacheItemArgs(
+                cacheKey,
                                                                     DataCache.PublishedTabModuleCacheTimeOut,
                                                                     DataCache.PublishedTabModuleCachePriority),
                                                                     c => this.GetCurrentModulesInternal(tabId));
@@ -355,7 +357,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 throw new InvalidOperationException(
                     String.Format(
-                        Localization.GetString("TabVersionCannotBeDeleted_UnpublishedVersion",
+                        Localization.GetString(
+                            "TabVersionCannotBeDeleted_UnpublishedVersion",
                             Localization.ExceptionsResourceFile), tabId, version));
             }
 
@@ -591,7 +594,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 {
                     if (snapShotTabVersionDetails.All(tvd => tvd.TabVersionDetailId != existingDetail.TabVersionDetailId))
                     {
-                        this._tabVersionDetailController.DeleteTabVersionDetail(existingDetail.TabVersionId,
+                        this._tabVersionDetailController.DeleteTabVersionDetail(
+                            existingDetail.TabVersionId,
                             existingDetail.TabVersionDetailId);
                     }
                 }
@@ -604,7 +608,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                             deleteDetail.Action == TabVersionDetailAction.Added);
                     if (moduleAddedAndDeleted)
                     {
-                        this._tabVersionDetailController.DeleteTabVersionDetail(existingDetail.TabVersionId,
+                        this._tabVersionDetailController.DeleteTabVersionDetail(
+                            existingDetail.TabVersionId,
                             existingDetail.TabVersionDetailId);
                     }
                 }
@@ -804,7 +809,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             foreach (var module in modules)
             {
                 var moduleVersion = this.GetModuleContentPublishedVersion(module);
-                this._tabVersionDetailController.SaveTabVersionDetail(new TabVersionDetail
+                this._tabVersionDetailController.SaveTabVersionDetail(
+                    new TabVersionDetail
                 {
                     Action = TabVersionDetailAction.Added,
                     ModuleId = module.ModuleID,
