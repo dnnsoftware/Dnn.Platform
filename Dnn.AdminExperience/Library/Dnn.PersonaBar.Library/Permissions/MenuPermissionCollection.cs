@@ -14,7 +14,7 @@ using DotNetNuke.Security.Permissions;
 
 namespace Dnn.PersonaBar.Library.Permissions
 {
-    /// -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
     [Serializable]
     public class MenuPermissionCollection : CollectionBase
     {
