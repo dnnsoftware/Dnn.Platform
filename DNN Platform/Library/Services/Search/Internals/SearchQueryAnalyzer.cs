@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Search.Internals
             // Note: the order of filtering is important for both operation and performane, so we try to make it work faster
             // Also, note that filters are applied from the innermost outwards.
             var filter =
-                    new ASCIIFoldingFilter( // accents filter
+                    new ASCIIFoldingFilter(// accents filter
                         new LowerCaseFilter(
                             new LengthFilter(
                                 new StandardFilter(

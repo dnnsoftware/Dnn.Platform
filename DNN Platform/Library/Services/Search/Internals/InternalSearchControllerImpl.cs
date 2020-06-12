@@ -196,7 +196,7 @@ namespace DotNetNuke.Services.Search.Internals
             if (searchDocument.SearchTypeId == this._moduleSearchTypeId)
             {
                 if (searchDocument.ModuleDefId <= 0)
-                    throw new ArgumentException( Localization.Localization.GetExceptionMessage("ModuleDefIdMustBeGreaterThanZero", "ModuleDefId must be greater than zero when SearchTypeId is for a module"));
+                    throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleDefIdMustBeGreaterThanZero", "ModuleDefId must be greater than zero when SearchTypeId is for a module"));
 
                 if (searchDocument.ModuleId <= 0)
                     throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleIdMustBeGreaterThanZero", "ModuleId must be greater than zero when SearchTypeId is for a module"));

@@ -19,7 +19,7 @@ namespace DotNetNuke.Modules.Journal
         public int file_id { get; set; }
         // ReSharper restore InconsistentNaming
 
-		public FilesStatus ()
+		public FilesStatus()
 		{
 		}
 	}

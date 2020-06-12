@@ -23,16 +23,16 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		/// </remarks>
 		/// <param name="maxColors">The maximum number of colors to return</param>
 		/// <param name="maxColorBits">The number of significant bits</param>
-		public OctreeQuantizer ( int maxColors, int maxColorBits ) : base ( false )
+		public OctreeQuantizer(int maxColors, int maxColorBits ) : base(false )
 		{
-			if ( maxColors > 255 )
-				throw new ArgumentOutOfRangeException ( nameof(maxColors), maxColors, "The number of colors should be less than 256" );
+			if (maxColors > 255 )
+				throw new ArgumentOutOfRangeException(nameof(maxColors), maxColors, "The number of colors should be less than 256" );
 
-			if ( ( maxColorBits < 1 ) | ( maxColorBits > 8 ) )
-				throw new ArgumentOutOfRangeException ( nameof(maxColorBits), maxColorBits, "This should be between 1 and 8" );
+			if ((maxColorBits < 1 ) | (maxColorBits > 8 ) )
+				throw new ArgumentOutOfRangeException(nameof(maxColorBits), maxColorBits, "This should be between 1 and 8" );
 
 			// Construct the octree
-			this._octree = new Octree ( maxColorBits  );
+			this._octree = new Octree(maxColorBits  );
 			this._maxColors = maxColors;
 		}
 
@@ -44,10 +44,10 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		/// This function need only be overridden if your quantize algorithm needs two passes,
 		/// such as an Octree quantizer.
 		/// </remarks>
-		protected override void InitialQuantizePixel ( Color32 pixel )
+		protected override void InitialQuantizePixel(Color32 pixel )
 		{
 			// Add the color to the octree
-			this._octree.AddColor ( pixel );
+			this._octree.AddColor(pixel );
 		}
 
 		/// <summary>
@@ -55,15 +55,15 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		/// </summary>
 		/// <param name="pixel">The pixel to quantize</param>
 		/// <returns>The quantized value</returns>
-		protected override byte QuantizePixel ( Color32 pixel )
+		protected override byte QuantizePixel(Color32 pixel )
 		{
 			byte	paletteIndex = (byte)this._maxColors;	// The color at [_maxColors] is set to transparent
 
             
 
 			// Get the palette index if this non-transparent
-			if ( pixel.Alpha > 0 )
-				paletteIndex = (byte)this._octree.GetPaletteIndex ( pixel );
+			if (pixel.Alpha > 0 )
+				paletteIndex = (byte)this._octree.GetPaletteIndex(pixel );
 
 			return paletteIndex;
 		}
@@ -73,17 +73,17 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		/// </summary>
 		/// <param name="original">Any old palette, this is overrwritten</param>
 		/// <returns>The new color palette</returns>
-		protected override ColorPalette GetPalette ( ColorPalette original )
+		protected override ColorPalette GetPalette(ColorPalette original )
 		{
 			// First off convert the octree to _maxColors colors
-			ArrayList	palette = this._octree.Palletize ( this._maxColors - 1 );
+			ArrayList	palette = this._octree.Palletize(this._maxColors - 1 );
 
 			// Then convert the palette based on those colors
-			for ( int index = 0; index < palette.Count; index++)
+			for (int index = 0; index < palette.Count; index++)
 				original.Entries[index] = (Color)palette[index];
 
 			// Add the transparent color
-			original.Entries[this._maxColors] = Color.FromArgb ( 0, 0, 0, 0 );
+			original.Entries[this._maxColors] = Color.FromArgb(0, 0, 0, 0 );
 
 			return original;
 		}
@@ -107,12 +107,12 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 			/// Construct the octree
 			/// </summary>
 			/// <param name="maxColorBits">The maximum number of significant bits in the image</param>
-			public Octree ( int maxColorBits )
+			public Octree(int maxColorBits )
 			{
 				this._maxColorBits = maxColorBits;
 				this._leafCount = 0;
 				this._reducibleNodes = new OctreeNode[9];
-				this._root = new OctreeNode ( 0, this._maxColorBits, this ); 
+				this._root = new OctreeNode(0, this._maxColorBits, this ); 
 				this._previousColor = 0;
 				this._previousNode = null;
 			}
@@ -121,26 +121,26 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 			/// Add a given color value to the octree
 			/// </summary>
 			/// <param name="pixel"></param>
-			public void AddColor ( Color32 pixel )
+			public void AddColor(Color32 pixel )
 			{
 				// Check if this request is for the same color as the last
-				if ( this._previousColor == pixel.ARGB )
+				if (this._previousColor == pixel.ARGB )
 				{
 					// If so, check if I have a previous node setup. This will only ocurr if the first color in the image
 					// happens to be black, with an alpha component of zero.
-					if ( null == this._previousNode )
+					if (null == this._previousNode )
 					{
 						this._previousColor = pixel.ARGB;
-						this._root.AddColor ( pixel, this._maxColorBits, 0, this );
+						this._root.AddColor(pixel, this._maxColorBits, 0, this );
 					}
 					else
 						// Just update the previous node
-						this._previousNode.Increment ( pixel );
+						this._previousNode.Increment(pixel );
 				}
 				else
 				{
 					this._previousColor = pixel.ARGB;
-					this._root.AddColor ( pixel, this._maxColorBits, 0, this );
+					this._root.AddColor(pixel, this._maxColorBits, 0, this );
 				}
 			}
 
@@ -188,7 +188,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 			/// Keep track of the previous node that was quantized
 			/// </summary>
 			/// <param name="node">The node last quantized</param>
-			protected void TrackPrevious ( OctreeNode node )
+			protected void TrackPrevious(OctreeNode node )
 			{
 				this._previousNode = node;
 			}
@@ -198,15 +198,15 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 			/// </summary>
 			/// <param name="colorCount">The maximum number of colors</param>
 			/// <returns>An arraylist with the palettized colors</returns>
-			public ArrayList Palletize ( int colorCount )
+			public ArrayList Palletize(int colorCount )
 			{
-				while ( this.Leaves > colorCount )
-					this.Reduce ( );
+				while (this.Leaves > colorCount )
+					this.Reduce();
 
 				// Now palettize the nodes
-				ArrayList	palette = new ArrayList ( this.Leaves );
+				ArrayList	palette = new ArrayList(this.Leaves );
 				int			paletteIndex = 0;
-				this._root.ConstructPalette ( palette, ref paletteIndex );
+				this._root.ConstructPalette(palette, ref paletteIndex );
 
 				// And return the palette
 				return palette;
@@ -217,9 +217,9 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 			/// </summary>
 			/// <param name="pixel"></param>
 			/// <returns></returns>
-			public int GetPaletteIndex ( Color32 pixel )
+			public int GetPaletteIndex(Color32 pixel )
 			{
-				return this._root.GetPaletteIndex ( pixel, 0 );
+				return this._root.GetPaletteIndex(pixel, 0 );
 			}
 
 			/// <summary>
@@ -268,16 +268,16 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 				/// <param name="level">The level in the tree = 0 - 7</param>
 				/// <param name="colorBits">The number of significant color bits in the image</param>
 				/// <param name="octree">The tree to which this node belongs</param>
-				public OctreeNode ( int level, int colorBits, Octree octree )
+				public OctreeNode(int level, int colorBits, Octree octree )
 				{
 					// Construct the new node
-					this._leaf = ( level == colorBits );
+					this._leaf = (level == colorBits );
 
 					this._red = this._green = this._blue = 0;
 					this._pixelCount = 0;
 
 					// If a leaf, increment the leaf count
-					if ( this._leaf )
+					if (this._leaf )
 					{
 						octree.Leaves++;
 						this._nextReducible = null;
@@ -299,34 +299,34 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 				/// <param name="colorBits">The number of significant color bits</param>
 				/// <param name="level">The level in the tree</param>
 				/// <param name="octree">The tree to which this node belongs</param>
-				public void AddColor ( Color32 pixel, int colorBits, int level, Octree octree )
+				public void AddColor(Color32 pixel, int colorBits, int level, Octree octree )
 				{
 					// Update the color information if this is a leaf
-					if ( this._leaf )
+					if (this._leaf )
 					{
-						this.Increment ( pixel );
+						this.Increment(pixel );
 						// Setup the previous node
-						octree.TrackPrevious ( this );
+						octree.TrackPrevious(this );
 					}
 					else
 					{
 						// Go to the next level down in the tree
 						int	shift = 7 - level;
-						int index = ( ( pixel.Red & mask[level] ) >> ( shift - 2 ) ) |
-							( ( pixel.Green & mask[level] ) >> ( shift - 1 ) ) |
-							( ( pixel.Blue & mask[level] ) >> ( shift ) );
+						int index = ((pixel.Red & mask[level] ) >> (shift - 2 ) ) |
+							((pixel.Green & mask[level] ) >> (shift - 1 ) ) |
+							((pixel.Blue & mask[level] ) >> (shift ) );
 
 						OctreeNode	child = this._children[index];
 
-						if ( null == child )
+						if (null == child )
 						{
 							// Create a new child node & store in the array
-							child = new OctreeNode ( level + 1, colorBits, octree ); 
+							child = new OctreeNode(level + 1, colorBits, octree ); 
 							this._children[index] = child;
 						}
 
 						// Add the color to the child node
-						child.AddColor ( pixel, colorBits, level + 1, octree );
+						child.AddColor(pixel, colorBits, level + 1, octree );
 					}
 
 				}
@@ -352,15 +352,15 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 				/// Reduce this node by removing all of its children
 				/// </summary>
 				/// <returns>The number of leaves removed</returns>
-				public int Reduce ( )
+				public int Reduce()
 				{
 					this._red = this._green = this._blue = 0;
 					int	children = 0;
 
 					// Loop through all children and add their information to this node
-					for ( int index = 0; index < 8; index++)
+					for (int index = 0; index < 8; index++)
 					{
-						if ( null != this._children[index] )
+						if (null != this._children[index] )
 						{
 							this._red += this._children[index]._red;
 							this._green += this._children[index]._green;
@@ -375,7 +375,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 					this._leaf = true;
 
 					// Return the number of nodes to decrement the leaf count by
-					return ( children - 1 );
+					return (children - 1 );
 				}
 
 				/// <summary>
@@ -383,23 +383,23 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 				/// </summary>
 				/// <param name="palette">The palette</param>
 				/// <param name="paletteIndex">The current palette index</param>
-				public void ConstructPalette ( ArrayList palette, ref int paletteIndex )
+				public void ConstructPalette(ArrayList palette, ref int paletteIndex )
 				{
-					if ( this._leaf )
+					if (this._leaf )
 					{
 						// Consume the next palette index
 						this._paletteIndex = paletteIndex++;
 
 						// And set the color of the palette entry
-						palette.Add ( Color.FromArgb ( this._red / this._pixelCount, this._green / this._pixelCount, this._blue / this._pixelCount ) );
+						palette.Add(Color.FromArgb(this._red / this._pixelCount, this._green / this._pixelCount, this._blue / this._pixelCount ) );
 					}
 					else
 					{
 						// Loop through children looking for leaves
-						for ( int index = 0; index < 8; index++)
+						for (int index = 0; index < 8; index++)
 						{
-							if ( null != this._children[index] )
-								this._children[index].ConstructPalette ( palette, ref paletteIndex );
+							if (null != this._children[index] )
+								this._children[index].ConstructPalette(palette, ref paletteIndex );
 						}
 					}
 				}
@@ -407,21 +407,21 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 				/// <summary>
 				/// Return the palette index for the passed color
 				/// </summary>
-				public int GetPaletteIndex ( Color32 pixel, int level )
+				public int GetPaletteIndex(Color32 pixel, int level )
 				{
 					int	paletteIndex = this._paletteIndex;
 
 					if (!this._leaf )
 					{
 						int	shift = 7 - level;
-						int index = ( ( pixel.Red & mask[level] ) >> ( shift - 2 ) ) |
-							( ( pixel.Green & mask[level] ) >> ( shift - 1 ) ) |
-							( ( pixel.Blue & mask[level] ) >> ( shift ) );
+						int index = ((pixel.Red & mask[level] ) >> (shift - 2 ) ) |
+							((pixel.Green & mask[level] ) >> (shift - 1 ) ) |
+							((pixel.Blue & mask[level] ) >> (shift ) );
 
-						if ( null != this._children[index] )
-							paletteIndex = this._children[index].GetPaletteIndex ( pixel, level + 1 );
+						if (null != this._children[index] )
+							paletteIndex = this._children[index].GetPaletteIndex(pixel, level + 1 );
 						else
-							throw new Exception ( "Didn't expect this!" );
+							throw new Exception("Didn't expect this!" );
 					}
 
 					return paletteIndex;
@@ -430,7 +430,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 				/// <summary>
 				/// Increment the pixel count and add to the color information
 				/// </summary>
-				public void Increment ( Color32 pixel )
+				public void Increment(Color32 pixel )
 				{
 					this._pixelCount++;
 					this._red += pixel.Red;

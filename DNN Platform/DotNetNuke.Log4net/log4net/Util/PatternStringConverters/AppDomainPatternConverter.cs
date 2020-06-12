@@ -52,7 +52,7 @@ namespace log4net.Util.PatternStringConverters
 		/// </remarks>
 		override protected void Convert(TextWriter writer, object state) 
 		{
-			writer.Write( SystemInfo.ApplicationFriendlyName );
+			writer.Write(SystemInfo.ApplicationFriendlyName );
 		}
 	}
 }

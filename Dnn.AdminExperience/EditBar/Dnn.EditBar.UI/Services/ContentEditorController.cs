@@ -73,7 +73,7 @@ namespace Dnn.EditBar.UI.Services
         [HttpGet]
         public HttpResponseMessage GetRecommendedModules()
         {
-            var recommendedModuleNames = new List<string> ();
+            var recommendedModuleNames = new List<string>();
             var filteredList = DesktopModuleController.GetPortalDesktopModules(this.PortalSettings.PortalId)
                                         .Where(kvp => kvp.Value.DesktopModule.Category == "Recommended");
 

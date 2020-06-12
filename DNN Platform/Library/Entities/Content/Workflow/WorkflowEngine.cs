@@ -230,7 +230,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
                 var message = workflowAction.GetActionMessage(stateTransaction, workflow.FirstState);
 
-                var notification = this.GetNotification( this.GetWorkflowNotificationContext(contentItem, workflow.FirstState), stateTransaction, message, ContentWorkflowNotificatioStartWorkflowType);
+                var notification = this.GetNotification(this.GetWorkflowNotificationContext(contentItem, workflow.FirstState), stateTransaction, message, ContentWorkflowNotificatioStartWorkflowType);
 
 
                 this._notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
@@ -513,7 +513,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             var initialTransaction = this.CreateInitialTransaction(contentItemId, workflow.FirstState.StateID, userId);
 
             // Perform action before starting workflow
-            this.PerformWorkflowActionOnStateChanging( initialTransaction, WorkflowActionTypes.StartWorkflow);
+            this.PerformWorkflowActionOnStateChanging(initialTransaction, WorkflowActionTypes.StartWorkflow);
             this.UpdateContentItemWorkflowState(workflow.FirstState.StateID, contentItem);
 
             // Send notifications to stater

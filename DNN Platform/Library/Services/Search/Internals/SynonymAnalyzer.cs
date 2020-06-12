@@ -33,8 +33,8 @@ namespace DotNetNuke.Services.Search.Internals
             // According to Lucene's documentaiton the StopFilter performs a case-sensitive lookup of each token in a set of stop
             // words. It relies on being fed already lowercased tokens. Therefore, DO NOT reverse the order of these filters.
             return
-                new PorterStemFilter( // stemming filter
-                    new ASCIIFoldingFilter( // accents filter
+                new PorterStemFilter(// stemming filter
+                    new ASCIIFoldingFilter(// accents filter
                         new SynonymFilter(
                             new StopFilter(true,
                                 new LowerCaseFilter(

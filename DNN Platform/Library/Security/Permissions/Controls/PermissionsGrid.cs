@@ -631,7 +631,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 groupRoles.Add(new RoleInfo { RoleID = this.AllUsersRoleId, RoleName = Globals.glbRoleAllUsersName });            
             }
             
-            foreach (var role in groupRoles.OrderBy( r => r.RoleName))
+            foreach (var role in groupRoles.OrderBy(r => r.RoleName))
             {
                 this.cboSelectRole.Items.Add(new ListItem(role.RoleName, role.RoleID.ToString(CultureInfo.InvariantCulture)));
             }            

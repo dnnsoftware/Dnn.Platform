@@ -153,7 +153,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
         protected IEnumerable<Action<SharedList<string>>> GetObjectDisposedExceptionMethods()
         {
-            var list = new List<Action<SharedList<string>>> {(SharedList<string> l) => l.GetReadLock(), (SharedList<string> l) => l.GetWriteLock()};
+            var list = new List<Action<SharedList<string>>> { (SharedList<string> l) => l.GetReadLock(), (SharedList<string> l) => l.GetWriteLock()};
 
             list.AddRange(this.GetReadMethods());
             list.AddRange(this.GetWriteMethods());

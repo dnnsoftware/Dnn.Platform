@@ -414,7 +414,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         public FolderViewModel CreateFolder(string folderName, int folderParentID, int folderMappingID, string mappedPath)
         {
-            return this.GetFolderViewModel(AssetManager.Instance.CreateFolder( folderName, folderParentID, folderMappingID, mappedPath));
+            return this.GetFolderViewModel(AssetManager.Instance.CreateFolder(folderName, folderParentID, folderMappingID, mappedPath));
         }
 
         public ItemViewModel GetFile(int fileID)

@@ -181,7 +181,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <param name="html">The HTML helper instance that this method extends.</param>
         public static MvcHtmlString DisplayForModel(this DnnHtmlHelper html)
         {
-            return html.HtmlHelper.DisplayForModel( html.ViewData.ModelMetadata);
+            return html.HtmlHelper.DisplayForModel(html.ViewData.ModelMetadata);
         }
 
         /// <summary>

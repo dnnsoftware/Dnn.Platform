@@ -376,11 +376,11 @@ namespace log4net.Util
 				// Don't have a repository to render with so just have to rely on ToString
 				if (value == null)
 				{
-					writer.Write( SystemInfo.NullText );
+					writer.Write(SystemInfo.NullText );
 				}
 				else
 				{
-					writer.Write( value.ToString() );
+					writer.Write(value.ToString() );
 				}
 			}
 		}

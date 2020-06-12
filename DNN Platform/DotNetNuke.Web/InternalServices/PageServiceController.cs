@@ -53,7 +53,7 @@ namespace DotNetNuke.Web.InternalServices
             var urlPath = dto.Path.ValueOrEmpty().TrimStart('/');
             bool modified;
             // Clean Url
-            var options = UrlRewriterUtils.ExtendOptionsForCustomURLs( UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(this.PortalSettings.PortalId)) );
+            var options = UrlRewriterUtils.ExtendOptionsForCustomURLs(UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(this.PortalSettings.PortalId)) );
             
             // now clean the path
             urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);

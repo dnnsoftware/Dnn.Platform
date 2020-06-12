@@ -503,7 +503,7 @@ namespace DotNetNuke.Services.FileSystem
         private void LoadHashProperty()
         {
             var fileManager = (FileManager)FileManager.Instance;
-            var currentHashCode = FolderProvider.Instance( FolderMappingController.Instance.GetFolderMapping(this.FolderMappingID).FolderProviderType).GetHashCode(this);
+            var currentHashCode = FolderProvider.Instance(FolderMappingController.Instance.GetFolderMapping(this.FolderMappingID).FolderProviderType).GetHashCode(this);
             if (currentHashCode != this._sha1Hash)
             {
                 this._sha1Hash = currentHashCode;

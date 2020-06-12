@@ -325,7 +325,7 @@ namespace log4net.Core
 		/// Compares two levels.
 		/// </para>
 		/// </remarks>
-		public static bool operator > (Level l, Level r)
+		public static bool operator >(Level l, Level r)
 		{
 			return l.m_levelValue > r.m_levelValue;
 		}
@@ -345,7 +345,7 @@ namespace log4net.Core
 		/// Compares two levels.
 		/// </para>
 		/// </remarks>
-		public static bool operator < (Level l, Level r)
+		public static bool operator <(Level l, Level r)
 		{
 			return l.m_levelValue < r.m_levelValue;
 		}
@@ -365,7 +365,7 @@ namespace log4net.Core
 		/// Compares two levels.
 		/// </para>
 		/// </remarks>
-		public static bool operator >= (Level l, Level r)
+		public static bool operator >=(Level l, Level r)
 		{
 			return l.m_levelValue >= r.m_levelValue;
 		}
@@ -385,7 +385,7 @@ namespace log4net.Core
 		/// Compares two levels.
 		/// </para>
 		/// </remarks>
-		public static bool operator <= (Level l, Level r)
+		public static bool operator <=(Level l, Level r)
 		{
 			return l.m_levelValue <= r.m_levelValue;
 		}
@@ -405,7 +405,7 @@ namespace log4net.Core
 		/// Compares two levels.
 		/// </para>
 		/// </remarks>
-		public static bool operator == (Level l, Level r)
+		public static bool operator ==(Level l, Level r)
 		{
 			if (((object)l) != null && ((object)r) != null)
 			{
@@ -432,7 +432,7 @@ namespace log4net.Core
 		/// Compares two levels.
 		/// </para>
 		/// </remarks>
-		public static bool operator != (Level l, Level r)
+		public static bool operator !=(Level l, Level r)
 		{
 			return !(l == r);
 		}

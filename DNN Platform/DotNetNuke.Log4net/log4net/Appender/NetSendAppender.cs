@@ -414,7 +414,7 @@ namespace log4net.Appender
 		/// </para>
 		/// </returns>
 		[DllImport("netapi32.dll", SetLastError=true)] 
-		protected static extern int NetMessageBufferSend(	   
+		protected static extern int NetMessageBufferSend(
 			[MarshalAs(UnmanagedType.LPWStr)] string serverName,
 			[MarshalAs(UnmanagedType.LPWStr)] string msgName,
 			[MarshalAs(UnmanagedType.LPWStr)] string fromName,

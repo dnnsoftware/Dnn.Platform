@@ -52,7 +52,7 @@ namespace log4net.Layout.Pattern
 		/// </remarks>
 		override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
 		{
-			writer.Write( loggingEvent.LocationInformation.FullInfo );
+			writer.Write(loggingEvent.LocationInformation.FullInfo );
 		}
 	}
 }

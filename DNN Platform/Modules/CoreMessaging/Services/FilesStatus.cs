@@ -19,7 +19,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         public int id { get; set; }
         // ReSharper restore InconsistentNaming
 
-		public FilesStatus ()
+		public FilesStatus()
 		{
 		}
 	}

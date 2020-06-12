@@ -272,7 +272,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-        public void GetAllRouteValuesWorksWithNullRouteValues   ()
+        public void GetAllRouteValuesWorksWithNullRouteValues()
         {
             // Arrange
             

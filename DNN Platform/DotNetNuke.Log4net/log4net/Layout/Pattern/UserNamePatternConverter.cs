@@ -43,7 +43,7 @@ namespace log4net.Layout.Pattern
 		/// <param name="loggingEvent">the event being logged</param>
 		override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
 		{
-			writer.Write( loggingEvent.UserName );
+			writer.Write(loggingEvent.UserName );
 		}
 	}
 }

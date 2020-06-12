@@ -88,7 +88,7 @@ namespace log4net.Layout
 		/// <param name="pattern">the pattern to use</param>
 		/// <remarks>
 		/// </remarks>
-		public DynamicPatternLayout (string pattern) 
+		public DynamicPatternLayout(string pattern) 
 			: base(pattern)
 		{
 		}

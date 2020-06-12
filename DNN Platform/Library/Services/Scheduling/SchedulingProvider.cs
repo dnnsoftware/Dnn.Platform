@@ -231,7 +231,7 @@ namespace DotNetNuke.Services.Scheduling
 
         public abstract void UpdateSchedule(ScheduleItem scheduleItem);
 
-        public abstract void UpdateScheduleWithoutExecution (ScheduleItem scheduleItem);
+        public abstract void UpdateScheduleWithoutExecution(ScheduleItem scheduleItem);
 
         public abstract void DeleteSchedule(ScheduleItem scheduleItem);
 

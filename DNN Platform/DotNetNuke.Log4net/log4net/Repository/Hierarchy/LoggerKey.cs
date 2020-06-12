@@ -123,7 +123,7 @@ namespace log4net.Repository.Hierarchy
 				return ( m_name == objKey.m_name );
 #else
 				// Compare reference types rather than string's overloaded ==
-				return ( ((object)this.m_name) == ((object)objKey.m_name) );
+				return (((object)this.m_name) == ((object)objKey.m_name) );
 #endif
 			}
 			return false;
