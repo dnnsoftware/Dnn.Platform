@@ -304,7 +304,8 @@ namespace log4net.Appender
                 get { return (this.foreColor); }
                 // Keep a flag that the color has been set
                 // and is no longer the default.
-                set { this.foreColor = value; this.hasForeColor = true; }
+                set { this.foreColor = value;
+                    this.hasForeColor = true; }
             }
             private ConsoleColor foreColor;
             private bool hasForeColor;
@@ -328,7 +329,8 @@ namespace log4net.Appender
                 get { return (this.backColor); }
                 // Keep a flag that the color has been set
                 // and is no longer the default.
-                set { this.backColor = value; this.hasBackColor = true; }
+                set { this.backColor = value;
+                    this.hasBackColor = true; }
             }
             private ConsoleColor backColor;
             private bool hasBackColor;
