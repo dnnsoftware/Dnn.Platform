@@ -25,9 +25,10 @@
 using System;
 using System.Runtime.Remoting;
 
-using log4net.Util;
-using log4net.Repository;
 using log4net.Core;
+using log4net.Repository;
+using log4net.Util;
+
 using IRemoteLoggingSink = log4net.Appender.RemotingAppender.IRemoteLoggingSink;
 
 namespace log4net.Plugin

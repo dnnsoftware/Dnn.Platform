@@ -14,10 +14,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Abstractions;
-
 using DotNetNuke.Application;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
@@ -38,6 +36,7 @@ using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
+using Microsoft.Extensions.DependencyInjection;
 
 using Globals = DotNetNuke.Common.Globals;
 

@@ -21,15 +21,17 @@
 //
 
 using System;
+
 #if NETSTANDARD1_3
 using System.Runtime.InteropServices;
 #else
 using System.Configuration;
+
 #endif
 using System.Reflection;
 
-using log4net.Util;
 using log4net.Repository;
+using log4net.Util;
 
 namespace log4net.Core
 {

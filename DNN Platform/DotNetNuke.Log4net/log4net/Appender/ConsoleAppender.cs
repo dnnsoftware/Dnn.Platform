@@ -23,8 +23,8 @@
 using System;
 using System.Globalization;
 
-using log4net.Layout;
 using log4net.Core;
+using log4net.Layout;
 using log4net.Util;
 
 namespace log4net.Appender

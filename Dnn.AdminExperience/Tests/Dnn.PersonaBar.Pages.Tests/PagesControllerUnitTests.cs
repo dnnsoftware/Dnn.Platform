@@ -3,16 +3,17 @@
 // See the LICENSE file in the project root for more information
 
 using System.Collections.Generic;
-using Moq;
-using NUnit.Framework;
+
+using Dnn.PersonaBar.Library.Helper;
+using Dnn.PersonaBar.Pages.Components;
+using Dnn.PersonaBar.Pages.Components.Exceptions;
+using Dnn.PersonaBar.Pages.Services.Dto;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
-using Dnn.PersonaBar.Pages.Components;
-using Dnn.PersonaBar.Pages.Services.Dto;
-using Dnn.PersonaBar.Library.Helper;
-using Dnn.PersonaBar.Pages.Components.Exceptions;
+using Moq;
+using NUnit.Framework;
 
 namespace Dnn.PersonaBar.Pages.Tests
 {

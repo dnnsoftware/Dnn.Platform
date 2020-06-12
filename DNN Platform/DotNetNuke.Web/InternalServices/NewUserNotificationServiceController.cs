@@ -5,12 +5,13 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
-using DotNetNuke.Services.Mail;
 
 namespace DotNetNuke.Web.InternalServices
 {

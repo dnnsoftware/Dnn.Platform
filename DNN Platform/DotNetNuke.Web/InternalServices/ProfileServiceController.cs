@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -17,8 +18,8 @@ using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Api;
 using DotNetNuke.Services.Registration;
+using DotNetNuke.Web.Api;
 
 namespace DotNetNuke.Web.InternalServices
 {

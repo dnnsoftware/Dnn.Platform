@@ -20,11 +20,11 @@
 //
 #if !NETCF
 using System;
-using System.IO;
 using System.Diagnostics;
+using System.IO;
 
-using log4net.Util;
 using log4net.Core;
+using log4net.Util;
 
 namespace log4net.Layout.Pattern
 {

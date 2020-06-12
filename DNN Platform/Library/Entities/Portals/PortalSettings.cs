@@ -8,14 +8,15 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+
+using DotNetNuke.Abstractions.Portals;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.Services.Tokens;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions.Portals;
 
 namespace DotNetNuke.Entities.Portals
 {

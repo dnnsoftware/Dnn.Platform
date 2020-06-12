@@ -3,8 +3,8 @@
 // See the LICENSE file in the project root for more information
 
 using System;
-using System.Web.UI;
 using System.ComponentModel;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Web.UI.WebControls

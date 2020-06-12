@@ -10,20 +10,21 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
+
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Modules.Html.Components;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Common.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Telerik.Web.UI;
-using DotNetNuke.Modules.Html.Components;
-using DotNetNuke.Abstractions;
 
 namespace DotNetNuke.Modules.Html
 {

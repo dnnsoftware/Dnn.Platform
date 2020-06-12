@@ -11,6 +11,7 @@ using System.Security.Principal;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
+
 using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -22,12 +23,12 @@ using DotNetNuke.HttpModules.Services;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
+using DotNetNuke.Services.UserRequest;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.Skins.EventListeners;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.UserRequest;
 
 namespace DotNetNuke.HttpModules.Membership
 {

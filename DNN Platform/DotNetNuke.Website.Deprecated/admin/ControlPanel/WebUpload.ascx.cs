@@ -10,10 +10,9 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
 
-using DotNetNuke.Common;
 using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
@@ -26,6 +25,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.Common;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Admin.FileManager
 {

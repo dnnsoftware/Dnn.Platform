@@ -22,9 +22,10 @@
 
 using System;
 using System.Collections;
+
 using log4net;
-using log4net.ObjectRenderer;
 using log4net.Core;
+using log4net.ObjectRenderer;
 using log4net.Plugin;
 using log4net.Repository.Hierarchy;
 using log4net.Util;

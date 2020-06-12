@@ -5,7 +5,8 @@
 
 
 using System;
-using Microsoft.Extensions.DependencyInjection;
+
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -14,10 +15,10 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Admin.Users
 {

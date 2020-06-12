@@ -12,14 +12,13 @@ using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.HttpModules.UrlRewrite;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Tests.Utilities;
-
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Urls

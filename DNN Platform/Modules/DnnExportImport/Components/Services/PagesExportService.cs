@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Controllers;
 using Dnn.ExportImport.Components.Dto;
@@ -19,8 +20,8 @@ using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Workflow;
-using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Tabs.TabVersions;
@@ -31,9 +32,10 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
 using Newtonsoft.Json;
-using Util = Dnn.ExportImport.Components.Common.Util;
+
 using InstallerUtil = DotNetNuke.Services.Installer.Util;
 using TermHelper = DotNetNuke.Entities.Content.Taxonomy.TermHelper;
+using Util = Dnn.ExportImport.Components.Common.Util;
 
 // ReSharper disable SuggestBaseTypeForParameter
 

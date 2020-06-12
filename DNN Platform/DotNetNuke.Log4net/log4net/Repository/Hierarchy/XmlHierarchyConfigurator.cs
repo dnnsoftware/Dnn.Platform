@@ -27,9 +27,9 @@ using System.Reflection;
 using System.Xml;
 
 using log4net.Appender;
-using log4net.Util;
 using log4net.Core;
 using log4net.ObjectRenderer;
+using log4net.Util;
 
 namespace log4net.Repository.Hierarchy
 {

@@ -11,10 +11,10 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Web.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
@@ -31,8 +31,8 @@ using DotNetNuke.Services.Personalization;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.UI;
 using DotNetNuke.Web.UI.WebControls;
-using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Web.UI.WebControls.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 using Globals = DotNetNuke.Common.Globals;
 using PortalInfo = DotNetNuke.Entities.Portals.PortalInfo;

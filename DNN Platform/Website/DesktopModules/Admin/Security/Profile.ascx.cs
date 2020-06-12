@@ -7,14 +7,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
-using DotNetNuke.UI.WebControls;
 using DotNetNuke.UI.Skins.Controls;
+using DotNetNuke.UI.WebControls;
+
 using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
 namespace DesktopModules.Admin.Security

@@ -21,13 +21,14 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Instrumentation;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Services.Authentication.OAuth

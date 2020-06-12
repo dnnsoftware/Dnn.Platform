@@ -4,10 +4,11 @@
 
 using System;
 using System.Text.RegularExpressions;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
+
 using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Groups {
     public class Utilities {

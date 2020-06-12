@@ -10,10 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using Microsoft.Extensions.DependencyInjection;
 
-using DotNetNuke.Common;
 using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Modules;
@@ -36,7 +35,7 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls;
-
+using Microsoft.Extensions.DependencyInjection;
 using Telerik.Web.UI;
 
 namespace DotNetNuke.Modules.DigitalAssets

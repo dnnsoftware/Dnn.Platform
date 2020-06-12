@@ -7,11 +7,12 @@
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
+
 using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.UI.Skins.Controls
 {

@@ -5,8 +5,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Web.UI;
 using System.Threading;
+using System.Web.UI;
 
 namespace DotNetNuke.Web.UI.WebControls
 {

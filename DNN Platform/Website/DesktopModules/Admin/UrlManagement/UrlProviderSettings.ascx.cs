@@ -5,8 +5,8 @@
 using System;
 using System.Linq;
 
-using DotNetNuke.Common;
 using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.UI.Modules;
 using Microsoft.Extensions.DependencyInjection;

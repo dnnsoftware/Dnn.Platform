@@ -7,21 +7,21 @@
 using System;
 using System.IO;
 using System.Web.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Security;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Framework;
+using DotNetNuke.Security;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Installer.Packages;
+using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.UI.Skins.Controls;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Dnn.Module.ModuleCreator
 {

@@ -7,11 +7,10 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Cache;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
-
 using Moq;
-using DotNetNuke.Services.FileSystem;
 
 namespace DotNetNuke.Tests.Utilities.Mocks
 {

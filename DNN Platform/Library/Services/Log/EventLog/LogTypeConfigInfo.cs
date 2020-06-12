@@ -6,8 +6,8 @@
 
 using System;
 
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Services.Log.EventLog
 {

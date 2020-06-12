@@ -21,12 +21,12 @@
 //
 
 using System;
-using System.Text;
 using System.IO;
+using System.Text;
 
-using log4net.Util;
-using log4net.DateFormatter;
 using log4net.Core;
+using log4net.DateFormatter;
+using log4net.Util;
 
 namespace log4net.Util.PatternStringConverters
 {

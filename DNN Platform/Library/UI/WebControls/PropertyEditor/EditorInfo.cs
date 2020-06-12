@@ -9,8 +9,8 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Profile;
+using DotNetNuke.Entities.Users;
 
 namespace DotNetNuke.UI.WebControls
 {

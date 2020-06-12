@@ -4,11 +4,11 @@
 
 using System;
 
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Entities.Host;
 
 namespace DotNetNuke.Modules.Journal {
     public partial class MyFiles : PortalModuleBase {

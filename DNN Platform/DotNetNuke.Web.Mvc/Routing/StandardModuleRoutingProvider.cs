@@ -7,12 +7,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Routing;
-using Microsoft.Extensions.DependencyInjection;
+
+using DotNetNuke.Abstractions;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.UI.Modules;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Web.Mvc.Routing
 {

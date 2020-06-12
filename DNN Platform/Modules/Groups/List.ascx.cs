@@ -3,10 +3,11 @@
 // See the LICENSE file in the project root for more information
 
 using System;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
+
 using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
 using DotNetNuke.Framework;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Groups
 {

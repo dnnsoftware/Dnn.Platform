@@ -16,9 +16,10 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
 using System.Xml.Linq;
-using DotNetNuke.Common.Utilities;
+
 using DNN.Integration.Test.Framework.Controllers;
 using DNN.Integration.Test.Framework.Helpers;
+using DotNetNuke.Common.Utilities;
 
 namespace DNN.Integration.Test.Framework
 {

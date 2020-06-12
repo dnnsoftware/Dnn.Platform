@@ -20,12 +20,12 @@
 // limitations under the License.
 //
 
-using System.Text;
-using System.IO;
 using System.Collections;
+using System.IO;
+using System.Text;
 
-using log4net.Util;
 using log4net.Repository;
+using log4net.Util;
 
 namespace log4net.Util
 {

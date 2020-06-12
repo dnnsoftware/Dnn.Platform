@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Web.UI;
 
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -18,7 +19,6 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
-using DotNetNuke.Common;
 
 namespace DotNetNuke.Modules.CoreMessaging
 {

@@ -6,12 +6,13 @@
 
 using System;
 using System.IO;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
+
 using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Admin.EditExtension
 {

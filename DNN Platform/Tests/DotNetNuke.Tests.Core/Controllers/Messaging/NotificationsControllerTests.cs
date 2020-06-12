@@ -11,8 +11,8 @@ using System.Text;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
-using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Social.Messaging;
@@ -22,9 +22,7 @@ using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Services.Social.Notifications.Data;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
-
 using Moq;
-
 using NUnit.Framework;
 
 // ReSharper disable InconsistentNaming

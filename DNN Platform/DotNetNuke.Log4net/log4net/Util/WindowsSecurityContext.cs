@@ -30,8 +30,8 @@
 
 using System;
 using System.Runtime.InteropServices;
-using System.Security.Principal;
 using System.Security.Permissions;
+using System.Security.Principal;
 
 using log4net.Core;
 

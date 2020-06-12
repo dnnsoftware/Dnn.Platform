@@ -23,12 +23,12 @@
 #if !NETCF
 
 using System;
-using System.Reflection;
 using System.IO;
+using System.Reflection;
 
-using log4net.Util;
 using log4net.Repository;
 using log4net.Repository.Hierarchy;
+using log4net.Util;
 
 namespace log4net.Config
 {

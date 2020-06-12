@@ -7,14 +7,14 @@
 using System;
 using System.Globalization;
 using System.Threading;
-using Microsoft.Extensions.DependencyInjection;
 
-using DotNetNuke.Common;
 using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.UI.Modules
 {

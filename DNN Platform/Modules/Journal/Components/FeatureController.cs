@@ -18,9 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
+
 using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Modules;
@@ -32,6 +32,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Search.Controllers;
 using DotNetNuke.Services.Search.Entities;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Journal.Components {
 

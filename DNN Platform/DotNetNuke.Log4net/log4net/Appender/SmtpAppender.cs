@@ -29,12 +29,13 @@ using System.Text;
 
 #if NET_2_0 || MONO_2_0
 using System.Net.Mail;
+
 #else
 using System.Web.Mail;
 #endif
 
-using log4net.Layout;
 using log4net.Core;
+using log4net.Layout;
 using log4net.Util;
 
 namespace log4net.Appender

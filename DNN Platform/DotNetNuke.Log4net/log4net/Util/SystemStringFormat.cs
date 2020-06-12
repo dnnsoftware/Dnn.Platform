@@ -22,8 +22,8 @@
 
 using System;
 using System.Text;
-using System.Xml;
 using System.Text.RegularExpressions;
+using System.Xml;
 
 namespace log4net.Util
 {

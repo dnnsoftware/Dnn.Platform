@@ -4,10 +4,9 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
 
-using DotNetNuke.Application;
 using DotNetNuke.Abstractions;
+using DotNetNuke.Application;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework.JavaScriptLibraries;
@@ -16,7 +15,9 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
+using Microsoft.Extensions.DependencyInjection;
 using Telerik.Web.UI;
+
 using Globals = DotNetNuke.Common.Globals;
 
 namespace DotNetNuke.Modules.DigitalAssets

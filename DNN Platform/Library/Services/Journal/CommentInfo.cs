@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using DotNetNuke.Services.Tokens;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
-
+using DotNetNuke.Services.Tokens;
 
 namespace DotNetNuke.Services.Journal {
     public class CommentInfo : IHydratable, IPropertyAccess {

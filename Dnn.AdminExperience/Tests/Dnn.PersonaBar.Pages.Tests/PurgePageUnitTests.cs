@@ -3,14 +3,15 @@
 // See the LICENSE file in the project root for more information
 
 using System;
-using NUnit.Framework;
-using Moq;
+
+using Dnn.PersonaBar.Library.Helper;
 using Dnn.PersonaBar.Library.Prompt;
 using Dnn.PersonaBar.Recyclebin.Components;
 using Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-using Dnn.PersonaBar.Library.Helper;
+using Moq;
+using NUnit.Framework;
 
 namespace Dnn.PersonaBar.Pages.Tests
 {

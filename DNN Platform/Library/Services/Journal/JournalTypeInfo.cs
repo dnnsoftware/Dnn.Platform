@@ -6,8 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using DotNetNuke.Entities.Modules;
+
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Services.Journal {
     [Serializable]

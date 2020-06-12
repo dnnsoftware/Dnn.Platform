@@ -8,19 +8,19 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.Groups.Components;
+using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Social.Messaging.Internal;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
-using DotNetNuke.Security;
-using DotNetNuke.Abstractions;
 
 namespace DotNetNuke.Modules.Groups
 {

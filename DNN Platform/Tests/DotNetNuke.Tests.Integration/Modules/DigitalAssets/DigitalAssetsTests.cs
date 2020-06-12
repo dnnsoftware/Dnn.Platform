@@ -6,9 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using DotNetNuke.Common.Utilities;
+
 using DNN.Integration.Test.Framework;
 using DNN.Integration.Test.Framework.Helpers;
+using DotNetNuke.Common.Utilities;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets

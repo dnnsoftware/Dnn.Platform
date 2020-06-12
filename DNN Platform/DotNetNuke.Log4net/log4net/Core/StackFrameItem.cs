@@ -21,9 +21,10 @@
 // limitations under the License.
 //
 using System;
-using System.Text;
 using System.Diagnostics;
 using System.Reflection;
+using System.Text;
+
 using log4net.Util;
 
 namespace log4net.Core

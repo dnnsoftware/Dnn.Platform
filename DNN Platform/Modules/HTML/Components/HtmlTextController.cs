@@ -10,8 +10,8 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Xml;
-using Microsoft.Extensions.DependencyInjection;
 
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Taxonomy;
@@ -24,12 +24,12 @@ using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Roles.Internal;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Services.Tokens;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Html
 {

@@ -3,8 +3,8 @@
 // See the LICENSE file in the project root for more information
 
 using System;
-using System.Web.Hosting;
 using System.IO;
+using System.Web.Hosting;
 
 namespace DotNetNuke.Tests.Instance.Utilities
 {

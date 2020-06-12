@@ -7,28 +7,27 @@
 using System;
 using System.Collections;
 using System.Web;
-using Microsoft.Extensions.DependencyInjection;
 
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Membership;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Mail;
-using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Services.UserRequest;
-using DotNetNuke.Abstractions;
+using DotNetNuke.UI.Skins.Controls;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Admin.Security
 {
-
     using Host = DotNetNuke.Entities.Host.Host;
 
     /// <summary>

@@ -23,8 +23,8 @@
 using System;
 using System.Collections;
 
-using log4net.Util;
 using log4net.Repository;
+using log4net.Util;
 
 namespace log4net.Plugin
 {

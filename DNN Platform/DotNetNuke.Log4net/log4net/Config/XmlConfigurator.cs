@@ -21,16 +21,16 @@
 //
 
 using System;
-using System.Xml;
 using System.Collections;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Threading;
-using System.Net;
+using System.Xml;
 
 using log4net.Appender;
-using log4net.Util;
 using log4net.Repository;
+using log4net.Util;
 
 namespace log4net.Config
 {

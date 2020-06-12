@@ -24,11 +24,14 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading;
-using log4net.Util;
-using log4net.Layout;
+
 using log4net.Core;
+using log4net.Layout;
+using log4net.Util;
+
 #if NET_4_5 || NETSTANDARD1_3
 using System.Threading.Tasks;
+
 #endif
 
 namespace log4net.Appender

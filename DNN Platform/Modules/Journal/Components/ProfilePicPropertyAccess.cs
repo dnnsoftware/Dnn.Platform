@@ -3,9 +3,10 @@
 // See the LICENSE file in the project root for more information
 
 using System.Globalization;
+
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Tokens;
-using DotNetNuke.Common;
 
 namespace DotNetNuke.Modules.Journal.Components
 {

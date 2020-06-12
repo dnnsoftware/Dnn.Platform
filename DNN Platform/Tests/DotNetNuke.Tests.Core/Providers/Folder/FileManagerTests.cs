@@ -9,6 +9,7 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Text;
+
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -17,15 +18,14 @@ using DotNetNuke.Entities.Content.Workflow;
 using DotNetNuke.Entities.Content.Workflow.Entities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.FileSystem.Internal;
+using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Log.EventLog;
 using Moq;
-
 using NUnit.Framework;
 
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;

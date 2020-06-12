@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Threading;
 using System.Web;
 using System.Web.Hosting;
+
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
@@ -22,11 +23,11 @@ using DotNetNuke.Services.Connections;
 using DotNetNuke.Services.EventQueue;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Installer.Blocker;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Upgrade;
 using DotNetNuke.UI.Modules;
-using DotNetNuke.Services.Installer.Blocker;
 using Microsoft.Win32;
 
 namespace DotNetNuke.Common

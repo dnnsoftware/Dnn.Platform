@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Moq;
-using NUnit.Framework;
-using DotNetNuke.Entities.Users;
-using Dnn.PersonaBar.Users.Components;
 using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Recyclebin.Components;
 using Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands;
+using Dnn.PersonaBar.Users.Components;
+using DotNetNuke.Entities.Users;
+using Moq;
+using NUnit.Framework;
 
 namespace Dnn.PersonaBar.Users.Tests
 {

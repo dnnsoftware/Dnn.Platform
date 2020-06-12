@@ -23,15 +23,18 @@
 using System;
 using System.Collections;
 using System.IO;
+
 #if !NETCF
 using System.Runtime.Serialization;
+
 #if !NETSTANDARD1_3
 using System.Security.Principal;
+
 #endif
 #endif
 
-using log4net.Util;
 using log4net.Repository;
+using log4net.Util;
 
 namespace log4net.Core
 {

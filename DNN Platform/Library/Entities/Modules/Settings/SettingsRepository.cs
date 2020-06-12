@@ -10,12 +10,13 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web.Caching;
-using DotNetNuke.Common;
+
 using DotNetNuke.Collections;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Entities.Modules.Settings
 {

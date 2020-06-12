@@ -27,8 +27,8 @@ using System.Globalization;
 using System.Reflection;
 
 using log4net.Core;
-using log4net.Util;
 using log4net.Plugin;
+using log4net.Util;
 
 namespace log4net.Config
 {

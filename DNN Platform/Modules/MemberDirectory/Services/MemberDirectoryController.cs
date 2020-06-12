@@ -9,15 +9,16 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Web.Api;
-using DotNetNuke.Entities.Users.Social;
 
 namespace DotNetNuke.Modules.MemberDirectory.Services
 {

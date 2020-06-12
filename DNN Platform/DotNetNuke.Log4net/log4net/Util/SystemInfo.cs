@@ -21,16 +21,18 @@
 //
 
 using System;
+
 #if NETSTANDARD1_3
 using System.Globalization;
 #else
 using System.Configuration;
+
 #endif
-using System.Reflection;
-using System.Text;
-using System.IO;
-using System.Runtime.InteropServices;
 using System.Collections;
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace log4net.Util
 {

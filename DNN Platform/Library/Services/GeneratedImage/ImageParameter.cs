@@ -4,8 +4,8 @@
 
 using System;
 using System.ComponentModel;
-using System.Web.UI;
 using System.Globalization;
+using System.Web.UI;
 
 namespace DotNetNuke.Services.GeneratedImage
 {

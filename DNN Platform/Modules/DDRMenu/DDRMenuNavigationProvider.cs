@@ -6,11 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Web.UI;
-using DotNetNuke.Web.DDRMenu.Localisation;
-using DotNetNuke.Web.DDRMenu.TemplateEngine;
+
 using DotNetNuke.Modules.NavigationProvider;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.WebControls;
+using DotNetNuke.Web.DDRMenu.Localisation;
+using DotNetNuke.Web.DDRMenu.TemplateEngine;
 
 namespace DotNetNuke.Web.DDRMenu
 {

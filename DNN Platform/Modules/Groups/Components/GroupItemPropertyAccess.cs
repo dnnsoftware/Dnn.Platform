@@ -6,11 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using DotNetNuke.Services.Tokens;
-using DotNetNuke.Services.Journal;
+
 using DotNetNuke.Entities.Groups;
-using DotNetNuke.Security.Roles;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Journal;
+using DotNetNuke.Services.Tokens;
 
 namespace DotNetNuke.Modules.Groups.Components {
     public class GroupItemTokenReplace : Services.Tokens.BaseCustomTokenReplace {

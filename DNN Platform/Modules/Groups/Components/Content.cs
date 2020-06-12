@@ -6,10 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Entities.Content.Common;
+
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content;
+using DotNetNuke.Entities.Content.Common;
+using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Entities.Groups {
     public class Content {

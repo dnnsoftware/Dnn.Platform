@@ -9,13 +9,17 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Security;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 using DotNetNuke.Framework;
+using DotNetNuke.HttpModules.DependencyInjection;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.HTMLEditorProvider;
 using DotNetNuke.Modules.NavigationProvider;
+using DotNetNuke.Security.Cookies;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Profile;
@@ -24,6 +28,7 @@ using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.ClientCapability;
 using DotNetNuke.Services.Cryptography;
 using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Installer.Blocker;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.ModuleCache;
 using DotNetNuke.Services.OutputCache;
@@ -32,10 +37,6 @@ using DotNetNuke.Services.Search;
 using DotNetNuke.Services.Search.Internals;
 using DotNetNuke.Services.Sitemap;
 using DotNetNuke.Services.Url.FriendlyUrl;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Cookies;
-using DotNetNuke.Services.Installer.Blocker;
-using DotNetNuke.HttpModules.DependencyInjection;
 
 namespace DotNetNuke.Web.Common.Internal
 {

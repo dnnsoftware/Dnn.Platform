@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 
 using DotNetNuke.ComponentModel;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Search.Entities;
@@ -18,11 +19,8 @@ using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
-
 using Moq;
-
 using NUnit.Framework;
-using DotNetNuke.Entities.Controllers;
 
 using Directory = System.IO.Directory;
 

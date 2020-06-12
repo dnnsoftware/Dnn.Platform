@@ -5,13 +5,14 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+
+using DNN.Integration.Test.Framework;
+using DNN.Integration.Test.Framework.Controllers;
+using DNN.Integration.Test.Framework.Helpers;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Tests.Integration.Executers;
 using DotNetNuke.Tests.Integration.Executers.Builders;
 using DotNetNuke.Tests.Integration.Executers.Dto;
-using DNN.Integration.Test.Framework;
-using DNN.Integration.Test.Framework.Controllers;
-using DNN.Integration.Test.Framework.Helpers;
 using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Integration.Modules.DDRMenu

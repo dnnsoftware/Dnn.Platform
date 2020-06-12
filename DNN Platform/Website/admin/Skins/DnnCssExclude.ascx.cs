@@ -4,8 +4,9 @@
 // See the LICENSE file in the project root for more information
 
 using System;
-using ClientDependency.Core.Controls;
+
 using ClientDependency.Core;
+using ClientDependency.Core.Controls;
 
 namespace DotNetNuke.UI.Skins.Controls
 {

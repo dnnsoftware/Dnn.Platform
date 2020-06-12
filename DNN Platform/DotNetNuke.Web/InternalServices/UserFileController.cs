@@ -6,8 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
-using System.Web.Http;
 using System.Net.Http;
+using System.Web.Http;
+
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.Instrumentation;

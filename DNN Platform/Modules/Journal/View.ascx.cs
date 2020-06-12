@@ -15,19 +15,20 @@
 */
 
 using System;
-using Microsoft.Extensions.DependencyInjection;
+
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Modules.Journal.Components;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Abstractions;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Web.Client.ClientResourceManagement;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Journal {
 

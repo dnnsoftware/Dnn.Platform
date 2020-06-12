@@ -7,18 +7,20 @@ using System.Globalization;
 using System.Threading;
 using System.Web;
 using System.Web.UI;
-using Microsoft.Extensions.DependencyInjection;
+
 using Dnn.PersonaBar.Library.Common;
 using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.Helper;
 using Dnn.PersonaBar.Library.Model;
-using DotNetNuke.Application;
 using DotNetNuke.Abstractions;
+using DotNetNuke.Application;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.ImprovementsProgram;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
+
 using Globals = DotNetNuke.Common.Globals;
 
 namespace Dnn.PersonaBar.Library.Containers

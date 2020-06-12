@@ -5,10 +5,11 @@
 
 
 using System;
+
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
-using Telerik.Web.UI;
 using DotNetNuke.Services.Localization;
+using Telerik.Web.UI;
 
 namespace DotNetNuke.Web.UI.WebControls
 {

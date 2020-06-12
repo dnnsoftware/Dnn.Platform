@@ -6,15 +6,15 @@
 
 using System;
 using System.Web;
-using Microsoft.Extensions.DependencyInjection;
 
-using DotNetNuke.Common;
 using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.UI.Skins.Controls
 {

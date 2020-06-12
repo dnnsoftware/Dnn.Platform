@@ -25,8 +25,10 @@
 
 using System;
 using System.Collections;
+
 #if !NETSTANDARD1_3
 using System.Configuration;
+
 #else
 using System.Linq;
 #endif
@@ -34,8 +36,8 @@ using System.IO;
 using System.Reflection;
 
 using log4net.Config;
-using log4net.Util;
 using log4net.Repository;
+using log4net.Util;
 
 namespace log4net.Core
 {

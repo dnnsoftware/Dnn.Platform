@@ -5,11 +5,11 @@
 using System;
 using System.Collections.Generic;
 
-using DotNetNuke.Services.Social.Notifications;
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Common;
+using DotNetNuke.Services.Social.Notifications;
 
 namespace DotNetNuke.Modules.Groups.Components {
     public class Notifications {

@@ -21,8 +21,8 @@
 //
 
 using System;
-using System.Text;
 using System.Globalization;
+using System.Text;
 
 namespace log4net.DateFormatter
 {

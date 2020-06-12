@@ -21,8 +21,8 @@
 //
 
 using System;
-using System.Text;
 using System.IO;
+using System.Text;
 
 namespace log4net.Util
 {

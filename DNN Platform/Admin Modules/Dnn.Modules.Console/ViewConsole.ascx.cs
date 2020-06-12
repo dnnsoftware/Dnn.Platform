@@ -11,7 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
+
 using Dnn.Modules.Console.Components;
 using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
@@ -26,6 +26,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.Web.Client.ClientResourceManagement;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Dnn.Modules.Console
 {

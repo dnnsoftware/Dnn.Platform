@@ -3,9 +3,10 @@
 // See the LICENSE file in the project root for more information
 
 using System.Linq;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content;
+
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content;
+using DotNetNuke.Entities.Content.Common;
 
 namespace DotNetNuke.Services.Journal {
 

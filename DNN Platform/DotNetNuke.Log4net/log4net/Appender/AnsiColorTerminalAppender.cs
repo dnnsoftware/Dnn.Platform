@@ -21,8 +21,8 @@
 //
 
 using System;
-using System.Text;
 using System.Globalization;
+using System.Text;
 
 using log4net.Core;
 using log4net.Layout;

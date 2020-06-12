@@ -8,10 +8,10 @@ using System;
 using System.Web.UI.WebControls;
 
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.UI.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
+using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.UI.WebControls
 {

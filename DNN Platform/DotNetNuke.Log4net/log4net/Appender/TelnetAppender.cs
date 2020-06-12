@@ -23,16 +23,17 @@
 using System;
 using System.Collections;
 using System.Globalization;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.IO;
 using System.Threading;
+
 #if NETSTANDARD1_3
 using System.Threading.Tasks;
 #endif
-using log4net.Layout;
 using log4net.Core;
+using log4net.Layout;
 using log4net.Util;
 
 namespace log4net.Appender

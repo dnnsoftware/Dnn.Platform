@@ -8,7 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Web;
-using Microsoft.Extensions.DependencyInjection;
+
+using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
@@ -18,9 +19,9 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Services.Social.Messaging.Internal;
-using DotNetNuke.Abstractions;
+using DotNetNuke.Services.Social.Notifications;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.UI.Skins.Controls
 {

@@ -24,12 +24,11 @@
 
 using System;
 using System.Collections;
+using System.Runtime.Remoting.Messaging;
 using System.Threading;
 
-using System.Runtime.Remoting.Messaging;
-
-using log4net.Layout;
 using log4net.Core;
+using log4net.Layout;
 using log4net.Util;
 
 namespace log4net.Appender

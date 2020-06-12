@@ -21,9 +21,9 @@
 //
 
 using System;
+using System.IO;
 using System.Text;
 using System.Xml;
-using System.IO;
 
 using log4net.Core;
 using log4net.Util;

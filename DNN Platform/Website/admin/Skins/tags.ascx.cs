@@ -5,10 +5,11 @@
 
 
 using System;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
+
 using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Icons;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.UI.Skins.Controls
 {

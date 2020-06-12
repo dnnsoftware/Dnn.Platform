@@ -6,13 +6,14 @@ using System;
 using System.IO;
 using System.Web;
 using System.Web.UI;
+
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Cache;
+using DotNetNuke.Web.Client;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.UI.Modules.Html5
 {

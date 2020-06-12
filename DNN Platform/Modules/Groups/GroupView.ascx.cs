@@ -8,15 +8,16 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke;
-using DotNetNuke.UI.WebControls;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Modules.Groups.Components;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Modules.Groups.Components;
+using DotNetNuke.UI.Skins.Controls;
+using DotNetNuke.UI.WebControls;
 
 namespace DotNetNuke.Modules.Groups
 {

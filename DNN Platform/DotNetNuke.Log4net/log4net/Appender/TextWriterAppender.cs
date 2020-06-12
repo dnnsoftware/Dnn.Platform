@@ -23,9 +23,9 @@
 using System;
 using System.IO;
 
-using log4net.Util;
-using log4net.Layout;
 using log4net.Core;
+using log4net.Layout;
+using log4net.Util;
 
 namespace log4net.Appender
 {

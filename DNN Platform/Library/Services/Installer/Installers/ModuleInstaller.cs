@@ -13,10 +13,10 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.EventQueue;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Tabs.TabVersions;
+using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.EventQueue;
 
 namespace DotNetNuke.Services.Installer.Installers
 {

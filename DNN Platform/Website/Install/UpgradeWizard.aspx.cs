@@ -6,25 +6,26 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Web;
 using System.Xml.XPath;
 
+using DotNetNuke.Application;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
-using DotNetNuke.Common.Utilities;
 using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Localization.Internal;
-using DotNetNuke.Application;
 using DotNetNuke.Services.Installer.Blocker;
+using DotNetNuke.Services.Localization.Internal;
 using DotNetNuke.Services.Upgrade.InternalController.Steps;
 using DotNetNuke.Services.Upgrade.Internals.Steps;
 using DotNetNuke.Services.UserRequest;
+
 using Globals = DotNetNuke.Common.Globals;
 
 namespace DotNetNuke.Services.Install

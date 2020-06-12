@@ -4,14 +4,15 @@
 
 using System;
 using System.Collections.Generic;
-using Moq;
-using NUnit.Framework;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
+
+using Dnn.PersonaBar.Library.Prompt.Models;
 using Dnn.PersonaBar.Roles.Components;
 using Dnn.PersonaBar.Users.Components;
 using Dnn.PersonaBar.Users.Components.Prompt.Commands;
-using Dnn.PersonaBar.Library.Prompt.Models;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Roles;
+using Moq;
+using NUnit.Framework;
 
 namespace Dnn.PersonaBar.Users.Tests
 {

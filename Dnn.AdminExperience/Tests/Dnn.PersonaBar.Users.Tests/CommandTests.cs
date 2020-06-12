@@ -3,11 +3,12 @@
 // See the LICENSE file in the project root for more information
 
 using System.Linq;
-using NUnit.Framework;
+
 using Dnn.PersonaBar.Library.Prompt;
-using DotNetNuke.Entities.Portals;
 using Dnn.PersonaBar.Library.Prompt.Models;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using NUnit.Framework;
 
 namespace Dnn.PersonaBar.Users.Tests
 {

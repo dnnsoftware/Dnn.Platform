@@ -23,13 +23,14 @@
 using System;
 using System.Collections;
 using System.IO;
+
 #if NETSTANDARD1_3
 using System.Reflection;
 #endif
 
+using log4net.Core;
 using log4net.Util;
 using log4net.Util.PatternStringConverters;
-using log4net.Core;
 
 namespace log4net.Util
 {

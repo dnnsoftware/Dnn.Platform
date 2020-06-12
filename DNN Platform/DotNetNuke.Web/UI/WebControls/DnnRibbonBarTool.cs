@@ -8,11 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Web.UI;
-using Microsoft.Extensions.DependencyInjection;
 
+using DotNetNuke.Abstractions;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
@@ -24,6 +23,7 @@ using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Web.Client.ClientResourceManagement;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Web.UI.WebControls
 {

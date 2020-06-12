@@ -4,7 +4,6 @@
 
 using System;
 using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
 
 using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
@@ -15,6 +14,7 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.DigitalAssets
 {

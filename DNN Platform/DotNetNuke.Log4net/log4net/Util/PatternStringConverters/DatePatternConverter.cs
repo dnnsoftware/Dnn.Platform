@@ -23,8 +23,8 @@
 using System;
 using System.IO;
 
-using log4net.DateFormatter;
 using log4net.Core;
+using log4net.DateFormatter;
 
 namespace log4net.Util.PatternStringConverters
 {

@@ -5,18 +5,18 @@
 
 
 using System;
-using Microsoft.Extensions.DependencyInjection;
 
+using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Modules.Groups.Components;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
-using DotNetNuke.Modules.Groups.Components;
-using DotNetNuke.Common;
-using DotNetNuke.Framework;
-using DotNetNuke.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Groups
 {

@@ -9,16 +9,16 @@ using System.Linq;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
+using DotNetNuke.Data;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Data;
 using DotNetNuke.Services.Cache;
+using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Tests.Content.Mocks;
 using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
 using NUnit.Framework;
-using DotNetNuke.Services.Search.Entities;
-using DotNetNuke.Data;
 
 namespace DotNetNuke.Tests.Content
 {

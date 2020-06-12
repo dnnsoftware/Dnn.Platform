@@ -20,8 +20,8 @@
 // limitations under the License.
 //
 using System;
-using System.Text;
 using System.Collections;
+using System.Text;
 
 using log4net.Util;
 

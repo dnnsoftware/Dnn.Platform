@@ -5,11 +5,12 @@
 using System;
 using System.Collections;
 using System.Web.UI;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Tokens;
-using DotNetNuke.Instrumentation;
+
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Framework;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Tokens;
 
 namespace DotNetNuke.UI.Modules.Html5
 {
