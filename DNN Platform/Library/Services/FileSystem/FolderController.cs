@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -12,8 +12,6 @@ using System.Web;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
-
-#endregion
 
 namespace DotNetNuke.Services.FileSystem
 {
@@ -31,15 +29,11 @@ namespace DotNetNuke.Services.FileSystem
     /// -----------------------------------------------------------------------------
     public class FolderController
     {
-        #region StorageLocationTypes enum
-
         public enum StorageLocationTypes
         {
             InsecureFileSystem = 0,
             SecureFileSystem = 1,
             DatabaseSecure = 2
         }
-
-        #endregion
     }
 }

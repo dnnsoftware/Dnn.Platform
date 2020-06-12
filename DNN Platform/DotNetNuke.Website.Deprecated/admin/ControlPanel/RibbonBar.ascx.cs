@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -29,8 +29,6 @@ using DotNetNuke.Web.UI.WebControls;
 
 using Globals = DotNetNuke.Common.Globals;
 
-#endregion
-
 namespace DotNetNuke.UI.ControlPanels
 {
     public partial class RibbonBar : ControlPanelBase
@@ -44,9 +42,6 @@ namespace DotNetNuke.UI.ControlPanels
                 return base.IncludeInControlHierarchy && (this.IsPageAdmin() || this.IsModuleAdmin());
             }
         }
-
-
-        #region "Private Methods"
 
         private void Localize()
         {
@@ -160,10 +155,6 @@ namespace DotNetNuke.UI.ControlPanels
 
             return s;
         }
-
-        #endregion
-
-        #region "Event Handlers"
 
         protected override void OnInit(EventArgs e)
         {
@@ -342,10 +333,6 @@ namespace DotNetNuke.UI.ControlPanels
             this.Response.Redirect(this.Request.RawUrl, true);
         }
 
-        #endregion
-
-        #region "Protected Methods"
-
         protected string PreviewPopup()
         {
             var previewUrl = string.Format(
@@ -363,7 +350,5 @@ namespace DotNetNuke.UI.ControlPanels
                 return string.Format("location.href = \"{0}\"", previewUrl);
             }
         }
-
-        #endregion
     }
 }

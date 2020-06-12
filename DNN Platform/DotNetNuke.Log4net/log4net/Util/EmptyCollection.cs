@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -42,7 +41,6 @@ namespace log4net.Util
 #endif
     public sealed class EmptyCollection : ICollection
     {
-        #region Private Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EmptyCollection" /> class.
@@ -56,9 +54,7 @@ namespace log4net.Util
         {
         }
 
-        #endregion Private Instance Constructors
 
-        #region Public Static Properties
 
         /// <summary>
         /// Gets the singleton instance of the empty collection.
@@ -74,9 +70,7 @@ namespace log4net.Util
             get { return s_instance; }
         }
 
-        #endregion Public Static Properties
 
-        #region Implementation of ICollection
 
         /// <summary>
         /// Copies the elements of the <see cref="ICollection"/> to an
@@ -147,9 +141,7 @@ namespace log4net.Util
             get { return this; }
         }
 
-        #endregion Implementation of ICollection
 
-        #region Implementation of IEnumerable
 
         /// <summary>
         /// Returns an enumerator that can iterate through a collection.
@@ -168,15 +160,11 @@ namespace log4net.Util
             return NullEnumerator.Instance;
         }
 
-        #endregion Implementation of IEnumerable
 
-        #region Private Static Fields
 
         /// <summary>
         /// The singleton instance of the empty collection.
         /// </summary>
         private readonly static EmptyCollection s_instance = new EmptyCollection();
-
-        #endregion Private Static Fields
     }
 }

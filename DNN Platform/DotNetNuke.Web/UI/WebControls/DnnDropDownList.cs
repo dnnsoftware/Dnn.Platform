@@ -32,8 +32,6 @@ namespace DotNetNuke.Web.UI.WebControls
     [ToolboxData("<{0}:DnnDropDownList runat='server'></{0}:DnnDropDownList>")]
     public class DnnDropDownList : Panel, INamingContainer
     {
-        #region Private Fields
-
         private static readonly object EventSelectionChanged = new object();
 
         private readonly Lazy<DnnDropDownListOptions> _options =
@@ -41,10 +39,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private DnnGenericHiddenField<DnnDropDownListState> _stateControl;
         private HtmlAnchor _selectedValue;
-
-        #endregion
-
-        #region Protected Properties
 
         internal DnnDropDownListOptions Options
         {
@@ -84,9 +78,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        #endregion
 
-        #region Events
 
         /// <summary>
         /// Occurs when the selection from the list control changes between posts to the server.
@@ -102,10 +94,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.Events.RemoveHandler(EventSelectionChanged, value);
             }
         }
-
-        #endregion
-
-        #region Public Properties
 
         public override ControlCollection Controls
         {
@@ -287,10 +275,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        #endregion
-
-        #region Event Handlers
-
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
@@ -336,10 +320,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             eventHandler(this, e);
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static string LocalizeString(string key)
         {
@@ -430,9 +410,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.Page.ClientScript.RegisterStartupScript(this.GetType(), this.ClientID + "DnnDropDownList", script, true);
             }
         }
-
-        #endregion
-
     }
 
 }

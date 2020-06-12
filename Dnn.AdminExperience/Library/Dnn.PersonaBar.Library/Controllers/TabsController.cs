@@ -426,8 +426,6 @@ namespace Dnn.PersonaBar.Library.Controllers
                     .All(perm => perm.RoleName != Globals.glbRoleAllUsersName || !perm.AllowAccess);
         }
 
-        #region Sort
-
         private static IEnumerable<TabDto> ApplySort(IEnumerable<TabDto> items, int sortOrder)
         {
             switch (sortOrder)
@@ -440,8 +438,5 @@ namespace Dnn.PersonaBar.Library.Controllers
                     return items;
             }
         }
-
-        #endregion
-
     }
 }

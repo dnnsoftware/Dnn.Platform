@@ -42,8 +42,6 @@ namespace DotNetNuke.Web.Api.Internal
 
         internal ITypeLocator TypeLocator { get; set; }
 
-        #region IMapRoute Members
-
         public IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, object defaults, object constraints, string[] namespaces)
         {
             if (namespaces == null || namespaces.Length == 0 || string.IsNullOrEmpty(namespaces[0]))
@@ -91,8 +89,6 @@ namespace DotNetNuke.Web.Api.Internal
         {
             return this.MapHttpRoute(moduleFolderName, routeName, url, null, null, namespaces);
         }
-
-        #endregion
 
         public void RegisterRoutes()
         {

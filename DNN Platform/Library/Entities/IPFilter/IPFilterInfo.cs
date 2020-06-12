@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Data;
@@ -17,8 +17,6 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Roles.Internal;
 
-#endregion
-
 namespace DotNetNuke.Entities.Host
 {
 
@@ -26,7 +24,6 @@ namespace DotNetNuke.Entities.Host
     public class IPFilterInfo : BaseEntityInfo, IHydratable
     {
 
-        #region Constructors
 
         /// <summary>
         /// Create new IPFilterInfo instance
@@ -47,10 +44,6 @@ namespace DotNetNuke.Entities.Host
             this.RuleType = -1;
         }
 
-        #endregion
-
-        #region Auto_Properties
-
         public int IPFilterID { get; set; }
 
         public string IPAddress { get; set; }
@@ -59,10 +52,8 @@ namespace DotNetNuke.Entities.Host
 
         public int RuleType { get; set; }
 
-        #endregion
 
 
-        #region IHydratable Members
 
         /// <summary>
         /// Fills an IPFilterInfo from a Data Reader
@@ -107,7 +98,5 @@ namespace DotNetNuke.Entities.Host
                 this.IPFilterID = value;
             }
         }
-
-        #endregion
     }
 }

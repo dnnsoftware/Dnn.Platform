@@ -46,8 +46,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// </summary>
         public string CDNPath { get; set; }
 
-        #region IXmlSerializable Implementation
-
         public XmlSchema GetSchema()
         {
             throw new NotImplementedException();
@@ -136,7 +134,5 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             // Write end of main element
             writer.WriteEndElement();
         }
-
-        #endregion
     }
 }

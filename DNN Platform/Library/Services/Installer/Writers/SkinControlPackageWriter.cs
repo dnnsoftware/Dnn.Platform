@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
@@ -12,8 +12,6 @@ using System.Xml.XPath;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Installer.Packages;
-
-#endregion
 
 namespace DotNetNuke.Services.Installer.Writers
 {
@@ -26,8 +24,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class SkinControlPackageWriter : PackageWriterBase
     {
-        #region "Constructors"
-
         public SkinControlPackageWriter(PackageInfo package) : base(package)
         {
             this.SkinControl = SkinControlController.GetSkinControlByPackageID(package.PackageID);
@@ -60,9 +56,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.AppCodePath = Path.Combine("App_Code", this.Package.Name.ToLowerInvariant()).Replace("/", "\\");
         }
 
-        #endregion
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -71,8 +65,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <value>A SkinControlInfo object</value>
         /// -----------------------------------------------------------------------------
         public SkinControlInfo SkinControl { get; set; }
-
-        #endregion
 
         private void ReadLegacyManifest(XPathNavigator legacyManifest, bool processModule)
         {
@@ -112,8 +104,6 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        #region "Protected Methods"
-
         protected override void WriteManifestComponent(XmlWriter writer)
         {
             // Start component Element
@@ -126,7 +116,5 @@ namespace DotNetNuke.Services.Installer.Writers
             // End component Element
             writer.WriteEndElement();
         }
-
-        #endregion
     }
 }

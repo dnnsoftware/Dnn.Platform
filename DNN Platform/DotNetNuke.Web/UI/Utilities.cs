@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
@@ -23,23 +23,14 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
-
-#endregion
-
 namespace DotNetNuke.Web.UI
 {
     public class Utilities
     {
-        #region Private Methods
-
         private static void AddMessageWindow(Control ctrl)
         {
             ClientResourceManager.RegisterScript(ctrl.Page, ctrl.ResolveUrl("~/js/dnn.postbackconfirm.js"));
         }
-
-        #endregion
-
-        #region Public Methods
 
         public static void ApplySkin(Control telerikControl)
         {
@@ -285,7 +276,5 @@ namespace DotNetNuke.Web.UI
         {
             ctrl.Page.ClientScript.RegisterClientScriptBlock(ctrl.GetType(), ctrl.ID + "_AlertOnPageLoad", GetClientAlert(ctrl, message), true);
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -17,8 +17,6 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Collections;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Localization;
-
-#endregion
 
 namespace DotNetNuke.Web.UI.WebControls
 {
@@ -35,8 +33,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
             this.Validators = new List<IValidator>();
         }
-
-        #region Protected Properties
 
         protected PropertyInfo ChildProperty
         {
@@ -78,10 +74,6 @@ namespace DotNetNuke.Web.UI.WebControls
             get { return this._value; }
             set { this._value = value; }
         }
-
-        #endregion
-
-        #region Public Properties
 
         public string DataField { get; set; }
 
@@ -129,10 +121,6 @@ namespace DotNetNuke.Web.UI.WebControls
         public List<IValidator> Validators { get; private set; }
 
         public string ValidationExpression { get; set; }
-
-        #endregion
-
-        #region Control Hierarchy and Data Binding
 
         private void AddValidators(string controlId)
         {
@@ -396,10 +384,6 @@ namespace DotNetNuke.Web.UI.WebControls
             this.UpdateDataSourceInternal(oldValue, newValue, dataField);
         }
 
-        #endregion
-
-        #region Protected Methods
-
         protected override void LoadControlState(object state)
         {
             this._value = state;
@@ -420,7 +404,5 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             return this._value;
         }
-
-        #endregion
     }
 }

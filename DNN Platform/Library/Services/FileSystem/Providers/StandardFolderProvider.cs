@@ -23,7 +23,6 @@ namespace DotNetNuke.Services.FileSystem
 
         private static readonly char[] InvalidFileUrlChars = new char[] { '%', ';', '?', ':', '@', '&', '=', '+', '$', ',' };
 
-        #region Public Properties
 
         /// <summary>
         /// Gets a value indicating if the provider requires network connectivity to do its tasks.
@@ -49,9 +48,6 @@ namespace DotNetNuke.Services.FileSystem
             get { return true; }
         }
 
-        #endregion
-
-        #region Abstract Methods
         public override void CopyFile(string folderPath, string fileName, string newFolderPath, FolderMappingInfo folderMapping)
         {
             Requires.PropertyNotNull("folderPath", folderPath);
@@ -341,10 +337,6 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        #endregion
-
-        #region Internal Methods
-
         internal virtual string GetHash(IFileInfo file)
         {
             var fileManager = new FileManager();
@@ -356,9 +348,7 @@ namespace DotNetNuke.Services.FileSystem
             return new PortalSettings(portalId);
         }
 
-        #endregion
 
-        #region Protected Methods
         /// <summary>
         /// Get actual path to a file
         /// </summary>
@@ -444,8 +434,5 @@ namespace DotNetNuke.Services.FileSystem
         {
             return PathUtils.Instance.GetRelativePath(folderMapping.PortalID, path);
         }
-
-        #endregion
-
     }
 }

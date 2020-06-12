@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 // .NET Compact Framework 1.0 has no support for System.Runtime.Remoting
 #if !NETCF
@@ -84,7 +82,6 @@ namespace log4net.Appender
     /// <author>Daniel Cazzulino</author>
     public class RemotingAppender : BufferingAppenderSkeleton
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RemotingAppender" /> class.
@@ -98,9 +95,7 @@ namespace log4net.Appender
         {
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets or sets the URL of the well-known object that will accept
@@ -122,9 +117,7 @@ namespace log4net.Appender
             set { this.m_sinkUrl = value; }
         }
 
-        #endregion Public Instance Properties
 
-        #region Implementation of IOptionHandler
 
         /// <summary>
         /// Initialize the appender based on the options set
@@ -155,9 +148,7 @@ namespace log4net.Appender
             this.m_sinkObj = (IRemoteLoggingSink)Activator.GetObject(typeof(IRemoteLoggingSink), this.m_sinkUrl, channelProperties);
         }
 
-        #endregion
 
-        #region Override implementation of BufferingAppenderSkeleton
 
         /// <summary>
         /// Send the contents of the buffer to the remote sink.
@@ -233,7 +224,6 @@ namespace log4net.Appender
             return this.m_workQueueEmptyEvent.WaitOne(millisecondsTimeout, false);
         }
 
-        #endregion
 
         /// <summary>
         /// A work item is being queued into the thread pool
@@ -288,7 +278,6 @@ namespace log4net.Appender
             }
         }
 
-        #region Private Instance Fields
 
         /// <summary>
         /// The URL of the remote sink.
@@ -314,7 +303,6 @@ namespace log4net.Appender
         /// </remarks>
         private ManualResetEvent m_workQueueEmptyEvent = new ManualResetEvent(true);
 
-        #endregion Private Instance Fields
 
         /// <summary>
         /// Interface used to deliver <see cref="LoggingEvent"/> objects to a remote sink.

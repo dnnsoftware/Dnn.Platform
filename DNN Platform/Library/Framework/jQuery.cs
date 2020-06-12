@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
@@ -22,8 +22,6 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 using DataCache = DotNetNuke.UI.Utilities.DataCache;
 using Globals = DotNetNuke.Common.Globals;
-
-#endregion
 
 namespace DotNetNuke.Framework
 {
@@ -53,7 +51,6 @@ namespace DotNetNuke.Framework
         private const string jQueryUIVersionMatch = "(?<=version:\\s\")(.*)(?=\")";
         public const string DefaultUIHostedUrl = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js";
 
-        #region Public Properties
 
         /// <summary>
         /// Gets the HostSetting for the URL of the hosted version of the jQuery script.
@@ -287,9 +284,6 @@ namespace DotNetNuke.Framework
                 return ver;
             }
         }
-        #endregion
-
-        #region Private Methods
 
         private static bool GetSettingAsBoolean(string key, bool defaultValue)
         {
@@ -308,10 +302,6 @@ namespace DotNetNuke.Framework
             }
             return retValue;
         }
-
-        #endregion
-
-        #region Public Methods
 
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string JQueryFileMapPath(bool getMinFile)
@@ -416,10 +406,6 @@ namespace DotNetNuke.Framework
             ScriptManager.RegisterClientScriptBlock(page, page.GetType(), "PageKeepAlive", scriptBlock, true);
         }
 
-        #endregion
-
-        #region Obsolete Members
-
         [Obsolete("Obsoleted in 7.2.0 - registration occurs automatically during page load. Scheduled removal in v10.0.0.")]
         public static void RegisterJQuery(Page page)
         {
@@ -482,9 +468,6 @@ namespace DotNetNuke.Framework
 
             JavaScript.RequestRegistration(CommonJs.HoverIntent);
         }
-
-
-        #endregion
     }
 #pragma warning restore 618
 }

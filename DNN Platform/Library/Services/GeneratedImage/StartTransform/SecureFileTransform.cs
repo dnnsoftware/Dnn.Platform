@@ -18,7 +18,6 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     /// </summary>
     public class SecureFileTransform : ImageTransform
     {
-        #region Properties
         /// <summary>
         /// Set IFileInfo object of given FileId
         /// </summary>
@@ -33,7 +32,6 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// Provides an Unique String for the image transformation
         /// </summary>
         public override string UniqueString => base.UniqueString + this.SecureFile.FileId;
-        #endregion
 
         public SecureFileTransform()
         {

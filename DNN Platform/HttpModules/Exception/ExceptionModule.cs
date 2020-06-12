@@ -1,16 +1,14 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Log.EventLog;
-
-#endregion
 
 namespace DotNetNuke.HttpModules.Exceptions
 {
@@ -34,7 +32,6 @@ namespace DotNetNuke.HttpModules.Exceptions
             }
         }
 
-        #region IHttpModule Members
 
         /// <summary>
         /// Initializes the error handling for the specified application.
@@ -49,7 +46,6 @@ namespace DotNetNuke.HttpModules.Exceptions
         {
         }
 
-        #endregion
 
         /// <summary>
         /// Called when error handling is requested.

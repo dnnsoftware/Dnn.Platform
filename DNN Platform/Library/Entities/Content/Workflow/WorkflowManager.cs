@@ -15,14 +15,11 @@ namespace DotNetNuke.Entities.Content.Workflow
 {
     public class WorkflowManager : ServiceLocator<IWorkflowManager, WorkflowManager>, IWorkflowManager
     {
-        #region Members
         private readonly DataProvider _dataProvider;
         private readonly IWorkflowRepository _workflowRepository;
         private readonly IWorkflowStateRepository _workflowStateRepository;
         private readonly ISystemWorkflowManager _systemWorkflowManager;
-        #endregion
 
-        #region Constructor
         public WorkflowManager()
         {
             this._dataProvider = DataProvider.Instance();
@@ -30,9 +27,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             this._workflowStateRepository = WorkflowStateRepository.Instance;
             this._systemWorkflowManager = SystemWorkflowManager.Instance;
         }
-        #endregion
-
-        #region Public Methods
 
         public void DeleteWorkflow(Entities.Workflow workflow)
         {
@@ -110,13 +104,10 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             return this._dataProvider.GetContentWorkflowUsageCount(workflowId);
         }
-        #endregion
 
-        #region Service Locator
         protected override System.Func<IWorkflowManager> GetFactory()
         {
             return () => new WorkflowManager();
         }
-        #endregion
     }
 }

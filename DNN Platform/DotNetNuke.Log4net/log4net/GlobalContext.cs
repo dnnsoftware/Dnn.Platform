@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -55,7 +54,6 @@ namespace log4net
     /// <author>Nicko Cadell</author>
     public sealed class GlobalContext
     {
-        #region Private Instance Constructors
 
         /// <summary>
         /// Private Constructor.
@@ -67,14 +65,11 @@ namespace log4net
         {
         }
 
-        #endregion Private Instance Constructors
-
         static GlobalContext()
         {
             Properties[log4net.Core.LoggingEvent.HostNameProperty] = SystemInfo.HostName;
         }
 
-        #region Public Static Properties
 
         /// <summary>
         /// The global properties map.
@@ -92,15 +87,11 @@ namespace log4net
             get { return s_properties; }
         }
 
-        #endregion Public Static Properties
 
-        #region Private Static Fields
 
         /// <summary>
         /// The global context properties instance
         /// </summary>
         private readonly static GlobalContextProperties s_properties = new GlobalContextProperties();
-
-        #endregion Private Static Fields
     }
 }

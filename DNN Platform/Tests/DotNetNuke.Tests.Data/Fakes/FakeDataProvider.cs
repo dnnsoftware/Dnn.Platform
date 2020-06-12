@@ -16,8 +16,6 @@ namespace DotNetNuke.Tests.Data.Fakes
             this.Settings = settings;
         }
 
-        #region Overrides of DataProvider
-
         public override bool IsConnectionValid
         {
             get { throw new System.NotImplementedException(); }
@@ -125,7 +123,5 @@ namespace DotNetNuke.Tests.Data.Fakes
         {
             throw new System.NotImplementedException();
         }
-
-        #endregion
     }
 }

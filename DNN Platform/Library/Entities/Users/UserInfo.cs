@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Concurrent;
@@ -20,8 +20,6 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Tokens;
 using DotNetNuke.UI.WebControls;
 
-#endregion
-
 namespace DotNetNuke.Entities.Users
 {
     /// -----------------------------------------------------------------------------
@@ -38,16 +36,10 @@ namespace DotNetNuke.Entities.Users
     [Serializable]
     public class UserInfo : BaseEntityInfo, IPropertyAccess
     {
-        #region Private Members
-
         private string _administratorRoleName;
         private UserMembership _membership;
         private UserProfile _profile;
         private readonly ConcurrentDictionary<int, UserSocial> _social = new ConcurrentDictionary<int, UserSocial>();
-
-        #endregion
-
-        #region Constructors
 
         public UserInfo()
         {
@@ -58,9 +50,7 @@ namespace DotNetNuke.Entities.Users
             this.AffiliateID = Null.NullInteger;
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -293,7 +283,6 @@ namespace DotNetNuke.Entities.Users
         public string VanityUrl { get; set; }
 
 
-        #region IPropertyAccess Members
 
         /// <summary>
         /// Property access, initially provided for TokenReplace
@@ -423,11 +412,8 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        #endregion
 
-        #endregion
 
-        #region Private Methods
 
         /// <summary>
         /// Determine, if accessing user is Administrator
@@ -453,9 +439,7 @@ namespace DotNetNuke.Entities.Users
             return MembershipProvider.Instance().GetProviderUserKey(this)?.Replace("-", string.Empty) ?? string.Empty;
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -533,7 +517,5 @@ namespace DotNetNuke.Entities.Users
             format = format.Replace("[USERNAME]", this.Username);
             this.DisplayName = format;
         }
-
-        #endregion
     }
 }

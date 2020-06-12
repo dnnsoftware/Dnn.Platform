@@ -26,7 +26,6 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
     public class MemberDirectoryController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MemberDirectoryController));
-        #region Private Methods
 
         private static void AddSearchTerm(ref string propertyNames, ref string propertyValues, string name, string value)
         {
@@ -184,10 +183,6 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             return users.Where(u => !u.IsSuperUser).Select(u => u).ToList();
         }
-
-        #endregion
-
-        #region Public Methods
 
         [HttpGet]
         public HttpResponseMessage AdvancedSearch(int userId, int groupId, int pageIndex, int pageSize, string searchTerm1, string searchTerm2, string searchTerm3, string searchTerm4)
@@ -354,10 +349,6 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             }
         }
 
-        #endregion
-
-        #region DTO
-
         public class FollowDTO
         {
             public int FollowId { get; set; }
@@ -367,7 +358,5 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             public int FriendId { get; set; }
         }
-
-        #endregion
     }
 }

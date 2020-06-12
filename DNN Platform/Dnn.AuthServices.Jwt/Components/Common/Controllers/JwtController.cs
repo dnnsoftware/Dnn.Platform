@@ -26,8 +26,6 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 {
     internal class JwtController : ServiceLocator<IJwtController, JwtController>, IJwtController
     {
-        #region constants, properties, etc.
-
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtController));
         private static readonly HashAlgorithm Hasher = SHA384.Create();
 
@@ -40,10 +38,6 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         public const string AuthScheme = "Bearer";
         public string SchemeType => "JWT";
 
-        #endregion
-
-        #region constructors / instantiators
-
         protected override Func<IJwtController> GetFactory()
         {
             return () => new JwtController();
@@ -51,9 +45,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
         public readonly IDataService DataProvider = DataService.Instance;
 
-        #endregion
 
-        #region interface implementation
 
         /// <summary>
         /// Validates the received JWT against the databas eand returns username when successful.
@@ -262,10 +254,6 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 RenewalToken = renewalToken
             };
         }
-
-        #endregion
-
-        #region private methods
 
         private static string NewSessionId => DateTime.UtcNow.Ticks.ToString("x16") + Guid.NewGuid().ToString("N").Substring(16);
 
@@ -480,7 +468,5 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         {
             return EncodeBase64(Hasher.ComputeHash(TextEncoder.GetBytes(data)));
         }
-
-        #endregion
     }
 }

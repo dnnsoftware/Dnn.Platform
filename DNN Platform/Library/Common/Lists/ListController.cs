@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -19,16 +19,12 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 
-#endregion
-
 namespace DotNetNuke.Common.Lists
 {
     public class ListController
     {
 
         public readonly string[] NonLocalizedLists = { "ContentTypes", "Processor", "DataType", "ProfanityFilter", "BannedPasswords" };
-
-        #region Private Methods
 
         private void ClearListCache(int portalId)
         {
@@ -123,7 +119,6 @@ namespace DotNetNuke.Common.Lists
                 c => CBO.FillCollection<ListEntryInfo>(DataProvider.Instance().GetListEntriesByListName(listName, string.Empty, portalId)));
         }
 
-        #endregion
 
         /// <summary>
         /// Adds a new list entry to the database. If the current thread locale is not "en-US" then the text value will also be

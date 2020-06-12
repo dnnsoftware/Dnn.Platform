@@ -19,15 +19,9 @@ namespace DotNetNuke.Common.Utilities
     {
         private static readonly Regex FolderPathRx = new Regex("^0\\\\", RegexOptions.Compiled);
 
-        #region Constructor
-
         internal PathUtils()
         {
         }
-
-        #endregion
-
-        #region Public Enums
 
         public enum UserFolderElement
         {
@@ -35,9 +29,7 @@ namespace DotNetNuke.Common.Utilities
             SubFolder = 1
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// <summary>
         /// Adds backslash to the specified source.
@@ -274,10 +266,6 @@ namespace DotNetNuke.Common.Utilities
             return originalPath.StartsWith("0") ? originalPath.Substring(1) : originalPath;
         }
 
-        #endregion
-
-        #region Private Methods
-
         private static string GetHostMapPath()
         {
             return Globals.HostMapPath;
@@ -288,7 +276,5 @@ namespace DotNetNuke.Common.Utilities
             var portalInfo = PortalController.Instance.GetPortal(portalId);
             return portalInfo.HomeDirectoryMapPath;
         }
-
-        #endregion
     }
 }

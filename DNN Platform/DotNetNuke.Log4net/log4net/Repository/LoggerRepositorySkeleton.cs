@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -47,8 +46,6 @@ namespace log4net.Repository
     /// <author>Gert Driesen</author>
     public abstract class LoggerRepositorySkeleton : ILoggerRepository, Appender.IFlushable
     {
-        #region Member Variables
-
         private string m_name;
         private RendererMap m_rendererMap;
         private PluginMap m_pluginMap;
@@ -61,9 +58,7 @@ namespace log4net.Repository
         private event LoggerRepositoryConfigurationChangedEventHandler m_configurationChangedEvent;
         private PropertiesDictionary m_properties;
 
-        #endregion
 
-        #region Constructors
 
         /// <summary>
         /// Default Constructor
@@ -101,9 +96,7 @@ namespace log4net.Repository
             this.m_threshold = Level.All;
         }
 
-        #endregion
 
-        #region Implementation of ILoggerRepository
 
         /// <summary>
         /// The name of the repository
@@ -425,9 +418,7 @@ namespace log4net.Repository
         /// </remarks>
         abstract public log4net.Appender.IAppender[] GetAppenders();
 
-        #endregion
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the LoggerRepositorySkeleton class.
@@ -437,8 +428,6 @@ namespace log4net.Repository
         /// log message.
         /// </remarks>
         private readonly static Type declaringType = typeof(LoggerRepositorySkeleton);
-
-        #endregion Private Static Fields
 
         private void AddBuiltinLevels()
         {

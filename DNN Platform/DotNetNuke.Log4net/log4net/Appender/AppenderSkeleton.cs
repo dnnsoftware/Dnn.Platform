@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.IO;
@@ -50,7 +49,6 @@ namespace log4net.Appender
     /// <author>Gert Driesen</author>
     public abstract class AppenderSkeleton : IAppender, IBulkAppender, IOptionHandler, IFlushable
     {
-        #region Protected Instance Constructors
 
         /// <summary>
         /// Default constructor
@@ -63,9 +61,7 @@ namespace log4net.Appender
             this.m_errorHandler = new OnlyOnceErrorHandler(this.GetType().Name);
         }
 
-        #endregion Protected Instance Constructors
 
-        #region Finalizer
 
         /// <summary>
         /// Finalizes this appender by calling the implementation's
@@ -88,9 +84,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion Finalizer
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets or sets the threshold <see cref="Level"/> of this appender.
@@ -177,9 +171,7 @@ namespace log4net.Appender
             set { this.m_layout = value; }
         }
 
-        #endregion
 
-        #region Implementation of IOptionHandler
 
         /// <summary>
         /// Initialize the appender based on the options set
@@ -201,9 +193,7 @@ namespace log4net.Appender
         {
         }
 
-        #endregion Implementation of IOptionHandler
 
-        #region Implementation of IAppender
 
         /// <summary>
         /// Gets or sets the name of this appender.
@@ -343,9 +333,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion Implementation of IAppender
 
-        #region Implementation of IBulkAppender
 
         /// <summary>
         /// Performs threshold checks and invokes filters before
@@ -450,7 +438,6 @@ namespace log4net.Appender
             }
         }
 
-        #endregion Implementation of IBulkAppender
 
         /// <summary>
         /// Test if the logging event should we output by this appender
@@ -512,7 +499,6 @@ namespace log4net.Appender
             return true;
         }
 
-        #region Public Instance Methods
 
         /// <summary>
         /// Adds a filter to the end of the filter chain.
@@ -558,9 +544,7 @@ namespace log4net.Appender
             this.m_headFilter = this.m_tailFilter = null;
         }
 
-        #endregion Public Instance Methods
 
-        #region Protected Instance Methods
 
         /// <summary>
         /// Checks if the message level is below this appender's threshold.
@@ -784,21 +768,19 @@ namespace log4net.Appender
             get { return false; }
         }
 
-        #endregion
 
         /// <summary>
-            /// Flushes any buffered log data.
-            /// </summary>
+        /// Flushes any buffered log data.
+        /// </summary>
         /// <remarks>
         /// This implementation doesn't flush anything and always returns true
         /// </remarks>
-            /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
-            public virtual bool Flush(int millisecondsTimeout)
+        /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
+        public virtual bool Flush(int millisecondsTimeout)
             {
             return true;
             }
 
-        #region Private Instance Fields
 
         /// <summary>
         /// The layout of this appender.
@@ -881,9 +863,7 @@ namespace log4net.Appender
         /// </summary>
         private ReusableStringWriter m_renderWriter = null;
 
-        #endregion Private Instance Fields
 
-        #region Constants
 
         /// <summary>
         /// Initial buffer size
@@ -895,9 +875,7 @@ namespace log4net.Appender
         /// </summary>
         private const int c_renderBufferMaxCapacity = 1024;
 
-        #endregion
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the AppenderSkeleton class.
@@ -907,7 +885,5 @@ namespace log4net.Appender
         /// log message.
         /// </remarks>
         private readonly static Type declaringType = typeof(AppenderSkeleton);
-
-        #endregion Private Static Fields
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -12,8 +12,6 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Abstractions;
-
-#endregion
 
 namespace DotNetNuke.Modules.Groups
 {
@@ -32,7 +30,6 @@ namespace DotNetNuke.Modules.Groups
             View = 2
         }
 
-        #region Public Properties
         public GroupMode LoadView
         {
             get
@@ -245,10 +242,6 @@ namespace DotNetNuke.Modules.Groups
             }
         }
 
-
-        #endregion
-
-        #region Public Methods
         public string GetCreateUrl()
         {
             return this.ModuleContext.EditUrl("Create"); // .NavigateUrl(GroupCreateTabId,"",true,null);
@@ -263,6 +256,5 @@ namespace DotNetNuke.Modules.Groups
         {
             return this.ModuleContext.EditUrl("GroupId", this.GroupId.ToString("D"), "Edit");
         }
-        #endregion
     }
 }

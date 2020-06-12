@@ -25,9 +25,6 @@ namespace DotNetNuke.Modules.Journal {
     /// </summary>
     /// -----------------------------------------------------------------------------
     public partial class Edit : JournalModuleBase {
-
-        #region Event Handlers
-
         override protected void OnInit(EventArgs e) {
             this.InitializeComponent();
             base.OnInit(e);
@@ -51,9 +48,6 @@ namespace DotNetNuke.Modules.Journal {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
-
     }
 
 }

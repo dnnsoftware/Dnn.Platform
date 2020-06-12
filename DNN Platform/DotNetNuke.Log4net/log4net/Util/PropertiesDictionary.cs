@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -48,7 +47,6 @@ namespace log4net.Util
     [Serializable] public sealed class PropertiesDictionary : ReadOnlyPropertiesDictionary, ISerializable, IDictionary
 #endif
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Constructor
@@ -75,9 +73,7 @@ namespace log4net.Util
         {
         }
 
-        #endregion Public Instance Constructors
 
-        #region Private Instance Constructors
 
 #if !(NETCF || NETSTANDARD1_3)
         /// <summary>
@@ -96,9 +92,7 @@ namespace log4net.Util
         }
 #endif
 
-        #endregion Protected Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets or sets the value of the  property with the specified key.
@@ -120,9 +114,7 @@ namespace log4net.Util
             set { this.InnerHashtable[key] = value; }
         }
 
-        #endregion Public Instance Properties
 
-        #region Public Instance Methods
 
         /// <summary>
         /// Remove the entry with the specified key from this dictionary
@@ -138,9 +130,7 @@ namespace log4net.Util
             this.InnerHashtable.Remove(key);
         }
 
-        #endregion Public Instance Methods
 
-        #region Implementation of IDictionary
 
         /// <summary>
         /// See <see cref="IDictionary.GetEnumerator"/>
@@ -291,9 +281,7 @@ namespace log4net.Util
             get { return false; }
         }
 
-        #endregion
 
-        #region Implementation of ICollection
 
         /// <summary>
         /// See <see cref="ICollection.CopyTo"/>
@@ -321,9 +309,7 @@ namespace log4net.Util
             get { return this.InnerHashtable.SyncRoot; }
         }
 
-        #endregion
 
-        #region Implementation of IEnumerable
 
         /// <summary>
         /// See <see cref="IEnumerable.GetEnumerator"/>
@@ -332,8 +318,6 @@ namespace log4net.Util
         {
             return ((IEnumerable)this.InnerHashtable).GetEnumerator();
         }
-
-        #endregion
     }
 }
 

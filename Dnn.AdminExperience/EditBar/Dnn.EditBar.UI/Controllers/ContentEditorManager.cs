@@ -40,13 +40,9 @@ namespace Dnn.EditBar.UI.Controllers
     /// </summary>
     public class ContentEditorManager : UserControlBase
     {
-        #region Fields
         private const int CssFileOrder = 40;
         public const string ControlFolder = "~/DesktopModules/admin/Dnn.EditBar/Resources";
         private bool _supportAjax = true;
-        #endregion
-
-        #region Properties
 
         public Skin Skin { get; set; }
 
@@ -67,10 +63,6 @@ namespace Dnn.EditBar.UI.Controllers
             }
         }
 
-        #endregion
-
-        #region Static Methods
-
         internal static ContentEditorManager GetCurrent(Page page)
         {
             if (page.Items.Contains("ContentEditorManager"))
@@ -80,10 +72,6 @@ namespace Dnn.EditBar.UI.Controllers
 
             return null;
         }
-
-        #endregion
-
-        #region Override Methods
 
         protected override void OnInit(EventArgs e)
         {
@@ -221,10 +209,6 @@ namespace Dnn.EditBar.UI.Controllers
             }
             base.Render(writer);
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void RegisterClientResources()
         {
@@ -689,12 +673,6 @@ namespace Dnn.EditBar.UI.Controllers
             return user.IsSuperUser || PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
         }
 
-
-        #endregion
-
-        #region Helper Classes
-
-
         public class ProxyPage : CDefault
         {
             private readonly Page _originalPage;
@@ -742,7 +720,5 @@ namespace Dnn.EditBar.UI.Controllers
                 return this._originalPage.FindControl(id);
             }
         }
-
-        #endregion
     }
 }

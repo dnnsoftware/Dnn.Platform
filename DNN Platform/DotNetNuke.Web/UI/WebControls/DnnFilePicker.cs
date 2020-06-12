@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
@@ -21,8 +21,6 @@ using DotNetNuke.Services.Localization;
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 using DotNetNuke.Entities.Host;
 
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
 
@@ -33,7 +31,6 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DnnFilePicker));
 
-        #region Public Enums
 
         /// <summary>
         ///   Represents a possible mode for the File Control
@@ -56,12 +53,6 @@ namespace DotNetNuke.Web.UI.WebControls
             Preview
         }
 
-        #endregion
-
-        #region Private Members
-
-        #region Controls
-
         private Panel _pnlContainer;
         private Panel _pnlLeftDiv;
         private Panel _pnlFolder;
@@ -80,16 +71,11 @@ namespace DotNetNuke.Web.UI.WebControls
         private Label _lblMessage;
         private Panel _pnlRightDiv;
         private Image _imgPreview;
-
-        #endregion
-
         private bool _localize = true;
         private int _maxHeight = 100;
         private int _maxWidth = 135;
 
-        #endregion
 
-        #region Protected Properties
 
         /// <summary>
         ///   Gets whether the control is on a Host or Portal Tab
@@ -200,9 +186,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// <summary>
         ///   Gets or sets the class to be used for the Labels
@@ -396,9 +380,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public UserInfo User { get; set; }
 
-        #endregion
 
-        #region Private Methods
 
         /// <summary>
         ///   AddButton adds a button to the Command Row
@@ -644,10 +626,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        #endregion
-
-        #region Protected Methods
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -777,10 +755,6 @@ namespace DotNetNuke.Web.UI.WebControls
             this._pnlMessage.Visible = !string.IsNullOrEmpty(this._lblMessage.Text);
         }
 
-        #endregion
-
-        #region Event Handlers
-
         private void CancelUpload(object sender, EventArgs e)
         {
             this.Mode = FileControlMode.Normal;
@@ -881,10 +855,6 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Mode = FileControlMode.UpLoadFile;
         }
 
-        #endregion
-
-        #region ILocalizable Implementation
-
         public bool Localize
         {
             get
@@ -902,8 +872,5 @@ namespace DotNetNuke.Web.UI.WebControls
         public virtual void LocalizeStrings()
         {
         }
-
-        #endregion
-
     }
 }

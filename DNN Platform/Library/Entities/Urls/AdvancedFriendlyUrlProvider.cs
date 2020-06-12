@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -18,8 +18,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 
-#endregion
-
 namespace DotNetNuke.Entities.Urls
 {
     public class AdvancedFriendlyUrlProvider : FriendlyUrlProviderBase
@@ -32,16 +30,10 @@ namespace DotNetNuke.Entities.Urls
         const string CodePattern = @"(?:\&|\?)language=(?<cc>[A-Za-z]{2,3}-[A-Za-z0-9]{2,4}(-[A-Za-z]{2}){0,1})";
         private static readonly Regex CodePatternRegex = new Regex(CodePattern, RegexOptions.Compiled);
 
-        #region Constructor
-
         internal AdvancedFriendlyUrlProvider(NameValueCollection attributes)
             : base(attributes)
         {
         }
-
-        #endregion
-
-        #region Overriden methods
 
         internal override string FriendlyUrl(TabInfo tab, string path)
         {
@@ -67,9 +59,7 @@ namespace DotNetNuke.Entities.Urls
             return this.FriendlyUrlInternal(tab, path, pageName, portalAlias, null);
         }
 
-        #endregion
 
-        #region Addvanced Friendly Url Methods
 
         /// <summary>
         /// Return a FriendlyUrl for the supplied Tab, but don't improve it past the standard DNN Friendly Url version
@@ -172,9 +162,6 @@ namespace DotNetNuke.Entities.Urls
             OutputFriendlyUrlMessages(tab, path, "base/messages", messages, friendlyPath, settings);
             return friendlyPath;
         }
-        #endregion
-
-        #region Private Methods
 
         private static string AddPage(string path, string pageName)
         {
@@ -1371,10 +1358,6 @@ namespace DotNetNuke.Entities.Urls
             return builtInUrl;
         }
 
-#endregion
-
-#region Internal Methods
-
         internal static string ForceLowerCaseIfAllowed(TabInfo tab, string url, FriendlyUrlSettings settings)
         {
             // 606 : include regex to stop lower case in certain circumstances
@@ -1406,7 +1389,5 @@ namespace DotNetNuke.Entities.Urls
             }
             return url;
         }
-
-#endregion
     }
 }

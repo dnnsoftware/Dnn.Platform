@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -39,8 +39,6 @@ using DotNetNuke.Services.ModuleCache;
 using DotNetNuke.Services.OutputCache;
 using DotNetNuke.Services.Search.Entities;
 
-#endregion
-
 namespace DotNetNuke.Entities.Modules
 {
     /// <summary>
@@ -55,7 +53,6 @@ namespace DotNetNuke.Entities.Modules
         {
             return () => new ModuleController();
         }
-        #region Private Methods
 
         private static void AddContent(XmlNode nodeModule, ModuleInfo module)
         {
@@ -947,9 +944,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// <summary>
         /// Check if a ModuleInfo belongs to the referenced Tab or not
@@ -2290,9 +2285,7 @@ namespace DotNetNuke.Entities.Modules
             this.ClearCache(localizedModule.TabID);
         }
 
-        #endregion
 
-        #region Static Methods
 
         /// <summary>
         /// Deserializes the module.
@@ -2582,8 +2575,5 @@ namespace DotNetNuke.Entities.Modules
                 Instance.ClearCache(module.TabID);
             }
         }
-
-
-        #endregion
     }
 }

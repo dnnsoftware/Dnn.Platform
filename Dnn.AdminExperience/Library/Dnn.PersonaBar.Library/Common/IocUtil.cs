@@ -13,7 +13,6 @@ namespace Dnn.PersonaBar.Library.Common
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IocUtil));
 
-        #region IOC helpers
 
         /// <summary>
         /// Register a component into the IOC container for later instantiation.
@@ -126,7 +125,5 @@ namespace Dnn.PersonaBar.Library.Common
             var instances = ComponentFactory.GetComponents<TContract>();
             return instances.Values;
         }
-
-        #endregion
     }
 }

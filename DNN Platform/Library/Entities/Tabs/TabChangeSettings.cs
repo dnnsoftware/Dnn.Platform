@@ -12,8 +12,6 @@ namespace DotNetNuke.Entities.Tabs
 {
     public class TabChangeSettings : ServiceLocator<ITabChangeSettings, TabChangeSettings>, ITabChangeSettings
     {
-
-        #region Public Methods
         public bool IsChangeControlEnabled(int portalId, int tabId)
         {
             if (portalId == Null.NullInteger)
@@ -36,13 +34,9 @@ namespace DotNetNuke.Entities.Tabs
             };
         }
 
-        #endregion
-
-        #region Service Locator
         protected override Func<ITabChangeSettings> GetFactory()
         {
             return () => new TabChangeSettings();
         }
-        #endregion
     }
 }

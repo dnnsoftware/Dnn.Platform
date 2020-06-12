@@ -12,7 +12,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     [Serializable]
     public class TabVersionDetail : BaseEntityInfo
     {
-      #region Public Properties
 
         /// <summary>
         /// Id of TabVersionDetail
@@ -48,7 +47,5 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// Action which provoked the detail
         /// </summary>
         public TabVersionDetailAction Action { get; set; }
-
-        #endregion
     }
 }

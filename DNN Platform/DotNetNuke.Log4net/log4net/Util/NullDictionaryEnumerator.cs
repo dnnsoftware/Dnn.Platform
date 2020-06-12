@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -39,7 +38,6 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public sealed class NullDictionaryEnumerator : IDictionaryEnumerator
     {
-        #region Private Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NullDictionaryEnumerator" /> class.
@@ -53,9 +51,7 @@ namespace log4net.Util
         {
         }
 
-        #endregion Private Instance Constructors
 
-        #region Public Static Properties
 
         /// <summary>
         /// Gets the singleton instance of the <see cref="NullDictionaryEnumerator" />.
@@ -71,9 +67,7 @@ namespace log4net.Util
             get { return s_instance; }
         }
 
-        #endregion Public Static Properties
 
-        #region Implementation of IEnumerator
 
         /// <summary>
         /// Gets the current object from the enumerator.
@@ -124,9 +118,7 @@ namespace log4net.Util
         {
         }
 
-        #endregion Implementation of IEnumerator
 
-        #region Implementation of IDictionaryEnumerator
 
         /// <summary>
         /// Gets the current key from the enumerator.
@@ -192,15 +184,11 @@ namespace log4net.Util
             get { throw new InvalidOperationException(); }
         }
 
-        #endregion Implementation of IDictionaryEnumerator
 
-        #region Private Static Fields
 
         /// <summary>
         /// The singleton instance of the <see cref="NullDictionaryEnumerator" />.
         /// </summary>
         private readonly static NullDictionaryEnumerator s_instance = new NullDictionaryEnumerator();
-
-        #endregion Private Static Fields
     }
 }

@@ -29,8 +29,6 @@ namespace DotNetNuke.Entities.Profile
     [Serializable]
     public class ProfilePropertyDefinition : BaseEntityInfo
     {
-        #region Private Members
-
         private int _dataType = Null.NullInteger;
         private string _defaultValue;
         private UserVisibilityMode _defaultVisibility = UserVisibilityMode.AdminOnly;
@@ -51,10 +49,6 @@ namespace DotNetNuke.Entities.Profile
         private int _viewOrder;
         private bool _visible;
 
-        #endregion
-
-        #region Constructors
-
         public ProfilePropertyDefinition()
         {
             this.PropertyDefinitionId = Null.NullInteger;
@@ -69,9 +63,7 @@ namespace DotNetNuke.Entities.Profile
             this.PortalId = portalId;
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -456,9 +448,7 @@ namespace DotNetNuke.Entities.Profile
             }
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -499,10 +489,6 @@ namespace DotNetNuke.Entities.Profile
             return clone;
         }
 
-        #endregion
-
-        #region Obsolete
-
         [Obsolete("Deprecated in 6.2 as profile visibility has been extended, keep for compatible with upgrade.. Scheduled removal in v10.0.0.")]
         [Browsable(false)]
         [XmlIgnore]
@@ -521,7 +507,5 @@ namespace DotNetNuke.Entities.Profile
                 this.ProfileVisibility.VisibilityMode = value;
             }
         }
-
-        #endregion
     }
 }

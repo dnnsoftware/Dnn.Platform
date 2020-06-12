@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 // .NET Compact Framework 1.0 has no support for System.Runtime.Remoting
 #if !NETCF
@@ -52,7 +50,6 @@ namespace log4net.Plugin
     /// <author>Gert Driesen</author>
     public class RemoteLoggingServerPlugin : PluginSkeleton
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Default constructor
@@ -85,9 +82,7 @@ namespace log4net.Plugin
             this.m_sinkUri = sinkUri;
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets or sets the URI of this sink.
@@ -107,9 +102,7 @@ namespace log4net.Plugin
             set { this.m_sinkUri = value; }
         }
 
-        #endregion Public Instance Properties
 
-        #region Override implementation of PluginSkeleton
 
         /// <summary>
         /// Attaches this plugin to a <see cref="ILoggerRepository"/>.
@@ -164,16 +157,10 @@ namespace log4net.Plugin
             base.Shutdown();
         }
 
-        #endregion Override implementation of PluginSkeleton
-
-        #region Private Instance Fields
-
         private RemoteLoggingSinkImpl m_sink;
         private string m_sinkUri;
 
-        #endregion Private Instance Fields
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the RemoteLoggingServerPlugin class.
@@ -184,7 +171,6 @@ namespace log4net.Plugin
         /// </remarks>
         private readonly static Type declaringType = typeof(RemoteLoggingServerPlugin);
 
-        #endregion Private Static Fields
 
         /// <summary>
         /// Delivers <see cref="LoggingEvent"/> objects to a remote sink.
@@ -197,7 +183,6 @@ namespace log4net.Plugin
         /// </remarks>
         private class RemoteLoggingSinkImpl : MarshalByRefObject, IRemoteLoggingSink
         {
-            #region Public Instance Constructors
 
             /// <summary>
             /// Constructor
@@ -214,9 +199,7 @@ namespace log4net.Plugin
                 this.m_repository = repository;
             }
 
-            #endregion Public Instance Constructors
 
-            #region Implementation of IRemoteLoggingSink
 
             /// <summary>
             /// Logs the events to the repository.
@@ -241,9 +224,7 @@ namespace log4net.Plugin
                 }
             }
 
-            #endregion Implementation of IRemoteLoggingSink
 
-            #region Override implementation of MarshalByRefObject
 
             /// <summary>
             /// Obtains a lifetime service object to control the lifetime
@@ -265,17 +246,13 @@ namespace log4net.Plugin
                 return null;
             }
 
-            #endregion Override implementation of MarshalByRefObject
 
-            #region Private Instance Fields
 
             /// <summary>
             /// The underlying <see cref="ILoggerRepository" /> that events should
             /// be logged to.
             /// </summary>
             private readonly ILoggerRepository m_repository;
-
-            #endregion Private Instance Fields
         }
     }
 }

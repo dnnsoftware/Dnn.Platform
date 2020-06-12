@@ -24,7 +24,6 @@ namespace Dnn.EditBar.UI.Services
     {
         private static object _threadLocker = new object();
 
-        #region Public API methods
 
         /// <summary>
         /// Retrieve a list of CMX related Localization Keys with it's values for the current culture.
@@ -55,10 +54,6 @@ namespace Dnn.EditBar.UI.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private IDictionary<string, IDictionary<string, string>> GetResourcesFromFile(string culture)
         {
@@ -147,8 +142,6 @@ namespace Dnn.EditBar.UI.Services
             var physicalPath = HttpContext.Current.Server.MapPath(editBarResourcesPath);
             return Directory.GetFiles(physicalPath, "*.resx");
         }
-
-        #endregion
     }
 
     [Serializable]

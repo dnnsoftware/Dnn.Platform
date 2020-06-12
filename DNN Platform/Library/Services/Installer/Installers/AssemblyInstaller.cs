@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
@@ -14,8 +14,6 @@ using System.Xml;
 using DotNetNuke.Common;
 using DotNetNuke.Data;
 using DotNetNuke.Framework;
-
-#endregion
 
 namespace DotNetNuke.Services.Installer.Installers
 {
@@ -31,7 +29,6 @@ namespace DotNetNuke.Services.Installer.Installers
 
         private static readonly string OldVersion = "0.0.0.0-" + new Version(short.MaxValue, short.MaxValue, short.MaxValue, short.MaxValue);
 
-        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -85,9 +82,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        #endregion
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -103,9 +98,7 @@ namespace DotNetNuke.Services.Installer.Installers
         }
 
 
-        #endregion
 
-        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -185,9 +178,7 @@ namespace DotNetNuke.Services.Installer.Installers
             return bSuccess;
         }
 
-        #endregion
 
-        #region "Private Methods"
 
         /// <summary>Adds or updates the binding redirect for the assembly file, if the assembly file it strong-named.</summary>
         /// <param name="file">The assembly file.</param>
@@ -325,7 +316,5 @@ namespace DotNetNuke.Services.Installer.Installers
             var attribute = parentNode.SelectSingleNode(xpath, namespaceManager);
             attribute.Value = attribute.Value.Replace(oldValue, newValue);
         }
-
-        #endregion
     }
 }

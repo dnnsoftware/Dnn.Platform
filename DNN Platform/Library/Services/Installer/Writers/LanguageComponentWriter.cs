@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System.Collections.Generic;
 using System.Xml;
@@ -10,8 +10,6 @@ using System.Xml;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
-
-#endregion
 
 namespace DotNetNuke.Services.Installer.Writers
 {
@@ -25,15 +23,11 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class LanguageComponentWriter : FileComponentWriter
     {
-        #region "Private Members"
-
         private readonly int _DependentPackageID;
         private readonly Locale _Language;
         private readonly LanguagePackType _PackageType;
 
-        #endregion
 
-        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -66,9 +60,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this._DependentPackageID = languagePack.DependentPackageID;
         }
 
-        #endregion
 
-        #region "Protected Properties"
 
 
         /// -----------------------------------------------------------------------------
@@ -141,7 +133,5 @@ namespace DotNetNuke.Services.Installer.Writers
                 writer.WriteElementString("package", package.Name);
             }
         }
-
-        #endregion
     }
 }

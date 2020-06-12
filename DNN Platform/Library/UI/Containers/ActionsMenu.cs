@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Text.RegularExpressions;
@@ -14,8 +14,6 @@ using DotNetNuke.Modules.NavigationProvider;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.WebControls;
-
-#endregion
 
 namespace DotNetNuke.UI.Containers
 {
@@ -34,17 +32,13 @@ namespace DotNetNuke.UI.Containers
     /// -----------------------------------------------------------------------------
     public class ActionsMenu : Control, IActionControl
     {
-        #region "Private Members"
-
         private ActionManager _ActionManager;
         private ModuleAction _ActionRoot;
         private int _ExpandDepth = -1;
         private NavigationProvider _ProviderControl;
         private string _ProviderName = "DNNMenuNavigationProvider";
 
-        #endregion
 
-        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -78,9 +72,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        #endregion
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -138,8 +130,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        #region IActionControl Members
-
         public event ActionEventHandler Action;
 
         /// -----------------------------------------------------------------------------
@@ -168,11 +158,8 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl { get; set; }
 
-        #endregion
 
-        #endregion
 
-        #region "Private Methods"
 
 
         /// -----------------------------------------------------------------------------
@@ -253,9 +240,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        #endregion
 
-        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -322,9 +307,7 @@ namespace DotNetNuke.UI.Containers
             this.BindMenu();
         }
 
-        #endregion
 
-        #region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -365,7 +348,5 @@ namespace DotNetNuke.UI.Containers
             this.ProviderControl.ClearNodes(); // since we always bind we need to clear the nodes for providers that maintain their state
             this.BindMenu(Navigation.GetActionNodes(objAction, args.Node, this, this.ExpandDepth));
         }
-
-        #endregion
     }
 }

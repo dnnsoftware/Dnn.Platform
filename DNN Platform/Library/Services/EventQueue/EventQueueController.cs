@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Data;
@@ -12,8 +12,6 @@ using DotNetNuke.Data;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.EventQueue.Config;
 using DotNetNuke.Services.Log.EventLog;
-
-#endregion
 
 namespace DotNetNuke.Services.EventQueue
 {
@@ -48,8 +46,6 @@ namespace DotNetNuke.Services.EventQueue
     /// </example>
     public class EventQueueController
     {
-        #region "Private Shared Methods"
-
         private static EventMessage FillMessage(IDataReader dr, bool CheckForOpenDataReader)
         {
             EventMessage message;
@@ -133,9 +129,7 @@ namespace DotNetNuke.Services.EventQueue
             return subscribers;
         }
 
-        #endregion
 
-        #region "Public Shared Methods"
 
         /// <summary>
         /// Gets the messages.
@@ -278,16 +272,10 @@ namespace DotNetNuke.Services.EventQueue
             return success;
         }
 
-        #endregion
-
-        #region "Obsolete Methods"
-
         [Obsolete("This method is obsolete. Use Sendmessage(message, eventName) instead. Scheduled removal in v10.0.0.")]
         public bool SendMessage(EventMessage message, string eventName, bool encryptMessage)
         {
             return SendMessage(message, eventName);
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Data;
@@ -15,8 +15,6 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
-
-#endregion
 
 namespace DotNetNuke.Entities.Portals
 {
@@ -56,15 +54,11 @@ namespace DotNetNuke.Entities.Portals
     [Serializable]
     public class PortalInfo : BaseEntityInfo, IHydratable
     {
-        #region "Private Members"
-
         private string _administratorRoleName;
         private int _pages = Null.NullInteger;
         private string _registeredRoleName;
 
-        #endregion
 
-        #region Constructors
 
         /// <summary>
         /// Create new Portalinfo instance
@@ -84,9 +78,7 @@ namespace DotNetNuke.Entities.Portals
             this.Users = Null.NullInteger;
         }
 
-        #endregion
 
-        #region Auto_Properties
 
         /// <summary>
         /// UserID of the user who is the admininistrator of the portal
@@ -640,9 +632,7 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("version")]
         public string Version { get; set; }
 
-        #endregion
 
-        #region Properties
 
         /// <summary>
         /// The actual name of the Administrators group of the portal.
@@ -755,13 +745,10 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        #endregion
-
         [XmlIgnore]
         [Obsolete("Deprecated in DNN 6.0. Scheduled removal in v10.0.0.")]
         public int TimeZoneOffset { get; set; }
 
-        #region IHydratable Members
 
         /// <summary>
         /// Fills a PortalInfo from a Data Reader
@@ -877,7 +864,5 @@ namespace DotNetNuke.Entities.Portals
                 this.PortalID = value;
             }
         }
-
-        #endregion
     }
 }

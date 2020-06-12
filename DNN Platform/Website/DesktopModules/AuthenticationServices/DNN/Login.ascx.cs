@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web;
@@ -19,8 +19,6 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
 
 using Globals = DotNetNuke.Common.Globals;
-
-#endregion
 
 namespace DotNetNuke.Modules.Admin.Authentication.DNN
 {
@@ -42,7 +40,6 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Protected Properties
 
         /// <summary>
         /// Gets whether the Captcha control is used to validate the login
@@ -55,9 +52,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             }
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// <summary>
         /// Check if the Auth System is Enabled (for the Portal)
@@ -70,10 +65,6 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 return AuthenticationConfig.GetConfig(this.PortalId).Enabled;
             }
         }
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnLoad(EventArgs e)
         {
@@ -298,10 +289,6 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         protected string GetRedirectUrl(bool checkSettings = true)
         {
             var redirectUrl = string.Empty;
@@ -340,8 +327,5 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
             return redirectUrl;
         }
-
-        #endregion
-
     }
 }

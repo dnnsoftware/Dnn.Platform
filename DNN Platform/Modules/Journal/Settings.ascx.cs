@@ -34,7 +34,6 @@ namespace DotNetNuke.Modules.Journal {
     /// -----------------------------------------------------------------------------
     public partial class Settings : JournalSettingsBase {
 
-        #region Base Method Implementations
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -162,15 +161,12 @@ namespace DotNetNuke.Modules.Journal {
             }
         }
 
-        #endregion
-        #region Private Methods
         private void BindJournalTypes() {
             foreach (JournalTypeInfo journalTypeInfo in JournalController.Instance.GetJournalTypes(this.PortalId))
             {
                 this.chkJournalFilters.Items.Add(new ListItem(Localization.GetString(journalTypeInfo.JournalType, "~/desktopmodules/journal/app_localresources/sharedresources.resx"), journalTypeInfo.JournalTypeId.ToString()));
             }
         }
-        #endregion
     }
 
 }

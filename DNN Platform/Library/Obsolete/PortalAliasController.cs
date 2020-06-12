@@ -3,9 +3,6 @@
 // See the LICENSE file in the project root for more information
 
 using System.ComponentModel;
-
-#region Usings
-
 using System;
 using System.Collections;
 using System.Linq;
@@ -15,7 +12,6 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Log.EventLog;
 
-#endregion
 
 // ReSharper disable once CheckNamespace
 namespace DotNetNuke.Entities.Portals

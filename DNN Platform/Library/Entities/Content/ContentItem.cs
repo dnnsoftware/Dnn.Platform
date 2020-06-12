@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -17,8 +17,6 @@ using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.FileSystem;
-
-#endregion
 
 namespace DotNetNuke.Entities.Content
 {
@@ -82,7 +80,6 @@ namespace DotNetNuke.Entities.Content
             this.StateID = Null.NullInteger;
         }
 
-        #region Public Properties
 
         /// <summary>
         /// Gets or sets the content item id.
@@ -232,9 +229,7 @@ namespace DotNetNuke.Entities.Content
         [XmlIgnore]
         public int StateID { get; set; }
 
-        #endregion
 
-        #region Protected Methods
 
         /// <summary>
         /// Fills the internal.
@@ -279,9 +274,7 @@ namespace DotNetNuke.Entities.Content
             cloneItem.StateID = originalItem.StateID;
         }
 
-        #endregion
 
-        #region IHydratable Implementation
 
         /// <summary>
         /// Fill this content object will the information from data reader.
@@ -314,7 +307,5 @@ namespace DotNetNuke.Entities.Content
                 this.ContentItemId = value;
             }
         }
-
-        #endregion
     }
 }

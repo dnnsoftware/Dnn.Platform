@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -36,8 +36,6 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Search.Entities;
-
-#endregion
 
 namespace DotNetNuke.Entities.Tabs
 {
@@ -79,7 +77,6 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        #region Private Methods
         private bool IsAdminTab(TabInfo tab)
         {
             var portal = PortalController.Instance.GetPortal(tab.PortalID);
@@ -885,9 +882,7 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// <summary>
         /// Adds localized copies of the page in all missing languages
@@ -2123,9 +2118,7 @@ namespace DotNetNuke.Entities.Tabs
             EventManager.Instance.OnTabMarkedAsPublished(new TabEventArgs { Tab = tab });
         }
 
-        #endregion
 
-        #region Static Methods
 
         /// <summary>
         /// Copies the design to children.
@@ -3080,7 +3073,5 @@ namespace DotNetNuke.Entities.Tabs
 
             return true;
         }
-
-        #endregion
     }
 }

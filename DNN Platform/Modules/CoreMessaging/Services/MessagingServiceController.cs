@@ -30,7 +30,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     public class MessagingServiceController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MessagingServiceController));
-        #region Public Methods
 
         [HttpGet]
         public HttpResponseMessage Inbox(int afterMessageId, int numberOfRecords)
@@ -369,9 +368,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-        #endregion
-
-        #region DTO
 
         public class ConversationDTO
         {
@@ -383,10 +379,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             public string Body { get; set; }
             public IList<int> FileIds { get; set; }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private string LocalizeActionString(string key, int desktopModuleId)
         {
@@ -436,7 +428,5 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
             return messageObj;
         }
-
-        #endregion
     }
 }

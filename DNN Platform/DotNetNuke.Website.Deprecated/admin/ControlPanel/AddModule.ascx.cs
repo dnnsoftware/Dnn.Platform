@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -37,8 +37,6 @@ using DotNetNuke.Web.UI.WebControls.Extensions;
 using Globals = DotNetNuke.Common.Globals;
 using PortalInfo = DotNetNuke.Entities.Portals.PortalInfo;
 using Reflection = DotNetNuke.Framework.Reflection;
-
-#endregion
 
 namespace DotNetNuke.UI.ControlPanel
 {
@@ -86,9 +84,6 @@ namespace DotNetNuke.UI.ControlPanel
                 return portalSettings;
             }
         }
-
-
-        #region Event Handlers
 
         protected void AddNewOrExisting_OnClick(object sender, EventArgs e)
         {
@@ -307,10 +302,6 @@ namespace DotNetNuke.UI.ControlPanel
             }
         }
 
-        #endregion
-
-        #region Properties
-
         public override bool Visible
         {
             get
@@ -391,10 +382,6 @@ namespace DotNetNuke.UI.ControlPanel
                 return null;
             }
         }
-
-        #endregion
-
-        #region Methods
 
         private static ModulePermissionInfo AddModulePermission(ModuleInfo objModule, PermissionInfo permission, int roleId, int userId, bool allowAccess)
         {
@@ -888,9 +875,6 @@ namespace DotNetNuke.UI.ControlPanel
                 this.chkCopyModule.ToolTip = Localization.GetString("CopyModuleWOcontent.ToolTip", this.LocalResourceFile);
             }
         }
-
-        #endregion
-
 
         public bool CanAddModuleToPage()
         {

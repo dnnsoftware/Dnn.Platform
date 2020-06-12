@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 
@@ -42,7 +41,6 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public class AppenderAttachedImpl : IAppenderAttachable
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Constructor
@@ -56,9 +54,7 @@ namespace log4net.Util
         {
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Methods
 
         /// <summary>
         /// Append on on all attached appenders.
@@ -155,9 +151,7 @@ namespace log4net.Util
             return this.m_appenderList.Count;
         }
 
-        #endregion Public Instance Methods
 
-        #region Private Static Methods
 
         /// <summary>
         /// Calls the DoAppende method on the <see cref="IAppender"/> with
@@ -189,9 +183,7 @@ namespace log4net.Util
             }
         }
 
-        #endregion
 
-        #region Implementation of IAppenderAttachable
 
         /// <summary>
         /// Attaches an appender.
@@ -348,9 +340,7 @@ namespace log4net.Util
             return this.RemoveAppender(this.GetAppender(name));
         }
 
-        #endregion
 
-        #region Private Instance Fields
 
         /// <summary>
         /// List of appenders
@@ -362,9 +352,7 @@ namespace log4net.Util
         /// </summary>
         private IAppender[] m_appenderArray;
 
-        #endregion Private Instance Fields
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the AppenderAttachedImpl class.
@@ -374,7 +362,5 @@ namespace log4net.Util
         /// log message.
         /// </remarks>
         private readonly static Type declaringType = typeof(AppenderAttachedImpl);
-
-        #endregion Private Static Fields
     }
 }

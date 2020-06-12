@@ -1,15 +1,13 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 
 using DotNetNuke.Services.Search.Controllers;
 using DotNetNuke.Services.Search.Entities;
-
-#endregion
 
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {
@@ -19,8 +17,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     /// <remarks></remarks>
     public class FakeResultController : BaseResultController
     {
-        #region Abstract Class Implmentation
-
         public override bool HasViewPermission(SearchResult searchResult)
         {
             return true;
@@ -31,8 +27,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
            return "http://www.google.com";
         }
-
-        #endregion
     }
 
     public class NoPermissionFakeResultController : FakeResultController

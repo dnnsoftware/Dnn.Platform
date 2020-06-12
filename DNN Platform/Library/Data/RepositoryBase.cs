@@ -15,16 +15,10 @@ namespace DotNetNuke.Data
 {
     public abstract class RepositoryBase<T> : IRepository<T> where T : class
     {
-        #region Constructors
-
         protected RepositoryBase()
         {
             this.InitializeInternal();
         }
-
-        #endregion
-
-        #region IRepository<T> Implementation
 
         public void Delete(T item)
         {
@@ -103,10 +97,6 @@ namespace DotNetNuke.Data
 
         public abstract void Update(string sqlCondition, params object[] args);
 
-        #endregion
-
-        #region Private Methods
-
         private void CheckIfScoped()
         {
             if (!this.IsScoped)
@@ -160,10 +150,6 @@ namespace DotNetNuke.Data
             }
         }
 
-        #endregion
-
-        #region Protected Properties
-
         protected CacheItemArgs CacheArgs { get; private set; }
 
         protected string Scope { get; private set; }
@@ -171,8 +157,6 @@ namespace DotNetNuke.Data
         protected bool IsCacheable { get; private set; }
 
         protected bool IsScoped { get; private set; }
-
-        #endregion
 
         protected int CompareTo<TProperty>(TProperty first, TProperty second)
         {
@@ -202,8 +186,6 @@ namespace DotNetNuke.Data
             return DataUtil.GetPropertyValue<T, TProperty>(item, this.Scope);
         }
 
-        #region Abstract Methods
-
         protected abstract void DeleteInternal(T item);
 
         protected abstract IEnumerable<T> GetInternal();
@@ -219,8 +201,6 @@ namespace DotNetNuke.Data
         protected abstract void InsertInternal(T item);
 
         protected abstract void UpdateInternal(T item);
-
-        #endregion
 
         public void Initialize(string cacheKey, int cacheTimeOut = 20, CacheItemPriority cachePriority = CacheItemPriority.Default, string scope = "")
         {

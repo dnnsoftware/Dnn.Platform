@@ -19,13 +19,8 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 {
     public abstract class BaseRemoteStorageProvider : FolderProvider
     {
-        #region Private Members
-
         private readonly string _encryptionKey = Host.GUID;
         private readonly PortalSecurity _portalSecurity = PortalSecurity.Instance;
-        #endregion
-
-        #region Private Methods
 
         private IRemoteStorageItem GetStorageItemInternal(FolderMappingInfo folderMapping, string key)
         {
@@ -46,10 +41,6 @@ namespace DotNetNuke.Providers.FolderProviders.Components
                 });
 
         }
-
-        #endregion
-
-        #region Protected Properties
 
         protected virtual string FileNotFoundMessage
         {
@@ -76,8 +67,6 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             get { return 300; }
         }
 
-        #endregion
-
         public override bool SupportsMappedPaths
         {
             get { return true; }
@@ -92,8 +81,6 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         {
             get { return true; }
         }
-
-        #region Protected Methods
 
         protected abstract void CopyFileInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri);
 
@@ -143,7 +130,6 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         {
             return this.GetStorageItemInternal(folderMapping, key);
         }
-        #endregion
 
         /// <summary>
         /// Adds a new folder

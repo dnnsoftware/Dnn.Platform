@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 // .NET Compact Framework 1.0 has no support for Marshal.StringToHGlobalAnsi
 // SSCLI 1.0 has no support for Marshal.StringToHGlobalAnsi
@@ -70,7 +68,6 @@ namespace log4net.Appender
     /// <author>Nicko Cadell</author>
     public class LocalSyslogAppender : AppenderSkeleton
     {
-        #region Enumerations
 
         /// <summary>
         /// syslog severities
@@ -257,9 +254,7 @@ namespace log4net.Appender
             Local7 = 23
         }
 
-        #endregion // Enumerations
 
-        #region Public Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalSyslogAppender" /> class.
@@ -272,9 +267,7 @@ namespace log4net.Appender
         {
         }
 
-        #endregion // Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Message identity
@@ -307,7 +300,6 @@ namespace log4net.Appender
             set { this.m_facility = value; }
         }
 
-        #endregion // Public Instance Properties
 
         /// <summary>
         /// Add a mapping of level to severity
@@ -323,7 +315,6 @@ namespace log4net.Appender
             this.m_levelMapping.Add(mapping);
         }
 
-        #region IOptionHandler Implementation
 
         /// <summary>
         /// Initialize the appender based on the options set.
@@ -366,9 +357,7 @@ namespace log4net.Appender
             openlog(this.m_handleToIdentity, 1, this.m_facility);
         }
 
-        #endregion // IOptionHandler Implementation
 
-        #region AppenderSkeleton Implementation
 
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
@@ -444,9 +433,7 @@ namespace log4net.Appender
             get { return true; }
         }
 
-        #endregion // AppenderSkeleton Implementation
 
-        #region Protected Members
 
         /// <summary>
         /// Translates a log4net level to a syslog severity.
@@ -496,9 +483,7 @@ namespace log4net.Appender
             return SyslogSeverity.Debug;
         }
 
-        #endregion // Protected Members
 
-        #region Public Static Members
 
         /// <summary>
         /// Generate a syslog priority.
@@ -511,9 +496,7 @@ namespace log4net.Appender
             return ((int)facility * 8) + (int)severity;
         }
 
-        #endregion // Public Static Members
 
-        #region Private Instances Fields
 
         /// <summary>
         /// The facility. The default facility is <see cref="SyslogFacility.User"/>.
@@ -537,9 +520,7 @@ namespace log4net.Appender
         /// </summary>
         private LevelMapping m_levelMapping = new LevelMapping();
 
-        #endregion // Private Instances Fields
 
-        #region External Members
 
         /// <summary>
         /// Open connection to system logger.
@@ -568,9 +549,7 @@ namespace log4net.Appender
         [DllImport("libc")]
         private static extern void closelog();
 
-        #endregion // External Members
 
-        #region LevelSeverity LevelMapping Entry
 
         /// <summary>
         /// A class to act as a mapping between the level that a logging call is made at and
@@ -601,8 +580,6 @@ namespace log4net.Appender
                 set { this.m_severity = value; }
             }
         }
-
-        #endregion // LevelSeverity LevelMapping Entry
     }
 }
 

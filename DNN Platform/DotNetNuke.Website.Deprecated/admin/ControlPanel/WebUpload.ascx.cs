@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -27,8 +27,6 @@ using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.Common;
 
-#endregion
-
 namespace DotNetNuke.Modules.Admin.FileManager
 {
     using Host = DotNetNuke.Entities.Host.Host;
@@ -51,17 +49,12 @@ namespace DotNetNuke.Modules.Admin.FileManager
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-        #region "Members"
 
         private string _DestinationFolder;
         private UploadType _FileType;
         private string _FileTypeName;
         private string _RootFolder;
         private string _UploadRoles;
-
-        #endregion
-
-        #region "Public Properties"
 
         public string DestinationFolder
         {
@@ -161,9 +154,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
             }
         }
 
-        #endregion
 
-        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -208,9 +199,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
             }
         }
 
-        #endregion
 
-        #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -389,7 +378,5 @@ namespace DotNetNuke.Modules.Admin.FileManager
         {
             this.Response.Redirect(this.ReturnURL(), true);
         }
-
-        #endregion
     }
 }

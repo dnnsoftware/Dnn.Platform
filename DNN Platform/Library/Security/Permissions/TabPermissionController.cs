@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -14,8 +14,6 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Log.EventLog;
-
-#endregion
 
 namespace DotNetNuke.Security.Permissions
 {
@@ -30,23 +28,15 @@ namespace DotNetNuke.Security.Permissions
     /// -----------------------------------------------------------------------------
     public class TabPermissionController
     {
-        #region "Private Shared Methods"
-
         private static void ClearPermissionCache(int tabId)
         {
             var objTab = TabController.Instance.GetTab(tabId, Null.NullInteger, false);
             DataCache.ClearTabPermissionsCache(objTab.PortalID);
         }
 
-        #endregion
-
-        #region Private Members
-
         private static readonly PermissionProvider _provider = PermissionProvider.Instance();
 
-        #endregion
 
-        #region Public Shared Methods
 
         /// <summary>
         /// Returns a list with all roles with implicit permissions on Tabs
@@ -312,7 +302,5 @@ namespace DotNetNuke.Security.Permissions
             EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TABPERMISSION_UPDATED);
             DataCache.ClearTabPermissionsCache(tab.PortalID);
         }
-
-        #endregion
     }
 }

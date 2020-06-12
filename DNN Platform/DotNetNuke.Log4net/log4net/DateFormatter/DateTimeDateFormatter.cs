@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Text;
@@ -42,7 +41,6 @@ namespace log4net.DateFormatter
     /// <author>Angelika Schnagl</author>
     public class DateTimeDateFormatter : AbsoluteTimeDateFormatter
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Default constructor.
@@ -57,9 +55,7 @@ namespace log4net.DateFormatter
             this.m_dateTimeFormatInfo = DateTimeFormatInfo.InvariantInfo;
         }
 
-        #endregion Public Instance Constructors
 
-        #region Override implementation of AbsoluteTimeDateFormatter
 
         /// <summary>
         /// Formats the date without the milliseconds part
@@ -96,15 +92,11 @@ namespace log4net.DateFormatter
             base.FormatDateWithoutMillis(dateToFormat, buffer);
         }
 
-        #endregion Override implementation of AbsoluteTimeDateFormatter
 
-        #region Private Instance Fields
 
         /// <summary>
         /// The format info for the invariant culture.
         /// </summary>
         private readonly DateTimeFormatInfo m_dateTimeFormatInfo;
-
-        #endregion Private Instance Fields
     }
 }

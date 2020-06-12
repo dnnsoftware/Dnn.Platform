@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -12,8 +12,6 @@ using System.Web.UI;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Localization;
-
-#endregion
 
 namespace DotNetNuke.UI.WebControls
 {
@@ -52,14 +50,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #region IPostBackEventHandler Members
-
         public void RaisePostBackEvent(string eventArgument)
         {
             this._DisplayMode = eventArgument;
         }
-
-        #endregion
 
         private bool IsSelected(string locale)
         {
@@ -126,7 +120,6 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderEndTag();
         }
 
-        #region Protected Methods
 
         /// <summary>
         /// OnAttributesChanged runs when the CustomAttributes property has changed.
@@ -265,7 +258,5 @@ function onLocaleChanged(element){
             // close div
             writer.RenderEndTag();
         }
-
-        #endregion
     }
 }

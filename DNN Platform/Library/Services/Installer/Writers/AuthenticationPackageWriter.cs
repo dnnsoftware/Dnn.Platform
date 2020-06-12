@@ -1,16 +1,14 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System.IO;
 using System.Xml;
 
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Installer.Packages;
-
-#endregion
 
 namespace DotNetNuke.Services.Installer.Writers
 {
@@ -23,8 +21,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class AuthenticationPackageWriter : PackageWriterBase
     {
-        #region "Constructors"
-
         public AuthenticationPackageWriter(PackageInfo package) : base(package)
         {
             this.AuthSystem = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
@@ -37,9 +33,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.Initialize();
         }
 
-        #endregion
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -48,10 +42,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <value>An AuthenticationInfo object</value>
         /// -----------------------------------------------------------------------------
         public AuthenticationInfo AuthSystem { get; set; }
-
-        #endregion
-
-        #region "Private Methods"
 
         private void Initialize()
         {
@@ -80,8 +70,6 @@ namespace DotNetNuke.Services.Installer.Writers
             // End component Element
             writer.WriteEndElement();
         }
-
-        #endregion
 
         protected override void WriteManifestComponent(XmlWriter writer)
         {

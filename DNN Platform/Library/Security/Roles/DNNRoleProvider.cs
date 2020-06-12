@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -18,8 +18,6 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Membership;
-
-#endregion
 
 namespace DotNetNuke.Security.Roles
 {
@@ -40,8 +38,6 @@ namespace DotNetNuke.Security.Roles
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DNNRoleProvider));
         private readonly DataProvider dataProvider = DataProvider.Instance();
 
-        #region Private Methods
-
         private void AddDNNUserRole(UserRoleInfo userRole)
         {
             // Add UserRole to DNN
@@ -51,9 +47,7 @@ namespace DotNetNuke.Security.Roles
                                                                 UserController.Instance.GetCurrentUserInfo().UserID));
         }
 
-        #endregion
 
-        #region Role Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -192,9 +186,7 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        #endregion
 
-        #region User Role Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -316,10 +308,6 @@ namespace DotNetNuke.Security.Roles
                                         UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
-        #endregion
-
-        #region RoleGroup Methods
-
         private void ClearRoleGroupCache(int portalId)
         {
             DataCache.ClearCache(this.GetRoleGroupsCacheKey(portalId));
@@ -415,8 +403,5 @@ namespace DotNetNuke.Security.Roles
                 (roleGroup.Description ?? string.Empty).Trim(), UserController.Instance.GetCurrentUserInfo().UserID);
             this.ClearRoleGroupCache(roleGroup.PortalID);
         }
-
-
-        #endregion
     }
 }

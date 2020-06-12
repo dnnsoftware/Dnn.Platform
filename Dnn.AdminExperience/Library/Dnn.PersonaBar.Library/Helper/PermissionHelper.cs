@@ -13,8 +13,6 @@ using DotNetNuke.Security.Roles;
 
 namespace Dnn.PersonaBar.Library.Helper
 {
-    #region Permission Extension Class
-
     public static class PermissionHelper
     {
         public static void AddUserPermission(this DTO.Permissions dto, PermissionInfoBase permissionInfo)
@@ -133,7 +131,4 @@ namespace Dnn.PersonaBar.Library.Helper
             return data;
         }
     }
-
-    #endregion
-
 }

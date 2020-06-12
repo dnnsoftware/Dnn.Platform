@@ -25,14 +25,8 @@ namespace DotNetNuke.Web.Mvc
 {
     public class MvcHostControl : ModuleControlBase, IActionable
     {
-        #region Fields
-
         private ModuleRequestResult _result;
         private string _controlKey;
-
-        #endregion
-
-        #region Constructors
 
         public MvcHostControl()
         {
@@ -43,10 +37,6 @@ namespace DotNetNuke.Web.Mvc
         {
             this._controlKey = controlKey;
         }
-
-        #endregion
-
-        #region Private Methods
 
         private ModuleApplication GetModuleApplication(DesktopModuleInfo desktopModule, RouteData defaultRouteData)
         {
@@ -203,17 +193,9 @@ namespace DotNetNuke.Web.Mvc
             }
         }
 
-        #endregion
-
-        #region Properties
-
         public ModuleActionCollection ModuleActions { get; private set; }
 
         protected bool ExecuteModuleImmediately { get; set; } = true;
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
@@ -242,7 +224,5 @@ namespace DotNetNuke.Web.Mvc
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
     }
 }

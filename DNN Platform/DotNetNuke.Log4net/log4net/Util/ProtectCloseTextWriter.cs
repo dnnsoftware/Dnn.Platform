@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.IO;
@@ -41,7 +40,6 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public class ProtectCloseTextWriter : TextWriterAdapter
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Constructor
@@ -56,9 +54,7 @@ namespace log4net.Util
         {
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Properties
 
         /// <summary>
         /// Attach this instance to a different underlying <see cref="TextWriter"/>
@@ -74,9 +70,7 @@ namespace log4net.Util
             this.Writer = writer;
         }
 
-        #endregion
 
-        #region Override Implementation of TextWriter
 
         /// <summary>
         /// Does not close the underlying output writer.
@@ -91,7 +85,5 @@ namespace log4net.Util
         {
             // do nothing
         }
-
-        #endregion Public Instance Methods
     }
 }

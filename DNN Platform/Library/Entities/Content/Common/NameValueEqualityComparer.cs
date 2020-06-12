@@ -8,8 +8,6 @@ namespace DotNetNuke.Entities.Content.Common
 {
     internal class NameValueEqualityComparer : IEqualityComparer<KeyValuePair<string, string>>
     {
-        #region Implementation of IEqualityComparer<KeyValuePair<string,string>>
-
         public bool Equals(KeyValuePair<string, string> x, KeyValuePair<string, string> y)
         {
             return x.Key == y.Key && x.Value == y.Value;
@@ -19,7 +17,5 @@ namespace DotNetNuke.Entities.Content.Common
         {
             return obj.Key.GetHashCode() ^ obj.Value.GetHashCode();
         }
-
-        #endregion
     }
 }

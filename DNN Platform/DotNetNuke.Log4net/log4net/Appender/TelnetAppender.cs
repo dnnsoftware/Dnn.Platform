@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -60,7 +59,6 @@ namespace log4net.Appender
         private SocketHandler m_handler;
         private int m_listeningPort = 23;
 
-        #region Constructor
 
         /// <summary>
         /// Default constructor
@@ -74,9 +72,7 @@ namespace log4net.Appender
         {
         }
 
-        #endregion
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the TelnetAppender class.
@@ -87,7 +83,6 @@ namespace log4net.Appender
         /// </remarks>
         private readonly static Type declaringType = typeof(TelnetAppender);
 
-        #endregion Private Static Fields
 
         /// <summary>
         /// Gets or sets the TCP port number on which this <see cref="TelnetAppender"/> will listen for connections.
@@ -126,7 +121,6 @@ namespace log4net.Appender
             }
         }
 
-        #region Override implementation of AppenderSkeleton
 
         /// <summary>
         /// Overrides the parent method to close the socket handler
@@ -212,9 +206,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion
 
-        #region SocketHandler helper class
 
         /// <summary>
         /// Helper class to manage connected clients
@@ -285,7 +277,6 @@ namespace log4net.Appender
                     this.m_writer.Flush();
                 }
 
-                #region IDisposable Members
 
                 /// <summary>
                 /// Cleanup the clients connection
@@ -324,8 +315,6 @@ namespace log4net.Appender
                         this.m_socket = null;
                     }
                 }
-
-                #endregion
             }
 
             /// <summary>
@@ -493,7 +482,6 @@ namespace log4net.Appender
                 }
             }
 
-            #region IDisposable Members
 
             /// <summary>
             /// Close all network connections
@@ -531,10 +519,6 @@ namespace log4net.Appender
                 {
                 }
             }
-
-            #endregion
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -23,8 +23,6 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Personalization;
 
-#endregion
-
 namespace DotNetNuke.UI.ControlPanels
 {
     /// -----------------------------------------------------------------------------
@@ -37,13 +35,9 @@ namespace DotNetNuke.UI.ControlPanels
     /// -----------------------------------------------------------------------------
     public class ControlPanelBase : UserControl
     {
-        #region Private Members
-
         private string _localResourceFile;
 
-        #endregion
 
-        #region Protected Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -164,9 +158,7 @@ namespace DotNetNuke.UI.ControlPanels
             return _IsPageAdmin;
         }
 
-        #endregion
 
-        #region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -196,9 +188,7 @@ namespace DotNetNuke.UI.ControlPanels
             return objModulePermission;
         }
 
-        #endregion
 
-        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -457,16 +447,10 @@ namespace DotNetNuke.UI.ControlPanels
             }
         }
 
-        #endregion
-
-        #region Nested type: ViewPermissionType
-
         protected enum ViewPermissionType
         {
             View = 0,
             Edit = 1
         }
-
-        #endregion
     }
 }

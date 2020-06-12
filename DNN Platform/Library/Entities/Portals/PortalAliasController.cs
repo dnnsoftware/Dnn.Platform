@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -20,8 +20,6 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Log.EventLog;
 
-#endregion
-
 namespace DotNetNuke.Entities.Portals
 {
     /// <summary>
@@ -38,8 +36,6 @@ namespace DotNetNuke.Entities.Portals
         {
             return () => new PortalAliasController();
         }
-
-        #region Private Methods
 
         private static void ClearCache(bool refreshServiceRoutes, int portalId = -1)
         {
@@ -153,10 +149,6 @@ namespace DotNetNuke.Entities.Portals
 
             return portalAlias.All(c => validChars.Contains(c.ToString()));
         }
-
-        #endregion
-
-        #region Public Methods
 
         public int AddPortalAlias(PortalAliasInfo portalAlias)
         {
@@ -280,9 +272,7 @@ namespace DotNetNuke.Entities.Portals
             ClearCache(false);
         }
 
-        #endregion
 
-        #region Public Static Helper Methods
 
         /// <summary>
         /// Gets the portal alias by portal.
@@ -389,7 +379,5 @@ namespace DotNetNuke.Entities.Portals
             }
             return false;
         }
-
-        #endregion
     }
 }

@@ -31,13 +31,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     [TestFixture]
     public class FileContentTypeManagerTests
     {
-        #region Private Variables
-
-
-        #endregion
-
-        #region Setup & TearDown
-
         [SetUp]
         public void Setup()
         {
@@ -59,10 +52,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             CBO.ClearInstance();
         }
 
-        #endregion
-
-        #region GetContentType
-
         [Test]
         public void GetContentType_Returns_Known_Value_When_Extension_Is_Not_Managed()
         {
@@ -82,7 +71,5 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.AreEqual("text/html", contentType);
         }
-
-        #endregion
     }
 }

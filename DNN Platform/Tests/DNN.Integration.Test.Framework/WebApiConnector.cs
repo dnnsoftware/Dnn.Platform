@@ -293,8 +293,6 @@ namespace DNN.Integration.Test.Framework
             return string.Empty;
         }
 
-        #region file uploading
-
         public HttpResponseMessage UploadUserFile(string fileName, bool waitHttpResponse = true, int userId = -1)
         {
             this.EnsureLoggedIn();
@@ -430,11 +428,6 @@ namespace DNN.Integration.Test.Framework
                     : EnsureSuccessResponse(result, "ActivityStreamUploadFile", ActivityStreamUploadFilePath);
             }
         }
-
-        #endregion
-
-
-        #region API requests / uploading content
 
         public HttpResponseMessage PostJson(
             string relativeUrl,
@@ -590,10 +583,6 @@ namespace DNN.Integration.Test.Framework
 
             return cachedPage != null ? cachedPage.InputFields : new string[0];
         }
-
-        #endregion
-
-        #region Multipart Form Data Post
 
         private static readonly Regex HtmlFormInuts = new Regex(
             @"<input .*?/>",
@@ -841,8 +830,6 @@ namespace DNN.Integration.Test.Framework
             formDataStream.Close();
             return formData;
         }
-
-        #endregion
 
         private static string CombineUrlPath(Uri domain, string path)
         {

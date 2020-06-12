@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -33,16 +33,12 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Tokens;
 
-#endregion
-
 namespace DotNetNuke.Entities.Tabs
 {
     [XmlRoot("tab", IsNullable = false)]
     [Serializable]
     public class TabInfo : ContentItem, IPropertyAccess
     {
-        #region Private Members
-
         private string _administratorRoles;
         private string _authorizedRoles;
         private TabInfo _defaultLanguageTab;
@@ -61,11 +57,6 @@ namespace DotNetNuke.Entities.Tabs
         private Dictionary<string, string> _customAliases;
         private List<TabUrlInfo> _tabUrls;
         private ArrayList _modules;
-
-
-        #endregion
-
-        #region Constructors
 
         public TabInfo()
             : this(new SharedDictionary<string, string>(), new SharedDictionary<string, string>())
@@ -115,10 +106,6 @@ namespace DotNetNuke.Entities.Tabs
 
             this.IsSystem = false;
         }
-
-        #endregion
-
-        #region Auto-Properties
 
         [XmlIgnore]
         public ArrayList BreadCrumbs { get; set; }
@@ -245,10 +232,6 @@ namespace DotNetNuke.Entities.Tabs
 
         [XmlElement("versionguid")]
         public Guid VersionGuid { get; set; }
-
-        #endregion
-
-        #region Public Properties
 
         [XmlIgnore]
         public Dictionary<int, ModuleInfo> ChildModules
@@ -500,10 +483,6 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        #endregion
-
-        #region Url Properties
-
         [XmlIgnore]
         public List<TabAliasSkinInfo> AliasSkins
         {
@@ -594,10 +573,6 @@ namespace DotNetNuke.Entities.Tabs
 
         [XmlIgnore]
         public bool UseBaseFriendlyUrls { get; set; }
-
-        #endregion
-
-        #region IPropertyAccess Members
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
@@ -769,10 +744,6 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private static Dictionary<string, string> _docTypeCache = new Dictionary<string, string>();
         private static ReaderWriterLockSlim _docTypeCacheLock = new ReaderWriterLockSlim();
         private static readonly Regex SkinSrcRegex = new Regex(@"([^/]+$)", RegexOptions.CultureInvariant);
@@ -860,10 +831,6 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        #endregion
-
-        #region Internal Methods
-
         internal void ClearTabUrls()
         {
             this._tabUrls = null;
@@ -873,10 +840,6 @@ namespace DotNetNuke.Entities.Tabs
         {
             this._settings = null;
         }
-
-        #endregion
-
-        #region Public Methods
 
         public TabInfo Clone()
         {
@@ -1003,7 +966,5 @@ namespace DotNetNuke.Entities.Tabs
         {
             return string.Join(",", this.Terms.Select(t => t.Name));
         }
-
-        #endregion
     }
 }

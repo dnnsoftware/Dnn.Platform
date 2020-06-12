@@ -18,7 +18,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
     public class CoreMessagingBusinessController : IUpgradeable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CoreMessagingBusinessController));
-        #region Implementation of IUpgradeable
 
         public string UpgradeModule(string Version)
         {
@@ -67,7 +66,5 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
                 return "Failed";
             }
         }
-
-        #endregion
     }
 }

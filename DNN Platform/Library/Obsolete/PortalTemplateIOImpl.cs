@@ -15,8 +15,6 @@ namespace DotNetNuke.Entities.Portals.Internal
     [Obsolete("Deprecated in DotNetNuke 7.3.0. Use PortalTemplateIO. Scheduled removal in v10.0.0.")]
     public class PortalTemplateIOImpl : IPortalTemplateIO
     {
-        #region IPortalTemplateIO Members
-
         public IEnumerable<string> EnumerateTemplates()
         {
             string path = Globals.HostMapPath;
@@ -63,7 +61,5 @@ namespace DotNetNuke.Entities.Portals.Internal
 
             return string.Empty;
         }
-
-        #endregion
     }
 }

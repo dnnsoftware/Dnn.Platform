@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 
@@ -48,7 +47,6 @@ namespace log4net.Filter
     /// <author>Gert Driesen</author>
     public class LevelMatchFilter : FilterSkeleton
     {
-        #region Member Variables
 
         /// <summary>
         /// flag to indicate if the filter should <see cref="FilterDecision.Accept"/> on a match
@@ -60,9 +58,7 @@ namespace log4net.Filter
         /// </summary>
         private Level m_levelToMatch;
 
-        #endregion
 
-        #region Constructors
 
         /// <summary>
         /// Default constructor
@@ -71,7 +67,6 @@ namespace log4net.Filter
         {
         }
 
-        #endregion
 
         /// <summary>
         /// <see cref="FilterDecision.Accept"/> when matching <see cref="LevelToMatch"/>
@@ -109,7 +104,6 @@ namespace log4net.Filter
             set { this.m_levelToMatch = value; }
         }
 
-        #region Override implementation of FilterSkeleton
 
         /// <summary>
         /// Tests if the <see cref="Level"/> of the logging event matches that of the filter
@@ -140,7 +134,5 @@ namespace log4net.Filter
             }
             return FilterDecision.Neutral;
         }
-
-        #endregion
     }
 }

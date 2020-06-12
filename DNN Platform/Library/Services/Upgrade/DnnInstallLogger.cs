@@ -46,8 +46,6 @@ namespace DotNetNuke.Services.Upgrade
             }
         }
 
-        #region InstallLog
-
         public static void InstallLogError(object message)
         {
             LogInstaller("[ERROR]", message.ToString());
@@ -62,8 +60,6 @@ namespace DotNetNuke.Services.Upgrade
         {
             LogInstaller("[INFO]", message.ToString());
         }
-
-        #endregion
 
         private static void LogInstaller(string logType, string message)
         {

@@ -1,15 +1,13 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Users;
-
-#endregion
 
 namespace DotNetNuke.HttpModules.UsersOnline
 {
@@ -25,8 +23,6 @@ namespace DotNetNuke.HttpModules.UsersOnline
             }
         }
 
-        #region IHttpModule Members
-
         public void Init(HttpApplication application)
         {
             application.AuthorizeRequest += this.OnAuthorizeRequest;
@@ -35,8 +31,6 @@ namespace DotNetNuke.HttpModules.UsersOnline
         public void Dispose()
         {
         }
-
-        #endregion
 
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public void OnAuthorizeRequest(object s, EventArgs e)

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -52,16 +51,13 @@ namespace log4net.Util
     [Serializable] public class ReadOnlyPropertiesDictionary : ISerializable, IDictionary
 #endif
     {
-        #region Private Instance Fields
 
         /// <summary>
         /// The Hashtable used to store the properties data
         /// </summary>
         private readonly Hashtable m_hashtable = new Hashtable();
 
-        #endregion Private Instance Fields
 
-        #region Public Instance Constructors
 
         /// <summary>
         /// Constructor
@@ -92,9 +88,7 @@ namespace log4net.Util
             }
         }
 
-        #endregion Public Instance Constructors
 
-        #region Private Instance Constructors
 
 #if !(NETCF || NETSTANDARD1_3)
         /// <summary>
@@ -118,9 +112,7 @@ namespace log4net.Util
         }
 #endif
 
-        #endregion Protected Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets the key names.
@@ -158,9 +150,7 @@ namespace log4net.Util
             set { throw new NotSupportedException("This is a Read Only Dictionary and can not be modified"); }
         }
 
-        #endregion Public Instance Properties
 
-        #region Public Instance Methods
 
         /// <summary>
         /// Test if the dictionary contains a specified key
@@ -177,7 +167,6 @@ namespace log4net.Util
             return this.InnerHashtable.Contains(key);
         }
 
-        #endregion
 
         /// <summary>
         /// The hashtable used to store the properties
@@ -195,7 +184,6 @@ namespace log4net.Util
             get { return this.m_hashtable; }
         }
 
-        #region Implementation of ISerializable
 
 #if !NETCF
         /// <summary>
@@ -238,9 +226,7 @@ namespace log4net.Util
         }
 #endif
 
-        #endregion Implementation of ISerializable
 
-        #region Implementation of IDictionary
 
         /// <summary>
         /// See <see cref="IDictionary.GetEnumerator"/>
@@ -335,9 +321,7 @@ namespace log4net.Util
             get { return this.InnerHashtable.IsFixedSize; }
         }
 
-        #endregion
 
-        #region Implementation of ICollection
 
         /// <summary>
         /// See <see cref="ICollection.CopyTo"/>
@@ -373,9 +357,7 @@ namespace log4net.Util
             get { return this.InnerHashtable.SyncRoot; }
         }
 
-        #endregion
 
-        #region Implementation of IEnumerable
 
         /// <summary>
         /// See <see cref="IEnumerable.GetEnumerator"/>
@@ -384,8 +366,6 @@ namespace log4net.Util
         {
             return ((IEnumerable)this.InnerHashtable).GetEnumerator();
         }
-
-        #endregion
     }
 }
 

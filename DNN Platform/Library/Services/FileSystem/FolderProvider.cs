@@ -22,19 +22,10 @@ namespace DotNetNuke.Services.FileSystem
     /// </summary>
     public abstract class FolderProvider
     {
-        #region Constants
-
         private const string SettingsControlId = "Settings.ascx";
-
-        #endregion
-
-        #region Private Variables
-
         private string _providerName;
 
-        #endregion
 
-        #region Static Provider Methods
 
         /// <summary>
         ///   Get the list of all the folder providers.
@@ -63,9 +54,7 @@ namespace DotNetNuke.Services.FileSystem
             return provider;
         }
 
-        #endregion
 
-        #region Properties
 
         /// <summary>
         /// Gets a value indicating if the provider ensures the files/folders it manages are secure from outside access.
@@ -125,10 +114,6 @@ namespace DotNetNuke.Services.FileSystem
             get { return false; }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private static void AddFolderAndMoveFiles(string folderPath, string newFolderPath, FolderMappingInfo folderMapping)
         {
             var folderProvider = Instance(folderMapping.FolderProviderType);
@@ -168,10 +153,6 @@ namespace DotNetNuke.Services.FileSystem
                 folderProvider.DeleteFile(new FileInfo { FileName = file, Folder = folder.FolderPath, FolderMappingID = folderMapping.FolderMappingID, PortalId = folderMapping.PortalID });
             }
         }
-
-        #endregion
-
-        #region Virtual Methods
 
         public virtual void AddFolder(string folderPath, FolderMappingInfo folderMapping, string mappedPath)
         {
@@ -337,9 +318,7 @@ namespace DotNetNuke.Services.FileSystem
             return hashText.ToString();
         }
 
-        #endregion
 
-        #region Abstract Methods
 
         /// <summary>
         ///   Adds a new file to the specified folder.
@@ -462,7 +441,5 @@ namespace DotNetNuke.Services.FileSystem
         ///   Do not close content Stream.
         /// </remarks>
         public abstract void UpdateFile(IFolderInfo folder, string fileName, Stream content);
-
-        #endregion
     }
 }

@@ -1,15 +1,13 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
 
 using DotNetNuke.Services.Search.Entities;
-
-#endregion
 
 namespace DotNetNuke.Services.Search.Internals
 {
@@ -39,7 +37,6 @@ namespace DotNetNuke.Services.Search.Internals
         /// ~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx for the Module_[MODULENAME].txt is found.</remarks>
         string GetSearchDocumentTypeDisplayName(SearchResult searchResult);
 
-        #region Core Search Indexing APIs
 
         /// <summary>
         /// Add a Search Document to Search Index
@@ -94,7 +91,5 @@ namespace DotNetNuke.Services.Search.Internals
         /// </remarks>
         /// <returns>True is optimization was scheduled to run in the background, false otherwise.</returns>
         bool OptimizeSearchIndex();
-
-        #endregion
     }
 }

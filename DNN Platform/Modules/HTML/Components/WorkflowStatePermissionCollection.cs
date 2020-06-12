@@ -23,8 +23,6 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public class WorkflowStatePermissionCollection : CollectionBase
     {
-        #region Constructors
-
         public WorkflowStatePermissionCollection()
         {
         }
@@ -50,10 +48,6 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        #endregion
-
-        #region Public Properties
-
         public WorkflowStatePermissionInfo this[int index]
         {
             get
@@ -65,10 +59,6 @@ namespace DotNetNuke.Security.Permissions
                 this.List[index] = value;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         public int Add(WorkflowStatePermissionInfo value)
         {
@@ -184,7 +174,5 @@ namespace DotNetNuke.Security.Permissions
         {
             return PermissionController.BuildPermissions(this.List, key);
         }
-
-        #endregion
     }
 }

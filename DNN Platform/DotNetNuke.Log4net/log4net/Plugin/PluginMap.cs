@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -42,7 +41,6 @@ namespace log4net.Plugin
     /// <author>Gert Driesen</author>
     public sealed class PluginMap
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Constructor
@@ -59,9 +57,7 @@ namespace log4net.Plugin
             this.m_repository = repository;
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets a <see cref="IPlugin" /> by name.
@@ -113,9 +109,7 @@ namespace log4net.Plugin
             }
         }
 
-        #endregion Public Instance Properties
 
-        #region Public Instance Methods
 
         /// <summary>
         /// Adds a <see cref="IPlugin" /> to the map.
@@ -181,13 +175,7 @@ namespace log4net.Plugin
             }
         }
 
-        #endregion Public Instance Methods
-
-        #region Private Instance Fields
-
         private readonly Hashtable m_mapName2Plugin = new Hashtable();
         private readonly ILoggerRepository m_repository;
-
-        #endregion Private Instance Fields
     }
 }

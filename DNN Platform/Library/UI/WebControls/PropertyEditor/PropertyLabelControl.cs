@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.ComponentModel;
@@ -17,8 +17,6 @@ using DotNetNuke.UI.UserControls;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
 
@@ -31,9 +29,6 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:PropertyLabelControl runat=server></{0}:PropertyLabelControl>")]
     public class PropertyLabelControl : WebControl
     {
-
-        #region Private Members
-
         private string _ResourceKey;
         protected LinkButton cmdHelp;
         protected HtmlGenericControl label;
@@ -41,10 +36,6 @@ namespace DotNetNuke.UI.WebControls
         protected Label lblLabel;
         protected Panel pnlTooltip;
         protected Panel pnlHelp;
-
-        #endregion
-
-        #region Protected Members
 
         public PropertyLabelControl()
         {
@@ -60,9 +51,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// <summary>
         /// Gets and Sets the Caption Text if no ResourceKey is provided
@@ -166,7 +155,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #region Data Properties
 
         /// <summary>
         /// Gets and sets the value of the Field that is bound to the Label
@@ -182,9 +170,7 @@ namespace DotNetNuke.UI.WebControls
         [Browsable(false)]
         public object DataSource { get; set; }
 
-        #endregion
 
-        #region Style Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -222,11 +208,8 @@ namespace DotNetNuke.UI.WebControls
 
         public bool Required { get; set; }
 
-        #endregion
 
-        #endregion
 
-        #region Protected Methods
 
         /// <summary>
         /// CreateChildControls creates the control collection.
@@ -333,7 +316,5 @@ namespace DotNetNuke.UI.WebControls
                 this.pnlHelp.ControlStyle.CssClass = string.Format("dnnFormHelpContent {0}", this.pnlHelp.ControlStyle.CssClass);
             }
         }
-
-        #endregion
     }
 }

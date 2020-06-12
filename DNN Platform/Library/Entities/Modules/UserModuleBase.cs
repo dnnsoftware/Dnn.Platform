@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -26,8 +26,6 @@ using DotNetNuke.Services.Mail;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.UI.WebControls;
-
-#endregion
 
 namespace DotNetNuke.Entities.Modules
 {
@@ -484,8 +482,6 @@ namespace DotNetNuke.Entities.Modules
             return strMessage;
         }
 
-        #region Private methods
-
         private void SendAdminNotification(UserInfo newUser, PortalSettings portalSettings)
         {
             var notificationType = newUser.Membership.Approved ? "NewUserRegistration" : "NewUnauthorizedUserRegistration";
@@ -521,7 +517,5 @@ namespace DotNetNuke.Entities.Modules
             const string text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_SUBJECT";
             return this.LocalizeNotificationText(text, locale, newUser, portalSettings);
         }
-
-        #endregion
     }
 }

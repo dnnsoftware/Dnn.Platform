@@ -16,7 +16,6 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 {
     internal class WorkflowStateRepository : ServiceLocator<IWorkflowStateRepository, WorkflowStateRepository>, IWorkflowStateRepository
     {
-        #region Public Methods
         public IEnumerable<WorkflowState> GetWorkflowStates(int workflowId)
         {
             using (var context = DataContext.Instance())
@@ -96,9 +95,6 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             DataCache.RemoveCache(GetWorkflowStateKey(state.StateID));
             DataCache.RemoveCache(WorkflowRepository.GetWorkflowItemKey(state.WorkflowID));
         }
-        #endregion
-
-        #region Private Methods
 
         private static bool DoesExistWorkflowState(WorkflowState state, IRepository<WorkflowState> rep)
         {
@@ -122,13 +118,10 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 _ => state);
             }
         }
-        #endregion
 
-        #region Service Locator
         protected override Func<IWorkflowStateRepository> GetFactory()
         {
             return () => new WorkflowStateRepository();
         }
-        #endregion
     }
 }

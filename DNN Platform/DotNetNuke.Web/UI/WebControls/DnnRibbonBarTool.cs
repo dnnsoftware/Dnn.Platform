@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -25,8 +25,6 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
     [ParseChildren(true)]
@@ -37,8 +35,6 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        #region Properties
 
         private IDictionary<string, RibbonBarToolInfo> _allTools;
         private DnnTextLink _dnnLink;
@@ -193,10 +189,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        #endregion
-
-        #region Events
-
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
@@ -259,10 +251,6 @@ namespace DotNetNuke.Web.UI.WebControls
                     break;
             }
         }
-
-        #endregion
-
-        #region Methods
 
         protected virtual void ProcessTool()
         {
@@ -602,7 +590,5 @@ namespace DotNetNuke.Web.UI.WebControls
             LogController.Instance.AddLog(log);
             Config.Touch();
         }
-
-        #endregion
     }
 }

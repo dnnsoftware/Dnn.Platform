@@ -18,7 +18,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
 
-        #region Public Methods
         public TabVersion GetTabVersion(int tabVersionId, int tabId, bool ignoreCache = false)
         {
             return this.GetTabVersions(tabId, ignoreCache).SingleOrDefault(tv => tv.TabVersionId == tabVersionId);
@@ -88,9 +87,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             Provider.DeleteTabVersionDetailByModule(moduleId);
         }
-        #endregion
 
-        #region Private Methods
         private void ClearCache(int tabId)
         {
             DataCache.RemoveCache(GetTabVersionsCacheKey(tabId));
@@ -100,8 +97,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             return string.Format(DataCache.TabVersionsCacheKey, tabId);
         }
-
-        #endregion
 
         protected override Func<ITabVersionController> GetFactory()
         {

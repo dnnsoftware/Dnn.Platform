@@ -50,8 +50,6 @@ namespace DotNetNuke.Collections.Internal
             this._lock = new ReaderWriterLockSlim(this._lockRecursionPolicy);
         }
 
-        #region ILockStrategy Members
-
         public ISharedCollectionLock GetReadLock()
         {
             return this.GetReadLock(TimeSpan.FromMilliseconds(-1));
@@ -116,10 +114,6 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        #endregion
-
-        #region "IDisposable Support"
-
         private bool _isDisposed;
 
         public void Dispose()
@@ -166,6 +160,5 @@ namespace DotNetNuke.Collections.Internal
 
         // This code added by Visual Basic to correctly implement the disposable pattern.
 
-        #endregion
     }
 }

@@ -1,15 +1,13 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web;
 using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Icons;
-
-#endregion
 
 namespace DotNetNuke.UI.WebControls
 {
@@ -21,9 +19,6 @@ namespace DotNetNuke.UI.WebControls
     {
         private ImageCommandColumnEditMode _editMode = ImageCommandColumnEditMode.Command;
         private bool _showImage = true;
-
-        #region "Public Properties"
-
         private string _imageURL = string.Empty;
 
         /// <summary>
@@ -173,9 +168,7 @@ namespace DotNetNuke.UI.WebControls
             return template;
         }
 
-        #endregion
 
-        #region "Public Methods"
 
         /// <summary>
         /// Initialises the Column
@@ -195,7 +188,5 @@ namespace DotNetNuke.UI.WebControls
             this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
             this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
         }
-
-        #endregion
     }
 }

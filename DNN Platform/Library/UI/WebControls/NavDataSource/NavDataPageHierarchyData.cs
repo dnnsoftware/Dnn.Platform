@@ -1,15 +1,13 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web.UI;
 
 using DotNetNuke.Entities.Portals;
-
-#endregion
 
 namespace DotNetNuke.UI.WebControls
 {
@@ -43,7 +41,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #region IHierarchyData Members
 
         /// <summary>
         /// Indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.
@@ -136,9 +133,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
 
-        #region INavigateUIData Members
 
         /// <summary>
         /// Returns node name
@@ -195,8 +190,6 @@ namespace DotNetNuke.UI.WebControls
                 return this.GetSafeValue(this.m_objNode.ToolTip, string.Empty);
             }
         }
-
-        #endregion
 
         public override string ToString()
         {

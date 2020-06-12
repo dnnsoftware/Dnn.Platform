@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Specialized;
@@ -27,8 +27,6 @@ using DotNetNuke.Services.Localization;
 
 using Image = System.Web.UI.WebControls.Image;
 
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
 
@@ -41,24 +39,11 @@ namespace DotNetNuke.UI.WebControls
     public class CaptchaControl : WebControl, INamingContainer, IPostBackDataHandler
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CaptchaControl));
-
-        #region Private Constants
-
         private const int EXPIRATION_DEFAULT = 120;
         private const int LENGTH_DEFAULT = 6;
         private const string RENDERURL_DEFAULT = "ImageChallenge.captcha.aspx";
         private const string CHARS_DEFAULT = "abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-
-        #endregion
-
-        #region Friend Constants
-
         internal const string KEY = "captcha";
-
-        #endregion
-
-        #region Private Members
-
         private static readonly string[] _FontFamilies = { "Arial", "Comic Sans MS", "Courier New", "Georgia", "Lucida Console", "MS Sans Serif", "Tahoma", "Times New Roman", "Trebuchet MS", "Verdana" };
 
         private static readonly Random _Rand = new Random();
@@ -78,20 +63,12 @@ namespace DotNetNuke.UI.WebControls
         private string _UserText = string.Empty;
         private Image _image;
 
-        #endregion
-
-        #region Constructors
-
         public CaptchaControl()
         {
             this.ErrorMessage = Localization.GetString("InvalidCaptcha", Localization.SharedResourceFile);
             this.Text = Localization.GetString("CaptchaText.Text", Localization.SharedResourceFile);
             this._Expiration = HostController.Instance.GetInteger("EXPIRATION_DEFAULT", EXPIRATION_DEFAULT);
         }
-
-        #endregion
-
-        #region Private Properties
 
         private bool IsDesignMode
         {
@@ -101,9 +78,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// <summary>
         /// Gets and sets the BackGroundColor
@@ -299,7 +274,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #region IPostBackDataHandler Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -328,18 +302,9 @@ namespace DotNetNuke.UI.WebControls
         {
         }
 
-        #endregion
-
-        #endregion
-
-        #region Public Events
-
-
         public event ServerValidateEventHandler UserValidated;
 
-        #endregion
 
-        #region Private Methods
 
         /// <summary>
         /// Builds the url for the Handler
@@ -370,9 +335,7 @@ namespace DotNetNuke.UI.WebControls
             return sb.ToString();
         }
 
-        #endregion
 
-        #region Shared/Static Methods
 
         /// <summary>
         /// Creates the Image
@@ -645,9 +608,7 @@ namespace DotNetNuke.UI.WebControls
             textPath.Warp(points, rectF, m, WarpMode.Perspective, 0);
         }
 
-        #endregion
 
-        #region "Protected Methods"
 
         /// <summary>
         /// Creates the child controls
@@ -836,9 +797,7 @@ namespace DotNetNuke.UI.WebControls
             return allStates;
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// <summary>
         /// Validates the posted back data
@@ -862,8 +821,5 @@ namespace DotNetNuke.UI.WebControls
             this.OnUserValidated(new ServerValidateEventArgs(this._CaptchaText, this._IsValid));
             return this._IsValid;
         }
-
-        #endregion
-
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -13,8 +13,6 @@ using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
-
-#endregion
 
 namespace DotNetNuke.Entities.Urls
 {
@@ -37,8 +35,6 @@ namespace DotNetNuke.Entities.Urls
             this._fileExtension = !string.IsNullOrEmpty(attributes["fileExtension"]) ? attributes["fileExtension"] : ".aspx";
         }
 
-        #region Public Properties
-
         public string FileExtension
         {
             get { return this._fileExtension; }
@@ -54,9 +50,7 @@ namespace DotNetNuke.Entities.Urls
             get { return this._regexMatch; }
         }
 
-        #endregion
 
-        #region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -289,10 +283,6 @@ namespace DotNetNuke.Entities.Urls
             return results;
         }
 
-        #endregion
-
-        #region Internal Methods
-
         internal override string FriendlyUrl(TabInfo tab, string path)
         {
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -409,7 +399,5 @@ namespace DotNetNuke.Entities.Urls
 
             return friendlyPath;
         }
-
-        #endregion
     }
 }

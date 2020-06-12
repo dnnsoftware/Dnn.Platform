@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -15,8 +15,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
-
-#endregion
 
 namespace DotNetNuke.UI.Utilities
 {
@@ -32,8 +30,6 @@ namespace DotNetNuke.UI.Utilities
     /// </remarks>
     public class DNNClientAPI
     {
-        #region MinMaxPersistanceType enum
-
         public enum MinMaxPersistanceType
         {
             None,
@@ -42,17 +38,11 @@ namespace DotNetNuke.UI.Utilities
             Personalization
         }
 
-        #endregion
-
-        #region PageCallBackType enum
-
         public enum PageCallBackType
         {
             GetPersonalization = 0,
             SetPersonalization = 1
         }
-
-        #endregion
 
         private static readonly Hashtable m_objEnabledClientPersonalizationKeys = new Hashtable();
 

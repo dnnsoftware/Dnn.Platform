@@ -11,8 +11,6 @@ namespace DotNetNuke.Web.Mvp
     {
         private TModel _model;
 
-        #region IView<TModel> Members
-
         public TModel Model
         {
             get
@@ -26,8 +24,6 @@ namespace DotNetNuke.Web.Mvp
             }
             set { this._model = value; }
         }
-
-        #endregion
 
         protected string GetModuleSetting(string key, string defaultValue)
         {

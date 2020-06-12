@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -129,7 +128,6 @@ namespace log4net.Appender
     /// <author>Edward Smit</author>
     public class RollingFileAppender : FileAppender
     {
-        #region Public Enums
 
         /// <summary>
         /// Style of rolling to use
@@ -174,9 +172,7 @@ namespace log4net.Appender
             Composite   = 3
         }
 
-        #endregion
 
-        #region Protected Enums
 
         /// <summary>
         /// The code assumes that the following 'time' constants are in a increasing sequence.
@@ -224,9 +220,7 @@ namespace log4net.Appender
             TopOfMonth = 5
         }
 
-        #endregion Protected Enums
 
-        #region Public Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RollingFileAppender" /> class.
@@ -258,9 +252,7 @@ namespace log4net.Appender
 #endif
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
 #if !NET_1_0 && !CLI_1_0 && !NETCF
         /// <summary>
@@ -540,9 +532,7 @@ namespace log4net.Appender
             set { this.m_staticLogFileName = value; }
         }
 
-        #endregion Public Instance Properties
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the RollingFileAppender class.
@@ -553,9 +543,7 @@ namespace log4net.Appender
         /// </remarks>
         private readonly static Type declaringType = typeof(RollingFileAppender);
 
-        #endregion Private Static Fields
 
-        #region Override implementation of FileAppender
 
         /// <summary>
         /// Sets the quiet writer being used.
@@ -745,9 +733,7 @@ namespace log4net.Appender
             return fileName;
         }
 
-        #endregion
 
-        #region Initialize Options
 
         /// <summary>
         ///     Determines curSizeRollBackups (only within the current roll point)
@@ -1177,9 +1163,7 @@ namespace log4net.Appender
             base.ActivateOptions();
         }
 
-        #endregion
 
-        #region Roll File
 
         /// <summary>
         ///
@@ -1517,9 +1501,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion
 
-        #region NextCheckDate
 
         /// <summary>
         /// Get the start time of the next window for the current rollpoint
@@ -1603,9 +1585,7 @@ namespace log4net.Appender
             return current;
         }
 
-        #endregion
 
-        #region Private Instance Fields
 
         /// <summary>
         /// This object supplies the current date/time.  Allows test code to plug in
@@ -1700,18 +1680,14 @@ namespace log4net.Appender
         private Mutex m_mutexForRolling;
 #endif
 
-        #endregion Private Instance Fields
 
-        #region Static Members
 
         /// <summary>
         /// The 1st of January 1970 in UTC
         /// </summary>
         private static readonly DateTime s_date1970 = new DateTime(1970, 1, 1);
 
-        #endregion
 
-        #region DateTime
 
         /// <summary>
         /// This interface is used to supply Date/Time information to the <see cref="RollingFileAppender"/>.
@@ -1777,6 +1753,5 @@ namespace log4net.Appender
         }
 #endif
 
-        #endregion DateTime
     }
 }

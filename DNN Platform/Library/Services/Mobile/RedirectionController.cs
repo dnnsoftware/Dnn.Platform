@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -20,19 +20,14 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.ClientCapability;
 using DotNetNuke.Services.Log.EventLog;
 
-#endregion
-
 namespace DotNetNuke.Services.Mobile
 {
     public class RedirectionController : IRedirectionController
     {
-        #region Constants
         private const string DisableMobileRedirectCookieName = "disablemobileredirect";
         private const string DisableRedirectPresistCookieName = "disableredirectpresist";
         private const string DisableMobileRedirectQueryStringName = "nomo"; // google uses the same name nomo=1 means do not redirect to mobile
-        #endregion
 
-        #region Private Properties
 
         private const string UrlsCacheKey = "MobileRedirectAllUrls";
         private const string RedirectionUrlCacheKey = "RedirectionUrl_{0}_{1}_{2}";
@@ -40,9 +35,7 @@ namespace DotNetNuke.Services.Mobile
         private const string MobileSiteUrlCacheKey = "MobileSiteUrl_{0}_{1}";
         private const int UrlsCacheTimeout = 60;
 
-        #endregion
 
-        #region Public Methods
 
         /// <summary>
         /// Is Redirection Allowed for the session. Method analyzes the query string for special parameters to enable / disable redirects.
@@ -594,10 +587,6 @@ namespace DotNetNuke.Services.Mobile
             return redirectUrl;
         }
 
-        #endregion
-
-        #region "Private Methods"
-
         private string GetPortalHomePageUrl(PortalSettings portalSettings)
         {
             return Globals.AddHTTP(portalSettings.DefaultPortalAlias);
@@ -703,9 +692,6 @@ namespace DotNetNuke.Services.Mobile
             return match;
         }
 
-        #endregion
-
-        #region Private Properties
         private string AllRedirectionsCacheKey
         {
             get
@@ -713,6 +699,5 @@ namespace DotNetNuke.Services.Mobile
                 return string.Format(DataCache.RedirectionsCacheKey, "All");
             }
         }
-        #endregion
     }
 }

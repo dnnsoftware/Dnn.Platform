@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Text;
@@ -56,7 +55,6 @@ namespace log4net.Appender
     /// <author>Nicko Cadell</author>
     public class SmtpPickupDirAppender : BufferingAppenderSkeleton
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Default constructor
@@ -71,9 +69,7 @@ namespace log4net.Appender
             this.m_fileExtension = string.Empty; // Default to empty string, not null
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets or sets a semicolon-delimited list of recipient e-mail addresses.
@@ -194,9 +190,7 @@ namespace log4net.Appender
             set { this.m_securityContext = value; }
         }
 
-        #endregion Public Instance Properties
 
-        #region Override implementation of BufferingAppenderSkeleton
 
         /// <summary>
         /// Sends the contents of the cyclic buffer as an e-mail message.
@@ -266,9 +260,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion Override implementation of BufferingAppenderSkeleton
 
-        #region Override implementation of AppenderSkeleton
 
         /// <summary>
         /// Activate the options on this appender.
@@ -315,9 +307,7 @@ namespace log4net.Appender
             get { return true; }
         }
 
-        #endregion Override implementation of AppenderSkeleton
 
-        #region Protected Static Methods
 
         /// <summary>
         /// Convert a path into a fully qualified path.
@@ -337,10 +327,6 @@ namespace log4net.Appender
             return SystemInfo.ConvertToFullPath(path);
         }
 
-        #endregion Protected Static Methods
-
-        #region Private Instance Fields
-
         private string m_to;
         private string m_from;
         private string m_subject;
@@ -351,7 +337,5 @@ namespace log4net.Appender
         /// The security context to use for privileged calls
         /// </summary>
         private SecurityContext m_securityContext;
-
-        #endregion Private Instance Fields
     }
 }

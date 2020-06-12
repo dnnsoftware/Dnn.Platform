@@ -1,14 +1,12 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Installer.Packages;
-
-#endregion
 
 namespace DotNetNuke.Services.Installer.Writers
 {
@@ -22,7 +20,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class PackageWriterFactory
     {
-        #region "Public Shared Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -77,7 +74,5 @@ namespace DotNetNuke.Services.Installer.Writers
             }
             return writer;
         }
-
-        #endregion
     }
 }

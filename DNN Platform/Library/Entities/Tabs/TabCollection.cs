@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -14,8 +14,6 @@ using DotNetNuke.Collections;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Localization;
-
-#endregion
 
 namespace DotNetNuke.Entities.Tabs
 {
@@ -37,8 +35,6 @@ namespace DotNetNuke.Entities.Tabs
         // This is used to provide a culture based set of tabs
         [NonSerialized]
         private readonly Dictionary<string, List<TabInfo>> _localizedTabs;
-
-        #region Constructors
 
         public TabCollection()
         {
@@ -71,10 +67,6 @@ namespace DotNetNuke.Entities.Tabs
         {
             this.AddRange(tabs);
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void AddInternal(TabInfo tab)
         {
@@ -197,10 +189,6 @@ namespace DotNetNuke.Entities.Tabs
         {
             return PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", portalId, false);
         }
-
-        #endregion
-
-        #region Public Methods
 
         public void Add(TabInfo tab)
         {
@@ -348,7 +336,5 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
         }
-
-        #endregion
     }
 }

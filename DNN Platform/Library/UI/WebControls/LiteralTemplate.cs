@@ -1,12 +1,10 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System.Web.UI;
-
-#endregion
 
 namespace DotNetNuke.UI.WebControls
 {
@@ -25,8 +23,6 @@ namespace DotNetNuke.UI.WebControls
             this.m_objControl = ctl;
         }
 
-        #region ITemplate Members
-
         public void InstantiateIn(Control container)
         {
             if (this.m_objControl == null)
@@ -38,7 +34,5 @@ namespace DotNetNuke.UI.WebControls
                 container.Controls.Add(this.m_objControl);
             }
         }
-
-        #endregion
     }
 }

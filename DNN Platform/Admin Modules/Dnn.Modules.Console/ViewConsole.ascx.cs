@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -27,8 +27,6 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
-#endregion
-
 namespace Dnn.Modules.Console
 {
     public partial class ViewConsole : PortalModuleBase
@@ -45,8 +43,6 @@ namespace Dnn.Modules.Console
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        #region Public Properties
 
         public bool AllowSizeChange
         {
@@ -190,10 +186,6 @@ namespace Dnn.Modules.Console
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private bool CanShowTab(TabInfo tab)
         {
             bool canShowTab = TabPermissionController.CanViewPage(tab) &&
@@ -321,8 +313,6 @@ namespace Dnn.Modules.Console
         {
             Personalization.SetProfile(this.ModuleConfiguration.ModuleDefinition.FriendlyName, this.PersonalizationKey(key), val);
         }
-
-        #endregion
 
         protected override void OnInit(EventArgs e)
         {

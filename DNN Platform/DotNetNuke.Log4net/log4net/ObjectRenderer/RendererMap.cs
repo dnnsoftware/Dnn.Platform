@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.IO;
@@ -50,17 +49,12 @@ namespace log4net.ObjectRenderer
     public class RendererMap
     {
         private readonly static Type declaringType = typeof(RendererMap);
-
-        #region Member Variables
-
         private System.Collections.Hashtable m_map;
         private System.Collections.Hashtable m_cache = new System.Collections.Hashtable();
 
         private static IObjectRenderer s_defaultRenderer = new DefaultRenderer();
 
-        #endregion
 
-        #region Constructors
 
         /// <summary>
         /// Default Constructor
@@ -75,7 +69,6 @@ namespace log4net.ObjectRenderer
             this.m_map = System.Collections.Hashtable.Synchronized(new System.Collections.Hashtable());
         }
 
-        #endregion
 
         /// <summary>
         /// Render <paramref name="obj"/> using the appropriate renderer.

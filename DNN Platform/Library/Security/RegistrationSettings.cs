@@ -11,8 +11,6 @@ namespace DotNetNuke.Security
 {
     public class RegistrationSettings
     {
-
-        #region Properties
         public bool RandomPassword { get; set; }
         public int RedirectAfterRegistration { get; set; }
         public int RedirectAfterLogout { get; set; }
@@ -32,9 +30,6 @@ namespace DotNetNuke.Security
         public string UserNameValidator { get; set; }
         public string DisplayNameFormat { get; set; }
         public string EmailValidator { get; set; }
-        #endregion
-
-        #region Constructors
 
         public RegistrationSettings()
         {
@@ -81,7 +76,5 @@ namespace DotNetNuke.Security
 
             this.ExcludeTermsRegex = "^(?:(?!" + this.ExcludeTerms.Replace(" ", string.Empty).Replace(",", "|") + ").)*$\\r?\\n?";
         }
-        #endregion
-
     }
 }

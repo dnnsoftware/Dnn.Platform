@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
@@ -14,8 +14,6 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Instrumentation;
 
-#endregion
-
 namespace DotNetNuke.Services.Cache
 {
     public class FBCachingProvider : CachingProvider
@@ -23,8 +21,6 @@ namespace DotNetNuke.Services.Cache
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FBCachingProvider));
         internal const string CacheFileExtension = ".resources";
         internal static string CachingDirectory = "Cache\\";
-
-        #region Abstract Method Implementation
 
         public override void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,
                                     CacheItemRemovedCallback onRemoveCallback)
@@ -77,10 +73,6 @@ namespace DotNetNuke.Services.Cache
                 DeleteCacheFile(f);
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static string ByteArrayToString(byte[] arrInput)
         {
@@ -196,7 +188,5 @@ namespace DotNetNuke.Services.Cache
             // return a summary message for the job
             return string.Format("Cache Synchronization Files Processed: " + f.Length + ", Purged: " + PurgedFiles + ", Errors: " + PurgeErrors);
         }
-
-        #endregion
     }
 }

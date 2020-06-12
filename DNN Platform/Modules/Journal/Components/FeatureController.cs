@@ -50,7 +50,6 @@ namespace DotNetNuke.Modules.Journal.Components {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Optional Interfaces
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -112,10 +111,6 @@ namespace DotNetNuke.Modules.Journal.Components {
         public string UpgradeModule(string version) {
             throw new NotImplementedException("The method or operation is not implemented.");
         }
-
-        #endregion
-
-        #region Implement ModuleSearchBase
 
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
         {
@@ -201,10 +196,6 @@ namespace DotNetNuke.Modules.Journal.Components {
 
             return searchDocuments.Values.ToList();
         }
-
-        #endregion
-
-        #region Implement IModuleSearchController
 
         public bool HasViewPermission(SearchResult searchResult)
         {
@@ -293,10 +284,6 @@ namespace DotNetNuke.Modules.Journal.Components {
             return url;
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void AddCommentItems(Dictionary<int, int> journalIds, IDictionary<string, SearchDocument> searchDocuments)
         {
             var comments = JournalController.Instance.GetCommentsByJournalIds(journalIds.Keys.ToList());
@@ -313,8 +300,6 @@ namespace DotNetNuke.Modules.Journal.Components {
                 }
             }
         }
-
-        #endregion
     }
 
 }

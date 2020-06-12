@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Specialized;
@@ -16,8 +16,6 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 
 using Calendar = DotNetNuke.Common.Utilities.Calendar;
-
-#endregion
 
 namespace DotNetNuke.UI.WebControls
 {
@@ -40,7 +38,6 @@ namespace DotNetNuke.UI.WebControls
         private TextBox dateField;
         private HyperLink linkCalendar;
 
-        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -156,8 +153,6 @@ namespace DotNetNuke.UI.WebControls
                 this.Value = DateTime.Parse(value);
             }
         }
-
-        #endregion
 
         protected override void CreateChildControls()
         {

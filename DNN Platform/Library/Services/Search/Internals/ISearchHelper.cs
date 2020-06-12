@@ -1,15 +1,13 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
 
 using DotNetNuke.Services.Search.Entities;
-
-#endregion
 
 namespace DotNetNuke.Services.Search.Internals
 {
@@ -20,7 +18,6 @@ namespace DotNetNuke.Services.Search.Internals
     public interface ISearchHelper
     {
 
-        #region SearchType APIs
 
         // /// <summary>
         // /// Commits the added search documents into the search database
@@ -39,9 +36,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// <returns></returns>
         SearchType GetSearchTypeByName(string searchTypeName);
 
-        #endregion
 
-        #region Synonym Management APIs
         /// <summary>
         /// Returns a list of Synonyms for a given word. E.g. leap, hop for jump
         /// </summary>
@@ -85,9 +80,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// <param name="cultureCode">culture code</param>
         void DeleteSynonymsGroup(int synonymsGroupId, int portalId, string cultureCode);
 
-        #endregion
 
-        #region Stop Word Management APIs
 
         /// <summary>
         /// Gets a search stop words
@@ -124,9 +117,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// <param name="cultureCode"></param>
         void DeleteSearchStopWords(int stopWordsId, int portalId, string cultureCode);
 
-        #endregion
 
-        #region Reindex and Compact settings
 
         DateTime GetSearchReindexRequestTime(int portalId);
         DateTime SetSearchReindexRequestTime(int portalId);
@@ -143,12 +134,9 @@ namespace DotNetNuke.Services.Search.Internals
         string GetIndexerCheckpointData(int scheduleId, string indexerKey);
         void SetIndexerCheckpointData(int scheduleId, string indexerKey, string checkPointData);
 
-        #endregion
 
-        #region Other Search Helper methods
         Tuple<int, int> GetSearchMinMaxLength();
         string RephraseSearchText(string searchPhrase, bool useWildCard, bool allowLeadingWildcard = false);
         string StripTagsNoAttributes(string html, bool retainSpace);
-        #endregion
     }
 }

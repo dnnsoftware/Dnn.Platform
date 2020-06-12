@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -20,7 +20,6 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 
-#endregion
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.UI.WebControls
@@ -36,13 +35,8 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public class PropertyEditorControl : WebControl, INamingContainer
     {
-        #region Private Members
-
         private bool _itemChanged;
         private Hashtable _sections;
-        #endregion
-
-        #region Constructors
 
         public PropertyEditorControl()
         {
@@ -60,10 +54,6 @@ namespace DotNetNuke.UI.WebControls
             this.Groups = Null.NullString;
             this.AutoGenerate = true;
         }
-
-        #endregion
-
-        #region Protected Members
 
         protected override HtmlTextWriterTag TagKey
         {
@@ -84,9 +74,7 @@ namespace DotNetNuke.UI.WebControls
             get { return this.GetProperties(); }
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -240,7 +228,6 @@ namespace DotNetNuke.UI.WebControls
         [Category("Behavior"), PersistenceMode(PersistenceMode.InnerProperty), DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public ArrayList Fields { get; private set; }
 
-        #region "Style Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -326,19 +313,11 @@ namespace DotNetNuke.UI.WebControls
         [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Visibility Control")]
         public Style VisibilityStyle { get; private set; }
 
-        #endregion
-
-        #endregion
-
-        #region Events
-
         public event PropertyChangedEventHandler ItemAdded;
         public event EditorCreatedEventHandler ItemCreated;
         public event PropertyChangedEventHandler ItemDeleted;
 
-        #endregion
 
-        #region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -405,9 +384,7 @@ namespace DotNetNuke.UI.WebControls
             container.Controls.Add(editor);
         }
 
-        #endregion
 
-        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -887,9 +864,7 @@ namespace DotNetNuke.UI.WebControls
             base.OnPreRender(e);
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -917,9 +892,7 @@ namespace DotNetNuke.UI.WebControls
             this.ChildControlsCreated = true;
         }
 
-        #endregion
 
-        #region Event Handlers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -960,7 +933,5 @@ namespace DotNetNuke.UI.WebControls
         {
             this._itemChanged = true;
         }
-
-        #endregion
     }
 }

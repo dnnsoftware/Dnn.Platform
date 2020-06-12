@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Linq;
@@ -26,8 +26,6 @@ using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Util;
 using Lucene.Net.Analysis.Tokenattributes;
 
-#endregion
-
 namespace DotNetNuke.Services.Search.Internals
 {
     internal class SearchHelperImpl : ISearchHelper
@@ -40,8 +38,6 @@ namespace DotNetNuke.Services.Search.Internals
         private const string SearchStopWordsCacheKey = "SearchStopWords";
         private const string ResourceFileRelativePathWithoutExt = "/App_GlobalResources/GlobalResources";
         private readonly IList<string> _emptySynonums = new List<string>(0);
-
-        #region SearchType APIs
 
         public IEnumerable<SearchType> GetSearchTypes()
         {
@@ -58,10 +54,6 @@ namespace DotNetNuke.Services.Search.Internals
         {
             return this.GetSearchTypes().Single(t => t.SearchTypeName == searchTypeName);
         }
-
-        #endregion
-
-        #region Synonym Management APIs
 
         private IDictionary<string, IList<string>> GetSynonymTerms(int portalId, string cultureCode)
         {
@@ -209,10 +201,6 @@ namespace DotNetNuke.Services.Search.Internals
             var cacheKey = string.Format(CacheKeyFormat, SearchStopWordsCacheKey, portalId, cultureCode);
             DataCache.ClearCache(cacheKey);
         }
-
-        #endregion
-
-        #region Reindex and Compact settings management API
 
         public DateTime GetSearchReindexRequestTime(int portalId)
         {
@@ -368,10 +356,6 @@ namespace DotNetNuke.Services.Search.Internals
             SchedulingProvider.Instance().AddScheduleItemSetting(scheduleId, indexerKey, checkPointData);
         }
 
-        #endregion
-
-        #region Other Search Helper methods
-
         public Tuple<int, int> GetSearchMinMaxLength()
         {
             var hostController = HostController.Instance;
@@ -467,10 +451,6 @@ namespace DotNetNuke.Services.Search.Internals
 
             return strippedString;
         }
-
-        #endregion
-
-        #region private methods
 
         private static DateTime FixSqlDateTime(DateTime datim)
         {
@@ -698,8 +678,5 @@ namespace DotNetNuke.Services.Search.Internals
             }
             return sb.ToString();
         }
-
-        #endregion
-
     }
 }

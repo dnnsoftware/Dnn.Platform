@@ -15,24 +15,14 @@ namespace DotNetNuke.Services.Connections
 {
     public sealed class ConnectionsManager : ServiceLocator<IConnectionsManager, ConnectionsManager>, IConnectionsManager
     {
-        #region Service Locator Implements
-
         protected override Func<IConnectionsManager> GetFactory()
         {
             return () => new ConnectionsManager();
         }
 
-        #endregion
-
-        #region Properties
-
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConnectionsManager));
         private static readonly object LockerObject = new object();
         private static IDictionary<string, IConnector> _processors;
-
-        #endregion
-
-        #region Public Methods
 
         public void RegisterConnections()
         {
@@ -52,10 +42,6 @@ namespace DotNetNuke.Services.Connections
         {
             return _processors.Values.Where(x => this.IsPackageInstalled(x.GetType().Assembly)).ToList();
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void LoadProcessors()
         {
@@ -94,7 +80,5 @@ namespace DotNetNuke.Services.Connections
                 -1,
                 info => info.Name == assembly.GetName().Name && info.IsValid).Count > 0;
         }
-
-        #endregion
     }
 }

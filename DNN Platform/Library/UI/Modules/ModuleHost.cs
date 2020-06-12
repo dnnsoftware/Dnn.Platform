@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -34,8 +34,6 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 using Microsoft.Extensions.DependencyInjection;
 using Globals = DotNetNuke.Common.Globals;
 
-#endregion
-
 namespace DotNetNuke.UI.Modules
 {
     /// -----------------------------------------------------------------------------
@@ -55,17 +53,12 @@ namespace DotNetNuke.UI.Modules
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private const string DefaultCssProvider = "DnnPageHeaderProvider";
         private const string DefaultJsProvider = "DnnBodyProvider";
-
-        #region Private Members
-
         private readonly ModuleInfo _moduleConfiguration;
         private Control _control;
         private bool _isCached;
         private readonly IModuleControlPipeline _moduleControlPipeline = Globals.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
 
-        #endregion
 
-        #region Constructors
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -80,10 +73,6 @@ namespace DotNetNuke.UI.Modules
             this._moduleConfiguration = moduleConfiguration;
             this.Skin = skin;
         }
-
-        #endregion
-
-        #region Public Properties
 
         public Containers.Container Container { get; private set; }
 
@@ -115,10 +104,6 @@ namespace DotNetNuke.UI.Modules
         }
 
         public Skins.Skin Skin { get; private set; }
-
-        #endregion
-
-        #region Private Methods
 
         private bool IsVersionRequest()
         {
@@ -488,9 +473,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        #endregion
 
-        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -582,8 +565,5 @@ namespace DotNetNuke.UI.Modules
                 }
             }
         }
-
-        #endregion
-
     }
 }

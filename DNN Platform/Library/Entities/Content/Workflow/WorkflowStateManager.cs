@@ -16,21 +16,16 @@ namespace DotNetNuke.Entities.Content.Workflow
 {
     public class WorkflowStateManager : ServiceLocator<IWorkflowStateManager, WorkflowStateManager>, IWorkflowStateManager
     {
-        #region Members
         private readonly DataProvider _dataProvider;
         private readonly IWorkflowRepository _workflowRepository = WorkflowRepository.Instance;
         private readonly IWorkflowStateRepository _workflowStateRepository = WorkflowStateRepository.Instance;
         private readonly IWorkflowStatePermissionsRepository _workflowStatePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
-        #endregion
 
-        #region Constructor
         public WorkflowStateManager()
         {
             this._dataProvider = DataProvider.Instance();
         }
-        #endregion
 
-        #region Public Methods
         public IEnumerable<WorkflowState> GetWorkflowStates(int workflowId)
         {
             return this._workflowStateRepository.GetWorkflowStates(workflowId);
@@ -238,9 +233,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             return this._dataProvider.GetContentWorkflowStateUsageCount(stateId);
         }
-        #endregion
 
-        #region Private Methods
         private int GetStateIndex(WorkflowState[] states, WorkflowState currentState)
         {
             int i = 0;
@@ -278,12 +271,10 @@ namespace DotNetNuke.Entities.Content.Workflow
                 }
             }
         }
-        #endregion
-        #region Service Locator
+
         protected override Func<IWorkflowStateManager> GetFactory()
         {
             return () => new WorkflowStateManager();
         }
-        #endregion
     }
 }

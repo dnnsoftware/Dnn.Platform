@@ -29,8 +29,6 @@ namespace DotNetNuke.UI.Skins.Controls
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Private Members
-
         private const string MyFileName = "Search.ascx";
         private bool _showSite = true;
         private bool _showWeb = true;
@@ -43,9 +41,7 @@ namespace DotNetNuke.UI.Skins.Controls
         private string _webToolTip;
         private string _webURL;
 
-        #endregion
 
-        #region Public Members
 
         /// <summary>
         /// Gets or sets the CSS class for the option buttons and search button
@@ -348,10 +344,6 @@ namespace DotNetNuke.UI.Skins.Controls
 
         protected string CultureCode { get; set; }
 
-        #endregion
-
-        #region Private Methods
-
         private int GetSearchTabId()
         {
             int searchTabId = this.PortalSettings.SearchTabId;
@@ -448,9 +440,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        #endregion
 
-        #region Event Handlers
 
         /// <summary>
         /// Handles the Load event of the Page control.
@@ -585,7 +575,5 @@ namespace DotNetNuke.UI.Skins.Controls
                 this.txtSearch.Attributes.Add("placeholder", this.PlaceHolderText);
             }
         }
-
-        #endregion
     }
 }

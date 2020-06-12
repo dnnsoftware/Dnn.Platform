@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Specialized;
@@ -17,9 +17,6 @@ using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Localization;
-
-
-#endregion
 
 namespace DotNetNuke.Web.UI.WebControls
 {
@@ -38,8 +35,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 return (from v in vocabularyController.GetVocabularies() where v.IsSystem && v.Name == "Tags" select v).SingleOrDefault();
             }
         }
-
-        #region "Public Properties"
 
         public string AddImageUrl { get; set; }
 
@@ -97,10 +92,6 @@ namespace DotNetNuke.Web.UI.WebControls
         public bool ShowCategories { get; set; }
 
         public bool ShowTags { get; set; }
-
-        #endregion
-
-        #region "Private Methods"
 
         private string LocalizeString(string key)
         {
@@ -192,8 +183,6 @@ namespace DotNetNuke.Web.UI.WebControls
             this.OnTagsUpdate(EventArgs.Empty);
         }
 
-        #endregion
-
         public event EventHandler<EventArgs> TagsUpdated;
 
         protected void OnTagsUpdate(EventArgs e)
@@ -203,8 +192,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.TagsUpdated(this, e);
             }
         }
-
-        #region "Public Methods"
 
         protected override void OnPreRender(EventArgs e)
         {
@@ -340,10 +327,6 @@ namespace DotNetNuke.Web.UI.WebControls
             writer.RenderEndTag();
         }
 
-        #endregion
-
-        #region "IPostBackDataHandler Implementation"
-
         public bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             this._Tags = postCollection[postDataKey];
@@ -355,10 +338,6 @@ namespace DotNetNuke.Web.UI.WebControls
         public void RaisePostDataChangedEvent()
         {
         }
-
-        #endregion
-
-        #region "IPostBackEventHandler Implementation"
 
         public void RaisePostBackEvent(string eventArgument)
         {
@@ -378,7 +357,5 @@ namespace DotNetNuke.Web.UI.WebControls
                     break;
             }
         }
-
-        #endregion
     }
 }

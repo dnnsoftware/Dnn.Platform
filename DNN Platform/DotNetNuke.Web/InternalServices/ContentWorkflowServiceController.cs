@@ -19,18 +19,13 @@ namespace DotNetNuke.Web.InternalServices
     [DnnAuthorize]
     public class ContentWorkflowServiceController : DnnApiController
     {
-        #region Members
         private readonly IWorkflowEngine _workflowEngine;
-        #endregion
 
-        #region Constructor
         public ContentWorkflowServiceController()
         {
             this._workflowEngine = WorkflowEngine.Instance;
         }
-        #endregion
 
-        #region Web Methods
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Reject(NotificationDTO postData)
@@ -153,6 +148,5 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
 
         }
-        #endregion
     }
 }

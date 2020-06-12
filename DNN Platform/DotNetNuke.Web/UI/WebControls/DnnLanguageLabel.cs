@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web.UI;
@@ -12,27 +12,18 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnLanguageLabel : CompositeControl, ILocalizable
     {
-        #region Controls
-
         private Image _Flag;
 
         private Label _Label;
-
-        #endregion
 
         public DnnLanguageLabel()
         {
             this.Localize = true;
         }
-
-        #region Public Properties
 
         public CultureDropDownTypes DisplayType { get; set; }
 
@@ -47,10 +38,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.ViewState["Language"] = value;
             }
         }
-
-        #endregion
-
-        #region Protected Methods
 
         protected override void OnInit(EventArgs e)
         {
@@ -133,10 +120,6 @@ namespace DotNetNuke.Web.UI.WebControls
             this._Flag.AlternateText = localeName;
         }
 
-        #endregion
-
-        #region ILocalizable Implementation
-
         public bool Localize { get; set; }
 
         public string LocalResourceFile { get; set; }
@@ -144,7 +127,5 @@ namespace DotNetNuke.Web.UI.WebControls
         public virtual void LocalizeStrings()
         {
         }
-
-        #endregion
     }
 }

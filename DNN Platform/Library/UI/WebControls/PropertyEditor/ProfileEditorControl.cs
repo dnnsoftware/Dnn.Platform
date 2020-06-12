@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web.UI;
@@ -13,7 +13,6 @@ using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
 
-#endregion
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.UI.WebControls
@@ -34,7 +33,6 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:ProfileEditorControl runat=server></{0}:ProfileEditorControl>")]
     public class ProfileEditorControl : CollectionEditorControl
     {
-        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -107,7 +105,5 @@ namespace DotNetNuke.UI.WebControls
                 }
             }
         }
-
-        #endregion
     }
 }

@@ -17,13 +17,10 @@ namespace DotNetNuke.Entities.Tabs
     class TabWorkflowTracker : ServiceLocator<ITabChangeTracker, TabWorkflowTracker>, ITabChangeTracker
     {
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(TabWorkflowTracker));
-
-        #region Members
         private readonly ITabController _tabController;
         private readonly IWorkflowEngine _workflowEngine;
         private readonly IWorkflowManager _workflowManager;
         private readonly ITabWorkflowSettings _tabWorkflowSettings;
-        #endregion
 
         public TabWorkflowTracker()
         {
@@ -98,7 +95,6 @@ namespace DotNetNuke.Entities.Tabs
             this.TrackModuleDeletion(module, moduleVersion, userId);
         }
 
-        #region Private Statics Methods
         private void NotifyWorkflowAboutChanges(int portalId, int tabId, int userId)
         {
             try
@@ -134,6 +130,5 @@ namespace DotNetNuke.Entities.Tabs
             var defaultWorkflow = this._tabWorkflowSettings.GetDefaultTabWorkflowId(portalId);
             return this._workflowManager.GetWorkflow(defaultWorkflow);
         }
-        #endregion
     }
 }

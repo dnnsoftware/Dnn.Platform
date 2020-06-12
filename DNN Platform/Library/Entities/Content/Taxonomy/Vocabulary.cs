@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -12,8 +12,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security;
-
-#endregion
 
 namespace DotNetNuke.Entities.Content.Taxonomy
 {
@@ -37,8 +35,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         private int _VocabularyId;
 
         private int _Weight;
-
-        #region "Constructors"
 
         public Vocabulary() : this(Null.NullString, Null.NullString, VocabularyType.Simple)
         {
@@ -67,10 +63,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             this.VocabularyId = Null.NullInteger;
             this.Weight = 0;
         }
-
-        #endregion
-
-        #region "Public Properties"
 
         public string Description
         {
@@ -203,10 +195,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
         }
 
-        #endregion
-
-        #region "IHydratable Implementation"
-
         public virtual void Fill(IDataReader dr)
         {
             this.VocabularyId = Null.SetNullInteger(dr["VocabularyID"]);
@@ -241,7 +229,5 @@ namespace DotNetNuke.Entities.Content.Taxonomy
                 this.VocabularyId = value;
             }
         }
-
-        #endregion
     }
 }

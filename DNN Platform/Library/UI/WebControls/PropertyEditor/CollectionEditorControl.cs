@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -13,8 +13,6 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 using DotNetNuke.Common.Utilities;
-
-#endregion
 
 namespace DotNetNuke.UI.WebControls
 {
@@ -33,7 +31,6 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:CollectionEditorControl runat=server></{0}:CollectionEditorControl>")]
     public class CollectionEditorControl : PropertyEditorControl
     {
-        #region Protected Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -49,9 +46,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -144,10 +139,6 @@ namespace DotNetNuke.UI.WebControls
         [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that determines the visibility.")]
         public string VisibilityDataField { get; set; }
 
-        #endregion
-
-        #region Private Methods
-
         private Hashtable GetFieldNames()
         {
             var fields = new Hashtable();
@@ -163,10 +154,6 @@ namespace DotNetNuke.UI.WebControls
 
             return fields;
         }
-
-        #endregion
-
-        #region Protected Methods
 
         protected override void AddEditorRow(Table table, object obj)
         {
@@ -266,7 +253,5 @@ namespace DotNetNuke.UI.WebControls
             }
             return isVisible;
         }
-
-        #endregion
     }
 }

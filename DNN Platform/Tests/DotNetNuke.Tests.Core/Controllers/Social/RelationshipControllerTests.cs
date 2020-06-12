@@ -32,8 +32,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
     [TestFixture]
     public class RelationshipControllerTests
     {
-        #region Private Properties
-
         private Mock<CachingProvider> mockCachingProvider;
         private Mock<IPortalController> _portalController;
         private Mock<IPortalGroupController> _portalGroupController;
@@ -42,10 +40,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         private DataTable dtRelationships;
         private DataTable dtUserRelationships;
         private DataTable dtUserRelationshipPreferences;
-
-        #endregion
-
-        #region Set Up
 
         [SetUp]
         public void SetUp()
@@ -84,10 +78,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             UserController.ClearInstance();
         }
 
-        #endregion
-
-        #region Constructor Tests
-
         [Test]
         public void RelationshipController_Constructor_Throws_On_Null_DataService()
         {
@@ -107,10 +97,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             // Act, Assert
             Assert.Throws<ArgumentNullException>(() => new RelationshipControllerImpl(mockDataService.Object, null));
         }
-
-        #endregion
-
-        #region RelationshipType Tests
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -309,10 +295,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             // Assert
             this.mockCachingProvider.Verify(e => e.Remove(cacheKey));
         }
-
-        #endregion
-
-        #region Relationship Tests
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -613,10 +595,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             this.mockCachingProvider.Verify(e => e.Remove(cacheKey));
         }
 
-        #endregion
-
-        #region UserRelationship Tests
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void RelationshipController_DeleteUserRelationship_Throws_On_Null_UserRelationship()
@@ -806,10 +784,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             mockEventLogController.Verify(e => e.AddLog("Message", logContent, EventLogController.EventLogType.ADMIN_ALERT));
         }
 
-        #endregion
-
-        #region UserRelationshipPreference Tests
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void RelationshipController_DeleteUserRelationshipPreference_Throws_On_Null_UserRelationshipPreference()
@@ -953,12 +927,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             mockEventLogController.Verify(e => e.AddLog("Message", logContent, EventLogController.EventLogType.ADMIN_ALERT));
         }
 
-        #endregion
-
-        #region Relationship Business APIs Tests
-
-        #region InitiateUserRelationship Tests
-
         [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void RelationshipController_InitiateUserRelationship_Throws_On_Negative_RelationshipID()
@@ -1079,12 +1047,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             Assert.AreEqual(userRelationship.Status, RelationshipStatus.Pending);
         }
 
-        #endregion
-
-        #region UpdateRelationship Tests
-
-        #region UserRelationshipDoesNotExist Exception
-
         [Test]
         [ExpectedException(typeof(UserRelationshipDoesNotExistException))]
         public void RelationshipController_RemoveUserRelationship_Throws_On_NonExistent_Relationship()
@@ -1122,10 +1084,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             // Act, Assert
             relationshipController.AcceptUserRelationship(Constants.SOCIAL_UserRelationshipIDUser10User11);
         }
-
-        #endregion
-
-        #region Verify Update of UserRelationship Status calls Data Layer
 
         [Test]
         public void RelationshipController_AcceptUserRelationship_Calls_DataService_On_Valid_RelationshipID()
@@ -1172,14 +1130,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             // Assert
             mockDataService.Verify(ds => ds.DeleteUserRelationship(Constants.SOCIAL_UserRelationshipIDUser10User11));
         }
-
-        #endregion
-
-        #endregion
-
-        #endregion
-
-        #region Private Methods
 
         private Mock<IDataService> CreateMockDataServiceWithRelationshipTypes()
         {
@@ -1316,8 +1266,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
             return mockPortalGroupInfo;
         }
-
-        #endregion
     }
 }
 

@@ -21,17 +21,13 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabVersionBuilder));
         private const int DefaultVersionNumber = 1;
-
-        #region Members
         private readonly ITabController _tabController;
         private readonly IModuleController _moduleController;
         private readonly ITabVersionSettings _tabVersionSettings;
         private readonly ITabVersionController _tabVersionController;
         private readonly ITabVersionDetailController _tabVersionDetailController;
         private readonly PortalSettings _portalSettings;
-        #endregion
 
-        #region Constructor
         public TabVersionBuilder()
         {
             this._tabController = TabController.Instance;
@@ -41,9 +37,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             this._tabVersionDetailController = TabVersionDetailController.Instance;
             this._portalSettings = PortalSettings.Current;
         }
-        #endregion
-
-        #region Public Methods
 
         public void SetupFirstVersionForExistingTab(int portalId, int tabId)
         {
@@ -274,9 +267,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             var versionableController = this.GetVersionableController(module);
             return versionableController != null ? versionableController.GetLatestVersion(module.ModuleID) : DefaultVersionNumber;
         }
-        #endregion
 
-        #region Private Methods
         private IEnumerable<ModuleInfo> GetCurrentModulesInternal(int tabId)
         {
             var versioningEnabled = this._portalSettings != null &&
@@ -827,7 +818,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             var versionableController = this.GetVersionableController(module);
             return versionableController != null ? versionableController.GetPublishedVersion(module.ModuleID) : Null.NullInteger;
         }
-        #endregion
 
         protected override Func<ITabVersionBuilder> GetFactory()
         {

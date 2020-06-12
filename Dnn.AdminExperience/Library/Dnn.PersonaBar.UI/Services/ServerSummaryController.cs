@@ -38,7 +38,6 @@ namespace Dnn.PersonaBar.UI.Services
             Critical
         }
 
-        #region Public API methods
 
         /// <summary>
         /// Return server info.
@@ -148,7 +147,5 @@ namespace Dnn.PersonaBar.UI.Services
                 return false;
             }
         }
-
-        #endregion
     }
 }

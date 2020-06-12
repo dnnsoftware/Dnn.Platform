@@ -24,7 +24,6 @@ namespace DotNetNuke.Modules.Html
     /// -----------------------------------------------------------------------------
     public class HtmlTextLogController
     {
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -51,7 +50,5 @@ namespace DotNetNuke.Modules.Html
         {
             DataProvider.Instance().AddHtmlTextLog(objHtmlTextLog.ItemID, objHtmlTextLog.StateID, objHtmlTextLog.Comment, objHtmlTextLog.Approved, UserController.Instance.GetCurrentUserInfo().UserID);
         }
-
-        #endregion
     }
 }

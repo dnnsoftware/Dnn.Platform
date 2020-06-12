@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web.UI.WebControls;
@@ -11,8 +11,6 @@ using DotNetNuke.Common;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.UI.Skins;
-
-#endregion
 
 namespace DotNetNuke.UI.Containers
 {
@@ -29,14 +27,8 @@ namespace DotNetNuke.UI.Containers
     /// </remarks>
     public partial class Icon : SkinObjectBase
     {
-        #region "Public Members"
-
         public string BorderWidth { get; set; }
         public string CssClass { get; set; }
-
-        #endregion
-
-        #region "Event Handlers"
 
         protected override void OnLoad(EventArgs e)
         {
@@ -75,10 +67,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private string GetIconFileUrl()
         {
             var iconFile = this.ModuleControl.ModuleContext.Configuration.IconFile;
@@ -100,7 +88,5 @@ namespace DotNetNuke.UI.Containers
 
             return fileInfo != null ? FileManager.Instance.GetUrl(fileInfo) : iconFile;
         }
-
-        #endregion
     }
 }

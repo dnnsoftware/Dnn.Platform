@@ -26,7 +26,6 @@ namespace Dnn.PersonaBar.UI.Services
     {
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(MenuExtensionsController));
 
-        #region Public API methods
 
         /// <summary>
         /// Retrieve a list of extensions for menu.
@@ -62,8 +61,6 @@ namespace Dnn.PersonaBar.UI.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
             }
         }
-
-        #endregion
 
         private string GetExtensionPathByController(PersonaBarExtension extension)
         {

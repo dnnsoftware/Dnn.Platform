@@ -59,8 +59,6 @@ namespace DotNetNuke.Modules.Journal {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Event Handlers
-
         override protected void OnInit(EventArgs e)
         {
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
@@ -211,6 +209,5 @@ namespace DotNetNuke.Modules.Journal {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-        #endregion
     }
 }

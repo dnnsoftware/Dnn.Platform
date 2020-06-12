@@ -33,8 +33,6 @@ namespace Dnn.ExportImport.Components.Services
             return this.Repository.GetCount<TaxonomyVocabulary>() + this.Repository.GetCount<TaxonomyTerm>();
         }
 
-        #region Exporting
-
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckPoint.Stage > 0) return;
@@ -95,10 +93,6 @@ namespace Dnn.ExportImport.Components.Services
             return CBO.FillCollection<ExportWorkflowStatePermission>(
                 DataProvider.Instance().GetAllWorkflowStatePermissions(stateId, toDate, fromDate));
         }
-
-        #endregion
-
-        #region Importing
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
@@ -275,7 +269,5 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPoint.ProcessedItems = importWorkflows.Count;
             this.CheckPointStageCallback(this);
         }
-
-        #endregion
     }
 }

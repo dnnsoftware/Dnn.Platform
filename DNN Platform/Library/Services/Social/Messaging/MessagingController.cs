@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -23,8 +23,6 @@ using DotNetNuke.Services.Social.Messaging.Data;
 using DotNetNuke.Services.Social.Messaging.Exceptions;
 using DotNetNuke.Services.Social.Messaging.Internal;
 
-#endregion
-
 namespace DotNetNuke.Services.Social.Messaging
 {
     /// -----------------------------------------------------------------------------
@@ -42,8 +40,6 @@ namespace DotNetNuke.Services.Social.Messaging
             return () => new MessagingController();
         }
 
-        #region Constants
-
         internal const int ConstMaxTo = 2000;
         internal const int ConstMaxSubject = 400;
         internal const int ConstDefaultPageIndex = 0;
@@ -54,15 +50,9 @@ namespace DotNetNuke.Services.Social.Messaging
         internal const bool ConstAscending = true;
         internal const double DefaultMessagingThrottlingInterval = 0.5; // default MessagingThrottlingInterval set to 30 seconds.
 
-        #endregion
 
-        #region Private Variables
 
         private readonly IDataService _dataService;
-
-        #endregion
-
-        #region Constructors
 
         public MessagingController() : this(DataService.Instance)
         {
@@ -75,10 +65,6 @@ namespace DotNetNuke.Services.Social.Messaging
 
             this._dataService = dataService;
         }
-
-        #endregion
-
-        #region Public APIs
 
         public virtual void SendMessage(Message message, IList<RoleInfo> roles, IList<UserInfo> users, IList<int> fileIDs)
         {
@@ -243,10 +229,6 @@ namespace DotNetNuke.Services.Social.Messaging
             InternalMessagingController.Instance.MarkRead(message.MessageID, sender.UserID);
         }
 
-        #endregion
-
-        #region Internal Methods
-
         internal virtual UserInfo GetCurrentUserInfo()
         {
             return UserController.Instance.GetCurrentUserInfo();
@@ -277,8 +259,6 @@ namespace DotNetNuke.Services.Social.Messaging
         {
             return userInfo.IsSuperUser || userInfo.IsInRole(PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleName);
         }
-
-        #endregion
 
         private bool CanViewFile(int fileId)
         {

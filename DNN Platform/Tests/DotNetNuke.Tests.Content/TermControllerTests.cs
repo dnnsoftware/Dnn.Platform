@@ -29,8 +29,6 @@ namespace DotNetNuke.Tests.Content
     {
         private Mock<CachingProvider> mockCache;
 
-        #region Test Initialize
-
         [SetUp]
         public void SetUp()
         {
@@ -45,10 +43,6 @@ namespace DotNetNuke.Tests.Content
         {
             MockComponentProvider.ResetContainer();
         }
-
-        #endregion
-
-        #region AddTerm
 
         [Test]
         public void TermController_AddTerm_Throws_On_Null_Term()
@@ -204,10 +198,6 @@ namespace DotNetNuke.Tests.Content
             this.mockCache.Verify(cache => cache.Remove(string.Format(Constants.TERM_CacheKey, Constants.VOCABULARY_ValidVocabularyId)));
         }
 
-        #endregion
-
-        #region AddTermToContent
-
         [Test]
         public void TermController_AddTermToContent_Throws_On_Null_Term()
         {
@@ -250,10 +240,6 @@ namespace DotNetNuke.Tests.Content
             // Assert
             mockDataService.Verify(ds => ds.AddTermToContent(term, content));
         }
-
-        #endregion
-
-        #region DeleteTerm
 
         [Test]
         public void TermController_DeleteTerm_Throws_On_Null_Term()
@@ -330,10 +316,6 @@ namespace DotNetNuke.Tests.Content
             this.mockCache.Verify(cache => cache.Remove(string.Format(Constants.TERM_CacheKey, Constants.VOCABULARY_ValidVocabularyId)));
         }
 
-        #endregion
-
-        #region GetTerm
-
         [Test]
         public void TermController_GetTerm_Throws_On_Negative_TermId()
         {
@@ -393,10 +375,6 @@ namespace DotNetNuke.Tests.Content
             Assert.AreEqual(Constants.TERM_ValidName, term.Name);
         }
 
-        #endregion
-
-        #region GetTermsByContent
-
         [Test]
         public void TermController_GetTermsByContent_Throws_On_Invalid_ContentItemId()
         {
@@ -451,10 +429,6 @@ namespace DotNetNuke.Tests.Content
             }
         }
 
-        #endregion
-
-        #region GetTermsByVocabulary
-
         [Test]
         public void TermController_GetTermsByVocabulary_Throws_On_Invalid_VocabularyId()
         {
@@ -504,10 +478,6 @@ namespace DotNetNuke.Tests.Content
             Assert.Throws<ArgumentException>(() => termController.GetTermsByVocabulary(Null.NullString));
         }
 
-        #endregion
-
-        #region RemoveTermsFromContent
-
         [Test]
         public void TermController_RemoveTermsFromContent_Throws_On_Null_ContentItem()
         {
@@ -534,10 +504,6 @@ namespace DotNetNuke.Tests.Content
             // Assert
             mockDataService.Verify(ds => ds.RemoveTermsFromContent(content));
         }
-
-        #endregion
-
-        #region UpdateTerm
 
         [Test]
         public void TermController_UpdateTerm_Throws_On_Null_Term()
@@ -646,7 +612,5 @@ namespace DotNetNuke.Tests.Content
             // Assert
             this.mockCache.Verify(cache => cache.Remove(string.Format(Constants.TERM_CacheKey, Constants.VOCABULARY_ValidVocabularyId)));
         }
-
-        #endregion
     }
 }

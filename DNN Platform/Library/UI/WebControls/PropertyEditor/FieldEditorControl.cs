@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -15,8 +15,6 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
-
-#endregion
 
 namespace DotNetNuke.UI.WebControls
 {
@@ -48,17 +46,11 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:FieldEditorControl runat=server></{0}:FieldEditorControl>")]
     public class FieldEditorControl : WebControl, INamingContainer
     {
-        #region Private Members
-
         private readonly List<IValidator> Validators = new List<IValidator>();
         private IEditorInfoAdapter _EditorInfoAdapter;
         private bool _IsValid = true;
         private StandardEditorInfoAdapter _StdAdapter;
         private bool _Validated;
-
-        #endregion
-
-        #region Constructors
 
         public FieldEditorControl()
         {
@@ -76,10 +68,6 @@ namespace DotNetNuke.UI.WebControls
             this.ViewStateMode = ViewStateMode.Disabled;
         }
 
-        #endregion
-
-        #region Protected Properties
-
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -88,9 +76,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -252,7 +238,6 @@ namespace DotNetNuke.UI.WebControls
 
         public string ValidationExpression { get; set; }
 
-        #region Style Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -317,20 +302,12 @@ namespace DotNetNuke.UI.WebControls
         [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof(ExpandableObjectConverter)), Description("Set the Style for the Visibility Control")]
         public Style VisibilityStyle { get; private set; }
 
-        #endregion
-
-        #endregion
-
-        #region Events
-
         public event PropertyChangedEventHandler ItemAdded;
         public event PropertyChangedEventHandler ItemChanged;
         public event EditorCreatedEventHandler ItemCreated;
         public event PropertyChangedEventHandler ItemDeleted;
 
-        #endregion
 
-        #region Private Methods
 
         /// <summary>
         /// BuildDiv creates the Control as a Div
@@ -646,9 +623,7 @@ namespace DotNetNuke.UI.WebControls
             return visControl;
         }
 
-        #endregion
 
-        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -799,9 +774,7 @@ namespace DotNetNuke.UI.WebControls
             this.IsDirty = this.EditorInfoAdapter.UpdateVisibility(e);
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -855,9 +828,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
 
-        #region Event Handlers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -872,7 +843,5 @@ namespace DotNetNuke.UI.WebControls
                 this.ItemChanged(this, e);
             }
         }
-
-        #endregion
     }
 }

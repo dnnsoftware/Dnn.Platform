@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.IO;
@@ -47,7 +46,6 @@ namespace log4net.Layout
     /// <author>Gert Driesen</author>
     abstract public class XmlLayoutBase : LayoutSkeleton
     {
-        #region Protected Instance Constructors
 
         /// <summary>
         /// Protected constructor to support subclasses
@@ -86,9 +84,7 @@ namespace log4net.Layout
             this.m_locationInfo = locationInfo;
         }
 
-        #endregion Protected Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets a value indicating whether to include location information in
@@ -133,9 +129,7 @@ namespace log4net.Layout
             get { return this.m_invalidCharReplacement; }
             set { this.m_invalidCharReplacement = value; }
         }
-        #endregion
 
-        #region Implementation of IOptionHandler
 
         /// <summary>
         /// Initialize layout options
@@ -158,9 +152,7 @@ namespace log4net.Layout
             // nothing to do
         }
 
-        #endregion Implementation of IOptionHandler
 
-        #region Override implementation of LayoutSkeleton
 
         /// <summary>
         /// Gets the content type output by this layout.
@@ -222,9 +214,7 @@ namespace log4net.Layout
             xmlWriter.Close();
         }
 
-        #endregion Override implementation of LayoutSkeleton
 
-        #region Protected Instance Methods
 
         /// <summary>
         /// Does the actual writing of the XML.
@@ -239,9 +229,7 @@ namespace log4net.Layout
         /// </remarks>
         abstract protected void FormatXml(XmlWriter writer, LoggingEvent loggingEvent);
 
-        #endregion Protected Instance Methods
 
-        #region Private Instance Fields
 
         /// <summary>
         /// Flag to indicate if location information should be included in
@@ -253,7 +241,5 @@ namespace log4net.Layout
         /// The string to replace invalid chars with
         /// </summary>
         private string m_invalidCharReplacement = "?";
-
-        #endregion Private Instance Fields
     }
 }

@@ -13,7 +13,6 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 {
     internal class WorkflowStatePermissionsRepository : ServiceLocator<IWorkflowStatePermissionsRepository, WorkflowStatePermissionsRepository>, IWorkflowStatePermissionsRepository
     {
-        #region Public Methods
         public IEnumerable<WorkflowStatePermission> GetWorkflowStatePermissionByState(int stateId)
         {
             return CBO.FillCollection<WorkflowStatePermission>(DataProvider.Instance().GetContentWorkflowStatePermissionsByStateID(stateId));
@@ -34,13 +33,10 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
         {
             DataProvider.Instance().DeleteContentWorkflowStatePermission(workflowStatePermissionId);
         }
-        #endregion
 
-        #region Service Locator
         protected override Func<IWorkflowStatePermissionsRepository> GetFactory()
         {
             return () => new WorkflowStatePermissionsRepository();
         }
-        #endregion
     }
 }

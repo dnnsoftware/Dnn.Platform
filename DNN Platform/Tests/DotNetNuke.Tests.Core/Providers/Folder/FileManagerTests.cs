@@ -35,8 +35,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     [TestFixture]
     public class FileManagerTests
     {
-        #region Private Variables
-
         private FileManager _fileManager;
         private Mock<IFolderManager> _folderManager;
         private Mock<IFolderPermissionController> _folderPermissionController;
@@ -57,10 +55,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         private Mock<IFileLockingController> _mockFileLockingController;
         private Mock<IFileDeletionController> _mockFileDeletionController;
         private Mock<IHostController> _hostController;
-
-        #endregion
-
-        #region Setup & TearDown
 
         [SetUp]
         public void Setup()
@@ -119,10 +113,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             PortalController.ClearInstance();
 
         }
-
-        #endregion
-
-        #region AddFile
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -382,10 +372,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._mockFolder.Verify(mf => mf.AddFile(It.IsAny<IFolderInfo>(), It.IsAny<string>(), It.IsAny<Stream>()), Times.Never());
         }
 
-        #endregion
-
-        #region CopyFile
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void CopyFile_Throws_On_Null_File()
@@ -451,10 +437,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._fileManager.CopyFile(this._fileInfo.Object, this._folderInfo.Object);
         }
 
-        #endregion
-
-        #region DeleteFile
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DeleteFile_Throws_On_Null_File()
@@ -488,10 +470,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._mockFileManager.Object.DeleteFile(this._fileInfo.Object);
         }
-
-        #endregion
-
-        #region WriteFileToResponse
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -568,10 +546,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._mockFileManager.Verify();
         }
-
-        #endregion
-
-        #region FileExists
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -685,10 +659,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._mockFileManager.Object.FileExists(this._folderInfo.Object, Constants.FOLDER_ValidFileName);
         }
 
-        #endregion
-
-        #region GetFile
-
         [Test]
         [TestCase(null)]
         [TestCase("")]
@@ -736,10 +706,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._mockData.Verify();
         }
 
-        #endregion
-
-        #region GetFile
-
         [Test]
         public void GetFileByID_Does_Not_Call_DataCache_GetCache_If_FileId_Is_Not_Valid()
         {
@@ -769,10 +735,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._mockData.Verify(md => md.GetFileById(Constants.FOLDER_ValidFileId, It.IsAny<bool>()), Times.Once());
         }
-
-        #endregion
-
-        #region MoveFile
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -889,10 +851,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._mockFileManager.Verify();
         }
 
-        #endregion
-
-        #region RenameFile
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void RenameFile_Throws_On_Null_File()
@@ -998,10 +956,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._mockFileManager.Object.RenameFile(this._fileInfo.Object, Constants.FOLDER_OtherValidFileName);
         }
 
-        #endregion
-
-        #region UnzipFile
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void UnzipFile_Throws_On_Null_File()
@@ -1036,10 +990,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._mockFileManager.Verify();
         }
-
-        #endregion
-
-        #region UpdateFile
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -1145,10 +1095,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._mockFileManager.Verify(mfm => mfm.UpdateFile(this._fileInfo.Object), Times.Once());
         }
 
-        #endregion
-
-        #region GetSeekableStream
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetSeekableStream_Throws_On_Null_Stream()
@@ -1179,8 +1125,5 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._mockFileManager.Verify();
         }
-
-
-        #endregion
     }
 }

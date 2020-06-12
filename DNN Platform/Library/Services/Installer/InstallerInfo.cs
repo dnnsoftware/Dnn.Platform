@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -17,8 +17,6 @@ using DotNetNuke.Services.Installer.Packages;
 
 using ICSharpCode.SharpZipLib.Zip;
 
-#endregion
-
 namespace DotNetNuke.Services.Installer
 {
     /// -----------------------------------------------------------------------------
@@ -32,11 +30,8 @@ namespace DotNetNuke.Services.Installer
     [Serializable]
     public class InstallerInfo
     {
-        #region Private Members
 
-        #endregion
 
-        #region Constructors
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -121,9 +116,7 @@ namespace DotNetNuke.Services.Installer
             package.AttachInstallerInfo(this);
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -298,10 +291,6 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public string TempInstallFolder { get; private set; }
 
-        #endregion
-
-        #region Private Methods
-
         private void Initialize()
         {
             this.TempInstallFolder = Null.NullString;
@@ -407,7 +396,5 @@ namespace DotNetNuke.Services.Installer
             // Close the Zip Input Stream as we have finished with it
             inputStream.Close();
         }
-
-        #endregion
     }
 }

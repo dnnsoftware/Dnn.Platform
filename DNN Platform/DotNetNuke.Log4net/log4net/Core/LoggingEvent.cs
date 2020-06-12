@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -47,7 +46,6 @@ namespace log4net.Core
     /// <author>Nicko Cadell</author>
     public struct LoggingEventData
     {
-        #region Public Instance Fields
 
         /// <summary>
         /// The logger name.
@@ -196,8 +194,6 @@ namespace log4net.Core
         /// </para>
         /// </remarks>
         public PropertiesDictionary Properties;
-
-        #endregion Public Instance Fields
     }
 
     /// <summary>
@@ -336,7 +332,6 @@ namespace log4net.Core
     {
         private readonly static Type declaringType = typeof(LoggingEvent);
 
-        #region Public Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LoggingEvent" /> class
@@ -461,9 +456,7 @@ namespace log4net.Core
         {
         }
 
-        #endregion Public Instance Constructors
 
-        #region Protected Instance Constructors
 
 #if !(NETCF || NETSTANDARD1_3)
 
@@ -506,9 +499,7 @@ namespace log4net.Core
 
 #endif
 
-        #endregion Protected Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets the time when the current process started.
@@ -1074,9 +1065,7 @@ namespace log4net.Core
             set { this.FixVolatileData(value); }
         }
 
-        #endregion Public Instance Properties
 
-        #region Implementation of ISerializable
 
 #if !NETCF
 
@@ -1125,9 +1114,7 @@ namespace log4net.Core
 
 #endif
 
-        #endregion Implementation of ISerializable
 
-        #region Public Instance Methods
 
         /// <summary>
         /// Gets the portable data for this <see cref="LoggingEvent" />.
@@ -1386,10 +1373,6 @@ namespace log4net.Core
             this.m_cacheUpdatable = false;
         }
 
-        #endregion Public Instance Methods
-
-        #region Protected Instance Methods
-
         private void CreateCompositeProperties()
         {
             CompositeProperties compositeProperties = new CompositeProperties();
@@ -1538,9 +1521,7 @@ namespace log4net.Core
             return this.m_compositeProperties.Flatten();
         }
 
-        #endregion Public Instance Methods
 
-        #region Private Instance Fields
 
         /// <summary>
         /// The internal logging event data.
@@ -1603,9 +1584,7 @@ namespace log4net.Core
         /// </remarks>
         private bool m_cacheUpdatable = true;
 
-        #endregion Private Instance Fields
 
-        #region Constants
 
         /// <summary>
         /// The key into the Properties map for the host name value.
@@ -1621,7 +1600,5 @@ namespace log4net.Core
         /// The key into the Properties map for the user name value.
         /// </summary>
         public const string UserNameProperty = "log4net:UserName";
-
-        #endregion
     }
 }

@@ -25,7 +25,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             return () => new JavaScriptLibraryController();
         }
 
-        #region IJavaScriptController Implementation
 
         /// <summary>Delete the library reference from the database</summary>
         /// <param name="library">Library to be deleted</param>
@@ -85,7 +84,5 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                                                         library.CDNPath);
             this.ClearCache();
         }
-
-        #endregion
     }
 }

@@ -13,7 +13,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 {
     class TabVersionTracker : ServiceLocator<ITabChangeTracker, TabVersionTracker>, ITabChangeTracker
     {
-        #region Public Methods
 
         /// <summary>
         /// Tracks a version detail when a module is added to a page
@@ -164,10 +163,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
         }
 
-        #endregion
-
-        #region Private Statics Methods
-
         private static void ProcessAdditionDetail(ModuleInfo module, int moduleVersion, int userId, TabVersion targetVersion)
         {
             if (IsHostModule(module))
@@ -264,13 +259,10 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 Action = action
             };
         }
-        #endregion
 
-        #region Service Locator
         protected override Func<ITabChangeTracker> GetFactory()
         {
             return () => new TabVersionTracker();
         }
-        #endregion
     }
 }

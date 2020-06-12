@@ -1,16 +1,14 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
 using DotNetNuke.Common;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Upgrade.Internals.Steps;
-
-#endregion
 
 namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 {
@@ -22,7 +20,6 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     public class InstallExtensionsStep : BaseInstallationStep
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallExtensionsStep));
-        #region Implementation of IInstallationStep
 
         /// <summary>
         /// Main method to execute the step
@@ -59,7 +56,5 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             }
             this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
         }
-
-        #endregion
     }
 }

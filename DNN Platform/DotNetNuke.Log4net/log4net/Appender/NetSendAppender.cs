@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 // MONO 1.0 Beta mcs does not like #if !A && !B && !C syntax
 
@@ -146,7 +144,6 @@ namespace log4net.Appender
     /// <author>Gert Driesen</author>
     public class NetSendAppender : AppenderSkeleton
     {
-        #region Member Variables
 
         /// <summary>
         /// The DNS or NetBIOS name of the server on which the function is to execute.
@@ -168,9 +165,7 @@ namespace log4net.Appender
         /// </summary>
         private SecurityContext m_securityContext;
 
-        #endregion
 
-        #region Constructors
 
         /// <summary>
         /// Initializes the appender.
@@ -182,9 +177,7 @@ namespace log4net.Appender
         {
         }
 
-        #endregion
 
-        #region Properties
 
         /// <summary>
         /// Gets or sets the sender of the message.
@@ -256,9 +249,7 @@ namespace log4net.Appender
             set { this.m_securityContext = value; }
         }
 
-        #endregion
 
-        #region Implementation of IOptionHandler
 
         /// <summary>
         /// Initialize the appender based on the options set.
@@ -295,9 +286,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion
 
-        #region Override implementation of AppenderSkeleton
 
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
@@ -355,9 +344,7 @@ namespace log4net.Appender
             get { return true; }
         }
 
-        #endregion
 
-        #region Stubs For Native Function Calls
 
         /// <summary>
         /// Sends a buffer of information to a registered message alias.
@@ -420,8 +407,6 @@ namespace log4net.Appender
             [MarshalAs(UnmanagedType.LPWStr)] string fromName,
             [MarshalAs(UnmanagedType.LPWStr)] string buffer,
             int bufferSize);
-
-        #endregion
     }
 }
 

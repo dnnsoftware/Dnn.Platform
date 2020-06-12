@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 
@@ -47,7 +46,6 @@ namespace log4net.Repository.Hierarchy
     /// <author>Gert Driesen</author>
     public class RootLogger : Logger
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Construct a <see cref="RootLogger"/>
@@ -68,9 +66,7 @@ namespace log4net.Repository.Hierarchy
             this.Level = level;
         }
 
-        #endregion Public Instance Constructors
 
-        #region Override implementation of Logger
 
         /// <summary>
         /// Gets the assigned level value without walking the logger hierarchy.
@@ -119,9 +115,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        #endregion Override implementation of Logger
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the RootLogger class.
@@ -131,7 +125,5 @@ namespace log4net.Repository.Hierarchy
         /// log message.
         /// </remarks>
         private readonly static Type declaringType = typeof(RootLogger);
-
-        #endregion Private Static Fields
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -23,8 +23,6 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 
 using ICSharpCode.SharpZipLib.Zip;
-
-#endregion
 
 namespace DotNetNuke.UI.Skins
 {
@@ -49,8 +47,6 @@ namespace DotNetNuke.UI.Skins
         private static readonly Regex SdirRegex = new Regex("\\[s]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex LdirRegex = new Regex("\\[l]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        #region Public Shared Properties
-
         public static string RootSkin
         {
             get
@@ -66,10 +62,6 @@ namespace DotNetNuke.UI.Skins
                 return "Containers";
             }
         }
-
-        #endregion
-
-        #region Public Shared Methods
 
         private static void AddSkinFiles(List<KeyValuePair<string, string>> skins, string skinRoot, string skinFolder, string skinPrefix)
         {
@@ -569,7 +561,5 @@ namespace DotNetNuke.UI.Skins
             }
             return strMessage;
         }
-
-        #endregion
     }
 }

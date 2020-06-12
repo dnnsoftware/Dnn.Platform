@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -39,7 +38,6 @@ namespace log4net.Util
     {
         private readonly ContextPropertiesBase m_properties;
 
-        #region Public Instance Constructors
 
         /// <summary>
         /// Internal constructor
@@ -54,9 +52,7 @@ namespace log4net.Util
             this.m_properties = properties;
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets the named thread context stack
@@ -109,9 +105,7 @@ namespace log4net.Util
             }
         }
 
-        #endregion Public Instance Properties
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the ThreadContextStacks class.
@@ -121,8 +115,6 @@ namespace log4net.Util
         /// log message.
         /// </remarks>
         private readonly static Type declaringType = typeof(ThreadContextStacks);
-
-        #endregion Private Static Fields
     }
 }
 

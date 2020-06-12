@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -43,8 +43,6 @@ using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utils;
 using Microsoft.Extensions.DependencyInjection;
 
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Authentication
 {
     using Host = DotNetNuke.Entities.Host.Host;
@@ -68,16 +66,12 @@ namespace DotNetNuke.Modules.Admin.Authentication
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Private Members
-
         private readonly List<AuthenticationLoginBase> _loginControls = new List<AuthenticationLoginBase>();
         private readonly List<AuthenticationLoginBase> _defaultauthLogin = new List<AuthenticationLoginBase>();
         private readonly List<OAuthLoginBase> _oAuthControls = new List<OAuthLoginBase>();
         private const string LOGIN_PATH = "/login";
 
-        #endregion
 
-        #region Protected Properties
 
         /// <summary>
         /// Gets and sets the current AuthenticationType
@@ -370,10 +364,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 this.ViewState["UserName"] = value;
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void AddLoginControlAttributes(AuthenticationLoginBase loginControl)
         {
@@ -989,9 +979,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             return LocaleController.Instance.GetLocales(this.PortalSettings.PortalId).ContainsKey(locale);
         }
 
-        #endregion
 
-        #region Event Handlers
 
         /// <summary>
         /// Page_Init runs when the control is initialised
@@ -1416,8 +1404,5 @@ namespace DotNetNuke.Modules.Admin.Authentication
             log.AddProperty(propertyName, propertyValue);
             LogController.Instance.AddLog(log);
         }
-
-        #endregion
-
     }
 }

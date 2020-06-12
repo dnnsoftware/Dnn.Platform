@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Data;
@@ -10,8 +10,6 @@ using System.Xml.Serialization;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security.Permissions;
-
-#endregion
 
 namespace Dnn.PersonaBar.Library.Model
 {
@@ -27,16 +25,12 @@ namespace Dnn.PersonaBar.Library.Model
     [Serializable]
     public class MenuPermissionInfo : PermissionInfoBase, IHydratable
     {
-        #region "Private Members"
-
         private int _menuId;
 
         // local property declarations
         private int _menuPermissionId;
 
-        #endregion
 
-        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -64,9 +58,7 @@ namespace Dnn.PersonaBar.Library.Model
             this.PermissionName = permission.PermissionName;
         }
 
-        #endregion
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -109,9 +101,7 @@ namespace Dnn.PersonaBar.Library.Model
         [XmlElement("portalid")]
         public int PortalId { get; set; }
 
-        #endregion
 
-        #region IHydratable Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -146,9 +136,7 @@ namespace Dnn.PersonaBar.Library.Model
             }
         }
 
-        #endregion
 
-        #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -215,7 +203,5 @@ namespace Dnn.PersonaBar.Library.Model
                 return (this._menuId * 397) ^ this._menuPermissionId;
             }
         }
-
-        #endregion
     }
 }

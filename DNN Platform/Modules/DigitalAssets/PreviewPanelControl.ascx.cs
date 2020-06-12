@@ -10,7 +10,6 @@ namespace DotNetNuke.Modules.DigitalAssets
 {
     public partial class PreviewPanelControl : System.Web.UI.UserControl
     {
-        #region Protected Properties
         protected string Title
         {
             get
@@ -32,9 +31,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         protected IDigitalAssetsController Controller { get; private set; }
 
         protected ModuleInfo ModuleConfiguration { get; private set; }
-        #endregion
 
-        #region Public Methods
         public void SetPreviewInfo(PreviewInfoViewModel previewInfoViewModel)
         {
             this.PreviewInfo = previewInfoViewModel;
@@ -55,6 +52,5 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             this.ModuleConfiguration = moduleConfiguration;
         }
-        #endregion
     }
 }

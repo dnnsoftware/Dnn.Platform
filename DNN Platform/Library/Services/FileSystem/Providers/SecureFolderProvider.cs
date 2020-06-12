@@ -13,7 +13,6 @@ namespace DotNetNuke.Services.FileSystem
 {
     public class SecureFolderProvider : StandardFolderProvider
     {
-        #region Public Properties
 
         /// <summary>
         /// Gets the file extension to use for protected files.
@@ -36,10 +35,6 @@ namespace DotNetNuke.Services.FileSystem
                 return true;
             }
         }
-
-        #endregion
-
-        #region Abstract Methods
 
         public override string[] GetFiles(IFolderInfo folder)
         {
@@ -78,9 +73,6 @@ namespace DotNetNuke.Services.FileSystem
             return IconControllerWrapper.Instance.IconURL("FolderSecure", "32x32");
         }
 
-        #endregion
-
-        #region Protected Methods
         protected override string GetActualPath(FolderMappingInfo folderMapping, string folderPath, string fileName)
         {
             return base.GetActualPath(folderMapping, folderPath, fileName) + this.ProtectedExtension;
@@ -95,7 +87,5 @@ namespace DotNetNuke.Services.FileSystem
         {
             return base.GetActualPath(folder, fileName) + this.ProtectedExtension;
         }
-
-        #endregion
     }
 }

@@ -354,7 +354,6 @@ namespace DotNetNuke.Modules.Journal.Components
             return sb.ToString();
         }
 
-        #region Private Methods
         private string GetStringReplacement(JournalItem journalItem)
         {
             string replacement = string.Empty;
@@ -368,6 +367,5 @@ namespace DotNetNuke.Modules.Journal.Components
             }
             return replacement;
         }
-        #endregion
     }
 }

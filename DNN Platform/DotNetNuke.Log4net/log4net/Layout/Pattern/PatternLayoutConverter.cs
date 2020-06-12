@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Text;
@@ -44,7 +43,6 @@ namespace log4net.Layout.Pattern
     /// <author>Nicko Cadell</author>
     public abstract class PatternLayoutConverter : PatternConverter
     {
-        #region Protected Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PatternLayoutConverter" /> class.
@@ -53,9 +51,7 @@ namespace log4net.Layout.Pattern
         {
         }
 
-        #endregion Protected Instance Constructors
 
-        #region Public Properties
 
         /// <summary>
         /// Flag indicating if this converter handles the logging event exception
@@ -79,9 +75,7 @@ namespace log4net.Layout.Pattern
             set { this.m_ignoresException = value; }
         }
 
-        #endregion Public Properties
 
-        #region Protected Abstract Methods
 
         /// <summary>
         /// Derived pattern converters must override this method in order to
@@ -91,9 +85,7 @@ namespace log4net.Layout.Pattern
         /// <param name="loggingEvent">The <see cref="LoggingEvent" /> on which the pattern converter should be executed.</param>
         abstract protected void Convert(TextWriter writer, LoggingEvent loggingEvent);
 
-        #endregion Protected Abstract Methods
 
-        #region Protected Methods
 
         /// <summary>
         /// Derived pattern converters must override this method in order to
@@ -114,7 +106,6 @@ namespace log4net.Layout.Pattern
             }
         }
 
-        #endregion Protected Methods
 
         /// <summary>
         /// Flag indicating if this converter handles exceptions

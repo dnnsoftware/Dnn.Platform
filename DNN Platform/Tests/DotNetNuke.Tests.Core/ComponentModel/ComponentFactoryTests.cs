@@ -20,8 +20,6 @@ namespace DotNetNuke.Tests.Core.ComponentModel
     [TestFixture]
     public class ComponentFactoryTests
     {
-        #region InstallComponents
-
         [TearDown]
         public void TearDown()
         {
@@ -73,8 +71,6 @@ namespace DotNetNuke.Tests.Core.ComponentModel
             var retreivedComponent = ComponentFactory.GetComponent<IList>();
             Assert.AreEqual(testComp1, retreivedComponent);
         }
-
-        #endregion
 
         public static IContainer CreateMockContainer()
         {

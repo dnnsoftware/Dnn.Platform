@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -32,8 +32,6 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Tokens;
 using DotNetNuke.UI.Modules;
 using System.Text.RegularExpressions;
-
-#endregion
 
 namespace DotNetNuke.Services.Localization
 {
@@ -99,16 +97,11 @@ namespace DotNetNuke.Services.Localization
     public class Localization
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Localization));
-
-        #region Private Members
-
         private static string _defaultKeyName = "resourcekey";
         // private static readonly ILocaleController LocaleController.Instance = LocaleController.Instance;
         // private static readonly ILocalizationProvider _localizationProvider = LocalizationProvider.Instance;
         private static bool? _showMissingKeys;
-        #endregion
 
-        #region Public Shared Properties
 
         /// <summary>
         /// Returns ~/App_GlobalResources
@@ -243,9 +236,7 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -273,10 +264,6 @@ namespace DotNetNuke.Services.Localization
                 return Thread.CurrentThread.CurrentUICulture.ToString();
             }
         }
-
-        #endregion
-
-        #region Private Shared Methods
 
         private static void LocalizeDataControlField(DataControlField controlField, string resourceFile)
         {
@@ -372,10 +359,6 @@ namespace DotNetNuke.Services.Localization
                 }
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         public static int ActiveLanguagesByPortalID(int portalID)
         {
@@ -740,8 +723,6 @@ namespace DotNetNuke.Services.Localization
             return TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(cultureCodes);
         }
 
-        #region GetExceptionMessage
-
         public static string GetExceptionMessage(string key, string defaultValue)
         {
             if (HttpContext.Current == null)
@@ -760,8 +741,6 @@ namespace DotNetNuke.Services.Localization
             var content = GetString(key, ExceptionsResourceFile);
             return string.Format(string.IsNullOrEmpty(content) ? defaultValue : GetString(key, ExceptionsResourceFile), @params);
         }
-
-        #endregion
 
         public string GetFixedCurrency(decimal expression, string culture, int numDigitsAfterDecimal)
         {
@@ -832,7 +811,6 @@ namespace DotNetNuke.Services.Localization
             return name;
         }
 
-        #region Language detection
         /// <summary>
         /// Detects the current language for the request.
         /// The order in which the language is being detect is:
@@ -1030,7 +1008,6 @@ namespace DotNetNuke.Services.Localization
             }
             return culture;
         }
-        #endregion
 
         public static string GetResourceFileName(string resourceFileName, string language, string mode, int portalId)
         {
@@ -1064,8 +1041,6 @@ namespace DotNetNuke.Services.Localization
         {
             return control.TemplateSourceDirectory + "/" + LocalResourceDirectory + "/" + fileName;
         }
-
-        #region GetString
 
         public static string GetString(string key, Control ctrl)
         {
@@ -1200,9 +1175,7 @@ namespace DotNetNuke.Services.Localization
             return LocalizationProvider.Instance.GetString(key, resourceFileRoot, language, portalSettings, disableShowMissingKeys);
         }
 
-        #endregion
 
-        #region GetStringUrl
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -1223,9 +1196,7 @@ namespace DotNetNuke.Services.Localization
             return GetString(key, resourceFileRoot, PortalController.Instance.GetCurrentPortalSettings(), null, true);
         }
 
-        #endregion
 
-        #region GetSafeJSString
 
         /// <summary>
         /// this function will escape reserved character fields to their "safe" javascript equivalents
@@ -1254,9 +1225,7 @@ namespace DotNetNuke.Services.Localization
             return GetSafeJSString(unsafeString);
         }
 
-        #endregion
 
-        #region Get System Message
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -1530,9 +1499,7 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        #endregion
 
-        #region LoadCultureDropDownList
 
         /// <summary>
         ///   <para>LoadCultureDropDownList loads a DropDownList with the list of supported cultures
@@ -1632,7 +1599,6 @@ namespace DotNetNuke.Services.Localization
             return cultureListItems;
         }
 
-        #endregion
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -2055,6 +2021,5 @@ namespace DotNetNuke.Services.Localization
             var locale = LocaleController.Instance.GetLocale(cultureCode);
             return locale != null ? locale.LanguageId : Null.NullInteger;
         }
-        #endregion
     }
 }

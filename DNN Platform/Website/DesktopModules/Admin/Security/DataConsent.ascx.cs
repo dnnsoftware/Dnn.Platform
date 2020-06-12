@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -11,8 +11,6 @@ using DotNetNuke.Security;
 using DotNetNuke.Services.Log.EventLog;
 using System;
 using System.Web.UI;
-
-#endregion
 
 namespace DotNetNuke.Modules.Admin.Users
 {
@@ -35,16 +33,12 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        #region Delegate and event
-
         public delegate void DataConsentEventHandler(object sender, DataConsentEventArgs e);
         public event DataConsentEventHandler DataConsentCompleted;
         public void OnDataConsentComplete(DataConsentEventArgs e)
         {
             this.DataConsentCompleted?.Invoke(this, e);
         }
-
-        #endregion
 
         protected override void OnLoad(EventArgs e)
         {
@@ -108,7 +102,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        #region DataConsentEventArgs
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -141,8 +134,5 @@ namespace DotNetNuke.Modules.Admin.Users
             RemovedAccount,
             FailedToRemoveAccount
         }
-
-        #endregion
-
     }
 }

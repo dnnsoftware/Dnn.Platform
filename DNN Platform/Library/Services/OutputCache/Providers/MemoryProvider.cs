@@ -21,8 +21,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
         protected const string cachePrefix = "DNN_OUTPUT:";
         private static System.Web.Caching.Cache runtimeCache;
 
-        #region Friend Properties
-
         internal static System.Web.Caching.Cache Cache
         {
             get
@@ -44,10 +42,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private string GetCacheKey(string CacheKey)
         {
             if (string.IsNullOrEmpty(CacheKey))
@@ -56,10 +50,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
             return string.Concat(cachePrefix, CacheKey);
         }
-
-        #endregion
-
-        #region Friend Methods
 
         internal static List<string> GetCacheKeys()
         {
@@ -88,10 +78,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
             return keys;
         }
-
-        #endregion
-
-        #region Abstract Method Implementation
 
         public override string GenerateCacheKey(int tabId, System.Collections.Specialized.StringCollection includeVaryByKeys, System.Collections.Specialized.StringCollection excludeVaryByKeys, SortedDictionary<string, string> varyBy)
         {
@@ -157,7 +143,5 @@ namespace DotNetNuke.Services.OutputCache.Providers
             context.Response.BinaryWrite(Encoding.Default.GetBytes(Cache[cacheKey].ToString()));
             return true;
         }
-
-        #endregion
     }
 }

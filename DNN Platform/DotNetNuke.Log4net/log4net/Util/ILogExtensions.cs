@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 #if NET_3_5 || NET_4_0 || MONO_3_5 || MONO_4_0 || NETSTANDARD1_3
 
@@ -52,18 +50,14 @@ namespace log4net.Util
     /// </example>
     public static class ILogExtensions
     {
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the Logger class.
         /// </summary>
         private readonly static Type declaringType = typeof(ILogExtensions);
 
-        #endregion //Private Static Fields
 
-        #region debug extensions
 
-        #region debug extensions that uses log message lambda expression
 
         /// <summary>
         /// Log a message object with the <see cref="Level.Debug"/> level.
@@ -135,9 +129,7 @@ namespace log4net.Util
             }
         }
 
-        #endregion
 
-        #region debug extension that use the formatter
 
         /// <overloads>Log a message object with the <see cref="Level.Debug"/> level.</overloads> //TODO
         /// <summary>
@@ -210,9 +202,7 @@ namespace log4net.Util
             }
         }
 
-        #endregion
 
-        #region debug extension that use string format
 
         /// <summary>
         /// Logs a formatted message string with the <see cref="Level.Debug"/> level.
@@ -393,13 +383,9 @@ namespace log4net.Util
             }
         }
 
-        #endregion
 
-        #endregion
 
-        #region info extensions
 
-        #region info extensions that uses log message lambda expression
 
         /// <summary>
         /// Log a message object with the <see cref="Level.Info"/> level.
@@ -471,9 +457,7 @@ namespace log4net.Util
             }
         }
 
-        #endregion
 
-        #region info extension that use the formatter
 
         /// <overloads>Log a message object with the <see cref="Level.Info"/> level.</overloads> //TODO
         /// <summary>
@@ -546,9 +530,7 @@ namespace log4net.Util
             }
         }
 
-        #endregion
 
-        #region info extension that use string format
 
         /// <summary>
         /// Logs a formatted message string with the <see cref="Level.Info"/> level.
@@ -729,13 +711,9 @@ namespace log4net.Util
             }
         }
 
-        #endregion
 
-        #endregion
 
-        #region warn extensions
 
-        #region warn extensions that uses log message lambda expression
 
         /// <summary>
         /// Log a message object with the <see cref="Level.Warn"/> level.
@@ -807,9 +785,7 @@ namespace log4net.Util
             }
         }
 
-        #endregion
 
-        #region warn extension that use the formatter
 
         /// <overloads>Log a message object with the <see cref="Level.Warn"/> level.</overloads> //TODO
         /// <summary>
@@ -882,9 +858,7 @@ namespace log4net.Util
             }
         }
 
-        #endregion
 
-        #region warn extension that use string format
 
         /// <summary>
         /// Logs a formatted message string with the <see cref="Level.Warn"/> level.
@@ -1065,13 +1039,9 @@ namespace log4net.Util
             }
         }
 
-        #endregion
 
-        #endregion
 
-        #region error extensions
 
-        #region error extensions that uses log message lambda expression
 
         /// <summary>
         /// Log a message object with the <see cref="Level.Error"/> level.
@@ -1143,9 +1113,7 @@ namespace log4net.Util
             }
         }
 
-        #endregion
 
-        #region error extension that use the formatter
 
         /// <overloads>Log a message object with the <see cref="Level.Error"/> level.</overloads> //TODO
         /// <summary>
@@ -1218,9 +1186,7 @@ namespace log4net.Util
             }
         }
 
-        #endregion
 
-        #region error extension that use string format
 
         /// <summary>
         /// Logs a formatted message string with the <see cref="Level.Error"/> level.
@@ -1401,13 +1367,9 @@ namespace log4net.Util
             }
         }
 
-        #endregion
 
-        #endregion
 
-        #region fatal extensions
 
-        #region fatal extensions that uses log message lambda expression
 
         /// <summary>
         /// Log a message object with the <see cref="Level.Fatal"/> level.
@@ -1479,9 +1441,7 @@ namespace log4net.Util
             }
         }
 
-        #endregion
 
-        #region fatal extension that use the formatter
 
         /// <overloads>Log a message object with the <see cref="Level.Fatal"/> level.</overloads> //TODO
         /// <summary>
@@ -1554,9 +1514,7 @@ namespace log4net.Util
             }
         }
 
-        #endregion
 
-        #region fatal extension that use string format
 
         /// <summary>
         /// Logs a formatted message string with the <see cref="Level.Fatal"/> level.
@@ -1736,10 +1694,6 @@ namespace log4net.Util
                 log4net.Util.LogLog.Error(declaringType, "Exception while logging", ex);
             }
         }
-
-        #endregion
-
-        #endregion
     }
 }
 #endif

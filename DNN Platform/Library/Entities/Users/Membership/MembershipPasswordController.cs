@@ -17,13 +17,7 @@ namespace DotNetNuke.Entities.Users.Membership
 {
     public class MembershipPasswordController
     {
-        #region Private Members
-
         private readonly DataProvider _dataProvider = DataProvider.Instance();
-
-        #endregion
-
-        #region Private functions
 
         private void AddPasswordHistory(int userId, string password, int passwordsRetained, int daysRetained)
         {
@@ -51,7 +45,6 @@ namespace DotNetNuke.Entities.Users.Membership
             }
         }
 
-        #endregion
 
         /// <summary>
         /// returns the password history of the supplied user

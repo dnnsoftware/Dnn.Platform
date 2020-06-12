@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Globalization;
@@ -16,7 +16,6 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 
-#endregion
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
@@ -37,13 +36,7 @@ namespace DotNetNuke.Security.Profile
     /// -----------------------------------------------------------------------------
     public class DNNProfileProvider : ProfileProvider
     {
-        #region Private Members
-
         private readonly DataProvider _dataProvider = DataProvider.Instance();
-
-        #endregion
-
-        #region Private Methods
 
         private void UpdateTimeZoneInfo(UserInfo user, ProfilePropertyDefinitionCollection properties)
         {
@@ -72,9 +65,7 @@ namespace DotNetNuke.Security.Profile
             }
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -220,8 +211,6 @@ namespace DotNetNuke.Security.Profile
                 }
             }
         }
-
-        #endregion
 
         private string GetProfileCacheKey(UserInfo user)
         {

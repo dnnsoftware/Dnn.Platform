@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 // .NET Compact Framework 1.0 has no support for reading assembly attributes
 // and uses the CompactRepositorySelector instead
@@ -54,7 +52,6 @@ namespace log4net.Core
     /// <author>Gert Driesen</author>
     public class DefaultRepositorySelector : IRepositorySelector
     {
-        #region Public Events
 
         /// <summary>
         /// Event to notify that a logger repository has been created.
@@ -76,9 +73,7 @@ namespace log4net.Core
             remove { this.m_loggerRepositoryCreatedEvent -= value; }
         }
 
-        #endregion Public Events
 
-        #region Public Instance Constructors
 
         /// <summary>
         /// Creates a new repository selector.
@@ -111,9 +106,7 @@ namespace log4net.Core
             LogLog.Debug(declaringType, "defaultRepositoryType [" + this.m_defaultRepositoryType + "]");
         }
 
-        #endregion Public Instance Constructors
 
-        #region Implementation of IRepositorySelector
 
         /// <summary>
         /// Gets the <see cref="ILoggerRepository"/> for the specified assembly.
@@ -474,9 +467,7 @@ namespace log4net.Core
             }
         }
 
-        #endregion Implementation of IRepositorySelector
 
-        #region Public Instance Methods
 
         /// <summary>
         /// Aliases a repository to an existing repository.
@@ -539,9 +530,7 @@ namespace log4net.Core
             }
         }
 
-        #endregion Public Instance Methods
 
-        #region Protected Instance Methods
 
         /// <summary>
         /// Notifies the registered listeners that the repository has been created.
@@ -561,9 +550,7 @@ namespace log4net.Core
             }
         }
 
-        #endregion Protected Instance Methods
 
-        #region Private Instance Methods
 
         /// <summary>
         /// Gets the repository name and repository type for the specified assembly.
@@ -884,9 +871,7 @@ namespace log4net.Core
             }
         }
 
-        #endregion Private Instance Methods
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the DefaultRepositorySelector class.
@@ -898,19 +883,12 @@ namespace log4net.Core
         private readonly static Type declaringType = typeof(DefaultRepositorySelector);
 
         private const string DefaultRepositoryName = "log4net-default-repository";
-
-        #endregion Private Static Fields
-
-        #region Private Instance Fields
-
         private readonly Hashtable m_name2repositoryMap = new Hashtable();
         private readonly Hashtable m_assembly2repositoryMap = new Hashtable();
         private readonly Hashtable m_alias2repositoryMap = new Hashtable();
         private readonly Type m_defaultRepositoryType;
 
         private event LoggerRepositoryCreationEventHandler m_loggerRepositoryCreatedEvent;
-
-        #endregion Private Instance Fields
     }
 }
 

@@ -8,7 +8,6 @@ namespace DotNetNuke.Entities.Users.Social
 {
     public interface IRelationshipController
     {
-        #region RelationshipType
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -45,9 +44,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// -----------------------------------------------------------------------------
         void SaveRelationshipType(RelationshipType relationshipType);
 
-        #endregion
 
-        #region Relationship
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -93,9 +90,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// -----------------------------------------------------------------------------
         void SaveRelationship(Relationship relationship);
 
-        #endregion
 
-        #region UserRelationship
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -142,9 +137,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// -----------------------------------------------------------------------------
         void SaveUserRelationship(UserRelationship userRelationship);
 
-        #endregion
 
-        #region UserRelationshipPreference
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -183,9 +176,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// -----------------------------------------------------------------------------
         void SaveUserRelationshipPreference(UserRelationshipPreference userRelationshipPreference);
 
-        #endregion
 
-        #region Relationship Business APIs
 
         UserRelationship InitiateUserRelationship(UserInfo initiatingUser, UserInfo targetUser, Relationship relationship);
 
@@ -193,9 +184,7 @@ namespace DotNetNuke.Entities.Users.Social
 
         void RemoveUserRelationship(int userRelationshipId);
 
-        #endregion
 
-        #region Easy Wrapper APIs
 
         UserRelationship GetFollowerRelationship(UserInfo targetUser);
         UserRelationship GetFollowerRelationship(UserInfo initiatingUser, UserInfo targetUser);
@@ -206,7 +195,6 @@ namespace DotNetNuke.Entities.Users.Social
         UserRelationship GetFriendRelationship(UserInfo targetUser);
         UserRelationship GetFriendRelationship(UserInfo initiatingUser, UserInfo targetUser);
 
-        #endregion
 
         void CreateDefaultRelationshipsForPortal(int portalId);
 

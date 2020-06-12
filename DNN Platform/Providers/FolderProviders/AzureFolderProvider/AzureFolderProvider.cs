@@ -50,8 +50,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             get { return "Azure_ListObjects_{0}"; }
         }
 
-        #region Private Methods
-
         private static void CheckSettings(FolderMappingInfo folderMapping)
         {
             var settings = folderMapping.FolderMappingSettings;
@@ -80,8 +78,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             var blobClient = csa.CreateCloudBlobClient();
             return blobClient.GetContainerReference(container);
         }
-
-        #endregion
 
         protected override void CopyFileInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri)
         {
@@ -206,7 +202,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             this.ClearCache(folderMapping.FolderMappingID);
         }
 
-        #region FolderProvider Methods
 
         /// <remarks>
         /// Azure Storage doesn't support folders, so we create a file in order for the folder to not be deleted during future synchronizations.
@@ -317,8 +312,5 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             blobClient.ListContainers().ToList().ForEach(x => containers.Add(x.Name));
             return containers;
         }
-
-        #endregion
-
     }
 }

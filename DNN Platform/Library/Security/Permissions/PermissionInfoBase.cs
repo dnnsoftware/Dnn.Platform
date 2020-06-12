@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Data;
@@ -10,8 +10,6 @@ using System.Xml.Serialization;
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-
-#endregion
 
 namespace DotNetNuke.Security.Permissions
 {
@@ -37,18 +35,12 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public abstract class PermissionInfoBase : PermissionInfo
     {
-        #region "Private Members"
-
         private bool _AllowAccess;
         private string _DisplayName;
         private int _RoleID;
         private string _RoleName;
         private int _UserID;
         private string _Username;
-
-        #endregion
-
-        #region "Constructors"
 
         public PermissionInfoBase()
         {
@@ -60,9 +52,7 @@ namespace DotNetNuke.Security.Permissions
             this._DisplayName = Null.NullString;
         }
 
-        #endregion
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -178,9 +168,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        #endregion
 
-        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -208,7 +196,5 @@ namespace DotNetNuke.Security.Permissions
             }
             this.AllowAccess = Null.SetNullBoolean(dr["AllowAccess"]);
         }
-
-        #endregion
     }
 }

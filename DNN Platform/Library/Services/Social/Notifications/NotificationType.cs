@@ -93,7 +93,6 @@ namespace DotNetNuke.Services.Social.Notifications
         [XmlAttribute]
         public bool IsTask { get; set; }
 
-        #region Implementation of IHydratable
 
         /// <summary>
         /// IHydratable.KeyID.
@@ -125,7 +124,5 @@ namespace DotNetNuke.Services.Social.Notifications
             // add audit column data
             this.FillInternal(dr);
         }
-
-        #endregion
     }
 }

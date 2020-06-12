@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -20,8 +20,6 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
-
-#endregion
 
 namespace DotNetNuke.Services.Cache
 {
@@ -45,16 +43,12 @@ namespace DotNetNuke.Services.Cache
     /// </example>
     public abstract class CachingProvider
     {
-        #region Private Members
-
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CachingProvider));
 
         private static System.Web.Caching.Cache _cache;
         private const string CachePrefix = "DNN_";
 
-        #endregion
 
-        #region Protected Properties
 
         /// <summary>
         /// Gets the default cache provider.
@@ -74,9 +68,7 @@ namespace DotNetNuke.Services.Cache
         /// <remarks>This setting shouldn't affect current server, cache should always expire in current server even this setting set to True.</remarks>
         protected static bool CacheExpirationDisable { get; private set; }
 
-        #endregion
 
-        #region Shared/Static Methods
 
         /// <summary>
         /// Cleans the cache key by remove cache key prefix.
@@ -140,10 +132,6 @@ namespace DotNetNuke.Services.Cache
             DataCache.ClearHostCache(true);
             Logger.Warn("Enable cache expiration.");
         }
-
-    #endregion
-
-        #region Private Methods
 
         private void ClearCacheInternal(string prefix, bool clearRuntime)
         {
@@ -353,9 +341,7 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-        #endregion
 
-        #region Protected Methods
 
         /// <summary>
         /// Clears the cache internal.
@@ -523,7 +509,5 @@ namespace DotNetNuke.Services.Cache
         {
             this.RemoveInternal(CacheKey);
         }
-
-        #endregion
     }
 }

@@ -138,8 +138,6 @@ namespace Dnn.ExportImport.Components.Common
             return false;
         }
 
-        #region Private Methods
-
         public static bool AddFileToArchive(ZipArchive archive, string file, int folderOffset, string folder = null)
         {
             var entryName = file.Substring(folderOffset); // Makes the name in zip based on the folder
@@ -172,7 +170,5 @@ namespace Dnn.ExportImport.Components.Common
                 ? ZipFile.Open(archiveFileName, ZipArchiveMode.Update, Encoding.UTF8)
                 : new ZipArchive(new FileStream(archiveFileName, FileMode.Create), ZipArchiveMode.Update);
         }
-
-        #endregion
     }
 }

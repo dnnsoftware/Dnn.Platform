@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System.Collections.Generic;
 using System.Web.UI;
@@ -11,8 +11,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.UI.WebControls;
 
 using DNNLocalization = DotNetNuke.Services.Localization.Localization;
-
-#endregion
 
 namespace DotNetNuke.Services.Installer.Packages.WebControls
 {
@@ -29,7 +27,6 @@ namespace DotNetNuke.Services.Installer.Packages.WebControls
     [ToolboxData("<{0}:PackageTypeEditControl runat=server></{0}:PackageTypeEditControl>")]
     public class PackageTypeEditControl : TextEditControl
     {
-        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -80,7 +77,5 @@ namespace DotNetNuke.Services.Installer.Packages.WebControls
             // Close Select Tag
             writer.RenderEndTag();
         }
-
-        #endregion
     }
 }

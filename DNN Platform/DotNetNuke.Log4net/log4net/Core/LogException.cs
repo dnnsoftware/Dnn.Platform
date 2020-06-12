@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 #if !NETCF
@@ -49,7 +48,6 @@ namespace log4net.Core
     public class LogException : ApplicationException
 #endif
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Constructor
@@ -92,9 +90,7 @@ namespace log4net.Core
         {
         }
 
-        #endregion Public Instance Constructors
 
-        #region Protected Instance Constructors
 
 #if !(NETCF || NETSTANDARD1_3)
         /// <summary>
@@ -113,6 +109,5 @@ namespace log4net.Core
         }
 #endif
 
-        #endregion Protected Instance Constructors
     }
 }

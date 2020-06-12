@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -38,7 +38,6 @@ using DotNetNuke.Web.Components.Controllers.Models;
 using Globals = DotNetNuke.Common.Globals;
 using DotNetNuke.Abstractions;
 
-#endregion
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.UI.ControlPanels
@@ -106,8 +105,6 @@ namespace DotNetNuke.UI.ControlPanels
             }
         }
 
-        #region Event Handlers
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -166,10 +163,6 @@ namespace DotNetNuke.UI.ControlPanels
 
             this.LoadTabModuleMessage = multipleSite ? this.GetString("LoadingTabModuleCE.Text") : this.GetString("LoadingTabModule.Text");
         }
-
-        #endregion
-
-        #region Protected Methods
 
         protected bool CheckPageQuota()
         {
@@ -769,10 +762,6 @@ namespace DotNetNuke.UI.ControlPanels
             return DesktopModuleController.GetDesktopModuleByFriendlyName("Languages") != null;
         }
 
-        #endregion
-
-        #region Private Methods
-
         private new string LocalResourceFile
         {
             get
@@ -933,10 +922,6 @@ namespace DotNetNuke.UI.ControlPanels
             }
         }
 
-        #endregion
-
-        #region Menu Items Properties
-
         private List<string> _adminBookmarkItems;
         protected List<string> AdminBookmarkItems
         {
@@ -1093,10 +1078,6 @@ namespace DotNetNuke.UI.ControlPanels
             return isHost ? this._hostCommonTabs.Contains(tab.TabName) : this._adminCommonTabs.Contains(tab.TabName);
         }
 
-        #endregion
-
-        #region Beacon code
-
         protected string GetBeaconUrl()
         {
             var beaconService = BeaconService.Instance;
@@ -1113,8 +1094,6 @@ namespace DotNetNuke.UI.ControlPanels
                 return BeaconService.Instance.IsBeaconEnabledForControlBar(user);
             }
         }
-
-        #endregion
     }
 
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web.UI;
@@ -20,9 +20,6 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Modules.Html.Components;
 using DotNetNuke.Abstractions;
-
-
-#endregion
 
 namespace DotNetNuke.Modules.Html
 {
@@ -44,11 +41,8 @@ namespace DotNetNuke.Modules.Html
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region "Private Methods"
 
-        #endregion
 
-        #region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -265,9 +259,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
             }
         }
 
-        #endregion
 
-        #region "Optional Interfaces"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -374,7 +366,5 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                 return Actions;
             }
         }
-
-        #endregion
     }
 }

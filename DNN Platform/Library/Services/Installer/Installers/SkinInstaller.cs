@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -13,8 +13,6 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.UI.Skins;
-
-#endregion
 
 namespace DotNetNuke.Services.Installer.Installers
 {
@@ -27,17 +25,13 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class SkinInstaller : FileInstaller
     {
-        #region "Private Members"
-
         private readonly ArrayList _SkinFiles = new ArrayList();
 
         private SkinPackageInfo SkinPackage;
         private SkinPackageInfo TempSkinPackage;
         private string _SkinName = Null.NullString;
 
-        #endregion
 
-        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -165,9 +159,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        #endregion
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -183,9 +175,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        #endregion
 
-        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -211,9 +201,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        #endregion
 
-        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -279,9 +267,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        #endregion
 
-        #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -403,7 +389,5 @@ namespace DotNetNuke.Services.Installer.Installers
             // Call base class to prcoess files
             base.UnInstall();
         }
-
-        #endregion
     }
 }

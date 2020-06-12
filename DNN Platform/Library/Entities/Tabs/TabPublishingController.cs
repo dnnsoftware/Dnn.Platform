@@ -72,7 +72,6 @@ namespace DotNetNuke.Entities.Tabs
 
         }
 
-        #region private Methods
         private void PublishTabInternal(TabInfo tab)
         {
             var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
@@ -132,7 +131,6 @@ namespace DotNetNuke.Entities.Tabs
                         };
             return tabPermission;
         }
-        #endregion
 
         protected override Func<ITabPublishingController> GetFactory()
         {

@@ -15,16 +15,8 @@ namespace DotNetNuke.Services.Installer.Blocker
     /// </summary>
     public class InstallBlocker : ServiceLocator<IInstallBlocker, InstallBlocker>, IInstallBlocker
     {
-        #region Constants
-
         const string installBlockerFile = "\\installBlocker.lock";
-        #endregion
-
-        #region Members
         private bool fileCreated = false;
-        #endregion
-
-        #region Public Methods
 
         public void RegisterInstallBegining()
         {
@@ -53,16 +45,9 @@ namespace DotNetNuke.Services.Installer.Blocker
             this.fileCreated = false;
         }
 
-        #endregion
-
-        #region Private Methods
-        #endregion
-
-        #region Service Locator
         protected override Func<IInstallBlocker> GetFactory()
         {
             return () => new InstallBlocker();
         }
-        #endregion
     }
 }

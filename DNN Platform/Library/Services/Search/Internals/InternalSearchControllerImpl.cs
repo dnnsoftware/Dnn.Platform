@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -31,8 +31,6 @@ using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Search;
 
-#endregion
-
 namespace DotNetNuke.Services.Search.Internals
 {
     /// -----------------------------------------------------------------------------
@@ -60,7 +58,6 @@ namespace DotNetNuke.Services.Search.Internals
         private static readonly Regex StripOpeningTagsRegex = new Regex(@"<\w*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex StripClosingTagsRegex = new Regex(@"</\w*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        #region constructor
         public InternalSearchControllerImpl()
         {
             var hostController = HostController.Instance;
@@ -70,7 +67,6 @@ namespace DotNetNuke.Services.Search.Internals
             this._descriptionBoost = hostController.GetInteger(Constants.SearchDescriptionBoostSetting, Constants.DefaultSearchDescriptionBoost);
             this._authorBoost = hostController.GetInteger(Constants.SearchAuthorBoostSetting, Constants.DefaultSearchAuthorBoost);
         }
-        #endregion
 
         internal virtual object SearchContentSourceCallback(CacheItemArgs cacheItem)
         {
@@ -177,8 +173,6 @@ namespace DotNetNuke.Services.Search.Internals
 
             return keys.ContainsKey(key) ? keys[key] : string.Empty;
         }
-
-        #region Core Search APIs
 
         public void AddSearchDocument(SearchDocument searchDocument)
         {
@@ -374,10 +368,6 @@ namespace DotNetNuke.Services.Search.Internals
         {
             return LuceneController.Instance.GetSearchStatistics();
         }
-
-        #endregion
-
-        #region Private methods
 
         private void AddSearchDocumentParamters(Document doc, SearchDocument searchDocument, StringBuilder sb)
         {
@@ -575,7 +565,5 @@ namespace DotNetNuke.Services.Search.Internals
 
             return strippedString;
         }
-
-        #endregion
     }
 }

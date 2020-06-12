@@ -1,14 +1,12 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
-#endregion
 
 namespace DotNetNuke.Collections.Internal
 {
@@ -37,8 +35,6 @@ namespace DotNetNuke.Collections.Internal
                 return this._list;
             }
         }
-
-        #region IList<T> Members
 
         public void Add(T item)
         {
@@ -144,10 +140,6 @@ namespace DotNetNuke.Collections.Internal
             return this.GetEnumerator1();
         }
 
-        #endregion
-
-        #region "IDisposable Support"
-
         private bool _isDisposed;
 
         public void Dispose()
@@ -186,8 +178,6 @@ namespace DotNetNuke.Collections.Internal
         {
             this.Dispose(false);
         }
-
-        #endregion
 
         public ISharedCollectionLock GetReadLock()
         {

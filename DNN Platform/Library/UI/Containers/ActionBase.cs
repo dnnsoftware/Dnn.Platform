@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web.UI;
@@ -14,8 +14,6 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.WebControls;
-
-#endregion
 
 namespace DotNetNuke.UI.Containers
 {
@@ -32,15 +30,11 @@ namespace DotNetNuke.UI.Containers
     /// </remarks>
     public abstract class ActionBase : UserControl, IActionControl
     {
-        #region "Private Members"
-
         private ActionManager _ActionManager;
         private ModuleAction _ActionRoot;
         protected bool m_supportsIcons = true;
 
-        #endregion
 
-        #region Protected Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -98,10 +92,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        #endregion
-
-        #region Public Properties
-
         public bool EditMode
         {
             get
@@ -117,10 +107,6 @@ namespace DotNetNuke.UI.Containers
                 return this.m_supportsIcons;
             }
         }
-
-        #endregion
-
-        #region IActionControl Members
 
         public event ActionEventHandler Action;
 
@@ -148,9 +134,7 @@ namespace DotNetNuke.UI.Containers
         /// <returns>An IModuleControl object</returns>
         public IModuleControl ModuleControl { get; set; }
 
-        #endregion
 
-        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -217,8 +201,5 @@ namespace DotNetNuke.UI.Containers
 
             base.OnLoad(e);
         }
-
-
-        #endregion
     }
 }

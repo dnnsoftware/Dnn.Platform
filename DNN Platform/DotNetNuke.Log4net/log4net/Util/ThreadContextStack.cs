@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 
@@ -42,16 +41,13 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public sealed class ThreadContextStack : IFixingRequired
     {
-        #region Private Static Fields
 
         /// <summary>
         /// The stack store.
         /// </summary>
         private Stack m_stack = new Stack();
 
-        #endregion Private Static Fields
 
-        #region Public Instance Constructors
 
         /// <summary>
         /// Internal constructor
@@ -65,9 +61,7 @@ namespace log4net.Util
         {
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Properties
 
         /// <summary>
         /// The number of messages in the stack
@@ -87,9 +81,7 @@ namespace log4net.Util
             get { return this.m_stack.Count; }
         }
 
-        #endregion // Public Properties
 
-        #region Public Methods
 
         /// <summary>
         /// Clears all the contextual information held in this stack.
@@ -163,9 +155,7 @@ namespace log4net.Util
             return new AutoPopStackFrame(stack, stack.Count - 1);
         }
 
-        #endregion Public Methods
 
-        #region Internal Methods
 
         /// <summary>
         /// Gets the current context information for this stack.
@@ -198,7 +188,6 @@ namespace log4net.Util
             set { this.m_stack = value; }
         }
 
-        #endregion Internal Methods
 
         /// <summary>
         /// Gets the current context information for this stack.
@@ -238,15 +227,11 @@ namespace log4net.Util
         /// </remarks>
         private sealed class StackFrame
         {
-            #region Private Instance Fields
-
             private readonly string m_message;
             private readonly StackFrame m_parent;
             private string m_fullMessage = null;
 
-            #endregion
 
-            #region Internal Instance Constructors
 
             /// <summary>
             /// Constructor
@@ -270,9 +255,7 @@ namespace log4net.Util
                 }
             }
 
-            #endregion Internal Instance Constructors
 
-            #region Internal Instance Properties
 
             /// <summary>
             /// Get the message.
@@ -310,8 +293,6 @@ namespace log4net.Util
                     return this.m_fullMessage;
                 }
             }
-
-            #endregion Internal Instance Properties
         }
 
         /// <summary>
@@ -325,7 +306,6 @@ namespace log4net.Util
         /// </remarks>
         private struct AutoPopStackFrame : IDisposable
         {
-            #region Private Instance Fields
 
             /// <summary>
             /// The ThreadContextStack internal stack
@@ -337,9 +317,7 @@ namespace log4net.Util
             /// </summary>
             private int m_frameDepth;
 
-            #endregion Private Instance Fields
 
-            #region Internal Instance Constructors
 
             /// <summary>
             /// Constructor
@@ -358,9 +336,7 @@ namespace log4net.Util
                 this.m_frameDepth = frameDepth;
             }
 
-            #endregion Internal Instance Constructors
 
-            #region Implementation of IDisposable
 
             /// <summary>
             /// Returns the stack to the correct depth.
@@ -380,8 +356,6 @@ namespace log4net.Util
                     }
                 }
             }
-
-            #endregion Implementation of IDisposable
         }
 
 #if NETCF_1_0

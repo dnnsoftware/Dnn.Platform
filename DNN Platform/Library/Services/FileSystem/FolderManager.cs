@@ -42,8 +42,6 @@ namespace DotNetNuke.Services.FileSystem
         private const string DefaultMappedPathSetting = "DefaultMappedPath";
         private static readonly object _threadLocker = new object();
 
-        #region Public Properties
-
         public virtual string MyFolderName
         {
             get
@@ -52,9 +50,6 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        #endregion
-
-        #region Private Methods
         private int AddFolderInternal(IFolderInfo folder)
         {
             // Check this is not a duplicate
@@ -363,7 +358,6 @@ namespace DotNetNuke.Services.FileSystem
             return this.GetFolders(parentFolder.PortalID).Where(f => f.ParentID == parentFolder.FolderID);
         }
 
-        #region On Folder Events
         private void OnFolderMoved(IFolderInfo folderInfo, int userId, string oldFolderPath)
         {
             EventManager.Instance.OnFolderMoved(new FolderMovedEventArgs
@@ -413,11 +407,8 @@ namespace DotNetNuke.Services.FileSystem
                                                         });
         }
 
-        #endregion
 
-        #endregion
 
-        #region Public Methods
 
         /// <summary>
         /// Creates a new folder using the provided folder path.
@@ -1054,9 +1045,7 @@ namespace DotNetNuke.Services.FileSystem
             return updatedFolder;
         }
 
-        #endregion
 
-        #region Permission Methods
 
         /// <summary>
         /// Adds read permissions for all users to the specified folder.
@@ -1199,10 +1188,6 @@ namespace DotNetNuke.Services.FileSystem
 
             FolderPermissionController.SaveFolderPermissions((FolderInfo)folder);
         }
-
-        #endregion
-
-        #region Internal Methods
 
         internal virtual void AddLogEntry(IFolderInfo folder, EventLogController.EventLogType eventLogType)
         {
@@ -2191,9 +2176,7 @@ namespace DotNetNuke.Services.FileSystem
 
             return IsStandardFolderProviderType(sourceFolderMapping) && IsStandardFolderProviderType(destinationFolderMapping);
         }
-        #endregion
 
-        #region Internal Classes
 
         /// <summary>
         /// This class and its members are reserved for internal use and are not intended to be used in your code.
@@ -2235,9 +2218,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        #endregion
 
-        #region Obsolete Methods
 
         /// <summary>
         /// Moves the specified folder and its contents to a new location.
@@ -2263,8 +2244,6 @@ namespace DotNetNuke.Services.FileSystem
 
             return this.MoveFolder(folder, parentFolder);
         }
-
-        #endregion
     }
 
     class SyncFolderData

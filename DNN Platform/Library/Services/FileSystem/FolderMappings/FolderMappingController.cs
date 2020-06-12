@@ -19,22 +19,12 @@ namespace DotNetNuke.Services.FileSystem
 {
     public class FolderMappingController : ComponentBase<IFolderMappingController, FolderMappingController>, IFolderMappingController
     {
-        #region Constructor
-
         internal FolderMappingController()
         {
         }
 
-        #endregion
-
-        #region Private Variables
-
         private static readonly DataProvider dataProvider = DataProvider.Instance();
         private const string CacheKeyPrefix = "GetFolderMappingSettings";
-
-        #endregion
-
-        #region Public Methods
 
         public FolderMappingInfo GetDefaultFolderMapping(int portalId)
         {
@@ -190,10 +180,6 @@ namespace DotNetNuke.Services.FileSystem
             return objSettings;
         }
 
-        #endregion
-
-        #region Private Methods
-
         private static void UpdateFolderMappingSettings(FolderMappingInfo objFolderMapping)
         {
             foreach (string sKey in objFolderMapping.FolderMappingSettings.Keys)
@@ -240,7 +226,5 @@ namespace DotNetNuke.Services.FileSystem
         {
             DataCache.RemoveCache(CacheKeyPrefix + folderMappingID);
         }
-
-        #endregion
     }
 }

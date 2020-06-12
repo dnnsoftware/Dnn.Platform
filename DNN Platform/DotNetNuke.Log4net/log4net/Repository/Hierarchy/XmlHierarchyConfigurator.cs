@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -52,7 +51,6 @@ namespace log4net.Repository.Hierarchy
             Overwrite
         }
 
-        #region Public Instance Constructors
 
         /// <summary>
         /// Construct the configurator for a hierarchy
@@ -70,9 +68,7 @@ namespace log4net.Repository.Hierarchy
             this.m_appenderBag = new Hashtable();
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Methods
 
         /// <summary>
         /// Configure the hierarchy by parsing a DOM tree of XML elements.
@@ -227,9 +223,7 @@ namespace log4net.Repository.Hierarchy
             // Done reading config
         }
 
-        #endregion Public Instance Methods
 
-        #region Protected Instance Methods
 
         /// <summary>
         /// Parse appenders by IDREF.
@@ -1068,7 +1062,6 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        #endregion Protected Instance Methods
 
 #if !(NETCF || NETSTANDARD1_3) // NETSTANDARD1_3: System.Runtime.InteropServices.RuntimeInformation not available on desktop 4.6
         private bool HasCaseInsensitiveEnvironment
@@ -1102,7 +1095,6 @@ namespace log4net.Repository.Hierarchy
         }
 #endif
 
-        #region Private Constants
 
         // String constants used while parsing the XML data
         private const string CONFIGURATION_TAG = "log4net";
@@ -1135,9 +1127,7 @@ namespace log4net.Repository.Hierarchy
         // flag used on the level element
         private const string INHERITED = "inherited";
 
-        #endregion Private Constants
 
-        #region Private Instance Fields
 
         /// <summary>
         /// key: appenderName, value: appender.
@@ -1149,9 +1139,7 @@ namespace log4net.Repository.Hierarchy
         /// </summary>
         private readonly Hierarchy m_hierarchy;
 
-        #endregion Private Instance Fields
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the XmlHierarchyConfigurator class.
@@ -1161,7 +1149,5 @@ namespace log4net.Repository.Hierarchy
         /// log message.
         /// </remarks>
         private readonly static Type declaringType = typeof(XmlHierarchyConfigurator);
-
-        #endregion Private Static Fields
     }
 }

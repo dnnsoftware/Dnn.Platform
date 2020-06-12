@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -11,14 +11,10 @@ using System.Collections.Generic;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Users;
 
-#endregion
-
 namespace DotNetNuke.Security.Membership
 {
     public abstract class MembershipProvider
     {
-        #region Abstract Properties
-
         public abstract bool CanEditProviderProperties { get; }
         public abstract int MaxInvalidPasswordAttempts { get; set; }
         public abstract int MinPasswordLength { get; set; }
@@ -31,9 +27,7 @@ namespace DotNetNuke.Security.Membership
         public abstract bool RequiresQuestionAndAnswer { get; set; }
         public abstract bool RequiresUniqueEmail { get; set; }
 
-        #endregion
 
-        #region Shared/Static Methods
 
         // return the provider
         public static MembershipProvider Instance()
@@ -41,9 +35,7 @@ namespace DotNetNuke.Security.Membership
             return ComponentFactory.GetComponent<MembershipProvider>();
         }
 
-        #endregion
 
-        #region Abstract Methods
 
         // Users
         public abstract bool ChangePassword(UserInfo user, string oldPassword, string newPassword);
@@ -91,10 +83,6 @@ namespace DotNetNuke.Security.Membership
         public abstract ArrayList GetUsersByEmail(int portalId, string emailToMatch, int pageIndex, int pageSize, ref int totalRecords);
         public abstract ArrayList GetUsersByUserName(int portalId, string userNameToMatch, int pageIndex, int pageSize, ref int totalRecords);
         public abstract ArrayList GetUsersByProfileProperty(int portalId, string propertyName, string propertyValue, int pageIndex, int pageSize, ref int totalRecords);
-
-        #endregion
-
-        #region Virtual Methods
 
         public virtual UserInfo GetUserByDisplayName(int portalId, string displayName)
         {
@@ -189,8 +177,5 @@ namespace DotNetNuke.Security.Membership
         {
             throw new NotImplementedException();
         }
-
-
-        #endregion
     }
 }

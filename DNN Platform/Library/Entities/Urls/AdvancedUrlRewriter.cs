@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -28,8 +28,6 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.EventQueue;
 
-#endregion
-
 namespace DotNetNuke.Entities.Urls
 {
     public class AdvancedUrlRewriter : UrlRewriterBase
@@ -39,15 +37,8 @@ namespace DotNetNuke.Entities.Urls
         private static readonly Regex RewritePathRx = new Regex("(?:&(?<parm>.[^&]+)=$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex UrlSlashesRegex = new Regex("[\\\\/]\\.\\.[\\\\/]", RegexOptions.Compiled);
         private static readonly Regex AliasUrlRegex = new Regex(@"(?:^(?<http>http[s]{0,1}://){0,1})(?:(?<alias>_ALIAS_)(?<path>$|\?[\w]*|/[\w]*))", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-
-        #region Private Members
-
         private const string _productName = "AdvancedUrlRewriter";
         private FriendlyUrlSettings _settings;
-
-        #endregion
-
-        #region Overridden Methods
 
         internal override void RewriteUrl(object sender, EventArgs e)
         {
@@ -108,10 +99,6 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         public void ProcessTestRequestWithContext(
             HttpContext context,
                                                     Uri requestUri,
@@ -130,10 +117,6 @@ namespace DotNetNuke.Entities.Urls
                                 false,
                                 parentTraceId);
         }
-
-        #endregion
-
-        #region Private Methods
 
         private PortalAliasInfo GetPortalAlias(FriendlyUrlSettings settings, string requestUrl, out bool redirectAlias, out bool isPrimaryAlias, out string wrongAlias)
         {
@@ -2899,7 +2882,5 @@ namespace DotNetNuke.Entities.Urls
             }
             return destUrl;
         }
-
-        #endregion
     }
 }

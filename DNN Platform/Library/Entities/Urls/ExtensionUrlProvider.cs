@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -16,8 +16,6 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 
-#endregion
-
 namespace DotNetNuke.Entities.Urls
 {
     /// <summary>
@@ -27,8 +25,6 @@ namespace DotNetNuke.Entities.Urls
     public abstract class ExtensionUrlProvider
     {
         public ExtensionUrlProviderInfo ProviderConfig { get; internal set; }
-
-        #region Protected Methods
 
         protected string CleanNameForUrl(string urlValue, FriendlyUrlOptions options)
         {
@@ -81,9 +77,7 @@ namespace DotNetNuke.Entities.Urls
             return FriendlyUrlController.EnsureLeadingChar(leading, path);
         }
 
-        #endregion
 
-        #region Abstract Methods
 
         /// <summary>
         /// When true, output Urls from the provider for the specified portalId always include the current DotNetNuke page path (ie example.com/pagename/friendlyUrl)
@@ -167,9 +161,7 @@ namespace DotNetNuke.Entities.Urls
                                                                     out int status,
                                                                     out string location);
 
-        #endregion
 
-        #region Public Methods
 
         /// <summary>
         /// This method is called to check whether to do a Url Rewrite on all Tabs specified by the provider
@@ -187,7 +179,5 @@ namespace DotNetNuke.Entities.Urls
         {
             return FriendlyUrlController.EnsureNotLeadingChar(leading, path);
         }
-
-        #endregion
     }
 }

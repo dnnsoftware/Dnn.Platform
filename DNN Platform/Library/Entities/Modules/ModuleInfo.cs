@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -25,8 +25,6 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.ModuleCache;
 using DotNetNuke.Services.Tokens;
-
-#endregion
 
 namespace DotNetNuke.Entities.Modules
 {
@@ -364,8 +362,6 @@ namespace DotNetNuke.Entities.Modules
         [XmlElement("webslicettl")]
         public int WebSliceTTL { get; set; }
 
-        #region Localization Properties
-
         [XmlElement("cultureCode")]
         public string CultureCode
         {
@@ -489,10 +485,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        #endregion
-
-        #region Tab Properties
-
         public TabInfo ParentTab
         {
             get
@@ -513,9 +505,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        #endregion
 
-        #region IHydratable Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -631,10 +621,6 @@ namespace DotNetNuke.Entities.Modules
                 this.ModuleID = value;
             }
         }
-
-        #endregion
-
-        #region IPropertyAccess Members
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
@@ -952,8 +938,6 @@ namespace DotNetNuke.Entities.Modules
                 return CacheLevel.fullyCacheable;
             }
         }
-
-        #endregion
 
         public ModuleInfo Clone()
         {

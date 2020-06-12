@@ -23,15 +23,9 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
     [TestFixture]
     public class PreviewProfileControllerTests
     {
-        #region "Private Properties"
-
         private Mock<DataProvider> _dataProvider;
 
         private DataTable _dtProfiles;
-
-        #endregion
-
-        #region "Set Up"
 
         [SetUp]
         public void SetUp()
@@ -116,10 +110,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                                                                                             });
         }
 
-        #endregion
-
-        #region "Test"
-
         [Test]
         public void PreviewProfileController_Save_Valid_Profile()
         {
@@ -157,10 +147,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             Assert.AreEqual(2, list.Count);
         }
 
-        #endregion
-
-        #region "Private Methods"
-
         private IDataReader GetProfilesCallBack(int portalId)
         {
             var dtCheck = this._dtProfiles.Clone();
@@ -181,7 +167,5 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             this._dtProfiles.Rows.Add(5, 1, "R5", 640, 480, string.Empty, 5);
             this._dtProfiles.Rows.Add(6, 1, "R6", 640, 480, string.Empty, 6);
         }
-
-        #endregion
     }
 }

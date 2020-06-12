@@ -31,13 +31,9 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
 
     public class FeatureController : IUpgradeable
     {
-        #region Constants
-
         private const string ResourceFileRelativePath = "~/Providers/ClientCapabilityProviders/AspNetClientCapabilityProvider/App_LocalResources/SharedResources.resx";
 
-        #endregion
 
-        #region Interfaces
 
         /// <summary>
         /// Handles upgrading the module and adding the module to the hosts menu.
@@ -158,7 +154,5 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
             }
             return mappingCapabilites;
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -12,8 +12,6 @@ using System.Xml.Serialization;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities;
 using DotNetNuke.Entities.Modules;
-
-#endregion
 
 namespace DotNetNuke.UI.Skins
 {
@@ -31,18 +29,12 @@ namespace DotNetNuke.UI.Skins
     [Serializable]
     public class SkinPackageInfo : BaseEntityInfo, IHydratable
     {
-        #region "Private Members"
-
         private int _PackageID = Null.NullInteger;
         private int _PortalID = Null.NullInteger;
         private string _SkinName;
         private int _SkinPackageID = Null.NullInteger;
         private string _SkinType;
         private Dictionary<int, string> _Skins = new Dictionary<int, string>();
-
-        #endregion
-
-        #region "Public Properties"
 
         public int PackageID
         {
@@ -117,10 +109,6 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        #endregion
-
-        #region IHydratable Members
-
         public void Fill(IDataReader dr)
         {
             this.SkinPackageID = Null.SetNullInteger(dr["SkinPackageID"]);
@@ -154,7 +142,5 @@ namespace DotNetNuke.UI.Skins
                 this.SkinPackageID = value;
             }
         }
-
-        #endregion
     }
 }

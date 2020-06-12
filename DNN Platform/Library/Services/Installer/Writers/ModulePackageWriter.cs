@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -19,8 +19,6 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Installer.Packages;
 
-#endregion
-
 namespace DotNetNuke.Services.Installer.Writers
 {
     /// -----------------------------------------------------------------------------
@@ -33,7 +31,6 @@ namespace DotNetNuke.Services.Installer.Writers
     public class ModulePackageWriter : PackageWriterBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulePackageWriter));
-        #region "Constructors"
 
         public ModulePackageWriter(XPathNavigator manifestNav, InstallerInfo installer)
         {
@@ -84,10 +81,6 @@ namespace DotNetNuke.Services.Installer.Writers
             this.Initialize(desktopModule.FolderName);
         }
 
-        #endregion
-
-        #region "Protected Properties"
-
         protected override Dictionary<string, string> Dependencies
         {
             get
@@ -105,9 +98,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        #endregion
 
-        #region "Public Properties"
 
 
         /// -----------------------------------------------------------------------------
@@ -117,10 +108,6 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <value>A DesktopModuleInfo object</value>
         /// -----------------------------------------------------------------------------
         public DesktopModuleInfo DesktopModule { get; set; }
-
-        #endregion
-
-        #region "Private Methods"
 
         private void Initialize(string folder)
         {
@@ -385,16 +372,10 @@ namespace DotNetNuke.Services.Installer.Writers
             writer.WriteEndElement();
         }
 
-        #endregion
-
-        #region "Protected Methods"
-
         protected override void WriteManifestComponent(XmlWriter writer)
         {
             // Write Module Component
             this.WriteModuleComponent(writer);
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using log4net.Core;
 
@@ -51,7 +50,6 @@ namespace log4net.Util.PatternStringConverters
     /// <author>Nicko Cadell</author>
     internal sealed class NewLinePatternConverter : LiteralPatternConverter, IOptionHandler
     {
-        #region Implementation of IOptionHandler
 
         /// <summary>
         /// Initialize the converter
@@ -84,7 +82,5 @@ namespace log4net.Util.PatternStringConverters
                 this.Option = SystemInfo.NewLine;
             }
         }
-
-        #endregion
     }
 }

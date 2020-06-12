@@ -13,26 +13,18 @@ namespace DotNetNuke.Entities.Content.Workflow
 {
     public class SystemWorkflowManager : ServiceLocator<ISystemWorkflowManager, SystemWorkflowManager>, ISystemWorkflowManager
     {
-        #region Public Constants
         public const string DirectPublishWorkflowKey = "DirectPublish";
         public const string SaveDraftWorkflowKey = "SaveDraft";
         public const string ContentAprovalWorkflowKey = "ContentApproval";
-        #endregion
-
-        #region Members
         private readonly IWorkflowRepository _workflowRepository;
         private readonly IWorkflowStateRepository _workflowStateRepository;
-        #endregion
 
-        #region Constructor
         public SystemWorkflowManager()
         {
             this._workflowRepository = WorkflowRepository.Instance;
             this._workflowStateRepository = WorkflowStateRepository.Instance;
         }
-        #endregion
 
-        #region Private Methods
         private WorkflowState GetDefaultWorkflowState(int order)
         {
             return new WorkflowState
@@ -105,9 +97,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             state.WorkflowID = workflow.WorkflowID;
             this._workflowStateRepository.AddWorkflowState(state);
         }
-        #endregion
 
-        #region Public Methods
         public void CreateSystemWorkflows(int portalId)
         {
             this.CreateDirectPublishWorkflow(portalId);
@@ -152,13 +142,10 @@ namespace DotNetNuke.Entities.Content.Workflow
             state.SendNotificationToAdministrators = true;
             return state;
         }
-        #endregion
 
-        #region Service Locator
         protected override Func<ISystemWorkflowManager> GetFactory()
         {
             return () => new SystemWorkflowManager();
         }
-        #endregion
     }
 }

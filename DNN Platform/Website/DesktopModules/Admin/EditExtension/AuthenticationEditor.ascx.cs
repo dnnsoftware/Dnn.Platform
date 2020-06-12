@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
@@ -12,8 +12,6 @@ using DotNetNuke.Abstractions;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
-
-#endregion
 
 namespace DotNetNuke.Modules.Admin.EditExtension
 {
@@ -33,14 +31,8 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region "Private Members"
-
         private AuthenticationInfo _AuthSystem;
         private AuthenticationSettingsBase _SettingsControl;
-
-        #endregion
-
-        #region "Protected Properties"
 
         protected AuthenticationInfo AuthSystem
         {
@@ -74,9 +66,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-        #endregion
 
-        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -117,10 +107,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-        #endregion
-
-        #region "Public Methods"
-
         public override void Initialize()
         {
             this.pnlSettings.Visible = !this.IsSuperTab;
@@ -154,10 +140,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-        #endregion
-
-        #region "Event Handlers"
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -177,7 +159,5 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             if (displayMode != "editor" && displayMode != "settings")
                 this.Response.Redirect(this._navigationManager.NavigateURL(), true);
         }
-
-        #endregion
     }
 }

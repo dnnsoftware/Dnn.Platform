@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,14 +18,11 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
 using PermissionInfo = Dnn.PersonaBar.Library.Model.PermissionInfo;
-#endregion
 
 namespace Dnn.PersonaBar.Library.Permissions
 {
     public class MenuPermissionController
     {
-        #region Private Members
-
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(MenuPermissionController));
 
         private static readonly IDataService DataService = new DataService();
@@ -37,10 +34,6 @@ namespace Dnn.PersonaBar.Library.Permissions
         private const string PermissionInitializedKey = "PersonaBarMenuPermissionsInitialized";
 
         private const string ViewPermissionKey = "VIEW";
-
-        #endregion
-
-        #region Public Methods
 
         public static bool CanView(int portalId, MenuItem menu)
         {
@@ -202,10 +195,6 @@ namespace Dnn.PersonaBar.Library.Permissions
             return PortalController.Instance.GetPortalSettings(portalId).ContainsKey(PermissionInitializedKey);
         }
 
-        #endregion
-
-        #region Private Methods
-
         private static void SetPermissionIntialized(int portalId)
         {
             PortalController.UpdatePortalSetting(portalId, PermissionInitializedKey, "Y");
@@ -348,7 +337,5 @@ namespace Dnn.PersonaBar.Library.Permissions
             return CBO.GetCachedObject<IList<PermissionInfo>>(cacheItemArgs, c =>
                 CBO.FillCollection<PermissionInfo>(DataService.GetPersonaBarPermissions()));
         }
-
-        #endregion
     }
 }

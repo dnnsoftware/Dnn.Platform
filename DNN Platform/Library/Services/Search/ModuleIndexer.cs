@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -20,8 +20,6 @@ using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Services.Search.Internals;
 
-#endregion
-
 namespace DotNetNuke.Services.Search
 {
     /// -----------------------------------------------------------------------------
@@ -38,16 +36,10 @@ namespace DotNetNuke.Services.Search
     /// -----------------------------------------------------------------------------
     public class ModuleIndexer : IndexingProviderBase
     {
-        #region Private Fields
-
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleIndexer));
         private static readonly int ModuleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
         private readonly IDictionary<int, IEnumerable<ModuleIndexInfo>> _searchModules;
-
-        #endregion
-
-        #region Constructors
 
         public ModuleIndexer() : this(false)
         {
@@ -69,9 +61,7 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -257,11 +247,9 @@ namespace DotNetNuke.Services.Search
 
             return searchDoc;
         }
-        #pragma warning restore 0618
+#pragma warning restore 0618
 
-        #endregion
 
-        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -282,11 +270,6 @@ namespace DotNetNuke.Services.Search
                 where allModules || mii.SupportSearch
                 select mii.ModuleInfo;
         }
-
-
-        #endregion
-
-        #region Private Methods
 
         private static void ThrowLogError(ModuleInfo module, Exception ex)
         {
@@ -353,8 +336,5 @@ namespace DotNetNuke.Services.Search
             }
             return searchModules;
         }
-
-        #endregion
-
     }
 }

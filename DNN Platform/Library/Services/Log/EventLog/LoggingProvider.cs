@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -12,33 +12,23 @@ using System.Linq;
 
 using DotNetNuke.ComponentModel;
 
-#endregion
-
 namespace DotNetNuke.Services.Log.EventLog
 {
     public abstract class LoggingProvider
     {
-        #region ReturnType enum
-
         public enum ReturnType
         {
             LogInfoObjects,
             XML
         }
 
-        #endregion
 
-        #region "Shared/Static Methods"
 
         // return the provider
         public static LoggingProvider Instance()
         {
             return ComponentFactory.GetComponent<LoggingProvider>();
         }
-
-        #endregion
-
-        #region "Abstract Methods"
 
         public abstract void AddLog(LogInfo logInfo);
 
@@ -84,7 +74,5 @@ namespace DotNetNuke.Services.Log.EventLog
         public abstract void UpdateLogType(string logTypeKey, string logTypeFriendlyName, string logTypeDescription, string logTypeCSSClass, string logTypeOwner);
 
         public abstract void UpdateLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, string keepMostRecent, string logFileName, bool emailNotificationIsActive, string threshold, string notificationThresholdTime, string notificationThresholdTimeType, string mailFromAddress, string mailToAddress);
-
-        #endregion
     }
 }

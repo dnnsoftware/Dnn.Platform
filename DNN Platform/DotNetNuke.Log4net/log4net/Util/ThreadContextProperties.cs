@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 #if NETCF
@@ -40,7 +39,6 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public sealed class ThreadContextProperties : ContextPropertiesBase
     {
-        #region Private Instance Fields
 
 #if NETCF
 		/// <summary>
@@ -55,9 +53,7 @@ namespace log4net.Util
         private static PropertiesDictionary _dictionary;
 #endif
 
-        #endregion Private Instance Fields
 
-        #region Public Instance Constructors
 
         /// <summary>
         /// Internal constructor
@@ -71,9 +67,7 @@ namespace log4net.Util
         {
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets or sets the value of a property
@@ -105,9 +99,7 @@ namespace log4net.Util
             }
         }
 
-        #endregion Public Instance Properties
 
-        #region Public Instance Methods
 
         /// <summary>
         /// Remove a property
@@ -167,9 +159,7 @@ namespace log4net.Util
             }
         }
 
-        #endregion Public Instance Methods
 
-        #region Internal Instance Methods
 
         /// <summary>
         /// Get the <c>PropertiesDictionary</c> for this thread.
@@ -197,8 +187,6 @@ namespace log4net.Util
             }
             return _dictionary;
         }
-
-        #endregion Internal Instance Methods
     }
 }
 

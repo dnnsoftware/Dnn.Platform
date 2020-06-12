@@ -45,22 +45,12 @@ namespace DotNetNuke.Services.FileSystem
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileManager));
 
-        #region Properties
-
         public virtual IDictionary<string, string> ContentTypes
         {
             get { return FileContentTypeManager.Instance.ContentTypes; }
         }
 
-        #endregion
-
-        #region Constants
-
         private const int BufferSize = 4096;
-
-        #endregion
-
-        #region Private Methods
 
         private void AddFileToFolderProvider(Stream fileContent, string fileName, IFolderInfo destinationFolder, FolderProvider provider)
         {
@@ -99,7 +89,6 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        #region On File Events
         private void OnFileDeleted(IFileInfo fileInfo, int userId)
         {
             EventManager.Instance.OnFileDeleted(new FileDeletedEventArgs
@@ -157,7 +146,6 @@ namespace DotNetNuke.Services.FileSystem
                 FolderInfo = folderInfo
             });
         }
-        #endregion
 
         /// <summary>
         /// Rotate/Flip the image as per the metadata and reset the metadata.
@@ -272,9 +260,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// <summary>
         /// Adds a file to the specified folder.
@@ -1463,11 +1449,6 @@ namespace DotNetNuke.Services.FileSystem
             this.WriteFileToHttpContext(file, contentDisposition);
         }
 
-        #endregion
-
-        #region Internal Methods
-
-        #region ContentType Methods
         internal virtual int CopyContentItem(int contentItemId)
         {
             if (contentItemId == Null.NullInteger) return Null.NullInteger;
@@ -1506,9 +1487,7 @@ namespace DotNetNuke.Services.FileSystem
             return objContent;
         }
 
-        #endregion
 
-        #region File Versions
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual void MoveVersions(IFileInfo file, IFolderInfo destinationFolder, FolderProvider sourceFolderProvider, FolderProvider destinationFolderProvider)
@@ -1540,10 +1519,6 @@ namespace DotNetNuke.Services.FileSystem
                 this.DeleteFileFromFolderProvider(fileVersion, sourceFolderProvider);
             }
         }
-
-        #endregion
-
-        #region Workflow Methods
 
         private bool CanUpdateWhenApproving(IFolderInfo folder, ContentItem item, int createdByUserID)
         {
@@ -1598,7 +1573,6 @@ namespace DotNetNuke.Services.FileSystem
                     "FileLockedRunningWorkflowError",
                                                                 "File locked. The file cannot be updated because it has a running workflow"));
         }
-        #endregion
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual void AutoSyncFile(IFileInfo file)
@@ -2011,7 +1985,5 @@ namespace DotNetNuke.Services.FileSystem
 
             return true;
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -14,14 +14,10 @@ using System.Web;
 
 using DotNetNuke.ComponentModel;
 
-#endregion
-
 namespace DotNetNuke.Services.OutputCache
 {
     public abstract class OutputCachingProvider
     {
-        #region "Protected Methods"
-
         protected string ByteArrayToString(byte[] arrInput)
         {
             int i = 0;
@@ -64,10 +60,6 @@ namespace DotNetNuke.Services.OutputCache
             }
         }
 
-        #endregion
-
-        #region "Shared/Static Methods"
-
         public static Dictionary<string, OutputCachingProvider> GetProviderList()
         {
             return ComponentFactory.GetComponents<OutputCachingProvider>();
@@ -86,10 +78,6 @@ namespace DotNetNuke.Services.OutputCache
             }
         }
 
-        #endregion
-
-        #region "Abstract Methods"
-
         public abstract int GetItemCount(int tabId);
 
         public abstract byte[] GetOutput(int tabId, string cacheKey);
@@ -101,10 +89,6 @@ namespace DotNetNuke.Services.OutputCache
         public abstract void SetOutput(int tabId, string cacheKey, TimeSpan duration, byte[] output);
 
         public abstract bool StreamOutput(int tabId, string cacheKey, HttpContext context);
-
-        #endregion
-
-        #region "Virtual Methods"
 
         public virtual string GenerateCacheKey(int tabId, StringCollection includeVaryByKeys, StringCollection excludeVaryByKeys, SortedDictionary<string, string> varyBy)
         {
@@ -131,7 +115,5 @@ namespace DotNetNuke.Services.OutputCache
         public virtual void PurgeExpiredItems(int portalId)
         {
         }
-
-        #endregion
     }
 }

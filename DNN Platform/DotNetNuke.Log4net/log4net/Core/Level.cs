@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -89,7 +88,6 @@ namespace log4net.Core
 #endif
     sealed public class Level : IComparable
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Constructor
@@ -138,9 +136,7 @@ namespace log4net.Core
         {
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets the name of this level.
@@ -190,9 +186,7 @@ namespace log4net.Core
             get { return this.m_levelDisplayName; }
         }
 
-        #endregion Public Instance Properties
 
-        #region Override implementation of Object
 
         /// <summary>
         /// Returns the <see cref="string" /> representation of the current
@@ -254,9 +248,7 @@ namespace log4net.Core
             return this.m_levelValue;
         }
 
-        #endregion Override implementation of Object
 
-        #region Implementation of IComparable
 
         /// <summary>
         /// Compares this instance to a specified object and returns an
@@ -306,9 +298,7 @@ namespace log4net.Core
             throw new ArgumentException("Parameter: r, Value: [" + r + "] is not an instance of Level");
         }
 
-        #endregion Implementation of IComparable
 
-        #region Operators
 
         /// <summary>
         /// Returns a value indicating whether a specified <see cref="Level" />
@@ -437,9 +427,7 @@ namespace log4net.Core
             return !(l == r);
         }
 
-        #endregion Operators
 
-        #region Public Static Methods
 
         /// <summary>
         /// Compares two specified <see cref="Level"/> instances.
@@ -497,9 +485,7 @@ namespace log4net.Core
             return l.m_levelValue.CompareTo(r.m_levelValue);
         }
 
-        #endregion Public Static Methods
 
-        #region Public Static Fields
 
         /// <summary>
         /// The <see cref="Off" /> level designates a higher level than all the rest.
@@ -605,15 +591,8 @@ namespace log4net.Core
         /// The <see cref="All" /> level designates the lowest level possible.
         /// </summary>
         public readonly static Level All = new Level(int.MinValue, "ALL");
-
-        #endregion Public Static Fields
-
-        #region Private Instance Fields
-
         private readonly int m_levelValue;
         private readonly string m_levelName;
         private readonly string m_levelDisplayName;
-
-        #endregion Private Instance Fields
     }
 }

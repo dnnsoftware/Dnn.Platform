@@ -48,7 +48,6 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
             Assert.IsNotNullOrEmpty(result2.Response.Pages.First().ErrorMessage);
         }
 
-        #region helper classes
         [JsonObject]
         public class BulkPage
         {
@@ -83,6 +82,5 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
             public int Status { get; set; }
             public BulkPageResponse Response { get; set; }
         }
-        #endregion
     }
 }

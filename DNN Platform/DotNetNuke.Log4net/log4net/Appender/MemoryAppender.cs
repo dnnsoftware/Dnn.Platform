@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -60,7 +59,6 @@ namespace log4net.Appender
     /// <author>Gert Driesen</author>
     public class MemoryAppender : AppenderSkeleton
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemoryAppender" /> class.
@@ -75,9 +73,7 @@ namespace log4net.Appender
             this.m_eventsList = new ArrayList();
         }
 
-        #endregion Protected Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets the events that have been logged.
@@ -146,9 +142,7 @@ namespace log4net.Appender
             set { this.m_fixFlags = value; }
         }
 
-        #endregion Public Instance Properties
 
-        #region Override implementation of AppenderSkeleton
 
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
@@ -170,9 +164,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion Override implementation of AppenderSkeleton
 
-        #region Public Instance Methods
 
         /// <summary>
         /// Clear the list of events
@@ -207,9 +199,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion Public Instance Methods
 
-        #region Protected Instance Fields
 
         /// <summary>
         /// The list of events that have been appended.
@@ -223,7 +213,5 @@ namespace log4net.Appender
         /// By default all fields are fixed
         /// </remarks>
         protected FixFlags m_fixFlags = FixFlags.All;
-
-        #endregion Protected Instance Fields
     }
 }

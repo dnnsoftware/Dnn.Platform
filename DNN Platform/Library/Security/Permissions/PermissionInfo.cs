@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Data;
@@ -10,8 +10,6 @@ using System.Xml.Serialization;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities;
-
-#endregion
 
 namespace DotNetNuke.Security.Permissions
 {
@@ -27,11 +25,8 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public class PermissionInfo : BaseEntityInfo
     {
-        #region Private Members
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -78,9 +73,7 @@ namespace DotNetNuke.Security.Permissions
         [XmlIgnore]
         public string PermissionName { get; set; }
 
-        #endregion
 
-        #region "Protected methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -97,7 +90,5 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionKey = Null.SetNullString(dr["PermissionKey"]);
             this.PermissionName = Null.SetNullString(dr["PermissionName"]);
         }
-
-        #endregion
     }
 }

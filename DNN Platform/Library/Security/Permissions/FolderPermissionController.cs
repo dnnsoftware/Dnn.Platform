@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using DotNetNuke.Common.Utilities;
@@ -11,8 +11,6 @@ using DotNetNuke.Framework;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 using System.Collections.Generic;
-
-#endregion
 
 namespace DotNetNuke.Security.Permissions
 {
@@ -25,7 +23,6 @@ namespace DotNetNuke.Security.Permissions
             return () => new FolderPermissionController();
         }
 
-        #region Public Methods
 
         /// <summary>
         /// Returns a flag indicating whether the current user can add a folder or file
@@ -56,8 +53,6 @@ namespace DotNetNuke.Security.Permissions
         {
             return provider.CanViewFolder((FolderInfo)folder);
         }
-
-        #endregion
 
         private static void ClearPermissionCache(int PortalID)
         {

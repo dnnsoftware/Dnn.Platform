@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Text.RegularExpressions;
@@ -42,7 +41,6 @@ namespace log4net.Filter
     /// <author>Gert Driesen</author>
     public class StringMatchFilter : FilterSkeleton
     {
-        #region Member Variables
 
         /// <summary>
         /// Flag to indicate the behavior when we have a match
@@ -64,9 +62,7 @@ namespace log4net.Filter
         /// </summary>
         protected Regex m_regexToMatch;
 
-        #endregion
 
-        #region Constructors
 
         /// <summary>
         /// Default constructor
@@ -75,9 +71,7 @@ namespace log4net.Filter
         {
         }
 
-        #endregion
 
-        #region Implementation of IOptionHandler
 
         /// <summary>
         /// Initialize and precompile the Regex if required
@@ -107,7 +101,6 @@ namespace log4net.Filter
             }
         }
 
-        #endregion
 
         /// <summary>
         /// <see cref="FilterDecision.Accept"/> when matching <see cref="StringToMatch"/> or <see cref="RegexToMatch"/>
@@ -171,7 +164,6 @@ namespace log4net.Filter
             set { this.m_stringRegexToMatch = value; }
         }
 
-        #region Override implementation of FilterSkeleton
 
         /// <summary>
         /// Check if this filter should allow the event to be logged
@@ -243,7 +235,5 @@ namespace log4net.Filter
             return FilterDecision.Neutral;
 
         }
-
-        #endregion
     }
 }

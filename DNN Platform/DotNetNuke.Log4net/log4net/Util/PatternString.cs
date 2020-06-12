@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -263,16 +262,13 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public class PatternString : IOptionHandler
     {
-        #region Static Fields
 
         /// <summary>
         /// Internal map of converter identifiers to converter types.
         /// </summary>
         private static Hashtable s_globalRulesRegistry;
 
-        #endregion Static Fields
 
-        #region Member Variables
 
         /// <summary>
         /// the pattern
@@ -289,9 +285,7 @@ namespace log4net.Util
         /// </summary>
         private Hashtable m_instanceRulesRegistry = new Hashtable();
 
-        #endregion
 
-        #region Static Constructor
 
         /// <summary>
         /// Initialize the global registry
@@ -328,9 +322,7 @@ namespace log4net.Util
 #endif
         }
 
-        #endregion Static Constructor
 
-        #region Constructors
 
         /// <summary>
         /// Default constructor
@@ -359,7 +351,6 @@ namespace log4net.Util
             this.ActivateOptions();
         }
 
-        #endregion
 
         /// <summary>
         /// Gets or sets the pattern formatting string
@@ -380,7 +371,6 @@ namespace log4net.Util
             set { this.m_pattern = value; }
         }
 
-        #region Implementation of IOptionHandler
 
         /// <summary>
         /// Initialize object options
@@ -403,7 +393,6 @@ namespace log4net.Util
             this.m_head = this.CreatePatternParser(this.m_pattern).Parse();
         }
 
-        #endregion
 
         /// <summary>
         /// Create the <see cref="PatternParser"/> used to parse the pattern

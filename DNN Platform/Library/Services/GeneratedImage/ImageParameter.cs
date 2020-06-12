@@ -39,12 +39,8 @@ namespace DotNetNuke.Services.GeneratedImage
 
         public Control BindingContainer { get; internal set; }
 
-        #region IDataBindingsAccessor Members
-
         DataBindingCollection IDataBindingsAccessor.DataBindings => this._dataBindings;
 
         bool IDataBindingsAccessor.HasDataBindings => this._dataBindings.Count != 0;
-
-        #endregion
     }
 }

@@ -18,7 +18,6 @@ namespace DotNetNuke.Services.Installer.Installers
         private ExtensionUrlProviderInfo _installedExtensionUrlProvider;
         private string _desktopModuleName;
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -32,9 +31,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "ashx, aspx, ascx, vb, cs, resx, css, js, resources, config, vbproj, csproj, sln, htm, html";
             }
         }
-
-        #endregion
-
 
         private void DeleteProvider()
         {
@@ -54,7 +50,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -158,7 +153,5 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             this.DeleteProvider();
         }
-
-        #endregion
     }
 }

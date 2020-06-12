@@ -27,8 +27,6 @@ namespace DotNetNuke.Tests.Content
     {
         private Mock<CachingProvider> mockCache;
 
-        #region Test Initialize
-
         [SetUp]
         public void SetUp()
         {
@@ -42,10 +40,6 @@ namespace DotNetNuke.Tests.Content
         {
             MockComponentProvider.ResetContainer();
         }
-
-        #endregion
-
-        #region AddScopeType
 
         [Test]
         public void ScopeTypeController_AddScopeType_Throws_On_Null_ScopeType()
@@ -106,10 +100,6 @@ namespace DotNetNuke.Tests.Content
             Assert.AreEqual(Constants.SCOPETYPE_AddScopeTypeId, scopeType.ScopeTypeId);
         }
 
-        #endregion
-
-        #region DeleteScopeType
-
         [Test]
         public void ScopeTypeController_DeleteScopeType_Throws_On_Null_ScopeType()
         {
@@ -150,10 +140,6 @@ namespace DotNetNuke.Tests.Content
             // Assert
             mockDataService.Verify(ds => ds.DeleteScopeType(scopeType));
         }
-
-        #endregion
-
-        #region GetScopeTypes
 
         [Test]
         public void ScopeTypeController_GetScopeTypes_Calls_DataService()
@@ -201,10 +187,6 @@ namespace DotNetNuke.Tests.Content
             Assert.AreEqual(Constants.SCOPETYPE_ValidScopeTypeCount, scopeTypes.Count());
         }
 
-        #endregion
-
-        #region UpdateScopeType
-
         [Test]
         public void ScopeTypeController_UpdateScopeType_Throws_On_Null_ScopeType()
         {
@@ -246,7 +228,5 @@ namespace DotNetNuke.Tests.Content
             // Assert
             mockDataService.Verify(ds => ds.UpdateScopeType(scopeType));
         }
-
-        #endregion
     }
 }

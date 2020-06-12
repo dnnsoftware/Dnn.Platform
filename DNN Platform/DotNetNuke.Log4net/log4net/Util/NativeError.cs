@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 // MONO 1.0 has no support for Win32 Error APIs
 #if !MONO
@@ -46,7 +44,6 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public sealed class NativeError
     {
-        #region Protected Instance Constructors
 
         /// <summary>
         /// Create an instance of the <see cref="NativeError" /> class with the specified
@@ -66,9 +63,7 @@ namespace log4net.Util
             this.m_message = message;
         }
 
-        #endregion // Protected Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets the number of the native error.
@@ -102,9 +97,7 @@ namespace log4net.Util
             get { return this.m_message; }
         }
 
-        #endregion // Public Instance Properties
 
-        #region Public Static Methods
 
         /// <summary>
         /// Create a new instance of the <see cref="NativeError" /> class for the last Windows error.
@@ -208,9 +201,7 @@ namespace log4net.Util
             return msgBuf;
         }
 
-        #endregion // Public Static Methods
 
-        #region Override Object Implementation
 
         /// <summary>
         /// Return error information string
@@ -226,9 +217,7 @@ namespace log4net.Util
             return string.Format(CultureInfo.InvariantCulture, "0x{0:x8}", this.Number) + (this.Message != null ? ": " + this.Message : string.Empty);
         }
 
-        #endregion // Override Object Implementation
 
-        #region Stubs For Native Function Calls
 
         /// <summary>
         /// Formats a message string.
@@ -278,14 +267,8 @@ namespace log4net.Util
             int nSize,
             IntPtr Arguments);
 
-        #endregion // Stubs For Native Function Calls
-
-        #region Private Instance Fields
-
         private int m_number;
         private string m_message;
-
-        #endregion
     }
 }
 

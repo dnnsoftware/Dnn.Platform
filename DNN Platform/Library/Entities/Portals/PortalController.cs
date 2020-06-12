@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -48,8 +48,6 @@ using ICSharpCode.SharpZipLib.Zip;
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 using IAbPortalSettings = DotNetNuke.Abstractions.Portals.IPortalSettings;
 
-#endregion
-
 namespace DotNetNuke.Entities.Portals
 {
     /// <summary>
@@ -72,8 +70,6 @@ namespace DotNetNuke.Entities.Portals
         {
             return () => new PortalController();
         }
-
-        #region Private Methods
 
         private void AddFolderPermissions(int portalId, int folderId)
         {
@@ -2107,9 +2103,7 @@ namespace DotNetNuke.Entities.Portals
             DataCache.ClearHostCache(true);
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// <summary>
         /// Creates a new portal alias
@@ -2752,9 +2746,7 @@ namespace DotNetNuke.Entities.Portals
             UpdatePortalSettingInternal(portalID, settingName, settingValue, clearCache, cultureCode, isSecure);
         }
 
-        #endregion
 
-        #region Public Static Methods
 
         /// <summary>
         /// Adds the portal dictionary.
@@ -3532,8 +3524,6 @@ namespace DotNetNuke.Entities.Portals
                 }
             }
         }
-
-        #endregion
 
         public class PortalTemplateInfo
         {

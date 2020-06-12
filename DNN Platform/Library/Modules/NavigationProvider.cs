@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System.Collections.Generic;
 using System.Web.UI;
@@ -11,21 +11,13 @@ using DotNetNuke.Framework;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.WebControls;
 
-#endregion
-
 namespace DotNetNuke.Modules.NavigationProvider
 {
     public abstract class NavigationProvider : UserControlBase
     {
-        #region Delegates
-
         public delegate void NodeClickEventHandler(NavigationEventArgs args);
 
         public delegate void PopulateOnDemandEventHandler(NavigationEventArgs args);
-
-        #endregion
-
-        #region Alignment enum
 
         public enum Alignment
         {
@@ -35,19 +27,11 @@ namespace DotNetNuke.Modules.NavigationProvider
             Justify
         }
 
-        #endregion
-
-        #region HoverAction enum
-
         public enum HoverAction
         {
             Expand,
             None
         }
-
-        #endregion
-
-        #region HoverDisplay enum
 
         public enum HoverDisplay
         {
@@ -56,19 +40,11 @@ namespace DotNetNuke.Modules.NavigationProvider
             None
         }
 
-        #endregion
-
-        #region Orientation enum
-
         public enum Orientation
         {
             Horizontal,
             Vertical
         }
-
-        #endregion
-
-        #region "Properties"
 
         public abstract Control NavigationControl { get; }
         public abstract string ControlID { get; set; }
@@ -923,11 +899,6 @@ namespace DotNetNuke.Modules.NavigationProvider
             }
         }
 
-
-        #endregion
-
-        #region "Methods"
-
         public event NodeClickEventHandler NodeClick;
         public event PopulateOnDemandEventHandler PopulateOnDemand;
 
@@ -975,8 +946,6 @@ namespace DotNetNuke.Modules.NavigationProvider
                 this.PopulateOnDemand(new NavigationEventArgs(strID, null));
             }
         }
-
-        #endregion
     }
 
     public class NavigationEventArgs

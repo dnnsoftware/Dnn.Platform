@@ -20,8 +20,6 @@ namespace Dnn.AuthServices.Jwt.Data
     {
         private readonly DataProvider _dataProvider = DataProvider.Instance();
 
-        #region implementation
-
         public virtual PersistedToken GetTokenById(string tokenId)
         {
             try
@@ -77,15 +75,9 @@ namespace Dnn.AuthServices.Jwt.Data
             this._dataProvider.ExecuteNonQuery("JsonWebTokens_DeleteExpired");
         }
 
-        #endregion
-
-        #region helper methods
-
         private static string GetCacheKey(string tokenId)
         {
             return string.Join(":", "JsonWebTokens", tokenId);
         }
-
-        #endregion
     }
 }

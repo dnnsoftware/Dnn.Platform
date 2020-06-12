@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -24,8 +24,6 @@ using DotNetNuke.Services.Log.EventLog;
 
 using Assembly = System.Reflection.Assembly;
 
-#endregion
-
 namespace DotNetNuke.Entities.Urls
 {
     public class ExtensionUrlProviderController
@@ -34,8 +32,6 @@ namespace DotNetNuke.Entities.Urls
         private static readonly Regex RewrittenUrlRegex = new Regex(
             @"(?<tabid>(?:\?|&)tabid=\d+)(?<qs>&[^=]+=[^&]*)*",
             RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-
-        #region Private Methods
 
         private static void ClearCache()
         {
@@ -108,9 +104,7 @@ namespace DotNetNuke.Entities.Urls
             return providers;
         }
 
-        #endregion
 
-        #region Internal Methods
 
         /// <summary>
         /// Checks to see if any providers are marked as 'always call for rewrites'
@@ -450,10 +444,6 @@ namespace DotNetNuke.Entities.Urls
             return rewriteDone;
         }
 
-        #endregion
-
-        #region Public Methods
-
         public static void DeleteProvider(ExtensionUrlProviderInfo urlProvider)
         {
             DataProvider.Instance().DeleteExtensionUrlProvider(urlProvider.ExtensionUrlProviderId);
@@ -707,8 +697,5 @@ namespace DotNetNuke.Entities.Urls
             DataProvider.Instance().SaveExtensionUrlProviderSetting(providerId, portalId, settingName, settingValue);
             ClearCache(portalId);
         }
-
-        #endregion
-
     }
 }

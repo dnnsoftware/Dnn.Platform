@@ -28,7 +28,6 @@ namespace DotNetNuke.Modules.CoreMessaging
     {
         private const string SharedResources = "~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";
 
-        #region Public Properties
         public ModuleInstanceContext ModuleContext { get; set; }
 
         public ModuleInfo ModuleConfiguration
@@ -42,18 +41,10 @@ namespace DotNetNuke.Modules.CoreMessaging
 
         public string LocalResourceFile { get; set; }
 
-        #endregion
-
-        #region Protected Methods
-
         protected string LocalizeString(string key)
         {
             return Localization.GetString(key, this.LocalResourceFile);
         }
-
-        #endregion
-
-        #region Public Methods
 
         public string GetSettingsAsJson()
         {
@@ -72,10 +63,6 @@ namespace DotNetNuke.Modules.CoreMessaging
 
             return settings.ToJson();
         }
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnLoad(EventArgs e)
         {
@@ -96,9 +83,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
         }
 
-        #endregion
 
-        #region Private methods
 
         /// <summary>
         /// These values are passed in as the 'settings' parameter of the JavaScript initialization function, together with
@@ -241,7 +226,5 @@ namespace DotNetNuke.Modules.CoreMessaging
 
             return returnUrl;
         }
-
-        #endregion
     }
 }

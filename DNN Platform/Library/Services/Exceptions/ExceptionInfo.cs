@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
@@ -10,15 +10,11 @@ using System.Net;
 using System.Text;
 using System.Xml;
 
-#endregion
-
 namespace DotNetNuke.Services.Exceptions
 {
     [Serializable]
     public class ExceptionInfo
     {
-
-        #region Constructors
         public ExceptionInfo() { }
 
         public ExceptionInfo(Exception e)
@@ -33,9 +29,7 @@ namespace DotNetNuke.Services.Exceptions
             }
             this.ExceptionHash = e.Hash();
         }
-        #endregion
 
-        #region Properties
         public string AssemblyVersion { get; set; }
 
         public int PortalId { get; set; }
@@ -69,9 +63,7 @@ namespace DotNetNuke.Services.Exceptions
         public int FileColumnNumber { get; set; }
 
         public string Method { get; set; }
-        #endregion
 
-        #region Public Methods
         public void Deserialize(string content)
         {
             using (XmlReader reader = XmlReader.Create(new StringReader(content)))
@@ -206,7 +198,5 @@ namespace DotNetNuke.Services.Exceptions
             writer.WriteElementString("Method", this.Method);
             writer.WriteEndElement();
         }
-        #endregion
-
     }
 }

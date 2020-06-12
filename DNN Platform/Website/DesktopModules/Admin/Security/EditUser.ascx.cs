@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using DotNetNuke.Common;
 using DotNetNuke.Abstractions;
@@ -28,8 +28,6 @@ using System.Web;
 using Microsoft.Extensions.DependencyInjection;
 using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Users
 {
     /// -----------------------------------------------------------------------------
@@ -48,7 +46,6 @@ namespace DotNetNuke.Modules.Admin.Users
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Protected Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -145,9 +142,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -171,10 +166,6 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         public bool ShowVanityUrl { get; private set; }
-
-        #endregion
-
-        #region Private Methods
 
         private void BindData()
         {
@@ -354,9 +345,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
 
-        #endregion
 
-        #region Event Handlers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -648,7 +637,5 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             this.AddLocalizedModuleMessage(message, ModuleMessage.ModuleMessageType.GreenSuccess, true);
         }
-
-        #endregion
     }
 }

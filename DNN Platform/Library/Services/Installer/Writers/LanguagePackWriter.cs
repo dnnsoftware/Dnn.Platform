@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -16,8 +16,6 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Localization;
 
-#endregion
-
 namespace DotNetNuke.Services.Installer.Writers
 {
     /// -----------------------------------------------------------------------------
@@ -29,16 +27,9 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class LanguagePackWriter : PackageWriterBase
     {
-        #region "Private Members"
-
         private bool _IsCore = Null.NullBoolean;
         private Locale _Language;
         private LanguagePackInfo _LanguagePack;
-
-        #endregion
-
-        #region "Constructors"
-
 
         public LanguagePackWriter(PackageInfo package) : base(package)
         {
@@ -98,10 +89,6 @@ namespace DotNetNuke.Services.Installer.Writers
             this._Language = language;
             this.BasePath = Null.NullString;
         }
-
-        #endregion
-
-        #region "Public Properties"
 
         public override bool IncludeAssemblies
         {
@@ -499,10 +486,6 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        #endregion
-
-        #region "Protected methods"
-
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
             // Language file starts at the root
@@ -554,6 +537,5 @@ namespace DotNetNuke.Services.Installer.Writers
             }
             languageFileWriter.WriteManifest(writer);
         }
-        #endregion
     }
 }

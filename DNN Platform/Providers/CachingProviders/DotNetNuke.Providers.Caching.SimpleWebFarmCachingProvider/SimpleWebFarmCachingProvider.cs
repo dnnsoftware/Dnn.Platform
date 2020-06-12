@@ -23,7 +23,6 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 
         private readonly int executionTimeout = 5000; // Limit timeout to 5 seconds as cache operations should be quick
 
-        #region Server Notification Methods
 
         private void NotifyOtherServers(string command, string detail)
         {
@@ -109,9 +108,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             request?.Abort();
         }
 
-        #endregion
 
-        #region Synchronization Implementation
 
         /// <summary>
         /// This method responds to an incoming request to process synchronization from an additional server
@@ -137,9 +134,6 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
                 this.ClearCacheInternal(commandParts[1], detail, true);
             }
         }
-        #endregion
-
-        #region Default Caching Implementation Overrides
 
         public override void Clear(string type, string data)
         {
@@ -166,7 +160,5 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             // Notify Other Servers
             this.NotifyOtherServers("Remove", key);
         }
-
-        #endregion
     }
 }

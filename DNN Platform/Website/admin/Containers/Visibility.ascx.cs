@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web.UI;
@@ -15,8 +15,6 @@ using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Utilities;
 
 using Globals = DotNetNuke.Common.Globals;
-
-#endregion
 
 namespace DotNetNuke.UI.Containers
 {
@@ -35,8 +33,6 @@ namespace DotNetNuke.UI.Containers
     /// -----------------------------------------------------------------------------
     public partial class Visibility : SkinObjectBase
     {
-#region "Private Members"
-
         private int _animationFrames = 5;
         private Panel _pnlModuleContent;
 
@@ -89,11 +85,6 @@ namespace DotNetNuke.UI.Containers
                 return this.ModuleControl.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleControl.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1);
             }
         }
-
-        #endregion
-
-        #region "Public Members"
-
 
         public int AnimationFrames
         {
@@ -268,7 +259,5 @@ namespace DotNetNuke.UI.Containers
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
     }
 }

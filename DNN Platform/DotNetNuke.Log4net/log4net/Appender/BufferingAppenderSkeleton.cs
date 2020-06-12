@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -74,7 +73,6 @@ namespace log4net.Appender
     /// <author>Gert Driesen</author>
     public abstract class BufferingAppenderSkeleton : AppenderSkeleton
     {
-        #region Protected Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BufferingAppenderSkeleton" /> class.
@@ -108,9 +106,7 @@ namespace log4net.Appender
             this.m_eventMustBeFixed = eventMustBeFixed;
         }
 
-        #endregion Protected Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets or sets a value that indicates whether the appender is lossy.
@@ -261,9 +257,7 @@ namespace log4net.Appender
             set { this.m_fixFlags = value; }
         }
 
-        #endregion Public Instance Properties
 
-        #region Public Methods
 
         /// <summary>
         /// Flushes any buffered log data.
@@ -364,9 +358,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion Public Methods
 
-        #region Implementation of IOptionHandler
 
         /// <summary>
         /// Initialize the appender based on the options set
@@ -406,9 +398,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion Implementation of IOptionHandler
 
-        #region Override implementation of AppenderSkeleton
 
         /// <summary>
         /// Close this appender instance.
@@ -531,9 +521,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion Override implementation of AppenderSkeleton
 
-        #region Protected Instance Methods
 
         /// <summary>
         /// Sends the contents of the buffer.
@@ -568,7 +556,6 @@ namespace log4net.Appender
             }
         }
 
-        #endregion Protected Instance Methods
 
         /// <summary>
         /// Sends the events.
@@ -581,7 +568,6 @@ namespace log4net.Appender
         /// </remarks>
         abstract protected void SendBuffer(LoggingEvent[] events);
 
-        #region Private Static Fields
 
         /// <summary>
         /// The default buffer size.
@@ -592,9 +578,7 @@ namespace log4net.Appender
         /// </remarks>
         private const int DEFAULT_BUFFER_SIZE = 512;
 
-        #endregion Private Static Fields
 
-        #region Private Instance Fields
 
         /// <summary>
         /// The size of the cyclic buffer used to hold the logging events.
@@ -656,7 +640,5 @@ namespace log4net.Appender
         /// The events delivered to the subclass must be fixed.
         /// </summary>
         private readonly bool m_eventMustBeFixed;
-
-        #endregion Private Instance Fields
     }
 }

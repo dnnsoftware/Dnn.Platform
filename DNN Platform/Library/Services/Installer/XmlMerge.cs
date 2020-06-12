@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -16,8 +16,6 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Upgrade;
 
-#endregion
-
 namespace DotNetNuke.Services.Installer
 {
     /// -----------------------------------------------------------------------------
@@ -27,13 +25,9 @@ namespace DotNetNuke.Services.Installer
     /// -----------------------------------------------------------------------------
     public class XmlMerge
     {
-        #region Private Properties
-
         private IDictionary<string, XmlDocument> _pendingDocuments;
 
-        #endregion
 
-        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -98,9 +92,7 @@ namespace DotNetNuke.Services.Installer
             this.SourceConfig = sourceDoc;
         }
 
-        #endregion
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -162,10 +154,6 @@ namespace DotNetNuke.Services.Installer
                 return this._pendingDocuments;
             }
         }
-
-        #endregion
-
-        #region "Private Methods"
 
         private bool AddNode(XmlNode rootNode, XmlNode actionNode)
         {
@@ -587,9 +575,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        #endregion
 
-        #region "Public Methods"
 
 
         /// -----------------------------------------------------------------------------
@@ -701,7 +687,5 @@ namespace DotNetNuke.Services.Installer
                 Config.Save(this.PendingDocuments[key], key);
             }
         }
-
-        #endregion
     }
 }

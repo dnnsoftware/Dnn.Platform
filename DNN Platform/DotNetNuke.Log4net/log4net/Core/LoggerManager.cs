@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 #if NETSTANDARD1_3
@@ -57,7 +56,6 @@ namespace log4net.Core
     /// <author>Gert Driesen</author>
     public sealed class LoggerManager
     {
-        #region Private Instance Constructors
 
         /// <summary>
         /// Private constructor to prevent instances. Only static methods should be used.
@@ -71,9 +69,7 @@ namespace log4net.Core
         {
         }
 
-        #endregion Private Instance Constructors
 
-        #region Static Constructor
 
         /// <summary>
         /// Hook the shutdown event
@@ -179,9 +175,7 @@ namespace log4net.Core
 #endif
         }
 
-        #endregion Static Constructor
 
-        #region Public Static Methods
 
         /// <summary>
         /// Return the default <see cref="ILoggerRepository"/> instance.
@@ -793,9 +787,7 @@ namespace log4net.Core
             set { s_repositorySelector = value; }
         }
 
-        #endregion Public Static Methods
 
-        #region Private Static Methods
 
         /// <summary>
         /// Internal method to get pertinent version info.
@@ -861,9 +853,7 @@ namespace log4net.Core
         }
 #endif
 
-        #endregion Private Static Methods
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the LoggerManager class.
@@ -878,7 +868,5 @@ namespace log4net.Core
         /// Initialize the default repository selector
         /// </summary>
         private static IRepositorySelector s_repositorySelector;
-
-        #endregion Private Static Fields
     }
 }

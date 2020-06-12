@@ -307,7 +307,6 @@ namespace DotNetNuke.Services.GeneratedImage
             return CachePath + id + TempFileExtension;
         }
 
-        #region IImageStore Members
         void IImageStore.Add(string id, byte[] data)
         {
             this.Add(id, data);
@@ -317,6 +316,5 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             return this.TryTransmitIfContains(id, response);
         }
-        #endregion
     }
 }

@@ -1,9 +1,9 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
 #if !NETCF
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -20,7 +20,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 using System;
 using System.Text;
 using System.Diagnostics;
@@ -37,7 +36,6 @@ namespace log4net.Core
     [Serializable]
     public class StackFrameItem
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// returns a stack frame item from a stack frame. This
@@ -75,9 +73,7 @@ namespace log4net.Core
             this.m_fullInfo = this.m_className + '.' + this.m_method.Name + '(' + this.m_fileName + ':' + this.m_lineNumber + ')';
         }
 
-        #endregion
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets the fully qualified class name of the caller making the logging
@@ -164,19 +160,13 @@ namespace log4net.Core
             get { return this.m_fullInfo; }
         }
 
-        #endregion Public Instance Properties
-
-        #region Private Instance Fields
-
         private readonly string m_lineNumber;
         private readonly string m_fileName;
         private readonly string m_className;
         private readonly string m_fullInfo;
         private readonly MethodItem m_method;
 
-        #endregion
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the StackFrameItem class.
@@ -193,8 +183,6 @@ namespace log4net.Core
         /// constant is <b>?</b>.
         /// </summary>
         private const string NA = "?";
-
-        #endregion Private Static Fields
     }
 }
 #endif

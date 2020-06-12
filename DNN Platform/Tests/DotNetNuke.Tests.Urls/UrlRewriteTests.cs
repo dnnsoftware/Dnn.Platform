@@ -40,8 +40,6 @@ namespace DotNetNuke.Tests.Urls
 
         public UrlRewriteTests() : base(0) { }
 
-        #region Private Methods
-
         private void CreateSimulatedRequest(Uri url)
         {
             var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", this.WebsitePhysicalAppPath);
@@ -92,10 +90,6 @@ namespace DotNetNuke.Tests.Urls
                             .Replace("{userId}", userId)
                             .Replace("{defaultPage}", _defaultPage);
         }
-
-        #endregion
-
-        #region SetUp and TearDown
 
         [SetUp]
         public override void SetUp()
@@ -216,10 +210,6 @@ namespace DotNetNuke.Tests.Urls
 
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void DeleteTab(string tabName)
         {
             var tab = TabController.Instance.GetTabByName(tabName, this.PortalId);
@@ -319,10 +309,6 @@ namespace DotNetNuke.Tests.Urls
             tab.SkinSrc = newSkin;
             TabController.Instance.UpdateTab(tab);
         }
-
-        #endregion
-
-        #region Tests
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), "UrlRewrite_BasicTestCases")]
@@ -690,7 +676,5 @@ namespace DotNetNuke.Tests.Urls
             tab.TabSettings[settingName] = settingValue;
             TabController.Instance.UpdateTab(tab);
         }
-
-        #endregion
     }
 }

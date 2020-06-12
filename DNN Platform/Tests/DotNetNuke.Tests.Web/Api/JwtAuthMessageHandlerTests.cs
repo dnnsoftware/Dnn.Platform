@@ -28,8 +28,6 @@ namespace DotNetNuke.Tests.Web.Api
     [TestFixture]
     public class JwtAuthMessageHandlerTests
     {
-        #region setting/mocked data and methods
-
         private Mock<DataProvider> _mockDataProvider;
         private Mock<MembershipProvider> _mockMembership;
         private Mock<Entities.Portals.Data.IDataService> _mockDataService;
@@ -199,8 +197,6 @@ namespace DotNetNuke.Tests.Web.Api
             return null;
         }
 
-        #endregion
-
         [Test]
         public void ReturnsResponseAsReceived()
         {
@@ -311,7 +307,6 @@ namespace DotNetNuke.Tests.Web.Api
         // very hard to unit test inbound authentication code as it dips into untestable bits of
         // UserController, etc. Need to write controllers with interfaces and ServiceLocator<>.
 
-        #region helpers
 
         // private static string DecodeBase64(string b64Str)
         // {
@@ -333,7 +328,5 @@ namespace DotNetNuke.Tests.Web.Api
                 return EncodeBase64(hasher.ComputeHash(Encoding.UTF8.GetBytes(data)));
             }
         }
-
-        #endregion
     }
 }

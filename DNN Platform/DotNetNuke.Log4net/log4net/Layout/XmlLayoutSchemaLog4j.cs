@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Text;
@@ -42,16 +41,13 @@ namespace log4net.Layout
     /// <author>Nicko Cadell</author>
     public class XmlLayoutSchemaLog4j : XmlLayoutBase
     {
-        #region Static Members
 
         /// <summary>
         /// The 1st of January 1970 in UTC
         /// </summary>
         private static readonly DateTime s_date1970 = new DateTime(1970, 1, 1);
 
-        #endregion
 
-        #region Constructors
 
         /// <summary>
         /// Constructs an XMLLayoutSchemaLog4j
@@ -81,9 +77,7 @@ namespace log4net.Layout
         {
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// <summary>
         /// The version of the log4j schema to use.
@@ -105,7 +99,6 @@ namespace log4net.Layout
             }
         }
 
-        #endregion
 
         /* Example log4j schema event
 

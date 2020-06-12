@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -19,8 +19,6 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Log.EventLog;
-
-#endregion
 
 namespace DotNetNuke.Security.Permissions
 {
@@ -42,8 +40,6 @@ namespace DotNetNuke.Security.Permissions
         {
             DataCache.RemoveCache(DataCache.PermissionsCacheKey);
         }
-
-        #region Public Methods
 
         public int AddPermission(PermissionInfo permission)
         {
@@ -106,10 +102,6 @@ namespace DotNetNuke.Security.Permissions
                                       UserController.Instance.GetCurrentUserInfo().UserID);
             this.ClearCache();
         }
-
-        #endregion
-
-        #region Shared Methods
 
         public static string BuildPermissions(IList Permissions, string PermissionKey)
         {
@@ -226,8 +218,6 @@ namespace DotNetNuke.Security.Permissions
 
             return result;
         }
-
-        #endregion
 
         [Obsolete("Deprecated in DNN 7.3.0. Replaced by GetPermissionsByModule(int, int). Scheduled removal in v10.0.0.")]
         public ArrayList GetPermissionsByModuleID(int moduleId)

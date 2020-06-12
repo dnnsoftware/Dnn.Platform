@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,8 +18,6 @@ using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Abstractions;
-
-#endregion
 
 namespace DotNetNuke.Modules.Admin.Users
 {
@@ -41,7 +39,6 @@ namespace DotNetNuke.Modules.Admin.Users
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -61,9 +58,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        #endregion
 
-        #region "Events"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -79,9 +74,7 @@ namespace DotNetNuke.Modules.Admin.Users
         public event EventHandler MembershipPromoteToSuperuser;
         public event EventHandler MembershipDemoteFromSuperuser;
 
-        #endregion
 
-        #region "Event Methods"
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Raises the MembershipPromoteToSuperuser Event
@@ -187,9 +180,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        #endregion
 
-        #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -253,9 +244,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.membershipForm.DataBind();
         }
 
-        #endregion
 
-        #region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -420,7 +409,5 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.OnMembershipUnLocked(EventArgs.Empty);
             }
         }
-
-        #endregion
     }
 }

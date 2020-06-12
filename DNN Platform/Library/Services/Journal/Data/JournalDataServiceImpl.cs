@@ -1,23 +1,19 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Data;
 
 using DotNetNuke.Data;
 
-#endregion
-
 namespace DotNetNuke.Services.Journal
 {
     internal class JournalDataServiceImpl : IJournalDataService
     {
         private readonly DataProvider _provider = DataProvider.Instance();
-
-        #region IJournalDataService Members
 
         public IDataReader Journal_ListForSummary(int portalId, int moduleId, int currentUserId, int rowIndex,
                                                   int maxRows)
@@ -217,7 +213,5 @@ namespace DotNetNuke.Services.Journal
         {
             this._provider.ExecuteNonQuery("Journal_TypeFilters_Save", portalId, moduleId, journalTypeId);
         }
-
-        #endregion
     }
 }

@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 // .NET Compact Framework 1.0 has no support for reading assembly attributes
 #if !NETCF
@@ -54,7 +52,6 @@ namespace log4net.Config
         // Class is not sealed because AliasDomainAttribute extends it while it is obsoleted
         //
 
-        #region Public Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AliasRepositoryAttribute" /> class with
@@ -72,9 +69,7 @@ namespace log4net.Config
             this.Name = name;
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets or sets the repository to alias to this assembly's repository.
@@ -93,13 +88,7 @@ namespace log4net.Config
             set { this.m_name = value; }
         }
 
-        #endregion Public Instance Properties
-
-        #region Private Instance Fields
-
         private string m_name = null;
-
-        #endregion Private Instance Fields
     }
 }
 

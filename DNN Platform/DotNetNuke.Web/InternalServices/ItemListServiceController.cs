@@ -35,8 +35,6 @@ namespace DotNetNuke.Web.InternalServices
         private const string PortalPrefix = "P-";
         private const string RootKey = "Root";
 
-        #region Dtos
-
         [DataContract]
         public class ItemDto
         {
@@ -60,11 +58,6 @@ namespace DotNetNuke.Web.InternalServices
             public string Id { get; set; }
         }
 
-        #endregion
-
-        #region Web Methods
-
-        #region Page Methods
         [HttpGet]
         public HttpResponseMessage GetPageDescendants(string parentId = null, int sortOrder = 0,
             string searchText = "", int portalId = -1, bool includeDisabled = false,
@@ -208,10 +201,6 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
-        #endregion
-
-        #region Folder Methods
-
         [HttpGet]
         public HttpResponseMessage GetFolderDescendants(string parentId = null, int sortOrder = 0, string searchText = "", string permission = null, int portalId = -1)
         {
@@ -271,10 +260,6 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
-        #endregion
-
-        #region File Methods
-
         [HttpGet]
         public HttpResponseMessage GetFiles(int parentId, string filter, int sortOrder = 0, string permission = null, int portalId = -1)
         {
@@ -310,12 +295,6 @@ namespace DotNetNuke.Web.InternalServices
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
-
-        #endregion
-
-        #endregion
-
-        #region Pages List
 
         private NTree<ItemDto> GetPagesInternal(int portalId, int sortOrder, bool includeDisabled = false,
             bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false,
@@ -928,10 +907,6 @@ namespace DotNetNuke.Web.InternalServices
             return filterTabs;
         }
 
-        #endregion
-
-        #region Folders List
-
         private NTree<ItemDto> GetFoldersInternal(int portalId, int sortOrder, string permissions)
         {
             var tree = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
@@ -1207,10 +1182,6 @@ namespace DotNetNuke.Web.InternalServices
                     this.HasPermission(folder, permission)));
         }
 
-        #endregion
-
-        #region Files List
-
         private NTree<ItemDto> GetFilesInternal(int portalId, int parentId, string filter, string searchText, int sortOrder, string permissions)
         {
             var tree = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
@@ -1286,9 +1257,7 @@ namespace DotNetNuke.Web.InternalServices
             return FolderManager.Instance.GetFiles(parentFolder).Where(f => searchFunc(f));
         }
 
-        #endregion
 
-        #region Users List
 
         /// <summary>
         /// This class stores a single search result needed by jQuery Tokeninput
@@ -1333,10 +1302,6 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
-        #endregion
-
-        #region Terms List
-
         [HttpGet]
         public HttpResponseMessage GetTerms(string q, bool includeSystem, bool includeTags)
         {
@@ -1363,10 +1328,6 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, terms);
         }
 
-        #endregion
-
-        #region Sort
-
         private static IEnumerable<ItemDto> ApplySort(IEnumerable<ItemDto> items, int sortOrder)
         {
             switch (sortOrder)
@@ -1379,10 +1340,6 @@ namespace DotNetNuke.Web.InternalServices
                     return items;
             }
         }
-
-        #endregion
-
-        #region check portal permission
 
         private static IEnumerable<PortalInfo> GetMyPortalGroup()
         {
@@ -1427,8 +1384,5 @@ namespace DotNetNuke.Web.InternalServices
 
             return portalId;
         }
-
-        #endregion
-
     }
 }

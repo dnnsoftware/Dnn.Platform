@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.IO;
@@ -41,7 +40,6 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public class QuietTextWriter : TextWriterAdapter
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Constructor
@@ -62,9 +60,7 @@ namespace log4net.Util
             this.ErrorHandler = errorHandler;
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets or sets the error handler that all errors are passed to.
@@ -107,9 +103,7 @@ namespace log4net.Util
             get { return this.m_closed; }
         }
 
-        #endregion Public Instance Properties
 
-        #region Override Implementation of TextWriter
 
         /// <summary>
         /// Writes a character to the underlying writer
@@ -190,9 +184,7 @@ namespace log4net.Util
             base.Close();
         }
 
-        #endregion Public Instance Methods
 
-        #region Private Instance Fields
 
         /// <summary>
         /// The error handler instance to pass all errors to
@@ -203,7 +195,5 @@ namespace log4net.Util
         /// Flag to indicate if this writer is closed
         /// </summary>
         private bool m_closed = false;
-
-        #endregion Private Instance Fields
     }
 }

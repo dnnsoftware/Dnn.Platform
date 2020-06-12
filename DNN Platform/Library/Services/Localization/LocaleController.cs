@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -19,8 +19,6 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Installer.Packages;
 
-#endregion
-
 namespace DotNetNuke.Services.Localization
 {
     /// <summary>
@@ -35,8 +33,6 @@ namespace DotNetNuke.Services.Localization
     /// </remarks>
     public class LocaleController : ComponentBase<ILocaleController, LocaleController>, ILocaleController
     {
-        #region Private Shared Methods
-
         private static object GetLocalesCallBack(CacheItemArgs cacheItemArgs)
         {
             var portalID = (int)cacheItemArgs.ParamList[0];
@@ -46,9 +42,7 @@ namespace DotNetNuke.Services.Localization
             return locales;
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// <summary>
         /// Determines whether the language can be delete.
@@ -319,7 +313,5 @@ namespace DotNetNuke.Services.Localization
                 .GetCultures(CultureTypes.SpecificCultures)
                 .Any(c => c.Name == name);
         }
-
-        #endregion
     }
 }

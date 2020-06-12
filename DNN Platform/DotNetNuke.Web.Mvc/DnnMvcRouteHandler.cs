@@ -41,13 +41,9 @@ namespace DotNetNuke.Web.Mvc
             return controllerFactory.GetControllerSessionBehavior(requestContext, controllerName);
         }
 
-        #region IRouteHandler Members
-
         IHttpHandler IRouteHandler.GetHttpHandler(RequestContext requestContext)
         {
             return this.GetHttpHandler(requestContext);
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -15,8 +15,6 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Search.Entities;
-
-#endregion
 
 namespace DotNetNuke.Entities.Modules.Definitions
 {
@@ -34,7 +32,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         private const string key = "ModuleDefID";
         private static readonly DataProvider dataProvider = DataProvider.Instance();
 
-        #region Private Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -49,7 +46,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
             return CBO.FillDictionary(key, dataProvider.GetModuleDefinitions(), new Dictionary<int, ModuleDefinitionInfo>());
         }
 
-        #endregion
 
         /// -----------------------------------------------------------------------------
         /// <summary>

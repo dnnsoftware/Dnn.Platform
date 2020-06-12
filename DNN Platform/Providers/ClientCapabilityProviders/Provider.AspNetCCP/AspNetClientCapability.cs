@@ -35,7 +35,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             }
         }
 
-        #region Constructor
 
         /// <summary>
         /// Constructs a new instance of ClientCapability.
@@ -120,9 +119,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             }
         }
 
-        #endregion
 
-        #region Private Methods
 
         /// <summary>
         /// Returns a dictionary of capability names and values as strings based on the object
@@ -334,7 +331,5 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
 
             return true;
         }
-
-        #endregion
     }
 }

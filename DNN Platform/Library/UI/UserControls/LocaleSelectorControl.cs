@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web.UI.WebControls;
@@ -10,8 +10,6 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
-
-#endregion
 
 namespace DotNetNuke.UI.UserControls
 {
@@ -23,14 +21,9 @@ namespace DotNetNuke.UI.UserControls
     /// -----------------------------------------------------------------------------
     public abstract class LocaleSelectorControl : UserControlBase
     {
-        #region "Controls"
-
         protected DropDownList ddlPortalDefaultLanguage;
         protected Literal litStatus;
         protected RadioButtonList rbViewType;
-
-        #endregion
-
         private string MyFileName = "LocaleSelectorControl.ascx";
         private string _ViewType = string.Empty;
 
@@ -66,8 +59,6 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        #region "Public Methods"
-
         public void BindDefaultLanguageSelector()
         {
             if (this.Page.IsPostBack == false)
@@ -76,10 +67,6 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        #endregion
-
-        #region "Public properties"
-
         public string CultureCode
         {
             get
@@ -87,10 +74,6 @@ namespace DotNetNuke.UI.UserControls
                 return this.ddlPortalDefaultLanguage.SelectedValue;
             }
         }
-
-        #endregion
-
-        #region "Event Handlers"
 
         protected override void OnLoad(EventArgs e)
         {
@@ -131,7 +114,5 @@ namespace DotNetNuke.UI.UserControls
         {
             this._ViewType = this.rbViewType.SelectedValue;
         }
-
-        #endregion
     }
 }

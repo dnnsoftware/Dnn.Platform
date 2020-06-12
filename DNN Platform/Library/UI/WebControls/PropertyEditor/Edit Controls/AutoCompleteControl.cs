@@ -21,16 +21,12 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:TextEditControl runat=server></{0}:TextEditControl>")]
     class AutoCompleteControl : TextEditControl
     {
-        #region Constructors
-
         public AutoCompleteControl()
         {
             this.Init += this.AutoCompleteControl_Init;
             this.Load += this.AutoCompleteControl_Load;
         }
-        #endregion
 
-        #region Page Events
         private void AutoCompleteControl_Init(object sender, System.EventArgs e)
         {
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/ProfileAutoComplete/dnn.ProfileAutoComplete.js");
@@ -43,7 +39,6 @@ namespace DotNetNuke.UI.WebControls
         {
 
         }
-        #endregion
 
         protected override void RenderEditMode(HtmlTextWriter writer)
         {

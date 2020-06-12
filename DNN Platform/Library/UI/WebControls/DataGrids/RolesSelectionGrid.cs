@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -19,7 +19,6 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Localization;
 
-#endregion
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.UI.WebControls
@@ -28,9 +27,6 @@ namespace DotNetNuke.UI.WebControls
 
     public class RolesSelectionGrid : Control, INamingContainer
     {
-
-        #region Private Members
-
         private readonly DataTable _dtRoleSelections = new DataTable();
         private IList<RoleInfo> _roles;
         private IList<string> _selectedRoles;
@@ -38,13 +34,6 @@ namespace DotNetNuke.UI.WebControls
         private DataGrid dgRoleSelection;
         private Label lblGroups;
         private Panel pnlRoleSlections;
-
-        #endregion
-
-        #region Public Properties
-
-        #region DataGrid Properties
-
 
         public TableItemStyle AlternatingItemStyle
         {
@@ -138,7 +127,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
 
         /// <summary>
         /// List of the Names of the selected Roles
@@ -199,10 +187,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
-
-        #region Private Properties
-
         private DataTable dtRolesSelection
         {
             get
@@ -223,9 +207,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
 
-        #region Private Methods
 
         /// <summary>
         /// Bind the data to the controls
@@ -328,9 +310,7 @@ namespace DotNetNuke.UI.WebControls
             this.dgRoleSelection.Columns.Add(checkCol);
         }
 
-        #endregion
 
-        #region Protected Methods
 
         /// <summary>
         /// Load the ViewState
@@ -495,8 +475,5 @@ namespace DotNetNuke.UI.WebControls
                 }
             }
         }
-
-        #endregion
-
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -16,16 +16,12 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Web.UI.WebControls;
 
-#endregion
-
 namespace DotNetNuke.UI.ControlPanel
 {
     using System.Web.UI.WebControls;
 
     public partial class SwitchSite : UserControl, IDnnRibbonBarTool
     {
-        #region Event Handlers
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -70,10 +66,6 @@ namespace DotNetNuke.UI.ControlPanel
             }
         }
 
-        #endregion
-
-        #region Properties
-
         public override bool Visible
         {
             get
@@ -102,10 +94,6 @@ namespace DotNetNuke.UI.ControlPanel
             }
         }
 
-        #endregion
-
-        #region Methods
-
         private void LoadPortalsList()
         {
             var portals = PortalController.Instance.GetPortals();
@@ -121,7 +109,5 @@ namespace DotNetNuke.UI.ControlPanel
             // SitesLst.Items.Insert(0, new ListItem(string.Empty));
             this.SitesLst.InsertItem(0, string.Empty, string.Empty);
         }
-
-        #endregion
     }
 }

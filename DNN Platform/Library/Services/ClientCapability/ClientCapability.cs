@@ -26,7 +26,6 @@ namespace DotNetNuke.Services.ClientCapability
             this._capabilities = new Dictionary<string, string>();
         }
 
-        #region Implementation of IClientCapability
 
         /// <summary>
         ///   Unique ID of the client making request.
@@ -122,7 +121,5 @@ namespace DotNetNuke.Services.ClientCapability
                 throw new NotImplementedException(string.Empty);
             }
         }
-
-        #endregion
     }
 }

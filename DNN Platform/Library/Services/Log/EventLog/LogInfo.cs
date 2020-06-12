@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
@@ -10,15 +10,11 @@ using System.Text;
 using System.Xml;
 using DotNetNuke.Services.Exceptions;
 
-#endregion
-
 namespace DotNetNuke.Services.Log.EventLog
 {
     [Serializable]
     public class LogInfo
     {
-        #region Constructors
-
         public LogInfo()
         {
             this.LogGUID = Guid.NewGuid().ToString();
@@ -36,10 +32,6 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             this.Deserialize(content);
         }
-
-        #endregion
-
-        #region "Properties"
 
         public string LogGUID { get; set; }
 
@@ -70,10 +62,6 @@ namespace DotNetNuke.Services.Log.EventLog
         public string LogConfigID { get; set; }
 
         public ExceptionInfo Exception { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         public void AddProperty(string PropertyName, string PropertyValue)
         {
@@ -259,7 +247,5 @@ namespace DotNetNuke.Services.Log.EventLog
             }
             writer.WriteEndElement();
         }
-
-        #endregion
     }
 }

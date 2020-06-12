@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -35,7 +34,6 @@ namespace log4net.Core
         , ICloneable
 #endif
     {
-        #region Interfaces
 
         /// <summary>
         /// Supports type-safe iteration over a <see cref="LevelCollection"/>.
@@ -65,19 +63,12 @@ namespace log4net.Core
             void Reset();
         }
 
-        #endregion
-
         private const int DEFAULT_CAPACITY = 16;
-
-        #region Implementation (data)
-
         private Level[] m_array;
         private int m_count = 0;
         private int m_version = 0;
 
-        #endregion
 
-        #region Static Wrappers
 
         /// <summary>
         /// Creates a read-only wrapper for a <c>LevelCollection</c> instance.
@@ -93,9 +84,7 @@ namespace log4net.Core
             return new ReadOnlyLevelCollection(list);
         }
 
-        #endregion
 
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <c>LevelCollection</c> class
@@ -171,9 +160,7 @@ namespace log4net.Core
         {
             this.m_array = null;
         }
-        #endregion
 
-        #region Operations (type-safe ICollection)
 
         /// <summary>
         /// Gets the number of elements actually contained in the <c>LevelCollection</c>.
@@ -226,9 +213,7 @@ namespace log4net.Core
             get { return this.m_array; }
         }
 
-        #endregion
 
-        #region Operations (type-safe IList)
 
         /// <summary>
         /// Gets or sets the <see cref="Level"/> at the specified index.
@@ -428,9 +413,7 @@ namespace log4net.Core
             get { return false; }
         }
 
-        #endregion
 
-        #region Operations (type-safe IEnumerable)
 
         /// <summary>
         /// Returns an enumerator that can iterate through the <c>LevelCollection</c>.
@@ -441,9 +424,7 @@ namespace log4net.Core
             return new Enumerator(this);
         }
 
-        #endregion
 
-        #region Public helpers (just to mimic some nice features of ArrayList)
 
         /// <summary>
         /// Gets or sets the number of elements the <c>LevelCollection</c> can contain.
@@ -543,9 +524,7 @@ namespace log4net.Core
             this.Capacity = this.m_count;
         }
 
-        #endregion
 
-        #region Implementation (helpers)
 
         /// <exception cref="ArgumentOutOfRangeException">
         /// <para><paramref name="i"/> is less than zero</para>
@@ -582,18 +561,10 @@ namespace log4net.Core
             this.Capacity = newCapacity;
         }
 
-        #endregion
-
-        #region Implementation (ICollection)
-
         void ICollection.CopyTo(Array array, int start)
         {
             Array.Copy(this.m_array, 0, array, start, this.m_count);
         }
-
-        #endregion
-
-        #region Implementation (IList)
 
         object IList.this[int i]
         {
@@ -631,33 +602,23 @@ namespace log4net.Core
             this.RemoveAt(pos);
         }
 
-        #endregion
-
-        #region Implementation (IEnumerable)
-
         IEnumerator IEnumerable.GetEnumerator()
         {
             return (IEnumerator) this.GetEnumerator();
         }
 
-        #endregion
 
-        #region Nested enumerator class
 
         /// <summary>
         /// Supports simple iteration over a <see cref="LevelCollection"/>.
         /// </summary>
         private sealed class Enumerator : IEnumerator, ILevelCollectionEnumerator
         {
-            #region Implementation (data)
-
             private readonly LevelCollection m_collection;
             private int m_index;
             private int m_version;
 
-            #endregion
 
-            #region Construction
 
             /// <summary>
             /// Initializes a new instance of the <c>Enumerator</c> class.
@@ -670,9 +631,7 @@ namespace log4net.Core
                 this.m_version = tc.m_version;
             }
 
-            #endregion
 
-            #region Operations (type-safe IEnumerator)
 
             /// <summary>
             /// Gets the current element in the collection.
@@ -711,40 +670,20 @@ namespace log4net.Core
                 this.m_index = -1;
             }
 
-            #endregion
-
-            #region Implementation (IEnumerator)
-
             object IEnumerator.Current
             {
                 get { return this.Current; }
             }
-
-            #endregion
         }
-
-        #endregion
-
-        #region Nested Read Only Wrapper class
 
         private sealed class ReadOnlyLevelCollection : LevelCollection
         {
-            #region Implementation (data)
-
             private readonly LevelCollection m_collection;
-
-            #endregion
-
-            #region Construction
 
             internal ReadOnlyLevelCollection(LevelCollection list) : base(Tag.Default)
             {
                 this.m_collection = list;
             }
-
-            #endregion
-
-            #region Type-safe ICollection
 
             public override void CopyTo(Level[] array)
             {
@@ -769,10 +708,6 @@ namespace log4net.Core
             {
                 get { return this.m_collection.SyncRoot; }
             }
-
-            #endregion
-
-            #region Type-safe IList
 
             public override Level this[int i]
             {
@@ -825,18 +760,12 @@ namespace log4net.Core
                 get { return true; }
             }
 
-            #endregion
-
-            #region Type-safe IEnumerable
-
             public override ILevelCollectionEnumerator GetEnumerator()
             {
                 return this.m_collection.GetEnumerator();
             }
 
-            #endregion
 
-            #region Public Helpers
 
             // (just to mimic some nice features of ArrayList)
             public override int Capacity
@@ -854,11 +783,7 @@ namespace log4net.Core
             {
                 throw new NotSupportedException("This is a Read Only Collection and can not be modified");
             }
-
-            #endregion
         }
-
-        #endregion
     }
 
 }

@@ -19,7 +19,6 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     /// </summary>
     public class UserProfilePicTransform : ImageTransform
     {
-        #region Properties
         /// <summary>
         /// Sets the UserID of the profile pic
         /// </summary>
@@ -34,7 +33,6 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// Is reusable
         /// </summary>
         public bool IsReusable => false;
-        #endregion
 
         public UserProfilePicTransform()
         {

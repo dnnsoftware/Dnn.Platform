@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Linq;
@@ -19,8 +19,6 @@ using DotNetNuke.Framework;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Client;
 
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {   /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
@@ -35,8 +33,6 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:DNNRegionEditControl runat=server></{0}:DNNRegionEditControl>")]
     public class DNNRegionEditControl : EditControl
     {
-
-        #region Controls
         private DropDownList _Regions;
         private DropDownList Regions
         {
@@ -75,9 +71,7 @@ namespace DotNetNuke.UI.WebControls
                 return this._InitialValue;
             }
         }
-        #endregion
 
-        #region Properties
         protected override string StringValue
         {
             get
@@ -127,9 +121,7 @@ namespace DotNetNuke.UI.WebControls
                 return PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
             }
         }
-        #endregion
 
-        #region Constructors
         public DNNRegionEditControl()
         {
             this.Init += this.DnnRegionControl_Init;
@@ -139,9 +131,7 @@ namespace DotNetNuke.UI.WebControls
             this.Init += this.DnnRegionControl_Init;
             this.SystemType = type;
         }
-        #endregion
 
-        #region Overrides
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnAttributesChanged runs when the CustomAttributes property has changed.
@@ -241,9 +231,7 @@ namespace DotNetNuke.UI.WebControls
             this.RenderChildren(writer);
             writer.RenderEndTag();
         }
-        #endregion
 
-        #region Page Events
         private void DnnRegionControl_Init(object sender, System.EventArgs e)
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
@@ -253,14 +241,9 @@ namespace DotNetNuke.UI.WebControls
             JavaScript.RequestRegistration(CommonJs.jQueryUI);
         }
 
-        #endregion
-
-        #region Private Methods
         private void LoadControls()
         {
             this.RegionCode.Value = this.StringValue;
         }
-        #endregion
-
     }
 }

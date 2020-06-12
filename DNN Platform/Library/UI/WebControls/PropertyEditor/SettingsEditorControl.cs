@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -10,8 +10,6 @@ using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-
-#endregion
 
 namespace DotNetNuke.UI.WebControls
 {
@@ -30,7 +28,6 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:SettingsEditorControl runat=server></{0}:SettingsEditorControl>")]
     public class SettingsEditorControl : PropertyEditorControl
     {
-        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -46,9 +43,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -67,9 +62,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public Hashtable Visibility { get; set; }
 
-        #endregion
 
-        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -93,10 +86,6 @@ namespace DotNetNuke.UI.WebControls
             arrSettings.Sort(new SettingNameComparer());
             return arrSettings;
         }
-
-        #endregion
-
-        #region "Protected Override Methods"
 
         protected override void AddEditorRow(Table table, object obj)
         {
@@ -132,7 +121,5 @@ namespace DotNetNuke.UI.WebControls
             }
             return _IsVisible;
         }
-
-        #endregion
     }
 }

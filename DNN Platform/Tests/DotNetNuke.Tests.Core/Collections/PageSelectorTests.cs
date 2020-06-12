@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -12,22 +12,16 @@ using DotNetNuke.Tests.Utilities;
 
 using NUnit.Framework;
 
-#endregion
-
 namespace DotNetNuke.Tests.Core.Collections
 {
     [TestFixture]
     public class PageSelectorTests
     {
-        #region Setup/Teardown
-
         [SetUp]
         public void SetUp()
         {
             this.list = Util.CreateIntegerList(Constants.PAGE_TotalCount);
         }
-
-        #endregion
 
         private IEnumerable<int> list;
 

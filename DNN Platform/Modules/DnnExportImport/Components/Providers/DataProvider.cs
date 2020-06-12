@@ -15,8 +15,6 @@ namespace Dnn.ExportImport.Components.Providers
 {
     internal class DataProvider
     {
-        #region Shared/Static Methods
-
         private static readonly DataProvider Provider;
 
         private readonly DotNetNuke.Data.DataProvider _dataProvider = DotNetNuke.Data.DataProvider.Instance();
@@ -35,8 +33,6 @@ namespace Dnn.ExportImport.Components.Providers
         {
             // so it can't be instantiated outside this class
         }
-
-        #endregion
 
         public void UpdateRecordChangers(string tableName, string primaryKeyName, int primaryKeyId, int? createdBy, int? modifiedBy)
         {

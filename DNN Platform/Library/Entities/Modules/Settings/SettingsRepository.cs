@@ -21,13 +21,9 @@ namespace DotNetNuke.Entities.Modules.Settings
 {
     public abstract class SettingsRepository<T> : ISettingsRepository<T> where T : class, new()
     {
-        #region Properties
-
         private IList<ParameterMapping> Mapping { get; }
 
         private readonly IModuleController _moduleController;
-
-        #endregion
 
         protected SettingsRepository()
         {
@@ -40,7 +36,6 @@ namespace DotNetNuke.Entities.Modules.Settings
             return CBO.GetCachedObject<T>(new CacheItemArgs(this.CacheKey(moduleContext.TabModuleID), 20, CacheItemPriority.AboveNormal, moduleContext), this.Load, false);
         }
 
-        #region Serialization
         public void SaveSettings(ModuleInfo moduleContext, T settings)
         {
             Requires.NotNull("settings", settings);
@@ -101,9 +96,6 @@ namespace DotNetNuke.Entities.Modules.Settings
             return Convert.ToString(settingValue, CultureInfo.InvariantCulture);
         }
 
-        #endregion
-
-        #region Mappings
         protected IList<ParameterMapping> LoadMapping()
         {
             var cacheKey = this.MappingCacheKey;
@@ -143,9 +135,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
             return mapping;
         }
-        #endregion
 
-        #region Deserialization
         private T Load(CacheItemArgs args)
         {
             var ctlModule = (ModuleInfo)args.ParamList[0];
@@ -310,8 +300,6 @@ namespace DotNetNuke.Entities.Modules.Settings
 
             return propertyValue;
         }
-
-        #endregion
 
         private static object CallSerializerMethod(string serializerTypeName, Type typeArgument, object value, string methodName)
         {

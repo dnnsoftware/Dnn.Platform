@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 #if !NETCF
 using System;
@@ -50,7 +48,6 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public sealed class LogicalThreadContextStack : IFixingRequired
     {
-        #region Private Instance Fields
 
         /// <summary>
         /// The stack store.
@@ -69,13 +66,11 @@ namespace log4net.Util
         /// </summary>
         #if NET_2_0 || MONO_2_0
         private TwoArgAction<string, LogicalThreadContextStack> m_registerNew;
-                #else
+#else
 		private TwoArgAction m_registerNew;
-        #endif
+#endif
 
-        #endregion Private Instance Fields
 
-        #region Public Instance Constructors
 
         /// <summary>
         /// Internal constructor
@@ -85,7 +80,7 @@ namespace log4net.Util
         /// Initializes a new instance of the <see cref="LogicalThreadContextStack" /> class.
         /// </para>
         /// </remarks>
-        #if NET_2_0 || MONO_2_0
+#if NET_2_0 || MONO_2_0
         internal LogicalThreadContextStack(string propertyKey, TwoArgAction<string, LogicalThreadContextStack> registerNew)
                 #else
 		internal LogicalThreadContextStack(string propertyKey, TwoArgAction registerNew)
@@ -95,9 +90,7 @@ namespace log4net.Util
             this.m_registerNew = registerNew;
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Properties
 
         /// <summary>
         /// The number of messages in the stack
@@ -117,9 +110,7 @@ namespace log4net.Util
             get { return this.m_stack.Count; }
         }
 
-        #endregion // Public Properties
 
-        #region Public Methods
 
         /// <summary>
         /// Clears all the contextual information held in this stack.
@@ -202,9 +193,7 @@ namespace log4net.Util
             return new AutoPopStackFrame(contextStack, stack.Count - 1);
         }
 
-        #endregion Public Methods
 
-        #region Internal Methods
 
         /// <summary>
         /// Gets the current context information for this stack.
@@ -237,7 +226,6 @@ namespace log4net.Util
             set { this.m_stack = value; }
         }
 
-        #endregion Internal Methods
 
         /// <summary>
         /// Gets the current context information for this stack.
@@ -277,15 +265,11 @@ namespace log4net.Util
         /// </remarks>
         private sealed class StackFrame
         {
-            #region Private Instance Fields
-
             private readonly string m_message;
             private readonly StackFrame m_parent;
             private string m_fullMessage = null;
 
-            #endregion
 
-            #region Internal Instance Constructors
 
             /// <summary>
             /// Constructor
@@ -309,9 +293,7 @@ namespace log4net.Util
                 }
             }
 
-            #endregion Internal Instance Constructors
 
-            #region Internal Instance Properties
 
             /// <summary>
             /// Get the message.
@@ -349,8 +331,6 @@ namespace log4net.Util
                     return this.m_fullMessage;
                 }
             }
-
-            #endregion Internal Instance Properties
         }
 
         /// <summary>
@@ -364,7 +344,6 @@ namespace log4net.Util
         /// </remarks>
         private struct AutoPopStackFrame : IDisposable
         {
-            #region Private Instance Fields
 
             /// <summary>
             /// The depth to trim the stack to when this instance is disposed
@@ -376,9 +355,7 @@ namespace log4net.Util
             /// </summary>
             private LogicalThreadContextStack m_logicalThreadContextStack;
 
-            #endregion Private Instance Fields
 
-            #region Internal Instance Constructors
 
             /// <summary>
             /// Constructor
@@ -397,9 +374,7 @@ namespace log4net.Util
                 this.m_logicalThreadContextStack = logicalThreadContextStack;
             }
 
-            #endregion Internal Instance Constructors
 
-            #region Implementation of IDisposable
 
             /// <summary>
             /// Returns the stack to the correct depth.
@@ -425,8 +400,6 @@ namespace log4net.Util
                         ltcs);
                 }
             }
-
-            #endregion Implementation of IDisposable
         }
 
     }

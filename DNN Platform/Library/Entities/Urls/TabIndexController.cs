@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -20,15 +20,11 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Log.EventLog;
 
-#endregion
-
 namespace DotNetNuke.Entities.Urls
 {
     internal static class TabIndexController
     {
         private static readonly object tabPathDictBuildLock = new object();
-
-        #region Private Methods
 
         private static void AddCustomRedirectsToDictionary(
             SharedDictionary<string, string> tabIndex,
@@ -1403,10 +1399,6 @@ namespace DotNetNuke.Entities.Urls
             return customHttpAlias;
         }
 
-        #endregion
-
-        #region Internal Methods
-
         internal static string CreateRewritePath(int tabId, string cultureCode, params string[] keyValuePair)
         {
             string rewritePath = "?TabId=" + tabId.ToString();
@@ -1712,10 +1704,6 @@ namespace DotNetNuke.Entities.Urls
             return tabPath ?? TabPathHelper.GetFriendlyUrlTabPath(tab, options, parentTraceId);
         }
 
-        #endregion
-
-        #region Public Methods
-
         public static void InvalidateDictionary(string reason, PageIndexData rebuildData, int portalId)
         {
             // if supplied, store the rebuildData for when the dictionary gets rebuilt
@@ -1742,8 +1730,5 @@ namespace DotNetNuke.Entities.Urls
             log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
             LogController.Instance.AddLog(log);
         }
-
-        #endregion
-
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -40,7 +39,6 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public abstract class LevelMappingEntry : IOptionHandler
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Default protected constructor
@@ -54,9 +52,7 @@ namespace log4net.Util
         {
         }
 
-        #endregion // Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// The level that is the key for this mapping
@@ -76,9 +72,7 @@ namespace log4net.Util
             set { this.m_level = value; }
         }
 
-        #endregion // Public Instance Properties
 
-        #region IOptionHandler Members
 
         /// <summary>
         /// Initialize any options defined on this entry
@@ -93,12 +87,6 @@ namespace log4net.Util
             // default implementation is to do nothing
         }
 
-        #endregion // IOptionHandler Members
-
-        #region Private Instance Fields
-
         private Level m_level;
-
-        #endregion // Private Instance Fields
     }
 }

@@ -34,8 +34,6 @@ namespace DotNetNuke.Tests.Content
         private Mock<DataProvider> _mockDataProvider;
         private Mock<Services.Search.Internals.ISearchHelper> _mockSearchHelper;
 
-        #region Test Initialize
-
         [SetUp]
         public void SetUp()
         {
@@ -55,10 +53,6 @@ namespace DotNetNuke.Tests.Content
         {
             MockComponentProvider.ResetContainer();
         }
-
-        #endregion
-
-        #region AddContentItem Tests
 
         [Test]
         public void ContentController_AddContentItem_Throws_On_Null_ContentItem()
@@ -131,10 +125,6 @@ namespace DotNetNuke.Tests.Content
             Assert.AreEqual(Constants.CONTENT_AddContentItemId, content.ContentItemId);
         }
 
-        #endregion
-
-        #region DeleteContentItem Tests
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ContentController_DeleteContentItem_Throws_On_Null_ContentItem()
@@ -176,10 +166,6 @@ namespace DotNetNuke.Tests.Content
             // Assert
             mockDataService.Verify(ds => ds.DeleteContentItem(content.ContentItemId));
         }
-
-        #endregion
-
-        #region GetContentItem Tests
 
         [Test]
         public void ContentController_GetContentItem_Throws_On_Negative_ContentItemId()
@@ -238,10 +224,6 @@ namespace DotNetNuke.Tests.Content
             Assert.AreEqual(ContentTestHelper.GetContent(Constants.CONTENT_ValidContentItemId), content.Content);
             Assert.AreEqual(ContentTestHelper.GetContentKey(Constants.CONTENT_ValidContentItemId), content.ContentKey);
         }
-
-        #endregion
-
-        #region GetContentItemsByTerm Tests
 
         [Test]
         public void ContentController_GetContentItemsByTerm_Throws_On_Null_Term()
@@ -303,10 +285,6 @@ namespace DotNetNuke.Tests.Content
             Assert.AreEqual(Constants.CONTENT_TaggedItemCount, contentItems.Count());
         }
 
-        #endregion
-
-        #region GetContentItemsByContentType
-
         [Test]
         public void ContentController_GetContentItemsByContentType_Returns_Results()
         {
@@ -334,10 +312,6 @@ namespace DotNetNuke.Tests.Content
             Assert.IsEmpty(items);
         }
 
-        #endregion
-
-        #region GetContentItensByModuleId
-
         [Test]
         public void GetContentItemsByModuleId_With_Negative_ModuleId_Returns_ContentItems()
         {
@@ -353,10 +327,6 @@ namespace DotNetNuke.Tests.Content
             Assert.AreEqual(negative.Length, 10);
             Assert.AreEqual(positive.Length, 1);
         }
-
-        #endregion
-
-        #region GetUnIndexedContentItems Tests
 
         [Test]
         public void ContentController_GetUnIndexedContentItems_Calls_DataService()
@@ -413,10 +383,6 @@ namespace DotNetNuke.Tests.Content
             }
         }
 
-        #endregion
-
-        #region UpdateContentItem Tests
-
         [Test]
         public void ContentController_UpdateContentItem_Throws_On_Null_ContentItem()
         {
@@ -461,10 +427,6 @@ namespace DotNetNuke.Tests.Content
             // Assert
             mockDataService.Verify(ds => ds.UpdateContentItem(content, It.IsAny<int>()));
         }
-
-        #endregion
-
-        #region AddMetaData Tests
 
         [Test]
         public void ContentController_AddMetaData_Throws_On_Null_ContentItem()
@@ -521,10 +483,6 @@ namespace DotNetNuke.Tests.Content
             mockDataService.Verify(ds => ds.AddMetaData(content, Constants.CONTENT_ValidMetaDataName, Constants.CONTENT_ValidMetaDataValue));
         }
 
-        #endregion
-
-        #region DeleteMetaData Tests
-
         [Test]
         public void ContentController_DeleteMetaData_Throws_On_Null_ContentItem()
         {
@@ -579,10 +537,6 @@ namespace DotNetNuke.Tests.Content
             // Assert
             mockDataService.Verify(ds => ds.DeleteMetaData(content, Constants.CONTENT_ValidMetaDataName, Constants.CONTENT_ValidMetaDataValue));
         }
-
-        #endregion
-
-        #region GetMetaData Tests
 
         [Test]
         public void ContentController_GetMetaData_Throws_On_Negative_ContentItemId()
@@ -640,10 +594,6 @@ namespace DotNetNuke.Tests.Content
             // Assert
             Assert.AreEqual(Constants.CONTENT_MetaDataCount, metaData.Count);
         }
-
-        #endregion
-
-        #region Title Tests
 
         [Test]
         public void ContentController_Title_Is_Saved_On_Add()
@@ -736,7 +686,5 @@ namespace DotNetNuke.Tests.Content
             mockDataService.Verify(ds => ds.AddMetaData(content, AttachmentController.TitleKey, Constants.CONTENT_ValidTitle));
             mockDataService.Verify(ds => ds.AddMetaData(content, AttachmentController.TitleKey, Constants.CONTENT_ValidTitle2));
         }
-
-        #endregion
     }
 }

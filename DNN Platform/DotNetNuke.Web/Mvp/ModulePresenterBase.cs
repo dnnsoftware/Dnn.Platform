@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -18,15 +18,11 @@ using DotNetNuke.Web.Validators;
 
 using WebFormsMvp;
 
-#endregion
-
 namespace DotNetNuke.Web.Mvp
 {
     [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
     public abstract class ModulePresenterBase<TView> : Presenter<TView> where TView : class, IModuleViewBase
     {
-        #region Constructors
-
         protected ModulePresenterBase(TView view) : base(view)
         {
             // Try and cast view to Control to get common control properties
@@ -49,10 +45,6 @@ namespace DotNetNuke.Web.Mvp
             view.Load += this.LoadInternal;
         }
 
-        #endregion
-
-        #region Protected Properties
-
         protected internal virtual bool AllowAnonymousAccess
         {
             get
@@ -68,10 +60,6 @@ namespace DotNetNuke.Web.Mvp
                 return true;
             }
         }
-
-        #endregion
-
-        #region Public Properties
 
         public bool AutoDataBind { get; set; }
 
@@ -99,10 +87,6 @@ namespace DotNetNuke.Web.Mvp
 
         public Validator Validator { get; set; }
 
-        #endregion
-
-        #region Event Handlers
-
         private void InitializeInternal(object sender, EventArgs e)
         {
             this.LoadFromContext();
@@ -116,10 +100,6 @@ namespace DotNetNuke.Web.Mvp
                 this.OnLoad();
             }
         }
-
-        #endregion
-
-        #region Protected Methods
 
         protected internal virtual bool CheckAuthPolicy()
         {
@@ -237,10 +217,6 @@ namespace DotNetNuke.Web.Mvp
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         public virtual void RestoreState(StateBag stateBag)
         {
             AttributeBasedViewStateSerializer.DeSerialize(this, stateBag);
@@ -250,7 +226,5 @@ namespace DotNetNuke.Web.Mvp
         {
             AttributeBasedViewStateSerializer.Serialize(this, stateBag);
         }
-
-        #endregion
     }
 }

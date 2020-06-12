@@ -654,7 +654,6 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return environment;
         }
 
-        #region --- Text Manipulation Methods for slashes ---
         protected static string NormalizeSlashes(string s)
         {
             if (string.IsNullOrEmpty(s) || s == "/")
@@ -685,8 +684,6 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         {
             return string.IsNullOrEmpty(s) ? string.Empty : Regex.Replace(s, @"(.*)\\*$", "$1", RegexOptions.RightToLeft);
         }
-
-        #endregion
 
         internal class ConfigMapPath : IConfigMapPath
         {

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -17,21 +17,13 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 
-#endregion
-
 namespace DotNetNuke.Services.ModuleCache
 {
     public class FileProvider : ModuleCachingProvider
     {
-        #region Private Members
-
         private const string DataFileExtension = ".data.resources";
         private const string AttribFileExtension = ".attrib.resources";
         private static readonly SharedDictionary<int, string> CacheFolderPath = new SharedDictionary<int, string>(LockingStrategy.ReaderWriter);
-
-        #endregion
-
-        #region Private Methods
 
         private string GenerateCacheKeyHash(int tabModuleId, string cacheKey)
         {
@@ -161,10 +153,6 @@ namespace DotNetNuke.Services.ModuleCache
         {
             return cacheFolder.Contains(Globals.ApplicationMapPath);
         }
-
-        #endregion
-
-        #region Abstract Method Implementation
 
         public override string GenerateCacheKey(int tabModuleId, SortedDictionary<string, string> varyBy)
         {
@@ -302,7 +290,5 @@ namespace DotNetNuke.Services.ModuleCache
                 Exceptions.Exceptions.LogException(ex);
             }
         }
-
-        #endregion
     }
 }

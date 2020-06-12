@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -28,7 +27,6 @@ using log4net.Repository;
 
 namespace log4net.Core
 {
-    #region WrapperCreationHandler
 
     /// <summary>
     /// Delegate used to handle creation of new wrappers.
@@ -47,7 +45,6 @@ namespace log4net.Core
     /// </remarks>
     public delegate ILoggerWrapper WrapperCreationHandler(ILogger logger);
 
-    #endregion WrapperCreationHandler
 
     /// <summary>
     /// Maps between logger objects and wrapper objects.
@@ -70,7 +67,6 @@ namespace log4net.Core
     /// <author>Gert Driesen</author>
     public class WrapperMap
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WrapperMap" />
@@ -90,9 +86,7 @@ namespace log4net.Core
             this.m_shutdownHandler = new LoggerRepositoryShutdownEventHandler(this.ILoggerRepository_Shutdown);
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets the wrapper object for the specified logger.
@@ -152,9 +146,7 @@ namespace log4net.Core
             }
         }
 
-        #endregion Public Instance Properties
 
-        #region Protected Instance Properties
 
         /// <summary>
         /// Gets the map of logger repositories.
@@ -174,9 +166,7 @@ namespace log4net.Core
             get { return this.m_repositories; }
         }
 
-        #endregion Protected Instance Properties
 
-        #region Protected Instance Methods
 
         /// <summary>
         /// Creates the wrapper object for the specified logger.
@@ -239,9 +229,7 @@ namespace log4net.Core
             }
         }
 
-        #endregion Protected Instance Methods
 
-        #region Private Instance Variables
 
         /// <summary>
         /// Map of logger repositories to hashtables of ILogger to ILoggerWrapper mappings
@@ -257,7 +245,5 @@ namespace log4net.Core
         /// Internal reference to the delegate used to register for repository shutdown events.
         /// </summary>
         private readonly LoggerRepositoryShutdownEventHandler m_shutdownHandler;
-
-        #endregion Private Instance Variables
     }
 }

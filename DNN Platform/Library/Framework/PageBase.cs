@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -28,8 +28,6 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
-#endregion
-
 namespace DotNetNuke.Framework
 {
     /// -----------------------------------------------------------------------------
@@ -50,16 +48,12 @@ namespace DotNetNuke.Framework
         private static readonly Regex LinkItemMatchRegex = new Regex(LinkItemPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private PageStatePersister _persister;
-        #region Private Members
-
         private readonly NameValueCollection _htmlAttributes = new NameValueCollection();
         private readonly ArrayList _localizedControls;
         private CultureInfo _pageCulture;
         private string _localResourceFile;
 
-        #endregion
 
-        #region Constructors
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -71,9 +65,7 @@ namespace DotNetNuke.Framework
             this._localizedControls = new ArrayList();
         }
 
-        #endregion
 
-        #region Protected Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -107,10 +99,6 @@ namespace DotNetNuke.Framework
                 return this._persister;
             }
         }
-
-        #endregion
-
-        #region Public Properties
 
         public PortalSettings PortalSettings
         {
@@ -165,10 +153,6 @@ namespace DotNetNuke.Framework
         /// </summary>
         public bool HeaderIsWritten { get; internal set; }
 
-        #endregion
-
-        #region Private Methods
-
         private string GetErrorUrl(string url, Exception exc, bool hideContent = true)
         {
             if (this.Request.QueryString["error"] != null)
@@ -214,10 +198,6 @@ namespace DotNetNuke.Framework
             if (this._tracelLogger.IsDebugEnabled)
                 this._tracelLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
         }
-
-        #endregion
-
-        #region Protected Methods
 
         protected virtual void RegisterAjaxScript()
         {
@@ -337,9 +317,7 @@ namespace DotNetNuke.Framework
         }
 
 
-        #endregion
 
-        #region Public Methods
 
         /// <summary>
         /// <para>GetControlAttribute looks a the type of control and does it's best to find an AttributeCollection.</para>
@@ -641,7 +619,5 @@ namespace DotNetNuke.Framework
                 ac.Remove(IconController.IconStyleName);
             }
         }
-
-        #endregion
     }
 }

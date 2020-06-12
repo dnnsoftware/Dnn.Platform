@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Text;
@@ -43,7 +42,6 @@ namespace log4net.Util
         private readonly string m_format;
         private readonly object[] m_args;
 
-        #region Constructor
 
         /// <summary>
         /// Initialise the <see cref="SystemStringFormat"/>
@@ -58,7 +56,6 @@ namespace log4net.Util
             this.m_args = args;
         }
 
-        #endregion Constructor
 
         /// <summary>
         /// Format the string and arguments
@@ -69,7 +66,6 @@ namespace log4net.Util
             return StringFormat(this.m_provider, this.m_format, this.m_args);
         }
 
-        #region StringFormat
 
         /// <summary>
         /// Replaces the format item in a specified <see cref="string"/> with the text equivalent
@@ -223,9 +219,7 @@ namespace log4net.Util
             }
         }
 
-        #endregion StringFormat
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the SystemStringFormat class.
@@ -235,7 +229,5 @@ namespace log4net.Util
         /// log message.
         /// </remarks>
         private readonly static Type declaringType = typeof(SystemStringFormat);
-
-        #endregion Private Static Fields
     }
 }

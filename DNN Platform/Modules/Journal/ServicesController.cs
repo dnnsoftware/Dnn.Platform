@@ -40,7 +40,6 @@ namespace DotNetNuke.Modules.Journal
 
         private static readonly string[] AcceptedFileExtensions = { "jpg", "png", "gif", "jpe", "jpeg", "tiff", "bmp" };
 
-        #region Public Methods
         public class CreateDTO
         {
             public string Text { get; set; }
@@ -507,9 +506,6 @@ namespace DotNetNuke.Modules.Journal
             }
         }
 
-        #endregion
-
-        #region Private Methods
         private string ParseMentions(string content, IList<MentionDTO> mentions, ref IDictionary<string, UserInfo> mentionedUsers)
         {
             if (mentions == null || mentions.Count == 0)
@@ -604,7 +600,5 @@ namespace DotNetNuke.Modules.Journal
 
             return folders;
         }
-
-        #endregion
     }
 }

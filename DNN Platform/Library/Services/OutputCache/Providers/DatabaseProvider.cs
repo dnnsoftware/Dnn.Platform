@@ -16,8 +16,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
     /// </summary>
     public class DatabaseProvider : OutputCachingProvider
     {
-        #region Abstract Method Implementation
-
         public override int GetItemCount(int tabId)
         {
             return DataProvider.Instance().GetOutputCacheItemCount(tabId);
@@ -114,7 +112,5 @@ namespace DotNetNuke.Services.OutputCache.Providers
                 }
             }
         }
-
-        #endregion
     }
 }

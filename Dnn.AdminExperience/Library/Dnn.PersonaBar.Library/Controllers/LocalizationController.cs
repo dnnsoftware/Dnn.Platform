@@ -22,14 +22,10 @@ namespace Dnn.PersonaBar.Library.Controllers
         public static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);
         public static readonly TimeSpan OneHour = TimeSpan.FromHours(1);
 
-        #region Overrides of ServiceLocator
-
         protected override Func<ILocalizationController> GetFactory()
         {
             return () => new LocalizationController();
         }
-
-        #endregion
 
         public string CultureName
         {
@@ -116,8 +112,6 @@ namespace Dnn.PersonaBar.Library.Controllers
             return dictionary;
         }
 
-        #region Private Methods
-
         private static string GetNameAttribute(XmlNode node)
         {
             if (node.Attributes != null)
@@ -196,7 +190,5 @@ namespace Dnn.PersonaBar.Library.Controllers
                 }
             }
         }
-
-        #endregion
     }
 }

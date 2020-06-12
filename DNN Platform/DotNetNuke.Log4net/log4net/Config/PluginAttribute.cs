@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 // .NET Compact Framework 1.0 has no support for reading assembly attributes
 #if !NETCF
@@ -51,7 +49,6 @@ namespace log4net.Config
     [Serializable]
     public sealed class PluginAttribute : Attribute, IPluginFactory
     {
-        #region Public Instance Constructors
 
 #if !NETSTANDARD1_3 // Excluded because GetCallingAssembly() is not available in CoreFX (https://github.com/dotnet/corefx/issues/2221).
         /// <summary>
@@ -88,9 +85,7 @@ namespace log4net.Config
             this.m_type = type;
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets or sets the type for the plugin.
@@ -129,9 +124,7 @@ namespace log4net.Config
             set { this.m_typeName = value; }
         }
 
-        #endregion Public Instance Properties
 
-        #region Implementation of IPluginFactory
 
         /// <summary>
         /// Creates the plugin object defined by this attribute.
@@ -165,9 +158,7 @@ namespace log4net.Config
             return plugin;
         }
 
-        #endregion Implementation of IPluginFactory
 
-        #region Override implementation of Object
 
         /// <summary>
         /// Returns a representation of the properties of this object.
@@ -188,14 +179,8 @@ namespace log4net.Config
             return "PluginAttribute[Type=" + this.m_typeName + "]";
         }
 
-        #endregion Override implementation of Object
-
-        #region Private Instance Fields
-
         private string m_typeName = null;
         private Type m_type = null;
-
-        #endregion Private Instance Fields
     }
 }
 

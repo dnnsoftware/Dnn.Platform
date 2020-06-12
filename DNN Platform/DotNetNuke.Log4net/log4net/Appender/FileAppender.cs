@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.IO;
@@ -134,7 +133,6 @@ namespace log4net.Appender
 #endif
     public class FileAppender : TextWriterAppender
     {
-        #region LockingStream Inner Class
 
         /// <summary>
         /// Write only <see cref="Stream"/> that uses the <see cref="LockingModelBase"/>
@@ -164,7 +162,6 @@ namespace log4net.Appender
                 this.m_lockingModel = locking;
             }
 
-            #region Override Implementation of Stream
 
 #if NETSTANDARD1_3
 			protected override void Dispose(bool disposing)
@@ -311,10 +308,6 @@ namespace log4net.Appender
                 }
             }
 
-            #endregion Override Implementation of Stream
-
-            #region Locking Methods
-
             private void AssertLocked()
             {
                 if (this.m_realStream == null)
@@ -355,13 +348,9 @@ namespace log4net.Appender
                     }
                 }
             }
-
-            #endregion Locking Methods
         }
 
-        #endregion LockingStream Inner Class
 
-        #region Locking Models
 
         /// <summary>
         /// Locking model base class
@@ -880,9 +869,7 @@ namespace log4net.Appender
         }
 #endif
 
-        #endregion Locking Models
 
-        #region Public Instance Constructors
 
         /// <summary>
         /// Default constructor
@@ -933,9 +920,7 @@ namespace log4net.Appender
         {
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets or sets the path to the file that logging will be written to.
@@ -1062,9 +1047,7 @@ namespace log4net.Appender
             set { this.m_lockingModel = value; }
         }
 
-        #endregion Public Instance Properties
 
-        #region Override implementation of AppenderSkeleton
 
         /// <summary>
         /// Activate the options on the file appender.
@@ -1117,9 +1100,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion Override implementation of AppenderSkeleton
 
-        #region Override implementation of TextWriterAppender
 
         /// <summary>
         /// Closes any previously opened file and calls the parent's <see cref="TextWriterAppender.Reset"/>.
@@ -1288,9 +1269,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion Override implementation of TextWriterAppender
 
-        #region Public Instance Methods
 
         /// <summary>
         /// Closes the previously opened file.
@@ -1306,9 +1285,7 @@ namespace log4net.Appender
             this.WriteFooterAndCloseWriter();
         }
 
-        #endregion Public Instance Methods
 
-        #region Protected Instance Methods
 
         /// <summary>
         /// Sets and <i>opens</i> the file where the log output will go. The specified file must be writable.
@@ -1431,9 +1408,7 @@ namespace log4net.Appender
             this.QuietWriter = new QuietTextWriter(writer, this.ErrorHandler);
         }
 
-        #endregion Protected Instance Methods
 
-        #region Protected Static Methods
 
         /// <summary>
         /// Convert a path into a fully qualified path.
@@ -1453,9 +1428,7 @@ namespace log4net.Appender
             return SystemInfo.ConvertToFullPath(path);
         }
 
-        #endregion Protected Static Methods
 
-        #region Private Instance Fields
 
         /// <summary>
         /// Flag to indicate if we should append to the file
@@ -1488,9 +1461,7 @@ namespace log4net.Appender
         /// </summary>
         private FileAppender.LockingModelBase m_lockingModel = new FileAppender.ExclusiveLock();
 
-        #endregion Private Instance Fields
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the FileAppender class.
@@ -1500,7 +1471,5 @@ namespace log4net.Appender
         /// log message.
         /// </remarks>
         private readonly static Type declaringType = typeof(FileAppender);
-
-        #endregion Private Static Fields
     }
 }

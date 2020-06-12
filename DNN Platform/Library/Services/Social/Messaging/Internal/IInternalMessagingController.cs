@@ -13,15 +13,11 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
     /// <summary>Interface used for Message Controller behaviors</summary>
     public interface IInternalMessagingController
     {
-        #region Reply APIs
-
         int ReplyMessage(int conversationId, string body, IList<int> fileIDs);
 
         int ReplyMessage(int conversationId, string body, IList<int> fileIDs, UserInfo sender);
 
-        #endregion
 
-        #region CRUD APIs
 
         Message GetMessage(int messageId);
         MessageRecipient GetMessageRecipient(int messageId, int userId);
@@ -34,9 +30,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         void MarkArchived(int conversationId, int userId);
         void MarkUnArchived(int conversationId, int userId);
 
-        #endregion
 
-        #region Admin Settings APIs
 
         /// <summary>How long a user needs to wait before user is allowed sending the next message</summary>
         /// <returns>Time in seconds. Returns zero if user has never sent a message</returns>
@@ -67,9 +61,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <param name="portalId">Portal Id</param>
         bool DisablePrivateMessage(int portalId);
 
-        #endregion
 
-        #region Upgrade APIs
 
         /// <summary>Converts the legacy messages.</summary>
         /// <param name="pageIndex">Index of the page.</param>
@@ -80,9 +72,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <returns>A count of messages</returns>
         int CountLegacyMessages();
 
-        #endregion
 
-        #region Get View APIs
 
         /// <summary>Gets the inbox.</summary>
         /// <param name="userId">The user identifier.</param>
@@ -180,18 +170,14 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <returns>A list of <see cref="MessageFileView"/></returns>
         IEnumerable<MessageFileView> GetAttachments(int messageId);
 
-        #endregion
 
-        #region Queued email API's
 
         IList<MessageRecipient> GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize);
         IList<MessageRecipient> GetNextMessagesForDigestDispatch(Frequency frequency, Guid schedulerInstance, int batchSize);
         void MarkMessageAsDispatched(int messageId, int recipientId);
         void MarkMessageAsSent(int messageId, int recipientId);
 
-        #endregion
 
-        #region Counter APIs
 
         int CheckReplyHasRecipients(int conversationId, int userId);
 
@@ -210,7 +196,5 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         int CountSentConversations(int userId, int portalId);
 
         int CountArchivedConversations(int userId, int portalId);
-
-        #endregion
     }
 }

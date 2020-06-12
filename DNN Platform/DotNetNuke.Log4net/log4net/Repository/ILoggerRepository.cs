@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -32,7 +31,6 @@ using log4net.Util;
 
 namespace log4net.Repository
 {
-    #region LoggerRepositoryShutdownEvent
 
     /// <summary>
     /// Delegate used to handle logger repository shutdown event notifications
@@ -46,9 +44,7 @@ namespace log4net.Repository
     /// </remarks>
     public delegate void LoggerRepositoryShutdownEventHandler(object sender, EventArgs e);
 
-    #endregion
 
-    #region LoggerRepositoryConfigurationResetEventHandler
 
     /// <summary>
     /// Delegate used to handle logger repository configuration reset event notifications
@@ -62,9 +58,7 @@ namespace log4net.Repository
     /// </remarks>
     public delegate void LoggerRepositoryConfigurationResetEventHandler(object sender, EventArgs e);
 
-    #endregion
 
-    #region LoggerRepositoryConfigurationChangedEventHandler
 
     /// <summary>
     /// Delegate used to handle event notifications for logger repository configuration changes.
@@ -78,7 +72,6 @@ namespace log4net.Repository
     /// </remarks>
     public delegate void LoggerRepositoryConfigurationChangedEventHandler(object sender, EventArgs e);
 
-    #endregion
 
     /// <summary>
     /// Interface implemented by logger repositories.

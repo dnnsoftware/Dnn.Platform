@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -16,8 +16,6 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Log.EventLog;
-
-#endregion
 
 namespace DotNetNuke.Services.Authentication
 {
@@ -36,22 +34,14 @@ namespace DotNetNuke.Services.Authentication
     public class AuthenticationController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthenticationController));
-        #region "Private Members"
-
         private static readonly DataProvider provider = DataProvider.Instance();
-
-        #endregion
-
-        #region "Private Shared Methods"
 
         private static object GetAuthenticationServicesCallBack(CacheItemArgs cacheItemArgs)
         {
             return CBO.FillCollection<AuthenticationInfo>(provider.GetAuthenticationServices());
         }
 
-        #endregion
 
-        #region "Public Shared Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -415,7 +405,5 @@ namespace DotNetNuke.Services.Authentication
                                           UserController.Instance.GetCurrentUserInfo().UserID);
             EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_UPDATED);
         }
-
-        #endregion
     }
 }

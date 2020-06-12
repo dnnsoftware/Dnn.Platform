@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -16,8 +16,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Localization;
 
-#endregion
-
 namespace DotNetNuke.Entities.Urls
 {
     /// <summary>
@@ -25,8 +23,6 @@ namespace DotNetNuke.Entities.Urls
     /// </summary>
     public class TabPathHelper
     {
-        #region Private Methods
-
         private static string AppendToTabPath(string path, TabInfo tab, FriendlyUrlOptions options, out bool modified)
         {
             string tabName = tab.TabName;
@@ -47,9 +43,7 @@ namespace DotNetNuke.Entities.Urls
             return result.ToString();
         }
 
-        #endregion
 
-        #region Internal Methods
 
         /// <summary>
         /// Get the tab path for the supplied Tab
@@ -341,10 +335,6 @@ namespace DotNetNuke.Entities.Urls
             return isTabHomePage;
         }
 
-        #endregion
-
-        #region Public Methods
-
         public static string BuildTabPathWithReplacement(TabInfo tab, FriendlyUrlOptions options, Guid parentTraceId)
         {
             string path = string.Empty;
@@ -386,8 +376,5 @@ namespace DotNetNuke.Entities.Urls
             replacedDiacritic = string.CompareOrdinal(tabPath, result) != 0;
             return sb.ToString();
         }
-
-        #endregion
-
     }
 }

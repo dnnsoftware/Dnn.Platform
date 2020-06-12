@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -18,8 +18,6 @@ using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Security
 {
     /// -----------------------------------------------------------------------------
@@ -31,19 +29,11 @@ namespace DotNetNuke.Modules.Admin.Security
     /// -----------------------------------------------------------------------------
     public partial class MemberServices : UserModuleBase
     {
-        #region Delegates
-
         public delegate void SubscriptionUpdatedEventHandler(object sender, SubscriptionUpdatedEventArgs e);
 
-        #endregion
+        public event SubscriptionUpdatedEventHandler SubscriptionUpdated;
 
-        #region "Events"
 
-       public event SubscriptionUpdatedEventHandler SubscriptionUpdated;
-
-        #endregion
-
-        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -116,9 +106,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        #endregion
 
-        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -335,9 +323,7 @@ namespace DotNetNuke.Modules.Admin.Security
             return showTrial;
         }
 
-        #endregion
 
-        #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -357,9 +343,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        #endregion
 
-        #region "Event Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -378,9 +362,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        #endregion
 
-        #region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -466,9 +448,7 @@ namespace DotNetNuke.Modules.Admin.Security
             this.DataBind();
         }
 
-        #endregion
 
-        #region Nested type: SubscriptionUpdatedEventArgs
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -505,7 +485,5 @@ namespace DotNetNuke.Modules.Admin.Security
             /// -----------------------------------------------------------------------------
             public string RoleName { get; set; }
         }
-
-        #endregion
     }
 }

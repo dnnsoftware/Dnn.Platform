@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Data;
@@ -10,8 +10,6 @@ using System.Xml.Serialization;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
-
-#endregion
 
 namespace DotNetNuke.Security.Permissions
 {
@@ -28,22 +26,18 @@ namespace DotNetNuke.Security.Permissions
     [XmlRoot("permission")]
     public class TabPermissionInfo : PermissionInfoBase, IHydratable
     {
-        #region "Private Members"
-
         private int _TabID;
         // local property declarations
         private int _TabPermissionID;
 
-        #endregion
 
-        #region "Constructors"
 
-         /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Constructs a new TabPermissionInfo
         /// </summary>
         /// -----------------------------------------------------------------------------
-       public TabPermissionInfo()
+        public TabPermissionInfo()
         {
             this._TabPermissionID = Null.NullInteger;
             this._TabID = Null.NullInteger;
@@ -64,9 +58,7 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionName = permission.PermissionName;
         }
 
-        #endregion
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -106,9 +98,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        #endregion
 
-        #region IHydratable Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -142,7 +132,5 @@ namespace DotNetNuke.Security.Permissions
                 this.TabPermissionID = value;
             }
         }
-
-        #endregion
     }
 }

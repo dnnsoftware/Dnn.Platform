@@ -38,7 +38,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this.subscriptionTypeController = new SubscriptionTypeController();
         }
 
-        #region GetSubscriptionTypes method tests
         [Test]
         public void GetSubscriptionTypes_ShouldCallDataService_WhenNoError()
         {
@@ -67,18 +66,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             // Act, Arrange
             Assert.Throws<ArgumentNullException>(() => this.subscriptionTypeController.GetSubscriptionTypes(null));
         }
-        #endregion
 
-        #region GetSubscriptionType method tests
         [Test]
         public void GetSubscriptionType_ShouldThrowArgumentNullException_WhenPredicateIsNull()
         {
             // Act, Assert
             Assert.Throws<ArgumentNullException>(() => this.subscriptionTypeController.GetSubscriptionType(null));
         }
-        #endregion
 
-        #region AddSubscriptionType method tests
         [Test]
         public void AddSubscriptionType_ShouldThrowArgumentNullException_WhenSubscriptionTypeIsNull()
         {
@@ -122,9 +117,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             // Assert
             this.mockCacheProvider.Verify(cp => cp.Remove(SubscriptionTypesCacheKey), Times.Once());
         }
-        #endregion
 
-        #region DeleteSubscriptionType method tests
         [Test]
         public void DeleteSubscriptionType_ShouldThrowArgumentOutOfRangeException_WhenSubscriptionTypeIdIsNegative()
         {
@@ -176,7 +169,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             // Assert
             this.mockCacheProvider.Verify(cp => cp.Remove(SubscriptionTypesCacheKey), Times.Once());
         }
-        #endregion
 
         [TearDown]
         public void TearDown()

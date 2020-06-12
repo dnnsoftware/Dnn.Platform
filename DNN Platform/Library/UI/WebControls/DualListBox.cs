@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -16,14 +16,10 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Localization;
 
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
     public class DualListBox : WebControl, IPostBackEventHandler, IPostBackDataHandler
     {
-        #region Private Members
-
         private readonly Style _AvailableListBoxStyle = new Style();
         private readonly Style _ButtonStyle = new Style();
         private readonly TableStyle _ContainerStyle = new TableStyle();
@@ -32,8 +28,6 @@ namespace DotNetNuke.UI.WebControls
         private List<string> _AddValues;
         private List<string> _RemoveValues;
 
-        #endregion
-
         public DualListBox()
         {
             this.ShowAddButton = true;
@@ -41,8 +35,6 @@ namespace DotNetNuke.UI.WebControls
             this.ShowRemoveButton = true;
             this.ShowRemoveAllButton = true;
         }
-
-        #region Public Properties
 
         public string AddAllImageURL { get; set; }
 
@@ -98,7 +90,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #region Style Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -179,11 +170,6 @@ namespace DotNetNuke.UI.WebControls
                 return this._SelectedListBoxStyle;
             }
         }
-        #endregion
-
-        #endregion
-
-        #region IPostBackDataHandler Members
 
         public bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
@@ -215,10 +201,6 @@ namespace DotNetNuke.UI.WebControls
         {
         }
 
-        #endregion
-
-        #region IPostBackEventHandler Members
-
         public void RaisePostBackEvent(string eventArgument)
         {
             switch (eventArgument)
@@ -238,18 +220,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
-
-        #region Events
-
         public event DualListBoxEventHandler AddButtonClick;
         public event EventHandler AddAllButtonClick;
         public event DualListBoxEventHandler RemoveButtonClick;
         public event EventHandler RemoveAllButtonClick;
-
-        #endregion
-
-        #region Private Methods
 
         private NameValueCollection GetList(string listType, object dataSource)
         {
@@ -473,10 +447,6 @@ namespace DotNetNuke.UI.WebControls
             return postBackOptions;
         }
 
-        #endregion
-
-        #region Protected Methods
-
         protected void OnAddButtonClick(DualListBoxEventArgs e)
         {
             if (this.AddButtonClick != null)
@@ -536,7 +506,5 @@ namespace DotNetNuke.UI.WebControls
             // Render end of table
             writer.RenderEndTag();
         }
-
-        #endregion
     }
 }

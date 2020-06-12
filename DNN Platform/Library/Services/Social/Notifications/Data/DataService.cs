@@ -16,16 +16,10 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         private readonly DataProvider _provider = DataProvider.Instance();
         private const string Prefix = "CoreMessaging_";
 
-        #region Private Methods
-
         private static string GetFullyQualifiedName(string procedureName)
         {
             return Prefix + procedureName;
         }
-
-        #endregion
-
-        #region NotificationTypes CRUD
 
         public int CreateNotificationType(string name, string description, int timeToLive, int desktopModuleId, int createUpdateUserId, bool isTask)
         {
@@ -46,10 +40,6 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         {
             return this._provider.ExecuteReader(GetFullyQualifiedName("GetNotificationTypeByName"), name);
         }
-
-        #endregion
-
-        #region NotificationTypeActions CRUD
 
         public int AddNotificationTypeAction(int notificationTypeId, string nameResourceKey, string descriptionResourceKey, string confirmResourceKey, string apiCall, int createdByUserId)
         {
@@ -75,10 +65,6 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         {
             return this._provider.ExecuteReader(GetFullyQualifiedName("GetNotificationTypeActions"), notificationTypeId);
         }
-
-        #endregion
-
-        #region Notifications Public Methods
 
         public int SendNotification(Notification notification, int portalId)
         {
@@ -128,10 +114,6 @@ namespace DotNetNuke.Services.Social.Notifications.Data
             return this._provider.ExecuteReader(GetFullyQualifiedName("GetNotificationByContext"), notificationTypeId, context);
         }
 
-        #endregion
-
-        #region Toast
-
         public bool IsToastPending(int notificationId)
         {
             return this._provider.ExecuteScalar<bool>(
@@ -163,8 +145,5 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         {
             return this._provider.ExecuteReader(GetFullyQualifiedName("GetToasts"), userId, portalId);
         }
-
-        #endregion
-
     }
 }

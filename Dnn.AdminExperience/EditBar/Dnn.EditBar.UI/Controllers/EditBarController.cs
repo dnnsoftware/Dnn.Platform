@@ -37,8 +37,6 @@ namespace Dnn.EditBar.UI.Controllers
             return () => new EditBarController();
         }
 
-        #region Public Methods
-
         public IDictionary<string, object> GetConfigurations(int portalId)
         {
             var settings = new Dictionary<string, object>();
@@ -82,10 +80,6 @@ namespace Dnn.EditBar.UI.Controllers
                     .ToList();
         }
 
-        #endregion
-
-        #region Private Methods
-
         private static IEnumerable<BaseMenuItem> GetMenuItemInstances()
         {
             var types = GetAllMenuItemTypes();
@@ -121,7 +115,5 @@ namespace Dnn.EditBar.UI.Controllers
                      !t.IsAbstract &&
                      typeof(BaseMenuItem).IsAssignableFrom(t));
         }
-
-        #endregion
     }
 }

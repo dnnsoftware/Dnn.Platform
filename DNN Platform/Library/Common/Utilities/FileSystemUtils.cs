@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -33,14 +33,11 @@ using Directory = SchwabenCode.QuickIO.QuickIODirectory;
 using File = SchwabenCode.QuickIO.QuickIOFile;
 using DirectoryInfo = SchwabenCode.QuickIO.QuickIODirectoryInfo;
 
-#endregion
-
 namespace DotNetNuke.Common.Utilities
 {
     public class FileSystemUtils
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemUtils));
-        #region Private Methods
 
         private static string CreateFile(IFolderInfo folder, string fileName, string contentType, Stream fileContent, bool unzip, bool overwrite, bool checkPermissions)
         {
@@ -171,7 +168,6 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        #endregion
 
         /// -----------------------------------------------------------------------------
         /// <summary>

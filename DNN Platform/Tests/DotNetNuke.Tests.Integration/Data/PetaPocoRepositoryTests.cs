@@ -51,8 +51,6 @@ namespace DotNetNuke.Tests.Data
             DataUtil.DeleteDatabase(Constants.PETAPOCO_DatabaseName);
         }
 
-        #region Constructor Tests
-
         [Test]
         public void PetaPocoRepository_Constructor_Throws_On_Null_Database()
         {
@@ -78,10 +76,6 @@ namespace DotNetNuke.Tests.Data
             // Assert
             Assert.AreSame(mockMapper.Object, Mappers.GetMapper(typeof(Dog), mockMapper.Object));
         }
-
-        #endregion
-
-        #region Get Tests
 
         [Test]
         [TestCase(0)]
@@ -167,10 +161,6 @@ namespace DotNetNuke.Tests.Data
             Assert.AreEqual(this._dogAges[0], dog.Age.ToString());
             Assert.AreEqual(this._dogNames[0], dog.Name);
         }
-
-        #endregion
-
-        #region GetById Tests
 
         [Test]
         public void PetaPocoRepository_GetById_Returns_Instance_Of_Model_If_Valid_Id()
@@ -273,10 +263,6 @@ namespace DotNetNuke.Tests.Data
             Assert.AreEqual(Constants.PETAPOCO_ValidDogAge, dog.Age);
             Assert.AreEqual(Constants.PETAPOCO_ValidDogName, dog.Name);
         }
-
-        #endregion
-
-        #region Add Tests
 
         [Test]
         public void PetaPocoRepository_Add_Inserts_Item_Into_DataBase()
@@ -388,10 +374,6 @@ namespace DotNetNuke.Tests.Data
             Assert.AreEqual(Constants.PETAPOCO_InsertDogAge, row["Age"]);
             Assert.AreEqual(Constants.PETAPOCO_InsertDogName, row["Name"]);
         }
-
-        #endregion
-
-        #region Delete Tests
 
         [Test]
         public void PetaPocoRepository_Delete_Deletes_Item_From_DataBase()
@@ -542,10 +524,6 @@ namespace DotNetNuke.Tests.Data
             Assert.AreEqual(Constants.PETAPOCO_RecordCount, actualCount);
         }
 
-        #endregion
-
-        #region Delete(sql, args) Tests
-
         [Test]
         public void PetaPocoRepository_Delete_Overload_Deletes_Item_From_DataBase()
         {
@@ -610,10 +588,6 @@ namespace DotNetNuke.Tests.Data
             Assert.AreEqual(Constants.PETAPOCO_RecordCount, actualCount);
         }
 
-        #endregion
-
-        #region Find Tests
-
         [Test]
         [TestCase(1, "WHERE ID < @0", 2)]
         [TestCase(4, "WHERE Age <= @0", 5)]
@@ -634,10 +608,6 @@ namespace DotNetNuke.Tests.Data
             // Assert
             Assert.AreEqual(count, dogs.Count());
         }
-
-        #endregion
-
-        #region GetPage Tests
 
         [Test]
         [TestCase(Constants.PAGE_First, Constants.PAGE_RecordCount)]
@@ -722,10 +692,6 @@ namespace DotNetNuke.Tests.Data
             var dog = dogs.First();
             Assert.AreEqual(firstId, dog.ID);
         }
-
-        #endregion
-
-        #region Update Tests
 
         [Test]
         public void PetaPocoRepository_Update_Updates_Item_In_DataBase()
@@ -823,10 +789,6 @@ namespace DotNetNuke.Tests.Data
             }
         }
 
-        #endregion
-
-        #region Update(sql, args) Tests
-
         [Test]
         public void PetaPocoRepository_Update_Overload_Updates_Item_In_DataBase()
         {
@@ -873,8 +835,6 @@ namespace DotNetNuke.Tests.Data
                 }
             }
         }
-
-        #endregion
 
         private Database CreatePecaPocoDatabase()
         {

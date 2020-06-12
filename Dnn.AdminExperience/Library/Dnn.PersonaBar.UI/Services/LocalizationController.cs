@@ -26,7 +26,6 @@ namespace Dnn.PersonaBar.UI.Services
     {
         private static object _threadLocker = new object();
 
-        #region Public API methods
 
         /// <summary>
         /// Retrieve a list of CMX related Localization Keys with it's values for the current culture.
@@ -57,10 +56,6 @@ namespace Dnn.PersonaBar.UI.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message);
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private IDictionary<string, IDictionary<string, string>> GetResourcesFromFile(string culture)
         {
@@ -247,8 +242,6 @@ namespace Dnn.PersonaBar.UI.Services
 
             return resourceFiles;
         }
-
-        #endregion
     }
 
     [Serializable]

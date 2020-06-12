@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -22,8 +22,6 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Log.EventLog;
 
-#endregion
-
 namespace DotNetNuke.Entities.Profile
 {
     /// -----------------------------------------------------------------------------
@@ -41,16 +39,9 @@ namespace DotNetNuke.Entities.Profile
     public class ProfileController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProfileController));
-
-        #region Private Members
-
         private static readonly DataProvider _dataProvider = DataProvider.Instance();
         private static readonly ProfileProvider _profileProvider = ProfileProvider.Instance();
         private static int _orderCounter;
-
-        #endregion
-
-        #region Private Methdods
 
         private static void AddDefaultDefinition(int portalId, string category, string name, string strType, int length, UserVisibilityMode defaultVisibility, Dictionary<string, ListEntryInfo> types)
         {
@@ -194,9 +185,7 @@ namespace DotNetNuke.Entities.Profile
             return definitions;
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -655,16 +644,10 @@ namespace DotNetNuke.Entities.Profile
             return res;
         }
 
-        #endregion
-
-        #region Obsolete Methods
-
         [Obsolete("This method has been deprecated.  Please use GetPropertyDefinition(ByVal definitionId As Integer, ByVal portalId As Integer) instead. Scheduled removal in v11.0.0.")]
         public static ProfilePropertyDefinition GetPropertyDefinition(int definitionId)
         {
             return CBO.FillObject<ProfilePropertyDefinition>(_dataProvider.GetPropertyDefinition(definitionId));
         }
-
-        #endregion
     }
 }

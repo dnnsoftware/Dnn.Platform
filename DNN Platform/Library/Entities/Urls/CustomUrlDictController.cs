@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Concurrent;
@@ -13,13 +13,10 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Services.Localization;
 
-#endregion
-
 namespace DotNetNuke.Entities.Urls
 {
     internal static class CustomUrlDictController
     {
-        #region Private Methods
 
         /// <summary>
         /// Returns a list of tab and redirects from the database, for the specified portal
@@ -105,8 +102,6 @@ namespace DotNetNuke.Entities.Urls
             return existingTabs;
         }
 
-        #endregion
-
         private static void AddEntryToDictionary(SharedDictionary<int, SharedDictionary<string, string>> existingTabs, int portalId, TabInfo tab, string cultureKey, string url)
         {
             int tabid = tab.TabID;
@@ -143,7 +138,6 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        #region Internal Methods
 
         /// <summary>
         /// returns a tabId indexed dictionary of Friendly Urls
@@ -213,7 +207,5 @@ namespace DotNetNuke.Entities.Urls
         {
             CacheController.FlushPageIndexFromCache();
         }
-
-        #endregion
     }
 }

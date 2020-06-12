@@ -24,7 +24,6 @@ namespace DotNetNuke.Services.Localization
     public class LocalizationProvider : ComponentBase<ILocalizationProvider, LocalizationProvider>, ILocalizationProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LocalizationProvider));
-        #region Nested type: CustomizedLocale
 
         public enum CustomizedLocale
         {
@@ -32,10 +31,6 @@ namespace DotNetNuke.Services.Localization
             Portal = 1,
             Host = 2
         }
-
-        #endregion
-
-        #region Implementation of ILocalizationProvider
 
         public string GetString(string key, string resourceFileRoot)
         {
@@ -174,8 +169,6 @@ namespace DotNetNuke.Services.Localization
                         DataCache.ResourceFilesCacheTimeOut, DataCache.ResourceFilesCachePriority, resourceFile, locale,
                         portalSettings), GetCompiledResourceFileCallBack, true);
         }
-
-        #endregion
 
         private static object GetCompiledResourceFileCallBack(CacheItemArgs cacheItemArgs)
         {

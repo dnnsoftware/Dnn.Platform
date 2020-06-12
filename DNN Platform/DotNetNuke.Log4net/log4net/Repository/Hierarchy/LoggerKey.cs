@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 
@@ -44,7 +43,6 @@ namespace log4net.Repository.Hierarchy
     /// <author>Gert Driesen</author>
     internal sealed class LoggerKey
     {
-        #region Internal Instance Constructors
 
         /// <summary>
         /// Construct key with string name
@@ -77,9 +75,7 @@ namespace log4net.Repository.Hierarchy
             this.m_hashCache = name.GetHashCode();
         }
 
-        #endregion Internal Instance Constructors
 
-        #region Override implementation of Object
 
         /// <summary>
         /// Returns a hash code for the current instance.
@@ -129,14 +125,8 @@ namespace log4net.Repository.Hierarchy
             return false;
         }
 
-        #endregion
-
-        #region Private Instance Fields
-
         private readonly string m_name;
         private readonly int m_hashCache;
-
-        #endregion Private Instance Fields
     }
 }
 

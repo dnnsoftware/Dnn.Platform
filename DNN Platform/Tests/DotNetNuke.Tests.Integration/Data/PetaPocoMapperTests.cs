@@ -18,7 +18,6 @@ namespace DotNetNuke.Tests.Data
     {
         // ReSharper disable InconsistentNaming
 
-        #region Constructor Tests
 
         [Test]
         public void PetaPocoMapper_Constructor_Initialises_TablePrefix_Property()
@@ -31,10 +30,6 @@ namespace DotNetNuke.Tests.Data
             // Assert
             Assert.AreEqual(Constants.TABLENAME_Prefix, Util.GetPrivateMember<PetaPocoMapper, string>(mapper, "_tablePrefix"));
         }
-
-        #endregion
-
-        #region GetTableInfo Tests
 
         [Test]
         public void PetaPocoMapper_GetTableInfo_Returns_TableInfo()
@@ -140,10 +135,6 @@ namespace DotNetNuke.Tests.Data
             Assert.IsTrue(ti.AutoIncrement);
         }
 
-        #endregion
-
-        #region GetColumnInfo Tests
-
         [Test]
         public void PetaPocoMapper_GetColumnInfo_Returns_ColumnInfo()
         {
@@ -189,7 +180,6 @@ namespace DotNetNuke.Tests.Data
             Assert.AreEqual(Constants.COLUMNNAME_Name, ci.ColumnName);
         }
 
-        #endregion
 
         // ReSharper restore InconsistentNaming
     }

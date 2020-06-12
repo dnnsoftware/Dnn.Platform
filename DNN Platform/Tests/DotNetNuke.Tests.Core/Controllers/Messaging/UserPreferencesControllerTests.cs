@@ -48,16 +48,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             ComponentFactory.Container = null;
         }
 
-        #region Constructor tests
         [Test]
         public void UserPreferencesController_ShouldThrowArgumentNullException_WhenNullDataServiceIsPassedInTheConstructor()
         {
             // Act, Assert
             Assert.Throws<ArgumentNullException>(() => new UserPreferencesController(null));
         }
-        #endregion
 
-        #region SetUserPreference tests
         [Test]
         public void SetUserPreference_ShouldCallDataService_WhenNoError()
         {
@@ -81,9 +78,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 (int)userPreference.MessagesEmailFrequency,
                 (int)userPreference.NotificationsEmailFrequency), Times.Once);
         }
-        #endregion
 
-        #region GetUserPreference tests
         [Test]
         public void GetUserPreference_ShouldReturnNullObject_WhenUserDoesNotHavePreference()
         {
@@ -123,7 +118,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             Assert.AreEqual(user.PortalID, userPreference.PortalId);
             Assert.AreEqual(user.UserID, userPreference.UserId);
         }
-        #endregion
 
         private static UserInfo GetValidUser()
         {

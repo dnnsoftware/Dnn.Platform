@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -22,14 +22,10 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.ClientCapability;
 using DotNetNuke.Services.Exceptions;
 
-#endregion
-
 namespace DotNetNuke.Entities.Urls
 {
     public class FriendlyUrlController
     {
-        #region Constants
-
         private const string DisableMobileRedirectCookieName = "disablemobileredirect"; // dnn cookies
         private const string DisableRedirectPresistCookieName = "disableredirectpresist"; // dnn cookies
 
@@ -39,587 +35,579 @@ namespace DotNetNuke.Entities.Urls
         private const string MobileViewSiteCookieName = "dnn_IsMobile";
         private const string DisableMobileViewCookieName = "dnn_NoMobile";
 
-        #endregion
-
-        #region Friendly Url Settings Control
-
         public static FriendlyUrlSettings GetCurrentSettings(int portalId)
         {
             return new FriendlyUrlSettings(portalId);
         }
 
-        #endregion
 
-        #region Friendly Url Provider methods
         /*
-        /// <summary>
-        /// Determines if the tab is excluded from FriendlyUrl Processing
-        /// </summary>
-        /// <param name="tab"></param>
-        /// <param name="settings"></param>
-        /// <param name="rewriting">If true, we are checking for rewriting purposes, if false, we are checking for friendly Url Generating.</param>
-        /// <returns></returns>
-        private static bool IsExcludedFromFriendlyUrls(TabInfo tab, FriendlyUrlSettings settings, bool rewriting)
+/// <summary>
+/// Determines if the tab is excluded from FriendlyUrl Processing
+/// </summary>
+/// <param name="tab"></param>
+/// <param name="settings"></param>
+/// <param name="rewriting">If true, we are checking for rewriting purposes, if false, we are checking for friendly Url Generating.</param>
+/// <returns></returns>
+private static bool IsExcludedFromFriendlyUrls(TabInfo tab, FriendlyUrlSettings settings, bool rewriting)
+{
+    //note this is a duplicate of another method in RewriteController.cs
+    bool exclude = false;
+    string tabPath = (tab.TabPath.Replace("//", "/") + ";").ToLower();
+    if (settings.UseBaseFriendlyUrls != null)
+    {
+        exclude = settings.UseBaseFriendlyUrls.ToLower().Contains(tabPath);
+    }
+
+    return exclude;
+}
+
+private static void SetExclusionProperties(TabInfo tab, FriendlyUrlSettings settings)
+{
+    string tabPath = (tab.TabPath.Replace("//", "/") + ";").ToLower();
+    tab.UseBaseFriendlyUrls = settings.UseBaseFriendlyUrls != null && settings.UseBaseFriendlyUrls.ToLower().Contains(tabPath);
+}
+
+/// <summary>
+/// Builds up a collection of the Friendly Urls for a tab
+/// </summary>
+/// <param name="tab">The TabInfoEx object</param>
+/// <param name="includeStdUrls">Whether to add in the redirects for the 'standard' DNN urls</param>
+/// <param name="portalSettings"></param>
+/// <param name="settings">The current friendly Url settings</param>
+/// <remarks>Updated  to insert where an ascii replacement or spaces-replaced replacement has been made (562)</remarks>
+private static void BuildFriendlyUrls(TabInfo tab, bool includeStdUrls, PortalSettings portalSettings, FriendlyUrlSettings settings)
+{
+
+    //unfriendly Url
+    if (includeStdUrls)
+    {
+        string stdUrl = Globals.glbDefaultPage + "?TabId=" + tab.TabID.ToString();
+        string stdHttpStatus = "200";
+        string httpAlias = portalSettings.PortalAlias.HTTPAlias;
+        string defaultCulture = portalSettings.DefaultLanguage;
+        var locales = LocaleController.Instance.GetLocales(portalSettings.PortalId);
+
+        string baseFriendlyHttpStatus = "200";
+        int seqNum = -1;
+        //check for custom redirects
+        //bool tabHasCustom200 = false;
+        var culturesWithCustomUrls = new List<string>();
+        if (tab.TabUrls.Count > 0)
         {
-            //note this is a duplicate of another method in RewriteController.cs
-            bool exclude = false;
-            string tabPath = (tab.TabPath.Replace("//", "/") + ";").ToLower();
-            if (settings.UseBaseFriendlyUrls != null)
+            //there are custom redirects for this tab
+            //cycle through all and collect the list of cultures where a
+            //custom redirect has been implemented
+            foreach (TabUrlInfo redirect in tab.TabUrls)
             {
-                exclude = settings.UseBaseFriendlyUrls.ToLower().Contains(tabPath);
-            }
-
-            return exclude;
-        }
-
-        private static void SetExclusionProperties(TabInfo tab, FriendlyUrlSettings settings)
-        {
-            string tabPath = (tab.TabPath.Replace("//", "/") + ";").ToLower();
-            tab.UseBaseFriendlyUrls = settings.UseBaseFriendlyUrls != null && settings.UseBaseFriendlyUrls.ToLower().Contains(tabPath);
-        }
-
-        /// <summary>
-        /// Builds up a collection of the Friendly Urls for a tab
-        /// </summary>
-        /// <param name="tab">The TabInfoEx object</param>
-        /// <param name="includeStdUrls">Whether to add in the redirects for the 'standard' DNN urls</param>
-        /// <param name="portalSettings"></param>
-        /// <param name="settings">The current friendly Url settings</param>
-        /// <remarks>Updated  to insert where an ascii replacement or spaces-replaced replacement has been made (562)</remarks>
-        private static void BuildFriendlyUrls(TabInfo tab, bool includeStdUrls, PortalSettings portalSettings, FriendlyUrlSettings settings)
-        {
-
-            //unfriendly Url
-            if (includeStdUrls)
-            {
-                string stdUrl = Globals.glbDefaultPage + "?TabId=" + tab.TabID.ToString();
-                string stdHttpStatus = "200";
-                string httpAlias = portalSettings.PortalAlias.HTTPAlias;
-                string defaultCulture = portalSettings.DefaultLanguage;
-                var locales = LocaleController.Instance.GetLocales(portalSettings.PortalId);
-
-                string baseFriendlyHttpStatus = "200";
-                int seqNum = -1;
-                //check for custom redirects
-                //bool tabHasCustom200 = false;
-                var culturesWithCustomUrls = new List<string>();
-                if (tab.TabUrls.Count > 0)
+                if (redirect.HttpStatus == "200" && !redirect.IsSystem)
                 {
-                    //there are custom redirects for this tab
-                    //cycle through all and collect the list of cultures where a
-                    //custom redirect has been implemented
-                    foreach (TabUrlInfo redirect in tab.TabUrls)
+                    //there is a custom redirect for this culture
+                    //751 : use the default culture if the redirect doesn't have a valid culture set
+                    string redirectCulture = redirect.CultureCode;
+                    if (string.IsNullOrEmpty(redirectCulture))
                     {
-                        if (redirect.HttpStatus == "200" && !redirect.IsSystem)
-                        {
-                            //there is a custom redirect for this culture
-                            //751 : use the default culture if the redirect doesn't have a valid culture set
-                            string redirectCulture = redirect.CultureCode;
-                            if (string.IsNullOrEmpty(redirectCulture))
-                            {
-                                redirectCulture = portalSettings.DefaultLanguage;
-                            }
+                        redirectCulture = portalSettings.DefaultLanguage;
+                    }
 
-                            if (!culturesWithCustomUrls.Contains(redirectCulture))
-                            {
-                                culturesWithCustomUrls.Add(redirectCulture);
-                            }
-                        }
+                    if (!culturesWithCustomUrls.Contains(redirectCulture))
+                    {
+                        culturesWithCustomUrls.Add(redirectCulture);
                     }
                 }
+            }
+        }
 
-                //add friendly urls first (sequence number goes in reverse)
-                if (Host.Host.UseFriendlyUrls)
+        //add friendly urls first (sequence number goes in reverse)
+        if (Host.Host.UseFriendlyUrls)
+        {
+            //determine whether post process or use base by looking at current settings
+            SetExclusionProperties(tab, settings);
+
+            //friendly Urls are switched on
+            //std = default.aspx?tabId=xx
+            //and page not excluded from redirects
+            bool onlyBaseUrls = tab.UseBaseFriendlyUrls;
+                //use base means only use Base Friendly Urls (searchFriendly)
+
+            //if not using base urls, and redirect all unfriendly, and not in the list of pages to not redirect
+            if (!onlyBaseUrls & settings.RedirectUnfriendly && !tab.DoNotRedirect)
+            {
+                //all base urls will be 301
+                baseFriendlyHttpStatus = "301";
+                stdHttpStatus = "301";
+                //default url 301'd if friendly Urls on and redirect unfriendly switch 'on'
+            }
+            var localeCodes = new List<string>();
+            if (!string.IsNullOrEmpty(tab.CultureCode))
+            {
+                //the tab culture is specified, so skip all locales and only process those for the locale
+                localeCodes.Add(tab.CultureCode);
+            }
+            else
+            {
+                localeCodes.AddRange(from Locale lc in locales.Values select lc.Code);
+            }
+            foreach (string cultureCode in localeCodes) //go through and generate the urls for each language
+            {
+                string langQs = "&language=" + cultureCode;
+                if (cultureCode == defaultCulture)
                 {
-                    //determine whether post process or use base by looking at current settings
-                    SetExclusionProperties(tab, settings);
+                    langQs = "";
+                }
 
-                    //friendly Urls are switched on
-                    //std = default.aspx?tabId=xx
-                    //and page not excluded from redirects
-                    bool onlyBaseUrls = tab.UseBaseFriendlyUrls;
-                        //use base means only use Base Friendly Urls (searchFriendly)
+                var improvedFriendlyUrls = new Dictionary<string, string>();
+                //call friendly url provider to get current friendly url (uses all settings)
+                string baseFriendlyUrl = GetFriendlyUrl(tab,
+                                                        stdUrl + langQs,
+                                                        Globals.glbDefaultPage,
+                                                        portalSettings.PortalAlias.HTTPAlias,
+                                                        settings);
 
-                    //if not using base urls, and redirect all unfriendly, and not in the list of pages to not redirect
-                    if (!onlyBaseUrls & settings.RedirectUnfriendly && !tab.DoNotRedirect)
+                if (onlyBaseUrls == false)
+                {
+                    //get the improved friendly Url for this tab
+                    //improved friendly Url = 'human friendly' url generated by Advanced Friendly Url Provider : note call is made to ignore custom redirects
+                    //this temp switch is to clear out the useBaseFriendlyUrls setting.  The post-process setting means the generated
+                    //friendly url will be a base url, and then replaced later when the page is finished.  Because we want to pretend we're
+                    //looking at the finished product, we clear out the value and restore it after the friendly url generation
+                    string improvedFriendlyUrl = GetImprovedFriendlyUrl(tab,
+                                                                        stdUrl + langQs,
+                                                                        Globals.glbDefaultPage,
+                                                                        portalSettings,
+                                                                        true,
+                                                                        settings);
+
+                    improvedFriendlyUrls.Add("hfurl:" + cultureCode, improvedFriendlyUrl);
+                    //get any other values
+                    bool autoAsciiConvert = false;
+                    bool replaceSpacesWith = false;
+                    if (settings.AutoAsciiConvert)
                     {
-                        //all base urls will be 301
-                        baseFriendlyHttpStatus = "301";
-                        stdHttpStatus = "301";
-                        //default url 301'd if friendly Urls on and redirect unfriendly switch 'on'
-                    }
-                    var localeCodes = new List<string>();
-                    if (!string.IsNullOrEmpty(tab.CultureCode))
-                    {
-                        //the tab culture is specified, so skip all locales and only process those for the locale
-                        localeCodes.Add(tab.CultureCode);
-                    }
-                    else
-                    {
-                        localeCodes.AddRange(from Locale lc in locales.Values select lc.Code);
-                    }
-                    foreach (string cultureCode in localeCodes) //go through and generate the urls for each language
-                    {
-                        string langQs = "&language=" + cultureCode;
-                        if (cultureCode == defaultCulture)
+                        //check to see that the ascii conversion would actually produce a different result
+                        string changedTabPath = ReplaceDiacritics(tab.TabPath);
+                        if (changedTabPath != tab.TabPath)
                         {
-                            langQs = "";
+                            autoAsciiConvert = true;
                         }
-
-                        var improvedFriendlyUrls = new Dictionary<string, string>();
-                        //call friendly url provider to get current friendly url (uses all settings)
-                        string baseFriendlyUrl = GetFriendlyUrl(tab,
+                    }
+                    if (settings.ReplaceSpaceWith != FriendlyUrlSettings.ReplaceSpaceWithNothing)
+                    {
+                        if (tab.TabName.Contains(" "))
+                        {
+                            string tabPath = BuildTabPathWithReplacement(tab, " ", settings.ReplaceSpaceWith);
+                            if (tabPath != tab.TabPath)
+                            {
+                                replaceSpacesWith = true;
+                            }
+                        }
+                    }
+                    if (autoAsciiConvert && replaceSpacesWith)
+                    {
+                        string replaceSpaceWith = settings.ReplaceSpaceWith;
+                        settings.ReplaceSpaceWith = "None";
+                        settings.AutoAsciiConvert = false;
+                        //get one without auto ascii convert, and replace spaces off
+                        string impUrl = GetImprovedFriendlyUrl(tab,
                                                                 stdUrl + langQs,
                                                                 Globals.glbDefaultPage,
-                                                                portalSettings.PortalAlias.HTTPAlias,
+                                                                httpAlias,
+                                                                true,
                                                                 settings);
-
-                        if (onlyBaseUrls == false)
+                        improvedFriendlyUrls.Add("aac:rsw:" + cultureCode, impUrl);
+                        settings.AutoAsciiConvert = true;
+                        //now get one with ascii convert on, and replace spaces still off
+                        //impUrl = GetImprovedFriendlyUrl(tab, stdUrl, Globals.glbDefaultPage, httpAlias, true, settings);
+                        //improvedFriendlyUrls.Add("aac", impUrl);
+                        settings.ReplaceSpaceWith = replaceSpaceWith;
+                    }
+                    if (autoAsciiConvert && !replaceSpacesWith)
+                    {
+                        settings.AutoAsciiConvert = false;
+                        //get one with auto ascii convert off
+                        string impUrl = GetImprovedFriendlyUrl(tab,
+                                                                stdUrl + langQs,
+                                                                Globals.glbDefaultPage,
+                                                                httpAlias,
+                                                                true,
+                                                                settings);
+                        improvedFriendlyUrls.Add("aac:" + cultureCode, impUrl);
+                        settings.AutoAsciiConvert = true;
+                    }
+                    if (!autoAsciiConvert && replaceSpacesWith)
+                    {
+                        string replaceSpaceWith = settings.ReplaceSpaceWith;
+                        settings.ReplaceSpaceWith = "None";
+                        //get one with replace spaces off
+                        string impUrl = GetImprovedFriendlyUrl(tab,
+                                                                stdUrl + langQs,
+                                                                Globals.glbDefaultPage,
+                                                                httpAlias,
+                                                                true,
+                                                                settings);
+                        improvedFriendlyUrls.Add("rsw:" + cultureCode, impUrl);
+                        settings.ReplaceSpaceWith = replaceSpaceWith;
+                    }
+                    bool tabHasCustom200 = culturesWithCustomUrls.Contains(cultureCode);
+                    foreach (string key in improvedFriendlyUrls.Keys)
+                    {
+                        string friendlyUrl = improvedFriendlyUrls[key];
+                        if (friendlyUrl != baseFriendlyUrl && friendlyUrl != "")
                         {
-                            //get the improved friendly Url for this tab
-                            //improved friendly Url = 'human friendly' url generated by Advanced Friendly Url Provider : note call is made to ignore custom redirects
-                            //this temp switch is to clear out the useBaseFriendlyUrls setting.  The post-process setting means the generated
-                            //friendly url will be a base url, and then replaced later when the page is finished.  Because we want to pretend we're
-                            //looking at the finished product, we clear out the value and restore it after the friendly url generation
-                            string improvedFriendlyUrl = GetImprovedFriendlyUrl(tab,
-                                                                                stdUrl + langQs,
-                                                                                Globals.glbDefaultPage,
-                                                                                portalSettings,
-                                                                                true,
-                                                                                settings);
-
-                            improvedFriendlyUrls.Add("hfurl:" + cultureCode, improvedFriendlyUrl);
-                            //get any other values
-                            bool autoAsciiConvert = false;
-                            bool replaceSpacesWith = false;
-                            if (settings.AutoAsciiConvert)
+                            //if the improved friendly Url is different to the base friendly Url,
+                            //then we will add it in as a 'fixed' url, except if the improved friendly Url
+                            //is actually a redirect in the first place
+                            bool found = false;
+                            foreach (TabUrlInfo redirect in tab.TabUrls)
                             {
-                                //check to see that the ascii conversion would actually produce a different result
-                                string changedTabPath = ReplaceDiacritics(tab.TabPath);
-                                if (changedTabPath != tab.TabPath)
+                                //compare each redirect to the improved friendly Url
+                                //just in case it is the same
+                                if (String.Compare(redirect.Url, friendlyUrl, StringComparison.OrdinalIgnoreCase) == 0)
                                 {
-                                    autoAsciiConvert = true;
+                                    found = true;
                                 }
                             }
-                            if (settings.ReplaceSpaceWith != FriendlyUrlSettings.ReplaceSpaceWithNothing)
+                            if (!found)
                             {
-                                if (tab.TabName.Contains(" "))
+                                //ok if hte improved friendly Url isn't a tab redirect record,
+                                //then add in the improved friendly Url as a 'fixed' url
+                                var predefinedRedirect = new TabUrlInfo
+                                                                {
+                                                                    TabId = tab.TabID,
+                                                                    CultureCode = cultureCode
+                                                                };
+                                if (key.StartsWith("hfurl") == false)
                                 {
-                                    string tabPath = BuildTabPathWithReplacement(tab, " ", settings.ReplaceSpaceWith);
-                                    if (tabPath != tab.TabPath)
+                                    //this means it's not the actual url, it's either a spaces replace,
+                                    //auto ascii or both output.  It should be a 301 unless redirectunfriendly
+                                    //is off, or the page is excluded from redirects
+                                    if (settings.RedirectUnfriendly && !tab.DoNotRedirect)
                                     {
-                                        replaceSpacesWith = true;
+                                        predefinedRedirect.HttpStatus = "301"; //redirect to custom url
                                     }
-                                }
-                            }
-                            if (autoAsciiConvert && replaceSpacesWith)
-                            {
-                                string replaceSpaceWith = settings.ReplaceSpaceWith;
-                                settings.ReplaceSpaceWith = "None";
-                                settings.AutoAsciiConvert = false;
-                                //get one without auto ascii convert, and replace spaces off
-                                string impUrl = GetImprovedFriendlyUrl(tab,
-                                                                        stdUrl + langQs,
-                                                                        Globals.glbDefaultPage,
-                                                                        httpAlias,
-                                                                        true,
-                                                                        settings);
-                                improvedFriendlyUrls.Add("aac:rsw:" + cultureCode, impUrl);
-                                settings.AutoAsciiConvert = true;
-                                //now get one with ascii convert on, and replace spaces still off
-                                //impUrl = GetImprovedFriendlyUrl(tab, stdUrl, Globals.glbDefaultPage, httpAlias, true, settings);
-                                //improvedFriendlyUrls.Add("aac", impUrl);
-                                settings.ReplaceSpaceWith = replaceSpaceWith;
-                            }
-                            if (autoAsciiConvert && !replaceSpacesWith)
-                            {
-                                settings.AutoAsciiConvert = false;
-                                //get one with auto ascii convert off
-                                string impUrl = GetImprovedFriendlyUrl(tab,
-                                                                        stdUrl + langQs,
-                                                                        Globals.glbDefaultPage,
-                                                                        httpAlias,
-                                                                        true,
-                                                                        settings);
-                                improvedFriendlyUrls.Add("aac:" + cultureCode, impUrl);
-                                settings.AutoAsciiConvert = true;
-                            }
-                            if (!autoAsciiConvert && replaceSpacesWith)
-                            {
-                                string replaceSpaceWith = settings.ReplaceSpaceWith;
-                                settings.ReplaceSpaceWith = "None";
-                                //get one with replace spaces off
-                                string impUrl = GetImprovedFriendlyUrl(tab,
-                                                                        stdUrl + langQs,
-                                                                        Globals.glbDefaultPage,
-                                                                        httpAlias,
-                                                                        true,
-                                                                        settings);
-                                improvedFriendlyUrls.Add("rsw:" + cultureCode, impUrl);
-                                settings.ReplaceSpaceWith = replaceSpaceWith;
-                            }
-                            bool tabHasCustom200 = culturesWithCustomUrls.Contains(cultureCode);
-                            foreach (string key in improvedFriendlyUrls.Keys)
-                            {
-                                string friendlyUrl = improvedFriendlyUrls[key];
-                                if (friendlyUrl != baseFriendlyUrl && friendlyUrl != "")
-                                {
-                                    //if the improved friendly Url is different to the base friendly Url,
-                                    //then we will add it in as a 'fixed' url, except if the improved friendly Url
-                                    //is actually a redirect in the first place
-                                    bool found = false;
-                                    foreach (TabUrlInfo redirect in tab.TabUrls)
+                                    else
                                     {
-                                        //compare each redirect to the improved friendly Url
-                                        //just in case it is the same
-                                        if (String.Compare(redirect.Url, friendlyUrl, StringComparison.OrdinalIgnoreCase) == 0)
-                                        {
-                                            found = true;
-                                        }
-                                    }
-                                    if (!found)
-                                    {
-                                        //ok if hte improved friendly Url isn't a tab redirect record,
-                                        //then add in the improved friendly Url as a 'fixed' url
-                                        var predefinedRedirect = new TabUrlInfo
-                                                                        {
-                                                                            TabId = tab.TabID,
-                                                                            CultureCode = cultureCode
-                                                                        };
-                                        if (key.StartsWith("hfurl") == false)
-                                        {
-                                            //this means it's not the actual url, it's either a spaces replace,
-                                            //auto ascii or both output.  It should be a 301 unless redirectunfriendly
-                                            //is off, or the page is excluded from redirects
-                                            if (settings.RedirectUnfriendly && !tab.DoNotRedirect)
-                                            {
-                                                predefinedRedirect.HttpStatus = "301"; //redirect to custom url
-                                            }
-                                            else
-                                            {
-                                                predefinedRedirect.HttpStatus = "200"; //allow it to work
-                                            }
-                                        }
-                                        else
-                                        {
-                                            //the hfurl key is the base human friendly url
-                                            if (tabHasCustom200 && (settings.RedirectUnfriendly && !tab.DoNotRedirect))
-                                            {
-                                                predefinedRedirect.HttpStatus = "301";
-                                            }
-                                            else
-                                            {
-                                                predefinedRedirect.HttpStatus = "200";
-                                                    //if no redirects, or not redirecting unfriendly, then 200 is OK
-                                            }
-                                        }
-                                        predefinedRedirect.Url = friendlyUrl;
-                                        predefinedRedirect.IsSystem = true;
-                                        predefinedRedirect.SeqNum = seqNum;
-                                        tab.TabUrls.Insert(0, predefinedRedirect);
-                                        seqNum--;
+                                        predefinedRedirect.HttpStatus = "200"; //allow it to work
                                     }
                                 }
                                 else
                                 {
-                                    //improved Friendly Url same as base Friendly Url, so we 200 this one, regardless of redirection settings
-                                    if (tabHasCustom200 == false)
+                                    //the hfurl key is the base human friendly url
+                                    if (tabHasCustom200 && (settings.RedirectUnfriendly && !tab.DoNotRedirect))
                                     {
-                                        baseFriendlyHttpStatus = "200";
+                                        predefinedRedirect.HttpStatus = "301";
+                                    }
+                                    else
+                                    {
+                                        predefinedRedirect.HttpStatus = "200";
+                                            //if no redirects, or not redirecting unfriendly, then 200 is OK
                                     }
                                 }
+                                predefinedRedirect.Url = friendlyUrl;
+                                predefinedRedirect.IsSystem = true;
+                                predefinedRedirect.SeqNum = seqNum;
+                                tab.TabUrls.Insert(0, predefinedRedirect);
+                                seqNum--;
                             }
                         }
-                        //base friendly url
-                        var baseFriendly = new TabUrlInfo
-                                                {
-                                                    TabId = tab.TabID,
-                                                    HttpStatus = (settings.RedirectUnfriendly == false || IsExcludedFromFriendlyUrls(tab, settings, true))
-                                                                        ? "200"
-                                                                        : baseFriendlyHttpStatus,
-                                                    CultureCode = cultureCode,
-                                                    Url = baseFriendlyUrl,
-                                                    IsSystem = true,
-                                                    SeqNum = seqNum
-                                                };
-                        tab.TabUrls.Insert(0, baseFriendly);
-                        seqNum--;
-                    }
-                    //standard url (/default.aspx?tabid=xx)
-                    var std = new TabUrlInfo
+                        else
                         {
+                            //improved Friendly Url same as base Friendly Url, so we 200 this one, regardless of redirection settings
+                            if (tabHasCustom200 == false)
+                            {
+                                baseFriendlyHttpStatus = "200";
+                            }
+                        }
+                    }
+                }
+                //base friendly url
+                var baseFriendly = new TabUrlInfo
+                                        {
                                             TabId = tab.TabID,
-                                            HttpStatus = stdHttpStatus,
-                                            CultureCode = (tab.CultureCode == "") ? defaultCulture : tab.CultureCode,
-                                            Url = stdUrl,
+                                            HttpStatus = (settings.RedirectUnfriendly == false || IsExcludedFromFriendlyUrls(tab, settings, true))
+                                                                ? "200"
+                                                                : baseFriendlyHttpStatus,
+                                            CultureCode = cultureCode,
+                                            Url = baseFriendlyUrl,
                                             IsSystem = true,
-                                            SeqNum = seqNum,
+                                            SeqNum = seqNum
                                         };
-                    tab.TabUrls.Insert(0, std);
-                    seqNum--;
-                }
+                tab.TabUrls.Insert(0, baseFriendly);
+                seqNum--;
             }
-        }
-
-        /// <summary>
-        /// A reflection based call to the Friendly Url provider to get the 'base' (dnn standard) urls
-        /// </summary>
-        /// <param name="tab"></param>
-        /// <param name="path"></param>
-        /// <param name="defaultPage"></param>
-        /// <param name="httpAlias"></param>
-        /// <param name="settings"></param>
-        /// <returns></returns>
-        internal static string GetFriendlyUrl(TabInfo tab, string path, string defaultPage, string httpAlias,
-                                              FriendlyUrlSettings settings)
-        {
-            List<string> messages;
-            object result = CallFriendlyUrlProviderMethod("BaseFriendlyUrl", out messages, tab, path, defaultPage, httpAlias, settings);
-            if (result == null)
-            {
-                return Globals.NavigateURL(tab.TabID);
-            }
-            return (string) result;
-        }
-
-        internal static string GetImprovedFriendlyUrl(TabInfo tab, string path, string defaultPage, string httpAlias,
-                                                      bool ignoreCustomRedirects)
-        {
-            FriendlyUrlSettings settings = GetCurrentSettings(tab.PortalID);
-            List<string> messages;
-            return GetImprovedFriendlyUrl(tab, path, defaultPage, httpAlias, ignoreCustomRedirects, settings,
-                                          out messages);
-        }
-
-        /// <summary>
-        /// A reflection based call to the friendly URl Provider object.  Done like this to avoid a circular reference
-        /// </summary>
-        /// <param name="tab"></param>
-        /// <param name="path"></param>
-        /// <param name="defaultPage"></param>
-        /// <param name="httpAlias"></param>
-        /// <param name="ignoreCustomRedirects"></param>
-        /// <param name="settings"></param>
-        /// <returns></returns>
-        internal static string GetImprovedFriendlyUrl(TabInfo tab, string path, string defaultPage, string httpAlias,
-                                                      bool ignoreCustomRedirects, FriendlyUrlSettings settings)
-        {
-            List<string> messages;
-            return GetImprovedFriendlyUrl(tab, path, defaultPage, httpAlias, ignoreCustomRedirects, settings,
-                                          out messages);
-        }
-
-        internal static string GetImprovedFriendlyUrl(TabInfo tab, string path, string defaultPage, string httpAlias,
-                                                      bool ignoreCustomRedirects, FriendlyUrlSettings settings,
-                                                      out List<string> messages)
-        {
-            object result = CallFriendlyUrlProviderMethod("ImprovedFriendlyUrlWithMessages", out messages, tab, path,
-                                                          defaultPage, httpAlias, ignoreCustomRedirects, settings);
-            if (result != null)
-            {
-                return (string) result;
-            }
-            return "";
-        }
-
-        internal static string GetImprovedFriendlyUrl(TabInfo tab, string path, string defaultPage,
-                                                      PortalSettings portalSettings, bool ignoreCustomRedirects,
-                                                      FriendlyUrlSettings settings)
-        {
-            List<string> messages;
-            object result = CallFriendlyUrlProviderMethod("ImprovedFriendlyUrlWithSettings", out messages, tab, path,
-                                                          defaultPage, portalSettings, ignoreCustomRedirects, settings);
-            if (result != null)
-            {
-                return (string) result;
-            }
-            return "";
-        }
-
-        internal static string GetImprovedFriendlyUrl(TabInfo tab, string path, string defaultPage,
-                                                      PortalSettings portalSettings, bool ignoreCustomRedirects,
-                                                      FriendlyUrlSettings settings, out List<string> messages)
-        {
-            object result = CallFriendlyUrlProviderMethod("ImprovedFriendlyUrlWithSettingsAndMessages", out messages,
-                                                          tab, path, defaultPage, portalSettings, ignoreCustomRedirects,
-                                                          settings);
-            if (result != null)
-            {
-                return (string) result;
-            }
-            return "";
-        }
-        /*
-        /// <summary>
-        /// A reflection based called to the Friendly Url Provider object.  Done like this to avoid circular references
-        /// </summary>
-        /// <param name="tab"></param>
-        /// <param name="replaceCharacter"></param>
-        /// <param name="replaceWith"></param>
-        /// <returns></returns>
-        internal static string BuildTabPathWithReplacement(TabInfo tab, string replaceCharacter, string replaceWith)
-        {
-            object result = CallTabPathHelperMethod("BuildTabPathWithReplacement", tab, replaceCharacter, replaceWith);
-            if (result != null)
-            {
-                return (string) result;
-            }
-            return "";
-        }
-
-        internal static string ReplaceDiacritics(string tabPath)
-        {
-            object result = CallTabPathHelperMethod("ReplaceDiacritics", tabPath);
-            if (result != null)
-            {
-                return (string) result;
-            }
-            return "";
-        }
-
-        public static void RebuildCustomUrlDict(string reason, int portalId)
-        {
-            CallTabDictControllerMethod("InvalidateDictionary", reason, null, portalId);
-        }
-
-        //internal static void ProcessTestRequest(string httpMethod, Uri requestUri, UrlAction result, NameValueCollection queryString, FriendlyUrlSettings settings, out List<string> messages)
-        //{
-        //    //public void ProcessRequest(HttpContext context, HttpRequest request, HttpServerUtility Server, HttpResponse response, bool useFriendlyUrls, string requestType, Uri requestUri, UrlAction result, NameValueCollection queryStringCol, FriendlyUrlSettings settings)
-        //    bool useFriendlyUrls = (DotNetNuke.Entities.Host.HostSettings.GetHostSetting("UseFriendlyUrls") == "Y");
-        //    object retval = CallUrlRewriterMethod("ProcessTestRequest", out messages, useFriendlyUrls, httpMethod, requestUri, result, queryString, settings);
-        //}
-        /// <summary>
-        /// Gets the Reflection MethodInfo object of the FriendlyUrlProvider method,
-        /// as LONG as the iFInity.UrlMaster.FriendlyUrlProvider can be found
-        /// </summary>
-        /// <remarks>This is a heavyweight proc, don't call too much!</remarks>
-        /// <param name="methodName"></param>
-        /// <returns></returns>
-        private static object CallFriendlyUrlProviderMethod(string methodName, out List<string> messages,
-                                                            params object[] parameters)
-        {
-            return CallFriendlyUrlProviderDllMethod(methodName, "iFinity.DNN.Modules.UrlMaster.DNNFriendlyUrlProvider",
-                                                    out messages, parameters);
-        }
-
-        private static void CallTabDictControllerMethod(string methodName, params object[] parameters)
-        {
-            CallFriendlyUrlProviderDllMethod(methodName, "iFinity.DNN.Modules.UrlMaster.TabDictController",
-                                             parameters);
-        }
-
-        private static object CallTabPathHelperMethod(string methodName, params object[] parameters)
-        {
-            return CallFriendlyUrlProviderDllMethod(methodName, "iFinity.DNN.Modules.UrlMaster.TabPathHelper",
-                                                    parameters);
-        }
-
-        private static object CallFriendlyUrlProviderDllMethod(string methodName, string typeName,
-                                                               params object[] parameters)
-        {
-            List<string> messages;
-            return CallFriendlyUrlProviderDllMethod(methodName, typeName, out messages, parameters);
-        }
-
-        private static object CallFriendlyUrlProviderDllMethod(string methodName, string typeName,
-                                                               out List<string> messages, params object[] parameters)
-        {
-            object result = null;
-            messages = null;
-            try
-            {
-                object providerObj = null;
-
-                Assembly urlMasterProvider = Assembly.Load("iFinity.UrlMaster.FriendlyUrlProvider");
-                Type[] types = urlMasterProvider.GetTypes();
-                foreach (Type type in types)
+            //standard url (/default.aspx?tabid=xx)
+            var std = new TabUrlInfo
                 {
-                    if ((type.FullName == typeName) & (type.IsClass))
+                                    TabId = tab.TabID,
+                                    HttpStatus = stdHttpStatus,
+                                    CultureCode = (tab.CultureCode == "") ? defaultCulture : tab.CultureCode,
+                                    Url = stdUrl,
+                                    IsSystem = true,
+                                    SeqNum = seqNum,
+                                };
+            tab.TabUrls.Insert(0, std);
+            seqNum--;
+        }
+    }
+}
+
+/// <summary>
+/// A reflection based call to the Friendly Url provider to get the 'base' (dnn standard) urls
+/// </summary>
+/// <param name="tab"></param>
+/// <param name="path"></param>
+/// <param name="defaultPage"></param>
+/// <param name="httpAlias"></param>
+/// <param name="settings"></param>
+/// <returns></returns>
+internal static string GetFriendlyUrl(TabInfo tab, string path, string defaultPage, string httpAlias,
+                                      FriendlyUrlSettings settings)
+{
+    List<string> messages;
+    object result = CallFriendlyUrlProviderMethod("BaseFriendlyUrl", out messages, tab, path, defaultPage, httpAlias, settings);
+    if (result == null)
+    {
+        return Globals.NavigateURL(tab.TabID);
+    }
+    return (string) result;
+}
+
+internal static string GetImprovedFriendlyUrl(TabInfo tab, string path, string defaultPage, string httpAlias,
+                                              bool ignoreCustomRedirects)
+{
+    FriendlyUrlSettings settings = GetCurrentSettings(tab.PortalID);
+    List<string> messages;
+    return GetImprovedFriendlyUrl(tab, path, defaultPage, httpAlias, ignoreCustomRedirects, settings,
+                                  out messages);
+}
+
+/// <summary>
+/// A reflection based call to the friendly URl Provider object.  Done like this to avoid a circular reference
+/// </summary>
+/// <param name="tab"></param>
+/// <param name="path"></param>
+/// <param name="defaultPage"></param>
+/// <param name="httpAlias"></param>
+/// <param name="ignoreCustomRedirects"></param>
+/// <param name="settings"></param>
+/// <returns></returns>
+internal static string GetImprovedFriendlyUrl(TabInfo tab, string path, string defaultPage, string httpAlias,
+                                              bool ignoreCustomRedirects, FriendlyUrlSettings settings)
+{
+    List<string> messages;
+    return GetImprovedFriendlyUrl(tab, path, defaultPage, httpAlias, ignoreCustomRedirects, settings,
+                                  out messages);
+}
+
+internal static string GetImprovedFriendlyUrl(TabInfo tab, string path, string defaultPage, string httpAlias,
+                                              bool ignoreCustomRedirects, FriendlyUrlSettings settings,
+                                              out List<string> messages)
+{
+    object result = CallFriendlyUrlProviderMethod("ImprovedFriendlyUrlWithMessages", out messages, tab, path,
+                                                  defaultPage, httpAlias, ignoreCustomRedirects, settings);
+    if (result != null)
+    {
+        return (string) result;
+    }
+    return "";
+}
+
+internal static string GetImprovedFriendlyUrl(TabInfo tab, string path, string defaultPage,
+                                              PortalSettings portalSettings, bool ignoreCustomRedirects,
+                                              FriendlyUrlSettings settings)
+{
+    List<string> messages;
+    object result = CallFriendlyUrlProviderMethod("ImprovedFriendlyUrlWithSettings", out messages, tab, path,
+                                                  defaultPage, portalSettings, ignoreCustomRedirects, settings);
+    if (result != null)
+    {
+        return (string) result;
+    }
+    return "";
+}
+
+internal static string GetImprovedFriendlyUrl(TabInfo tab, string path, string defaultPage,
+                                              PortalSettings portalSettings, bool ignoreCustomRedirects,
+                                              FriendlyUrlSettings settings, out List<string> messages)
+{
+    object result = CallFriendlyUrlProviderMethod("ImprovedFriendlyUrlWithSettingsAndMessages", out messages,
+                                                  tab, path, defaultPage, portalSettings, ignoreCustomRedirects,
+                                                  settings);
+    if (result != null)
+    {
+        return (string) result;
+    }
+    return "";
+}
+/*
+/// <summary>
+/// A reflection based called to the Friendly Url Provider object.  Done like this to avoid circular references
+/// </summary>
+/// <param name="tab"></param>
+/// <param name="replaceCharacter"></param>
+/// <param name="replaceWith"></param>
+/// <returns></returns>
+internal static string BuildTabPathWithReplacement(TabInfo tab, string replaceCharacter, string replaceWith)
+{
+    object result = CallTabPathHelperMethod("BuildTabPathWithReplacement", tab, replaceCharacter, replaceWith);
+    if (result != null)
+    {
+        return (string) result;
+    }
+    return "";
+}
+
+internal static string ReplaceDiacritics(string tabPath)
+{
+    object result = CallTabPathHelperMethod("ReplaceDiacritics", tabPath);
+    if (result != null)
+    {
+        return (string) result;
+    }
+    return "";
+}
+
+public static void RebuildCustomUrlDict(string reason, int portalId)
+{
+    CallTabDictControllerMethod("InvalidateDictionary", reason, null, portalId);
+}
+
+//internal static void ProcessTestRequest(string httpMethod, Uri requestUri, UrlAction result, NameValueCollection queryString, FriendlyUrlSettings settings, out List<string> messages)
+//{
+//    //public void ProcessRequest(HttpContext context, HttpRequest request, HttpServerUtility Server, HttpResponse response, bool useFriendlyUrls, string requestType, Uri requestUri, UrlAction result, NameValueCollection queryStringCol, FriendlyUrlSettings settings)
+//    bool useFriendlyUrls = (DotNetNuke.Entities.Host.HostSettings.GetHostSetting("UseFriendlyUrls") == "Y");
+//    object retval = CallUrlRewriterMethod("ProcessTestRequest", out messages, useFriendlyUrls, httpMethod, requestUri, result, queryString, settings);
+//}
+/// <summary>
+/// Gets the Reflection MethodInfo object of the FriendlyUrlProvider method,
+/// as LONG as the iFInity.UrlMaster.FriendlyUrlProvider can be found
+/// </summary>
+/// <remarks>This is a heavyweight proc, don't call too much!</remarks>
+/// <param name="methodName"></param>
+/// <returns></returns>
+private static object CallFriendlyUrlProviderMethod(string methodName, out List<string> messages,
+                                                    params object[] parameters)
+{
+    return CallFriendlyUrlProviderDllMethod(methodName, "iFinity.DNN.Modules.UrlMaster.DNNFriendlyUrlProvider",
+                                            out messages, parameters);
+}
+
+private static void CallTabDictControllerMethod(string methodName, params object[] parameters)
+{
+    CallFriendlyUrlProviderDllMethod(methodName, "iFinity.DNN.Modules.UrlMaster.TabDictController",
+                                     parameters);
+}
+
+private static object CallTabPathHelperMethod(string methodName, params object[] parameters)
+{
+    return CallFriendlyUrlProviderDllMethod(methodName, "iFinity.DNN.Modules.UrlMaster.TabPathHelper",
+                                            parameters);
+}
+
+private static object CallFriendlyUrlProviderDllMethod(string methodName, string typeName,
+                                                       params object[] parameters)
+{
+    List<string> messages;
+    return CallFriendlyUrlProviderDllMethod(methodName, typeName, out messages, parameters);
+}
+
+private static object CallFriendlyUrlProviderDllMethod(string methodName, string typeName,
+                                                       out List<string> messages, params object[] parameters)
+{
+    object result = null;
+    messages = null;
+    try
+    {
+        object providerObj = null;
+
+        Assembly urlMasterProvider = Assembly.Load("iFinity.UrlMaster.FriendlyUrlProvider");
+        Type[] types = urlMasterProvider.GetTypes();
+        foreach (Type type in types)
+        {
+            if ((type.FullName == typeName) & (type.IsClass))
+            {
+                Type providerType = type;
+                string providerTypeName = providerType.Name;
+                //570 : check to see if it is an abstract class before trying to instantiate the
+                //calling object
+                if (!providerType.IsAbstract)
+                {
+                    // get the provider objects from the stored collection if necessary
+                    if (_providerObjects != null)
                     {
-                        Type providerType = type;
-                        string providerTypeName = providerType.Name;
-                        //570 : check to see if it is an abstract class before trying to instantiate the
-                        //calling object
-                        if (!providerType.IsAbstract)
+                        if (_providerObjects.ContainsKey(providerTypeName))
                         {
-                            // get the provider objects from the stored collection if necessary
-                            if (_providerObjects != null)
-                            {
-                                if (_providerObjects.ContainsKey(providerTypeName))
-                                {
-                                    providerObj = _providerObjects[providerTypeName];
-                                }
-                            }
-                            if (providerObj == null)
-                            {
-                                providerObj = Activator.CreateInstance(providerType);
-                            }
-
-                            if (_providerObjects == null)
-                            {
-                                _providerObjects = new Dictionary<string, object> {{providerTypeName, providerObj}};
-                            }
-                        }
-
-                        if (providerObj != null || providerType.IsAbstract)
-                        {
-                            MethodInfo method = providerType.GetMethod(methodName);
-                            if (method != null)
-                            {
-                                //new collection
-                                int messageParmIdx = -1;
-                                var parmValues = new List<object>(parameters);
-                                ParameterInfo[] methodParms = method.GetParameters();
-                                for (int i = 0; i <= methodParms.GetUpperBound(0); i++)
-                                {
-                                    if (methodParms[i].IsOut && i > parameters.GetUpperBound(0) &&
-                                        methodParms[i].Name.ToLower() == "messages")
-                                    {
-                                        //add on another one on the end
-                                        parmValues.Add(messages);
-                                        messageParmIdx = i;
-                                        parameters = parmValues.ToArray();
-                                    }
-                                    if (methodParms[i].Name.ToLower() == "parenttraceid" &&
-                                        i > parameters.GetUpperBound(0))
-                                    {
-                                        parmValues.Add(Guid.Empty);
-                                        parameters = parmValues.ToArray();
-                                    }
-                                }
-                                result = method.Invoke(providerObj, parameters);
-                                //get the out messages value
-                                if (messageParmIdx > -1)
-                                {
-                                    messages = (List<string>) parameters[messageParmIdx];
-                                }
-                            }
-                            break;
+                            providerObj = _providerObjects[providerTypeName];
                         }
                     }
-                }
-                //}
-            }
-            catch (Exception ex)
-            {
-                //get the standard DNN friendly Url by loading up HttpModules
-                if (messages == null)
-                {
-                    messages = new List<string>();
-                }
-                messages.Add("Error:[" + ex.Message + "]");
-                if (ex.InnerException != null)
-                {
-                    messages.Add("Inner Error:[ " + ex.InnerException.Message + "]");
-                    messages.Add("Stack Trace :[ " + ex.InnerException.StackTrace + "]");
-                }
-            }
-            return result;
-        }
-        */
-        #endregion
+                    if (providerObj == null)
+                    {
+                        providerObj = Activator.CreateInstance(providerType);
+                    }
 
-        #region Database methods
+                    if (_providerObjects == null)
+                    {
+                        _providerObjects = new Dictionary<string, object> {{providerTypeName, providerObj}};
+                    }
+                }
+
+                if (providerObj != null || providerType.IsAbstract)
+                {
+                    MethodInfo method = providerType.GetMethod(methodName);
+                    if (method != null)
+                    {
+                        //new collection
+                        int messageParmIdx = -1;
+                        var parmValues = new List<object>(parameters);
+                        ParameterInfo[] methodParms = method.GetParameters();
+                        for (int i = 0; i <= methodParms.GetUpperBound(0); i++)
+                        {
+                            if (methodParms[i].IsOut && i > parameters.GetUpperBound(0) &&
+                                methodParms[i].Name.ToLower() == "messages")
+                            {
+                                //add on another one on the end
+                                parmValues.Add(messages);
+                                messageParmIdx = i;
+                                parameters = parmValues.ToArray();
+                            }
+                            if (methodParms[i].Name.ToLower() == "parenttraceid" &&
+                                i > parameters.GetUpperBound(0))
+                            {
+                                parmValues.Add(Guid.Empty);
+                                parameters = parmValues.ToArray();
+                            }
+                        }
+                        result = method.Invoke(providerObj, parameters);
+                        //get the out messages value
+                        if (messageParmIdx > -1)
+                        {
+                            messages = (List<string>) parameters[messageParmIdx];
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        //}
+    }
+    catch (Exception ex)
+    {
+        //get the standard DNN friendly Url by loading up HttpModules
+        if (messages == null)
+        {
+            messages = new List<string>();
+        }
+        messages.Add("Error:[" + ex.Message + "]");
+        if (ex.InnerException != null)
+        {
+            messages.Add("Inner Error:[ " + ex.InnerException.Message + "]");
+            messages.Add("Stack Trace :[ " + ex.InnerException.StackTrace + "]");
+        }
+    }
+    return result;
+}
+*/
+
 
         public static Dictionary<int, TabInfo> GetTabs(int portalId, bool includeStdUrls)
         {
@@ -704,8 +692,6 @@ namespace DotNetNuke.Entities.Urls
             return tab;
         }
 
-        #endregion
-
         private static bool IsMobileClient()
         {
             return (HttpContext.Current.Request.Browser != null) && (ClientCapabilityProvider.Instance() != null) && ClientCapabilityProvider.CurrentClientCapability.IsMobile;
@@ -749,8 +735,6 @@ namespace DotNetNuke.Entities.Urls
                 ch = options.SpaceEncoding;
             }
         }
-
-        #region Internal Methods
 
         internal static bool CanUseMobileDevice(HttpRequest request, HttpResponse response)
         {
@@ -816,10 +800,6 @@ namespace DotNetNuke.Entities.Urls
         {
             return RewriteController.IsAdminTab(portalId, tabPath, settings);
         }
-
-        #endregion
-
-        #region Public Methods
 
         public static string CleanNameForUrl(string urlName, FriendlyUrlOptions options, out bool replacedUnwantedChars)
         {
@@ -1089,8 +1069,5 @@ namespace DotNetNuke.Entities.Urls
             }
             return isUnique;
         }
-
-
-        #endregion
     }
 }

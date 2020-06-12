@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
@@ -32,8 +32,6 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 
-#endregion
-
 namespace DotNetNuke.Entities.Icons
 {
     /// <summary>
@@ -47,8 +45,6 @@ namespace DotNetNuke.Entities.Icons
     public class IconController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IconController));
-        #region Constants
-
         public const string DefaultIconSize = "16X16";
         public const string DefaultLargeIconSize = "32X32";
         public const string DefaultIconStyle = "Standard";
@@ -56,7 +52,6 @@ namespace DotNetNuke.Entities.Icons
         public const string IconSizeName = "IconSize";
         public const string IconStyleName = "IconStyle";
 
-        #endregion
 
 
         /// <summary>

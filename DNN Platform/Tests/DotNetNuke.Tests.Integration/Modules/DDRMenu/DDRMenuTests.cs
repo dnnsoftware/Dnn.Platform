@@ -19,14 +19,8 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
     [TestFixture]
     public class DDRMenuTests : IntegrationTestBase
     {
-        #region Fields
-
         private readonly string _hostName;
         private readonly string _hostPass;
-
-        #endregion
-
-        #region SetUp
 
         public DDRMenuTests()
         {
@@ -40,10 +34,6 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
         {
             base.TestFixtureSetUp();
         }
-
-        #endregion
-
-        #region Tests
 
         [Test]
         public void Page_Should_Able_To_Duplicate_With_Ddr_Menu_On_It()
@@ -61,12 +51,6 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
             int copyTabId;
             this.CreateNewPage(tabId, out copyTabId);
         }
-
-
-
-        #endregion
-
-        #region Private Methods
 
         private IWebApiConnector CreateNewPage(int templateTabId, out int tabId)
         {
@@ -114,7 +98,5 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
 
             return connector;
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System.Text;
 using System.IO;
@@ -45,7 +44,6 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public abstract class PatternConverter
     {
-        #region Protected Instance Constructors
 
         /// <summary>
         /// Protected constructor
@@ -59,9 +57,7 @@ namespace log4net.Util
         {
         }
 
-        #endregion Protected Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Get the next pattern converter in the chain
@@ -118,9 +114,7 @@ namespace log4net.Util
             set { this.m_option = value; }
         }
 
-        #endregion Public Instance Properties
 
-        #region Protected Abstract Methods
 
         /// <summary>
         /// Evaluate this pattern converter and write the output to a writer.
@@ -135,9 +129,7 @@ namespace log4net.Util
         /// </remarks>
         abstract protected void Convert(TextWriter writer, object state);
 
-        #endregion Protected Abstract Methods
 
-        #region Public Instance Methods
 
         /// <summary>
         /// Set the next pattern converter in the chains
@@ -250,10 +242,6 @@ namespace log4net.Util
             }
         }
 
-        #endregion Public Instance Methods
-
-        #region Private Instance Fields
-
         private PatternConverter m_next;
         private int m_min = -1;
         private int m_max = int.MaxValue;
@@ -266,9 +254,7 @@ namespace log4net.Util
 
         private ReusableStringWriter m_formatWriter = new ReusableStringWriter(System.Globalization.CultureInfo.InvariantCulture);
 
-        #endregion Private Instance Fields
 
-        #region Constants
 
         /// <summary>
         /// Initial buffer size
@@ -280,9 +266,7 @@ namespace log4net.Util
         /// </summary>
         private const int c_renderBufferMaxCapacity = 1024;
 
-        #endregion
 
-        #region Static Methods
 
         /// <summary>
         /// Write an dictionary to a <see cref="TextWriter"/>
@@ -384,8 +368,6 @@ namespace log4net.Util
                 }
             }
         }
-
-        #endregion
 
         private PropertiesDictionary properties;
 

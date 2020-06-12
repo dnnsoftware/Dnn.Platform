@@ -12,14 +12,11 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 {
     internal class WorkflowActionRepository : ServiceLocator<IWorkflowActionRepository, WorkflowActionRepository>, IWorkflowActionRepository
     {
-        #region Service Locator
         protected override Func<IWorkflowActionRepository> GetFactory()
         {
             return () => new WorkflowActionRepository();
         }
-        #endregion
 
-        #region Public Methods
         public WorkflowAction GetWorkflowAction(int contentTypeId, string type)
         {
             using (var context = DataContext.Instance())
@@ -37,6 +34,5 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 rep.Insert(action);
             }
         }
-        #endregion
     }
 }

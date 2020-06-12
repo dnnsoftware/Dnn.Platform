@@ -28,7 +28,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         private const string SharedResources = "~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";
         private const string ViewControlResources = "~/DesktopModules/CoreMessaging/App_LocalResources/View.ascx.resx";
 
-        #region Private Properties
         private string LocalizationFolder
         {
             get
@@ -38,9 +37,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                     DesktopModuleController.GetDesktopModuleByModuleName("DotNetNuke.Modules.CoreMessaging", this.PortalSettings.PortalId).FolderName);
             }
         }
-        #endregion
 
-        #region Public APIs
 
         /// <summary>
         /// Perform a search on Scoring Activities registered in the system.
@@ -185,9 +182,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
             }
         }
-        #endregion
-
-        #region Private Statics Methods
 
         private static SubscriptionViewModel GetSubscriptionViewModel(Subscription subscription)
         {
@@ -300,6 +294,5 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
             return null;
         }
-        #endregion
     }
 }

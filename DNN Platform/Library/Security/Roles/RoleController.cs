@@ -49,8 +49,6 @@ namespace DotNetNuke.Security.Roles
             return () => new RoleController();
         }
 
-        #region Private Methods
-
         private void AddMessage(RoleInfo roleInfo, EventLogController.EventLogType logType)
         {
             EventLogController.Instance.AddLog(
@@ -156,10 +154,6 @@ namespace DotNetNuke.Security.Roles
             // _messagingController.SaveMessage(_message);
             Mail.SendEmail(PortalSettings.Email, objUser.Email, _message.Subject, _message.Body);
         }
-
-        #endregion
-
-        #region Public Methods
 
         public int AddRole(RoleInfo role)
         {
@@ -494,9 +488,7 @@ namespace DotNetNuke.Security.Roles
         }
 
 
-        #endregion
 
-        #region Static Helper Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -747,8 +739,5 @@ namespace DotNetNuke.Security.Roles
                 }
             }
         }
-
-        #endregion
-
     }
 }

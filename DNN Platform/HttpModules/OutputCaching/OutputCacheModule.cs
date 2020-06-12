@@ -26,8 +26,6 @@ namespace DotNetNuke.HttpModules.OutputCaching
         private const string ContextKeyTabOutputCacheProvider = "OutputCache:TabOutputCacheProvider";
         private HttpApplication _app;
 
-        #region IHttpModule Members
-
         public void Init(HttpApplication httpApp)
         {
             this._app = httpApp;
@@ -40,9 +38,6 @@ namespace DotNetNuke.HttpModules.OutputCaching
         public void Dispose()
         {
         }
-
-        #endregion
-
 
         private bool IsInstallInProgress(HttpApplication app)
         {
@@ -249,14 +244,10 @@ namespace DotNetNuke.HttpModules.OutputCaching
             }
         }
 
-        #region Nested type: IncludeExcludeType
-
         private enum IncludeExcludeType
         {
             IncludeByDefault,
             ExcludeByDefault
         }
-
-        #endregion
     }
 }

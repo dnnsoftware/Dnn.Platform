@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -15,8 +15,6 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
-
-#endregion
 
 namespace DotNetNuke.Security.Permissions
 {
@@ -31,13 +29,7 @@ namespace DotNetNuke.Security.Permissions
     /// -----------------------------------------------------------------------------
     public class ModulePermissionController
     {
-        #region Private Members
-
         private static readonly PermissionProvider _provider = PermissionProvider.Instance();
-
-        #endregion
-
-        #region Private Methods
 
         private static void ClearPermissionCache(int moduleId)
         {
@@ -45,9 +37,7 @@ namespace DotNetNuke.Security.Permissions
             DataCache.ClearModulePermissionsCache(objModule.TabID);
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// <summary>
         /// Returns a list with all roles with implicit permissions on Modules
@@ -197,7 +187,5 @@ namespace DotNetNuke.Security.Permissions
             _provider.SaveModulePermissions(module);
             DataCache.ClearModulePermissionsCache(module.TabID);
         }
-
-        #endregion
     }
 }

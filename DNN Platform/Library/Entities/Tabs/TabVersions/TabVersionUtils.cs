@@ -17,7 +17,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     /// </summary>
     internal static class TabVersionUtils
     {
-        #region Internal Methods
 
         /// <summary>
         /// Try to get the version number from the current URL
@@ -69,9 +68,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
             return TabPermissionController.HasTabPermission(tab.TabPermissions, "EDIT,CONTENT,MANAGE");
         }
-        #endregion
 
-        #region Private Methods
         private static string GetTabVersionQueryStringValue()
         {
             var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
@@ -79,6 +76,5 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 string.Empty :
                 HttpContext.Current.Request.QueryString[TabVersionSettings.Instance.GetTabVersionQueryStringParameter(currentPortal.PortalId)];
         }
-        #endregion
     }
 }

@@ -20,8 +20,6 @@ namespace DotNetNuke.Entities.Portals.Internal
             return () => new PortalTemplateIO();
         }
 
-        #region IPortalTemplateIO Members
-
         public IEnumerable<string> EnumerateTemplates()
         {
             string path = Globals.HostMapPath;
@@ -70,7 +68,5 @@ namespace DotNetNuke.Entities.Portals.Internal
         {
             return File.Exists(path) ? path : string.Empty;
         }
-
-        #endregion
     }
 }

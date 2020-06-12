@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using log4net.Repository;
 
@@ -39,7 +38,6 @@ namespace log4net.Plugin
     /// <author>Gert Driesen</author>
     public abstract class PluginSkeleton : IPlugin
     {
-        #region Protected Instance Constructors
 
         /// <summary>
         /// Constructor
@@ -53,9 +51,7 @@ namespace log4net.Plugin
             this.m_name = name;
         }
 
-        #endregion Protected Instance Constructors
 
-        #region Implementation of IPlugin
 
         /// <summary>
         /// Gets or sets the name of the plugin.
@@ -111,9 +107,7 @@ namespace log4net.Plugin
         {
         }
 
-        #endregion Implementation of IPlugin
 
-        #region Protected Instance Properties
 
         /// <summary>
         /// The repository for this plugin
@@ -133,9 +127,7 @@ namespace log4net.Plugin
             set { this.m_repository = value; }
         }
 
-        #endregion Protected Instance Properties
 
-        #region Private Instance Fields
 
         /// <summary>
         /// The name of this plugin.
@@ -146,7 +138,5 @@ namespace log4net.Plugin
         /// The repository this plugin is attached to.
         /// </summary>
         private ILoggerRepository m_repository;
-
-        #endregion Private Instance Fields
     }
 }

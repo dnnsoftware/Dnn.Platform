@@ -15,18 +15,12 @@ namespace DotNetNuke.Entities.Content.Workflow
 {
     public class WorkflowSecurity : ServiceLocator<IWorkflowSecurity, WorkflowSecurity>, IWorkflowSecurity
     {
-        #region Constants
         private const string ReviewPermissionKey = "REVIEW";
         private const string ReviewPermissionCode = "SYSTEM_CONTENTWORKFLOWSTATE";
-        #endregion
-
-        #region Members
         private readonly IUserController _userController = UserController.Instance;
         private readonly IWorkflowManager _workflowManager = WorkflowManager.Instance;
         private readonly IWorkflowStatePermissionsRepository _statePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
-        #endregion
 
-        #region Public Methods
         public bool HasStateReviewerPermission(PortalSettings settings, UserInfo user, int stateId)
         {
             var permissions = this._statePermissionsRepository.GetWorkflowStatePermissionByState(stateId);
@@ -59,13 +53,10 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             return (PermissionInfo)new PermissionController().GetPermissionByCodeAndKey(ReviewPermissionCode, ReviewPermissionKey)[0];
         }
-        #endregion
 
-        #region Service Locator
         protected override Func<IWorkflowSecurity> GetFactory()
         {
             return () => new WorkflowSecurity();
         }
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Globalization;
@@ -17,8 +17,6 @@ using DotNetNuke.Services.Tokens;
 using DotNetNuke.Common;
 using DotNetNuke.Abstractions.Portals;
 
-#endregion
-
 namespace DotNetNuke.Entities.Portals
 {
     /// -----------------------------------------------------------------------------
@@ -31,17 +29,11 @@ namespace DotNetNuke.Entities.Portals
     [Serializable]
     public partial class PortalSettings : BaseEntityInfo, IPropertyAccess, IPortalSettings
     {
-        #region ControlPanelPermission enum
-
         public enum ControlPanelPermission
         {
             TabEditor,
             ModuleEditor
         }
-
-        #endregion
-
-        #region Mode enum
 
         public enum Mode
         {
@@ -50,10 +42,6 @@ namespace DotNetNuke.Entities.Portals
             Layout
         }
 
-        #endregion
-
-        #region PortalAliasMapping enum
-
         public enum PortalAliasMapping
         {
             None,
@@ -61,9 +49,6 @@ namespace DotNetNuke.Entities.Portals
             Redirect
         }
 
-        #endregion
-
-        #region Data Consent UserDeleteAction enum
         public enum UserDeleteAction
         {
             Off = 0,
@@ -71,9 +56,6 @@ namespace DotNetNuke.Entities.Portals
             DelayedHardDelete = 2,
             HardDelete = 3
         }
-        #endregion
-
-        #region Constructors
 
         public PortalSettings()
         {
@@ -148,10 +130,6 @@ namespace DotNetNuke.Entities.Portals
                 }
             }
         }
-
-        #endregion
-
-        #region Auto-Properties
 
         public TabInfo ActiveTab { get; set; }
 
@@ -240,9 +218,7 @@ namespace DotNetNuke.Entities.Portals
 
         public int PrivacyTabId { get; set; }
 
-        #endregion
 
-        #region Read-Only Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -444,10 +420,6 @@ namespace DotNetNuke.Entities.Portals
         public int SMTPConnectionLimit { get; internal set; }
 
         public int SMTPMaxIdleTime { get; internal set; }
-
-        #endregion
-
-        #region Public Properties
 
         public CacheLevel Cacheability
         {
@@ -677,9 +649,6 @@ namespace DotNetNuke.Entities.Portals
         /// Whitelist of file extensions for end users
         /// </summary>
         public FileExtensionWhitelist AllowedExtensionsWhitelist { get; internal set; }
-        #endregion
-
-        #region IPropertyAccess Members
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
@@ -892,15 +861,9 @@ namespace DotNetNuke.Entities.Portals
             return result;
         }
 
-        #endregion
-
-        #region Public Methods
-
         public PortalSettings Clone()
         {
             return (PortalSettings)this.MemberwiseClone();
         }
-
-        #endregion
     }
 }

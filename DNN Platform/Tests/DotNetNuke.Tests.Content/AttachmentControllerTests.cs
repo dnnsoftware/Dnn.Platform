@@ -44,8 +44,6 @@ namespace DotNetNuke.Tests.Content
             MockComponentProvider.ResetContainer();
         }
 
-        #region Utility methods
-
         private static Mock<IDataService> DataServiceFactory()
         {
             var dataService = new Mock<IDataService>();
@@ -89,10 +87,6 @@ namespace DotNetNuke.Tests.Content
 
             return dataService;
         }
-
-        #endregion
-
-        #region FileController Tests
 
         [Test]
         public void Test_Add_File_To_Content_Item_Without_Metadata()
@@ -298,7 +292,5 @@ namespace DotNetNuke.Tests.Content
             dataService.Verify(ds => ds.AddMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Exactly(2));
             dataService.Verify(ds => ds.DeleteMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Once());
         }
-
-        #endregion
     }
 }

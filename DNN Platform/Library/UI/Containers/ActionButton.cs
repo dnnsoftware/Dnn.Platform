@@ -1,14 +1,12 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 
 using DotNetNuke.Entities.Modules.Actions;
-
-#endregion
 
 namespace DotNetNuke.UI.Containers
 {
@@ -29,7 +27,6 @@ namespace DotNetNuke.UI.Containers
     {
         private ActionButtonList _ButtonList;
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -169,9 +166,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        #endregion
 
-        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -183,9 +178,7 @@ namespace DotNetNuke.UI.Containers
             this.ProcessAction(e.Action.ID.ToString());
         }
 
-        #endregion
 
-        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -201,7 +194,5 @@ namespace DotNetNuke.UI.Containers
 
             this.Controls.Add(this._ButtonList);
         }
-
-        #endregion
     }
 }

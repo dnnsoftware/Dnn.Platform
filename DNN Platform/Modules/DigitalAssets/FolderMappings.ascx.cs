@@ -29,13 +29,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Private Variables
-
         private readonly IFolderMappingController _folderMappingController = FolderMappingController.Instance;
-
-        #endregion
-
-        #region Properties
 
         public int FolderPortalID
         {
@@ -74,10 +68,6 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
             set { this.Session["FolderMappingsList"] = value; }
         }
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
@@ -172,10 +162,6 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void UpdateFolderMappings(IList<FolderMappingInfo> folderMappingsList)
         {
             for (var i = 3; i < folderMappingsList.Count; i++)
@@ -184,8 +170,5 @@ namespace DotNetNuke.Modules.DigitalAssets
                 this._folderMappingController.UpdateFolderMapping(folderMappingsList[i]);
             }
         }
-
-        #endregion
-
     }
 }

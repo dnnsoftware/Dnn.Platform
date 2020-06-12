@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Data;
@@ -10,8 +10,6 @@ using System.Xml.Serialization;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
-
-#endregion
 
 namespace DotNetNuke.Security.Permissions
 {
@@ -27,16 +25,12 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public class ModulePermissionInfo : PermissionInfoBase, IHydratable
     {
-        #region "Private Members"
-
         private int _moduleID;
 
         // local property declarations
         private int _modulePermissionID;
 
-        #endregion
 
-        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -64,9 +58,7 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionName = permission.PermissionName;
         }
 
-        #endregion
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -106,9 +98,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        #endregion
 
-        #region IHydratable Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -142,9 +132,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        #endregion
 
-        #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -211,7 +199,5 @@ namespace DotNetNuke.Security.Permissions
                 return (this._moduleID * 397) ^ this._modulePermissionID;
             }
         }
-
-        #endregion
     }
 }

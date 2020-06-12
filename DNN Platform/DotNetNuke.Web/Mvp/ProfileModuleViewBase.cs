@@ -25,8 +25,6 @@ namespace DotNetNuke.Web.Mvp
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region IProfileModule Members
-
         public abstract bool DisplayModule { get; }
 
         public int ProfileUserId
@@ -42,10 +40,6 @@ namespace DotNetNuke.Web.Mvp
             }
         }
 
-        #endregion
-
-        #region Protected Properties
-
         protected bool IsUser
         {
             get
@@ -58,10 +52,6 @@ namespace DotNetNuke.Web.Mvp
         {
             get { return UserController.GetUserById(this.ModuleContext.PortalId, this.ProfileUserId); }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private string GetRedirectUrl()
         {
@@ -81,10 +71,6 @@ namespace DotNetNuke.Web.Mvp
             return redirectUrl;
         }
 
-        #endregion
-
-        #region Protected Methods
-
         protected override void OnInit(EventArgs e)
         {
             if (this.ProfileUserId == Null.NullInteger &&
@@ -100,7 +86,5 @@ namespace DotNetNuke.Web.Mvp
 
             base.OnInit(e);
         }
-
-        #endregion
     }
 }

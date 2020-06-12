@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -22,8 +22,6 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Installer;
 using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
 
-#endregion
-
 namespace DotNetNuke.Services.Upgrade.Internals
 {
     /// -----------------------------------------------------------------------------
@@ -34,7 +32,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
     /// </remarks>
     internal class InstallControllerImpl : IInstallController
     {
-        #region IInstallController Members
 
         /// <summary>
         /// GetConnectionFromWebConfig - Returns Connection Configuration in web.config file
@@ -603,8 +600,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
         {
             get { return "InstallerLog" + DateTime.Now.ToString("yyyyMMdd") + ".resources"; }
         }
-
-        #endregion
 
         public CultureInfo GetCultureFromBrowser()
         {

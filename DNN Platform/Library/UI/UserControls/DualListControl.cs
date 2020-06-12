@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -12,13 +12,10 @@ using DotNetNuke.Framework;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 
-#endregion
-
 namespace DotNetNuke.UI.UserControls
 {
     public abstract class DualListControl : UserControlBase
     {
-        #region "Private Members"
         protected Label Label1;
         protected Label Label2;
         private string MyFileName = "DualListControl.ascx";
@@ -35,10 +32,6 @@ namespace DotNetNuke.UI.UserControls
         protected LinkButton cmdRemoveAll;
         protected ListBox lstAssigned;
         protected ListBox lstAvailable;
-
-        #endregion
-
-        #region "Public Properties"
 
         public string ListBoxWidth
         {
@@ -122,9 +115,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        #endregion
 
-        #region "Protected Event Handlers"
 
         /// <summary>The Page_Load server event handler on this page is used to populate the role information for the page</summary>
         protected override void OnLoad(EventArgs e)
@@ -253,10 +244,6 @@ namespace DotNetNuke.UI.UserControls
             this.Sort(this.lstAvailable);
         }
 
-        #endregion
-
-        #region "Private Methods"
-
         private void Sort(ListBox ctlListBox)
         {
             var arrListItems = new ArrayList();
@@ -271,14 +258,10 @@ namespace DotNetNuke.UI.UserControls
                 ctlListBox.Items.Add(objListItem);
             }
         }
-
-        #endregion
     }
 
     public class ListItemComparer : IComparer
     {
-        #region IComparer Members
-
         public int Compare(object x, object y)
         {
             var a = (ListItem)x;
@@ -286,7 +269,5 @@ namespace DotNetNuke.UI.UserControls
             var c = new CaseInsensitiveComparer();
             return c.Compare(a.Text, b.Text);
         }
-
-        #endregion
     }
 }

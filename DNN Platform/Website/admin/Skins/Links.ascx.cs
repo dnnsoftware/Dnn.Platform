@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -11,8 +11,6 @@ using System.Text.RegularExpressions;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
-
-#endregion
 
 namespace DotNetNuke.UI.Skins.Controls
 {
@@ -23,17 +21,10 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class Links : SkinObjectBase
     {
         private static readonly Regex SrcRegex = new Regex("src=[']?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        #region "Private Members"
-
         private string _alignment;
         private bool _forceLinks = true;
         private bool _includeActiveTab = true;
         private string _level;
-
-        #endregion
-
-        #region "Public Members"
 
         public string Alignment
         {
@@ -89,10 +80,6 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        #endregion
-
-        #region "Event Handlers"
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -134,10 +121,6 @@ namespace DotNetNuke.UI.Skins.Controls
             }
             this.lblLinks.Text = strLinks;
         }
-
-        #endregion
-
-        #region "Private Methods"
 
         private string BuildLinks(string strLevel, string strSeparator, string strCssClass)
         {
@@ -219,7 +202,5 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             return string.Format("<a class=\"{0}\" href=\"{1}\">{2}</a>", strCssClass, strURL, strTabName);
         }
-
-        #endregion
     }
 }

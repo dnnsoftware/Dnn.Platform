@@ -25,8 +25,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
         private static readonly SharedDictionary<int, string> CacheFolderPath = new SharedDictionary<int, string>(LockingStrategy.ReaderWriter);
 
-        #region Private Methods
-
         private static string GetCacheFolder()
         {
             int portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
@@ -121,10 +119,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
-        #endregion
-
-        #region Friend Methods
-
         internal static string GetAttribFileName(int tabId, string cacheKey)
         {
             return string.Concat(GetCacheFolder(), cacheKey, AttribFileExtension);
@@ -144,10 +138,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
         {
             return string.Concat(GetCacheFolder(), cacheKey, TempFileExtension);
         }
-
-        #endregion
-
-        #region Abstract Method Implementation
 
         public override int GetItemCount(int tabId)
         {
@@ -326,7 +316,5 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
             return foundFile;
         }
-
-        #endregion
     }
 }

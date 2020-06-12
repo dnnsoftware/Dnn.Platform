@@ -39,8 +39,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     [TestFixture]
     public class MessagingControllerTests
     {
-        #region "Private Properties"
-
         private Mock<IDataService> _mockDataService;
         private MessagingController _messagingController;
         private InternalMessagingControllerImpl _internalMessagingController;
@@ -66,10 +64,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private UserInfo _hostUserInfo;
         private UserInfo _user12UserInfo;
         private UserInfo _groupOwnerUserInfo;
-
-        #endregion
-
-        #region "Set Up"
 
         [SetUp]
         public void SetUp()
@@ -199,10 +193,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._folderPermissionController.Setup(f => f.CanViewFolder(It.IsAny<IFolderInfo>())).Returns(true);
         }
 
-        #endregion
-
-        #region Constructor Tests
-
         [Test]
         public void MessagingController_Constructor_Throws_On_Null_DataService()
         {
@@ -211,12 +201,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             // Act, Assert
             Assert.Throws<ArgumentNullException>(() => new MessagingController(null));
         }
-
-        #endregion
-
-        #region Easy Wrapper APIs Tests
-
-        #region AttachmentsAllowed
 
         [Test]
         public void AttachmentsAllowed_Returns_True_When_MessagingAllowAttachments_Setting_Is_YES()
@@ -241,10 +225,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var result = this._mockInternalMessagingController.Object.AttachmentsAllowed(Constants.CONTENT_ValidPortalId);
             Assert.IsFalse(result);
         }
-
-        #endregion
-
-        #region GetArchivedMessages
 
         [Test]
         public void GetArchivedMessages_Calls_DataService_GetArchiveBoxView_With_Default_Values()
@@ -273,10 +253,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockInternalMessagingController.Verify();
         }
 
-        #endregion
-
-        #region GetMessageThread
-
         [Test]
         public void GetMessageThread_Calls_DataService_GetMessageThread()
         {
@@ -304,10 +280,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockInternalMessagingController.Verify();
         }
 
-        #endregion
-
-        #region GetRecentSentbox
-
         [Test]
         public void GetRecentSentbox_Calls_Overload_With_Default_Values()
         {
@@ -331,10 +303,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             this._mockInternalMessagingController.Verify();
         }
-
-        #endregion
-
-        #region GetSentbox
 
         [Test]
         public void GetSentbox_Calls_DataService_GetSentBoxView_With_Default_Values()
@@ -382,10 +350,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockInternalMessagingController.Verify();
         }
 
-        #endregion
-
-        #region RecipientLimit
-
         [Test]
         public void RecipientLimit_Returns_MessagingRecipientLimit_Setting()
         {
@@ -398,10 +362,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             Assert.AreEqual(expected, actual);
         }
-
-        #endregion
-
-        #region CreateMessageTests
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
@@ -1069,10 +1029,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockInternalMessagingController.Verify(imc => imc.MarkMessageAsDispatched(It.IsAny<int>(), Constants.Messaging_RecipientId_1), Times.Never());
         }
 
-        #endregion
-
-        #region ReplyMessageTests
-
         [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_ReplyMessage_Throws_On_Null_Sender()
@@ -1217,10 +1173,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockInternalMessagingController.Verify(imc => imc.MarkMessageAsDispatched(It.IsAny<int>(), Constants.Messaging_RecipientId_1));
         }
 
-        #endregion
-
-        #region Setting Message Status Tests
-
         [Test]
         public void MessagingController_SetReadMessage_Calls_DataService_UpdateSocialMessageReadStatus()
         {
@@ -1277,10 +1229,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockDataService.Verify(ds => ds.UpdateMessageArchivedStatus(messageInstance.ConversationId, user.UserID, false));
         }
 
-        #endregion
-
-        #region GetMessageRecipient
-
         [Test]
         public void GetSocialMessageRecipient_Calls_DataService_GetSocialMessageRecipientByMessageAndUser()
         {
@@ -1294,10 +1242,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             this._mockDataService.Verify();
         }
-
-        #endregion
-
-        #region WaitTimeForNextMessage
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -1368,10 +1312,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             Assert.AreEqual(expected, result);
         }
 
-        #endregion
-
-        #region GetInbox
-
         [Test]
         public void GetInbox_Calls_DataService_GetMessageBoxView()
         {
@@ -1399,10 +1339,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockInternalMessagingController.Verify();
         }
 
-        #endregion
-
-        #region GetRecentInbox
-
         [Test]
         public void GetRecentInbox_Calls_GetInbox_With_Default_Values()
         {
@@ -1427,10 +1363,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockInternalMessagingController.Verify();
         }
 
-        #endregion
-
-        #region CountArchivedMessagesByConversation
-
         [Test]
         public void CountArchivedMessagesByConversation_Calls_DataService_CountArchivedMessagesByConversation()
         {
@@ -1438,10 +1370,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._internalMessagingController.CountArchivedMessagesByConversation(1);
             this._mockDataService.Verify();
         }
-
-        #endregion
-
-        #region CountMessagesByConversation
 
         [Test]
         public void CountMessagesByConversation_Calls_DataService_CountMessagesByConversation()
@@ -1451,10 +1379,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockDataService.Verify();
         }
 
-        #endregion
-
-        #region CountConversations
-
         [Test]
         public void CountConversations_Calls_DataService_CountTotalConversations()
         {
@@ -1462,10 +1386,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._internalMessagingController.CountConversations(Constants.UserID_User12, Constants.PORTAL_Zero);
             this._mockDataService.Verify();
         }
-
-        #endregion
-
-        #region CountUnreadMessages
 
         [Test]
         public void CountUnreadMessages_Calls_DataService_CountNewThreads()
@@ -1475,10 +1395,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockDataService.Verify();
         }
 
-        #endregion
-
-        #region CountSentMessages
-
         [Test]
         public void CountSentMessages_Calls_DataService_CountSentMessages()
         {
@@ -1486,10 +1402,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._internalMessagingController.CountSentMessages(Constants.UserID_User12, Constants.PORTAL_Zero);
             this._mockDataService.Verify();
         }
-
-        #endregion
-
-        #region CountArchivedMessages
 
         [Test]
         public void CountArchivedMessages_Calls_DataService_CountArchivedMessages()
@@ -1499,10 +1411,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockDataService.Verify();
         }
 
-        #endregion
-
-        #region DeleteMessageRecipient
-
         [Test]
         public void DeleteMessageRecipient_Calls_DataService_DeleteMessageRecipientByMessageAndUser()
         {
@@ -1510,10 +1418,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._internalMessagingController.DeleteMessageRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12);
             this._mockDataService.Verify();
         }
-
-        #endregion
-
-        #region GetMessageRecipients
 
         [Test]
         public void GetMessageRecipients_Calls_DataService_GetMessageRecipientsByMessage()
@@ -1527,12 +1431,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._internalMessagingController.GetMessageRecipients(Constants.Messaging_MessageId_1);
             this._mockDataService.Verify();
         }
-
-        #endregion
-
-        #endregion
-
-        #region "Private Methods"
 
         private static Message CreateValidMessage()
         {
@@ -1628,8 +1526,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._dtMessageThreadsView.Columns.Add("TotalNewThreads", typeof(int));
             this._dtMessageThreadsView.Columns.Add("TotalArchivedThreads", typeof(int));
         }
-
-        #endregion
     }
 }
 // ReSharper restore InconsistentNaming

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -17,28 +17,15 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Social.Notifications;
 
-#endregion
-
 namespace DotNetNuke.Entities.Users.Social
 {
     internal class RelationshipControllerImpl : IRelationshipController
     {
-        #region Constants
-
         internal const string FriendRequest = "FriendRequest";
         internal const string FollowerRequest = "FollowerRequest";
         internal const string FollowBackRequest = "FollowBackRequest";
-
-        #endregion
-
-        #region Private Variables
-
         private readonly IDataService _dataService;
         private readonly IEventLogController _eventLogController;
-
-        #endregion
-
-        #region Constructors
 
         public RelationshipControllerImpl()
             : this(DataService.Instance, EventLogController.Instance)
@@ -54,12 +41,6 @@ namespace DotNetNuke.Entities.Users.Social
             this._dataService = dataService;
             this._eventLogController = eventLogController;
         }
-
-        #endregion
-
-        #region IRelationshipController Implementation
-
-        #region RelationshipType CRUD
 
         public void DeleteRelationshipType(RelationshipType relationshipType)
         {
@@ -118,10 +99,6 @@ namespace DotNetNuke.Entities.Users.Social
             // clear cache
             DataCache.RemoveCache(DataCache.RelationshipTypesCacheKey);
         }
-
-        #endregion
-
-        #region Relationship CRUD
 
         public void DeleteRelationship(Relationship relationship)
         {
@@ -192,10 +169,6 @@ namespace DotNetNuke.Entities.Users.Social
             this.ClearRelationshipCache(relationship);
         }
 
-        #endregion
-
-        #region UserRelationship CRUD
-
         public void DeleteUserRelationship(UserRelationship userRelationship)
         {
             Requires.NotNull("userRelationship", userRelationship);
@@ -263,10 +236,6 @@ namespace DotNetNuke.Entities.Users.Social
             this.ClearUserCache(userRelationship);
         }
 
-        #endregion
-
-        #region UserRelationshipPreference CRUD
-
         public void DeleteUserRelationshipPreference(UserRelationshipPreference userRelationshipPreference)
         {
             Requires.NotNull("userRelationshipPreference", userRelationshipPreference);
@@ -317,9 +286,7 @@ namespace DotNetNuke.Entities.Users.Social
             this.AddLog(logContent);
         }
 
-        #endregion
 
-        #region Relationship Business APIs
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -449,9 +416,7 @@ namespace DotNetNuke.Entities.Users.Social
             }
         }
 
-        #endregion
 
-        #region Easy Wrapper APIs
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -558,8 +523,6 @@ namespace DotNetNuke.Entities.Users.Social
                                        this.GetFriendsRelationshipByPortal(initiatingUser.PortalID));
         }
 
-        #endregion
-
         public void CreateDefaultRelationshipsForPortal(int portalId)
         {
             // create default Friend Relationship
@@ -607,11 +570,6 @@ namespace DotNetNuke.Entities.Users.Social
 
             return this.GetRelationshipsByPortalId(portalId).FirstOrDefault(re => re.RelationshipTypeId == (int)DefaultRelationshipTypes.Followers);
         }
-
-
-        #endregion
-
-        #region Private Methods
 
         private void AddLog(string logContent)
         {
@@ -694,7 +652,5 @@ namespace DotNetNuke.Entities.Users.Social
 
             return userRelationship;
         }
-
-        #endregion
     }
 }

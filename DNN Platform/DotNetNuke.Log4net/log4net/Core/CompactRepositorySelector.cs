@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -51,8 +50,6 @@ namespace log4net.Core
     /// <author>Nicko Cadell</author>
     public class CompactRepositorySelector : IRepositorySelector
     {
-        #region Member Variables
-
         private const string DefaultRepositoryName = "log4net-default-repository";
 
         private readonly Hashtable m_name2repositoryMap = new Hashtable();
@@ -60,9 +57,7 @@ namespace log4net.Core
 
         private event LoggerRepositoryCreationEventHandler m_loggerRepositoryCreatedEvent;
 
-        #endregion
 
-        #region Constructors
 
         /// <summary>
         /// Create a new repository selector
@@ -95,9 +90,7 @@ namespace log4net.Core
             LogLog.Debug(declaringType, "defaultRepositoryType [" + this.m_defaultRepositoryType + "]");
         }
 
-        #endregion
 
-        #region Implementation of IRepositorySelector
 
         /// <summary>
         /// Get the <see cref="ILoggerRepository"/> for the specified assembly
@@ -304,9 +297,7 @@ namespace log4net.Core
             }
         }
 
-        #endregion
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the CompactRepositorySelector class.
@@ -317,7 +308,6 @@ namespace log4net.Core
         /// </remarks>
         private readonly static Type declaringType = typeof(CompactRepositorySelector);
 
-        #endregion Private Static Fields
 
         /// <summary>
         /// Event to notify that a logger repository has been created.

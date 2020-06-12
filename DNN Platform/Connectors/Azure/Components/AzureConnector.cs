@@ -21,7 +21,6 @@ namespace Dnn.AzureConnector.Components
 {
     public class AzureConnector : IConnector
     {
-        #region Properties
         private static readonly DataProvider dataProvider = DataProvider.Instance();
         private const string DefaultDisplayName = "Azure Storage";
 
@@ -66,9 +65,6 @@ namespace Dnn.AzureConnector.Components
 
         public bool SupportsMultiple => true;
 
-        #endregion
-
-        #region Public Methods
         public IEnumerable<IConnector> GetConnectors(int portalId)
         {
             var connectors = this.FindAzureFolderMappings(portalId);
@@ -228,10 +224,6 @@ namespace Dnn.AzureConnector.Components
                 return false;
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private bool Validation(string azureAccountName, string azureAccountKey, string azureContainerName)
         {
@@ -483,7 +475,5 @@ namespace Dnn.AzureConnector.Components
                 }
             }
         }
-
-        #endregion
     }
 }

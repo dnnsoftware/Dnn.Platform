@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -60,8 +60,6 @@ using Microsoft.VisualBasic.CompilerServices;
 using DataCache = DotNetNuke.UI.Utilities.DataCache;
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
-#endregion
-
 namespace DotNetNuke.Common
 {
     /// <summary>
@@ -84,7 +82,6 @@ namespace DotNetNuke.Common
         public static readonly Regex ServicesFrameworkRegex = new Regex("/API/|DESKTOPMODULES/.+/API/", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         public static readonly string USERNAME_UNALLOWED_ASCII = "!\"#$%&'()*+,/:;<=>?[\\]^`{|}";
 
-        #region PerformanceSettings enum
 
         /// <summary>
         /// Enumeration of site performance setting, say by another way that means how to set the cache.
@@ -123,9 +120,7 @@ namespace DotNetNuke.Common
             HeavyCaching = 6
         }
 
-        #endregion
 
-        #region PortalRegistrationType enum
 
         /// <summary>
         /// Enumeration Of Registration Type for portal.
@@ -161,9 +156,7 @@ namespace DotNetNuke.Common
             VerifiedRegistration = 3
         }
 
-        #endregion
 
-        #region UpgradeStatus enum
 
         /// <summary>
         /// Enumeration Of Application upgrade status.
@@ -193,7 +186,6 @@ namespace DotNetNuke.Common
             Unknown
         }
 
-        #endregion
 
         /// <summary>
         /// Global role id for all users
@@ -3790,13 +3782,11 @@ namespace DotNetNuke.Common
 
         }
 
-        #region "Obsolete - retained for Binary Compatability"
 
         // ****************************************************************************************
         // Constants are inlined in code and would require a rebuild of any module or skinobject
         // that may be using these constants.
 
-        #region "Html functions moved to HtmlUtils.vb"
 
         [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.HtmlUtils.FormatEmail. Scheduled removal in v11.0.0.")]
         public static string FormatEmail(string Email)
@@ -3810,17 +3800,11 @@ namespace DotNetNuke.Common
             return HtmlUtils.FormatWebsite(Website);
         }
 
-        #endregion
-
-        #region "Xml functions moved to XmlUtils.vb"
-
         [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.XmlUtils.XMLEncode. Scheduled removal in v11.0.0.")]
         public static string XMLEncode(string HTML)
         {
             return XmlUtils.XMLEncode(HTML);
         }
-
-        #endregion
 
         [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.Config.GetConnectionString. Scheduled removal in v11.0.0.")]
         public static string GetDBConnectionString()
@@ -3891,8 +3875,6 @@ namespace DotNetNuke.Common
         {
             return PortalSecurity.Instance.InputFilter(strSQL, PortalSecurity.FilterFlag.NoSQL);
         }
-
-        #endregion
 
         private static readonly Stopwatch AppStopwatch = Stopwatch.StartNew();
 

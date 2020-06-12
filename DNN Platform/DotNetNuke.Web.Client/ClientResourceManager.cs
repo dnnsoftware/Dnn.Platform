@@ -39,8 +39,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         static Dictionary<string, bool> _fileExistsCache = new Dictionary<string, bool>();
         static ReaderWriterLockSlim _lockFileExistsCache = new ReaderWriterLockSlim();
 
-        #region Private Methods
-
         private static bool FileExists(Page page, string filePath)
         {
             // remove query string for the file exists check, won't impact the absoluteness, so just do it either way.
@@ -85,9 +83,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             return queryStringPosition != -1 ? filePath.Substring(0, queryStringPosition) : filePath;
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// <summary>
         /// Adds the neccessary configuration to website root web.config to use the Client Depenedecny componenet.
@@ -466,8 +462,5 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 HttpContext.Current.Items.Add("AsyncPostBackHandlerEnabled", true);
             }
         }
-
-        #endregion
-
     }
 }

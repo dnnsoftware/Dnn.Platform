@@ -29,7 +29,6 @@ namespace DotNetNuke.Modules.Html
 
         private const CacheItemPriority WORKFLOW_CACHE_PRIORITY = CacheItemPriority.Normal;
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -207,7 +206,5 @@ namespace DotNetNuke.Modules.Html
             }
             return intStateID;
         }
-
-        #endregion
     }
 }

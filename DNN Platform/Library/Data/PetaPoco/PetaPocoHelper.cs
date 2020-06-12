@@ -18,8 +18,6 @@ namespace DotNetNuke.Data.PetaPoco
 
         private const string SqlProviderName = "System.Data.SqlClient";
 
-        #region Public Methods
-
         public static void ExecuteNonQuery(string connectionString, CommandType type, string sql, params object[] args)
         {
             ExecuteNonQuery(connectionString, type, Null.NullInteger, sql, args);
@@ -216,7 +214,5 @@ namespace DotNetNuke.Data.PetaPoco
                 }
             }
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web.UI.HtmlControls;
@@ -11,8 +11,6 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
-
-#endregion
 
 namespace DotNetNuke.UI.UserControls
 {
@@ -25,8 +23,6 @@ namespace DotNetNuke.UI.UserControls
     /// -----------------------------------------------------------------------------
     public abstract class User : UserControlBase
     {
-        #region "Private Members"
-
         protected HtmlTableRow ConfirmPasswordRow;
         private string MyFileName = "User.ascx";
         protected HtmlTableRow PasswordRow;
@@ -44,11 +40,6 @@ namespace DotNetNuke.UI.UserControls
         private string _UserName;
         private string _Website;
         protected Label lblUsername;
-
-        #endregion
-
-        #region "Protected Members"
-
         protected Label lblUsernameAsterisk;
         protected LabelControl plConfirm;
         protected LabelControl plEmail;
@@ -74,10 +65,6 @@ namespace DotNetNuke.UI.UserControls
         protected RequiredFieldValidator valLastName;
         protected RequiredFieldValidator valPassword;
         protected RequiredFieldValidator valUsername;
-
-        #endregion
-
-        #region "Public Properties"
 
         public int ModuleId
         {
@@ -235,9 +222,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        #endregion
 
-        #region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -317,7 +302,5 @@ namespace DotNetNuke.UI.UserControls
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
     }
 }

@@ -1,14 +1,12 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web;
 using System.Xml;
-
-#endregion
 
 namespace DotNetNuke.Services.Syndication
 {
@@ -45,8 +43,6 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
-        #region IHttpHandler Members
-
         void IHttpHandler.ProcessRequest(HttpContext context)
         {
             this.InternalInit(context);
@@ -74,8 +70,6 @@ namespace DotNetNuke.Services.Syndication
                 return false;
             }
         }
-
-        #endregion
 
         public event InitEventHandler Init;
         public event PreRenderEventHandler PreRender;

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System.ComponentModel;
 using System.Web.UI;
@@ -10,8 +10,6 @@ using System.Web.UI;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.UI.Modules;
-
-#endregion
 
 namespace DotNetNuke.UI.Skins
 {
@@ -50,7 +48,6 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        #region ISkinControl Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -58,7 +55,5 @@ namespace DotNetNuke.UI.Skins
         /// </summary>
         /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl { get; set; }
-
-        #endregion
     }
 }

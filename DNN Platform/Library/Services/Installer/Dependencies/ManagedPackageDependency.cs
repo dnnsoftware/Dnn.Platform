@@ -49,10 +49,6 @@ namespace DotNetNuke.Services.Installer.Dependencies
             };
         }
 
-        #region IManagedPackageDependency Implementation
-
         public PackageDependencyInfo PackageDependency { get; set; }
-
-        #endregion
     }
 }

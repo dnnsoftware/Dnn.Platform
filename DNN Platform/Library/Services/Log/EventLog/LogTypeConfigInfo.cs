@@ -1,23 +1,19 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Common;
 
-#endregion
-
 namespace DotNetNuke.Services.Log.EventLog
 {
     [Serializable]
     public class LogTypeConfigInfo : LogTypeInfo
     {
-        #region NotificationThresholdTimeTypes enum
-
         public enum NotificationThresholdTimeTypes
         {
             None = 0,
@@ -26,8 +22,6 @@ namespace DotNetNuke.Services.Log.EventLog
             Hours = 3,
             Days = 4
         }
-
-        #endregion
 
         private string _mailFromAddress;
 

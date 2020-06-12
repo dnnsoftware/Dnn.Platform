@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -24,8 +24,6 @@ using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 
-#endregion
-
 namespace DotNetNuke.Services.Search.Controllers
 {
     /// -----------------------------------------------------------------------------
@@ -35,15 +33,9 @@ namespace DotNetNuke.Services.Search.Controllers
     /// -----------------------------------------------------------------------------
     internal class SearchControllerImpl : ISearchController
     {
-        #region Private Properties
-
         private const string SeacrchContollersCacheKey = "SearchControllers";
 
         private readonly int _moduleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
-
-        #endregion
-
-        #region Core Search APIs
 
         public SearchResults SiteSearch(SearchQuery searchQuery)
         {
@@ -57,10 +49,6 @@ namespace DotNetNuke.Services.Search.Controllers
             var results = this.GetResults(searchQuery);
             return new SearchResults { TotalHits = results.Item1, Results = results.Item2 };
         }
-
-        #endregion
-
-        #region Private Methods
 
         private Tuple<int, IList<SearchResult>> GetResults(SearchQuery searchQuery)
         {
@@ -468,8 +456,5 @@ namespace DotNetNuke.Services.Search.Controllers
             FillTagsValues(doc, result);
             return result;
         }
-
-
-        #endregion
     }
 }

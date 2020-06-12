@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -33,8 +33,6 @@ using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Web.Client;
 
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Users
 {
     using Host = DotNetNuke.Entities.Host.Host;
@@ -48,7 +46,6 @@ namespace DotNetNuke.Modules.Admin.Users
     public partial class User : UserUserControlBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(User));
-        #region Public Properties
 
         public UserCreateStatus CreateStatus { get; set; }
 
@@ -112,9 +109,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        #endregion
 
-        #region Private Methods
 
         /// <summary>
         /// method checks to see if its allowed to change the username
@@ -226,9 +221,7 @@ namespace DotNetNuke.Modules.Admin.Users
             return _IsValid;
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -405,9 +398,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        #endregion
 
-        #region Event Handlers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -617,7 +608,5 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
             }
         }
-
-        #endregion
     }
 }

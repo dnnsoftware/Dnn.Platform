@@ -1,15 +1,13 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
-
-#endregion
 
 namespace DotNetNuke.Entities.Modules
 {
@@ -26,15 +24,12 @@ namespace DotNetNuke.Entities.Modules
     /// -----------------------------------------------------------------------------
     public class UserUserControlBase : UserModuleBase
     {
-        #region Delegates
         public delegate void UserCreatedEventHandler(object sender, UserCreatedEventArgs e);
         public delegate void UserDeletedEventHandler(object sender, UserDeletedEventArgs e);
         public delegate void UserRestoredEventHandler(object sender, UserRestoredEventArgs e);
         public delegate void UserRemovedEventHandler(object sender, UserRemovedEventArgs e);
         public delegate void UserUpdateErrorEventHandler(object sender, UserUpdateErrorArgs e);
-        #endregion
 
-        #region "Events"
         public event UserCreatedEventHandler UserCreated;
         public event UserCreatedEventHandler UserCreateCompleted;
         public event UserDeletedEventHandler UserDeleted;
@@ -46,9 +41,7 @@ namespace DotNetNuke.Entities.Modules
         public event EventHandler UserUpdated;
         public event EventHandler UserUpdateCompleted;
         public event UserUpdateErrorEventHandler UserUpdateError;
-        #endregion
 
-        #region "Event Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -173,15 +166,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        #endregion
-
-        #region "Properties"
-
         protected override bool AddUser => !this.Request.IsAuthenticated || base.AddUser;
 
-        #endregion
 
-        #region Nested type: BaseUserEventArgs
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -205,9 +192,7 @@ namespace DotNetNuke.Entities.Modules
             public string UserName { get; set; }
         }
 
-        #endregion
 
-        #region Nested type: UserCreatedEventArgs
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -262,9 +247,7 @@ namespace DotNetNuke.Entities.Modules
             public bool Notify { get; set; }
         }
 
-        #endregion
 
-        #region Nested type: UserDeletedEventArgs
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -288,9 +271,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        #endregion
 
-        #region Nested type: UserRestoredEventArgs
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -314,9 +295,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        #endregion
 
-        #region Nested type: UserRemovedEventArgs
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -342,9 +321,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
 
-        #endregion
 
-        #region Nested type: UserUpdateErrorArgs
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -376,7 +353,5 @@ namespace DotNetNuke.Entities.Modules
             /// -----------------------------------------------------------------------------
             public string Message { get; set; }
         }
-
-        #endregion
     }
 }

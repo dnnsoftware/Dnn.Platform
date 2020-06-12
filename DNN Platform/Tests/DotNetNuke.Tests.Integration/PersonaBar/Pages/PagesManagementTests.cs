@@ -19,16 +19,10 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
     [TestFixture]
     public class PagesManagementTests : IntegrationTestBase
     {
-        #region Fields
-
         private readonly string _hostName;
         private readonly string _hostPass;
 
         private readonly int PortalId = 0;
-
-        #endregion
-
-        #region SetUp
 
         public PagesManagementTests()
         {
@@ -58,10 +52,6 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
 
             this.UpdateContentLocalization(false);
         }
-
-        #endregion
-
-        #region Tests
 
         [Test]
         public void Page_Marked_As_Secure_Should_Able_To_Management_In_Insecure_Channel()
@@ -109,10 +99,6 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
             connector.PostJson("API/PersonaBar/Security/UpdateSslSettings", postData);
         }
 
-        #endregion
-
-        #region Private Methods
-
         private IWebApiConnector CreateNewSecurePage(out int tabId)
         {
             var pagesExecuter = new PagesExecuter { Connector = WebApiTestHelper.LoginHost() };
@@ -129,7 +115,5 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
 
             return pagesExecuter.Connector;
         }
-
-        #endregion
     }
 }

@@ -64,15 +64,9 @@ namespace DotNetNuke.Entities.Users
             return () => new UserController();
         }
 
-        #region Public Properties
-
         public string DisplayFormat { get; set; }
 
         public int PortalId { get; set; }
-
-        #endregion
-
-        #region Private Methods
 
         private static void AddEventLog(int portalId, string username, int userId, string portalName, string ip, UserLoginStatus loginStatus)
         {
@@ -475,10 +469,6 @@ namespace DotNetNuke.Entities.Users
             Mail.SendEmail(portalSettings.Email, portalSettings.Email, message.Subject, message.Body);
         }
 
-        #endregion
-
-        #region Public Mehods
-
         UserInfo IUserController.GetCurrentUserInfo()
         {
             return GetCurrentUserInternal();
@@ -655,9 +645,7 @@ namespace DotNetNuke.Entities.Users
             return DataProvider.Instance().GetDuplicateEmailCount(PortalSettings.Current.PortalId);
         }
 
-        #endregion
 
-        #region Public Helper Methods
 
         /// <summary>
         /// add new userportal record (used for creating sites with existing user)
@@ -2398,8 +2386,5 @@ namespace DotNetNuke.Entities.Users
             FixMemberPortalId(user, portalId);
             return user;
         }
-
-        #endregion
-
     }
 }

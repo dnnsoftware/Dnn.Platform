@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Linq;
@@ -17,15 +17,10 @@ using Microsoft.VisualBasic;
 
 using Globals = DotNetNuke.Common.Globals;
 
-#endregion
-
 namespace DotNetNuke.Services.Scheduling
 {
     public class DNNScheduler : SchedulingProvider
     {
-
-        #region Public Properties
-
         public override Dictionary<string, string> Settings
         {
             get
@@ -33,10 +28,6 @@ namespace DotNetNuke.Services.Scheduling
                 return ComponentFactory.GetComponentSettings<DNNScheduler>() as Dictionary<string, string>;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         public override int AddSchedule(ScheduleItem scheduleItem)
         {
@@ -269,7 +260,5 @@ namespace DotNetNuke.Services.Scheduling
             var runningscheduleHistoryItem = this.GetScheduleHistory(scheduleItem.ScheduleID).Cast<ScheduleHistoryItem>().ElementAtOrDefault(0);
             Scheduler.CoreScheduler.StopScheduleInProgress(scheduleItem, runningscheduleHistoryItem);
         }
-
-        #endregion
     }
 }

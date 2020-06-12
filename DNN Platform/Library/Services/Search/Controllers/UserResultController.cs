@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Linq;
@@ -14,8 +14,6 @@ using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Services.Search.Entities;
-
-#endregion
 
 namespace DotNetNuke.Services.Search.Controllers
 {
@@ -30,16 +28,10 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
 
-        #region Private Properties
-
         private PortalSettings PortalSettings
         {
             get { return PortalController.Instance.GetCurrentPortalSettings(); }
         }
-
-        #endregion
-
-        #region Abstract Class Implmentation
 
         public override bool HasViewPermission(SearchResult searchResult)
         {
@@ -106,10 +98,6 @@ namespace DotNetNuke.Services.Search.Controllers
 
         public override string LocalizedSearchTypeName => Localization.Localization.GetString("Crawler_user", LocalizedResxFile);
 
-        #endregion
-
-        #region Private Methods
-
         private bool HasSocialReplationship(UserInfo targetUser, UserInfo accessingUser, string extendedVisibility)
         {
             if (string.IsNullOrEmpty(extendedVisibility))
@@ -161,6 +149,5 @@ namespace DotNetNuke.Services.Search.Controllers
             var match = SearchResultMatchRegex.Match(searchResult.UniqueKey);
             return match.Success ? Convert.ToInt32(match.Groups[1].Value) : Null.NullInteger;
         }
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,6 @@ using DotNetNuke.Security.Cookies;
 using DotNetNuke.Services.Cryptography;
 // ReSharper disable MemberCanBeMadeStatic.Global
 
-#endregion
 
 namespace DotNetNuke.Security
 {
@@ -92,7 +91,6 @@ namespace DotNetNuke.Security
         private static readonly Regex DangerElementsRegex = new Regex(@"(<[^>]*?) on.*?\=(['""]*)[\s\S]*?(\2)( *)([^>]*?>)", RxOptions);
         private static readonly Regex DangerElementContentRegex = new Regex(@"on.*?\=(['""]*)[\s\S]*?(\1)( *)", RxOptions);
 
-        #region FilterFlag enum
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -133,9 +131,6 @@ namespace DotNetNuke.Security
             SystemAndPortalList
         }
 
-        #endregion
-
-        #region private enum
         enum RoleType
         {
             Security,
@@ -143,9 +138,6 @@ namespace DotNetNuke.Security
             Follower,
             Owner
         }
-        #endregion
-
-        #region Private Methods
 
         private static void ProcessRole(UserInfo user, PortalSettings settings, string roleName, out bool? roleAllowed)
         {
@@ -400,9 +392,7 @@ namespace DotNetNuke.Security
             return StripTagsRegex.IsMatch(strInput);
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -835,10 +825,6 @@ namespace DotNetNuke.Security
             }
         }
 
-        #endregion
-
-        #region Public Shared/Static Methods
-
         public static void ForceSecureConnection()
         {
             // get current url
@@ -999,6 +985,5 @@ namespace DotNetNuke.Security
             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
             return IsInRoles(objUserInfo, settings, RoleOwnerPrefix + userId);
         }
-        #endregion
     }
 }

@@ -1,14 +1,12 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-
-#endregion
 
 namespace DotNetNuke.Services.Installer.Writers
 {
@@ -22,14 +20,10 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class CleanupComponentWriter
     {
-        #region "Private Members"
-
         private readonly SortedList<string, InstallFile> _Files;
         private string _BasePath;
 
-        #endregion
 
-        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -43,10 +37,6 @@ namespace DotNetNuke.Services.Installer.Writers
             this._Files = files;
             this._BasePath = basePath;
         }
-
-        #endregion
-
-        #region "Public Methods"
 
         public virtual void WriteManifest(XmlWriter writer)
         {
@@ -62,7 +52,5 @@ namespace DotNetNuke.Services.Installer.Writers
                 writer.WriteEndElement();
             }
         }
-
-        #endregion
     }
 }

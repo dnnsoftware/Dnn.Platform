@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.ComponentModel;
@@ -10,8 +10,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 
 using ICSharpCode.SharpZipLib.Zip;
-
-#endregion
 
 namespace DotNetNuke.Services.Installer
 {
@@ -27,11 +25,8 @@ namespace DotNetNuke.Services.Installer
     {
         private static readonly Regex FileTypeMatchRegex = new Regex(Util.REGEX_Version + ".txt", RegexOptions.Compiled);
 
-        #region Private Members
 
-        #endregion
 
-        #region Constructors
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -106,9 +101,7 @@ namespace DotNetNuke.Services.Installer
             this.Path = filePath;
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -249,9 +242,7 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public Version Version { get; private set; }
 
-        #endregion
 
-        #region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -345,9 +336,7 @@ namespace DotNetNuke.Services.Installer
             File.SetLastWriteTime(this.TempFileName, entry.DateTime);
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -359,7 +348,5 @@ namespace DotNetNuke.Services.Installer
         {
             this.Version = version;
         }
-
-        #endregion
     }
 }

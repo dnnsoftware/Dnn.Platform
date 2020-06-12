@@ -1,14 +1,12 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-#endregion
 
 namespace DotNetNuke.Collections
 {
@@ -21,7 +19,6 @@ namespace DotNetNuke.Collections
     /// <typeparam name = "T">The type of objects contained in this list</typeparam>
     public class PagedList<T> : List<T>, IPagedList<T>
     {
-        #region Constructors
 
         /// <summary>
         ///  Initializes a new instance of the <see cref="PagedList{T}"/> a paged list containing objects from the selected enumerable source
@@ -46,10 +43,6 @@ namespace DotNetNuke.Collections
         {
             this.CommonConstruct(items, totalCount, pageIndex, pageSize);
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void CommonConstruct(IEnumerable<T> items, int totalCount, int pageIndex, int pageSize)
         {
@@ -84,9 +77,7 @@ namespace DotNetNuke.Collections
             this.IsLastPage = this.PageIndex >= (this.PageCount - 1);
         }
 
-        #endregion
 
-        #region IPagedList<T> Members
 
         /// <summary>
         ///   Gets a boolean indicating if there is a next page available
@@ -127,7 +118,5 @@ namespace DotNetNuke.Collections
         ///   Gets or ses the total number of objects in the data store
         /// </summary>
         public int TotalCount { get; set; }
-
-        #endregion
     }
 }

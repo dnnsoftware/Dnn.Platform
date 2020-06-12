@@ -23,13 +23,9 @@ namespace DotNetNuke.Modules.Html
     /// -----------------------------------------------------------------------------
     public class HtmlTextUserInfo
     {
-        #region Private Member
         // local property declarations
         private ModuleInfo _Module;
 
-        #endregion
-
-        #region Public Properties
         public int ItemID { get; set; }
 
         public int StateID { get; set; }
@@ -69,6 +65,5 @@ namespace DotNetNuke.Modules.Html
         public int UserID { get; set; }
 
         public DateTime CreatedOnDate { get; set; }
-        #endregion
     }
 }

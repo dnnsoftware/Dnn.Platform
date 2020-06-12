@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -13,14 +13,10 @@ using DotNetNuke.Common;
 using DotNetNuke.Modules.NavigationProvider;
 using DotNetNuke.UI.WebControls;
 
-#endregion
-
 namespace DotNetNuke.UI.Skins
 {
     public class NavObjectBase : SkinObjectBase
     {
-        #region "Private Members"
-
         private readonly List<CustomAttribute> m_objCustomAttributes = new List<CustomAttribute>();
         private bool m_blnPopulateNodesFromClient = true;
         private int m_intExpandDepth = -1;
@@ -105,9 +101,7 @@ namespace DotNetNuke.UI.Skins
         private string m_strToolTip = string.Empty;
         private string m_strWorkImage;
 
-        #endregion
 
-        #region "Public Properties"
         // JH - 2/5/07 - support for custom attributes
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty)]
         public List<CustomAttribute> CustomAttributes
@@ -2234,10 +2228,6 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        #endregion
-
-        #region "Public Methods"
-
         public DNNNodeCollection GetNavigationNodes(DNNNode objNode)
         {
             int intRootParent = this.PortalSettings.ActiveTab.TabID;
@@ -2303,10 +2293,6 @@ namespace DotNetNuke.UI.Skins
             return objNodes;
         }
 
-        #endregion
-
-        #region "Protected Methods"
-
         protected string GetValue(string strVal, string strDefault)
         {
             if (string.IsNullOrEmpty(strVal))
@@ -2331,10 +2317,6 @@ namespace DotNetNuke.UI.Skins
             this.AssignControlProperties();
             objParent.Controls.Add(this.Control.NavigationControl);
         }
-
-        #endregion
-
-        #region "Private Methods"
 
         private void AssignControlProperties()
         {
@@ -2693,8 +2675,6 @@ namespace DotNetNuke.UI.Skins
             }
             return strPath;
         }
-
-        #endregion
     }
 
     public class CustomAttribute

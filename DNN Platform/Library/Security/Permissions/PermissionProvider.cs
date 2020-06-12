@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -23,13 +23,10 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 
-#endregion
-
 namespace DotNetNuke.Security.Permissions
 {
     public class PermissionProvider
     {
-        #region Private Members
 
         // Folder Permission Keys
         private const string AdminFolderPermissionKey = "WRITE";
@@ -62,9 +59,7 @@ namespace DotNetNuke.Security.Permissions
         private const string ViewPagePermissionKey = "VIEW";
         private readonly DataProvider dataProvider = DataProvider.Instance();
 
-        #endregion
 
-        #region Shared/Static Methods
 
         // return the provider
         public virtual string LocalResourceFile
@@ -123,9 +118,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        #endregion
 
-        #region Private Methods
 
 #if false
         private object GetFolderPermissionsCallBack(CacheItemArgs cacheItemArgs)
@@ -454,10 +447,6 @@ namespace DotNetNuke.Security.Permissions
             };
         }
 
-#endregion
-
-        #region Protected Methods
-
         protected bool HasModulePermission(ModuleInfo moduleConfiguration, string permissionKey)
         {
             return this.CanViewModule(moduleConfiguration) &&
@@ -479,10 +468,6 @@ namespace DotNetNuke.Security.Permissions
                         || this.IsDeniedTabPermission(tab.TabPermissions, "EDIT");
         }
 
-        #endregion
-
-        #region Public Methods
-
         public virtual bool SupportsFullControl()
         {
             return true;
@@ -498,7 +483,6 @@ namespace DotNetNuke.Security.Permissions
             return settings != null && PortalSecurity.IsInRole(settings.AdministratorRoleName);
         }
 
-        #region FolderPermission Methods
 
         /// <summary>
         /// Returns a flag indicating whether the current user can add a folder or file
@@ -717,9 +701,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        #endregion
 
-        #region ModulePermission Methods
 
         /// <summary>
         /// Returns a flag indicating whether the current user can administer a module
@@ -984,9 +966,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        #endregion
 
-        #region TabPermission Methods
 
         /// <summary>
         /// Returns a list with all roles with implicit permissions on Tabs
@@ -1211,9 +1191,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        #endregion
 
-        #region DesktopModule Permissions Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -1259,9 +1237,5 @@ namespace DotNetNuke.Security.Permissions
         {
             return PortalSecurity.IsInRoles(desktopModulePermissions.ToString(permissionKey));
         }
-
-        #endregion
-
-        #endregion
     }
 }

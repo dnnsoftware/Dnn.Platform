@@ -18,18 +18,8 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProvider
     [TestFixture]
     public class AspNetClientCapabilityProviderTest
     {
-        #region Private Variables
         private Providers.AspNetClientCapabilityProvider.AspNetClientCapabilityProvider _clientCapabilityProvider;
-
-        #endregion
-
-        #region UserAgent
-
         private const string iphoneUserAgent = "Mozilla/5.0 (iPod; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7";
-
-        #endregion
-
-        #region Setup & TearDown
 
         [SetUp]
         public void Setup()
@@ -56,10 +46,6 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProvider
 
         }
 
-        #endregion
-
-        #region Testing Getting ClientCapabilities based on clientID
-
         [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void AspNetClientCapabilityProvider_GetClientCapabilityById_ThrowsException_For_Empty_ClientCapabilityId()
@@ -77,7 +63,5 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProvider
             string nullClientCapabilityId = null;
             var clientCapabilitiesByEmptyId = this._clientCapabilityProvider.GetClientCapabilityById(nullClientCapabilityId);
         }
-
-        #endregion
     }
 }

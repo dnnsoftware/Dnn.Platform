@@ -20,8 +20,6 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
     [TestFixture]
     public class JwtAuthTest : IntegrationTestBase
     {
-        #region private data
-
         private readonly string _hostName;
         private readonly string _hostPass;
         private readonly HttpClient _httpClient;
@@ -65,10 +63,6 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
                 // ignored
             }
         }
-
-        #endregion
-
-        #region tests
 
         [Test]
         public void InvalidUserLoginShouldFail()
@@ -410,9 +404,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         }
          */
 
-        #endregion
 
-        #region helpers
 
         private LoginResultData GetAuthorizationTokenFor(string uname, string upass)
         {
@@ -467,10 +459,6 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             return TextEncoder.GetString(Convert.FromBase64String(b64Str));
         }
 
-        #endregion
-
-        #region supporting classes
-
         [JsonObject]
         public class LoginResultData
         {
@@ -486,7 +474,5 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             [JsonProperty("renewalToken")]
             public string RenewalToken { get; set; }
         }
-
-        #endregion
     }
 }

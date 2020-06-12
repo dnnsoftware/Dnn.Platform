@@ -1,14 +1,12 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 
 using DotNetNuke.Framework;
-
-#endregion
 
 namespace DotNetNuke.ComponentModel
 {
@@ -29,8 +27,6 @@ namespace DotNetNuke.ComponentModel
             this._Type = type;
         }
 
-        #region IComponentBuilder Members
-
         public object BuildComponent()
         {
             if (this._Instance == null)
@@ -47,8 +43,6 @@ namespace DotNetNuke.ComponentModel
                 return this._Name;
             }
         }
-
-        #endregion
 
         private void CreateInstance()
         {

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -27,8 +27,6 @@ using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Messaging.Data;
 using DotNetNuke.Services.Tokens;
 
-#endregion
-
 namespace DotNetNuke.Services.Mail
 {
     /// -----------------------------------------------------------------------------
@@ -42,7 +40,6 @@ namespace DotNetNuke.Services.Mail
     public class SendTokenizedBulkEmail : IDisposable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendTokenizedBulkEmail));
-        #region AddressMethods enum
 
         /// <summary>
         /// Addressing Methods (personalized or hidden)
@@ -56,11 +53,10 @@ namespace DotNetNuke.Services.Mail
             Send_BCC = 2,
             Send_Relay = 3
         }
+
         // ReSharper restore InconsistentNaming
 
-        #endregion
 
-        #region "Private Members"
 
         private readonly List<string> _addressedRoles = new List<string>();
         private readonly List<UserInfo> _addressedUsers = new List<UserInfo>();
@@ -82,10 +78,6 @@ namespace DotNetNuke.Services.Mail
         private string _smtpUsername = string.Empty;
         private string _strSenderLanguage;
         private bool _isDisposed;
-
-        #endregion
-
-        #region "Constructs"
 
         public SendTokenizedBulkEmail()
         {
@@ -112,9 +104,7 @@ namespace DotNetNuke.Services.Mail
             this.Initialize();
         }
 
-        #endregion
 
-        #region "Public Properties"
 
         /// <summary>
         /// Priority of emails to be sent
@@ -218,9 +208,7 @@ namespace DotNetNuke.Services.Mail
 
         public string[] LanguageFilter { get; set; }
 
-        #endregion
 
-        #region "Private Methods"
 
         /// <summary>internal method to initialize used objects, depending on parameters of construct method</summary>
         private void Initialize()
@@ -360,9 +348,7 @@ namespace DotNetNuke.Services.Mail
             return attachments;
         }
 
-        #endregion
 
-        #region "Public Methods"
 
         /// <summary>Specify SMTP server to be used</summary>
         /// <param name="smtpServer">name of the SMTP server</param>
@@ -633,8 +619,6 @@ namespace DotNetNuke.Services.Mail
             this.EnsureNotDisposed();
             this.SendMails();
         }
-
-        #endregion
 
         private void EnsureNotDisposed()
         {

@@ -23,23 +23,13 @@ namespace Dnn.PersonaBar.UI.UserControls
 {
     public partial class PersonaBarContainer : ControlPanelBase
     {
-        #region Fields
-
         private readonly IPersonaBarContainer _personaBarContainer = Library.Containers.PersonaBarContainer.Instance;
-
-        #endregion
-
-        #region Properties
 
         public string PersonaBarSettings => JsonConvert.SerializeObject(this._personaBarContainer.GetConfiguration());
 
         public string AppPath => Globals.ApplicationPath;
 
         public string BuildNumber => Host.CrmVersion.ToString(CultureInfo.InvariantCulture);
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
@@ -68,10 +58,6 @@ namespace Dnn.PersonaBar.UI.UserControls
 
             base.OnPreRender(e);
         }
-
-        #endregion
-
-        #region Private Methods
 
         private bool InjectPersonaBar()
         {
@@ -128,7 +114,5 @@ namespace Dnn.PersonaBar.UI.UserControls
                 }
             }
         }
-
-        #endregion
     }
 }

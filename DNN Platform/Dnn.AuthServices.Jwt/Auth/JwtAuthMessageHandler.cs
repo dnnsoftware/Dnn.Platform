@@ -21,8 +21,6 @@ namespace Dnn.AuthServices.Jwt.Auth
     /// </summary>
     public class JwtAuthMessageHandler : AuthMessageHandlerBase
     {
-        #region constants, properties, etc.
-
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtAuthMessageHandler));
 
         public override string AuthScheme => this._jwtController.SchemeType;
@@ -30,10 +28,6 @@ namespace Dnn.AuthServices.Jwt.Auth
 
         internal static bool IsEnabled { get; set; }
         private readonly IJwtController _jwtController = JwtController.Instance;
-
-        #endregion
-
-        #region constructor
 
         public JwtAuthMessageHandler(bool includeByDefault, bool forceSsl)
             : base(includeByDefault, forceSsl)
@@ -43,10 +37,6 @@ namespace Dnn.AuthServices.Jwt.Auth
             // this scheme gets marked as enabled.
             IsEnabled = true;
         }
-
-        #endregion
-
-        #region implementation
 
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
@@ -74,7 +64,5 @@ namespace Dnn.AuthServices.Jwt.Auth
                 Logger.Error("Unexpected error in authenticating the user. " + ex);
             }
         }
-
-        #endregion
     }
 }

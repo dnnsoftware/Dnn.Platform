@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -44,7 +43,6 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public sealed class OptionConverter
     {
-        #region Private Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OptionConverter" /> class.
@@ -58,82 +56,80 @@ namespace log4net.Util
         {
         }
 
-        #endregion Private Instance Constructors
 
-        #region Public Static Methods
 
-// /// <summary>
-// /// Concatenates two string arrays.
-// /// </summary>
-// /// <param name="l">Left array.</param>
-// /// <param name="r">Right array.</param>
-// /// <returns>Array containing both left and right arrays.</returns>
-// public static string[] ConcatenateArrays(string[] l, string[] r)
-// {
-// return (string[])ConcatenateArrays(l, r);
-// }
+        // /// <summary>
+        // /// Concatenates two string arrays.
+        // /// </summary>
+        // /// <param name="l">Left array.</param>
+        // /// <param name="r">Right array.</param>
+        // /// <returns>Array containing both left and right arrays.</returns>
+        // public static string[] ConcatenateArrays(string[] l, string[] r)
+        // {
+        // return (string[])ConcatenateArrays(l, r);
+        // }
 
-// /// <summary>
-// /// Concatenates two arrays.
-// /// </summary>
-// /// <param name="l">Left array</param>
-// /// <param name="r">Right array</param>
-// /// <returns>Array containing both left and right arrays.</returns>
-// public static Array ConcatenateArrays(Array l, Array r)
-// {
-// if (l == null)
-// {
-// throw new ArgumentNullException("l");
-// }
-// if (r == null)
-// {
-// throw new ArgumentNullException("r");
-// }
-//
-// int len = l.Length + r.Length;
-// Array a = Array.CreateInstance(l.GetType(), len);
-//
-// Array.Copy(l, 0, a, 0, l.Length);
-// Array.Copy(r, 0, a, l.Length, r.Length);
-//
-// return a;
-// }
+        // /// <summary>
+        // /// Concatenates two arrays.
+        // /// </summary>
+        // /// <param name="l">Left array</param>
+        // /// <param name="r">Right array</param>
+        // /// <returns>Array containing both left and right arrays.</returns>
+        // public static Array ConcatenateArrays(Array l, Array r)
+        // {
+        // if (l == null)
+        // {
+        // throw new ArgumentNullException("l");
+        // }
+        // if (r == null)
+        // {
+        // throw new ArgumentNullException("r");
+        // }
+        //
+        // int len = l.Length + r.Length;
+        // Array a = Array.CreateInstance(l.GetType(), len);
+        //
+        // Array.Copy(l, 0, a, 0, l.Length);
+        // Array.Copy(r, 0, a, l.Length, r.Length);
+        //
+        // return a;
+        // }
 
-// /// <summary>
-// /// Converts string escape characters back to their correct values.
-// /// </summary>
-// /// <param name="s">String to convert.</param>
-// /// <returns>Converted result.</returns>
-// public static string ConvertSpecialChars(string s)
-// {
-// if (s == null)
-// {
-// throw new ArgumentNullException("s");
-// }
-// char c;
-// int len = s.Length;
-// StringBuilder buf = new StringBuilder(len);
-//
-// int i = 0;
-// while(i < len)
-// {
-// c = s[i++];
-// if (c == '\\')
-// {
-// c =  s[i++];
-// if (c == 'n')      c = '\n';
-// else if (c == 'r') c = '\r';
-// else if (c == 't') c = '\t';
-// else if (c == 'f') c = '\f';
-// else if (c == '\b') c = '\b';
-// else if (c == '\"') c = '\"';
-// else if (c == '\'') c = '\'';
-// else if (c == '\\') c = '\\';
-// }
-// buf.Append(c);
-// }
-// return buf.ToString();
-// }
+        // /// <summary>
+        // /// Converts string escape characters back to their correct values.
+        // /// </summary>
+        // /// <param name="s">String to convert.</param>
+        // /// <returns>Converted result.</returns>
+        // public static string ConvertSpecialChars(string s)
+        // {
+        // if (s == null)
+        // {
+        // throw new ArgumentNullException("s");
+        // }
+        // char c;
+        // int len = s.Length;
+        // StringBuilder buf = new StringBuilder(len);
+        //
+        // int i = 0;
+        // while(i < len)
+        // {
+        // c = s[i++];
+        // if (c == '\\')
+        // {
+        // c =  s[i++];
+        // if (c == 'n')      c = '\n';
+        // else if (c == 'r') c = '\r';
+        // else if (c == 't') c = '\t';
+        // else if (c == 'f') c = '\f';
+        // else if (c == '\b') c = '\b';
+        // else if (c == '\"') c = '\"';
+        // else if (c == '\'') c = '\'';
+        // else if (c == '\\') c = '\\';
+        // }
+        // buf.Append(c);
+        // }
+        // return buf.ToString();
+        // }
 
         /// <summary>
         /// Converts a string to a <see cref="bool" /> value.
@@ -597,9 +593,7 @@ namespace log4net.Util
             }
         }
 
-        #endregion Public Static Methods
 
-        #region Private Static Methods
 
         /// <summary>
         /// Converts the string representation of the name or numeric value of one or
@@ -652,9 +646,7 @@ namespace log4net.Util
 #endif
         }
 
-        #endregion Private Static Methods
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the OptionConverter class.
@@ -669,7 +661,5 @@ namespace log4net.Util
         private const char DELIM_STOP = '}';
         private const int DELIM_START_LEN = 2;
         private const int DELIM_STOP_LEN = 1;
-
-        #endregion Private Static Fields
     }
 }

@@ -25,8 +25,6 @@ namespace DotNetNuke.Entities.Users
     [Serializable]
     public class UserRoleInfo : RoleInfo
     {
-        #region Public Properties
-
         public int UserRoleID { get; set; }
 
         public int UserID { get; set; }
@@ -44,8 +42,6 @@ namespace DotNetNuke.Entities.Users
         public bool IsTrialUsed { get; set; }
 
         public bool Subscribed { get; set; }
-
-        #endregion
 
         public override void Fill(IDataReader dr)
         {

@@ -15,7 +15,6 @@ namespace DotNetNuke.Services.Social.Notifications
     /// </summary>
     public interface INotificationsController
     {
-        #region NotificationTypes Methods
 
         /// <summary>
         /// Creates a new notification type.
@@ -43,9 +42,7 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <returns>The notification type with the provided name.</returns>
         NotificationType GetNotificationType(string name);
 
-        #endregion
 
-        #region NotificationTypeActions Methods
 
         /// <summary>
         /// Deletes an existing notification type action.
@@ -82,9 +79,7 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <param name="notificationTypeId">Id of the notification type</param>
         void SetNotificationTypeActions(IList<NotificationTypeAction> actions, int notificationTypeId);
 
-        #endregion
 
-        #region Notifications Methods
 
         /// <summary>
         /// Creates a new notification and sets is sender as the portal administrator.
@@ -168,9 +163,7 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <returns>The filtered list of notifications sent to the provided user in the specified portal.</returns>
         IList<Notification> GetNotificationByContext(int notificationTypeId, string context);
 
-        #endregion
 
-        #region Toast APIS
 
         /// <summary>
         /// Is there a Toast that needs to be sent for a Notification
@@ -199,7 +192,5 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <param name="userInfo">UserInfo object</param>
         /// <returns>List of Undelivered Toasts for the user specific to the portal</returns>
         IList<Notification> GetToasts(UserInfo userInfo);
-
-        #endregion
     }
 }

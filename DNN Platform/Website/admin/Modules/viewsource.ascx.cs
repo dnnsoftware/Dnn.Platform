@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
@@ -16,8 +16,6 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
 
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Modules
 {
     public partial class ViewSource : PortalModuleBase
@@ -27,8 +25,6 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        #region Private Members
 
         protected bool CanEditSource
         {
@@ -58,10 +54,6 @@ namespace DotNetNuke.Modules.Admin.Modules
                 return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this._navigationManager.NavigateURL();
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void BindFiles(string controlSrc)
         {
@@ -137,10 +129,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
-        #endregion
-
-        #region Event Handlers
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -207,8 +195,5 @@ namespace DotNetNuke.Modules.Admin.Modules
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
-
     }
 }

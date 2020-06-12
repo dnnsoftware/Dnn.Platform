@@ -21,8 +21,6 @@ namespace DotNetNuke.Web.Mvp
             view.OnSaveSettings += this.OnSaveSettingsInternal;
         }
 
-        #region Event Handlers
-
         private void OnLoadSettingsInternal(object sender, EventArgs e)
         {
             this.LoadSettings();
@@ -32,10 +30,6 @@ namespace DotNetNuke.Web.Mvp
         {
             this.SaveSettings();
         }
-
-        #endregion
-
-        #region Protected Methods
 
         protected override void OnLoad()
         {
@@ -76,7 +70,5 @@ namespace DotNetNuke.Web.Mvp
                 ModuleController.Instance.UpdateTabModuleSetting(this.ModuleContext.TabModuleId, setting.Key, setting.Value);
             }
         }
-
-        #endregion
     }
 }

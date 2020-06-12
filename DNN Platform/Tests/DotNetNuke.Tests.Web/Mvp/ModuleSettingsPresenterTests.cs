@@ -18,8 +18,6 @@ namespace DotNetNuke.Tests.Web.Mvp
     [TestFixture]
     public class ModuleSettingsPresenterTests
     {
-        #region Private Members
-
         private const int _moduleSettingCount = 2;
         private const string _moduleSettingName = "moduleKey{0}";
         private const string _moduleSettingValue = "value{0}";
@@ -27,10 +25,6 @@ namespace DotNetNuke.Tests.Web.Mvp
         private const int _tabModuleSettingCount = 3;
         private const string _tabModuleSettingName = "tabModuleKey{0}";
         private const string _tabModuleSettingValue = "value{0}";
-
-        #endregion
-
-        #region Embedded Classes for Testing
 
         public class TestSettingsPresenter : ModuleSettingsPresenter<ISettingsView<SettingsModel>, SettingsModel>
         {
@@ -40,10 +34,6 @@ namespace DotNetNuke.Tests.Web.Mvp
 
             }
         }
-
-        #endregion
-
-        #region Tests
 
         [Test]
         public void ModuleSettingsPresenter_Load_Initialises_Both_Dictionaries_On_PostBack()
@@ -173,7 +163,5 @@ namespace DotNetNuke.Tests.Web.Mvp
 
             return context;
         }
-
-        #endregion
     }
 }

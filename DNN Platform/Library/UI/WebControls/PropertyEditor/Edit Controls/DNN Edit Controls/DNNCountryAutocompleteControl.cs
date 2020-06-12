@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Linq;
@@ -15,16 +15,12 @@ using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
 
     [ToolboxData("<{0}:DnnCountryAutocompleteControl runat=server></{0}:DnnCountryAutocompleteControl>")]
     public class DnnCountryAutocompleteControl : EditControl
     {
-
-        #region " Controls "
         private TextBox _CountryName;
         private TextBox CountryName
         {
@@ -60,9 +56,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
-
-        #region " Properties "
         protected override string StringValue
         {
             get
@@ -81,9 +74,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get { return Convert.ToString(this.OldValue); }
         }
-        #endregion
 
-        #region " Constructors "
         public DnnCountryAutocompleteControl()
         {
             this.Init += this.DnnCountryRegionControl_Init;
@@ -93,9 +84,7 @@ namespace DotNetNuke.UI.WebControls
             this.Init += this.DnnCountryRegionControl_Init;
             this.SystemType = type;
         }
-        #endregion
 
-        #region " Overrides "
         protected override void OnDataChanged(EventArgs e)
         {
             PropertyEditorEventArgs args = new PropertyEditorEventArgs(this.Name);
@@ -154,9 +143,7 @@ namespace DotNetNuke.UI.WebControls
         {
             this.RenderChildren(writer);
         }
-        #endregion
 
-        #region " Page Events "
         private void DnnCountryRegionControl_Init(object sender, System.EventArgs e)
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
@@ -166,9 +153,6 @@ namespace DotNetNuke.UI.WebControls
             JavaScript.RequestRegistration(CommonJs.jQueryUI);
         }
 
-        #endregion
-
-        #region " Private Methods "
         private void LoadControls()
         {
 
@@ -204,7 +188,5 @@ namespace DotNetNuke.UI.WebControls
             }
             return false;
         }
-        #endregion
-
     }
 }

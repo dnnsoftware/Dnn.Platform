@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Data;
@@ -13,8 +13,6 @@ using System.Xml.Serialization;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Urls;
-
-#endregion
 
 namespace DotNetNuke.Entities.Portals
 {
@@ -35,8 +33,6 @@ namespace DotNetNuke.Entities.Portals
             this.Skin = alias.Skin;
         }
 
-        #region Auto-Properties
-
         public string HTTPAlias { get; set; }
         public int PortalAliasID { get; set; }
         public int PortalID { get; set; }
@@ -46,10 +42,6 @@ namespace DotNetNuke.Entities.Portals
         public BrowserTypes BrowserType { get; set; }
         public string CultureCode { get; set; }
         public string Skin { get; set; }
-
-        #endregion
-
-        #region IHydratable Members
 
         public int KeyID
         {
@@ -72,10 +64,6 @@ namespace DotNetNuke.Entities.Portals
             this.CultureCode = Null.SetNullString(dr["CultureCode"]);
             this.Skin = Null.SetNullString(dr["Skin"]);
         }
-
-        #endregion
-
-        #region IXmlSerializable Members
 
         public XmlSchema GetSchema()
         {
@@ -147,8 +135,5 @@ namespace DotNetNuke.Entities.Portals
             // Write end of main element
             writer.WriteEndElement();
         }
-
-        #endregion
-
     }
 }

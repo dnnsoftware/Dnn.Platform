@@ -13,18 +13,13 @@ namespace DotNetNuke.Entities.Content.Workflow
 {
     public class WorkflowLogger : ServiceLocator<IWorkflowLogger, WorkflowLogger>, IWorkflowLogger
     {
-        #region Members
         private readonly IWorkflowLogRepository _workflowLogRepository;
-        #endregion
 
-        #region Constructor
         public WorkflowLogger()
         {
             this._workflowLogRepository = WorkflowLogRepository.Instance;
         }
-        #endregion
 
-        #region Private Methods
         private void AddWorkflowLog(int contentItemId, int workflowId, WorkflowLogType type, string action, string comment, int userId)
         {
             var workflowLog = new WorkflowLog
@@ -45,9 +40,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             var logName = Enum.GetName(typeof(WorkflowLogType), logType);
             return Localization.GetString(logName + ".Action");
         }
-        #endregion
 
-        #region Public Methods
         public IEnumerable<WorkflowLog> GetWorkflowLogs(int contentItemId, int workflowId)
         {
             return this._workflowLogRepository.GetWorkflowLogs(contentItemId, workflowId);
@@ -63,13 +56,10 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             this.AddWorkflowLog(contentItemId, workflowId, WorkflowLogType.CommentProvided, action, comment, userId);
         }
-        #endregion
 
-        #region Service Locator
         protected override Func<IWorkflowLogger> GetFactory()
         {
             return () => new WorkflowLogger();
         }
-        #endregion
     }
 }

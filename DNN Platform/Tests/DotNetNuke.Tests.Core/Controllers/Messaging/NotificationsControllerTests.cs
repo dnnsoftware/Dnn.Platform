@@ -33,8 +33,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     [TestFixture]
     public class NotificationsControllerTests
     {
-        #region Private Properties
-
         private Mock<IDataService> _mockDataService;
         private Mock<IPortalController> _portalController;
         private Mock<IPortalGroupController> _portalGroupController;
@@ -48,10 +46,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private DataTable _dtNotificationTypes;
         private DataTable _dtNotificationTypeActions;
         private DataTable _dtNotificationActions;
-
-        #endregion
-
-        #region SetUp
 
         [SetUp]
         public void SetUp()
@@ -98,10 +92,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             PortalController.ClearInstance();
             InternalMessagingController.ClearInstance();
         }
-
-        #endregion
-
-        #region CreateNotificationType
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -173,10 +163,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             Assert.IsTrue(new NotificationTypeComparer().Equals(expectedNotificationType, actualNotificationType));
         }
 
-        #endregion
-
-        #region DeleteNotificationType
-
         [Test]
         public void DeleteNotificationType_Calls_DataService_DeleteNotificationType()
         {
@@ -194,10 +180,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockNotificationsController.Object.DeleteNotificationType(Constants.Messaging_NotificationTypeId);
             this._mockNotificationsController.Verify();
         }
-
-        #endregion
-
-        #region GetNotificationType
 
         [Test]
         public void GetNotificationType_By_Id_Gets_Object_From_Cache()
@@ -308,9 +290,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             Assert.IsTrue(new NotificationTypeComparer().Equals(expectedNotificationType, actualNotificationType));
         }
 
-        #endregion
-
-        #region AddNotificationTypeAction
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SetNotificationTypeActions_Throws_On_Null()
@@ -405,10 +384,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             Assert.IsTrue(new NotificationTypeActionComparer().Equals(expectedNotificationTypeAction, action));
         }
 
-        #endregion
-
-        #region DeleteNotificationTypeAction
-
         [Test]
         public void DeleteNotificationTypeAction_Calls_DataService_DeleteNotificationTypeAction()
         {
@@ -426,10 +401,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockNotificationsController.Object.DeleteNotificationTypeAction(Constants.Messaging_NotificationTypeActionId);
             this._mockNotificationsController.Verify();
         }
-
-        #endregion
-
-        #region GetNotificationTypeAction
 
         [Test]
         public void GetNotificationTypeAction_By_Id_Gets_Object_From_Cache()
@@ -546,10 +517,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             Assert.IsTrue(new NotificationTypeActionComparer().Equals(expectedNotificationTypeAction, actualNotificationTypeAction));
         }
 
-        #endregion
-
-        #region GetNotificationTypeActions
-
         [Test]
         public void GetNotificationTypeActions_Calls_DataService_GetNotificationTypeActions()
         {
@@ -586,10 +553,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             Assert.AreEqual(1, actualNotificationTypeActions.Count);
             Assert.IsTrue(new NotificationTypeActionComparer().Equals(expectedNotificationTypeAction, actualNotificationTypeActions[0]));
         }
-
-        #endregion
-
-        #region SendNotification
 
         [Test]
         public void SendNotification_Sets_Empty_SenderUserId_With_Admin()
@@ -991,10 +954,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             Assert.IsTrue(new NotificationComparer().Equals(expectedNotification, notification));
         }
 
-        #endregion
-
-        #region DeleteNotification
-
         [Test]
         public void DeleteNotification_Calls_DataService_DeleteNotification()
         {
@@ -1009,10 +968,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._notificationsController.DeleteNotification(Constants.Messaging_MessageId_1);
             this._mockDataService.Verify();
         }
-
-        #endregion
-
-        #region GetNotifications
 
         [Test]
         public void GetNotifications_Calls_DataService_GetNotifications()
@@ -1059,10 +1014,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockDataService.Verify();
         }
 
-        #endregion
-
-        #region CountNotifications
-
         [Test]
         public void CountNotifications_Calls_DataService_CountNotifications()
         {
@@ -1070,10 +1021,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._notificationsController.CountNotifications(Constants.UserID_User12, Constants.PORTAL_Zero);
             this._mockDataService.Verify();
         }
-
-        #endregion
-
-        #region DeleteNotificationRecipient
 
         [Test]
         public void DeleteNotificationRecipient_Calls_MessagingController_DeleteMessageRecipient()
@@ -1118,10 +1065,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockNotificationsController.Verify(nc => nc.DeleteNotification(Constants.Messaging_MessageId_1));
         }
 
-        #endregion
-
-        #region DeleteAllNotificationRecipients
-
         [Test]
         public void DeleteAllNotificationRecipients_Calls_DeleteNotificationRecipient_For_Each_Recipient()
         {
@@ -1145,10 +1088,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockNotificationsController.Object.DeleteAllNotificationRecipients(Constants.Messaging_MessageId_1);
             this._mockNotificationsController.Verify(nc => nc.DeleteNotificationRecipient(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static Notification CreateUnsavedNotification()
         {
@@ -1270,10 +1209,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._dtNotificationActions.Columns.Add("LastModifiedOnDate", typeof(DateTime));
         }
 
-        #endregion
-
-        #region Private Classes
-
         private class NotificationTypeComparer : IEqualityComparer<NotificationType>
         {
             public bool Equals(NotificationType x, NotificationType y)
@@ -1342,8 +1277,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 throw new NotImplementedException();
             }
         }
-
-        #endregion
     }
 }
 // ReSharper restore InconsistentNaming

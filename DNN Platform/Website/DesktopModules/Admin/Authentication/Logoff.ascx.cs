@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
@@ -14,8 +14,6 @@ using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Authentication
 {
 
@@ -26,9 +24,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
     /// </remarks>
     public partial class Logoff : UserModuleBase
     {
-
-        #region Private Methods
-
         private void Redirect()
         {
             // Redirect browser back to portal
@@ -53,9 +48,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        #endregion
 
-        #region Event Handlers
 
         /// <summary>
         /// Page_Load runs when the control is loaded
@@ -114,8 +107,5 @@ namespace DotNetNuke.Modules.Admin.Authentication
         {
             this.Redirect();
         }
-
-        #endregion
-
     }
 }

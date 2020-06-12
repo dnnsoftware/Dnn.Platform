@@ -21,8 +21,6 @@ namespace DotNetNuke.Services.FileSystem
 {
     public class FileVersionController : ComponentBase<IFileVersionController, FileVersionController>, IFileVersionController
     {
-
-        #region database methods
         public string AddFileVersion(IFileInfo file, int userId, bool published, bool removeOldestVersions, Stream content = null)
         {
             Requires.NotNull("file", file);
@@ -241,10 +239,6 @@ namespace DotNetNuke.Services.FileSystem
             this.RemoveOldestsVersions(file);
         }
 
-        #endregion
-
-        #region helper methods
-
         private void OnFileChanged(IFileInfo fileInfo, int userId)
         {
             EventManager.Instance.OnFileChanged(new FileChangedEventArgs
@@ -289,7 +283,5 @@ namespace DotNetNuke.Services.FileSystem
 
             DataCache.RemoveCache("GetFileById" + file.FileId);
         }
-
-        #endregion
     }
 }

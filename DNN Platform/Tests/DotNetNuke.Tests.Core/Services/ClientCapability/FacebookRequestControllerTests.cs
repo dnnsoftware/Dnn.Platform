@@ -20,13 +20,7 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
     [TestFixture]
     public class FacebookRequestControllerTests
     {
-        #region "Private Properties"
-
         private IDictionary<string, string> _requestDics;
-
-        #endregion
-
-        #region "Set Up"
 
         [SetUp]
         public void SetUp()
@@ -40,10 +34,6 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
 
             this._requestDics.Add("Invalid", "Invalid Content");
         }
-
-        #endregion
-
-        #region "Tests"
 
         [Test]
         public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Empty_Request_String()
@@ -127,10 +117,6 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
             Assert.AreEqual(true, request.IsValid);
         }
 
-        #endregion
-
-        #region "Private Methods"
-
         private void SetReadonly(NameValueCollection collection, bool readOnly)
         {
             var readOnlyProperty = collection.GetType().GetProperty("IsReadOnly", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -152,7 +138,5 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
             DateTime epoc = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return epoc.AddSeconds((double)value);
         }
-
-        #endregion
     }
 }

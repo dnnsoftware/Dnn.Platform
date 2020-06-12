@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -19,8 +19,6 @@ using DotNetNuke.Services.Installer.Packages;
 
 using ICSharpCode.SharpZipLib.Zip;
 
-#endregion
-
 namespace DotNetNuke.Services.Installer.Writers
 {
     /// -----------------------------------------------------------------------------
@@ -32,8 +30,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class PackageWriterBase
     {
-#region "Private Members"
-
         private readonly Dictionary<string, InstallFile> _AppCodeFiles = new Dictionary<string, InstallFile>();
         private readonly Dictionary<string, InstallFile> _Assemblies = new Dictionary<string, InstallFile>();
         private readonly SortedList<string, InstallFile> _CleanUpFiles = new SortedList<string, InstallFile>();
@@ -46,10 +42,6 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private static readonly Regex FileVersionMatchRegex = new Regex(Util.REGEX_Version, RegexOptions.Compiled);
 
-        #endregion
-
-        #region "Constructors"
-
         protected PackageWriterBase()
         {
         }
@@ -60,10 +52,6 @@ namespace DotNetNuke.Services.Installer.Writers
             this._Package.AttachInstallerInfo(new InstallerInfo());
         }
 
-        #endregion
-
-        #region "Protected Properties"
-
         protected virtual Dictionary<string, string> Dependencies
         {
             get
@@ -72,9 +60,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        #endregion
 
-        #region "Public Properties"
 
 
         /// -----------------------------------------------------------------------------
@@ -271,10 +257,6 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        #endregion
-
-        #region "Private Methods"
-
         private void AddFilesToZip(ZipOutputStream stream, IDictionary<string, InstallFile> files, string basePath)
         {
             foreach (InstallFile packageFile in files.Values)
@@ -415,10 +397,6 @@ namespace DotNetNuke.Services.Installer.Writers
             // Write components Element
             writer.WriteStartElement("components");
         }
-
-        #endregion
-
-        #region "Protected Methods"
 
         protected virtual void AddFile(string fileName)
         {
@@ -581,10 +559,6 @@ namespace DotNetNuke.Services.Installer.Writers
         protected virtual void WriteManifestComponent(XmlWriter writer)
         {
         }
-
-        #endregion
-
-        #region "Public Methods"
 
         public virtual void AddFile(InstallFile file)
         {
@@ -779,7 +753,5 @@ namespace DotNetNuke.Services.Installer.Writers
             // Start packages Element
             writer.WriteStartElement("packages");
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web.UI.WebControls;
@@ -12,8 +12,6 @@ using DotNetNuke.UI.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
-
-#endregion
 
 namespace DotNetNuke.UI.WebControls
 {
@@ -31,8 +29,6 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public class ActionLink : HyperLink
     {
-        #region Private Members
-
         public ActionLink()
         {
             this.RequireEditMode = false;
@@ -40,10 +36,6 @@ namespace DotNetNuke.UI.WebControls
             this.ControlKey = string.Empty;
             this.Title = string.Empty;
         }
-
-        #endregion
-
-        #region Public Properties
 
         public string Title { get; set; }
 
@@ -59,10 +51,6 @@ namespace DotNetNuke.UI.WebControls
 
         public IModuleControl ModuleControl { get; set; }
 
-        #endregion
-
-        #region Private Methods
-
         private bool IsVisible(SecurityAccessLevel security)
         {
             bool isVisible = false;
@@ -77,9 +65,7 @@ namespace DotNetNuke.UI.WebControls
             return isVisible;
         }
 
-        #endregion
 
-        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -122,7 +108,5 @@ namespace DotNetNuke.UI.WebControls
                 this.Visible = false;
             }
         }
-
-        #endregion
     }
 }

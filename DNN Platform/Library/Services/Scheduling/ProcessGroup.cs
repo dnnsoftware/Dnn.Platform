@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Reflection;
@@ -12,22 +12,18 @@ using DotNetNuke.Common;
 using DotNetNuke.Instrumentation;
 using Microsoft.Extensions.DependencyInjection;
 
-#endregion
-
 namespace DotNetNuke.Services.Scheduling
 {
     public class ProcessGroup
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProcessGroup));
+
         // ''''''''''''''''''''''''''''''''''''''''''''''''''
         // This class represents a process group for
         // our threads to run in.
         // ''''''''''''''''''''''''''''''''''''''''''''''''''
-        #region Delegates
 
         public delegate void CompletedEventHandler();
-
-        #endregion
 
         private static int numberOfProcessesInQueue;
         private static int numberOfProcesses;

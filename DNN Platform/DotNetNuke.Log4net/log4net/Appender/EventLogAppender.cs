@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 // MONO 1.0 Beta mcs does not like #if !A && !B && !C syntax
 
@@ -90,7 +88,6 @@ namespace log4net.Appender
     /// <author>Thomas Voss</author>
     public class EventLogAppender : AppenderSkeleton
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EventLogAppender" /> class.
@@ -123,9 +120,7 @@ namespace log4net.Appender
             this.Layout = layout;
         }
 
-        #endregion // Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// The name of the log where messages will be stored.
@@ -257,9 +252,7 @@ namespace log4net.Appender
             get { return this.m_category; }
             set { this.m_category = value; }
         }
-        #endregion // Public Instance Properties
 
-        #region Implementation of IOptionHandler
 
         /// <summary>
         /// Initialize the appender based on the options set
@@ -345,7 +338,6 @@ namespace log4net.Appender
             }
         }
 
-        #endregion // Implementation of IOptionHandler
 
         /// <summary>
         /// Create an event log source
@@ -364,7 +356,6 @@ namespace log4net.Appender
 #endif
         }
 
-        #region Override implementation of AppenderSkeleton
 
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/>
@@ -488,9 +479,7 @@ namespace log4net.Appender
             get { return true; }
         }
 
-        #endregion // Override implementation of AppenderSkeleton
 
-        #region Protected Instance Methods
 
         /// <summary>
         /// Get the equivalent <see cref="EventLogEntryType"/> for a <see cref="Level"/> <paramref name="level"/>
@@ -527,9 +516,7 @@ namespace log4net.Appender
             return EventLogEntryType.Information;
         }
 
-        #endregion // Protected Instance Methods
 
-        #region Private Instance Fields
 
         /// <summary>
         /// The log name is the section in the event logs where the messages
@@ -569,9 +556,7 @@ namespace log4net.Appender
         /// </summary>
         private short m_category = 0;
 
-        #endregion // Private Instance Fields
 
-        #region Level2EventLogEntryType LevelMapping Entry
 
         /// <summary>
         /// A class to act as a mapping between the level that a logging call is made at and
@@ -602,9 +587,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion // LevelColors LevelMapping Entry
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the EventLogAppender class.
@@ -682,8 +665,6 @@ namespace log4net.Appender
                 return MAX_EVENTLOG_MESSAGE_SIZE_VISTA_OR_NEWER;
             return MAX_EVENTLOG_MESSAGE_SIZE_DEFAULT;
         }
-
-        #endregion Private Static Fields
     }
 }
 

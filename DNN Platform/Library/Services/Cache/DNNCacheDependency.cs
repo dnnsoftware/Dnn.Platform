@@ -1,13 +1,11 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web.Caching;
-
-#endregion
 
 namespace DotNetNuke.Services.Cache
 {
@@ -19,17 +17,13 @@ namespace DotNetNuke.Services.Cache
     /// </remarks>
     public class DNNCacheDependency : IDisposable
     {
-        #region "Private Members"
-
         private readonly DateTime _utcStart = DateTime.MaxValue;
         private DNNCacheDependency _cacheDependency;
         private string[] _cacheKeys;
         private string[] _fileNames;
         private CacheDependency _systemCacheDependency;
 
-        #endregion
 
-        #region "Constructors"
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DNNCacheDependency"/> class.
@@ -141,9 +135,7 @@ namespace DotNetNuke.Services.Cache
             this._cacheDependency = dependency;
         }
 
-        #endregion
 
-        #region "Public Properties"
 
         /// <summary>
         /// Gets the cache keys.
@@ -236,9 +228,7 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-        #endregion
 
-        #region IDisposable Members
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -269,7 +259,5 @@ namespace DotNetNuke.Services.Cache
                 this._systemCacheDependency = null;
             }
         }
-
-        #endregion
     }
 }

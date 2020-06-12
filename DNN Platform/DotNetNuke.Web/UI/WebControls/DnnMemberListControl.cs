@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -16,8 +16,6 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Services.Tokens;
 
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
     /// <summary>
@@ -26,16 +24,11 @@ namespace DotNetNuke.Web.UI.WebControls
     [ToolboxData("<{0}:DnnMemberListControl runat=\"server\"></{0}:DnnMemberListControl>")]
     public class DnnMemberListControl : WebControl
     {
-        #region Private Variables
-
         private UserInfo _currentUser;
         private RelationshipController _relationshipController;
 
-        #endregion
 
-        #region Properties
 
-        #region Layout Properties
 
         /// <summary>
         /// Gets or sets the template for displaying the header section of a DnnMemberListControl object.
@@ -85,9 +78,7 @@ namespace DotNetNuke.Web.UI.WebControls
         [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
         public string FooterTemplate { get; set; }
 
-        #endregion
 
-        #region Filter Properties
 
         /// <summary>
         /// Gets or sets the index of the currently displayed page.
@@ -126,12 +117,6 @@ namespace DotNetNuke.Web.UI.WebControls
         /// Posible keys are: RoleId, RelationshipTypeId, UserId, Profile:PropertyName, FirstName, LastName, DisplayName, Username, Email.
         /// </remarks>
         public IDictionary<string, string> Filters { get; set; }
-
-        #endregion
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
@@ -199,7 +184,5 @@ namespace DotNetNuke.Web.UI.WebControls
 
             writer.Write(this.FooterTemplate);
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -20,8 +20,6 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Common;
 
-#endregion
-
 namespace DotNetNuke.Modules.CoreMessaging
 {
     /// -----------------------------------------------------------------------------
@@ -31,8 +29,6 @@ namespace DotNetNuke.Modules.CoreMessaging
     /// -----------------------------------------------------------------------------
     public partial class View : PortalModuleBase
     {
-        #region Public Properties
-
         public int ProfileUserId
         {
             get
@@ -74,10 +70,6 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
         }
 
-        #endregion
-
-        #region Event Handlers
-
         override protected void OnInit(EventArgs e)
         {
             if (!this.Request.IsAuthenticated)
@@ -110,10 +102,6 @@ namespace DotNetNuke.Modules.CoreMessaging
             base.OnInit(e);
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void AddIe7StyleSheet()
         {
             var browser = this.Request.Browser;
@@ -145,7 +133,5 @@ namespace DotNetNuke.Modules.CoreMessaging
         {
             return p.PermissionKey == "VIEW" && p.AllowAccess && (p.RoleName == Globals.glbRoleAllUsersName || p.RoleName == Globals.glbRoleUnauthUserName);
         }
-
-        #endregion
     }
 }

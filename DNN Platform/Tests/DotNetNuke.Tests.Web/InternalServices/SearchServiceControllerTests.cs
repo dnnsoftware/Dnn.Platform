@@ -40,8 +40,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
     [TestFixture]
     public class SearchServiceControllerTests
     {
-
-        #region Constants
         private const int ModuleSearchTypeId = 1;
         private const int TabSearchTypeId = 2;
         private const int UserSearchTypeId = 3;
@@ -77,11 +75,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
         private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
 
         private const int DefaultSearchRetryTimes = 5;
-
-        #endregion
-
-        #region Private Properties
-
         private Mock<ICBO> _mockCBO;
         private Mock<IHostController> _mockHostController;
         private Mock<CachingProvider> _mockCachingProvider;
@@ -95,9 +88,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
         private IInternalSearchController _internalSearchController;
         private LuceneControllerImpl _luceneController;
 
-        #endregion
-
-        #region Set Up
         [SetUp]
         public void SetUp()
         {
@@ -155,9 +145,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             PortalController.ClearInstance();
             ModuleController.ClearInstance();
         }
-        #endregion
 
-        #region Private Methods
         private void CreateNewLuceneControllerInstance()
         {
             if (this._luceneController != null)
@@ -521,7 +509,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             return table.CreateDataReader();
         }
-        #endregion
 
         private IEnumerable<GroupedBasicView> GetGroupBasicViewResults(SearchQuery query)
         {

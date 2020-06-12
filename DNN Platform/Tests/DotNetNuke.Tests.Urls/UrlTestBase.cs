@@ -25,8 +25,6 @@ namespace DotNetNuke.Tests.Urls
 
         protected virtual string TestType { get { return string.Empty; } }
 
-        #region SetUp and TearDown
-
         public virtual void SetUp()
         {
             this.ExecuteScriptFile(string.Format("{0}\\{1}\\{2}", this.TestType, this.GetTestFolder(), "SetUp.sql"));
@@ -46,8 +44,6 @@ namespace DotNetNuke.Tests.Urls
         {
             this.ExecuteScriptFile(string.Format("{0}\\{1}", this.TestType, "TearDown.sql"));
         }
-
-        #endregion
 
         protected void CreateTab(string tabName)
         {

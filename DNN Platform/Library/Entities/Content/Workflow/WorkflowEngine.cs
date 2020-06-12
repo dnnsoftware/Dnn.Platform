@@ -25,13 +25,9 @@ namespace DotNetNuke.Entities.Content.Workflow
 {
     public class WorkflowEngine : ServiceLocator<IWorkflowEngine, WorkflowEngine>, IWorkflowEngine
     {
-        #region Constants
         private const string ContentWorkflowNotificationType = "ContentWorkflowNotification";
         private const string ContentWorkflowNotificationNoActionType = "ContentWorkflowNoActionNotification";
         private const string ContentWorkflowNotificatioStartWorkflowType = "ContentWorkflowStartWorkflowNotification";
-        #endregion
-
-        #region Members
         private readonly IContentController _contentController;
         private readonly IWorkflowRepository _workflowRepository;
         private readonly IWorkflowStateRepository _workflowStateRepository;
@@ -44,9 +40,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         private readonly IWorkflowManager _workflowManager;
         private readonly IWorkflowLogger _workflowLogger;
         private readonly ISystemWorkflowManager _systemWorkflowManager;
-        #endregion
 
-        #region Constructor
         public WorkflowEngine()
         {
             this._contentController = Util.GetContentController();
@@ -62,9 +56,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             this._workflowLogger = WorkflowLogger.Instance;
             this._systemWorkflowManager = SystemWorkflowManager.Instance;
         }
-        #endregion
-
-        #region Private Methods
 
         private StateTransaction CreateInitialTransaction(int contentItemId, int stateId, int userId)
         {
@@ -147,7 +138,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             return !(isDirectPublishWorkflow || !draftSubmitted);
         }
 
-        #region Notification utilities
         private string GetWorkflowNotificationContext(ContentItem contentItem, WorkflowState state)
         {
             return string.Format("{0}:{1}:{2}", contentItem.ContentItemId, state.WorkflowID, state.StateID);
@@ -365,9 +355,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             return users.All(u => u.UserID != superUser.UserID);
         }
-        #endregion
 
-        #region Log Workflow utilities
         private void AddWorkflowCommentLog(ContentItem contentItem, int userId, string userComment)
         {
             if (string.IsNullOrEmpty(userComment))
@@ -477,11 +465,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             return previousState ?? workflow.LastState;
         }
-        #endregion
 
-        #endregion
-
-        #region Public Methods
         public UserInfo GetStartedDraftStateUser(ContentItem contentItem)
         {
             return this.GetUserByWorkflowLogType(contentItem, WorkflowLogType.WorkflowStarted);
@@ -736,13 +720,10 @@ namespace DotNetNuke.Entities.Content.Workflow
             // after-change action
             this.PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.CompleteWorkflow);
         }
-        #endregion
 
-        #region Service Locator
         protected override Func<IWorkflowEngine> GetFactory()
         {
             return () => new WorkflowEngine();
         }
-        #endregion
     }
 }

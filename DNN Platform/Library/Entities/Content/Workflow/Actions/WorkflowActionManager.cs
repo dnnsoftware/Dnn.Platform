@@ -11,18 +11,13 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions
 {
     public class WorkflowActionManager : ServiceLocator<IWorkflowActionManager, WorkflowActionManager>, IWorkflowActionManager
     {
-        #region Members
         private readonly IWorkflowActionRepository _workflowActionRepository;
-        #endregion
 
-        #region Constructor
         public WorkflowActionManager()
         {
             this._workflowActionRepository = WorkflowActionRepository.Instance;
         }
-        #endregion
 
-        #region Public Methods
         public IWorkflowAction GetWorkflowActionInstance(int contentTypeId, WorkflowActionTypes actionType)
         {
             var action = this._workflowActionRepository.GetWorkflowAction(contentTypeId, actionType.ToString());
@@ -46,13 +41,10 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions
 
             this._workflowActionRepository.AddWorkflowAction(workflowAction);
         }
-        #endregion
 
-        #region Service Locator
         protected override Func<IWorkflowActionManager> GetFactory()
         {
             return () => new WorkflowActionManager();
         }
-        #endregion
     }
 }

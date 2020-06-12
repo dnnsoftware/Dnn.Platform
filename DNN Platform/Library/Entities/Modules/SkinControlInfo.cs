@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Data;
@@ -11,8 +11,6 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 
 using DotNetNuke.Common.Utilities;
-
-#endregion
 
 namespace DotNetNuke.Entities.Modules
 {
@@ -50,7 +48,6 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public int PackageID { get; set; }
 
-        #region IHydratable Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -83,9 +80,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        #endregion
 
-        #region IXmlSerializable Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -136,7 +131,5 @@ namespace DotNetNuke.Entities.Modules
             // Write end of main element
             writer.WriteEndElement();
         }
-
-        #endregion
     }
 }

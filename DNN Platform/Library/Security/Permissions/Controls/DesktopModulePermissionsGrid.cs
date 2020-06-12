@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -15,21 +15,13 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 
-#endregion
-
 namespace DotNetNuke.Security.Permissions.Controls
 {
     public class DesktopModulePermissionsGrid : PermissionsGrid
     {
-        #region "Private Members"
-
         private DesktopModulePermissionCollection _DesktopModulePermissions;
         private List<PermissionInfoBase> _PermissionsList;
         private int _PortalDesktopModuleID = -1;
-
-        #endregion
-
-        #region "Protected Properties"
 
         protected override List<PermissionInfoBase> PermissionsList
         {
@@ -43,9 +35,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        #endregion
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -86,9 +76,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        #endregion
 
-        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -123,10 +111,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             objDesktopModulePermission.PortalDesktopModuleID = this.PortalDesktopModuleID;
             return objDesktopModulePermission;
         }
-
-        #endregion
-
-        #region "Protected Methods"
 
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
@@ -316,10 +300,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             return true;
         }
 
-        #endregion
-
-        #region "Public Methods"
-
         public void ResetPermissions()
         {
             this.GetDesktopModulePermissions();
@@ -329,7 +309,5 @@ namespace DotNetNuke.Security.Permissions.Controls
         public override void GenerateDataGrid()
         {
         }
-
-        #endregion
     }
 }

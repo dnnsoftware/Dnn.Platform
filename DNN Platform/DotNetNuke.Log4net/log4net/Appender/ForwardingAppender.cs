@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 
@@ -42,7 +41,6 @@ namespace log4net.Appender
     /// <author>Gert Driesen</author>
     public class ForwardingAppender : AppenderSkeleton, IAppenderAttachable
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ForwardingAppender" /> class.
@@ -56,9 +54,7 @@ namespace log4net.Appender
         {
         }
 
-        #endregion Public Instance Constructors
 
-        #region Override implementation of AppenderSkeleton
 
         /// <summary>
         /// Closes the appender and releases resources.
@@ -120,9 +116,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion Override implementation of AppenderSkeleton
 
-        #region Implementation of IAppenderAttachable
 
         /// <summary>
         /// Adds an <see cref="IAppender" /> to the list of appenders of this
@@ -269,15 +263,11 @@ namespace log4net.Appender
             return null;
         }
 
-        #endregion Implementation of IAppenderAttachable
 
-        #region Private Instance Fields
 
         /// <summary>
         /// Implementation of the <see cref="IAppenderAttachable"/> interface
         /// </summary>
         private AppenderAttachedImpl m_appenderAttachedImpl;
-
-        #endregion Private Instance Fields
     }
 }

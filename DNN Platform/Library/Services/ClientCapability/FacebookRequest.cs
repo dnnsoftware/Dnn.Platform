@@ -21,7 +21,6 @@ namespace DotNetNuke.Services.ClientCapability
     /// </summary>
     public class FacebookRequest
     {
-        #region Public Properties
 
         /// <summary>
         ///  Mechanism used to sign the request
@@ -102,14 +101,11 @@ namespace DotNetNuke.Services.ClientCapability
         /// Is this a valid FaceBook Request. Check this value prior to accessing any other property
         /// </summary>
         public bool IsValid { get; set; }
-        #endregion
 
-        #region Public Methods
         public bool IsValidSignature(string secretKey)
         {
             return FacebookRequestController.IsValidSignature(this.RawSignedRequest, secretKey);
         }
-        #endregion
     }
 
 }

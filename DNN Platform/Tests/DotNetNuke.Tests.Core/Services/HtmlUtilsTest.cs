@@ -49,8 +49,6 @@ namespace DotNetNuke.Tests.Core.Services
         {
         }
 
-        #region HTML Cleaning Tests
-
         [Test]
         public void HtmlUtils_CleanWithTagInfo_Should_Return_Clean_Content_With_Attribute_Values()
         {
@@ -116,7 +114,5 @@ namespace DotNetNuke.Tests.Core.Services
             // TearDown
             this.TearDown();
         }
-
-        #endregion
     }
 }

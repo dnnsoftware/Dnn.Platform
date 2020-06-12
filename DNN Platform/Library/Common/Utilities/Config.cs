@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Globalization;
@@ -17,8 +17,6 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 
-#endregion
-
 namespace DotNetNuke.Common.Utilities
 {
     /// -----------------------------------------------------------------------------
@@ -31,7 +29,6 @@ namespace DotNetNuke.Common.Utilities
     public class Config
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Config));
-        #region ConfigFileType enum
 
         public enum ConfigFileType
         {
@@ -43,10 +40,6 @@ namespace DotNetNuke.Common.Utilities
             SolutionsExplorer
         }
 
-        #endregion
-
-        #region FcnMode enum
-
         public enum FcnMode
         {
             Default,
@@ -55,9 +48,8 @@ namespace DotNetNuke.Common.Utilities
             Single
         }
 
-        #endregion
 
-            /// <summary>
+        /// <summary>
         /// Adds a new AppSetting to Web.Config. The update parameter allows you to define if,
         /// when the key already exists, this need to be updated or not
         /// </summary>

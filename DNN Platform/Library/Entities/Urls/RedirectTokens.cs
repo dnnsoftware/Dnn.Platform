@@ -26,7 +26,6 @@ namespace DotNetNuke.Entities.Urls
             @"(?<=(?<p>&|\?))(?<tk>do301|do302|do404)=(?<val>[^&]+)",
             RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
-        #region Private Methods
 
         /// <summary>
         /// Returns the list of tokens found in a rewrite path as a key/value dictionary
@@ -140,9 +139,7 @@ namespace DotNetNuke.Entities.Urls
             return results;
         }
 
-        #endregion
 
-        #region Internal Methods
 
         /// <summary>
         /// Adds on a redirect reason to the rewrite path
@@ -517,7 +514,5 @@ namespace DotNetNuke.Entities.Urls
             result.Reason = reason;
             result.RewritePath = newUrl;
         }
-
-        #endregion
     }
 }

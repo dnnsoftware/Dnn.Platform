@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 // .NET Compact Framework 1.0 has no support for WindowsIdentity
 #if !NETCF
@@ -76,17 +74,13 @@ namespace log4net.Util
             Process
         }
 
-        #region Member Variables
-
         private ImpersonationMode m_impersonationMode = ImpersonationMode.User;
         private string m_userName;
         private string m_domainName = Environment.MachineName;
         private string m_password;
         private WindowsIdentity m_identity;
 
-        #endregion
 
-        #region Constructor
 
         /// <summary>
         /// Default constructor
@@ -100,9 +94,7 @@ namespace log4net.Util
         {
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// <summary>
         /// Gets or sets the impersonation mode for this security context
@@ -195,9 +187,7 @@ namespace log4net.Util
             set { this.m_password = value; }
         }
 
-        #endregion
 
-        #region IOptionHandler Members
 
         /// <summary>
         /// Initialize the SecurityContext based on the options set.
@@ -233,7 +223,6 @@ namespace log4net.Util
             }
         }
 
-        #endregion
 
         /// <summary>
         /// Impersonate the Windows account specified by the <see cref="UserName"/> and <see cref="DomainName"/> properties.
@@ -324,8 +313,6 @@ namespace log4net.Util
             return identity;
         }
 
-        #region Native Method Stubs
-
         [DllImport("advapi32.dll", SetLastError=true)]
         private static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword, int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
 
@@ -335,9 +322,7 @@ namespace log4net.Util
         [DllImport("advapi32.dll", CharSet=CharSet.Auto, SetLastError=true)]
         private extern static bool DuplicateToken(IntPtr ExistingTokenHandle, int SECURITY_IMPERSONATION_LEVEL, ref IntPtr DuplicateTokenHandle);
 
-        #endregion
 
-        #region DisposableImpersonationContext class
 
         /// <summary>
         /// Adds <see cref="IDisposable"/> to <see cref="WindowsImpersonationContext"/>
@@ -379,8 +364,6 @@ namespace log4net.Util
                 this.m_impersonationContext.Undo();
             }
         }
-
-        #endregion
     }
 }
 

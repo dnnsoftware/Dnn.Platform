@@ -12,7 +12,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     [Serializable]
     public class TabVersion : BaseEntityInfo
     {
-        #region Public Properties
 
         /// <summary>
         /// Id of the TabVersion object
@@ -38,6 +37,5 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// True if the version is published. False if it is not published yet
         /// </summary>
         public bool IsPublished { get; set; }
-        #endregion
     }
 }

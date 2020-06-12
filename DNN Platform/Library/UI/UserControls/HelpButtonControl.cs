@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web.UI;
@@ -12,8 +12,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
-
-#endregion
 
 namespace DotNetNuke.UI.UserControls
 {
@@ -29,8 +27,6 @@ namespace DotNetNuke.UI.UserControls
     /// -----------------------------------------------------------------------------
     public abstract class HelpButtonControl : UserControl
     {
-        #region "Private Members"
-
         private string _HelpKey;
         private string _ResourceKey;
         protected LinkButton cmdHelp;
@@ -38,9 +34,7 @@ namespace DotNetNuke.UI.UserControls
         protected Label lblHelp;
         protected Panel pnlHelp;
 
-        #endregion
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -119,9 +113,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        #endregion
 
-        #region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -160,7 +152,5 @@ namespace DotNetNuke.UI.UserControls
         {
             this.pnlHelp.Visible = true;
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Text;
@@ -40,7 +39,6 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public sealed class Transform
     {
-        #region Private Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Transform" /> class.
@@ -54,9 +52,7 @@ namespace log4net.Util
         {
         }
 
-        #endregion Private Instance Constructors
 
-        #region XML String Methods
 
         /// <summary>
         /// Write a string to an <see cref="XmlWriter"/>
@@ -142,9 +138,7 @@ namespace log4net.Util
             return INVALIDCHARS.Replace(textData, mask);
         }
 
-        #endregion XML String Methods
 
-        #region Private Helper Methods
 
         /// <summary>
         /// Count the number of times that the substring occurs in the text
@@ -188,10 +182,6 @@ namespace log4net.Util
             return count;
         }
 
-        #endregion
-
-        #region Private Static Fields
-
         private const string CDATA_END  = "]]>";
         private const string CDATA_UNESCAPABLE_TOKEN    = "]]";
 
@@ -199,6 +189,5 @@ namespace log4net.Util
         /// Characters illegal in XML 1.0
         /// </summary>
         private static Regex INVALIDCHARS = new Regex(@"[^\x09\x0A\x0D\x20-\uD7FF\uE000-\uFFFD]", RegexOptions.Compiled);
-        #endregion Private Static Fields
     }
 }

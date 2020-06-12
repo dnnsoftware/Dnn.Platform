@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web.UI;
@@ -12,8 +12,6 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 
-#endregion
-
 namespace DotNetNuke.UI.Skins.Controls
 {
 
@@ -21,8 +19,6 @@ namespace DotNetNuke.UI.Skins.Controls
     /// <remarks></remarks>
     public class ModuleMessage : SkinObjectBase
     {
-        #region ModuleMessageType enum
-
         public enum ModuleMessageType
         {
             GreenSuccess,
@@ -31,17 +27,10 @@ namespace DotNetNuke.UI.Skins.Controls
             BlueInfo
         }
 
-        #endregion
-        #region "Private Members"
-
         protected Panel dnnSkinMessage;
         protected Label lblHeading;
         protected Label lblMessage;
         protected Control scrollScript;
-
-        #endregion
-
-        #region "Public Members"
 
         public string Text { get; set; }
 
@@ -62,9 +51,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        #endregion
 
-        #region "Protected Methods"
 
         /// <summary>
         /// The Page_Load server event handler on this page is used
@@ -128,7 +115,5 @@ namespace DotNetNuke.UI.Skins.Controls
             // set the scroll js only shown for module message and in postback mode.
             this.scrollScript.Visible = this.IsPostBack && this.IsModuleMessage;
         }
-
-        #endregion
     }
 }

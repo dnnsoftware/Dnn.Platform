@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -16,8 +16,6 @@ using DotNetNuke.Common;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer;
-
-#endregion
 
 namespace DotNetNuke.UI.Skins
 {
@@ -41,8 +39,6 @@ namespace DotNetNuke.UI.Skins
     public class SkinFileProcessor
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinFileProcessor));
-        #region "Private Members"
-
         private readonly string DUPLICATE_DETAIL = Util.GetLocalizedString("DuplicateSkinObject.Detail");
         private readonly string DUPLICATE_ERROR = Util.GetLocalizedString("DuplicateSkinObject.Error");
         private readonly string FILES_END = Util.GetLocalizedString("EndSkinFiles");
@@ -62,9 +58,7 @@ namespace DotNetNuke.UI.Skins
         private readonly string m_SkinRoot;
         private string m_Message = string.Empty;
 
-        #endregion
 
-        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -159,10 +153,6 @@ namespace DotNetNuke.UI.Skins
             this.m_ObjectFactory = new ObjectParser(this.m_ControlList);
         }
 
-        #endregion
-
-        #region "Private Properties"
-
         private PathParser PathFactory
         {
             get
@@ -207,10 +197,6 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        #endregion
-
-        #region "Public Properties"
-
         public string SkinRoot
         {
             get
@@ -234,10 +220,6 @@ namespace DotNetNuke.UI.Skins
                 return this.m_SkinName;
             }
         }
-
-        #endregion
-
-        #region "Public Methods"
 
         public string ProcessFile(string FileName, SkinParser ParseOption)
         {
@@ -297,9 +279,7 @@ namespace DotNetNuke.UI.Skins
             return contents;
         }
 
-        #endregion
 
-        #region Nested type: ControlParser
 
         /// -----------------------------------------------------------------------------
         /// Project  : DotNetNuke
@@ -566,9 +546,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        #endregion
 
-        #region Nested type: ObjectParser
 
         /// -----------------------------------------------------------------------------
         /// Project  : DotNetNuke
@@ -846,9 +824,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        #endregion
 
-        #region Nested type: PathParser
 
         /// -----------------------------------------------------------------------------
         /// Project  : DotNetNuke
@@ -1061,9 +1037,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        #endregion
 
-        #region Nested type: SkinFile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -1307,7 +1281,5 @@ namespace DotNetNuke.UI.Skins
                 return Messages;
             }
         }
-
-        #endregion
     }
 }

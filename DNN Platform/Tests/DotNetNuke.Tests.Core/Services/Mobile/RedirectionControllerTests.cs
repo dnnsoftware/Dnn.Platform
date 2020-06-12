@@ -36,8 +36,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
     [TestFixture]
     public class RedirectionControllerTests
     {
-        #region Private Properties
-
         private Mock<DataProvider> _dataProvider;
         private RedirectionController _redirectionController;
         private Mock<ClientCapabilityProvider> _clientCapabilityProvider;
@@ -87,9 +85,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         private const string DisableRedirectPresistCookieName = "disableredirectpresist";
         private const string DisableMobileRedirectQueryStringName = "nomo";
 
-        #endregion
-
-        #region Set Up
         [SetUp]
         public void SetUp()
         {
@@ -146,12 +141,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             containerMock.Setup(x => x.GetService(typeof(INavigationManager))).Returns(navigationManagerMock.Object);
             Globals.DependencyProvider = containerMock.Object;
         }
-        #endregion
-
-        #region Tests
-
-        #region CURD API Tests
-
 
         [Test]
         public void RedirectionController_Save_Valid_Redirection()
@@ -240,10 +229,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             this._redirectionController.PurgeInvalidRedirections(0);
             Assert.AreEqual(0, this._redirectionController.GetRedirectionsByPortal(0).Count);
         }
-
-        #endregion
-
-        #region Get Redirections URL Tests
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
@@ -365,11 +350,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             Assert.AreEqual(string.Empty, this._redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
         }
 
-
-        #endregion
-
-        #region Get FullSite Url Tests
-
         [Test]
         public void RedirectionController_GetFullSiteUrl_With_NoRedirections()
         {
@@ -407,10 +387,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
             Assert.AreEqual(string.Empty, url);
         }
-
-        #endregion
-
-        #region Get MobileSite Url Tests
 
         [Test]
         public void RedirectionController_GetMobileSiteUrl_With_NoRedirections()
@@ -468,10 +444,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             Assert.AreEqual(string.Empty, url);
         }
 
-        #endregion
-
-        #region Redirect Enable/Disable Tests
-
         [Test]
         public void RedirectionController_IsRedirectAllowedForTheSession_In_Normal_Action()
         {
@@ -510,12 +482,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             app.Context.Request.QueryString.Add(DisableMobileRedirectQueryStringName, "0");
             Assert.IsTrue(this._redirectionController.IsRedirectAllowedForTheSession(app));
         }
-
-        #endregion
-
-        #endregion
-
-        #region Private Methods
 
         private void SetupDataProvider()
         {
@@ -976,7 +942,5 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         {
             return string.Format("/Default.aspx?tabid={0}", tabId);
         }
-
-        #endregion
     }
 }

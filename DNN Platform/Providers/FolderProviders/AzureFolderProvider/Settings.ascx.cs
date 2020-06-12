@@ -22,7 +22,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Settings));
 
-        #region Overrided Methods
 
         /// <summary>
         /// Loads concrete settings.
@@ -123,10 +122,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
             folderMappingController.UpdateFolderMapping(folderMapping);
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static bool AreThereFolderMappingsWithSameSettings(FolderMappingInfo folderMapping, string accountName, string container)
         {
@@ -325,9 +320,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             }
         }
 
-        #endregion
 
-        #region Event Handlers
 
         /// <summary>
         /// </summary>
@@ -397,7 +390,5 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             this.valContainerName.ErrorMessage = Localization.GetString("valContainerName.ErrorMessage", this.LocalResourceFile);
             args.IsValid = false;
         }
-
-        #endregion
     }
 }

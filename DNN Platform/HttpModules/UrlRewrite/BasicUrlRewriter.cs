@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -23,8 +23,6 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.EventQueue;
 using DotNetNuke.Services.Localization;
 
-#endregion
-
 namespace DotNetNuke.HttpModules.UrlRewrite
 {
     internal class BasicUrlRewriter : UrlRewriterBase
@@ -33,8 +31,6 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
         public static readonly Regex TabIdRegex = new Regex("&?tabid=\\d+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         public static readonly Regex PortalIdRegex = new Regex("&?portalid=\\d+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        #region overridden methods
 
         internal override void RewriteUrl(object sender, EventArgs e)
         {
@@ -368,9 +364,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             }
         }
 
-        #endregion
 
-        #region rewriting methods
 
         // Note these formerly lived in the 'UrlRewriteModule.cs' class
         private string FormatDomain(string url, string replaceDomain, string withDomain)
@@ -792,7 +786,5 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 }
             }
         }
-
-        #endregion
     }
 }

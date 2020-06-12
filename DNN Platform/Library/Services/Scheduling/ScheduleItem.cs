@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -12,22 +12,14 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities;
 using DotNetNuke.Entities.Modules;
 
-#endregion
-
 namespace DotNetNuke.Services.Scheduling
 {
     [Serializable]
     public class ScheduleItem : BaseEntityInfo, IHydratable
     {
-        #region Private Members
-
         private static readonly DateTime MinNextTime = DateTime.Now;
         private DateTime? _NextStart;
         private Hashtable _ScheduleItemSettings;
-
-        #endregion
-
-        #region Constructors
 
         public ScheduleItem()
         {
@@ -47,10 +39,6 @@ namespace DotNetNuke.Services.Scheduling
             this.Servers = Null.NullString;
             this.ScheduleStartDate = Null.NullDate;
         }
-
-        #endregion
-
-        #region Persisted Properties
 
         public string AttachToEvent { get; set; }
 
@@ -102,10 +90,6 @@ namespace DotNetNuke.Services.Scheduling
 
         public int ThreadID { get; set; }
 
-        #endregion
-
-        #region IHydratable Members
-
         public int KeyID
         {
             get
@@ -122,8 +106,6 @@ namespace DotNetNuke.Services.Scheduling
         {
             this.FillInternal(dr);
         }
-
-        #endregion
 
         public bool HasObjectDependencies(string strObjectDependencies)
         {
@@ -146,8 +128,6 @@ namespace DotNetNuke.Services.Scheduling
             }
             return false;
         }
-
-        #region "Public Methods"
 
         public void AddSetting(string Key, string Value)
         {
@@ -207,7 +187,5 @@ namespace DotNetNuke.Services.Scheduling
             // Fill BaseEntityInfo
             base.FillInternal(dr);
         }
-
-        #endregion
     }
 }

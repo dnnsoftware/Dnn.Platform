@@ -25,19 +25,12 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnFilePickerUploader : UserControl, IFilePickerUploader
     {
-        #region Private Fields
-
         private const string MyFileName = "filepickeruploader.ascx";
         private int? _portalId = null;
 
         private string _fileFilter;
         private string _folderPath = string.Empty;
         private bool _folderPathSet = false;
-
-        #endregion
-
-        #region Protected Properties
-
         protected DnnFileDropDownList FilesComboBox;
         protected DnnFolderDropDownList FoldersComboBox;
         protected Label FoldersLabel;
@@ -74,10 +67,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 return Localization.GetString("DropFile", Localization.GetResourceFile(this, MyFileName));
             }
         }
-
-        #endregion
-
-        #region Public Properties
 
         public bool UsePersonalFolder { get; set; }
 
@@ -198,10 +187,6 @@ namespace DotNetNuke.Web.UI.WebControls
             set { this.FileUploadControl.SupportHost = value; }
         }
 
-        #endregion
-
-        #region Event Handlers
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -271,10 +256,6 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnPreRender(e);
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void LoadFolders()
         {
             if (this.UsePersonalFolder)
@@ -310,7 +291,5 @@ namespace DotNetNuke.Web.UI.WebControls
             this.FoldersComboBox.Enabled = !this.UsePersonalFolder;
             this.FoldersLabel.Visible = this.UsePersonalFolder;
         }
-
-        #endregion
     }
 }

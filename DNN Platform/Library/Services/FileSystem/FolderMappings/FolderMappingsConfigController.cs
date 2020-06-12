@@ -17,16 +17,14 @@ namespace DotNetNuke.Services.FileSystem
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FolderMappingsConfigController));
         private static readonly string defaultConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DotNetNuke.folderMappings.config");
-        #region Constructor
+
         public FolderMappingsConfigController()
         {
             this.FolderMappings = new Dictionary<string, string>();
             this.FolderTypes = new List<FolderTypeConfig>();
             this.LoadConfig();
         }
-        #endregion
 
-        #region private methods
         private IDictionary<string, string> FolderMappings { get; set; }
 
         private void FillFolderMappings(XmlDocument configDocument)
@@ -84,9 +82,7 @@ namespace DotNetNuke.Services.FileSystem
 
             return folderType;
         }
-        #endregion
 
-        #region public Properties
         public IList<FolderTypeConfig> FolderTypes { get; internal set; }
 
         private const string configNode = "folderMappingsSettings";
@@ -94,9 +90,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             get { return configNode; }
         }
-        #endregion
 
-        #region public Methods
         public void LoadConfig()
         {
             try
@@ -136,7 +130,6 @@ namespace DotNetNuke.Services.FileSystem
             }
             return FolderMappingController.Instance.GetFolderMapping(portalId, this.FolderMappings[folderPath]);
         }
-        #endregion
 
         protected override Func<IFolderMappingsConfigController> GetFactory()
         {

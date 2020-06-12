@@ -1,12 +1,10 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System.Collections;
-
-#endregion
 
 namespace DotNetNuke.Services.Scheduling
 {
@@ -20,13 +18,9 @@ namespace DotNetNuke.Services.Scheduling
     /// -----------------------------------------------------------------------------
     public class ScheduleStatusSortRemainingTimeDescending : IComparer
     {
-        #region IComparer Members
-
         public int Compare(object x, object y)
         {
             return ((ScheduleHistoryItem)x).RemainingTime.CompareTo(((ScheduleHistoryItem)y).RemainingTime);
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -10,14 +10,10 @@ using System.Data;
 
 using DotNetNuke.Services.Social.Messaging.Internal.Views;
 
-#endregion
-
 namespace DotNetNuke.Services.Social.Messaging.Data
 {
     public interface IDataService
     {
-        #region Messages CRUD
-
         int SaveMessage(Message message, int portalId, int createUpdateUserId);
         IDataReader GetMessage(int messageId);
         IDataReader GetMessagesBySender(int messageId, int portalId);
@@ -42,9 +38,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         int CountArchivedConversations(int userId, int portalId);
         int CheckReplyHasRecipients(int conversationId, int userId);
 
-        #endregion
 
-        #region Message_Recipients CRUD
 
         int SaveMessageRecipient(MessageRecipient messageRecipient, int createUpdateUserId);
         void CreateMessageRecipientsForRole(int messageId, string roleIds, int createUpdateUserId);
@@ -55,39 +49,29 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         void DeleteMessageRecipient(int messageRecipientId);
         void DeleteMessageRecipientByMessageAndUser(int messageId, int userId);
 
-        #endregion
 
-        #region Message_Attachments CRUD
 
         int SaveMessageAttachment(MessageAttachment messageAttachment, int createUpdateUserId);
         IDataReader GetMessageAttachment(int messageAttachmentId);
         IList<MessageFileView> GetMessageAttachmentsByMessage(int messageId);
         void DeleteMessageAttachment(int messageAttachmentId);
 
-        #endregion
 
-        #region Upgrade APIs
 
         void ConvertLegacyMessages(int pageIndex, int pageSize);
 
         IDataReader CountLegacyMessages();
 
-        #endregion
 
-        #region Queued email API's
 
         IDataReader GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize);
         IDataReader GetNextMessagesForDigestDispatch(int frequecy, Guid schedulerInstance, int batchSize);
         void MarkMessageAsDispatched(int messageId, int recipientId);
         void MarkMessageAsSent(int messageId, int recipientId);
 
-        #endregion
 
-        #region User Preferences
 
         IDataReader GetUserPreference(int portalId, int userId);
         void SetUserPreference(int portalId, int userId, int messagesEmailFrequency, int notificationsEmailFrequency);
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web.UI;
@@ -11,8 +11,6 @@ using System.Web.UI.HtmlControls;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.Skins;
-
-#endregion
 
 namespace DotNetNuke.UI.Containers.Controls
 {
@@ -24,13 +22,7 @@ namespace DotNetNuke.UI.Containers.Controls
     [PersistChildren(true)]
     public partial class Toggle : SkinObjectBase
     {
-        #region "Private Properties"
-
         private string _target;
-
-        #endregion
-
-        #region "Public Properties"
 
         public string Class { get; set; }
 
@@ -60,10 +52,6 @@ namespace DotNetNuke.UI.Containers.Controls
             }
         }
 
-        #endregion
-
-        #region "Event Handlers"
-
         protected override void OnPreRender(EventArgs e)
         {
             JavaScript.RequestRegistration(CommonJs.jQuery);
@@ -91,7 +79,5 @@ namespace DotNetNuke.UI.Containers.Controls
             writer.RenderEndTag();
             writer.RenderEndTag();
         }
-
-        #endregion
     }
 }

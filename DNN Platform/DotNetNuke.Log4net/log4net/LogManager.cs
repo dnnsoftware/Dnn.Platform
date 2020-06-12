@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Reflection;
@@ -61,7 +60,6 @@ namespace log4net
     /// <author>Gert Driesen</author>
     public sealed class LogManager
     {
-        #region Private Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LogManager" /> class.
@@ -73,9 +71,7 @@ namespace log4net
         {
         }
 
-        #endregion Private Instance Constructors
 
-        #region Type Specific Manager Methods
 
 #if !NETSTANDARD1_3 // Excluded because GetCallingAssembly() is not available in CoreFX (https://github.com/dotnet/corefx/issues/2221).
         /// <overloads>Returns the named logger if it exists.</overloads>
@@ -293,9 +289,7 @@ namespace log4net
             return WrapLogger(LoggerManager.GetLogger(repositoryAssembly, type));
         }
 
-        #endregion Type Specific Manager Methods
 
-        #region Domain & Repository Manager Methods
 
         /// <summary>
         /// Shuts down the log4net system.
@@ -777,9 +771,7 @@ namespace log4net
 #endif
             }
 
-        #endregion Domain & Repository Manager Methods
 
-        #region Extension Handlers
 
         /// <summary>
         /// Looks up the wrapper object for the logger specified.
@@ -817,15 +809,11 @@ namespace log4net
             return new LogImpl(logger);
         }
 
-        #endregion
 
-        #region Private Static Fields
 
         /// <summary>
         /// The wrapper map to use to hold the <see cref="LogImpl"/> objects.
         /// </summary>
         private static readonly WrapperMap s_wrapperMap = new WrapperMap(new WrapperCreationHandler(WrapperCreationHandler));
-
-        #endregion Private Static Fields
     }
 }

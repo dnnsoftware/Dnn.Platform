@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -13,9 +13,6 @@ using DotNetNuke.Entities.Content.Taxonomy;
 
 using Telerik.Web.UI;
 
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
     public class TermsList : WebControl
@@ -25,13 +22,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private DnnTreeView _TreeView;
 
-        #region "Events"
-
         public event EventHandler<TermsEventArgs> SelectedTermChanged;
-
-        #endregion
-
-        #region "Public Properties"
 
         public bool IsHeirarchical
         {
@@ -96,10 +87,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        #endregion
-
-        #region "Protected Methods"
-
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
@@ -152,10 +139,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        #endregion
-
-        #region "Event Handlers"
-
         private void ListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
             // Raise the SelectedTermChanged Event
@@ -167,10 +150,6 @@ namespace DotNetNuke.Web.UI.WebControls
             // Raise the SelectedTermChanged Event
             this.OnSelectedTermChanged(new TermsEventArgs(this.SelectedTerm));
         }
-
-        #endregion
-
-        #region "Public Methods"
 
         public void BindTerms(List<Term> terms, bool isHeirarchical, bool dataBind)
         {
@@ -191,7 +170,5 @@ namespace DotNetNuke.Web.UI.WebControls
             this._ListBox.SelectedIndex = Null.NullInteger;
             this._TreeView.UnselectAllNodes();
         }
-
-        #endregion
     }
 }

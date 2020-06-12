@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -22,8 +22,6 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.UI;
 using DotNetNuke.Web.UI.WebControls;
 
-#endregion
-
 namespace DotNetNuke.UI.ControlPanel
 {
     using DotNetNuke.Abstractions;
@@ -36,8 +34,6 @@ namespace DotNetNuke.UI.ControlPanel
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        #region "Event Handlers"
 
         protected override void OnLoad(EventArgs e)
         {
@@ -117,10 +113,6 @@ namespace DotNetNuke.UI.ControlPanel
             }
         }
 
-        #endregion
-
-        #region "Properties"
-
         public override bool Visible
         {
             get
@@ -144,10 +136,6 @@ namespace DotNetNuke.UI.ControlPanel
                 throw new NotSupportedException("Set ToolName not supported");
             }
         }
-
-        #endregion
-
-        #region "Methods"
 
         private TabInfo _newTabObject;
 
@@ -243,7 +231,5 @@ namespace DotNetNuke.UI.ControlPanel
         {
             return Localization.GetString(key, this.LocalResourceFile);
         }
-
-        #endregion
     }
 }

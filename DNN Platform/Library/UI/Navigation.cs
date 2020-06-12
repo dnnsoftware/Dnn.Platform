@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -20,14 +20,10 @@ using DotNetNuke.UI.Containers;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.WebControls;
 
-#endregion
-
 namespace DotNetNuke.UI
 {
     public class Navigation
     {
-        #region NavNodeOptions enum
-
         public enum NavNodeOptions
         {
             IncludeSelf = 1,
@@ -37,10 +33,6 @@ namespace DotNetNuke.UI
             IncludeHiddenNodes = 16
         }
 
-        #endregion
-
-        #region ToolTipSource enum
-
         public enum ToolTipSource
         {
             TabName,
@@ -49,9 +41,7 @@ namespace DotNetNuke.UI
             None
         }
 
-        #endregion
 
-        #region Private Shared Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -374,10 +364,6 @@ namespace DotNetNuke.UI
             }
         }
 
-        #endregion
-
-        #region Public Shared Methods
-
         public static bool CanShowTab(TabInfo objTab, bool isAdminMode, bool showDisabled)
         {
             return CanShowTab(objTab, isAdminMode, showDisabled, false);
@@ -625,7 +611,5 @@ namespace DotNetNuke.UI
                 }
             }
         }
-
-        #endregion
     }
 }

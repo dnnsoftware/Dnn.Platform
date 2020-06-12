@@ -12,16 +12,10 @@ namespace DotNetNuke.Entities.Tabs
     [Serializable] // 584 support sql session state
     public class TabUrlInfo
     {
-        #region Constructors
-
         public TabUrlInfo()
         {
             this.PortalAliasUsage = PortalAliasUsageType.Default;
         }
-
-        #endregion
-
-        #region Public Properties
 
         public string CultureCode { get; set; }
         public string HttpStatus { get; set; }
@@ -35,8 +29,5 @@ namespace DotNetNuke.Entities.Tabs
         public int? LastModifiedByUserId { get; set; }
 
         public string Url { get; set; }
-
-        #endregion
-
     }
 }

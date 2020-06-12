@@ -42,7 +42,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             MockComponentProvider.ResetContainer();
         }
 
-        #region IsFileLocked Method Tests
         [Test]
         public void IsFileLocked_ReturnsTrue_WhenPublishPeriodIsOut()
         {
@@ -161,9 +160,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             // Assert
             Assert.IsFalse(result);
         }
-        #endregion
 
-        #region IsFileOutOfPublishPeriod Method Tests
         [Test]
         public void IsFileOutOfPublishPeriod_ReturnsTrue_WhenPublishPeriodIsOut()
         {
@@ -248,6 +245,5 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             // Assert
             Assert.IsFalse(result);
         }
-        #endregion
     }
 }

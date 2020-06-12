@@ -1,15 +1,13 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Web;
-
-#endregion
 
 namespace DotNetNuke.UI.WebControls
 {
@@ -26,8 +24,6 @@ namespace DotNetNuke.UI.WebControls
     {
         private const int MAX_IMAGE_WIDTH = 600;
         private const int MAX_IMAGE_HEIGHT = 600;
-
-        #region IHttpHandler Members
 
         public bool IsReusable
         {
@@ -48,7 +44,5 @@ namespace DotNetNuke.UI.WebControls
                 bmp.Save(response.OutputStream, ImageFormat.Jpeg);
             }
         }
-
-        #endregion
     }
 }

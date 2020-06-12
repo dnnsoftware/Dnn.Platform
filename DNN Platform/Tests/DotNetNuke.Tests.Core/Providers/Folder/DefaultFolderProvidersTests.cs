@@ -13,8 +13,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     [TestFixture]
     public class DefaultFolderProvidersTests
     {
-        #region GetDefaultProviders Tests
-
         [Test]
         public void GetDefaultProviders_Should_Return_3_Valid_Providers()
         {
@@ -24,7 +22,5 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             CollectionAssert.AreEqual(expectedValues, defaultProviders);
         }
-
-        #endregion
     }
 }

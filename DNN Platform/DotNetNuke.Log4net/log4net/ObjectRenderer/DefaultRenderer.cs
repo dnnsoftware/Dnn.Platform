@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Text;
@@ -45,7 +44,6 @@ namespace log4net.ObjectRenderer
     /// <author>Gert Driesen</author>
     public sealed class DefaultRenderer : IObjectRenderer
     {
-        #region Constructors
 
         /// <summary>
         /// Default constructor
@@ -59,9 +57,7 @@ namespace log4net.ObjectRenderer
         {
         }
 
-        #endregion
 
-        #region Implementation of IObjectRenderer
 
         /// <summary>
         /// Render the object <paramref name="obj"/> to a string
@@ -215,7 +211,6 @@ namespace log4net.ObjectRenderer
             writer.Write((str == null) ? SystemInfo.NullText : str);
         }
 
-        #endregion
 
         /// <summary>
         /// Render the array argument into a string

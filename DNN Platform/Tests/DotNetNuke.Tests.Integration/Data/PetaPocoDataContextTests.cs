@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -15,15 +15,12 @@ using NUnit.Framework;
 
 using PetaPoco;
 
-#endregion
-
 namespace DotNetNuke.Tests.Data
 {
     [TestFixture]
     public class PetaPocoDataContextTests
     {
         // ReSharper disable InconsistentNaming
-        #region Setup/Teardown
 
         [SetUp]
         public void SetUp()
@@ -35,12 +32,8 @@ namespace DotNetNuke.Tests.Data
         {
         }
 
-        #endregion
-
         private const string connectionStringName = "PetaPoco";
         private const string tablePrefix = "dnn_";
-
-        #region Constructor Tests
 
         [Test]
         public void PetaPocoDataContext_Constructors_Throw_On_Null_ConnectionString()
@@ -127,10 +120,6 @@ namespace DotNetNuke.Tests.Data
             Assert.AreEqual(connectionString, Util.GetPrivateMember<Database, string>(db, "_connectionString"));
         }
 
-        #endregion
-
-        #region BeginTransaction Tests
-
         [Test]
         public void PetaPocoDataContext_BeginTransaction_Increases_Database_Transaction_Count()
         {
@@ -146,10 +135,6 @@ namespace DotNetNuke.Tests.Data
             // Assert
             Assert.AreEqual(transactionDepth + 1, Util.GetPrivateMember<Database, int>(db, "_transactionDepth"));
         }
-
-        #endregion
-
-        #region Commit Tests
 
         [Test]
         public void PetaPocoDataContext_Commit_Decreases_Database_Transaction_Count()
@@ -183,10 +168,6 @@ namespace DotNetNuke.Tests.Data
             Assert.AreEqual(false, Util.GetPrivateMember<Database, bool>(db, "_transactionCancelled"));
         }
 
-        #endregion
-
-        #region RollbackTransaction Tests
-
         [Test]
         public void PetaPocoDataContext_RollbackTransaction_Decreases_Database_Transaction_Count()
         {
@@ -218,10 +199,6 @@ namespace DotNetNuke.Tests.Data
             // Assert
             Assert.AreEqual(true, Util.GetPrivateMember<Database, bool>(db, "_transactionCancelled"));
         }
-
-        #endregion
-
-        #region GetRepository Tests
 
         [Test]
         public void PetaPocoDataContext_GetRepository_Returns_Repository()
@@ -279,7 +256,6 @@ namespace DotNetNuke.Tests.Data
             Assert.IsInstanceOf<FluentMapper<Dog>>(Util.GetPrivateMember<PetaPocoRepository<Dog>, IMapper>(repo, "_mapper"));
         }
 
-        #endregion
 
         // ReSharper restore InconsistentNaming
     }

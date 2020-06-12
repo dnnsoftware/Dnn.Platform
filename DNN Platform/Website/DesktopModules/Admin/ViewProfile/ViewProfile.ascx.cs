@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Linq;
@@ -22,8 +22,6 @@ using DotNetNuke.UI.Modules;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Abstractions;
-
-#endregion
 
 namespace DotNetNuke.Modules.Admin.ViewProfile
 {
@@ -61,8 +59,6 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
         }
 
         public string ProfileProperties { get; set; }
-
-        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
@@ -227,10 +223,6 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private string GetRedirectUrl()
         {
             // redirect user to default page if not specific the home tab, do this action to prevent loop redirect.
@@ -306,7 +298,5 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 this.Response.Redirect(Common.Globals.UserProfileURL(initiatingUser.UserID));
             }
         }
-
-        #endregion
     }
 }

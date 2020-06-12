@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -788,7 +787,6 @@ namespace log4net.Layout
     /// <author>Daniel Cazzulino</author>
     public class PatternLayout : LayoutSkeleton
     {
-        #region Constants
 
         /// <summary>
         /// Default pattern string for log output.
@@ -813,9 +811,7 @@ namespace log4net.Layout
         /// </remarks>
         public const string DetailConversionPattern = "%timestamp [%thread] %level %logger %ndc - %message%newline";
 
-        #endregion
 
-        #region Static Fields
 
         /// <summary>
         /// Internal map of converter identifiers to converter types.
@@ -827,9 +823,7 @@ namespace log4net.Layout
         /// </remarks>
         private static Hashtable s_globalRulesRegistry;
 
-        #endregion Static Fields
 
-        #region Member Variables
 
         /// <summary>
         /// the pattern
@@ -846,9 +840,7 @@ namespace log4net.Layout
         /// </summary>
         private Hashtable m_instanceRulesRegistry = new Hashtable();
 
-        #endregion
 
-        #region Static Constructor
 
         /// <summary>
         /// Initialize the global registry
@@ -942,9 +934,7 @@ namespace log4net.Layout
             s_globalRulesRegistry.Add("username", typeof(UserNamePatternConverter));
         }
 
-        #endregion Static Constructor
 
-        #region Constructors
 
         /// <summary>
         /// Constructs a PatternLayout using the DefaultConversionPattern
@@ -997,7 +987,6 @@ namespace log4net.Layout
             this.ActivateOptions();
         }
 
-        #endregion
 
         /// <summary>
         /// The pattern formatting string
@@ -1047,7 +1036,6 @@ namespace log4net.Layout
             return patternParser;
         }
 
-        #region Implementation of IOptionHandler
 
         /// <summary>
         /// Initialize layout options
@@ -1087,9 +1075,7 @@ namespace log4net.Layout
             }
         }
 
-        #endregion
 
-        #region Override implementation of LayoutSkeleton
 
         /// <summary>
         /// Produces a formatted string as specified by the conversion pattern.
@@ -1123,7 +1109,6 @@ namespace log4net.Layout
             }
         }
 
-        #endregion
 
         /// <summary>
         /// Add a converter to this PatternLayout

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Text;
@@ -107,7 +106,6 @@ namespace log4net.Appender
     /// <author>Nicko Cadell</author>
     public class AnsiColorTerminalAppender : AppenderSkeleton
     {
-        #region Colors Enum
 
         /// <summary>
         /// The enum of possible display attributes
@@ -218,9 +216,7 @@ namespace log4net.Appender
             White   = 7
         }
 
-        #endregion
 
-        #region Public Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AnsiColorTerminalAppender" /> class.
@@ -233,9 +229,7 @@ namespace log4net.Appender
         {
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Target is the value of the console output stream.
@@ -284,9 +278,7 @@ namespace log4net.Appender
             this.m_levelMapping.Add(mapping);
         }
 
-        #endregion Public Instance Properties
 
-        #region Override implementation of AppenderSkeleton
 
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
@@ -389,9 +381,7 @@ namespace log4net.Appender
             this.m_levelMapping.ActivateOptions();
         }
 
-        #endregion Override implementation of AppenderSkeleton
 
-        #region Public Static Fields
 
         /// <summary>
         /// The <see cref="AnsiColorTerminalAppender.Target"/> to use when writing to the Console
@@ -417,9 +407,7 @@ namespace log4net.Appender
         /// </remarks>
         public const string ConsoleError = "Console.Error";
 
-        #endregion Public Static Fields
 
-        #region Private Instances Fields
 
         /// <summary>
         /// Flag to write output to the error stream rather than the standard output stream
@@ -436,9 +424,7 @@ namespace log4net.Appender
         /// </summary>
         private const string PostEventCodes = "\x1b[0m";
 
-        #endregion Private Instances Fields
 
-        #region LevelColors LevelMapping Entry
 
         /// <summary>
         /// A class to act as a mapping between the level that a logging call is made at and
@@ -572,7 +558,5 @@ namespace log4net.Appender
                 get { return this.m_combinedColor; }
             }
         }
-
-        #endregion // LevelColors LevelMapping Entry
     }
 }

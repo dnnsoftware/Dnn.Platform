@@ -11,7 +11,6 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     public class JavaScriptFileInstaller : FileInstaller
     {
-        #region Protected Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -41,9 +40,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -60,9 +57,7 @@ namespace DotNetNuke.Services.Installer.Installers
         }
 
 
-        #endregion
 
-        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -79,9 +74,5 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.BasePath = string.Format("Resources\\Libraries\\{0}\\{1}", libraryNav.Value, Globals.FormatVersion(this.Package.Version, "00", 3, "_"));
             }
         }
-
-
-        #endregion
-
     }
 }

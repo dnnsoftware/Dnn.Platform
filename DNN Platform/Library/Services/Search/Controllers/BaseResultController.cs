@@ -1,14 +1,12 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
 using DotNetNuke.Services.Search.Entities;
-
-#endregion
 
 namespace DotNetNuke.Services.Search.Controllers
 {
@@ -19,7 +17,6 @@ namespace DotNetNuke.Services.Search.Controllers
     [Serializable]
     public abstract class BaseResultController
     {
-        #region Abstract
 
         /// <summary>
         /// Does the user in the Context have View Permission on the Document
@@ -40,7 +37,5 @@ namespace DotNetNuke.Services.Search.Controllers
         /// Gets the localized search type name.
         /// </summary>
         public virtual string LocalizedSearchTypeName => string.Empty;
-
-        #endregion
     }
 }

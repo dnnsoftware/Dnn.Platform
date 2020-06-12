@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -10,8 +10,6 @@ using System.Data;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
-
-#endregion
 
 namespace DotNetNuke.Entities.Portals
 {
@@ -48,8 +46,6 @@ namespace DotNetNuke.Entities.Portals
         [Required()]
         public string PortalGroupName { get; set; }
 
-        #region IHydratable Members
-
         public int KeyID
         {
             get
@@ -72,7 +68,5 @@ namespace DotNetNuke.Entities.Portals
             this.MasterPortalId = Null.SetNullInteger(dr["MasterPortalID"]);
             this.AuthenticationDomain = Null.SetNullString(dr["AuthenticationDomain"]);
         }
-
-        #endregion
     }
 }

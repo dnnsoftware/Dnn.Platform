@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
@@ -15,8 +15,6 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 
 using Image = System.Drawing.Image;
-
-#endregion
 
 namespace DotNetNuke.UI.Skins
 {
@@ -31,14 +29,8 @@ namespace DotNetNuke.UI.Skins
     public abstract class SkinThumbNailControl : UserControlBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinThumbNailControl));
-        #region "Private Members"
-
         protected HtmlGenericControl ControlContainer;
         protected RadioButtonList OptSkin;
-
-        #endregion
-
-        #region "Properties"
 
         public string Border
         {
@@ -140,9 +132,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        #endregion
 
-        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -290,9 +280,7 @@ namespace DotNetNuke.UI.Skins
             return strThumbnail;
         }
 
-        #endregion
 
-        #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -417,8 +405,5 @@ namespace DotNetNuke.UI.Skins
                 }
             }
         }
-
-        #endregion
-
     }
 }

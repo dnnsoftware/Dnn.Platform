@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -22,8 +22,6 @@ using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Services.Installer.Packages;
 
-#endregion
-
 namespace DotNetNuke.Entities.Modules
 {
     /// -----------------------------------------------------------------------------
@@ -38,8 +36,6 @@ namespace DotNetNuke.Entities.Modules
     [Serializable]
     public class DesktopModuleInfo : ContentItem, IXmlSerializable
     {
-        #region Inner Classes
-
         [Serializable]
         public class PageInfo : IXmlSerializable
         {
@@ -147,8 +143,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        #endregion
-
         private Dictionary<string, ModuleDefinitionInfo> _moduleDefinitions;
         private PageInfo _pageInfo;
 
@@ -163,7 +157,6 @@ namespace DotNetNuke.Entities.Modules
             this.Shareable = ModuleSharing.Unknown;
         }
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -433,9 +426,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        #endregion
 
-        #region IHydratable Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -467,9 +458,7 @@ namespace DotNetNuke.Entities.Modules
             this.FillInternal(dr);
         }
 
-        #endregion
 
-        #region IXmlSerializable Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -650,9 +639,7 @@ namespace DotNetNuke.Entities.Modules
             writer.WriteEndElement();
         }
 
-        #endregion
 
-        #region "Private Helper Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -804,7 +791,5 @@ namespace DotNetNuke.Entities.Modules
                 this.HostPage = this.Page.Name;
             }
         }
-
-        #endregion
     }
 }

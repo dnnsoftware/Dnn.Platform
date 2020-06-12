@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -41,8 +41,6 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 using Globals = DotNetNuke.Common.Globals;
 
-#endregion
-
 namespace DotNetNuke.Framework
 {
     using Web.Client;
@@ -73,7 +71,6 @@ namespace DotNetNuke.Framework
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -140,10 +137,6 @@ namespace DotNetNuke.Framework
             }
         }
 
-        #endregion
-
-        #region IClientAPICallbackEventHandler Members
-
         public string RaiseClientAPICallbackEvent(string eventArgument)
         {
             var dict = this.ParsePageCallBackArgs(eventArgument);
@@ -167,9 +160,7 @@ namespace DotNetNuke.Framework
             return string.Empty;
         }
 
-        #endregion
 
-        #region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -544,10 +535,6 @@ namespace DotNetNuke.Framework
             return FileManager.Instance.GetFile(this.PortalSettings.PortalId, this.PortalSettings.BackgroundFile);
         }
 
-        #endregion
-
-        #region Protected Methods
-
         protected bool NonProductionVersion()
         {
             return DotNetNukeContext.Current.Application.Status != ReleaseMode.Stable;
@@ -777,8 +764,5 @@ namespace DotNetNuke.Framework
 
             base.Render(writer);
         }
-
-        #endregion
-
     }
 }

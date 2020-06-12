@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Specialized;
@@ -10,21 +10,14 @@ using System.Web.UI;
 
 using DotNetNuke.UI.WebControls;
 
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnFileEditControl : IntegerEditControl
     {
-        #region Private Fields
-
         private DnnFilePickerUploader _fileControl;
         // private DnnFilePicker _fileControl;
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -40,9 +33,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// -----------------------------------------------------------------------------
         public string FilePath { get; set; }
 
-        #endregion
 
-        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -108,9 +99,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.RenderChildren(writer);
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -137,7 +126,5 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             return dataChanged;
         }
-
-        #endregion
     }
 }

@@ -20,8 +20,6 @@ namespace DotNetNuke.Tests.UI.Validation
 
         private static readonly ValidationResult AnotherFailedResult = new ValidationResult(new[] { new ValidationError() });
 
-        #region Tests
-
         [Test]
         public void ValidateObject_Returns_Successful_Result_If_All_Validators_Return_Successful()
         {
@@ -69,10 +67,6 @@ namespace DotNetNuke.Tests.UI.Validation
             EnumerableAssert.ElementsMatch(new[] { FailedResult, AnotherFailedResult }, result.Errors, (e, a) => ReferenceEquals(e.Errors.First(), a));
         }
 
-        #endregion
-
-        #region Helpers
-
         private static void SetupValidators(Validator validator, object target, params ValidationResult[] validationResults)
         {
             validator.Validators.Clear();
@@ -83,7 +77,5 @@ namespace DotNetNuke.Tests.UI.Validation
                 validator.Validators.Add(mockValidator.Object);
             }
         }
-
-        #endregion
     }
 }

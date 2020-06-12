@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Specialized;
@@ -16,8 +16,6 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.UI.WebControls.Extensions;
 using Newtonsoft.Json;
 
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     /// <remarks>
@@ -25,14 +23,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// </remarks>
     public class DnnComboBox : DropDownList
     {
-        #region Fields
-
         private string _initValue;
         private string _multipleValue;
-
-        #endregion
-
-        #region Properties
 
         public override string SelectedValue
         {
@@ -93,10 +85,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         }
 
         public DnnComboBoxOption Options { get; set; } = new DnnComboBoxOption();
-
-        #endregion
-
-        #region Override Methods
 
         protected override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
@@ -163,10 +151,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         public void AddItem(string text, string value)
         {
             this.Items.Add(new ListItem(text, value));
@@ -222,10 +206,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             return this.Items.IndexOf(this.FindItemByValue(value));
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void RegisterRequestResources()
         {
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
@@ -256,7 +236,5 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 }
             }
         }
-
-        #endregion
     }
 }

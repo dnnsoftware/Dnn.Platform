@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -55,7 +54,6 @@ namespace log4net.Config
     /// <author>Gert Driesen</author>
     public sealed class BasicConfigurator
     {
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the BasicConfigurator class.
@@ -66,9 +64,7 @@ namespace log4net.Config
         /// </remarks>
         private readonly static Type declaringType = typeof(BasicConfigurator);
 
-        #endregion Private Static Fields
 
-        #region Private Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicConfigurator" /> class.
@@ -82,9 +78,7 @@ namespace log4net.Config
         {
         }
 
-        #endregion Private Instance Constructors
 
-        #region Public Static Methods
 
 #if !NETSTANDARD1_3
         /// <summary>
@@ -232,7 +226,5 @@ namespace log4net.Config
                 LogLog.Warn(declaringType, "BasicConfigurator: Repository [" + repository + "] does not support the BasicConfigurator");
             }
         }
-
-        #endregion Public Static Methods
     }
 }

@@ -18,13 +18,9 @@ namespace DotNetNuke.Security.Permissions
     /// </summary>
     internal class CompareWorkflowStatePermissions : IComparer
     {
-        #region IComparer Interface
-
         public int Compare(object x, object y)
         {
             return ((WorkflowStatePermissionInfo)x).WorkflowStatePermissionID.CompareTo(((WorkflowStatePermissionInfo)y).WorkflowStatePermissionID);
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Specialized;
@@ -11,8 +11,6 @@ using System.Text;
 using System.Xml;
 
 using DotNetNuke.Common.Utilities;
-
-#endregion
 
 namespace DotNetNuke.Services.EventQueue
 {
@@ -26,8 +24,6 @@ namespace DotNetNuke.Services.EventQueue
     [Serializable]
     public class EventMessage
     {
-        #region "Private Members"
-
         private NameValueCollection _attributes;
         private string _authorizedRoles = Null.NullString;
         private string _body = Null.NullString;
@@ -41,18 +37,10 @@ namespace DotNetNuke.Services.EventQueue
         private DateTime _sentDate;
         private string _subscribers = Null.NullString;
 
-        #endregion
-
-        #region "Constructors"
-
         public EventMessage()
         {
             this._attributes = new NameValueCollection();
         }
-
-        #endregion
-
-        #region "Public Properties"
 
         public int EventMessageID
         {
@@ -247,10 +235,6 @@ namespace DotNetNuke.Services.EventQueue
             }
         }
 
-        #endregion
-
-        #region "Public Methods"
-
         public void DeserializeAttributes(string configXml)
         {
             string attName = Null.NullString;
@@ -332,7 +316,5 @@ namespace DotNetNuke.Services.EventQueue
                 return sb.ToString();
             }
         }
-
-        #endregion
     }
 }

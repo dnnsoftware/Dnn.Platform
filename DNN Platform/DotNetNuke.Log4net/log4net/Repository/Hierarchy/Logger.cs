@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -57,7 +56,6 @@ namespace log4net.Repository.Hierarchy
     /// <author>Douglas de la Torre</author>
     public abstract class Logger : IAppenderAttachable, ILogger
     {
-        #region Protected Instance Constructors
 
         /// <summary>
         /// This constructor created a new <see cref="Logger" /> instance and
@@ -85,9 +83,7 @@ namespace log4net.Repository.Hierarchy
 #endif
         }
 
-        #endregion Protected Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets or sets the parent logger in the hierarchy.
@@ -194,9 +190,7 @@ namespace log4net.Repository.Hierarchy
             set { this.m_level = value; }
         }
 
-        #endregion Public Instance Properties
 
-        #region Implementation of IAppenderAttachable
 
         /// <summary>
         /// Add <paramref name="newAppender"/> to the list of appenders of this
@@ -386,9 +380,7 @@ namespace log4net.Repository.Hierarchy
             return null;
         }
 
-        #endregion
 
-        #region Implementation of ILogger
 
         /// <summary>
         /// Gets the logger name.
@@ -540,7 +532,6 @@ namespace log4net.Repository.Hierarchy
             get { return this.m_hierarchy; }
         }
 
-        #endregion Implementation of ILogger
 
         /// <summary>
         /// Deliver the <see cref="LoggingEvent"/> to the attached appenders.
@@ -710,16 +701,13 @@ namespace log4net.Repository.Hierarchy
             this.CallAppenders(logEvent);
         }
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the Logger class.
         /// </summary>
         private readonly static Type declaringType = typeof(Logger);
 
-        #endregion Private Static Fields
 
-        #region Private Instance Fields
 
         /// <summary>
         /// The name of this logger.
@@ -786,7 +774,5 @@ namespace log4net.Repository.Hierarchy
         /// Lock to protect AppenderAttachedImpl variable m_appenderAttachedImpl
         /// </summary>
         private readonly ReaderWriterLock m_appenderLock = new ReaderWriterLock();
-
-        #endregion
     }
 }

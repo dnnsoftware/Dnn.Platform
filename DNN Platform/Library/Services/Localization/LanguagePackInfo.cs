@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Data;
@@ -11,23 +11,15 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities;
 using DotNetNuke.Entities.Modules;
 
-#endregion
-
 namespace DotNetNuke.Services.Localization
 {
     [Serializable]
     public class LanguagePackInfo : BaseEntityInfo, IHydratable
     {
-        #region "Private Members"
-
         private int _DependentPackageID = Null.NullInteger;
         private int _LanguageID = Null.NullInteger;
         private int _LanguagePackID = Null.NullInteger;
         private int _PackageID = Null.NullInteger;
-
-        #endregion
-
-        #region "Public Properties"
 
         public int LanguagePackID
         {
@@ -92,10 +84,6 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        #endregion
-
-        #region IHydratable Members
-
         public void Fill(IDataReader dr)
         {
             this.LanguagePackID = Null.SetNullInteger(dr["LanguagePackID"]);
@@ -117,7 +105,5 @@ namespace DotNetNuke.Services.Localization
                 this.LanguagePackID = value;
             }
         }
-
-        #endregion
     }
 }

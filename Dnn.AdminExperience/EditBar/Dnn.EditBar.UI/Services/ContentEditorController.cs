@@ -27,24 +27,14 @@ namespace Dnn.EditBar.UI.Services
     [DnnPageEditor]
     public class ContentEditorController : DnnApiController
     {
-        #region Fields
-
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ContentEditorController));
 
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
-
-        #endregion
-
-        #region Properties
 
         private string LocalResourcesFile
         {
             get { return Path.Combine(ContentEditorManager.ControlFolder, "ContentEditorManager/App_LocalResources/SharedResources.resx"); }
         }
-
-        #endregion
-
-        #region API
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -134,10 +124,6 @@ namespace Dnn.EditBar.UI.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Script = moduleScriptContent, StyleFile = moduleStylePath });
         }
 
-        #endregion
-
-        #region Private Methods
-
         private string LocalizeString(string key)
         {
             return Localization.GetString(key, this.LocalResourcesFile);
@@ -157,8 +143,6 @@ namespace Dnn.EditBar.UI.Services
             imageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
         }
-
-        #endregion
     }
 
 }

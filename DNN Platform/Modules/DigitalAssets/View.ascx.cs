@@ -80,8 +80,6 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
-        #region Protected Properties
-
         protected int InitialTab
         {
             get
@@ -165,9 +163,6 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         protected string ActiveView { get; private set; }
 
-        #endregion
-
-        #region Private Methods
         private static string GetNoControlCharsString(string text)
         {
             var result = new StringBuilder();
@@ -525,7 +520,6 @@ namespace DotNetNuke.Modules.DigitalAssets
             var dataSource = (FolderMappingViewModel)e.Item.DataItem;
             e.Item.Attributes["SupportsMappedPaths"] = FolderProvider.GetProviderList()[dataSource.FolderTypeName].SupportsMappedPaths.ToString().ToLowerInvariant();
         }
-        #endregion
 
         protected FolderViewModel RootFolderViewModel { get; private set; }
 

@@ -19,8 +19,6 @@ namespace DotNetNuke.Entities.Tabs
 {
     public class TabModulesController : ServiceLocator<ITabModulesController, TabModulesController>, ITabModulesController
     {
-        #region Public Methods
-
         public ArrayList GetTabModules(TabInfo tab)
         {
             var objPaneModules = new Dictionary<string, int>();
@@ -97,9 +95,6 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        #endregion
-
-        #region Private Methods
         private static void ConfigureModule(ModuleInfo cloneModule, TabInfo tab)
         {
             if (Null.IsNull(cloneModule.StartDate))
@@ -134,7 +129,6 @@ namespace DotNetNuke.Entities.Tabs
 
             return TabVersionBuilder.Instance.GetCurrentModules(tab.TabID);
         }
-        #endregion
 
         protected override Func<ITabModulesController> GetFactory()
         {

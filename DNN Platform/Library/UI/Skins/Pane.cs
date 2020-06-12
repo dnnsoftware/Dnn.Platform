@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -26,8 +26,6 @@ using DotNetNuke.UI.WebControls;
 
 using Globals = DotNetNuke.Common.Globals;
 
-#endregion
-
 namespace DotNetNuke.UI.Skins
 {
     /// -----------------------------------------------------------------------------
@@ -43,15 +41,11 @@ namespace DotNetNuke.UI.Skins
     /// -----------------------------------------------------------------------------
     public class Pane
     {
-        #region Private Members
-
         private const string CPaneOutline = "paneOutline";
         private HtmlGenericControl _containerWrapperControl;
         private Dictionary<string, Containers.Container> _containers;
 
-        #endregion
 
-        #region Constructors
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -80,9 +74,7 @@ namespace DotNetNuke.UI.Skins
             this.Name = name;
         }
 
-        #endregion
 
-        #region Protected Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -157,9 +149,7 @@ namespace DotNetNuke.UI.Skins
             return canCollapsePane;
         }
 
-        #endregion
 
-        #region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -420,9 +410,7 @@ namespace DotNetNuke.UI.Skins
             return controller is IVersionable;
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -616,7 +604,5 @@ namespace DotNetNuke.UI.Skins
                 }
             }
         }
-
-        #endregion
     }
 }

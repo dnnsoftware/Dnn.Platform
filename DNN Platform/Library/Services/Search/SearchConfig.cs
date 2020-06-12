@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -11,8 +11,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
-
-#endregion
 
 namespace DotNetNuke.Services.Search
 {
@@ -26,16 +24,10 @@ namespace DotNetNuke.Services.Search
     public class SearchConfig
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SearchConfig));
-        #region "Private Members"
-
         private readonly bool _SearchIncludeCommon;
         private readonly bool _SearchIncludeNumeric;
         private readonly int _SearchMaxWordlLength;
         private readonly int _SearchMinWordlLength;
-
-        #endregion
-
-        #region "Constructor(s)"
 
         public SearchConfig(int portalID)
             : this(PortalController.Instance.GetPortalSettings(portalID))
@@ -50,9 +42,7 @@ namespace DotNetNuke.Services.Search
             this._SearchMinWordlLength = this.GetSettingAsInteger("MinSearchWordLength", settings, Host.SearchMinWordlLength);
         }
 
-        #endregion
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -110,11 +100,6 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        #endregion
-
-        #region "Private Methods"
-
-
         private bool GetSettingAsBoolean(string key, Dictionary<string, string> settings, bool defaultValue)
         {
             bool retValue = Null.NullBoolean;
@@ -164,7 +149,5 @@ namespace DotNetNuke.Services.Search
             }
             return retValue;
         }
-
-        #endregion
     }
 }

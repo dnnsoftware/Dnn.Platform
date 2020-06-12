@@ -15,7 +15,6 @@ namespace DotNetNuke.Modules.Html.Components
     /// </remarks>
     public class DataProvider
     {
-        #region Shared/Static Methods
 
         // singleton reference to the instantiated object
 
@@ -32,10 +31,6 @@ namespace DotNetNuke.Modules.Html.Components
         {
             return provider;
         }
-
-        #endregion
-
-        #region Virtual Methods
 
         public virtual IDataReader GetHtmlText(int ModuleID, int ItemID)
         {
@@ -111,7 +106,5 @@ namespace DotNetNuke.Modules.Html.Components
         {
             return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetWorkflowStatePermissionsByStateID", StateID);
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Diagnostics;
@@ -16,8 +16,6 @@ using log4net.Core;
 using log4net.Repository;
 using log4net.Util;
 
-#endregion
-
 namespace DotNetNuke.Instrumentation
 {
     /// <summary>
@@ -25,8 +23,6 @@ namespace DotNetNuke.Instrumentation
     /// </summary>
     public sealed class DnnLogger : LoggerWrapperImpl
     {
-        #region Private Fields
-
         internal static Level LevelTrace;
         internal static Level LevelDebug;
         internal static Level LevelInfo;
@@ -36,12 +32,6 @@ namespace DotNetNuke.Instrumentation
         // add custom logging levels (below trace value of 20000)
         internal static Level LevelLogInfo = new Level(10001, "LogInfo");
         internal static Level LevelLogError = new Level(10002, "LogError");
-
-
-        #endregion
-
-        #region dnn sepcific bits
-
         private readonly Type _dnnExceptionType = BuildManager.GetType("DotNetNuke.Services.Exceptions.Exceptions", false);
         private readonly Type _stackBoundary = typeof(DnnLogger);
 
@@ -111,7 +101,6 @@ namespace DotNetNuke.Instrumentation
             return new DnnLogger(LogManager.GetLogger(name).Logger);
         }
 
-        #endregion
 
         /// <summary>
         ///   Logs a message object with the <c>DEBUG</c> level.
@@ -585,7 +574,6 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this._stackBoundary, LevelFatal, new SystemStringFormat(provider, format, args), null);
         }
 
-        #region Install log levels
         public void InstallLogError(object message)
         {
             this.Logger.Log(this._stackBoundary, LevelLogError, message, null);
@@ -620,7 +608,5 @@ namespace DotNetNuke.Instrumentation
         {
             this.Logger.Log(this._stackBoundary, LevelLogInfo, new SystemStringFormat(provider, format, args), null);
         }
-
-        #endregion
     }
 }

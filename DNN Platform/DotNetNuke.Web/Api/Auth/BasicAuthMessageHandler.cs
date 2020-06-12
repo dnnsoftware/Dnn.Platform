@@ -106,8 +106,6 @@ namespace DotNetNuke.Web.Api.Auth
             return new UserCredentials(parts[0], parts[1]);
         }
 
-        #region Nested type: UserCredentials
-
         internal class UserCredentials
         {
             public UserCredentials(string userName, string password)
@@ -119,7 +117,5 @@ namespace DotNetNuke.Web.Api.Auth
             public string Password { get; set; }
             public string UserName { get; set; }
         }
-
-        #endregion
     }
 }

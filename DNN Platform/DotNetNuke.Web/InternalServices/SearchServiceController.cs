@@ -63,8 +63,6 @@ namespace DotNetNuke.Web.InternalServices
             // _moduleController = newmoduleController;
         }
 
-        #region private methods
-
         private int HtmlModuleDefitionId;
 
         private bool IsWildCardEnabledForModule()
@@ -78,8 +76,6 @@ namespace DotNetNuke.Web.InternalServices
 
             return enableWildSearch;
         }
-
-        #region Loads Search portal ids, crawler ids and module def ids
 
         private const string ModuleInfosCacheKey = "ModuleInfos{0}";
         private const CacheItemPriority ModuleInfosCachePriority = CacheItemPriority.AboveNormal;
@@ -249,9 +245,6 @@ namespace DotNetNuke.Web.InternalServices
             return sources;
         }
 
-        #endregion
-
-        #region view models for search results
         internal IEnumerable<GroupedDetailView> GetGroupedDetailViews(SearchQuery searchQuery, int userSearchTypeId,  out int totalHits, out bool more)
         {
             var searchResults = SearchController.Instance.SiteSearch(searchQuery);
@@ -475,10 +468,6 @@ namespace DotNetNuke.Web.InternalServices
 
             return string.Empty;
         }
-
-        #endregion
-
-        #endregion
 
         [HttpGet]
         [AllowAnonymous]

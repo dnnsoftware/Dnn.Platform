@@ -14,26 +14,17 @@ namespace DotNetNuke.Entities.Tabs
 {
     public class TabWorkflowSettings : ServiceLocator<ITabWorkflowSettings, TabWorkflowSettings>, ITabWorkflowSettings
     {
-        #region Constants
         private const string DefaultTabWorkflowKey = "DefaultTabWorkflowKey";
         private const string TabWorkflowEnableKey = "TabWorkflowEnabledKey";
-        #endregion
-
-        #region Private Members
         private readonly ITabController _tabController;
         private readonly ISystemWorkflowManager _systemWorkflowManager;
-        #endregion
-
-        #region Constructor
 
         public TabWorkflowSettings()
         {
             this._tabController = TabController.Instance;
             this._systemWorkflowManager = SystemWorkflowManager.Instance;
         }
-        #endregion
 
-        #region Public Methods
         public int GetDefaultTabWorkflowId(int portalId)
         {
             var workflowId = PortalController.GetPortalSettingAsInteger(DefaultTabWorkflowKey, portalId, Null.NullInteger);
@@ -90,13 +81,10 @@ namespace DotNetNuke.Entities.Tabs
 
             return Convert.ToBoolean(PortalController.GetPortalSetting(TabWorkflowEnableKey, portalId, bool.FalseString));
         }
-        #endregion
 
-        #region Service Locator
         protected override Func<ITabWorkflowSettings> GetFactory()
         {
             return () => new TabWorkflowSettings();
         }
-        #endregion
     }
 }

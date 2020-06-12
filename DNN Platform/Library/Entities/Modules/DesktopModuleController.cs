@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -28,8 +28,6 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Upgrade;
 using Microsoft.VisualBasic.Logging;
 
-#endregion
-
 namespace DotNetNuke.Entities.Modules
 {
     /// -----------------------------------------------------------------------------
@@ -44,8 +42,6 @@ namespace DotNetNuke.Entities.Modules
     public class DesktopModuleController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DesktopModuleController));
-        #region Private Methods
-
         private static readonly DataProvider DataProvider = DataProvider.Instance();
 
         private static Dictionary<int, DesktopModuleInfo> GetDesktopModulesInternal(int portalID)
@@ -100,10 +96,6 @@ namespace DotNetNuke.Entities.Modules
             desktopModule.ContentTypeId = contentType.ContentTypeId;
             desktopModule.ContentItemId = contentController.AddContentItem(desktopModule);
         }
-
-        #endregion
-
-        #region DesktopModule Methods
 
         public static void AddModuleCategory(string category)
         {
@@ -412,10 +404,6 @@ namespace DotNetNuke.Entities.Modules
             desktopModuleInfo.IsUpgradeable = businessController.GetInterfaces().Contains(typeof(IUpgradeable));
         }
 
-        #endregion
-
-        #region PortalDesktopModuleMethods
-
         public static int AddDesktopModuleToPortal(int portalID, DesktopModuleInfo desktopModule, DesktopModulePermissionCollection permissions, bool clearCache)
         {
             int portalDesktopModuleID = AddDesktopModuleToPortal(portalID, desktopModule.DesktopModuleID, false, clearCache);
@@ -594,8 +582,6 @@ namespace DotNetNuke.Entities.Modules
             writer.WriteEndElement();
         }
 
-        #region Interal Methods
-
         internal static void AddDesktopModulePageToPortal(DesktopModuleInfo desktopModule, string pageName, int portalId, ref bool createdNewPage, ref bool addedNewModule)
         {
             var tabPath = string.Format("//{0}//{1}", portalId == Null.NullInteger ? "Host" : "Admin", pageName);
@@ -662,9 +648,5 @@ namespace DotNetNuke.Entities.Modules
             }
 
         }
-
-        #endregion
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -11,8 +11,6 @@ using System.Xml;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Installer.Packages;
-
-#endregion
 
 namespace DotNetNuke.Services.Installer.Writers
 {
@@ -26,15 +24,11 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class ScriptComponentWriter : FileComponentWriter
     {
-        #region "Constructors"
-
         public ScriptComponentWriter(string basePath, Dictionary<string, InstallFile> scripts, PackageInfo package) : base(basePath, scripts, package)
         {
         }
 
-        #endregion
 
-        #region "Public Properties"
 
 
         /// -----------------------------------------------------------------------------
@@ -131,7 +125,5 @@ namespace DotNetNuke.Services.Installer.Writers
             // Close file Element
             writer.WriteEndElement();
         }
-
-        #endregion
     }
 }

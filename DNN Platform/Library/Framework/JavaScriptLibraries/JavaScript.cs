@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -26,8 +26,6 @@ using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Globals = DotNetNuke.Common.Globals;
 
-#endregion
-
 namespace DotNetNuke.Framework.JavaScriptLibraries
 {
     public class JavaScript
@@ -35,7 +33,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         private const string ScriptPrefix = "JSL.";
         private const string LegacyPrefix = "LEGACY.";
 
-        #region Public Methods
 
         /// <summary>
         ///     checks whether the script file is a known javascript library
@@ -154,17 +151,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
         }
 
-        #endregion
-
-        #region Contructors
-
         protected JavaScript()
         {
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static void RequestHighestVersionLibraryRegistration(string jsname)
         {
@@ -553,10 +542,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 #pragma warning restore 618
         }
 
-        #endregion
-
-        #region Legacy methods and preinstall support
-
         private const string jQueryUIDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.js";
         private const string jQueryUIMinFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.min.js";
 
@@ -614,7 +599,5 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     break;
             }
         }
-
-        #endregion
     }
 }

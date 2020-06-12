@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -14,8 +14,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Data;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Services.FileSystem;
-
-#endregion
 
 namespace DotNetNuke.Entities.Content
 {
@@ -44,7 +42,6 @@ namespace DotNetNuke.Entities.Content.Common
     /// <seealso cref="Term"/>
     public static class ContentExtensions
     {
-        #region "Term Extensions"
 
         /// <summary>
         /// Gets the child terms.
@@ -122,9 +119,7 @@ namespace DotNetNuke.Entities.Content.Common
             return sb.ToString();
         }
 
-        #endregion
 
-        #region "Vocabulary Extensions"
 
         /// <summary>
         /// Gets the type of the scope.
@@ -152,9 +147,7 @@ namespace DotNetNuke.Entities.Content.Common
             return ctl.GetTermsByVocabulary(vocabularyId).ToList();
         }
 
-        #endregion
 
-        #region "ContentItem Extensions"
 
         /// <summary>
         /// Gets the meta data.
@@ -201,7 +194,5 @@ namespace DotNetNuke.Entities.Content.Common
 
             return _Terms;
         }
-
-        #endregion
     }
 }

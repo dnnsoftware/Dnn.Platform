@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 
@@ -11,8 +11,6 @@ using DotNetNuke.Modules.NavigationProvider;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.WebControls;
-
-#endregion
 
 namespace DotNetNuke.UI.Skins.Controls
 {
@@ -28,8 +26,6 @@ namespace DotNetNuke.UI.Skins.Controls
     /// -----------------------------------------------------------------------------
     public partial class TreeViewMenu : NavObjectBase
     {
-        #region "Private Members"
-
         private const string MyFileName = "TreeViewMenu.ascx";
         private string _bodyCssClass = string.Empty;
         private string _cssClass = string.Empty;
@@ -51,10 +47,6 @@ namespace DotNetNuke.UI.Skins.Controls
         private string _treeGoUpImage = "~/images/folderup.gif";
         private int _treeIndentWidth = 10;
         private string _width = "100%";
-
-        #endregion
-
-        #region "Public Properties"
 
         public string BodyCssClass
         {
@@ -302,9 +294,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
         }
 
-        #endregion
 
-        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -452,9 +442,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        #endregion
 
-        #region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -578,10 +566,6 @@ namespace DotNetNuke.UI.Skins.Controls
             this.InitializeComponent();
         }
 
-        #endregion
-
-        #region Nested type: eImageType
-
         private enum eImageType
         {
             FolderClosed = 0,
@@ -589,7 +573,5 @@ namespace DotNetNuke.UI.Skins.Controls
             Page = 2,
             GotoParent = 3
         }
-
-        #endregion
     }
 }

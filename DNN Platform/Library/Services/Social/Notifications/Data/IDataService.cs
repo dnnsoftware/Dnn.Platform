@@ -9,7 +9,6 @@ namespace DotNetNuke.Services.Social.Notifications.Data
 {
     public interface IDataService
     {
-        #region NotificationTypes CRUD
 
         /// <summary>
         /// Creates a new Notification Type
@@ -43,9 +42,7 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         /// <returns>IDataReader with the retrieved data</returns>
         IDataReader GetNotificationTypeByName(string name);
 
-        #endregion
 
-        #region NotificationTypeActions CRUD
 
         /// <summary>
         /// Creates a new Notification Type Action
@@ -87,9 +84,7 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         /// <returns>DataReader with the retrieved data</returns>
         IDataReader GetNotificationTypeActions(int notificationTypeId);
 
-        #endregion
 
-        #region Notifications
 
         /// <summary>
         /// Send a notification to its receivers
@@ -146,9 +141,7 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         /// <returns>DataReader with the retrieved data</returns>
         IDataReader GetNotificationByContext(int notificationTypeId, string context);
 
-        #endregion
 
-        #region Toast
 
         /// <summary>
         /// Whether a Toast Notification is pending or not
@@ -178,7 +171,5 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         /// <param name="portalId">Portal Id of the user</param>
         /// <returns>DataReader with the retrieved data</returns>
         IDataReader GetToasts(int userId, int portalId);
-
-        #endregion
     }
 }

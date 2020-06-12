@@ -33,11 +33,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.contentController = new ContentController();
         }
 
-        #region Public Methods
-        #region Obsolete Methods
-
-        #region Engine
-
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine. Scheduled removal in v10.0.0.")]
         public void DiscardWorkflow(int contentItemId, string comment, int portalId, int userId)
         {
@@ -178,9 +173,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             if (workflow == null) return false; // If item has not workflow, then it is not on Draft
             return item.StateID == this.GetFirstWorkflowStateID(workflow);
         }
-        #endregion
 
-        #region Log
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowLogger. Scheduled removal in v10.0.0.")]
         public void AddWorkflowLog(ContentItem item, string action, string comment, int userID)
         {
@@ -200,9 +193,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             DataProvider.Instance().DeleteContentWorkflowLogs(contentItemID, workflowID);
         }
-        #endregion
 
-        #region State Permissions
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager. Scheduled removal in v10.0.0.")]
         public IEnumerable<ContentWorkflowStatePermission> GetWorkflowStatePermissionByState(int stateID)
         {
@@ -239,9 +230,6 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             DataProvider.Instance().DeleteContentWorkflowStatePermission(workflowStatePermissionID);
         }
-        #endregion
-
-        #region State
 
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager. Scheduled removal in v10.0.0.")]
         public ContentWorkflowState GetWorkflowStateByID(int stateID)
@@ -289,9 +277,6 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             return CBO.FillCollection<ContentWorkflowState>(DataProvider.Instance().GetContentWorkflowStates(workflowID));
         }
-        #endregion
-
-        #region Workflow
 
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowManager. Scheduled removal in v10.0.0.")]
         public IEnumerable<ContentWorkflow> GetWorkflows(int portalID)
@@ -331,9 +316,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             }
             return null;
         }
-        #endregion
 
-        #region Default Workflows
         [Obsolete("Deprecated in Platform 7.4.0. Use instead ISystemWorkflowManager. Scheduled removal in v10.0.0.")]
         public void CreateDefaultWorkflows(int portalId)
         {
@@ -437,9 +420,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             wf.States = this.GetWorkflowStates(wf.WorkflowID);
             return wf;
         }
-        #endregion
 
-        #region Security Helpers
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowSecurity. Scheduled removal in v10.0.0.")]
         public bool IsAnyReviewer(int workflowID)
         {
@@ -485,8 +466,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             var item = this.contentController.GetContentItem(itemID);
             return this.IsReviewer(item.StateID);
         }
-        #endregion
-
 
         [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
         public ContentWorkflowSource GetWorkflowSource(int workflowId, string sourceName)
@@ -502,10 +481,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             var replacedBody = this.ReplaceNotificationTokens(body, null, null, null, settings.PortalId, userID);
             this.SendNotification(sendEmail, sendMessage, settings, roles, users, replacedSubject, replacedBody, comment, userID, null, null);
         }
-        #endregion
-        #endregion
 
-        #region Private Methods
         private void AddWorkflowCommentLog(ContentItem item, string userComment, int userID)
         {
             var workflow = this.GetWorkflow(item);
@@ -797,7 +773,5 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             return item.StateID == Null.NullInteger || endStateID == item.StateID;
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
@@ -12,15 +12,12 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 
-#endregion
-
 namespace DotNetNuke.HttpModules.Compression
 {
 
     [Obsolete("The http modules in web.config removed in 9.2.0, this class need to be removed in future release for upgrade compactible.. Scheduled removal in v11.0.0.")]
     public class CompressionModule : IHttpModule
     {
-        #region IHttpModule Members
 
         /// <summary>
         /// Init the handler and fulfill <see cref="IHttpModule"/>
@@ -44,7 +41,5 @@ namespace DotNetNuke.HttpModules.Compression
         public void Dispose()
         {
         }
-
-        #endregion
     }
 }

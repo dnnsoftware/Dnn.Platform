@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 // .NET Compact Framework 1.0 has no support for ASP.NET
 // SSCLI 1.0 has no support for ASP.NET
@@ -59,7 +57,6 @@ namespace log4net.Appender
     /// <author>Ron Grabowski</author>
     public class AspNetTraceAppender : AppenderSkeleton
     {
-        #region Public Instances Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AspNetTraceAppender" /> class.
@@ -73,9 +70,7 @@ namespace log4net.Appender
         {
         }
 
-        #endregion // Public Instances Constructors
 
-        #region Override implementation of AppenderSkeleton
 
         /// <summary>
         /// Write the logging event to the ASP.NET trace
@@ -122,9 +117,7 @@ namespace log4net.Appender
             get { return true; }
         }
 
-        #endregion // Override implementation of AppenderSkeleton
 
-        #region Public Instance Properties
 
         /// <summary>
         /// The category parameter sent to the Trace method.
@@ -143,16 +136,12 @@ namespace log4net.Appender
             set { this.m_category = value; }
         }
 
-        #endregion
 
-        #region Private Instance Fields
 
         /// <summary>
         /// Defaults to %logger
         /// </summary>
         private PatternLayout m_category = new PatternLayout("%logger");
-
-        #endregion
     }
 }
 

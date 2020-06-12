@@ -16,8 +16,6 @@ namespace DotNetNuke.Services.Installer.Installers
         private JavaScriptLibrary _library;
         private JavaScriptLibrary _installedLibrary;
 
-        #region Public Methods
-
         private void DeleteLibrary()
         {
             try
@@ -97,8 +95,5 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             this.DeleteLibrary();
         }
-
-        #endregion
-
     }
 }

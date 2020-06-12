@@ -33,8 +33,6 @@ namespace DotNetNuke.Tests.Urls
 
         public FriendlyUrlTests() : base(0) { }
 
-        #region SetUp and TearDown
-
         [SetUp]
         public override void SetUp()
         {
@@ -131,10 +129,6 @@ namespace DotNetNuke.Tests.Urls
                         });
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void ExecuteTest(string test, Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], this.PortalId);
@@ -223,10 +217,6 @@ namespace DotNetNuke.Tests.Urls
             tab.TabName = newName;
             TabController.Instance.UpdateTab(tab);
         }
-
-        #endregion
-
-        #region Tests
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_BaseTestCases")]
@@ -460,7 +450,5 @@ namespace DotNetNuke.Tests.Urls
 
             this.ExecuteTest("Improved", settings, testFields);
         }
-
-        #endregion
     }
 }

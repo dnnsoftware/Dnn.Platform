@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
@@ -24,14 +24,10 @@ using DotNetNuke.Web.Common;
 
 using Globals = DotNetNuke.Common.Globals;
 
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
     public abstract class DnnUrlControl : UserControlBase
     {
-        #region Private Members
-
         protected Panel ErrorRow;
         protected Panel FileRow;
         protected Panel ImagesRow;
@@ -63,10 +59,6 @@ namespace DotNetNuke.Web.UI.WebControls
         protected TextBox txtUrl;
         protected TextBox txtUser;
         protected DnnFilePickerUploader ctlFile;
-
-        #endregion
-
-        #region Public Properties
 
         public string FileFilter
         {
@@ -544,10 +536,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void LoadUrls()
         {
             var objUrls = new UrlController();
@@ -950,10 +938,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        #endregion
-
-        #region Event Handlers
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -1088,7 +1072,5 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ViewState["UrlType"] = this.optType.SelectedItem.Value;
             this._doRenderTypeControls = true;
         }
-
-        #endregion
     }
 }

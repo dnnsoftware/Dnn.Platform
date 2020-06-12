@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -16,8 +16,6 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Localization;
-
-#endregion
 
 namespace DotNetNuke.Web.UI.WebControls
 {
@@ -129,8 +127,6 @@ namespace DotNetNuke.Web.UI.WebControls
             return items;
         }
 
-        #region Private Methods
-
         [Obsolete("Obsoleted in Platform 7.4.1, please add encryptIds. Scheduled removal in v10.0.0.")]
         internal static void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile)
         {
@@ -220,10 +216,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        #endregion
-
-        #region Control Hierarchy and Data Binding
-
         protected override void CreateChildControls()
         {
             // CreateChildControls re-creates the children (the items)
@@ -286,10 +278,6 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ChildControlsCreated = true;
         }
 
-        #endregion
-
-        #region Protected Methods
-
         protected override void LoadControlState(object state)
         {
             if (state != null)
@@ -351,7 +339,5 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             return this._itemCount > 0 ? (object)this._itemCount : null;
         }
-
-        #endregion
     }
 }

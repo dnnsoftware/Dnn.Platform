@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 #define DEBUG
 
@@ -46,7 +44,6 @@ namespace log4net.Appender
     /// <author>Nicko Cadell</author>
     public class DebugAppender : AppenderSkeleton
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DebugAppender" />.
@@ -76,9 +73,7 @@ namespace log4net.Appender
             this.Layout = layout;
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets or sets a value that indicates whether the appender will
@@ -104,15 +99,14 @@ namespace log4net.Appender
             set { this.m_immediateFlush = value; }
         }
 
-        #endregion Public Instance Properties
 
 #if !NETSTANDARD1_3
-            /// <summary>
-            /// Flushes any buffered log data.
-            /// </summary>
-            /// <param name="millisecondsTimeout">The maximum time to wait for logging events to be flushed.</param>
-            /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
-            public override bool Flush(int millisecondsTimeout)
+        /// <summary>
+        /// Flushes any buffered log data.
+        /// </summary>
+        /// <param name="millisecondsTimeout">The maximum time to wait for logging events to be flushed.</param>
+        /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
+        public override bool Flush(int millisecondsTimeout)
             {
                 // Nothing to do if ImmediateFlush is true
                 if (this.m_immediateFlush) return true;
@@ -124,7 +118,6 @@ namespace log4net.Appender
             }
 #endif
 
-        #region Override implementation of AppenderSkeleton
 
         /// <summary>
         /// Writes the logging event to the <see cref="System.Diagnostics.Debug"/> system.
@@ -165,9 +158,7 @@ namespace log4net.Appender
             get { return true; }
         }
 
-        #endregion Override implementation of AppenderSkeleton
 
-        #region Private Instance Fields
 
         /// <summary>
         /// Immediate flush means that the underlying writer or output stream
@@ -185,7 +176,5 @@ namespace log4net.Appender
         /// The default value is <c>true</c>.</para>
         /// </remarks>
         private bool m_immediateFlush = true;
-
-        #endregion Private Instance Fields
     }
 }

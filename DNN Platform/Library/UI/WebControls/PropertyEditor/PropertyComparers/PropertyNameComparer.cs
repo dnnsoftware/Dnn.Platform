@@ -1,21 +1,17 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
 using System.Reflection;
 
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
     public class PropertyNameComparer : IComparer
     {
-        #region IComparer Members
-
         public int Compare(object x, object y)
         {
             if (x is PropertyInfo && y is PropertyInfo)
@@ -27,7 +23,5 @@ namespace DotNetNuke.UI.WebControls
                 throw new ArgumentException("Object is not of type PropertyInfo");
             }
         }
-
-        #endregion
     }
 }

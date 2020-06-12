@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web.UI;
@@ -10,8 +10,6 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.UI.Modules;
-
-#endregion
 
 namespace DotNetNuke.UI.Containers
 {
@@ -24,8 +22,6 @@ namespace DotNetNuke.UI.Containers
     /// </remarks>
     public class ActionButtonList : CompositeControl, IActionControl
     {
-        #region "Private Members"
-
         private ActionManager _ActionManager;
         private ModuleActionCollection _ModuleActions;
         private string _buttonSeparator = "&nbsp;&nbsp;";
@@ -33,9 +29,7 @@ namespace DotNetNuke.UI.Containers
         private bool _displayLink = true;
 
 
-        #endregion
 
-        #region "Protected Members"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -54,9 +48,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        #endregion
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -128,8 +120,6 @@ namespace DotNetNuke.UI.Containers
         /// <value>A String</value>
         public string ImageURL { get; set; }
 
-        #region IActionControl Members
-
         public event ActionEventHandler Action;
 
         /// -----------------------------------------------------------------------------
@@ -156,11 +146,8 @@ namespace DotNetNuke.UI.Containers
         /// <returns>An IModuleControl object</returns>
         public IModuleControl ModuleControl { get; set; }
 
-        #endregion
 
-        #endregion
 
-        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -213,9 +200,7 @@ namespace DotNetNuke.UI.Containers
             this.Visible = this.Controls.Count > 0;
         }
 
-        #endregion
 
-        #region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -225,7 +210,5 @@ namespace DotNetNuke.UI.Containers
         {
             this.OnAction(e);
         }
-
-        #endregion
     }
 }

@@ -18,7 +18,6 @@ namespace DotNetNuke.Collections
         private readonly int _pageSize;
         private readonly IEnumerable<T> _source;
 
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PageSelector{T}"/> for use on the specified data store
@@ -31,9 +30,7 @@ namespace DotNetNuke.Collections
             this._pageSize = pageSize;
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// <summary>
         ///   Retrieves the specified page as a <see cref = "IPagedList{T}" />
@@ -47,7 +44,5 @@ namespace DotNetNuke.Collections
         {
             return new PagedList<T>(this._source, pageIndex, this._pageSize);
         }
-
-        #endregion
     }
 }

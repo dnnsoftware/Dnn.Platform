@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -23,7 +23,6 @@ using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
-#endregion
 
 namespace Dnn.Module.ModuleCreator
 {
@@ -35,8 +34,6 @@ namespace Dnn.Module.ModuleCreator
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        #region Private Methods
 
         private void LoadReadMe()
         {
@@ -369,10 +366,6 @@ namespace Dnn.Module.ModuleCreator
             }
         }
 
-        #endregion
-
-        #region Event Handlers
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -434,8 +427,5 @@ namespace Dnn.Module.ModuleCreator
                 }
             }
         }
-
-        #endregion
-
     }
 }

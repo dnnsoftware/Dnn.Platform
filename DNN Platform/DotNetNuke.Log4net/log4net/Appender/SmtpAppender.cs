@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 // .NET Compact Framework 1.0 has no support for System.Web.Mail
 // SSCLI 1.0 has no support for System.Web.Mail
@@ -75,7 +73,6 @@ namespace log4net.Appender
     /// <author>Gert Driesen</author>
     public class SmtpAppender : BufferingAppenderSkeleton
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Default constructor
@@ -89,9 +86,7 @@ namespace log4net.Appender
         {
         }
 
-        #endregion // Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets or sets a comma- or semicolon-delimited list of recipient e-mail addresses (use semicolon on .NET 1.1 and comma for later versions).
@@ -378,9 +373,7 @@ namespace log4net.Appender
             set { this.m_bodyEncoding = value; }
         }
 
-        #endregion // Public Instance Properties
 
-        #region Override implementation of BufferingAppenderSkeleton
 
         /// <summary>
         /// Sends the contents of the cyclic buffer as an e-mail message.
@@ -420,9 +413,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion // Override implementation of BufferingAppenderSkeleton
 
-        #region Override implementation of AppenderSkeleton
 
         /// <summary>
         /// This appender requires a <see cref="Layout"/> to be set.
@@ -438,9 +429,7 @@ namespace log4net.Appender
             get { return true; }
         }
 
-        #endregion // Override implementation of AppenderSkeleton
 
-        #region Protected Methods
 
         /// <summary>
         /// Send the email message
@@ -585,10 +574,6 @@ namespace log4net.Appender
 #endif // if NET_2_0
         }
 
-        #endregion // Protected Methods
-
-        #region Private Instance Fields
-
         private string m_to;
         private string m_cc;
         private string m_bcc;
@@ -613,9 +598,7 @@ namespace log4net.Appender
         private string m_replyTo;
 #endif
 
-        #endregion // Private Instance Fields
 
-        #region SmtpAuthentication Enum
 
         /// <summary>
         /// Values for the <see cref="SmtpAppender.Authentication"/> property.
@@ -649,9 +632,7 @@ namespace log4net.Appender
             Ntlm
         }
 
-        #endregion // SmtpAuthentication Enum
-
-            private static readonly char[] ADDRESS_DELIMITERS = new char[] { ',', ';' };
+        private static readonly char[] ADDRESS_DELIMITERS = new char[] { ',', ';' };
 
             /// <summary>
             ///   trims leading and trailing commas or semicolons

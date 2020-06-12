@@ -1,15 +1,13 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System.Web;
 using System.Web.UI.WebControls;
 
 using DotNetNuke.Common.Utilities;
-
-#endregion
 
 namespace DotNetNuke.UI.WebControls
 {
@@ -24,17 +22,13 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public class CheckBoxColumn : TemplateColumn
     {
-        #region "Private Members"
-
         private bool mAutoPostBack = true;
         private string mDataField = Null.NullString;
         private bool mEnabled = true;
         private string mEnabledField = Null.NullString;
         private bool mHeaderCheckBox = true;
 
-        #endregion
 
-        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -57,9 +51,7 @@ namespace DotNetNuke.UI.WebControls
             this.AutoPostBack = autoPostBack;
         }
 
-        #endregion
 
-        #region "Public Properties"
 
 
         /// -----------------------------------------------------------------------------
@@ -166,15 +158,9 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
-
-        #region "Events"
-
         public event DNNDataGridCheckedColumnEventHandler CheckedChanged;
 
-        #endregion
 
-        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -224,9 +210,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
 
-        #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -247,7 +231,5 @@ namespace DotNetNuke.UI.WebControls
             this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
             this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
         }
-
-        #endregion
     }
 }

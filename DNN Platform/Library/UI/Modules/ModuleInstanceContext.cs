@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -23,8 +23,6 @@ using DotNetNuke.UI.Utilities;
 using Globals = DotNetNuke.Common.Globals;
 using System.Web.UI;
 
-#endregion
-
 namespace DotNetNuke.UI.Modules
 {
     using DotNetNuke.Common.Internal;
@@ -34,8 +32,6 @@ namespace DotNetNuke.UI.Modules
     /// </summary>
     public class ModuleInstanceContext
     {
-        #region Private Members
-
         private readonly IModuleControl _moduleControl;
         private ModuleActionCollection _actions;
         private ModuleAction _moduleSpecificActions;
@@ -46,10 +42,6 @@ namespace DotNetNuke.UI.Modules
         private int _nextActionId = -1;
         private Hashtable _settings;
 
-        #endregion
-
-        #region Constructors
-
         public ModuleInstanceContext()
         {
         }
@@ -59,9 +51,7 @@ namespace DotNetNuke.UI.Modules
             this._moduleControl = moduleControl;
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -282,9 +272,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        #endregion
 
-        #region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -744,10 +732,6 @@ namespace DotNetNuke.UI.Modules
                    || (!isSecureConnection && url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase));
         }
 
-        #endregion
-
-        #region Public Methods
-
         public string EditUrl()
         {
             return this.EditUrl(string.Empty, string.Empty, "Edit");
@@ -828,7 +812,5 @@ namespace DotNetNuke.UI.Modules
             this._nextActionId += 1;
             return this._nextActionId;
         }
-
-        #endregion
     }
 }

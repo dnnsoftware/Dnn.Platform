@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -21,8 +21,6 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls.Config;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
-
-#endregion
 
 namespace DotNetNuke.Entities.Urls
 {
@@ -48,8 +46,6 @@ namespace DotNetNuke.Entities.Urls
         private static readonly Regex RewriteParamsRegex = new Regex(
             @"(?:\&|\?)(?:(?<key>.[^\=\&]*)\=(?<val>.[^\=\&]*))",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        #region Private Methods
 
         private static string AddQueryStringToRewritePath(string rewritePath, string queryString)
         {
@@ -573,9 +569,7 @@ namespace DotNetNuke.Entities.Urls
             result.RewritePath = result.RewritePath.Replace(result.ApplicationPath + "/", string.Empty);
         }
 
-        #endregion
 
-        #region Internal Methods
 
         /// <summary>
         /// appends a language/culture code value if it is not already present in the rewrite path
@@ -1842,7 +1836,5 @@ namespace DotNetNuke.Entities.Urls
 
             return result;
         }
-
-        #endregion
     }
 }

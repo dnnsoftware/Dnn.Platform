@@ -12,8 +12,6 @@ namespace DotNetNuke.Entities.Users.Membership
 {
     public class MembershipPasswordSettings
     {
-        #region Public Properties
-
         public bool EnableBannedList { get; set; }
         public bool EnableStrengthMeter { get; set; }
         public bool EnableIPChecking { get; set; }
@@ -72,9 +70,7 @@ namespace DotNetNuke.Entities.Users.Membership
             get { return System.Web.Security.Membership.PasswordStrengthRegularExpression; }
         }
 
-        #endregion
 
-        #region initialization methods
 
         /// <summary>
         /// Initialiser for MembershipPasswordSettings provider object.
@@ -105,10 +101,6 @@ namespace DotNetNuke.Entities.Users.Membership
 
         public int PortalId { get; set; }
 
-        #endregion
-
-        #region Private Methods
-
         private static bool IsInstallRequest(HttpRequest request)
         {
             var url = request.Url.LocalPath.ToLowerInvariant();
@@ -116,7 +108,5 @@ namespace DotNetNuke.Entities.Users.Membership
             return url.EndsWith("/install.aspx")
                    || url.Contains("/installwizard.aspx");
         }
-
-        #endregion
     }
 }

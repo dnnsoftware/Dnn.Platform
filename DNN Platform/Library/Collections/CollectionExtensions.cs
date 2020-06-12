@@ -96,7 +96,6 @@ namespace DotNetNuke.Collections
             return value => trueValues.Contains(value, StringComparer.OrdinalIgnoreCase);
         }
 
-        #region GetValue Extension Methods
 
         /// <summary>Gets the value from the dictionary.</summary>
         /// <typeparam name="T">The type of the value to retrieve</typeparam>
@@ -327,9 +326,7 @@ namespace DotNetNuke.Collections
             return node.ToDictionary().GetValue(key, converter);
         }
 
-        #endregion
 
-        #region GetValueOrDefault Extension Methods
 
         /// <summary>Gets the value from the dictionary, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
         /// <typeparam name="T">The type of the value to retrieve</typeparam>
@@ -769,9 +766,7 @@ namespace DotNetNuke.Collections
             return value;
         }
 
-        #endregion
 
-        #region GetValues Extension Methods
 
         /// <summary>Gets the values from the lookup.</summary>
         /// <typeparam name="T">The type of the values to retrieve</typeparam>
@@ -822,7 +817,6 @@ namespace DotNetNuke.Collections
             return collection.ToLookup().GetValues(key, converter);
         }
 
-        #endregion
 
         /// <summary>Converts the <paramref name="collection"/> to an <see cref="ILookup{TKey,TElement}"/>.</summary>
         /// <param name="collection">The collection.</param>
@@ -863,7 +857,6 @@ namespace DotNetNuke.Collections
             return source;
         }
 
-        #region Private Methods
 
         /// <summary>Converts the <paramref name="value"/> into a <typeparamref name="T"/> instance.</summary>
         /// <typeparam name="T">The type of the value to return</typeparam>
@@ -981,8 +974,6 @@ namespace DotNetNuke.Collections
                 throw new InvalidOperationException("There were multiple values for the given key", exc);
             }
         }
-
-        #endregion
     }
 
 }

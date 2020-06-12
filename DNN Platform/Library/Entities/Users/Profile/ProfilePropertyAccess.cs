@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -22,7 +22,6 @@ using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Tokens;
 
-#endregion
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Users
@@ -36,8 +35,6 @@ namespace DotNetNuke.Entities.Users
         {
             this.user = user;
         }
-
-        #region Private Members
 
         private static bool IsAdminUser(PortalSettings portalSettings, UserInfo accessingUser, UserInfo targetUser)
         {
@@ -71,10 +68,6 @@ namespace DotNetNuke.Entities.Users
         {
             return accessingUser != null && accessingUser.UserID == targetUser.UserID;
         }
-
-        #endregion
-
-        #region IPropertyAccess Members
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
@@ -119,7 +112,6 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        #endregion
 
         /// <summary>
         /// Checks whether profile property is accessible.

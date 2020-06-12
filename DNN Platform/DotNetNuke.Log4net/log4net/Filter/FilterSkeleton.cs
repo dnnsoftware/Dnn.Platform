@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using log4net.Core;
@@ -72,7 +71,6 @@ namespace log4net.Filter
     /// <author>Gert Driesen</author>
     public abstract class FilterSkeleton : IFilter
     {
-        #region Member Variables
 
         /// <summary>
         /// Points to the next filter in the filter chain.
@@ -84,9 +82,7 @@ namespace log4net.Filter
         /// </remarks>
         private IFilter m_next;
 
-        #endregion
 
-        #region Implementation of IOptionHandler
 
         /// <summary>
         /// Initialize the filter with the options set
@@ -112,9 +108,7 @@ namespace log4net.Filter
         {
         }
 
-        #endregion
 
-        #region Implementation of IFilter
 
         /// <summary>
         /// Decide if the <see cref="LoggingEvent"/> should be logged through an appender.
@@ -153,7 +147,5 @@ namespace log4net.Filter
             get { return this.m_next; }
             set { this.m_next = value; }
         }
-
-        #endregion
     }
 }

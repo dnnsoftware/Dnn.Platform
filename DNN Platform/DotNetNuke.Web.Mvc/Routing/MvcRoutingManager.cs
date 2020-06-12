@@ -35,8 +35,6 @@ namespace DotNetNuke.Web.Mvc.Routing
 
            internal ITypeLocator TypeLocator { get; set; }
 
-        #region IMapRoute Members
-
         public Route MapRoute(string moduleFolderName, string routeName, string url, string[] namespaces)
         {
             return this.MapRoute(moduleFolderName, routeName, url, null /* defaults */, null /* constraints */, namespaces);
@@ -78,8 +76,6 @@ namespace DotNetNuke.Web.Mvc.Routing
 
             return route;
         }
-
-        #endregion
 
         public void RegisterRoutes()
         {

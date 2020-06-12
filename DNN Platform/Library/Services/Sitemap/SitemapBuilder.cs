@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -18,23 +18,16 @@ using DotNetNuke.Common;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Portals;
 
-#endregion
-
 namespace DotNetNuke.Services.Sitemap
 {
     public class SitemapBuilder
     {
-#region Fields
         private const int SITEMAP_MAXURLS = 50000;
 
         private const string SITEMAP_VERSION = "0.9";
         private readonly PortalSettings PortalSettings;
         private string _cacheFileName;
         private string _cacheIndexFileNameFormat;
-
-        #endregion
-
-        #region Properties
 
         public string CacheFileName
         {
@@ -69,7 +62,6 @@ namespace DotNetNuke.Services.Sitemap
             }
         }
 
-        #endregion
 
         /// <summary>
         ///   Creates an instance of the sitemap builder class
@@ -84,7 +76,6 @@ namespace DotNetNuke.Services.Sitemap
             LoadProviders();
         }
 
-        #region "Sitemap Building"
 
         /// <summary>
         ///   Builds the complete portal sitemap
@@ -329,9 +320,7 @@ namespace DotNetNuke.Services.Sitemap
             }
         }
 
-        #endregion
 
-        #region "Helper methods"
 
         /// <summary>
         ///   Adds a new url to the sitemap
@@ -427,10 +416,6 @@ namespace DotNetNuke.Services.Sitemap
             return isChild;
         }
 
-        #endregion
-
-        #region "Provider configuration and setup"
-
         private static List<SitemapProvider> _providers;
 
         private static readonly object _lock = new object();
@@ -466,7 +451,5 @@ namespace DotNetNuke.Services.Sitemap
                 }
             }
         }
-
-        #endregion
     }
 }

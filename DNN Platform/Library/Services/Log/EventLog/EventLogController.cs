@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -19,14 +19,10 @@ using DotNetNuke.Framework;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
 
-#endregion
-
 namespace DotNetNuke.Services.Log.EventLog
 {
     public class EventLogController : ServiceLocator<IEventLogController, EventLogController>, IEventLogController
     {
-        #region EventLogType enum
-
         public enum EventLogType
         {
             USER_CREATED,
@@ -185,14 +181,10 @@ namespace DotNetNuke.Services.Log.EventLog
             FOLDER_MOVED
         }
 
-        #endregion
-
         protected override Func<IEventLogController> GetFactory()
         {
             return () => new EventLogController();
         }
-
-        #region IEventLogController Members
 
         public void AddLog(string propertyName, string propertyValue, EventLogType logType)
         {
@@ -346,10 +338,6 @@ namespace DotNetNuke.Services.Log.EventLog
             LogController.Instance.AddLog(log);
         }
 
-        #endregion
-
-        #region ILogController Members
-
         public void AddLog(LogInfo logInfo)
         {
             LogController.Instance.AddLog(logInfo);
@@ -430,11 +418,6 @@ namespace DotNetNuke.Services.Log.EventLog
             LogController.Instance.UpdateLogType(logType);
         }
 
-
-        #endregion
-
-        #region Helper Methods
-
         public static void AddSettingLog(EventLogType logTypeKey, string idFieldName, int idValue, string settingName, string settingValue, int userId)
         {
             var log = new LogInfo() { LogUserID = userId, LogTypeKey = logTypeKey.ToString() };
@@ -444,8 +427,5 @@ namespace DotNetNuke.Services.Log.EventLog
 
             LogController.Instance.AddLog(log);
         }
-
-        #endregion
-
     }
 }

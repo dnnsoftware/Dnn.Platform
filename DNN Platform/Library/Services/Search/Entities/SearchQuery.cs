@@ -1,14 +1,12 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
-#endregion
 
 namespace DotNetNuke.Services.Search.Entities
 {
@@ -161,8 +159,6 @@ namespace DotNetNuke.Services.Search.Entities
         /// <remarks>When host setting "Search_AllowLeadingWildcard" set to true, it will always allow search in word but ignore this value.</remarks>
         public bool AllowLeadingWildcard { get; set; }
 
-        #region constructor
-
         public SearchQuery()
         {
             this.Tags = new string[0];
@@ -177,7 +173,5 @@ namespace DotNetNuke.Services.Search.Entities
             this.CustomKeywords = new Dictionary<string, string>();
             this.NumericKeys = new Dictionary<string, int>();
         }
-
-        #endregion
     }
 }

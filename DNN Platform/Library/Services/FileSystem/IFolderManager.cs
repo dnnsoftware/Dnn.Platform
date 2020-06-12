@@ -282,7 +282,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The updated folder</returns>
         IFolderInfo UpdateFolder(IFolderInfo folder);
 
-        #region Obsolete Methods
 
         /// <summary>
         /// Moves the specified folder and its contents to a new location.
@@ -293,7 +292,5 @@ namespace DotNetNuke.Services.FileSystem
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 7.1.  It has been replaced by FolderManager.Instance.MoveFolder(IFolderInfo folder, IFolderInfo destinationFolder) . Scheduled removal in v10.0.0.")]
         IFolderInfo MoveFolder(IFolderInfo folder, string newFolderPath);
-
-        #endregion
     }
 }

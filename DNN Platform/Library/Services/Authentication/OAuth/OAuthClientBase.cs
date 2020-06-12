@@ -34,7 +34,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
 {
     public abstract class OAuthClientBase
     {
-        #region Private Members
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(OAuthClientBase));
         private const string HMACSHA1SignatureType = "HMAC-SHA1";
 
@@ -66,8 +65,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
         // Directory implementation of OAuth V2
         private const string OAuthResourceKey = "resource";
 
-        #endregion
-
         protected OAuthClientBase(int portalId, AuthMode mode, string service)
         {
             // Set default Expiry to 14 days
@@ -84,8 +81,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
                                     ? new Uri(Globals.LoginURL(string.Empty, false))
                                     : new Uri(Globals.RegisterURL(string.Empty, string.Empty));
         }
-
-        #region Protected Properties
 
         protected const string OAuthTokenKey = "oauth_token";
 
@@ -130,9 +125,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         // DNN-6265 Support "Optional" Resource Parameter required by Azure AD Oauth V2 Solution
         protected string APIResource { get; set; }
 
-        #endregion
 
-        #region Public Properties
 
         public Uri CallbackUri { get; set; }
         public string Service { get; set; }
@@ -146,10 +139,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             get { return false; }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private AuthorisationResult AuthorizeV1()
         {
@@ -553,9 +542,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             return new Uri(string.Format("{0}{1}{2}", url, url.Contains("?") ? "&" : "?", parameters));
         }
 
-        #endregion
 
-        #region Protected Methods
 
         /// <summary>
         /// Generate the timestamp for the signature
@@ -601,8 +588,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 }
             }
         }
-
-        #endregion
 
         public virtual void AuthenticateUser(UserData user, PortalSettings settings, string IPAddress, Action<NameValueCollection> addCustomProperties, Action<UserAuthenticatedEventArgs> onAuthenticated)
         {

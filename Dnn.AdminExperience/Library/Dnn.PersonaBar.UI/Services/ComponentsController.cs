@@ -31,8 +31,6 @@ namespace Dnn.PersonaBar.UI.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ComponentsController));
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
 
-        #region API in Admin Level
-
         [HttpGet]
         public HttpResponseMessage GetRoleGroups(bool reload = false)
         {
@@ -60,10 +58,6 @@ namespace Dnn.PersonaBar.UI.Services
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
             }
         }
-
-        #endregion
-
-        #region API in Regular Level
 
         [HttpGet]
         public HttpResponseMessage GetSuggestionUsers(string keyword, int count)
@@ -128,7 +122,5 @@ namespace Dnn.PersonaBar.UI.Services
             }
 
         }
-
-        #endregion
     }
 }

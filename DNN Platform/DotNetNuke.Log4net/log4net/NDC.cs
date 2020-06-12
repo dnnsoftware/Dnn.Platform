@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -72,7 +71,6 @@ namespace log4net
     [Obsolete("NDC has been replaced by ThreadContext.Stacks. Scheduled removal in v10.0.0.")]
     public sealed class NDC
     {
-        #region Private Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NDC" /> class.
@@ -84,9 +82,7 @@ namespace log4net
         {
         }
 
-        #endregion Private Instance Constructors
 
-        #region Public Static Properties
 
         /// <summary>
         /// Gets the current context depth.
@@ -114,9 +110,7 @@ namespace log4net
             get { return ThreadContext.Stacks["NDC"].Count; }
         }
 
-        #endregion Public Static Properties
 
-        #region Public Static Methods
 
         /// <summary>
         /// Clears all the contextual information held on the current thread.
@@ -347,7 +341,5 @@ namespace log4net
                 }
             }
         }
-
-        #endregion Public Static Methods
     }
 }

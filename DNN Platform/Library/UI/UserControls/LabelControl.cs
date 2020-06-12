@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web.UI;
@@ -15,8 +15,6 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
-
-#endregion
 
 namespace DotNetNuke.UI.UserControls
 {
@@ -31,9 +29,6 @@ namespace DotNetNuke.UI.UserControls
     /// </remarks>
     public abstract class LabelControl : UserControl
     {
-
-        #region Private Memebers
-
         protected LinkButton cmdHelp;
         protected HtmlGenericControl label;
         protected Label lblHelp;
@@ -41,9 +36,7 @@ namespace DotNetNuke.UI.UserControls
         protected Panel pnlHelp;
         protected Label lblNoHelpLabel;
 
-        #endregion
 
-        #region Properties
 
         /// <summary>
         /// ControlName is the Id of the control that is associated with the label
@@ -157,9 +150,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        #endregion
 
-        #region Event Handlers
 
         /// <summary>
         /// Page_Load runs when the control is loaded
@@ -252,8 +243,5 @@ namespace DotNetNuke.UI.UserControls
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             // ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
         }
-
-        #endregion
-
     }
 }

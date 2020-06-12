@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -23,8 +23,6 @@ using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Search.Entities;
 
-#endregion
-
 namespace DotNetNuke.Services.Search.Controllers
 {
     /// <summary>
@@ -38,8 +36,6 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private static Hashtable _moduleSearchControllers = new Hashtable();
         private static object _threadLock = new object();
-
-        #region Abstract Class Implmentation
 
         public override bool HasViewPermission(SearchResult searchResult)
         {
@@ -202,7 +198,5 @@ namespace DotNetNuke.Services.Search.Controllers
 
             return TabVersionBuilder.Instance.GetCurrentModules(tab.TabID);
         }
-
-        #endregion
     }
 }

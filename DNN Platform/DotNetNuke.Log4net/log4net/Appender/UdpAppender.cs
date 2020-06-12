@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Globalization;
@@ -112,7 +111,6 @@ namespace log4net.Appender
     /// <author>Nicko Cadell</author>
     public class UdpAppender : AppenderSkeleton
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UdpAppender" /> class.
@@ -124,9 +122,7 @@ namespace log4net.Appender
         {
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets or sets the IP address of the remote host or multicast group to which
@@ -289,9 +285,7 @@ namespace log4net.Appender
             set { this.m_encoding = value; }
         }
 
-        #endregion Public Instance Properties
 
-        #region Protected Instance Properties
 
         /// <summary>
         /// Gets or sets the underlying <see cref="UdpClient" />.
@@ -329,9 +323,7 @@ namespace log4net.Appender
             set { this.m_remoteEndPoint = value; }
         }
 
-        #endregion Protected Instance Properties
 
-        #region Implementation of IOptionHandler
 
         /// <summary>
         /// Initialize the appender based on the options set.
@@ -386,9 +378,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion
 
-        #region Override implementation of AppenderSkeleton
 
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
@@ -460,9 +450,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion Override implementation of AppenderSkeleton
 
-        #region Protected Instance Methods
 
         /// <summary>
         /// Initializes the underlying  <see cref="UdpClient" /> connection.
@@ -509,9 +497,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion Protected Instance Methods
 
-        #region Private Instance Fields
 
         /// <summary>
         /// The IP address of the remote host or multicast group to which
@@ -550,6 +536,5 @@ namespace log4net.Appender
         private Encoding m_encoding = Encoding.Default;
 #endif
 
-        #endregion Private Instance Fields
     }
 }

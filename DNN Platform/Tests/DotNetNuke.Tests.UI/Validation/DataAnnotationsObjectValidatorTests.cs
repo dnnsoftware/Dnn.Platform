@@ -26,8 +26,6 @@ namespace DotNetNuke.Tests.UI.Validation
             }
         }
 
-        #region Nested type: TestClass
-
         public class TestClass
         {
             [Required(ErrorMessage = "Dude, you forgot to enter a {0}")]
@@ -36,10 +34,6 @@ namespace DotNetNuke.Tests.UI.Validation
             [StringLength(5, ErrorMessageResourceName = "ErrorMessage", ErrorMessageResourceType = typeof(DataAnnotationsObjectValidatorTests))]
             public string Bar { get; set; }
         }
-
-        #endregion
-
-        #region Tests
 
         [Test]
         public void ValidateObject_Returns_Successful_Result_If_All_Attributes_On_All_Properties_Validate()
@@ -100,7 +94,5 @@ namespace DotNetNuke.Tests.UI.Validation
             Assert.IsInstanceOf<RequiredAttribute>(result.Errors.Single(e => e.PropertyName == "Foo").Validator);
             Assert.IsInstanceOf<StringLengthAttribute>(result.Errors.Single(e => e.PropertyName == "Bar").Validator);
         }
-
-        #endregion
     }
 }

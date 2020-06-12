@@ -20,8 +20,6 @@ namespace DotNetNuke.ComponentModel
             this._Instance = instance;
         }
 
-        #region IComponentBuilder Members
-
         public object BuildComponent()
         {
             return this._Instance;
@@ -34,7 +32,5 @@ namespace DotNetNuke.ComponentModel
                 return this._Name;
             }
         }
-
-        #endregion
     }
 }

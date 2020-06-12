@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -23,14 +23,10 @@ using DotNetNuke.Services.Tokens;
 
 using Localize = DotNetNuke.Services.Localization.Localization;
 
-#endregion
-
 namespace DotNetNuke.Services.Mail
 {
     public class Mail
     {
-        #region Private Methods
-
         private static readonly Regex SmtpServerRegex = new Regex("^[^:]+(:[0-9]{1,5})?$", RegexOptions.Compiled);
 
         private static string SendMailInternal(MailMessage mailMessage, string subject, string body, MailPriority priority,
@@ -180,10 +176,6 @@ namespace DotNetNuke.Services.Mail
 
             return retValue;
         }
-
-        #endregion
-
-        #region Public Methods
 
         public static string ConvertToText(string sHTML)
         {
@@ -619,7 +611,5 @@ namespace DotNetNuke.Services.Mail
                     attachments, smtpServer, smtpAuthentication, smtpUsername, smtpPassword, smtpEnableSSL);
             }
         }
-
-        #endregion
     }
 }

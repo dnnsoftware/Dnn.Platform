@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.IO;
@@ -41,7 +40,6 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public class CountingQuietTextWriter : QuietTextWriter
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Constructor
@@ -59,9 +57,7 @@ namespace log4net.Util
             this.m_countBytes = 0;
         }
 
-        #endregion Public Instance Constructors
 
-        #region Override implementation of QuietTextWriter
 
         /// <summary>
         /// Writes a character to the underlying writer and counts the number of bytes written.
@@ -149,9 +145,7 @@ namespace log4net.Util
             }
         }
 
-        #endregion Override implementation of QuietTextWriter
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets or sets the total number of bytes written.
@@ -170,15 +164,11 @@ namespace log4net.Util
             set { this.m_countBytes = value; }
         }
 
-        #endregion Public Instance Properties
 
-        #region Private Instance Fields
 
         /// <summary>
         /// Total number of bytes written.
         /// </summary>
         private long m_countBytes;
-
-        #endregion Private Instance Fields
     }
 }

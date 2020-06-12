@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Data;
@@ -10,8 +10,6 @@ using System.Linq;
 
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
-
-#endregion
 
 namespace DotNetNuke.Entities.Content
 {
@@ -26,8 +24,6 @@ namespace DotNetNuke.Entities.Content
     [Serializable]
     public class ContentType : ContentTypeMemberNameFixer, IHydratable
     {
-        #region Private Members
-
         private static ContentType _desktopModule;
         private static ContentType _module;
         private static ContentType _tab;
@@ -35,10 +31,6 @@ namespace DotNetNuke.Entities.Content
         private const string desktopModuleContentTypeName = "DesktopModule";
         private const string moduleContentTypeName = "Module";
         private const string tabContentTypeName = "Tab";
-
-        #endregion
-
-        #region Constructors
 
         public ContentType() : this(Null.NullString)
         {
@@ -49,10 +41,6 @@ namespace DotNetNuke.Entities.Content
             this.ContentTypeId = Null.NullInteger;
             this.ContentType = contentType;
         }
-
-        #endregion
-
-        #region Public Static Properties
 
         public static ContentType DesktopModule
         {
@@ -78,7 +66,6 @@ namespace DotNetNuke.Entities.Content
             }
         }
 
-        #endregion
 
         /// <summary>
         /// Gets or sets the content type id.
@@ -88,7 +75,6 @@ namespace DotNetNuke.Entities.Content
         /// </value>
         public int ContentTypeId { get; set; }
 
-        #region IHydratable Implementation
 
         /// <summary>
         /// Fill this content object will the information from data reader.
@@ -119,7 +105,6 @@ namespace DotNetNuke.Entities.Content
             }
         }
 
-        #endregion
 
         /// <summary>
         /// override ToString to return content type

@@ -13,14 +13,10 @@ namespace DotNetNuke.Services.Connections
 {
     public class ConnectionsController : ServiceLocator<IConnectionsController, ConnectionsController>, IConnectionsController
     {
-        #region Overrides of ServiceLocator
-
         protected override Func<IConnectionsController> GetFactory()
         {
             return () => new ConnectionsController();
         }
-
-        #endregion
 
         public IList<IConnector> GetConnections(int portalId)
         {

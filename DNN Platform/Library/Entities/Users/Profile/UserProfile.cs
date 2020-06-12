@@ -3,9 +3,6 @@
 // See the LICENSE file in the project root for more information
 
 using DotNetNuke.Common.Internal;
-
-#region Usings
-
 using System;
 using System.ComponentModel;
 using System.Globalization;
@@ -20,7 +17,6 @@ using DotNetNuke.Services.FileSystem;
 using System.Xml.Serialization;
 using DotNetNuke.Common.Lists;
 
-#endregion
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Users
@@ -32,7 +28,6 @@ namespace DotNetNuke.Entities.Users
     [Serializable]
     public class UserProfile : IIndexable
     {
-        #region Public Constants
 
         // Name properties
         public const string USERPROFILE_FirstName = "FirstName";
@@ -62,19 +57,12 @@ namespace DotNetNuke.Entities.Users
         public const string USERPROFILE_PreferredLocale = "PreferredLocale";
         public const string USERPROFILE_PreferredTimeZone = "PreferredTimeZone";
         public const string USERPROFILE_Biography = "Biography";
-
-        #endregion
-
-        #region Private Members
-
         private bool _IsDirty;
 
         private UserInfo _user;
 
         // collection to store all profile properties.
         private ProfilePropertyDefinitionCollection _profileProperties;
-
-        #endregion
 
         public UserProfile()
         {
@@ -85,7 +73,6 @@ namespace DotNetNuke.Entities.Users
             this._user = user;
         }
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -509,9 +496,7 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -638,8 +623,6 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        #endregion
-
         public string Biography
         {
             get
@@ -651,8 +634,6 @@ namespace DotNetNuke.Entities.Users
                 this.SetProfileProperty(USERPROFILE_Biography, value);
             }
         }
-
-        #region Implement IIndexable
 
         public object this[string name]
         {
@@ -680,7 +661,5 @@ namespace DotNetNuke.Entities.Users
                 this.SetProfileProperty(name, stringValue);
             }
         }
-
-        #endregion
     }
 }

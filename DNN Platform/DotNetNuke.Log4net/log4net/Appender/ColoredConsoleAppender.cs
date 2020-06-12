@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 // MONO 1.0 Beta mcs does not like #if !A && !B && !C syntax
 
@@ -98,7 +96,6 @@ namespace log4net.Appender
     /// <author>Nicko Cadell</author>
     public class ColoredConsoleAppender : AppenderSkeleton
     {
-        #region Colors Enum
 
         /// <summary>
         /// The enum of possible color values for use with the color mapping method
@@ -154,9 +151,7 @@ namespace log4net.Appender
             HighIntensity = 0x0008,
         }
 
-        #endregion // Colors Enum
 
-        #region Public Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ColoredConsoleAppender" /> class.
@@ -201,9 +196,7 @@ namespace log4net.Appender
             this.m_writeToErrorStream = writeToErrorStream;
         }
 
-        #endregion // Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Target is the value of the console output stream.
@@ -253,9 +246,7 @@ namespace log4net.Appender
             this.m_levelMapping.Add(mapping);
         }
 
-        #endregion // Public Instance Properties
 
-        #region Override implementation of AppenderSkeleton
 
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(log4net.Core.LoggingEvent)"/> method.
@@ -476,9 +467,7 @@ namespace log4net.Appender
             GC.SuppressFinalize(this.m_consoleOutputWriter);
         }
 
-        #endregion // Override implementation of AppenderSkeleton
 
-        #region Public Static Fields
 
         /// <summary>
         /// The <see cref="ColoredConsoleAppender.Target"/> to use when writing to the Console
@@ -504,9 +493,7 @@ namespace log4net.Appender
         /// </remarks>
         public const string ConsoleError = "Console.Error";
 
-        #endregion // Public Static Fields
 
-        #region Private Instances Fields
 
         /// <summary>
         /// Flag to write output to the error stream rather than the standard output stream
@@ -527,10 +514,6 @@ namespace log4net.Appender
         /// </para>
         /// </remarks>
         private System.IO.StreamWriter m_consoleOutputWriter = null;
-
-        #endregion // Private Instances Fields
-
-        #region Win32 Methods
 
         [DllImport("Kernel32.dll", SetLastError=true, CharSet=CharSet.Auto)]
         private static extern int GetConsoleOutputCP();
@@ -587,9 +570,7 @@ namespace log4net.Appender
             public COORD dwMaximumWindowSize;
         }
 
-        #endregion // Win32 Methods
 
-        #region LevelColors LevelMapping Entry
 
         /// <summary>
         /// A class to act as a mapping between the level that a logging call is made at and
@@ -659,8 +640,6 @@ namespace log4net.Appender
                 get { return this.m_combinedColor; }
             }
         }
-
-        #endregion // LevelColors LevelMapping Entry
     }
 }
 

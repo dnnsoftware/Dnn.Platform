@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -27,8 +27,6 @@ using DotNetNuke.Services.Upgrade.Internals.Steps;
 using DotNetNuke.Services.UserRequest;
 using Globals = DotNetNuke.Common.Globals;
 
-#endregion
-
 namespace DotNetNuke.Services.Install
 {
     /// -----------------------------------------------------------------------------
@@ -40,8 +38,6 @@ namespace DotNetNuke.Services.Install
     /// -----------------------------------------------------------------------------
     public partial class UpgradeWizard : PageBase
     {
-        #region Private Members
-
         private const string LocalesFile = "/Install/App_LocalResources/Locales.xml";
         protected static readonly string StatusFilename = "upgradestat.log.resources.txt";
         protected static new string LocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
@@ -51,10 +47,6 @@ namespace DotNetNuke.Services.Install
         private static IInstallationStep _currentStep;
         private static bool _upgradeRunning;
         private static int _upgradeProgress;
-
-        #endregion
-
-        #region Protected Members
 
         protected Version ApplicationVersion
         {
@@ -77,10 +69,6 @@ namespace DotNetNuke.Services.Install
             get { return File.Exists(Path.Combine(Globals.ApplicationMapPath, "Licenses\\Dnn_Corp_License.pdf")); }
         }
 
-        #endregion
-
-        #region Private Properties
-
         private static string StatusFile
         {
             get
@@ -90,10 +78,6 @@ namespace DotNetNuke.Services.Install
         }
 
         private static bool IsAuthenticated { get; set; }
-
-        #endregion
-
-        #region Private Methods
 
         private void LocalizePage()
         {
@@ -322,9 +306,6 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        #endregion
-
-        #region Protected Methods
         protected string LocalizeString(string key)
         {
             return Localization.Localization.GetString(key, LocalResourceFile, _culture);
@@ -335,9 +316,7 @@ namespace DotNetNuke.Services.Install
             HttpContext.Current.Response.Clear();
             HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
         }
-        #endregion
 
-        #region Event Handlers
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Init runs when the Page is initialised
@@ -391,9 +370,7 @@ namespace DotNetNuke.Services.Install
                 Upgrade.Upgrade.RemoveInvalidAntiForgeryCookie();
             }
         }
-        #endregion
 
-        #region Web Methods
 
         // steps shown in UI
         static IInstallationStep upgradeDatabase = new InstallDatabaseStep();
@@ -510,7 +487,5 @@ namespace DotNetNuke.Services.Install
 
             return data;
         }
-
-        #endregion
     }
 }

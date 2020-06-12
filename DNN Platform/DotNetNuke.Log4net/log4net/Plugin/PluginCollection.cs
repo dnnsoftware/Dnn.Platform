@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -35,7 +34,6 @@ namespace log4net.Plugin
         , ICloneable
 #endif
     {
-        #region Interfaces
 
         /// <summary>
         /// Supports type-safe iteration over a <see cref="PluginCollection"/>.
@@ -66,19 +64,12 @@ namespace log4net.Plugin
             void Reset();
         }
 
-        #endregion Interfaces
-
         private const int DEFAULT_CAPACITY = 16;
-
-        #region Implementation (data)
-
         private IPlugin[] m_array;
         private int m_count = 0;
         private int m_version = 0;
 
-        #endregion Implementation (data)
 
-        #region Static Wrappers
 
         /// <summary>
         ///     Creates a read-only wrapper for a <c>PluginCollection</c> instance.
@@ -94,9 +85,7 @@ namespace log4net.Plugin
             return new ReadOnlyPluginCollection(list);
         }
 
-        #endregion
 
-        #region Constructors
 
         /// <summary>
         ///     Initializes a new instance of the <c>PluginCollection</c> class
@@ -175,9 +164,7 @@ namespace log4net.Plugin
             this.m_array = null;
         }
 
-        #endregion
 
-        #region Operations (type-safe ICollection)
 
         /// <summary>
         /// Gets the number of elements actually contained in the <c>PluginCollection</c>.
@@ -233,9 +220,7 @@ namespace log4net.Plugin
             get { return this.m_array; }
         }
 
-        #endregion
 
-        #region Operations (type-safe IList)
 
         /// <summary>
         /// Gets or sets the <see cref="IPlugin"/> at the specified index.
@@ -437,9 +422,7 @@ namespace log4net.Plugin
             get { return false; }
         }
 
-        #endregion
 
-        #region Operations (type-safe IEnumerable)
 
         /// <summary>
         /// Returns an enumerator that can iterate through the <c>PluginCollection</c>.
@@ -450,9 +433,7 @@ namespace log4net.Plugin
             return new Enumerator(this);
         }
 
-        #endregion
 
-        #region Public helpers (just to mimic some nice features of ArrayList)
 
         /// <summary>
         /// Gets or sets the number of elements the <c>PluginCollection</c> can contain.
@@ -555,9 +536,7 @@ namespace log4net.Plugin
             this.Capacity = this.m_count;
         }
 
-        #endregion
 
-        #region Implementation (helpers)
 
         /// <exception cref="ArgumentOutOfRangeException">
         /// <para><paramref name="i"/> is less than zero.</para>
@@ -594,18 +573,10 @@ namespace log4net.Plugin
             this.Capacity = newCapacity;
         }
 
-        #endregion
-
-        #region Implementation (ICollection)
-
         void ICollection.CopyTo(Array array, int start)
         {
             Array.Copy(this.m_array, 0, array, start, this.m_count);
         }
-
-        #endregion
-
-        #region Implementation (IList)
 
         object IList.this[int i]
         {
@@ -643,18 +614,12 @@ namespace log4net.Plugin
             this.RemoveAt(pos);
         }
 
-        #endregion
-
-        #region Implementation (IEnumerable)
-
         IEnumerator IEnumerable.GetEnumerator()
         {
             return (IEnumerator) this.GetEnumerator();
         }
 
-        #endregion Implementation (IEnumerable)
 
-        #region Nested enumerator class
 
         /// <summary>
         /// Supports simple iteration over a <see cref="PluginCollection"/>.
@@ -662,15 +627,11 @@ namespace log4net.Plugin
         /// <exclude/>
         private sealed class Enumerator : IEnumerator, IPluginCollectionEnumerator
         {
-            #region Implementation (data)
-
             private readonly PluginCollection m_collection;
             private int m_index;
             private int m_version;
 
-            #endregion Implementation (data)
 
-            #region Construction
 
             /// <summary>
             /// Initializes a new instance of the <c>Enumerator</c> class.
@@ -683,9 +644,7 @@ namespace log4net.Plugin
                 this.m_version = tc.m_version;
             }
 
-            #endregion
 
-            #region Operations (type-safe IEnumerator)
 
             /// <summary>
             /// Gets the current element in the collection.
@@ -727,41 +686,23 @@ namespace log4net.Plugin
                 this.m_index = -1;
             }
 
-            #endregion
-
-            #region Implementation (IEnumerator)
-
             object IEnumerator.Current
             {
                 get { return this.Current; }
             }
-
-            #endregion
         }
 
-        #endregion
 
-        #region Nested Read Only Wrapper class
 
         /// <exclude/>
         private sealed class ReadOnlyPluginCollection : PluginCollection
         {
-            #region Implementation (data)
-
             private readonly PluginCollection m_collection;
-
-            #endregion
-
-            #region Construction
 
             internal ReadOnlyPluginCollection(PluginCollection list) : base(Tag.Default)
             {
                 this.m_collection = list;
             }
-
-            #endregion
-
-            #region Type-safe ICollection
 
             public override void CopyTo(IPlugin[] array)
             {
@@ -786,10 +727,6 @@ namespace log4net.Plugin
             {
                 get { return this.m_collection.SyncRoot; }
             }
-
-            #endregion
-
-            #region Type-safe IList
 
             public override IPlugin this[int i]
             {
@@ -842,18 +779,12 @@ namespace log4net.Plugin
                 get { return true; }
             }
 
-            #endregion
-
-            #region Type-safe IEnumerable
-
             public override IPluginCollectionEnumerator GetEnumerator()
             {
                 return this.m_collection.GetEnumerator();
             }
 
-            #endregion
 
-            #region Public Helpers
 
             // (just to mimic some nice features of ArrayList)
             public override int Capacity
@@ -871,10 +802,6 @@ namespace log4net.Plugin
             {
                 throw new NotSupportedException("This is a Read Only Collection and can not be modified");
             }
-
-            #endregion
         }
-
-        #endregion
     }
 }

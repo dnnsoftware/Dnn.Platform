@@ -1,16 +1,14 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
-
-#endregion
 
 namespace DotNetNuke.Common.Controls
 {
@@ -24,15 +22,9 @@ namespace DotNetNuke.Common.Controls
     /// -----------------------------------------------------------------------------
     public partial class Privacy : PortalModuleBase
     {
-        #region " Web Form Designer Generated Code "
-
         private void InitializeComponent()
         {
         }
-
-        #endregion
-
-        #region "Event Handlers"
 
         protected override void OnInit(EventArgs e)
         {
@@ -66,7 +58,5 @@ namespace DotNetNuke.Common.Controls
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
     }
 }

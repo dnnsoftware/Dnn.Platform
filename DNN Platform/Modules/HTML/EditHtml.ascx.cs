@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -25,8 +25,6 @@ using Telerik.Web.UI;
 using DotNetNuke.Modules.Html.Components;
 using DotNetNuke.Abstractions;
 
-#endregion
-
 namespace DotNetNuke.Modules.Html
 {
 
@@ -43,25 +41,15 @@ namespace DotNetNuke.Modules.Html
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Private Members
-
         private readonly HtmlTextController _htmlTextController = new HtmlTextController();
         private readonly HtmlTextLogController _htmlTextLogController = new HtmlTextLogController();
         private readonly WorkflowStateController _workflowStateController = new WorkflowStateController();
-
-        #endregion
-
-        #region Nested type: WorkflowType
 
         private enum WorkflowType
         {
             DirectPublish = 1,
             ContentStaging = 2
         }
-
-        #endregion
-
-        #region Private Properties
 
         private int WorkflowID
         {
@@ -133,9 +121,7 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        #endregion
 
-        #region Private Methods
 
         /// <summary>
         ///   Displays the history of an html content item in a grid in the preview section.
@@ -351,9 +337,7 @@ namespace DotNetNuke.Modules.Html
             this.lblPreviewWorkflowState.Text = firstState.StateName;
         }
 
-        #endregion
 
-        #region Private Functions
 
         /// <summary>
         ///   Formats the content to make it html safe.
@@ -417,10 +401,6 @@ namespace DotNetNuke.Modules.Html
         {
             return (from version in this._htmlTextController.GetAllHtmlText(this.ModuleId) where version.StateID == publishedStateID orderby version.Version descending select version).ToList()[0];
         }
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
@@ -781,8 +761,5 @@ namespace DotNetNuke.Modules.Html
 
             this.ddlRender.Items.Add(new ListItem(this.LocalizeString("liBasicText"), "BASIC"));
         }
-
-        #endregion
-
     }
 }

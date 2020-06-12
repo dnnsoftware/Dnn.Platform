@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -14,8 +14,6 @@ using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Localization;
 
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
 
@@ -24,9 +22,6 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     public class LanguageSelector : Control, INamingContainer
     {
-
-        #region LanguageItemStyle enum
-
         public enum LanguageItemStyle
         {
             FlagOnly = 1,
@@ -34,19 +29,13 @@ namespace DotNetNuke.UI.WebControls
             CaptionOnly = 3
         }
 
-        #endregion
-
-        #region LanguageListDirection enum
-
         public enum LanguageListDirection
         {
             Horizontal = 1,
             Vertical = 2
         }
 
-        #endregion
 
-        #region LanguageSelectionMode enum
 
         /// <summary>
         /// Language Selection mode, offered to the user: single select or multiple select.
@@ -57,9 +46,7 @@ namespace DotNetNuke.UI.WebControls
             Single = 2
         }
 
-        #endregion
 
-        #region LanguageSelectionObject enum
 
         /// <summary>
         /// Selection object: Language ("de", "en") or Locale ("de-DE", "en-US")
@@ -70,11 +57,8 @@ namespace DotNetNuke.UI.WebControls
             SpecificCulture = 2
         }
 
-        #endregion
-
         private Panel pnlControl;
 
-        #region Public Properties
 
         /// <summary>
         /// Gets or sets selection mode (single, multiple)
@@ -273,9 +257,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
 
-        #region Protected Methods
 
         /// <summary>
         /// Create Child Controls
@@ -338,9 +320,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
 
-        #region " Private Methods "
 
         /// <summary>
         /// retrieve the cultures, currently supported by the portal
@@ -369,8 +349,5 @@ namespace DotNetNuke.UI.WebControls
             }
             return (CultureInfo[])a.ToArray(typeof(CultureInfo));
         }
-
-        #endregion
-
     }
 }

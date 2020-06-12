@@ -29,7 +29,6 @@ namespace DotNetNuke.Security.Permissions
         private int _StateID;
         private int _WorkflowStatePermissionID;
 
-        #region Constructors
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -59,9 +58,7 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionName = permission.PermissionName;
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -99,9 +96,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -155,9 +150,7 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        #endregion
 
-        #region IHydratable Implementation
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -191,7 +184,5 @@ namespace DotNetNuke.Security.Permissions
                 this.WorkflowStatePermissionID = value;
             }
         }
-
-        #endregion
     }
 }

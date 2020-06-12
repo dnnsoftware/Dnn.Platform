@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Data;
@@ -24,8 +24,6 @@ using DotNetNuke.Services.Search.Internals;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 
-#endregion
-
 namespace DotNetNuke.Services.Search
 {
     /// -----------------------------------------------------------------------------
@@ -46,17 +44,12 @@ namespace DotNetNuke.Services.Search
         internal const string ValueSplitFlag = "$$$";
 
         internal static readonly Regex UsrFirstNameSplitRx = new Regex(Regex.Escape(ValueSplitFlag), RegexOptions.Compiled);
-
-        #region Private Properties
-
         private const int BatchSize = 250;
         private const int ClauseMaxCount = 1024;
 
         private static readonly int UserSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
 
-        #endregion
 
-        #region Override Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -345,10 +338,6 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private static void DeleteDocuments(int portalId, ICollection<int> usersList)
         {
             if (usersList == null || usersList.Count == 0)
@@ -410,9 +399,6 @@ namespace DotNetNuke.Services.Search
             var schema = reader.GetSchemaTable();
             return schema != null && schema.Select("ColumnName = '" + col + "'").Length > 0;
         }
-
-        #endregion
-
     }
 
     internal class UserSearch

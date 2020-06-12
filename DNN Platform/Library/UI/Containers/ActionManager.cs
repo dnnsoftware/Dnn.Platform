@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Linq;
@@ -22,8 +22,6 @@ using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.WebControls;
 
-#endregion
-
 namespace DotNetNuke.UI.Containers
 {
     /// -----------------------------------------------------------------------------
@@ -38,15 +36,11 @@ namespace DotNetNuke.UI.Containers
     /// -----------------------------------------------------------------------------
     public class ActionManager
     {
-        #region Private Members
-
         private readonly PortalSettings PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
         private readonly HttpRequest Request = HttpContext.Current.Request;
         private readonly HttpResponse Response = HttpContext.Current.Response;
 
-        #endregion
 
-        #region Constructors
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -58,9 +52,7 @@ namespace DotNetNuke.UI.Containers
             this.ActionControl = actionControl;
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -84,10 +76,6 @@ namespace DotNetNuke.UI.Containers
                 return this.ActionControl.ModuleControl.ModuleContext;
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void ClearCache(ModuleAction Command)
         {
@@ -203,9 +191,7 @@ namespace DotNetNuke.UI.Containers
             this.Response.Redirect(this.Request.RawUrl, true);
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -392,7 +378,5 @@ namespace DotNetNuke.UI.Containers
             }
             return bProcessed;
         }
-
-        #endregion
     }
 }

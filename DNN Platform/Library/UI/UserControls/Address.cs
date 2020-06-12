@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Linq;
@@ -16,8 +16,6 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.WebControls;
 
-#endregion
-
 namespace DotNetNuke.UI.UserControls
 {
 
@@ -28,9 +26,6 @@ namespace DotNetNuke.UI.UserControls
     /// </remarks>
     public abstract class Address : UserControlBase
     {
-
-        #region Private Members
-
         private const string MyFileName = "Address.ascx";
         private string _cell;
         private string _city;
@@ -101,18 +96,10 @@ namespace DotNetNuke.UI.UserControls
         protected RequiredFieldValidator valStreet;
         protected RequiredFieldValidator valTelephone;
 
-        #endregion
-
-        #region Constructors
-
         protected Address()
         {
             this.StartTabIndex = 1;
         }
-
-        #endregion
-
-        #region Properties
 
         public int ModuleId
         {
@@ -392,9 +379,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        #endregion
 
-        #region Private Methods
 
         /// <summary>
         /// Localize correctly sets up the control for US/Canada/Other Countries
@@ -607,9 +592,7 @@ namespace DotNetNuke.UI.UserControls
             this.ShowRequiredFields();
         }
 
-        #endregion
 
-        #region Event Handlers
 
         /// <summary>
         /// Page_Load runs when the control is loaded
@@ -869,8 +852,5 @@ namespace DotNetNuke.UI.UserControls
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
-
     }
 }

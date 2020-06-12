@@ -14,7 +14,6 @@ namespace Dnn.AuthServices.Jwt.Services
     [DnnAuthorize(AuthTypes = "JWT")]
     public class MobileController : DnnApiController
     {
-        #region API methods
 
         /// <summary>
         /// Clients that used JWT login should use this API call to logout and invalidate the tokens.
@@ -57,10 +56,6 @@ namespace Dnn.AuthServices.Jwt.Services
             return this.ReplyWith(result);
         }
 
-        #endregion
-
-        #region helpers
-
         private IHttpActionResult ReplyWith(LoginResultData result)
         {
             if (result == null)
@@ -77,9 +72,7 @@ namespace Dnn.AuthServices.Jwt.Services
             return this.Ok(result);
         }
 
-        #endregion
 
-        #region Testing APIs
 
         // Test API Method 1
         [HttpGet]
@@ -107,7 +100,5 @@ namespace Dnn.AuthServices.Jwt.Services
             [JsonProperty("text")]
             public string Text;
         }
-
-        #endregion
     }
 }

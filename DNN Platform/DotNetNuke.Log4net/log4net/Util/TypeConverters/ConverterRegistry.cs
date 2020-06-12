@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Globalization;
@@ -52,7 +51,6 @@ namespace log4net.Util.TypeConverters
     /// <author>Gert Driesen</author>
     public sealed class ConverterRegistry
     {
-        #region Private Constructors
 
         /// <summary>
         /// Private constructor
@@ -64,9 +62,7 @@ namespace log4net.Util.TypeConverters
         {
         }
 
-        #endregion Private Constructors
 
-        #region Static Constructor
 
         /// <summary>
         /// Static constructor.
@@ -87,9 +83,7 @@ namespace log4net.Util.TypeConverters
             AddConverter(typeof(System.Net.IPAddress), typeof(IPAddressConverter));
         }
 
-        #endregion Static Constructor
 
-        #region Public Static Methods
 
         /// <summary>
         /// Adds a converter for a specific type.
@@ -277,9 +271,7 @@ namespace log4net.Util.TypeConverters
             return null;
         }
 
-        #endregion Public Static Methods
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the ConverterRegistry class.
@@ -294,7 +286,5 @@ namespace log4net.Util.TypeConverters
         /// Mapping from <see cref="Type" /> to type converter.
         /// </summary>
         private static Hashtable s_type2converter = new Hashtable();
-
-        #endregion
     }
 }

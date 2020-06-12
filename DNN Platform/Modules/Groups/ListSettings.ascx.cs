@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 
@@ -17,9 +17,6 @@ using DotNetNuke.Entities.Tabs;
 using System.Collections.Generic;
 using DotNetNuke.Entities.Modules.Definitions;
 
-
-#endregion
-
 namespace DotNetNuke.Modules.Groups
 {
     /// -----------------------------------------------------------------------------
@@ -29,7 +26,6 @@ namespace DotNetNuke.Modules.Groups
     /// -----------------------------------------------------------------------------
     public partial class ListSettings : GroupsSettingsBase
     {
-        #region Base Method Implementations
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -130,7 +126,6 @@ namespace DotNetNuke.Modules.Groups
             }
         }
 
-        #endregion
         private void BindGroups() {
             var arrGroups = RoleController.GetRoleGroups(this.PortalId);
             this.drpRoleGroup.Items.Add(new ListItem(Localization.GetString("AllRoles"), "-2"));

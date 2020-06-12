@@ -1,29 +1,23 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
 using System.Data;
 
-#endregion
-
 namespace DotNetNuke.Entities.Users.Social.Data
 {
     public interface IDataService
     {
-        #region RelationshipType CRUD
-
         void DeleteRelationshipType(int relationshipTypeId);
         IDataReader GetAllRelationshipTypes();
         IDataReader GetRelationshipType(int relationshipTypeId);
         int SaveRelationshipType(RelationshipType relationshipType, int createUpdateUserId);
 
-        #endregion
 
-        #region Relationship CRUD
 
         void DeleteRelationship(int relationshipId);
         IDataReader GetRelationship(int relationshipId);
@@ -31,9 +25,7 @@ namespace DotNetNuke.Entities.Users.Social.Data
         IDataReader GetRelationshipsByPortalId(int portalId);
         int SaveRelationship(Relationship relationship, int createUpdateUserId);
 
-        #endregion
 
-        #region UserRelationship CRUD
 
         void DeleteUserRelationship(int userRelationshipId);
         IDataReader GetUserRelationship(int userRelationshipId);
@@ -42,15 +34,11 @@ namespace DotNetNuke.Entities.Users.Social.Data
         IDataReader GetUserRelationshipsByRelationshipId(int relationshipId);
         int SaveUserRelationship(UserRelationship userRelationship, int createUpdateUserId);
 
-        #endregion
 
-        #region UserRelationshipPreference CRUD
 
         void DeleteUserRelationshipPreference(int preferenceId);
         IDataReader GetUserRelationshipPreferenceById(int preferenceId);
         IDataReader GetUserRelationshipPreference(int userId, int relationshipId);
         int SaveUserRelationshipPreference(UserRelationshipPreference userRelationshipPreference, int createUpdateUserId);
-
-        #endregion
     }
 }

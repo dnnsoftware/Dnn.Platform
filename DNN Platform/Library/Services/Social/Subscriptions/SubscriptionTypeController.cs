@@ -30,7 +30,6 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return () => new SubscriptionTypeController();
         }
 
-        #region Implemented Methods
         public void AddSubscriptionType(SubscriptionType subscriptionType)
         {
             Requires.NotNull("subscriptionType", subscriptionType);
@@ -77,7 +76,6 @@ namespace DotNetNuke.Services.Social.Subscriptions
             this.dataService.DeleteSubscriptionType(subscriptionType.SubscriptionTypeId);
             CleanCache();
         }
-        #endregion
 
         private static void CleanCache()
         {

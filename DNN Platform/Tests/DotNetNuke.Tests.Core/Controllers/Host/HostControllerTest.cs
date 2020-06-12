@@ -74,8 +74,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             return this._hostSettingsTable.Rows.Find(key)["SettingValue"].ToString();
         }
 
-        #region Get Dictionaries
-
         [Test]
         public void HostController_GetSettings_GetList()
         {
@@ -119,10 +117,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             // Assert
             CollectionAssert.AreEquivalent(expectedDic.Values, settingsDic.Values);
         }
-
-        #endregion
-
-        #region Update Value
 
         [Test]
         public void HostController_Update_ExistingValue()
@@ -206,10 +200,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             this._mockCache.Verify(c => c.Clear("Host", string.Empty), Times.Exactly(1));
         }
 
-        #endregion
-
-        #region Create Value
-
         [Test]
         public void HostController_Update_NewValue()
         {
@@ -274,10 +264,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             this._mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Never);
         }
 
-        #endregion
-
-        #region GetString()
-
         [Test]
         [TestCase("String_1_S")]
         [TestCase("String_2_S")]
@@ -315,10 +301,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             HostController.Instance.GetString(key);
         }
 
-        #endregion
-
-        #region GetInteger()
-
         [Test]
         [TestCase("Int_5_U")]
         [TestCase("Int_6_S")]
@@ -353,10 +335,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         {
             HostController.Instance.GetInteger(key);
         }
-
-        #endregion
-
-        #region GetBoolean()
 
         [Test]
         [TestCase("Bool_9_U")]
@@ -396,10 +374,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             HostController.Instance.GetBoolean(key);
         }
 
-        #endregion
-
-        #region GetDouble()
-
         [Test]
         [TestCase("Double_7_S")]
         [TestCase("Double_8_U")]
@@ -434,7 +408,5 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         {
             HostController.Instance.GetDouble(key);
         }
-
-        #endregion
     }
 }

@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 #define TRACE
 
@@ -57,7 +55,6 @@ namespace log4net.Appender
     /// <author>Ron Grabowski</author>
     public class TraceAppender : AppenderSkeleton
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TraceAppender" />.
@@ -87,9 +84,7 @@ namespace log4net.Appender
             this.Layout = layout;
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets or sets a value that indicates whether the appender will
@@ -132,9 +127,7 @@ namespace log4net.Appender
             set { this.m_category = value; }
         }
 
-        #endregion Public Instance Properties
 
-        #region Override implementation of AppenderSkeleton
 
         /// <summary>
         /// Writes the logging event to the <see cref="System.Diagnostics.Trace"/> system.
@@ -181,9 +174,7 @@ namespace log4net.Appender
             get { return true; }
         }
 
-        #endregion Override implementation of AppenderSkeleton
 
-        #region Private Instance Fields
 
         /// <summary>
         /// Immediate flush means that the underlying writer or output stream
@@ -207,7 +198,6 @@ namespace log4net.Appender
         /// </summary>
         private PatternLayout m_category = new PatternLayout("%logger");
 
-        #endregion Private Instance Fields
 
         /// <summary>
         /// Flushes any buffered log data.

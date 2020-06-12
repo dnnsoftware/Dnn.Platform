@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Globalization;
@@ -102,7 +101,6 @@ namespace log4net.Core
     /// <author>Gert Driesen</author>
     public class LogImpl : LoggerWrapperImpl, ILog
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Construct a new wrapper for the specified logger.
@@ -122,7 +120,6 @@ namespace log4net.Core
             this.ReloadLevels(logger.Repository);
         }
 
-        #endregion Public Instance Constructors
 
         /// <summary>
         /// Virtual method called when the configuration of the repository changes
@@ -144,7 +141,6 @@ namespace log4net.Core
             this.m_levelFatal = levelMap.LookupWithDefault(Level.Fatal);
         }
 
-        #region Implementation of ILog
 
         /// <summary>
         /// Logs a message object with the <c>DEBUG</c> level.
@@ -1258,9 +1254,7 @@ namespace log4net.Core
             get { return this.Logger.IsEnabledFor(this.m_levelFatal); }
         }
 
-        #endregion Implementation of ILog
 
-        #region Private Methods
 
         /// <summary>
         /// Event handler for the <see cref="log4net.Repository.ILoggerRepository.ConfigurationChanged"/> event
@@ -1276,25 +1270,16 @@ namespace log4net.Core
             }
         }
 
-        #endregion
 
-        #region Private Static Instance Fields
 
         /// <summary>
         /// The fully qualified name of this declaring type not the type of any subclass.
         /// </summary>
         private readonly static Type ThisDeclaringType = typeof(LogImpl);
-
-        #endregion Private Static Instance Fields
-
-        #region Private Fields
-
         private Level m_levelDebug;
         private Level m_levelInfo;
         private Level m_levelWarn;
         private Level m_levelError;
         private Level m_levelFatal;
-
-        #endregion
     }
 }

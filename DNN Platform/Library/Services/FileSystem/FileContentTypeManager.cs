@@ -13,14 +13,8 @@ namespace DotNetNuke.Services.FileSystem
 {
     public class FileContentTypeManager : ComponentBase<IFileContentTypeManager, FileContentTypeManager>, IFileContentTypeManager
     {
-        #region Fields
-
         private IDictionary<string, string> _contentTypes;
         private static readonly object _threadLocker = new object();
-
-        #endregion
-
-        #region Implement IFileContentTypeManager
 
         public virtual IDictionary<string, string> ContentTypes
         {
@@ -66,10 +60,6 @@ namespace DotNetNuke.Services.FileSystem
             return this.ContentTypes.ContainsKey(key) ? this.ContentTypes[key] : "application/octet-stream";
         }
 
-        #endregion
-
-        #region Private Methods
-
         private Dictionary<string, string> GetDefaultContentTypes()
         {
             var contentTypes = new Dictionary<string, string>();
@@ -111,8 +101,5 @@ namespace DotNetNuke.Services.FileSystem
 
             return contentTypes;
         }
-
-        #endregion
-
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -54,7 +53,6 @@ namespace log4net
     [Obsolete("MDC has been replaced by ThreadContext.Properties. Scheduled removal in v10.0.0.")]
     public sealed class MDC
     {
-        #region Private Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MDC" /> class.
@@ -66,9 +64,7 @@ namespace log4net
         {
         }
 
-        #endregion Private Instance Constructors
 
-        #region Public Static Methods
 
         /// <summary>
         /// Gets the context value identified by the <paramref name="key" /> parameter.
@@ -167,7 +163,5 @@ namespace log4net
         {
             ThreadContext.Properties.Clear();
         }
-
-        #endregion Public Static Methods
     }
 }

@@ -14,8 +14,6 @@ namespace DotNetNuke.Tests.Data
 {
     public class DataUtil
     {
-        #region Public Methods
-
         public static void CreateDatabase(string databaseName)
         {
             if (File.Exists(databaseName))
@@ -101,8 +99,6 @@ namespace DotNetNuke.Tests.Data
                 index++;
             }
         }
-
-        #endregion
 
         private static TReturn ExecuteQuery<TReturn>(string databaseName, string sqlScript, Func<SqlCeCommand, TReturn> command)
         {

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -12,8 +12,6 @@ using System.Xml.XPath;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Framework.Providers;
-
-#endregion
 
 namespace DotNetNuke.Services.Installer.Installers
 {
@@ -26,16 +24,12 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class ScriptInstaller : FileInstaller
     {
-        #region Private Members
-
         private readonly SortedList<Version, InstallFile> _installScripts = new SortedList<Version, InstallFile>();
         private readonly SortedList<Version, InstallFile> _unInstallScripts = new SortedList<Version, InstallFile>();
         private InstallFile _installScript;
         private InstallFile _upgradeScript;
 
-        #endregion
 
-        #region Protected Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -129,9 +123,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -146,10 +138,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "*dataprovider, sql";
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private bool ExecuteSql(InstallFile scriptFile)
         {
@@ -187,10 +175,6 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             return this.ProviderConfiguration.DefaultProvider.Equals(fileExtension, StringComparison.InvariantCultureIgnoreCase) || fileExtension.Equals("sql", StringComparison.InvariantCultureIgnoreCase);
         }
-
-        #endregion
-
-        #region Protected Methods
 
         private bool InstallScriptFile(InstallFile scriptFile)
         {
@@ -278,9 +262,7 @@ namespace DotNetNuke.Services.Installer.Installers
             base.UnInstallFile(scriptFile);
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -385,7 +367,5 @@ namespace DotNetNuke.Services.Installer.Installers
 
             this.Log.AddInfo(Util.SQL_EndUnInstall);
         }
-
-        #endregion
     }
 }

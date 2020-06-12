@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.IO;
@@ -97,7 +96,6 @@ namespace log4net.Layout.Pattern
         /// </remarks>
         protected IDateFormatter m_dateFormatter;
 
-        #region Implementation of IOptionHandler
 
         /// <summary>
         /// Initialize the converter pattern based on the <see cref="PatternConverter.Option"/> property.
@@ -149,7 +147,6 @@ namespace log4net.Layout.Pattern
             }
         }
 
-        #endregion
 
         /// <summary>
         /// Convert the pattern into the rendered message
@@ -177,7 +174,6 @@ namespace log4net.Layout.Pattern
             }
         }
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the DatePatternConverter class.
@@ -187,7 +183,5 @@ namespace log4net.Layout.Pattern
         /// log message.
         /// </remarks>
         private readonly static Type declaringType = typeof(DatePatternConverter);
-
-        #endregion Private Static Fields
     }
 }

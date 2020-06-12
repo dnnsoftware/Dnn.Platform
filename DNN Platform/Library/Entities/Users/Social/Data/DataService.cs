@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -12,15 +12,11 @@ using System.Linq;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
 
-#endregion
-
 namespace DotNetNuke.Entities.Users.Social.Data
 {
     internal class DataService : ComponentBase<IDataService, DataService>, IDataService
     {
         private readonly DataProvider _provider = DataProvider.Instance();
-
-        #region RelationshipType CRUD
 
         public IDataReader GetAllRelationshipTypes()
         {
@@ -41,10 +37,6 @@ namespace DotNetNuke.Entities.Users.Social.Data
         {
             return this._provider.ExecuteScalar<int>("SaveRelationshipType", relationshipType.RelationshipTypeId, relationshipType.Direction, relationshipType.Name, relationshipType.Description, createUpdateUserId);
         }
-
-        #endregion
-
-        #region Relationship CRUD
 
         public void DeleteRelationship(int relationshipId)
         {
@@ -70,10 +62,6 @@ namespace DotNetNuke.Entities.Users.Social.Data
         {
             return this._provider.ExecuteScalar<int>("SaveRelationship", relationship.RelationshipId, relationship.RelationshipTypeId, relationship.Name, relationship.Description, this._provider.GetNull(relationship.UserId), this._provider.GetNull(relationship.PortalId), relationship.DefaultResponse, createUpdateUserId);
         }
-
-        #endregion
-
-        #region UserRelationship CRUD
 
         public void DeleteUserRelationship(int userRelationshipId)
         {
@@ -105,10 +93,6 @@ namespace DotNetNuke.Entities.Users.Social.Data
             return this._provider.ExecuteScalar<int>("SaveUserRelationship", userRelationship.UserRelationshipId, userRelationship.UserId, userRelationship.RelatedUserId, userRelationship.RelationshipId, userRelationship.Status, createUpdateUserId);
         }
 
-        #endregion
-
-        #region UserRelationshipPreference CRUD
-
         public IDataReader GetUserRelationshipPreferenceById(int preferenceId)
         {
             return this._provider.ExecuteReader("GetUserRelationshipPreferenceByID", preferenceId);
@@ -128,7 +112,5 @@ namespace DotNetNuke.Entities.Users.Social.Data
         {
             return this._provider.ExecuteScalar<int>("SaveUserRelationshipPreference", userRelationshipPreference.PreferenceId, userRelationshipPreference.UserId, userRelationshipPreference.RelationshipId, userRelationshipPreference.DefaultResponse, createUpdateUserId);
         }
-
-        #endregion
     }
 }

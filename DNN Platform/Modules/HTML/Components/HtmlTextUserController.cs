@@ -23,7 +23,6 @@ namespace DotNetNuke.Modules.Html
     /// -----------------------------------------------------------------------------
     public class HtmlTextUserController
     {
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -62,7 +61,5 @@ namespace DotNetNuke.Modules.Html
         {
             DataProvider.Instance().DeleteHtmlTextUsers();
         }
-
-        #endregion
     }
 }

@@ -47,7 +47,6 @@ namespace DotNetNuke.Tests.Integration.Tests.Security
             return client.GetAsync(path).Result;
         }
 
-        #region This is duplicated  from the connector with tweaking to use direct calling to control the cookies
         private static HttpClient CreateHttpClient(Uri domain, TimeSpan timeout, CookieContainer cookies)
         {
             var clientHandler = new HttpClientHandler
@@ -64,7 +63,5 @@ namespace DotNetNuke.Tests.Integration.Tests.Security
 
             return client;
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.IO;
@@ -48,7 +47,6 @@ namespace log4net.Appender
     /// <author>Douglas de la Torre</author>
     public class TextWriterAppender : AppenderSkeleton
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TextWriterAppender" /> class.
@@ -100,9 +98,7 @@ namespace log4net.Appender
             this.Writer = writer;
         }
 
-        #endregion
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets or set whether the appender will flush at the end
@@ -165,9 +161,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion Public Instance Properties
 
-        #region Override implementation of AppenderSkeleton
 
         /// <summary>
         /// This method determines if there is a sense in attempting to append.
@@ -312,9 +306,7 @@ namespace log4net.Appender
             get { return true; }
         }
 
-        #endregion Override implementation of AppenderSkeleton
 
-        #region Protected Instance Methods
 
         /// <summary>
         /// Writes the footer and closes the underlying <see cref="TextWriter"/>.
@@ -443,9 +435,7 @@ namespace log4net.Appender
             set { this.m_qtw = value; }
         }
 
-        #endregion Protected Instance Methods
 
-        #region Private Instance Fields
 
         /// <summary>
         /// This is the <see cref="log4net.Util.QuietTextWriter"/> where logging events
@@ -471,9 +461,7 @@ namespace log4net.Appender
         /// </remarks>
         private bool m_immediateFlush = true;
 
-        #endregion Private Instance Fields
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the TextWriterAppender class.
@@ -484,14 +472,13 @@ namespace log4net.Appender
         /// </remarks>
         private readonly static Type declaringType = typeof(TextWriterAppender);
 
-        #endregion Private Static Fields
 
-            /// <summary>
-            /// Flushes any buffered log data.
-            /// </summary>
-            /// <param name="millisecondsTimeout">The maximum time to wait for logging events to be flushed.</param>
-            /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
-            public override bool Flush(int millisecondsTimeout)
+        /// <summary>
+        /// Flushes any buffered log data.
+        /// </summary>
+        /// <param name="millisecondsTimeout">The maximum time to wait for logging events to be flushed.</param>
+        /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
+        public override bool Flush(int millisecondsTimeout)
             {
                 // Nothing to do if ImmediateFlush is true
                 if (this.m_immediateFlush) return true;

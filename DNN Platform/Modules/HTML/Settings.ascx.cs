@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -10,8 +10,6 @@ using System.Collections.Generic;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Modules.Html.Components;
-
-#endregion
 
 namespace DotNetNuke.Modules.Html
 {
@@ -33,9 +31,6 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-
-        #region Event Handlers
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -46,10 +41,6 @@ namespace DotNetNuke.Modules.Html
         {
             this.DisplayWorkflowDetails();
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void DisplayWorkflowDetails()
         {
@@ -70,9 +61,7 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        #endregion
 
-        #region Base Method Implementations
 
         /// <summary>
         ///   LoadSettings loads the settings from the Database and displays them
@@ -173,8 +162,5 @@ namespace DotNetNuke.Modules.Html
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
-
     }
 }

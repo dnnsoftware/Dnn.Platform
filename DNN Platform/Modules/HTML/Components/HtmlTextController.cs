@@ -53,8 +53,6 @@ namespace DotNetNuke.Modules.Html
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Private Methods
-
         private static void AddHtmlNotification(string subject, string body, UserInfo user)
         {
             var notificationType = NotificationsController.Instance.GetNotificationType("HtmlNotification");
@@ -268,9 +266,7 @@ namespace DotNetNuke.Modules.Html
             return string.IsNullOrEmpty(protocol) ? result : protocol + result;
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -702,13 +698,10 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        #endregion
 
-        #region Optional Interfaces
 
-        #region IPortable Members
 
-         /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         ///   ExportModule implements the IPortable ExportModule Interface
         /// </summary>
@@ -770,10 +763,6 @@ namespace DotNetNuke.Modules.Html
             this.UpdateHtmlText(htmlContent, this.GetMaximumVersionHistory(module.PortalID));
         }
 
-        #endregion
-
-        #region ModuleSearchBase
-
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo modInfo, DateTime beginDateUtc)
         {
             var workflowId = this.GetWorkflow(modInfo.ModuleID, modInfo.TabID, modInfo.PortalID).Value;
@@ -831,10 +820,6 @@ namespace DotNetNuke.Modules.Html
             return collectTagsFunc(terms, new List<string>());
         }
 
-        #endregion
-
-        #region IUpgradeable Members
-
         public string UpgradeModule(string Version)
         {
             switch (Version)
@@ -870,9 +855,5 @@ namespace DotNetNuke.Modules.Html
                 NotificationsController.Instance.CreateNotificationType(type);
             }
         }
-
-        #endregion
-
-        #endregion
     }
 }

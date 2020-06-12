@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Text;
@@ -41,16 +40,13 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public abstract class TextWriterAdapter : TextWriter
     {
-        #region Private Member Variables
 
         /// <summary>
         /// The writer to forward messages to
         /// </summary>
         private TextWriter m_writer;
 
-        #endregion
 
-        #region Constructors
 
         /// <summary>
         /// Create an instance of <see cref="TextWriterAdapter"/> that forwards all
@@ -68,9 +64,7 @@ namespace log4net.Util
             this.m_writer = writer;
         }
 
-        #endregion
 
-        #region Protected Instance Properties
 
         /// <summary>
         /// Gets or sets the underlying <see cref="TextWriter" />.
@@ -89,9 +83,7 @@ namespace log4net.Util
             set { this.m_writer = value; }
         }
 
-        #endregion Protected Instance Properties
 
-        #region Public Properties
 
         /// <summary>
         /// The Encoding in which the output is written
@@ -142,9 +134,7 @@ namespace log4net.Util
             set { this.m_writer.NewLine = value; }
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// <summary>
         /// Closes the writer and releases any system resources associated with the writer
@@ -239,7 +229,5 @@ namespace log4net.Util
         {
             this.m_writer.Write(value);
         }
-
-        #endregion
     }
 }

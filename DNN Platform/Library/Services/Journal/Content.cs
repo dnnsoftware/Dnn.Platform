@@ -110,7 +110,6 @@ namespace DotNetNuke.Services.Journal {
             return contentTypeId;
         }
 
-        #region Private Methods
 
         /// <summary>
         /// Creates a Content Type (for taxonomy) in the data store.
@@ -138,7 +137,5 @@ namespace DotNetNuke.Services.Journal {
                 return null;
             }
         }
-        #endregion
-
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -20,8 +20,6 @@ using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Telerik.Web.UI;
 
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
     public class TermsSelector : DnnComboBox, IClientAPICallbackEventHandler
@@ -33,8 +31,6 @@ namespace DotNetNuke.Web.UI.WebControls
             this.EnableViewState = false;
         }
 
-        #region Public Properties
-
         public int PortalId { get; set; }
 
         public bool IncludeSystemVocabularies { get; set; }
@@ -42,10 +38,6 @@ namespace DotNetNuke.Web.UI.WebControls
         public bool IncludeTags { get; set; }
 
         public List<Term> Terms { get; set; }
-
-        #endregion
-
-        #region Protected Methods
 
         protected override void OnInit(EventArgs e)
         {
@@ -128,22 +120,12 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Attributes.Add("PortalId", this.PortalId.ToString());
         }
 
-        #endregion
-
-        #region Private Template Class
-
         public class TreeViewTemplate : ITemplate
         {
-            #region Private Fields
-
             private RadComboBoxItem _container;
             private TermsSelector _termsSelector;
 
             private DnnTreeView _tree;
-
-            #endregion
-
-            #region ITemplate Members
 
             public void InstantiateIn(Control container)
             {
@@ -160,14 +142,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 this._container.Controls.Add(this._tree);
             }
-
-
-            #endregion
         }
-
-        #endregion
-
-        #region IClientAPICallbackEventHandler Implementation
 
         public string RaiseClientAPICallbackEvent(string eventArgument)
         {
@@ -180,10 +155,6 @@ namespace DotNetNuke.Web.UI.WebControls
             var serializer = new JavaScriptSerializer();
             return serializer.Serialize(terms);
         }
-
-        #endregion
-
-        #region Private Methods
 
         private ArrayList GetTerms()
         {
@@ -228,7 +199,5 @@ namespace DotNetNuke.Web.UI.WebControls
             }
 
         }
-
-        #endregion
     }
 }

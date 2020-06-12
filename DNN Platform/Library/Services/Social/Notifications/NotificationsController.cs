@@ -33,22 +33,13 @@ namespace DotNetNuke.Services.Social.Notifications
             return () => new NotificationsController();
         }
 
-        #region Constants
-
         internal const int ConstMaxSubject = 400;
         internal const int ConstMaxTo = 2000;
         private const string ToastsCacheKey = "GetToasts_{0}";
-
-        #endregion
-
-        #region Private Variables
-
         private readonly IDataService _dataService;
         private readonly Messaging.Data.IDataService _messagingDataService;
 
-        #endregion
 
-        #region Constructors
 
         /// <summary>
         /// Default constructor
@@ -71,10 +62,6 @@ namespace DotNetNuke.Services.Social.Notifications
             this._dataService = dataService;
             this._messagingDataService = messagingDataService;
         }
-
-        #endregion
-
-        #region Public API
 
         public void SetNotificationTypeActions(IList<NotificationTypeAction> actions, int notificationTypeId)
         {
@@ -371,10 +358,6 @@ namespace DotNetNuke.Services.Social.Notifications
             return CBO.FillCollection<NotificationTypeAction>(this._dataService.GetNotificationTypeActions(notificationTypeId));
         }
 
-        #endregion
-
-        #region Toast APIS
-
         public bool IsToastPending(int notificationId)
         {
             return this._dataService.IsToastPending(notificationId);
@@ -415,11 +398,6 @@ namespace DotNetNuke.Services.Social.Notifications
 
             return toasts;
         }
-
-
-        #endregion
-
-        #region Internal Methods
 
         internal virtual UserInfo GetAdminUser()
         {
@@ -488,7 +466,5 @@ namespace DotNetNuke.Services.Social.Notifications
         {
             DataCache.ClearCache("NotificationTypes:");
         }
-
-        #endregion
     }
 }

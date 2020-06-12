@@ -11,9 +11,6 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
-
-#region Usings
-
 using System;
 using System.Collections;
 using System.Xml;
@@ -21,7 +18,6 @@ using System.Xml;
 using DotNetNuke.Entities.Tabs;
 // using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
 
-#endregion
 
 // ReSharper disable once CheckNamespace
 namespace DotNetNuke.Entities.Portals

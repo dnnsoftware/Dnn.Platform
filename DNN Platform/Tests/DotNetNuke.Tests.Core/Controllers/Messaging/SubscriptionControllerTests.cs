@@ -47,7 +47,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             MockComponentProvider.ResetContainer();
         }
 
-        #region IsSubscribed method tests
         [Test]
         public void IsSubscribed_ShouldReturnFalse_IfUserIsNotSubscribed()
         {
@@ -152,9 +151,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 subscription.ModuleId,
                 subscription.TabId), Times.Once);
         }
-        #endregion
 
-        #region AddSubscription method tests
         [Test]
         public void AddSubscription_ShouldThrowArgumentNullException_WhenSubscriptionIsNull()
         {
@@ -256,9 +253,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             // Assert
             Assert.AreEqual(expectedSubscriptionId, subscription.SubscriptionId);
         }
-        #endregion
 
-        #region DeleteSubscription method tests
         [Test]
         public void DeleteSubscription_ShouldThrowArgumentNullException_WhenSubscriptionIsNull()
         {
@@ -311,6 +306,5 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             // Assert
             this.mockDataService.Verify(ds => ds.DeleteSubscription(It.IsAny<int>()), Times.Never);
         }
-        #endregion
     }
 }

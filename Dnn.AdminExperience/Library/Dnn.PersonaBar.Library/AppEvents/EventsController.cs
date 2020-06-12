@@ -22,16 +22,10 @@ namespace Dnn.PersonaBar.Library.AppEvents
         private static readonly object LockThis = new object();
         private static bool _isInitialized;
 
-        #region
-
         protected override Func<IEventsController> GetFactory()
         {
             return () => new EventsController();
         }
-
-        #endregion
-
-        #region AppEventsController methods
 
         public void ApplicationStartEvent()
         {
@@ -76,10 +70,6 @@ namespace Dnn.PersonaBar.Library.AppEvents
                 }
             });
         }
-
-        #endregion
-
-        #region
 
         private static IEnumerable<T> GetEventsImplements<T>() where T : class
         {
@@ -142,7 +132,5 @@ namespace Dnn.PersonaBar.Library.AppEvents
 
             return matched;
         }
-
-        #endregion
     }
 }

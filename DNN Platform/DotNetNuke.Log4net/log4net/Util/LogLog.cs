@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -133,7 +132,6 @@ namespace log4net.Util
             return this.Prefix + this.Source.Name + ": " + this.Message;
         }
 
-        #region Private Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LogLog" /> class.
@@ -152,9 +150,7 @@ namespace log4net.Util
             this.exception = exception;
         }
 
-        #endregion Private Instance Constructors
 
-        #region Static Constructor
 
         /// <summary>
         /// Static constructor that initializes logging by reading
@@ -193,9 +189,7 @@ namespace log4net.Util
 #endif
         }
 
-        #endregion Static Constructor
 
-        #region Public Static Properties
 
         /// <summary>
         /// Gets or sets a value indicating whether log4net internal logging
@@ -288,9 +282,7 @@ namespace log4net.Util
             set { s_emitInternalMessages = value; }
         }
 
-        #endregion Public Static Properties
 
-        #region Public Static Methods
 
         /// <summary>
         /// Raises the LogReceived event when an internal messages is received.
@@ -520,7 +512,6 @@ namespace log4net.Util
             }
         }
 
-        #endregion Public Static Methods
 
         /// <summary>
         /// Writes output to the standard output stream.
@@ -590,7 +581,6 @@ namespace log4net.Util
             }
         }
 
-        #region Private Static Fields
 
         /// <summary>
         ///  Default debug level
@@ -608,7 +598,6 @@ namespace log4net.Util
         private const string ERR_PREFIX = "log4net:ERROR ";
         private const string WARN_PREFIX    = "log4net:WARN ";
 
-        #endregion Private Static Fields
 
         /// <summary>
         /// Subscribes to the LogLog.LogReceived event and stores messages

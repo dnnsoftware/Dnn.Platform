@@ -1,15 +1,13 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System.IO;
 using System.Xml;
 
 using DotNetNuke.Services.Installer.Packages;
-
-#endregion
 
 namespace DotNetNuke.Services.Installer.Writers
 {
@@ -22,8 +20,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class WidgetPackageWriter : PackageWriterBase
     {
-        #region "Constructors"
-
         public WidgetPackageWriter(PackageInfo package) : base(package)
         {
             string company = package.Name;
@@ -35,10 +31,6 @@ namespace DotNetNuke.Services.Installer.Writers
             this.BasePath = Path.Combine("Resources\\Widgets\\User", company);
         }
 
-        #endregion
-
-        #region "Public Properties"
-
         public override bool IncludeAssemblies
         {
             get
@@ -46,8 +38,6 @@ namespace DotNetNuke.Services.Installer.Writers
                 return false;
             }
         }
-
-        #endregion
 
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {

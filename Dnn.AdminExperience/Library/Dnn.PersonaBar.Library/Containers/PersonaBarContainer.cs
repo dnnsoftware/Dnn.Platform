@@ -31,8 +31,6 @@ namespace Dnn.PersonaBar.Library.Containers
             this.NavigationManager = navigationManager;
         }
 
-        #region Instance Methods
-
         private static IPersonaBarContainer _instance;
 
         public static IPersonaBarContainer Instance
@@ -61,10 +59,6 @@ namespace Dnn.PersonaBar.Library.Containers
             _instance = null;
         }
 
-        #endregion
-
-        #region IPersonaBarContainer Implements
-
         public virtual IList<string> RootItems => new List<string> { "Content", "Manage", "Settings", "Edit" };
 
         public virtual bool Visible => true;
@@ -85,10 +79,6 @@ namespace Dnn.PersonaBar.Library.Containers
         {
 
         }
-
-        #endregion
-
-        #region Private Methods
 
         private IDictionary<string, object> GetConfigration(PortalSettings portalSettings)
         {
@@ -141,7 +131,5 @@ namespace Dnn.PersonaBar.Library.Containers
             var user = UserController.Instance.GetCurrentUserInfo();
             return beaconService.GetBeaconEndpoint() + beaconService.GetBeaconQuery(user);
         }
-
-        #endregion
     }
 }

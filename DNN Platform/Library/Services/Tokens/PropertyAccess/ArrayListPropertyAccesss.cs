@@ -1,16 +1,14 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
 using System.Globalization;
 
 using DotNetNuke.Entities.Users;
-
-#endregion
 
 namespace DotNetNuke.Services.Tokens
 {
@@ -22,8 +20,6 @@ namespace DotNetNuke.Services.Tokens
         {
             this.custom = list;
         }
-
-        #region IPropertyAccess Members
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
@@ -74,7 +70,5 @@ namespace DotNetNuke.Services.Tokens
                 return CacheLevel.notCacheable;
             }
         }
-
-        #endregion
     }
 }

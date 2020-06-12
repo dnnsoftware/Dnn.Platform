@@ -21,8 +21,6 @@ namespace DotNetNuke.Services.Assets
 {
     public class AssetManager : ComponentBase<IAssetManager, AssetManager>, IAssetManager
     {
-        #region Default exception messages
-
         private const string UserHasNoPermissionToBrowseFolderDefaultMessage = "The user has no permission to browse this folder";
         private const string FileNameInvalidDefaultMessage = "The specified name ({0}) is not valid";
         private const string FolderFileNameIsReservedDefaultMessage = "The name is reserved. Try a different name";
@@ -34,9 +32,6 @@ namespace DotNetNuke.Services.Assets
         private const string FolderAlreadyExistsDefaultMessage = "Cannot create folder ({0}), folder already exists in this location";
         private const string FolderFileNameHasInvalidcharactersDefaultMessage = "The name contains invalid character(s). Please specify a name without {0}";
         private const string DefaultMessageDefaultMessage = "The folder does not exist";
-
-        #endregion
-
         private static readonly Regex MappedPathRegex = new Regex(@"^(?!\s*[\\/]).*$", RegexOptions.Compiled);
 
         public ContentPage GetFolderContent(int folderId, int startIndex, int numItems, string sortExpression = null, SubfolderFilter subfolderFilter = SubfolderFilter.IncludeSubfoldersFolderStructure)

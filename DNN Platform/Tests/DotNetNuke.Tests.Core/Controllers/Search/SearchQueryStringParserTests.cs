@@ -12,7 +12,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     [TestFixture]
     public class SearchQueryStringParserTests
     {
-        #region GetLastModifiedDate Method Tests
         public void GetLastModifiedDate_ShouldReturnOneDayAgoDate_WhenKeywordsHaveAfterDay()
         {
             // Arrange
@@ -125,9 +124,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Assert
             Assert.AreEqual(expectedOutputKeywords, outputKeywords);
         }
-        #endregion
 
-        #region GetSearchTypeList Method Tests
         [Test]
         public void GetSearchTypeList_ShouldReturnSearchTypeList_WhenKeywordsHaveTypeParameter()
         {
@@ -186,9 +183,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Assert
             Assert.AreEqual(expectedOutputKeywords, outputKeywords);
         }
-        #endregion
 
-        #region GetTags Method Tests
         [Test]
         public void GetTags_ShouldReturnTagsList_WhenKeywordsHaveTags()
         {
@@ -247,6 +242,5 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Assert
             Assert.AreEqual(expectedOutputKeywords, outputKeywords);
         }
-        #endregion
     }
 }

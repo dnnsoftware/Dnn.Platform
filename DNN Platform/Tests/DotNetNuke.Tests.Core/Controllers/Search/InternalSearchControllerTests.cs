@@ -29,9 +29,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     [TestFixture]
     public class InternalSearchControllerTests
     {
-
-        #region Constants
-
         public enum SearchTypeIds
         {
             ModuleSearchTypeId = 1,
@@ -83,11 +80,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private const string SearchIndexFolder = @"App_Data\InternalSearchTests";
         private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
-
-        #endregion
-
-        #region Private Properties
-
         private Mock<IHostController> _mockHostController;
         private Mock<CachingProvider> _mockCachingProvider;
         private Mock<DataProvider> _mockDataProvider;
@@ -97,10 +89,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private IInternalSearchController _internalSearchController;
         private LuceneControllerImpl _luceneController;
-
-        #endregion
-
-        #region Set Up
 
         [SetUp]
         public void SetUp()
@@ -140,10 +128,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             LuceneController.ClearInstance();
             this._luceneController = null;
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void CreateNewLuceneControllerInstance()
         {
@@ -362,10 +346,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             }
         }
 
-        #endregion
-
-        #region Add Tests
-
         [Test]
         public void SearchController_Add_Throws_On_Null_SearchDocument()
         {
@@ -445,10 +425,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.Throws<ArgumentException>(
                 () => this._internalSearchController.AddSearchDocument(new SearchDocument { UniqueKey = Guid.NewGuid().ToString(), Title = "title", SearchTypeId = 1 }));
         }
-
-        #endregion
-
-        #region Delete Tests
 
         [Test]
         public void SearchController_Add_Then_Delete_ModuleDefinition_WorksAsExpected()
@@ -757,7 +733,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 #endif
 
-        #endregion
 
     }
 }

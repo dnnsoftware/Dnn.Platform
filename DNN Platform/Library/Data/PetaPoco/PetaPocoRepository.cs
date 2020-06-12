@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -12,16 +12,12 @@ using DotNetNuke.Common;
 
 using PetaPoco;
 
-#endregion
-
 namespace DotNetNuke.Data.PetaPoco
 {
     public class PetaPocoRepository<T> : RepositoryBase<T> where T : class
     {
         private readonly Database _database;
         private readonly IMapper _mapper;
-
-        #region Constructors
 
         public PetaPocoRepository(Database database, IMapper mapper)
         {
@@ -32,10 +28,6 @@ namespace DotNetNuke.Data.PetaPoco
 
             PetaPocoMapper.SetMapper<T>(mapper);
         }
-
-        #endregion
-
-        #region IRepository<T> Implementation
 
         public override void Delete(string sqlCondition, params object[] args)
         {
@@ -63,8 +55,6 @@ namespace DotNetNuke.Data.PetaPoco
         {
             this._database.Update<T>(DataUtil.ReplaceTokens(sqlCondition), args);
         }
-
-        #endregion
 
         protected override void DeleteInternal(T item)
         {

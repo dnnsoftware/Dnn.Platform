@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -19,14 +19,10 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 
-#endregion
-
 namespace DotNetNuke.Security.Permissions.Controls
 {
     public class ModulePermissionsGrid : PermissionsGrid
     {
-        #region Private Members
-
         private bool _InheritViewPermissionsFromTab;
         private int _ModuleID = -1;
         private ModulePermissionCollection _ModulePermissions;
@@ -37,10 +33,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             this.TabId = -1;
         }
-
-        #endregion
-
-        #region Protected Properties
 
         protected override List<PermissionInfoBase> PermissionsList
         {
@@ -54,9 +46,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -184,11 +174,6 @@ namespace DotNetNuke.Security.Permissions.Controls
                 }
             }
         }
-
-
-        #endregion
-
-        #region Protected Methods
 
         protected override void CreateChildControls()
         {
@@ -542,9 +527,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             return true;
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -554,7 +537,5 @@ namespace DotNetNuke.Security.Permissions.Controls
         public override void GenerateDataGrid()
         {
         }
-
-        #endregion
     }
 }

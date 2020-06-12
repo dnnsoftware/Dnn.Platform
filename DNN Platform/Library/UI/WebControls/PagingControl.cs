@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.ComponentModel;
@@ -14,8 +14,6 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Common.Internal;
 using DotNetNuke.Services.Localization;
-
-#endregion
 
 namespace DotNetNuke.UI.WebControls
 {
@@ -99,15 +97,11 @@ namespace DotNetNuke.UI.WebControls
         [Bindable(true), Category("Behavior"), DefaultValue("0")]
         public int TotalRecords { get; set; }
 
-        #region IPostBackEventHandler Members
-
         public void RaisePostBackEvent(string eventArgument)
         {
             this.CurrentPage = int.Parse(eventArgument.Replace("Page_", string.Empty));
             this.OnPageChanged(new EventArgs());
         }
-
-        #endregion
 
         public event EventHandler PageChanged;
 
@@ -327,8 +321,6 @@ namespace DotNetNuke.UI.WebControls
             this.tablePageNumbers.RenderControl(output);
         }
 
-        #region Nested type: PageNumberLinkTemplate
-
         public class PageNumberLinkTemplate : ITemplate
         {
             private readonly PagingControl _PagingControl;
@@ -338,16 +330,12 @@ namespace DotNetNuke.UI.WebControls
                 this._PagingControl = ctlPagingControl;
             }
 
-            #region ITemplate Members
-
             void ITemplate.InstantiateIn(Control container)
             {
                 var l = new Literal();
                 l.DataBinding += this.BindData;
                 container.Controls.Add(l);
             }
-
-            #endregion
 
             private void BindData(object sender, EventArgs e)
             {
@@ -358,7 +346,5 @@ namespace DotNetNuke.UI.WebControls
                 lc.Text = this._PagingControl.GetLink(Convert.ToInt32(DataBinder.Eval(container.DataItem, "PageNum"))) + "&nbsp;&nbsp;";
             }
         }
-
-        #endregion
     }
 }

@@ -26,18 +26,12 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     [TestFixture]
     public class DatabaseFolderProviderTests
     {
-        #region Private Variables
-
         private DatabaseFolderProvider _dfp;
         private Mock<DataProvider> _mockData;
         private Mock<IFolderInfo> _folderInfo;
         private Mock<IFileInfo> _fileInfo;
         private Mock<IFolderManager> _folderManager;
         private Mock<IFileManager> _fileManager;
-
-        #endregion
-
-        #region Setup & TearDown
 
         [SetUp]
         public void Setup()
@@ -59,10 +53,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             MockComponentProvider.ResetContainer();
         }
 
-        #endregion
-
-        #region AddFile
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void AddFile_Throws_On_Null_Folder()
@@ -83,10 +73,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._dfp.AddFile(this._folderInfo.Object, fileName, stream.Object);
         }
 
-        #endregion
-
-        #region DeleteFile
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DeleteFile_Throws_On_Null_File()
@@ -103,10 +89,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._mockData.Verify(md => md.ClearFileContent(Constants.FOLDER_ValidFileId), Times.Once());
         }
-
-        #endregion
-
-        #region FileExists
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -148,10 +130,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.IsFalse(result);
         }
-
-        #endregion
-
-        #region FolderExists
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -196,10 +174,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             Assert.IsFalse(result);
         }
 
-        #endregion
-
-        #region GetFileAttributes
-
         [Test]
         public void GetFileAttributes_Returns_Null()
         {
@@ -207,10 +181,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.IsNull(result);
         }
-
-        #endregion
-
-        #region GetFiles
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -273,10 +243,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             CollectionAssert.AreEqual(expectedFiles, files);
         }
-
-        #endregion
-
-        #region GetFileContent
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -354,10 +320,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             Assert.IsNull(result);
         }
 
-        #endregion
-
-        #region GetFolderProviderIconPath
-
         [Test]
         public void GetImageUrl_Calls_IconControllerWrapper_IconURL()
         {
@@ -369,10 +331,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             iconControllerWrapper.Verify(icw => icw.IconURL("FolderDatabase", "32x32"), Times.Once());
         }
 
-        #endregion
-
-        #region GetLastModificationTime
-
         [Test]
         public void GetLastModificationTime_Returns_Null_Date()
         {
@@ -382,10 +340,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.AreEqual(expectedResult, result);
         }
-
-        #endregion
-
-        #region GetSubFolders
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -460,10 +414,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             CollectionAssert.AreEqual(expectedResult, result);
         }
 
-        #endregion
-
-        #region IsInSync
-
         [Test]
         public void IsInSync_Returns_True()
         {
@@ -472,10 +422,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             Assert.IsTrue(result);
         }
 
-        #endregion
-
-        #region SupportsFileAttributes
-
         [Test]
         public void SupportsFileAttributes_Returns_False()
         {
@@ -483,10 +429,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.IsFalse(result);
         }
-
-        #endregion
-
-        #region UpdateFile
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -535,7 +477,5 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._mockData.Verify(md => md.UpdateFileContent(It.IsAny<int>(), It.IsAny<byte[]>()), Times.Never());
         }
-
-        #endregion
     }
 }

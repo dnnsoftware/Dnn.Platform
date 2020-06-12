@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -17,14 +17,10 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.WebControls;
 
-#endregion
-
 namespace DotNetNuke.UI.Skins
 {
     public class SkinControl : UserControlBase
     {
-        #region "Private Members"
-
         private string _DefaultKey = "System";
         private string _SkinRoot;
         private string _SkinSrc;
@@ -35,10 +31,6 @@ namespace DotNetNuke.UI.Skins
         protected CommandButton cmdPreview;
         protected RadioButton optHost;
         protected RadioButton optSite;
-
-        #endregion
-
-        #region "Public Properties"
 
         public string DefaultKey
         {
@@ -116,10 +108,6 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        #endregion
-
-        #region "Private Methods"
-
         private void LoadSkins()
         {
             this.cboSkin.Items.Clear();
@@ -156,9 +144,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        #endregion
 
-        #region "Event Handlers"
 
         /// <summary>
         /// The Page_Load server event handler on this page is used
@@ -255,7 +241,5 @@ namespace DotNetNuke.UI.Skins
                 this.Response.Redirect(strURL, true);
             }
         }
-
-        #endregion
     }
 }

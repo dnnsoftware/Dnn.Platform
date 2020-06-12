@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Text.RegularExpressions;
@@ -17,8 +17,6 @@ using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
-
-#endregion
 
 namespace DotNetNuke.UI.UserControls
 {
@@ -35,8 +33,6 @@ namespace DotNetNuke.UI.UserControls
     [ValidationPropertyAttribute("Text")]
     public class TextEditor : UserControl
     {
-        #region Private Members
-
         private const string MyFileName = "TextEditor.ascx";
         private HtmlEditorProvider _richTextEditor;
         protected Panel PanelTextEditor;
@@ -56,9 +52,7 @@ namespace DotNetNuke.UI.UserControls
             this.ChooseMode = true;
         }
 
-        #endregion
 
-        #region Properties
 
         /// <summary>Enables/Disables the option to allow the user to select between Rich/Basic Mode, Default is true.</summary>
         public bool ChooseMode { get; set; }
@@ -251,9 +245,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        #endregion
 
-        #region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -361,9 +353,6 @@ namespace DotNetNuke.UI.UserControls
         {
             return Globals.BaseTagRegex.Replace(strInput, " ");
         }
-        #endregion
-
-        #region Public Methods
 
         public void ChangeMode(string mode)
         {
@@ -375,10 +364,6 @@ namespace DotNetNuke.UI.UserControls
             this.OptRender.SelectedItem.Value = textRenderMode;
             this.OptRenderSelectedIndexChanged(this.OptRender, EventArgs.Empty);
         }
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
@@ -510,8 +495,5 @@ namespace DotNetNuke.UI.UserControls
             }
             this.SetPanels();
         }
-
-        #endregion
-
     }
 }

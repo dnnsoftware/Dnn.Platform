@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web.UI;
@@ -22,8 +22,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Globals = DotNetNuke.Common.Globals;
 
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Users
 {
     /// -----------------------------------------------------------------------------
@@ -42,23 +40,14 @@ namespace DotNetNuke.Modules.Admin.Users
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Constants
-
         private const int COLUMN_REQUIRED = 11;
         private const int COLUMN_VISIBLE = 12;
         private const int COLUMN_MOVE_DOWN = 2;
         private const int COLUMN_MOVE_UP = 3;
-
-        #endregion
-
-        #region Private Members
-
         private ProfilePropertyDefinitionCollection _profileProperties;
         private bool _requiredColumnHidden = false;
 
-        #endregion
 
-        #region Protected Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -137,10 +126,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        #endregion
-
-        #region IActionable Members
-
         public ModuleActionCollection ModuleActions
         {
             get
@@ -172,9 +157,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        #endregion
 
-        #region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -351,10 +334,6 @@ namespace DotNetNuke.Modules.Admin.Users
             this.ProfileProperties.Sort();
         }
 
-        #endregion
-
-        #region Protected Methods
-
         protected override void LoadViewState(object savedState)
         {
             if (savedState != null)
@@ -386,10 +365,6 @@ namespace DotNetNuke.Modules.Admin.Users
 
             return allStates;
         }
-
-        #endregion
-
-        #region Public Methods
 
         public string DisplayDataType(ProfilePropertyDefinition definition)
         {
@@ -428,9 +403,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        #endregion
 
-        #region Event Handlers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -666,7 +639,5 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
             }
         }
-
-        #endregion
     }
 }

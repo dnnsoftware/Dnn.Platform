@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Specialized;
@@ -21,7 +21,6 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 
-#endregion
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.UI.WebControls
@@ -43,7 +42,6 @@ namespace DotNetNuke.UI.WebControls
             set { this.Value = value; }
         }
 
-        #region Public Properties
 
         /// <summary>
         /// Caption
@@ -68,9 +66,7 @@ namespace DotNetNuke.UI.WebControls
         /// <value>A string representing the Value</value>
         public object Value { get; set; }
 
-        #endregion
 
-        #region IPostBackDataHandler Members
 
         /// <summary>
         /// LoadPostData loads the Post Back Data and determines whether the value has change
@@ -135,15 +131,7 @@ namespace DotNetNuke.UI.WebControls
             this.OnVisibilityChanged(args);
         }
 
-        #endregion
-
-        #region Events
-
         public event PropertyChangedEventHandler VisibilityChanged;
-
-        #endregion
-
-        #region Private Methods
 
         private void RenderVisibility(HtmlTextWriter writer, string optionValue, UserVisibilityMode selectedVisibility, string optionText)
         {
@@ -210,10 +198,6 @@ namespace DotNetNuke.UI.WebControls
                                         this.Visibility.RelationshipVisibilities.Count(r => r.RelationshipId == relationship.RelationshipId) == 1);
             }
         }
-
-        #endregion
-
-        #region Protected Methods
 
         protected override void OnInit(EventArgs e)
         {
@@ -308,7 +292,5 @@ namespace DotNetNuke.UI.WebControls
             // Close Div
             writer.RenderEndTag();
         }
-
-        #endregion
     }
 }

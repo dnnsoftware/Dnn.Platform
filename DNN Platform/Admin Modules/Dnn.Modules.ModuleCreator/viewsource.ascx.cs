@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
@@ -23,8 +23,6 @@ using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.Services.Log.EventLog;
 
-#endregion
-
 namespace Dnn.Module.ModuleCreator
 {
     public partial class ViewSource : PortalModuleBase
@@ -34,9 +32,6 @@ namespace Dnn.Module.ModuleCreator
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-
-        #region Private Members
 
         protected int ModuleControlId
         {
@@ -58,10 +53,6 @@ namespace Dnn.Module.ModuleCreator
                 return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this._navigationManager.NavigateURL();
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void BindFiles(string controlSrc)
         {
@@ -431,11 +422,6 @@ namespace Dnn.Module.ModuleCreator
             return this.txtControl.Text.Replace(" ", string.Empty);
         }
 
-
-        #endregion
-
-        #region Event Handlers
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -532,8 +518,5 @@ namespace Dnn.Module.ModuleCreator
                 DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("AddControlError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
             }
         }
-
-        #endregion
-
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 using System;
 using System.Text;
 using System.Collections;
@@ -38,7 +37,6 @@ namespace log4net.Core
 #endif
     public class MethodItem
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// constructs a method item for an unknown method.
@@ -79,8 +77,6 @@ namespace log4net.Core
         {
         }
 
-        #endregion
-
         private static string[] GetMethodParameterNames(System.Reflection.MethodBase methodBase)
         {
             ArrayList methodParameterNames = new ArrayList();
@@ -103,7 +99,6 @@ namespace log4net.Core
             return (string[])methodParameterNames.ToArray(typeof(string));
         }
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets the method name of the caller making the logging
@@ -143,16 +138,10 @@ namespace log4net.Core
             get { return this.m_parameters; }
         }
 
-        #endregion
-
-        #region Private Instance Fields
-
         private readonly string m_name;
         private readonly string[] m_parameters;
 
-        #endregion
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the StackFrameItem class.
@@ -169,7 +158,5 @@ namespace log4net.Core
         /// constant is <b>?</b>.
         /// </summary>
         private const string NA = "?";
-
-        #endregion Private Static Fields
     }
 }

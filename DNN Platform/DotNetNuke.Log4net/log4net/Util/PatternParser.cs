@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -44,7 +43,6 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public sealed class PatternParser
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Constructor
@@ -61,9 +59,7 @@ namespace log4net.Util
             this.m_pattern = pattern;
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Methods
 
         /// <summary>
         /// Parses the pattern into a chain of pattern converters.
@@ -83,9 +79,7 @@ namespace log4net.Util
             return this.m_head;
         }
 
-        #endregion Public Instance Methods
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Get the converter registry used by this parser
@@ -103,9 +97,7 @@ namespace log4net.Util
             get { return this.m_patternConverters; }
         }
 
-        #endregion Public Instance Properties
 
-        #region Private Instance Methods
 
         /// <summary>
         /// Build the unified cache of converters from the static and instance maps
@@ -127,7 +119,6 @@ namespace log4net.Util
             return converterNamesCache;
         }
 
-        #region StringLengthComparer
 
         /// <summary>
         /// Sort strings by length
@@ -145,8 +136,6 @@ namespace log4net.Util
             private StringLengthComparer()
             {
             }
-
-            #region Implementation of IComparer
 
             public int Compare(object x, object y)
             {
@@ -168,11 +157,8 @@ namespace log4net.Util
 
                 return s2.Length.CompareTo(s1.Length);
             }
-
-            #endregion
         }
 
-        #endregion // StringLengthComparer
 
         /// <summary>
         /// Internal method to parse the specified pattern to find specified matches
@@ -386,15 +372,9 @@ namespace log4net.Util
             }
         }
 
-        #endregion Protected Instance Methods
-
-        #region Private Constants
-
         private const char ESCAPE_CHAR = '%';
 
-        #endregion Private Constants
 
-        #region Private Instance Fields
 
         /// <summary>
         /// The first pattern converter in the chain
@@ -421,9 +401,7 @@ namespace log4net.Util
         /// </remarks>
         private Hashtable m_patternConverters = new Hashtable();
 
-        #endregion Private Instance Fields
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the PatternParser class.
@@ -433,7 +411,5 @@ namespace log4net.Util
         /// log message.
         /// </remarks>
         private readonly static Type declaringType = typeof(PatternParser);
-
-        #endregion Private Static Fields
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -47,8 +47,6 @@ using Microsoft.VisualBasic;
 
 using Globals = DotNetNuke.Common.Globals;
 
-#endregion
-
 namespace DotNetNuke.UI.Skins
 {
     /// -----------------------------------------------------------------------------
@@ -64,7 +62,6 @@ namespace DotNetNuke.UI.Skins
     /// -----------------------------------------------------------------------------
     public class Skin : UserControlBase
     {
-        #region Public Constants
 
         // ReSharper disable InconsistentNaming
         public static string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
@@ -75,17 +72,14 @@ namespace DotNetNuke.UI.Skins
         public const string OnInitMessageType = "Skin_InitMessageType";
 
         private readonly ModuleCommunicate _communicator = new ModuleCommunicate();
+
         // ReSharper restore InconsistentNaming
 
-        #endregion
 
-        #region Private Members
 
         private ArrayList _actionEventListeners;
         private Control _controlPanel;
         private Dictionary<string, Pane> _panes;
-
-        #endregion
 
         public Skin()
         {
@@ -93,7 +87,6 @@ namespace DotNetNuke.UI.Skins
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Protected Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -112,9 +105,7 @@ namespace DotNetNuke.UI.Skins
 
         protected IModuleControlPipeline ModuleControlPipeline { get; }
         protected INavigationManager NavigationManager { get; }
-        #endregion
 
-        #region Friend Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -128,9 +119,7 @@ namespace DotNetNuke.UI.Skins
                 return this._communicator;
             }
         }
-        #endregion
 
-        #region Public Properties
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a Dictionary of Panes.
@@ -184,10 +173,6 @@ namespace DotNetNuke.UI.Skins
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------
         public string SkinSrc { get; set; }
-
-        #endregion
-
-        #region Private Methods
 
         private static void AddModuleMessage(Control control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconSrc)
         {
@@ -579,9 +564,7 @@ namespace DotNetNuke.UI.Skins
             return success;
         }
 
-        #endregion
 
-        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -711,10 +694,6 @@ namespace DotNetNuke.UI.Skins
 
             this.InvokeSkinEvents(SkinEventType.OnSkinUnLoad);
         }
-
-        #endregion
-
-        #region Public Methods
 
         public static void AddModuleMessage(PortalModuleBase control, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
@@ -1058,7 +1037,5 @@ namespace DotNetNuke.UI.Skins
             }
             return list;
         }
-
-        #endregion
     }
 }

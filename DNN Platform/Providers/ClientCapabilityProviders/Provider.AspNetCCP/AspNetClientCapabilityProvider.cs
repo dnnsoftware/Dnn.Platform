@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -14,8 +14,6 @@ using System.Web.Configuration;
 using DotNetNuke.Common;
 using DotNetNuke.Services.ClientCapability;
 
-#endregion
-
 namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
 {
     /// <summary>
@@ -23,8 +21,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
     /// </summary>
     public class AspNetClientCapabilityProvider : ClientCapabilityProvider
     {
-        #region Static Methods
-
         private static readonly object _allCapabilitiesLock = new object();
         private static IQueryable<IClientCapability> _allCapabilities;
 
@@ -109,10 +105,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             }
         }
 
-        #endregion
-
-        #region ClientCapabilityProvider Override Methods
-
         private static IDictionary<string, string> _dummyProperies;
 
         private static IDictionary<string, string> DummyProperties
@@ -180,9 +172,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             return AllCapabilities;
         }
 
-        #endregion
 
-        #region Override Properties
 
         /// <summary>
         /// Indicates whether tablet detection is supported in the available data set.
@@ -191,11 +181,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         {
             get { return false; }
         }
-
-        #endregion
-
-        #region Private Methods
-
 
         public static HttpBrowserCapabilities GetHttpBrowserCapabilities(NameValueCollection headers, string userAgent)
         {
@@ -208,7 +193,5 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             factory.ConfigureCustomCapabilities(headers, browserCaps);
             return browserCaps;
         }
-
-        #endregion
     }
 }

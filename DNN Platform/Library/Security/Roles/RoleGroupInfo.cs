@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -15,8 +15,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security.Roles.Internal;
-
-#endregion
 
 namespace DotNetNuke.Security.Roles
 {
@@ -32,17 +30,11 @@ namespace DotNetNuke.Security.Roles
     [Serializable]
     public class RoleGroupInfo : BaseEntityInfo, IHydratable, IXmlSerializable
     {
-        #region "Private Members"
-
         private string _Description;
         private int _PortalID = Null.NullInteger;
         private int _RoleGroupID = Null.NullInteger;
         private string _RoleGroupName;
         private Dictionary<string, RoleInfo> _Roles;
-
-        #endregion
-
-        #region "Constructors"
 
         public RoleGroupInfo()
         {
@@ -58,9 +50,7 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        #endregion
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -152,9 +142,7 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        #endregion
 
-        #region IHydratable Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -191,9 +179,7 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        #endregion
 
-        #region IXmlSerializable Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -285,8 +271,6 @@ namespace DotNetNuke.Security.Roles
             // Write end of main element
             writer.WriteEndElement();
         }
-
-        #endregion
 
         private void GetRoles()
         {

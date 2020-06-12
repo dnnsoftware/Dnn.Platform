@@ -1,14 +1,12 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
 using System.Text;
-
-#endregion
 
 namespace DotNetNuke.Services.OutputCache
 {
@@ -16,8 +14,6 @@ namespace DotNetNuke.Services.OutputCache
     public abstract class OutputCacheResponseFilter : Stream
     {
         private Stream _captureStream;
-
-        #region "Constructors"
 
         public OutputCacheResponseFilter(Stream filterChain, string cacheKey, TimeSpan cacheDuration, int maxVaryByCount)
         {
@@ -27,10 +23,6 @@ namespace DotNetNuke.Services.OutputCache
             this.MaxVaryByCount = maxVaryByCount;
             this._captureStream = this.CaptureStream;
         }
-
-        #endregion
-
-        #region "Public Properties"
 
         public TimeSpan CacheDuration { get; set; }
 
@@ -98,10 +90,6 @@ namespace DotNetNuke.Services.OutputCache
             }
         }
 
-        #endregion
-
-        #region "Public Methods"
-
         public override void Flush()
         {
             this.ChainedStream.Flush();
@@ -142,8 +130,6 @@ namespace DotNetNuke.Services.OutputCache
         {
             throw new NotSupportedException();
         }
-
-        #endregion
 
         protected virtual void AddItemToCache(int itemId, string output)
         {

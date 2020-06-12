@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 // Compatibility:
 // http://msdn.microsoft.com/en-us/library/system.console.foregroundcolor.aspx
@@ -115,7 +113,6 @@ namespace log4net.Appender
         {
         }
 
-        #region Public Instance Properties
         /// <summary>
         /// Target is the value of the console output stream.
         /// This is either <c>"Console.Out"</c> or <c>"Console.Error"</c>.
@@ -163,9 +160,7 @@ namespace log4net.Appender
         {
             this.m_levelMapping.Add(mapping);
         }
-        #endregion // Public Instance Properties
 
-        #region Override implementation of AppenderSkeleton
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(log4net.Core.LoggingEvent)"/> method.
         /// </summary>
@@ -238,9 +233,7 @@ namespace log4net.Appender
             base.ActivateOptions();
             this.m_levelMapping.ActivateOptions();
         }
-        #endregion // Override implementation of AppenderSkeleton
 
-        #region Public Static Fields
         /// <summary>
         /// The <see cref="ManagedColoredConsoleAppender.Target"/> to use when writing to the Console
         /// standard output stream.
@@ -264,9 +257,7 @@ namespace log4net.Appender
         /// </para>
         /// </remarks>
         public const string ConsoleError = "Console.Error";
-        #endregion // Public Static Fields
 
-        #region Private Instances Fields
         /// <summary>
         /// Flag to write output to the error stream rather than the standard output stream
         /// </summary>
@@ -276,9 +267,7 @@ namespace log4net.Appender
         /// Mapping from level object to color value
         /// </summary>
         private LevelMapping m_levelMapping = new LevelMapping();
-        #endregion // Private Instances Fields
 
-        #region LevelColors LevelMapping Entry
         /// <summary>
         /// A class to act as a mapping between the level that a logging call is made at and
         /// the color it should be displayed as.
@@ -340,7 +329,6 @@ namespace log4net.Appender
                 }
             }
         }
-        #endregion // LevelColors LevelMapping Entry
     }
 }
 

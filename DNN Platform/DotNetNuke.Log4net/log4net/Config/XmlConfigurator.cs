@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Xml;
@@ -47,7 +46,6 @@ namespace log4net.Config
     /// <author>Gert Driesen</author>
     public sealed class XmlConfigurator
     {
-        #region Private Instance Constructors
 
         /// <summary>
         /// Private constructor
@@ -56,9 +54,7 @@ namespace log4net.Config
         {
         }
 
-        #endregion Protected Instance Constructors
 
-        #region Configure static methods
 
 #if !NETCF
         /// <summary>
@@ -791,9 +787,7 @@ namespace log4net.Config
             }
         }
 
-        #endregion Configure static methods
 
-        #region ConfigureAndWatch static methods
 
 #if !NETCF && !SSCLI
 #if !NETSTANDARD1_3 // Excluded because GetCallingAssembly() is not available in CoreFX (https://github.com/dotnet/corefx/issues/2221).
@@ -913,9 +907,7 @@ namespace log4net.Config
         }
 #endif
 
-        #endregion ConfigureAndWatch static methods
 
-        #region ConfigureAndWatchHandler
 
 #if !NETCF && !SSCLI
         /// <summary>
@@ -1066,9 +1058,7 @@ namespace log4net.Config
         }
 #endif
 
-        #endregion ConfigureAndWatchHandler
 
-        #region Private Static Methods
 
         /// <summary>
         /// Configures the specified repository using a <c>log4net</c> element.
@@ -1118,9 +1108,7 @@ namespace log4net.Config
             }
         }
 
-        #endregion Private Static Methods
 
-        #region Private Static Fields
 
         /// <summary>
         /// Maps repository names to ConfigAndWatchHandler instances to allow a particular
@@ -1137,8 +1125,6 @@ namespace log4net.Config
         /// log message.
         /// </remarks>
         private readonly static Type declaringType = typeof(XmlConfigurator);
-
-        #endregion Private Static Fields
     }
 }
 

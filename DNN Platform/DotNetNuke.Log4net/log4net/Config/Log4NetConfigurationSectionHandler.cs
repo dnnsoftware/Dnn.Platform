@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 // .NET Compact Framework 1.0 has no support for application .config files
 #if !NETCF
@@ -54,7 +52,6 @@ namespace log4net.Config
     /// <author>Gert Driesen</author>
     public class Log4NetConfigurationSectionHandler : IConfigurationSectionHandler
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Log4NetConfigurationSectionHandler"/> class.
@@ -68,9 +65,7 @@ namespace log4net.Config
         {
         }
 
-        #endregion Public Instance Constructors
 
-        #region Implementation of IConfigurationSectionHandler
 
         /// <summary>
         /// Parses the configuration section.
@@ -88,8 +83,6 @@ namespace log4net.Config
         {
             return section;
         }
-
-        #endregion Implementation of IConfigurationSectionHandler
     }
 }
 

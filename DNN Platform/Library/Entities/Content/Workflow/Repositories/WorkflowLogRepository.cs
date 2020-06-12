@@ -13,7 +13,6 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 {
     internal class WorkflowLogRepository : ServiceLocator<IWorkflowLogRepository, WorkflowLogRepository>, IWorkflowLogRepository
     {
-        #region Public Methods
         public IEnumerable<WorkflowLog> GetWorkflowLogs(int contentItemId, int workflowId)
         {
             using (var context = DataContext.Instance())
@@ -43,13 +42,10 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 rep.Insert(workflowLog);
             }
         }
-        #endregion
 
-        #region Service Locator
         protected override Func<IWorkflowLogRepository> GetFactory()
         {
             return () => new WorkflowLogRepository();
         }
-        #endregion
     }
 }

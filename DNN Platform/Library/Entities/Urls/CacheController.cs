@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -21,8 +21,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Log.EventLog;
 
-#endregion
-
 namespace DotNetNuke.Entities.Urls
 {
     public class CacheController
@@ -30,9 +28,6 @@ namespace DotNetNuke.Entities.Urls
         private static CacheItemRemovedReason cacheItemRemovedReason;
         private static bool LogRemovedReason;
         private CacheItemRemovedCallback onRemovePageIndex;
-
-        #region Cache Keys
-
         private const string PageIndexKey = "url_PageIndex";
         private const string PageIndexDepthKey = "url_PageIndexDepth";
         private const string UrlDictKey = "url_UrlDict";
@@ -54,10 +49,6 @@ namespace DotNetNuke.Entities.Urls
         private const string TabPathsKey = "url_TabPathsKey_{0}";
 
         internal const string VanityUrlLookupKey = "url_VanityUrlLookup_{0}";
-
-        #endregion
-
-        #region Private Methods
 
         private static CacheDependency GetPortalsCacheDependency()
         {
@@ -127,9 +118,7 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        #endregion
 
-        #region Internal Methods
 
         /// <summary>
         /// Finds the best match friendlyurlparms.config file path
@@ -763,10 +752,6 @@ namespace DotNetNuke.Entities.Urls
                         null);
         }
 
-        #endregion
-
-        #region Public Methods
-
         public static void FlushFriendlyUrlSettingsFromCache()
         {
             DataCache.RemoveCache(FriendlyUrlSettingsKey);
@@ -946,7 +931,5 @@ namespace DotNetNuke.Entities.Urls
             }
 #endif
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -11,8 +11,6 @@ using System.Linq;
 using System.Xml.Serialization;
 
 using DotNetNuke.Security.Roles;
-
-#endregion
 
 namespace DotNetNuke.Entities.Users.Social
 {
@@ -29,25 +27,17 @@ namespace DotNetNuke.Entities.Users.Social
     [Serializable]
     public class UserSocial
     {
-        #region Private
-
         private IList<Relationship> _relationships;
         private IList<UserRelationship> _userRelationships;
         private IList<UserRoleInfo> _roles;
         private readonly UserInfo _userInfo;
-
-        #endregion
-
-        #region Constructor
 
         public UserSocial(UserInfo userInfo)
         {
             this._userInfo = userInfo;
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// <summary>
         /// Returns the Friend Relationship (if it exists with the current User)
@@ -143,7 +133,5 @@ namespace DotNetNuke.Entities.Users.Social
                                             : RoleController.Instance.GetUserRoles(this._userInfo, true));
             }
         }
-
-        #endregion
     }
 }

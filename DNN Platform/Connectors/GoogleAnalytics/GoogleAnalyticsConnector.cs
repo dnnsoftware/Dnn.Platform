@@ -14,8 +14,6 @@ namespace DNN.Connectors.GoogleAnalytics
 {
     public class GoogleAnalyticsConnector : IConnector
     {
-        #region Properties
-
         private const string DefaultDisplayName = "Google Analytics";
 
         public string Name
@@ -61,9 +59,6 @@ namespace DNN.Connectors.GoogleAnalytics
         // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
         public bool SupportsMultiple => false;
 
-        #endregion
-
-        #region Public Methods
         public IEnumerable<IConnector> GetConnectors(int portalId)
         {
 
@@ -256,8 +251,5 @@ namespace DNN.Connectors.GoogleAnalytics
                 return false;
             }
         }
-
-        #endregion
-
     }
 }

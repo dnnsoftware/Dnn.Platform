@@ -13,16 +13,13 @@ namespace DotNetNuke.Services.Social.Messaging
 {
     public class UserPreferencesController : ServiceLocator<IUserPreferencesController, UserPreferencesController>, IUserPreferencesController
     {
-        #region Private Memebers
         private readonly IDataService dataService;
-        #endregion
 
         protected override Func<IUserPreferencesController> GetFactory()
         {
             return () => new UserPreferencesController();
         }
 
-        #region Constructor
         public UserPreferencesController() : this(DataService.Instance)
         {
         }
@@ -34,9 +31,7 @@ namespace DotNetNuke.Services.Social.Messaging
 
             this.dataService = dataService;
         }
-        #endregion
 
-        #region Public API
         public void SetUserPreference(UserPreference userPreference)
         {
             this.dataService.SetUserPreference(userPreference.PortalId, userPreference.UserId, Convert.ToInt32(userPreference.MessagesEmailFrequency), Convert.ToInt32(userPreference.NotificationsEmailFrequency));
@@ -46,8 +41,5 @@ namespace DotNetNuke.Services.Social.Messaging
         {
             return CBO.FillObject<UserPreference>(this.dataService.GetUserPreference(userinfo.PortalID, userinfo.UserID));
         }
-
-        #endregion
-
     }
 }

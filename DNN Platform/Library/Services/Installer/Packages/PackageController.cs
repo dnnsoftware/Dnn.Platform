@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -26,8 +26,6 @@ using DotNetNuke.UI.Skins;
 
 using ICSharpCode.SharpZipLib.Zip;
 
-#endregion
-
 namespace DotNetNuke.Services.Installer.Packages
 {
     /// -----------------------------------------------------------------------------
@@ -37,18 +35,12 @@ namespace DotNetNuke.Services.Installer.Packages
     /// -----------------------------------------------------------------------------
     public class PackageController : ServiceLocator<IPackageController, PackageController>, IPackageController
     {
-        #region Private Members
-
         private static readonly DataProvider provider = DataProvider.Instance();
-
-        #endregion
 
         protected override Func<IPackageController> GetFactory()
         {
             return () => new PackageController();
         }
-
-        #region Private Methods
 
         private static void AddLog(PackageInfo package, EventLogController.EventLogType logType)
         {
@@ -166,10 +158,6 @@ namespace DotNetNuke.Services.Installer.Packages
             ClearDependenciesCache();
         }
 
-        #endregion
-
-        #region IPackageController Implementation
-
         public void DeleteExtensionPackage(PackageInfo package)
         {
             switch (package.PackageType)
@@ -273,10 +261,6 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             return GetPackageDependencies().Where(predicate).ToList();
         }
-
-        #endregion
-
-        #region Static Helper Methods
 
         public static bool CanDeletePackage(PackageInfo package, PortalSettings portalSettings)
         {
@@ -517,10 +501,6 @@ namespace DotNetNuke.Services.Installer.Packages
             return result;
         }
 
-        #endregion
-
-        #region Deprecated Methods
-
         [Obsolete("Deprecated in DNN 7.2, Replaced by SaveExtensionPackage(PackageInfo package). Scheduled removal in v10.0.0.")]
         public static int AddPackage(PackageInfo package, bool includeDetail)
         {
@@ -611,8 +591,5 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             Instance.SaveExtensionPackage(package);
         }
-
-        #endregion
-
     }
 }

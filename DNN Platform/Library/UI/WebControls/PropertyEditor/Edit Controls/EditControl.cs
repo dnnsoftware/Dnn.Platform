@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Specialized;
@@ -11,8 +11,6 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security;
-
-#endregion
 
 namespace DotNetNuke.UI.WebControls
 {
@@ -31,13 +29,9 @@ namespace DotNetNuke.UI.WebControls
     [ValidationPropertyAttribute("Value")]
     public abstract class EditControl : WebControl, IPostBackDataHandler
     {
-        #region "Private Members"
-
         private object[] _CustomAttributes;
 
-        #endregion
 
-        #region "Data Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -162,9 +156,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
 
-        #region IPostBackDataHandler Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -197,17 +189,11 @@ namespace DotNetNuke.UI.WebControls
             this.OnDataChanged(EventArgs.Empty);
         }
 
-        #endregion
-
-        #region "Events"
-
         public event PropertyChangedEventHandler ItemAdded;
         public event PropertyChangedEventHandler ItemDeleted;
         public event PropertyChangedEventHandler ValueChanged;
 
-        #endregion
 
-        #region "Abstract Members"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -217,9 +203,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected abstract void OnDataChanged(EventArgs e);
 
-        #endregion
 
-        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -324,7 +308,5 @@ namespace DotNetNuke.UI.WebControls
                 this.RenderViewMode(writer);
             }
         }
-
-        #endregion
     }
 }

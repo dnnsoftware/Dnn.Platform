@@ -1,12 +1,10 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System.Collections;
-
-#endregion
 
 namespace DotNetNuke.Services.Search
 {
@@ -24,7 +22,6 @@ namespace DotNetNuke.Services.Search
     #pragma warning disable 0618
     public class SearchContentModuleInfoCollection : CollectionBase
     {
-        #region "Constructors"
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchContentModuleInfoCollection">SearchContentModuleInfoCollection</see> class.
@@ -51,9 +48,7 @@ namespace DotNetNuke.Services.Search
             this.AddRange(value);
         }
 
-        #endregion
 
-        #region "Properties"
 
         /// <summary>
         /// Gets the <see cref="SearchContentModuleInfoCollection">SearchContentModuleInfoCollection</see> at the specified index in the collection.
@@ -73,9 +68,7 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        #endregion
 
-        #region "Public Methods"
 
         /// <summary>
         /// Add an element of the specified <see cref="SearchContentModuleInfo">SearchContentModuleInfo</see> to the end of the collection.
@@ -170,8 +163,6 @@ namespace DotNetNuke.Services.Search
             this.CopyTo(arr, 0);
             return arr;
         }
-
-        #endregion
     }
-    #pragma warning restore 0618
+#pragma warning restore 0618
 }

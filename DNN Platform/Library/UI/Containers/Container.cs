@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -33,8 +33,6 @@ using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
-#endregion
-
 namespace DotNetNuke.UI.Containers
 {
     using Web.Client;
@@ -46,16 +44,12 @@ namespace DotNetNuke.UI.Containers
     /// </remarks>
     public class Container : UserControl
     {
-        #region Private Members
-
         private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
         private HtmlContainerControl _contentPane;
         private ModuleInfo _moduleConfiguration;
         private ModuleHost _moduleHost;
 
-        #endregion
 
-        #region Protected Properties
 
         /// <summary>
         /// Gets the Content Pane Control (Id="ContentPane")
@@ -82,9 +76,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -165,10 +157,6 @@ namespace DotNetNuke.UI.Containers
         public string ContainerSrc { get; set; }
 
         internal bool InjectActionMenu { get; set; }
-
-        #endregion
-
-        #region Private Helper Methods
 
         private void AddAdministratorOnlyHighlighting(string message)
         {
@@ -430,9 +418,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        #endregion
 
-        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -491,19 +477,13 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         public void SetModuleConfiguration(ModuleInfo configuration)
         {
             this._moduleConfiguration = configuration;
             this.ProcessModule();
         }
 
-        #endregion
 
-        #region Event Handlers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -529,7 +509,5 @@ namespace DotNetNuke.UI.Containers
                 }
             }
         }
-
-        #endregion
     }
 }

@@ -15,16 +15,10 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
     [TestFixture]
     public class PostJournalTests : IntegrationTestBase
     {
-        #region Fields
-
         private readonly string _hostName;
         private readonly string _hostPass;
 
         private readonly int PortalId = 0;
-
-        #endregion
-
-        #region SetUp
 
         public PostJournalTests()
         {
@@ -47,10 +41,6 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 // ignored
             }
         }
-
-        #endregion
-
-        #region Tests
 
         [Test]
         public void Journal_Should_Able_To_Attach_Files_Upload_By_Himself()
@@ -433,9 +423,6 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             Assert.AreEqual(response.IndexOf(journalText), -1);
         }
 
-        #endregion
-
-        #region Private Methods
         private static readonly Random rnd = new Random();
 
         private IWebApiConnector PrepareNewUser(out int userId, out string username, out int fileId)
@@ -481,7 +468,5 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
         {
             return WebApiTestHelper.GetRequestHeaders("//ActivityFeed", moduleName, this.PortalId);
         }
-
-        #endregion
     }
 }

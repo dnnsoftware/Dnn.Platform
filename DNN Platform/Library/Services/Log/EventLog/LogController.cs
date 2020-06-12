@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -22,8 +22,6 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 
-#endregion
-
 namespace DotNetNuke.Services.Log.EventLog
 {
     public partial class LogController : ServiceLocator<ILogController, LogController>, ILogController
@@ -36,8 +34,6 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             return () => new LogController();
         }
-
-        #region Private Methods
 
         private static void AddLogToFile(LogInfo logInfo)
         {
@@ -152,10 +148,6 @@ namespace DotNetNuke.Services.Log.EventLog
                 LockLog.ExitWriteLock();
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         public void AddLog(LogInfo logInfo)
         {
@@ -398,7 +390,5 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             LoggingProvider.Instance().UpdateLogType(logType.LogTypeKey, logType.LogTypeFriendlyName, logType.LogTypeDescription, logType.LogTypeCSSClass, logType.LogTypeOwner);
         }
-
-        #endregion
     }
 }

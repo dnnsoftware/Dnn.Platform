@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -15,8 +15,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Data;
 using DotNetNuke.Entities.Users;
-
-#endregion
 
 namespace DotNetNuke.Entities.Content.Taxonomy
 {
@@ -38,8 +36,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         private const CacheItemPriority _CachePriority = CacheItemPriority.Normal;
         private const int _CacheTimeOut = 20;
 
-        #region Constructors
-
         public TermController() : this(Util.GetDataService())
         {
         }
@@ -49,19 +45,13 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             this._DataService = dataService;
         }
 
-        #endregion
-
-        #region Private Methods
-
         private object GetTermsCallBack(CacheItemArgs cacheItemArgs)
         {
             var vocabularyId = (int)cacheItemArgs.ParamList[0];
             return CBO.FillQueryable<Term>(this._DataService.GetTermsByVocabulary(vocabularyId)).ToList();
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// <summary>
         /// Adds the term.
@@ -255,7 +245,5 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             // Clear Cache
             DataCache.RemoveCache(string.Format(DataCache.TermCacheKey, term.VocabularyId));
         }
-
-        #endregion
     }
 }

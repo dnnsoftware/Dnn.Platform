@@ -14,9 +14,9 @@ namespace DNN.Integration.Test.Framework
     public abstract class IntegrationTestBase
     {
         public static string ConnectionString { get; }
+
         // public static string DatabaseName { get; }
 
-        #region static constructor
 
         static IntegrationTestBase()
         {
@@ -30,8 +30,6 @@ namespace DNN.Integration.Test.Framework
             // SchedulerController.DisableAllSchedulers(false);
             // SchedulerController.DisableAppStartDelay(false);
         }
-
-        #endregion
 
         [TestFixtureSetUp]
         public virtual void TestFixtureSetUp()

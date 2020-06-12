@@ -105,7 +105,6 @@ namespace DotNetNuke.Entities.Groups {
             return contentTypeId;
         }
 
-        #region Private Methods
 
         /// <summary>
         /// Creates a Content Type (for taxonomy) in the data store.
@@ -117,8 +116,5 @@ namespace DotNetNuke.Entities.Groups {
 
             return typeController.AddContentType(objContentType);
         }
-
-        #endregion
-
     }
 }

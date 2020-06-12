@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -40,7 +39,6 @@ namespace log4net.DateFormatter
     /// <author>Gert Driesen</author>
     public class AbsoluteTimeDateFormatter : IDateFormatter
     {
-        #region Protected Instance Methods
 
         /// <summary>
         /// Renders the date into a string. Format is <c>"HH:mm:ss"</c>.
@@ -81,9 +79,7 @@ namespace log4net.DateFormatter
             buffer.Append(secs);
         }
 
-        #endregion Protected Instance Methods
 
-        #region Implementation of IDateFormatter
 
         /// <summary>
         /// Renders the date into a string. Format is "HH:mm:ss,fff".
@@ -172,9 +168,7 @@ namespace log4net.DateFormatter
                     }
         }
 
-        #endregion Implementation of IDateFormatter
 
-        #region Public Static Fields
 
         /// <summary>
         /// String constant used to specify AbsoluteTimeDateFormat in layouts. Current value is <b>ABSOLUTE</b>.
@@ -191,9 +185,7 @@ namespace log4net.DateFormatter
         /// </summary>
         public const string Iso8601TimeDateFormat = "ISO8601";
 
-        #endregion Public Static Fields
 
-        #region Private Static Fields
 
         /// <summary>
         /// Last stored time with precision up to the second.
@@ -211,7 +203,5 @@ namespace log4net.DateFormatter
         /// as a string.
         /// </summary>
         private static Hashtable s_lastTimeStrings = new Hashtable();
-
-        #endregion Private Static Fields
     }
 }

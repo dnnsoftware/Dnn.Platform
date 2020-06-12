@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web;
@@ -15,8 +15,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
-
-#endregion
 
 namespace DotNetNuke.UI.Skins.Controls
 {
@@ -33,12 +31,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.LegacyMode = true;
         }
 
-        #region Private Members
-
         private const string MyFileName = "Login.ascx";
-        #endregion
-
-        #region Public Members
 
         public string Text { get; set; }
 
@@ -55,10 +48,6 @@ namespace DotNetNuke.UI.Skins.Controls
         /// set this to true to show in custom 404/500 page.
         /// </summary>
         public bool ShowInErrorPage { get; set; }
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
@@ -166,7 +155,5 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
             }
         }
-
-        #endregion
     }
 }

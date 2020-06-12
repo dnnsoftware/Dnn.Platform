@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -18,22 +18,13 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Log.EventLog;
 
-#endregion
-
 namespace DotNetNuke.Data
 {
     public sealed class SqlDataProvider : DataProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SqlDataProvider));
         private static DatabaseConnectionProvider _dbConnectionProvider = DatabaseConnectionProvider.Instance() ?? new SqlDatabaseConnectionProvider();
-
-        #region Private Members
-
         private const string ScriptDelimiter = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
-
-        #endregion
-
-        #region Public Properties
 
         public override bool IsConnectionValid
         {
@@ -50,10 +41,6 @@ namespace DotNetNuke.Data
                 return ComponentFactory.GetComponentSettings<SqlDataProvider>() as Dictionary<string, string>;
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static bool CanConnect(string connectionString, string owner, string qualifier)
         {
@@ -247,10 +234,6 @@ namespace DotNetNuke.Data
             return exceptions;
         }
 
-        #endregion
-
-        #region Abstract Methods
-
         public override void ExecuteNonQuery(string procedureName, params object[] commandParameters)
         {
             _dbConnectionProvider.ExecuteNonQuery(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
@@ -388,7 +371,5 @@ namespace DotNetNuke.Data
         {
             return this.ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
         }
-
-        #endregion
     }
 }

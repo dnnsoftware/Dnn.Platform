@@ -1,30 +1,22 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region usings
 
 using System.Collections.Generic;
 using System.Data;
 
 using DotNetNuke.ComponentModel;
 
-#endregion
-
 namespace DotNetNuke.Data
 {
     public abstract class DatabaseConnectionProvider
     {
-        #region Shared/Static Methods
-
         public static DatabaseConnectionProvider Instance()
         {
             return ComponentFactory.GetComponent<DatabaseConnectionProvider>();
         }
-
-        #endregion
-
-        #region Public Methods
 
         public abstract int ExecuteNonQuery(string connectionString, CommandType commandType, int commandTimeout, string query);
 
@@ -39,7 +31,5 @@ namespace DotNetNuke.Data
         public abstract void BulkInsert(string connectionString, int commandTimeout, string procedureName, string tableParameterName, DataTable dataTable);
 
         public abstract void BulkInsert(string connectionString, int commandTimeout, string procedureName, string tableParameterName, DataTable dataTable, Dictionary<string, object> commandParameters);
-
-        #endregion
     }
 }

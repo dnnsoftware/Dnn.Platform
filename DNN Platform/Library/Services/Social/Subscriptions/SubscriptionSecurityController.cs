@@ -44,7 +44,6 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return true;
         }
 
-        #region Private Static Methods
         private static bool HasUserModuleViewPermission(UserInfo userInfo, ModuleInfo moduleInfo)
         {
             var portalSettings = new PortalSettings(moduleInfo.PortalID);
@@ -71,6 +70,5 @@ namespace DotNetNuke.Services.Social.Subscriptions
         {
             return UserController.Instance.GetUser(subscription.PortalId, subscription.UserId);
         }
-        #endregion
     }
 }

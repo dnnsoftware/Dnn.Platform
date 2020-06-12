@@ -78,7 +78,6 @@ namespace log4net.Layout.Pattern
             return returnValue;
         }
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the StackTraceDetailPatternConverter class.
@@ -88,8 +87,6 @@ namespace log4net.Layout.Pattern
         /// log message.
         /// </remarks>
         private readonly static Type declaringType = typeof(StackTracePatternConverter);
-
-        #endregion Private Static Fields
     }
 }
 #endif

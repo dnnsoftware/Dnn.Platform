@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -14,8 +14,6 @@ using DotNetNuke.Data;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Services.FileSystem;
-
-#endregion
 
 namespace DotNetNuke.Entities.Content.Data
 {
@@ -40,7 +38,6 @@ namespace DotNetNuke.Entities.Content.Data
     {
         private readonly DataProvider _provider = DataProvider.Instance();
 
-        #region "ContentItem Methods"
 
         /// <summary>
         /// Adds the content item.
@@ -168,9 +165,7 @@ namespace DotNetNuke.Entities.Content.Data
                                      this._provider.GetNull(contentItem.StateID));
         }
 
-        #endregion
 
-        #region "MetaData Methods"
 
         /// <summary>
         /// Adds the meta data.
@@ -247,9 +242,7 @@ namespace DotNetNuke.Entities.Content.Data
             return this._provider.ExecuteReader("GetMetaData", contentItemId);
         }
 
-        #endregion
 
-        #region "ContentType Methods"
 
         /// <summary>
         /// Adds the type of the content.
@@ -284,9 +277,7 @@ namespace DotNetNuke.Entities.Content.Data
             this._provider.ExecuteNonQuery("UpdateContentType", contentType.ContentTypeId, contentType.ContentType);
         }
 
-        #endregion
 
-        #region "ScopeType Methods"
 
         /// <summary>
         /// Adds the type of the scope.
@@ -325,9 +316,7 @@ namespace DotNetNuke.Entities.Content.Data
             this._provider.ExecuteNonQuery("UpdateScopeType", scopeType.ScopeTypeId, scopeType.ScopeType);
         }
 
-        #endregion
 
-        #region "Term Methods"
 
         /// <summary>
         /// Adds the heirarchical term.
@@ -441,9 +430,7 @@ namespace DotNetNuke.Entities.Content.Data
             this._provider.ExecuteNonQuery("UpdateSimpleTerm", term.TermId, term.VocabularyId, term.Name, term.Description, term.Weight, lastModifiedByUserId);
         }
 
-        #endregion
 
-        #region "Vocabulary Methods"
 
         /// <summary>
         /// Adds the vocabulary.
@@ -500,7 +487,5 @@ namespace DotNetNuke.Entities.Content.Data
                                      vocabulary.ScopeTypeId,
                                      lastModifiedByUserId);
         }
-
-        #endregion
     }
 }

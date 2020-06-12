@@ -19,8 +19,6 @@ namespace DotNetNuke.Services.FileSystem
 {
     public class DatabaseFolderProvider : SecureFolderProvider
     {
-        #region Private Methods
-
         private Stream GetFileStreamInternal(IDataReader dr)
         {
             byte[] bytes = null;
@@ -76,10 +74,6 @@ namespace DotNetNuke.Services.FileSystem
 
             UpdateFileContent(fileId, fileContent);
         }
-
-        #endregion
-
-        #region Abstract Methods
 
         public override void CopyFile(string folderPath, string fileName, string newFolderPath, FolderMappingInfo folderMapping)
         {
@@ -253,9 +247,7 @@ namespace DotNetNuke.Services.FileSystem
             this.UpdateFileInternal(file.FileId, content);
         }
 
-        #endregion
 
-        #region Static Methods
 
         /// <summary>
         /// Clears the content of the file in the database.
@@ -315,7 +307,5 @@ namespace DotNetNuke.Services.FileSystem
                 ClearFileContent(fileId);
             }
         }
-
-        #endregion
     }
 }

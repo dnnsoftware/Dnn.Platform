@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -30,8 +30,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Calendar = DotNetNuke.Common.Utilities.Calendar;
 using Globals = DotNetNuke.Common.Globals;
 
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Security
 {
     /// -----------------------------------------------------------------------------
@@ -46,8 +44,6 @@ namespace DotNetNuke.Modules.Admin.Security
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityRoles));
         private readonly INavigationManager _navigationManager;
-        #region "Private Members"
-
         private int RoleId = Null.NullInteger;
         private new int UserId = Null.NullInteger;
         private RoleInfo _Role;
@@ -57,14 +53,11 @@ namespace DotNetNuke.Modules.Admin.Security
         private int _totalPages = 1;
         private int _totalRecords;
 
-        #endregion
-
         public SecurityRoles()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region "Protected Members"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -180,9 +173,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-#endregion
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -193,10 +184,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// -----------------------------------------------------------------------------
         public PortalModuleBase ParentModule { get; set; }
 
-        #endregion
-
-        #region IActionable Members
-
         public ModuleActionCollection ModuleActions
         {
             get
@@ -205,9 +192,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        #endregion
 
-        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -415,9 +400,7 @@ namespace DotNetNuke.Modules.Admin.Security
             this.expiryDatePicker.SelectedDate = expiryDate;
         }
 
-        #endregion
 
-        #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -493,9 +476,7 @@ namespace DotNetNuke.Modules.Admin.Security
             return "<a href=\"" + Globals.LinkClick("userid=" + UserID, this.TabId, this.ModuleId) + "\" class=\"CommandButton\">" + DisplayName + "</a>";
         }
 
-        #endregion
 
-        #region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -792,7 +773,5 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
             }
         }
-
-        #endregion
     }
 }

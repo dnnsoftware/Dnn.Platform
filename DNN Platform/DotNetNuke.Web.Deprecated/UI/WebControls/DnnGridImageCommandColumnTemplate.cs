@@ -141,7 +141,6 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <value>A Boolean</value>
         public string VisibleField { get; set; }
 
-        #region ITemplate Members
 
         /// <summary>
         /// InstantiateIn instantiates the template (implementation of ITemplate)
@@ -215,7 +214,6 @@ namespace DotNetNuke.Web.UI.WebControls
             return new OrderedDictionary();
         }
 
-        #endregion
 
         /// <summary>
         /// Gets whether theButton is visible

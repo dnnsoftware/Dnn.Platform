@@ -13,8 +13,6 @@ namespace DotNetNuke.Tests.Utilities
 {
     public static class MailAssert
     {
-        #region Private Methods
-
         private static string ConvertEmailContentFromBase64ToUnicode(string emailFileName)
         {
             string emailContent = File.ReadAllText(emailFileName);
@@ -88,10 +86,6 @@ namespace DotNetNuke.Tests.Utilities
             return emailFileName;
         }
 
-        #endregion
-
-        #region Public Methods
-
         public static void Base64EncodedContentLineContains(string expectedValue, string toAddress, string findByText)
         {
             var contentLine = ConvertEmailContentFromBase64ToUnicode(GetEmailFileName(toAddress, findByText));
@@ -138,7 +132,5 @@ namespace DotNetNuke.Tests.Utilities
 
             Assert.IsTrue(toLine.Contains(expectedValue));
         }
-
-        #endregion
     }
 }

@@ -1,16 +1,14 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Reflection;
 using System.Threading;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using PetaPoco;
-
-#endregion
 
 namespace DotNetNuke.Data.PetaPoco
 {
@@ -25,8 +23,6 @@ namespace DotNetNuke.Data.PetaPoco
             this._tablePrefix = tablePrefix;
             _defaultMapper = new StandardMapper();
         }
-
-        #region Implementation of IMapper
 
         public ColumnInfo GetColumnInfo(PropertyInfo pocoProperty)
         {
@@ -89,8 +85,6 @@ namespace DotNetNuke.Data.PetaPoco
         {
             return null;
         }
-
-        #endregion
 
         public static void SetMapper<T>(IMapper mapper)
         {

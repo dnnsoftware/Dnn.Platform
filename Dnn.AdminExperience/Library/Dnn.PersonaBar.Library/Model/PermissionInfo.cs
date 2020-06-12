@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Data;
@@ -10,8 +10,6 @@ using System.Xml.Serialization;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities;
 using DotNetNuke.Entities.Modules;
-
-#endregion
 
 namespace Dnn.PersonaBar.Library.Model
 {
@@ -27,9 +25,6 @@ namespace Dnn.PersonaBar.Library.Model
     [Serializable]
     public class PermissionInfo : BaseEntityInfo, IHydratable
     {
-        #region "Public Properties"
-
-
         [XmlElement("permissionId")]
         public int PermissionId { get; set; }
 
@@ -42,9 +37,7 @@ namespace Dnn.PersonaBar.Library.Model
         [XmlElement("permissionName")]
         public string PermissionName { get; set; }
 
-        #endregion
 
-        #region IHydratable Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -81,7 +74,5 @@ namespace Dnn.PersonaBar.Library.Model
                 this.PermissionId = value;
             }
         }
-
-        #endregion
     }
 }

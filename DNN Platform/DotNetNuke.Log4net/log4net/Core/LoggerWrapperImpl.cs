@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 namespace log4net.Core
 {
@@ -35,7 +34,6 @@ namespace log4net.Core
     /// <author>Gert Driesen</author>
     public abstract class LoggerWrapperImpl : ILoggerWrapper
     {
-        #region Protected Instance Constructors
 
         /// <summary>
         /// Constructs a new wrapper for the specified logger.
@@ -51,9 +49,7 @@ namespace log4net.Core
             this.m_logger = logger;
         }
 
-        #endregion Public Instance Constructors
 
-        #region Implementation of ILoggerWrapper
 
         /// <summary>
         /// Gets the implementation behind this wrapper object.
@@ -76,15 +72,11 @@ namespace log4net.Core
             get { return this.m_logger; }
         }
 
-        #endregion
 
-        #region Private Instance Fields
 
         /// <summary>
         /// The logger that this object is wrapping
         /// </summary>
         private readonly ILogger m_logger;
-
-        #endregion Private Instance Fields
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Text;
@@ -75,7 +74,6 @@ namespace log4net.Layout
     /// <author>Gert Driesen</author>
     public class XmlLayout : XmlLayoutBase
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Constructs an XmlLayout
@@ -105,9 +103,7 @@ namespace log4net.Layout
         {
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// The prefix to use for all element names
@@ -165,9 +161,7 @@ namespace log4net.Layout
         }
 
 
-        #endregion Public Instance Properties
 
-        #region Implementation of IOptionHandler
 
         /// <summary>
         /// Initialize layout options
@@ -204,9 +198,7 @@ namespace log4net.Layout
             }
         }
 
-        #endregion Implementation of IOptionHandler
 
-        #region Override implementation of XMLLayoutBase
 
         /// <summary>
         /// Does the actual writing of the XML.
@@ -313,9 +305,7 @@ namespace log4net.Layout
             writer.WriteEndElement();
         }
 
-        #endregion Override implementation of XMLLayoutBase
 
-        #region Private Instance Fields
 
         /// <summary>
         /// The prefix to use for all generated element names
@@ -331,11 +321,6 @@ namespace log4net.Layout
 
         private bool m_base64Message = false;
         private bool m_base64Properties = false;
-
-        #endregion Private Instance Fields
-
-        #region Private Static Fields
-
         private const string PREFIX = "log4net";
 
         private const string ELM_EVENT = "event";
@@ -359,9 +344,6 @@ namespace log4net.Layout
         private const string ATTR_LINE = "line";
         private const string ATTR_NAME = "name";
         private const string ATTR_VALUE = "value";
-
-
-        #endregion Private Static Fields
     }
 }
 

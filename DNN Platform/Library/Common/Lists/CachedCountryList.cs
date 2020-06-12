@@ -13,9 +13,6 @@ namespace DotNetNuke.Common.Lists
     [Serializable]
     public class CachedCountryList : Dictionary<string, CachedCountryList.Country>
     {
-
-        #region " Structures "
-
         [Serializable]
         public struct Country
         {
@@ -26,9 +23,6 @@ namespace DotNetNuke.Common.Lists
             public string NormalizedFullName;
         }
 
-        #endregion
-
-        #region " Constructors "
         public CachedCountryList(string locale)
             : base()
         {
@@ -48,9 +42,7 @@ namespace DotNetNuke.Common.Lists
             }
 
         }
-        #endregion
 
-        #region " Static Methods "
         public static CachedCountryList GetCountryList(string locale)
         {
 
@@ -76,7 +68,5 @@ namespace DotNetNuke.Common.Lists
         {
             return string.Format("CountryList:{0}", locale);
         }
-        #endregion
-
     }
 }

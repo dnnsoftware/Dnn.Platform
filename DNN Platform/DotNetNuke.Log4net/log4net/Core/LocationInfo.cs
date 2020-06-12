@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -65,7 +64,6 @@ namespace log4net.Core
 #endif
     public class LocationInfo
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Constructor
@@ -186,9 +184,7 @@ namespace log4net.Core
                 ':' + this.m_lineNumber + ')';
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Gets the fully qualified class name of the caller making the logging
@@ -285,9 +281,7 @@ namespace log4net.Core
         }
 #endif
 
-        #endregion Public Instance Properties
 
-        #region Private Instance Fields
 
         private readonly string m_className;
         private readonly string m_fileName;
@@ -298,9 +292,7 @@ namespace log4net.Core
         private readonly StackFrameItem[] m_stackFrames;
 #endif
 
-        #endregion Private Instance Fields
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the LocationInfo class.
@@ -317,7 +309,5 @@ namespace log4net.Core
         /// constant is <b>?</b>.
         /// </summary>
         private const string NA = "?";
-
-        #endregion Private Static Fields
     }
 }

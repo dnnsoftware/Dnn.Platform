@@ -22,9 +22,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     [TestFixture]
     public class SearchHelperTests
     {
-
-        #region constants
-
         private const int OtherSearchTypeId = 2;
         private const string TermDNN = "DNN";
         private const string TermDotNetNuke = "DotnetNuke";
@@ -35,18 +32,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const string TermHop = "Hop";
         private const int PortalId0 = 0;
         private const string CultureEnUs = "en-US";
-
-        #endregion
-
-        #region Private Properties
-
         private Mock<DataProvider> _dataProvider;
         private Mock<CachingProvider> _cachingProvider;
         private SearchHelperImpl _searchHelper;
-
-        #endregion
-
-        #region Set Up
 
         [SetUp]
         public void SetUp()
@@ -58,10 +46,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._searchHelper = new SearchHelperImpl();
             DataCache.ClearCache();
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void SetupDataProvider()
         {
@@ -139,10 +123,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             return table.CreateDataReader();
         }
 
-        #endregion
-
-        #region Synonyms Tests
-
         [Test]
         public void SearchHelper_GetSynonyms_Two_Terms_Returns_Correct_Results()
         {
@@ -169,10 +149,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(TermJump.ToLowerInvariant(), synonyms[0]);
             Assert.AreEqual(TermLeap.ToLowerInvariant(), synonyms[1]);
         }
-
-        #endregion
-
-        #region Rephrasing Search Text Tests
 
         [Test]
         public void SearchHelper_Rephrase_NoWildCardButExact_1()
@@ -411,7 +387,5 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Assert
             Assert.AreEqual(expected, analyzed);
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -14,32 +14,20 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Cache;
 
-#endregion
-
 namespace DotNetNuke.Services.EventQueue.Config
 {
     [Serializable]
     internal class EventQueueConfiguration
     {
-        #region "Constructors"
-
         internal EventQueueConfiguration()
         {
             this.PublishedEvents = new Dictionary<string, PublishedEvent>();
             this.EventQueueSubscribers = new Dictionary<string, SubscriberInfo>();
         }
 
-        #endregion
-
-        #region "Public Properties"
-
         internal Dictionary<string, SubscriberInfo> EventQueueSubscribers { get; set; }
 
         internal Dictionary<string, PublishedEvent> PublishedEvents { get; set; }
-
-        #endregion
-
-        #region "Private Methods"
 
         private void Deserialize(string configXml)
         {
@@ -126,7 +114,7 @@ namespace DotNetNuke.Services.EventQueue.Config
                 return sb.ToString();
             }
         }
-        #endregion
+
         internal static EventQueueConfiguration GetConfig()
         {
             var config = (EventQueueConfiguration)DataCache.GetCache("EventQueueConfig");

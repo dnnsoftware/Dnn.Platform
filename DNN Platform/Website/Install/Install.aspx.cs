@@ -4,9 +4,6 @@
 
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Installer.Blocker;
-
-#region Usings
-
 using System;
 using System.Data;
 using System.IO;
@@ -27,7 +24,6 @@ using DotNetNuke.Services.Upgrade.Internals;
 using DotNetNuke.Services.Upgrade.Internals.Steps;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
-#endregion
 
 // ReSharper disable once CheckNamespace
 namespace DotNetNuke.Services.Install
@@ -36,7 +32,6 @@ namespace DotNetNuke.Services.Install
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
         private static readonly object installLocker = new object();
-        #region Private Methods
 
         private void ExecuteScripts()
         {
@@ -506,10 +501,6 @@ namespace DotNetNuke.Services.Install
             HtmlUtils.WriteFooter(this.Response);
         }
 
-        #endregion
-
-        #region "Event Handlers"
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -591,6 +582,5 @@ namespace DotNetNuke.Services.Install
                 this.Server.ScriptTimeout = scriptTimeOut;
             }
         }
-        #endregion
     }
 }

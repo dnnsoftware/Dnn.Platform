@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -18,8 +18,6 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 
-#endregion
-
 namespace DotNetNuke.UI.Skins.Controls
 {
     /// <summary>
@@ -28,8 +26,6 @@ namespace DotNetNuke.UI.Skins.Controls
     /// <remarks></remarks>
     public partial class Language : SkinObjectBase
     {
-        #region Private Members
-
         private const string MyFileName = "Language.ascx";
         private string _SelectedItemTemplate;
         private string _alternateTemplate;
@@ -42,10 +38,6 @@ namespace DotNetNuke.UI.Skins.Controls
         private LanguageTokenReplace _localTokenReplace;
         private string _separatorTemplate;
         private bool _showMenu = true;
-
-        #endregion
-
-        #region Public Properties
 
         public string AlternateTemplate
         {
@@ -198,10 +190,6 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public bool UseCurrentCultureForTemplate { get; set;  }
 
-        #endregion
-
-        #region Protected Properties
-
         protected string CurrentCulture
         {
             get
@@ -242,10 +230,6 @@ namespace DotNetNuke.UI.Skins.Controls
                 return this._localTokenReplace;
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private string parseTemplate(string template, string locale)
         {
@@ -305,10 +289,6 @@ namespace DotNetNuke.UI.Skins.Controls
 
             return localizedTab != null && !localizedTab.IsDeleted && TabPermissionController.CanViewPage(localizedTab);
         }
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnLoad(EventArgs e)
         {
@@ -466,7 +446,5 @@ namespace DotNetNuke.UI.Skins.Controls
                 Exceptions.ProcessPageLoadException(ex, this.Request.RawUrl);
             }
         }
-
-        #endregion
     }
 }

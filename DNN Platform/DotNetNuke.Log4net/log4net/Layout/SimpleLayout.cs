@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.IO;
@@ -46,7 +45,6 @@ namespace log4net.Layout
     /// <author>Gert Driesen</author>
     public class SimpleLayout : LayoutSkeleton
     {
-        #region Constructors
 
         /// <summary>
         /// Constructs a SimpleLayout
@@ -56,9 +54,7 @@ namespace log4net.Layout
             this.IgnoresException = true;
         }
 
-        #endregion
 
-        #region Implementation of IOptionHandler
 
         /// <summary>
         /// Initialize layout options
@@ -81,9 +77,7 @@ namespace log4net.Layout
             // nothing to do.
         }
 
-        #endregion
 
-        #region Override implementation of LayoutSkeleton
 
         /// <summary>
         /// Produces a simple formatted output.
@@ -109,7 +103,5 @@ namespace log4net.Layout
             loggingEvent.WriteRenderedMessage(writer);
             writer.WriteLine();
         }
-
-        #endregion
     }
 }

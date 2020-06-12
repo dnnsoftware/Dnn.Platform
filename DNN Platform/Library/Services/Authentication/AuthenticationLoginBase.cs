@@ -1,14 +1,13 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 using System.Web;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.UserRequest;
 using System;
-#endregion
 
 namespace DotNetNuke.Services.Authentication
 {
@@ -20,11 +19,7 @@ namespace DotNetNuke.Services.Authentication
     /// -----------------------------------------------------------------------------
     public abstract class AuthenticationLoginBase : UserModuleBase
     {
-        #region Delegates
-
         public delegate void UserAuthenticatedEventHandler(object sender, UserAuthenticatedEventArgs e);
-
-        #endregion
 
         protected AuthenticationLoginBase()
         {

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Collections;
@@ -30,7 +29,6 @@ using log4net.Util;
 
 namespace log4net.Repository.Hierarchy
 {
-    #region LoggerCreationEvent
 
     /// <summary>
     /// Delegate used to handle logger creation event notifications.
@@ -92,7 +90,6 @@ namespace log4net.Repository.Hierarchy
         }
     }
 
-    #endregion LoggerCreationEvent
 
     /// <summary>
     /// Hierarchical organization of loggers
@@ -125,7 +122,6 @@ namespace log4net.Repository.Hierarchy
     /// <author>Gert Driesen</author>
     public class Hierarchy : LoggerRepositorySkeleton, IBasicRepositoryConfigurator, IXmlRepositoryConfigurator
     {
-        #region Public Events
 
         /// <summary>
         /// Event used to notify that a logger has been created.
@@ -141,9 +137,7 @@ namespace log4net.Repository.Hierarchy
             remove { this.m_loggerCreatedEvent -= value; }
         }
 
-        #endregion Public Events
 
-        #region Public Instance Constructors
 
         /// <summary>
         /// Default constructor
@@ -207,9 +201,7 @@ namespace log4net.Repository.Hierarchy
             this.m_ht = System.Collections.Hashtable.Synchronized(new System.Collections.Hashtable());
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Has no appender warning been emitted
@@ -279,9 +271,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        #endregion Public Instance Properties
 
-        #region Override Implementation of LoggerRepositorySkeleton
 
         /// <summary>
         /// Test if a logger exists
@@ -512,9 +502,7 @@ namespace log4net.Repository.Hierarchy
             return (Appender.IAppender[])appenderList.ToArray(typeof(Appender.IAppender));
         }
 
-        #endregion Override Implementation of LoggerRepositorySkeleton
 
-        #region Private Static Methods
 
         /// <summary>
         /// Collect the appenders from an <see cref="IAppenderAttachable"/>.
@@ -549,9 +537,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        #endregion
 
-        #region Implementation of IBasicRepositoryConfigurator
 
         /// <summary>
         /// Initialize the log4net system using the specified appender
@@ -602,9 +588,7 @@ namespace log4net.Repository.Hierarchy
             this.OnConfigurationChanged(new ConfigurationChangedEventArgs(configurationMessages));
         }
 
-        #endregion Implementation of IBasicRepositoryConfigurator
 
-        #region Implementation of IXmlRepositoryConfigurator
 
         /// <summary>
         /// Initialize the log4net system using the specified config
@@ -644,9 +628,7 @@ namespace log4net.Repository.Hierarchy
             this.OnConfigurationChanged(new ConfigurationChangedEventArgs(configurationMessages));
         }
 
-        #endregion Implementation of IXmlRepositoryConfigurator
 
-        #region Public Instance Methods
 
         /// <summary>
         /// Test if this hierarchy is disabled for the specified <see cref="Level"/>.
@@ -780,9 +762,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        #endregion Public Instance Methods
 
-        #region Protected Instance Methods
 
         /// <summary>
         /// Sends a logger creation event to all registered listeners
@@ -800,9 +780,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-        #endregion Protected Instance Methods
 
-        #region Private Instance Methods
 
         /// <summary>
         /// Updates all the parents of the specified logger
@@ -1059,10 +1037,6 @@ namespace log4net.Repository.Hierarchy
             this.Properties[propertyEntry.Key] = propertyEntry.Value;
         }
 
-        #endregion Private Instance Methods
-
-        #region Private Instance Fields
-
         private ILoggerFactory m_defaultFactory;
 
         private System.Collections.Hashtable m_ht;
@@ -1072,9 +1046,7 @@ namespace log4net.Repository.Hierarchy
 
         private event LoggerCreationEventHandler m_loggerCreatedEvent;
 
-        #endregion Private Instance Fields
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the Hierarchy class.
@@ -1084,7 +1056,5 @@ namespace log4net.Repository.Hierarchy
         /// log message.
         /// </remarks>
         private readonly static Type declaringType = typeof(Hierarchy);
-
-        #endregion Private Static Fields
     }
 }

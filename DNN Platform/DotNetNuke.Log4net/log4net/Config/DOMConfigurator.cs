@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Xml;
@@ -50,7 +49,6 @@ namespace log4net.Config
     [Obsolete("Use XmlConfigurator instead of DOMConfigurator. Scheduled removal in v10.0.0.")]
     public sealed class DOMConfigurator
     {
-        #region Private Instance Constructors
 
         /// <summary>
         /// Private constructor
@@ -59,9 +57,7 @@ namespace log4net.Config
         {
         }
 
-        #endregion Protected Instance Constructors
 
-        #region Configure static methods
 
         /// <summary>
         /// Automatically configures the log4net system based on the
@@ -287,9 +283,7 @@ namespace log4net.Config
             XmlConfigurator.Configure(repository, configStream);
         }
 
-        #endregion Configure static methods
 
-        #region ConfigureAndWatch static methods
 
 #if !NETCF && !SSCLI
 
@@ -356,7 +350,6 @@ namespace log4net.Config
         }
 #endif
 
-        #endregion ConfigureAndWatch static methods
     }
 }
 

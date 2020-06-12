@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -23,8 +23,6 @@ using DotNetNuke.Services.Installer.Writers;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
-#endregion
-
 namespace DotNetNuke.Services.Installer
 {
     using Entities.Controllers;
@@ -37,13 +35,9 @@ namespace DotNetNuke.Services.Installer
     public class Installer
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Installer));
-        #region Private Members
-
         private Stream _inputStream;
 
-        #endregion
 
-        #region Constructors
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -131,9 +125,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -179,9 +171,7 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        #endregion
 
-        #region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -427,10 +417,6 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         public void DeleteTempFolder()
         {
             try
@@ -570,7 +556,5 @@ namespace DotNetNuke.Services.Installer
             this.LogInstallEvent("Package", "UnInstall");
             return true;
         }
-
-        #endregion
     }
 }

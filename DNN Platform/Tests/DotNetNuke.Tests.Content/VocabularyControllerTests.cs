@@ -27,8 +27,6 @@ namespace DotNetNuke.Tests.Content
     {
         private Mock<CachingProvider> mockCache;
 
-        #region Test Initialize
-
         [SetUp]
         public void SetUp()
         {
@@ -42,10 +40,6 @@ namespace DotNetNuke.Tests.Content
         {
             MockComponentProvider.ResetContainer();
         }
-
-        #endregion
-
-        #region AddVocabulary
 
         [Test]
         public void VocabularyController_AddVocabulary_Throws_On_Null_Vocabulary()
@@ -152,10 +146,6 @@ namespace DotNetNuke.Tests.Content
             this.mockCache.Verify(cache => cache.Remove(Constants.VOCABULARY_CacheKey));
         }
 
-        #endregion
-
-        #region DeleteVocabulary
-
         [Test]
         public void VocabularyController_DeleteVocabulary_Throws_On_Null_Vocabulary()
         {
@@ -215,10 +205,6 @@ namespace DotNetNuke.Tests.Content
             this.mockCache.Verify(cache => cache.Remove(Constants.VOCABULARY_CacheKey));
         }
 
-        #endregion
-
-        #region GetVocabularies
-
         [Test]
         public void VocabularyController_GetVocabularies_Calls_DataService()
         {
@@ -248,10 +234,6 @@ namespace DotNetNuke.Tests.Content
             // Assert
             Assert.AreEqual(Constants.VOCABULARY_ValidCount, vocabularys.Count());
         }
-
-        #endregion
-
-        #region UpdateVocabulary
 
         [Test]
         public void VocabularyController_UpdateVocabulary_Throws_On_Null_Vocabulary()
@@ -339,7 +321,5 @@ namespace DotNetNuke.Tests.Content
             // Assert
             this.mockCache.Verify(cache => cache.Remove(Constants.VOCABULARY_CacheKey));
         }
-
-        #endregion
     }
 }

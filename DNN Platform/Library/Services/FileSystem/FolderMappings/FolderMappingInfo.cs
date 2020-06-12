@@ -20,8 +20,6 @@ namespace DotNetNuke.Services.FileSystem
     {
         private Hashtable _folderMappingSettings;
 
-        #region "Public Properties"
-
         public int FolderMappingID { get; set; }
         public int PortalID { get; set; }
         public string MappingName { get; set; }
@@ -86,10 +84,6 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        #endregion
-
-        #region "Constructors"
-
         public FolderMappingInfo()
         {
             this.FolderMappingID = Null.NullInteger;
@@ -104,9 +98,7 @@ namespace DotNetNuke.Services.FileSystem
             this.FolderProviderType = folderProviderType;
         }
 
-        #endregion
 
-        #region "IHydratable Implementation"
 
         /// <summary>
         ///   Fills a FolderInfo from a Data Reader
@@ -135,7 +127,5 @@ namespace DotNetNuke.Services.FileSystem
                 this.FolderMappingID = value;
             }
         }
-
-        #endregion
     }
 }

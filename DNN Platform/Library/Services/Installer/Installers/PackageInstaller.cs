@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -15,8 +15,6 @@ using DotNetNuke.Services.EventQueue;
 using DotNetNuke.Services.Installer.Dependencies;
 using DotNetNuke.Services.Installer.Packages;
 
-#endregion
-
 namespace DotNetNuke.Services.Installer.Installers
 {
     /// -----------------------------------------------------------------------------
@@ -26,15 +24,11 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class PackageInstaller : ComponentInstallerBase
     {
-        #region Private Members
-
         private readonly SortedList<int, ComponentInstallerBase> _componentInstallers = new SortedList<int, ComponentInstallerBase>();
         private PackageInfo _installedPackage;
         private EventMessage _eventMessage;
 
-        #endregion
 
-        #region Constructors
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -92,9 +86,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -113,9 +105,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public bool IsValid { get; private set; }
 
-        #endregion
 
-        #region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -200,9 +190,7 @@ namespace DotNetNuke.Services.Installer.Installers
             return strText;
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -570,7 +558,5 @@ namespace DotNetNuke.Services.Installer.Installers
             // Remove the Package information from the Data Store
             PackageController.Instance.DeleteExtensionPackage(this.Package);
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 using System.Globalization;
@@ -56,7 +55,6 @@ namespace log4net.Appender
     /// <author>Gert Driesen</author>
     public class ConsoleAppender : AppenderSkeleton
     {
-        #region Public Instance Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsoleAppender" /> class.
@@ -101,9 +99,7 @@ namespace log4net.Appender
             this.m_writeToErrorStream = writeToErrorStream;
         }
 
-        #endregion Public Instance Constructors
 
-        #region Public Instance Properties
 
         /// <summary>
         /// Target is the value of the console output stream.
@@ -137,9 +133,7 @@ namespace log4net.Appender
             }
         }
 
-        #endregion Public Instance Properties
 
-        #region Override implementation of AppenderSkeleton
 
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
@@ -186,9 +180,7 @@ namespace log4net.Appender
             get { return true; }
         }
 
-        #endregion Override implementation of AppenderSkeleton
 
-        #region Public Static Fields
 
         /// <summary>
         /// The <see cref="ConsoleAppender.Target"/> to use when writing to the Console
@@ -213,13 +205,6 @@ namespace log4net.Appender
         /// </para>
         /// </remarks>
         public const string ConsoleError = "Console.Error";
-
-        #endregion Public Static Fields
-
-        #region Private Instances Fields
-
         private bool m_writeToErrorStream = false;
-
-        #endregion Private Instances Fields
     }
 }

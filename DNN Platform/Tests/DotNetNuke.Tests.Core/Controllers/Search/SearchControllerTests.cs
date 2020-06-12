@@ -35,9 +35,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     [TestFixture]
     public class SearchControllerTests
     {
-
-        #region Constants
-
         public enum SearchTypeIds
         {
             ModuleSearchTypeId = 1,
@@ -127,10 +124,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const string SearchIndexFolder = @"App_Data\SearchTests";
         private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
         private const int DefaultSearchRetryTimes = 5;
-        #endregion
-
-        #region Private Properties
-
         private Mock<IHostController> _mockHostController;
         private Mock<CachingProvider> _mockCachingProvider;
         private Mock<DataProvider> _mockDataProvider;
@@ -141,10 +134,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private SearchControllerImpl _searchController;
         private IInternalSearchController _internalSearchController;
         private LuceneControllerImpl _luceneController;
-
-        #endregion
-
-        #region Set Up
 
         [SetUp]
         public void SetUp()
@@ -183,10 +172,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             LuceneController.ClearInstance();
             this._luceneController = null;
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void CreateNewLuceneControllerInstance(bool reCreate = false)
         {
@@ -725,10 +710,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             return r; // ah!
         }
 
-        #endregion
-
-        #region Search Tests
-
         [Test]
         public void SearchController_Search_Throws_On_Null_Query()
         {
@@ -771,10 +752,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                         return false;
                     }, TimeSpan.FromSeconds(1)));
         }
-
-        #endregion
-
-        #region Add and Search Tests
 
         [Test]
         public void SearchController_Added_Item_IsRetrieved()
@@ -930,9 +907,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(1, search.Results.Count);
             Assert.AreEqual("<b>" + veryLongWord + "</b>", this.StipEllipses(search.Results[0].Snippet).Trim());
         }
-        #endregion
-
-        #region Security Trimming Tests
 
         [Test]
         public void SearchController_SecurityTrimmedTest_ReturnsNoResultsWhenHavingNoPermission()
@@ -1310,10 +1284,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(new int[] { 86, 87, 88, 89, 96, 97, 98, 99 }, ids);
         }
 
-        #endregion
-
-        #region Supplied Data Tests
-
         [Test]
         public void SearchController_GetResult_Returns_Correct_SuppliedData_When_Optionals_Are_Supplied()
         {
@@ -1480,10 +1450,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(cultureCode, searches.Results[0].CultureCode);
         }
 
-        #endregion
-
-        #region DateRange Tests
-
         [Test]
         public void SearchController_GetResult_TimeRangeSearch_Ignores_When_Only_BeginDate_Specified()
         {
@@ -1567,10 +1533,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(1, search.Results.Count);
             Assert.AreEqual(Line2, search.Results[0].Title);
         }
-
-        #endregion
-
-        #region Tag Tests
 
         [Test]
         public void SearchController_GetResult_TagSearch_Single_Tag_Returns_Single_Result()
@@ -1678,10 +1640,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Assert
             Assert.AreEqual(1, search.Results.Count);
         }
-
-        #endregion
-
-        #region Sort Tests
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
@@ -2145,10 +2103,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(true, search.Results[0].Snippet.Contains("brown") && search.Results[0].Snippet.Contains("dog"));
         }
 
-        #endregion
-
-        #region Locale Tests
-
         [Test]
         public void SearchController_GetResult_By_Locale_Returns_Specific_And_Neutral_Locales()
         {
@@ -2170,10 +2124,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(Line1, search.Results[1].Title);
         }
 
-
-        #endregion
-
-        #region Add and Delete Tests
         [Test]
         public void SearchController_EnsureOldDocument_Deleted_Upon_Second_Index_Content_With_Same_Key()
         {
@@ -2230,9 +2180,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.DoesNotThrow(() => this._internalSearchController.AddSearchDocument(doc));
         }
 
-        #endregion
-
-        #region IsActive Tests
         [Test]
         public void SearchController_EnsureOldDocument_Deleted_Upon_Second_Index_When_IsActive_Is_False()
         {
@@ -2260,9 +2207,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(0, search.Results.Count);
         }
 
-        #endregion
 
-        #region accents tests
         // Note: these tests needs to pass through the analyzer which is utilized
         //       in SearchControllerImpl but not LuceneControllerImpl.
 
@@ -2338,10 +2283,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual("e boy <b>rides</b> his bike to school", this.StipEllipses(search.Results[2].Snippet));
         }
 
-        #endregion
-
-        #region synonyms tests
-
         [Test]
         public void SearchController_Search_Synonym_Works()
         {
@@ -2360,9 +2301,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual("gold <b>fox</b> jumped over the lazy black dog", snippets[2]);
             Assert.AreEqual("quick <b>fox</b> jumps over the black dog - Italian", snippets[3]);
         }
-        #endregion
 
-        #region Field Boosting Tests
         [Test]
         public void SearchController_Title_Ranked_Higher_Than_Body()
         {
@@ -2469,9 +2408,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(doc4.UniqueKey, result.Results[3].UniqueKey);
         }
 
-        #endregion
-
-        #region FileName Tests
         [Test]
         public void SearchController_FileNameTest_With_WildCard()
         {
@@ -2525,9 +2461,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(1, result.TotalHits);
             Assert.AreEqual(doc1.UniqueKey, result.Results[0].UniqueKey);
         }
-        #endregion
-
-        #region folder scope search tests
 
         private void AddFoldersAndFiles()
         {
@@ -2599,9 +2532,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(2, result3.TotalHits);
         }
 
-        #endregion
-
-        #region EmailAddress Tests
         [Test]
         public void SearchController_EmailTest_With_WildCard()
         {
@@ -2619,9 +2549,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(1, result.TotalHits);
             Assert.AreEqual(doc1.UniqueKey, result.Results[0].UniqueKey);
         }
-        #endregion
 
-        #region search type id test
         [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void SearchController_Add_Use_Of_Module_Search_Type_Requires_ModuleDefinitionId()
@@ -2709,11 +2637,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(0, result.Results.Count);
         }
 
-
-        #endregion
-
-        #region group id test
-
         [Test]
         public void SearchController_Search_For_GroupId_Zero_Ignores_GroupId()
         {
@@ -2773,10 +2696,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(RoleId731, result.Results[0].RoleId);
         }
 
-        #endregion
-
-        #region Module Definitions Test
-
         [Test]
         public void SearchController_Search_For_Two_ModuleDefinitions_Returns_Two_Only()
         {
@@ -2828,9 +2747,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(doc1.UniqueKey, result.Results[0].UniqueKey);
             Assert.AreEqual(doc2.UniqueKey, result.Results[1].UniqueKey);
         }
-        #endregion
-
-        #region module and non-module search type tests
 
         [Test]
         public void SearchController_Search_For_Module_Search_Type_And_Multiple_ModuleDefIds_Should_Return_From_Those_ModuleDefinitions_Only()
@@ -2921,9 +2837,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(doc5.UniqueKey, result.Results[2].UniqueKey);
         }
 
-        #endregion
-
-        #region custom numeric key and keyword test
         [Test]
         public void SearchController_GetResult_Works_With_Custom_Numeric_Querirs()
         {
@@ -2962,10 +2875,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(1, search.Results.Count);
             Assert.AreEqual(KeyWord1Value, search.Results[0].Keywords[KeyWord1Name]);
         }
-
-        #endregion
-
-        #region Leading Wildcard search tests
 
         [Test]
         public void SearchController_EnableLeadingWildcard_Should_Not_Return_Results_When_Property_Is_False()
@@ -3038,10 +2947,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(doc2.UniqueKey, result.Results[0].UniqueKey);
         }
 
-        #endregion
-
-        #region stop-words tests
-
         [Test]
         public void SearchController_Search_StopWords_Works()
         {
@@ -3070,7 +2975,5 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // we won't find "los" in the es-ES document.
             Assert.AreEqual(0, search.TotalHits, "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
         }
-        #endregion
-
     }
 }

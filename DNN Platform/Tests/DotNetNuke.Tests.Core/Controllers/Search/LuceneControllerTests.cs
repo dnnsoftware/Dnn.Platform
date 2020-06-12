@@ -34,8 +34,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     [TestFixture]
     public class LuceneControllerTests
     {
-        #region Private Properties & Constants
-
         private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
         private const string SearchIndexFolder = @"App_Data\LuceneTests";
         private const string WriteLockFile = "write.lock";
@@ -58,10 +56,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private Mock<CachingProvider> _cachingProvider;
         private Mock<ISearchHelper> _mockSearchHelper;
         private Mock<SearchQuery> _mockSearchQuery;
-
-        #endregion
-
-        #region Set Up
 
         [SetUp]
         public void SetUp()
@@ -97,11 +91,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.DeleteIndexFolder();
             SearchHelper.ClearInstance();
         }
-
-
-        #endregion
-
-        #region Private Methods
 
         private void CreateNewLuceneControllerInstance()
         {
@@ -160,10 +149,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
              this._luceneController.Commit();
          }
-
-        #endregion
-
-        #region Add Tests
 
         [Test]
         public void LuceneController_SearchFolderIsAsExpected()
@@ -272,10 +257,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(1, hits.Results.Count());
         }
 
-        #endregion
-
-        #region pagination tests
-
         [Test]
         public void LuceneController_Search_Returns_Correct_Total_Hits()
         {
@@ -368,9 +349,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(Line1, hits.Results.ElementAt(0).Document.GetField(Constants.ContentTag).StringValue);
         }
 
-        #endregion
-
-        #region search tests
         [Test]
         public void LuceneController_NumericRangeCheck()
         {
@@ -534,9 +512,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         }
 
-        #endregion
-
-        #region fuzzy search
         [Test]
         public void LuceneController_Search_Single_FuzzyQuery()
         {
@@ -588,9 +563,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Assert
             Assert.AreEqual(3, previews.Results.Count());
         }
-        #endregion
 
-        #region search reader tests
         [Test]
         public void LuceneController_Throws_SearchIndexEmptyException_WhenNoDataInSearch()
         {
@@ -664,9 +637,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             Assert.AreNotSame(reader, this._luceneController.GetSearcher());
         }
-        #endregion
-
-        #region Locking Tests
 
         [Test]
         public void LuceneController_LockFileWhenExistsDoesNotCauseProblemForFirstIController()
@@ -709,9 +679,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.Throws<SearchException>(() => secondController.Add(doc1));
         }
 
-        #endregion
 
-        #region Added/Deleted documents count and ptimization tests
 
         // Arrange
         const int TotalTestDocs2Create = 5;
@@ -795,9 +763,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(statistics.TotalDeletedDocuments, delCount);
             Assert.AreEqual(statistics.TotalActiveDocuments, addedCount - delCount);
         }
-        #endregion
-
-        #region Tests for other controllers but need to be run from this location (they enforce tesing private components in others)
 
         [Test]
         public void SearchController_LuceneControllerReaderIsNotNullWhenWriterIsNull()
@@ -809,8 +774,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Assert
             Assert.IsNotNull(this._luceneController.GetSearcher());
         }
-
-        #endregion
 
         private LuceneSearchContext CreateSearchContext(LuceneQuery luceneQuery)
         {

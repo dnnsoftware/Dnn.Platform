@@ -14,14 +14,8 @@ namespace DotNetNuke.Data.PetaPoco
     [CLSCompliant(false)]
     public class PetaPocoDataContext : IDataContext
     {
-        #region Private Members
-
         private readonly Database _database;
         private readonly IMapper _mapper;
-
-        #endregion
-
-        #region Constructors
 
         public PetaPocoDataContext()
             : this(ConfigurationManager.ConnectionStrings[0].Name, string.Empty)
@@ -48,13 +42,9 @@ namespace DotNetNuke.Data.PetaPoco
             this.FluentMappers = mappers;
         }
 
-        #endregion
-
         public Dictionary<Type, IMapper> FluentMappers { get; private set; }
 
         public string TablePrefix { get; private set; }
-
-        #region Implementation of IDataContext
 
         public void BeginTransaction()
         {
@@ -141,15 +131,9 @@ namespace DotNetNuke.Data.PetaPoco
             this._database.AbortTransaction();
         }
 
-        #endregion
-
-        #region Implementation of IDisposable
-
         public void Dispose()
         {
             this._database.Dispose();
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Data;
@@ -17,8 +17,6 @@ using DotNetNuke.Entities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
-
-#endregion
 
 namespace DotNetNuke.Services.FileSystem
 {
@@ -44,8 +42,6 @@ namespace DotNetNuke.Services.FileSystem
         private int? _width = null;
         private int? _height = null;
         private string _sha1Hash = null;
-
-        #region Constructors
 
         public FileInfo()
         {
@@ -82,10 +78,6 @@ namespace DotNetNuke.Services.FileSystem
             this.IsCached = cached;
             this.SHA1Hash = hash;
         }
-
-        #endregion
-
-        #region Properties
 
         [XmlElement("contenttype")]
         public string ContentType { get; set; }
@@ -401,10 +393,6 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         public int ContentItemID { get; set; }
 
-        #endregion
-
-        #region IHydratable Implementation
-
         public void Fill(IDataReader dr)
         {
             this.ContentType = Null.SetNullString(dr["ContentType"]);
@@ -447,10 +435,6 @@ namespace DotNetNuke.Services.FileSystem
                 this.FileId = value;
             }
         }
-
-        #endregion
-
-        #region Private methods
 
         private void LoadImageProperties()
         {
@@ -511,7 +495,5 @@ namespace DotNetNuke.Services.FileSystem
             }
 
         }
-
-        #endregion
     }
 }

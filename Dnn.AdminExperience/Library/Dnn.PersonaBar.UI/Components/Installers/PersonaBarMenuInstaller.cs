@@ -92,8 +92,6 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             this.DeleteMenus();
         }
 
-        #region Private Methods
-
         private void SaveMenuItems()
         {
             foreach (var menuItem in this._menuItems.Where(x => !string.IsNullOrEmpty(x.Identifier) && !string.IsNullOrEmpty(x.ModuleName)))
@@ -259,7 +257,5 @@ namespace Dnn.PersonaBar.UI.Components.Installers
                 throw;
             }
         }
-
-        #endregion
     }
 }

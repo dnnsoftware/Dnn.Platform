@@ -33,8 +33,6 @@ namespace DotNetNuke.Services.Connections
             get { return new ReadOnlyCollection<Type>(new List<Type>(new[] { typeof(object) })); }
         }
 
-        #region Nested type: DynamicJsonObject
-
         private sealed class DynamicJsonObject : DynamicObject
         {
             private readonly IDictionary<string, object> _dictionary;
@@ -158,7 +156,5 @@ namespace DotNetNuke.Services.Connections
                 return result;
             }
         }
-
-        #endregion
     }
 }

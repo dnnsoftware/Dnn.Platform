@@ -31,7 +31,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         private UserCopiedCallback userCopied;
 #pragma warning restore 649
 
-        #region Test Initialize
 
         [SetUp]
         public void SetUp()
@@ -54,10 +53,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             MockComponentProvider.ResetContainer();
         }
 
-        #endregion
-
-        #region Constructor Tests
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void PortalGroupController_Constructor_Throws_On_Null_DataService()
@@ -79,10 +74,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             // Act, Assert
             new PortalGroupController(mockDataService.Object, null);
         }
-
-        #endregion
-
-        #region AddPortalToGroup Tests
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -146,10 +137,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             // Act, Assert
             controller.AddPortalToGroup(portal, portalGroup, this.userCopied);
         }
-
-        #endregion
-
-        #region AddPortalGroup Tests
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -246,10 +233,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             Assert.AreEqual(Constants.PORTALGROUP_AddPortalGroupId, portalGroup.PortalGroupId);
         }
 
-        #endregion
-
-        #region DeletePortalGroup Tests
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void PortalGroupController_DeletePortalGroup_Throws_On_Null_PortalGroup()
@@ -297,10 +280,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             // Assert
             mockDataService.Verify(ds => ds.DeletePortalGroup(portalGroup));
         }
-
-        #endregion
-
-        #region GetPortalGroups Tests
 
         [Test]
 
@@ -365,10 +344,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             Assert.AreEqual(Constants.PORTALGROUP_ValidPortalGroupCount, portalGroups.Count());
         }
 
-        #endregion
-
-        #region RemovePortalFromGroup Tests
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void PortalGroupController_RemovePortalFromGroup_Throws_On_Null_PortalGroup()
@@ -432,10 +407,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             controller.RemovePortalFromGroup(portal, portalGroup, false, this.userCopied);
         }
 
-        #endregion
-
-        #region UpdatePortalGroup Tests
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void PortalGroupController_UpdatePortalGroup_Throws_On_Null_PortalGroup()
@@ -483,8 +454,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             // Assert
             mockDataService.Verify(ds => ds.UpdatePortalGroup(portalGroup, It.IsAny<int>()));
         }
-
-        #endregion
 
         private static DataTable CreatePortalGroupTable()
         {

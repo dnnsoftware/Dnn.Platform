@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -10,15 +10,11 @@ using System.Collections.Generic;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
 
-#endregion
-
 namespace DotNetNuke.Entities.Urls
 {
     [Serializable]
     public class FriendlyUrlSettings
     {
-        #region Private Members
-
         private readonly IHostController _hostControllerInstance = HostController.Instance;
 
         // 894 : new switch to disable custom url provider
@@ -65,15 +61,7 @@ namespace DotNetNuke.Entities.Urls
         private List<string> _processRequestList;
         private Dictionary<string, string> _replaceCharacterDictionary;
 
-        #endregion
-
-        #region private helper methods
-
         internal List<string> PortalValues { get; private set; }
-
-        #endregion
-
-        #region Constants
 
         public const string ReplaceSpaceWithNothing = "None";
         public const string SpaceEncodingPlus = "+";
@@ -122,10 +110,6 @@ namespace DotNetNuke.Entities.Urls
         public const string ProcessRequestsSetting = "AUM_ProcessRequests";
         public const string CacheTimeSetting = "AUM_CacheTime";
         public const string IncludePageNameSetting = "AUM_IncludePageName";
-
-        #endregion
-
-        #region Public Properties
 
         public List<InternalAlias> InternalAliasList { get; private set; }
 
@@ -659,10 +643,6 @@ namespace DotNetNuke.Entities.Urls
             internal set { this._vanityUrlPrefix = value; }
         }
 
-        #endregion
-
-        #region initialization methods
-
         private bool GetBooleanSetting(string key, bool defaultValue)
         {
             // First Get the Host Value using the passed in value as default
@@ -705,10 +685,6 @@ namespace DotNetNuke.Entities.Urls
             return returnValue;
         }
 
-        #endregion
-
-        #region others
-
         public FriendlyUrlSettings(int portalId)
         {
             this.PortalId = portalId < -1 ? -1 : portalId;
@@ -750,7 +726,5 @@ namespace DotNetNuke.Entities.Urls
                 }
             }
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Diagnostics;
@@ -11,8 +11,6 @@ using System.IO;
 using System.Linq;
 using System.Web.Compilation;
 using log4net.Config;
-
-#endregion
 
 namespace DotNetNuke.Instrumentation
 {
@@ -128,8 +126,6 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
-        #region Trace
-
         public static void Trace(string message)
         {
             EnsureConfig();
@@ -159,10 +155,6 @@ namespace DotNetNuke.Instrumentation
                 Logger.TraceFormat(provider, format, args);
             }
         }
-
-        #endregion
-
-        #region Debug
 
         public static void Debug(object message)
         {
@@ -201,10 +193,6 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
-        #endregion
-
-        #region Info
-
         public static void Info(object message)
         {
             EnsureConfig();
@@ -238,10 +226,6 @@ namespace DotNetNuke.Instrumentation
                 }
             }
         }
-
-        #endregion
-
-        #region Warn
 
         public static void Warn(string message, Exception exception)
         {
@@ -286,10 +270,6 @@ namespace DotNetNuke.Instrumentation
                 }
             }
         }
-
-        #endregion
-
-        #region Error
 
         public static void Error(string message, Exception exception)
         {
@@ -346,10 +326,6 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
-        #endregion
-
-        #region Fatal
-
         public static void Fatal(string message, Exception exception)
         {
             EnsureConfig();
@@ -392,7 +368,5 @@ namespace DotNetNuke.Instrumentation
                 }
             }
         }
-
-        #endregion
     }
 }

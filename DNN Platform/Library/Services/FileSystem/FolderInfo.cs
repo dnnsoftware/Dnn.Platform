@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -19,8 +19,6 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Permissions;
 
-#endregion
-
 namespace DotNetNuke.Services.FileSystem
 {
     [XmlRoot("folder", IsNullable = false)]
@@ -32,8 +30,6 @@ namespace DotNetNuke.Services.FileSystem
         private string _displayPath;
         private FolderPermissionCollection _folderPermissions;
         private int _folderMappingId;
-
-        #region Constructors
 
         public FolderInfo() : this(false)
         {
@@ -50,9 +46,6 @@ namespace DotNetNuke.Services.FileSystem
                 this._folderPermissions = new FolderPermissionCollection();
             }
         }
-        #endregion
-
-        #region Public Properties
 
         [XmlElement("folderid")]
         public int FolderID { get; set; }
@@ -249,9 +242,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        #endregion
 
-        #region IHydratable Implementation
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -297,10 +288,6 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        #endregion
-
-        #region Obsolete Methods
-
         [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers. Scheduled removal in v10.0.0.")]
         public FolderInfo(int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
             : this(Guid.NewGuid(), portalId, folderpath, storageLocation, isProtected, isCached, lastUpdated)
@@ -322,7 +309,5 @@ namespace DotNetNuke.Services.FileSystem
             this.IsCached = isCached;
             this.LastUpdated = lastUpdated;
         }
-
-        #endregion
     }
 }

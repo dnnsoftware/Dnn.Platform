@@ -17,8 +17,6 @@ namespace Dnn.AzureConnector.Services
     [DnnAuthorize]
     public class ServicesController : DnnApiController
     {
-        #region API
-
         [HttpGet]
         public HttpResponseMessage GetAllContainers(int id)
         {
@@ -53,7 +51,5 @@ namespace Dnn.AzureConnector.Services
         {
             return this.Request.CreateResponse(HttpStatusCode.OK, Components.AzureConnector.FindAzureFolderMappingStatic(this.PortalSettings.PortalId).FolderMappingID);
         }
-
-        #endregion
     }
 }

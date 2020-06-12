@@ -26,8 +26,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
     {
         private Mock<CachingProvider> mockCache;
 
-        #region Test Initialization and Cleanup
-
         [SetUp]
         public void SetUp()
         {
@@ -36,10 +34,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
 
             this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
         }
-
-        #endregion
-
-        #region GetCache Tests
 
         [Test]
         public void DataCache_GetCache_Should_Return_On_Correct_CacheKey()
@@ -76,10 +70,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             Assert.Throws<ArgumentException>(() => DataCache.GetCache(key));
         }
 
-        #endregion
-
-        #region GetCache Tests
-
         [Test]
         public void DataCache_GetCacheOfT_Should_Return_On_Correct_CacheKey()
         {
@@ -115,10 +105,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             Assert.Throws<ArgumentException>(() => DataCache.GetCache<string>(key));
         }
 
-        #endregion
-
-        #region RemoveCache Tests
-
         [Test]
         public void DataCache_RemoveCache_Should_Succeed_On_Valid_CacheKey()
         {
@@ -138,12 +124,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         {
             Assert.Throws<ArgumentException>(() => DataCache.RemoveCache(key));
         }
-
-        #endregion
-
-        #region SetCache Tests
-
-        #region SetCache(string, object) Tests
 
         [Test]
         [TestCase(null)]
@@ -174,10 +154,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
                              CacheItemPriority.Normal,
                              DataCache.ItemRemovedCallback));
         }
-
-        #endregion
-
-        #region SetCache(string, object, CacheDependency) Tests
 
         [Test]
         [TestCase(null)]
@@ -210,10 +186,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
                              DataCache.ItemRemovedCallback));
         }
 
-        #endregion
-
-        #region SetCache(string, object, DateTime) Tests
-
         [Test]
         [TestCase(null)]
         [TestCase("")]
@@ -245,10 +217,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
                              CacheItemPriority.Normal,
                              DataCache.ItemRemovedCallback));
         }
-
-        #endregion
-
-        #region SetCache(string, object, TimeSpan) Tests
 
         [Test]
         [TestCase(null)]
@@ -283,10 +251,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
                              DataCache.ItemRemovedCallback));
         }
 
-        #endregion
-
-        #region SetCache(string, object, CacheDependency, DateTime, TimeSpan) Tests
-
         [Test]
         [TestCase(null)]
         [TestCase("")]
@@ -314,10 +278,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
                 cache =>
                 cache.Insert(this.GetDnnCacheKey(Constants.CACHEING_ValidKey), Constants.CACHEING_ValidValue, dep, absExpiry, slidingExpiry, CacheItemPriority.Normal, DataCache.ItemRemovedCallback));
         }
-
-        #endregion
-
-        #region SetCache(string, object, CacheDependency, DateTime, TimeSpan, CacheItemPriority, CacheItemRemovedCallback) Tests
 
         [Test]
         [TestCase(null)]
@@ -364,12 +324,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
                 cache => cache.Insert(this.GetDnnCacheKey(Constants.CACHEING_ValidKey), Constants.CACHEING_ValidValue, dep, absExpiry, slidingExpiry, CacheItemPriority.Normal, this.ItemRemovedCallback));
         }
 
-        #endregion
-
-        #endregion
-
-        #region Private Helper Methods
-
         private DNNCacheDependency CreateTestDependency()
         {
             return new DNNCacheDependency("C:\\testdependency.txt");
@@ -384,7 +338,5 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         {
             // do nothing
         }
-
-        #endregion
     }
 }

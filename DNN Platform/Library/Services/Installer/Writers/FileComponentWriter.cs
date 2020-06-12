@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System.Collections.Generic;
 using System.Xml;
@@ -10,8 +10,6 @@ using System.Xml;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Installer.Log;
 using DotNetNuke.Services.Installer.Packages;
-
-#endregion
 
 namespace DotNetNuke.Services.Installer.Writers
 {
@@ -24,17 +22,13 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class FileComponentWriter
     {
-        #region "Private Members"
-
         private readonly string _BasePath;
         private readonly Dictionary<string, InstallFile> _Files;
         private readonly PackageInfo _Package;
         private int _InstallOrder = Null.NullInteger;
         private int _UnInstallOrder = Null.NullInteger;
 
-        #endregion
 
-        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -51,9 +45,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this._Package = package;
         }
 
-        #endregion
 
-        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -125,10 +117,6 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        #endregion
-
-        #region "Public Properties"
-
         public int InstallOrder
         {
             get
@@ -153,9 +141,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        #endregion
 
-        #region "Protected Methods"
 
 
         /// -----------------------------------------------------------------------------
@@ -203,10 +189,6 @@ namespace DotNetNuke.Services.Installer.Writers
             writer.WriteEndElement();
         }
 
-        #endregion
-
-        #region "Public Methods"
-
         public virtual void WriteManifest(XmlWriter writer)
         {
             // Start component Element
@@ -243,7 +225,5 @@ namespace DotNetNuke.Services.Installer.Writers
             // End component Element
             writer.WriteEndElement();
         }
-
-        #endregion
     }
 }

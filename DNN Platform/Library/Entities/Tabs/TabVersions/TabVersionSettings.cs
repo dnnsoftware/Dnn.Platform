@@ -13,11 +13,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 {
     public class TabVersionSettings : ServiceLocator<ITabVersionSettings, TabVersionSettings>, ITabVersionSettings
     {
-        #region Constants
         private const int TabVersionsMaxNumber = 5;
         private const string TabVersionQueryStringParam = "DnnTabVersion";
         private const string TabVersioningSettingKey = "TabVersioningSettingKey";
-        #endregion
 
         public int GetMaxNumberOfVersions(int portalId)
         {

@@ -24,7 +24,6 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
         private const string EnglishLanguageCode = "en-US";
         private const string SpainishLanguageCode = "es-ES";
 
-        #region Tests
         [Test]
         public void Page_Url_Should_Able_To_Add_On_English_Disabled_Site()
         {
@@ -54,10 +53,6 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
 
             Assert.IsTrue(bool.Parse(result.Success.ToString()));
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static IWebApiConnector PrepareTest(out bool isEnglishEnabled, out dynamic languageSettings)
         {
@@ -128,7 +123,5 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
             Assert.NotNull(pageDetail.Page, "The system must create the page and return its details in the response");
             return (int)pageDetail.Page.id;
         }
-
-        #endregion
     }
 }

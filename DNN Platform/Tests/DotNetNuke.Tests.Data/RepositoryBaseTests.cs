@@ -31,8 +31,6 @@ namespace DotNetNuke.Tests.Data
             MockComponentProvider.ResetContainer();
         }
 
-        #region Constructor Tests
-
         [Test]
         public void RepositoryBase_Constructor_Sets_CacheArgs_Null_If_Not_Cacheable()
         {
@@ -203,10 +201,6 @@ namespace DotNetNuke.Tests.Data
             var baseRepo = repo as RepositoryBase<CacheableCat>;
             Assert.AreEqual(Constants.CACHE_ScopeModule, Util.GetPrivateMember<RepositoryBase<CacheableCat>, string>(baseRepo, "Scope"));
         }
-
-        #endregion
-
-        #region Initialize Tests
 
         [Test]
         public void RepositoryBase_Initialize_Sets_CacheArgs_Null_If_Not_Cacheable()
@@ -391,10 +385,6 @@ namespace DotNetNuke.Tests.Data
             Assert.AreEqual(Constants.CACHE_ScopeModule, Util.GetPrivateMember<RepositoryBase<Cat>, string>(baseRepo, "Scope"));
         }
 
-        #endregion
-
-        #region Delete Tests
-
         [Test]
         public void RepositoryBase_Delete_Clears_Cache_If_Cacheable()
         {
@@ -459,10 +449,6 @@ namespace DotNetNuke.Tests.Data
             // Assert
             mockRepository.Protected().Verify("DeleteInternal", Times.Once(), ItExpr.IsAny<Dog>());
         }
-
-        #endregion
-
-        #region Get Tests
 
         [Test]
         public void RepositoryBase_Get_Checks_Cache_If_Cacheable()
@@ -581,10 +567,6 @@ namespace DotNetNuke.Tests.Data
             mockRepository.Protected().Verify("GetInternal", Times.Never());
         }
 
-        #endregion
-
-        #region Get<TScopeType> Tests
-
         [Test]
         public void RepositoryBase_Get_Overload_Checks_Cache_If_Cacheable_And_Scoped()
         {
@@ -698,10 +680,6 @@ namespace DotNetNuke.Tests.Data
             mockRepository.Protected().Verify<IEnumerable<CacheableCat>>("GetByScopeInternal", Times.Never(), ItExpr.IsAny<object>());
         }
 
-        #endregion
-
-        #region GetById Tests
-
         [Test]
         public void RepositoryBase_GetById_Checks_Cache_If_Cacheable()
         {
@@ -799,10 +777,6 @@ namespace DotNetNuke.Tests.Data
             mockRepository.Protected().Verify<CacheableDog>("GetByIdInternal", Times.Never(), ItExpr.IsAny<object>());
         }
 
-        #endregion
-
-        #region GetById<TScopeType> Tests
-
         [Test]
         public void RepositoryBase_GetById_Overload_Checks_Cache_If_Cacheable_And_Scoped()
         {
@@ -845,10 +819,6 @@ namespace DotNetNuke.Tests.Data
             // Act, Assert
             Assert.Throws<NotSupportedException>(() => mockRepository.Object.GetById(Constants.PETAPOCO_ValidDogId, Constants.MODULE_ValidId));
         }
-
-        #endregion
-
-        #region GetPage Tests
 
         [Test]
         public void RepositoryBase_GetPage_Checks_Cache_If_Cacheable()
@@ -947,10 +917,6 @@ namespace DotNetNuke.Tests.Data
             // Assert
             mockRepository.Protected().Verify<IPagedList<CacheableDog>>("GetPageInternal", Times.Never(), ItExpr.IsAny<int>(), ItExpr.IsAny<int>());
         }
-
-        #endregion
-
-        #region GetPage<TScopeType> Tests
 
         [Test]
         public void RepositoryBase_GetPage_Overload_Checks_Cache_If_Cacheable_And_Scoped()
@@ -1069,10 +1035,6 @@ namespace DotNetNuke.Tests.Data
             mockRepository.Protected().Verify<IEnumerable<CacheableCat>>("GetByScopeInternal", Times.Never(), ItExpr.IsAny<object>());
         }
 
-        #endregion
-
-        #region Insert Tests
-
         [Test]
         public void RepositoryBase_Insert_Clears_Cache_If_Cacheable()
         {
@@ -1138,10 +1100,6 @@ namespace DotNetNuke.Tests.Data
             mockRepository.Protected().Verify("InsertInternal", Times.Once(), ItExpr.IsAny<Dog>());
         }
 
-        #endregion
-
-        #region Update Tests
-
         [Test]
         public void RepositoryBase_Update_Clears_Cache_If_Cacheable()
         {
@@ -1206,7 +1164,6 @@ namespace DotNetNuke.Tests.Data
             // Assert
             mockRepository.Protected().Verify("UpdateInternal", Times.Once(), ItExpr.IsAny<Dog>());
         }
-        #endregion
 
         // ReSharper restore InconsistentNaming
 

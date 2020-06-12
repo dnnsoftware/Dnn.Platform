@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -17,8 +17,6 @@ using DotNetNuke.UI.WebControls;
 using DotNetNuke.UI.Skins.Controls;
 using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
-#endregion
-
 namespace DesktopModules.Admin.Security
 {
     /// -----------------------------------------------------------------------------
@@ -30,7 +28,6 @@ namespace DesktopModules.Admin.Security
     /// -----------------------------------------------------------------------------
     public partial class DNNProfile : ProfileUserControlBase
     {
-        #region Protected Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -46,9 +43,7 @@ namespace DesktopModules.Admin.Security
             }
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -115,9 +110,7 @@ namespace DesktopModules.Admin.Security
             }
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -149,9 +142,7 @@ namespace DesktopModules.Admin.Security
             this.ProfileProperties.DataBind();
         }
 
-        #endregion
 
-        #region Event Handlers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -240,7 +231,5 @@ namespace DesktopModules.Admin.Security
                 this.User.UpdateDisplayName(this.PortalSettings.Registration.DisplayNameFormat);
             }
         }
-
-        #endregion
     }
 }

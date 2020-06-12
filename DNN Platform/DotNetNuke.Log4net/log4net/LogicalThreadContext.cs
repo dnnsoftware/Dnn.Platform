@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 // .NET Compact Framework 1.0 has no support for System.Runtime.Remoting.Messaging.CallContext
 #if !NETCF
@@ -83,7 +81,6 @@ namespace log4net
     /// <author>Nicko Cadell</author>
     public sealed class LogicalThreadContext
     {
-        #region Private Instance Constructors
 
         /// <summary>
         /// Private Constructor.
@@ -97,9 +94,7 @@ namespace log4net
         {
         }
 
-        #endregion Private Instance Constructors
 
-        #region Public Static Properties
 
         /// <summary>
         /// The thread properties map
@@ -134,9 +129,7 @@ namespace log4net
             get { return s_stacks; }
         }
 
-        #endregion Public Static Properties
 
-        #region Private Static Fields
 
         /// <summary>
         /// The thread context properties instance
@@ -147,8 +140,6 @@ namespace log4net
         /// The thread context stacks instance
         /// </summary>
         private readonly static LogicalThreadContextStacks s_stacks = new LogicalThreadContextStacks(s_properties);
-
-        #endregion Private Static Fields
     }
 }
 

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Specialized;
@@ -21,8 +21,6 @@ using Telerik.Web.UI;
 
 using Calendar = DotNetNuke.Common.Utilities.Calendar;
 
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 {
     /// -----------------------------------------------------------------------------
@@ -39,7 +37,6 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DateEditControl));
         private DnnDatePicker _dateControl;
 
-        #region Protected Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -159,10 +156,6 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
             }
         }
 
-        #endregion
-
-        #region Override Properties
-
         public override string ID
         {
             get
@@ -185,10 +178,6 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
             }
         }
 
-        #endregion
-
-        #region Private Properties
-
         private DnnDatePicker DateControl
         {
             get
@@ -201,8 +190,6 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
                 return this._dateControl;
             }
         }
-
-        #endregion
 
         protected override void CreateChildControls()
         {

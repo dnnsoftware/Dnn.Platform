@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -27,8 +27,6 @@ using Lucene.Net.Store;
 using DotNetNuke.Instrumentation;
 using System.Web;
 
-#endregion
-
 namespace DotNetNuke.Services.Search.Internals
 {
     /// -----------------------------------------------------------------------------
@@ -38,17 +36,12 @@ namespace DotNetNuke.Services.Search.Internals
     /// -----------------------------------------------------------------------------
     internal class LuceneControllerImpl : ILuceneController, IDisposable
     {
-        #region Constants
         private const string DefaultSearchFolder = @"App_Data\Search";
         private const string WriteLockFile = "write.lock";
         internal const int DefaultRereadTimeSpan = 30; // in seconds
         private const int DefaultSearchRetryTimes = 5;
         private const int DISPOSED = 1;
         private const int UNDISPOSED = 0;
-        #endregion
-
-        #region Private Properties
-
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LuceneControllerImpl));
 
         internal string IndexFolder { get; private set; }
@@ -69,7 +62,6 @@ namespace DotNetNuke.Services.Search.Internals
         private const string HtmlPreTag = "<b>";
         private const string HtmlPostTag = "</b>";
 
-        #region constructor
         public LuceneControllerImpl()
         {
             var hostController = HostController.Instance;
@@ -86,7 +78,6 @@ namespace DotNetNuke.Services.Search.Internals
             if (Thread.VolatileRead(ref this._isDisposed) == DISPOSED)
                 throw new ObjectDisposedException(Localization.Localization.GetExceptionMessage("LuceneControlerIsDisposed", "LuceneController is disposed and cannot be used anymore"));
         }
-        #endregion
 
         private IndexWriter Writer
         {
@@ -237,8 +228,6 @@ namespace DotNetNuke.Services.Search.Internals
                 return this._fastHighlighter;
             }
         }
-
-        #endregion
 
         public LuceneResults Search(LuceneSearchContext searchContext)
         {

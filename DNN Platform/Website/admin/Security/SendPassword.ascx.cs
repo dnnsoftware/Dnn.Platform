@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -26,8 +26,6 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Services.UserRequest;
 using DotNetNuke.Abstractions;
 
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Security
 {
 
@@ -47,15 +45,11 @@ namespace DotNetNuke.Modules.Admin.Security
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Private Members
-
         private UserInfo _user;
         private int _userCount = Null.NullInteger;
         private string _ipAddress;
 
-        #endregion
 
-        #region Protected Properties
 
         /// <summary>
         /// Gets the Redirect URL (after successful sending of password)
@@ -141,10 +135,6 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void GetUser()
         {
             ArrayList arrUsers;
@@ -161,10 +151,6 @@ namespace DotNetNuke.Modules.Admin.Security
                 this._user = UserController.GetUserByName(this.PortalSettings.PortalId, this.txtUsername.Text);
             }
         }
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
@@ -377,8 +363,5 @@ namespace DotNetNuke.Modules.Admin.Security
             LogController.Instance.AddLog(log);
 
         }
-
-        #endregion
-
     }
 }

@@ -31,8 +31,6 @@ namespace DotNetNuke.Entities.Content
 
         private readonly IContentController _contentController;
 
-        #region Implementation of IFileController
-
         private void AddToContent(int contentItemId, Action<ContentItem> action)
         {
             var contentItem = this._contentController.GetContentItem(contentItemId);
@@ -92,10 +90,6 @@ namespace DotNetNuke.Entities.Content
 
             return files.Select(fileId => FileManager.Instance.GetFile(fileId)).ToList();
         }
-
-        #endregion
-
-        #region Internal utility methods
 
         private static void SerializeToMetadata(IList<IFileInfo> files, NameValueCollection nvc, string key)
         {
@@ -196,15 +190,9 @@ namespace DotNetNuke.Entities.Content
             return fileList.ToJson();
         }
 
-        #endregion
-
-        #region Private
-
         internal const string FilesKey = "Files";
         internal const string ImageKey = "Images";
         internal const string VideoKey = "Videos";
         internal const string TitleKey = "Title";
-
-        #endregion
     }
 }

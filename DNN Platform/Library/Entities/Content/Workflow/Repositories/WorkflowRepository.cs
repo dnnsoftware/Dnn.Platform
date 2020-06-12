@@ -16,18 +16,13 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
     // TODO: removed unused SPRoc and DataProvider layer
     internal class WorkflowRepository : ServiceLocator<IWorkflowRepository, WorkflowRepository>, IWorkflowRepository
     {
-        #region Members
         private readonly IWorkflowStateRepository _stateRepository;
-        #endregion
 
-        #region Constructor
         public WorkflowRepository()
         {
             this._stateRepository = WorkflowStateRepository.Instance;
         }
-        #endregion
 
-        #region Public Methods
         public IEnumerable<Entities.Workflow> GetWorkflows(int portalId)
         {
             using (var context = DataContext.Instance())
@@ -137,9 +132,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
             DataCache.RemoveCache(GetWorkflowItemKey(workflow.WorkflowID));
         }
-        #endregion
 
-        #region Private Methods
         private static bool DoesExistWorkflow(Entities.Workflow workflow, IRepository<Entities.Workflow> rep)
         {
             return rep.Find(
@@ -163,13 +156,9 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             }
         }
 
-        #endregion
-
-        #region Service Locator
         protected override Func<IWorkflowRepository> GetFactory()
         {
             return () => new WorkflowRepository();
         }
-        #endregion
     }
 }

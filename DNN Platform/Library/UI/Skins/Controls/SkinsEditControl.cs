@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -14,8 +14,6 @@ using DotNetNuke.Entities.Icons;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.UI.WebControls;
-
-#endregion
 
 namespace DotNetNuke.UI.Skins.Controls
 {
@@ -36,7 +34,6 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         private string _AddedItem = Null.NullString;
 
-        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -58,9 +55,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.SystemType = type;
         }
 
-        #endregion
 
-        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -158,8 +153,6 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        #region IPostBackEventHandler Members
-
         public void RaisePostBackEvent(string eventArgument)
         {
             PropertyEditorEventArgs args;
@@ -183,11 +176,8 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        #endregion
 
-        #endregion
 
-        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -326,8 +316,6 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
             }
         }
-
-        #endregion
 
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {

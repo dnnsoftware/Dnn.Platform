@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -73,8 +73,6 @@ using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 using ModuleInfo = DotNetNuke.Entities.Modules.ModuleInfo;
 using Util = DotNetNuke.Entities.Content.Common.Util;
 
-#endregion
-
 namespace DotNetNuke.Services.Upgrade
 {
     /// -----------------------------------------------------------------------------
@@ -89,16 +87,9 @@ namespace DotNetNuke.Services.Upgrade
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Upgrade));
         private static readonly object _threadLocker = new object();
-
-        #region Private Shared Field
-
         private static DateTime _startTime;
         private const string FipsCompilanceAssembliesCheckedKey = "FipsCompilanceAssembliesChecked";
         private const string FipsCompilanceAssembliesFolder = "App_Data\\FipsCompilanceAssemblies";
-
-        #endregion
-
-        #region Public Properties
 
         public static string DefaultProvider
         {
@@ -116,10 +107,6 @@ namespace DotNetNuke.Services.Upgrade
                 return currentTime.Subtract(_startTime);
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static Version ApplicationVersion
         {
@@ -3550,9 +3537,7 @@ namespace DotNetNuke.Services.Upgrade
             return true;
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -6322,7 +6307,5 @@ namespace DotNetNuke.Services.Upgrade
 
             return true;
         }
-
-        #endregion
     }
 }

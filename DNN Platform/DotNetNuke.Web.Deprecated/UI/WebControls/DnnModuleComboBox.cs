@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -20,22 +20,13 @@ using DotNetNuke.Services.Installer.Packages;
 
 using Telerik.Web.UI;
 
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnModuleComboBox : WebControl
     {
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
 
-        #region Public Events
-
         public event EventHandler ItemChanged;
-
-        #endregion
-
-        #region Public Properties
 
         public Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool> Filter { get; set; }
 
@@ -73,10 +64,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 this._moduleCombo.Enabled = value;
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private Dictionary<int, string> GetPortalDesktopModules()
         {
@@ -160,10 +147,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        #endregion
-
-        #region Protected Methods
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -198,10 +181,6 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnPreRender(e);
         }
 
-        #endregion
-
-        #region Public Methods
-
         public void BindAllPortalDesktopModules()
         {
             this._moduleCombo.SelectedValue = null;
@@ -222,8 +201,6 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             this._moduleCombo.SelectedIndex = this._moduleCombo.FindItemIndexByValue(code);
         }
-
-        #endregion
 
         private DnnComboBox _moduleCombo;
         private string _originalValue;

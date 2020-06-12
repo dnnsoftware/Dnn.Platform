@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -28,14 +28,10 @@ using DotNetNuke.UI.Utilities;
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 using Globals = DotNetNuke.Common.Globals;
 
-#endregion
-
 namespace DotNetNuke.UI.UserControls
 {
     public abstract class UrlControl : UserControlBase
     {
-        #region "Private Members"
-
         protected Panel ErrorRow;
         protected Panel FileRow;
         protected Panel ImagesRow;
@@ -77,10 +73,6 @@ namespace DotNetNuke.UI.UserControls
         protected HtmlInputFile txtFile;
         protected TextBox txtUrl;
         protected TextBox txtUser;
-
-        #endregion
-
-        #region "Public Properties"
 
         public string FileFilter
         {
@@ -568,10 +560,6 @@ namespace DotNetNuke.UI.UserControls
                 }
             }
         }
-
-        #endregion
-
-        #region "Private Methods"
 
         private ArrayList GetFileList(bool NoneSpecified)
         {
@@ -1118,10 +1106,6 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        #endregion
-
-        #region "Event Handlers"
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -1485,7 +1469,5 @@ namespace DotNetNuke.UI.UserControls
             this.ViewState["UrlType"] = this.optType.SelectedItem.Value;
             this._doRenderTypeControls = true;
         }
-
-        #endregion
     }
 }

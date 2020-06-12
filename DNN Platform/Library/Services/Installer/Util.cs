@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Diagnostics;
@@ -19,8 +19,6 @@ using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.UI.Modules;
 using System.Threading;
 
-#endregion
-
 namespace DotNetNuke.Services.Installer
 {
     /// -----------------------------------------------------------------------------
@@ -33,7 +31,6 @@ namespace DotNetNuke.Services.Installer
     /// </remarks>
     public class Util
     {
-        #region Constants
 
         // ReSharper disable InconsistentNaming
         public const string DEFAULT_MANIFESTEXT = ".manifest";
@@ -176,9 +173,7 @@ namespace DotNetNuke.Services.Installer
         public static string REGEX_Version = "\\d{2}.\\d{2}.\\d{2}";
         public const string BackupInstallPackageFolder = "App_Data/ExtensionPackages/";
         // ReSharper restore InconsistentNaming
-        #endregion
 
-        #region "Private Shared Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -229,9 +224,7 @@ namespace DotNetNuke.Services.Installer
             return propValue;
         }
 
-        #endregion
 
-        #region Public Shared Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -240,7 +233,7 @@ namespace DotNetNuke.Services.Installer
         /// <param name="installFile">The file to backup</param>
         /// <param name="basePath">The basePath to the file</param>
         /// <param name="log">A Logger to log the result</param>
-       public static void BackupFile(InstallFile installFile, string basePath, Logger log)
+        public static void BackupFile(InstallFile installFile, string basePath, Logger log)
         {
             string fullFileName = Path.Combine(basePath, installFile.FullName);
             string backupFileName = Path.Combine(installFile.BackupPath, installFile.Name + ".config");
@@ -492,10 +485,6 @@ namespace DotNetNuke.Services.Installer
 
             return Path.Combine(folderPath, fileName);
         }
-
-        #endregion
-
-        #region ReadElement
 
         public static string ReadElement(XPathNavigator nav, string elementName)
         {
@@ -778,7 +767,5 @@ namespace DotNetNuke.Services.Installer
                 }
             }
         }
-
-        #endregion
     }
 }

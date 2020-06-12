@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -28,8 +28,6 @@ using DotNetNuke.Services.FileSystem.Internal;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
 
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Modules
 {
     /// -----------------------------------------------------------------------------
@@ -45,8 +43,6 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        #region Private Members
 
         private new int ModuleId = -1;
         private ModuleInfo _module;
@@ -66,10 +62,6 @@ namespace DotNetNuke.Modules.Admin.Modules
                 return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this._navigationManager.NavigateURL();
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private string ExportModule(int moduleID, string fileName, IFolderInfo folder)
         {
@@ -167,10 +159,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             return strName;
         }
 
-        #endregion
-
-        #region Event Handlers
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -248,8 +236,5 @@ namespace DotNetNuke.Modules.Admin.Modules
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
-
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -18,8 +18,6 @@ using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Client.ClientResourceManagement;
-
-#endregion
 
 namespace DotNetNuke.Modules.MemberDirectory
 {
@@ -168,8 +166,6 @@ namespace DotNetNuke.Modules.MemberDirectory
             get { return UserController.Instance.GetCurrentUserInfo(); }
         }
 
-        #region Private Helper Functions
-
         private void AddIe7StyleSheet()
         {
             var browser = this.Request.Browser;
@@ -199,7 +195,5 @@ namespace DotNetNuke.Modules.MemberDirectory
             }
             return setting;
         }
-
-        #endregion
     }
 }

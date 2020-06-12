@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -17,15 +17,11 @@ using DotNetNuke.Services.Social.Messaging.Data;
 using DotNetNuke.Services.Social.Messaging.Exceptions;
 using DotNetNuke.Services.Social.Messaging.Internal.Views;
 
-#endregion
-
 namespace DotNetNuke.Services.Social.Messaging.Internal
 {
     /// <summary>The Controller class for social Messaging</summary>
     internal class InternalMessagingControllerImpl : IInternalMessagingController
     {
-        #region Constants
-
         internal const int ConstMaxTo = 2000;
         internal const int ConstMaxSubject = 400;
         internal const int ConstDefaultPageIndex = 0;
@@ -36,15 +32,9 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         internal const bool ConstAscending = true;
         internal const double DefaultMessagingThrottlingInterval = 0.5; // default MessagingThrottlingInterval set to 30 seconds.
 
-        #endregion
 
-        #region Private Variables
 
         private readonly IDataService _dataService;
-
-        #endregion
-
-        #region Constructors
 
         public InternalMessagingControllerImpl()
             : this(DataService.Instance)
@@ -58,10 +48,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
             this._dataService = dataService;
         }
-
-        #endregion
-
-        #region CRUD APIs
 
         public virtual void DeleteMessageRecipient(int messageId, int userId)
         {
@@ -107,10 +93,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         {
             this._dataService.UpdateMessageReadStatus(conversationId, userId, false);
         }
-
-        #endregion
-
-        #region Reply APIs
 
         public virtual int ReplyMessage(int conversationId, string body, IList<int> fileIDs)
         {
@@ -169,9 +151,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         }
 
 
-        #endregion
 
-        #region Admin Settings APIs
 
         /// <summary>How long a user needs to wait before sending the next message.</summary>
         /// <returns>Time in seconds. Returns zero if user is Host, Admin or has never sent a message.</returns>
@@ -233,10 +213,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         {
             return this.GetPortalSetting("DisablePrivateMessage", portalId, "N") == "Y";
         }
-
-        #endregion
-
-        #region Get View APIs
 
         public virtual MessageBoxView GetArchivedMessages(int userId, int afterMessageId, int numberOfRecords)
         {
@@ -322,10 +298,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return new MessageBoxView { Conversations = CBO.FillCollection<MessageConversationView>(reader) };
         }
 
-        #endregion
-
-        #region Counter APIs
-
         public virtual int CheckReplyHasRecipients(int conversationId, int userId)
         {
             return userId <= 0 ? 0 :
@@ -406,10 +378,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
            return this._dataService.GetMessageAttachmentsByMessage(messageId);
         }
 
-        #endregion
-
-        #region Internal Methods
-
         internal virtual DateTime GetDateTimeNow()
         {
             return DateTime.UtcNow;
@@ -446,10 +414,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return ps.InputFilter(input, PortalSecurity.FilterFlag.NoProfanity);
         }
 
-        #endregion
-
-        #region Upgrade APIs
-
         public void ConvertLegacyMessages(int pageIndex, int pageSize)
         {
             this._dataService.ConvertLegacyMessages(pageIndex, pageSize);
@@ -475,10 +439,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return totalRecords;
         }
 
-        #endregion
-
-        #region Queued email API's
-
         public IList<MessageRecipient> GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize)
         {
             return CBO.FillCollection<MessageRecipient>(this._dataService.GetNextMessagesForInstantDispatch(schedulerInstance, batchSize));
@@ -499,7 +459,5 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         {
             this._dataService.MarkMessageAsSent(messageId, recipientId);
         }
-
-        #endregion
     }
 }

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -24,8 +24,6 @@ using DotNetNuke.Framework;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Scheduling;
 
-#endregion
-
 namespace DotNetNuke.Common.Utilities
 {
     /// <summary>
@@ -33,22 +31,14 @@ namespace DotNetNuke.Common.Utilities
     /// </summary>
     public partial class CBO : ServiceLocator<ICBO, CBO>, ICBO
     {
-        #region Private Constants
-
         private const string defaultPrimaryKey = "ItemID";
 
         private const string objectMapCacheKey = "ObjectMap_";
-
-        #endregion
 
         protected override Func<ICBO> GetFactory()
         {
             return () => new CBO();
         }
-
-        #region Private Shared Methods
-
-        #region Object Creation/Hydration Helper Methods
 
         private static object CreateObjectInternal(Type objType, bool initialise)
         {
@@ -362,10 +352,6 @@ namespace DotNetNuke.Common.Utilities
              return null;
          }
 
-        #endregion
-
-        #region Object Mapping Helper Methods
-
         private static string GetColumnName(PropertyInfo objProperty)
         {
             string columnName = objProperty.Name;
@@ -425,12 +411,6 @@ namespace DotNetNuke.Common.Utilities
             return tableName;
         }
 
-        #endregion
-
-        #endregion
-
-        #region Public Methods
-
         List<TItem> ICBO.FillCollection<TItem>(IDataReader dr)
         {
             return (List<TItem>)FillListFromReader(dr, new List<TItem>(), true);
@@ -446,11 +426,8 @@ namespace DotNetNuke.Common.Utilities
             return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, saveInDictionary);
         }
 
-        #endregion
 
-        #region Public Shared Methods
 
-        #region Clone Object
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -513,10 +490,6 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        #endregion
-
-        #region CloseDataReader
-
         public static void CloseDataReader(IDataReader dr, bool closeReader)
         {
             // close datareader
@@ -526,9 +499,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        #endregion
 
-        #region Create Object
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -542,10 +513,6 @@ namespace DotNetNuke.Common.Utilities
         {
             return (TObject)CreateObjectInternal(typeof(TObject), initialise);
         }
-
-        #endregion
-
-        #region DeserializeObject
 
         public static TObject DeserializeObject<TObject>(string fileName)
         {
@@ -587,9 +554,7 @@ namespace DotNetNuke.Common.Utilities
             return objObject;
         }
 
-        #endregion
 
-        #region FillCollection
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -736,9 +701,7 @@ namespace DotNetNuke.Common.Utilities
             return (List<T>)objFillCollection;
         }
 
-        #endregion
 
-        #region FillDictionary
 
         /// <summary>
         /// FillDictionary fills a Dictionary of objects from a DataReader
@@ -781,9 +744,7 @@ namespace DotNetNuke.Common.Utilities
             return (Dictionary<TKey, TValue>)FillDictionaryFromReader(keyField, dr, objDictionary, true);
         }
 
-        #endregion
 
-        #region FillObject
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -809,8 +770,6 @@ namespace DotNetNuke.Common.Utilities
         {
             return (TObject)CreateObjectFromReader(typeof(TObject), dr, closeReader);
         }
-
-        #endregion
 
         public static IQueryable<TItem> FillQueryable<TItem>(IDataReader dr)
         {
@@ -887,7 +846,6 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        #region "GetCachedObject"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -909,9 +867,7 @@ namespace DotNetNuke.Common.Utilities
             return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, saveInDictionary);
         }
 
-        #endregion
 
-        #region "GetProperties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -935,9 +891,7 @@ namespace DotNetNuke.Common.Utilities
             return GetObjectMapping(objType).Properties;
         }
 
-        #endregion
 
-        #region "InitializeObject"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -979,9 +933,7 @@ namespace DotNetNuke.Common.Utilities
             return objObject;
         }
 
-        #endregion
 
-        #region "SerializeObject"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -1075,9 +1027,5 @@ namespace DotNetNuke.Common.Utilities
                 xmlSerializableObject.WriteXml(writer);
             }
         }
-
-        #endregion
-
-        #endregion
     }
 }

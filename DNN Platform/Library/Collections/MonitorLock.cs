@@ -1,12 +1,10 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
-
-#endregion
 
 namespace DotNetNuke.Collections.Internal
 {
@@ -19,7 +17,6 @@ namespace DotNetNuke.Collections.Internal
             this._lockStrategy = lockStrategy;
         }
 
-        #region "IDisposable Support"
 
         // To detect redundant calls
         private bool _isDisposed;
@@ -44,7 +41,5 @@ namespace DotNetNuke.Collections.Internal
             }
             this._isDisposed = true;
         }
-
-        #endregion
     }
 }

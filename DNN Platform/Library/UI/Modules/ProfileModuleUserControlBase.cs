@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Globalization;
@@ -16,8 +16,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
-#endregion
-
 namespace DotNetNuke.UI.Modules
 {
     public abstract class ProfileModuleUserControlBase : ModuleUserControlBase, IProfileModule
@@ -27,8 +25,6 @@ namespace DotNetNuke.UI.Modules
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        #region IProfileModule Members
 
         public abstract bool DisplayModule { get; }
 
@@ -45,10 +41,6 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        #endregion
-
-        #region Protected Properties
-
         protected bool IsUser
         {
             get { return this.ProfileUserId == this.ModuleContext.PortalSettings.UserId; }
@@ -58,10 +50,6 @@ namespace DotNetNuke.UI.Modules
         {
             get { return UserController.GetUserById(this.ModuleContext.PortalId, this.ProfileUserId); }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private string GetRedirectUrl()
         {
@@ -81,10 +69,6 @@ namespace DotNetNuke.UI.Modules
 
             return redirectUrl;
         }
-
-        #endregion
-
-        #region Protected Methods
 
         protected override void OnInit(EventArgs e)
         {
@@ -108,7 +92,5 @@ namespace DotNetNuke.UI.Modules
 
             base.OnInit(e);
         }
-
-        #endregion
     }
 }

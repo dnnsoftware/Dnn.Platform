@@ -21,7 +21,7 @@ namespace Dnn.PersonaBar.Library.Prompt
         protected int TabId { get; private set; }
         protected string[] Args { get; private set; }
         protected Hashtable Flags { get; private set; }
-        #region Protected Methods
+
         protected bool HasFlag(string flagName)
         {
             flagName = NormalizeFlagName(flagName);
@@ -107,9 +107,6 @@ namespace Dnn.PersonaBar.Library.Prompt
             }
             return value ?? defaultVal;
         }
-        #endregion
-
-        #region Public Methods
 
         public virtual void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
@@ -134,9 +131,7 @@ namespace Dnn.PersonaBar.Library.Prompt
         {
             return string.IsNullOrEmpty(this.ValidationMessage);
         }
-        #endregion
 
-        #region Private Methods
         private void ParseFlags()
         {
             this.Flags = new Hashtable();
@@ -186,9 +181,6 @@ namespace Dnn.PersonaBar.Library.Prompt
             return typeof(T) == typeof(bool?);
         }
 
-        #endregion
-
-        #region Helper Methods
         private static string GetTypeName(Type type)
         {
             if (type.FullName.ToLowerInvariant().Contains("int"))
@@ -217,7 +209,6 @@ namespace Dnn.PersonaBar.Library.Prompt
                 flagName = flagName.Substring(2);
             return flagName.ToLower().Trim();
         }
-        #endregion
 
         public string ValidationMessage { get; private set; }
 

@@ -1,13 +1,11 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
-
-#endregion
 
 namespace DotNetNuke.Services.Search
 {
@@ -25,7 +23,6 @@ namespace DotNetNuke.Services.Search
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     public class SearchCriteriaCollection : CollectionBase
     {
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> class.
@@ -99,9 +96,7 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        #endregion
 
-        #region Properties
 
         /// <summary>
         /// Gets the <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> at the specified index in the collection.
@@ -121,9 +116,7 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// <summary>
         /// Add an element of the specified <see cref="SearchCriteria">SearchCriteria</see> to the end of the collection.
@@ -217,7 +210,5 @@ namespace DotNetNuke.Services.Search
             this.CopyTo(arr, 0);
             return arr;
         }
-
-        #endregion
     }
 }

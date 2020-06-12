@@ -11,22 +11,16 @@ namespace DotNetNuke.Tests.Core.Security.PortalSecurity
     [TestFixture]
     public class PortalSecurityTest
     {
-        #region Setup
         [SetUp]
         public void Setup()
         {
         }
 
-        #endregion
-
-        #region Tear Down
         [TearDown]
         public void TearDown()
         {
         }
-        #endregion
 
-        #region Test Methods
         [TestCase("<source></source>", " ",
             DotNetNuke.Security.PortalSecurity.FilterFlag.NoMarkup |
             DotNetNuke.Security.PortalSecurity.FilterFlag.NoScripting |
@@ -133,7 +127,6 @@ namespace DotNetNuke.Tests.Core.Security.PortalSecurity
             // Assert
             Assert.AreEqual(filterOutput, expectedOutput);
         }
-        #endregion
     }
 
 }

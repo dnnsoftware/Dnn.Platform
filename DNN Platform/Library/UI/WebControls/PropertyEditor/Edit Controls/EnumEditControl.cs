@@ -1,16 +1,14 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Globalization;
 using System.Web.UI;
 
 using DotNetNuke.Services.Localization;
-
-#endregion
 
 namespace DotNetNuke.UI.WebControls
 {
@@ -29,7 +27,6 @@ namespace DotNetNuke.UI.WebControls
     {
         private readonly Type EnumType;
 
-        #region Constructors
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -51,9 +48,7 @@ namespace DotNetNuke.UI.WebControls
             this.EnumType = Type.GetType(type);
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -75,9 +70,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
 
-        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -155,7 +148,5 @@ namespace DotNetNuke.UI.WebControls
             writer.Write(enumValue);
             writer.RenderEndTag();
         }
-
-        #endregion
     }
 }

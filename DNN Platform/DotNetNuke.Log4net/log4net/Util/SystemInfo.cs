@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 #if NETSTANDARD1_3
@@ -48,14 +47,10 @@ namespace log4net.Util
     /// <author>Alexey Solofnenko</author>
     public sealed class SystemInfo
     {
-        #region Private Constants
-
         private const string DEFAULT_NULL_TEXT = "(null)";
         private const string DEFAULT_NOT_AVAILABLE_TEXT = "NOT AVAILABLE";
 
-        #endregion
 
-        #region Private Instance Constructors
 
         /// <summary>
         /// Private constructor to prevent instances.
@@ -69,9 +64,7 @@ namespace log4net.Util
         {
         }
 
-        #endregion Private Instance Constructors
 
-        #region Public Static Constructor
 
         /// <summary>
         /// Initialize default values for private static fields.
@@ -107,9 +100,7 @@ namespace log4net.Util
             s_nullText = nullText;
         }
 
-        #endregion
 
-        #region Public Static Properties
 
         /// <summary>
         /// Gets the system dependent line terminator.
@@ -468,9 +459,7 @@ namespace log4net.Util
             set { s_notAvailableText = value; }
         }
 
-        #endregion Public Static Properties
 
-        #region Public Static Methods
 
         /// <summary>
         /// Gets the assembly location path for the specified assembly.
@@ -1112,9 +1101,7 @@ namespace log4net.Util
 #endif
         }
 
-        #endregion Public Static Methods
 
-        #region Private Static Methods
 
 #if NETCF
 		private static string NativeEntryAssemblyLocation 
@@ -1153,9 +1140,7 @@ namespace log4net.Util
 
 #endif
 
-        #endregion Private Static Methods
 
-        #region Public Static Fields
 
         /// <summary>
         /// Gets an empty array of types.
@@ -1168,9 +1153,7 @@ namespace log4net.Util
         /// </remarks>
         public static readonly Type[] EmptyTypes = new Type[0];
 
-        #endregion Public Static Fields
 
-        #region Private Static Fields
 
         /// <summary>
         /// The fully qualified type of the SystemInfo class.
@@ -1206,9 +1189,7 @@ namespace log4net.Util
         /// </summary>
         private static DateTime s_processStartTimeUtc = DateTime.UtcNow;
 
-        #endregion
 
-        #region Compact Framework Helper Classes
 #if NETCF_1_0
 		/// <summary>
 		/// Generate GUIDs on the .NET Compact Framework.
@@ -1327,6 +1308,5 @@ namespace log4net.Util
 			}
 		}
 #endif
-        #endregion Compact Framework Helper Classes
     }
 }

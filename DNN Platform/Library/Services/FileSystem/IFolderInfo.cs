@@ -53,7 +53,6 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         bool HasChildren { get; }
 
-        #region Supoort for BaseEntityInfo on inherited classes
 
         int CreatedByUserID { get; }
 
@@ -66,7 +65,5 @@ namespace DotNetNuke.Services.FileSystem
         UserInfo CreatedByUser(int portalId);
 
         UserInfo LastModifiedByUser(int portalId);
-
-        #endregion
     }
 }

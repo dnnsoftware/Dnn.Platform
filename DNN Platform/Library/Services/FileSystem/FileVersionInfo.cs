@@ -11,16 +11,10 @@ namespace DotNetNuke.Services.FileSystem
     [Serializable]
     public class FileVersionInfo : BaseEntityInfo
     {
-        #region "Constructors"
-
         public FileVersionInfo()
         {
             this.Version = 1;
         }
-
-        #endregion
-
-        #region "Properties"
 
         [XmlElement("fileid")]
         public int FileId { get; set; }
@@ -48,7 +42,5 @@ namespace DotNetNuke.Services.FileSystem
 
         [XmlElement("sha1hash")]
         public string SHA1Hash { get; set; }
-
-        #endregion
     }
 }

@@ -10,10 +10,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
 {
     public class DefaultMenuButtonItem : IMenuButtonItemExtensionPoint
     {
-        #region Private fields
-
-        #endregion
-
         public DefaultMenuButtonItem(string itemId, string itemType, string itemCssClass, string itemText, string itemAction, string itemIcon, int itemOrder, string itemAttributes)
         {
             this.ItemId = itemId;

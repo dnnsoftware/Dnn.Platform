@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -22,8 +22,6 @@ using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Tokens;
 using System.Web;
-
-#endregion
 
 namespace DotNetNuke.Security.Roles
 {
@@ -51,7 +49,6 @@ namespace DotNetNuke.Security.Roles
             this.IsSystemRole = false;
         }
 
-        #region Public Properties
         /// <summary>
         /// Gets whether this role is a system role
         /// </summary>
@@ -282,10 +279,6 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void GetRoleType()
         {
             var portal = PortalController.Instance.GetPortal(this.PortalID);
@@ -307,9 +300,7 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        #endregion
 
-        #region IHydratable Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -404,10 +395,6 @@ namespace DotNetNuke.Security.Roles
             set { this.RoleID = value; }
         }
 
-        #endregion
-
-        #region IPropertyAccess Members
-
         public CacheLevel Cacheability
         {
             get { return CacheLevel.fullyCacheable; }
@@ -485,9 +472,7 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        #endregion
 
-        #region IXmlSerializable Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -713,8 +698,6 @@ namespace DotNetNuke.Security.Roles
             // Write end of main element
             writer.WriteEndElement();
         }
-
-        #endregion
 
         private string GetString(string keyName, string defaultValue)
         {

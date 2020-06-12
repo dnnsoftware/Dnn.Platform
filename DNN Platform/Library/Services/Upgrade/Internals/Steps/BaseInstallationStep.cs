@@ -1,13 +1,11 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
-
-#endregion
 
 namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
@@ -18,18 +16,9 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
     /// -----------------------------------------------------------------------------
     public abstract class BaseInstallationStep : IInstallationStep
     {
-        #region Protected
-
         protected string LocalInstallResourceFile = "~/Install/App_LocalResources/InstallWizard.aspx.resx";
         protected string LocalUpgradeResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
-
-        #endregion
-
-        #region Private
-
         private string _details = string.Empty;
-
-        #endregion
 
         protected BaseInstallationStep()
         {
@@ -37,7 +26,6 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
             this.Errors = new List<string>();
         }
 
-        #region Implementation of IInstallationStep
 
         /// <summary>
         /// Any details of the task while it's executing
@@ -81,7 +69,5 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         /// This event gets fired when any activity gets recorded
         /// </summary>
         public event ActivityEventHandler Activity;
-
-        #endregion
     }
 }

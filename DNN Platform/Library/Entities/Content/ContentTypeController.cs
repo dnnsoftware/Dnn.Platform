@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +11,6 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Data;
-
-#endregion
 
 namespace DotNetNuke.Entities.Content
 {
@@ -38,8 +36,6 @@ namespace DotNetNuke.Entities.Content
     {
         private readonly IDataService _DataService;
 
-        #region Constructors
-
         public ContentTypeController() : this(Util.GetDataService())
         {
         }
@@ -49,9 +45,7 @@ namespace DotNetNuke.Entities.Content
             this._DataService = dataService;
         }
 
-        #endregion
 
-        #region Public Methods
 
         /// <summary>
         /// Adds the type of the content.
@@ -133,7 +127,5 @@ namespace DotNetNuke.Entities.Content
             // Refresh cached collection of types
             this.ClearContentTypeCache();
         }
-
-        #endregion
     }
 }

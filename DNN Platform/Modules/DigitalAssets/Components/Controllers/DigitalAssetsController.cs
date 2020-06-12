@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
     {
         protected static readonly DigitalAssetsSettingsRepository SettingsRepository = new DigitalAssetsSettingsRepository();
         private static readonly Hashtable MappedPathsSupported = new Hashtable();
-        #region Static Private Methods
+
         private static bool IsHostMenu
         {
             get
@@ -60,9 +60,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return IconController.IconURL("ExtFile", "32x32", "Standard");
         }
 
-        #endregion
-
-        #region Private Methods
         private IFolderInfo GetFolderInfo(int folderId)
         {
             var folder = FolderManager.Instance.GetFolder(folderId);
@@ -221,9 +218,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return "false";
 
         }
-        #endregion
-
-        #region Public Methods
 
         public IEnumerable<FolderMappingInfo> GetDefaultFolderProviderValues(int moduleId)
         {
@@ -647,9 +641,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         {
             return 0; // Always
         }
-        #endregion
 
-        #region Protected Methods
         public bool HasPermission(IFolderInfo folder, string permissionKey)
         {
             var hasPermision = PortalSettings.Current.UserInfo.IsSuperUser;
@@ -774,8 +766,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
             return imageUrl;
         }
-
-        #endregion
 
         public string UpgradeModule(string version)
         {

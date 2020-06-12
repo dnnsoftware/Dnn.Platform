@@ -32,16 +32,10 @@ namespace DotNetNuke.Services.Journal
         private const string AllowPhotosSetting = "Journal_AllowPhotos";
         private const string EditorEnabledSetting = "Journal_EditorEnabled";
 
-        #region Constructors
-
         public JournalControllerImpl()
         {
             this._dataService = JournalDataService.Instance;
         }
-
-        #endregion
-
-        #region Private Methods
 
         private XmlElement CreateElement(XmlDocument xDoc, string name, string value)
         {
@@ -278,9 +272,7 @@ namespace DotNetNuke.Services.Journal
         private static readonly string[] InvalidSecuritySetsWithoutId = new[] { "R", "U", "F", "P" };
         private static readonly char[] ValidSecurityDescriptors = new[] { 'E', 'C', 'R', 'U', 'F', 'P' };
 
-        #endregion
 
-        #region Public Methods
 
         // Journal Items
         public void SaveJournalItem(JournalItem journalItem, int tabId, int moduleId)
@@ -724,10 +716,6 @@ namespace DotNetNuke.Services.Journal
             this._dataService.Journal_Comment_Like(journalId, commentId, userId, displayName);
         }
 
-        #endregion
-
-        #region Journal Types
-
         public JournalTypeInfo GetJournalType(string journalType)
         {
             return CBO.FillObject<JournalTypeInfo>(this._dataService.Journal_Types_Get(journalType));
@@ -749,10 +737,6 @@ namespace DotNetNuke.Services.Journal
                                             c => CBO.FillCollection<JournalTypeInfo>(this._dataService.Journal_Types_List(portalId)));
         }
 
-        #endregion
-
-        #region Obsolete Methods
-
         [Obsolete("Deprecated in DNN 7.2.2. Use SaveJournalItem(JournalItem, ModuleInfo). Scheduled removal in v10.0.0.")]
         public void SaveJournalItem(JournalItem journalItem, int tabId)
         {
@@ -764,7 +748,5 @@ namespace DotNetNuke.Services.Journal
         {
             this.UpdateJournalItem(journalItem, tabId, Null.NullInteger);
         }
-
-        #endregion
     }
 }

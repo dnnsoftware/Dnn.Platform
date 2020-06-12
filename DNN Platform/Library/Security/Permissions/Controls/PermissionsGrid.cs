@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -24,22 +24,13 @@ using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Globals = DotNetNuke.Common.Globals;
 
-#endregion
-
 namespace DotNetNuke.Security.Permissions.Controls
 {
     public abstract class PermissionsGrid : Control, INamingContainer
     {
-        #region Enums
-
         protected const string PermissionTypeGrant = "True";
         protected const string PermissionTypeDeny = "False";
         protected const string PermissionTypeNull = "Null";
-
-        #endregion
-
-        #region Private Members
-
         private ArrayList _permissions;
         private ArrayList _users;
         private DropDownList cboRoleGroups;
@@ -53,23 +44,15 @@ namespace DotNetNuke.Security.Permissions.Controls
         private TextBox txtUser;
         private HiddenField hiddenUserIds;
         private HiddenField roleField;
-        #endregion
-
-        #region Protected Members
         protected DataGrid rolePermissionsGrid;
         protected DataGrid userPermissionsGrid;
-        #endregion
 
-        #region Constructor
         public PermissionsGrid()
         {
             this.dtUserPermissions = new DataTable();
             this.dtRolePermissions = new DataTable();
         }
 
-        #endregion
-
-        #region private Properties
         private int unAuthUsersRoleId = int.Parse(Globals.glbRoleUnauthUser);
         private int UnAuthUsersRoleId
         {
@@ -84,9 +67,6 @@ namespace DotNetNuke.Security.Permissions.Controls
                 return this.allUsersRoleId;
             }
         }
-        #endregion
-
-        #region Protected Properties
 
         protected virtual List<PermissionInfoBase> PermissionsList
         {
@@ -104,9 +84,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// <summary>
         /// Registers the scripts neccesary to make the tri-state controls work inside a RadAjaxPanel
@@ -119,8 +97,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             PermissionTriState.RegisterScripts(this.Page, this);
         }
-
-        #region "DataGrid Properties"
 
         public TableItemStyle AlternatingItemStyle
         {
@@ -217,7 +193,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        #endregion
 
         /// <summary>
         /// Gets the Id of the Administrator Role
@@ -298,18 +273,12 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// </summary>
         public string ResourceFile { get; set; }
 
-        #endregion
 
-        #region Abstract Members
 
         /// <summary>
         /// Generate the Data Grid
         /// </summary>
         public abstract void GenerateDataGrid();
-
-        #endregion
-
-        #region Private Methods
 
         private void BindData()
         {
@@ -653,10 +622,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             };
             this.pnlPermissions.Controls.Add(this.lblErrorMessage);
         }
-
-        #endregion
-
-        #region Protected Methods
 
         protected virtual void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
@@ -1218,9 +1183,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        #endregion
 
-        #region Event Handlers
 
         /// <summary>
         /// RoleGroupsSelectedIndexChanged runs when the Role Group is changed
@@ -1306,7 +1269,5 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
             return role;
         }
-
-        #endregion
     }
 }

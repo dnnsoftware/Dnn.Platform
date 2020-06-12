@@ -13,13 +13,9 @@ namespace DotNetNuke.Tests.Core.ComponentModel.Helpers
             this._service = service;
         }
 
-        #region IService2 Members
-
         public IService Service
         {
             get { return this._service; }
         }
-
-        #endregion
     }
 }

@@ -33,7 +33,6 @@ namespace DotNetNuke.Security.Permissions
         public const int WorkflowStatePermissionCacheTimeOut = 20;
         private static readonly DataProvider provider = DataProvider.Instance();
 
-        #region Private Shared Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -112,9 +111,7 @@ namespace DotNetNuke.Security.Permissions
             return dic;
         }
 
-        #endregion
 
-        #region Public Shared Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -156,7 +153,5 @@ namespace DotNetNuke.Security.Permissions
         {
             return PortalSecurity.IsInRoles(objWorkflowStatePermissions.ToString(permissionKey));
         }
-
-        #endregion
     }
 }

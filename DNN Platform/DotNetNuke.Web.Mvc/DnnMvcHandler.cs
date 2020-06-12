@@ -89,8 +89,6 @@ namespace DotNetNuke.Web.Mvc
             }
         }
 
-        #region DNN Mvc Methods
-
         private IModuleExecutionEngine GetModuleExecutionEngine()
         {
             var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
@@ -130,7 +128,5 @@ namespace DotNetNuke.Web.Mvc
 
             moduleExecutionEngine.ExecuteModuleResult(moduleResult, writer);
         }
-
-        #endregion
     }
 }

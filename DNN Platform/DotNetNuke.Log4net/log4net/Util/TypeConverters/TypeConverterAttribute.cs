@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 using System;
 
@@ -44,16 +43,13 @@ namespace log4net.Util.TypeConverters
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Enum)]
     public sealed class TypeConverterAttribute : Attribute
     {
-        #region Member Variables
 
         /// <summary>
         /// The string type name of the type converter
         /// </summary>
         private string m_typeName = null;
 
-        #endregion
 
-        #region Constructors
 
         /// <summary>
         /// Default constructor
@@ -97,7 +93,6 @@ namespace log4net.Util.TypeConverters
             this.m_typeName = log4net.Util.SystemInfo.AssemblyQualifiedName(converterType);
         }
 
-        #endregion
 
         /// <summary>
         /// The string type name of the type converter

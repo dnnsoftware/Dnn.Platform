@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Apache License
 //
 // Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
@@ -19,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 
 #if !NETCF
 #define HAS_READERWRITERLOCK
@@ -53,7 +51,6 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public sealed class ReaderWriterLock
     {
-        #region Instance Constructors
 
         /// <summary>
         /// Constructor
@@ -75,9 +72,7 @@ namespace log4net.Util
 #endif
         }
 
-        #endregion Private Instance Constructors
 
-        #region Public Methods
 
         /// <summary>
         /// Acquires a reader lock
@@ -177,9 +172,7 @@ namespace log4net.Util
 #endif
         }
 
-        #endregion Public Methods
 
-        #region Private Members
 
 #if HAS_READERWRITERLOCK
 #if HAS_READERWRITERLOCKSLIM
@@ -190,6 +183,5 @@ namespace log4net.Util
 
 #endif
 
-        #endregion
     }
 }

@@ -11,9 +11,7 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
 {
     public class DataService : ServiceLocator<IDataService, DataService>, IDataService
     {
-        #region Private Members
         private readonly DataProvider provider;
-        #endregion
 
         public DataService()
         {
@@ -25,7 +23,6 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
             return () => new DataService();
         }
 
-        #region Subscription Types
         public int AddSubscriptionType(string subscriptionName, string friendlyName, int desktopModuleId)
         {
             return this.provider.ExecuteScalar<int>("CoreMessaging_AddSubscriptionType", subscriptionName, friendlyName, desktopModuleId);
@@ -40,10 +37,7 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
         {
             return this.provider.ExecuteScalar<int>("CoreMessaging_DeleteSubscriptionType", subscriptionTypeId) == 0;
         }
-        #endregion
 
-
-        #region Subscriptions
         public int AddSubscription(int userId, int portalId, int subscriptionTypeId, string objectKey, string description, int moduleId, int tabId, string objectData)
         {
             return this.provider.ExecuteScalar<int>(
@@ -98,7 +92,5 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
         {
             this.provider.ExecuteNonQuery("CoreMessaging_DeleteSubscriptionsByObjectKey", portalId, objectKey);
         }
-
-        #endregion
     }
 }

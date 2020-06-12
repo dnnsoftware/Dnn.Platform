@@ -14,7 +14,6 @@ namespace DotNetNuke.Entities.Modules.Settings
     [Serializable]
     public class ParameterMapping
     {
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ParameterMapping"/> class.
@@ -40,16 +39,10 @@ namespace DotNetNuke.Entities.Modules.Settings
             this.FullParameterName = parameterName;
         }
 
-        #endregion
-
-        #region Properties
-
         public ParameterAttributeBase Attribute { get; set; }
 
         public string FullParameterName { get; set; }
 
         public PropertyInfo Property { get; set; }
-
-        #endregion
     }
 }

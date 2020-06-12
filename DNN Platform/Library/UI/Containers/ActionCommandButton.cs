@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 
@@ -10,8 +10,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.WebControls;
-
-#endregion
 
 namespace DotNetNuke.UI.Containers
 {
@@ -29,14 +27,10 @@ namespace DotNetNuke.UI.Containers
     /// -----------------------------------------------------------------------------
     public class ActionCommandButton : CommandButton, IActionControl
     {
-        #region "Private Members"
-
         private ActionManager _ActionManager;
         private ModuleAction _ModuleAction;
 
-        #endregion
 
-        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -59,8 +53,6 @@ namespace DotNetNuke.UI.Containers
                 this._ModuleAction = value;
             }
         }
-
-        #region IActionControl Members
 
         public event ActionEventHandler Action;
 
@@ -90,11 +82,8 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl { get; set; }
 
-        #endregion
 
-        #endregion
 
-        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -177,7 +166,5 @@ namespace DotNetNuke.UI.Containers
                 this.Visible = false;
             }
         }
-
-        #endregion
     }
 }

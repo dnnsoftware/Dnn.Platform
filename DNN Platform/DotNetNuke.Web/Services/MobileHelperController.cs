@@ -42,8 +42,6 @@ namespace DotNetNuke.Web.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, siteDetails);
         }
 
-        #region private methods
-
         private static IEnumerable<KeyValuePair<int, string>> GetMonikersForList(string moduleList)
         {
             var portalId = PortalSettings.Current.PortalId;
@@ -180,7 +178,5 @@ namespace DotNetNuke.Web.Services
                 }
             }
         }
-
-        #endregion
     }
 }

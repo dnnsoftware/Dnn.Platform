@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web;
@@ -12,15 +12,12 @@ using DotNetNuke.Common.Utils;
 using DotNetNuke.Entities.Urls;
 using DotNetNuke.HttpModules.UrlRewrite;
 
-#endregion
-
 namespace DotNetNuke.HttpModules.RequestFilter
 {
     public class RequestFilterModule : IHttpModule
     {
         private const string InstalledKey = "httprequestfilter.attemptedinstall";
 
-        #region IHttpModule Members
 
         /// <summary>
         /// Implementation of <see cref="IHttpModule"/>
@@ -36,8 +33,6 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
             context.BeginRequest += FilterRequest;
         }
-
-        #endregion
 
         private static void FilterRequest(object sender, EventArgs e)
         {

@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Web;
@@ -28,8 +28,6 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Mail;
 using DotNetNuke.UI.Skins.Controls;
 
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Users
 {
     /// -----------------------------------------------------------------------------
@@ -46,7 +44,6 @@ namespace DotNetNuke.Modules.Admin.Users
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Protected Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -158,9 +155,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        #endregion
 
-        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -182,10 +177,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.ViewState["PageNo"] = value;
             }
         }
-
-        #endregion
-
-        #region IActionable Members
 
         public ModuleActionCollection ModuleActions
         {
@@ -237,10 +228,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 return Actions;
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void BindData()
         {
@@ -467,9 +454,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        #endregion
 
-        #region Event Handlers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -986,7 +971,5 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             this.AddModuleMessage(e.Message, ModuleMessage.ModuleMessageType.RedError, true);
         }
-
-        #endregion
     }
 }

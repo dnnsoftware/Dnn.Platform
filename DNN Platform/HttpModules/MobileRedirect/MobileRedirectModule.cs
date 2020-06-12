@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -15,8 +15,6 @@ using DotNetNuke.Entities.Urls;
 using DotNetNuke.HttpModules.Services;
 using DotNetNuke.Services.Mobile;
 
-#endregion
-
 namespace DotNetNuke.HttpModules
 {
     public class MobileRedirectModule : IHttpModule
@@ -25,8 +23,6 @@ namespace DotNetNuke.HttpModules
         private readonly IList<string> _specialPages = new List<string> { "/login.aspx", "/register.aspx", "/terms.aspx", "/privacy.aspx", "/login", "/register", "/terms", "/privacy" };
         private readonly Regex MvcServicePath = new Regex(@"DesktopModules/MVC/", RegexOptions.Compiled);
         public string ModuleName => "MobileRedirectModule";
-
-        #region IHttpModule Members
 
         public void Init(HttpApplication application)
         {
@@ -37,8 +33,6 @@ namespace DotNetNuke.HttpModules
         public void Dispose()
         {
         }
-
-        #endregion
 
         public void OnBeginRequest(object s, EventArgs e)
         {

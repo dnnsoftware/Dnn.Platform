@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -28,8 +28,6 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
 
-#endregion
-
 namespace DotNetNuke.Security.Membership
 {
     /// -----------------------------------------------------------------------------
@@ -47,15 +45,8 @@ namespace DotNetNuke.Security.Membership
     public class AspNetMembershipProvider : MembershipProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AspNetMembershipProvider));
-
-        #region Private Members
-
         private readonly DataProvider _dataProvider = DataProvider.Instance();
         private readonly IEnumerable<string> _socialAuthProviders = new List<string>() { "Facebook", "Google", "Twitter", "LiveID" };
-
-        #endregion
-
-        #region Public Properties
 
         public override bool CanEditProviderProperties
         {
@@ -172,10 +163,6 @@ namespace DotNetNuke.Security.Membership
                     "Provider properties for AspNetMembershipProvider must be set in web.config");
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static bool AutoUnlockUser(MembershipUser aspNetUser)
         {
@@ -706,9 +693,7 @@ namespace DotNetNuke.Security.Membership
             return settings[settingKey] == null ? string.Empty : settings[settingKey].ToString();
         }
 
-        #endregion
 
-        #region Public Methods
         /// <summary>
         /// add new userportal record (used for creating sites with existing user)
         /// </summary>
@@ -1938,8 +1923,6 @@ namespace DotNetNuke.Security.Membership
             }
             return user;
         }
-
-        #endregion
 
         public static ArrayList FillUserCollection(int portalId, IDataReader dr)
         {

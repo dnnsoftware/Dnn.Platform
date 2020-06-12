@@ -1,16 +1,14 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
 using DotNetNuke.Collections.Internal;
-
-#endregion
 
 namespace DotNetNuke.ComponentModel
 {
@@ -25,7 +23,6 @@ namespace DotNetNuke.ComponentModel
 
         private readonly SharedDictionary<Type, string> _registeredComponents = new SharedDictionary<Type, string>();
 
-        #region "Constructors"
 
         /// <summary>
         ///   Initializes a new instance of the SimpleContainer class.
@@ -42,10 +39,6 @@ namespace DotNetNuke.ComponentModel
         {
             this._name = name;
         }
-
-        #endregion
-
-        #region "Private Methods"
 
         private void AddBuilder(Type contractType, IComponentBuilder builder)
         {
@@ -138,8 +131,6 @@ namespace DotNetNuke.ComponentModel
                 this._registeredComponents[type] = name;
             }
         }
-
-        #endregion
 
         public override string Name
         {

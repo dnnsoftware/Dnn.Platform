@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections;
@@ -19,21 +19,13 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 
-#endregion
-
 namespace DotNetNuke.Security.Permissions.Controls
 {
     public class TabPermissionsGrid : PermissionsGrid
     {
-        #region Private Members
-
         private List<PermissionInfoBase> _PermissionsList;
         private int _TabID = -1;
         private TabPermissionCollection _TabPermissions;
-
-        #endregion
-
-        #region Protected Methods
 
         protected override bool IsFullControl(PermissionInfo permissionInfo)
         {
@@ -393,14 +385,8 @@ namespace DotNetNuke.Security.Permissions.Controls
             return true;
         }
 
-        #endregion
-
-        #region Public Methods
-
         public override void GenerateDataGrid()
         {
         }
-
-        #endregion
     }
 }

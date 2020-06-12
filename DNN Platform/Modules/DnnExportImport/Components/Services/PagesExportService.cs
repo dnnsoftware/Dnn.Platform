@@ -118,8 +118,6 @@ namespace Dnn.ExportImport.Components.Services
             return this.Repository.GetCount<ExportTab>(x => x.IsSystem == this.IncludeSystem);
         }
 
-        #region import methods
-
         private void ProcessImportPages()
         {
             this._dataProvider = DataProvider.Instance();
@@ -1430,8 +1428,6 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        #region Methods for updating CreatedBy and ModifiedBy of various tables
-
         private void UpdateTabChangers(int tabId, int createdBy, int modifiedBy)
         {
             this._dataProvider.UpdateRecordChangers("Tabs", "TabID", tabId, createdBy, modifiedBy);
@@ -1487,13 +1483,6 @@ namespace Dnn.ExportImport.Components.Services
         {
             this._dataProvider.UpdateUniqueId("TabModules", "TabModuleID", tabModuleId, uniqueId);
         }
-
-
-        #endregion
-
-        #endregion
-
-        #region export methods
 
         private void ProcessExportPages()
         {
@@ -1800,10 +1789,6 @@ namespace Dnn.ExportImport.Components.Services
             return exportPage;
         }
 
-        #endregion
-
-        #region helper methods
-
         private static bool IsTabIncluded(ExportTabInfo tab, IList<ExportTabInfo> allTabs, PageToExport[] selectedPages)
         {
             var first = true;
@@ -2068,10 +2053,6 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        #endregion
-
-        #region private classes
-
         [JsonObject]
         private class ProgressTotals
         {
@@ -2100,6 +2081,5 @@ namespace Dnn.ExportImport.Components.Services
 
             public int LocalModuleId { get; set; }
         }
-        #endregion
     }
 }

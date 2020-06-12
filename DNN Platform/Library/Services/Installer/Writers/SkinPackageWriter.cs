@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.IO;
@@ -10,8 +10,6 @@ using System.Xml;
 
 using DotNetNuke.Services.Installer.Packages;
 using DotNetNuke.UI.Skins;
-
-#endregion
 
 namespace DotNetNuke.Services.Installer.Writers
 {
@@ -24,14 +22,8 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class SkinPackageWriter : PackageWriterBase
     {
-        #region "Private Members"
-
         private readonly SkinPackageInfo _SkinPackage;
         private readonly string _SubFolder;
-
-        #endregion
-
-        #region "Constructors"
 
         public SkinPackageWriter(PackageInfo package) : base(package)
         {
@@ -58,9 +50,6 @@ namespace DotNetNuke.Services.Installer.Writers
             this.BasePath = Path.Combine(basePath, subFolder);
         }
 
-        #endregion
-
-        #region "Protected Properties"
         public override bool IncludeAssemblies
         {
             get
@@ -76,8 +65,6 @@ namespace DotNetNuke.Services.Installer.Writers
                 return this._SkinPackage;
             }
         }
-
-        #endregion
 
         public void SetBasePath()
         {

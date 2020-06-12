@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Data;
@@ -10,8 +10,6 @@ using System.Data;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security;
-
-#endregion
 
 namespace DotNetNuke.Services.Messaging.Data
 {
@@ -42,18 +40,12 @@ namespace DotNetNuke.Services.Messaging.Data
         private bool _allowReply;
         private bool _skipInbox;
 
-        #region "Constructors"
-
         public Message()
         {
             this.Conversation = Guid.Empty;
             this.Status = MessageStatusType.Draft;
             this.MessageDate = DateTime.Now;
         }
-
-        #endregion
-
-        #region "Public Properties"
 
         private Guid _EmailSchedulerInstance;
         private DateTime _EmailSentDate;
@@ -286,10 +278,6 @@ namespace DotNetNuke.Services.Messaging.Data
             }
         }
 
-        #endregion
-
-        #region "Public Methods"
-
         public Message GetReplyMessage()
         {
             var message = new Message();
@@ -306,10 +294,6 @@ namespace DotNetNuke.Services.Messaging.Data
 
             return message;
         }
-
-        #endregion
-
-        #region "IHydratable Implementation"
 
         public void Fill(IDataReader dr)
         {
@@ -349,7 +333,5 @@ namespace DotNetNuke.Services.Messaging.Data
                 this.MessageID = value;
             }
         }
-
-        #endregion
     }
 }

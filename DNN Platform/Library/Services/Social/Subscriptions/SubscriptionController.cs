@@ -33,7 +33,6 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return () => new SubscriptionController();
         }
 
-        #region Implemented Methods
         public IEnumerable<Subscription> GetUserSubscriptions(UserInfo user, int portalId, int subscriptionTypeId = -1)
         {
             var subscriptions = CBO.FillCollection<Subscription>(this.dataService.GetSubscriptionsByUser(
@@ -114,7 +113,5 @@ namespace DotNetNuke.Services.Social.Subscriptions
         {
             this.dataService.DeleteSubscriptionsByObjectKey(portalId, objectKey);
         }
-
-        #endregion
     }
 }

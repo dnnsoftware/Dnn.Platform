@@ -1,8 +1,8 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -18,8 +18,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Log.EventLog;
 
-#endregion
-
 namespace DotNetNuke.Services.Mobile
 {
     /// <summary>
@@ -27,7 +25,6 @@ namespace DotNetNuke.Services.Mobile
     /// </summary>
     public class PreviewProfileController : IPreviewProfileController
     {
-        #region "Public Methods"
         /// <summary>
         /// save a preview profile. If profile.Id equals Null.NullInteger(-1), that means need to add a new profile;
         /// otherwise will update the profile by profile.Id.
@@ -106,10 +103,6 @@ namespace DotNetNuke.Services.Mobile
             return this.GetProfilesByPortal(portalId).Where(r => r.Id == id).FirstOrDefault();
         }
 
-        #endregion
-
-        #region "Private Methods"
-
         private IList<IPreviewProfile> GetProfilesByPortal(int portalId, bool addDefault)
         {
             string cacheKey = string.Format(DataCache.PreviewProfilesCacheKey, portalId);
@@ -184,6 +177,5 @@ namespace DotNetNuke.Services.Mobile
 
             return profiles;
         }
-        #endregion
     }
 }

@@ -27,8 +27,6 @@ namespace DotNetNuke.Tests.Content
     {
         private Mock<CachingProvider> mockCache;
 
-        #region Test Initialize
-
         [SetUp]
         public void SetUp()
         {
@@ -42,10 +40,6 @@ namespace DotNetNuke.Tests.Content
         {
             MockComponentProvider.ResetContainer();
         }
-
-        #endregion
-
-        #region AddContentType
 
         [Test]
         public void ContentTypeController_AddContentType_Throws_On_Null_ContentType()
@@ -108,10 +102,6 @@ namespace DotNetNuke.Tests.Content
             Assert.AreEqual(Constants.CONTENTTYPE_AddContentTypeId, contentType.ContentTypeId);
         }
 
-        #endregion
-
-        #region DeleteContentType
-
         [Test]
         public void ContentTypeController_DeleteContentType_Throws_On_Null_ContentType()
         {
@@ -153,10 +143,6 @@ namespace DotNetNuke.Tests.Content
             // Assert
             mockDataService.Verify(ds => ds.DeleteContentType(contentType));
         }
-
-        #endregion
-
-        #region GetContentTypes
 
         [Test]
         public void ContentTypeController_GetContentTypes_Calls_DataService()
@@ -204,10 +190,6 @@ namespace DotNetNuke.Tests.Content
             Assert.AreEqual(Constants.CONTENTTYPE_ValidContentTypeCount, contentTypes.Count());
         }
 
-        #endregion
-
-        #region UpdateContentType
-
         [Test]
         public void ContentTypeController_UpdateContentType_Throws_On_Null_ContentType()
         {
@@ -249,7 +231,5 @@ namespace DotNetNuke.Tests.Content
             // Assert
             mockDataService.Verify(ds => ds.UpdateContentType(contentType));
         }
-
-        #endregion
     }
 }

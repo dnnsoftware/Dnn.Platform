@@ -17,13 +17,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
     [TestFixture]
     public class AspNetClientCapabilityTest
     {
-        #region Private Variables
         private Providers.AspNetClientCapabilityProvider.AspNetClientCapabilityProvider _clientCapabilityProvider;
-
-        #endregion
-
-        #region User Agents
-
         public const string iphoneUserAgent = "Mozilla/5.0 (iPod; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7";
 
         public const string wp7UserAgent = "Mozilla/4.0 (compatible; MSIE 7.0; Windows Phone OS 7.0; Trident/3.1; IEMobile/7.0) Asus;Galaxy6";
@@ -43,10 +37,6 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         public const string htcDesireVer1Sub22UserAgent = "Mozilla/5.0 (Linux; U; Android 2.2; sv-se; Desire_A8181 Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1";
         public const string blackBerry9105V1 = "BlackBerry9105/5.0.0.696 Profile/MIDP-2.1 Configuration/CLDC-1.1 VendorID/133";
 
-        #endregion
-
-        #region Setup & TearDown
-
         [SetUp]
         public void Setup()
         {
@@ -64,10 +54,6 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         {
 
         }
-
-        #endregion
-
-        #region Testing IsMobile for common smart phones and Tablets
 
         [Test]
         public void AspNetClientCapability_IsMobile_Returns_True_For_BlackBerry9105V1()
@@ -180,10 +166,6 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             Assert.IsTrue(bIsMobile);
         }
 
-        #endregion
-
-        #region Testing IsMobible for common desktop browsers
-
         [Test]
         public void AspNetClientCapability_IsMobile_Returns_False_For_InternetExplorer8()
         {
@@ -236,9 +218,6 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             Assert.IsFalse(bIsMobile);
         }
 
-        #endregion
-
-        #region Testing IsTables False for non Tablet devices and User Agents
         [Test]
         public void AspNetClientCapability_IsTablet_Returns_False_For_IPhone()
         {
@@ -265,10 +244,6 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             Assert.IsTrue(bIsTablet);
         }
 
-        #endregion
-
-        #region Testing SupportsFlash True User Agents of known Devices
-
         [Test]
         public void AspNetClientCapability_SupportsFlash_Returns_True_For_HTCDesireVer1Sub22()
         {
@@ -282,10 +257,6 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             Assert.IsFalse(bSupportsFlash);
         }
 
-        #endregion
-
-        #region Testing SupportsFlash False User Agents of known Devices
-
         [Test]
         public void AspNetClientCapability_SupportsFlash_Returns_False_For_WindowsPhone7()
         {
@@ -298,9 +269,6 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             // Assert
             Assert.IsFalse(bIsTablet);
         }
-
-        #endregion
-
     }
 
 }

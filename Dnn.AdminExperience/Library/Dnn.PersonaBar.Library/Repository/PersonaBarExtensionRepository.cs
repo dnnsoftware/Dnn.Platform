@@ -16,11 +16,9 @@ namespace Dnn.PersonaBar.Library.Repository
     public class PersonaBarExtensionRepository : ServiceLocator<IPersonaBarExtensionRepository, PersonaBarExtensionRepository>,
         IPersonaBarExtensionRepository
     {
-        #region Fields
         private readonly IDataService _dataService = new DataService();
         private const string PersonaBarExtensionsCacheKey = "PersonaBarExtensions";
         private static readonly object ThreadLocker = new object();
-        #endregion
 
         private void ClearCache()
         {
