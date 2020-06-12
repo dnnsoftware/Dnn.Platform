@@ -624,7 +624,6 @@ namespace DotNetNuke.Services.Installer
         /// files
         /// </summary>
         /// -----------------------------------------------------------------------------
-
         public void UpdateConfigs()
         {
             this.UpdateConfigs(true);

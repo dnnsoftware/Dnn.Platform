@@ -15,7 +15,6 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
     /// TODO This class may not capture all the details from the config file
     /// </summary>
     /// -----------------------------------------------------------------------------
-
     public class InstallConfig
     {
         public IList<string> Scripts { get; set; }

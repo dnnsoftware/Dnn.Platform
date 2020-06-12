@@ -66,8 +66,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// Raises the MembershipAuthorized Event
         /// </summary>
         /// -----------------------------------------------------------------------------
-
-
         public event EventHandler MembershipAuthorized;
         public event EventHandler MembershipPasswordUpdateChanged;
         public event EventHandler MembershipUnAuthorized;

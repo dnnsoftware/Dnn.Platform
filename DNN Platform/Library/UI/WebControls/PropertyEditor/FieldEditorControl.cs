@@ -157,7 +157,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>The typename of the editor</value>
         /// -----------------------------------------------------------------------------
-
         public string EditorTypeName { get; set; }
 
         /// -----------------------------------------------------------------------------

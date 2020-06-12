@@ -26,7 +26,6 @@ namespace DotNetNuke.Services.Search
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> class.
         /// </summary>
-
         public SearchCriteriaCollection()
         {
         }

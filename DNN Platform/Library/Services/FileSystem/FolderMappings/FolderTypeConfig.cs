@@ -13,7 +13,6 @@ namespace DotNetNuke.Services.FileSystem
     /// HostSettingConfig - A class that represents Install/DotNetNuke.Install.Config/Settings
     /// </summary>
     /// -----------------------------------------------------------------------------
-
     public class FolderTypeConfig
     {
         public string Name { get; set; }

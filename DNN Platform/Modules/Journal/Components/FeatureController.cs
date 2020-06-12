@@ -41,7 +41,6 @@ namespace DotNetNuke.Modules.Journal.Components
     /// The Controller class for Journal
     /// </summary>
     /// -----------------------------------------------------------------------------
-
     // uncomment the interfaces to add the support.
     public class FeatureController : ModuleSearchBase, IModuleSearchResultController
     {

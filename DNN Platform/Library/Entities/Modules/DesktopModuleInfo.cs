@@ -562,7 +562,6 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <param name="writer">The XmlWriter to use</param>
         /// -----------------------------------------------------------------------------
-
         public void WriteXml(XmlWriter writer)
         {
             // Write start of main elemenst

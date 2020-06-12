@@ -13,7 +13,6 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
     /// LicenseConfig - A class that represents Install/DotNetNuke.Install.Config/LicenseActivation
     /// </summary>
     /// -----------------------------------------------------------------------------
-
     public class LicenseConfig
     {
         public string AccountEmail { get; set; }

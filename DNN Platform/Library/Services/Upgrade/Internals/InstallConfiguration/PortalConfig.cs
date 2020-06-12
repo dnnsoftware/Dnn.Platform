@@ -14,7 +14,6 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
     /// PortalConfig - A class that represents Install/DotNetNuke.Install.Config/Portals/Portal
     /// </summary>
     /// -----------------------------------------------------------------------------
-
     public class PortalConfig
     {
         public string PortalName { get; set; }

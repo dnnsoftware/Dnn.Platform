@@ -1752,7 +1752,6 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="result"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-
         private static bool RedirectPortalAlias(string httpAlias, ref UrlAction result, FriendlyUrlSettings settings)
         {
             bool redirected = false;

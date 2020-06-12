@@ -13,7 +13,6 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
     /// HostSettingConfig - A class that represents Install/DotNetNuke.Install.Config/Settings
     /// </summary>
     /// -----------------------------------------------------------------------------
-
     public class HostSettingConfig
     {
         public string Name { get; set; }

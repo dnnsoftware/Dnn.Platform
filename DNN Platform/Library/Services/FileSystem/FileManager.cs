@@ -1336,7 +1336,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>Total files count in the zip file.</returns>
         /// <exception cref="System.ArgumentException">Thrown when file is not a zip compressed file.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when file or destination folder are null.</exception>
-
         public virtual int UnzipFile(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles)
         {
             Requires.NotNull("file", file);

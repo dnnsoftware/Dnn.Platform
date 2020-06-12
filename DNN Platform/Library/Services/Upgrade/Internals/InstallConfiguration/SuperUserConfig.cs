@@ -13,7 +13,6 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
     /// SuperUserConfig - A class that represents Install/DotNetNuke.Install.Config/SuperUser
     /// </summary>
     /// -----------------------------------------------------------------------------
-
     public class SuperUserConfig
     {
         public string FirstName { get; set; }

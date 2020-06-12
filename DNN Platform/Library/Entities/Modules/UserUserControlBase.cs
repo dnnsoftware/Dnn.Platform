@@ -303,7 +303,6 @@ namespace DotNetNuke.Entities.Modules
         /// the UserRemoved Event
         /// </summary>
         /// -----------------------------------------------------------------------------
-
         public class UserRemovedEventArgs : BaseUserEventArgs
         {
             /// -----------------------------------------------------------------------------

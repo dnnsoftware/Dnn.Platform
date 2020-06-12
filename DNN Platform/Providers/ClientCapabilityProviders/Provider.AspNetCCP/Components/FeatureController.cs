@@ -27,7 +27,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
     /// <history>
     /// </history>
     /// -----------------------------------------------------------------------------
-
     public class FeatureController : IUpgradeable
     {
         private const string ResourceFileRelativePath = "~/Providers/ClientCapabilityProviders/AspNetClientCapabilityProvider/App_LocalResources/SharedResources.resx";
