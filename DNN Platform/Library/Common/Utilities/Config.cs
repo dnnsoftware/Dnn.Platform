@@ -294,7 +294,10 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static void SetMaxUploadSize(long newSize)
         {
-            if (newSize < 12582912) { newSize = 12582912; } // 12 Mb minimum
+            if (newSize < 12582912)
+            {
+                newSize = 12582912;
+            } // 12 Mb minimum
 
             var configNav = Load();
 

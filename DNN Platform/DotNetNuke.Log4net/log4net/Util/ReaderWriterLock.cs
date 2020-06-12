@@ -88,7 +88,9 @@ namespace log4net.Util
 #if HAS_READERWRITERLOCK
 #if HAS_READERWRITERLOCKSLIM
                     // prevent ThreadAbort while updating state, see https://issues.apache.org/jira/browse/LOG4NET-443
-                    try { }
+                    try
+                    {
+                    }
                     finally
                     {
             this.m_lock.EnterReadLock();
@@ -137,7 +139,9 @@ namespace log4net.Util
 #if HAS_READERWRITERLOCK
 #if HAS_READERWRITERLOCKSLIM
                     // prevent ThreadAbort while updating state, see https://issues.apache.org/jira/browse/LOG4NET-443
-                    try { }
+                    try
+                    {
+                    }
                     finally
                     {
             this.m_lock.EnterWriteLock();

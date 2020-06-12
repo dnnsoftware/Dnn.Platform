@@ -59,8 +59,14 @@ namespace DotNetNuke.Services.UserProfile
                 Exceptions.Exceptions.ProcessHttpException(context.Request);
             }
 
-            if (height > 128) { height = 128; }
-            if (width > 128) { width = 128; }
+            if (height > 128)
+            {
+                height = 128;
+            }
+            if (width > 128)
+            {
+                width = 128;
+            }
 
 
             this.CalculateSize(ref height, ref width, ref size);

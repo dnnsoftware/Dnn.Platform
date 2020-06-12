@@ -85,7 +85,10 @@ namespace DotNetNuke.Common.Lists
                 {
                     // ignore
                 }
-                if (string.IsNullOrEmpty(res)) { res = this._Text; }
+                if (string.IsNullOrEmpty(res))
+                {
+                    res = this._Text;
+                }
                 return res;
             }
             set

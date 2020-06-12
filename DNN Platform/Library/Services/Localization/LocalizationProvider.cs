@@ -132,7 +132,10 @@ namespace DotNetNuke.Services.Localization
                         AddResourceFileNode(ref root, "resheader", "writer", "System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
                     }
                 }
-                if (doc == null) { return false; }
+                if (doc == null)
+                {
+                    return false;
+                }
                 XmlNode reskeyNode = doc.SelectSingleNode("root/data[@name=\"" + key + "\"]");
                 if (reskeyNode != null)
                 {

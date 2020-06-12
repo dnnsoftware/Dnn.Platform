@@ -297,7 +297,9 @@ namespace log4net.Appender
                             this.m_writer = null;
                         }
                     }
-                    catch { }
+                    catch
+                    {
+                    }
 
                     if (this.m_socket != null)
                     {
@@ -305,13 +307,17 @@ namespace log4net.Appender
                         {
                             this.m_socket.Shutdown(SocketShutdown.Both);
                         }
-                        catch { }
+                        catch
+                        {
+                        }
 
                         try
                         {
                             this.m_socket.Close();
                         }
-                        catch { }
+                        catch
+                        {
+                        }
 
                         this.m_socket = null;
                     }

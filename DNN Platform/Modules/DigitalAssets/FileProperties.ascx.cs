@@ -180,7 +180,9 @@ namespace DotNetNuke.Modules.DigitalAssets
                 this.SaveFileProperties();
                 this.Page.CloseClientDialog(true);
             }
-            catch (ThreadAbortException) { }
+            catch (ThreadAbortException)
+            {
+            }
             catch (DotNetNukeException dnnex)
             {
                 UI.Skins.Skin.AddModuleMessage(this, dnnex.Message, ModuleMessage.ModuleMessageType.RedError);

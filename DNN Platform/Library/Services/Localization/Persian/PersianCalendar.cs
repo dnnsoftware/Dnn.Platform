@@ -10,7 +10,10 @@ namespace DotNetNuke.Services.Localization.Persian
     {
         public override int GetYear(DateTime time)
         {
-            try { return base.GetYear(time); }
+            try
+            {
+                return base.GetYear(time);
+            }
             catch
             {
                 // ignore
@@ -20,7 +23,10 @@ namespace DotNetNuke.Services.Localization.Persian
 
         public override int GetMonth(DateTime time)
         {
-            try { return base.GetMonth(time); }
+            try
+            {
+                return base.GetMonth(time);
+            }
             catch
             {
                 // ignore
@@ -30,7 +36,10 @@ namespace DotNetNuke.Services.Localization.Persian
 
         public override int GetDayOfMonth(DateTime time)
         {
-            try { return base.GetDayOfMonth(time); }
+            try
+            {
+                return base.GetDayOfMonth(time);
+            }
             catch
             {
                 // ignore
@@ -40,7 +49,10 @@ namespace DotNetNuke.Services.Localization.Persian
 
         public override int GetDayOfYear(DateTime time)
         {
-            try { return base.GetDayOfYear(time); }
+            try
+            {
+                return base.GetDayOfYear(time);
+            }
             catch
             {
                 // ignore
@@ -50,7 +62,10 @@ namespace DotNetNuke.Services.Localization.Persian
 
         public override DayOfWeek GetDayOfWeek(DateTime time)
         {
-            try { return base.GetDayOfWeek(time); }
+            try
+            {
+                return base.GetDayOfWeek(time);
+            }
             catch
             {
                 // ignore
