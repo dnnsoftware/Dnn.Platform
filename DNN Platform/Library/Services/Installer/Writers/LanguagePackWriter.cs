@@ -498,7 +498,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             if (this.LanguagePack.PackageType == LanguagePackType.Core)
             {
-                if (folder.FullName.ToLowerInvariant().Contains("desktopmodules") && !folder.FullName.ToLowerInvariant().Contains("admin") || folder.FullName.ToLowerInvariant().Contains("providers"))
+                if ((folder.FullName.ToLowerInvariant().Contains("desktopmodules") && !folder.FullName.ToLowerInvariant().Contains("admin")) || folder.FullName.ToLowerInvariant().Contains("providers"))
                 {
                     return;
                 }

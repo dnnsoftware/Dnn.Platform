@@ -210,7 +210,7 @@ namespace Dnn.Modules.Console
                         break;
                     case "Friends":
                         var profileUser = UserController.GetUserById(this.PortalId, this.ProfileUserId);
-                        canShowTab = (profileUser != null) && (profileUser.Social.Friend != null) || (this.UserId == this.ProfileUserId);
+                        canShowTab = ((profileUser != null) && (profileUser.Social.Friend != null)) || (this.UserId == this.ProfileUserId);
                         break;
                     case "User":
                         canShowTab = this.UserId == this.ProfileUserId;

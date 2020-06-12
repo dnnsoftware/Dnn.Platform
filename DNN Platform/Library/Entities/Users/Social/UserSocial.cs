@@ -50,8 +50,8 @@ namespace DotNetNuke.Entities.Users.Social
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
                 return this.UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == _friendsRelationship.RelationshipId
                                                                 &&
-                                                                (ur.UserId == this._userInfo.UserID &&
-                                                                 ur.RelatedUserId == currentUser.UserID
+                                                                ((ur.UserId == this._userInfo.UserID &&
+                                                                 ur.RelatedUserId == currentUser.UserID)
                                                                  ||
                                                                  (ur.UserId == currentUser.UserID &&
                                                                   ur.RelatedUserId == this._userInfo.UserID))));

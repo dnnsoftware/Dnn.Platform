@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
                 return false;
             }
             var user = UserController.Instance.GetUserById(portalId, userId);
-            return user.IsSuperUser || portalId > Null.NullInteger && user.IsInRole(PortalController.Instance.GetPortal(portalId).AdministratorRoleName);
+            return user.IsSuperUser || (portalId > Null.NullInteger && user.IsInRole(PortalController.Instance.GetPortal(portalId).AdministratorRoleName));
         }
 
         public bool HasFolderPermission(IFolderInfo folder, string permissionKey)

@@ -244,7 +244,7 @@ namespace DotNetNuke.HttpModules.Membership
             try
             {
                 if (user == null || user.IsDeleted || user.Membership.LockedOut
-                    || !user.Membership.Approved && !user.IsInRole("Unverified Users")
+                    || (!user.Membership.Approved && !user.IsInRole("Unverified Users"))
                     || !user.Username.Equals(context.User.Identity.Name, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return true;

@@ -58,7 +58,7 @@ namespace DotNetNuke.Collections.Internal
         public ISharedCollectionLock GetReadLock(TimeSpan timeout)
         {
             this.EnsureNotDisposed();
-            if (this.Lock.RecursionPolicy == LockRecursionPolicy.NoRecursion && this.Lock.IsReadLockHeld ||
+            if ((this.Lock.RecursionPolicy == LockRecursionPolicy.NoRecursion && this.Lock.IsReadLockHeld) ||
                 this.Lock.TryEnterReadLock(timeout))
             {
                 return new ReaderWriterSlimLock(this.Lock);
@@ -77,7 +77,7 @@ namespace DotNetNuke.Collections.Internal
         public ISharedCollectionLock GetWriteLock(TimeSpan timeout)
         {
             this.EnsureNotDisposed();
-            if (this.Lock.RecursionPolicy == LockRecursionPolicy.NoRecursion && this.Lock.IsWriteLockHeld ||
+            if ((this.Lock.RecursionPolicy == LockRecursionPolicy.NoRecursion && this.Lock.IsWriteLockHeld) ||
                 this.Lock.TryEnterWriteLock(timeout))
             {
                 return new ReaderWriterSlimLock(this.Lock);

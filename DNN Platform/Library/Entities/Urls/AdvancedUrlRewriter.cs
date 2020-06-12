@@ -2036,7 +2036,7 @@ namespace DotNetNuke.Entities.Urls
                 if (httpAliasFromTab != null)
                 {
                     // 882 : account for situation when portalAlias is null.
-                    if (result.PortalAlias != null && string.Compare(result.PortalAlias.HTTPAlias, httpAliasFromTab, StringComparison.OrdinalIgnoreCase) != 0
+                    if ((result.PortalAlias != null && string.Compare(result.PortalAlias.HTTPAlias, httpAliasFromTab, StringComparison.OrdinalIgnoreCase) != 0)
                         || result.PortalAlias == null)
                     {
                         // 691 : change logic to force change in portal alias context rather than force back.

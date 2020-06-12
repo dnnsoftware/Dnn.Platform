@@ -74,8 +74,8 @@ namespace DotNetNuke.UI
                     // if action is visible and user has permission
                     if (action.Visible &&
                         (action.Secure != SecurityAccessLevel.Anonymous ||
-                            (!ModuleHost.IsViewMode(actionControl.ModuleControl.ModuleContext.Configuration, PortalSettings.Current))
-                                && ModulePermissionController.HasModuleAccess(action.Secure, Null.NullString, actionControl.ModuleControl.ModuleContext.Configuration)))
+                            ((!ModuleHost.IsViewMode(actionControl.ModuleControl.ModuleContext.Configuration, PortalSettings.Current))
+                                && ModulePermissionController.HasModuleAccess(action.Secure, Null.NullString, actionControl.ModuleControl.ModuleContext.Configuration))))
                     {
                         if (isActionPending)
                         {

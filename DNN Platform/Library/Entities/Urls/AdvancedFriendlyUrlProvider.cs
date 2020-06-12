@@ -945,7 +945,7 @@ namespace DotNetNuke.Entities.Urls
                                            ? string.Empty
                                            : DetermineExtension(isHomePage, pageName, settings);
 
-                    if (customOnly && isCustomUrl || customOnly == false)
+                    if ((customOnly && isCustomUrl) || customOnly == false)
                     {
                         result = Globals.AddHTTP(httpAlias + "/" + newTabPath.TrimStart('/') + extension) + qs;
                     }
@@ -1176,7 +1176,7 @@ namespace DotNetNuke.Entities.Urls
                             finalPath = AumDebugRegex.Replace(finalPath, string.Empty);
 
                             // 'and we're done!
-                            if (customOnly && isCustomUrl || customOnly == false || builtInUrl)
+                            if ((customOnly && isCustomUrl) || customOnly == false || builtInUrl)
                             {
                                 result = Globals.AddHTTP(finalPath);
                             }
