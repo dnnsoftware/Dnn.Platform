@@ -379,7 +379,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static bool IsPopUp(string url)
         {
-            return url .IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0;
+            return url.IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         /// <summary>
