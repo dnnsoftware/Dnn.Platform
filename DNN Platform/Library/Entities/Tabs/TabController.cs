@@ -457,7 +457,6 @@ namespace DotNetNuke.Entities.Tabs
                 DataCache.TabAliasSkinCachePriority,
                 portalId),
                 this.GetAliasSkinsCallback);
-
         }
 
         private object GetAliasSkinsCallback(CacheItemArgs cacheItemArgs)
@@ -513,7 +512,6 @@ namespace DotNetNuke.Entities.Tabs
                 DataCache.TabCustomAliasCachePriority,
                 portalId),
                 this.GetCustomAliasesCallback);
-
         }
 
         private object GetCustomAliasesCallback(CacheItemArgs cacheItemArgs)
@@ -655,7 +653,6 @@ namespace DotNetNuke.Entities.Tabs
                 DataCache.TabUrlCachePriority,
                 portalId),
                 this.GetTabUrlsCallback);
-
         }
 
         private object GetTabUrlsCallback(CacheItemArgs cacheItemArgs)
@@ -919,7 +916,6 @@ namespace DotNetNuke.Entities.Tabs
                         }
                     }
                 }
-
             }
         }
 
@@ -1036,7 +1032,6 @@ namespace DotNetNuke.Entities.Tabs
                     this.ClearCache(portalId);
                 }
             }
-
         }
 
         /// <summary>
@@ -1223,7 +1218,6 @@ namespace DotNetNuke.Entities.Tabs
                     {
                         this.ClearCache(portalId);
                     }
-
                 }
             }
             return true;
@@ -1613,7 +1607,6 @@ namespace DotNetNuke.Entities.Tabs
                                         .Count(locale => workingTab.LocalizedTabs.Values.Any(localizedTab => localizedTab.CultureCode == locale.Code));
 
             return (LocaleCount - localizedCount) != 0;
-
         }
 
         /// <summary>
@@ -1897,7 +1890,6 @@ namespace DotNetNuke.Entities.Tabs
             if (tabUrl.HttpStatus == "200")
             {
                 saveLog = EventLogController.EventLogType.TABURL_CREATED;
-
             }
             else
             {

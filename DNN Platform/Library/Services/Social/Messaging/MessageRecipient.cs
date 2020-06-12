@@ -97,7 +97,6 @@ namespace DotNetNuke.Services.Social.Messaging
 
             // add audit column data
             this.FillInternal(dr);
-
         }
     }
 }

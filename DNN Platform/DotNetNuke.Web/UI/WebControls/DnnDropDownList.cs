@@ -288,7 +288,6 @@ namespace DotNetNuke.Web.UI.WebControls
             this._stateControl = new DnnGenericHiddenField<DnnDropDownListState> { ID = "state" };
             this._stateControl.ValueChanged += (sender, args) => this.OnSelectionChanged(EventArgs.Empty);
             this.Controls.Add(this._stateControl);
-
         }
 
         protected override void OnInit(EventArgs e)
@@ -409,5 +408,4 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
     }
-
 }

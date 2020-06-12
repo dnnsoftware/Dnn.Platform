@@ -45,6 +45,5 @@ namespace Dnn.ExportImport.Dto.Assets
 
         public string LastModifiedByUserName { get; set; } // This could be used to find "LastModifiedByUserId"
         public DateTime? LastModifiedOnDate { get; set; }
-
     }
 }

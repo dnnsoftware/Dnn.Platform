@@ -280,5 +280,4 @@ namespace DotNetNuke.Common.Utils
         IPv4,
         IPv6,
     }
-
 }

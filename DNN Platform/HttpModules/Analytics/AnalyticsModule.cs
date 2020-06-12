@@ -83,7 +83,6 @@ namespace DotNetNuke.HttpModules.Analytics
                 log.AddProperty("ExceptionMessage", ex.Message);
                 LogController.Instance.AddLog(log);
                 Logger.Error(log);
-
             }
         }
 
@@ -177,7 +176,6 @@ namespace DotNetNuke.HttpModules.Analytics
                 log.AddProperty("ExceptionMessage", ex.Message);
                 LogController.Instance.AddLog(log);
                 Logger.Error(ex);
-
             }
         }
     }

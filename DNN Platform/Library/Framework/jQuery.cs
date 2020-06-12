@@ -433,7 +433,6 @@ namespace DotNetNuke.Framework
         public static void RegisterFileUpload(Page page)
         {
             JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
-
         }
 
         [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.jQuery);. Scheduled removal in v10.0.0.")]

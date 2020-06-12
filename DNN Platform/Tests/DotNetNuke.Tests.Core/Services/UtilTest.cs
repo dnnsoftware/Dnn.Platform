@@ -39,7 +39,6 @@ namespace DotNetNuke.Tests.Core.Services
 
                 fileStream.Dispose();
                 Debug.WriteLine("fileStream unlocked");
-
             });
 
             Debug.WriteLine("Rewrite process attempts started");

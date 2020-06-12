@@ -213,7 +213,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
                             redirectURL = this._navigationManager.NavigateURL();
                         }
                     }
-
                 }
 
                 // replace language parameter in querystring, to make sure that user will see page in correct language
@@ -1098,7 +1097,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 this.ctlCaptcha.ErrorMessage = Localization.GetString("InvalidCaptcha", Localization.SharedResourceFile);
                 this.ctlCaptcha.Text = Localization.GetString("CaptchaText", Localization.SharedResourceFile);
             }
-
         }
 
         /// <summary>

@@ -512,7 +512,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Assert
             Assert.AreEqual(1, hits.Results.Count());
             Assert.AreEqual("brown <b>fox</b> jumps over the lazy dog", hits.Results.ElementAt(0).ContentSnippet);
-
         }
 
         [Test]

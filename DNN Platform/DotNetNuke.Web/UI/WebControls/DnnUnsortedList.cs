@@ -63,7 +63,5 @@ namespace DotNetNuke.Web.UI.WebControls
             listItem.AddControls(listItemControls);
             this.ListItems.Add(listItem);
         }
-
     }
-
 }

@@ -86,7 +86,6 @@ namespace DotNetNuke.Instrumentation
             //// Register custom logging levels with the default LoggerRepository
             LogManager.GetRepository().LevelMap.Add(LevelLogInfo);
             LogManager.GetRepository().LevelMap.Add(LevelLogError);
-
         }
 
         public static DnnLogger GetClassLogger(Type type)

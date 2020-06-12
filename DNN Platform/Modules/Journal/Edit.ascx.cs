@@ -47,7 +47,6 @@ namespace DotNetNuke.Modules.Journal
             try
             {
                 // Implement your edit logic for your module
-
             }
             catch (Exception exc) // Module failed to load
             {
@@ -55,5 +54,4 @@ namespace DotNetNuke.Modules.Journal
             }
         }
     }
-
 }

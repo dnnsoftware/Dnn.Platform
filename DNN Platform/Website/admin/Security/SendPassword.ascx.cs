@@ -99,7 +99,6 @@ namespace DotNetNuke.Modules.Admin.Security
 
                 return _RedirectURL;
             }
-
         }
 
         /// <summary>
@@ -182,7 +181,6 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 this.lblHelp.Text += Localization.GetString("RequiresQuestionAndAnswer", this.LocalResourceFile);
             }
-
         }
 
         /// <summary>
@@ -355,7 +353,6 @@ namespace DotNetNuke.Modules.Admin.Security
             log.AddProperty("IP", this._ipAddress);
 
             LogController.Instance.AddLog(log);
-
         }
     }
 }

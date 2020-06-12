@@ -94,7 +94,6 @@ namespace DotNetNuke.HttpModules.Config
                 log.AddProperty("ExceptionMessage", ex.Message);
                 LogController.Instance.AddLog(log);
                 Logger.Error(log);
-
             }
             finally
             {

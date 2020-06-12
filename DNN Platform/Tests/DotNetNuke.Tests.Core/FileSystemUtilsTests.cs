@@ -143,7 +143,6 @@ namespace DotNetNuke.Tests.Core
                 Assert.IsFalse(result.Contains(" "));
                 Assert.IsFalse(result.Contains("/"));
             }
-
         }
 
         private void PrepareRootPath(string rootPath)

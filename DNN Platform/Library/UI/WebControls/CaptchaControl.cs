@@ -425,7 +425,6 @@ namespace DotNetNuke.UI.WebControls
             catch (Exception exc)
             {
                 Logger.Error(exc);
-
             }
             finally
             {
@@ -454,7 +453,6 @@ namespace DotNetNuke.UI.WebControls
             catch (ArgumentException exc)
             {
                 Logger.Debug(exc);
-
             }
             return decryptedText;
         }
@@ -688,7 +686,6 @@ namespace DotNetNuke.UI.WebControls
             }
             // var cacheKey = string.Format(DataCache.CaptchaCacheKey, masterPortalId);
             // _CaptchaText
-
         }
 
         /// <summary>

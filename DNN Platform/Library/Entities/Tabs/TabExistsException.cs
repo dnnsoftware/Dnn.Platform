@@ -13,6 +13,5 @@ namespace DotNetNuke.Entities.Tabs
             : base(tabId, message)
         {
         }
-
     }
 }

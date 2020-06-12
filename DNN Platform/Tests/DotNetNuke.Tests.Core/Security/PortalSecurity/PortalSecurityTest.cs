@@ -127,5 +127,4 @@ namespace DotNetNuke.Tests.Core.Security.PortalSecurity
             Assert.AreEqual(filterOutput, expectedOutput);
         }
     }
-
 }

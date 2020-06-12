@@ -55,7 +55,6 @@ namespace Dnn.PersonaBar.Library.DTO
                 default:
                     this.ReadLegacySettings(reader);
                     break;
-
             }
         }
 

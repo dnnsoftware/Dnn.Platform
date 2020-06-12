@@ -91,7 +91,6 @@ namespace DotNetNuke.Services.Tokens
                     RegionInfo country = new RegionInfo(new CultureInfo(ci.Name, false).LCID);
                     return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(country.NativeName), format);
                 }
-
             }
             PropertyNotFound = true;
             return string.Empty;

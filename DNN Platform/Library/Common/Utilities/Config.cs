@@ -427,7 +427,6 @@ namespace DotNetNuke.Common.Utilities
                 formsNav = configNav.SelectSingleNode("configuration/location/system.web/authentication/forms");
             }
             return (formsNav != null) ? XmlUtils.GetAttributeValueAsInteger(formsNav, "timeout", 30) : 30;
-
         }
 
         /// <summary>
@@ -496,7 +495,6 @@ namespace DotNetNuke.Common.Utilities
                 customErrorMode = "RemoteOnly";
             }
             return (customErrorsNav != null) ? customErrorMode : "RemoteOnly";
-
         }
 
         public static XmlDocument Load(string filename)
@@ -692,7 +690,6 @@ namespace DotNetNuke.Common.Utilities
 
                 // create random keys for the Membership machine keys
                 xmlConfig = UpdateMachineKey(xmlConfig);
-
             }
             catch (Exception ex)
             {
@@ -841,7 +838,6 @@ namespace DotNetNuke.Common.Utilities
 
                     // Update the InstallVersion
                     xmlConfig = UpdateInstallVersion(xmlConfig, version);
-
                 }
                 catch (Exception ex)
                 {
@@ -854,7 +850,6 @@ namespace DotNetNuke.Common.Utilities
 
                 // save the web.config
                 strError += Save(xmlConfig);
-
             }
 
             return strError;

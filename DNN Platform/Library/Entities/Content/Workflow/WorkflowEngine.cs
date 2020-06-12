@@ -227,7 +227,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             {
                 Services.Exceptions.Exceptions.LogException(ex);
             }
-
         }
 
         private void SendNotificationsToReviewers(ContentItem contentItem, WorkflowState state, StateTransaction stateTransaction, WorkflowActionTypes workflowActionType, PortalSettings portalSettings)

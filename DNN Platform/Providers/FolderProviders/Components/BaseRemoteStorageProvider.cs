@@ -39,7 +39,6 @@ namespace DotNetNuke.Providers.FolderProviders.Components
                     // return list.FirstOrDefault(i => i.Key == key);
                     return list.FirstOrDefault(i => i.Key.Equals(key, StringComparison.InvariantCultureIgnoreCase));
                 });
-
         }
 
         protected virtual string FileNotFoundMessage
@@ -266,7 +265,6 @@ namespace DotNetNuke.Providers.FolderProviders.Components
                      let r = !string.IsNullOrEmpty(mappedPath) ? Regex.Replace(f, pattern, string.Empty, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2)) : f
                     where f.StartsWith(mappedPath, true, CultureInfo.InvariantCulture) && f.Length > mappedPath.Length && r.IndexOf("/", StringComparison.Ordinal) == -1
                     select Path.GetFileName(f)).ToArray();
-
         }
 
         /// <summary>
@@ -285,7 +283,6 @@ namespace DotNetNuke.Providers.FolderProviders.Components
                 throw new FileNotFoundException(this.FileNotFoundMessage, file.RelativePath);
             }
             return item.Size;
-
         }
 
         /// <summary>
@@ -365,7 +362,6 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             //        select folderPath + r.Substring(0, r.IndexOf("/", StringComparison.Ordinal)) + "/").Distinct().ToList();
 
             // return mylist;
-
         }
 
         /// <summary>

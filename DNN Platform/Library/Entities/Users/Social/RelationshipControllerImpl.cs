@@ -203,7 +203,6 @@ namespace DotNetNuke.Entities.Users.Social
                                                                                       Direction));
             }
             return userRelationship;
-
         }
 
         public IList<UserRelationship> GetUserRelationships(UserInfo user)

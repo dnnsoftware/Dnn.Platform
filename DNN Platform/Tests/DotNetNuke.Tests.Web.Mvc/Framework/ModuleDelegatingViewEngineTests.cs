@@ -196,5 +196,4 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             context.HttpContext.SetModuleRequestResult(activeModuleRequest);
         }
     }
-
 }

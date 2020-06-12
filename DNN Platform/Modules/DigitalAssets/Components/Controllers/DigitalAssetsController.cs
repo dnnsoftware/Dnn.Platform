@@ -216,7 +216,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 return "true";
             }
             return "false";
-
         }
 
         public IEnumerable<FolderMappingInfo> GetDefaultFolderProviderValues(int moduleId)

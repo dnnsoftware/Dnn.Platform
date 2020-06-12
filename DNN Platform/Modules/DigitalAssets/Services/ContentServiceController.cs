@@ -87,7 +87,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
             {
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
             }
-
         }
 
         [HttpPost]

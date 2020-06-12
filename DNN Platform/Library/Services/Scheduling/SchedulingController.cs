@@ -261,6 +261,5 @@ namespace DotNetNuke.Services.Scheduling
 
             return false;
         }
-
     }
 }

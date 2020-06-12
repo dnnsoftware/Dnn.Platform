@@ -223,7 +223,6 @@ namespace DotNetNuke.Modules.Html
                 this.cmdMasterContent.Text = this.phMasterContent.Visible ?
                     Localization.GetString("cmdHideMasterContent", this.LocalResourceFile) :
                     Localization.GetString("cmdShowMasterContent", this.LocalResourceFile);
-
             }
         }
 
@@ -282,7 +281,6 @@ namespace DotNetNuke.Modules.Html
             this.cmdHistory.Enabled = true;
             this.DisplayMasterContentButton();
             this.ddlRender.Visible = true;
-
         }
 
         /// <summary>
@@ -480,7 +478,6 @@ namespace DotNetNuke.Modules.Html
                     this.BindRenderItems();
                     this.ddlRender.SelectedValue = this.txtContent.Mode;
                 }
-
             }
             catch (Exception exc)
             {

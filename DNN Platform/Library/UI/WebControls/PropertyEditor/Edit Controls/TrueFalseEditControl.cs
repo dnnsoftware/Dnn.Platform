@@ -59,7 +59,6 @@ namespace DotNetNuke.UI.WebControls
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
                 return boolValue;
             }
@@ -84,7 +83,6 @@ namespace DotNetNuke.UI.WebControls
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
                 return boolValue;
             }

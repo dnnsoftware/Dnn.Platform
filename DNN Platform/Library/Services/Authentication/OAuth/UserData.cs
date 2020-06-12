@@ -49,7 +49,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 return (!string.IsNullOrEmpty(this.Name) && this.Name.IndexOf(" ", StringComparison.Ordinal) > 0) ? this.Name.Substring(this.Name.IndexOf(" ", StringComparison.Ordinal) + 1) : this.Name;
             }
             set { this.Name = this.FirstName + " " + value; }
-
         }
 
         [DataMember(Name = "locale")]

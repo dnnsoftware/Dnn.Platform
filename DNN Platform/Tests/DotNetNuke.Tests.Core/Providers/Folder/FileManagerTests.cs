@@ -111,7 +111,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             FileDeletionController.ClearInstance();
             MockComponentProvider.ResetContainer();
             PortalController.ClearInstance();
-
         }
 
         [Test]

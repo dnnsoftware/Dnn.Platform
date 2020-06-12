@@ -159,7 +159,6 @@ namespace DotNetNuke.Modules.Groups
                                         this.drpGroupViewPage.Items.Add(new ListItem(tabInfo.TabName + " - " + def.Key, tabInfo.TabID.ToString()));
                                     }
                                 }
-
                             }
                         }
                     }

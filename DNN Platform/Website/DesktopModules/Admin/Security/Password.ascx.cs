@@ -235,7 +235,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.ctlCaptcha.ErrorMessage = Localization.GetString("InvalidCaptcha", this.LocalResourceFile);
                 this.ctlCaptcha.Text = Localization.GetString("CaptchaText", this.LocalResourceFile);
             }
-
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -460,7 +459,6 @@ namespace DotNetNuke.Modules.Admin.Users
                         this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.BannedPasswordUsed));
                         return;
                     }
-
                 }
 
                 // check new password is not in history

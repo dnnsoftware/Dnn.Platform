@@ -48,7 +48,6 @@ namespace DotNetNuke.Common.Utilities
                 InitializeObject(objObject);
             }
             return objObject;
-
         }
 
         private static object CreateObjectFromReader(Type objType, IDataReader dr, bool closeReader)

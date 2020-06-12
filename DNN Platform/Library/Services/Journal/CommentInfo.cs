@@ -51,7 +51,6 @@ namespace DotNetNuke.Services.Journal
             }
             this.UserId = Null.SetNullInteger(dr["UserId"]);
             this.DisplayName = Null.SetNullString(dr["DisplayName"]);
-
         }
 
         public CacheLevel Cacheability
@@ -60,7 +59,6 @@ namespace DotNetNuke.Services.Journal
             {
                 return CacheLevel.fullyCacheable;
             }
-
         }
 
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)

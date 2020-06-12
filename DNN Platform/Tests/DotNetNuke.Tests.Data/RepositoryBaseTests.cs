@@ -1166,6 +1166,5 @@ namespace DotNetNuke.Tests.Data
         }
 
         // ReSharper restore InconsistentNaming
-
     }
 }

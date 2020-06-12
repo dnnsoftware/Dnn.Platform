@@ -170,7 +170,6 @@ namespace DotNetNuke.UI.WebControls
 
             // Close Li
             writer.RenderEndTag();
-
         }
 
         private void RenderGroups(HtmlTextWriter writer)

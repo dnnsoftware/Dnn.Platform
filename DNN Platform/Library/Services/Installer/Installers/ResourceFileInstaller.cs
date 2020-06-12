@@ -179,7 +179,6 @@ namespace DotNetNuke.Services.Installer.Installers
                         this.Log.AddInfo(Util.FILES_CreatedResources);
                     }
                 }
-
             }
             catch (Exception exc)
             {

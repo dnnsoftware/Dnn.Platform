@@ -262,13 +262,11 @@ namespace Dnn.EditBar.UI.Controllers
             ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/admin/Dnn.EditBar/scripts/editBarContainer.js");
 
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/admin/Dnn.EditBar/css/editBarContainer.css");
-
         }
 
         private bool IsPageEditor()
         {
             return HasTabPermission("EDIT");
-
         }
 
         public static bool HasTabPermission(string permissionKey)
@@ -647,7 +645,6 @@ namespace Dnn.EditBar.UI.Controllers
                     this.SetUserMode("EDIT");
                     this.SetLastPageHistory(pageId);
                     this.Response.Redirect(this.Request.RawUrl, true);
-
                 }
 
                 return;

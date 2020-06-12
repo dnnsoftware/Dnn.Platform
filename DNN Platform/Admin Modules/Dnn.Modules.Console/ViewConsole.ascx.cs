@@ -513,6 +513,5 @@ namespace Dnn.Modules.Console
                 tmid,
                 this.ShowTooltip.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
         }
-
     }
 }

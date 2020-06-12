@@ -13,6 +13,5 @@ namespace DotNetNuke.Entities.Portals
         public string SettingName { get; set; }
 
         public string SettingValue { get; set; }
-
     }
 }

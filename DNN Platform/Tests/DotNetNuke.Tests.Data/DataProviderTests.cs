@@ -126,6 +126,5 @@ namespace DotNetNuke.Tests.Data
             // Assert
             Assert.AreEqual(providerPath, provider.ProviderPath);
         }
-
     }
 }

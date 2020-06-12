@@ -894,6 +894,5 @@ namespace DotNetNuke.UI.ControlPanel
             // If we are not in an edit page
             return string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"]) && string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]);
         }
-
     }
 }

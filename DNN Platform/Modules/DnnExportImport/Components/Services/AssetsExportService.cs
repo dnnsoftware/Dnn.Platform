@@ -138,7 +138,6 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 CompressionUtil.AddFilesToArchive(zipArchive, files.Select(file => portal.HomeDirectoryMapPath + folder.FolderPath + this.GetActualFileName(file)),
                                     folderOffset, isUserFolder ? "TempUsers" : null);
-
                             }
                             this.CheckPoint.ProcessedItems++;
                             this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalFolders;

@@ -29,7 +29,6 @@ namespace DotNetNuke.Entities.Groups
             this.SecurityMode = roleInfo.SecurityMode;
             this.ServiceFee = roleInfo.ServiceFee;
             this.RSVPCode = roleInfo.RSVPCode;
-
         }
         // public RoleInfo Role {
         //    get {
@@ -156,6 +155,5 @@ namespace DotNetNuke.Entities.Groups
                 this.Settings.Add(keyName, value);
             }
         }
-
     }
 }

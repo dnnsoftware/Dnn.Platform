@@ -97,7 +97,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
                            UserId = this.userId,
                            ObjectData = this.objectData,
                        };
-
         }
     }
 }

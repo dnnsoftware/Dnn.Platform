@@ -61,7 +61,6 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
             {
                 context.HttpContext.Response.Redirect(url, true);
             }
-
         }
     }
 }

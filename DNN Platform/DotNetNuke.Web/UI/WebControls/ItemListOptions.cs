@@ -67,6 +67,5 @@ namespace DotNetNuke.Web.UI.WebControls
             this.LoadingResultText = Localization.GetString("DropDownList.LoadingResultText", Localization.SharedResourceFile);
             this.ResultsText = Localization.GetString("DropDownList.Results", Localization.SharedResourceFile);
         }
-
     }
 }

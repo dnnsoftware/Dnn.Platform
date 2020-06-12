@@ -252,6 +252,5 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             return this.EnumerableGetEnumerator();
         }
-
     }
 }

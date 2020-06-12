@@ -201,7 +201,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
             this._mockDataService.Setup(ds => ds.GetPortalGroups()).Returns(this.GetPortalGroups);
 
             DataService.RegisterInstance(this._mockDataService.Object);
-
         }
         private void SetupPortalSettings()
         {

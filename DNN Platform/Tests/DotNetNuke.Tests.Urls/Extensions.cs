@@ -23,6 +23,5 @@ namespace DotNetNuke.Tests.Urls
             }
             return returnValue;
         }
-
     }
 }

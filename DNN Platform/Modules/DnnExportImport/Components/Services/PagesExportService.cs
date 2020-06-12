@@ -1749,7 +1749,6 @@ namespace Dnn.ExportImport.Components.Services
                         Logger.Error(ex);
                         return 0;
                     }
-
                 }
             }
             return 0;

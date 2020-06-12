@@ -52,7 +52,6 @@ namespace DotNetNuke.Modules.Groups
             {
                 this.txtFilter.Text = this.GroupListFilter;
             }
-
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)

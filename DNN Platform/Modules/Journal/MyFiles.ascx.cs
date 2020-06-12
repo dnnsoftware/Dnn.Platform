@@ -42,7 +42,6 @@ namespace DotNetNuke.Modules.Journal
             catch (PermissionsNotMetException)
             {
                 message = string.Format(Localization.GetString("InsufficientFolderPermission"), userFolder.FolderPath);
-
             }
             catch (NoSpaceAvailableException)
             {
@@ -59,7 +58,6 @@ namespace DotNetNuke.Modules.Journal
             if (string.IsNullOrEmpty(message) && fi != null)
             {
                 this.litOut.Text = "<script type=\"text/javascript\">var fileInfo=" + JsonExtensionsWeb.ToJsonString(fi) + ";alert(fileInfo.FileName);</script>";
-
             }
             else
             {

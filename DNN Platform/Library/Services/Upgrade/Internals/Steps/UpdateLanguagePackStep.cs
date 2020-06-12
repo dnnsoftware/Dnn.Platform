@@ -57,7 +57,6 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                     // so we logged what's wrong here, and user can check it later.
                     Logger.Error(ex);
                 }
-
             }
             this.Status = StepStatus.Done;
         }

@@ -61,6 +61,5 @@ namespace DotNetNuke.Modules.Journal
 
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
         }
-
     }
 }

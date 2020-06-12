@@ -57,7 +57,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 // Draw the source image onto the copy bitmap,
                 // which will effect a widening as appropriate.
                 g.DrawImage(source, bounds);
-
             }
 
             // Define a pointer to the bitmap data
@@ -185,7 +184,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 
                         pSourcePixel = (IntPtr)((long)pSourcePixel + this._pixelSize);
                         pDestinationPixel = (IntPtr)((long)pDestinationPixel + 1);
-
                     }
 
                     // Add the stride to the source row
@@ -248,7 +246,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             public Color32(IntPtr pSourcePixel)
             {
               this = (Color32)Marshal.PtrToStructure(pSourcePixel, typeof(Color32));
-
             }
 
             /// <summary>

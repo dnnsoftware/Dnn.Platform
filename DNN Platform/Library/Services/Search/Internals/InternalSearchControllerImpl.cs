@@ -134,7 +134,6 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             return results;
-
         }
 
         public IEnumerable<SearchContentSource> GetSearchContentSourceList(int portalId)
@@ -541,7 +540,6 @@ namespace DotNetNuke.Services.Search.Internals
                     field.Boost = this._contentBoost / 10f;
                 }
             }
-
         }
 
         /// <summary>

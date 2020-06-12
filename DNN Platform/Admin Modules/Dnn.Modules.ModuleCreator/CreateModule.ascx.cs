@@ -183,9 +183,7 @@ namespace Dnn.Module.ModuleCreator
                     }
 
                     EventLogController.Instance.AddLog("Created File", modulePath + fileName, this.PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
-
                 }
-
             }
 
             return controlName;

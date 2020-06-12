@@ -146,6 +146,5 @@ namespace DotNetNuke.Web.UI.WebControls
         /// Specific to only show tabs which have view permission on these roles.
         /// </summary>
         public IList<int> Roles { get; set; }
-
     }
 }

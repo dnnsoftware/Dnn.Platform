@@ -226,7 +226,6 @@ namespace Dnn.PersonaBar.UI.Services
                             return !string.IsNullOrEmpty(name)
                                         && name.Equals(cultureSpecificFileName, StringComparison.InvariantCultureIgnoreCase);
                         });
-
                     }
 
                     if (!string.IsNullOrEmpty(cultureSpecificFile))

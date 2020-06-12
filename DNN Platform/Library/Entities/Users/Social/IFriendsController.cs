@@ -13,6 +13,5 @@ namespace DotNetNuke.Entities.Users.Social
 
         void DeleteFriend(UserInfo targetUser);
         void DeleteFriend(UserInfo initiatingUser, UserInfo targetUser);
-
     }
 }

@@ -226,7 +226,6 @@ namespace log4net.Filter
                 return FilterDecision.Deny;
             }
             return FilterDecision.Neutral;
-
         }
     }
 }

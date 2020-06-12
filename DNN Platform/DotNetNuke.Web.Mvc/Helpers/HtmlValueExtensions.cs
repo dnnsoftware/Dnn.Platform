@@ -91,6 +91,5 @@ namespace DotNetNuke.Web.Mvc.Helpers
         {
             return html.HtmlHelper.Value(format);
         }
-
     }
 }

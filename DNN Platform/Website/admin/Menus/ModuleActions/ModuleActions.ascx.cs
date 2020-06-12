@@ -152,7 +152,6 @@ namespace DotNetNuke.Admin.Containers
                                     }
                                 }
                             }
-
                         }
 
                         var oSerializer = new JavaScriptSerializer();

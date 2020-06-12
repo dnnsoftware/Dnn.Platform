@@ -43,7 +43,6 @@ namespace DotNetNuke.UI.Containers.Controls
                 {
                     return targetControl.ClientID;
                 }
-
             }
             set
             {

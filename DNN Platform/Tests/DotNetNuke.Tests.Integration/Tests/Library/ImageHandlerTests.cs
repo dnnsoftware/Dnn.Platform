@@ -52,7 +52,6 @@ namespace DotNetNuke.Tests.Integration.Tests.Library
                     Skin = primary.Skin,
                     BrowserType = primary.BrowserType,
                     IsPrimary = false,
-
                 };
             }
             else

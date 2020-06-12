@@ -106,5 +106,4 @@ namespace DotNetNuke.Services.ClientCapability
             return FacebookRequestController.IsValidSignature(this.RawSignedRequest, secretKey);
         }
     }
-
 }

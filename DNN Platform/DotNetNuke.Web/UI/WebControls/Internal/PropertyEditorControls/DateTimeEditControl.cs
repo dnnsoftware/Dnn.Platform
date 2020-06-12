@@ -52,7 +52,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
                 return dteValue;
             }
@@ -125,7 +124,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
                 return dteValue;
             }

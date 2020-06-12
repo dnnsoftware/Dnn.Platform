@@ -72,6 +72,5 @@ namespace Dnn.EditBar.UI.Helpers
             }
             return portalSettings.ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && isModuleAdmin;
         }
-
     }
 }

@@ -199,7 +199,6 @@ namespace DotNetNuke.UI.Skins.Controls
                 this.registerLink.Attributes.Add("onclick", this.RegisterUrlForClickEvent);
                 this.loginLink.Attributes.Add("onclick", this.LoginUrlForClickEvent);
             }
-
         }
 
         private int GetMessageTab()

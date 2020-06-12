@@ -110,6 +110,5 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <param name="contentItem">ContentItem</param>
         /// <returns>User Info</returns>
         UserInfo GetSubmittedDraftStateUser(ContentItem contentItem);
-
     }
 }

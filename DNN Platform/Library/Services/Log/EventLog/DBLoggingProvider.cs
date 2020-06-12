@@ -173,7 +173,6 @@ namespace DotNetNuke.Services.Log.EventLog
                     response.End();
                 }
             }
-
         }
 
         private static void WriteLog(LogQueueItem logQueueItem)

@@ -83,7 +83,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     this.cboTemplate.InsertItem(0, "<" + Localization.GetString("None_Specified") + ">", "None_Specified");
                     this.cboTemplate.SelectedIndex = 0;
                 }
-
             }
         }
 
@@ -340,6 +339,5 @@ namespace DotNetNuke.Modules.Admin.Tabs
         {
             this.DisplayNewRows();
         }
-
     }
 }

@@ -108,7 +108,6 @@ namespace DotNetNuke.UI.WebControls
 
             this.CountryId.ID = this.ID + "_id";
             this.Controls.Add(this.CountryId);
-
         }
 
         public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
@@ -135,7 +134,6 @@ namespace DotNetNuke.UI.WebControls
                 this.Page.RegisterRequiresPostBack(this);
                 this.Page.RegisterRequiresPostBack(this.CountryId);
             }
-
         }
 
         protected override void RenderEditMode(HtmlTextWriter writer)
@@ -171,7 +169,6 @@ namespace DotNetNuke.UI.WebControls
             {
                 regionControl2.ParentKey = "Country." + countryCode;
             }
-
         }
 
         private bool IsCoupledRegionControl(Control ctr)

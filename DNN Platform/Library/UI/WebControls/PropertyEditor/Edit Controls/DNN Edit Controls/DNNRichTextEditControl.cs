@@ -103,7 +103,6 @@ namespace DotNetNuke.UI.WebControls
                 this.Controls.Clear();
                 pnlEditor.Controls.Add(this.TextEditControl);
                 this.Controls.Add(pnlEditor);
-
             }
             base.CreateChildControls();
         }
@@ -166,6 +165,5 @@ namespace DotNetNuke.UI.WebControls
             writer.Write(propValue);
             writer.RenderEndTag();
         }
-
     }
 }

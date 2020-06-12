@@ -249,7 +249,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.FileUploadControl.Options.FolderPicker.InitialState = new DnnDropDownListState
                                                                           {
                                                                               SelectedItem = selectedItem,
-
                                                                           };
                 this.FileUploadControl.Options.FolderPath = this.FoldersComboBox.SelectedFolder.FolderPath;
             }

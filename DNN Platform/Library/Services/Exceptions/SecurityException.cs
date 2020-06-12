@@ -80,7 +80,6 @@ namespace DotNetNuke.Services.Exceptions
                 this.m_IP = string.Empty;
                 this.m_Querystring = string.Empty;
                 Logger.Error(exc);
-
             }
         }
 

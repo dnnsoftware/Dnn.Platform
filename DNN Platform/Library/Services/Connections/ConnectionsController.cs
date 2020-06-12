@@ -40,6 +40,5 @@ namespace DotNetNuke.Services.Connections
 
             return null;
         }
-
     }
 }

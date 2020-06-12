@@ -97,6 +97,5 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                                         select trimmed;
             return split.ToArray();
         }
-
     }
 }

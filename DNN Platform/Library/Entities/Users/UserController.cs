@@ -860,7 +860,6 @@ namespace DotNetNuke.Entities.Users
                     passwordChanged = false;
                     errorMessage = Localization.GetString("PasswordResetFailed_WrongAnswer");
                 }
-
             }
             else
             {

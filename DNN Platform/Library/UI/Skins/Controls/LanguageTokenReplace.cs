@@ -157,7 +157,6 @@ namespace DotNetNuke.UI.Skins.Controls
                                         }
                                         returnValue += arrKeys[i] + "=" + HttpUtility.UrlEncode(rawQueryStringCollection.Get(arrKeys[i]));
                                     }
-
                                 }
                                 // on localised pages most of the module parameters have no sense and generate duplicate urls for the same content
                                 // because we are on a other tab with other modules (example : /en-US/news/articleid/1)

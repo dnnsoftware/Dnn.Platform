@@ -124,7 +124,6 @@ namespace DotNetNuke.Entities.Portals
                 }
             }
             return portalAlias;
-
         }
 
         private static void LogEvent(PortalAliasInfo portalAlias, EventLogController.EventLogType logType)

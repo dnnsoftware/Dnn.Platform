@@ -101,6 +101,5 @@ namespace DotNetNuke.Tests.Urls
                 }
             }
         }
-
     }
 }

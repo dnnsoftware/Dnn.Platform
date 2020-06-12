@@ -152,7 +152,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
                                             return list;
                                         });
-
         }
 
         protected override void MoveFileInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri)

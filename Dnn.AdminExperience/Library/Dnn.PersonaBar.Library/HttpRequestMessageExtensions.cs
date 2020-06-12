@@ -105,6 +105,5 @@ namespace Dnn.PersonaBar.Library
 
             return null;
         }
-
     }
 }

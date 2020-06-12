@@ -323,7 +323,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 message = Localization.GetString("OptionUnavailable", this.LocalResourceFile);
                 UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.YellowWarning);
             }
-
         }
 
         /// -----------------------------------------------------------------------------
@@ -387,7 +386,6 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 this.OnMembershipPromoteToSuperuser(EventArgs.Empty);
             }
-
         }
         /// -----------------------------------------------------------------------------
         /// <summary>

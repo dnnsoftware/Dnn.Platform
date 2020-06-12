@@ -37,6 +37,5 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ConfirmPasswordUnmatchedText = Utilities.GetLocalizedString("ConfirmPasswordUnmatched");
             this.ConfirmPasswordMatchedText = Utilities.GetLocalizedString("ConfirmPasswordMatched");
         }
-
     }
 }

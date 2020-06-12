@@ -71,7 +71,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._folderManager = new FolderManager();
 
             this._folderInfo = new Mock<IFolderInfo>();
-
         }
 
         [TearDown]
@@ -173,7 +172,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._mockFolderManager.Setup(mfm => mfm.FolderExists(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidSubFolderRelativePath)).Returns(true);
 
             this._mockFolderManager.Object.AddFolder(folderMapping, Constants.FOLDER_ValidSubFolderRelativePath);
-
         }
 
         [Test]
@@ -947,7 +945,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var result = this._mockFolderManager.Object.GetFileSystemFoldersRecursive(Constants.CONTENT_ValidPortalId, @"C:\folder");
 
             Assert.AreEqual(5, result.Count);
-
         }
 
         [Test]
@@ -2324,6 +2321,5 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
         // _mockFolderManager.Verify();
         // }
-
     }
 }

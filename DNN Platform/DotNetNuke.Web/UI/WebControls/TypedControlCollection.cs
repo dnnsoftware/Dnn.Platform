@@ -36,7 +36,5 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             base.AddAt(index, child);
         }
-
     }
-
 }

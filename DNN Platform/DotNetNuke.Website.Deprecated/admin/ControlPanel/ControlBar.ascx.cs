@@ -730,7 +730,6 @@ namespace DotNetNuke.UI.ControlPanels
              }
 
              return false;
-
         }
 
         protected string CheckedWhenInLayoutMode()
@@ -871,7 +870,6 @@ namespace DotNetNuke.UI.ControlPanels
                     this.SetUserMode("EDIT");
                     this.SetLastPageHistory(pageId);
                     this.Response.Redirect(this.Request.RawUrl, true);
-
                 }
 
                 return;
@@ -945,7 +943,6 @@ namespace DotNetNuke.UI.ControlPanels
 
                     this.controlBar_SwitchLanguage.Items.Add(item);
                 }
-
             }
         }
 
@@ -1090,7 +1087,6 @@ namespace DotNetNuke.UI.ControlPanels
                     this._adminAdvancedTabs.Add(tabInfo);
                 }
             }
-
         }
 
         private bool IsCommonTab(TabInfo tab, bool isHost = false)
@@ -1121,5 +1117,4 @@ namespace DotNetNuke.UI.ControlPanels
             }
         }
     }
-
 }

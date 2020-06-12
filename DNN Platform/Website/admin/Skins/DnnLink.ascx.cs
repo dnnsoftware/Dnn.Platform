@@ -75,7 +75,6 @@ namespace DotNetNuke.UI.Skins.Controls
 
             this.aDnnLink.InnerText = linkText;
             this.aDnnLink.HRef = HttpUtility.HtmlEncode(url + utmTerm);
-
         }
     }
 }

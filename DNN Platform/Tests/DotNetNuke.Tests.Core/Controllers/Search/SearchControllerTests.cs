@@ -681,7 +681,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     ex = e;
 
                     Console.WriteLine("Exception hit");
-
                 }
             });
 

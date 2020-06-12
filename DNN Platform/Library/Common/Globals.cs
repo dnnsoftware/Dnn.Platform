@@ -633,7 +633,6 @@ namespace DotNetNuke.Common
                 }
                 return _status;
             }
-
         }
 
         public static bool IncrementalVersionExists(Version version)
@@ -1190,7 +1189,6 @@ namespace DotNetNuke.Common
            {
                return 0;
            }
-
        }
 
         /// <summary>
@@ -3779,7 +3777,6 @@ namespace DotNetNuke.Common
             }
 
             return ApplicationPath + childPortalAlias + query + cdv;
-
         }
 
         // ****************************************************************************************

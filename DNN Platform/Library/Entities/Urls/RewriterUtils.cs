@@ -42,7 +42,6 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
                 queryString = string.Join("&", parameters);
-
             }
 
             // rewrite the path..

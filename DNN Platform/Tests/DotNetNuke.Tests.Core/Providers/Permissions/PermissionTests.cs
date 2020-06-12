@@ -332,6 +332,5 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             var modulePermission = new ModulePermissionInfo { PermissionID = permission.PermissionID, RoleID = roleId, AllowAccess = true };
             permissions.Add(modulePermission);
         }
-
     }
 }

@@ -237,7 +237,6 @@ namespace Dnn.PersonaBar.Library.Permissions
             {
                 Logger.Error(ex);
             }
-
         }
 
         private static void SaveMenuDefaultPermissions(int portalId, MenuItem menuItem, string roleName, bool ignoreExists)

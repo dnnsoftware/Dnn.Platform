@@ -145,7 +145,6 @@ namespace DotNetNuke.UI.Skins.Controls
                             this.registerLink.Attributes.Add("onclick", clickEvent);
                             this.enhancedRegisterLink.Attributes.Add("onclick", clickEvent);
                         }
-
                     }
                     else
                     {

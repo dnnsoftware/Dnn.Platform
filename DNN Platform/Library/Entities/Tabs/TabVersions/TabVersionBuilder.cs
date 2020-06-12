@@ -631,7 +631,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                     this._tabVersionDetailController.SaveTabVersionDetail(tabVersionDetail);
                     this._tabVersionDetailController.ClearCache(previousTabVersionId);
                 }
-
             }
         }
 
@@ -675,7 +674,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                     cloneModule.ModuleOrder = detail.ModuleOrder;
                     modules.Add(cloneModule);
                 }
-
             }
             catch (Exception ex)
             {

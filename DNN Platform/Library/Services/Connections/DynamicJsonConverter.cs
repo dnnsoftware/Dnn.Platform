@@ -101,7 +101,6 @@ namespace DotNetNuke.Services.Connections
                             {
                                 sb.AppendFormat("{0}", arrayValue);
                             }
-
                         }
                         sb.Append("]");
                     }

@@ -69,6 +69,5 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();
         }
-
     }
 }

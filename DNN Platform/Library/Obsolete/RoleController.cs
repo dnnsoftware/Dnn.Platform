@@ -104,6 +104,5 @@ namespace DotNetNuke.Security.Roles
         {
             this.UpdateUserRole(portalId, userId, roleId, RoleStatus.Approved, false, cancel);
         }
-
      }
 }

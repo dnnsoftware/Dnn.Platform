@@ -347,7 +347,6 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ConfirmPassword", script, true);
             }
-
         }
 
         private void AddField(string dataField, string dataMember, bool required, string regexValidator, TextBoxMode textMode)
@@ -401,7 +400,6 @@ namespace DotNetNuke.Modules.Admin.Users
             formItem.Required = required;
 
             this.userForm.Items.Add(formItem);
-
         }
 
         private void AddPasswordConfirmField(string dataField, string dataMember, bool required)
@@ -419,7 +417,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 MaxLength = 39,
             };
             this.userForm.Items.Add(formItem);
-
         }
 
         private void AddProperty(ProfilePropertyDefinition property)
@@ -456,7 +453,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 this.userForm.Items.Add(formItem);
             }
-
         }
 
         private void BindLoginControl(AuthenticationLoginBase authLoginControl, AuthenticationInfo authSystem)
@@ -621,7 +617,6 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.User.Membership.Password = UserController.GeneratePassword();
                     this.User.Membership.PasswordConfirm = this.User.Membership.Password;
                 }
-
             }
             else
             {
@@ -666,7 +661,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     this.CreateStatus = UserCreateStatus.BannedPasswordUsed;
                 }
-
             }
             // Validate Profanity
             if (this.PortalSettings.Registration.UseProfanityFilter)
@@ -800,7 +794,6 @@ namespace DotNetNuke.Modules.Admin.Users
                     {
                         this.CreateUser();
                     }
-
                 }
                 else
                 {

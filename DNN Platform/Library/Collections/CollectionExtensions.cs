@@ -968,5 +968,4 @@ namespace DotNetNuke.Collections
             }
         }
     }
-
 }

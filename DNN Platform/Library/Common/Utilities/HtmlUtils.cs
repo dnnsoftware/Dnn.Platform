@@ -328,7 +328,6 @@ namespace DotNetNuke.Common.Utilities
         public static string RemoveInlineStyle(string HTML)
         {
             return RemoveInlineStylesRegEx.Replace(HTML, string.Empty);
-
         }
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -567,7 +566,6 @@ namespace DotNetNuke.Common.Utilities
                     response.Write(" ");
                     response.Flush();
                 }
-
             }
         }
 
@@ -698,6 +696,5 @@ namespace DotNetNuke.Common.Utilities
 
             return html;
         }
-
     }
 }

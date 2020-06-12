@@ -131,7 +131,6 @@ namespace DotNetNuke.UI.UserControls
             }
             string createdString = Localization.GetString("CreatedBy", Localization.GetResourceFile(this, MyFileName));
             this.lblCreatedBy.Text = string.Format(createdString, this.CreatedByUser, this.CreatedDate);
-
         }
 
         private void ShowUpdatedString(bool isCreatorAndUpdater)

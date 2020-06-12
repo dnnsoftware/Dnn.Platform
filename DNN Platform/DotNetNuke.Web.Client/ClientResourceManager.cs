@@ -425,7 +425,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 {
                     Logger.Error(ex);
                 }
-
             }
         }
 

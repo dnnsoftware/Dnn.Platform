@@ -33,7 +33,6 @@ namespace DotNetNuke.Data.PetaPoco
                 reader = null;
             }
             return reader;
-
         }
     }
 }

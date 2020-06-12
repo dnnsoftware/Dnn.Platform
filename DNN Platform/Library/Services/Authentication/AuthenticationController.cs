@@ -103,7 +103,6 @@ namespace DotNetNuke.Services.Authentication
         {
             // Go to database
             return CBO.FillObject<UserAuthenticationInfo>(provider.GetUserAuthentication(userID));
-
         }
 
         public static void DeleteAuthentication(AuthenticationInfo authSystem)
@@ -303,7 +302,6 @@ namespace DotNetNuke.Services.Authentication
                     {
                         _RedirectURL = (request != null && request.UrlReferrer != null) ? request.UrlReferrer.PathAndQuery : TestableGlobals.Instance.NavigateURL(settings.ActiveTab.TabID);
                     }
-
                 }
                 else if (settings.HomeTabId != -1)
                 {

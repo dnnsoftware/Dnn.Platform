@@ -157,7 +157,6 @@ namespace Dnn.Modules.Console
 
                     this.SwitchMode();
                 }
-
             }
             catch (Exception exc) // Module failed to load
             {
@@ -235,7 +234,6 @@ namespace Dnn.Modules.Console
         private void modeList_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.SwitchMode();
-
         }
 
         protected void parentTab_SelectedIndexChanged(object sender, EventArgs e)
@@ -293,6 +291,5 @@ namespace Dnn.Modules.Console
                 }
             }
         }
-
     }
 }

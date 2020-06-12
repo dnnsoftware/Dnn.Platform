@@ -39,7 +39,6 @@ namespace DotNetNuke.Common.Lists
                 c.NormalizedFullName = c.FullName.NormalizeString();
                 this.Add(li.Value, c);
             }
-
         }
 
         public static CachedCountryList GetCountryList(string locale)
@@ -59,7 +58,6 @@ namespace DotNetNuke.Common.Lists
                 DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey(locale), res);
             }
             return res;
-
         }
 
         public static string CacheKey(string locale)

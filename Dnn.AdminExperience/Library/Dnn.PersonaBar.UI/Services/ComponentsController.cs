@@ -92,7 +92,6 @@ namespace Dnn.PersonaBar.UI.Services
                 Logger.Error(ex);
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
             }
-
         }
 
         public HttpResponseMessage GetSuggestionRoles(string keyword, int roleGroupId, int count)
@@ -121,7 +120,6 @@ namespace Dnn.PersonaBar.UI.Services
                 Logger.Error(ex);
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
             }
-
         }
     }
 }

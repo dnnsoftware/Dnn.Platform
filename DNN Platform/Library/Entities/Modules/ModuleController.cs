@@ -755,7 +755,6 @@ namespace DotNetNuke.Entities.Modules
                             {
                                 SetCloneModuleContext(false);
                             }
-
                         }
                     }
                     catch (Exception ex)

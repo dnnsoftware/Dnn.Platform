@@ -58,6 +58,5 @@ namespace DotNetNuke.Services.SystemDateTime
         {
             return Provider.GetDatabaseTime();
         }
-
     }
 }

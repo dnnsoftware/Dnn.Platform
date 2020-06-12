@@ -32,7 +32,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             WorkflowEngine.SetTestableInstance(this._mockWorkFlowEngine.Object);
             UserSecurityController.SetTestableInstance(this._mockUserSecurityController.Object);
-
         }
 
         [TearDown]

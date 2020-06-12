@@ -315,7 +315,6 @@ namespace DotNetNuke.Entities.Portals
                             ListName = listName + "-" + portalId,
                         };
                         listController.AddListEntry(entry);
-
                     }
                     catch (Exception Exc)
                     {
@@ -334,7 +333,6 @@ namespace DotNetNuke.Entities.Portals
                             ListName = listName + "-" + portalId,
                         };
                         listController.AddListEntry(entry);
-
                     }
                     catch (Exception Exc)
                     {
@@ -693,7 +691,6 @@ namespace DotNetNuke.Entities.Portals
                 };
                 LogController.Instance.AddLogTypeConfigInfo(logTypeFilterConf);
             }
-
         }
 
         private static PortalSettings GetCurrentPortalSettingsInternal()

@@ -158,8 +158,6 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.Page.ClientScript.RegisterStartupScript(this.GetType(), this.ClientID + "DnnFileUpload", script, true);
             }
-
         }
-
     }
 }

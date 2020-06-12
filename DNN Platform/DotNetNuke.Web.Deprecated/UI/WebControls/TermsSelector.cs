@@ -195,7 +195,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 terms.Add(new { termId = t.TermId, name = t.Name, parentTermId = t.ParentTermId });
             }
-
         }
     }
 }

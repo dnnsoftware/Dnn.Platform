@@ -45,6 +45,5 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             return LoggingProvider.Instance().SupportsInternalViewer();
         }
-
     }
 }

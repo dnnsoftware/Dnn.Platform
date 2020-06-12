@@ -451,7 +451,6 @@ namespace DotNetNuke.Services.GeneratedImage
                 var rotateFlipType = (RotateFlipType)Enum.Parse(typeof(RotateFlipType), parameters["RotateFlip"]);
                 rotateFlipTrans.RotateFlip = rotateFlipType;
                 this.ImageTransforms.Add(rotateFlipTrans);
-
             }
 
             // We start the chain with an empty image

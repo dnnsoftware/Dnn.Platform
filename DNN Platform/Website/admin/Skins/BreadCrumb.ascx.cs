@@ -240,7 +240,6 @@ namespace DotNetNuke.UI.Skins.Controls
                         this._separator = this._separator.Replace(match.Value, newMatch);
                     }
                 }
-
             }
         }
     }

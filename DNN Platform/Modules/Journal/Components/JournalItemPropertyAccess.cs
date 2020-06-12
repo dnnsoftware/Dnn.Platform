@@ -21,7 +21,6 @@ namespace DotNetNuke.Modules.Journal.Components
                 this.PropertySource["journalauthor"] = journalItem.JournalAuthor;
                 this.PropertySource["journalprofile"] = new ProfilePicPropertyAccess(journalItem.JournalAuthor.Id);
             }
-
         }
         public string ReplaceJournalItemTokens(string source)
         {

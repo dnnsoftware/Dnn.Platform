@@ -151,7 +151,6 @@ namespace DotNetNuke.Modules.MemberDirectory
             {
                 return this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser
                     && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
-
             }
         }
 

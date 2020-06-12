@@ -63,7 +63,6 @@ namespace DNN.Connectors.GoogleAnalytics
         public IEnumerable<IConnector> GetConnectors(int portalId)
         {
             return new List<IConnector> { this };
-
         }
 
         public void DeleteConnector(int portalId)
@@ -75,7 +74,6 @@ namespace DNN.Connectors.GoogleAnalytics
             IDictionary<string, string> config = this.GetConfig(portalId);
 
             return config.ContainsKey("TrackingID") && !string.IsNullOrEmpty(config["TrackingID"]);
-
         }
 
         public IDictionary<string, string> GetConfig(int portalId)
@@ -194,7 +192,6 @@ namespace DNN.Connectors.GoogleAnalytics
                         isValid = false;
                         customErrorMessage = Localization.GetString("TrackingCodeFormat.ErrorMessage", Constants.LocalResourceFile);
                     }
-
                 }
 
                 if (isValid)

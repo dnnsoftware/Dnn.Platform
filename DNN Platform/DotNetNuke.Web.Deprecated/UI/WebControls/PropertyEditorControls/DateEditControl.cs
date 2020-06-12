@@ -55,7 +55,6 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
                 return dteValue;
             }
@@ -128,7 +127,6 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
                 return dteValue;
             }
@@ -172,7 +170,6 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
             {
                 this.EnsureChildControls();
                 return this.DateControl.DateInput.ClientID;
-
             }
         }
 

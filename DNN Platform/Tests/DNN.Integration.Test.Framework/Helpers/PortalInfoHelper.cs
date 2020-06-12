@@ -55,6 +55,5 @@ namespace DNN.Integration.Test.Framework.Helpers
                 portal.LastModifiedByUserID,
                 portal.CultureCode);
         }
-
     }
 }

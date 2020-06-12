@@ -16,6 +16,5 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnInit(e);
             Utilities.ApplySkin(this);
         }
-
     }
 }

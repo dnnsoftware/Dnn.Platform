@@ -184,7 +184,6 @@ namespace DotNetNuke.Services.Exceptions
                     ProviderConfiguration objProviderConfiguration = ProviderConfiguration.GetProviderConfiguration("data");
                     string strTypeName = ((Provider)objProviderConfiguration.Providers[objProviderConfiguration.DefaultProvider]).Type;
                     this.DefaultDataProvider = strTypeName;
-
                 }
                 catch (Exception exc)
                 {
@@ -262,7 +261,6 @@ namespace DotNetNuke.Services.Exceptions
                 this.m_Message = string.Empty;
                 this.m_Source = string.Empty;
                 Logger.Error(exc);
-
             }
         }
 

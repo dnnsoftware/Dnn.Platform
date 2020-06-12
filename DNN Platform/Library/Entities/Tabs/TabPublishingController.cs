@@ -69,7 +69,6 @@ namespace DotNetNuke.Entities.Tabs
             var workflowID = Convert.ToInt32(PortalController.GetPortalSetting("WorkflowID", portalID, "-1"));
 
             return (workflowID == 1) || (workflowID == -1);
-
         }
 
         private void PublishTabInternal(TabInfo tab)

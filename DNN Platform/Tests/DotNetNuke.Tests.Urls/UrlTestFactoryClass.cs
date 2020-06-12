@@ -21,7 +21,6 @@ namespace DotNetNuke.Tests.Urls
                 string[] fields = line.Split(',');
                 GetTests(fields[1].Trim(), fields[0].Trim(), testType, testName, testData);
             });
-
         }
 
         private static void GetTests(string testPrefix, string alias, string testType, string testName, ArrayList testData)

@@ -554,7 +554,6 @@ namespace DotNetNuke.Entities.Profile
                     {
                         Logger.Error(ex);
                     }
-
                 }
 
                 UserController.UpdateUser(portalId, user);

@@ -91,6 +91,5 @@ namespace Dnn.EditBar.UI.Services
             }
             return portalSettings.ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && isModuleAdmin;
         }
-
     }
 }

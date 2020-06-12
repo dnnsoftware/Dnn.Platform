@@ -75,7 +75,6 @@ namespace DotNetNuke.Instrumentation
                         }
                         _configured = true;
                     }
-
                 }
             }
         }
@@ -276,7 +275,6 @@ namespace DotNetNuke.Instrumentation
             {
                 Logger.Error(message, exception);
             }
-
         }
 
         public static void Error(object message)

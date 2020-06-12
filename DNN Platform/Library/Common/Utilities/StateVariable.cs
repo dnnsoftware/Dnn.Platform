@@ -131,7 +131,5 @@ namespace DotNetNuke.Common.Utilities
         {
             this.Remove(this._key);
         }
-
     }
-
 }

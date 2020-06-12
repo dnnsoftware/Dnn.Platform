@@ -51,7 +51,6 @@ namespace DotNetNuke.Services.UserProfile
                 {
                     size = context.Request.QueryString["size"];
                 }
-
             }
             catch (Exception)
             {
@@ -85,7 +84,6 @@ namespace DotNetNuke.Services.UserProfile
                     catch (ThreadAbortException) // if ThreadAbortException will shown, should catch it and do nothing.
                     {
                     }
-
                 }
 
                 var folder = FolderManager.Instance.GetFolder(photoFile.FolderId);
@@ -120,7 +118,6 @@ namespace DotNetNuke.Services.UserProfile
                         case "gif":
                             context.Response.ContentType = "image/gif";
                             break;
-
                     }
 
                     using (var memoryStream = new MemoryStream())

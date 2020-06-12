@@ -48,7 +48,6 @@ namespace DotNetNuke.UI.WebControls
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
             }
             if (!IsFound)
@@ -62,7 +61,6 @@ namespace DotNetNuke.UI.WebControls
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
             }
         }

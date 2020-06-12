@@ -31,6 +31,5 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
         ViewEngineCollection ViewEngineCollectionEx { get; set; }
 
         DnnUrlHelper Url { get; set; }
-
     }
 }

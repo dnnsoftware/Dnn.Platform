@@ -49,6 +49,5 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Services = new ItemListServicesOptions();
             this.ItemList = new ItemListOptions();
         }
-
     }
 }

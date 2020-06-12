@@ -1241,7 +1241,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             this.dtUserRelationshipPreferences.Columns.Add("LastModifiedByUserID", typeof(int));
             this.dtUserRelationshipPreferences.Columns.Add("LastModifiedOnDate", typeof(DateTime));
             this.dtUserRelationshipPreferences.PrimaryKey = new[] { pkPreferenceID };
-
         }
 
         private static PortalInfo CreatePortalInfo(int portalId, int portalGroupId)

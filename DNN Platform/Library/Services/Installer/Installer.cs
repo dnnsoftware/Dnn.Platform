@@ -231,7 +231,6 @@ namespace DotNetNuke.Services.Installer
             catch (Exception exc)
             {
                 Logger.Error(exc);
-
             }
         }
 

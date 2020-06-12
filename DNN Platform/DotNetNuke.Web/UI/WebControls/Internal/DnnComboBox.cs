@@ -30,7 +30,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             get
             {
                 return base.SelectedValue;
-
             }
             set
             {

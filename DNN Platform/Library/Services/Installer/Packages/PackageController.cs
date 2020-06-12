@@ -49,7 +49,6 @@ namespace DotNetNuke.Services.Installer.Packages
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 string.Empty,
                 logType);
-
         }
 
         private static void AddPackageInternal(PackageInfo package)
@@ -104,7 +103,6 @@ namespace DotNetNuke.Services.Installer.Packages
                 ClearCache(PortalSettings.Current.PortalId);
             }
             ClearCache(Null.NullInteger);
-
         }
 
         private static IEnumerable<PackageDependencyInfo> GetPackageDependencies()

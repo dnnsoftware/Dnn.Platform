@@ -64,7 +64,6 @@ namespace DotNetNuke.Modules.Groups
                 ctl.ModuleConfiguration = this.ModuleConfiguration;
                 this.plhContent.Controls.Clear();
                 this.plhContent.Controls.Add(ctl);
-
             }
             catch (Exception exc) // Module failed to load
             {

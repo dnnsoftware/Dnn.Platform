@@ -1888,7 +1888,6 @@ namespace DotNetNuke.Security.Membership
                             loginStatus = UserLoginStatus.LOGIN_USERNOTAPPROVED;
                         }
                     }
-
                 }
 
                 // Verify User Credentials

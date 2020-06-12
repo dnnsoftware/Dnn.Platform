@@ -84,8 +84,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 this._textBox.Attributes.Add("value", Convert.ToString(this.Value));
             }
         }
-
     }
-
 }
 

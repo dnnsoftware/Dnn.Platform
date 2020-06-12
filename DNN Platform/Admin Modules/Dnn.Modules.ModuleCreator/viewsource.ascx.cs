@@ -127,7 +127,6 @@ namespace Dnn.Module.ModuleCreator
             {
                 this.cboFile.Items.FindByValue(Globals.ApplicationMapPath + "\\" + controlSrc.Replace("/", "\\")).Selected = true;
             }
-
         }
 
         private void LoadFile()
@@ -378,7 +377,6 @@ namespace Dnn.Module.ModuleCreator
                     }
 
                     EventLogController.Instance.AddLog("Created File", modulePath + fileName, this.PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
-
                 }
             }
 
@@ -460,7 +458,6 @@ namespace Dnn.Module.ModuleCreator
                 }
                 this.LoadReadMe();
             }
-
         }
 
         protected void OnFileIndexChanged(object sender, EventArgs e)

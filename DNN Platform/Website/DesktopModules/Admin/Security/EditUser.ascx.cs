@@ -320,7 +320,6 @@ namespace DotNetNuke.Modules.Admin.Users
         private void BindUser()
         {
             this.BindMembership();
-
         }
 
         private void DisableForm()
@@ -509,7 +508,6 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                 }
             }
-
         }
 
         /// -----------------------------------------------------------------------------

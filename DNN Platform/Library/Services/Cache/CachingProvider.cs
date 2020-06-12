@@ -113,7 +113,6 @@ namespace DotNetNuke.Services.Cache
         {
             CacheExpirationDisable = true;
             Logger.Warn("Disable cache expiration.");
-
         }
 
         /// <summary>

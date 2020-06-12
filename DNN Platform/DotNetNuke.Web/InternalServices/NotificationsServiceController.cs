@@ -54,6 +54,5 @@ namespace DotNetNuke.Web.InternalServices
         {
             return new { Subject = notification.Subject, Body = notification.Body };
         }
-
     }
 }

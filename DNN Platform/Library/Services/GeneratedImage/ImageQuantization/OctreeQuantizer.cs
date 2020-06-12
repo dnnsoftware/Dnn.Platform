@@ -338,7 +338,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                         // Add the color to the child node
                         child.AddColor(pixel, colorBits, level + 1, octree);
                     }
-
                 }
 
                 /// <summary>
@@ -493,7 +492,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 /// The index of this node in the palette
                 /// </summary>
                 private int _paletteIndex;
-
             }
         }
     }

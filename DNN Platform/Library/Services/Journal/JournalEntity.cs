@@ -38,7 +38,6 @@ namespace DotNetNuke.Services.Journal
                         {
                             this.Vanity = xNode["vanity"].InnerText.ToString();
                         }
-
                     }
                 }
             }
@@ -71,7 +70,6 @@ namespace DotNetNuke.Services.Journal
                     return PropertyAccess.FormatString(this.Vanity.ToString(), format);
                 case "avatar":
                     return PropertyAccess.FormatString(this.Avatar.ToString(), format);
-
             }
 
             propertyNotFound = true;

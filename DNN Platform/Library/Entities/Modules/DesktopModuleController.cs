@@ -396,7 +396,6 @@ namespace DotNetNuke.Entities.Modules
             {
                 Config.Touch();
             }
-
         }
 
         private void CheckInterfacesImplementation(ref DesktopModuleInfo desktopModuleInfo)
@@ -489,7 +488,6 @@ namespace DotNetNuke.Entities.Modules
                     {
                         AddDesktopModuleToPortal(portalId, desktopModule.DesktopModuleID, !desktopModule.IsAdmin, false);
                     }
-
                 }
             }
             DataCache.ClearPortalCache(portalId, true);
@@ -653,7 +651,6 @@ namespace DotNetNuke.Entities.Modules
                     addedNewModule = true;
                 }
             }
-
         }
     }
 }

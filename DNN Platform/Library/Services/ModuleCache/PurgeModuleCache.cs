@@ -40,7 +40,6 @@ namespace DotNetNuke.Services.ModuleCache
                     {
                         // some Module caching providers don't use this feature
                         Logger.Debug(exc);
-
                     }
                 }
                 this.ScheduleHistoryItem.Succeeded = true; // REQUIRED

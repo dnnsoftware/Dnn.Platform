@@ -79,7 +79,6 @@ namespace DotNetNuke.UI.WebControls
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
                 return intValue;
             }
@@ -167,7 +166,6 @@ namespace DotNetNuke.UI.WebControls
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
                 return intValue;
             }

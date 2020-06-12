@@ -99,6 +99,5 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("NoProvidersEnabled", this.LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
             }
         }
-
     }
 }

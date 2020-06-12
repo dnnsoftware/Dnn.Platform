@@ -606,7 +606,6 @@ namespace DotNetNuke.Web.UI.WebControls
                     Logger.WarnFormat("Unable to create thumbnail for {0}", image.PhysicalPath);
                     this._pnlRightDiv.Visible = false;
                 }
-
             }
             else
             {

@@ -71,6 +71,5 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <param name="contentItem">Content Item</param>
         /// <returns>Workflow Entity</returns>
         Entities.Workflow GetWorkflow(ContentItem contentItem);
-
     }
 }

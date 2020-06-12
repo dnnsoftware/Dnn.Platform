@@ -148,7 +148,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
                         {
                             Services.FileSystem.FileManager.Instance.AddFile(folder, this.txtFile.Text + ".page.template", fileContent, true, true, "application/octet-stream");
                         }
-
                     }
                 }
             }
@@ -156,7 +155,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
-
         }
     }
 }

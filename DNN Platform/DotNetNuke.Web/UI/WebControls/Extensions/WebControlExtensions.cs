@@ -43,7 +43,5 @@ namespace DotNetNuke.Web.UI.WebControls.Extensions
             return size.Width > size.Height ?
                 System.Web.UI.WebControls.Orientation.Horizontal : System.Web.UI.WebControls.Orientation.Vertical;
         }
-
     }
-
 }

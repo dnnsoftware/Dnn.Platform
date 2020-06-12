@@ -143,5 +143,4 @@ namespace Dnn.EditBar.UI.Services
             return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
         }
     }
-
 }

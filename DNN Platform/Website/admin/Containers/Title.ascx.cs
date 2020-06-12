@@ -73,7 +73,6 @@ namespace DotNetNuke.UI.Containers
                 this.titleLabel.EditEnabled = true;
                 this.titleToolbar.Visible = true;
             }
-
         }
 
         private void UpdateTitle(object source, DNNLabelEditEventArgs e)

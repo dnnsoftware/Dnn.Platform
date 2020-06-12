@@ -88,7 +88,6 @@ namespace DotNetNuke.Services.Installer.Installers
                                     if (mod.DesktopModuleID != tempDesktopModule.DesktopModuleID)
                                     {
                                         noOtherTabModule = false;
-
                                     }
                                 }
                                 if (noOtherTabModule)
@@ -99,7 +98,6 @@ namespace DotNetNuke.Services.Installer.Installers
                                 this.Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, tempDesktopModule.AdminPage, portal.PortalID));
                             }
                         }
-
                     }
                     if (!string.IsNullOrEmpty(tempDesktopModule.HostPage))
                     {
@@ -119,7 +117,6 @@ namespace DotNetNuke.Services.Installer.Installers
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -195,7 +192,6 @@ namespace DotNetNuke.Services.Installer.Installers
                         this.Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleAdded, this._desktopModule.AdminPage, portal.PortalID));
                     }
                 }
-
             }
 
             // Add host items

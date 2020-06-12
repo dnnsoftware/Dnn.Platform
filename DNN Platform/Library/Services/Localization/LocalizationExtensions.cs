@@ -35,6 +35,5 @@ namespace DotNetNuke.Services.Localization
             var m = FileNameMatchRegex.Match(fileName);
             return m.Success ? m.Groups[1].Value : string.Empty;
         }
-
     }
 }

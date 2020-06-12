@@ -114,7 +114,6 @@ namespace DotNetNuke.Entities.Tabs
             {
                 Exceptions.LogException(ex);
             }
-
         }
 
         private Workflow GetCurrentOrDefaultWorkflow(ContentItem item, int portalId)

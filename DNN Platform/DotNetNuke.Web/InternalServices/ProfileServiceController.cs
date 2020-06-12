@@ -98,6 +98,5 @@ namespace DotNetNuke.Web.InternalServices
             int portalId = int.Parse(HttpContext.Current.Request.Params["PortalId"]);
             return this.Request.CreateResponse(HttpStatusCode.OK, Entities.Profile.ProfileController.SearchProfilePropertyValues(portalId, propertyName, searchString));
         }
-
     }
 }

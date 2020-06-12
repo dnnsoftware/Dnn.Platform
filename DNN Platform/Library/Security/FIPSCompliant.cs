@@ -63,7 +63,6 @@ namespace DotNetNuke.Security
                     cryptoStream.Close();
 
                     return Convert.ToBase64String(cipherTextBytes);
-
                 }
             }
         }

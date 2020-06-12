@@ -308,7 +308,6 @@ namespace DotNetNuke.UI.Skins
             {
                 // host folder
                 return skinFile;
-
             }
 
             // portal folder
@@ -554,7 +553,6 @@ namespace DotNetNuke.UI.Skins
             catch (Exception exc)
             {
                 Logger.Error(exc);
-
             }
             return strMessage;
         }

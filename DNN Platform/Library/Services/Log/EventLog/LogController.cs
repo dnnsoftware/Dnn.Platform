@@ -45,7 +45,6 @@ namespace DotNetNuke.Services.Log.EventLog
             catch (Exception exc) // ReSharper restore EmptyGeneralCatchClause
             {
                 Logger.Error(exc);
-
             }
         }
 
@@ -228,7 +227,6 @@ namespace DotNetNuke.Services.Log.EventLog
                                 throw;
                             }
                         }
-
                     }
                 }
                 catch (Exception exc)

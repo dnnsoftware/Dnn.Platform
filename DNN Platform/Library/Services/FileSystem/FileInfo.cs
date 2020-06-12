@@ -492,7 +492,6 @@ namespace DotNetNuke.Services.FileSystem
                 this._sha1Hash = currentHashCode;
                 fileManager.UpdateFile(this);
             }
-
         }
     }
 }

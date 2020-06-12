@@ -74,18 +74,15 @@ namespace DotNetNuke.Modules.Journal.Components
                         {
                             bmp = new Bitmap(myStream);
                         }
-
                     }
                 }
 
                 return bmp;
-
             }
             catch
             {
                 return null;
             }
-
         }
 
         internal static string PrepareURL(string url)
@@ -111,7 +108,6 @@ namespace DotNetNuke.Modules.Journal.Components
 
             objURI = new Uri(url);
             return url;
-
         }
 
         internal static LinkInfo GetLinkData(string URL)
@@ -218,7 +214,6 @@ namespace DotNetNuke.Modules.Journal.Components
                                 link.Images.Add(img);
                                 imgList += sImg;
                                 i += 1;
-
                             }
                         }
                     }
@@ -227,7 +222,6 @@ namespace DotNetNuke.Modules.Journal.Components
                         break;
                     }
                 }
-
             }
             return link;
         }

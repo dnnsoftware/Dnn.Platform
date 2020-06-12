@@ -182,7 +182,6 @@ namespace DotNetNuke.Services.Scheduling
                         var item = ScheduleInProgress.FirstOrDefault(si => si.ScheduleID == scheduleItem.ScheduleID);
                         return item;
                     }
-
                 }
                 catch (ApplicationException ex)
                 {
@@ -256,7 +255,6 @@ namespace DotNetNuke.Services.Scheduling
                     // catches edge-case where schedule runs before webserver registration
                     return null;
                 }
-
             }
 
             public static ScheduleHistoryItem AddScheduleHistory(ScheduleHistoryItem scheduleHistoryItem)
@@ -579,7 +577,6 @@ namespace DotNetNuke.Services.Scheduling
                         {
                             StatusLock.ExitReadLock();
                         }
-
                     }
                 }
                 catch (ApplicationException)
@@ -1467,7 +1464,6 @@ namespace DotNetNuke.Services.Scheduling
                         log.AddProperty("NEXT START", Convert.ToString(scheduleHistoryItem.NextStart));
                         LogController.Instance.AddLog(log);
                     }
-
                 }
                 catch (Exception exc)
                 {

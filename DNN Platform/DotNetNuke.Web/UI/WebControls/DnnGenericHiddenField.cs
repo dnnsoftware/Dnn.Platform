@@ -94,6 +94,5 @@ namespace DotNetNuke.Web.UI.WebControls
             this.EnsureValue();
             base.RenderControl(writer);
         }
-
     }
 }

@@ -34,7 +34,6 @@ namespace DotNetNuke.Web.Mvc
                 segments[0]);
 
             return moduleControl;
-
         }
 
         public override Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)

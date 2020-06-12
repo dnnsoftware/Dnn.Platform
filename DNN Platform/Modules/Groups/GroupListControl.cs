@@ -90,7 +90,6 @@ namespace DotNetNuke.Modules.Groups.Controls
         {
             base.OnInit(e);
             this.currentUser = UserController.Instance.GetCurrentUserInfo();
-
         }
 
         private static bool TestPredicateGroup(IEnumerable<Func<RoleInfo, bool>> predicates, RoleInfo ri)
@@ -251,15 +250,11 @@ namespace DotNetNuke.Modules.Groups.Controls
 
                     sb.AppendFormat(sUrlFormat, sUrl, cssClass, x.ToString());
                 }
-
             }
 
             output.Write("<div class=\"dnnClear groupPager\">");
             output.Write(sb.ToString());
             output.Write("</div>");
-
         }
-
     }
-
 }

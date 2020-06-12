@@ -184,6 +184,5 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
         //        File.AppendAllText(folderMappingsConfigPath, "<folderMappingsSettings>" + folderMappinsSettings + "</folderMappingsSettings>");
         //    }
         // }
-
     }
 }

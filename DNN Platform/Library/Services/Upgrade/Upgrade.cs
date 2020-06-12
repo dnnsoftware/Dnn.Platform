@@ -133,7 +133,6 @@ namespace DotNetNuke.Services.Upgrade
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddAdminPages:" + tabName);
             // Call overload with InheritPermisions=True
             AddAdminPages(tabName, description, tabIconFile, tabIconFileLarge, isVisible, moduleDefId, moduleTitle, moduleIconFile, true);
-
         }
 
         private static void AddAdminRoleToPage(string tabPath)
@@ -2643,7 +2642,6 @@ namespace DotNetNuke.Services.Upgrade
             logTypeInfo.LogTypeKey = EventLogController.EventLogType.TABURL_DELETED.ToString();
             logTypeInfo.LogTypeFriendlyName = "TabURL deleted";
             LogController.Instance.AddLogType(logTypeInfo);
-
         }
 
         private static void UpgradeToVersion712()
@@ -3016,7 +3014,6 @@ namespace DotNetNuke.Services.Upgrade
                 };
 
                 permCtl.AddPermission(pi);
-
             }
             catch
             {
@@ -3034,7 +3031,6 @@ namespace DotNetNuke.Services.Upgrade
                 };
 
                 permCtl.AddPermission(pi);
-
             }
             catch
             {
@@ -3052,13 +3048,11 @@ namespace DotNetNuke.Services.Upgrade
                 };
 
                 permCtl.AddPermission(pi);
-
             }
             catch
             {
                 // suppress
             }
-
         }
 
         private static ContentItem CreateFileContentItem()
@@ -3707,7 +3701,6 @@ namespace DotNetNuke.Services.Upgrade
                     try
                     {
                         moduleId = ModuleController.Instance.AddModule(moduleInfo);
-
                     }
                     catch (Exception exc)
                     {
@@ -4510,7 +4503,6 @@ namespace DotNetNuke.Services.Upgrade
             Array.Sort(files); // The order of the returned file names is not guaranteed; use the Sort method if a specific sort order is required.
 
             return files;
-
         }
 
         private static string GetFileName(string file)
@@ -5173,7 +5165,6 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     Logger.Error(exc);
                 }
-
             }
 
             // Remove any .txt and .config files that may exist in the Install folder

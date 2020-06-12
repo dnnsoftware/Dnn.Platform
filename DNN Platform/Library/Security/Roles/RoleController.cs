@@ -57,7 +57,6 @@ namespace DotNetNuke.Security.Roles
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 string.Empty,
                 logType);
-
         }
 
         private void AutoAssignUsers(RoleInfo role)

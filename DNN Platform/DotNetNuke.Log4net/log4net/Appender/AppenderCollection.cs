@@ -810,5 +810,4 @@ namespace log4net.Appender
             }
         }
     }
-
 }

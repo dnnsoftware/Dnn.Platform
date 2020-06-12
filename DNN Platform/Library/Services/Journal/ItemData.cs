@@ -47,14 +47,11 @@ namespace DotNetNuke.Services.Journal
                         return PropertyAccess.FormatString(this.Description, format);
                     case "imageurl":
                         return PropertyAccess.FormatString(this.ImageUrl, format);
-
                 }
 
                 propertyNotFound = true;
                 return string.Empty;
-
             }
         }
-
 }
 

@@ -15,6 +15,5 @@ namespace DotNetNuke.Modules.Journal.Components
         public string Title { get; set; }
         public string Description { get; set; }
         public List<ImageInfo> Images { get; set; }
-
     }
 }

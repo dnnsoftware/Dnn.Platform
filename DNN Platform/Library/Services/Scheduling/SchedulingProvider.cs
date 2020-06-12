@@ -240,6 +240,5 @@ namespace DotNetNuke.Services.Scheduling
             // Do Nothing
         }
         public abstract void RemoveFromScheduleInProgress(ScheduleItem scheduleItem);
-
     }
 }

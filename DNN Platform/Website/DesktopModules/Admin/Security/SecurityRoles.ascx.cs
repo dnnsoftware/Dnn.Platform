@@ -541,7 +541,6 @@ namespace DotNetNuke.Modules.Admin.Security
             catch (ThreadAbortException exc) // Do nothing if ThreadAbort as this is caused by a redirect
             {
                 Logger.Debug(exc);
-
             }
             catch (Exception exc) // Module failed to load
             {
@@ -735,7 +734,6 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
 
                 item.Cells[5].Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
-
             }
             catch (Exception exc) // Module failed to load
             {

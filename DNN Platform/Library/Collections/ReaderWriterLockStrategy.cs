@@ -159,6 +159,5 @@ namespace DotNetNuke.Collections.Internal
         }
 
         // This code added by Visual Basic to correctly implement the disposable pattern.
-
     }
 }

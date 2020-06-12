@@ -19,7 +19,6 @@ namespace DotNetNuke.Tests.Core.Framework
             HttpContextHelper.RegisterMockHttpContext();
             var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", "c:\\");
             simulator.SimulateRequest(new Uri("http://localhost/dnn/Default.aspx"));
-
         }
 
         [TearDown]

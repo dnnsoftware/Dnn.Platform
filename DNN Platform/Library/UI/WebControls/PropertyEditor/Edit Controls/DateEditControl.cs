@@ -56,7 +56,6 @@ namespace DotNetNuke.UI.WebControls
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
                 return dteValue;
             }
@@ -126,7 +125,6 @@ namespace DotNetNuke.UI.WebControls
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
                 return dteValue;
             }

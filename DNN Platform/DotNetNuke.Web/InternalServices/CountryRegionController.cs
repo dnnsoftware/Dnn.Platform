@@ -48,6 +48,5 @@ namespace DotNetNuke.Web.InternalServices
             }
             return this.Request.CreateResponse(HttpStatusCode.OK, res.OrderBy(r => r.Text));
         }
-
     }
 }

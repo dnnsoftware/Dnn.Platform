@@ -119,7 +119,6 @@ namespace DotNetNuke.Entities.Host
                         // log
                         this.LogBannedIPAttempt(ipAddress);
                         return true;
-
                     }
                 }
                 // check any allows - if one exists set flag but let processing continue to verify no deny overrides
@@ -128,7 +127,6 @@ namespace DotNetNuke.Entities.Host
                     if (ipFilterInfo.IPAddress == "*" || NetworkUtils.IsIPInRange(ipAddress, ipFilterInfo.IPAddress, ipFilterInfo.SubnetMask))
                     {
                         ipAllowed = false;
-
                     }
                 }
             }

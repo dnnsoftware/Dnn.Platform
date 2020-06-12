@@ -178,5 +178,4 @@ namespace Dnn.PersonaBar.UI.Components
             }
         }
     }
-
 }

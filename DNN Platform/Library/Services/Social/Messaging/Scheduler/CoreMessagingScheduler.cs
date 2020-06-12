@@ -741,6 +741,5 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
             return template;
         }
-
     }
 }

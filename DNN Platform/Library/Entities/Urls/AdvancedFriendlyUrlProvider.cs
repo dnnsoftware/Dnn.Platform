@@ -1333,7 +1333,6 @@ namespace DotNetNuke.Entities.Urls
             qs = string.IsNullOrWhiteSpace(qs) ?
                 queryStringBuilder.ToString() :
                 string.Format("{0}&{1}", qs, queryStringBuilder);
-
         }
 
         private static bool TransformStandardPath(ref string newPath, ref string newTabPath)

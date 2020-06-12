@@ -20,7 +20,6 @@ namespace DotNetNuke.Web.Mvp
             }
 
             this.OnSettingsLoaded();
-
         }
 
         public void UpdateSettings()

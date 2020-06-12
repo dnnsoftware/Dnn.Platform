@@ -157,7 +157,6 @@ namespace DotNetNuke.Services.Journal
 
             propertyNotFound = true;
             return string.Empty;
-
         }
     }
 }

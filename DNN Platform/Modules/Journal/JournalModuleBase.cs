@@ -47,7 +47,6 @@ namespace DotNetNuke.Modules.Journal
                         return (JournalMode)Convert.ToInt16(this.Settings[Constants.JournalFilterMode].ToString());
                     }
                 }
-
             }
         }
         public int GroupId
@@ -93,7 +92,5 @@ namespace DotNetNuke.Modules.Journal
                 }
             }
         }
-
     }
-
 }

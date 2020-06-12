@@ -108,9 +108,6 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.Page.ClientScript.RegisterStartupScript(this.GetType(), "PasswordStrength", script, true);
             }
-
         }
-
     }
-
 }

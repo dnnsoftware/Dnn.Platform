@@ -69,7 +69,6 @@ namespace DotNetNuke.Services.Upgrade
             {
                 writer.WriteLine(DateTime.UtcNow.ToString(CultureInfo.InvariantCulture) + " " + logType + " " + CallingType + " " + message);
             }
-
         }
     }
 }

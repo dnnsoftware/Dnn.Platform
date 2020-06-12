@@ -167,7 +167,6 @@ namespace DotNetNuke.HttpModules.OutputCaching
                         includeVaryByKeys.Add(varyKey);
                     }
                 }
-
             }
             if (! varyBy.ContainsKey("portalid"))
             {

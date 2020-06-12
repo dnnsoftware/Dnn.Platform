@@ -37,7 +37,6 @@ namespace DotNetNuke.Modules.Groups
                 role.RoleID = -1;
                 role.RoleName = Localization.GetString("Sample_RoleName", this.LocalResourceFile);
                 role.Description = Localization.GetString("Sample_RoleDescription", this.LocalResourceFile);
-
             }
 
             if (role == null)
@@ -63,9 +62,7 @@ namespace DotNetNuke.Modules.Groups
                 groupParser.GroupEditUrl = this.GetEditUrl();
 
                 this.litOutput.Text = groupParser.ParseView();
-
             }
-
         }
     }
 }

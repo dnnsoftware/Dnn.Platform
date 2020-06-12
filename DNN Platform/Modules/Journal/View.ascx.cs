@@ -155,7 +155,6 @@ namespace DotNetNuke.Modules.Journal
                             this.ctlJournalList.Enabled = false;
                         }
                     }
-
                 }
             }
 

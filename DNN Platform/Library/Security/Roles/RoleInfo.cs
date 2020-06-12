@@ -366,7 +366,6 @@ namespace DotNetNuke.Security.Roles
                         this.IsSystemRole = Null.SetNullBoolean(dr["IsSystemRole"]);
                     }
                 }
-
             }
             catch (IndexOutOfRangeException)
             {

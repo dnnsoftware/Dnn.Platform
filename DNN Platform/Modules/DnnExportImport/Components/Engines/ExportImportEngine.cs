@@ -175,7 +175,6 @@ namespace Dnn.ExportImport.Components.Engines
                             try
                             {
                                 service.ExportData(exportJob, exportDto);
-
                             }
                             finally
                             {
@@ -668,7 +667,6 @@ namespace Dnn.ExportImport.Components.Engines
                         e.Message);
                 }
             }
-
         }
 
         private static string[] NotAllowedCategoriesinRequestArray => new[]

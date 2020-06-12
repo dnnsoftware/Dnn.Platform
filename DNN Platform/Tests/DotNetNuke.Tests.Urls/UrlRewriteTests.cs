@@ -151,7 +151,6 @@ namespace DotNetNuke.Tests.Urls
             {
                 TabController.Instance.DeleteTabUrl(tabUrl, this.PortalId, true);
             }
-
         }
 
         [TestFixtureSetUp]
@@ -209,7 +208,6 @@ namespace DotNetNuke.Tests.Urls
 
                                 TestUtil.DeleteUser(this.PortalId, fields[0]);
                             });
-
         }
 
         private void DeleteTab(string tabName)
@@ -295,7 +293,6 @@ namespace DotNetNuke.Tests.Urls
             {
                 TabController.Instance.UpdateTab(tab);
             }
-
         }
 
         private void UpdateTabName(int tabId, string newName)
@@ -541,7 +538,6 @@ namespace DotNetNuke.Tests.Urls
                 this._customLocale.Text = CultureInfo.GetCultureInfo(this._customLocale.Code).NativeName;
                 Localization.SaveLanguage(this._customLocale);
                 Localization.AddLanguageToPortals(this._customLocale.LanguageId);
-
             }
 
             if (testFields.ContainsKey("Final Url"))
@@ -659,7 +655,6 @@ namespace DotNetNuke.Tests.Urls
             {
                 this.UpdateHomeTab(homeTabId);
             }
-
         }
 
         private int UpdateHomeTab(int homeTabId)

@@ -51,7 +51,6 @@ namespace DotNetNuke.UI.ControlPanels
                 toolCtrl.Text = Localization.GetString("SiteNewPage", this.LocalResourceFile);
                 toolCtrl.ToolTip = Localization.GetString("SiteNewPage.ToolTip", this.LocalResourceFile);
             }
-
         }
 
         private void SetMode(bool update)
@@ -139,7 +138,6 @@ namespace DotNetNuke.UI.ControlPanels
             string host = this.StripLocalizationPrefix(Localization.GetString("//Host.String", Localization.GlobalResourceFile)).Trim();
 
             skinObject.IncludeNodes = admin + ", " + host;
-
         }
 
         private string StripLocalizationPrefix(string s)

@@ -267,5 +267,4 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             Assert.IsFalse(bIsTablet);
         }
     }
-
 }

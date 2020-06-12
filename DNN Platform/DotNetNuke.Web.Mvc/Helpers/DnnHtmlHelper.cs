@@ -88,6 +88,5 @@ namespace DotNetNuke.Web.Mvc.Helpers
         public void EnableUnobtrusiveJavaScript() => this.HtmlHelper.EnableUnobtrusiveJavaScript();
 
         public void EnableUnobtrusiveJavaScript(bool enabled) => this.HtmlHelper.EnableUnobtrusiveJavaScript(enabled);
-
     }
 }

@@ -134,7 +134,6 @@ namespace DotNetNuke.ExtensionPoints
                 }
             }
         }
-
     }
 
     public class PanelTabExtensionControl : WebControl

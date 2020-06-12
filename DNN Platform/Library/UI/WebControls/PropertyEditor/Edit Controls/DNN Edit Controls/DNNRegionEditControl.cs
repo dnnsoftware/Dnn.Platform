@@ -183,7 +183,6 @@ namespace DotNetNuke.UI.WebControls
             this.RegionCode.ID = this.ID + "_value";
             this.RegionCode.Attributes.Add("data-editor", "DNNRegionEditControl_Hidden");
             this.Controls.Add(this.RegionCode);
-
         }
 
         public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
@@ -210,7 +209,6 @@ namespace DotNetNuke.UI.WebControls
                 this.Page.RegisterRequiresPostBack(this);
                 this.Page.RegisterRequiresPostBack(this.RegionCode);
             }
-
         }
 
         protected override void RenderEditMode(HtmlTextWriter writer)

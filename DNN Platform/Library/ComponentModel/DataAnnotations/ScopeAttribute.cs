@@ -17,6 +17,5 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
         /// The property to use to scope the cache.  The default is an empty string.
         /// </summary>
         public string Scope { get; set; }
-
     }
 }

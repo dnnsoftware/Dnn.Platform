@@ -440,7 +440,6 @@ namespace DotNetNuke.UI.Modules
                         false);
                 }
             }
-
         }
 
         private static string FilterUrl(HttpRequest request)

@@ -76,7 +76,6 @@ namespace DotNetNuke.Instrumentation
                             }
                             _configured = true;
                         }
-
                     }
                 }
             }
@@ -97,7 +96,6 @@ namespace DotNetNuke.Instrumentation
                 //// Register custom logging levels with the default LoggerRepository
 //                LogManager.GetRepository().LevelMap.Add(LevelLogInfo);
 //                LogManager.GetRepository().LevelMap.Add(LevelLogError);
-
             }
 
             private static void AddGlobalContext()

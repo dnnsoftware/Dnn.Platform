@@ -76,7 +76,6 @@ namespace log4net.Util.PatternStringConverters
                 }
                 return _appSettingsHashTable;
             }
-
         }
         private static Hashtable _appSettingsHashTable;
 

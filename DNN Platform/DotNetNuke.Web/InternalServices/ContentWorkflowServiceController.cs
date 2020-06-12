@@ -96,7 +96,6 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
-
         }
 
         [Obsolete("Obsolted in Platform 7.4.0. Scheduled removal in v10.0.0.")]
@@ -146,7 +145,6 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
-
         }
     }
 }

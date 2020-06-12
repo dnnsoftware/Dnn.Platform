@@ -41,6 +41,5 @@ namespace Dnn.PersonaBar.Library.Repository
         /// </summary>
         /// <returns></returns>
         IList<PersonaBarExtension> GetExtensions(int menuId);
-
     }
 }

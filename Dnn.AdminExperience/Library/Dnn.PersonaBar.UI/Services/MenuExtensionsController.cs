@@ -107,7 +107,6 @@ namespace Dnn.PersonaBar.UI.Services
                 Logger.Error(ex);
                 return null;
             }
-
         }
     }
 }

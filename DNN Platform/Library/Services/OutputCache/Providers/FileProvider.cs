@@ -59,7 +59,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
             using (var writerLock = CacheFolderPath.GetWriteLock())
             {
                 CacheFolderPath.Add(portalId, cacheFolder);
-
             }
 
             return cacheFolder;

@@ -50,6 +50,5 @@ namespace Dnn.PersonaBar.Library.Common
                        ? document
                        : HtmlEntitiesPatternRegex.Replace(document, "&$1;");
         }
-
     }
 }

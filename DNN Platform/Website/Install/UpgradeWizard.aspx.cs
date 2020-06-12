@@ -248,7 +248,6 @@ namespace DotNetNuke.Services.Install
 
             // restore Script timeout
             HttpContext.Current.Server.ScriptTimeout = scriptTimeOut;
-
         }
 
         private static void CurrentStepActivity(string status)

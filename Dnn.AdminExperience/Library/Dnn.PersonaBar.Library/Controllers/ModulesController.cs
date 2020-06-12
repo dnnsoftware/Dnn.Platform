@@ -154,7 +154,6 @@ namespace Dnn.PersonaBar.Library.Controllers
                 }
                 // get the new module
                 return ModuleController.Instance.GetModule(sourceModule.ModuleID, targetPageId, true);
-
             }
             else
             {

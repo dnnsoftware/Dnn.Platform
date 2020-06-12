@@ -77,7 +77,6 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 this.ResetToken = this.Request.QueryString["resetToken"];
                 this.txtUsername.Enabled = false;
-
             }
 
             var useEmailAsUserName = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);

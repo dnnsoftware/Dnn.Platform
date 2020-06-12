@@ -83,12 +83,10 @@ namespace DotNetNuke.Services.ClientCapability
             get
             {
                 return this._capabilities;
-
             }
             set
             {
                 this._capabilities = value;
-
             }
         }
 

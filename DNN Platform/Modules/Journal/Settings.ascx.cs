@@ -53,7 +53,6 @@ namespace DotNetNuke.Modules.Journal
                     else
                     {
                         this.drpDefaultPageSize.SelectedIndex = this.drpDefaultPageSize.Items.IndexOf(this.drpDefaultPageSize.Items.FindByValue("20"));
-
                     }
                     if (this.Settings.ContainsKey(Constants.MaxCharacters))
                     {
@@ -62,7 +61,6 @@ namespace DotNetNuke.Modules.Journal
                     else
                     {
                         this.drpMaxMessageLength.SelectedIndex = this.drpMaxMessageLength.Items.IndexOf(this.drpMaxMessageLength.Items.FindByValue("250"));
-
                     }
                     if (this.Settings.ContainsKey(Constants.AllowFiles))
                     {
@@ -137,7 +135,6 @@ namespace DotNetNuke.Modules.Journal
                             }
                         }
                     }
-
                 }
             }
             catch (Exception exc) // Module failed to load
@@ -182,11 +179,9 @@ namespace DotNetNuke.Modules.Journal
                             jc.SaveFilters(this.PortalId, this.ModuleId, Convert.ToInt32(li.Value));
                             journalTypes += li.Value + ";";
                         }
-
                     }
                 }
                 ModuleController.Instance.UpdateModuleSetting(this.ModuleId, Constants.JournalFilters, journalTypes);
-
             }
             catch (Exception exc) // Module failed to load
             {
@@ -202,6 +197,5 @@ namespace DotNetNuke.Modules.Journal
             }
         }
     }
-
 }
 

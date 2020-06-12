@@ -188,7 +188,6 @@ namespace DotNetNuke.Web.InternalServices
                                     {
                                         returnFileDto = SaveFile(stream, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract, out alreadyExists, out errorMessage);
                                     }, null);
-
                         }
 
                         /* Response Content Type cannot be application/json
@@ -817,5 +816,4 @@ namespace DotNetNuke.Web.InternalServices
             return mygroup != null && mygroup.Any(p => p.PortalID == portalId);
         }
     }
-
 }

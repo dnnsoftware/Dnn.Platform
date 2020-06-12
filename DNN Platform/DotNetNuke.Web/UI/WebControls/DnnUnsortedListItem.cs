@@ -42,7 +42,5 @@ namespace DotNetNuke.Web.UI.WebControls
                 writer.AddAttribute(HtmlTextWriterAttribute.Title, this.ToolTip);
             }
         }
-
     }
-
 }

@@ -518,7 +518,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
 
             return table.CreateDataReader();
         }
-
     }
 
     // ReSharper restore InconsistentNaming

@@ -423,7 +423,6 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             // test attribute is set
             var node = nodes[0];
             Assert.AreEqual("foo", node.Attributes["test"].Value);
-
         }
 
         [Test]
@@ -438,7 +437,6 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             // test attribute is set
             var node = nodes[0];
             Assert.AreEqual("foo", node.Attributes["test"].Value);
-
         }
 
         [Test]

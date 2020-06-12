@@ -49,7 +49,6 @@ namespace DotNetNuke.Authentication.LiveConnect
             if (result == AuthorisationResult.Denied)
             {
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
-
             }
         }
     }

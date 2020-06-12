@@ -210,7 +210,6 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 sb.Append('\n');
 
                 this.ProfileProperties = sb.ToString();
-
             }
             catch (Exception exc)
             {

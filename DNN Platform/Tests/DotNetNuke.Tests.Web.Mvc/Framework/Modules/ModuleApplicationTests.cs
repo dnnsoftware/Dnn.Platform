@@ -252,6 +252,5 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
                             ModuleContext = moduleContext,
                         };
         }
-
     }
 }

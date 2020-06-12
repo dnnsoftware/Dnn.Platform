@@ -30,6 +30,5 @@ namespace DotNetNuke.Entities.Portals.Data
         /// <param name="portal">The owner Portal</param>
         /// <returns>A list of ModuleInfo objects</returns>
         IDataReader GetSharedModulesByPortal(PortalInfo portal);
-
     }
 }

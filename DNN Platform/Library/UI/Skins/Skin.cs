@@ -677,7 +677,6 @@ namespace DotNetNuke.UI.Skins
                     this.Page.ClientScript.RegisterStartupScript(this.GetType(), "DragAndDrop", script, true);
                 }
             }
-
         }
 
         /// -----------------------------------------------------------------------------
@@ -981,7 +980,6 @@ namespace DotNetNuke.UI.Skins
                 {
                     pane.InjectModule(module);
                 }
-
             }
             catch (ThreadAbortException)
             {

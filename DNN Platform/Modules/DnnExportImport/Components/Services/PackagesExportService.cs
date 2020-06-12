@@ -202,7 +202,6 @@ namespace Dnn.ExportImport.Components.Services
 
                 this.InstallPackage(filePath);
                 this.Result.AddLogEntry("Import Package completed", $"{packageName} version: {version}");
-
             }
             catch (Exception ex)
             {
@@ -314,6 +313,5 @@ namespace Dnn.ExportImport.Components.Services
 
             return installer;
         }
-
     }
 }

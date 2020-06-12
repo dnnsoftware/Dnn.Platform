@@ -82,7 +82,6 @@ namespace DotNetNuke.UI.WebControls
                     this.m_MemoryStream.Write(_Byte, 0, _Byte.Length);
                 }
                 _FileStream.Close();
-
             }
         }
 

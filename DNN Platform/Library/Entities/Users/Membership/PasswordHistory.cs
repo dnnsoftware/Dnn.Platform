@@ -31,6 +31,5 @@ namespace DotNetNuke.Entities.Users.Membership
             // add audit column data
             this.FillInternal(dr);
         }
-
     }
 }

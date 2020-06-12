@@ -154,7 +154,6 @@ namespace DotNetNuke.Modules.Groups
 
                             var url = this.NavigationManager.NavigateURL(postData.GroupViewTabId, string.Empty, new[] { "groupid=" + this._roleInfo.RoleID });
                             return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", URL = url });
-
                         }
                         if (this._roleInfo.IsPublic && requireApproval)
                         {

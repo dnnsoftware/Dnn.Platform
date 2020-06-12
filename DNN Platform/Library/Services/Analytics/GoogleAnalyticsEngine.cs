@@ -127,6 +127,5 @@ namespace DotNetNuke.Services.Analytics
                 return string.Empty;
             }
         }
-
     }
 }

@@ -661,6 +661,5 @@ namespace DotNetNuke.Web.InternalServices
             SearchHelper.Instance.DeleteSearchStopWords(stopWords.Id, stopWords.PortalId, stopWords.Culture);
             return this.Request.CreateResponse(HttpStatusCode.OK);
         }
-
     }
 }

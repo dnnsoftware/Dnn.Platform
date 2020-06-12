@@ -169,7 +169,6 @@ namespace DotNetNuke.Entities
                 this.UserApproved += handler.Value.UserApproved;
                 this.UserUpdated += handler.Value.UserUpdated;
             }
-
         }
 
         protected override Func<IEventManager> GetFactory()

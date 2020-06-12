@@ -68,7 +68,6 @@ namespace DotNetNuke.Data
             }
 
             return entities;
-
         }
 
         public IEnumerable<TEntity> Get()

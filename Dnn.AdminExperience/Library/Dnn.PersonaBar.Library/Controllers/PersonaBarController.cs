@@ -66,7 +66,6 @@ namespace Dnn.PersonaBar.Library.Controllers
                     Logger.Error(ex);
                     visible = false;
                 }
-
             }
 
             return visible;
@@ -192,13 +191,11 @@ namespace Dnn.PersonaBar.Library.Controllers
                 Logger.Error(ex);
                 return null;
             }
-
         }
 
         protected override Func<IPersonaBarController> GetFactory()
         {
             return () => new PersonaBarController();
         }
-
     }
 }

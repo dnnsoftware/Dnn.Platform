@@ -241,7 +241,6 @@ namespace DotNetNuke.Modules.Journal.Components
                     isLiked = true;
                     break;
                 }
-
             }
             int xc = 0;
             sb.Append("<div class=\"likes\">");
@@ -296,7 +295,6 @@ namespace DotNetNuke.Modules.Journal.Components
                 {
                     sb.Append(" {resx:likethis}");
                 }
-
         }
             else
         {

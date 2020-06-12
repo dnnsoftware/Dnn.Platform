@@ -704,7 +704,6 @@ namespace DotNetNuke.Common.Utilities
                 }
             }
             return newString.ToString();
-
         }
 
         public static void XSLTransform(XmlDocument doc, ref StreamWriter writer, string xsltUrl)

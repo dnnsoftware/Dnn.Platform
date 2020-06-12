@@ -24,6 +24,5 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
         public bool AutoIncrement { get; set; }
         public string ColumnName { get; set; }
         public string PropertyName { get; set; }
-
     }
 }

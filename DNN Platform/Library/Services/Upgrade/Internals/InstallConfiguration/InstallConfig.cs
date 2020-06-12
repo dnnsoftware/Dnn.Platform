@@ -36,5 +36,4 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
             this.Settings = new List<HostSettingConfig>();
         }
     }
-
 }

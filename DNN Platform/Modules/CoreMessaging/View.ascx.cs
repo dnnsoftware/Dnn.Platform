@@ -65,7 +65,6 @@ namespace DotNetNuke.Modules.CoreMessaging
             {
                 return this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser
                     && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
-
             }
         }
 

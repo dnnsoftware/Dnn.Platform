@@ -395,7 +395,6 @@ namespace Dnn.ExportImport.Components.Services
                     default:
                         throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
-
             }
 
             if (changedSettings.Count > 0)

@@ -70,6 +70,5 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 
             return colorIndex;
         }
-
     }
 }

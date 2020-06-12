@@ -60,7 +60,6 @@ namespace Dnn.PersonaBar.Users.Tests
             this.usersCtrl.GetUsers(this.usersContract, true, out totalRecords);
 
             Assert.AreEqual(expectedFilteredText, this.usersCtrl.LastSearch);
-
         }
 
         private class UsersControllerTestable : UsersController

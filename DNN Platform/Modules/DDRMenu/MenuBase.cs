@@ -205,7 +205,6 @@ namespace DotNetNuke.Web.DDRMenu
                                     return tab.Terms.Any(x => x.Name.ToLowerInvariant() == tagName);
                                 }));
                     }
-
                 }
                 else
                 {

@@ -70,7 +70,5 @@ namespace DotNetNuke.Common.Utilities
         {
             CurrentItems.Remove(key);
         }
-
     }
-
 }

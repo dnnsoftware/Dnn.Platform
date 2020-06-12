@@ -213,7 +213,6 @@ namespace DotNetNuke.Web.InternalServices
                                 : tabModules.Values.Where(m => ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", m) && !m.IsDeleted).ToList();
 
             return pageModules;
-
         }
 
         [HttpPost]
@@ -416,7 +415,6 @@ namespace DotNetNuke.Web.InternalServices
                         return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                     }
                 }
-
             }
             catch (System.Threading.ThreadAbortException)
             {
@@ -525,7 +523,6 @@ namespace DotNetNuke.Web.InternalServices
                         portalSettings = new PortalSettings(selectedPortalId);
                     }
                 }
-
             }
             catch (Exception)
             {

@@ -109,7 +109,6 @@ namespace DotNetNuke.Tests.Utilities
             ComponentFactory.InstallComponents(new ProviderInstaller("htmlEditor", typeof(HtmlEditorProvider), ComponentLifeStyleType.Transient));
             ComponentFactory.InstallComponents(new ProviderInstaller("navigationControl", typeof(NavigationProvider), ComponentLifeStyleType.Transient));
             ComponentFactory.InstallComponents(new ProviderInstaller("clientcapability", typeof(ClientCapabilityProvider)));
-
         }
 
         private static void RegisterIfNotAlreadyRegistered<TConcrete>()

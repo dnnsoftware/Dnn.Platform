@@ -48,6 +48,5 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
         {
             this.Attributes = new Dictionary<string, string>();
         }
-
     }
 }

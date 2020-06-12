@@ -177,7 +177,6 @@ namespace DotNetNuke.Services.Installer.Installers
                                         }
                                         break;
                                 }
-
                             }
                             attribValue = attribValue.TrimEnd(',');
                         }

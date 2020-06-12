@@ -767,5 +767,4 @@ namespace log4net.Core
             }
         }
     }
-
 }

@@ -51,6 +51,5 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
         /// </summary>
         /// <remarks>Content with more Views is ranked higher.</remarks>
         public int Views { get; set; }
-
     }
 }

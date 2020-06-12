@@ -336,7 +336,6 @@ namespace DotNetNuke.Services.Exceptions
                 ProcessPageLoadException(exc2);
             }
             Logger.ErrorFormat("FriendlyMessage=\"{0}\" ctrl=\"{1}\" exc=\"{2}\"", FriendlyMessage, ctrl, exc);
-
         }
 
         /// <summary>

@@ -94,7 +94,5 @@ namespace DotNetNuke.Web.UI.WebControls
             writer.Write(propValue);
             writer.RenderEndTag();
         }
-
     }
-
 }

@@ -435,7 +435,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     return (int)FileOrder.Js.HoverIntent;
                 default:
                     return jsl.PackageID + (int)FileOrder.Js.DefaultPriority;
-
             }
         }
 

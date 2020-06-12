@@ -203,7 +203,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 }
                 this.packageForm.Visible = this.IsSuperTab;
                 this.packageFormReadOnly.Visible = !this.IsSuperTab;
-
             }
         }
 
@@ -322,6 +321,5 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 Exceptions.ProcessModuleLoadException(this, ex);
             }
         }
-
     }
 }

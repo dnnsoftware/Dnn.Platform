@@ -912,7 +912,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         {
             this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.Tablet, 1, -1, DisabledFlag, (int)TargetType.Tab, TabletLandingPage, EnabledFlag);
             this._dtRedirections.Rows.Add(2, Portal0, "R2", (int)RedirectionType.MobilePhone, 2, -1, DisabledFlag, (int)TargetType.Tab, MobileLandingPage, EnabledFlag);
-
         }
 
         private void PrepareAllMobileRedirectionRule()

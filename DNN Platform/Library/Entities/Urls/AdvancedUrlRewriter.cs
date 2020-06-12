@@ -57,7 +57,6 @@ namespace DotNetNuke.Entities.Urls
 
                     this.SecurityCheck(app);
                 }
-
             }
             catch (Exception ex)
             {
@@ -263,7 +262,6 @@ namespace DotNetNuke.Entities.Urls
                                     result.PortalAlias = wrongAliasInfo;
                                     result.PrimaryAlias = requestedAlias;
                                 }
-
                             }
                         }
                     }
@@ -1505,7 +1503,6 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
-
             }
             catch (ThreadAbortException)
             {

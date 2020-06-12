@@ -64,5 +64,4 @@ namespace DotNetNuke.Common.Utilities
 
         private static readonly Encoding Iso8859Encoding = Encoding.GetEncoding("iso-8859-8");
     }
-
 }

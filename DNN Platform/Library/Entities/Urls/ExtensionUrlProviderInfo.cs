@@ -92,6 +92,5 @@ namespace DotNetNuke.Entities.Urls
             this.RedirectAllUrls = Null.SetNullBoolean(dr["RedirectAllUrls"]);
             this.ReplaceAllUrls = Null.SetNullBoolean(dr["ReplaceAllUrls"]);
         }
-
     }
 }

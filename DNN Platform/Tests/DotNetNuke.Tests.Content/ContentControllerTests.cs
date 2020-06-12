@@ -45,7 +45,6 @@ namespace DotNetNuke.Tests.Content
 
             this._mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns<string>(
                 (string searchTypeName) => new SearchType { SearchTypeName = searchTypeName, SearchTypeId = ModuleSearchTypeId });
-
         }
 
         [TearDown]

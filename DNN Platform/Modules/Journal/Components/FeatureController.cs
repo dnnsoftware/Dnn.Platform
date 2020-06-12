@@ -303,5 +303,4 @@ namespace DotNetNuke.Modules.Journal.Components
             }
         }
     }
-
 }

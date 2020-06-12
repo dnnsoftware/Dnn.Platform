@@ -156,7 +156,6 @@ namespace DotNetNuke.Modules.Groups
 
                     // Clear Roles Cache
                     DataCache.RemoveCache("GetRoles");
-
                 }
 
                 this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId, string.Empty, new string[] { "groupid=" + this.GroupId.ToString() }));

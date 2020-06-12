@@ -298,7 +298,6 @@ namespace DotNetNuke.Entities.Users
             catch (Exception exc)
             {
                 Logger.Error(exc);
-
             }
 
             // Remove users that have expired

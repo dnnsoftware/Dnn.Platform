@@ -109,7 +109,6 @@ namespace DotNetNuke.Services.Analytics
                     fileReader.Close();
                 }
                 Logger.Error(ex);
-
             }
 
             return fileReader;

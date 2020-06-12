@@ -773,7 +773,6 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     var docType = this.LoadDocType();
                     _docTypeCache[this.SkinSrc] = docType == null ? string.Empty : docType.FirstChild.InnerText;
-
                 }
                 catch (Exception ex)
                 {

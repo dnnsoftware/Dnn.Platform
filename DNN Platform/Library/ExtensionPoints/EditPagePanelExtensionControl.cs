@@ -21,7 +21,6 @@ namespace DotNetNuke.ExtensionPoints
             control.ID = Path.GetFileNameWithoutExtension(extension.UserControlSrc);
             editPanel.Controls.Add(control);
             this.Controls.Add(editPanel);
-
         }
 
         protected override void OnInit(EventArgs e)

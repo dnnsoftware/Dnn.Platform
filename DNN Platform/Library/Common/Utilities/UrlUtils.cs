@@ -134,7 +134,6 @@ namespace DotNetNuke.Common.Utilities
                             {
                                 // skip parameter
                                 // navigateURL adds portalid to querystring if tab is superTab
-
                             }
                             else
                             {
@@ -154,7 +153,6 @@ namespace DotNetNuke.Common.Utilities
             }
             // return the new querystring as a string array
             return returnValue.Split('&');
-
         }
 
         /// <summary>

@@ -157,5 +157,4 @@ namespace DotNetNuke.Tests.Web.InternalServices
             HostController.RegisterInstance(this._mockHostController.Object);
         }
     }
-
 }
