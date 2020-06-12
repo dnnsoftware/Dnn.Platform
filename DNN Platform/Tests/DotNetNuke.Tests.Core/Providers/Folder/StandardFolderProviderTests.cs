@@ -604,6 +604,36 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         #region GetFilesUrl
 
         [Test]
+        public void GetFileUrl_WhenCurrentPortalSettingsReturnsNull_DontThrow()
+        {
+            // arrange
+            var sfp = new Mock<StandardFolderProvider>
+            {
+                CallBase = true
+            };
+
+            sfp.Setup(x => x.GetPortalSettings(Constants.CONTENT_ValidPortalId))
+                .Returns(GetPortalSettingsMock());
+
+            _fileInfo.Setup(x => x.FileName)
+                .Returns(Constants.FOLDER_ValidFileName);
+
+            _fileInfo.Setup(x => x.PortalId)
+                .Returns(Constants.CONTENT_ValidPortalId);
+
+            _portalControllerMock.Setup(x => x.GetCurrentPortalSettings())
+                .Returns<PortalSettings>(null);
+
+            // act
+            string fileUrl = null;
+            TestDelegate action = () => fileUrl = sfp.Object.GetFileUrl(_fileInfo.Object);
+
+            // assert
+            Assert.DoesNotThrow(action);
+            Assert.IsNotNull(fileUrl);
+        }
+
+        [Test]
         [TestCase("(")]
         [TestCase(")")]
         [TestCase("")]        
