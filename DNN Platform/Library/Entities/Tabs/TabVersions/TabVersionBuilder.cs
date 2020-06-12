@@ -252,9 +252,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return CBO.GetCachedObject<IEnumerable<ModuleInfo>>(
                 new CacheItemArgs(
                 cacheKey,
-                                                                    DataCache.PublishedTabModuleCacheTimeOut,
-                                                                    DataCache.PublishedTabModuleCachePriority),
-                                                                    c => this.GetCurrentModulesInternal(tabId));
+                DataCache.PublishedTabModuleCacheTimeOut,
+                DataCache.PublishedTabModuleCachePriority),
+                c => this.GetCurrentModulesInternal(tabId));
         }
 
         public IEnumerable<ModuleInfo> GetVersionModules(int tabId, int version)

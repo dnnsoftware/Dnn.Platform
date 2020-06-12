@@ -133,7 +133,7 @@ namespace log4net.Util
                 entry.ActivateOptions();
             }
 
-             this.m_entries = sortValues;
+            this.m_entries = sortValues;
         }
 
         private Hashtable m_entriesMap = new Hashtable();

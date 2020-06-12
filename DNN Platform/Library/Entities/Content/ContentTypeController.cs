@@ -104,9 +104,9 @@ namespace DotNetNuke.Entities.Content
             return CBO.GetCachedObject<List<ContentType>>(
                 new CacheItemArgs(
                 DataCache.ContentTypesCacheKey,
-                                                                            DataCache.ContentTypesCacheTimeOut,
-                                                                            DataCache.ContentTypesCachePriority),
-                                                                c => CBO.FillQueryable<ContentType>(this._DataService.GetContentTypes()).ToList()).AsQueryable();
+                DataCache.ContentTypesCacheTimeOut,
+                DataCache.ContentTypesCachePriority),
+                c => CBO.FillQueryable<ContentType>(this._DataService.GetContentTypes()).ToList()).AsQueryable();
         }
 
         /// <summary>

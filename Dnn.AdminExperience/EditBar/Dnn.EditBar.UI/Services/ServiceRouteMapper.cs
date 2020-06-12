@@ -16,9 +16,9 @@ namespace Dnn.EditBar.UI.Services
         {
             routeManager.MapHttpRoute(
                 "editBar/Common",
-                                      "default",
-                                      "{controller}/{action}",
-                                      new[] { "Dnn.EditBar.UI.Services" });
+                "default",
+                "{controller}/{action}",
+                new[] { "Dnn.EditBar.UI.Services" });
         }
     }
 }

@@ -489,11 +489,11 @@ namespace Dnn.Modules.Console
 
                 returnValue += string.Format(
                     sb.ToString(),
-                                             tabUrl,
-                                             this.GetIconUrl(tab.IconFile, "IconFile"),
-                                             this.GetIconUrl(tab.IconFileLarge, "IconFileLarge"),
-                                             tab.LocalizedTabName,
-                                             tab.Description);
+                    tabUrl,
+                    this.GetIconUrl(tab.IconFile, "IconFile"),
+                    this.GetIconUrl(tab.IconFileLarge, "IconFileLarge"),
+                    tab.LocalizedTabName,
+                    tab.Description);
             }
             return returnValue;
         }
@@ -507,12 +507,12 @@ namespace Dnn.Modules.Console
             }
             return string.Format(
                 "allowIconSizeChange: {0}, allowDetailChange: {1}, selectedSize: '{2}', showDetails: '{3}', tabModuleID: {4}, showTooltip: {5}",
-                                 this.AllowSizeChange.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
-                                 this.AllowViewChange.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
-                                 this.DefaultSize,
-                                 this.DefaultView,
-                                 tmid,
-                                 this.ShowTooltip.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
+                this.AllowSizeChange.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
+                this.AllowViewChange.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
+                this.DefaultSize,
+                this.DefaultView,
+                tmid,
+                this.ShowTooltip.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
         }
 
     }

@@ -291,8 +291,8 @@ namespace DotNetNuke.Common.Utilities
                                 {
                                     objPropertyInfo.SetValue(
                                         hydratedObject,
-                                                             Enum.ToObject(propType, Convert.ToInt32(coloumnValue)),
-                                                             null);
+                                        Enum.ToObject(propType, Convert.ToInt32(coloumnValue)),
+                                        null);
                                 }
                                 else
                                 {
@@ -304,8 +304,8 @@ namespace DotNetNuke.Common.Utilities
                                 // guid is not a datatype common across all databases ( ie. Oracle )
                                 objPropertyInfo.SetValue(
                                     hydratedObject,
-                                                         Convert.ChangeType(new Guid(coloumnValue.ToString()), propType),
-                                                         null);
+                                    Convert.ChangeType(new Guid(coloumnValue.ToString()), propType),
+                                    null);
                             }
                             else if (propType == typeof(Version))
                             {
@@ -326,7 +326,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-         static object ChangeType(object obj, Type type)
+        static object ChangeType(object obj, Type type)
          {
              Type u = Nullable.GetUnderlyingType(type);
 
@@ -342,7 +342,7 @@ namespace DotNetNuke.Common.Utilities
              return Convert.ChangeType(obj, type);
          }
 
-         static object GetDefault(Type type)
+        static object GetDefault(Type type)
          {
              if (type.IsValueType)
              {

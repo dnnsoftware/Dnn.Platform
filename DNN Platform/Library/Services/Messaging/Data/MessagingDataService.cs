@@ -34,18 +34,18 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             return this.provider.ExecuteScalar<long>(
                 "Messaging_Save_Message",
-                                                      objMessaging.PortalID,
-                                                      objMessaging.FromUserID,
-                                                      objMessaging.ToUserID,
-                                                      objMessaging.ToRoleID,
-                                                      (int)objMessaging.Status,
-                                                      objMessaging.Subject,
-                                                      objMessaging.Body,
-                                                      objMessaging.MessageDate,
-                                                      objMessaging.Conversation,
-                                                      objMessaging.ReplyTo,
-                                                      objMessaging.AllowReply,
-                                                      objMessaging.SkipInbox);
+                objMessaging.PortalID,
+                objMessaging.FromUserID,
+                objMessaging.ToUserID,
+                objMessaging.ToRoleID,
+                (int)objMessaging.Status,
+                objMessaging.Subject,
+                objMessaging.Body,
+                objMessaging.MessageDate,
+                objMessaging.Conversation,
+                objMessaging.ReplyTo,
+                objMessaging.AllowReply,
+                objMessaging.SkipInbox);
         }
 
         public int GetNewMessageCount(int PortalID, int UserID)
@@ -67,16 +67,16 @@ namespace DotNetNuke.Services.Messaging.Data
         {
             this.provider.ExecuteNonQuery(
                 "Messaging_UpdateMessage",
-                                     message.MessageID,
-                                     message.ToUserID,
-                                     message.ToRoleID,
-                                     (int)message.Status,
-                                     message.Subject,
-                                     message.Body,
-                                     message.MessageDate,
-                                     message.ReplyTo,
-                                     message.AllowReply,
-                                     message.SkipInbox);
+                message.MessageID,
+                message.ToUserID,
+                message.ToRoleID,
+                (int)message.Status,
+                message.Subject,
+                message.Body,
+                message.MessageDate,
+                message.ReplyTo,
+                message.AllowReply,
+                message.SkipInbox);
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Linq;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.Reflections;
 using DotNetNuke.Instrumentation;
-﻿using DotNetNuke.Services.Installer.Packages;
+using DotNetNuke.Services.Installer.Packages;
 using System.Reflection;
 
 namespace DotNetNuke.Services.Connections

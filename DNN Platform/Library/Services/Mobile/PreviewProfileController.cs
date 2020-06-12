@@ -41,13 +41,13 @@ namespace DotNetNuke.Services.Mobile
 
             int id = DataProvider.Instance().SavePreviewProfile(
                 profile.Id,
-                                                        profile.PortalId,
-                                                        profile.Name,
-                                                        profile.Width,
-                                                        profile.Height,
-                                                        profile.UserAgent,
-                                                        profile.SortOrder,
-                                                        UserController.Instance.GetCurrentUserInfo().UserID);
+                profile.PortalId,
+                profile.Name,
+                profile.Width,
+                profile.Height,
+                profile.UserAgent,
+                profile.SortOrder,
+                UserController.Instance.GetCurrentUserInfo().UserID);
 
             profile.Id = id;
 

@@ -50,13 +50,13 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             this._dataProvider.Setup(d =>
                                 d.SavePreviewProfile(
                                     It.IsAny<int>(),
-                                It.IsAny<int>(),
-                                It.IsAny<string>(),
-                                It.IsAny<int>(),
-                                It.IsAny<int>(),
-                                It.IsAny<string>(),
-                                It.IsAny<int>(),
-                                It.IsAny<int>())).Returns<int, int, string, int, int, string, int, int>(
+                                    It.IsAny<int>(),
+                                    It.IsAny<string>(),
+                                    It.IsAny<int>(),
+                                    It.IsAny<int>(),
+                                    It.IsAny<string>(),
+                                    It.IsAny<int>(),
+                                    It.IsAny<int>())).Returns<int, int, string, int, int, string, int, int>(
                                                             (id, portalId, name, width, height, userAgent, sortOrder, userId) =>
                                                             {
                                                                 if (id == -1)

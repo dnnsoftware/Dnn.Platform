@@ -192,21 +192,21 @@ namespace DotNetNuke.Tests.Urls
             {
                 testUrl = AdvancedFriendlyUrlProvider.BaseFriendlyUrl(
                     tab,
-                                                                        baseUrl,
-                                                                        customPage,
-                                                                        httpAlias,
-                                                                        settings);
+                    baseUrl,
+                    customPage,
+                    httpAlias,
+                    settings);
             }
             else
             {
                 testUrl = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(
                     tab,
-                                                                        baseUrl,
-                                                                        customPage,
-                                                                        httpAlias,
-                                                                        true,
-                                                                        settings,
-                                                                        Guid.Empty);
+                    baseUrl,
+                    customPage,
+                    httpAlias,
+                    true,
+                    settings,
+                    Guid.Empty);
             }
 
             Assert.IsTrue(expectedResult.Equals(testUrl, StringComparison.InvariantCultureIgnoreCase));

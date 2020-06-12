@@ -27,7 +27,7 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             return CBO.GetCachedObject<List<ExportImportSetting>>(
                 new CacheItemArgs(CacheKey, CacheDuration, CacheItemPriority.Normal),
-                                                                c => CBO.FillQueryable<ExportImportSetting>(DataProvider.Instance().GetExportImportSettings()).ToList());
+                c => CBO.FillQueryable<ExportImportSetting>(DataProvider.Instance().GetExportImportSettings()).ToList());
         }
 
         public ExportImportSetting GetSetting(string settingName)

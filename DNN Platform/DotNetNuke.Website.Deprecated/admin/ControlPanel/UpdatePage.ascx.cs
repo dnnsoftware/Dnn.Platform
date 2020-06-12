@@ -225,7 +225,7 @@ namespace DotNetNuke.UI.ControlPanel
                         }
                         this.SkinLst.Items.Add(new RadComboBoxItem(
                             FormatSkinName(folder, Path.GetFileNameWithoutExtension(strFile)),
-                                                              "[L]" + SkinController.RootSkin + "/" + folder + "/" + Path.GetFileName(strFile)));
+                            "[L]" + SkinController.RootSkin + "/" + folder + "/" + Path.GetFileName(strFile)));
                     }
                 }
             }
@@ -262,7 +262,7 @@ namespace DotNetNuke.UI.ControlPanel
                             }
                             this.SkinLst.Items.Add(new RadComboBoxItem(
                                 FormatSkinName(folder, Path.GetFileNameWithoutExtension(strFile)),
-                                                                  "[G]" + SkinController.RootSkin + "/" + folder + "/" + Path.GetFileName(strFile)));
+                                "[G]" + SkinController.RootSkin + "/" + folder + "/" + Path.GetFileName(strFile)));
                         }
                     }
                 }

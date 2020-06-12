@@ -206,9 +206,9 @@ namespace DotNetNuke.Modules.Admin.Security
                     default:
                         formatTrial = string.Format(
                             Localization.GetString("TrialFee", this.LocalResourceFile),
-                                                     this.FormatPrice(price),
-                                                     period,
-                                                     Localization.GetString("Frequency_" + frequency, this.LocalResourceFile));
+                            this.FormatPrice(price),
+                            period,
+                            Localization.GetString("Frequency_" + frequency, this.LocalResourceFile));
                         break;
                 }
             }

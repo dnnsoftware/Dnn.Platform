@@ -105,11 +105,11 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                 {
                     string value = propertyAccess.GetProperty(
                         property.PropertyName,
-                                                             string.Empty,
-                                                             Thread.CurrentThread.CurrentUICulture,
-                                                             this._viewer,
-                                                             Scope.DefaultSettings,
-                                                             ref propertyNotFound);
+                        string.Empty,
+                        Thread.CurrentThread.CurrentUICulture,
+                        this._viewer,
+                        Scope.DefaultSettings,
+                        ref propertyNotFound);
 
                     properties[property.PropertyName] = string.IsNullOrEmpty(value) ? string.Empty : Common.Utilities.HtmlUtils.Clean(HttpUtility.HtmlDecode(value), false);
                 }

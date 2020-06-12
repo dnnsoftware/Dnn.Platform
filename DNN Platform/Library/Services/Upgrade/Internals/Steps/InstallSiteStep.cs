@@ -140,15 +140,15 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             // Create Portal
             var portalId = PortalController.Instance.CreatePortal(
                 portal.PortalName,
-                                                     userInfo,
-                                                     portal.Description,
-                                                     portal.Keywords,
-                                                     template,
-                                                     portal.HomeDirectory,
-                                                     portalAlias,
-                                                     serverPath,
-                                                     serverPath + childPath,
-                                                     portal.IsChild);
+                userInfo,
+                portal.Description,
+                portal.Keywords,
+                template,
+                portal.HomeDirectory,
+                portalAlias,
+                serverPath,
+                serverPath + childPath,
+                portal.IsChild);
 
             if (portalId > -1)
             {

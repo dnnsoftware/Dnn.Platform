@@ -251,17 +251,17 @@ namespace DotNetNuke.Services.EventQueue
                 {
                     intMessageID = DataProvider.Instance().AddEventMessage(
                         eventName,
-                                                                           (int)message.Priority,
-                                                                           message.ProcessorType,
-                                                                           message.ProcessorCommand,
-                                                                           message.Body,
-                                                                           message.Sender,
-                                                                           subscribers[indx],
-                                                                           message.AuthorizedRoles,
-                                                                           message.ExceptionMessage,
-                                                                           message.SentDate,
-                                                                           message.ExpirationDate,
-                                                                           message.SerializeAttributes());
+                        (int)message.Priority,
+                        message.ProcessorType,
+                        message.ProcessorCommand,
+                        message.Body,
+                        message.Sender,
+                        subscribers[indx],
+                        message.AuthorizedRoles,
+                        message.ExceptionMessage,
+                        message.SentDate,
+                        message.ExpirationDate,
+                        message.SerializeAttributes());
                 }
             }
             catch (Exception ex)

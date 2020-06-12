@@ -376,10 +376,10 @@ namespace DotNetNuke.UI.WebControls
 
             Brush b = new LinearGradientBrush(
                 rect,
-                                              Color.FromArgb(_Rand.Next(224), _Rand.Next(224), _Rand.Next(224)),
-                                              Color.FromArgb(_Rand.Next(224), _Rand.Next(224), _Rand.Next(224)),
-                                              Convert.ToSingle(_Rand.NextDouble()) * 360,
-                                              false);
+                Color.FromArgb(_Rand.Next(224), _Rand.Next(224), _Rand.Next(224)),
+                Color.FromArgb(_Rand.Next(224), _Rand.Next(224), _Rand.Next(224)),
+                Convert.ToSingle(_Rand.NextDouble()) * 360,
+                false);
             g.FillRectangle(b, rectF);
 
             if (_Rand.Next(2) == 1)

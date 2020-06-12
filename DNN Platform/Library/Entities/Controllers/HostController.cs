@@ -171,8 +171,8 @@ namespace DotNetNuke.Entities.Controllers
             return CBO.GetCachedObject<Dictionary<string, ConfigurationSetting>>(
                                             new CacheItemArgs(
                                                 DataCache.HostSettingsCacheKey,
-                                                    DataCache.HostSettingsCacheTimeOut,
-                                                    DataCache.HostSettingsCachePriority),
+                                                DataCache.HostSettingsCacheTimeOut,
+                                                DataCache.HostSettingsCachePriority),
                                             GetSettingsDictionaryCallBack,
                                             true);
         }
@@ -276,10 +276,10 @@ namespace DotNetNuke.Entities.Controllers
                         dbProvider.UpdateHostSetting(config.Key, config.Value, config.IsSecure, userId);
                         EventLogController.Instance.AddLog(
                             config.Key,
-                                           config.Value,
-                                           portalSettings,
-                                           userId,
-                                           EventLogController.EventLogType.HOST_SETTING_UPDATED);
+                            config.Value,
+                            portalSettings,
+                            userId,
+                            EventLogController.EventLogType.HOST_SETTING_UPDATED);
                     }
                 }
                 else
@@ -287,10 +287,10 @@ namespace DotNetNuke.Entities.Controllers
                     dbProvider.UpdateHostSetting(config.Key, config.Value, config.IsSecure, userId);
                     EventLogController.Instance.AddLog(
                         config.Key,
-                                       config.Value,
-                                       portalSettings,
-                                       userId,
-                                       EventLogController.EventLogType.HOST_SETTING_CREATED);
+                        config.Value,
+                        portalSettings,
+                        userId,
+                        EventLogController.EventLogType.HOST_SETTING_CREATED);
                 }
             }
             catch (Exception ex)

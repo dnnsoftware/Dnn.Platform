@@ -41,9 +41,9 @@ namespace DotNetNuke.Entities.Modules
             return CBO.GetCachedObject<Dictionary<int, ModuleControlInfo>>(
                 new CacheItemArgs(
                 DataCache.ModuleControlsCacheKey,
-                                                                                    DataCache.ModuleControlsCacheTimeOut,
-                                                                                    DataCache.ModuleControlsCachePriority),
-                                                                            GetModuleControlsCallBack);
+                DataCache.ModuleControlsCacheTimeOut,
+                DataCache.ModuleControlsCachePriority),
+                GetModuleControlsCallBack);
         }
 
         /// -----------------------------------------------------------------------------
@@ -139,33 +139,33 @@ namespace DotNetNuke.Entities.Modules
                 // Add new Module Definition
                 moduleControlID = dataProvider.AddModuleControl(
                     moduleControl.ModuleDefID,
-                                                                moduleControl.ControlKey,
-                                                                moduleControl.ControlTitle,
-                                                                moduleControl.ControlSrc,
-                                                                moduleControl.IconFile,
-                                                                Convert.ToInt32(moduleControl.ControlType),
-                                                                moduleControl.ViewOrder,
-                                                                moduleControl.HelpURL,
-                                                                moduleControl.SupportsPartialRendering,
-                                                                moduleControl.SupportsPopUps,
-                                                                UserController.Instance.GetCurrentUserInfo().UserID);
+                    moduleControl.ControlKey,
+                    moduleControl.ControlTitle,
+                    moduleControl.ControlSrc,
+                    moduleControl.IconFile,
+                    Convert.ToInt32(moduleControl.ControlType),
+                    moduleControl.ViewOrder,
+                    moduleControl.HelpURL,
+                    moduleControl.SupportsPartialRendering,
+                    moduleControl.SupportsPopUps,
+                    UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {
                 // Upgrade Module Control
                 dataProvider.UpdateModuleControl(
                     moduleControl.ModuleControlID,
-                                                 moduleControl.ModuleDefID,
-                                                 moduleControl.ControlKey,
-                                                 moduleControl.ControlTitle,
-                                                 moduleControl.ControlSrc,
-                                                 moduleControl.IconFile,
-                                                 Convert.ToInt32(moduleControl.ControlType),
-                                                 moduleControl.ViewOrder,
-                                                 moduleControl.HelpURL,
-                                                 moduleControl.SupportsPartialRendering,
-                                                 moduleControl.SupportsPopUps,
-                                                 UserController.Instance.GetCurrentUserInfo().UserID);
+                    moduleControl.ModuleDefID,
+                    moduleControl.ControlKey,
+                    moduleControl.ControlTitle,
+                    moduleControl.ControlSrc,
+                    moduleControl.IconFile,
+                    Convert.ToInt32(moduleControl.ControlType),
+                    moduleControl.ViewOrder,
+                    moduleControl.HelpURL,
+                    moduleControl.SupportsPartialRendering,
+                    moduleControl.SupportsPopUps,
+                    UserController.Instance.GetCurrentUserInfo().UserID);
             }
             if (clearCache)
             {

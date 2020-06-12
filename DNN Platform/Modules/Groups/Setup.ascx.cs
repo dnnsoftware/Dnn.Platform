@@ -253,20 +253,20 @@ namespace DotNetNuke.Modules.Groups
 
                         ModulePermissionInfo objModulePermission = this.AddModulePermission(
                             objModule,
-                                                                                       objSystemModulePermission,
-                                                                                       objTabPermission.RoleID,
-                                                                                       objTabPermission.UserID,
-                                                                                       objTabPermission.AllowAccess);
+                            objSystemModulePermission,
+                            objTabPermission.RoleID,
+                            objTabPermission.UserID,
+                            objTabPermission.AllowAccess);
 
                         // ensure that every EDIT permission which allows access also provides VIEW permission
                         if (objModulePermission.PermissionKey == "EDIT" & objModulePermission.AllowAccess)
                         {
                             ModulePermissionInfo objModuleViewperm = this.AddModulePermission(
                                 objModule,
-                                                                                         (PermissionInfo)arrSystemModuleViewPermissions[0],
-                                                                                         objModulePermission.RoleID,
-                                                                                         objModulePermission.UserID,
-                                                                                         true);
+                                (PermissionInfo)arrSystemModuleViewPermissions[0],
+                                objModulePermission.RoleID,
+                                objModulePermission.UserID,
+                                true);
                         }
                     }
                 }

@@ -449,22 +449,22 @@ namespace DotNetNuke.Entities.Users
             message.ToUserID = portalSettings.AdministratorId;
             message.Subject = Localization.GetSystemMessage(
                 user.Profile.PreferredLocale,
-                                                            portalSettings,
-                                                            "EMAIL_USER_UNREGISTER_SUBJECT",
-                                                            user,
-                                                            Localization.GlobalResourceFile,
-                                                            null,
-                                                            string.Empty,
-                                                            portalSettings.AdministratorId);
+                portalSettings,
+                "EMAIL_USER_UNREGISTER_SUBJECT",
+                user,
+                Localization.GlobalResourceFile,
+                null,
+                string.Empty,
+                portalSettings.AdministratorId);
             message.Body = Localization.GetSystemMessage(
                 user.Profile.PreferredLocale,
-                                                         portalSettings,
-                                                         "EMAIL_USER_UNREGISTER_BODY",
-                                                         user,
-                                                         Localization.GlobalResourceFile,
-                                                         null,
-                                                         string.Empty,
-                                                         portalSettings.AdministratorId);
+                portalSettings,
+                "EMAIL_USER_UNREGISTER_BODY",
+                user,
+                Localization.GlobalResourceFile,
+                null,
+                string.Empty,
+                portalSettings.AdministratorId);
             message.Status = MessageStatusType.Unread;
             Mail.SendEmail(portalSettings.Email, portalSettings.Email, message.Subject, message.Body);
         }

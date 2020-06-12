@@ -27,10 +27,10 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="urlPath"></param>
         private static void SplitUserIdFromFriendlyUrlPath(
             string urlPath,
-                                                                string parmName,
-                                                                string otherParametersPath,
-                                                                out string rawUserId,
-                                                                out string remainingPath)
+            string parmName,
+            string otherParametersPath,
+            out string rawUserId,
+            out string remainingPath)
         {
             // 688 : allow for other parts to be in the url by capturing more with the regex filters
             string regexPattern;
@@ -130,13 +130,13 @@ namespace DotNetNuke.Entities.Urls
         /// <returns></returns>
         internal static bool CheckParameterRegexReplacement(
             string parameterPath,
-                                                            TabInfo tab,
-                                                            FriendlyUrlSettings settings,
-                                                            int portalId,
-                                                            out string replacedPath,
-                                                            ref List<string> messages,
-                                                            out bool changeToSiteRoot,
-                                                            Guid parentTraceId)
+            TabInfo tab,
+            FriendlyUrlSettings settings,
+            int portalId,
+            out string replacedPath,
+            ref List<string> messages,
+            out bool changeToSiteRoot,
+            Guid parentTraceId)
         {
             bool replaced = false;
             replacedPath = string.Empty;
@@ -181,7 +181,7 @@ namespace DotNetNuke.Entities.Urls
                             // do a regex on the 'lookFor' in the parameter path
                             var parmRegex = RegexUtils.GetCachedRegex(
                                 parmReplace.LookFor,
-                                                      RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                                RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                             if (parmRegex.IsMatch(parameterPath))
                             {
                                 replacedPath = parmRegex.Replace(parameterPath, parmReplace.ReplaceWith);
@@ -209,15 +209,15 @@ namespace DotNetNuke.Entities.Urls
 
         internal static bool CheckUserProfileReplacement(
             string newPath,
-                                                            TabInfo tab,
-                                                            PortalSettings portalSettings,
-                                                            FriendlyUrlSettings settings,
-                                                            FriendlyUrlOptions options,
-                                                            out string changedPath,
-                                                            out bool changeToSiteRoot,
-                                                            out bool allowOtherParameters,
-                                                            ref List<string> meessages,
-                                                            Guid parentTraceId)
+            TabInfo tab,
+            PortalSettings portalSettings,
+            FriendlyUrlSettings settings,
+            FriendlyUrlOptions options,
+            out string changedPath,
+            out bool changeToSiteRoot,
+            out bool allowOtherParameters,
+            ref List<string> meessages,
+            Guid parentTraceId)
         {
             if (meessages == null)
             {
@@ -241,10 +241,10 @@ namespace DotNetNuke.Entities.Urls
                 // and return the userid and remaining parts as separate items
                 SplitUserIdFromFriendlyUrlPath(
                     newPath,
-                                                "UserId",
-                                                string.Empty,
-                                                out rawUserId,
-                                                out remainingPath);
+                    "UserId",
+                    string.Empty,
+                    out rawUserId,
+                    out remainingPath);
                 if (rawUserId != null)
                 {
                     meessages.Add("User Profile Url : RawUserId = " + rawUserId + " remainingPath = " + remainingPath);

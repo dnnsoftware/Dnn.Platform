@@ -169,11 +169,11 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                     var displayDataType = ProfilePropertyAccess.DisplayDataType(property).ToLowerInvariant();
                     string value = propertyAccess.GetProperty(
                         property.PropertyName,
-                                                              string.Empty,
-                                                              Thread.CurrentThread.CurrentUICulture,
-                                                              this.ModuleContext.PortalSettings.UserInfo,
-                                                              Scope.DefaultSettings,
-                                                              ref propertyNotFound);
+                        string.Empty,
+                        Thread.CurrentThread.CurrentUICulture,
+                        this.ModuleContext.PortalSettings.UserInfo,
+                        Scope.DefaultSettings,
+                        ref propertyNotFound);
 
 
                     var clientName = Localization.GetSafeJSString(property.PropertyName);

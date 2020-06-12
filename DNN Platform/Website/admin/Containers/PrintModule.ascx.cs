@@ -57,7 +57,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-    private void DisplayAction(ModuleAction action)
+        private void DisplayAction(ModuleAction action)
     {
         if (action.CommandName == ModuleActionType.PrintModule)
         {

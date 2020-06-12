@@ -266,7 +266,7 @@ namespace DotNetNuke.Web.UI
                     {
                         throw new DotNetNukeException(
                             "You do not have permissions to add or move pages to this location. You can only add or move pages as children of pages you can edit.",
-                                                      DotNetNukeErrorCode.PageEditorPermissionError);
+                            DotNetNukeErrorCode.PageEditorPermissionError);
                     }
                 }
 

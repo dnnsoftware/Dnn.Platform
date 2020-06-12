@@ -1754,12 +1754,12 @@ namespace DotNetNuke.Services.Upgrade
                 string message = UpdateConfig(upgradeFile, ApplicationVersion, "Remove System.Web.Extensions");
                 EventLogController.Instance.AddLog(
                     "UpgradeConfig",
-                                          string.IsNullOrEmpty(message)
+                    string.IsNullOrEmpty(message)
                                               ? "Remove System Web Extensions"
                                               : string.Format("Remove System Web Extensions failed. Error reported during attempt to update:{0}", message),
-                                          PortalController.Instance.GetCurrentPortalSettings(),
-                                          UserController.Instance.GetCurrentUserInfo().UserID,
-                                          EventLogController.EventLogType.HOST_ALERT);
+                    PortalController.Instance.GetCurrentPortalSettings(),
+                    UserController.Instance.GetCurrentUserInfo().UserID,
+                    EventLogController.EventLogType.HOST_ALERT);
             }
 
             // Add Styles Skin Object
@@ -2245,14 +2245,14 @@ namespace DotNetNuke.Services.Upgrade
             {
                 AddAdminPages(
                     "Lists",
-                                "Manage common lists",
-                                "~/Icons/Sigma/Lists_16X16_Standard.png",
-                                "~/Icons/Sigma/Lists_32X32_Standard.png",
-                                true,
-                                mDef.ModuleDefID,
-                                "Lists",
-                                "~/Icons/Sigma/Lists_16X16_Standard.png",
-                                true);
+                    "Manage common lists",
+                    "~/Icons/Sigma/Lists_16X16_Standard.png",
+                    "~/Icons/Sigma/Lists_32X32_Standard.png",
+                    true,
+                    mDef.ModuleDefID,
+                    "Lists",
+                    "~/Icons/Sigma/Lists_16X16_Standard.png",
+                    true);
             }
 
             // update DotNetNuke.Portals' friend name to 'Sites'.
@@ -2482,13 +2482,13 @@ namespace DotNetNuke.Services.Upgrade
                 AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/AdvancedSettings/AdvancedSettings.ascx", string.Empty, SecurityAccessLevel.Admin, 0);
                 AddAdminPages(
                     "Advanced Settings",
-                            string.Empty,
-                            "~/Icons/Sigma/AdvancedSettings_16X16_Standard.png",
-                            "~/Icons/Sigma/AdvancedSettings_32X32_Standard.png",
-                            true,
-                            moduleDefId,
-                            "Advanced Settings",
-                            "~/Icons/Sigma/AdvancedSettings_16X16_Standard.png");
+                    string.Empty,
+                    "~/Icons/Sigma/AdvancedSettings_16X16_Standard.png",
+                    "~/Icons/Sigma/AdvancedSettings_32X32_Standard.png",
+                    true,
+                    moduleDefId,
+                    "Advanced Settings",
+                    "~/Icons/Sigma/AdvancedSettings_16X16_Standard.png");
             }
 
             ConvertCoreNotificationTypeActionsFor700();
@@ -2768,7 +2768,7 @@ namespace DotNetNuke.Services.Upgrade
                         {
                             userName = portalSecurity.InputFilter(
                                 HttpUtility.HtmlDecode(userName),
-                                                                 PortalSecurity.FilterFlag.NoScripting |
+                                PortalSecurity.FilterFlag.NoScripting |
                                                                  PortalSecurity.FilterFlag.NoAngleBrackets |
                                                                  PortalSecurity.FilterFlag.NoMarkup);
 
@@ -3848,15 +3848,15 @@ namespace DotNetNuke.Services.Upgrade
                     // Create Portal
                     portalId = PortalController.Instance.CreatePortal(
                         portalName,
-                                                             userInfo,
-                                                             description,
-                                                             keyWords,
-                                                             template,
-                                                             homeDirectory,
-                                                             strPortalAlias,
-                                                             serverPath,
-                                                             serverPath + childPath,
-                                                             isChild);
+                        userInfo,
+                        description,
+                        keyWords,
+                        template,
+                        homeDirectory,
+                        strPortalAlias,
+                        serverPath,
+                        serverPath + childPath,
+                        isChild);
 
                     if (portalId > -1)
                     {
@@ -5134,12 +5134,12 @@ namespace DotNetNuke.Services.Upgrade
                         string strMessage = UpdateConfig(upgradeFile, ApplicationVersion, ".NET 4.0 Upgrade");
                         EventLogController.Instance.AddLog(
                             "UpgradeNet",
-                                                  string.IsNullOrEmpty(strMessage)
+                            string.IsNullOrEmpty(strMessage)
                                                       ? "Upgraded Site to .NET 4.0"
                                                       : string.Format("Upgrade to .NET 4.0 failed. Error reported during attempt to update:{0}", strMessage),
-                                                  PortalController.Instance.GetCurrentPortalSettings(),
-                                                  UserController.Instance.GetCurrentUserInfo().UserID,
-                                                  EventLogController.EventLogType.HOST_ALERT);
+                            PortalController.Instance.GetCurrentPortalSettings(),
+                            UserController.Instance.GetCurrentUserInfo().UserID,
+                            EventLogController.EventLogType.HOST_ALERT);
                     }
                     break;
             }
@@ -6112,8 +6112,8 @@ namespace DotNetNuke.Services.Upgrade
                     // Log Event to Event Log
                     EventLogController.Instance.AddLog(
                         "License Activation",
-                                       "License Activated during install for: " + licenseConfig.AccountEmail + " | invoice: " + licenseConfig.InvoiceNumber,
-                                       EventLogController.EventLogType.HOST_ALERT);
+                        "License Activated during install for: " + licenseConfig.AccountEmail + " | invoice: " + licenseConfig.InvoiceNumber,
+                        EventLogController.EventLogType.HOST_ALERT);
                 }
             }
 

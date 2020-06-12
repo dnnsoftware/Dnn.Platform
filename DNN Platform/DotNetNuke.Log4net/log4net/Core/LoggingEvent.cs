@@ -1406,7 +1406,7 @@ namespace log4net.Core
             compositeProperties.Add(eventProperties);
 
             compositeProperties.Add(GlobalContext.Properties.GetReadOnlyProperties());
-                        this.m_compositeProperties = compositeProperties;
+            this.m_compositeProperties = compositeProperties;
         }
 
         private void CacheProperties()

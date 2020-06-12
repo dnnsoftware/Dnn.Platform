@@ -27,10 +27,10 @@ namespace DotNetNuke.Entities.Portals
 
             EventLogController.Instance.AddLog(
                 "PortalAliasID",
-                               portalAliasId.ToString(),
-                               PortalController.Instance.GetCurrentPortalSettings(),
-                               UserController.Instance.GetCurrentUserInfo().UserID,
-                               EventLogController.EventLogType.PORTALALIAS_DELETED);
+                portalAliasId.ToString(),
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                EventLogController.EventLogType.PORTALALIAS_DELETED);
 
             DataCache.RemoveCache(DataCache.PortalAliasCacheKey);
         }

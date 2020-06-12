@@ -172,7 +172,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 var autoAssignRoles = RoleController.Instance.GetRoles(
                     portal.PortalID,
-                                                                               role =>
+                    role =>
                                                                                role.AutoAssignment &&
                                                                                role.Status == RoleStatus.Approved);
                 foreach (UserInfo user in masterUsers)
@@ -237,10 +237,10 @@ namespace DotNetNuke.Entities.Portals
             return CBO.GetCachedObject<IEnumerable<ModuleInfo>>(
                 new CacheItemArgs(
                 DataCache.SharedModulesWithPortalCacheKey,
-                                                                                DataCache.SharedModulesWithPortalCacheTimeOut,
-                                                                                DataCache.SharedModulesWithPortalCachePriority,
-                                                                                portal),
-            (p) => CBO.FillCollection<ModuleInfo>(this._dataService.GetSharedModulesWithPortal(portal)));
+                DataCache.SharedModulesWithPortalCacheTimeOut,
+                DataCache.SharedModulesWithPortalCachePriority,
+                portal),
+                (p) => CBO.FillCollection<ModuleInfo>(this._dataService.GetSharedModulesWithPortal(portal)));
         }
 
         private IEnumerable<ModuleInfo> GetSharedModulesByPortal(PortalInfo portal)
@@ -248,10 +248,10 @@ namespace DotNetNuke.Entities.Portals
             return CBO.GetCachedObject<IEnumerable<ModuleInfo>>(
                 new CacheItemArgs(
                 DataCache.SharedModulesByPortalCacheKey,
-                                                                                DataCache.SharedModulesByPortalCacheTimeOut,
-                                                                                DataCache.SharedModulesByPortalCachePriority,
-                                                                                portal),
-            (p) => CBO.FillCollection<ModuleInfo>(this._dataService.GetSharedModulesByPortal(portal)));
+                DataCache.SharedModulesByPortalCacheTimeOut,
+                DataCache.SharedModulesByPortalCachePriority,
+                portal),
+                (p) => CBO.FillCollection<ModuleInfo>(this._dataService.GetSharedModulesByPortal(portal)));
         }
 
         public int AddPortalGroup(PortalGroupInfo portalGroup)
@@ -301,9 +301,9 @@ namespace DotNetNuke.Entities.Portals
             return CBO.GetCachedObject<IEnumerable<PortalGroupInfo>>(
                 new CacheItemArgs(
                 DataCache.PortalGroupsCacheKey,
-                                                                                    DataCache.PortalGroupsCacheTimeOut,
-                                                                                    DataCache.PortalGroupsCachePriority),
-                                                                                this.GetPortalGroupsCallback);
+                DataCache.PortalGroupsCacheTimeOut,
+                DataCache.PortalGroupsCachePriority),
+                this.GetPortalGroupsCallback);
         }
 
         public IEnumerable<PortalInfo> GetPortalsByGroup(int portalGroupId)

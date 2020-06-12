@@ -352,9 +352,9 @@ namespace Dnn.EditBar.UI.Controllers
             const string scriptFormat = @"dnn.ContentEditorManager.init({{type: 'moduleManager', panes: '{0}', panesClientIds: '{2}', supportAjax: {1}}});";
             var script = string.Format(
                 scriptFormat,
-                                            panes,
-                                            this.SupportAjax ? "true" : "false",
-                                            panesClientIds);
+                panes,
+                this.SupportAjax ? "true" : "false",
+                panesClientIds);
 
             if (ScriptManager.GetCurrent(this.Page) != null)
             {

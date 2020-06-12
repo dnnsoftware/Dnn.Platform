@@ -216,9 +216,9 @@ namespace DotNetNuke.UI.ControlPanels
         {
             var previewUrl = string.Format(
                 "{0}/Default.aspx?ctl={1}&previewTab={2}&TabID={2}",
-                                        Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias),
-                                        "MobilePreview",
-                                        this.PortalSettings.ActiveTab.TabID);
+                Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias),
+                "MobilePreview",
+                this.PortalSettings.ActiveTab.TabID);
 
             if (this.PortalSettings.EnablePopUps)
             {
@@ -509,28 +509,28 @@ namespace DotNetNuke.UI.ControlPanels
                     if (!isHideBookmark)
                         return string.Format(
                             "<li data-tabname=\"{3}\"><a href=\"{0}\" {4}>{1}</a><a href=\"javascript:void(0)\" class=\"bookmark\" title=\"{2}\"><span></span></a></li>",
-                                             tab.FullUrl,
-                                             name,
-                                             ClientAPI.GetSafeJSString(this.GetString("Tool.AddToBookmarks.ToolTip")),
-                                             ClientAPI.GetSafeJSString(tab.TabName),
-                                             linkClass);
+                            tab.FullUrl,
+                            name,
+                            ClientAPI.GetSafeJSString(this.GetString("Tool.AddToBookmarks.ToolTip")),
+                            ClientAPI.GetSafeJSString(tab.TabName),
+                            linkClass);
                     else
                         return string.Format(
                             "<li data-tabname=\"{3}\"><a href=\"{0}\" {4}>{1}</a><a href=\"javascript:void(0)\" class=\"bookmark hideBookmark\" data-title=\"{2}\"><span></span></a></li>",
-                                            tab.FullUrl,
-                                            name,
-                                            ClientAPI.GetSafeJSString(this.GetString("Tool.AddToBookmarks.ToolTip")),
-                                            ClientAPI.GetSafeJSString(tab.TabName),
-                                            linkClass);
+                            tab.FullUrl,
+                            name,
+                            ClientAPI.GetSafeJSString(this.GetString("Tool.AddToBookmarks.ToolTip")),
+                            ClientAPI.GetSafeJSString(tab.TabName),
+                            linkClass);
                 }
 
                 return string.Format(
                     "<li data-tabname=\"{3}\"><a href=\"{0}\" {4}>{1}</a><a href=\"javascript:void(0)\" class=\"removeBookmark\" title=\"{2}\"><span></span></a></li>",
-                                        tab.FullUrl,
-                                        name,
-                                        ClientAPI.GetSafeJSString(this.GetString("Tool.RemoveFromBookmarks.ToolTip")),
-                                        ClientAPI.GetSafeJSString(tab.TabName),
-                                        linkClass);
+                    tab.FullUrl,
+                    name,
+                    ClientAPI.GetSafeJSString(this.GetString("Tool.RemoveFromBookmarks.ToolTip")),
+                    ClientAPI.GetSafeJSString(tab.TabName),
+                    linkClass);
             }
             return string.Empty;
         }
@@ -704,7 +704,7 @@ namespace DotNetNuke.UI.ControlPanels
                  return cultureListItems.Count() > 1;
              }
 
-            return false;
+             return false;
 
         }
 

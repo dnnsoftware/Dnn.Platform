@@ -137,16 +137,16 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             Assert.AreEqual(expected, propertyValue);
         }
 
-         [Test]
-         [TestCase("current", "", "D")]
-         [TestCase("now", "", "g")]
-         [TestCase("system", "", "g")]
-         [TestCase("utc", "", "g")]
-         [TestCase("current", "fr", "g")]
-         [TestCase("now", "de", "mmm yyyy")]
-         [TestCase("system", "en", "dd/mm/yy")]
-         [TestCase("utc", "it", "mmm dd, yyyy")]
-         public void DateTimePropertyAcccess_GetProperty_Returns_Correct_String_Given_Format_And_Culture(string propertyName, string cultureName, string format)
+        [Test]
+        [TestCase("current", "", "D")]
+        [TestCase("now", "", "g")]
+        [TestCase("system", "", "g")]
+        [TestCase("utc", "", "g")]
+        [TestCase("current", "fr", "g")]
+        [TestCase("now", "de", "mmm yyyy")]
+        [TestCase("system", "en", "dd/mm/yy")]
+        [TestCase("utc", "it", "mmm dd, yyyy")]
+        public void DateTimePropertyAcccess_GetProperty_Returns_Correct_String_Given_Format_And_Culture(string propertyName, string cultureName, string format)
          {
              // Arrange
              var dtPropertyAccess = new DateTimePropertyAccess();

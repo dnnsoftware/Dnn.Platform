@@ -133,26 +133,26 @@ namespace DotNetNuke.Modules.Admin.Users
                 var actions = new ModuleActionCollection();
                 actions.Add(
                     this.GetNextActionID(),
-                            Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
-                            ModuleActionType.AddContent,
-                            string.Empty,
-                            "add.gif",
-                            this.EditUrl("EditProfileProperty"),
-                            false,
-                            SecurityAccessLevel.Admin,
-                            true,
-                            false);
+                    Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
+                    ModuleActionType.AddContent,
+                    string.Empty,
+                    "add.gif",
+                    this.EditUrl("EditProfileProperty"),
+                    false,
+                    SecurityAccessLevel.Admin,
+                    true,
+                    false);
                 actions.Add(
                     this.GetNextActionID(),
-                            Localization.GetString("Cancel.Action", this.LocalResourceFile),
-                            ModuleActionType.AddContent,
-                            string.Empty,
-                            "lt.gif",
-                            this.ReturnUrl,
-                            false,
-                            SecurityAccessLevel.Admin,
-                            true,
-                            false);
+                    Localization.GetString("Cancel.Action", this.LocalResourceFile),
+                    ModuleActionType.AddContent,
+                    string.Empty,
+                    "lt.gif",
+                    this.ReturnUrl,
+                    false,
+                    SecurityAccessLevel.Admin,
+                    true,
+                    false);
                 return actions;
             }
         }

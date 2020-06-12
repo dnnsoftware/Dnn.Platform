@@ -29,9 +29,9 @@ namespace DotNetNuke.Web.Mvc
 
             moduleControl.LocalResourceFile = string.Format(
                 "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
-                               moduleConfiguration.DesktopModule.FolderName,
-                               Localization.LocalResourceDirectory,
-                               segments[0]);
+                moduleConfiguration.DesktopModule.FolderName,
+                Localization.LocalResourceDirectory,
+                segments[0]);
 
             return moduleControl;
 

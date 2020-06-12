@@ -363,12 +363,12 @@ namespace DotNetNuke.Security.Permissions.Controls
                     }
                     sb.Append(this.BuildKey(
                         objTabPermission.AllowAccess,
-                                       objTabPermission.PermissionID,
-                                       objTabPermission.TabPermissionID,
-                                       objTabPermission.RoleID,
-                                       objTabPermission.RoleName,
-                                       objTabPermission.UserID,
-                                       objTabPermission.DisplayName));
+                        objTabPermission.PermissionID,
+                        objTabPermission.TabPermissionID,
+                        objTabPermission.RoleID,
+                        objTabPermission.RoleName,
+                        objTabPermission.UserID,
+                        objTabPermission.DisplayName));
                 }
             }
             allStates[2] = sb.ToString();

@@ -1500,7 +1500,7 @@ namespace Dnn.ExportImport.Components.Services
 
             var allTabs = EntitiesController.Instance.GetPortalTabs(
                 portalId,
-                    this._exportDto.IncludeDeletions, this.IncludeSystem, toDate, fromDate) // ordered by TabID
+                this._exportDto.IncludeDeletions, this.IncludeSystem, toDate, fromDate) // ordered by TabID
                 .OrderBy(tab => tab.TabPath).ToArray();
 
             // Update the total items count in the check points. This should be updated only once.

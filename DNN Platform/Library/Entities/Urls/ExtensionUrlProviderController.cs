@@ -58,9 +58,9 @@ namespace DotNetNuke.Entities.Urls
         /// <returns></returns>
         private static List<ExtensionUrlProvider> GetProvidersToCall(
             int tabId,
-                                                                    int portalId,
-                                                                    FriendlyUrlSettings settings,
-                                                                    Guid parentTraceId)
+            int portalId,
+            FriendlyUrlSettings settings,
+            Guid parentTraceId)
         {
             List<ExtensionUrlProvider> providers;
 
@@ -72,10 +72,10 @@ namespace DotNetNuke.Entities.Urls
                 // get the list of providers to call based on the tab and the portal
                 var providersToCall = CacheController.GetProvidersForTabAndPortal(
                     tabId,
-                                                                                    portalId,
-                                                                                    settings,
-                                                                                    out definitelyNoProvider,
-                                                                                    parentTraceId);
+                    portalId,
+                    settings,
+                    out definitelyNoProvider,
+                    parentTraceId);
                 if (definitelyNoProvider == false && providersToCall == null)
                 // nothing in the cache, and we don't have a definitive 'no' that there isn't a provider
                 {
@@ -159,12 +159,12 @@ namespace DotNetNuke.Entities.Urls
 
         internal static bool CheckForRedirect(
             Uri requestUri,
-                                                UrlAction result,
-                                                NameValueCollection queryStringCol,
-                                                FriendlyUrlSettings settings,
-                                                out string location,
-                                                ref List<string> messages,
-                                                Guid parentTraceId)
+            UrlAction result,
+            NameValueCollection queryStringCol,
+            FriendlyUrlSettings settings,
+            out string location,
+            ref List<string> messages,
+            Guid parentTraceId)
         {
             bool redirected = false;
             location = string.Empty;
@@ -226,15 +226,15 @@ namespace DotNetNuke.Entities.Urls
 
         internal static bool GetUrlFromExtensionUrlProviders(
             int portalId,
-                                                                TabInfo tab,
-                                                                FriendlyUrlSettings settings,
-                                                                string friendlyUrlPath,
-                                                                string cultureCode,
-                                                                ref string endingPageName,
-                                                                out string changedPath,
-                                                                out bool changeToSiteRoot,
-                                                                ref List<string> messages,
-                                                                Guid parentTraceId)
+            TabInfo tab,
+            FriendlyUrlSettings settings,
+            string friendlyUrlPath,
+            string cultureCode,
+            ref string endingPageName,
+            out string changedPath,
+            out bool changeToSiteRoot,
+            ref List<string> messages,
+            Guid parentTraceId)
         {
             bool wasChanged = false;
             changedPath = friendlyUrlPath;
@@ -256,12 +256,12 @@ namespace DotNetNuke.Entities.Urls
                     // go through and call each provider to generate the friendly urls for the module
                     string customPath = provider.ChangeFriendlyUrl(
                         tab,
-                                                                friendlyUrlPath,
-                                                                options,
-                                                                cultureCode,
-                                                                ref endingPageName,
-                                                                out useDnnPagePath,
-                                                                ref messages);
+                        friendlyUrlPath,
+                        options,
+                        cultureCode,
+                        ref endingPageName,
+                        out useDnnPagePath,
+                        ref messages);
 
                     if (string.IsNullOrEmpty(endingPageName))
                     {
@@ -296,15 +296,15 @@ namespace DotNetNuke.Entities.Urls
 
         internal static bool TransformFriendlyUrlPath(
             string newUrl,
-                                                        string tabKeyVal,
-                                                        string[] urlParms,
-                                                        bool isSiteRootMatch,
-                                                        ref UrlAction result,
-                                                        FriendlyUrlSettings settings,
-                                                        out string rewrittenUrl,
-                                                        out bool newAction,
-                                                        ref List<string> messages,
-                                                        Guid parentTraceId)
+            string tabKeyVal,
+            string[] urlParms,
+            bool isSiteRootMatch,
+            ref UrlAction result,
+            FriendlyUrlSettings settings,
+            out string rewrittenUrl,
+            out bool newAction,
+            ref List<string> messages,
+            Guid parentTraceId)
         {
             bool rewriteDone = false;
             rewrittenUrl = newUrl;
@@ -319,9 +319,9 @@ namespace DotNetNuke.Entities.Urls
                 }
                 List<ExtensionUrlProvider> providersToCall = GetProvidersToCall(
                     tabId,
-                                                                                result.PortalId,
-                                                                                settings,
-                                                                                parentTraceId);
+                    result.PortalId,
+                    settings,
+                    parentTraceId);
                 if (providersToCall != null && providersToCall.Count > 0)
                 {
                     // now check for providers by calling the providers
@@ -345,14 +345,14 @@ namespace DotNetNuke.Entities.Urls
                         int status;
                         string queryString = provider.TransformFriendlyUrlToQueryString(
                             parms,
-                                                                                        result.TabId,
-                                                                                        result.PortalId,
-                                                                                        options,
-                                                                                        result.CultureCode,
-                                                                                        result.PortalAlias,
-                                                                                        ref messages,
-                                                                                        out status,
-                                                                                        out location);
+                            result.TabId,
+                            result.PortalId,
+                            options,
+                            result.CultureCode,
+                            result.PortalAlias,
+                            ref messages,
+                            out status,
+                            out location);
                         if (status == 0 || status == 200) // either not set, or set to '200 OK'.
                         {
                             if (!string.IsNullOrEmpty(queryString) && queryString != newUrl)
@@ -479,10 +479,10 @@ namespace DotNetNuke.Entities.Urls
             var moduleProviders = CBO.GetCachedObject<List<ExtensionUrlProvider>>(
                 new CacheItemArgs(
                 cacheKey,
-                                                                                60,
-                                                                                CacheItemPriority.High,
-                                                                                portalId),
-                                    c =>
+                60,
+                CacheItemPriority.High,
+                portalId),
+                c =>
                                     {
                                         var id = (int)c.Params[0];
                                         IDataReader dr = DataProvider.Instance().GetExtensionUrlProviders(id);
@@ -613,7 +613,7 @@ namespace DotNetNuke.Entities.Urls
                     var log = new LogInfo { LogTypeKey = "GENERAL_EXCEPTION" };
                     log.AddProperty(
                         "Url Rewriting Extension Url Provider Exception",
-                                         "Exception in Url Rewriting Process");
+                        "Exception in Url Rewriting Process");
                     log.AddProperty("Provider Name", moduleProviderName);
                     log.AddProperty("Provider Version", moduleProviderVersion);
                     log.AddProperty("Http Status", status);

@@ -505,12 +505,12 @@ namespace DotNetNuke.Security.Permissions.Controls
                     }
                     sb.Append(this.BuildKey(
                         modulePermission.AllowAccess,
-                                       modulePermission.PermissionID,
-                                       modulePermission.ModulePermissionID,
-                                       modulePermission.RoleID,
-                                       modulePermission.RoleName,
-                                       modulePermission.UserID,
-                                       modulePermission.DisplayName));
+                        modulePermission.PermissionID,
+                        modulePermission.ModulePermissionID,
+                        modulePermission.RoleID,
+                        modulePermission.RoleName,
+                        modulePermission.UserID,
+                        modulePermission.DisplayName));
                 }
             }
             allStates[4] = sb.ToString();

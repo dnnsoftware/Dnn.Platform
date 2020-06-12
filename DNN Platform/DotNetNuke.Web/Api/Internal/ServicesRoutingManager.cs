@@ -49,8 +49,8 @@ namespace DotNetNuke.Web.Api.Internal
             {
                 throw new ArgumentException(Localization.GetExceptionMessage(
                     "ArgumentCannotBeNullOrEmpty",
-                                                                             "The argument '{0}' cannot be null or empty.",
-                                                                             "namespaces"));
+                    "The argument '{0}' cannot be null or empty.",
+                    "namespaces"));
             }
 
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);

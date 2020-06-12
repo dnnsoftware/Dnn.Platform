@@ -159,7 +159,7 @@ namespace DotNetNuke.Entities.Urls
             bool hasDupes;
             Dictionary<string, string> tokensAndValues = GetRedirectTokensAndValuesFromRewritePath(
                 existingRewritePath,
-                                                                                                   out hasDupes);
+                out hasDupes);
             // can't overwrite existing tokens in certain cases
             if (tokensAndValues.Count > 0)
             {
@@ -221,12 +221,12 @@ namespace DotNetNuke.Entities.Urls
         /// was stored in the tab dictionary entry just to indicate a redirect reason.</returns>
         internal static void DetermineRedirectReasonAndAction(
             string rewrittenUrl,
-                                                                UrlAction result,
-                                                                bool wasParms,
-                                                                FriendlyUrlSettings settings,
-                                                                out string newUrl,
-                                                                out RedirectReason reason,
-                                                                out ActionType action)
+            UrlAction result,
+            bool wasParms,
+            FriendlyUrlSettings settings,
+            out string newUrl,
+            out RedirectReason reason,
+            out ActionType action)
         {
             // init parms
             newUrl = rewrittenUrl;

@@ -96,10 +96,10 @@ namespace DotNetNuke.Entities.Modules
                 // Add new Skin Control
                 skinControlID = dataProvider.AddSkinControl(
                     skinControl.PackageID,
-                                                            skinControl.ControlKey,
-                                                            skinControl.ControlSrc,
-                                                            skinControl.SupportsPartialRendering,
-                                                            UserController.Instance.GetCurrentUserInfo().UserID);
+                    skinControl.ControlKey,
+                    skinControl.ControlSrc,
+                    skinControl.SupportsPartialRendering,
+                    UserController.Instance.GetCurrentUserInfo().UserID);
                 EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_CREATED);
             }
             else
@@ -107,11 +107,11 @@ namespace DotNetNuke.Entities.Modules
                 // Upgrade Skin Control
                 dataProvider.UpdateSkinControl(
                     skinControl.SkinControlID,
-                                               skinControl.PackageID,
-                                               skinControl.ControlKey,
-                                               skinControl.ControlSrc,
-                                               skinControl.SupportsPartialRendering,
-                                               UserController.Instance.GetCurrentUserInfo().UserID);
+                    skinControl.PackageID,
+                    skinControl.ControlKey,
+                    skinControl.ControlSrc,
+                    skinControl.SupportsPartialRendering,
+                    UserController.Instance.GetCurrentUserInfo().UserID);
                 EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_UPDATED);
             }
             return skinControlID;

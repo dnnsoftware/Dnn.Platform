@@ -406,8 +406,8 @@ namespace DotNetNuke.UI.Skins
                 return false;
             }
 
-            object controller = Framework.Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, string.Empty);
-            return controller is IVersionable;
+             object controller = Framework.Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, string.Empty);
+             return controller is IVersionable;
         }
 
 

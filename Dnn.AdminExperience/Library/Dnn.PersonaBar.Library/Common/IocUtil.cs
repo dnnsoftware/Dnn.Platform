@@ -100,7 +100,7 @@ namespace Dnn.PersonaBar.Library.Common
             {
                 Logger.WarnFormat(
                     "No instance of type '{0}' and name '{1}' is registered in the IOC container.",
-                                  typeof(TContract).FullName, name ?? "<empty>");
+                    typeof(TContract).FullName, name ?? "<empty>");
             }
 
             return instance;

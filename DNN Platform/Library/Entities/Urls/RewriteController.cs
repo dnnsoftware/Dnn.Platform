@@ -253,15 +253,15 @@ namespace DotNetNuke.Entities.Urls
                                     // go check for a specific culture home page (5.5 and later)
                                     tabId = TabPathHelper.GetHomePageTabIdForCulture(
                                         portal.DefaultLanguage,
-                                                                                         portal.PortalID,
-                                                                                         culture,
-                                                                                         tabId);
+                                        portal.PortalID,
+                                        culture,
+                                        tabId);
                                 }
                             }
                             // see if there is a skin for the alias/culture combination
                             string skin = TabPathHelper.GetTabAliasSkinForTabAndAlias(
                                 portalAlias.PortalID,
-                                                                                      portalAlias.HTTPAlias, culture);
+                                portalAlias.HTTPAlias, culture);
                             if (string.IsNullOrEmpty(skin) == false)
                             {
                                 newUrl = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tabId, string.Empty, "skinSrc=" + skin);
@@ -330,7 +330,7 @@ namespace DotNetNuke.Entities.Urls
             string cacheKey = string.Format(CacheController.VanityUrlLookupKey, portalId);
             var vanityUrlLookupDictionary = CBO.GetCachedObject<Dictionary<string, UserInfo>>(
                 new CacheItemArgs(cacheKey, 20, CacheItemPriority.High, portalId),
-                                                                        c => new Dictionary<string, UserInfo>());
+                c => new Dictionary<string, UserInfo>());
 
             if (!vanityUrlLookupDictionary.ContainsKey(vanityUrl))
             {
@@ -502,28 +502,28 @@ namespace DotNetNuke.Entities.Urls
 
         private static string RewriteParametersFromModuleProvider(
             string newUrl,
-                                                                    string tabKeyVal,
-                                                                    string[] urlParms,
-                                                                    bool isSiteRootMatch,
-                                                                    UrlAction result,
-                                                                    FriendlyUrlSettings settings,
-                                                                    out bool rewriteParms,
-                                                                    out bool newAction,
-                                                                    ref List<string> messages,
-                                                                    Guid parentTraceId)
+            string tabKeyVal,
+            string[] urlParms,
+            bool isSiteRootMatch,
+            UrlAction result,
+            FriendlyUrlSettings settings,
+            out bool rewriteParms,
+            out bool newAction,
+            ref List<string> messages,
+            Guid parentTraceId)
         {
             string rewrittenUrl;
             rewriteParms = ExtensionUrlProviderController.TransformFriendlyUrlPath(
                 newUrl,
-                                                                                    tabKeyVal,
-                                                                                    urlParms,
-                                                                                    isSiteRootMatch,
-                                                                                    ref result,
-                                                                                    settings,
-                                                                                    out rewrittenUrl,
-                                                                                    out newAction,
-                                                                                    ref messages,
-                                                                                    parentTraceId);
+                tabKeyVal,
+                urlParms,
+                isSiteRootMatch,
+                ref result,
+                settings,
+                out rewrittenUrl,
+                out newAction,
+                ref messages,
+                parentTraceId);
             if (rewriteParms)
             {
                 result.CustomParmRewrite = true;
@@ -774,14 +774,14 @@ namespace DotNetNuke.Entities.Urls
 
             var tabDict = TabIndexController.FetchTabDictionary(
                 result.PortalId,
-                                                                        out minTabPathDepth,
-                                                                        out maxTabPathDepth,
-                                                                        out minAliasPathDepth,
-                                                                        out maxAliasPathDepth,
-                                                                        settings,
-                                                                        false,
-                                                                        result.BypassCachedDictionary,
-                                                                        parentTraceId);
+                out minTabPathDepth,
+                out maxTabPathDepth,
+                out minAliasPathDepth,
+                out maxAliasPathDepth,
+                settings,
+                false,
+                result.BypassCachedDictionary,
+                parentTraceId);
 
             // clean up and prepare the url for scanning
             if (url.EndsWith("/"))
@@ -916,12 +916,12 @@ namespace DotNetNuke.Entities.Urls
                                         string resultingUrl;
                                         RedirectTokens.DetermineRedirectReasonAndAction(
                                             newUrl,
-                                                                                        result,
-                                                                                        true,
-                                                                                        settings,
-                                                                                        out resultingUrl,
-                                                                                        out reason,
-                                                                                        out action);
+                                            result,
+                                            true,
+                                            settings,
+                                            out resultingUrl,
+                                            out reason,
+                                            out action);
                                         newUrl = resultingUrl;
                                         result.Action = action;
                                         result.Reason = reason;
@@ -946,15 +946,15 @@ namespace DotNetNuke.Entities.Urls
                                             List<string> messages = result.DebugMessages;
                                             newUrl = RewriteParametersFromModuleProvider(
                                                 newUrl,
-                                                                                        tabKeyVal,
-                                                                                        urlParms,
-                                                                                        isSiteRootMatch,
-                                                                                        result,
-                                                                                        settings,
-                                                                                        out rewriteParms,
-                                                                                        out newAction,
-                                                                                        ref messages,
-                                                                                        parentTraceId);
+                                                tabKeyVal,
+                                                urlParms,
+                                                isSiteRootMatch,
+                                                result,
+                                                settings,
+                                                out rewriteParms,
+                                                out newAction,
+                                                ref messages,
+                                                parentTraceId);
                                             result.DebugMessages = messages;
                                             if (newAction)
                                             {
@@ -966,12 +966,12 @@ namespace DotNetNuke.Entities.Urls
                                         {
                                             newUrl = RewriteParameters(
                                                 newUrl,
-                                                                        tabKeyVal,
-                                                                        urlParms,
-                                                                        isSiteRootMatch,
-                                                                        result,
-                                                                        out rewriteParms,
-                                                                        parentTraceId);
+                                                tabKeyVal,
+                                                urlParms,
+                                                isSiteRootMatch,
+                                                result,
+                                                out rewriteParms,
+                                                parentTraceId);
                                         }
                                         if (rewriteParms && isSiteRootMatch)
                                         {
@@ -987,12 +987,12 @@ namespace DotNetNuke.Entities.Urls
                                             string cultureCode;
                                             newUrl = RewriteParameters(
                                                 newUrl,
-                                                                        tabKeyVal,
-                                                                        urlParms,
-                                                                        result,
-                                                                        langParms,
-                                                                        settings,
-                                                                        out cultureCode);
+                                                tabKeyVal,
+                                                urlParms,
+                                                result,
+                                                langParms,
+                                                settings,
+                                                out cultureCode);
                                             if (cultureCode != null) // set culture code if not already set
                                             {
                                                 result.CultureCode = cultureCode;
@@ -1064,9 +1064,9 @@ namespace DotNetNuke.Entities.Urls
 
                                         if (settings.EnableCustomProviders && ExtensionUrlProviderController.CheckForAlwaysCallProviders(
                                             result.PortalId,
-                                                                                                       result.TabId,
-                                                                                                       settings,
-                                                                                                       parentTraceId))
+                                            result.TabId,
+                                            settings,
+                                            parentTraceId))
                                         {
                                             bool newAction;
                                             // newAction tracks whether or not a new 'action' (ie 301, 404, etc) has been requested.
@@ -1081,15 +1081,15 @@ namespace DotNetNuke.Entities.Urls
                                             List<string> messages = result.DebugMessages;
                                             newUrl = RewriteParametersFromModuleProvider(
                                                 newUrl,
-                                                                                        tabKeyVal,
-                                                                                        urlParms,
-                                                                                        isSiteRootMatch,
-                                                                                        result,
-                                                                                        settings,
-                                                                                        out rewriteParms,
-                                                                                        out newAction,
-                                                                                        ref messages,
-                                                                                        parentTraceId);
+                                                tabKeyVal,
+                                                urlParms,
+                                                isSiteRootMatch,
+                                                result,
+                                                settings,
+                                                out rewriteParms,
+                                                out newAction,
+                                                ref messages,
+                                                parentTraceId);
                                             result.DebugMessages = messages;
                                         }
 
@@ -1202,14 +1202,14 @@ namespace DotNetNuke.Entities.Urls
         /// <returns>true if a physical path, false if not</returns>
         internal static void IdentifyByPhysicalResource(
             string physicalPath,
-                                                        string fullUrl,
-                                                        NameValueCollection queryStringCol,
-                                                        ref UrlAction result,
-                                                        bool useFriendlyUrls,
-                                                        FriendlyUrlSettings settings,
-                                                        out bool isPhysicalResource,
-                                                        out bool checkFurtherForRewrite,
-                                                        Guid parentTraceId)
+            string fullUrl,
+            NameValueCollection queryStringCol,
+            ref UrlAction result,
+            bool useFriendlyUrls,
+            FriendlyUrlSettings settings,
+            out bool isPhysicalResource,
+            out bool checkFurtherForRewrite,
+            Guid parentTraceId)
         {
             isPhysicalResource = false;
             checkFurtherForRewrite = true;
@@ -1277,11 +1277,11 @@ namespace DotNetNuke.Entities.Urls
 
         internal static bool IdentifyByRegEx(
             string absoluteUri,
-                                                string queryString,
-                                                string applicationPath,
-                                                ref UrlAction result,
-                                                FriendlyUrlSettings settings,
-                                                Guid parentTraceId)
+            string queryString,
+            string applicationPath,
+            ref UrlAction result,
+            FriendlyUrlSettings settings,
+            Guid parentTraceId)
         {
             var doRewrite = false;
 
@@ -1369,11 +1369,11 @@ namespace DotNetNuke.Entities.Urls
 
         internal static bool IdentifyByTabPathEx(
             string absoluteUri,
-                                                    string queryString,
-                                                    UrlAction result,
-                                                    NameValueCollection queryStringCol,
-                                                    FriendlyUrlSettings settings,
-                                                    Guid parentTraceId)
+            string queryString,
+            UrlAction result,
+            NameValueCollection queryStringCol,
+            FriendlyUrlSettings settings,
+            Guid parentTraceId)
         {
             string scheme = result.Scheme;
             if (absoluteUri.StartsWith(scheme, StringComparison.InvariantCultureIgnoreCase))
@@ -1518,12 +1518,12 @@ namespace DotNetNuke.Entities.Urls
         /// <returns></returns>
         internal static string RewriteParameters(
             string newUrl,
-                                                    string tabKeyVal,
-                                                    string[] urlParms,
-                                                    UrlAction result,
-                                                    string langParms,
-                                                    FriendlyUrlSettings settings,
-                                                    out string cultureCode)
+            string tabKeyVal,
+            string[] urlParms,
+            UrlAction result,
+            string langParms,
+            FriendlyUrlSettings settings,
+            out string cultureCode)
         {
             cultureCode = null; // culture code is assigned from the langParms value, if it exists
             if (urlParms != null)
@@ -1708,12 +1708,12 @@ namespace DotNetNuke.Entities.Urls
         /// <returns>The new Url with the parameters rewritten onto the end of hte old Url</returns>
         internal static string RewriteParameters(
             string newUrl,
-                                                        string tabKeyVal,
-                                                        string[] urlParms,
-                                                        bool isSiteRoot,
-                                                        UrlAction urlAction,
-                                                        out bool rewriteParms,
-                                                        Guid parentTraceId)
+            string tabKeyVal,
+            string[] urlParms,
+            bool isSiteRoot,
+            UrlAction urlAction,
+            out bool rewriteParms,
+            Guid parentTraceId)
         {
             string result = newUrl;
             rewriteParms = false;
@@ -1721,7 +1721,7 @@ namespace DotNetNuke.Entities.Urls
             var messages = new List<string>();
             Dictionary<int, SharedList<ParameterRewriteAction>> rewriteActions = CacheController.GetParameterRewrites(
                 urlAction.PortalId,
-                                                                                            ref messages, parentTraceId);
+                ref messages, parentTraceId);
             if (messages == null)
             {
                 messages = new List<string>();

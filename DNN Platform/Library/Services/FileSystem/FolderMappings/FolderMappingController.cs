@@ -38,9 +38,9 @@ namespace DotNetNuke.Services.FileSystem
         {
             objFolderMapping.FolderMappingID = dataProvider.AddFolderMapping(
                 objFolderMapping.PortalID,
-                                                                             objFolderMapping.MappingName,
-                                                                             objFolderMapping.FolderProviderType,
-                                                                             UserController.Instance.GetCurrentUserInfo().UserID);
+                objFolderMapping.MappingName,
+                objFolderMapping.FolderProviderType,
+                UserController.Instance.GetCurrentUserInfo().UserID);
 
             UpdateFolderMappingSettings(objFolderMapping);
 
@@ -104,9 +104,9 @@ namespace DotNetNuke.Services.FileSystem
         {
             dataProvider.UpdateFolderMapping(
                 objFolderMapping.FolderMappingID,
-                                             objFolderMapping.MappingName,
-                                             objFolderMapping.Priority,
-                                             UserController.Instance.GetCurrentUserInfo().UserID);
+                objFolderMapping.MappingName,
+                objFolderMapping.Priority,
+                UserController.Instance.GetCurrentUserInfo().UserID);
 
             ClearFolderMappingCache(objFolderMapping.PortalID);
             UpdateFolderMappingSettings(objFolderMapping);
@@ -133,9 +133,9 @@ namespace DotNetNuke.Services.FileSystem
             return CBO.GetCachedObject<List<FolderMappingInfo>>(
                 new CacheItemArgs(
                 cacheKey,
-                                                                    DataCache.FolderMappingCacheTimeOut,
-                                                                    DataCache.FolderMappingCachePriority),
-                                                                (c) => CBO.FillCollection<FolderMappingInfo>(dataProvider.GetFolderMappings(portalId)));
+                DataCache.FolderMappingCacheTimeOut,
+                DataCache.FolderMappingCachePriority),
+                (c) => CBO.FillCollection<FolderMappingInfo>(dataProvider.GetFolderMappings(portalId)));
         }
 
         public void AddDefaultFolderTypes(int portalID)

@@ -286,7 +286,7 @@ namespace DotNetNuke.Tests.Data
             // Assert
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
-                                                      Constants.PETAPOCO_DogTableName);
+                Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount + 1, actualCount);
         }
 
@@ -312,7 +312,7 @@ namespace DotNetNuke.Tests.Data
             // Assert
             int newId = DataUtil.GetLastAddedRecordID(
                 Constants.PETAPOCO_DatabaseName,
-                                                      Constants.PETAPOCO_DogTableName, Constants.TABLENAME_Key);
+                Constants.PETAPOCO_DogTableName, Constants.TABLENAME_Key);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount + 1, newId);
         }
 
@@ -398,7 +398,7 @@ namespace DotNetNuke.Tests.Data
             // Assert
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
-                                                      Constants.PETAPOCO_DogTableName);
+                Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount - 1, actualCount);
         }
 
@@ -487,7 +487,7 @@ namespace DotNetNuke.Tests.Data
             // Assert
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
-                                                      Constants.PETAPOCO_DogTableName);
+                Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount, actualCount);
         }
 
@@ -520,7 +520,7 @@ namespace DotNetNuke.Tests.Data
             // Assert
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
-                                                      Constants.PETAPOCO_DogTableName);
+                Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount, actualCount);
         }
 
@@ -541,7 +541,7 @@ namespace DotNetNuke.Tests.Data
             // Assert
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
-                                                      Constants.PETAPOCO_DogTableName);
+                Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount - 1, actualCount);
         }
 
@@ -584,7 +584,7 @@ namespace DotNetNuke.Tests.Data
             // Assert
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
-                                                      Constants.PETAPOCO_DogTableName);
+                Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount, actualCount);
         }
 
@@ -716,7 +716,7 @@ namespace DotNetNuke.Tests.Data
             // Assert
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
-                                                      Constants.PETAPOCO_DogTableName);
+                Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount, actualCount);
         }
 
@@ -806,7 +806,7 @@ namespace DotNetNuke.Tests.Data
             // Assert
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
-                                                      Constants.PETAPOCO_DogTableName);
+                Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount, actualCount);
         }
 

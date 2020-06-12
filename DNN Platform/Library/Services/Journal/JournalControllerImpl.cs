@@ -349,21 +349,21 @@ namespace DotNetNuke.Services.Journal
 
             journalItem.JournalId = this._dataService.Journal_Save(
                 journalItem.PortalId,
-                                                     journalItem.UserId,
-                                                     journalItem.ProfileId,
-                                                     journalItem.SocialGroupId,
-                                                     journalItem.JournalId,
-                                                     journalItem.JournalTypeId,
-                                                     journalItem.Title,
-                                                     journalItem.Summary,
-                                                     journalItem.Body,
-                                                     journalData,
-                                                     xml,
-                                                     journalItem.ObjectKey,
-                                                     journalItem.AccessKey,
-                                                     journalItem.SecuritySet,
-                                                     journalItem.CommentsDisabled,
-                                                     journalItem.CommentsHidden);
+                journalItem.UserId,
+                journalItem.ProfileId,
+                journalItem.SocialGroupId,
+                journalItem.JournalId,
+                journalItem.JournalTypeId,
+                journalItem.Title,
+                journalItem.Summary,
+                journalItem.Body,
+                journalData,
+                xml,
+                journalItem.ObjectKey,
+                journalItem.AccessKey,
+                journalItem.SecuritySet,
+                journalItem.CommentsDisabled,
+                journalItem.CommentsHidden);
 
             var updatedJournalItem = this.GetJournalItem(journalItem.PortalId, journalItem.UserId, journalItem.JournalId);
             journalItem.DateCreated = updatedJournalItem.DateCreated;
@@ -466,21 +466,21 @@ namespace DotNetNuke.Services.Journal
 
             journalItem.JournalId = this._dataService.Journal_Update(
                 journalItem.PortalId,
-                                                     journalItem.UserId,
-                                                     journalItem.ProfileId,
-                                                     journalItem.SocialGroupId,
-                                                     journalItem.JournalId,
-                                                     journalItem.JournalTypeId,
-                                                     journalItem.Title,
-                                                     journalItem.Summary,
-                                                     journalItem.Body,
-                                                     journalData,
-                                                     xml,
-                                                     journalItem.ObjectKey,
-                                                     journalItem.AccessKey,
-                                                     journalItem.SecuritySet,
-                                                     journalItem.CommentsDisabled,
-                                                     journalItem.CommentsHidden);
+                journalItem.UserId,
+                journalItem.ProfileId,
+                journalItem.SocialGroupId,
+                journalItem.JournalId,
+                journalItem.JournalTypeId,
+                journalItem.Title,
+                journalItem.Summary,
+                journalItem.Body,
+                journalData,
+                xml,
+                journalItem.ObjectKey,
+                journalItem.AccessKey,
+                journalItem.SecuritySet,
+                journalItem.CommentsDisabled,
+                journalItem.CommentsHidden);
 
             var updatedJournalItem = this.GetJournalItem(journalItem.PortalId, journalItem.UserId, journalItem.JournalId);
             journalItem.DateCreated = updatedJournalItem.DateCreated;
@@ -731,9 +731,9 @@ namespace DotNetNuke.Services.Journal
             return CBO.GetCachedObject<IEnumerable<JournalTypeInfo>>(
                                             new CacheItemArgs(
                                                 string.Format(DataCache.JournalTypesCacheKey, portalId),
-                                                                DataCache.JournalTypesTimeOut,
-                                                                DataCache.JournalTypesCachePriority,
-                                                                portalId),
+                                                DataCache.JournalTypesTimeOut,
+                                                DataCache.JournalTypesCachePriority,
+                                                portalId),
                                             c => CBO.FillCollection<JournalTypeInfo>(this._dataService.Journal_Types_List(portalId)));
         }
 

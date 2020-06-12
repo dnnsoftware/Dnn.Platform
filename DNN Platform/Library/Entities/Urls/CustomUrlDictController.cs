@@ -34,9 +34,9 @@ namespace DotNetNuke.Entities.Urls
         /// <returns></returns>
         private static SharedDictionary<int, SharedDictionary<string, string>> BuildUrlDictionary(
             SharedDictionary<int, SharedDictionary<string, string>> existingTabs,
-                                                    int portalId,
-                                                    FriendlyUrlSettings settings,
-                                                    ref SharedDictionary<string, string> customAliasTabs)
+            int portalId,
+            FriendlyUrlSettings settings,
+            ref SharedDictionary<string, string> customAliasTabs)
         {
             // fetch tabs with redirects
             var tabs = FriendlyUrlController.GetTabs(portalId, false, null, settings);
@@ -151,11 +151,11 @@ namespace DotNetNuke.Entities.Urls
         /// <returns></returns>
         internal static SharedDictionary<int, SharedDictionary<string, string>> FetchCustomUrlDictionary(
             int portalId,
-                                    bool forceRebuild,
-                                    bool bypassCache,
-                                    FriendlyUrlSettings settings,
-                                    out SharedDictionary<string, string> customAliasForTabs,
-                                    Guid parentTraceId)
+            bool forceRebuild,
+            bool bypassCache,
+            FriendlyUrlSettings settings,
+            out SharedDictionary<string, string> customAliasForTabs,
+            Guid parentTraceId)
         {
             SharedDictionary<int, SharedDictionary<string, string>> urlDict;
             // this contains a list of all tabs for all the portals that have been retrieved
@@ -183,9 +183,9 @@ namespace DotNetNuke.Entities.Urls
 
                     cc.StoreFriendlyUrlIndexInCache(
                         urlDict,
-                                                urlPortals,
-                                                customAliasForTabs, settings,
-                                                "Portal Id " + portalId.ToString() + " added to index.");
+                        urlPortals,
+                        customAliasForTabs, settings,
+                        "Portal Id " + portalId.ToString() + " added to index.");
                 }
             }
             else // either values are null (Not in cache) or we want to force the rebuild, or we want to bypass the cache

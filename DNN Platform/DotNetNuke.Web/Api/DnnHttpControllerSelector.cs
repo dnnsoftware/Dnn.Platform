@@ -32,7 +32,7 @@ namespace DotNetNuke.Web.Api
             this._configuration = configuration;
             this._descriptorCache = new Lazy<ConcurrentDictionary<string, HttpControllerDescriptor>>(
                 this.InitTypeCache,
-                                                                                                isThreadSafe: true);
+                isThreadSafe: true);
         }
 
         private ConcurrentDictionary<string, HttpControllerDescriptor> DescriptorCache
@@ -50,7 +50,7 @@ namespace DotNetNuke.Web.Api
             {
                 throw new HttpResponseException(request.CreateErrorResponse(
                     HttpStatusCode.NotFound,
-                                                                            "Unable to locate a controller for " +
+                    "Unable to locate a controller for " +
                                                                             request.RequestUri));
             }
 

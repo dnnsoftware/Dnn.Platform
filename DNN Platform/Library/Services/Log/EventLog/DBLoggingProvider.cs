@@ -189,17 +189,17 @@ namespace DotNetNuke.Services.Log.EventLog
                     string logProperties = objLogInfo.LogProperties.Serialize();
                     DataProvider.Instance().AddLog(
                         objLogInfo.LogGUID,
-                                                   objLogInfo.LogTypeKey,
-                                                   objLogInfo.LogUserID,
-                                                   objLogInfo.LogUserName,
-                                                   objLogInfo.LogPortalID,
-                                                   objLogInfo.LogPortalName,
-                                                   objLogInfo.LogCreateDate,
-                                                   objLogInfo.LogServerName,
-                                                   logProperties,
-                                                   Convert.ToInt32(objLogInfo.LogConfigID),
-                                                   objLogInfo.Exception,
-                                                   logTypeConfigInfo.EmailNotificationIsActive);
+                        objLogInfo.LogTypeKey,
+                        objLogInfo.LogUserID,
+                        objLogInfo.LogUserName,
+                        objLogInfo.LogPortalID,
+                        objLogInfo.LogPortalName,
+                        objLogInfo.LogCreateDate,
+                        objLogInfo.LogServerName,
+                        logProperties,
+                        Convert.ToInt32(objLogInfo.LogConfigID),
+                        objLogInfo.Exception,
+                        logTypeConfigInfo.EmailNotificationIsActive);
                     if (logTypeConfigInfo.EmailNotificationIsActive)
                     {
                         if (LockNotif.TryEnterWriteLock(ReaderLockTimeout))
@@ -288,15 +288,15 @@ namespace DotNetNuke.Services.Log.EventLog
             }
             DataProvider.Instance().AddLogTypeConfigInfo(
                 loggingIsActive,
-                                                         logTypeKey,
-                                                         logTypePortalID,
-                                                         intKeepMostRecent,
-                                                         emailNotificationIsActive,
-                                                         intThreshold,
-                                                         intThresholdTime,
-                                                         intThresholdTimeType,
-                                                         mailFromAddress,
-                                                         mailToAddress);
+                logTypeKey,
+                logTypePortalID,
+                intKeepMostRecent,
+                emailNotificationIsActive,
+                intThreshold,
+                intThresholdTime,
+                intThresholdTimeType,
+                mailFromAddress,
+                mailToAddress);
             DataCache.RemoveCache(LogTypeInfoCacheKey);
             DataCache.RemoveCache(LogTypeInfoByKeyCacheKey);
         }
@@ -513,16 +513,16 @@ namespace DotNetNuke.Services.Log.EventLog
             }
             DataProvider.Instance().UpdateLogTypeConfigInfo(
                 id,
-                                                            loggingIsActive,
-                                                            logTypeKey,
-                                                            logTypePortalID,
-                                                            intKeepMostRecent,
-                                                            emailNotificationIsActive,
-                                                            intThreshold,
-                                                            intThresholdTime,
-                                                            intThresholdTimeType,
-                                                            mailFromAddress,
-                                                            mailToAddress);
+                loggingIsActive,
+                logTypeKey,
+                logTypePortalID,
+                intKeepMostRecent,
+                emailNotificationIsActive,
+                intThreshold,
+                intThresholdTime,
+                intThresholdTimeType,
+                mailFromAddress,
+                mailToAddress);
             DataCache.RemoveCache(LogTypeInfoCacheKey);
             DataCache.RemoveCache(LogTypeInfoByKeyCacheKey);
         }

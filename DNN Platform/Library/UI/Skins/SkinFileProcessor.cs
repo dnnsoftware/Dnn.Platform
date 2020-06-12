@@ -134,9 +134,9 @@ namespace DotNetNuke.UI.Skins
                 {
                     this.Message += SkinController.FormatMessage(
                         string.Format(this.DUPLICATE_ERROR, Token),
-                                                            string.Format(this.DUPLICATE_DETAIL, this.m_ControlList[Token], objSkinControl.ControlSrc),
-                                                            2,
-                                                            true);
+                        string.Format(this.DUPLICATE_DETAIL, this.m_ControlList[Token], objSkinControl.ControlSrc),
+                        2,
+                        true);
                 }
                 else
                 {
@@ -490,9 +490,9 @@ namespace DotNetNuke.UI.Skins
                                     // append the formatted attribute to the inner contents of the control statement
                                     this.Messages += SkinController.FormatMessage(
                                         TOKEN_FORMAT,
-                                                                             xmlSkinAttribute.SelectSingleNode("Name").InnerText + "=\"" + xmlSkinAttribute.SelectSingleNode("Value").InnerText + "\"",
-                                                                             2,
-                                                                             false);
+                                        xmlSkinAttribute.SelectSingleNode("Name").InnerText + "=\"" + xmlSkinAttribute.SelectSingleNode("Value").InnerText + "\"",
+                                        2,
+                                        false);
                                     SkinControl += " " + xmlSkinAttribute.SelectSingleNode("Name").InnerText + "=\"" + xmlSkinAttribute.SelectSingleNode("Value").InnerText.Replace("\"", "&quot;") +
                                                    "\"";
                                 }

@@ -115,7 +115,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 CBO.GetCachedObject<WorkflowState>(
                     new CacheItemArgs(
                 GetWorkflowStateKey(state.StateID), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
-                _ => state);
+                    _ => state);
             }
         }
 

@@ -276,15 +276,15 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                 var Actions = new ModuleActionCollection();
                 Actions.Add(
                     this.GetNextActionID(),
-                            Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
-                            ModuleActionType.AddContent,
-                            string.Empty,
-                            string.Empty,
-                            this.EditUrl(),
-                            false,
-                            SecurityAccessLevel.Edit,
-                            true,
-                            false);
+                    Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
+                    ModuleActionType.AddContent,
+                    string.Empty,
+                    string.Empty,
+                    this.EditUrl(),
+                    false,
+                    SecurityAccessLevel.Edit,
+                    true,
+                    false);
 
                 // get the content
                 var objHTML = new HtmlTextController();
@@ -303,15 +303,15 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                             // add publish action
                             Actions.Add(
                                 this.GetNextActionID(),
-                                        Localization.GetString("PublishContent.Action", this.LocalResourceFile),
-                                        ModuleActionType.AddContent,
-                                        "publish",
-                                        "grant.gif",
-                                        string.Empty,
-                                        true,
-                                        SecurityAccessLevel.Edit,
-                                        true,
-                                        false);
+                                Localization.GetString("PublishContent.Action", this.LocalResourceFile),
+                                ModuleActionType.AddContent,
+                                "publish",
+                                "grant.gif",
+                                string.Empty,
+                                true,
+                                SecurityAccessLevel.Edit,
+                                true,
+                                false);
                         }
                     }
                     else
@@ -325,26 +325,26 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                                 // add approve and reject actions
                                 Actions.Add(
                                     this.GetNextActionID(),
-                                            Localization.GetString("ApproveContent.Action", this.LocalResourceFile),
-                                            ModuleActionType.AddContent,
-                                            string.Empty,
-                                            "grant.gif",
-                                            this.EditUrl("action", "approve", "Review"),
-                                            false,
-                                            SecurityAccessLevel.Edit,
-                                            true,
-                                            false);
+                                    Localization.GetString("ApproveContent.Action", this.LocalResourceFile),
+                                    ModuleActionType.AddContent,
+                                    string.Empty,
+                                    "grant.gif",
+                                    this.EditUrl("action", "approve", "Review"),
+                                    false,
+                                    SecurityAccessLevel.Edit,
+                                    true,
+                                    false);
                                 Actions.Add(
                                     this.GetNextActionID(),
-                                            Localization.GetString("RejectContent.Action", this.LocalResourceFile),
-                                            ModuleActionType.AddContent,
-                                            string.Empty,
-                                            "deny.gif",
-                                            this.EditUrl("action", "reject", "Review"),
-                                            false,
-                                            SecurityAccessLevel.Edit,
-                                            true,
-                                            false);
+                                    Localization.GetString("RejectContent.Action", this.LocalResourceFile),
+                                    ModuleActionType.AddContent,
+                                    string.Empty,
+                                    "deny.gif",
+                                    this.EditUrl("action", "reject", "Review"),
+                                    false,
+                                    SecurityAccessLevel.Edit,
+                                    true,
+                                    false);
                             }
                         }
                     }
@@ -353,15 +353,15 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                 // add mywork to action menu
                 Actions.Add(
                     this.GetNextActionID(),
-                            Localization.GetString("MyWork.Action", this.LocalResourceFile),
-                            "MyWork.Action",
-                            string.Empty,
-                            "view.gif",
-                            this.EditUrl("MyWork"),
-                            false,
-                            SecurityAccessLevel.Edit,
-                            true,
-                            false);
+                    Localization.GetString("MyWork.Action", this.LocalResourceFile),
+                    "MyWork.Action",
+                    string.Empty,
+                    "view.gif",
+                    this.EditUrl("MyWork"),
+                    false,
+                    SecurityAccessLevel.Edit,
+                    true,
+                    false);
 
                 return Actions;
             }

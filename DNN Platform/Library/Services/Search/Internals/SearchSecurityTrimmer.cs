@@ -151,7 +151,7 @@ namespace DotNetNuke.Services.Search.Internals
             var scoreDocSize = Math.Min(tempDocs.Count(), pageSize);
             this._scoreDocs = new List<ScoreDoc>(scoreDocSize);
 
-           foreach (var scoreDoc in tempDocs)
+            foreach (var scoreDoc in tempDocs)
             {
                 if (this._securityChecker == null || this._securityChecker(this._searcher.Doc(scoreDoc.Doc), this._searchQuery))
                 {

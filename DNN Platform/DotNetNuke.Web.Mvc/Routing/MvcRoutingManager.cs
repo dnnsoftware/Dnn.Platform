@@ -34,7 +34,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             this.TypeLocator = new TypeLocator();
         }
 
-           internal ITypeLocator TypeLocator { get; set; }
+        internal ITypeLocator TypeLocator { get; set; }
 
         public Route MapRoute(string moduleFolderName, string routeName, string url, string[] namespaces)
         {
@@ -52,8 +52,8 @@ namespace DotNetNuke.Web.Mvc.Routing
             {
                 throw new ArgumentException(Localization.GetExceptionMessage(
                     "ArgumentCannotBeNullOrEmpty",
-                                                                             "The argument '{0}' cannot be null or empty.",
-                                                                             "namespaces"));
+                    "The argument '{0}' cannot be null or empty.",
+                    "namespaces"));
             }
 
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);

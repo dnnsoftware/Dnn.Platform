@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.InternalServices
             var results = RegistrationProfileController.Instance.Search(PortalController.GetEffectivePortalId(this.PortalSettings.PortalId), q);
             return this.Request.CreateResponse(
                 HttpStatusCode.OK,
-                        results.OrderBy(sr => sr)
+                results.OrderBy(sr => sr)
                         .Select(field => new { id = field, name = field }));
         }
 
@@ -66,7 +66,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 return this.Request.CreateResponse(
                     HttpStatusCode.OK,
-                                              new
+                    new
                                                   {
                                                       Result = "warning",
                                                       Title = Localization.GetString("DuplicateUrlWarningTitle", Localization.SharedResourceFile),

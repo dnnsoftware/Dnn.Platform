@@ -550,8 +550,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                                                                              && v.Body == "body"
                                                                              && v.To == "role1,user1"
                                                                              && v.SenderUserID == this._adminUserInfo.UserID),
-                                                               It.IsAny<int>(),
-                                                               It.IsAny<int>()));
+                It.IsAny<int>(),
+                It.IsAny<int>()));
         }
 
         [Test]

@@ -59,8 +59,8 @@ namespace DotNetNuke.Web.Mvc.Common
 
         protected static PropertyHelper[] GetProperties(
             object instance,
-                                                Func<PropertyInfo, PropertyHelper> createPropertyHelper,
-                                                ConcurrentDictionary<Type, PropertyHelper[]> cache)
+            Func<PropertyInfo, PropertyHelper> createPropertyHelper,
+            ConcurrentDictionary<Type, PropertyHelper[]> cache)
         {
             // Using an array rather than IEnumerable, as this will be called on the hot path numerous times.
             PropertyHelper[] helpers;

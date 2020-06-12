@@ -39,7 +39,7 @@ namespace DNN.Integration.Test.Framework.Helpers
                     WHEN MATCHED THEN UPDATE SET s.SettingValue = v.SettingValue, SettingIsSecure = v.Sec
                     WHEN NOT MATCHED THEN INSERT (PortalId, SettingName, SettingValue, SettingIsSecure)
 				                          VALUES (v.PortalId, v.SettingName, v.SettingValue, v.Sec);",
-                        settingName, settingValue, portalId, isSecure ? "1" : "0");
+                settingName, settingValue, portalId, isSecure ? "1" : "0");
 
             DatabaseHelper.ExecuteNonQuery(query);
             WebApiTestHelper.ClearHostCache();

@@ -179,7 +179,7 @@ namespace DotNetNuke.Services.Localization
                 {
                     locales = CBO.FillDictionary("CultureCode", DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
                 }
-            return locales;
+                return locales;
             }
 
             return null;

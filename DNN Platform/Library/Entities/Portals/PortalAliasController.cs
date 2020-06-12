@@ -113,10 +113,10 @@ namespace DotNetNuke.Entities.Portals
                     DataProvider.Instance().UpdatePortalAlias(httpAlias.ToLowerInvariant().Trim('/'), UserController.Instance.GetCurrentUserInfo().UserID);
                     EventLogController.Instance.AddLog(
                         "PortalAlias",
-                                       httpAlias,
-                                       PortalController.Instance.GetCurrentPortalSettings(),
-                                       UserController.Instance.GetCurrentUserInfo().UserID,
-                                       EventLogController.EventLogType.PORTALALIAS_UPDATED);
+                        httpAlias,
+                        PortalController.Instance.GetCurrentPortalSettings(),
+                        UserController.Instance.GetCurrentUserInfo().UserID,
+                        EventLogController.EventLogType.PORTALALIAS_UPDATED);
 
                     // clear the cachekey "GetPortalByAlias" otherwise portalalias "_default" stays in cache after first install
                     DataCache.RemoveCache("GetPortalByAlias");
@@ -156,12 +156,12 @@ namespace DotNetNuke.Entities.Portals
             var dataProvider = DataProvider.Instance();
             int Id = dataProvider.AddPortalAlias(
                 portalAlias.PortalID,
-                                                 portalAlias.HTTPAlias.ToLowerInvariant().Trim('/'),
-                                                 portalAlias.CultureCode,
-                                                 portalAlias.Skin,
-                                                 portalAlias.BrowserType.ToString(),
-                                                 portalAlias.IsPrimary,
-                                                 UserController.Instance.GetCurrentUserInfo().UserID);
+                portalAlias.HTTPAlias.ToLowerInvariant().Trim('/'),
+                portalAlias.CultureCode,
+                portalAlias.Skin,
+                portalAlias.BrowserType.ToString(),
+                portalAlias.IsPrimary,
+                UserController.Instance.GetCurrentUserInfo().UserID);
 
             // Log Event
             LogEvent(portalAlias, EventLogController.EventLogType.PORTALALIAS_CREATED);
@@ -215,16 +215,16 @@ namespace DotNetNuke.Entities.Portals
             return CBO.GetCachedObject<Dictionary<string, PortalAliasInfo>>(
                 new CacheItemArgs(
                 DataCache.PortalAliasCacheKey,
-                                                                                        DataCache.PortalAliasCacheTimeOut,
-                                                                                        DataCache.PortalAliasCachePriority),
-                                                                c =>
+                DataCache.PortalAliasCacheTimeOut,
+                DataCache.PortalAliasCachePriority),
+                c =>
                                                                 {
                                                                     var dic = CBO.FillDictionary<string, PortalAliasInfo>(
                                                                         "HTTPAlias",
                                                                         DataProvider.Instance().GetPortalAliases());
                                                                     return dic.Keys.ToDictionary(key => key.ToLowerInvariant(), key => dic[key]);
                                                                 },
-                                                                true);
+                true);
         }
 
         public PortalAliasCollection GetPortalAliases()
@@ -258,13 +258,13 @@ namespace DotNetNuke.Entities.Portals
             // Update Alias
             DataProvider.Instance().UpdatePortalAliasInfo(
                 portalAlias.PortalAliasID,
-                                                            portalAlias.PortalID,
-                                                            portalAlias.HTTPAlias.ToLowerInvariant().Trim('/'),
-                                                            portalAlias.CultureCode,
-                                                            portalAlias.Skin,
-                                                            portalAlias.BrowserType.ToString(),
-                                                            portalAlias.IsPrimary,
-                                                            UserController.Instance.GetCurrentUserInfo().UserID);
+                portalAlias.PortalID,
+                portalAlias.HTTPAlias.ToLowerInvariant().Trim('/'),
+                portalAlias.CultureCode,
+                portalAlias.Skin,
+                portalAlias.BrowserType.ToString(),
+                portalAlias.IsPrimary,
+                UserController.Instance.GetCurrentUserInfo().UserID);
             // Log Event
             LogEvent(portalAlias, EventLogController.EventLogType.PORTALALIAS_UPDATED);
 

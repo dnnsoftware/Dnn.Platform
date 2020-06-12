@@ -71,11 +71,11 @@ namespace DotNetNuke.Entities.Urls
             // Call GetFriendlyAlias to get the Alias part of the url
             string friendlyPath = GetFriendlyAlias(
                 path,
-                                                    ref httpAlias,
-                                                    tab.PortalID,
-                                                    settings,
-                                                    null,
-                                                    out cultureSpecificAlias);
+                ref httpAlias,
+                tab.PortalID,
+                settings,
+                null,
+                out cultureSpecificAlias);
 
             // Call GetFriendlyQueryString to get the QueryString part of the url
             friendlyPath = GetFriendlyQueryString(tab, friendlyPath, pageName, settings);
@@ -96,34 +96,34 @@ namespace DotNetNuke.Entities.Urls
         /// <returns></returns>
         public static string ImprovedFriendlyUrl(
             TabInfo tab,
-                                                        string path,
-                                                        string pageName,
-                                                        string httpAlias,
-                                                        bool ignoreCustomRedirects,
-                                                        FriendlyUrlSettings settings,
-                                                        Guid parentTraceId)
+            string path,
+            string pageName,
+            string httpAlias,
+            bool ignoreCustomRedirects,
+            FriendlyUrlSettings settings,
+            Guid parentTraceId)
         {
             List<string> messages;
             return ImprovedFriendlyUrlWithMessages(
                 tab,
-                                                    path,
-                                                    pageName,
-                                                    httpAlias,
-                                                    ignoreCustomRedirects,
-                                                    settings,
-                                                    out messages,
-                                                    parentTraceId);
+                path,
+                pageName,
+                httpAlias,
+                ignoreCustomRedirects,
+                settings,
+                out messages,
+                parentTraceId);
         }
 
         internal static string ImprovedFriendlyUrlWithMessages(
             TabInfo tab,
-                                                                    string path,
-                                                                    string pageName,
-                                                                    string httpAlias,
-                                                                    bool ignoreCustomRedirects,
-                                                                    FriendlyUrlSettings settings,
-                                                                    out List<string> messages,
-                                                                    Guid parentTraceId)
+            string path,
+            string pageName,
+            string httpAlias,
+            bool ignoreCustomRedirects,
+            FriendlyUrlSettings settings,
+            out List<string> messages,
+            Guid parentTraceId)
         {
             messages = new List<string>();
             bool cultureSpecificAlias;
@@ -131,11 +131,11 @@ namespace DotNetNuke.Entities.Urls
             // Call GetFriendlyAlias to get the Alias part of the url
             string friendlyPath = GetFriendlyAlias(
                 path,
-                                                   ref httpAlias,
-                                                   tab.PortalID,
-                                                   settings,
-                                                   new PortalSettings(tab.PortalID),
-                                                   out cultureSpecificAlias);
+                ref httpAlias,
+                tab.PortalID,
+                settings,
+                new PortalSettings(tab.PortalID),
+                out cultureSpecificAlias);
 
             // Call GetFriendlyQueryString to get the QueryString part of the url
             friendlyPath = GetFriendlyQueryString(tab, friendlyPath, pageName, settings);
@@ -148,14 +148,14 @@ namespace DotNetNuke.Entities.Urls
                 var portalSettings = new PortalSettings(tab.TabID, alias);
                 friendlyPath = ImproveFriendlyUrlWithMessages(
                     tab,
-                                                                friendlyPath,
-                                                                pageName,
-                                                                portalSettings,
-                                                                ignoreCustomRedirects,
-                                                                settings,
-                                                                ref messages,
-                                                                cultureSpecificAlias,
-                                                                parentTraceId);
+                    friendlyPath,
+                    pageName,
+                    portalSettings,
+                    ignoreCustomRedirects,
+                    settings,
+                    ref messages,
+                    cultureSpecificAlias,
+                    parentTraceId);
 
                 friendlyPath = ForceLowerCaseIfAllowed(tab, friendlyPath, settings);
             }
@@ -218,17 +218,17 @@ namespace DotNetNuke.Entities.Urls
 
         private static string CreateFriendlyUrl(
             string portalAlias,
-                                                    string newTabPath,
-                                                    string newPath,
-                                                    string pageAndExtension,
-                                                    string newPageName,
-                                                    string qs,
-                                                    string langParms,
-                                                    ref List<string> messages,
-                                                    bool builtInUrl,
-                                                    bool changeToSiteRoot,
-                                                    bool dropLangParms,
-                                                    bool isHomePage)
+            string newTabPath,
+            string newPath,
+            string pageAndExtension,
+            string newPageName,
+            string qs,
+            string langParms,
+            ref List<string> messages,
+            bool builtInUrl,
+            bool changeToSiteRoot,
+            bool dropLangParms,
+            bool isHomePage)
         {
             var finalPathBuilder = new StringBuilder();
 
@@ -399,11 +399,11 @@ namespace DotNetNuke.Entities.Urls
             }
             string friendlyPath = GetFriendlyAlias(
                 path,
-                                                    ref portalAlias,
-                                                    portalId,
-                                                    localSettings,
-                                                    portalSettings,
-                                                    out cultureSpecificAlias);
+                ref portalAlias,
+                portalId,
+                localSettings,
+                portalSettings,
+                out cultureSpecificAlias);
 
             if (portalSettings != null)
             {
@@ -429,13 +429,13 @@ namespace DotNetNuke.Entities.Urls
                 // ImproveFriendlyUrl will attempt to remove tabid/nn and other information from the Url
                 friendlyPath = ImproveFriendlyUrl(
                     tab,
-                                                    friendlyPath,
-                                                    pageName,
-                                                    portalSettings,
-                                                    false,
-                                                    cultureSpecificAlias,
-                                                    localSettings,
-                                                    parentTraceId);
+                    friendlyPath,
+                    pageName,
+                    portalSettings,
+                    false,
+                    cultureSpecificAlias,
+                    localSettings,
+                    parentTraceId);
             }
             // set it to lower case if so allowed by settings
             friendlyPath = ForceLowerCaseIfAllowed(tab, friendlyPath, localSettings);
@@ -448,8 +448,8 @@ namespace DotNetNuke.Entities.Urls
                friendlyPath = "https://" + friendlyPath.Substring("http://".Length);
 
                 // If portal's "SSL URL" setting is defined: Use "SSL URL" instaed of current portal alias
-                var sslUrl = portalSettings.SSLURL;
-                if (!string.IsNullOrEmpty(sslUrl))
+               var sslUrl = portalSettings.SSLURL;
+               if (!string.IsNullOrEmpty(sslUrl))
                 {
                     friendlyPath = friendlyPath.Replace("https://" + portalAlias, "https://" + sslUrl);
                 }
@@ -517,11 +517,11 @@ namespace DotNetNuke.Entities.Urls
 
         private static string GetFriendlyAlias(
             string path,
-                                                ref string httpAlias,
-                                                int portalId,
-                                                FriendlyUrlSettings settings,
-                                                PortalSettings portalSettings,
-                                                out bool cultureSpecificAlias)
+            ref string httpAlias,
+            int portalId,
+            FriendlyUrlSettings settings,
+            PortalSettings portalSettings,
+            out bool cultureSpecificAlias)
         {
             cultureSpecificAlias = false;
             string friendlyPath = path;
@@ -816,26 +816,26 @@ namespace DotNetNuke.Entities.Urls
 
         private static string ImproveFriendlyUrl(
             TabInfo tab,
-                                                    string friendlyPath,
-                                                    string pageName,
-                                                    PortalSettings portalSettings,
-                                                    bool ignoreCustomRedirects,
-                                                    bool cultureSpecificAlias,
-                                                    FriendlyUrlSettings settings,
-                                                    Guid parentTraceId)
+            string friendlyPath,
+            string pageName,
+            PortalSettings portalSettings,
+            bool ignoreCustomRedirects,
+            bool cultureSpecificAlias,
+            FriendlyUrlSettings settings,
+            Guid parentTraceId)
         {
             // older overload does not include informational/debug messages on return
             List<string> messages = null;
             string url = ImproveFriendlyUrlWithMessages(
                 tab,
-                                                        friendlyPath,
-                                                        pageName,
-                                                        portalSettings,
-                                                        ignoreCustomRedirects,
-                                                        settings,
-                                                        ref messages,
-                                                        cultureSpecificAlias,
-                                                        parentTraceId);
+                friendlyPath,
+                pageName,
+                portalSettings,
+                ignoreCustomRedirects,
+                settings,
+                ref messages,
+                cultureSpecificAlias,
+                parentTraceId);
 
             OutputFriendlyUrlMessages(tab, friendlyPath, "base/private", messages, url, settings);
 
@@ -844,14 +844,14 @@ namespace DotNetNuke.Entities.Urls
 
         private static string ImproveFriendlyUrlWithMessages(
             TabInfo tab,
-                                                        string friendlyPath,
-                                                        string pageName,
-                                                        PortalSettings portalSettings,
-                                                        bool ignoreCustomRedirects,
-                                                        FriendlyUrlSettings settings,
-                                                        ref List<string> messages,
-                                                        bool cultureSpecificAlias,
-                                                        Guid parentTraceId)
+            string friendlyPath,
+            string pageName,
+            PortalSettings portalSettings,
+            bool ignoreCustomRedirects,
+            FriendlyUrlSettings settings,
+            ref List<string> messages,
+            bool cultureSpecificAlias,
+            Guid parentTraceId)
         {
             if (messages == null)
             {
@@ -921,18 +921,18 @@ namespace DotNetNuke.Entities.Urls
                     bool isCustomUrl;
                     newTabPath = TabPathHelper.GetTabPath(
                         tab,
-                                                            settings,
-                                                            options,
-                                                            ignoreCustomRedirects,
-                                                            true,
-                                                            isHomePage,
-                                                            cultureCode,
-                                                            isDefaultLanguage,
-                                                            false,
-                                                            out dropLangParms,
-                                                            out customHttpAlias,
-                                                            out isCustomUrl,
-                                                            parentTraceId);
+                        settings,
+                        options,
+                        ignoreCustomRedirects,
+                        true,
+                        isHomePage,
+                        cultureCode,
+                        isDefaultLanguage,
+                        false,
+                        out dropLangParms,
+                        out customHttpAlias,
+                        out isCustomUrl,
+                        parentTraceId);
                     // 770 : custom http alias found, merge into overall result
                     if (!string.IsNullOrEmpty(customHttpAlias))
                     {
@@ -1022,18 +1022,18 @@ namespace DotNetNuke.Entities.Urls
                         bool isCustomUrl;
                         newTabPath = TabPathHelper.GetTabPath(
                             tab,
-                                                                settings,
-                                                                options,
-                                                                ignoreCustomRedirects,
-                                                                homePageSiteRoot,
-                                                                isHomePage,
-                                                                cultureCode,
-                                                                isDefaultLanguage,
-                                                                hasPath,
-                                                                out dropLangParms,
-                                                                out customHttpAlias,
-                                                                out isCustomUrl,
-                                                                parentTraceId);
+                            settings,
+                            options,
+                            ignoreCustomRedirects,
+                            homePageSiteRoot,
+                            isHomePage,
+                            cultureCode,
+                            isDefaultLanguage,
+                            hasPath,
+                            out dropLangParms,
+                            out customHttpAlias,
+                            out isCustomUrl,
+                            parentTraceId);
                         if (hasParms)
                         {
                             bool changeToSiteRoot;
@@ -1052,18 +1052,18 @@ namespace DotNetNuke.Entities.Urls
                                     // done like this to re-run all rules relating the url
                                     newTabPath = TabPathHelper.GetTabPath(
                                         tab,
-                                                                            settings,
-                                                                            options,
-                                                                            ignoreCustomRedirects,
-                                                                            homePageSiteRoot,
-                                                                            isHomePage,
-                                                                            cultureCode,
-                                                                            isDefaultLanguage,
-                                                                            hasPath,
-                                                                            out dropLangParms,
-                                                                            out customHttpAlias,
-                                                                            out isCustomUrl,
-                                                                            parentTraceId);
+                                        settings,
+                                        options,
+                                        ignoreCustomRedirects,
+                                        homePageSiteRoot,
+                                        isHomePage,
+                                        cultureCode,
+                                        isDefaultLanguage,
+                                        hasPath,
+                                        out dropLangParms,
+                                        out customHttpAlias,
+                                        out isCustomUrl,
+                                        parentTraceId);
                                 }
                             }
 
@@ -1072,15 +1072,15 @@ namespace DotNetNuke.Entities.Urls
                             bool allowOtherParameters;
                             if (FriendlyUrlPathController.CheckUserProfileReplacement(
                                 newPath,
-                                                                                        tab,
-                                                                                        portalSettings,
-                                                                                        settings,
-                                                                                        options,
-                                                                                        out changedPath,
-                                                                                        out changeToSiteRoot,
-                                                                                        out allowOtherParameters,
-                                                                                        ref messages,
-                                                                                        parentTraceId))
+                                tab,
+                                portalSettings,
+                                settings,
+                                options,
+                                out changedPath,
+                                out changeToSiteRoot,
+                                out allowOtherParameters,
+                                ref messages,
+                                parentTraceId))
                             {
                                 messages.Add("User Profile Replacement: Old Path=" + newPath + "; Changed Path=" + changedPath);
                                 newPath = changedPath;
@@ -1106,28 +1106,28 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     customModuleUrl = ExtensionUrlProviderController.GetUrlFromExtensionUrlProviders(
                                         portalSettings.PortalId,
-                                                                tab,
-                                                                settings,
-                                                                newPath,
-                                                                cultureCode,
-                                                                ref pageName,
-                                                                out changedPath,
-                                                                out changeToSiteRoot,
-                                                                ref messages,
-                                                                parentTraceId);
+                                        tab,
+                                        settings,
+                                        newPath,
+                                        cultureCode,
+                                        ref pageName,
+                                        out changedPath,
+                                        out changeToSiteRoot,
+                                        ref messages,
+                                        parentTraceId);
                                 }
                                 // when no custom module Urls, check for any regex replacements by way of the friendlyurlparms.config file
                                 if (!customModuleUrl)
                                 {
                                     if (FriendlyUrlPathController.CheckParameterRegexReplacement(
                                         newPath,
-                                                                                                    tab,
-                                                                                                    settings,
-                                                                                                    portalSettings.PortalId,
-                                                                                                    out changedPath,
-                                                                                                    ref messages,
-                                                                                                    out changeToSiteRoot,
-                                                                                                    parentTraceId))
+                                        tab,
+                                        settings,
+                                        portalSettings.PortalId,
+                                        out changedPath,
+                                        ref messages,
+                                        out changeToSiteRoot,
+                                        parentTraceId))
                                     {
                                         newPath = changedPath;
                                     }
@@ -1159,17 +1159,17 @@ namespace DotNetNuke.Entities.Urls
                             }
                             string finalPath = CreateFriendlyUrl(
                                 httpAlias,
-                                                                    newTabPath,
-                                                                    newPath,
-                                                                    pageAndExtension,
-                                                                    newPageName,
-                                                                    qs,
-                                                                    langParms,
-                                                                    ref messages,
-                                                                    builtInUrl,
-                                                                    changeToSiteRoot,
-                                                                    dropLangParms,
-                                                                    isHomePage);
+                                newTabPath,
+                                newPath,
+                                pageAndExtension,
+                                newPageName,
+                                qs,
+                                langParms,
+                                ref messages,
+                                builtInUrl,
+                                changeToSiteRoot,
+                                dropLangParms,
+                                isHomePage);
 
                             // 702: look for _aumdebug=true|false and remove if so - never want it part of the output friendly url path
 
@@ -1218,11 +1218,11 @@ namespace DotNetNuke.Entities.Urls
 
         private static void OutputFriendlyUrlMessages(
             TabInfo tab,
-                                                        string path,
-                                                        string method,
-                                                        List<string> messages,
-                                                        string resultUrl,
-                                                        FriendlyUrlSettings settings)
+            string path,
+            string method,
+            List<string> messages,
+            string resultUrl,
+            FriendlyUrlSettings settings)
         {
             if (settings != null && settings.AllowDebugCode && HttpContext.Current != null)
             {
@@ -1247,7 +1247,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         response.AppendHeader(
                             "X-Friendly-Url-" + msgId + ".00",
-                                              "Messages for Tab " + tabId.ToString() + ", " + tabName + ", " + path + " calltype:" + method);
+                            "Messages for Tab " + tabId.ToString() + ", " + tabName + ", " + path + " calltype:" + method);
 
                         int i = 1;
                         foreach (string msg in messages)
@@ -1259,7 +1259,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             response.AppendHeader(
                                 "X-Friendly-Url-" + msgId + ".99",
-                                                  "Path : " + path + " Generated Url : " + resultUrl);
+                                "Path : " + path + " Generated Url : " + resultUrl);
                         }
                     }
                     else
@@ -1268,7 +1268,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             response.AppendHeader(
                                 "X-Friendly-Url-" + msgId + ".00",
-                                                  "Path : " + path + " Generated Url: " + resultUrl);
+                                "Path : " + path + " Generated Url: " + resultUrl);
                         }
                     }
                 }

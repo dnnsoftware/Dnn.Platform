@@ -29,18 +29,18 @@ namespace DotNetNuke.Services.Scheduling
         {
             return AddSchedule(
                 TypeFullName,
-                               TimeLapse,
-                               TimeLapseMeasurement,
-                               RetryTimeLapse,
-                               RetryTimeLapseMeasurement,
-                               RetainHistoryNum,
-                               AttachToEvent,
-                               CatchUpEnabled,
-                               Enabled,
-                               ObjectDependencies,
-                               Servers,
-                               FriendlyName,
-                               DateTime.Now);
+                TimeLapse,
+                TimeLapseMeasurement,
+                RetryTimeLapse,
+                RetryTimeLapseMeasurement,
+                RetainHistoryNum,
+                AttachToEvent,
+                CatchUpEnabled,
+                Enabled,
+                ObjectDependencies,
+                Servers,
+                FriendlyName,
+                DateTime.Now);
         }
         public static int AddSchedule(string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum, string AttachToEvent,
                                       bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName, DateTime ScheduleStartDate)
@@ -48,19 +48,19 @@ namespace DotNetNuke.Services.Scheduling
             EventLogController.Instance.AddLog("TypeFullName", TypeFullName, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_CREATED);
             return DataProvider.Instance().AddSchedule(
                 TypeFullName,
-                                                       TimeLapse,
-                                                       TimeLapseMeasurement,
-                                                       RetryTimeLapse,
-                                                       RetryTimeLapseMeasurement,
-                                                       RetainHistoryNum,
-                                                       AttachToEvent,
-                                                       CatchUpEnabled,
-                                                       Enabled,
-                                                       ObjectDependencies,
-                                                       Servers,
-                                                       UserController.Instance.GetCurrentUserInfo().UserID,
-                                                       FriendlyName,
-                                                       ScheduleStartDate);
+                TimeLapse,
+                TimeLapseMeasurement,
+                RetryTimeLapse,
+                RetryTimeLapseMeasurement,
+                RetainHistoryNum,
+                AttachToEvent,
+                CatchUpEnabled,
+                Enabled,
+                ObjectDependencies,
+                Servers,
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                FriendlyName,
+                ScheduleStartDate);
         }
 
         public static int AddScheduleHistory(ScheduleHistoryItem objScheduleHistoryItem)
@@ -78,10 +78,10 @@ namespace DotNetNuke.Services.Scheduling
             DataProvider.Instance().DeleteSchedule(ScheduleID);
             EventLogController.Instance.AddLog(
                 "ScheduleID",
-                               ScheduleID.ToString(),
-                               PortalController.Instance.GetCurrentPortalSettings(),
-                               UserController.Instance.GetCurrentUserInfo().UserID,
-                               EventLogController.EventLogType.SCHEDULE_DELETED);
+                ScheduleID.ToString(),
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                EventLogController.EventLogType.SCHEDULE_DELETED);
         }
 
         public static int GetActiveThreadCount()
@@ -177,19 +177,19 @@ namespace DotNetNuke.Services.Scheduling
 #pragma warning disable 618
             UpdateSchedule(
                 scheduleItem.ScheduleID,
-                            scheduleItem.TypeFullName,
-                            scheduleItem.TimeLapse,
-                            scheduleItem.TimeLapseMeasurement,
-                            scheduleItem.RetryTimeLapse,
-                            scheduleItem.RetryTimeLapseMeasurement,
-                            scheduleItem.RetainHistoryNum,
-                            scheduleItem.AttachToEvent,
-                            scheduleItem.CatchUpEnabled,
-                            scheduleItem.Enabled,
-                            scheduleItem.ObjectDependencies,
-                            scheduleItem.Servers,
-                            scheduleItem.FriendlyName,
-                            scheduleItem.ScheduleStartDate);
+                scheduleItem.TypeFullName,
+                scheduleItem.TimeLapse,
+                scheduleItem.TimeLapseMeasurement,
+                scheduleItem.RetryTimeLapse,
+                scheduleItem.RetryTimeLapseMeasurement,
+                scheduleItem.RetainHistoryNum,
+                scheduleItem.AttachToEvent,
+                scheduleItem.CatchUpEnabled,
+                scheduleItem.Enabled,
+                scheduleItem.ObjectDependencies,
+                scheduleItem.Servers,
+                scheduleItem.FriendlyName,
+                scheduleItem.ScheduleStartDate);
 #pragma warning restore 618
         }
 
@@ -199,19 +199,19 @@ namespace DotNetNuke.Services.Scheduling
 #pragma warning disable 618
             UpdateSchedule(
                 ScheduleID,
-                            TypeFullName,
-                            TimeLapse,
-                            TimeLapseMeasurement,
-                            RetryTimeLapse,
-                            RetryTimeLapseMeasurement,
-                            RetainHistoryNum,
-                            AttachToEvent,
-                            CatchUpEnabled,
-                            Enabled,
-                            ObjectDependencies,
-                            Servers,
-                            FriendlyName,
-                            DateTime.Now);
+                TypeFullName,
+                TimeLapse,
+                TimeLapseMeasurement,
+                RetryTimeLapse,
+                RetryTimeLapseMeasurement,
+                RetainHistoryNum,
+                AttachToEvent,
+                CatchUpEnabled,
+                Enabled,
+                ObjectDependencies,
+                Servers,
+                FriendlyName,
+                DateTime.Now);
 #pragma warning restore 618
         }
 
@@ -221,20 +221,20 @@ namespace DotNetNuke.Services.Scheduling
         {
             DataProvider.Instance().UpdateSchedule(
                 ScheduleID,
-                                                   TypeFullName,
-                                                   TimeLapse,
-                                                   TimeLapseMeasurement,
-                                                   RetryTimeLapse,
-                                                   RetryTimeLapseMeasurement,
-                                                   RetainHistoryNum,
-                                                   AttachToEvent,
-                                                   CatchUpEnabled,
-                                                   Enabled,
-                                                   ObjectDependencies,
-                                                   Servers,
-                                                   UserController.Instance.GetCurrentUserInfo().UserID,
-                                                   FriendlyName,
-                                                   ScheduleStartDate);
+                TypeFullName,
+                TimeLapse,
+                TimeLapseMeasurement,
+                RetryTimeLapse,
+                RetryTimeLapseMeasurement,
+                RetainHistoryNum,
+                AttachToEvent,
+                CatchUpEnabled,
+                Enabled,
+                ObjectDependencies,
+                Servers,
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                FriendlyName,
+                ScheduleStartDate);
             EventLogController.Instance.AddLog("TypeFullName", TypeFullName, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.SCHEDULE_UPDATED);
         }
 
@@ -242,10 +242,10 @@ namespace DotNetNuke.Services.Scheduling
         {
             DataProvider.Instance().UpdateScheduleHistory(
                 objScheduleHistoryItem.ScheduleHistoryID,
-                                                          objScheduleHistoryItem.EndDate,
-                                                          objScheduleHistoryItem.Succeeded,
-                                                          objScheduleHistoryItem.LogNotes,
-                                                          objScheduleHistoryItem.NextStart);
+                objScheduleHistoryItem.EndDate,
+                objScheduleHistoryItem.Succeeded,
+                objScheduleHistoryItem.LogNotes,
+                objScheduleHistoryItem.NextStart);
         }
 
         public static bool CanRunOnThisServer(string servers)

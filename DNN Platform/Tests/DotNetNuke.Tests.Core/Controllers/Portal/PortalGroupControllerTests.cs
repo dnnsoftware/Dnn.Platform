@@ -332,7 +332,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.GetPortalGroups()).Returns(CreateValidPortalGroupsReader(
                 Constants.PORTALGROUP_ValidPortalGroupCount,
-                                                                                                        Constants.USER_ValidId));
+                Constants.USER_ValidId));
 
             var mockPortalController = new Mock<IPortalController>();
             var controller = new PortalGroupController(mockDataService.Object, mockPortalController.Object);

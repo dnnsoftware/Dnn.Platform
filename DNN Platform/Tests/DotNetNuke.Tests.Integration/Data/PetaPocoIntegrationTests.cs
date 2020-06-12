@@ -89,7 +89,7 @@ namespace DotNetNuke.Tests.Data
             // Assert
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
-                                                      Constants.PETAPOCO_DogTableName);
+                Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount + 1, actualCount);
         }
 
@@ -116,7 +116,7 @@ namespace DotNetNuke.Tests.Data
             // Assert
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
-                                                      Constants.PETAPOCO_DogTableName);
+                Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount + 1, actualCount);
         }
 
@@ -144,7 +144,7 @@ namespace DotNetNuke.Tests.Data
             // Assert
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
-                                                      Constants.PETAPOCO_DogTableName);
+                Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount - 1, actualCount);
         }
 
@@ -172,7 +172,7 @@ namespace DotNetNuke.Tests.Data
             // Assert
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
-                                                      Constants.PETAPOCO_DogTableName);
+                Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount - 1, actualCount);
         }
 
@@ -193,7 +193,7 @@ namespace DotNetNuke.Tests.Data
             // Assert
             int actualCount = DataUtil.GetRecordCount(
                 Constants.PETAPOCO_DatabaseName,
-                                                      Constants.PETAPOCO_DogTableName);
+                Constants.PETAPOCO_DogTableName);
             Assert.AreEqual(Constants.PETAPOCO_RecordCount - 1, actualCount);
         }
 

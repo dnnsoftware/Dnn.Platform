@@ -251,7 +251,7 @@ namespace DotNetNuke.Security.Permissions
             string cacheKey = string.Format(DataCache.TabPermissionCacheKey, portalID);
             return CBO.GetCachedObject<Dictionary<int, TabPermissionCollection>>(
                 new CacheItemArgs(cacheKey, DataCache.TabPermissionCacheTimeOut, DataCache.TabPermissionCachePriority, portalID),
-                                                                                 this.GetTabPermissionsCallBack);
+                this.GetTabPermissionsCallBack);
         }
 
         /// -----------------------------------------------------------------------------
@@ -692,11 +692,11 @@ namespace DotNetNuke.Security.Permissions
                 {
                     this.dataProvider.AddFolderPermission(
                         folder.FolderID,
-                                                        folderPermission.PermissionID,
-                                                        folderPermission.RoleID,
-                                                        folderPermission.AllowAccess,
-                                                        folderPermission.UserID,
-                                                        UserController.Instance.GetCurrentUserInfo().UserID);
+                        folderPermission.PermissionID,
+                        folderPermission.RoleID,
+                        folderPermission.AllowAccess,
+                        folderPermission.UserID,
+                        UserController.Instance.GetCurrentUserInfo().UserID);
                 }
             }
         }
@@ -954,12 +954,12 @@ namespace DotNetNuke.Security.Permissions
                         {
                             this.dataProvider.AddModulePermission(
                                 module.ModuleID,
-                                                             module.PortalID,
-                                                             modulePermission.PermissionID,
-                                                             modulePermission.RoleID,
-                                                             modulePermission.AllowAccess,
-                                                             modulePermission.UserID,
-                                                             UserController.Instance.GetCurrentUserInfo().UserID);
+                                module.PortalID,
+                                modulePermission.PermissionID,
+                                modulePermission.RoleID,
+                                modulePermission.AllowAccess,
+                                modulePermission.UserID,
+                                UserController.Instance.GetCurrentUserInfo().UserID);
                         }
                     }
                 }

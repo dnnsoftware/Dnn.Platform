@@ -232,10 +232,10 @@ namespace DotNetNuke.UI.Skins.Controls
                     {
                         var newMatch = string.Format(
                             "{0}={1}{2}{3}",
-                                                        match.Groups[1].Value,
-                                                        match.Groups[2].Value,
-                                                        url,
-                                                        match.Groups[4].Value);
+                            match.Groups[1].Value,
+                            match.Groups[2].Value,
+                            url,
+                            match.Groups[4].Value);
 
                         this._separator = this._separator.Replace(match.Value, newMatch);
                     }

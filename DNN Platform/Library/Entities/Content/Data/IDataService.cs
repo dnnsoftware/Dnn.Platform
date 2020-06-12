@@ -50,8 +50,8 @@ namespace DotNetNuke.Entities.Content.Data
 
         void SynchronizeMetaData(
             ContentItem contentItem,
-                                 IEnumerable<KeyValuePair<string, string>> added,
-                                 IEnumerable<KeyValuePair<string, string>> deleted);
+            IEnumerable<KeyValuePair<string, string>> added,
+            IEnumerable<KeyValuePair<string, string>> deleted);
 
         // ContentType Methods
         int AddContentType(ContentType contentType);

@@ -95,7 +95,7 @@ namespace Dnn.Modules.Console
                     this.parentTabRow.Visible = true;
                     this.includeParentRow.Visible = true;
                     this.tabVisibilityRow.Visible = true;
-                   break;
+                    break;
             }
 
             this.ParentTab.SelectedPage = TabController.Instance.GetTab(parentTabId, this.PortalId);

@@ -261,9 +261,9 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 "http://{0}/tabid/{1}/userId/{2}/action/{3}/{4}",
                 portalSettings.DefaultPortalAlias,
                 portalSettings.UserTabId,
-                                 userId.ToString(CultureInfo.InvariantCulture),
-                                 action,
-                                 Globals.glbDefaultPage);
+                userId.ToString(CultureInfo.InvariantCulture),
+                action,
+                Globals.glbDefaultPage);
         }
 
         /// <summary>Gets the profile URL.</summary>
@@ -372,7 +372,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 "http://{0}/tabid/{1}/ctl/Profile/userId/{2}/pageno/3",
                 portalSettings.DefaultPortalAlias,
                 GetMessageTab(portalSettings),
-                                 userId);
+                userId);
         }
 
         /// <summary>Gets the message tab.</summary>

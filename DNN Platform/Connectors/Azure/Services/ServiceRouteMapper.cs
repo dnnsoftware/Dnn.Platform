@@ -12,9 +12,9 @@ namespace Dnn.AzureConnector.Services
         {
             routeManager.MapHttpRoute(
                 "AzureConnector",
-                                      "default",
-                                      "{controller}/{action}",
-                                      new[] { "Dnn.AzureConnector.Services" });
+                "default",
+                "{controller}/{action}",
+                new[] { "Dnn.AzureConnector.Services" });
         }
     }
 }

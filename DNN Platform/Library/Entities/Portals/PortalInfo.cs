@@ -332,7 +332,7 @@ namespace DotNetNuke.Entities.Portals
         ///      txtDescription.Text = objPortal.Description
         ///      txtKeyWords.Text = objPortal.KeyWords
         ///  </code></example></remarks>
-       [XmlElement("keywords")]
+        [XmlElement("keywords")]
         public string KeyWords { get; set; }
 
         /// <summary>

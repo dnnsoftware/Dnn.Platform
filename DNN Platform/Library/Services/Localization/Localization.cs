@@ -402,10 +402,10 @@ namespace DotNetNuke.Services.Localization
 
                     EventLogController.Instance.AddLog(
                         "portalID/languageID",
-                                       portalID + "/" + languageID,
-                                       PortalController.Instance.GetCurrentPortalSettings(),
-                                       UserController.Instance.GetCurrentUserInfo().UserID,
-                                       EventLogController.EventLogType.LANGUAGETOPORTAL_CREATED);
+                        portalID + "/" + languageID,
+                        PortalController.Instance.GetCurrentPortalSettings(),
+                        UserController.Instance.GetCurrentUserInfo().UserID,
+                        EventLogController.EventLogType.LANGUAGETOPORTAL_CREATED);
 
                     var portalInfo = PortalController.Instance.GetPortal(portalID);
                     if (portalInfo != null && newLocale.Code != portalInfo.DefaultLanguage)
@@ -1856,10 +1856,10 @@ namespace DotNetNuke.Services.Localization
                 DataProvider.Instance().DeletePortalLanguages(portalID, languageID);
                 EventLogController.Instance.AddLog(
                     "portalID/languageID",
-                                   portalID + "/" + languageID,
-                                   PortalController.Instance.GetCurrentPortalSettings(),
-                                   UserController.Instance.GetCurrentUserInfo().UserID,
-                                   EventLogController.EventLogType.LANGUAGETOPORTAL_DELETED);
+                    portalID + "/" + languageID,
+                    PortalController.Instance.GetCurrentPortalSettings(),
+                    UserController.Instance.GetCurrentUserInfo().UserID,
+                    EventLogController.EventLogType.LANGUAGETOPORTAL_DELETED);
 
                 DataCache.ClearPortalCache(portalID, false);
             }

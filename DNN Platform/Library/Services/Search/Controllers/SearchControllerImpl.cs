@@ -229,7 +229,7 @@ namespace DotNetNuke.Services.Search.Controllers
                         {
                             searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.ModuleDefIdTag, moduleDefId, moduleDefId, true, true), Occur.SHOULD);
                         }
-                        if (!searchQuery.ModuleDefIds.Any())
+            if (!searchQuery.ModuleDefIds.Any())
                             searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, searchTypeId, searchTypeId, true, true), Occur.SHOULD);
                     }
                     else
@@ -364,7 +364,7 @@ namespace DotNetNuke.Services.Search.Controllers
             if (!string.IsNullOrEmpty(luceneResult.ContentSnippet)) sb.Append(luceneResult.ContentSnippet + "...");
 
             var snippet = sb.ToString();
-           if (string.IsNullOrEmpty(snippet)) snippet = searchResult.Title;
+            if (string.IsNullOrEmpty(snippet)) snippet = searchResult.Title;
 
             return snippet;
         }

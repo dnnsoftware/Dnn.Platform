@@ -222,10 +222,10 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
                     OutputCacheResponseFilter responseFilter = OutputCachingProvider.Instance(this._app.Context.Items[ContextKeyTabOutputCacheProvider].ToString()).GetResponseFilter(
                         Convert.ToInt32(this._app.Context.Items[ContextKeyTabId]),
-                                                                                                                                                                                 maxCachedVariationsForTab,
-                                                                                                                                                                                 this._app.Response.Filter,
-                                                                                                                                                                                 cacheKey,
-                                                                                                                                                                                 duration);
+                        maxCachedVariationsForTab,
+                        this._app.Response.Filter,
+                        cacheKey,
+                        duration);
                     this._app.Context.Items[ContextKeyResponseFilter] = responseFilter;
                     this._app.Context.Response.Filter = responseFilter;
                 }

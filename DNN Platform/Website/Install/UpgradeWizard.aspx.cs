@@ -215,7 +215,7 @@ namespace DotNetNuke.Services.Install
                         {
                             CurrentStepActivity(string.Format(
                                 Localization.Localization.GetString("ErrorInStep", LocalResourceFile),
-                                                                                                  _currentStep.Errors.Count > 0 ? string.Join(",", _currentStep.Errors.ToArray()) : _currentStep.Details));
+                                _currentStep.Errors.Count > 0 ? string.Join(",", _currentStep.Errors.ToArray()) : _currentStep.Details));
                             _upgradeRunning = false;
                             return;
                         }

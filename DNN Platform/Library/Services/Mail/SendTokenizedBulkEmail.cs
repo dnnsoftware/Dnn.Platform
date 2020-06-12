@@ -507,21 +507,21 @@ namespace DotNetNuke.Services.Mail
 
                             string mailError = Mail.SendMail(
                                 this._sendingUser.Email,
-                                                                recipient,
-                                                                string.Empty,
-                                                                string.Empty,
-                                                                this.ReplyTo.Email,
-                                                                this.Priority,
-                                                                subject,
-                                                                this.BodyFormat,
-                                                                Encoding.UTF8,
-                                                                body,
-                                                                this.LoadAttachments(),
-                                                                this._smtpServer,
-                                                                this._smtpAuthenticationMethod,
-                                                                this._smtpUsername,
-                                                                this._smtpPassword,
-                                                                this._smtpEnableSSL);
+                                recipient,
+                                string.Empty,
+                                string.Empty,
+                                this.ReplyTo.Email,
+                                this.Priority,
+                                subject,
+                                this.BodyFormat,
+                                Encoding.UTF8,
+                                body,
+                                this.LoadAttachments(),
+                                this._smtpServer,
+                                this._smtpAuthenticationMethod,
+                                this._smtpUsername,
+                                this._smtpPassword,
+                                this._smtpEnableSSL);
                             if (!string.IsNullOrEmpty(mailError))
                             {
                                 mailErrors.Append(mailError);
@@ -564,21 +564,21 @@ namespace DotNetNuke.Services.Mail
                             }
                             string mailError = Mail.SendMail(
                                 this._sendingUser.Email,
-                                                       this._sendingUser.Email,
-                                                       string.Empty,
-                                                       distributionList.ToString(0, distributionList.Length - 2),
-                                                       this.ReplyTo.Email,
-                                                       this.Priority,
-                                                       subject,
-                                                       this.BodyFormat,
-                                                       Encoding.UTF8,
-                                                       body,
-                                                       this.LoadAttachments(),
-                                                       this._smtpServer,
-                                                       this._smtpAuthenticationMethod,
-                                                       this._smtpUsername,
-                                                       this._smtpPassword,
-                                                       this._smtpEnableSSL);
+                                this._sendingUser.Email,
+                                string.Empty,
+                                distributionList.ToString(0, distributionList.Length - 2),
+                                this.ReplyTo.Email,
+                                this.Priority,
+                                subject,
+                                this.BodyFormat,
+                                Encoding.UTF8,
+                                body,
+                                this.LoadAttachments(),
+                                this._smtpServer,
+                                this._smtpAuthenticationMethod,
+                                this._smtpUsername,
+                                this._smtpPassword,
+                                this._smtpEnableSSL);
                             if (mailError == string.Empty)
                             {
                                 messagesSent = 1;

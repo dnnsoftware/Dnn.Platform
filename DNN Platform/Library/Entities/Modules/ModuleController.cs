@@ -116,16 +116,16 @@ namespace DotNetNuke.Entities.Modules
                 // Add Module
                 module.ModuleID = dataProvider.AddModule(
                     module.ContentItemId,
-                                                            module.PortalID,
-                                                            module.ModuleDefID,
-                                                            module.AllTabs,
-                                                            module.StartDate,
-                                                            module.EndDate,
-                                                            module.InheritViewPermissions,
-                                                            module.IsShareable,
-                                                            module.IsShareableViewOnly,
-                                                            module.IsDeleted,
-                                                            currentUser.UserID);
+                    module.PortalID,
+                    module.ModuleDefID,
+                    module.AllTabs,
+                    module.StartDate,
+                    module.EndDate,
+                    module.InheritViewPermissions,
+                    module.IsShareable,
+                    module.IsShareableViewOnly,
+                    module.IsDeleted,
+                    currentUser.UserID);
 
                 // Now we have the ModuleID - update the contentItem
                 var contentController = Util.GetContentController();
@@ -573,9 +573,9 @@ namespace DotNetNuke.Entities.Modules
             var moduleSettings = CBO.GetCachedObject<Dictionary<int, Hashtable>>(
                 new CacheItemArgs(
                 cacheKey,
-                                                                                    DataCache.ModuleCacheTimeOut,
-                                                                                    DataCache.ModuleCachePriority),
-                            c =>
+                DataCache.ModuleCacheTimeOut,
+                DataCache.ModuleCachePriority),
+                c =>
                             {
                                 var moduleSettingsDic = new Dictionary<int, Hashtable>();
                                 IDataReader dr = DataProvider.Instance().GetModuleSettingsByTab(tabId);
@@ -612,9 +612,9 @@ namespace DotNetNuke.Entities.Modules
             var tabModuleSettings = CBO.GetCachedObject<Dictionary<int, Hashtable>>(
                 new CacheItemArgs(
                 cacheKey,
-                                                                                    DataCache.TabModuleCacheTimeOut,
-                                                                                    DataCache.TabModuleCachePriority),
-                            c =>
+                DataCache.TabModuleCacheTimeOut,
+                DataCache.TabModuleCachePriority),
+                c =>
                             {
                                 var tabModuleSettingsDic = new Dictionary<int, Hashtable>();
                                 using (IDataReader dr = DataProvider.Instance().GetTabModuleSettingsByTab(tabId))
@@ -699,33 +699,33 @@ namespace DotNetNuke.Entities.Modules
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
                 dataProvider.UpdateTabModule(
                     newModule.TabModuleID,
-                                             newModule.TabID,
-                                             newModule.ModuleID,
-                                             newModule.ModuleTitle,
-                                             newModule.Header,
-                                             newModule.Footer,
-                                             newModule.ModuleOrder,
-                                             newModule.PaneName,
-                                             newModule.CacheTime,
-                                             newModule.CacheMethod,
-                                             newModule.Alignment,
-                                             newModule.Color,
-                                             newModule.Border,
-                                             newModule.IconFile,
-                                             (int)newModule.Visibility,
-                                             newModule.ContainerSrc,
-                                             newModule.DisplayTitle,
-                                             newModule.DisplayPrint,
-                                             newModule.DisplaySyndicate,
-                                             newModule.IsWebSlice,
-                                             newModule.WebSliceTitle,
-                                             newModule.WebSliceExpiryDate,
-                                             newModule.WebSliceTTL,
-                                             newModule.VersionGuid,
-                                             newModule.DefaultLanguageGuid,
-                                             newModule.LocalizedVersionGuid,
-                                             newModule.CultureCode,
-                                             currentUser.UserID);
+                    newModule.TabID,
+                    newModule.ModuleID,
+                    newModule.ModuleTitle,
+                    newModule.Header,
+                    newModule.Footer,
+                    newModule.ModuleOrder,
+                    newModule.PaneName,
+                    newModule.CacheTime,
+                    newModule.CacheMethod,
+                    newModule.Alignment,
+                    newModule.Color,
+                    newModule.Border,
+                    newModule.IconFile,
+                    (int)newModule.Visibility,
+                    newModule.ContainerSrc,
+                    newModule.DisplayTitle,
+                    newModule.DisplayPrint,
+                    newModule.DisplaySyndicate,
+                    newModule.IsWebSlice,
+                    newModule.WebSliceTitle,
+                    newModule.WebSliceExpiryDate,
+                    newModule.WebSliceTTL,
+                    newModule.VersionGuid,
+                    newModule.DefaultLanguageGuid,
+                    newModule.LocalizedVersionGuid,
+                    newModule.CultureCode,
+                    currentUser.UserID);
 
                 DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, newModule.TabModuleID));
 
@@ -822,8 +822,8 @@ namespace DotNetNuke.Entities.Modules
                     dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
                     EventLogController.AddSettingLog(
                         EventLogController.EventLogType.MODULE_SETTING_UPDATED,
-                                                        "ModuleId", moduleId, settingName, settingValue,
-                                                        currentUser.UserID);
+                        "ModuleId", moduleId, settingName, settingValue,
+                        currentUser.UserID);
                 }
 
                 if (updateVersion)
@@ -1007,33 +1007,33 @@ namespace DotNetNuke.Entities.Modules
                 // add tabmodule
                 dataProvider.AddTabModule(
                     module.TabID,
-                                          module.ModuleID,
-                                          module.ModuleTitle,
-                                          module.Header,
-                                          module.Footer,
-                                          module.ModuleOrder,
-                                          module.PaneName,
-                                          module.CacheTime,
-                                          module.CacheMethod,
-                                          module.Alignment,
-                                          module.Color,
-                                          module.Border,
-                                          module.IconFile,
-                                          (int)module.Visibility,
-                                          module.ContainerSrc,
-                                          module.DisplayTitle,
-                                          module.DisplayPrint,
-                                          module.DisplaySyndicate,
-                                          module.IsWebSlice,
-                                          module.WebSliceTitle,
-                                          module.WebSliceExpiryDate,
-                                          module.WebSliceTTL,
-                                          module.UniqueId,
-                                          module.VersionGuid,
-                                          module.DefaultLanguageGuid,
-                                          module.LocalizedVersionGuid,
-                                          module.CultureCode,
-                                          currentUser.UserID);
+                    module.ModuleID,
+                    module.ModuleTitle,
+                    module.Header,
+                    module.Footer,
+                    module.ModuleOrder,
+                    module.PaneName,
+                    module.CacheTime,
+                    module.CacheMethod,
+                    module.Alignment,
+                    module.Color,
+                    module.Border,
+                    module.IconFile,
+                    (int)module.Visibility,
+                    module.ContainerSrc,
+                    module.DisplayTitle,
+                    module.DisplayPrint,
+                    module.DisplaySyndicate,
+                    module.IsWebSlice,
+                    module.WebSliceTitle,
+                    module.WebSliceExpiryDate,
+                    module.WebSliceTTL,
+                    module.UniqueId,
+                    module.VersionGuid,
+                    module.DefaultLanguageGuid,
+                    module.LocalizedVersionGuid,
+                    module.CultureCode,
+                    currentUser.UserID);
 
                 var log = new LogInfo
                 {
@@ -1145,33 +1145,33 @@ namespace DotNetNuke.Entities.Modules
                 // Add a copy of the module to the bottom of the Pane for the new Tab
                 dataProvider.AddTabModule(
                     destinationModule.TabID,
-                                          destinationModule.ModuleID,
-                                          destinationModule.ModuleTitle,
-                                          destinationModule.Header,
-                                          destinationModule.Footer,
-                                          destinationModule.ModuleOrder,
-                                          destinationModule.PaneName,
-                                          destinationModule.CacheTime,
-                                          destinationModule.CacheMethod,
-                                          destinationModule.Alignment,
-                                          destinationModule.Color,
-                                          destinationModule.Border,
-                                          destinationModule.IconFile,
-                                          (int)destinationModule.Visibility,
-                                          destinationModule.ContainerSrc,
-                                          destinationModule.DisplayTitle,
-                                          destinationModule.DisplayPrint,
-                                          destinationModule.DisplaySyndicate,
-                                          destinationModule.IsWebSlice,
-                                          destinationModule.WebSliceTitle,
-                                          destinationModule.WebSliceExpiryDate,
-                                          destinationModule.WebSliceTTL,
-                                          destinationModule.UniqueId,
-                                          destinationModule.VersionGuid,
-                                          destinationModule.DefaultLanguageGuid,
-                                          destinationModule.LocalizedVersionGuid,
-                                          destinationModule.CultureCode,
-                                          userId);
+                    destinationModule.ModuleID,
+                    destinationModule.ModuleTitle,
+                    destinationModule.Header,
+                    destinationModule.Footer,
+                    destinationModule.ModuleOrder,
+                    destinationModule.PaneName,
+                    destinationModule.CacheTime,
+                    destinationModule.CacheMethod,
+                    destinationModule.Alignment,
+                    destinationModule.Color,
+                    destinationModule.Border,
+                    destinationModule.IconFile,
+                    (int)destinationModule.Visibility,
+                    destinationModule.ContainerSrc,
+                    destinationModule.DisplayTitle,
+                    destinationModule.DisplayPrint,
+                    destinationModule.DisplaySyndicate,
+                    destinationModule.IsWebSlice,
+                    destinationModule.WebSliceTitle,
+                    destinationModule.WebSliceExpiryDate,
+                    destinationModule.WebSliceTTL,
+                    destinationModule.UniqueId,
+                    destinationModule.VersionGuid,
+                    destinationModule.DefaultLanguageGuid,
+                    destinationModule.LocalizedVersionGuid,
+                    destinationModule.CultureCode,
+                    userId);
                 TabChangeTracker.Instance.TrackModuleCopy(destinationModule, 1, sourceModule.TabID, userId);
 
                 // Optionally copy the TabModuleSettings
@@ -1415,33 +1415,33 @@ namespace DotNetNuke.Entities.Modules
                     // update tabmodule
                     dataProvider.UpdateTabModule(
                         newModule.TabModuleID,
-                                                 newModule.TabID,
-                                                 newModule.ModuleID,
-                                                 newModule.ModuleTitle,
-                                                 newModule.Header,
-                                                 newModule.Footer,
-                                                 newModule.ModuleOrder,
-                                                 newModule.PaneName,
-                                                 newModule.CacheTime,
-                                                 newModule.CacheMethod,
-                                                 newModule.Alignment,
-                                                 newModule.Color,
-                                                 newModule.Border,
-                                                 newModule.IconFile,
-                                                 (int)newModule.Visibility,
-                                                 newModule.ContainerSrc,
-                                                 newModule.DisplayTitle,
-                                                 newModule.DisplayPrint,
-                                                 newModule.DisplaySyndicate,
-                                                 newModule.IsWebSlice,
-                                                 newModule.WebSliceTitle,
-                                                 newModule.WebSliceExpiryDate,
-                                                 newModule.WebSliceTTL,
-                                                 newModule.VersionGuid,
-                                                 newModule.DefaultLanguageGuid,
-                                                 newModule.LocalizedVersionGuid,
-                                                 newModule.CultureCode,
-                                                 UserController.Instance.GetCurrentUserInfo().UserID);
+                        newModule.TabID,
+                        newModule.ModuleID,
+                        newModule.ModuleTitle,
+                        newModule.Header,
+                        newModule.Footer,
+                        newModule.ModuleOrder,
+                        newModule.PaneName,
+                        newModule.CacheTime,
+                        newModule.CacheMethod,
+                        newModule.Alignment,
+                        newModule.Color,
+                        newModule.Border,
+                        newModule.IconFile,
+                        (int)newModule.Visibility,
+                        newModule.ContainerSrc,
+                        newModule.DisplayTitle,
+                        newModule.DisplayPrint,
+                        newModule.DisplaySyndicate,
+                        newModule.IsWebSlice,
+                        newModule.WebSliceTitle,
+                        newModule.WebSliceExpiryDate,
+                        newModule.WebSliceTTL,
+                        newModule.VersionGuid,
+                        newModule.DefaultLanguageGuid,
+                        newModule.LocalizedVersionGuid,
+                        newModule.CultureCode,
+                        UserController.Instance.GetCurrentUserInfo().UserID);
 
                     DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, newModule.TabModuleID));
 
@@ -1730,7 +1730,7 @@ namespace DotNetNuke.Entities.Modules
             var cacheKey = string.Format(DataCache.SingleTabModuleCacheKey, tabModuleID);
             return CBO.GetCachedObject<ModuleInfo>(
                 new CacheItemArgs(cacheKey, DataCache.TabModuleCacheTimeOut, DataCache.TabModuleCachePriority),
-                    c => CBO.FillObject<ModuleInfo>(dataProvider.GetTabModule(tabModuleID)));
+                c => CBO.FillObject<ModuleInfo>(dataProvider.GetTabModule(tabModuleID)));
         }
 
         /// <summary>
@@ -1744,9 +1744,9 @@ namespace DotNetNuke.Entities.Modules
             return CBO.GetCachedObject<Dictionary<int, ModuleInfo>>(
                 new CacheItemArgs(
                 cacheKey,
-                                                                            DataCache.TabModuleCacheTimeOut,
-                                                                            DataCache.TabModuleCachePriority),
-                                                                    c => this.GetModulesCurrentPage(tabId));
+                DataCache.TabModuleCacheTimeOut,
+                DataCache.TabModuleCachePriority),
+                c => this.GetModulesCurrentPage(tabId));
         }
 
         private Dictionary<int, ModuleInfo> GetModulesCurrentPage(int tabId)
@@ -1950,16 +1950,16 @@ namespace DotNetNuke.Entities.Modules
             // update module
             dataProvider.UpdateModule(
                 module.ModuleID,
-                                      module.ModuleDefID,
-                                      module.ContentItemId,
-                                      module.AllTabs,
-                                      module.StartDate,
-                                      module.EndDate,
-                                      module.InheritViewPermissions,
-                                      module.IsShareable,
-                                      module.IsShareableViewOnly,
-                                      module.IsDeleted,
-                                      currentUser.UserID);
+                module.ModuleDefID,
+                module.ContentItemId,
+                module.AllTabs,
+                module.StartDate,
+                module.EndDate,
+                module.InheritViewPermissions,
+                module.IsShareable,
+                module.IsShareableViewOnly,
+                module.IsDeleted,
+                currentUser.UserID);
 
             // Update Tags
             ITermController termController = Util.GetTermController();
@@ -1984,33 +1984,33 @@ namespace DotNetNuke.Entities.Modules
                 // update tabmodule
                 dataProvider.UpdateTabModule(
                     module.TabModuleID,
-                                             module.TabID,
-                                             module.ModuleID,
-                                             module.ModuleTitle,
-                                             module.Header,
-                                             module.Footer,
-                                             module.ModuleOrder,
-                                             module.PaneName,
-                                             module.CacheTime,
-                                             module.CacheMethod,
-                                             module.Alignment,
-                                             module.Color,
-                                             module.Border,
-                                             module.IconFile,
-                                             (int)module.Visibility,
-                                             module.ContainerSrc,
-                                             module.DisplayTitle,
-                                             module.DisplayPrint,
-                                             module.DisplaySyndicate,
-                                             module.IsWebSlice,
-                                             module.WebSliceTitle,
-                                             module.WebSliceExpiryDate,
-                                             module.WebSliceTTL,
-                                             module.VersionGuid,
-                                             module.DefaultLanguageGuid,
-                                             module.LocalizedVersionGuid,
-                                             module.CultureCode,
-                                             currentUser.UserID);
+                    module.TabID,
+                    module.ModuleID,
+                    module.ModuleTitle,
+                    module.Header,
+                    module.Footer,
+                    module.ModuleOrder,
+                    module.PaneName,
+                    module.CacheTime,
+                    module.CacheMethod,
+                    module.Alignment,
+                    module.Color,
+                    module.Border,
+                    module.IconFile,
+                    (int)module.Visibility,
+                    module.ContainerSrc,
+                    module.DisplayTitle,
+                    module.DisplayPrint,
+                    module.DisplaySyndicate,
+                    module.IsWebSlice,
+                    module.WebSliceTitle,
+                    module.WebSliceExpiryDate,
+                    module.WebSliceTTL,
+                    module.VersionGuid,
+                    module.DefaultLanguageGuid,
+                    module.LocalizedVersionGuid,
+                    module.CultureCode,
+                    currentUser.UserID);
 
                 DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, module.TabModuleID));
 
@@ -2062,33 +2062,33 @@ namespace DotNetNuke.Entities.Modules
 
                             dataProvider.UpdateTabModule(
                                 targetModule.TabModuleID,
-                                                         targetModule.TabID,
-                                                         targetModule.ModuleID,
-                                                         targetModule.ModuleTitle,
-                                                         targetModule.Header,
-                                                         targetModule.Footer,
-                                                         targetModule.ModuleOrder,
-                                                         targetModule.PaneName,
-                                                         targetModule.CacheTime,
-                                                         targetModule.CacheMethod,
-                                                         module.Alignment,
-                                                         module.Color,
-                                                         module.Border,
-                                                         module.IconFile,
-                                                         (int)module.Visibility,
-                                                         module.ContainerSrc,
-                                                         module.DisplayTitle,
-                                                         module.DisplayPrint,
-                                                         module.DisplaySyndicate,
-                                                         module.IsWebSlice,
-                                                         module.WebSliceTitle,
-                                                         module.WebSliceExpiryDate,
-                                                         module.WebSliceTTL,
-                                                         targetModule.VersionGuid,
-                                                         targetModule.DefaultLanguageGuid,
-                                                         targetModule.LocalizedVersionGuid,
-                                                         targetModule.CultureCode,
-                                                         currentUser.UserID);
+                                targetModule.TabID,
+                                targetModule.ModuleID,
+                                targetModule.ModuleTitle,
+                                targetModule.Header,
+                                targetModule.Footer,
+                                targetModule.ModuleOrder,
+                                targetModule.PaneName,
+                                targetModule.CacheTime,
+                                targetModule.CacheMethod,
+                                module.Alignment,
+                                module.Color,
+                                module.Border,
+                                module.IconFile,
+                                (int)module.Visibility,
+                                module.ContainerSrc,
+                                module.DisplayTitle,
+                                module.DisplayPrint,
+                                module.DisplaySyndicate,
+                                module.IsWebSlice,
+                                module.WebSliceTitle,
+                                module.WebSliceExpiryDate,
+                                module.WebSliceTTL,
+                                targetModule.VersionGuid,
+                                targetModule.DefaultLanguageGuid,
+                                targetModule.LocalizedVersionGuid,
+                                targetModule.CultureCode,
+                                currentUser.UserID);
 
                             DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, targetModule.TabModuleID));
                             this.ClearCache(targetModule.TabID);
@@ -2237,8 +2237,8 @@ namespace DotNetNuke.Entities.Modules
                         dataProvider.UpdateTabModuleSetting(tabModuleId, settingName, settingValue, currentUser.UserID);
                         EventLogController.AddSettingLog(
                             EventLogController.EventLogType.MODULE_SETTING_UPDATED,
-                                                        "TabModuleId", tabModuleId, settingName, settingValue,
-                                                        currentUser.UserID);
+                            "TabModuleId", tabModuleId, settingName, settingValue,
+                            currentUser.UserID);
                         UpdateTabModuleVersion(tabModuleId);
                     }
                 }
@@ -2247,8 +2247,8 @@ namespace DotNetNuke.Entities.Modules
                     dataProvider.UpdateTabModuleSetting(tabModuleId, settingName, settingValue, currentUser.UserID);
                     EventLogController.AddSettingLog(
                         EventLogController.EventLogType.TABMODULE_SETTING_CREATED,
-                                                    "TabModuleId", tabModuleId, settingName, settingValue,
-                                                    currentUser.UserID);
+                        "TabModuleId", tabModuleId, settingName, settingValue,
+                        currentUser.UserID);
                     UpdateTabModuleVersion(tabModuleId);
                 }
             }

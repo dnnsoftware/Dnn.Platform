@@ -102,9 +102,9 @@ namespace DotNetNuke.Common.Lists
             return CBO.GetCachedObject<Dictionary<string, ListInfo>>(
                 new CacheItemArgs(
                 cacheKey,
-                                                                        DataCache.ListsCacheTimeOut,
-                                                                        DataCache.ListsCachePriority),
-                                                                c => this.FillListInfoDictionary(DataProvider.Instance().GetLists(portalId)));
+                DataCache.ListsCacheTimeOut,
+                DataCache.ListsCachePriority),
+                c => this.FillListInfoDictionary(DataProvider.Instance().GetLists(portalId)));
         }
 
         private IEnumerable<ListEntryInfo> GetListEntries(string listName, int portalId)
@@ -114,8 +114,8 @@ namespace DotNetNuke.Common.Lists
             return CBO.GetCachedObject<IEnumerable<ListEntryInfo>>(
                 new CacheItemArgs(
                 cacheKey,
-                                                                        DataCache.ListsCacheTimeOut,
-                                                                        DataCache.ListsCachePriority),
+                DataCache.ListsCacheTimeOut,
+                DataCache.ListsCachePriority),
                 c => CBO.FillCollection<ListEntryInfo>(DataProvider.Instance().GetListEntriesByListName(listName, string.Empty, portalId)));
         }
 
@@ -132,16 +132,16 @@ namespace DotNetNuke.Common.Lists
             this.ClearListCache(listEntry.PortalID);
             int entryId = DataProvider.Instance().AddListEntry(
                 listEntry.ListName,
-                                                        listEntry.Value,
-                                                        listEntry.TextNonLocalized,
-                                                        listEntry.ParentID,
-                                                        listEntry.Level,
-                                                        enableSortOrder,
-                                                        listEntry.DefinitionID,
-                                                        listEntry.Description,
-                                                        listEntry.PortalID,
-                                                        listEntry.SystemList,
-                                                        UserController.Instance.GetCurrentUserInfo().UserID);
+                listEntry.Value,
+                listEntry.TextNonLocalized,
+                listEntry.ParentID,
+                listEntry.Level,
+                enableSortOrder,
+                listEntry.DefinitionID,
+                listEntry.Description,
+                listEntry.PortalID,
+                listEntry.SystemList,
+                UserController.Instance.GetCurrentUserInfo().UserID);
 
             if (entryId != Null.NullInteger)
             {

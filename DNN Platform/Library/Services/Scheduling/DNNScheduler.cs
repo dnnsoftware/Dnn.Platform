@@ -36,18 +36,18 @@ namespace DotNetNuke.Services.Scheduling
             // save item
             scheduleItem.ScheduleID = SchedulingController.AddSchedule(
                 scheduleItem.TypeFullName,
-                                                                          scheduleItem.TimeLapse,
-                                                                          scheduleItem.TimeLapseMeasurement,
-                                                                          scheduleItem.RetryTimeLapse,
-                                                                          scheduleItem.RetryTimeLapseMeasurement,
-                                                                          scheduleItem.RetainHistoryNum,
-                                                                          scheduleItem.AttachToEvent,
-                                                                          scheduleItem.CatchUpEnabled,
-                                                                          scheduleItem.Enabled,
-                                                                          scheduleItem.ObjectDependencies,
-                                                                          scheduleItem.Servers,
-                                                                          scheduleItem.FriendlyName,
-                                                                          scheduleItem.ScheduleStartDate);
+                scheduleItem.TimeLapse,
+                scheduleItem.TimeLapseMeasurement,
+                scheduleItem.RetryTimeLapse,
+                scheduleItem.RetryTimeLapseMeasurement,
+                scheduleItem.RetainHistoryNum,
+                scheduleItem.AttachToEvent,
+                scheduleItem.CatchUpEnabled,
+                scheduleItem.Enabled,
+                scheduleItem.ObjectDependencies,
+                scheduleItem.Servers,
+                scheduleItem.FriendlyName,
+                scheduleItem.ScheduleStartDate);
             // Add schedule to queue
             this.RunScheduleItemNow(scheduleItem);
 

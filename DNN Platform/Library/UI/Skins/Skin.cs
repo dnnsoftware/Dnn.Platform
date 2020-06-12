@@ -459,9 +459,9 @@ namespace DotNetNuke.UI.Skins
                 {
                     AddPageMessage(
                         this,
-                                   string.Empty,
-                                   string.Format(Localization.GetString("ContractExpired.Error"), this.PortalSettings.PortalName, Globals.GetMediumDate(this.PortalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), this.PortalSettings.Email),
-                                   ModuleMessage.ModuleMessageType.RedError);
+                        string.Empty,
+                        string.Format(Localization.GetString("ContractExpired.Error"), this.PortalSettings.PortalName, Globals.GetMediumDate(this.PortalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), this.PortalSettings.Email),
+                        ModuleMessage.ModuleMessageType.RedError);
                 }
             }
             else

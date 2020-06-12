@@ -144,10 +144,10 @@ namespace DotNetNuke.Entities.Modules
             DataProvider.DeleteDesktopModule(desktopModuleID);
             EventLogController.Instance.AddLog(
                 "DesktopModuleID",
-                               desktopModuleID.ToString(),
-                               PortalController.Instance.GetCurrentPortalSettings(),
-                               UserController.Instance.GetCurrentUserInfo().UserID,
-                               EventLogController.EventLogType.DESKTOPMODULE_DELETED);
+                desktopModuleID.ToString(),
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                EventLogController.EventLogType.DESKTOPMODULE_DELETED);
             DataCache.ClearHostCache(true);
         }
 
@@ -284,22 +284,22 @@ namespace DotNetNuke.Entities.Modules
                 CreateContentItem(desktopModule);
                 desktopModuleID = DataProvider.AddDesktopModule(
                     desktopModule.PackageID,
-                                                                desktopModule.ModuleName,
-                                                                desktopModule.FolderName,
-                                                                desktopModule.FriendlyName,
-                                                                desktopModule.Description,
-                                                                desktopModule.Version,
-                                                                desktopModule.IsPremium,
-                                                                desktopModule.IsAdmin,
-                                                                desktopModule.BusinessControllerClass,
-                                                                desktopModule.SupportedFeatures,
-                                                                (int)desktopModule.Shareable,
-                                                                desktopModule.CompatibleVersions,
-                                                                desktopModule.Dependencies,
-                                                                desktopModule.Permissions,
-                                                                desktopModule.ContentItemId,
-                                                                UserController.Instance.GetCurrentUserInfo().UserID,
-                                                                desktopModule.AdminPage, desktopModule.HostPage);
+                    desktopModule.ModuleName,
+                    desktopModule.FolderName,
+                    desktopModule.FriendlyName,
+                    desktopModule.Description,
+                    desktopModule.Version,
+                    desktopModule.IsPremium,
+                    desktopModule.IsAdmin,
+                    desktopModule.BusinessControllerClass,
+                    desktopModule.SupportedFeatures,
+                    (int)desktopModule.Shareable,
+                    desktopModule.CompatibleVersions,
+                    desktopModule.Dependencies,
+                    desktopModule.Permissions,
+                    desktopModule.ContentItemId,
+                    UserController.Instance.GetCurrentUserInfo().UserID,
+                    desktopModule.AdminPage, desktopModule.HostPage);
                 EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.DESKTOPMODULE_CREATED);
             }
             else
@@ -312,24 +312,24 @@ namespace DotNetNuke.Entities.Modules
 
                 DataProvider.UpdateDesktopModule(
                     desktopModule.DesktopModuleID,
-                                                 desktopModule.PackageID,
-                                                 desktopModule.ModuleName,
-                                                 desktopModule.FolderName,
-                                                 desktopModule.FriendlyName,
-                                                 desktopModule.Description,
-                                                 desktopModule.Version,
-                                                 desktopModule.IsPremium,
-                                                 desktopModule.IsAdmin,
-                                                 desktopModule.BusinessControllerClass,
-                                                 desktopModule.SupportedFeatures,
-                                                 (int)desktopModule.Shareable,
-                                                 desktopModule.CompatibleVersions,
-                                                 desktopModule.Dependencies,
-                                                 desktopModule.Permissions,
-                                                 desktopModule.ContentItemId,
-                                                 UserController.Instance.GetCurrentUserInfo().UserID,
-                                                 desktopModule.AdminPage,
-                                                 desktopModule.HostPage);
+                    desktopModule.PackageID,
+                    desktopModule.ModuleName,
+                    desktopModule.FolderName,
+                    desktopModule.FriendlyName,
+                    desktopModule.Description,
+                    desktopModule.Version,
+                    desktopModule.IsPremium,
+                    desktopModule.IsAdmin,
+                    desktopModule.BusinessControllerClass,
+                    desktopModule.SupportedFeatures,
+                    (int)desktopModule.Shareable,
+                    desktopModule.CompatibleVersions,
+                    desktopModule.Dependencies,
+                    desktopModule.Permissions,
+                    desktopModule.ContentItemId,
+                    UserController.Instance.GetCurrentUserInfo().UserID,
+                    desktopModule.AdminPage,
+                    desktopModule.HostPage);
 
                 // Update Tags
                 if (saveTerms)
@@ -428,10 +428,10 @@ namespace DotNetNuke.Entities.Modules
                 portalDesktopModuleID = DataProvider.Instance().AddPortalDesktopModule(portalId, desktopModuleId, UserController.Instance.GetCurrentUserInfo().UserID);
                 EventLogController.Instance.AddLog(
                     "PortalDesktopModuleID",
-                                   portalDesktopModuleID.ToString(),
-                                   PortalController.Instance.GetCurrentPortalSettings(),
-                                   UserController.Instance.GetCurrentUserInfo().UserID,
-                                   EventLogController.EventLogType.PORTALDESKTOPMODULE_CREATED);
+                    portalDesktopModuleID.ToString(),
+                    PortalController.Instance.GetCurrentPortalSettings(),
+                    UserController.Instance.GetCurrentUserInfo().UserID,
+                    EventLogController.EventLogType.PORTALDESKTOPMODULE_CREATED);
                 if (addPermissions)
                 {
                     ArrayList permissions = PermissionController.GetPermissionsByPortalDesktopModule();
@@ -525,10 +525,10 @@ namespace DotNetNuke.Entities.Modules
             DataProvider.Instance().DeletePortalDesktopModules(portalId, desktopModuleId);
             EventLogController.Instance.AddLog(
                 "DesktopModuleID",
-                               desktopModuleId.ToString(),
-                               PortalController.Instance.GetCurrentPortalSettings(),
-                               UserController.Instance.GetCurrentUserInfo().UserID,
-                               EventLogController.EventLogType.PORTALDESKTOPMODULE_DELETED);
+                desktopModuleId.ToString(),
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                EventLogController.EventLogType.PORTALDESKTOPMODULE_DELETED);
             if (clearCache)
             {
                 DataCache.ClearPortalCache(portalId, false);
@@ -540,10 +540,10 @@ namespace DotNetNuke.Entities.Modules
             DataProvider.Instance().DeletePortalDesktopModules(Null.NullInteger, desktopModuleId);
             EventLogController.Instance.AddLog(
                 "DesktopModuleID",
-                               desktopModuleId.ToString(),
-                               PortalController.Instance.GetCurrentPortalSettings(),
-                               UserController.Instance.GetCurrentUserInfo().UserID,
-                               EventLogController.EventLogType.PORTALDESKTOPMODULE_DELETED);
+                desktopModuleId.ToString(),
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                EventLogController.EventLogType.PORTALDESKTOPMODULE_DELETED);
             DataCache.ClearHostCache(true);
         }
 
@@ -552,10 +552,10 @@ namespace DotNetNuke.Entities.Modules
             DataProvider.Instance().DeletePortalDesktopModules(portalId, Null.NullInteger);
             EventLogController.Instance.AddLog(
                 "PortalID",
-                               portalId.ToString(),
-                               PortalController.Instance.GetCurrentPortalSettings(),
-                               UserController.Instance.GetCurrentUserInfo().UserID,
-                               EventLogController.EventLogType.PORTALDESKTOPMODULE_DELETED);
+                portalId.ToString(),
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                EventLogController.EventLogType.PORTALDESKTOPMODULE_DELETED);
             DataCache.ClearPortalCache(portalId, true);
         }
 
@@ -593,20 +593,20 @@ namespace DotNetNuke.Entities.Modules
                 {
                     existTab = Upgrade.AddHostPage(
                         pageName,
-                                                    desktopModule.Page.Description,
-                                                    desktopModule.Page.Icon,
-                                                    desktopModule.Page.LargeIcon,
-                                                    true);
+                        desktopModule.Page.Description,
+                        desktopModule.Page.Icon,
+                        desktopModule.Page.LargeIcon,
+                        true);
                 }
                 else
                 {
                     existTab = Upgrade.AddAdminPage(
                         PortalController.Instance.GetPortal(portalId),
-                                                        pageName,
-                                                        desktopModule.Page.Description,
-                                                        desktopModule.Page.Icon,
-                                                        desktopModule.Page.LargeIcon,
-                                                        true);
+                        pageName,
+                        desktopModule.Page.Description,
+                        desktopModule.Page.Icon,
+                        desktopModule.Page.LargeIcon,
+                        true);
                 }
 
                 createdNewPage = true;

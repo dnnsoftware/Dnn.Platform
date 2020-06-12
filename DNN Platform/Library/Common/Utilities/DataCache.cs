@@ -538,12 +538,12 @@ namespace DotNetNuke.Common.Utilities
                             // save the object in the cache
                             SetCache(
                                 cacheItemArgs.CacheKey,
-                                     objObject,
-                                     cacheItemArgs.CacheDependency,
-                                     Cache.NoAbsoluteExpiration,
-                                     TimeSpan.FromMinutes(timeOut),
-                                     cacheItemArgs.CachePriority,
-                                     cacheItemArgs.CacheCallback);
+                                objObject,
+                                cacheItemArgs.CacheDependency,
+                                Cache.NoAbsoluteExpiration,
+                                TimeSpan.FromMinutes(timeOut),
+                                cacheItemArgs.CachePriority,
+                                cacheItemArgs.CacheCallback);
 
                             // check if the item was actually saved in the cache
 

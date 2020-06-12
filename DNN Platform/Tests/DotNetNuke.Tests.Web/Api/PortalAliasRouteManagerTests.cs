@@ -293,7 +293,7 @@ namespace DotNetNuke.Tests.Web.Api
             // Act
             var result = new PortalAliasRouteManager().GetAllRouteValues(
                 new PortalAliasInfo { HTTPAlias = string.Empty },
-                                                               new { value1 = 1, value2 = 2 });
+                new { value1 = 1, value2 = 2 });
 
             // Assert
             var expected = new Dictionary<string, object> { { "value1", 1 }, { "value2", 2 } };
@@ -310,7 +310,7 @@ namespace DotNetNuke.Tests.Web.Api
             var result =
                 new PortalAliasRouteManager().GetAllRouteValues(
                     new PortalAliasInfo { HTTPAlias = "ce.lvh.me/child" },
-                                                                   null);
+                    null);
 
             // Assert
             var expected = new Dictionary<string, object> { { "prefix0", "child" } };
@@ -327,7 +327,7 @@ namespace DotNetNuke.Tests.Web.Api
             var result =
                 new PortalAliasRouteManager().GetAllRouteValues(
                     new PortalAliasInfo { HTTPAlias = "ce.lvh.me/child0/child1/child2/child3" },
-                                                                   new { value1 = 1, value2 = 2 });
+                    new { value1 = 1, value2 = 2 });
 
             // Assert
             var expected = new Dictionary<string, object> { { "prefix0", "child0" }, { "prefix1", "child1" }, { "prefix2", "child2" }, { "prefix3", "child3" }, { "value1", 1 }, { "value2", 2 } };

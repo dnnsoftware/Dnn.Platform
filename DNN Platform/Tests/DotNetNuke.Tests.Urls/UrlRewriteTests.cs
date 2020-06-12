@@ -56,10 +56,10 @@ namespace DotNetNuke.Tests.Urls
 
             provider.ProcessTestRequestWithContext(
                 HttpContext.Current,
-                                    HttpContext.Current.Request.Url,
-                                    true,
-                                    testHelper.Result,
-                                    settings);
+                HttpContext.Current.Request.Url,
+                true,
+                testHelper.Result,
+                settings);
             testHelper.Response = HttpContext.Current.Response;
         }
 
@@ -563,7 +563,7 @@ namespace DotNetNuke.Tests.Urls
                     alias.CultureCode = language;
                     alias.Skin = skin;
                 }
-               PortalAliasController.Instance.AddPortalAlias(alias);
+                PortalAliasController.Instance.AddPortalAlias(alias);
             }
             this.SetDefaultAlias(defaultAlias);
             this.ExecuteTest(settings, testFields, false);

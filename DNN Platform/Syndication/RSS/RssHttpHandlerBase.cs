@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Syndication
     public abstract class RssHttpHandlerBase<RssChannelType, RssItemType, RssImageType> : IHttpHandler
         where RssChannelType : RssChannelBase<RssItemType, RssImageType>, new()
         where RssItemType : RssElementBase, new()
-                                                                                                       where RssImageType : RssElementBase, new()
+        where RssImageType : RssElementBase, new()
     {
         private RssChannelType _channel;
         private HttpContext _context;

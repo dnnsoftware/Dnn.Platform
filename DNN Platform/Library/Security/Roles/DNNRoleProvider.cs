@@ -67,23 +67,23 @@ namespace DotNetNuke.Security.Roles
                 role.RoleID =
                     Convert.ToInt32(this.dataProvider.AddRole(
                         role.PortalID,
-                                                         role.RoleGroupID,
-                                                         role.RoleName.Trim(),
-                                                         (role.Description ?? string.Empty).Trim(),
-                                                         role.ServiceFee,
-                                                         role.BillingPeriod.ToString(CultureInfo.InvariantCulture),
-                                                         role.BillingFrequency,
-                                                         role.TrialFee,
-                                                         role.TrialPeriod,
-                                                         role.TrialFrequency,
-                                                         role.IsPublic,
-                                                         role.AutoAssignment,
-                                                         role.RSVPCode,
-                                                         role.IconFile,
-                                                         UserController.Instance.GetCurrentUserInfo().UserID,
-                                                         (int)role.Status,
-                                                         (int)role.SecurityMode,
-                                                         role.IsSystemRole));
+                        role.RoleGroupID,
+                        role.RoleName.Trim(),
+                        (role.Description ?? string.Empty).Trim(),
+                        role.ServiceFee,
+                        role.BillingPeriod.ToString(CultureInfo.InvariantCulture),
+                        role.BillingFrequency,
+                        role.TrialFee,
+                        role.TrialPeriod,
+                        role.TrialFrequency,
+                        role.IsPublic,
+                        role.AutoAssignment,
+                        role.RSVPCode,
+                        role.IconFile,
+                        UserController.Instance.GetCurrentUserInfo().UserID,
+                        (int)role.Status,
+                        (int)role.SecurityMode,
+                        role.IsSystemRole));
             }
             catch (SqlException e)
             {
@@ -148,23 +148,23 @@ namespace DotNetNuke.Security.Roles
         {
             this.dataProvider.UpdateRole(
                 role.RoleID,
-                                    role.RoleGroupID,
-                                    role.RoleName.Trim(),
-                                    (role.Description ?? string.Empty).Trim(),
-                                    role.ServiceFee,
-                                    role.BillingPeriod.ToString(CultureInfo.InvariantCulture),
-                                    role.BillingFrequency,
-                                    role.TrialFee,
-                                    role.TrialPeriod,
-                                    role.TrialFrequency,
-                                    role.IsPublic,
-                                    role.AutoAssignment,
-                                    role.RSVPCode,
-                                    role.IconFile,
-                                    UserController.Instance.GetCurrentUserInfo().UserID,
-                                    (int)role.Status,
-                                    (int)role.SecurityMode,
-                                    role.IsSystemRole);
+                role.RoleGroupID,
+                role.RoleName.Trim(),
+                (role.Description ?? string.Empty).Trim(),
+                role.ServiceFee,
+                role.BillingPeriod.ToString(CultureInfo.InvariantCulture),
+                role.BillingFrequency,
+                role.TrialFee,
+                role.TrialPeriod,
+                role.TrialFrequency,
+                role.IsPublic,
+                role.AutoAssignment,
+                role.RSVPCode,
+                role.IconFile,
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                (int)role.Status,
+                (int)role.SecurityMode,
+                role.IsSystemRole);
         }
 
         /// -----------------------------------------------------------------------------
@@ -303,9 +303,9 @@ namespace DotNetNuke.Security.Roles
         {
             this.dataProvider.UpdateUserRole(
                 userRole.UserRoleID,
-                                        (int)userRole.Status, userRole.IsOwner,
-                                        userRole.EffectiveDate, userRole.ExpiryDate,
-                                        UserController.Instance.GetCurrentUserInfo().UserID);
+                (int)userRole.Status, userRole.IsOwner,
+                userRole.EffectiveDate, userRole.ExpiryDate,
+                UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
         private void ClearRoleGroupCache(int portalId)
@@ -384,8 +384,8 @@ namespace DotNetNuke.Security.Roles
         {
             var cacheArgs = new CacheItemArgs(
                 this.GetRoleGroupsCacheKey(portalId),
-                                                DataCache.RoleGroupsCacheTimeOut,
-                                                DataCache.RoleGroupsCachePriority);
+                DataCache.RoleGroupsCacheTimeOut,
+                DataCache.RoleGroupsCachePriority);
 
             return CBO.GetCachedObject<IEnumerable<RoleGroupInfo>>(cacheArgs, c =>
                                             CBO.FillCollection<RoleGroupInfo>(this.dataProvider.GetRoleGroups(portalId)));

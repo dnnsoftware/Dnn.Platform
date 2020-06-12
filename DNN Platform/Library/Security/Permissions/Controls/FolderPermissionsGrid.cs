@@ -379,12 +379,12 @@ namespace DotNetNuke.Security.Permissions.Controls
                     }
                     sb.Append(this.BuildKey(
                         objFolderPermission.AllowAccess,
-                                       objFolderPermission.PermissionID,
-                                       objFolderPermission.FolderPermissionID,
-                                       objFolderPermission.RoleID,
-                                       objFolderPermission.RoleName,
-                                       objFolderPermission.UserID,
-                                       objFolderPermission.DisplayName));
+                        objFolderPermission.PermissionID,
+                        objFolderPermission.FolderPermissionID,
+                        objFolderPermission.RoleID,
+                        objFolderPermission.RoleName,
+                        objFolderPermission.UserID,
+                        objFolderPermission.DisplayName));
                 }
             }
             allStates[2] = sb.ToString();

@@ -189,40 +189,40 @@ namespace DotNetNuke.Modules.Admin.Users
                     {
                         Actions.Add(
                             this.GetNextActionID(),
-                                    Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
-                                    ModuleActionType.AddContent,
-                                    string.Empty,
-                                    "add.gif",
-                                    this.EditUrl(),
-                                    false,
-                                    SecurityAccessLevel.Admin,
-                                    true,
-                                    false);
+                            Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
+                            ModuleActionType.AddContent,
+                            string.Empty,
+                            "add.gif",
+                            this.EditUrl(),
+                            false,
+                            SecurityAccessLevel.Admin,
+                            true,
+                            false);
                         if (ProfileProviderConfig.CanEditProviderProperties)
                         {
                             Actions.Add(
                                 this.GetNextActionID(),
-                                        Localization.GetString("ManageProfile.Action", this.LocalResourceFile),
-                                        ModuleActionType.AddContent,
-                                        string.Empty,
-                                        "icon_profile_16px.gif",
-                                        this.EditUrl("ManageProfile"),
-                                        false,
-                                        SecurityAccessLevel.Admin,
-                                        true,
-                                        false);
+                                Localization.GetString("ManageProfile.Action", this.LocalResourceFile),
+                                ModuleActionType.AddContent,
+                                string.Empty,
+                                "icon_profile_16px.gif",
+                                this.EditUrl("ManageProfile"),
+                                false,
+                                SecurityAccessLevel.Admin,
+                                true,
+                                false);
                         }
                         Actions.Add(
                             this.GetNextActionID(),
-                                    Localization.GetString("Cancel.Action", this.LocalResourceFile),
-                                    ModuleActionType.AddContent,
-                                    string.Empty,
-                                    "lt.gif",
-                                    this.ReturnUrl,
-                                    false,
-                                    SecurityAccessLevel.Admin,
-                                    true,
-                                    false);
+                            Localization.GetString("Cancel.Action", this.LocalResourceFile),
+                            ModuleActionType.AddContent,
+                            string.Empty,
+                            "lt.gif",
+                            this.ReturnUrl,
+                            false,
+                            SecurityAccessLevel.Admin,
+                            true,
+                            false);
                     }
                 }
                 return Actions;

@@ -1081,7 +1081,7 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-            private IDictionary CreateCaseInsensitiveWrapper(IDictionary dict)
+        private IDictionary CreateCaseInsensitiveWrapper(IDictionary dict)
             {
             if (dict == null)
             {

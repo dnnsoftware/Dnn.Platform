@@ -41,26 +41,26 @@ namespace DotNetNuke.Modules.RazorHost
                 var Actions = new ModuleActionCollection();
                 Actions.Add(
                     this.ModuleContext.GetNextActionID(),
-                            Localization.GetString(ModuleActionType.EditContent, this.LocalResourceFile),
-                            ModuleActionType.AddContent,
-                            string.Empty,
-                            "edit.gif",
-                            this.ModuleContext.EditUrl(),
-                            false,
-                            SecurityAccessLevel.Host,
-                            true,
-                            false);
+                    Localization.GetString(ModuleActionType.EditContent, this.LocalResourceFile),
+                    ModuleActionType.AddContent,
+                    string.Empty,
+                    "edit.gif",
+                    this.ModuleContext.EditUrl(),
+                    false,
+                    SecurityAccessLevel.Host,
+                    true,
+                    false);
                 Actions.Add(
                     this.ModuleContext.GetNextActionID(),
-                            Localization.GetString("CreateModule.Action", this.LocalResourceFile),
-                            ModuleActionType.AddContent,
-                            string.Empty,
-                            "edit.gif",
-                            this.ModuleContext.EditUrl("CreateModule"),
-                            false,
-                            SecurityAccessLevel.Host,
-                            true,
-                            false);
+                    Localization.GetString("CreateModule.Action", this.LocalResourceFile),
+                    ModuleActionType.AddContent,
+                    string.Empty,
+                    "edit.gif",
+                    this.ModuleContext.EditUrl("CreateModule"),
+                    false,
+                    SecurityAccessLevel.Host,
+                    true,
+                    false);
                 return Actions;
             }
         }

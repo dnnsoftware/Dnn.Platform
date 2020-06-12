@@ -306,17 +306,17 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             LoggingProvider.Instance().AddLogTypeConfigInfo(
                 logTypeConfig.ID,
-                                                            logTypeConfig.LoggingIsActive,
-                                                            logTypeConfig.LogTypeKey,
-                                                            logTypeConfig.LogTypePortalID,
-                                                            logTypeConfig.KeepMostRecent,
-                                                            logTypeConfig.LogFileName,
-                                                            logTypeConfig.EmailNotificationIsActive,
-                                                            Convert.ToString(logTypeConfig.NotificationThreshold),
-                                                            Convert.ToString(logTypeConfig.NotificationThresholdTime),
-                                                            Convert.ToString((int)logTypeConfig.NotificationThresholdTimeType),
-                                                            logTypeConfig.MailFromAddress,
-                                                            logTypeConfig.MailToAddress);
+                logTypeConfig.LoggingIsActive,
+                logTypeConfig.LogTypeKey,
+                logTypeConfig.LogTypePortalID,
+                logTypeConfig.KeepMostRecent,
+                logTypeConfig.LogFileName,
+                logTypeConfig.EmailNotificationIsActive,
+                Convert.ToString(logTypeConfig.NotificationThreshold),
+                Convert.ToString(logTypeConfig.NotificationThresholdTime),
+                Convert.ToString((int)logTypeConfig.NotificationThresholdTimeType),
+                logTypeConfig.MailFromAddress,
+                logTypeConfig.MailToAddress);
         }
 
         public void ClearLog()
@@ -373,17 +373,17 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             LoggingProvider.Instance().UpdateLogTypeConfigInfo(
                 logTypeConfig.ID,
-                                                               logTypeConfig.LoggingIsActive,
-                                                               logTypeConfig.LogTypeKey,
-                                                               logTypeConfig.LogTypePortalID,
-                                                               logTypeConfig.KeepMostRecent,
-                                                               logTypeConfig.LogFileName,
-                                                               logTypeConfig.EmailNotificationIsActive,
-                                                               Convert.ToString(logTypeConfig.NotificationThreshold),
-                                                               Convert.ToString(logTypeConfig.NotificationThresholdTime),
-                                                               Convert.ToString((int)logTypeConfig.NotificationThresholdTimeType),
-                                                               logTypeConfig.MailFromAddress,
-                                                               logTypeConfig.MailToAddress);
+                logTypeConfig.LoggingIsActive,
+                logTypeConfig.LogTypeKey,
+                logTypeConfig.LogTypePortalID,
+                logTypeConfig.KeepMostRecent,
+                logTypeConfig.LogFileName,
+                logTypeConfig.EmailNotificationIsActive,
+                Convert.ToString(logTypeConfig.NotificationThreshold),
+                Convert.ToString(logTypeConfig.NotificationThresholdTime),
+                Convert.ToString((int)logTypeConfig.NotificationThresholdTimeType),
+                logTypeConfig.MailFromAddress,
+                logTypeConfig.MailToAddress);
         }
 
         public virtual void UpdateLogType(LogTypeInfo logType)

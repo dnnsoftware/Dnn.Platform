@@ -75,13 +75,13 @@ namespace DotNetNuke.Services.Social.Subscriptions
 
             subscription.SubscriptionId = this.dataService.AddSubscription(
                 subscription.UserId,
-                                               subscription.PortalId,
-                                               subscription.SubscriptionTypeId,
-                                               subscription.ObjectKey,
-                                               subscription.Description,
-                                               subscription.ModuleId,
-                                               subscription.TabId,
-                                               subscription.ObjectData);
+                subscription.PortalId,
+                subscription.SubscriptionTypeId,
+                subscription.ObjectKey,
+                subscription.Description,
+                subscription.ModuleId,
+                subscription.TabId,
+                subscription.ObjectData);
         }
 
         public void DeleteSubscription(Subscription subscription)

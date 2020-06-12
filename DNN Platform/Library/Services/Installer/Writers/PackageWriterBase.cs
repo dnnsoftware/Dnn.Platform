@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Installer.Writers
          /// </summary>
          /// <value>A String</value>
          /// -----------------------------------------------------------------------------
-         public string AppCodePath { get; set; }
+        public string AppCodePath { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -105,7 +105,7 @@ namespace DotNetNuke.Services.Installer.Writers
          /// </summary>
          /// <value>A String</value>
          /// -----------------------------------------------------------------------------
-         public string AssemblyPath { get; set; }
+        public string AssemblyPath { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -181,7 +181,7 @@ namespace DotNetNuke.Services.Installer.Writers
          /// <value></value>
          /// <returns></returns>
          /// <remarks></remarks>
-         public string LegacyError { get; set; }
+        public string LegacyError { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

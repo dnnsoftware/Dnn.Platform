@@ -32,7 +32,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 throw new InvalidOperationException(Localization.GetExceptionMessage(
                     "ModuleDoesNotBelongToPage",
-                "This module does not belong to the page. Please, move to its master page to change the module"));
+                    "This module does not belong to the page. Please, move to its master page to change the module"));
             }
 
             var unPublishedVersion = TabVersionBuilder.Instance.GetUnPublishedVersion(module.TabID);

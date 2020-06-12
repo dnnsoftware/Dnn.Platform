@@ -144,8 +144,8 @@ namespace DotNetNuke.Entities.Modules.Definitions
             return CBO.GetCachedObject<Dictionary<int, ModuleDefinitionInfo>>(
                 new CacheItemArgs(
                 DataCache.ModuleDefinitionCacheKey,
-                                                                                        DataCache.ModuleDefinitionCachePriority),
-                                                                              GetModuleDefinitionsCallBack);
+                DataCache.ModuleDefinitionCachePriority),
+                GetModuleDefinitionsCallBack);
         }
 
         /// -----------------------------------------------------------------------------
@@ -195,10 +195,10 @@ namespace DotNetNuke.Entities.Modules.Definitions
                 // Add new Module Definition
                 moduleDefinitionID = dataProvider.AddModuleDefinition(
                     moduleDefinition.DesktopModuleID,
-                                                                      moduleDefinition.FriendlyName,
-                                                                      moduleDefinition.DefinitionName,
-                                                                      moduleDefinition.DefaultCacheTime,
-                                                                      UserController.Instance.GetCurrentUserInfo().UserID);
+                    moduleDefinition.FriendlyName,
+                    moduleDefinition.DefinitionName,
+                    moduleDefinition.DefaultCacheTime,
+                    UserController.Instance.GetCurrentUserInfo().UserID);
             }
             else
             {

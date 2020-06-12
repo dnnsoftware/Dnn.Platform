@@ -248,12 +248,12 @@ namespace DotNetNuke.Tests.Content.Mocks
             DataTable table = CreateContentItemTable();
             AddContentItemToTable(
                 table,
-                                  Constants.CONTENT_ValidContentItemId,
-                                  ContentTestHelper.GetContent(Constants.CONTENT_ValidContentItemId),
-                                  ContentTestHelper.GetContentKey(Constants.CONTENT_ValidContentItemId),
-                                  true,
-                                  Constants.USER_ValidId,
-                                  Null.NullString);
+                Constants.CONTENT_ValidContentItemId,
+                ContentTestHelper.GetContent(Constants.CONTENT_ValidContentItemId),
+                ContentTestHelper.GetContentKey(Constants.CONTENT_ValidContentItemId),
+                true,
+                Constants.USER_ValidId,
+                Null.NullString);
 
             return table.CreateDataReader();
         }
@@ -264,12 +264,12 @@ namespace DotNetNuke.Tests.Content.Mocks
 
             AddContentItemToTable(
                 table,
-                                  contentItem.ContentItemId,
-                                  ContentTestHelper.GetContent(contentItem.ContentItemId),
-                                  ContentTestHelper.GetContentKey(contentItem.ContentItemId),
-                                  true,
-                                  Constants.USER_ValidId,
-                                  Null.NullString);
+                contentItem.ContentItemId,
+                ContentTestHelper.GetContent(contentItem.ContentItemId),
+                ContentTestHelper.GetContentKey(contentItem.ContentItemId),
+                true,
+                Constants.USER_ValidId,
+                Null.NullString);
 
             return table.CreateDataReader();
         }
@@ -387,13 +387,13 @@ namespace DotNetNuke.Tests.Content.Mocks
             DataTable table = CreateTermTable();
             AddTermToTable(
                 table,
-                           Constants.TERM_ValidTermId,
-                           Constants.TERM_ValidContent1,
-                           Constants.TERM_ValidVocabulary1,
-                           Constants.TERM_ValidName,
-                           Constants.TERM_ValidName,
-                           Constants.TERM_ValidWeight,
-                           Constants.TERM_ValidParentTermId);
+                Constants.TERM_ValidTermId,
+                Constants.TERM_ValidContent1,
+                Constants.TERM_ValidVocabulary1,
+                Constants.TERM_ValidName,
+                Constants.TERM_ValidName,
+                Constants.TERM_ValidWeight,
+                Constants.TERM_ValidParentTermId);
 
 
             return table.CreateDataReader();

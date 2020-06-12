@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.Journal
 
             var extension = relativePath.Substring(relativePath.LastIndexOf(
                 ".",
-            StringComparison.Ordinal) + 1).ToLowerInvariant();
+                StringComparison.Ordinal) + 1).ToLowerInvariant();
             return AcceptedFileExtensions.Contains(extension);
         }
 
@@ -525,8 +525,8 @@ namespace DotNetNuke.Modules.Journal
                     {
                         var userLink = string.Format(
                             "<a href=\"{0}\" class=\"userLink\" target=\"_blank\">{1}</a>",
-                                                     Globals.UserProfileURL(user.UserID),
-                                                     MentionIdentityChar + user.DisplayName);
+                            Globals.UserProfileURL(user.UserID),
+                            MentionIdentityChar + user.DisplayName);
                         content = content.Replace(MentionIdentityChar + mention.DisplayName, userLink);
 
                         mentionedUsers.Add(mention.DisplayName, user);

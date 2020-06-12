@@ -273,9 +273,9 @@ namespace DotNetNuke.Tests.Content
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.GetContentItemsByTerm(Constants.TERM_ValidName)).Returns(MockHelper.CreateValidContentItemsReader(
                 Constants.CONTENT_TaggedItemCount,
-                                                                                                                                             Constants.CONTENT_IndexedFalse,
-                                                                                                                                             Null.NullInteger,
-                                                                                                                                             Constants.TERM_ValidName));
+                Constants.CONTENT_IndexedFalse,
+                Null.NullInteger,
+                Constants.TERM_ValidName));
             ContentController controller = new ContentController(mockDataService.Object);
 
             // Act
@@ -366,9 +366,9 @@ namespace DotNetNuke.Tests.Content
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.GetUnIndexedContentItems()).Returns(MockHelper.CreateValidContentItemsReader(
                 Constants.CONTENT_IndexedFalseItemCount,
-                                                                                                                        Constants.CONTENT_IndexedFalse,
-                                                                                                                        Null.NullInteger,
-                                                                                                                        Null.NullString));
+                Constants.CONTENT_IndexedFalse,
+                Null.NullInteger,
+                Null.NullString));
 
             ContentController controller = new ContentController(mockDataService.Object);
 

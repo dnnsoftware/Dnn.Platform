@@ -147,12 +147,12 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
                 cache =>
                 cache.Insert(
                     this.GetDnnCacheKey(Constants.CACHEING_ValidKey),
-                             Constants.CACHEING_ValidValue,
-                             dep,
-                             Cache.NoAbsoluteExpiration,
-                             Cache.NoSlidingExpiration,
-                             CacheItemPriority.Normal,
-                             DataCache.ItemRemovedCallback));
+                    Constants.CACHEING_ValidValue,
+                    dep,
+                    Cache.NoAbsoluteExpiration,
+                    Cache.NoSlidingExpiration,
+                    CacheItemPriority.Normal,
+                    DataCache.ItemRemovedCallback));
         }
 
         [Test]
@@ -178,12 +178,12 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
                 cache =>
                 cache.Insert(
                     this.GetDnnCacheKey(Constants.CACHEING_ValidKey),
-                             Constants.CACHEING_ValidValue,
-                             dep,
-                             Cache.NoAbsoluteExpiration,
-                             Cache.NoSlidingExpiration,
-                             CacheItemPriority.Normal,
-                             DataCache.ItemRemovedCallback));
+                    Constants.CACHEING_ValidValue,
+                    dep,
+                    Cache.NoAbsoluteExpiration,
+                    Cache.NoSlidingExpiration,
+                    CacheItemPriority.Normal,
+                    DataCache.ItemRemovedCallback));
         }
 
         [Test]
@@ -210,12 +210,12 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
                 cache =>
                 cache.Insert(
                     this.GetDnnCacheKey(Constants.CACHEING_ValidKey),
-                             Constants.CACHEING_ValidValue,
-                             dep,
-                             absExpiry,
-                             Cache.NoSlidingExpiration,
-                             CacheItemPriority.Normal,
-                             DataCache.ItemRemovedCallback));
+                    Constants.CACHEING_ValidValue,
+                    dep,
+                    absExpiry,
+                    Cache.NoSlidingExpiration,
+                    CacheItemPriority.Normal,
+                    DataCache.ItemRemovedCallback));
         }
 
         [Test]
@@ -243,12 +243,12 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
                 cache =>
                 cache.Insert(
                     this.GetDnnCacheKey(Constants.CACHEING_ValidKey),
-                             Constants.CACHEING_ValidValue,
-                             dep,
-                             Cache.NoAbsoluteExpiration,
-                             slidingExpiry,
-                             CacheItemPriority.Normal,
-                             DataCache.ItemRemovedCallback));
+                    Constants.CACHEING_ValidValue,
+                    dep,
+                    Cache.NoAbsoluteExpiration,
+                    slidingExpiry,
+                    CacheItemPriority.Normal,
+                    DataCache.ItemRemovedCallback));
         }
 
         [Test]

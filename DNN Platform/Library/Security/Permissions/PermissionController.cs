@@ -31,9 +31,9 @@ namespace DotNetNuke.Security.Permissions
             return CBO.GetCachedObject<IEnumerable<PermissionInfo>>(
                 new CacheItemArgs(
                 DataCache.PermissionsCacheKey,
-                                                                                DataCache.PermissionsCacheTimeout,
-                                                                                DataCache.PermissionsCachePriority),
-                                                                c => CBO.FillCollection<PermissionInfo>(provider.ExecuteReader("GetPermissions")));
+                DataCache.PermissionsCacheTimeout,
+                DataCache.PermissionsCachePriority),
+                c => CBO.FillCollection<PermissionInfo>(provider.ExecuteReader("GetPermissions")));
         }
 
         private void ClearCache()
@@ -46,10 +46,10 @@ namespace DotNetNuke.Security.Permissions
             EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_CREATED);
             var permissionId = Convert.ToInt32(provider.AddPermission(
                 permission.PermissionCode,
-                                                       permission.ModuleDefID,
-                                                       permission.PermissionKey,
-                                                       permission.PermissionName,
-                                                       UserController.Instance.GetCurrentUserInfo().UserID));
+                permission.ModuleDefID,
+                permission.PermissionKey,
+                permission.PermissionName,
+                UserController.Instance.GetCurrentUserInfo().UserID));
 
             this.ClearCache();
             return permissionId;
@@ -59,10 +59,10 @@ namespace DotNetNuke.Security.Permissions
         {
             EventLogController.Instance.AddLog(
                 "PermissionID",
-                               permissionID.ToString(),
-                               PortalController.Instance.GetCurrentPortalSettings(),
-                               UserController.Instance.GetCurrentUserInfo().UserID,
-                               EventLogController.EventLogType.PERMISSION_DELETED);
+                permissionID.ToString(),
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                EventLogController.EventLogType.PERMISSION_DELETED);
             provider.DeletePermission(permissionID);
             this.ClearCache();
         }
@@ -95,11 +95,11 @@ namespace DotNetNuke.Security.Permissions
             EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_UPDATED);
             provider.UpdatePermission(
                 permission.PermissionID,
-                                      permission.PermissionCode,
-                                      permission.ModuleDefID,
-                                      permission.PermissionKey,
-                                      permission.PermissionName,
-                                      UserController.Instance.GetCurrentUserInfo().UserID);
+                permission.PermissionCode,
+                permission.ModuleDefID,
+                permission.PermissionKey,
+                permission.PermissionName,
+                UserController.Instance.GetCurrentUserInfo().UserID);
             this.ClearCache();
         }
 

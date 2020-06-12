@@ -131,7 +131,7 @@ namespace DotNetNuke.Modules.Groups
             roleInfo.Settings.Add("ReviewMembers", this.chkMemberApproved.Checked.ToString());
 
             RoleController.Instance.UpdateRoleSettings(roleInfo, true);
-        if (this.inpFile.PostedFile != null && this.inpFile.PostedFile.ContentLength > 0)
+            if (this.inpFile.PostedFile != null && this.inpFile.PostedFile.ContentLength > 0)
             {
                 IFileManager _fileManager = FileManager.Instance;
                 IFolderManager _folderManager = FolderManager.Instance;

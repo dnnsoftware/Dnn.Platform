@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage GetNonTranslatedPages(string languageCode)
         {
             var request = HttpContext.Current.Request;
-           var locale = new LocaleController().GetLocale(languageCode);
+            var locale = new LocaleController().GetLocale(languageCode);
 
             List<PageDto> pages = new List<PageDto>();
             if (!this.IsDefaultLanguage(locale.Code))

@@ -512,16 +512,16 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             this._dataProvider.Setup(d =>
                                 d.SaveRedirection(
                                     It.IsAny<int>(),
-                                It.IsAny<int>(),
-                                It.IsAny<string>(),
-                                It.IsAny<int>(),
-                                It.IsAny<int>(),
-                                It.IsAny<int>(),
-                                It.IsAny<bool>(),
-                                It.IsAny<int>(),
-                                It.IsAny<object>(),
-                                It.IsAny<bool>(),
-                                It.IsAny<int>())).Returns<int, int, string, int, int, int, bool, int, object, bool, int>(
+                                    It.IsAny<int>(),
+                                    It.IsAny<string>(),
+                                    It.IsAny<int>(),
+                                    It.IsAny<int>(),
+                                    It.IsAny<int>(),
+                                    It.IsAny<bool>(),
+                                    It.IsAny<int>(),
+                                    It.IsAny<object>(),
+                                    It.IsAny<bool>(),
+                                    It.IsAny<int>())).Returns<int, int, string, int, int, int, bool, int, object, bool, int>(
                                                             (id, portalId, name, type, sortOrder, sourceTabId, includeChildTabs, targetType, targetValue, enabled, userId) =>
                                                             {
                                                                 if (id == -1)

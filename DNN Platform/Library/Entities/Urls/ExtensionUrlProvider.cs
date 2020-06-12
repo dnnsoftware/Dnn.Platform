@@ -104,12 +104,12 @@ namespace DotNetNuke.Entities.Urls
         /// <returns>Friendly Url for specified values.  Return friendlyUrlPath if no change is made.</returns>
         public abstract string ChangeFriendlyUrl(
             TabInfo tab,
-                                                    string friendlyUrlPath,
-                                                    FriendlyUrlOptions options,
-                                                    string cultureCode,
-                                                    ref string endingPageName,
-                                                    out bool useDnnPagePath,
-                                                    ref List<string> messages);
+            string friendlyUrlPath,
+            FriendlyUrlOptions options,
+            string cultureCode,
+            ref string endingPageName,
+            out bool useDnnPagePath,
+            ref List<string> messages);
         /// <summary>
         ///
         /// </summary>
@@ -122,13 +122,13 @@ namespace DotNetNuke.Entities.Urls
         /// <returns></returns>
         public abstract bool CheckForRedirect(
             int tabId,
-                                                    int portalid,
-                                                    string httpAlias,
-                                                    Uri requestUri,
-                                                    NameValueCollection queryStringCol,
-                                                    FriendlyUrlOptions options,
-                                                    out string redirectLocation,
-                                                    ref List<string> messages);
+            int portalid,
+            string httpAlias,
+            Uri requestUri,
+            NameValueCollection queryStringCol,
+            FriendlyUrlOptions options,
+            out string redirectLocation,
+            ref List<string> messages);
 
         /// <summary>
         /// This module returns any custom settings for the provider in a key/value pair.  This is used when any customised settings are saved to the web.config file.
@@ -153,13 +153,13 @@ namespace DotNetNuke.Entities.Urls
         /// <returns>Querystring value in key=value format, which will be used as an input to the rewriting function.</returns>
         public abstract string TransformFriendlyUrlToQueryString(
             string[] urlParms,
-                                                                    int tabId, int portalId,
-                                                                    FriendlyUrlOptions options,
-                                                                    string cultureCode,
-                                                                    PortalAliasInfo portalAlias,
-                                                                    ref List<string> messages,
-                                                                    out int status,
-                                                                    out string location);
+            int tabId, int portalId,
+            FriendlyUrlOptions options,
+            string cultureCode,
+            PortalAliasInfo portalAlias,
+            ref List<string> messages,
+            out int status,
+            out string location);
 
 
 

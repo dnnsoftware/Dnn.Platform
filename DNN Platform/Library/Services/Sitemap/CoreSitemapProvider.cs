@@ -84,8 +84,8 @@ namespace DotNetNuke.Services.Sitemap
                 {
                     Services.Exceptions.Exceptions.LogException(new Exception(Localization.Localization.GetExceptionMessage(
                         "SitemapUrlGenerationError",
-                                "URL sitemap generation for page '{0} - {1}' caused an exception: {2}",
-                                tab.TabID, tab.TabName, ex.Message)));
+                        "URL sitemap generation for page '{0} - {1}' caused an exception: {2}",
+                        tab.TabID, tab.TabName, ex.Message)));
                 }
             }
 

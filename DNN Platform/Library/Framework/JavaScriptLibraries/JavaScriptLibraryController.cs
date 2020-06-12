@@ -63,9 +63,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         return CBO.GetCachedObject<IEnumerable<JavaScriptLibrary>>(
             new CacheItemArgs(
             DataCache.JavaScriptLibrariesCacheKey,
-                                            DataCache.JavaScriptLibrariesCacheTimeout,
-                                            DataCache.JavaScriptLibrariesCachePriority),
-                                 c => CBO.FillCollection<JavaScriptLibrary>(DataProvider.Instance().ExecuteReader("GetJavaScriptLibraries")));
+            DataCache.JavaScriptLibrariesCacheTimeout,
+            DataCache.JavaScriptLibrariesCachePriority),
+            c => CBO.FillCollection<JavaScriptLibrary>(DataProvider.Instance().ExecuteReader("GetJavaScriptLibraries")));
         }
 
         /// <summary>Save a library to the database</summary>
@@ -74,14 +74,14 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         {
             library.JavaScriptLibraryID = DataProvider.Instance().ExecuteScalar<int>(
                 "SaveJavaScriptLibrary",
-                                                        library.JavaScriptLibraryID,
-                                                        library.PackageID,
-                                                        library.LibraryName,
-                                                        library.Version.ToString(3),
-                                                        library.FileName,
-                                                        library.ObjectName,
-                                                        library.PreferredScriptLocation,
-                                                        library.CDNPath);
+                library.JavaScriptLibraryID,
+                library.PackageID,
+                library.LibraryName,
+                library.Version.ToString(3),
+                library.FileName,
+                library.ObjectName,
+                library.PreferredScriptLocation,
+                library.CDNPath);
             this.ClearCache();
         }
     }

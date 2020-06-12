@@ -467,8 +467,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
                                             : this._loginControls.Count == 1
                                                 ? this._loginControls[0]
                                                 : this._oAuthControls[0],
-                                        false,
-                                        false);
+                        false,
+                        false);
                     break;
                 default:
                     // make sure defaultAuth provider control is diplayed first
@@ -1122,13 +1122,13 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
                 UserInfo objUser = UserController.ValidateUser(
                     this.PortalId,
-                                                               this.txtUsername.Text,
-                                                               this.txtPassword.Text,
-                                                               "DNN",
-                                                               string.Empty,
-                                                               this.PortalSettings.PortalName,
-                                                               ipAddress,
-                                                               ref loginStatus);
+                    this.txtUsername.Text,
+                    this.txtPassword.Text,
+                    "DNN",
+                    string.Empty,
+                    this.PortalSettings.PortalName,
+                    ipAddress,
+                    ref loginStatus);
                 if (loginStatus == UserLoginStatus.LOGIN_SUCCESS)
                 {
                     // Assocate alternate Login with User and proceed with Login

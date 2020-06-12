@@ -182,9 +182,9 @@ namespace DotNetNuke.UI.Modules
 
                     moduleControl.LocalResourceFile = string.Format(
                         "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
-                                        moduleConfiguration.DesktopModule.FolderName,
-                                        Localization.LocalResourceDirectory,
-                                        segments[0]);
+                        moduleConfiguration.DesktopModule.FolderName,
+                        Localization.LocalResourceDirectory,
+                        segments[0]);
                     break;
                 default:
                     moduleControl.LocalResourceFile = moduleConfiguration.ModuleControl.ControlSrc.Replace(Path.GetFileName(moduleConfiguration.ModuleControl.ControlSrc), string.Empty) +

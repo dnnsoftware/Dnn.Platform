@@ -630,19 +630,19 @@ namespace DotNetNuke.Services.Upgrade.Internals
             string myfile = string.Empty;
             WebResponse wr = Util.GetExternalRequest(
                 downloadUrl,
-                                                     null,
-                                                     null,
-                                                     null,
-                                                     null,
-                                                     null,
-                                                     -1,
-                                                     null,
-                                                     null,
-                                                     false,
-                                                     "DotNetNuke-Appgallery/1.0.0.0(Microsoft Windows NT 6.1.7600.0",
-                                                     "wpi://2.1.0.0/Microsoft Windows NT 6.1.7600.0",
-                                                     out myfile,
-                                                     10000);
+                null,
+                null,
+                null,
+                null,
+                null,
+                -1,
+                null,
+                null,
+                false,
+                "DotNetNuke-Appgallery/1.0.0.0(Microsoft Windows NT 6.1.7600.0",
+                "wpi://2.1.0.0/Microsoft Windows NT 6.1.7600.0",
+                out myfile,
+                10000);
             // use fixed name for later installation
             myfile = "installlanguage.resources";
             Util.DeployExtension(wr, myfile, installFolder);

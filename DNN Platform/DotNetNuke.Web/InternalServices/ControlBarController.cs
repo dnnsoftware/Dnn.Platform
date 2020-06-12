@@ -620,7 +620,7 @@ namespace DotNetNuke.Web.InternalServices
                             // Should never happen since the module should not be listed in the first place.
                             throw new ApplicationException(string.Format(
                                 "Module '{0}' does not support Shareable and should not be listed in Add Existing Module from a different source site",
-                                                                         moduleInfo.DesktopModule.FriendlyName));
+                                moduleInfo.DesktopModule.FriendlyName));
                         case ModuleSharing.Supported:
                             break;
                         case ModuleSharing.Unknown:
@@ -712,10 +712,10 @@ namespace DotNetNuke.Web.InternalServices
                     ArrayList arrSystemModuleViewPermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
                     this.AddModulePermission(
                         newModule,
-                                    (PermissionInfo)arrSystemModuleViewPermissions[0],
-                                    PortalSettings.Current.AdministratorRoleId,
-                                    Null.NullInteger,
-                                    true);
+                        (PermissionInfo)arrSystemModuleViewPermissions[0],
+                        PortalSettings.Current.AdministratorRoleId,
+                        Null.NullInteger,
+                        true);
 
                     // Set PortalID correctly
                     newModule.OwnerPortalID = newModule.PortalID;

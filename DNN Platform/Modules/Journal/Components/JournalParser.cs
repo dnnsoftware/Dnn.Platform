@@ -64,9 +64,9 @@ namespace DotNetNuke.Modules.Journal.Components
             }
             this.url = string.Format(
                 "{0}://{1}{2}",
-                                UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request) ? "https" : "http",
-                                this.url,
-                                !HttpContext.Current.Request.Url.IsDefaultPort && !this.url.Contains(":") ? ":" + HttpContext.Current.Request.Url.Port : string.Empty);
+                UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request) ? "https" : "http",
+                this.url,
+                !HttpContext.Current.Request.Url.IsDefaultPort && !this.url.Contains(":") ? ":" + HttpContext.Current.Request.Url.Port : string.Empty);
         }
 
         private static readonly Regex BaseUrlRegex = new Regex("\\[BaseUrl\\]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -219,7 +219,7 @@ namespace DotNetNuke.Modules.Journal.Components
             if (xLikes == null) {
                 return string.Empty;
             }
-             foreach (XmlNode xLike in xLikes) {
+            foreach (XmlNode xLike in xLikes) {
                 if (Convert.ToInt32(xLike.Attributes["uid"].Value) == this.CurrentUser.UserID) {
                     ji.CurrentUserLikes = true;
                     isLiked = true;
@@ -227,7 +227,7 @@ namespace DotNetNuke.Modules.Journal.Components
                 }
 
             }
-             int xc = 0;
+            int xc = 0;
             sb.Append("<div class=\"likes\">");
             if (xLikes.Count == 1 && ji.CurrentUserLikes) {
                 sb.Append("{resx:youlikethis}");

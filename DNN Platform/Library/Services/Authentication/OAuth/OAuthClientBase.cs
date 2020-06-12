@@ -293,15 +293,15 @@ namespace DotNetNuke.Services.Authentication.OAuth
             // Generate Signature
             string sig = this.GenerateSignature(
                 uri,
-                                            this.AuthToken,
-                                            this.TokenSecret,
-                                            string.Empty,
-                                            verifier,
-                                            method.ToString(),
-                                            timeStamp,
-                                            nonce,
-                                            out outUrl,
-                                            out requestParameters);
+                this.AuthToken,
+                this.TokenSecret,
+                string.Empty,
+                verifier,
+                method.ToString(),
+                timeStamp,
+                nonce,
+                out outUrl,
+                out requestParameters);
 
 
             var headerParameters = new List<QueryParameter>
@@ -495,15 +495,15 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             string sig = this.GenerateSignature(
                 this.RequestTokenEndpoint,
-                                            string.Empty,
-                                            string.Empty,
-                                            this.CallbackUri.OriginalString,
-                                            string.Empty,
-                                            this.RequestTokenMethod.ToString(),
-                                            timeStamp,
-                                            nonce,
-                                            out outUrl,
-                                            out requestParameters);
+                string.Empty,
+                string.Empty,
+                this.CallbackUri.OriginalString,
+                string.Empty,
+                this.RequestTokenMethod.ToString(),
+                timeStamp,
+                nonce,
+                out outUrl,
+                out requestParameters);
 
             var headerParameters = new List<QueryParameter>
                                        {

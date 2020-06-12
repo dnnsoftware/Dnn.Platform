@@ -247,19 +247,19 @@ namespace DotNetNuke.Entities.Profile
             }
             int intDefinition = _dataProvider.AddPropertyDefinition(
                 portalId,
-                                                               definition.ModuleDefId,
-                                                               definition.DataType,
-                                                               definition.DefaultValue,
-                                                               definition.PropertyCategory,
-                                                               definition.PropertyName,
-                                                               definition.ReadOnly,
-                                                               definition.Required,
-                                                               definition.ValidationExpression,
-                                                               definition.ViewOrder,
-                                                               definition.Visible,
-                                                               definition.Length,
-                                                               (int)definition.DefaultVisibility,
-                                                               UserController.Instance.GetCurrentUserInfo().UserID);
+                definition.ModuleDefId,
+                definition.DataType,
+                definition.DefaultValue,
+                definition.PropertyCategory,
+                definition.PropertyName,
+                definition.ReadOnly,
+                definition.Required,
+                definition.ValidationExpression,
+                definition.ViewOrder,
+                definition.Visible,
+                definition.Length,
+                (int)definition.DefaultVisibility,
+                UserController.Instance.GetCurrentUserInfo().UserID);
             EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
             ClearProfileDefinitionCache(definition.PortalId);
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
@@ -465,18 +465,18 @@ namespace DotNetNuke.Entities.Profile
             }
             _dataProvider.UpdatePropertyDefinition(
                 definition.PropertyDefinitionId,
-                                              definition.DataType,
-                                              definition.DefaultValue,
-                                              definition.PropertyCategory,
-                                              definition.PropertyName,
-                                              definition.ReadOnly,
-                                              definition.Required,
-                                              definition.ValidationExpression,
-                                              definition.ViewOrder,
-                                              definition.Visible,
-                                              definition.Length,
-                                              (int)definition.DefaultVisibility,
-                                              UserController.Instance.GetCurrentUserInfo().UserID);
+                definition.DataType,
+                definition.DefaultValue,
+                definition.PropertyCategory,
+                definition.PropertyName,
+                definition.ReadOnly,
+                definition.Required,
+                definition.ValidationExpression,
+                definition.ViewOrder,
+                definition.Visible,
+                definition.Length,
+                (int)definition.DefaultVisibility,
+                UserController.Instance.GetCurrentUserInfo().UserID);
             EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_UPDATED);
             ClearProfileDefinitionCache(definition.PortalId);
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);

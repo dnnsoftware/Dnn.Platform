@@ -514,8 +514,8 @@ namespace DotNetNuke.Services.FileSystem
                     throw new FolderProviderException(
                         Localization.Localization.GetExceptionMessage(
                             "AddFileUnderlyingSystemError",
-                                                                      "The underlying system threw an exception. The file has not been added."),
-                                                                      ex);
+                            "The underlying system threw an exception. The file has not been added."),
+                        ex);
                 }
 
                 DataCache.RemoveCache("GetFileById" + file.FileId);
@@ -632,7 +632,7 @@ namespace DotNetNuke.Services.FileSystem
                 throw new NoSpaceAvailableException(
                     Localization.Localization.GetExceptionMessage(
                         "AddFileNoSpaceAvailable",
-                                                                  "The portal has no space available to store the specified file. The file has not been added."));
+                        "The portal has no space available to store the specified file. The file has not been added."));
             }
 
             // Publish Period
@@ -641,7 +641,7 @@ namespace DotNetNuke.Services.FileSystem
                 throw new FileLockedException(
                                 Localization.Localization.GetExceptionMessage(
                                     "FileLockedOutOfPublishPeriodError",
-                                                                                "File locked. The file cannot be updated because it is out of Publish Period"));
+                                    "File locked. The file cannot be updated because it is out of Publish Period"));
             }
 
             if (!FileSecurityController.Instance.Validate(fileName, fileContent))
@@ -677,25 +677,25 @@ namespace DotNetNuke.Services.FileSystem
         {
             file.FileId = DataProvider.Instance().AddFile(
                 file.PortalId,
-                                                    file.UniqueId,
-                                                    file.VersionGuid,
-                                                    file.FileName,
-                                                    file.Extension,
-                                                    file.Size,
-                                                    file.Width,
-                                                    file.Height,
-                                                    file.ContentType,
-                                                    file.Folder,
-                                                    file.FolderId,
-                                                    createdByUserID,
-                                                    file.SHA1Hash,
-                                                    file.LastModificationTime,
-                                                    file.Title,
-                                                    file.Description,
-                                                    file.StartDate,
-                                                    file.EndDate,
-                                                    file.EnablePublishPeriod,
-                                                    file.ContentItemID);
+                file.UniqueId,
+                file.VersionGuid,
+                file.FileName,
+                file.Extension,
+                file.Size,
+                file.Width,
+                file.Height,
+                file.ContentType,
+                file.Folder,
+                file.FolderId,
+                createdByUserID,
+                file.SHA1Hash,
+                file.LastModificationTime,
+                file.Title,
+                file.Description,
+                file.StartDate,
+                file.EndDate,
+                file.EnablePublishPeriod,
+                file.ContentItemID);
         }
 
         private string ProcessVersioning(IFolderInfo folder, IFileInfo oldFile, IFileInfo file, int createdByUserID)
@@ -1571,7 +1571,7 @@ namespace DotNetNuke.Services.FileSystem
             throw new FileLockedException(
                 Localization.Localization.GetExceptionMessage(
                     "FileLockedRunningWorkflowError",
-                                                                "File locked. The file cannot be updated because it has a running workflow"));
+                    "File locked. The file cannot be updated because it has a running workflow"));
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
@@ -1916,23 +1916,23 @@ namespace DotNetNuke.Services.FileSystem
 
             DataProvider.Instance().UpdateFile(
                 file.FileId,
-                                               file.VersionGuid,
-                                               file.FileName,
-                                               file.Extension,
-                                               file.Size,
-                                               updateLazyload ? file.Width : Null.NullInteger,
-                                               updateLazyload ? file.Height : Null.NullInteger,
-                                               file.ContentType,
-                                               file.FolderId,
-                                               this.GetCurrentUserID(),
-                                               updateLazyload ? file.SHA1Hash : Null.NullString,
-                                               file.LastModificationTime,
-                                               file.Title,
-                                               file.Description,
-                                               file.StartDate,
-                                               file.EndDate,
-                                               file.EnablePublishPeriod,
-                                               file.ContentItemID);
+                file.VersionGuid,
+                file.FileName,
+                file.Extension,
+                file.Size,
+                updateLazyload ? file.Width : Null.NullInteger,
+                updateLazyload ? file.Height : Null.NullInteger,
+                file.ContentType,
+                file.FolderId,
+                this.GetCurrentUserID(),
+                updateLazyload ? file.SHA1Hash : Null.NullString,
+                file.LastModificationTime,
+                file.Title,
+                file.Description,
+                file.StartDate,
+                file.EndDate,
+                file.EnablePublishPeriod,
+                file.ContentItemID);
 
             DataCache.RemoveCache("GetFileById" + file.FileId);
             this.ClearFolderCache(file.PortalId);

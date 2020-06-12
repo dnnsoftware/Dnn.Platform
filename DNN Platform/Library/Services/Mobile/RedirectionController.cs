@@ -403,16 +403,16 @@ namespace DotNetNuke.Services.Mobile
 
             int id = DataProvider.Instance().SaveRedirection(
                 redirection.Id,
-                                                    redirection.PortalId,
-                                                    redirection.Name,
-                                                    (int)redirection.Type,
-                                                    redirection.SortOrder,
-                                                    redirection.SourceTabId,
-                                                    redirection.IncludeChildTabs,
-                                                    (int)redirection.TargetType,
-                                                    redirection.TargetValue,
-                                                    redirection.Enabled,
-                                                    UserController.Instance.GetCurrentUserInfo().UserID);
+                redirection.PortalId,
+                redirection.Name,
+                (int)redirection.Type,
+                redirection.SortOrder,
+                redirection.SourceTabId,
+                redirection.IncludeChildTabs,
+                (int)redirection.TargetType,
+                redirection.TargetValue,
+                redirection.Enabled,
+                UserController.Instance.GetCurrentUserInfo().UserID);
 
             foreach (IMatchRule rule in redirection.MatchRules)
             {

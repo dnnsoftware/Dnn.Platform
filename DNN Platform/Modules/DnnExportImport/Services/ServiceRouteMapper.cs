@@ -12,9 +12,9 @@ namespace Dnn.ExportImport.Services
         {
             routeManager.MapHttpRoute(
                 "SiteExportImport",
-                                      "default",
-                                      "{controller}/{action}",
-                                      new[] { typeof(ServiceRouteMapper).Namespace });
+                "default",
+                "{controller}/{action}",
+                new[] { typeof(ServiceRouteMapper).Namespace });
         }
     }
 }

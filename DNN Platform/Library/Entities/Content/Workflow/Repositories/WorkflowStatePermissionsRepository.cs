@@ -22,11 +22,11 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
         {
             return DataProvider.Instance().AddContentWorkflowStatePermission(
                 permission.StateID,
-                                                                       permission.PermissionID,
-                                                                       permission.RoleID,
-                                                                       permission.AllowAccess,
-                                                                       permission.UserID,
-                                                                       lastModifiedByUserId);
+                permission.PermissionID,
+                permission.RoleID,
+                permission.AllowAccess,
+                permission.UserID,
+                lastModifiedByUserId);
         }
 
         public void DeleteWorkflowStatePermission(int workflowStatePermissionId)

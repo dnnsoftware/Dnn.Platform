@@ -145,10 +145,10 @@ namespace DotNetNuke.Modules.Html
                 {
                     string strResourceFile = string.Format(
                         "{0}/DesktopModules/{1}/{2}/{3}",
-                                                           Globals.ApplicationPath,
-                                                           objModule.DesktopModule.FolderName,
-                                                           Localization.LocalResourceDirectory,
-                                                           Localization.LocalSharedResourceFile);
+                        Globals.ApplicationPath,
+                        objModule.DesktopModule.FolderName,
+                        Localization.LocalResourceDirectory,
+                        Localization.LocalSharedResourceFile);
                     string strSubject = Localization.GetString("NotificationSubject", strResourceFile);
                     string strBody = Localization.GetString("NotificationBody", strResourceFile);
                     strBody = strBody.Replace("[URL]", this.NavigationManager.NavigateURL(objModule.TabID));
@@ -572,12 +572,12 @@ namespace DotNetNuke.Modules.Html
                 // add content
                 htmlContent.ItemID = DataProvider.Instance().AddHtmlText(
                     htmlContent.ModuleID,
-                                                                         htmlContent.Content,
-                                                                         htmlContent.Summary,
-                                                                         htmlContent.StateID,
-                                                                         htmlContent.IsPublished,
-                                                                         UserController.Instance.GetCurrentUserInfo().UserID,
-                                                                         MaximumVersionHistory);
+                    htmlContent.Content,
+                    htmlContent.Summary,
+                    htmlContent.StateID,
+                    htmlContent.IsPublished,
+                    UserController.Instance.GetCurrentUserInfo().UserID,
+                    MaximumVersionHistory);
             }
             else
             {
@@ -844,7 +844,7 @@ namespace DotNetNuke.Modules.Html
                     break;
             }
 
-           return string.Empty;
+            return string.Empty;
         }
 
         private void AddNotificationTypes()

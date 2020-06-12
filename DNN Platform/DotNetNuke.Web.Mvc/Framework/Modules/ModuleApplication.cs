@@ -119,9 +119,9 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
                 moduleController.LocalResourceFile = string.Format(
                     "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
-                                                    context.ModuleContext.Configuration.DesktopModule.FolderName,
-                                                    Localization.LocalResourceDirectory,
-                                                    controllerName);
+                    context.ModuleContext.Configuration.DesktopModule.FolderName,
+                    Localization.LocalResourceDirectory,
+                    controllerName);
 
                 moduleController.ViewEngineCollectionEx = this.ViewEngines;
                 // Execute the controller and capture the result

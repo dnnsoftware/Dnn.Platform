@@ -87,12 +87,12 @@ namespace DotNetNuke.Entities.Urls
             DateTime absoluteExpiration = DateTime.Now.Add(settings.CacheTime);
             DataCache.SetCache(
                 key,
-                                value,
-                                dependency,
-                                absoluteExpiration,
-                                Cache.NoSlidingExpiration,
-                                CacheItemPriority.AboveNormal,
-                                callback);
+                value,
+                dependency,
+                absoluteExpiration,
+                Cache.NoSlidingExpiration,
+                CacheItemPriority.AboveNormal,
+                callback);
         }
 
         private static void SetPortalCache(string key, object value, FriendlyUrlSettings settings)
@@ -107,10 +107,10 @@ namespace DotNetNuke.Entities.Urls
             {
                 DataCache.SetCache(
                     key,
-                                    value,
-                                    new DNNCacheDependency(GetPortalsCacheDependency()),
-                                    absoluteExpiration,
-                                    Cache.NoSlidingExpiration);
+                    value,
+                    new DNNCacheDependency(GetPortalsCacheDependency()),
+                    absoluteExpiration,
+                    Cache.NoSlidingExpiration);
             }
             else
             {
@@ -223,8 +223,8 @@ namespace DotNetNuke.Entities.Urls
         /// </remarks>
         internal void GetFriendlyUrlIndexFromCache(
             out SharedDictionary<int, SharedDictionary<string, string>> urlDict,
-                                                   out ConcurrentBag<int> urlPortals,
-                                                   out SharedDictionary<string, string> customAliasTabs)
+            out ConcurrentBag<int> urlPortals,
+            out SharedDictionary<string, string> customAliasTabs)
         {
             urlDict = null;
             urlPortals = null;
@@ -269,8 +269,8 @@ namespace DotNetNuke.Entities.Urls
 
         internal void GetPageIndexFromCache(
             out SharedDictionary<string, string> dict,
-                                            out SharedDictionary<int, PathSizes> portalDepthInfo,
-                                            FriendlyUrlSettings settings)
+            out SharedDictionary<int, PathSizes> portalDepthInfo,
+            FriendlyUrlSettings settings)
         {
             object raw = DataCache.GetCache(PageIndexKey);
             if (raw != null)
@@ -415,10 +415,10 @@ namespace DotNetNuke.Entities.Urls
 
         internal static List<ExtensionUrlProvider> GetProvidersForTabAndPortal(
             int tabId,
-                                                        int portalId,
-                                                        FriendlyUrlSettings settings,
-                                                        out bool noSuchProvider,
-                                                        Guid parentTraceId)
+            int portalId,
+            FriendlyUrlSettings settings,
+            out bool noSuchProvider,
+            Guid parentTraceId)
         {
             // get list of tabids in this portal that have providers
             noSuchProvider = false;
@@ -503,10 +503,10 @@ namespace DotNetNuke.Entities.Urls
         /// </remarks>
         internal void StoreFriendlyUrlIndexInCache(
             SharedDictionary<int, SharedDictionary<string, string>> urlDict,
-                                                ConcurrentBag<int> urlPortals,
-                                                SharedDictionary<string, string> customAliasTabs,
-                                                FriendlyUrlSettings settings,
-                                                string reason)
+            ConcurrentBag<int> urlPortals,
+            SharedDictionary<string, string> customAliasTabs,
+            FriendlyUrlSettings settings,
+            string reason)
         {
             if (settings.LogCacheMessages)
             {
@@ -696,9 +696,9 @@ namespace DotNetNuke.Entities.Urls
 
         internal void StorePageIndexInCache(
             SharedDictionary<string, string> tabDictionary,
-                                             SharedDictionary<int, PathSizes> portalDepthInfo,
-                                             FriendlyUrlSettings settings,
-                                             string reason)
+            SharedDictionary<int, PathSizes> portalDepthInfo,
+            FriendlyUrlSettings settings,
+            string reason)
         {
             this.onRemovePageIndex = settings.LogCacheMessages ? (CacheItemRemovedCallback)this.RemovedPageIndexCallBack : null;
 
@@ -746,10 +746,10 @@ namespace DotNetNuke.Entities.Urls
         {
             SetPageCache(
                 string.Format(TabPathsKey, portalId),
-                        tabPathDictionary,
-                        new DNNCacheDependency(this.GetTabsCacheDependency(new List<int> { portalId })),
-                        settings,
-                        null);
+                tabPathDictionary,
+                new DNNCacheDependency(this.GetTabsCacheDependency(new List<int> { portalId })),
+                settings,
+                null);
         }
 
         public static void FlushFriendlyUrlSettingsFromCache()

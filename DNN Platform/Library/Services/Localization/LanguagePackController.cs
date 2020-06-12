@@ -44,9 +44,9 @@ namespace DotNetNuke.Services.Localization
                 // Add Language Pack
                 languagePack.LanguagePackID = DataProvider.Instance().AddLanguagePack(
                     languagePack.PackageID,
-                                                                                      languagePack.LanguageID,
-                                                                                      languagePack.DependentPackageID,
-                                                                                      UserController.Instance.GetCurrentUserInfo().UserID);
+                    languagePack.LanguageID,
+                    languagePack.DependentPackageID,
+                    UserController.Instance.GetCurrentUserInfo().UserID);
                 EventLogController.Instance.AddLog(languagePack, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGEPACK_CREATED);
             }
             else
@@ -54,10 +54,10 @@ namespace DotNetNuke.Services.Localization
                 // Update LanguagePack
                 DataProvider.Instance().UpdateLanguagePack(
                     languagePack.LanguagePackID,
-                                                           languagePack.PackageID,
-                                                           languagePack.LanguageID,
-                                                           languagePack.DependentPackageID,
-                                                           UserController.Instance.GetCurrentUserInfo().UserID);
+                    languagePack.PackageID,
+                    languagePack.LanguageID,
+                    languagePack.DependentPackageID,
+                    UserController.Instance.GetCurrentUserInfo().UserID);
                 EventLogController.Instance.AddLog(languagePack, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGEPACK_UPDATED);
             }
         }

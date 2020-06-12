@@ -44,7 +44,7 @@ namespace DotNetNuke.Security.Permissions
         {
             return CBO.GetCachedObject<Dictionary<int, WorkflowStatePermissionCollection>>(
                 new CacheItemArgs(WorkflowStatePermissionCacheKey, WorkflowStatePermissionCachePriority),
-                                                                                           GetWorkflowStatePermissionsCallBack);
+                GetWorkflowStatePermissionsCallBack);
         }
 
         /// -----------------------------------------------------------------------------
@@ -135,7 +135,7 @@ namespace DotNetNuke.Security.Permissions
                 // try the database
                 WorkflowStatePermissions = new WorkflowStatePermissionCollection(
                     CBO.FillCollection(provider.GetWorkflowStatePermissionsByStateID(StateID), typeof(WorkflowStatePermissionInfo)),
-                                                                                 StateID);
+                    StateID);
             }
 
             return WorkflowStatePermissions;

@@ -87,8 +87,8 @@ namespace DotNetNuke.Tests.Utilities
         {
             Throws<ArgumentException>(
                 string.Format("Argument cannot be null or an empty string{1}Parameter name: {0}", paramName, Environment.NewLine),
-                                      act,
-                                      ex => string.Equals(ex.ParamName, paramName, StringComparison.Ordinal));
+                act,
+                ex => string.Equals(ex.ParamName, paramName, StringComparison.Ordinal));
         }
     }
 }

@@ -471,7 +471,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PortalId = PortalId12,
                 NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue50 } },
             };
-            var doc2 = new SearchDocument
+             var doc2 = new SearchDocument
             {
                 Title = "Title",
                 UniqueKey = "key2",
@@ -480,7 +480,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PortalId = PortalId12,
                 NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue100 } },
             };
-            var doc3 = new SearchDocument
+             var doc3 = new SearchDocument
             {
                 Title = "Title",
                 UniqueKey = "key3",
@@ -489,7 +489,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PortalId = PortalId12,
                 NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue200 } },
             };
-            var doc4 = new SearchDocument
+             var doc4 = new SearchDocument
             {
                 Title = "Title",
                 UniqueKey = "key4",
@@ -498,7 +498,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PortalId = PortalId12,
                 NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue500 } },
             };
-            var doc5 = new SearchDocument
+             var doc5 = new SearchDocument
             {
                 Title = "Title",
                 UniqueKey = "key5",
@@ -508,11 +508,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue1000 } },
             };
 
-            var docs = new List<SearchDocument>() { doc1, doc2, doc3, doc4, doc5 };
+             var docs = new List<SearchDocument>() { doc1, doc2, doc3, doc4, doc5 };
 
-            this._internalSearchController.AddSearchDocuments(docs);
+             this._internalSearchController.AddSearchDocuments(docs);
 
-            return docs.Count;
+             return docs.Count;
         }
 
         private int AddDocumentsWithKeywords(int searchTypeId = OtherSearchTypeId)

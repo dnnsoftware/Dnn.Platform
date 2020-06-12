@@ -141,18 +141,18 @@ namespace DotNetNuke.Entities.Urls
         /// <returns>The tab path as specified</returns>
         internal static string GetTabPath(
             TabInfo tab,
-                                            FriendlyUrlSettings settings,
-                                            FriendlyUrlOptions options,
-                                            bool ignoreCustomRedirects,
-                                            bool homePageSiteRoot,
-                                            bool isHomeTab,
-                                            string cultureCode,
-                                            bool isDefaultCultureCode,
-                                            bool hasPath,
-                                            out bool dropLangParms,
-                                            out string customHttpAlias,
-                                            out bool isCustomPath,
-                                            Guid parentTraceId)
+            FriendlyUrlSettings settings,
+            FriendlyUrlOptions options,
+            bool ignoreCustomRedirects,
+            bool homePageSiteRoot,
+            bool isHomeTab,
+            string cultureCode,
+            bool isDefaultCultureCode,
+            bool hasPath,
+            out bool dropLangParms,
+            out string customHttpAlias,
+            out bool isCustomPath,
+            Guid parentTraceId)
         {
             string newTabPath;
             dropLangParms = false;

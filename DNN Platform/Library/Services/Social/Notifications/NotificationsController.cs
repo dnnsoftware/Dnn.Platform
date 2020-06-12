@@ -86,11 +86,11 @@ namespace DotNetNuke.Services.Social.Notifications
             {
                 action.NotificationTypeActionId = this._dataService.AddNotificationTypeAction(
                     notificationTypeId,
-                                                                                         action.NameResourceKey,
-                                                                                         action.DescriptionResourceKey,
-                                                                                         action.ConfirmResourceKey,
-                                                                                         action.APICall,
-                                                                                         this.GetCurrentUserId());
+                    action.NameResourceKey,
+                    action.DescriptionResourceKey,
+                    action.ConfirmResourceKey,
+                    action.APICall,
+                    this.GetCurrentUserId());
                 action.NotificationTypeId = notificationTypeId;
             }
         }
@@ -235,11 +235,11 @@ namespace DotNetNuke.Services.Social.Notifications
 
             notificationType.NotificationTypeId = this._dataService.CreateNotificationType(
                 notificationType.Name,
-                                                                                      notificationType.Description,
-                                                                                      (int)notificationType.TimeToLive.TotalMinutes == 0 ? Null.NullInteger : (int)notificationType.TimeToLive.TotalMinutes,
-                                                                                      notificationType.DesktopModuleId,
-                                                                                      this.GetCurrentUserId(),
-                                                                                      notificationType.IsTask);
+                notificationType.Description,
+                (int)notificationType.TimeToLive.TotalMinutes == 0 ? Null.NullInteger : (int)notificationType.TimeToLive.TotalMinutes,
+                notificationType.DesktopModuleId,
+                this.GetCurrentUserId(),
+                notificationType.IsTask);
         }
 
         public virtual void DeleteNotification(int notificationId)

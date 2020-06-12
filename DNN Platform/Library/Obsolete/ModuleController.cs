@@ -77,10 +77,10 @@ namespace DotNetNuke.Entities.Modules
             UpdateTabModuleVersion(tabModuleId);
             EventLogController.Instance.AddLog(
                 "TabModuleID",
-                               tabModuleId.ToString(),
-                               PortalController.Instance.GetCurrentPortalSettings(),
-                               UserController.Instance.GetCurrentUserInfo().UserID,
-                               EventLogController.EventLogType.TABMODULE_SETTING_DELETED);
+                tabModuleId.ToString(),
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                EventLogController.EventLogType.TABMODULE_SETTING_DELETED);
             ClearTabModuleSettingsCache(tabModuleId, null);
         }
 

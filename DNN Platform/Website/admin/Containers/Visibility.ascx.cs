@@ -110,9 +110,9 @@ namespace DotNetNuke.UI.Containers
                     case VisibilityState.Minimized:
                         return DNNClientAPI.MinMaxContentVisibile(
                             this.cmdVisibility,
-                                                                  this.ModuleControl.ModuleContext.ModuleId,
-                                                                  this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,
-                                                                  DNNClientAPI.MinMaxPersistanceType.Cookie);
+                            this.ModuleControl.ModuleContext.ModuleId,
+                            this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,
+                            DNNClientAPI.MinMaxPersistanceType.Cookie);
                     default:
                         return true;
                 }
@@ -121,10 +121,10 @@ namespace DotNetNuke.UI.Containers
             {
                 DNNClientAPI.MinMaxContentVisibile(
                     this.cmdVisibility,
-                                                   this.ModuleControl.ModuleContext.ModuleId,
-                                                   this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,
-                                                   DNNClientAPI.MinMaxPersistanceType.Cookie,
-                                                   value);
+                    this.ModuleControl.ModuleContext.ModuleId,
+                    this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,
+                    DNNClientAPI.MinMaxPersistanceType.Cookie,
+                    value);
             }
         }
 
@@ -226,13 +226,13 @@ namespace DotNetNuke.UI.Containers
                     case VisibilityState.Minimized:
                         DNNClientAPI.EnableMinMax(
                             this.cmdVisibility,
-                                                  this.ModuleContent,
-                                                  this.ModuleControl.ModuleContext.ModuleId,
-                                                  this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,
-                                                  this.MinIconLoc,
-                                                  this.MaxIconLoc,
-                                                  DNNClientAPI.MinMaxPersistanceType.Cookie,
-                                                  this.AnimationFrames);
+                            this.ModuleContent,
+                            this.ModuleControl.ModuleContext.ModuleId,
+                            this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized,
+                            this.MinIconLoc,
+                            this.MaxIconLoc,
+                            DNNClientAPI.MinMaxPersistanceType.Cookie,
+                            this.AnimationFrames);
                         break;
                 }
             }

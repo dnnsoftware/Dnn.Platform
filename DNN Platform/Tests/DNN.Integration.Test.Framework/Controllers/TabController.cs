@@ -64,7 +64,7 @@ namespace DNN.Integration.Test.Framework.Controllers
                 @"
                     SELECT ModuleID FROM {{objectQualifier}}vw_TabModules
                     WHERE TabId = '{0}' AND ISNULL(PortalID,0)={1};",
-                    pageId, PortalId);
+                pageId, PortalId);
             var result = DatabaseHelper.ExecuteQuery(squery);
             var listOfModules = new List<int>();
             foreach (var item in result)

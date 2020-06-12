@@ -69,11 +69,11 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             using (Stream targetStream =
                 this._assembly.GetManifestResourceStream(string.Format(
                     "DotNetNuke.Tests.Integration.Services.Installer.MergeFiles.{0}Target.xml",
-                                                                  testMethodName)))
+                    testMethodName)))
             {
                 Debug.Assert(
                     targetStream != null,
-                             string.Format("Unable to location embedded resource for {0}Target.xml", testMethodName));
+                    string.Format("Unable to location embedded resource for {0}Target.xml", testMethodName));
                 var targetDoc = new XmlDocument { XmlResolver = null };
                 targetDoc.Load(targetStream);
                 return targetDoc;
@@ -85,11 +85,11 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             using (Stream mergeStream =
                 this._assembly.GetManifestResourceStream(string.Format(
                     "DotNetNuke.Tests.Integration.Services.Installer.MergeFiles.{0}Merge.xml",
-                                                                  fileName)))
+                    fileName)))
             {
                 Debug.Assert(
                     mergeStream != null,
-                             string.Format("Unable to location embedded resource for {0}Merge.xml", fileName));
+                    string.Format("Unable to location embedded resource for {0}Merge.xml", fileName));
                 var merge = new XmlMerge(mergeStream, "version", "sender");
                 return merge;
             }

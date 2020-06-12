@@ -71,17 +71,17 @@ namespace DotNetNuke.Services.Social.Notifications.Data
             var createdByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
             return this._provider.ExecuteScalar<int>(
                 GetFullyQualifiedName("SendNotification"),
-                                                notification.NotificationTypeID,
-                                                portalId,
-                                                notification.To,
-                                                notification.From,
-                                                notification.Subject,
-                                                notification.Body,
-                                                notification.SenderUserID,
-                                                createdByUserId,
-                                                this._provider.GetNull(notification.ExpirationDate),
-                                                notification.IncludeDismissAction,
-                                                notification.Context);
+                notification.NotificationTypeID,
+                portalId,
+                notification.To,
+                notification.From,
+                notification.Subject,
+                notification.Body,
+                notification.SenderUserID,
+                createdByUserId,
+                this._provider.GetNull(notification.ExpirationDate),
+                notification.IncludeDismissAction,
+                notification.Context);
         }
 
         public void DeleteNotification(int notificationId)
@@ -118,7 +118,7 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         {
             return this._provider.ExecuteScalar<bool>(
                 GetFullyQualifiedName("IsToastPending"),
-                                                notificationId);
+                notificationId);
         }
 
         /// <summary>

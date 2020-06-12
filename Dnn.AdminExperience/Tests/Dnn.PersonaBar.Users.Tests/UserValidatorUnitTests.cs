@@ -123,9 +123,9 @@ namespace Dnn.PersonaBar.Users.Tests
                 .Setup(
                     u => u.GetUser(
                         It.IsAny<int>(),
-                    It.IsAny<PortalSettings>(),
-                    It.IsAny<UserInfo>(),
-                    out response))
+                        It.IsAny<PortalSettings>(),
+                        It.IsAny<UserInfo>(),
+                        out response))
                 .Returns(userInfo);
         }
 

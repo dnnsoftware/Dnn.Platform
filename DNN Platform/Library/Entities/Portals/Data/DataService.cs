@@ -19,11 +19,11 @@ namespace DotNetNuke.Entities.Portals.Data
         {
             return this._provider.ExecuteScalar<int>(
                 "AddPortalGroup",
-                                               portalGroup.PortalGroupName,
-                                               portalGroup.PortalGroupDescription,
-                                               portalGroup.MasterPortalId,
-                                               portalGroup.AuthenticationDomain,
-                                               createdByUserId);
+                portalGroup.PortalGroupName,
+                portalGroup.PortalGroupDescription,
+                portalGroup.MasterPortalId,
+                portalGroup.AuthenticationDomain,
+                createdByUserId);
         }
 
         public void DeletePortalGroup(PortalGroupInfo portalGroup)
@@ -40,11 +40,11 @@ namespace DotNetNuke.Entities.Portals.Data
         {
             this._provider.ExecuteNonQuery(
                 "UpdatePortalGroup",
-                                            portalGroup.PortalGroupId,
-                                            portalGroup.PortalGroupName,
-                                            portalGroup.PortalGroupDescription,
-                                            portalGroup.AuthenticationDomain,
-                                            lastModifiedByUserId);
+                portalGroup.PortalGroupId,
+                portalGroup.PortalGroupName,
+                portalGroup.PortalGroupDescription,
+                portalGroup.AuthenticationDomain,
+                lastModifiedByUserId);
         }
 
         public IDataReader GetSharedModulesWithPortal(PortalInfo portal)

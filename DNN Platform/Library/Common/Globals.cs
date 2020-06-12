@@ -1181,14 +1181,14 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="version">The version.</param>
         /// <param name="increment">The increment.</param>
-       public static void UpdateDataBaseVersionIncrement(Version version, int increment)
+        public static void UpdateDataBaseVersionIncrement(Version version, int increment)
         {
             // update the version and increment
            DataProvider.Instance().UpdateDatabaseVersionIncrement(version.Major, version.Minor, version.Build, increment, DotNetNukeContext.Current.Application.Name);
-            _dataBaseVersion = version;
+           _dataBaseVersion = version;
         }
 
-       public static int GetLastAppliedIteration(Version version)
+        public static int GetLastAppliedIteration(Version version)
        {
            try
            {
@@ -2382,7 +2382,7 @@ namespace DotNetNuke.Common
             // Regex is expensive so we will cache the results in a lookup table
             var validClassLookupDictionary = CBO.GetCachedObject<SharedDictionary<string, string>>(
                 new CacheItemArgs("ValidClassLookup", 200, CacheItemPriority.NotRemovable),
-                                                                                                   (CacheItemArgs cacheItemArgs) => new SharedDictionary<string, string>());
+                (CacheItemArgs cacheItemArgs) => new SharedDictionary<string, string>());
 
             bool idFound = Null.NullBoolean;
             using (ISharedCollectionLock readLock = validClassLookupDictionary.GetReadLock())
@@ -2439,7 +2439,7 @@ namespace DotNetNuke.Common
             // Regex is expensive so we will cache the results in a lookup table
             var validIDLookupDictionary = CBO.GetCachedObject<SharedDictionary<string, string>>(
                 new CacheItemArgs("ValidIDLookup", 200, CacheItemPriority.NotRemovable),
-                                                                                                (CacheItemArgs cacheItemArgs) => new SharedDictionary<string, string>());
+                (CacheItemArgs cacheItemArgs) => new SharedDictionary<string, string>());
 
             bool idFound = Null.NullBoolean;
             using (ISharedCollectionLock readLock = validIDLookupDictionary.GetReadLock())
@@ -3738,9 +3738,9 @@ namespace DotNetNuke.Common
             }
             avatarUrl = string.Format(
                 "{0}://{1}{2}",
-                                      UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request) ? "https" : "http",
-                                      avatarUrl,
-                                      !HttpContext.Current.Request.Url.IsDefaultPort && !avatarUrl.Contains(":") ? ":" + HttpContext.Current.Request.Url.Port : string.Empty);
+                UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request) ? "https" : "http",
+                avatarUrl,
+                !HttpContext.Current.Request.Url.IsDefaultPort && !avatarUrl.Contains(":") ? ":" + HttpContext.Current.Request.Url.Port : string.Empty);
 
             avatarUrl += "/DnnImageHandler.ashx?mode=profilepic&userId={0}&h={1}&w={2}";
 
@@ -3824,7 +3824,7 @@ namespace DotNetNuke.Common
         [Obsolete("This method has been deprecated. . Scheduled removal in v11.0.0.")]
         public static ArrayList GetFileList(DirectoryInfo CurrentDirectory, [Optional, DefaultParameterValue("")] // ERROR: Optional parameters aren't supported in C#
                                                                                 string strExtensions, [Optional, DefaultParameterValue(true)] // ERROR: Optional parameters aren't supported in C#
-                                                                                                          bool NoneSpecified)
+                                                                                bool NoneSpecified)
         {
             var arrFileList = new ArrayList();
             string strExtension = string.Empty;

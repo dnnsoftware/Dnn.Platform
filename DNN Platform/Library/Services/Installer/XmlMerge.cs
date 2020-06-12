@@ -523,10 +523,10 @@ namespace DotNetNuke.Services.Installer
                         case "save":
                             string commentHeaderText = string.Format(
                                 Localization.Localization.GetString("XMLMERGE_Upgrade", Localization.Localization.SharedResourceFile),
-                                                                     Environment.NewLine,
-                                                                     this.Sender,
-                                                                     this.Version,
-                                                                     DateTime.Now);
+                                Environment.NewLine,
+                                this.Sender,
+                                this.Version,
+                                DateTime.Now);
                             XmlComment commentHeader = this.TargetConfig.CreateComment(commentHeaderText);
 
                             var targetNodeContent = this.GetNodeContentWithoutComment(targetNode);

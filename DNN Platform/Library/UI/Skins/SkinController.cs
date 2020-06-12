@@ -405,11 +405,11 @@ namespace DotNetNuke.UI.Skins
         {
             DataProvider.Instance().UpdateSkinPackage(
                 skinPackage.SkinPackageID,
-                                                      skinPackage.PackageID,
-                                                      skinPackage.PortalID,
-                                                      skinPackage.SkinName,
-                                                      skinPackage.SkinType,
-                                                      UserController.Instance.GetCurrentUserInfo().UserID);
+                skinPackage.PackageID,
+                skinPackage.PortalID,
+                skinPackage.SkinName,
+                skinPackage.SkinType,
+                UserController.Instance.GetCurrentUserInfo().UserID);
             EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINPACKAGE_UPDATED);
             foreach (KeyValuePair<int, string> kvp in skinPackage.Skins)
             {

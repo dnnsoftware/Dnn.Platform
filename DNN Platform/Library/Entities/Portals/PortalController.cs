@@ -434,16 +434,16 @@ namespace DotNetNuke.Entities.Portals
 
                 PortalId = DataProvider.Instance().CreatePortal(
                     portalName,
-                                                                Host.Host.HostCurrency,
-                                                                datExpiryDate,
-                                                                Host.Host.HostFee,
-                                                                Host.Host.HostSpace,
-                                                                Host.Host.PageQuota,
-                                                                Host.Host.UserQuota,
-                                                                0, // site log history function has been removed.
-                                                                homeDirectory,
-                                                                cultureCode,
-                                                                UserController.Instance.GetCurrentUserInfo().UserID);
+                    Host.Host.HostCurrency,
+                    datExpiryDate,
+                    Host.Host.HostFee,
+                    Host.Host.HostSpace,
+                    Host.Host.PageQuota,
+                    Host.Host.UserQuota,
+                    0, // site log history function has been removed.
+                    homeDirectory,
+                    cultureCode,
+                    UserController.Instance.GetCurrentUserInfo().UserID);
 
                 // clear portal cache
                 DataCache.ClearHostCache(true);
@@ -1087,10 +1087,10 @@ namespace DotNetNuke.Entities.Portals
                 dictionary = CBO.GetCachedObject<Dictionary<string, string>>(
                     new CacheItemArgs(
                     cacheKey,
-                                                                                DataCache.PortalSettingsCacheTimeOut,
-                                                                                DataCache.PortalSettingsCachePriority, portalId, cultureCode),
-                                                                            GetPortalSettingsDictionaryCallback,
-                                                                            true);
+                    DataCache.PortalSettingsCacheTimeOut,
+                    DataCache.PortalSettingsCachePriority, portalId, cultureCode),
+                    GetPortalSettingsDictionaryCallback,
+                    true);
                 if (httpContext != null)
                 {
                     httpContext.Items[dictionaryKey] = dictionary;
@@ -1544,21 +1544,21 @@ namespace DotNetNuke.Entities.Portals
             var portal = this.GetPortal(portalID);
             this.UpdatePortalSetup(
                 portalID,
-                              administratorId,
-                              administratorRoleId,
-                              registeredRoleId,
-                              portal.SplashTabId,
-                              portal.HomeTabId,
-                              portal.LoginTabId,
-                              portal.RegisterTabId,
-                              portal.UserTabId,
-                              portal.SearchTabId,
-                              portal.Custom404TabId,
-                              portal.Custom500TabId,
-                              portal.TermsTabId,
-                              portal.PrivacyTabId,
-                              portal.AdminTabId,
-                              GetActivePortalLanguage(portalID));
+                administratorId,
+                administratorRoleId,
+                registeredRoleId,
+                portal.SplashTabId,
+                portal.HomeTabId,
+                portal.LoginTabId,
+                portal.RegisterTabId,
+                portal.UserTabId,
+                portal.SearchTabId,
+                portal.Custom404TabId,
+                portal.Custom500TabId,
+                portal.TermsTabId,
+                portal.PrivacyTabId,
+                portal.AdminTabId,
+                GetActivePortalLanguage(portalID));
         }
 
         private void ParseRoles(XPathNavigator nav, int portalID, int administratorId)
@@ -1601,21 +1601,21 @@ namespace DotNetNuke.Entities.Portals
             var portal = this.GetPortal(portalID);
             this.UpdatePortalSetup(
                 portalID,
-                              administratorId,
-                              administratorRoleId,
-                              registeredRoleId,
-                              portal.SplashTabId,
-                              portal.HomeTabId,
-                              portal.LoginTabId,
-                              portal.RegisterTabId,
-                              portal.UserTabId,
-                              portal.SearchTabId,
-                              portal.Custom404TabId,
-                              portal.Custom500TabId,
-                              portal.TermsTabId,
-                              portal.PrivacyTabId,
-                              portal.AdminTabId,
-                              GetActivePortalLanguage(portalID));
+                administratorId,
+                administratorRoleId,
+                registeredRoleId,
+                portal.SplashTabId,
+                portal.HomeTabId,
+                portal.LoginTabId,
+                portal.RegisterTabId,
+                portal.UserTabId,
+                portal.SearchTabId,
+                portal.Custom404TabId,
+                portal.Custom500TabId,
+                portal.TermsTabId,
+                portal.PrivacyTabId,
+                portal.AdminTabId,
+                GetActivePortalLanguage(portalID));
         }
 
         private void ParseTab(XmlNode nodeTab, int portalId, bool isAdminTemplate, PortalTemplateModuleAction mergeTabs, ref Hashtable hModules, ref Hashtable hTabs, bool isNewPortal)
@@ -1682,27 +1682,27 @@ namespace DotNetNuke.Entities.Portals
                 }
                 this.UpdatePortalSetup(
                     portalId,
-                                  portal.AdministratorId,
-                                  portal.AdministratorRoleId,
-                                  portal.RegisteredRoleId,
-                                  portal.SplashTabId,
-                                  portal.HomeTabId,
-                                  portal.LoginTabId,
-                                  portal.RegisterTabId,
-                                  portal.UserTabId,
-                                  portal.SearchTabId,
-                                  portal.Custom404TabId,
-                                  portal.Custom500TabId,
-                                  portal.TermsTabId,
-                                  portal.PrivacyTabId,
-                                  portal.AdminTabId,
-                                  GetActivePortalLanguage(portalId));
+                    portal.AdministratorId,
+                    portal.AdministratorRoleId,
+                    portal.RegisteredRoleId,
+                    portal.SplashTabId,
+                    portal.HomeTabId,
+                    portal.LoginTabId,
+                    portal.RegisterTabId,
+                    portal.UserTabId,
+                    portal.SearchTabId,
+                    portal.Custom404TabId,
+                    portal.Custom500TabId,
+                    portal.TermsTabId,
+                    portal.PrivacyTabId,
+                    portal.AdminTabId,
+                    GetActivePortalLanguage(portalId));
                 EventLogController.Instance.AddLog(
                     logType,
-                                   tab.TabID.ToString(),
-                                   GetCurrentPortalSettingsInternal(),
-                                   UserController.Instance.GetCurrentUserInfo().UserID,
-                                   EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
+                    tab.TabID.ToString(),
+                    GetCurrentPortalSettingsInternal(),
+                    UserController.Instance.GetCurrentUserInfo().UserID,
+                    EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
             }
         }
 
@@ -1996,40 +1996,40 @@ namespace DotNetNuke.Entities.Portals
 
             DataProvider.Instance().UpdatePortalInfo(
                 portal.PortalID,
-                                            portal.PortalGroupID,
-                                            portal.PortalName,
-                                            portal.LogoFile,
-                                            portal.FooterText,
-                                            portal.ExpiryDate,
-                                            portal.UserRegistration,
-                                            portal.BannerAdvertising,
-                                            portal.Currency,
-                                            portal.AdministratorId,
-                                            portal.HostFee,
-                                            portal.HostSpace,
-                                            portal.PageQuota,
-                                            portal.UserQuota,
-                                            portal.PaymentProcessor,
-                                            portal.ProcessorUserId,
-                                            processorPassword,
-                                            portal.Description,
-                                            portal.KeyWords,
-                                            portal.BackgroundFile,
-                                            0, // site log history function has been removed.
-                                            portal.SplashTabId,
-                                            portal.HomeTabId,
-                                            portal.LoginTabId,
-                                            portal.RegisterTabId,
-                                            portal.UserTabId,
-                                            portal.SearchTabId,
-                                            portal.Custom404TabId,
-                                            portal.Custom500TabId,
-                                            portal.TermsTabId,
-                                            portal.PrivacyTabId,
-                                            portal.DefaultLanguage,
-                                            portal.HomeDirectory,
-                                            UserController.Instance.GetCurrentUserInfo().UserID,
-                                            portal.CultureCode);
+                portal.PortalGroupID,
+                portal.PortalName,
+                portal.LogoFile,
+                portal.FooterText,
+                portal.ExpiryDate,
+                portal.UserRegistration,
+                portal.BannerAdvertising,
+                portal.Currency,
+                portal.AdministratorId,
+                portal.HostFee,
+                portal.HostSpace,
+                portal.PageQuota,
+                portal.UserQuota,
+                portal.PaymentProcessor,
+                portal.ProcessorUserId,
+                processorPassword,
+                portal.Description,
+                portal.KeyWords,
+                portal.BackgroundFile,
+                0, // site log history function has been removed.
+                portal.SplashTabId,
+                portal.HomeTabId,
+                portal.LoginTabId,
+                portal.RegisterTabId,
+                portal.UserTabId,
+                portal.SearchTabId,
+                portal.Custom404TabId,
+                portal.Custom500TabId,
+                portal.TermsTabId,
+                portal.PrivacyTabId,
+                portal.DefaultLanguage,
+                portal.HomeDirectory,
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                portal.CultureCode);
 
             EventLogController.Instance.AddLog("PortalId", portal.PortalID.ToString(), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
 
@@ -2084,21 +2084,21 @@ namespace DotNetNuke.Entities.Portals
         {
             DataProvider.Instance().UpdatePortalSetup(
                 portalId,
-                                                      administratorId,
-                                                      administratorRoleId,
-                                                      registeredRoleId,
-                                                      splashTabId,
-                                                      homeTabId,
-                                                      loginTabId,
-                                                      registerTabId,
-                                                      userTabId,
-                                                      searchTabId,
-                                                      custom404TabId,
-                                                      custom500TabId,
-                                                      termsTabId,
-                                                      privacyTabId,
-                                                      adminTabId,
-                                                      cultureCode);
+                administratorId,
+                administratorRoleId,
+                registeredRoleId,
+                splashTabId,
+                homeTabId,
+                loginTabId,
+                registerTabId,
+                userTabId,
+                searchTabId,
+                custom404TabId,
+                custom500TabId,
+                termsTabId,
+                privacyTabId,
+                adminTabId,
+                cultureCode);
             EventLogController.Instance.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
             DataCache.ClearHostCache(true);
         }
@@ -2448,7 +2448,7 @@ namespace DotNetNuke.Entities.Portals
             string cacheKey = string.Format(DataCache.PortalCacheKey, Null.NullInteger, cultureCode);
             return CBO.GetCachedObject<List<PortalInfo>>(
                 new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority, cultureCode),
-                                                                c => CBO.FillCollection<PortalInfo>(DataProvider.Instance().GetPortals(cultureCode)));
+                c => CBO.FillCollection<PortalInfo>(DataProvider.Instance().GetPortals(cultureCode)));
         }
 
         /// <summary>

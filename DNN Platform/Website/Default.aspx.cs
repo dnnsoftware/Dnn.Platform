@@ -525,7 +525,7 @@ namespace DotNetNuke.Framework
             string cacheKey = string.Format(Common.Utilities.DataCache.PortalCacheKey, this.PortalSettings.PortalId, "BackgroundFile");
             var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(
                 new CacheItemArgs(cacheKey, Common.Utilities.DataCache.PortalCacheTimeOut, Common.Utilities.DataCache.PortalCachePriority),
-                                                    this.GetBackgroundFileInfoCallBack);
+                this.GetBackgroundFileInfoCallBack);
 
             return file;
         }

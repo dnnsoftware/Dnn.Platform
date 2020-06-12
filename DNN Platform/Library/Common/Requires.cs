@@ -137,7 +137,7 @@ namespace DotNetNuke.Common
             {
                 throw new ArgumentOutOfRangeException(
                     argName,
-                                                      Localization.GetExceptionMessage("PropertyCannotBeNegative", "The property '{1}' in object '{0}' cannot be negative.", argName, argProperty));
+                    Localization.GetExceptionMessage("PropertyCannotBeNegative", "The property '{1}' in object '{0}' cannot be negative.", argName, argProperty));
             }
         }
 
@@ -209,7 +209,7 @@ namespace DotNetNuke.Common
             {
                 throw new ArgumentException(
                     argName,
-                                            Localization.GetExceptionMessage("PropertyCannotBeNullOrEmpty", "The property '{1}' in object '{0}' cannot be null or empty.", argName, argProperty));
+                    Localization.GetExceptionMessage("PropertyCannotBeNullOrEmpty", "The property '{1}' in object '{0}' cannot be null or empty.", argName, argProperty));
             }
         }
 

@@ -350,11 +350,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockDataService.Verify(
                 x => x.AddNotificationTypeAction(
                 Constants.Messaging_NotificationTypeId,
-                    Constants.Messaging_NotificationTypeActionNameResourceKey,
-                    Constants.Messaging_NotificationTypeActionDescriptionResourceKey,
-                    Constants.Messaging_NotificationTypeActionConfirmResourceKey,
-                    Constants.Messaging_NotificationTypeActionAPICall,
-                    Constants.UserID_User12), Times.Exactly(2));
+                Constants.Messaging_NotificationTypeActionNameResourceKey,
+                Constants.Messaging_NotificationTypeActionDescriptionResourceKey,
+                Constants.Messaging_NotificationTypeActionConfirmResourceKey,
+                Constants.Messaging_NotificationTypeActionAPICall,
+                Constants.UserID_User12), Times.Exactly(2));
         }
 
         [Test]

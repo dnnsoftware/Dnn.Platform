@@ -17,7 +17,7 @@ namespace DotNetNuke.Web.Validators
         {
             return targetProperty.GetCustomAttributes(true).OfType<TAttribute>().Aggregate(
                 ValidationResult.Successful,
-                                                                                           (result, attribute) =>
+                (result, attribute) =>
                                                                                            result.CombineWith(this.ValidateAttribute(target, targetProperty, attribute) ?? ValidationResult.Successful));
         }
 

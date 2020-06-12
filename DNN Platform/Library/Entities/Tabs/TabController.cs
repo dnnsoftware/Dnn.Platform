@@ -400,7 +400,7 @@ namespace DotNetNuke.Entities.Tabs
                         var portal = PortalController.Instance.GetPortal(tab.PortalID);
                         var role = RoleController.Instance.GetRole(
                             portal.PortalID,
-                                                                                r => r.RoleName == roleName);
+                            r => r.RoleName == roleName);
                         if (role != null)
                         {
                             roleID = role.RoleID;
@@ -456,10 +456,10 @@ namespace DotNetNuke.Entities.Tabs
             return CBO.GetCachedObject<Dictionary<int, List<TabAliasSkinInfo>>>(
                 new CacheItemArgs(
                 cacheKey,
-                                                                                                DataCache.TabAliasSkinCacheTimeOut,
-                                                                                                DataCache.TabAliasSkinCachePriority,
-                                                                                                portalId),
-                                                                                        this.GetAliasSkinsCallback);
+                DataCache.TabAliasSkinCacheTimeOut,
+                DataCache.TabAliasSkinCachePriority,
+                portalId),
+                this.GetAliasSkinsCallback);
 
         }
 
@@ -512,10 +512,10 @@ namespace DotNetNuke.Entities.Tabs
             return CBO.GetCachedObject<Dictionary<int, Dictionary<string, string>>>(
                 new CacheItemArgs(
                 cacheKey,
-                                                                                                DataCache.TabCustomAliasCacheTimeOut,
-                                                                                                DataCache.TabCustomAliasCachePriority,
-                                                                                                portalId),
-                                                                                        this.GetCustomAliasesCallback);
+                DataCache.TabCustomAliasCacheTimeOut,
+                DataCache.TabCustomAliasCachePriority,
+                portalId),
+                this.GetCustomAliasesCallback);
 
         }
 
@@ -617,9 +617,9 @@ namespace DotNetNuke.Entities.Tabs
             return CBO.GetCachedObject<Dictionary<int, Hashtable>>(
                 new CacheItemArgs(
                 cacheKey,
-                                                                                    DataCache.TabCacheTimeOut,
-                                                                                    DataCache.TabCachePriority),
-                        c =>
+                DataCache.TabCacheTimeOut,
+                DataCache.TabCachePriority),
+                c =>
                         {
                             var tabSettings = new Dictionary<int, Hashtable>();
                             using (var dr = this._dataProvider.GetTabSettings(portalId))
@@ -654,10 +654,10 @@ namespace DotNetNuke.Entities.Tabs
             return CBO.GetCachedObject<Dictionary<int, List<TabUrlInfo>>>(
                 new CacheItemArgs(
                 cacheKey,
-                                                                                                DataCache.TabUrlCacheTimeOut,
-                                                                                                DataCache.TabUrlCachePriority,
-                                                                                                portalId),
-                                                                                        this.GetTabUrlsCallback);
+                DataCache.TabUrlCacheTimeOut,
+                DataCache.TabUrlCachePriority,
+                portalId),
+                this.GetTabUrlsCallback);
 
         }
 
@@ -721,10 +721,10 @@ namespace DotNetNuke.Entities.Tabs
             // Log deletion
             EventLogController.Instance.AddLog(
                 "TabID",
-                            tabId.ToString(),
-                            PortalController.Instance.GetCurrentPortalSettings(),
-                            UserController.Instance.GetCurrentUserInfo().UserID,
-                            EventLogController.EventLogType.TAB_DELETED);
+                tabId.ToString(),
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                EventLogController.EventLogType.TAB_DELETED);
 
             // queue remove tab/page from search index
             var document = new SearchDocumentToDelete
@@ -861,9 +861,9 @@ namespace DotNetNuke.Entities.Tabs
                 // Tab exists so Throw
                 throw new TabExistsException(
                     tabId,
-                                             string.Format(
+                    string.Format(
                                                  "Page Exists in portal: {0}, path: {1}, culture: {2}",
-                                                           tab.PortalID, tab.TabPath, tab.CultureCode));
+                                                 tab.PortalID, tab.TabPath, tab.CultureCode));
             }
         }
 
@@ -1195,10 +1195,10 @@ namespace DotNetNuke.Entities.Tabs
 
             EventLogController.Instance.AddLog(
                 "tabUrl.TabId",
-                               tabUrl.TabId.ToString(),
-                               PortalController.Instance.GetCurrentPortalSettings(),
-                               UserController.Instance.GetCurrentUserInfo().UserID,
-                               EventLogController.EventLogType.TABURL_DELETED);
+                tabUrl.TabId.ToString(),
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                EventLogController.EventLogType.TABURL_DELETED);
             if (clearCache)
             {
                 DataCache.RemoveCache(string.Format(DataCache.TabUrlCacheKey, portalId));
@@ -1398,7 +1398,7 @@ namespace DotNetNuke.Entities.Tabs
                                 if (
                                     !originalTab.DefaultLanguageTab.LocalizedTabs.TryGetValue(
                                         locale.Code,
-                                                                                              out localizedTab))
+                                        out localizedTab))
                                 {
                                     localizedTab = originalTab.DefaultLanguageTab;
                                 }
@@ -1476,9 +1476,9 @@ namespace DotNetNuke.Entities.Tabs
             return CBO.GetCachedObject<TabCollection>(
                 new CacheItemArgs(
                 cacheKey,
-                                                                    DataCache.TabCacheTimeOut,
-                                                                    DataCache.TabCachePriority),
-                                                            c =>
+                DataCache.TabCacheTimeOut,
+                DataCache.TabCachePriority),
+                c =>
                                                             {
                                                                 List<TabInfo> tabs = CBO.FillCollection<TabInfo>(this._dataProvider.GetTabs(portalId));
                                                                 return new TabCollection(tabs);
@@ -1573,7 +1573,7 @@ namespace DotNetNuke.Entities.Tabs
                     string roleName = translatorRole;
                     RoleInfo role = RoleController.Instance.GetRole(
                         localizedTab.PortalID,
-                                                                            r => r.RoleName == roleName);
+                        r => r.RoleName == roleName);
                     if (role != null)
                     {
                         TabPermissionInfo perm =
@@ -1919,10 +1919,10 @@ namespace DotNetNuke.Entities.Tabs
 
             EventLogController.Instance.AddLog(
                 "tabUrl",
-                               tabUrl.ToString(),
-                               PortalController.Instance.GetCurrentPortalSettings(),
-                               UserController.Instance.GetCurrentUserInfo().UserID,
-                               saveLog);
+                tabUrl.ToString(),
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                saveLog);
 
             if (clearCache)
             {
@@ -2001,34 +2001,34 @@ namespace DotNetNuke.Entities.Tabs
             // Update Tab to DataStore
             this._dataProvider.UpdateTab(
                 updatedTab.TabID,
-                               updatedTab.ContentItemId,
-                               updatedTab.PortalID,
-                               updatedTab.VersionGuid,
-                               updatedTab.DefaultLanguageGuid,
-                               updatedTab.LocalizedVersionGuid,
-                               updatedTab.TabName,
-                               updatedTab.IsVisible,
-                               updatedTab.DisableLink,
-                               updatedTab.ParentId,
-                               updatedTab.IconFileRaw,
-                               updatedTab.IconFileLargeRaw,
-                               updatedTab.Title,
-                               updatedTab.Description,
-                               updatedTab.KeyWords,
-                               updatedTab.IsDeleted,
-                               updatedTab.Url,
-                               updatedTab.SkinSrc,
-                               updatedTab.ContainerSrc,
-                               updatedTab.StartDate,
-                               updatedTab.EndDate,
-                               updatedTab.RefreshInterval,
-                               updatedTab.PageHeadText,
-                               updatedTab.IsSecure,
-                               updatedTab.PermanentRedirect,
-                               updatedTab.SiteMapPriority,
-                               UserController.Instance.GetCurrentUserInfo().UserID,
-                               updatedTab.CultureCode,
-                               updatedTab.IsSystem);
+                updatedTab.ContentItemId,
+                updatedTab.PortalID,
+                updatedTab.VersionGuid,
+                updatedTab.DefaultLanguageGuid,
+                updatedTab.LocalizedVersionGuid,
+                updatedTab.TabName,
+                updatedTab.IsVisible,
+                updatedTab.DisableLink,
+                updatedTab.ParentId,
+                updatedTab.IconFileRaw,
+                updatedTab.IconFileLargeRaw,
+                updatedTab.Title,
+                updatedTab.Description,
+                updatedTab.KeyWords,
+                updatedTab.IsDeleted,
+                updatedTab.Url,
+                updatedTab.SkinSrc,
+                updatedTab.ContainerSrc,
+                updatedTab.StartDate,
+                updatedTab.EndDate,
+                updatedTab.RefreshInterval,
+                updatedTab.PageHeadText,
+                updatedTab.IsSecure,
+                updatedTab.PermanentRedirect,
+                updatedTab.SiteMapPriority,
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                updatedTab.CultureCode,
+                updatedTab.IsSystem);
 
             // Update Tags
             List<Term> terms = updatedTab.Terms;
@@ -2155,34 +2155,34 @@ namespace DotNetNuke.Entities.Tabs
 
                     DataProvider.Instance().UpdateTab(
                         tab.TabID,
-                                       tab.ContentItemId,
-                                       tab.PortalID,
-                                       tab.VersionGuid,
-                                       tab.DefaultLanguageGuid,
-                                       tab.LocalizedVersionGuid,
-                                       tab.TabName,
-                                       tab.IsVisible,
-                                       tab.DisableLink,
-                                       tab.ParentId,
-                                       tab.IconFileRaw,
-                                       tab.IconFileLargeRaw,
-                                       tab.Title,
-                                       tab.Description,
-                                       tab.KeyWords,
-                                       tab.IsDeleted,
-                                       tab.Url,
-                                       skinSrc,
-                                       containerSrc,
-                                       tab.StartDate,
-                                       tab.EndDate,
-                                       tab.RefreshInterval,
-                                       tab.PageHeadText,
-                                       tab.IsSecure,
-                                       tab.PermanentRedirect,
-                                       tab.SiteMapPriority,
-                                       UserController.Instance.GetCurrentUserInfo().UserID,
-                                       tab.CultureCode,
-                                       tab.IsSystem);
+                        tab.ContentItemId,
+                        tab.PortalID,
+                        tab.VersionGuid,
+                        tab.DefaultLanguageGuid,
+                        tab.LocalizedVersionGuid,
+                        tab.TabName,
+                        tab.IsVisible,
+                        tab.DisableLink,
+                        tab.ParentId,
+                        tab.IconFileRaw,
+                        tab.IconFileLargeRaw,
+                        tab.Title,
+                        tab.Description,
+                        tab.KeyWords,
+                        tab.IsDeleted,
+                        tab.Url,
+                        skinSrc,
+                        containerSrc,
+                        tab.StartDate,
+                        tab.EndDate,
+                        tab.RefreshInterval,
+                        tab.PageHeadText,
+                        tab.IsSecure,
+                        tab.PermanentRedirect,
+                        tab.SiteMapPriority,
+                        UserController.Instance.GetCurrentUserInfo().UserID,
+                        tab.CultureCode,
+                        tab.IsSystem);
 
                     UpdateTabVersion(tab.TabID);
 
@@ -2336,7 +2336,7 @@ namespace DotNetNuke.Entities.Tabs
                 tab.IconFile = Globals.ImportFile(portalId, XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "iconfile"));
                 tab.IconFileLarge = Globals.ImportFile(
                     portalId,
-                                                       XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "iconfilelarge"));
+                    XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "iconfilelarge"));
                 tab.Url = XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "url");
                 tab.StartDate = XmlUtils.GetNodeValueDate(tabNode, "startdate", Null.NullDate);
                 tab.EndDate = XmlUtils.GetNodeValueDate(tabNode, "enddate", Null.NullDate);
@@ -2465,15 +2465,15 @@ namespace DotNetNuke.Entities.Tabs
         {
             return GetPortalTabs(
                 GetTabsBySortOrder(portalId, PortalController.GetActivePortalLanguage(portalId), true),
-                                 excludeTabId,
-                                 includeNoneSpecified,
-                                 "<" + Localization.GetString("None_Specified") + ">",
-                                 includeHidden,
-                                 false,
-                                 false,
-                                 false,
-                                 false,
-                                 true);
+                excludeTabId,
+                includeNoneSpecified,
+                "<" + Localization.GetString("None_Specified") + ">",
+                includeHidden,
+                false,
+                false,
+                false,
+                false,
+                true);
         }
 
         /// <summary>
@@ -2491,15 +2491,15 @@ namespace DotNetNuke.Entities.Tabs
         {
             return GetPortalTabs(
                 GetTabsBySortOrder(portalId, PortalController.GetActivePortalLanguage(portalId), true),
-                                 excludeTabId,
-                                 includeNoneSpecified,
-                                 "<" + Localization.GetString("None_Specified") + ">",
-                                 includeHidden,
-                                 includeDeleted,
-                                 includeURL,
-                                 false,
-                                 false,
-                                 true);
+                excludeTabId,
+                includeNoneSpecified,
+                "<" + Localization.GetString("None_Specified") + ">",
+                includeHidden,
+                includeDeleted,
+                includeURL,
+                false,
+                false,
+                true);
         }
 
         /// <summary>
@@ -2521,15 +2521,15 @@ namespace DotNetNuke.Entities.Tabs
         {
             return GetPortalTabs(
                 GetTabsBySortOrder(portalId, PortalController.GetActivePortalLanguage(portalId), true),
-                                 excludeTabId,
-                                 includeNoneSpecified,
-                                 noneSpecifiedText,
-                                 includeHidden,
-                                 includeDeleted,
-                                 includeURL,
-                                 checkViewPermisison,
-                                 checkEditPermission,
-                                 true);
+                excludeTabId,
+                includeNoneSpecified,
+                noneSpecifiedText,
+                includeHidden,
+                includeDeleted,
+                includeURL,
+                checkViewPermisison,
+                checkEditPermission,
+                true);
         }
 
         /// <summary>

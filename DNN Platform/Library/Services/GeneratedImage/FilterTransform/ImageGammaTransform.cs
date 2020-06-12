@@ -55,7 +55,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
                     c = bmap.GetPixel(i, j);
                     bmap.SetPixel(i, j, Color.FromArgb(
                         gammaArray[c.R],
-                       gammaArray[c.G], gammaArray[c.B]));
+                        gammaArray[c.G], gammaArray[c.B]));
                 }
             }
             return (Image)bmap.Clone();

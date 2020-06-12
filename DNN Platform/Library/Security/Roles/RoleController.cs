@@ -53,10 +53,10 @@ namespace DotNetNuke.Security.Roles
         {
             EventLogController.Instance.AddLog(
                 roleInfo,
-                                PortalController.Instance.GetCurrentPortalSettings(),
-                                UserController.Instance.GetCurrentUserInfo().UserID,
-                                string.Empty,
-                                logType);
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                string.Empty,
+                logType);
 
         }
 
@@ -142,12 +142,12 @@ namespace DotNetNuke.Security.Roles
                                                   "_SUBJECT", objUser),
                 Body = Localization.GetSystemMessage(
                     objUser.Profile.PreferredLocale,
-                                                     PortalSettings,
-                                                     "EMAIL_ROLE_" +
+                    PortalSettings,
+                    "EMAIL_ROLE_" +
                                                      UserRoleActionsCaption[(int)Action] + "_BODY",
-                                                     objUser,
-                                                     Localization.GlobalResourceFile,
-                                                     Custom),
+                    objUser,
+                    Localization.GlobalResourceFile,
+                    Custom),
                 Status = MessageStatusType.Unread
             };
 
@@ -296,7 +296,7 @@ namespace DotNetNuke.Security.Roles
             var cacheKey = string.Format(DataCache.RolesCacheKey, portalId);
             return CBO.GetCachedObject<IList<RoleInfo>>(
                 new CacheItemArgs(cacheKey, DataCache.RolesCacheTimeOut, DataCache.RolesCachePriority),
-                                                                    c => provider.GetRoles(portalId).Cast<RoleInfo>().ToList());
+                c => provider.GetRoles(portalId).Cast<RoleInfo>().ToList());
         }
 
         public IList<RoleInfo> GetRoles(int portalId, Func<RoleInfo, bool> predicate)
@@ -398,10 +398,10 @@ namespace DotNetNuke.Security.Roles
                     DeleteUserRoleInternal(portalId, userId, roleId);
                     EventLogController.Instance.AddLog(
                         "UserId",
-                                       userId.ToString(CultureInfo.InvariantCulture),
-                                       PortalController.Instance.GetCurrentPortalSettings(),
-                                       UserController.Instance.GetCurrentUserInfo().UserID,
-                                       EventLogController.EventLogType.USER_ROLE_DELETED);
+                        userId.ToString(CultureInfo.InvariantCulture),
+                        PortalController.Instance.GetCurrentPortalSettings(),
+                        UserController.Instance.GetCurrentUserInfo().UserID,
+                        EventLogController.EventLogType.USER_ROLE_DELETED);
                 }
             }
             else

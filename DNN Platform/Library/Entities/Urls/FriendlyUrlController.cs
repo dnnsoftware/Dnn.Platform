@@ -1045,12 +1045,12 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                         var baseUrl = Globals.AddHTTP(settings.PortalAlias.HTTPAlias) + "/Default.aspx?TabId=" + tab.TabID;
                         var path = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(
                             tab,
-                                                                                    baseUrl,
-                                                                                    Globals.glbDefaultPage,
-                                                                                    settings.PortalAlias.HTTPAlias,
-                                                                                    false,
-                                                                                    friendlyUrlSettings,
-                                                                                    Guid.Empty);
+                            baseUrl,
+                            Globals.glbDefaultPage,
+                            settings.PortalAlias.HTTPAlias,
+                            false,
+                            friendlyUrlSettings,
+                            Guid.Empty);
 
                         var tabUrl = path.Replace(Globals.AddHTTP(settings.PortalAlias.HTTPAlias), string.Empty);
 

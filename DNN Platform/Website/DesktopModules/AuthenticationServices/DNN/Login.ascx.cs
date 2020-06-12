@@ -239,7 +239,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 var loginStatus = UserLoginStatus.LOGIN_FAILURE;
                 string userName = PortalSecurity.Instance.InputFilter(
                     this.txtUsername.Text,
-                                        PortalSecurity.FilterFlag.NoScripting |
+                    PortalSecurity.FilterFlag.NoScripting |
                                         PortalSecurity.FilterFlag.NoAngleBrackets |
                                         PortalSecurity.FilterFlag.NoMarkup);
 

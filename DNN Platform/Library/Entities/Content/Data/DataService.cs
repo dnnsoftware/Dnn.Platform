@@ -49,14 +49,14 @@ namespace DotNetNuke.Entities.Content.Data
         {
             return this._provider.ExecuteScalar<int>(
                 "AddContentItem",
-                                               contentItem.Content,
-                                               contentItem.ContentTypeId,
-                                               contentItem.TabID,
-                                               contentItem.ModuleID,
-                                               contentItem.ContentKey,
-                                               contentItem.Indexed,
-                                               createdByUserId,
-                                               this._provider.GetNull(contentItem.StateID));
+                contentItem.Content,
+                contentItem.ContentTypeId,
+                contentItem.TabID,
+                contentItem.ModuleID,
+                contentItem.ContentKey,
+                contentItem.Indexed,
+                createdByUserId,
+                this._provider.GetNull(contentItem.StateID));
         }
 
         /// <summary>
@@ -154,15 +154,15 @@ namespace DotNetNuke.Entities.Content.Data
         {
             this._provider.ExecuteNonQuery(
                 "UpdateContentItem",
-                                     contentItem.ContentItemId,
-                                     contentItem.Content,
-                                     contentItem.ContentTypeId,
-                                     contentItem.TabID,
-                                     contentItem.ModuleID,
-                                     contentItem.ContentKey,
-                                     contentItem.Indexed,
-                                     createdByUserId,
-                                     this._provider.GetNull(contentItem.StateID));
+                contentItem.ContentItemId,
+                contentItem.Content,
+                contentItem.ContentTypeId,
+                contentItem.TabID,
+                contentItem.ModuleID,
+                contentItem.ContentKey,
+                contentItem.Indexed,
+                createdByUserId,
+                this._provider.GetNull(contentItem.StateID));
         }
 
 
@@ -442,13 +442,13 @@ namespace DotNetNuke.Entities.Content.Data
         {
             return this._provider.ExecuteScalar<int>(
                 "AddVocabulary",
-                                               vocabulary.Type,
-                                               vocabulary.Name,
-                                               vocabulary.Description,
-                                               vocabulary.Weight,
-                                               this._provider.GetNull(vocabulary.ScopeId),
-                                               vocabulary.ScopeTypeId,
-                                               createdByUserId);
+                vocabulary.Type,
+                vocabulary.Name,
+                vocabulary.Description,
+                vocabulary.Weight,
+                this._provider.GetNull(vocabulary.ScopeId),
+                vocabulary.ScopeTypeId,
+                createdByUserId);
         }
 
         /// <summary>
@@ -478,14 +478,14 @@ namespace DotNetNuke.Entities.Content.Data
         {
             this._provider.ExecuteNonQuery(
                 "UpdateVocabulary",
-                                     vocabulary.VocabularyId,
-                                     vocabulary.Type,
-                                     vocabulary.Name,
-                                     vocabulary.Description,
-                                     vocabulary.Weight,
-                                     vocabulary.ScopeId,
-                                     vocabulary.ScopeTypeId,
-                                     lastModifiedByUserId);
+                vocabulary.VocabularyId,
+                vocabulary.Type,
+                vocabulary.Name,
+                vocabulary.Description,
+                vocabulary.Weight,
+                vocabulary.ScopeId,
+                vocabulary.ScopeTypeId,
+                lastModifiedByUserId);
         }
     }
 }

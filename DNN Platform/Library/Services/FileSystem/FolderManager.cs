@@ -78,19 +78,19 @@ namespace DotNetNuke.Services.FileSystem
                 folder.FolderPath = PathUtils.Instance.FormatFolderPath(folder.FolderPath);
                 folder.FolderID = DataProvider.Instance().AddFolder(
                     folder.PortalID,
-                                                                    folder.UniqueId,
-                                                                    folder.VersionGuid,
-                                                                    folder.FolderPath,
-                                                                    folder.MappedPath,
-                                                                    folder.StorageLocation,
-                                                                    folder.IsProtected,
-                                                                    folder.IsCached,
-                                                                    folder.LastUpdated,
-                                                                    this.GetCurrentUserId(),
-                                                                    folder.FolderMappingID,
-                                                                    isVersioned,
-                                                                    workflowId,
-                                                                    parentId);
+                    folder.UniqueId,
+                    folder.VersionGuid,
+                    folder.FolderPath,
+                    folder.MappedPath,
+                    folder.StorageLocation,
+                    folder.IsProtected,
+                    folder.IsCached,
+                    folder.LastUpdated,
+                    this.GetCurrentUserId(),
+                    folder.FolderMappingID,
+                    isVersioned,
+                    workflowId,
+                    parentId);
 
                 // Refetch folder for logging
                 folder = this.GetFolder(folder.PortalID, folder.FolderPath);
@@ -164,7 +164,7 @@ namespace DotNetNuke.Services.FileSystem
                 throw new FolderProviderException(
                     Localization.Localization.GetExceptionMessage(
                         "DeleteFolderUnderlyingSystemError",
-                                                                  "The underlying system threw an exception. The folder has not been deleted."),
+                        "The underlying system threw an exception. The folder has not been deleted."),
                     ex);
             }
 
@@ -216,19 +216,19 @@ namespace DotNetNuke.Services.FileSystem
 
             DataProvider.Instance().UpdateFolder(
                 folder.PortalID,
-                                                    folder.VersionGuid,
-                                                    folder.FolderID,
-                                                    PathUtils.Instance.FormatFolderPath(folder.FolderPath),
-                                                    folder.StorageLocation,
-                                                    folder.MappedPath,
-                                                    folder.IsProtected,
-                                                    folder.IsCached,
-                                                    folder.LastUpdated,
-                                                    this.GetCurrentUserId(),
-                                                    folder.FolderMappingID,
-                                                    folder.IsVersioned,
-                                                    folder.WorkflowID,
-                                                    folder.ParentID);
+                folder.VersionGuid,
+                folder.FolderID,
+                PathUtils.Instance.FormatFolderPath(folder.FolderPath),
+                folder.StorageLocation,
+                folder.MappedPath,
+                folder.IsProtected,
+                folder.IsCached,
+                folder.LastUpdated,
+                this.GetCurrentUserId(),
+                folder.FolderMappingID,
+                folder.IsVersioned,
+                folder.WorkflowID,
+                folder.ParentID);
 
             if (clearCache)
             {
@@ -826,7 +826,7 @@ namespace DotNetNuke.Services.FileSystem
                 throw new InvalidOperationException(string.Format(
                     Localization.Localization.GetExceptionMessage(
                         "CannotMoveFolderAlreadyExists",
-                    "The folder with name '{0}' cannot be moved. A folder with that name already exists under the folder '{1}'.", folder.FolderName, destinationFolder.FolderName)));
+                        "The folder with name '{0}' cannot be moved. A folder with that name already exists under the folder '{1}'.", folder.FolderName, destinationFolder.FolderName)));
             }
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
@@ -837,7 +837,7 @@ namespace DotNetNuke.Services.FileSystem
                 throw new InvalidOperationException(string.Format(
                     Localization.Localization.GetExceptionMessage(
                         "CannotMoveFolderBetweenFolderType",
-                    "The folder with name '{0}' cannot be moved. Move Folder operation between this two folder types is not allowed", folder.FolderName)));
+                        "The folder with name '{0}' cannot be moved. Move Folder operation between this two folder types is not allowed", folder.FolderName)));
             }
 
             if (!this.IsMoveOperationValid(folder, destinationFolder, newFolderPath))

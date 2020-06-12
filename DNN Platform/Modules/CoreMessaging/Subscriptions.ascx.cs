@@ -170,7 +170,7 @@ namespace DotNetNuke.Modules.CoreMessaging
                        { "usePopup", usePopup },
                        { "returnUrl", HttpContext.Current.Request.UrlReferrer },
                        { "uniqueId", uniqueId },
-                    };
+                   };
         }
 
         private static string GetHistoryNavigationKey(string moduleName)

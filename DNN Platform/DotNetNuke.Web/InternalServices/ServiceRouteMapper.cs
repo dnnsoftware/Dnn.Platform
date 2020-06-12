@@ -12,9 +12,9 @@ namespace DotNetNuke.Web.InternalServices
         {
             mapRouteManager.MapHttpRoute(
                 "InternalServices",
-                                            "default",
-                                            "{controller}/{action}",
-                                            new[] { "DotNetNuke.Web.InternalServices" });
+                "default",
+                "{controller}/{action}",
+                new[] { "DotNetNuke.Web.InternalServices" });
         }
     }
 }

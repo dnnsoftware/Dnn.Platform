@@ -125,10 +125,10 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             return CBO.GetCachedObject<IList<IRemoteStorageItem>>(
                 new CacheItemArgs(
                 cacheKey,
-                                                                        this.ListObjectsCacheTimeout,
-                                                                        CacheItemPriority.Default,
-                                                                        folderMapping.FolderMappingID),
-                                        c =>
+                this.ListObjectsCacheTimeout,
+                CacheItemPriority.Default,
+                folderMapping.FolderMappingID),
+                c =>
                                         {
                                             var container = this.GetContainer(folderMapping);
                                             var synchBatchSize = GetIntegerSetting(folderMapping, Constants.SyncBatchSize, Constants.DefaultSyncBatchSize);

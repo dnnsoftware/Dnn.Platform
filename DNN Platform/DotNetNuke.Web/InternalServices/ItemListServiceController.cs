@@ -542,7 +542,7 @@ namespace DotNetNuke.Web.InternalServices
                     .Where(t => (!t.DisableLink || includeDisabled) && !t.IsSystem)
                     .ToList();
 
-                if (this.PortalSettings.UserInfo.IsSuperUser && includeHostPages)
+            if (this.PortalSettings.UserInfo.IsSuperUser && includeHostPages)
                 {
                     tabs.AddRange(TabController.Instance.GetTabsByPortal(-1).AsList().Where(t => !t.IsDeleted && !t.DisableLink && !t.IsSystem).ToList());
                 }

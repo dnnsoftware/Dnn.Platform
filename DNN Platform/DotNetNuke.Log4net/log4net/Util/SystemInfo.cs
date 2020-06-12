@@ -745,7 +745,7 @@ namespace log4net.Util
                         {
                             // Found type in loaded assembly
                             LogLog.Debug(declaringType, "Loaded type [" + typeName + "] from assembly [" + assembly.FullName + "] by searching loaded assemblies.");
-                                                        if (assembly.GlobalAssemblyCache)
+                            if (assembly.GlobalAssemblyCache)
                                                         {
                                                             fallback = t;
                                                         }
@@ -755,7 +755,7 @@ namespace log4net.Util
                                                         }
                         }
                     }
-                                        if (fallback != null)
+                    if (fallback != null)
                                         {
                                             return fallback;
                                         }

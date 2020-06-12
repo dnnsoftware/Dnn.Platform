@@ -205,11 +205,11 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             DataProvider.Instance().AddContentWorkflowStatePermission(
                 permission.StateID,
-                                                                       permission.PermissionID,
-                                                                       permission.RoleID,
-                                                                       permission.AllowAccess,
-                                                                       permission.UserID,
-                                                                       lastModifiedByUserID);
+                permission.PermissionID,
+                permission.RoleID,
+                permission.AllowAccess,
+                permission.UserID,
+                lastModifiedByUserID);
         }
 
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager. Scheduled removal in v10.0.0.")]
@@ -217,12 +217,12 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             DataProvider.Instance().UpdateContentWorkflowStatePermission(
                 permission.WorkflowStatePermissionID,
-                                                                            permission.StateID,
-                                                                            permission.PermissionID,
-                                                                            permission.RoleID,
-                                                                            permission.AllowAccess,
-                                                                            permission.UserID,
-                                                                            lastModifiedByUserID);
+                permission.StateID,
+                permission.PermissionID,
+                permission.RoleID,
+                permission.AllowAccess,
+                permission.UserID,
+                lastModifiedByUserID);
         }
 
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager. Scheduled removal in v10.0.0.")]
@@ -242,16 +242,16 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             var id = DataProvider.Instance().AddContentWorkflowState(
                 state.WorkflowID,
-                                                                state.StateName,
-                                                                state.Order,
-                                                                state.IsActive,
-                                                                state.SendEmail,
-                                                                state.SendMessage,
-                                                                state.IsDisposalState,
-                                                                state.OnCompleteMessageSubject,
-                                                                state.OnCompleteMessageBody,
-                                                                state.OnDiscardMessageSubject,
-                                                                state.OnDiscardMessageBody);
+                state.StateName,
+                state.Order,
+                state.IsActive,
+                state.SendEmail,
+                state.SendMessage,
+                state.IsDisposalState,
+                state.OnCompleteMessageSubject,
+                state.OnCompleteMessageBody,
+                state.OnDiscardMessageSubject,
+                state.OnDiscardMessageBody);
             state.StateID = id;
         }
 
@@ -260,16 +260,16 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             DataProvider.Instance().UpdateContentWorkflowState(
                 state.StateID,
-                                                                state.StateName,
-                                                                state.Order,
-                                                                state.IsActive,
-                                                                state.SendEmail,
-                                                                state.SendMessage,
-                                                                state.IsDisposalState,
-                                                                state.OnCompleteMessageSubject,
-                                                                state.OnCompleteMessageBody,
-                                                                state.OnDiscardMessageSubject,
-                                                                state.OnDiscardMessageBody);
+                state.StateName,
+                state.Order,
+                state.IsActive,
+                state.SendEmail,
+                state.SendMessage,
+                state.IsDisposalState,
+                state.OnCompleteMessageSubject,
+                state.OnCompleteMessageBody,
+                state.OnDiscardMessageSubject,
+                state.OnDiscardMessageBody);
         }
 
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowStateManager. Scheduled removal in v10.0.0.")]

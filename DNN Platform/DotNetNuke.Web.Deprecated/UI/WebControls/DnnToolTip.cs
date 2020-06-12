@@ -23,7 +23,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
       public string ResourceKey { get; set; }
 
-        public bool Localize
+      public bool Localize
       {
          get
          {

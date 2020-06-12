@@ -83,7 +83,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             return portalModulesList.ToDictionary(
                 portalModule => portalModule.Value.DesktopModuleID,
-                                                    portalModule => portalModule.Key);
+                portalModule => portalModule.Key);
         }
 
         private static Dictionary<int, string> GetTabModules(int tabID)

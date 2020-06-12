@@ -87,7 +87,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
                 {
                     Logger.ErrorFormat(
                         "Unable to create {0} while calling Application start implementors.  {1}",
-                                       type.FullName, e.Message);
+                        type.FullName, e.Message);
                     appEventHandler = null;
                 }
 

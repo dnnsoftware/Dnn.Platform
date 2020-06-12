@@ -388,56 +388,56 @@ namespace DotNetNuke.Modules.DigitalAssets
                         CssClass = "permission_READ",
                         ImageUrl = IconController.IconURL("FileDownload", "16x16", "Black")
                     },
-                new DnnMenuItem
+                    new DnnMenuItem
                     {
                         Text = Localization.GetString("Rename", this.LocalResourceFile),
                         Value = "Rename",
                         CssClass = "permission_MANAGE singleItem",
                         ImageUrl = IconController.IconURL("FileRename", "16x16", "Black")
                     },
-                new DnnMenuItem
+                    new DnnMenuItem
                     {
                         Text = Localization.GetString("Copy", this.LocalResourceFile),
                         Value = "Copy",
                         CssClass = "permission_COPY onlyFiles",
                         ImageUrl = IconController.IconURL("FileCopy", "16x16", "Black")
                     },
-                new DnnMenuItem
+                    new DnnMenuItem
                     {
                         Text = Localization.GetString("Move", this.LocalResourceFile),
                         Value = "Move",
                         CssClass = "permission_COPY disabledIfFiltered",
                         ImageUrl = IconController.IconURL("FileMove", "16x16", "Black")
                     },
-                new DnnMenuItem
+                    new DnnMenuItem
                     {
                         Text = Localization.GetString("Delete", this.LocalResourceFile),
                         Value = "Delete",
                         CssClass = "permission_DELETE",
                         ImageUrl = IconController.IconURL("FileDelete", "16x16", "Black")
                     },
-                new DnnMenuItem
+                    new DnnMenuItem
                     {
                         Text = Localization.GetString("Unlink", this.LocalResourceFile),
                         Value = "Unlink",
                         CssClass = "permission_DELETE singleItem onlyFolders",
                         ImageUrl = IconController.IconURL("UnLink", "16x16", "Black")
                     },
-                new DnnMenuItem
+                    new DnnMenuItem
                     {
                         Text = Localization.GetString("UnzipFile", this.LocalResourceFile),
                         Value = "UnzipFile",
                         CssClass = "permission_MANAGE singleItem onlyFiles",
                         ImageUrl = IconController.IconURL("Unzip", "16x16", "Gray")
                     },
-                new DnnMenuItem
+                    new DnnMenuItem
                     {
                         Text = Localization.GetString("ViewProperties", this.LocalResourceFile),
                         Value = "Properties",
                         CssClass = "permission_READ singleItem",
                         ImageUrl = IconController.IconURL("ViewProperties", "16x16", "CtxtMn")
                     },
-                new DnnMenuItem
+                    new DnnMenuItem
                     {
                         Text = Localization.GetString("GetUrl", this.LocalResourceFile),
                         Value = "GetUrl",

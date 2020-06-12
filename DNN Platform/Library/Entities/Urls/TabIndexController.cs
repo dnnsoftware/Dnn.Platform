@@ -28,16 +28,16 @@ namespace DotNetNuke.Entities.Urls
 
         private static void AddCustomRedirectsToDictionary(
             SharedDictionary<string, string> tabIndex,
-                                                    Dictionary<string, DupKeyCheck> dupCheck,
-                                                    string httpAlias,
-                                                    TabInfo tab,
-                                                    FriendlyUrlSettings settings,
-                                                    FriendlyUrlOptions options,
-                                                    ref string rewritePath,
-                                                    out int tabPathDepth,
-                                                    ref List<string> customHttpAliasesUsed,
-                                                    bool isDeleted,
-                                                    Guid parentTraceId)
+            Dictionary<string, DupKeyCheck> dupCheck,
+            string httpAlias,
+            TabInfo tab,
+            FriendlyUrlSettings settings,
+            FriendlyUrlOptions options,
+            ref string rewritePath,
+            out int tabPathDepth,
+            ref List<string> customHttpAliasesUsed,
+            bool isDeleted,
+            Guid parentTraceId)
         {
             tabPathDepth = 1;
             var duplicateHandlingPreference = UrlEnums.TabKeyPreference.TabRedirected;
@@ -93,27 +93,27 @@ namespace DotNetNuke.Entities.Urls
                     case "301":
                         redirectedRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
                             rewritePath,
-                                                                                        ActionType.Redirect301,
-                                                                                        RedirectReason.Custom_Redirect);
+                            ActionType.Redirect301,
+                            RedirectReason.Custom_Redirect);
                         break;
                     case "302":
                         redirectedRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
                             rewritePath,
-                                                                                        ActionType.Redirect302,
-                                                                                        RedirectReason.Custom_Redirect);
+                            ActionType.Redirect302,
+                            RedirectReason.Custom_Redirect);
                         break;
                     case "404":
                         redirectedRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
                             rewritePath,
-                                                                                        ActionType.Output404,
-                                                                                        RedirectReason.Custom_Redirect);
+                            ActionType.Output404,
+                            RedirectReason.Custom_Redirect);
                         break;
                     case "200":
                         // when there is a 200, then replace the 'standard' path
                         newRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
                             newRewritePath,
-                                                                                        ActionType.CheckFor301,
-                                                                                        RedirectReason.Custom_Redirect);
+                            ActionType.CheckFor301,
+                            RedirectReason.Custom_Redirect);
                         // 672 : replacement urls have preference over all redirects, deleted tabs and standard urls
                         duplicateHandlingPreference = UrlEnums.TabKeyPreference.TabOK;
                         break;
@@ -136,8 +136,8 @@ namespace DotNetNuke.Entities.Urls
                                                                             RedirectReason.Custom_Redirect);
                         newRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
                             newRewritePath,
-                                                                            ActionType.CheckFor301,
-                                                                            RedirectReason.Custom_Redirect);
+                            ActionType.CheckFor301,
+                            RedirectReason.Custom_Redirect);
                         duplicateHandlingPreference = UrlEnums.TabKeyPreference.TabRedirected;
                     }
                     // add on the culture code for the redirect, so that the rewrite silently sets the culture for the page
@@ -148,15 +148,15 @@ namespace DotNetNuke.Entities.Urls
                 {
                     AddToTabDict(
                         tabIndex,
-                                    dupCheck,
-                                    httpAlias,
-                                    redirectTabPath,
-                                    redirectedRewritePath,
-                                    tab.TabID,
-                                    duplicateHandlingPreference,
-                                    ref tabPathDepth,
-                                    checkForDupUrls,
-                                    isDeleted);
+                        dupCheck,
+                        httpAlias,
+                        redirectTabPath,
+                        redirectedRewritePath,
+                        tab.TabID,
+                        duplicateHandlingPreference,
+                        ref tabPathDepth,
+                        checkForDupUrls,
+                        isDeleted);
                 }
                 else
                 {
@@ -164,8 +164,8 @@ namespace DotNetNuke.Entities.Urls
                     // if not a redirect already, make it a redirect for the wrong (original) rewrite path
                     string wrongAliasRedirectedRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
                         redirectedRewritePath,
-                                                                                                            ActionType.Redirect301,
-                                                                                                            RedirectReason.Custom_Tab_Alias);
+                        ActionType.Redirect301,
+                        RedirectReason.Custom_Tab_Alias);
                     // add in the entry with the specific redirectAlias
                     if (redirectTabPath == string.Empty)
                     {
@@ -173,31 +173,31 @@ namespace DotNetNuke.Entities.Urls
                         string tabPath = GetTabPath(tab, options, parentTraceId);
                         string stdDictRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
                             rewritePath,
-                                                                                                  ActionType.CheckFor301,
-                                                                                                  RedirectReason.Custom_Tab_Alias);
+                            ActionType.CheckFor301,
+                            RedirectReason.Custom_Tab_Alias);
                         AddToTabDict(
                             tabIndex,
-                                        dupCheck,
-                                        redirectAlias,
-                                        tabPath,
-                                        stdDictRewritePath,
-                                        tab.TabID,
-                                        UrlEnums.TabKeyPreference.TabOK,
-                                        ref tabPathDepth,
-                                        checkForDupUrls,
-                                        isDeleted);
+                            dupCheck,
+                            redirectAlias,
+                            tabPath,
+                            stdDictRewritePath,
+                            tab.TabID,
+                            UrlEnums.TabKeyPreference.TabOK,
+                            ref tabPathDepth,
+                            checkForDupUrls,
+                            isDeleted);
                         // then add in the portal alias with no tabpath (ie like a site root url)
                         AddToTabDict(
                             tabIndex,
-                                        dupCheck,
-                                        redirectAlias,
-                                        redirectTabPath,
-                                        redirectedRewritePath,
-                                        tab.TabID,
-                                        duplicateHandlingPreference,
-                                        ref tabPathDepth,
-                                        checkForDupUrls,
-                                        isDeleted);
+                            dupCheck,
+                            redirectAlias,
+                            redirectTabPath,
+                            redirectedRewritePath,
+                            tab.TabID,
+                            duplicateHandlingPreference,
+                            ref tabPathDepth,
+                            checkForDupUrls,
+                            isDeleted);
                         // 838 : disabled tabs with custom aliases - still load the settings page without redirect
                         // disabled / not active by date / external url pages cannot navigate to settings page
                         if (tab.DisableLink || !string.IsNullOrEmpty(tab.Url) ||
@@ -210,15 +210,15 @@ namespace DotNetNuke.Entities.Urls
                             // add in the ctl/tab Url for the custom alias, with no redirect so that the page settings can be loaded
                             AddToTabDict(
                                 tabIndex,
-                                            dupCheck,
-                                            redirectAlias,
-                                            settingsUrl,
-                                            settingsRewritePath,
-                                            tab.TabID,
-                                            UrlEnums.TabKeyPreference.TabRedirected,
-                                            ref tabPathDepth,
-                                            settings.CheckForDuplicateUrls,
-                                            isDeleted);
+                                dupCheck,
+                                redirectAlias,
+                                settingsUrl,
+                                settingsRewritePath,
+                                tab.TabID,
+                                UrlEnums.TabKeyPreference.TabRedirected,
+                                ref tabPathDepth,
+                                settings.CheckForDuplicateUrls,
+                                isDeleted);
                         }
                     }
                     else
@@ -226,27 +226,27 @@ namespace DotNetNuke.Entities.Urls
                         // add in custom entry with different alias
                         AddToTabDict(
                             tabIndex,
-                                        dupCheck,
-                                        redirectAlias,
-                                        redirectTabPath,
-                                        redirectedRewritePath,
-                                        tab.TabID,
-                                        duplicateHandlingPreference,
-                                        ref tabPathDepth,
-                                        checkForDupUrls,
-                                        isDeleted);
+                            dupCheck,
+                            redirectAlias,
+                            redirectTabPath,
+                            redirectedRewritePath,
+                            tab.TabID,
+                            duplicateHandlingPreference,
+                            ref tabPathDepth,
+                            checkForDupUrls,
+                            isDeleted);
                         // add in the entry with the original alias, plus an instruction to redirect if it's used
                         AddToTabDict(
                             tabIndex,
-                                        dupCheck,
-                                        httpAlias,
-                                        redirectTabPath,
-                                        wrongAliasRedirectedRewritePath,
-                                        tab.TabID,
-                                        duplicateHandlingPreference,
-                                        ref tabPathDepth,
-                                        checkForDupUrls,
-                                        isDeleted);
+                            dupCheck,
+                            httpAlias,
+                            redirectTabPath,
+                            wrongAliasRedirectedRewritePath,
+                            tab.TabID,
+                            duplicateHandlingPreference,
+                            ref tabPathDepth,
+                            checkForDupUrls,
+                            isDeleted);
                     }
                 }
                 if (tabPathDepth > maxTabPathDepth)
@@ -277,60 +277,60 @@ namespace DotNetNuke.Entities.Urls
 
         private static void AddPermanentRedirectToDictionary(
             SharedDictionary<string, string> tabIndex,
-                                                        Dictionary<string, DupKeyCheck> dupCheck,
-                                                        string httpAlias,
-                                                        TabInfo tab,
-                                                        string tabPath,
-                                                        ref string rewritePath,
-                                                        ref int tabPathDepth,
-                                                        bool checkForDupUrls,
-                                                        bool isDeleted)
+            Dictionary<string, DupKeyCheck> dupCheck,
+            string httpAlias,
+            TabInfo tab,
+            string tabPath,
+            ref string rewritePath,
+            ref int tabPathDepth,
+            bool checkForDupUrls,
+            bool isDeleted)
         {
             // because we have to catch all versions of this in the dictionary, then we have to add the 'base' url
             AddToTabDict(
                 tabIndex,
-                            dupCheck,
-                            httpAlias,
-                            tab.TabPath + "/tabid/" + tab.TabID + "/default",
-                            rewritePath,
-                            tab.TabID,
-                            UrlEnums.TabKeyPreference.TabRedirected,
-                            ref tabPathDepth,
-                            checkForDupUrls,
-                            isDeleted);
+                dupCheck,
+                httpAlias,
+                tab.TabPath + "/tabid/" + tab.TabID + "/default",
+                rewritePath,
+                tab.TabID,
+                UrlEnums.TabKeyPreference.TabRedirected,
+                ref tabPathDepth,
+                checkForDupUrls,
+                isDeleted);
             // and put in the name-less one as well, just in case a prior version of the site was runnign without the tabnames (urlformat=sefriendly)
             AddToTabDict(
                 tabIndex,
-                            dupCheck,
-                            httpAlias,
-                            "/tabid/" + tab.TabID + "/default",
-                            rewritePath,
-                            tab.TabID,
-                            UrlEnums.TabKeyPreference.TabRedirected,
-                            ref tabPathDepth,
-                            checkForDupUrls,
-                            isDeleted);
+                dupCheck,
+                httpAlias,
+                "/tabid/" + tab.TabID + "/default",
+                rewritePath,
+                tab.TabID,
+                UrlEnums.TabKeyPreference.TabRedirected,
+                ref tabPathDepth,
+                checkForDupUrls,
+                isDeleted);
             // finally, put one in for the ctl/tab combination, so that you can actually get to the page settings
             AddToTabDict(
                 tabIndex,
-                            dupCheck,
-                            httpAlias,
-                            tabPath.Replace("//", "/") + "/ctl/Tab",
-                            CreateRewritePath(tab.TabID, string.Empty, "ctl=Tab"),
-                            tab.TabID,
-                            UrlEnums.TabKeyPreference.TabRedirected,
-                            ref tabPathDepth,
-                            checkForDupUrls,
-                            isDeleted);
+                dupCheck,
+                httpAlias,
+                tabPath.Replace("//", "/") + "/ctl/Tab",
+                CreateRewritePath(tab.TabID, string.Empty, "ctl=Tab"),
+                tab.TabID,
+                UrlEnums.TabKeyPreference.TabRedirected,
+                ref tabPathDepth,
+                checkForDupUrls,
+                isDeleted);
         }
 
         private static void AddSiteRootRedirects(
             PathSizes pathSizes,
-                                        SharedDictionary<string, string> tabIndex,
-                                        IEnumerable<PortalAliasInfo> chosenAliases,
-                                        bool hasSiteRootRedirect,
-                                        Dictionary<string, DupKeyCheck> dupCheck,
-                                        ICollection<string> usingHttpAliases)
+            SharedDictionary<string, string> tabIndex,
+            IEnumerable<PortalAliasInfo> chosenAliases,
+            bool hasSiteRootRedirect,
+            Dictionary<string, DupKeyCheck> dupCheck,
+            ICollection<string> usingHttpAliases)
         {
             foreach (PortalAliasInfo alias in chosenAliases) // and that is once per portal alias per portal
             {
@@ -342,15 +342,15 @@ namespace DotNetNuke.Entities.Urls
                     int tempPathDepth = 0;
                     AddToTabDict(
                         tabIndex,
-                                 dupCheck,
-                                 httpAlias,
-                                 "*",
-                                 string.Empty,
-                                 -1,
-                                 UrlEnums.TabKeyPreference.TabOK,
-                                 ref tempPathDepth,
-                                 false,
-                                 false);
+                        dupCheck,
+                        httpAlias,
+                        "*",
+                        string.Empty,
+                        -1,
+                        UrlEnums.TabKeyPreference.TabOK,
+                        ref tempPathDepth,
+                        false,
+                        false);
                 }
 
                 pathSizes.SetAliasDepth(httpAlias);
@@ -362,10 +362,10 @@ namespace DotNetNuke.Entities.Urls
 
         private static void AddStandardPagesToDict(
             SharedDictionary<string, string> tabIndex,
-                                                    Dictionary<string, DupKeyCheck> dupCheck,
-                                                    string httpAlias,
-                                                    int portalId,
-                                                    string cultureCode)
+            Dictionary<string, DupKeyCheck> dupCheck,
+            string httpAlias,
+            int portalId,
+            string cultureCode)
         {
             int tabDepth = 0; // we ignore tab depth as it is only one for these in-built urls
             // 850 : add in the culture code to the redirect if supplied
@@ -390,15 +390,15 @@ namespace DotNetNuke.Entities.Urls
             }
             AddToTabDict(
                 tabIndex,
-                            dupCheck,
-                            httpAlias,
-                            "login",
-                            loginRewritePath,
-                            loginTabId,
-                            loginPreference,
-                            ref tabDepth,
-                            false,
-                            false);
+                dupCheck,
+                httpAlias,
+                "login",
+                loginRewritePath,
+                loginTabId,
+                loginPreference,
+                ref tabDepth,
+                false,
+                false);
 
             var registerRewritePath = portalRewritePath + "&ctl=Register" + cultureRewritePath;
             var registerPreference = UrlEnums.TabKeyPreference.TabDeleted;
@@ -411,15 +411,15 @@ namespace DotNetNuke.Entities.Urls
             }
             AddToTabDict(
                 tabIndex,
-                            dupCheck,
-                            httpAlias,
-                            "register",
-                            registerRewritePath,
-                            registerTabId,
-                            registerPreference,
-                            ref tabDepth,
-                            false,
-                            false);
+                dupCheck,
+                httpAlias,
+                "register",
+                registerRewritePath,
+                registerTabId,
+                registerPreference,
+                ref tabDepth,
+                false,
+                false);
             AddToTabDict(
                 tabIndex,
                 dupCheck,
@@ -433,43 +433,43 @@ namespace DotNetNuke.Entities.Urls
                 false);
             AddToTabDict(
                 tabIndex,
-                            dupCheck,
-                            httpAlias,
-                            "terms",
-                            portalRewritePath + "&ctl=Terms" + cultureRewritePath,
-                            -1,
-                            UrlEnums.TabKeyPreference.TabDeleted,
-                            ref tabDepth,
-                            false,
-                            false);
+                dupCheck,
+                httpAlias,
+                "terms",
+                portalRewritePath + "&ctl=Terms" + cultureRewritePath,
+                -1,
+                UrlEnums.TabKeyPreference.TabDeleted,
+                ref tabDepth,
+                false,
+                false);
             AddToTabDict(
                 tabIndex,
-                            dupCheck,
-                            httpAlias,
-                            "privacy",
-                            portalRewritePath + "&ctl=Privacy" + cultureRewritePath,
-                            -1,
-                            UrlEnums.TabKeyPreference.TabDeleted,
-                            ref tabDepth,
-                            false,
-                            false);
+                dupCheck,
+                httpAlias,
+                "privacy",
+                portalRewritePath + "&ctl=Privacy" + cultureRewritePath,
+                -1,
+                UrlEnums.TabKeyPreference.TabDeleted,
+                ref tabDepth,
+                false,
+                false);
         }
 
         private static int AddTabToTabDict(
             SharedDictionary<string, string> tabIndex,
-                                                Dictionary<string, DupKeyCheck> dupCheck,
-                                                string httpAlias,
-                                                string aliasCulture,
-                                                string customHttpAlias,
-                                                PortalInfo thisPortal,
-                                                string tabPath,
-                                                ref List<string> customAliasesUsed,
-                                                TabInfo tab,
-                                                FriendlyUrlSettings settings,
-                                                FriendlyUrlOptions options,
-                                                int homeTabId,
-                                                ref Hashtable homePageSkins,
-                                                Guid parentTraceId)
+            Dictionary<string, DupKeyCheck> dupCheck,
+            string httpAlias,
+            string aliasCulture,
+            string customHttpAlias,
+            PortalInfo thisPortal,
+            string tabPath,
+            ref List<string> customAliasesUsed,
+            TabInfo tab,
+            FriendlyUrlSettings settings,
+            FriendlyUrlOptions options,
+            int homeTabId,
+            ref Hashtable homePageSkins,
+            Guid parentTraceId)
         {
             string rewritePath = string.Empty;
             int tabPathDepth = 0;
@@ -509,9 +509,9 @@ namespace DotNetNuke.Entities.Urls
                 {
                     rewritePath = CreateRewritePath(
                         tab.TabID,
-                                                    cultureCode,
-                                                    ActionType.Redirect301,
-                                                    RedirectReason.Tab_Permanent_Redirect);
+                        cultureCode,
+                        ActionType.Redirect301,
+                        RedirectReason.Tab_Permanent_Redirect);
                 }
                 else
                 {
@@ -556,8 +556,8 @@ namespace DotNetNuke.Entities.Urls
                     // sure that the trimmed Url is used when appropriate
                     rewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
                         rewritePath,
-                                                                                ActionType.CheckFor301,
-                                                                                RedirectReason.User_Profile_Url);
+                        ActionType.CheckFor301,
+                        RedirectReason.User_Profile_Url);
                 }
             }
 
@@ -577,8 +577,8 @@ namespace DotNetNuke.Entities.Urls
                     }
                     substituteRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
                         substituteRewritePath,
-                                                            ActionType.Redirect301,
-                                                            tabPath.Contains(replaceSpaceWith)
+                        ActionType.Redirect301,
+                        tabPath.Contains(replaceSpaceWith)
                                                                 ? RedirectReason.Spaces_Replaced
                                                                 : RedirectReason.Custom_Redirect);
                 }
@@ -593,15 +593,15 @@ namespace DotNetNuke.Entities.Urls
                 // Note ; if anything else is wrong with this url, (ie, wrong alias) then that will be corrected in a redirect
                 AddToTabDict(
                     tabIndex,
-                                dupCheck,
-                                httpAlias,
-                                tab.TabPath,
-                                substituteRewritePath,
-                                tab.TabID,
-                                preference,
-                                ref tabPathDepth,
-                                settings.CheckForDuplicateUrls,
-                                isDeleted);
+                    dupCheck,
+                    httpAlias,
+                    tab.TabPath,
+                    substituteRewritePath,
+                    tab.TabID,
+                    preference,
+                    ref tabPathDepth,
+                    settings.CheckForDuplicateUrls,
+                    isDeleted);
             }
 
             // check for permanent redirects as specified in the core dnn permanent redirect property
@@ -609,14 +609,14 @@ namespace DotNetNuke.Entities.Urls
             {
                 AddPermanentRedirectToDictionary(
                     tabIndex,
-                                                    dupCheck,
-                                                    httpAlias,
-                                                    tab,
-                                                    tabPath,
-                                                    ref rewritePath,
-                                                    ref tabPathDepth,
-                                                    settings.CheckForDuplicateUrls,
-                                                    isDeleted);
+                    dupCheck,
+                    httpAlias,
+                    tab,
+                    tabPath,
+                    ref rewritePath,
+                    ref tabPathDepth,
+                    settings.CheckForDuplicateUrls,
+                    isDeleted);
             }
 
             // disabled / not active by date / external url pages cannot navigate to settings page
@@ -628,15 +628,15 @@ namespace DotNetNuke.Entities.Urls
                 string settingsRewritePath = CreateRewritePath(tab.TabID, string.Empty, "ctl=tab");
                 AddToTabDict(
                     tabIndex,
-                                dupCheck,
-                                httpAlias,
-                                settingsUrl,
-                                settingsRewritePath,
-                                tab.TabID,
-                                UrlEnums.TabKeyPreference.TabRedirected,
-                                ref tabPathDepth,
-                                settings.CheckForDuplicateUrls,
-                                isDeleted);
+                    dupCheck,
+                    httpAlias,
+                    settingsUrl,
+                    settingsRewritePath,
+                    tab.TabID,
+                    UrlEnums.TabKeyPreference.TabRedirected,
+                    ref tabPathDepth,
+                    settings.CheckForDuplicateUrls,
+                    isDeleted);
             }
 
             // 777: every tab is added to the dictionary, including those that are deleted
@@ -645,16 +645,16 @@ namespace DotNetNuke.Entities.Urls
             // 589 : tab with custom 200 redirects not changing base url to 301 statusa
             AddCustomRedirectsToDictionary(
                 tabIndex,
-                                                dupCheck,
-                                                httpAlias,
-                                                tab,
-                                                settings,
-                                                options,
-                                                ref rewritePath,
-                                                out tabPathDepth,
-                                                ref customAliasesUsed,
-                                                isDeleted,
-                                                parentTraceId);
+                dupCheck,
+                httpAlias,
+                tab,
+                settings,
+                options,
+                ref rewritePath,
+                out tabPathDepth,
+                ref customAliasesUsed,
+                isDeleted,
+                parentTraceId);
 
             // if auto ascii conversion is on, do that as well
             if (settings.AutoAsciiConvert)
@@ -670,34 +670,34 @@ namespace DotNetNuke.Entities.Urls
                         // add in a tab path, with 301, for the version with the diacritics in
                         string diacriticRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
                             rewritePath,
-                                                                                                ActionType.Redirect301,
-                                                                                                RedirectReason.Diacritic_Characters);
+                            ActionType.Redirect301,
+                            RedirectReason.Diacritic_Characters);
                         AddToTabDict(
                             tabIndex,
-                                        dupCheck,
-                                        httpAlias,
-                                        tabPath,
-                                        diacriticRewritePath,
-                                        tab.TabID,
-                                        UrlEnums.TabKeyPreference.TabOK,
-                                        ref tabPathDepth,
-                                        settings.CheckForDuplicateUrls,
-                                        isDeleted);
+                            dupCheck,
+                            httpAlias,
+                            tabPath,
+                            diacriticRewritePath,
+                            tab.TabID,
+                            UrlEnums.TabKeyPreference.TabOK,
+                            ref tabPathDepth,
+                            settings.CheckForDuplicateUrls,
+                            isDeleted);
                     }
                     else
                     {
                         // add in the standard version so that the page responds to both the diacritic version
                         AddToTabDict(
                             tabIndex,
-                                            dupCheck,
-                                            httpAlias,
-                                            tabPath,
-                                            rewritePath,
-                                            tab.TabID,
-                                            UrlEnums.TabKeyPreference.TabOK,
-                                            ref tabPathDepth,
-                                            settings.CheckForDuplicateUrls,
-                                            isDeleted);
+                            dupCheck,
+                            httpAlias,
+                            tabPath,
+                            rewritePath,
+                            tab.TabID,
+                            UrlEnums.TabKeyPreference.TabOK,
+                            ref tabPathDepth,
+                            settings.CheckForDuplicateUrls,
+                            isDeleted);
                     }
                 }
                 tabPath = asciiTabPath; // switch tabpath to new, ascii-converted version for rest of processing
@@ -710,19 +710,19 @@ namespace DotNetNuke.Entities.Urls
                 // 899: check for redirect on home page
                 rewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
                     rewritePath,
-                                                                                ActionType.CheckFor301,
-                                                                                RedirectReason.Site_Root_Home);
+                    ActionType.CheckFor301,
+                    RedirectReason.Site_Root_Home);
                 AddToTabDict(
                     tabIndex,
-                                dupCheck,
-                                httpAlias,
-                                tabPath,
-                                rewritePath,
-                                tab.TabID,
-                                UrlEnums.TabKeyPreference.TabOK,
-                                ref tabPathDepth,
-                                settings.CheckForDuplicateUrls,
-                                isDeleted);
+                    dupCheck,
+                    httpAlias,
+                    tabPath,
+                    rewritePath,
+                    tab.TabID,
+                    UrlEnums.TabKeyPreference.TabOK,
+                    ref tabPathDepth,
+                    settings.CheckForDuplicateUrls,
+                    isDeleted);
             }
             else
             {
@@ -731,19 +731,19 @@ namespace DotNetNuke.Entities.Urls
                     // add in the standard page, but it's a redirect to the customAlias
                     rewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
                         rewritePath,
-                                                                                ActionType.Redirect301,
-                                                                                RedirectReason.Custom_Tab_Alias);
+                        ActionType.Redirect301,
+                        RedirectReason.Custom_Tab_Alias);
                     AddToTabDict(
                         tabIndex,
-                                    dupCheck,
-                                    httpAlias,
-                                    tabPath,
-                                    rewritePath,
-                                    tab.TabID,
-                                    UrlEnums.TabKeyPreference.TabRedirected,
-                                    ref tabPathDepth,
-                                    settings.CheckForDuplicateUrls,
-                                    isDeleted);
+                        dupCheck,
+                        httpAlias,
+                        tabPath,
+                        rewritePath,
+                        tab.TabID,
+                        UrlEnums.TabKeyPreference.TabRedirected,
+                        ref tabPathDepth,
+                        settings.CheckForDuplicateUrls,
+                        isDeleted);
                 }
                 else
                 {
@@ -752,19 +752,19 @@ namespace DotNetNuke.Entities.Urls
                         // add in the standard page, but it's a redirect to the customAlias
                         rewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
                             rewritePath,
-                                                                                    ActionType.Redirect301,
-                                                                                    RedirectReason.Custom_Tab_Alias);
+                            ActionType.Redirect301,
+                            RedirectReason.Custom_Tab_Alias);
                         AddToTabDict(
                             tabIndex,
-                                        dupCheck,
-                                        httpAlias,
-                                        tabPath,
-                                        rewritePath,
-                                        tab.TabID,
-                                        UrlEnums.TabKeyPreference.TabRedirected,
-                                        ref tabPathDepth,
-                                        settings.CheckForDuplicateUrls,
-                                        isDeleted);
+                            dupCheck,
+                            httpAlias,
+                            tabPath,
+                            rewritePath,
+                            tab.TabID,
+                            UrlEnums.TabKeyPreference.TabRedirected,
+                            ref tabPathDepth,
+                            settings.CheckForDuplicateUrls,
+                            isDeleted);
                     }
                     else
                     {
@@ -779,15 +779,15 @@ namespace DotNetNuke.Entities.Urls
                         }
                         AddToTabDict(
                             tabIndex,
-                                        dupCheck,
-                                        httpAlias,
-                                        tabPath,
-                                        rewritePath,
-                                        tab.TabID,
-                                        dupCheckPreference,
-                                        ref tabPathDepth,
-                                        settings.CheckForDuplicateUrls,
-                                        isDeleted);
+                            dupCheck,
+                            httpAlias,
+                            tabPath,
+                            rewritePath,
+                            tab.TabID,
+                            dupCheckPreference,
+                            ref tabPathDepth,
+                            settings.CheckForDuplicateUrls,
+                            isDeleted);
                     }
                 }
             }
@@ -796,15 +796,15 @@ namespace DotNetNuke.Entities.Urls
 
         private static void AddToTabDict(
             SharedDictionary<string, string> tabIndex,
-                                            Dictionary<string, DupKeyCheck> dupCheckDict,
-                                            string httpAlias,
-                                            string tabPath,
-                                            string rewrittenPath,
-                                            int tabId,
-                                            UrlEnums.TabKeyPreference keyDupAction,
-                                            ref int tabPathDepth,
-                                            bool checkForDupUrls,
-                                            bool isDeleted)
+            Dictionary<string, DupKeyCheck> dupCheckDict,
+            string httpAlias,
+            string tabPath,
+            string rewrittenPath,
+            int tabId,
+            UrlEnums.TabKeyPreference keyDupAction,
+            ref int tabPathDepth,
+            bool checkForDupUrls,
+            bool isDeleted)
         {
             // remove leading '/' and convert to lower for all keys
             string tabPathSimple = tabPath.Replace("//", "/").ToLowerInvariant();
@@ -967,9 +967,9 @@ namespace DotNetNuke.Entities.Urls
             // portalAlias that matches, and we want to preserve the
             // order of the items, such that the item with the most path separators (/)
             // is at the front of the list.
-            var aliasList = new OrderedDictionary(aliases.Count);
-            var pathLengths = new List<int>();
-            foreach (string aliasKey in aliases.Keys)
+           var aliasList = new OrderedDictionary(aliases.Count);
+           var pathLengths = new List<int>();
+           foreach (string aliasKey in aliases.Keys)
             {
                 PortalAliasInfo alias = aliases[aliasKey];
                 // regex escape the portal alias for inclusion into a regex pattern
@@ -1036,17 +1036,17 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
-            return aliasList;
+           return aliasList;
         }
 
         private static SharedDictionary<string, string> BuildTabDictionary(
             out PathSizes pathSizes,
-                                                                                FriendlyUrlSettings settings,
-                                                                                int buildPortalId,
-                                                                                SharedDictionary<string, string> tabIndex,
-                                                                                out Hashtable homePageSkins,
-                                                                                out SharedDictionary<string, string> portalTabPathDictionary,
-                                                                                Guid parentTraceId)
+            FriendlyUrlSettings settings,
+            int buildPortalId,
+            SharedDictionary<string, string> tabIndex,
+            out Hashtable homePageSkins,
+            out SharedDictionary<string, string> portalTabPathDictionary,
+            Guid parentTraceId)
         {
             if (tabIndex == null)
             {
@@ -1128,11 +1128,11 @@ namespace DotNetNuke.Entities.Urls
                         bool customAliasUsed;
                         var customHttpAlias = ManageCustomAliases(
                             tabCulture,
-                                                                    thisPortal,
-                                                                    tab,
-                                                                    usingHttpAliases,
-                                                                    customHttpAliasesUsed,
-                                                                    out customAliasUsed);
+                            thisPortal,
+                            tab,
+                            usingHttpAliases,
+                            customHttpAliasesUsed,
+                            out customAliasUsed);
 
                         // process each entry for the alias
                         foreach (string httpAlias in usingHttpAliases)
@@ -1168,19 +1168,19 @@ namespace DotNetNuke.Entities.Urls
                                     // 750 : user profile action not returned as buildPortalId not used
                                     tabPathDepth = AddTabToTabDict(
                                         tabIndex,
-                                                                    dupCheck,
-                                                                    httpAlias,
-                                                                    aliasCulture,
-                                                                    customHttpAlias,
-                                                                    thisPortal,
-                                                                    tabPath,
-                                                                    ref customHttpAliasesUsed,
-                                                                    tab,
-                                                                    settings,
-                                                                    options,
-                                                                    homeTabId,
-                                                                    ref homePageSkins,
-                                                                    parentTraceId);
+                                        dupCheck,
+                                        httpAlias,
+                                        aliasCulture,
+                                        customHttpAlias,
+                                        thisPortal,
+                                        tabPath,
+                                        ref customHttpAliasesUsed,
+                                        tab,
+                                        settings,
+                                        options,
+                                        homeTabId,
+                                        ref homePageSkins,
+                                        parentTraceId);
                                 }
                                 else
                                 {
@@ -1197,16 +1197,16 @@ namespace DotNetNuke.Entities.Urls
                                         string rewritePathKeep = rewritePath; // remember this value to compare
                                         AddCustomRedirectsToDictionary(
                                             tabIndex,
-                                                                        dupCheck,
-                                                                        httpAlias,
-                                                                        tab,
-                                                                        settings,
-                                                                        options,
-                                                                        ref rewritePath,
-                                                                        out tabPathDepth,
-                                                                        ref customHttpAliasesUsed,
-                                                                        tab.IsDeleted,
-                                                                        parentTraceId);
+                                            dupCheck,
+                                            httpAlias,
+                                            tab,
+                                            settings,
+                                            options,
+                                            ref rewritePath,
+                                            out tabPathDepth,
+                                            ref customHttpAliasesUsed,
+                                            tab.IsDeleted,
+                                            parentTraceId);
                                         if (rewritePath != rewritePathKeep)
                                         // check to see the rewrite path is still the same, or did it get changed?
                                         {
@@ -1223,15 +1223,15 @@ namespace DotNetNuke.Entities.Urls
 
                                     AddToTabDict(
                                         tabIndex,
-                                                    dupCheck,
-                                                    httpAlias,
-                                                    tab.TabPath,
-                                                    rewritePath,
-                                                    tab.TabID,
-                                                    UrlEnums.TabKeyPreference.TabRedirected,
-                                                    ref tabPathDepth,
-                                                    true,
-                                                    false);
+                                        dupCheck,
+                                        httpAlias,
+                                        tab.TabPath,
+                                        rewritePath,
+                                        tab.TabID,
+                                        UrlEnums.TabKeyPreference.TabRedirected,
+                                        ref tabPathDepth,
+                                        true,
+                                        false);
                                 }
                             }
                             else
@@ -1241,15 +1241,15 @@ namespace DotNetNuke.Entities.Urls
                                 string rewritePath = CreateRewritePath(tab.TabID, tabCulture);
                                 AddToTabDict(
                                     tabIndex,
-                                                dupCheck,
-                                                httpAlias,
-                                                tab.TabPath,
-                                                rewritePath,
-                                                tab.TabID,
-                                                UrlEnums.TabKeyPreference.TabRedirected,
-                                                ref tabPathDepth,
-                                                true,
-                                                tab.IsDeleted);
+                                    dupCheck,
+                                    httpAlias,
+                                    tab.TabPath,
+                                    rewritePath,
+                                    tab.TabID,
+                                    UrlEnums.TabKeyPreference.TabRedirected,
+                                    ref tabPathDepth,
+                                    true,
+                                    tab.IsDeleted);
                             }
                             pathSizes.SetTabPathDepth(tabPathDepth);
                         }
@@ -1292,15 +1292,15 @@ namespace DotNetNuke.Entities.Urls
                         int tempPathDepth = 0;
                         AddToTabDict(
                             tabIndex,
-                                        dupCheck,
-                                        httpAlias,
-                                        "*",
-                                        string.Empty,
-                                        -1,
-                                        UrlEnums.TabKeyPreference.TabOK,
-                                        ref tempPathDepth,
-                                        false,
-                                        false);
+                            dupCheck,
+                            httpAlias,
+                            "*",
+                            string.Empty,
+                            -1,
+                            UrlEnums.TabKeyPreference.TabOK,
+                            ref tempPathDepth,
+                            false,
+                            false);
                     }
                 }
 
@@ -1336,8 +1336,8 @@ namespace DotNetNuke.Entities.Urls
 
         private static void GetAliasFromSettings(
             int portalId,
-                                                    out List<PortalAliasInfo> useAliases,
-                                                    out Dictionary<string, string> aliasCultures)
+            out List<PortalAliasInfo> useAliases,
+            out Dictionary<string, string> aliasCultures)
         {
             useAliases = new List<PortalAliasInfo>();
             aliasCultures = new Dictionary<string, string>();
@@ -1367,11 +1367,11 @@ namespace DotNetNuke.Entities.Urls
 
         private static string ManageCustomAliases(
             string tabCulture,
-                                            PortalInfo thisPortal,
-                                            TabInfo tab,
-                                            List<string> httpAliases,
-                                            List<string> customHttpAliasesUsed,
-                                            out bool customAliasUsed)
+            PortalInfo thisPortal,
+            TabInfo tab,
+            List<string> httpAliases,
+            List<string> customHttpAliasesUsed,
+            out bool customAliasUsed)
         {
             string customHttpAlias = string.Empty;
             string currentCulture = tabCulture;
@@ -1455,14 +1455,14 @@ namespace DotNetNuke.Entities.Urls
         /// </remarks>
         internal static SharedDictionary<string, string> FetchTabDictionary(
             int portalId,
-                                                                                out int minTabPathDepth,
-                                                                                out int maxTabPathDepth,
-                                                                                out int minAliasPathDepth,
-                                                                                out int maxAliasPathDepth,
-                                                                                FriendlyUrlSettings settings,
-                                                                                bool forceRebuild,
-                                                                                bool bypassCache,
-                                                                                Guid parentTraceId)
+            out int minTabPathDepth,
+            out int maxTabPathDepth,
+            out int minAliasPathDepth,
+            out int maxAliasPathDepth,
+            FriendlyUrlSettings settings,
+            bool forceRebuild,
+            bool bypassCache,
+            Guid parentTraceId)
         {
             PathSizes depthInfo;
             SharedDictionary<int, PathSizes> portalDepths = null;
@@ -1510,12 +1510,12 @@ namespace DotNetNuke.Entities.Urls
                         // the cached dictionary was null or forceRebuild = true or bypassCache = true, so go get a new dictionary
                         dict = BuildTabDictionary(
                             out depthInfo,
-                                                    settings,
-                                                    portalId,
-                                                    dict,
-                                                    out homePageSkins,
-                                                    out portalTabPathDictionary,
-                                                    parentTraceId);
+                            settings,
+                            portalId,
+                            dict,
+                            out homePageSkins,
+                            out portalTabPathDictionary,
+                            parentTraceId);
 
                         if (portalDepths == null || forceRebuild)
                         {

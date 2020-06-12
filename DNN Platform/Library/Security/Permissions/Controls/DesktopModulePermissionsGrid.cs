@@ -278,12 +278,12 @@ namespace DotNetNuke.Security.Permissions.Controls
                     }
                     sb.Append(this.BuildKey(
                         objDesktopModulePermission.AllowAccess,
-                                       objDesktopModulePermission.PermissionID,
-                                       objDesktopModulePermission.DesktopModulePermissionID,
-                                       objDesktopModulePermission.RoleID,
-                                       objDesktopModulePermission.RoleName,
-                                       objDesktopModulePermission.UserID,
-                                       objDesktopModulePermission.DisplayName));
+                        objDesktopModulePermission.PermissionID,
+                        objDesktopModulePermission.DesktopModulePermissionID,
+                        objDesktopModulePermission.RoleID,
+                        objDesktopModulePermission.RoleName,
+                        objDesktopModulePermission.UserID,
+                        objDesktopModulePermission.DisplayName));
                 }
             }
             allStates[2] = sb.ToString();

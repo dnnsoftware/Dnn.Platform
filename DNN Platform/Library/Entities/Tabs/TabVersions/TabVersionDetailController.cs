@@ -31,9 +31,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return CBO.GetCachedObject<List<TabVersionDetail>>(
                 new CacheItemArgs(
                 GetTabVersionDetailCacheKey(tabVersionId),
-                                                                    DataCache.TabVersionDetailsCacheTimeOut,
-                                                                    DataCache.TabVersionDetailsCachePriority),
-                                                            c => CBO.FillCollection<TabVersionDetail>(Provider.GetTabVersionDetails(tabVersionId)));
+                DataCache.TabVersionDetailsCacheTimeOut,
+                DataCache.TabVersionDetailsCachePriority),
+                c => CBO.FillCollection<TabVersionDetail>(Provider.GetTabVersionDetails(tabVersionId)));
         }
 
         public IEnumerable<TabVersionDetail> GetVersionHistory(int tabId, int version)
