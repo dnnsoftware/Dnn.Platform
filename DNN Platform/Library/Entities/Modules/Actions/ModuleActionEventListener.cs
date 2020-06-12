@@ -37,7 +37,9 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <summary>
         ///
         /// </summary>
-        /// <value></value>
+        /// <value>
+        ///
+        /// </value>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
         public int ModuleID
@@ -52,7 +54,9 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <summary>
         ///
         /// </summary>
-        /// <value></value>
+        /// <value>
+        ///
+        /// </value>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
         public ActionEventHandler ActionEvent

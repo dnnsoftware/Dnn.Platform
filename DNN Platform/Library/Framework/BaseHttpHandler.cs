@@ -103,7 +103,9 @@ namespace DotNetNuke.Framework
         /// <summary>
         ///   Gets the content MIME type for the response object.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The content MIME type for the response object.</placeholder>
+        /// </value>
         public virtual string ContentMimeType
         {
             get
@@ -115,7 +117,9 @@ namespace DotNetNuke.Framework
         /// <summary>
         ///   Gets the content encoding for the response object.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The content encoding for the response object.</placeholder>
+        /// </value>
         public virtual Encoding ContentEncoding
         {
             get

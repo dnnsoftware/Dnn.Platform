@@ -440,7 +440,9 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>
         /// Payment Processor userId
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>Payment Processor userId</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks> <seealso cref="PaymentProcessor"></seealso>
         /// <example>This shows the usage of the payment processing
@@ -664,7 +666,9 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>
         /// Fysical path on disk of the home directory of the portal
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>Fysical path on disk of the home directory of the portal</placeholder>
+        /// </value>
         /// <returns>Fully qualified path of the home directory</returns>
         /// <remarks><seealso cref="HomeDirectory"></seealso></remarks>
         [XmlIgnore]
@@ -679,7 +683,9 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>
         /// Fysical path on disk of the home directory of the portal
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>Fysical path on disk of the home directory of the portal</placeholder>
+        /// </value>
         /// <returns>Fully qualified path of the home system (local) directory</returns>
         /// <remarks><seealso cref="HomeDirectory"></seealso></remarks>
         [XmlIgnore]

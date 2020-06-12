@@ -73,7 +73,9 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Property to allow the programmatic assigning of ScrollTop position
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>Property to allow the programmatic assigning of ScrollTop position</placeholder>
+        /// </value>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------

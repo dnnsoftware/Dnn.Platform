@@ -172,12 +172,14 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-         /// <summary>
-         /// Gets and sets whether there are any errors in parsing legacy packages
-         /// </summary>
-         /// <value></value>
-         /// <returns></returns>
-         /// <remarks></remarks>
+        /// <summary>
+        /// Gets and sets whether there are any errors in parsing legacy packages
+        /// </summary>
+        /// <value>
+        /// <placeholder>And sets whether there are any errors in parsing legacy packages</placeholder>
+        /// </value>
+        /// <returns></returns>
+        /// <remarks></remarks>
         public string LegacyError { get; set; }
 
         /// -----------------------------------------------------------------------------

@@ -39,7 +39,9 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <summary>
         ///
         /// </summary>
-        /// <value></value>
+        /// <value>
+        ///
+        /// </value>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
         public ModuleAction Action
@@ -54,7 +56,9 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <summary>
         ///
         /// </summary>
-        /// <value></value>
+        /// <value>
+        ///
+        /// </value>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
         public ModuleInfo ModuleConfiguration

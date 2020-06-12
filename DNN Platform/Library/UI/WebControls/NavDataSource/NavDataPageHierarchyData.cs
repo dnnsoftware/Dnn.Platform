@@ -22,7 +22,9 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Returns nodes image
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>Returns nodes image</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
         public virtual string ImageUrl
@@ -43,7 +45,9 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>Indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
         public virtual bool HasChildren
@@ -57,7 +61,9 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets the hierarchical path of the node.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The hierarchical path of the node.</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
         public virtual string Path
@@ -71,7 +77,9 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets the hierarchical data node that the IHierarchyData object represents.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The hierarchical data node that the IHierarchyData object represents.</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
         public virtual object Item
@@ -85,7 +93,9 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets the name of the type of Object contained in the Item property.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The name of the type of Object contained in the Item property.</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
         public virtual string Type
@@ -135,7 +145,9 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Returns node name
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>Returns node name</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
         public virtual string Name
@@ -149,7 +161,9 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Returns value path of node
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>Returns value path of node</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
         public virtual string Value
@@ -163,7 +177,9 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Returns node navigation url
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>Returns node navigation url</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
         public virtual string NavigateUrl
@@ -177,7 +193,9 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Returns Node description
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>Returns Node description</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
         public virtual string Description

@@ -76,7 +76,9 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// gets whether this is the current user or admin
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>gets whether this is the current user or admin</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
         protected bool IsUserOrAdmin

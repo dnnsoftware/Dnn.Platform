@@ -53,7 +53,9 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Gets the HostSetting for the URL of the hosted version of the jQuery script.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The HostSetting for the URL of the hosted version of the jQuery script.</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks>This is a simple wrapper around the Host.jQueryUrl property</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
@@ -73,7 +75,9 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Gets the HostSetting for the URL of the hosted version of the jQuery migrated script.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The HostSetting for the URL of the hosted version of the jQuery migrated script.</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks>This is a simple wrapper around the Host.jQueryUrl property</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
@@ -93,7 +97,9 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Gets the HostSetting for the URL of the hosted version of the jQuery UI script.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The HostSetting for the URL of the hosted version of the jQuery UI script.</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks>This is a simple wrapper around the Host.jQueryUIUrl property</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
@@ -181,7 +187,9 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Gets the HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks>This is a simple wrapper around the Host.jQueryDebug property</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
@@ -201,7 +209,9 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Gets the HostSetting to determine if we should use a hosted version of the jQuery script.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The HostSetting to determine if we should use a hosted version of the jQuery script.</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks>This is a simple wrapper around the Host.jQueryHosted property</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
@@ -221,7 +231,9 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Gets the version string for the local jQuery script
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The version string for the local jQuery script</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks>
         /// This only evaluates the version in the full jQuery file and assumes that the minified script
@@ -255,7 +267,9 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// Gets the version string for the local jQuery UI script
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The version string for the local jQuery UI script</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks>
         /// This only evaluates the version in the full jQuery UI file and assumes that the minified script

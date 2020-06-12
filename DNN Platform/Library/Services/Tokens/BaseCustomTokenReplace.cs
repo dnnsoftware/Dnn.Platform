@@ -34,7 +34,9 @@ namespace DotNetNuke.Services.Tokens
         /// <summary>
         /// If DebugMessages are enabled, unknown Tokens are replaced with Error Messages
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>If DebugMessages are enabled, unknown Tokens are replaced with Error Messages</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
         public bool DebugMessages { get; set; }
