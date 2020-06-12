@@ -222,5 +222,3 @@ namespace DotNetNuke.Entities.Portals
         void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure);
     }
 }
-
-

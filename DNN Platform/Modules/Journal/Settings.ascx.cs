@@ -207,4 +207,3 @@ namespace DotNetNuke.Modules.Journal
         }
     }
 }
-

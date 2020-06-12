@@ -50,4 +50,3 @@ namespace log4net.Util
         public abstract object this[string key] { get; set; }
     }
 }
-

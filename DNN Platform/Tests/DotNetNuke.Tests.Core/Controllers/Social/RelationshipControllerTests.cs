@@ -1267,4 +1267,3 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
     }
 }
-

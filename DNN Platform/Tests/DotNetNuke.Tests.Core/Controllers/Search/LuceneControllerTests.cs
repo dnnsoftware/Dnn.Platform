@@ -792,4 +792,3 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
     }
 }
-

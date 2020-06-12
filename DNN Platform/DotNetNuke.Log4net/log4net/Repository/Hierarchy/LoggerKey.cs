@@ -127,4 +127,3 @@ namespace log4net.Repository.Hierarchy
         private readonly int m_hashCache;
     }
 }
-

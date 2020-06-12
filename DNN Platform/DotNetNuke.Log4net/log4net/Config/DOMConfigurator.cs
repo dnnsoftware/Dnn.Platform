@@ -346,4 +346,3 @@ namespace log4net.Config
 
     }
 }
-

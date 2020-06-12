@@ -61,4 +61,3 @@ namespace DotNetNuke.Services.Journal
             }
         }
 }
-

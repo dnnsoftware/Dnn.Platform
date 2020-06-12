@@ -342,4 +342,3 @@ namespace log4net.Layout
         private const string ATTR_VALUE = "value";
     }
 }
-

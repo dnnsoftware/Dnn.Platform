@@ -357,4 +357,3 @@ namespace log4net.Util
         }
     }
 }
-

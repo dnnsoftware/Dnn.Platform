@@ -1118,4 +1118,3 @@ namespace log4net.Config
         private static readonly Type declaringType = typeof(XmlConfigurator);
     }
 }
-

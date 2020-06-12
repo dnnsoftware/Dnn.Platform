@@ -112,4 +112,3 @@ namespace log4net.Util
         private static readonly Type declaringType = typeof(ThreadContextStacks);
     }
 }
-
