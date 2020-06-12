@@ -241,13 +241,13 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 foreach (var p in panes)
                 {
-                    var topPane = new[]{
+                    var topPane = new[] {
                         string.Format(this.GetString("Pane.AddTop.Text"), p),
                         p.ToString(),
                         "TOP"
                     };
 
-                    var botPane = new[]{
+                    var botPane = new[] {
                         string.Format(this.GetString("Pane.AddBottom.Text"), p),
                         p.ToString(),
                         "BOTTOM"
@@ -262,7 +262,7 @@ namespace DotNetNuke.UI.ControlPanels
                 foreach (var p in panes)
                 {
 
-                    var botPane = new[]{
+                    var botPane = new[] {
                         string.Format(this.GetString("Pane.Add.Text"), p),
                         p.ToString(),
                         "BOTTOM"

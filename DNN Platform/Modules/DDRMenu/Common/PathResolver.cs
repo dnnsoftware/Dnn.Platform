@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
 				if (path.StartsWith(key, StringComparison.InvariantCultureIgnoreCase))
 				{
 					path = path.Substring(key.Length);
-					roots = new[] {mappings[key]};
+					roots = new[] {mappings[key] };
 					break;
 				}
 			}

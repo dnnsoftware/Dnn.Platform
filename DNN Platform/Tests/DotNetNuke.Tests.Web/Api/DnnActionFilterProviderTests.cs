@@ -46,7 +46,7 @@ namespace DotNetNuke.Tests.Web.Api
         {
             // Arrange
             var adMock = new Mock<HttpActionDescriptor>();
-            adMock.Setup(ad => ad.GetFilters()).Returns(new Collection<IFilter>(new []{ new DnnAuthorizeAttribute() }));
+            adMock.Setup(ad => ad.GetFilters()).Returns(new Collection<IFilter>(new [] { new DnnAuthorizeAttribute() }));
 
             var cdMock = new Mock<HttpControllerDescriptor>();
             cdMock.Setup(cd => cd.GetFilters()).Returns(new Collection<IFilter>());

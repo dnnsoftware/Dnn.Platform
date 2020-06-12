@@ -43,7 +43,7 @@ namespace DotNetNuke.Tests.Integration.Tests
                 {"name", "SqlDataProvider"},
                 {"type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke"},
                 {"connectionStringName", "SiteSqlServer"},
-                {"objectQualifier", ConfigurationManager.AppSettings["objectQualifier"]},
+                {"objectQualifier", ConfigurationManager.AppSettings["objectQualifier"] },
                 {"databaseOwner", "dbo."}
             });
             ComponentFactory.InstallComponents(new ProviderInstaller("caching", typeof(CachingProvider), typeof(FBCachingProvider)));

@@ -398,7 +398,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Returns(expectedNotificationTypeAction);
             
             var action = CreateNewNotificationTypeAction();
-            this._mockNotificationsController.Object.SetNotificationTypeActions(new []{action}, expectedNotificationTypeAction.NotificationTypeId);
+            this._mockNotificationsController.Object.SetNotificationTypeActions(new [] {action}, expectedNotificationTypeAction.NotificationTypeId);
 
             Assert.IsTrue(new NotificationTypeActionComparer().Equals(expectedNotificationTypeAction, action));
         }
