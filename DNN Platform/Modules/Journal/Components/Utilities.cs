@@ -110,7 +110,6 @@ namespace DotNetNuke.Modules.Journal.Components {
             if (m.Success) {
                 link.Title = m.Groups[2].ToString().Trim();
             }
-            //
             MatchCollection matches = default(MatchCollection);
             matches = MetaRegex.Matches(sPage);
             int i = 0;

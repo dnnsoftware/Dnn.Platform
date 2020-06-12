@@ -164,13 +164,11 @@ namespace DotNetNuke.UI.Skins.Controls
                 // Get the absolute URL of the tab
                 var tabUrl = tab.FullUrl;
 
-                //
                 if (this.ProfileUserId > -1)
                 {
                     tabUrl = this._navigationManager.NavigateURL(tab.TabID, "", "UserId=" + this.ProfileUserId);
                 }
 
-                //
                 if (this.GroupId > -1)
                 {
                     tabUrl = this._navigationManager.NavigateURL(tab.TabID, "", "GroupId=" + this.GroupId);

@@ -52,7 +52,6 @@ namespace log4net.Config
     [Serializable]
     public /*sealed*/ class RepositoryAttribute : Attribute
     {
-        //
         // Class is not sealed because DomainAttribute extends it while it is obsoleted
         //
 

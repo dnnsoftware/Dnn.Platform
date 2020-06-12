@@ -86,7 +86,6 @@ namespace log4net.Config
     [Serializable]
     public /*sealed*/ class XmlConfiguratorAttribute : ConfiguratorAttribute
     {
-        //
         // Class is not sealed because DOMConfiguratorAttribute extends it while it is obsoleted
         //
 

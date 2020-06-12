@@ -314,10 +314,8 @@ namespace log4net.Appender
                 {
                     if (sourceAlreadyExists && currentLogName != this.m_logName)
                     {
-                        //
                         // Re-register this to the current application if the user has changed
                         // the application / logfile association
-                        //
                         EventLog.DeleteEventSource(this.m_applicationName, this.m_machineName);
                         CreateEventSource(this.m_applicationName, this.m_logName, this.m_machineName);
 
@@ -386,9 +384,7 @@ namespace log4net.Appender
         /// </remarks>
         override protected void Append(LoggingEvent loggingEvent)
         {
-            //
             // Write the resulting string to the event log system
-            //
             int eventID = this.m_eventId;
 
             // Look for the EventID property

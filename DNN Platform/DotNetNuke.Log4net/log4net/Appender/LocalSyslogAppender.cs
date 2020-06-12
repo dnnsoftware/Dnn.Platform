@@ -466,9 +466,7 @@ namespace log4net.Appender
                 return levelSeverity.Severity;
             }
 
-            //
             // Fallback to sensible default values
-            //
 
             if (level >= Level.Alert)
             {

@@ -600,7 +600,6 @@ namespace log4net.Repository.Hierarchy
             // (like IIS with multiple VDIRS).  Without this, it can be difficult
             // or impossible to determine which .config file is missing appender
             // definitions.
-            //
             if (!this.m_hierarchy.EmittedNoAppenderWarning && writes == 0)
             {
                 this.m_hierarchy.EmittedNoAppenderWarning = true;

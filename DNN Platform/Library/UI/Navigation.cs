@@ -222,7 +222,6 @@ namespace DotNetNuke.UI
 
         private static bool IsTabPending(TabInfo objTab, DNNNode objParentNode, DNNNode objRootNode, int intDepth, Hashtable objBreadCrumbs, int intLastBreadCrumbId, bool blnPOD)
         {
-            //
             // A
             // |
             //--B

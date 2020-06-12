@@ -42,7 +42,6 @@
 
 //
 // Shared assembly settings
-//
 
 [assembly: System.Reflection.AssemblyCompany("The Apache Software Foundation")]
 [assembly: System.Reflection.AssemblyCopyright("Copyright 2004-2018 The Apache Software Foundation.")]

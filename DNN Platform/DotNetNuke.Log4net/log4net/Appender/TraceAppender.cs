@@ -147,7 +147,6 @@ namespace log4net.Appender
         /// </remarks>
         override protected void Append(LoggingEvent loggingEvent)
         {
-            //
             // Write the string to the Trace system
             //
 #if NETCF
@@ -158,7 +157,6 @@ namespace log4net.Appender
 
             //
             // Flush the Trace system if needed
-            //
             if (this.m_immediateFlush)
             {
 #if NETCF

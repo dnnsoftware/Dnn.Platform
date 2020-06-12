@@ -139,14 +139,11 @@ namespace log4net.Appender
         /// </remarks>
         override protected void Append(LoggingEvent loggingEvent)
         {
-            //
             // Write the string to the Debug system
-            //
             System.Diagnostics.Debug.Write(this.RenderLoggingEvent(loggingEvent), loggingEvent.LoggerName);
 #if !NETSTANDARD1_3
             //
             // Flush the Debug system if needed
-            //
             if (this.m_immediateFlush)
             {
                 System.Diagnostics.Debug.Flush();
