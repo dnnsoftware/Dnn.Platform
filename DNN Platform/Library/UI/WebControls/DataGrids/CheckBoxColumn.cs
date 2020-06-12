@@ -24,17 +24,17 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public class CheckBoxColumn : TemplateColumn
     {
-		#region "Private Members"
+        #region "Private Members"
 
         private bool mAutoPostBack = true;
         private string mDataField = Null.NullString;
         private bool mEnabled = true;
         private string mEnabledField = Null.NullString;
         private bool mHeaderCheckBox = true;
-		
-		#endregion
+        
+        #endregion
 
-		#region "Constructors"
+        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -56,10 +56,10 @@ namespace DotNetNuke.UI.WebControls
         {
             this.AutoPostBack = autoPostBack;
         }
-		
-		#endregion
-		
-		#region "Public Properties"
+        
+        #endregion
+        
+        #region "Public Properties"
 
 
         /// -----------------------------------------------------------------------------
@@ -165,16 +165,16 @@ namespace DotNetNuke.UI.WebControls
                 this.mHeaderCheckBox = value;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Events"
+        #region "Events"
 
         public event DNNDataGridCheckedColumnEventHandler CheckedChanged;
-		
-		#endregion
+        
+        #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -223,10 +223,10 @@ namespace DotNetNuke.UI.WebControls
                 this.CheckedChanged(sender, e);
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -247,7 +247,7 @@ namespace DotNetNuke.UI.WebControls
             this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
             this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

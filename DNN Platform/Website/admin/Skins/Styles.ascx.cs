@@ -73,7 +73,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     }
                     if (this.IsFirst)
                     {
-						// Find the first HtmlLink
+                        // Find the first HtmlLink
                         int iLink;
                         for (iLink = 0; iLink <= objCSS.Controls.Count - 1; iLink++)
                         {
@@ -119,7 +119,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
                 else
                 {
-					// Since we want to add at a specific location, we do this in reverse order
+                    // Since we want to add at a specific location, we do this in reverse order
                     // this allows us to use the same insertion point
                     cssRoot.Controls.AddAt(InsertAt, closeif);
                     cssRoot.Controls.AddAt(InsertAt, link);

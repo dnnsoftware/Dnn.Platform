@@ -657,8 +657,8 @@ namespace DotNetNuke.Security.Roles
         /// <summary>
         /// Fetch a single RoleGroup
         /// </summary>
-		/// <param name="portalId">The Id of the Portal</param>
-		/// <param name="roleGroupId">Role Group ID</param>
+        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="roleGroupId">Role Group ID</param>
         /// <returns></returns>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
@@ -671,12 +671,12 @@ namespace DotNetNuke.Security.Roles
         /// <summary>
         /// Fetch a single RoleGroup by Name
         /// </summary>
-		/// <param name="portalId">The Id of the Portal</param>
+        /// <param name="portalId">The Id of the Portal</param>
         /// <param name="roleGroupName">Role Group Name</param>
         /// <returns></returns>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
-		public static RoleGroupInfo GetRoleGroupByName(int portalId, string roleGroupName)
+        public static RoleGroupInfo GetRoleGroupByName(int portalId, string roleGroupName)
         {
             return provider.GetRoleGroupByName(portalId, roleGroupName);
         }
@@ -698,7 +698,7 @@ namespace DotNetNuke.Security.Roles
         /// Serializes the role groups
         /// </summary>
         /// <param name="writer">An XmlWriter</param>
-		/// <param name="portalID">The Id of the Portal</param>
+        /// <param name="portalID">The Id of the Portal</param>
         /// -----------------------------------------------------------------------------
         public static void SerializeRoleGroups(XmlWriter writer, int portalID)
         {

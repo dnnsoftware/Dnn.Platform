@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.Html
     /// </remarks>
     public class HtmlTextController : ModuleSearchBase, IPortable, IUpgradeable
     {
-		public const int MAX_DESCRIPTION_LENGTH = 100;
+        public const int MAX_DESCRIPTION_LENGTH = 100;
         private const string PortalRootToken = "{{PortalRoot}}";
         protected INavigationManager NavigationManager { get; }
         public HtmlTextController()
@@ -287,42 +287,42 @@ namespace DotNetNuke.Modules.Html
             ModuleController.SynchronizeModule(ModuleID);
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		///   FormatHtmlText formats HtmlText content for display in the browser
-		/// </summary>
-		/// <remarks>
-		/// </remarks>
-		/// <param name="moduleId">The ModuleID</param>
-		/// <param name = "content">The HtmlText Content</param>
-		/// <param name = "settings">Module Settings</param>
-		/// <param name="portalSettings">The Portal Settings.</param>
-		/// <param name="page">The Page Instance.</param>
-		public static string FormatHtmlText(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, Page page)
-		{
-			// token replace
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   FormatHtmlText formats HtmlText content for display in the browser
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="moduleId">The ModuleID</param>
+        /// <param name = "content">The HtmlText Content</param>
+        /// <param name = "settings">Module Settings</param>
+        /// <param name="portalSettings">The Portal Settings.</param>
+        /// <param name="page">The Page Instance.</param>
+        public static string FormatHtmlText(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, Page page)
+        {
+            // token replace
 
-			if (settings.ReplaceTokens)
-			{
-			    var tr = new HtmlTokenReplace(page)
-			    {
-			        AccessingUser = UserController.Instance.GetCurrentUserInfo(),
-			        DebugMessages = portalSettings.UserMode != PortalSettings.Mode.View,
-			        ModuleId = moduleId,
-			        PortalSettings = portalSettings
-			    };
-			    content = tr.ReplaceEnvironmentTokens(content);
-			}
+            if (settings.ReplaceTokens)
+            {
+                var tr = new HtmlTokenReplace(page)
+                {
+                    AccessingUser = UserController.Instance.GetCurrentUserInfo(),
+                    DebugMessages = portalSettings.UserMode != PortalSettings.Mode.View,
+                    ModuleId = moduleId,
+                    PortalSettings = portalSettings
+                };
+                content = tr.ReplaceEnvironmentTokens(content);
+            }
 
-			// Html decode content
-			content = HttpUtility.HtmlDecode(content);
+            // Html decode content
+            content = HttpUtility.HtmlDecode(content);
 
-			// manage relative paths
-			content = ManageRelativePaths(content, portalSettings.HomeDirectory, "src", portalSettings.PortalId);
-			content = ManageRelativePaths(content, portalSettings.HomeDirectory, "background", portalSettings.PortalId);
+            // manage relative paths
+            content = ManageRelativePaths(content, portalSettings.HomeDirectory, "src", portalSettings.PortalId);
+            content = ManageRelativePaths(content, portalSettings.HomeDirectory, "background", portalSettings.PortalId);
 
-			return content;
-		}
+            return content;
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -575,7 +575,7 @@ namespace DotNetNuke.Modules.Html
                 // add content
                 htmlContent.ItemID = DataProvider.Instance().AddHtmlText(htmlContent.ModuleID,
                                                                          htmlContent.Content,
-																		 htmlContent.Summary,
+                                                                         htmlContent.Summary,
                                                                          htmlContent.StateID,
                                                                          htmlContent.IsPublished,
                                                                          UserController.Instance.GetCurrentUserInfo().UserID,
@@ -584,7 +584,7 @@ namespace DotNetNuke.Modules.Html
             else
             {
                 // update content
-				DataProvider.Instance().UpdateHtmlText(htmlContent.ItemID, htmlContent.Content, htmlContent.Summary, htmlContent.StateID, htmlContent.IsPublished, UserController.Instance.GetCurrentUserInfo().UserID);
+                DataProvider.Instance().UpdateHtmlText(htmlContent.ItemID, htmlContent.Content, htmlContent.Summary, htmlContent.StateID, htmlContent.IsPublished, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
             // add log history

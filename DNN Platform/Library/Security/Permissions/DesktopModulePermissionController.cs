@@ -21,9 +21,9 @@ using DotNetNuke.Services.Log.EventLog;
 namespace DotNetNuke.Security.Permissions
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : DesktopModulePermissionController
+    /// Class    : DesktopModulePermissionController
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// DesktopModulePermissionController provides the Business Layer for DesktopModule Permissions
@@ -44,7 +44,7 @@ namespace DotNetNuke.Security.Permissions
             DataCache.ClearDesktopModulePermissionsCache();
         }
 
-		#region Public Shared Methods
+        #region Public Shared Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -177,7 +177,7 @@ namespace DotNetNuke.Security.Permissions
                                EventLogController.EventLogType.DESKTOPMODULEPERMISSION_UPDATED);
             ClearPermissionCache();
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

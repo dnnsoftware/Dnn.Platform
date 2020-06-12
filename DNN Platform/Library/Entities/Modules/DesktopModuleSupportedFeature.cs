@@ -7,9 +7,9 @@ using System;
 namespace DotNetNuke.Entities.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities.Modules
-    /// Class	 : DesktopModuleSupportedFeature
+    /// Class    : DesktopModuleSupportedFeature
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DesktopModuleSupportedFeature enum provides an enumeration of Supported

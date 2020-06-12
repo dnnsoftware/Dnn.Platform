@@ -15,87 +15,87 @@ using DotNetNuke.UI.Skins;
 
 namespace DotNetNuke.Web.DDRMenu
 {
-	public class SkinObject : SkinObjectBase
-	{
-		public string MenuStyle { get; set; }
-		public string NodeXmlPath { get; set; }
-		public string NodeSelector { get; set; }
-		public bool IncludeContext { get; set; }
-		public bool IncludeHidden { get; set; }
-		public string IncludeNodes { get; set; }
-		public string ExcludeNodes { get; set; }
-		public string NodeManipulator { get; set; }
+    public class SkinObject : SkinObjectBase
+    {
+        public string MenuStyle { get; set; }
+        public string NodeXmlPath { get; set; }
+        public string NodeSelector { get; set; }
+        public bool IncludeContext { get; set; }
+        public bool IncludeHidden { get; set; }
+        public string IncludeNodes { get; set; }
+        public string ExcludeNodes { get; set; }
+        public string NodeManipulator { get; set; }
 
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		[PersistenceMode(PersistenceMode.InnerProperty)]
-		public List<ClientOption> ClientOptions { get; set; }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        public List<ClientOption> ClientOptions { get; set; }
 
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-		[PersistenceMode(PersistenceMode.InnerProperty)]
-		public List<TemplateArgument> TemplateArguments { get; set; }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        public List<TemplateArgument> TemplateArguments { get; set; }
 
-		private MenuBase menu;
+        private MenuBase menu;
 
-		protected override void OnPreRender(EventArgs e)
-		{
-			using (new DNNContext(this))
-			{
-				try
-				{
-					base.OnPreRender(e);
+        protected override void OnPreRender(EventArgs e)
+        {
+            using (new DNNContext(this))
+            {
+                try
+                {
+                    base.OnPreRender(e);
 
-					this.menu = MenuBase.Instantiate(this.MenuStyle);
-					this.menu.ApplySettings(
-						new Settings
-						{
-							MenuStyle = this.MenuStyle,
-							NodeXmlPath = this.NodeXmlPath,
-							NodeSelector = this.NodeSelector,
-							IncludeContext = this.IncludeContext,
-							IncludeHidden = this.IncludeHidden,
-							IncludeNodes = this.IncludeNodes,
-							ExcludeNodes = this.ExcludeNodes,
-							NodeManipulator = this.NodeManipulator,
-							ClientOptions = this.ClientOptions,
-							TemplateArguments = this.TemplateArguments
-						});
+                    this.menu = MenuBase.Instantiate(this.MenuStyle);
+                    this.menu.ApplySettings(
+                        new Settings
+                        {
+                            MenuStyle = this.MenuStyle,
+                            NodeXmlPath = this.NodeXmlPath,
+                            NodeSelector = this.NodeSelector,
+                            IncludeContext = this.IncludeContext,
+                            IncludeHidden = this.IncludeHidden,
+                            IncludeNodes = this.IncludeNodes,
+                            ExcludeNodes = this.ExcludeNodes,
+                            NodeManipulator = this.NodeManipulator,
+                            ClientOptions = this.ClientOptions,
+                            TemplateArguments = this.TemplateArguments
+                        });
 
-					if (String.IsNullOrEmpty(this.NodeXmlPath))
-					{
-						this.menu.RootNode =
-							new MenuNode(
-								Localiser.LocaliseDNNNodeCollection(
-									Navigation.GetNavigationNodes(
-										this.ClientID,
-										Navigation.ToolTipSource.None,
-										-1,
-										-1,
-										DNNAbstract.GetNavNodeOptions(true))));
-					}
+                    if (String.IsNullOrEmpty(this.NodeXmlPath))
+                    {
+                        this.menu.RootNode =
+                            new MenuNode(
+                                Localiser.LocaliseDNNNodeCollection(
+                                    Navigation.GetNavigationNodes(
+                                        this.ClientID,
+                                        Navigation.ToolTipSource.None,
+                                        -1,
+                                        -1,
+                                        DNNAbstract.GetNavNodeOptions(true))));
+                    }
 
-					this.menu.PreRender();
-				}
-				catch (Exception exc)
-				{
-					Exceptions.ProcessModuleLoadException(this, exc);
-				}
-			}
-		}
+                    this.menu.PreRender();
+                }
+                catch (Exception exc)
+                {
+                    Exceptions.ProcessModuleLoadException(this, exc);
+                }
+            }
+        }
 
-		protected override void Render(HtmlTextWriter writer)
-		{
-			using (new DNNContext(this))
-			{
-				try
-				{
-					base.Render(writer);
-					this.menu.Render(writer);
-				}
-				catch (Exception exc)
-				{
-					Exceptions.ProcessModuleLoadException(this, exc);
-				}
-			}
-		}
-	}
+        protected override void Render(HtmlTextWriter writer)
+        {
+            using (new DNNContext(this))
+            {
+                try
+                {
+                    base.Render(writer);
+                    this.menu.Render(writer);
+                }
+                catch (Exception exc)
+                {
+                    Exceptions.ProcessModuleLoadException(this, exc);
+                }
+            }
+        }
+    }
 }

@@ -17,9 +17,9 @@ using DotNetNuke.Entities.Users;
 namespace DotNetNuke.Entities
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities
-    /// Class	 : BaseEntityInfo
+    /// Class    : BaseEntityInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// BaseEntityInfo provides auditing fields for Core tables.
@@ -74,7 +74,7 @@ namespace DotNetNuke.Entities
         /// <summary>
         /// Gets the UserInfo object associated with this user
         /// </summary>
-		/// <param name="portalId">The PortalID associated with the desired user</param>
+        /// <param name="portalId">The PortalID associated with the desired user</param>
         /// <returns>A UserInfo object</returns>
         /// -----------------------------------------------------------------------------
         public UserInfo CreatedByUser(int portalId)
@@ -91,7 +91,7 @@ namespace DotNetNuke.Entities
         /// <summary>
         /// Gets the UserInfo object associated with this user
         /// </summary>
-		/// <param name="portalId">The PortalID associated with the desired user</param>
+        /// <param name="portalId">The PortalID associated with the desired user</param>
         /// <returns>A UserInfo object</returns>
         /// -----------------------------------------------------------------------------
         public UserInfo LastModifiedByUser(int portalId)
@@ -118,13 +118,13 @@ namespace DotNetNuke.Entities
             this.LastModifiedOnDate = Null.SetNullDateTime(dr["LastModifiedOnDate"]);
         }
 
-		protected void CloneBaseProperties(BaseEntityInfo clonedItem, BaseEntityInfo originalItem)
-		{
-			clonedItem.CreatedByUserID = originalItem.CreatedByUserID;
-			clonedItem.CreatedOnDate = originalItem.CreatedOnDate;
-			clonedItem.LastModifiedByUserID = originalItem.LastModifiedByUserID;
-			clonedItem.LastModifiedOnDate = originalItem.LastModifiedOnDate;
-		}
+        protected void CloneBaseProperties(BaseEntityInfo clonedItem, BaseEntityInfo originalItem)
+        {
+            clonedItem.CreatedByUserID = originalItem.CreatedByUserID;
+            clonedItem.CreatedOnDate = originalItem.CreatedOnDate;
+            clonedItem.LastModifiedByUserID = originalItem.LastModifiedByUserID;
+            clonedItem.LastModifiedOnDate = originalItem.LastModifiedOnDate;
+        }
 
         /// <summary>
         /// method used by cbo to fill readonly properties ignored by HydrateObject reflection

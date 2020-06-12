@@ -17,10 +17,10 @@ using DotNetNuke.Security;
 
 namespace DotNetNuke.Entities.Content.Taxonomy
 {
-	/// <summary>
-	/// Class of Vocabulary.
-	/// </summary>
-	/// <seealso cref="TermController"/>
+    /// <summary>
+    /// Class of Vocabulary.
+    /// </summary>
+    /// <seealso cref="TermController"/>
     [Serializable]
     public class Vocabulary : BaseEntityInfo, IHydratable
     {

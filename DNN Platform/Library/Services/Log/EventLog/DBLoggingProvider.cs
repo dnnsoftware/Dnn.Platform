@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.Log.EventLog
 {
     public class DBLoggingProvider : LoggingProvider
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DBLoggingProvider));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DBLoggingProvider));
         private const int ReaderLockTimeout = 10000;
         private const int WriterLockTimeout = 10000;
         private static readonly IList<LogQueueItem> LogQueue = new List<LogQueueItem>();
@@ -200,7 +200,7 @@ namespace DotNetNuke.Services.Log.EventLog
                                                    objLogInfo.LogServerName,
                                                    logProperties,
                                                    Convert.ToInt32(objLogInfo.LogConfigID),
-												   objLogInfo.Exception,
+                                                   objLogInfo.Exception,
                                                    logTypeConfigInfo.EmailNotificationIsActive);
                     if (logTypeConfigInfo.EmailNotificationIsActive)
                     {

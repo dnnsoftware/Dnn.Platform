@@ -43,7 +43,7 @@ namespace DotNetNuke.Common.Utilities
     /// -----------------------------------------------------------------------------
     public class DataCache
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DataCache));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DataCache));
         // Host keys
         public const string SecureHostSettingsCacheKey = "SecureHostSettings";
         public const string UnSecureHostSettingsCacheKey = "UnsecureHostSettings";
@@ -68,9 +68,9 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority PortalCachePriority = CacheItemPriority.High;
         public const int PortalCacheTimeOut = 20;
 
-		public const string AllPortalsCacheKey = "AllPortals";
-		public const CacheItemPriority AllPortalsCachePriority = CacheItemPriority.High;
-		public const int AllPortalsCacheTimeOut = 20;
+        public const string AllPortalsCacheKey = "AllPortals";
+        public const CacheItemPriority AllPortalsCachePriority = CacheItemPriority.High;
+        public const int AllPortalsCacheTimeOut = 20;
 
         public const string PortalUserCountCacheKey = "PortalUserCount{0}";
         public const CacheItemPriority PortalUserCountCachePriority = CacheItemPriority.High;
@@ -234,13 +234,13 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority BannersCachePriority = CacheItemPriority.Normal;
         public const int BannersCacheTimeOut = 20;
 
-		public const string RedirectionsCacheKey = "Redirections:{0}";
-		public const CacheItemPriority RedirectionsCachePriority = CacheItemPriority.Default;
-		public const int RedirectionsCacheTimeOut = 20;
+        public const string RedirectionsCacheKey = "Redirections:{0}";
+        public const CacheItemPriority RedirectionsCachePriority = CacheItemPriority.Default;
+        public const int RedirectionsCacheTimeOut = 20;
 
-		public const string PreviewProfilesCacheKey = "PreviewProfiles:{0}";
-		public const CacheItemPriority PreviewProfilesCachePriority = CacheItemPriority.Default;
-		public const int PreviewProfilesCacheTimeOut = 20;
+        public const string PreviewProfilesCacheKey = "PreviewProfiles:{0}";
+        public const CacheItemPriority PreviewProfilesCachePriority = CacheItemPriority.Default;
+        public const int PreviewProfilesCacheTimeOut = 20;
 
         public const string RelationshipTypesCacheKey = "RelationshipTypes";
         public const CacheItemPriority RelationshipTypesCachePriority = CacheItemPriority.Default;
@@ -275,10 +275,10 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority SubscriptionTypesCachePriority = CacheItemPriority.Default;
         public const int SubscriptionTypesTimeOut = 20;
 
-		public const string PackagesCacheKey = "Packages_{0}";
+        public const string PackagesCacheKey = "Packages_{0}";
         public const string PackageDependenciesCacheKey = "Packages_Dependencies";
         public const CacheItemPriority PackagesCachePriority = CacheItemPriority.Default;
-		public const int PackagesCacheTimeout = 20;
+        public const int PackagesCacheTimeout = 20;
 
         public const string ContentTypesCacheKey = "ContentTypes";
         public const CacheItemPriority ContentTypesCachePriority = CacheItemPriority.AboveNormal;
@@ -292,9 +292,9 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority PackageTypesCachePriority = CacheItemPriority.AboveNormal;
         public const int PackageTypesCacheTimeout = 20;
 
-	    public const string JavaScriptLibrariesCacheKey = "JavaScriptLibraries";
-	    public const CacheItemPriority JavaScriptLibrariesCachePriority = CacheItemPriority.AboveNormal;
-	    public const int JavaScriptLibrariesCacheTimeout = 20;
+        public const string JavaScriptLibrariesCacheKey = "JavaScriptLibraries";
+        public const CacheItemPriority JavaScriptLibrariesCachePriority = CacheItemPriority.AboveNormal;
+        public const int JavaScriptLibrariesCacheTimeout = 20;
 
         public const string CaptchaCacheKey = "Captcha_{0}";
         public const CacheItemPriority CaptchaCachePriority = CacheItemPriority.NotRemovable;
@@ -494,10 +494,10 @@ namespace DotNetNuke.Common.Utilities
             RemoveCache(String.Format(UserPersonalizationCacheKey, portalId, userId));
         }
 
-		public static void ClearPackagesCache(int portalId)
-		{
-			RemoveCache(String.Format(PackagesCacheKey, portalId));
-		}
+        public static void ClearPackagesCache(int portalId)
+        {
+            RemoveCache(String.Format(PackagesCacheKey, portalId));
+        }
 
         private static object GetCachedDataFromRuntimeCache(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
         {

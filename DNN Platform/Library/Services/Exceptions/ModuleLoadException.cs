@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Exceptions
         private int m_ModuleId;
 
         // default constructor
-		public ModuleLoadException()
+        public ModuleLoadException()
         {
         }
 
@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.Exceptions
 
         private void InitilizePrivateVariables()
         {
-			// Try and get the Portal settings from context
+            // Try and get the Portal settings from context
             // If an error occurs getting the context then set the variables to -1
             if ((this.m_ModuleConfiguration != null))
             {

@@ -11,9 +11,9 @@ using System.Web.UI;
 namespace DotNetNuke.UI.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Modules
-    /// Class	 : IModuleControl
+    /// Class    : IModuleControl
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// IModuleControl provides a common Interface for Module Controls

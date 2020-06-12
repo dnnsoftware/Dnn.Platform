@@ -32,13 +32,13 @@ namespace DotNetNuke.UI.UserControls
         private string DisplayMode => (this.Request.QueryString["Display"] ?? "").ToLowerInvariant();
 
         [Serializable]
-		private class EntityInfo
-		{
-			public int CreatedByUserID { get; set; }
-			public DateTime CreatedOnDate { get; set; }
-			public int LastModifiedByUserID { get; set; }
-			public DateTime LastModifiedOnDate { get; set; }
-		}
+        private class EntityInfo
+        {
+            public int CreatedByUserID { get; set; }
+            public DateTime CreatedOnDate { get; set; }
+            public int LastModifiedByUserID { get; set; }
+            public DateTime LastModifiedOnDate { get; set; }
+        }
 
         public ModuleAuditControl()
         {
@@ -56,31 +56,31 @@ namespace DotNetNuke.UI.UserControls
 
         public string LastModifiedDate { private get; set; }
 
-		public BaseEntityInfo Entity
-		{
-			set
-			{
-				if (value != null)
-				{
-					var entity = new EntityInfo();
-					entity.CreatedByUserID = value.CreatedByUserID;
-					entity.CreatedOnDate = value.CreatedOnDate;
-					entity.LastModifiedByUserID = value.LastModifiedByUserID;
-					entity.LastModifiedOnDate = value.LastModifiedOnDate;
+        public BaseEntityInfo Entity
+        {
+            set
+            {
+                if (value != null)
+                {
+                    var entity = new EntityInfo();
+                    entity.CreatedByUserID = value.CreatedByUserID;
+                    entity.CreatedOnDate = value.CreatedOnDate;
+                    entity.LastModifiedByUserID = value.LastModifiedByUserID;
+                    entity.LastModifiedOnDate = value.LastModifiedOnDate;
 
-					this.ViewState["Entity"] = entity;
-				}
-				else
-				{
-					this.ViewState["Entity"] = null;
-				}
-			}
-		}
+                    this.ViewState["Entity"] = entity;
+                }
+                else
+                {
+                    this.ViewState["Entity"] = null;
+                }
+            }
+        }
 
-	    private EntityInfo Model
-	    {
-		    get { return this.ViewState["Entity"] as EntityInfo; }
-	    }
+        private EntityInfo Model
+        {
+            get { return this.ViewState["Entity"] as EntityInfo; }
+        }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -88,12 +88,12 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-				if (this.Model != null)
+                if (this.Model != null)
                 {
-					this.CreatedByUser = this.Model.CreatedByUserID.ToString();
-					this.CreatedDate = this.Model.CreatedOnDate.ToString();
-					this.LastModifiedByUser = this.Model.LastModifiedByUserID.ToString();
-					this.LastModifiedDate = this.Model.LastModifiedOnDate.ToString();
+                    this.CreatedByUser = this.Model.CreatedByUserID.ToString();
+                    this.CreatedDate = this.Model.CreatedOnDate.ToString();
+                    this.LastModifiedByUser = this.Model.LastModifiedByUserID.ToString();
+                    this.LastModifiedDate = this.Model.LastModifiedOnDate.ToString();
                 }
 
                 // check to see if updated check is redundant

@@ -11,10 +11,10 @@ using System.Linq;
 
 namespace DotNetNuke.Entities.Content
 {
-	/// <summary>
-	/// Interface of ContentTypeController.
-	/// </summary>
-	/// <seealso cref="ContentTypeController"/>
+    /// <summary>
+    /// Interface of ContentTypeController.
+    /// </summary>
+    /// <seealso cref="ContentTypeController"/>
     public interface IContentTypeController
     {
         /// <summary>

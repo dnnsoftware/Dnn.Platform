@@ -28,16 +28,16 @@ namespace DotNetNuke.Framework
         /// </remarks>
         public static void AddScriptManager(Page page)
         {
-	        AddScriptManager(page, true);
+            AddScriptManager(page, true);
         }
-		/// <summary>
-		/// AddScriptManager is used internally by the framework to add a ScriptManager control to the page.
-		/// </summary>
-		/// <param name="page">the page instance.</param>
-		/// <param name="checkCdn">Whether check cdn settings from host settings.</param>
+        /// <summary>
+        /// AddScriptManager is used internally by the framework to add a ScriptManager control to the page.
+        /// </summary>
+        /// <param name="page">the page instance.</param>
+        /// <param name="checkCdn">Whether check cdn settings from host settings.</param>
         public static void AddScriptManager(Page page, bool checkCdn)
         {
-			if (GetScriptManager(page) == null)
+            if (GetScriptManager(page) == null)
             {
                 if (page.Form != null)
                 {
@@ -97,9 +97,9 @@ namespace DotNetNuke.Framework
             }
         }
 
-	/// <summary>Gets the current ScriptManager on the page</summary>
-	/// <param name="objPage">the page instance.</param>
-	/// <returns>The ScriptManager instance, or <c>null</c></returns>
+    /// <summary>Gets the current ScriptManager on the page</summary>
+    /// <param name="objPage">the page instance.</param>
+    /// <returns>The ScriptManager instance, or <c>null</c></returns>
         public static ScriptManager GetScriptManager(Page objPage)
         {
             return objPage.FindControl("ScriptManager") as ScriptManager;

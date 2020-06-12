@@ -194,51 +194,51 @@ namespace DotNetNuke.Services.Install
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-		/// OnLoad runs just before the page is rendered
+        /// OnLoad runs just before the page is rendered
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
-			base.OnLoad(e);
+            base.OnLoad(e);
 
-			if (this.IsPostBack)
-			{
-				if (!string.IsNullOrEmpty(this.txtPassword.Text))
-				{
-					this.ViewState["Password"] = this.txtPassword.Text;
-				}
-				else if (this.ViewState["Password"] != null)
-				{
-					this.txtPassword.Text = this.ViewState["Password"].ToString();
-				}
+            if (this.IsPostBack)
+            {
+                if (!string.IsNullOrEmpty(this.txtPassword.Text))
+                {
+                    this.ViewState["Password"] = this.txtPassword.Text;
+                }
+                else if (this.ViewState["Password"] != null)
+                {
+                    this.txtPassword.Text = this.ViewState["Password"].ToString();
+                }
 
-				if (!string.IsNullOrEmpty(this.txtConfirm.Text))
-				{
-					this.ViewState["Confirm"] = this.txtConfirm.Text;
-				}
-				else if (this.ViewState["Confirm"] != null)
-				{
-					this.txtConfirm.Text = this.ViewState["Confirm"].ToString();
-				}
-			}
+                if (!string.IsNullOrEmpty(this.txtConfirm.Text))
+                {
+                    this.ViewState["Confirm"] = this.txtConfirm.Text;
+                }
+                else if (this.ViewState["Confirm"] != null)
+                {
+                    this.txtConfirm.Text = this.ViewState["Confirm"].ToString();
+                }
+            }
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// OnLoad runs just before the page is rendered
-		/// </summary>
-		/// <remarks>
-		/// </remarks>
-		/// -----------------------------------------------------------------------------
-		protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnLoad runs just before the page is rendered
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
 
-			// Make sure that the password is not cleared on pastback
-			this.txtConfirm.Attributes["value"] = this.txtConfirm.Text;
-			this.txtPassword.Attributes["value"] = this.txtPassword.Text;
-		}
+            // Make sure that the password is not cleared on pastback
+            this.txtConfirm.Attributes["value"] = this.txtConfirm.Text;
+            this.txtPassword.Attributes["value"] = this.txtPassword.Text;
+        }
     }
 }

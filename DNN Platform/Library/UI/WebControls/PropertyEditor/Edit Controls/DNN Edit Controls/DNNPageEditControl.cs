@@ -31,7 +31,7 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:DNNPageEditControl runat=server></{0}:DNNPageEditControl>")]
     public class DNNPageEditControl : IntegerEditControl
     {
-	#region "Protected Methods"
+    #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -60,16 +60,16 @@ namespace DotNetNuke.UI.WebControls
 
                 if (tab.TabID == this.IntegerValue)
                 {
-					// Add the Selected Attribute
+                    // Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
                 }
-				
+                
                 // Render Option Tag
                 writer.RenderBeginTag(HtmlTextWriterTag.Option);
                 writer.Write(tab.IndentedTabName);
                 writer.RenderEndTag();
             }
-			
+            
             // Close Select Tag
             writer.RenderEndTag();
         }
@@ -102,7 +102,7 @@ namespace DotNetNuke.UI.WebControls
                 writer.RenderEndTag();
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

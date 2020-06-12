@@ -13,20 +13,20 @@ using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Services.Mobile
 {
-	public interface IPreviewProfile
-	{
-		int Id { get; set; }
+    public interface IPreviewProfile
+    {
+        int Id { get; set; }
 
-		int PortalId { get; set; }
+        int PortalId { get; set; }
 
-		string Name { get; set; }
+        string Name { get; set; }
 
-		int Width { get; set; }
+        int Width { get; set; }
 
-		string UserAgent { get; set; }
+        string UserAgent { get; set; }
 
-		int Height { get; set; }
+        int Height { get; set; }
 
-		int SortOrder { get; set; }
-	}
+        int SortOrder { get; set; }
+    }
 }

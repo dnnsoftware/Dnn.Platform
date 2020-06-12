@@ -11,7 +11,7 @@ using System.Web.UI;
 
 namespace DotNetNuke.UI.WebControls
 {
-	/// <summary>The NavDataSourceView class encapsulates the capabilities of the NavDataSource data source control.</summary>
+    /// <summary>The NavDataSourceView class encapsulates the capabilities of the NavDataSource data source control.</summary>
     public class NavDataSourceView : HierarchicalDataSourceView
     {
         private readonly string m_sKey;

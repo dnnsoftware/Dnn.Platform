@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.Admin.Security
     /// </remarks>
     public partial class SendPassword : UserModuleBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendPassword));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendPassword));
         private readonly INavigationManager _navigationManager;
         public SendPassword()
         {
@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 return _RedirectURL;
             }
 
-		}
+        }
 
         /// <summary>
         /// Gets whether the Captcha control is used to validate the login
@@ -124,21 +124,21 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-	    protected bool UsernameDisabled
-	    {
-		    get
-		    {
-				return PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);
-		    }
-	    }
+        protected bool UsernameDisabled
+        {
+            get
+            {
+                return PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);
+            }
+        }
 
-	    private bool ShowEmailField
-	    {
-		    get
-		    {
-			    return MembershipProviderConfig.RequiresUniqueEmail || this.UsernameDisabled;
-		    }
-	    }
+        private bool ShowEmailField
+        {
+            get
+            {
+                return MembershipProviderConfig.RequiresUniqueEmail || this.UsernameDisabled;
+            }
+        }
 
         #endregion
 
@@ -147,7 +147,7 @@ namespace DotNetNuke.Modules.Admin.Security
         private void GetUser()
         {
             ArrayList arrUsers;
-			if (this.ShowEmailField && !String.IsNullOrEmpty(this.txtEmail.Text.Trim()) && (String.IsNullOrEmpty(this.txtUsername.Text.Trim()) || this.divUsername.Visible == false))
+            if (this.ShowEmailField && !String.IsNullOrEmpty(this.txtEmail.Text.Trim()) && (String.IsNullOrEmpty(this.txtUsername.Text.Trim()) || this.divUsername.Visible == false))
             {
                 arrUsers = UserController.GetUsersByEmail(this.PortalSettings.PortalId, this.txtEmail.Text, 0, Int32.MaxValue, ref this._userCount);
                 if (arrUsers != null && arrUsers.Count == 1)
@@ -184,7 +184,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.divPassword.Visible = false;
             }
 
-			if (!MembershipProviderConfig.PasswordResetEnabled)
+            if (!MembershipProviderConfig.PasswordResetEnabled)
             {
                 isEnabled = false;
                 this.lblHelp.Text = Localization.GetString("DisabledPasswordHelp", this.LocalResourceFile);
@@ -218,8 +218,8 @@ namespace DotNetNuke.Modules.Admin.Security
 
             this._ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
 
-			this.divEmail.Visible = this.ShowEmailField;
-			this.divUsername.Visible = !this.UsernameDisabled;
+            this.divEmail.Visible = this.ShowEmailField;
+            this.divUsername.Visible = !this.UsernameDisabled;
             this.divCaptcha.Visible = this.UseCaptcha;
 
             if (this.UseCaptcha)
@@ -326,7 +326,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         this.LogFailure(message);
                     }
 
-					// always hide panel so as to not reveal if username exists.
+                    // always hide panel so as to not reveal if username exists.
                     this.pnlRecover.Visible = false;
                     UI.Skins.Skin.AddModuleMessage(this, message, moduleMessageType);
                     this.liSend.Visible = false;
@@ -353,7 +353,7 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             var portalSecurity = PortalSecurity.Instance;
 
-			var log = new LogInfo
+            var log = new LogInfo
             {
                 LogPortalID = this.PortalSettings.PortalId,
                 LogPortalName = this.PortalSettings.PortalName,
@@ -371,7 +371,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 log.LogProperties.Add(new LogDetailInfo("Cause", message));
             }
 
-			log.AddProperty("IP", this._ipAddress);
+            log.AddProperty("IP", this._ipAddress);
 
             LogController.Instance.AddLog(log);
 

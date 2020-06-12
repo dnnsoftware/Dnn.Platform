@@ -20,8 +20,8 @@ namespace DotNetNuke.Services.Exceptions
 // ReSharper restore CheckNamespace
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : ErrorPage
+    /// Project  : DotNetNuke
+    /// Class    : ErrorPage
     /// 
     /// -----------------------------------------------------------------------------
     /// <summary>

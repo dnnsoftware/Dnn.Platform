@@ -26,8 +26,8 @@ namespace DotNetNuke.Services.EventQueue
     [Serializable]
     public class EventMessage
     {
-		#region "Private Members"
-		
+        #region "Private Members"
+        
         private NameValueCollection _attributes;
         private string _authorizedRoles = Null.NullString;
         private string _body = Null.NullString;
@@ -40,19 +40,19 @@ namespace DotNetNuke.Services.EventQueue
         private string _sender = Null.NullString;
         private DateTime _sentDate;
         private string _subscribers = Null.NullString;
-		
-		#endregion
+        
+        #endregion
 
-		#region "Constructors"
+        #region "Constructors"
 
         public EventMessage()
         {
             this._attributes = new NameValueCollection();
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         public int EventMessageID
         {
@@ -246,10 +246,10 @@ namespace DotNetNuke.Services.EventQueue
                 this._attributes = value;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
         public void DeserializeAttributes(string configXml)
         {
@@ -261,7 +261,7 @@ namespace DotNetNuke.Services.EventQueue
             reader.ReadStartElement("Attributes");
             if (!reader.IsEmptyElement)
             {
-				// Loop throug the Attributes
+                // Loop throug the Attributes
                 do
                 {
                     reader.ReadStartElement("Attribute");
@@ -280,7 +280,7 @@ namespace DotNetNuke.Services.EventQueue
                     {
                         reader.Read();
                     }
-					
+                    
                     // Add attribute to the collection
                     this._attributes.Add(attName, attValue);
                 } while (reader.ReadToNextSibling("Attribute"));
@@ -332,7 +332,7 @@ namespace DotNetNuke.Services.EventQueue
                 return sb.ToString();
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

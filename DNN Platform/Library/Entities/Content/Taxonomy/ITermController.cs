@@ -10,10 +10,10 @@ using System.Linq;
 
 namespace DotNetNuke.Entities.Content.Taxonomy
 {
-	/// <summary>
-	/// Interface of TermController.
-	/// </summary>
-	/// <seealso cref="TermController"/>
+    /// <summary>
+    /// Interface of TermController.
+    /// </summary>
+    /// <seealso cref="TermController"/>
     public interface ITermController
     {
         int AddTerm(Term term);

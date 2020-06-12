@@ -74,12 +74,12 @@ namespace DotNetNuke.Framework
         /// -----------------------------------------------------------------------------
         public override void Save()
         {
-			// No processing needed if no states available
+            // No processing needed if no states available
             if (this.ViewState == null && this.ControlState == null)
             {
                 return;
             }
-			
+            
             // Generate a unique cache key
             var key = new StringBuilder();
             {
@@ -88,7 +88,7 @@ namespace DotNetNuke.Framework
                 key.Append("_");
                 key.Append(DateTime.Now.Ticks.ToString());
             }
-			
+            
             // Save view state and control state separately
             var state = new Pair(this.ViewState, this.ControlState);
 

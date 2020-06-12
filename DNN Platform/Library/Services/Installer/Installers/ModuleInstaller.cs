@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class ModuleInstaller : ComponentInstallerBase
     {
-		#region Private Properties
+        #region Private Properties
 
         private DesktopModuleInfo _desktopModule;
         private EventMessage _eventMessage;
@@ -51,13 +51,13 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-				return "cshtml, vbhtml, ashx, aspx, ascx, vb, cs, resx, css, js, resources, config, vbproj, csproj, sln, htm, html, xml, psd, svc, asmx, xsl, xslt";
+                return "cshtml, vbhtml, ashx, aspx, ascx, vb, cs, resx, css, js, resources, config, vbproj, csproj, sln, htm, html, xml, psd, svc, asmx, xsl, xslt";
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Private Methods
+        #region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-				// Attempt to get the Desktop Module
+                // Attempt to get the Desktop Module
                 DesktopModuleInfo tempDesktopModule = DesktopModuleController.GetDesktopModuleByPackageID(this.Package.PackageID);
                 if (tempDesktopModule != null)
                 {
@@ -139,10 +139,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Log.AddFailure(ex);
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Public Methods
+        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -152,7 +152,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
-			// Add CodeSubDirectory
+            // Add CodeSubDirectory
             if (!string.IsNullOrEmpty(this._desktopModule.CodeSubDirectory))
             {
                 Config.AddCodeSubDirectory(this._desktopModule.CodeSubDirectory);
@@ -177,8 +177,8 @@ namespace DotNetNuke.Services.Installer.Installers
                 // send it to occur on next App_Start Event
                 EventQueueController.SendMessage(oAppStartMessage, "Application_Start_FirstRequest");
             }
-			
-			// Add Event Message
+            
+            // Add Event Message
             if (this._eventMessage != null)
             {
                 if (!String.IsNullOrEmpty(this._eventMessage.Attributes["UpgradeVersionsList"]))
@@ -188,8 +188,8 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
             }
             
-			// Add DesktopModule to all portals
-			if (!this._desktopModule.IsPremium)
+            // Add DesktopModule to all portals
+            if (!this._desktopModule.IsPremium)
             {
                 DesktopModuleController.AddDesktopModuleToPortals(this._desktopModule.DesktopModuleID);
             }
@@ -243,16 +243,16 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-				// Attempt to get the Desktop Module
+                // Attempt to get the Desktop Module
                 this._installedDesktopModule = DesktopModuleController.GetDesktopModuleByModuleName(this._desktopModule.ModuleName, this.Package.InstallerInfo.PortalID);
 
                 if (this._installedDesktopModule != null)
                 {
                     this._desktopModule.DesktopModuleID = this._installedDesktopModule.DesktopModuleID;
-					// save the module's category
-                	this._desktopModule.Category = this._installedDesktopModule.Category;
+                    // save the module's category
+                    this._desktopModule.Category = this._installedDesktopModule.Category;
                 }
-				
+                
                 // Clear ModuleControls and Module Definitions caches in case script has modifed the contents
                 DataCache.RemoveCache(DataCache.ModuleDefinitionCacheKey);
                 DataCache.RemoveCache(DataCache.ModuleControlsCacheKey);
@@ -292,7 +292,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 
             this._eventMessage = this.ReadEventMessageNode(manifestNav);
-			
+            
             // Load permissions (to add)
             foreach (XPathNavigator moduleDefinitionNav in manifestNav.Select("desktopModule/moduleDefinitions/moduleDefinition"))
             {
@@ -324,15 +324,15 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-			// If Temp Module exists then we need to update the DataStore with this 
+            // If Temp Module exists then we need to update the DataStore with this 
             if (this._installedDesktopModule == null)
             {
-				// No Temp Module - Delete newly added module
+                // No Temp Module - Delete newly added module
                 this.DeleteModule();
             }
             else
             {
-				// Temp Module - Rollback to Temp
+                // Temp Module - Rollback to Temp
                 DesktopModuleController.SaveDesktopModule(this._installedDesktopModule, true, false);
             }
         }
@@ -346,7 +346,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             this.DeleteModule();
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

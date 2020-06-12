@@ -36,10 +36,10 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
     [ToolboxData("<{0}:DateEditControl runat=server></{0}:DateEditControl>")]
     public class DateEditControl : EditControl
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DateEditControl));
-		private DnnDatePicker _dateControl;
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DateEditControl));
+        private DnnDatePicker _dateControl;
 
-		#region Protected Properties
+        #region Protected Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -123,7 +123,7 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
                 DateTime dteValue = Null.NullDate;
                 try
                 {
-					// Try and cast the value to an DateTime
+                    // Try and cast the value to an DateTime
                     var dteString = this.OldValue as string;
                     if (!string.IsNullOrEmpty(dteString))
                     {
@@ -159,21 +159,21 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
             }
         }
 
-		#endregion
+        #endregion
 
-		#region Override Properties
-		
-		public override string ID
-		{
-			get
-			{
-				return base.ID + "_control";
-			}
-			set
-			{
-				base.ID = value;
-			}
-		}
+        #region Override Properties
+        
+        public override string ID
+        {
+            get
+            {
+                return base.ID + "_control";
+            }
+            set
+            {
+                base.ID = value;
+            }
+        }
 
         public override string EditControlClientId
         {
@@ -184,42 +184,42 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Private Properties
+        #region Private Properties
 
-	    private DnnDatePicker DateControl
-	    {
-		    get
-		    {
-			    if (this._dateControl == null)
-			    {
-				    this._dateControl = new DnnDatePicker();
-			    }
+        private DnnDatePicker DateControl
+        {
+            get
+            {
+                if (this._dateControl == null)
+                {
+                    this._dateControl = new DnnDatePicker();
+                }
 
-			    return this._dateControl;
-		    }
-	    }
+                return this._dateControl;
+            }
+        }
 
-		#endregion
+        #endregion
 
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
 
 
-			this.DateControl.ControlStyle.CopyFrom(this.ControlStyle);
-			this.DateControl.ID = base.ID + "_control";
+            this.DateControl.ControlStyle.CopyFrom(this.ControlStyle);
+            this.DateControl.ID = base.ID + "_control";
 
-			this.Controls.Add(this.DateControl);
+            this.Controls.Add(this.DateControl);
         }
 
         protected virtual void LoadDateControls()
         {
             if (this.DateValue != Null.NullDate)
             {
-				this.DateControl.SelectedDate = this.DateValue.Date;
+                this.DateControl.SelectedDate = this.DateValue.Date;
             }
         }
 
@@ -228,7 +228,7 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
             this.EnsureChildControls();
             bool dataChanged = false;
             string presentValue = this.StringValue;
-			string postedValue = postCollection[postDataKey + "_control"];
+            string postedValue = postCollection[postDataKey + "_control"];
             if (!presentValue.Equals(postedValue))
             {
                 if (string.IsNullOrEmpty(postedValue))

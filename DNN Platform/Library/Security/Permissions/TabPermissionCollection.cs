@@ -17,9 +17,9 @@ using DotNetNuke.Common.Utilities;
 namespace DotNetNuke.Security.Permissions
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : TabPermissionCollection
+    /// Class    : TabPermissionCollection
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// TabPermissionCollection provides the a custom collection for TabPermissionInfo

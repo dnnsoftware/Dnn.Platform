@@ -44,9 +44,9 @@ namespace DotNetNuke.Modules.Admin.Security
     /// -----------------------------------------------------------------------------
     public partial class SecurityRoles : PortalModuleBase, IActionable
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityRoles));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityRoles));
         private readonly INavigationManager _navigationManager;
-		#region "Private Members"
+        #region "Private Members"
 
         private int RoleId = Null.NullInteger;
         private new int UserId = Null.NullInteger;
@@ -57,14 +57,14 @@ namespace DotNetNuke.Modules.Admin.Security
         private int _totalPages = 1;
         private int _totalRecords;
 
-		#endregion
+        #endregion
 
         public SecurityRoles()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-		#region "Protected Members"
+        #region "Protected Members"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -182,7 +182,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
 #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -193,7 +193,7 @@ namespace DotNetNuke.Modules.Admin.Security
         /// -----------------------------------------------------------------------------
         public PortalModuleBase ParentModule { get; set; }
 
-		#endregion
+        #endregion
 
         #region IActionable Members
 
@@ -207,7 +207,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -265,7 +265,7 @@ namespace DotNetNuke.Modules.Admin.Security
             // bind all portal users to dropdownlist
             if (this.UserId == -1)
             {
-				// Make sure user has enough permissions
+                // Make sure user has enough permissions
                 if (this.Role.RoleName == this.PortalSettings.AdministratorRoleName && !PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName))
                 {
                     UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("NotAuthorized", this.LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
@@ -373,8 +373,8 @@ namespace DotNetNuke.Modules.Admin.Security
         /// -----------------------------------------------------------------------------
         private void GetDates(int UserId, int RoleId)
         {
-        	DateTime? expiryDate = null;
-        	DateTime? effectiveDate = null;
+            DateTime? expiryDate = null;
+            DateTime? effectiveDate = null;
 
             UserRoleInfo objUserRole = RoleController.Instance.GetUserRole(this.PortalId, UserId, RoleId);
             if (objUserRole != null)
@@ -411,15 +411,15 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                 }
             }
-			this.effectiveDatePicker.SelectedDate = effectiveDate;
-			this.expiryDatePicker.SelectedDate = expiryDate;
+            this.effectiveDatePicker.SelectedDate = effectiveDate;
+            this.expiryDatePicker.SelectedDate = expiryDate;
         }
 
-		#endregion
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// DataBind binds the data to the controls
         /// </summary>
@@ -457,7 +457,7 @@ namespace DotNetNuke.Modules.Admin.Security
             bool canDelete = RoleController.CanRemoveUserFromRole(this.PortalSettings, UserID, RoleID);
             if (RoleID == this.PortalSettings.AdministratorRoleId && canDelete)
             {
-				// User can only delete if in Admin role
+                // User can only delete if in Admin role
                 canDelete = PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
             }
             return canDelete;
@@ -493,9 +493,9 @@ namespace DotNetNuke.Modules.Admin.Security
             return "<a href=\"" + Globals.LinkClick("userid=" + UserID, this.TabId, this.ModuleId) + "\" class=\"CommandButton\">" + DisplayName + "</a>";
         }
 
-		#endregion
+        #endregion
 
-		#region "Event Handlers"
+        #region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -612,7 +612,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
             if (!String.IsNullOrEmpty(this.txtUsers.Text))
             {
-				// validate username
+                // validate username
                 UserInfo objUser = UserController.GetUserByName(this.PortalId, this.txtUsers.Text);
                 if (objUser != null)
                 {
@@ -660,17 +660,17 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     if ((this.Role != null) && (this.User != null))
                     {
-						// do not modify the portal Administrator account dates
+                        // do not modify the portal Administrator account dates
                         if (this.User.UserID == this.PortalSettings.AdministratorId && this.Role.RoleID == this.PortalSettings.AdministratorRoleId)
                         {
-                        	this.effectiveDatePicker.SelectedDate = null;
-                        	this.expiryDatePicker.SelectedDate = null;
+                            this.effectiveDatePicker.SelectedDate = null;
+                            this.expiryDatePicker.SelectedDate = null;
                         }
 
                         DateTime datEffectiveDate;
                         if (this.effectiveDatePicker.SelectedDate != null)
                         {
-							datEffectiveDate = this.effectiveDatePicker.SelectedDate.Value;
+                            datEffectiveDate = this.effectiveDatePicker.SelectedDate.Value;
                         }
                         else
                         {
@@ -680,7 +680,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         DateTime datExpiryDate;
                         if (this.expiryDatePicker.SelectedDate != null)
                         {
-							datExpiryDate = this.expiryDatePicker.SelectedDate.Value;
+                            datExpiryDate = this.expiryDatePicker.SelectedDate.Value;
                         }
                         else
                         {
@@ -793,6 +793,6 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-		#endregion
+        #endregion
     }
 }

@@ -20,33 +20,33 @@ using DotNetNuke.Services.Log.EventLog;
 namespace DotNetNuke.Security.Permissions
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : TabPermissionController
+    /// Class    : TabPermissionController
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// TabPermissionController provides the Business Layer for Tab Permissions
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class TabPermissionController
-	{
-		#region "Private Shared Methods"
+    {
+        #region "Private Shared Methods"
 
-		private static void ClearPermissionCache(int tabId)
-		{
+        private static void ClearPermissionCache(int tabId)
+        {
             var objTab = TabController.Instance.GetTab(tabId, Null.NullInteger, false);
-			DataCache.ClearTabPermissionsCache(objTab.PortalID);
-		}
+            DataCache.ClearTabPermissionsCache(objTab.PortalID);
+        }
 
-		#endregion
-		
-		#region Private Members
-		
+        #endregion
+        
+        #region Private Members
+        
         private static readonly PermissionProvider _provider = PermissionProvider.Instance();
-		
-		#endregion
-		
-		#region Public Shared Methods
+        
+        #endregion
+        
+        #region Public Shared Methods
 
         /// <summary>
         /// Returns a list with all roles with implicit permissions on Tabs
@@ -313,6 +313,6 @@ namespace DotNetNuke.Security.Permissions
             DataCache.ClearTabPermissionsCache(tab.PortalID);
         }
 
-		#endregion
+        #endregion
     }
 }

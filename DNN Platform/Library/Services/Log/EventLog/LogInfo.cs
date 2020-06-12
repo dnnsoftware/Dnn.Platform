@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Log.EventLog
     [Serializable]
     public class LogInfo
     {
-		#region Constructors
+        #region Constructors
 
         public LogInfo()
         {
@@ -29,17 +29,17 @@ namespace DotNetNuke.Services.Log.EventLog
             this.LogUserID = -1;
             this.LogEventID = -1;
             this.LogUserName = "";
-			this.Exception = new ExceptionInfo();
+            this.Exception = new ExceptionInfo();
         }
 
         public LogInfo(string content) : this()
         {
             this.Deserialize(content);
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Properties"
+        #region "Properties"
 
         public string LogGUID { get; set; }
 
@@ -69,11 +69,11 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public string LogConfigID { get; set; }
 
-		public ExceptionInfo Exception { get; set; }
+        public ExceptionInfo Exception { get; set; }
 
         #endregion
 
-		#region Public Methods
+        #region Public Methods
 
         public void AddProperty(string PropertyName, string PropertyValue)
         {
@@ -158,13 +158,13 @@ namespace DotNetNuke.Services.Log.EventLog
                         case "LogServerName":
                             this.LogServerName = reader.ReadContentAsString();
                             break;
-						case "LogConfigID":
-							this.LogConfigID = reader.ReadContentAsString();
-							break;
-					}
+                        case "LogConfigID":
+                            this.LogConfigID = reader.ReadContentAsString();
+                            break;
+                    }
                 }
             }
-			
+            
             // Check for LogProperties child node
             reader.Read();
             if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "LogProperties")
@@ -174,12 +174,12 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     this.LogProperties.ReadXml(reader);
                 }
-			}
-			// Check for Exception child node
-			if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "Exception")
-	        {
-				this.Exception.ReadXml(reader);
-	        }
+            }
+            // Check for Exception child node
+            if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "Exception")
+            {
+                this.Exception.ReadXml(reader);
+            }
         }
 
         public static bool IsSystemType(string PropName)
@@ -229,10 +229,10 @@ namespace DotNetNuke.Services.Log.EventLog
             str.Append("<p><strong>CreateDate:</strong>" + this.LogCreateDate + "</p>");
             str.Append("<p><strong>ServerName:</strong>" + this.LogServerName + "</p>");
             str.Append(this.LogProperties.ToString());
-	        if (!string.IsNullOrEmpty(this.Exception.ExceptionHash))
-	        {
-				str.Append(this.Exception.ToString());
-			}
+            if (!string.IsNullOrEmpty(this.Exception.ExceptionHash))
+            {
+                str.Append(this.Exception.ToString());
+            }
             return str.ToString();
         }
 
@@ -251,15 +251,15 @@ namespace DotNetNuke.Services.Log.EventLog
             writer.WriteAttributeString("LogCreateDateNum", this.LogCreateDateNum.ToString());
             writer.WriteAttributeString("BypassBuffering", this.BypassBuffering.ToString());
             writer.WriteAttributeString("LogServerName", this.LogServerName);
-			writer.WriteAttributeString("LogConfigID", this.LogConfigID);
+            writer.WriteAttributeString("LogConfigID", this.LogConfigID);
             this.LogProperties.WriteXml(writer);
-	        if (!string.IsNullOrEmpty(this.Exception.ExceptionHash))
-	        {
-		        this.Exception.WriteXml(writer);
-	        }
+            if (!string.IsNullOrEmpty(this.Exception.ExceptionHash))
+            {
+                this.Exception.WriteXml(writer);
+            }
             writer.WriteEndElement();
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

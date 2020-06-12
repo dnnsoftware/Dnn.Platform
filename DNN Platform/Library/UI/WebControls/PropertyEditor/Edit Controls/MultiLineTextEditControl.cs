@@ -26,8 +26,8 @@ namespace DotNetNuke.UI.WebControls
         {
             string propValue = Convert.ToString(this.Value);
             this.ControlStyle.AddAttributesToRender(writer);
-			writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
-			writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
             writer.AddAttribute("aria-label", "editor");
             writer.RenderBeginTag(HtmlTextWriterTag.Textarea);
             writer.Write(propValue);

@@ -5,8 +5,8 @@
 namespace DotNetNuke.Entities.Tabs
 {
     /// -----------------------------------------------------------------------------
-    /// Project		: DotNetNuke
-    /// Class		: TabMoveType
+    /// Project     : DotNetNuke
+    /// Class       : TabMoveType
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// Identifies common tab move types

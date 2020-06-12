@@ -10,10 +10,10 @@ using System.Linq;
 
 namespace DotNetNuke.Entities.Content.Taxonomy
 {
-	/// <summary>
-	/// Interface of ScopeTypeController.
-	/// </summary>
-	/// <seealso cref="ScopeTypeController"/>
+    /// <summary>
+    /// Interface of ScopeTypeController.
+    /// </summary>
+    /// <seealso cref="ScopeTypeController"/>
     public interface IScopeTypeController
     {
         int AddScopeType(ScopeType scopeType);

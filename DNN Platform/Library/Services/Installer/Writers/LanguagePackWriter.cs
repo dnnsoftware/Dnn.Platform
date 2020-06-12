@@ -29,15 +29,15 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class LanguagePackWriter : PackageWriterBase
     {
-		#region "Private Members"
+        #region "Private Members"
 
         private bool _IsCore = Null.NullBoolean;
         private Locale _Language;
         private LanguagePackInfo _LanguagePack;
-		
-		#endregion
+        
+        #endregion
 
-		#region "Constructors"
+        #region "Constructors"
 
 
         public LanguagePackWriter(PackageInfo package) : base(package)
@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 }
                 else
                 {
-					// Get the BasePath of the Dependent Package
+                    // Get the BasePath of the Dependent Package
                     PackageInfo dependendentPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == this.LanguagePack.DependentPackageID);
                     PackageWriterBase dependentPackageWriter = PackageWriterFactory.GetWriter(dependendentPackage);
                     this.BasePath = dependentPackageWriter.BasePath;
@@ -98,10 +98,10 @@ namespace DotNetNuke.Services.Installer.Writers
             this._Language = language;
             this.BasePath = Null.NullString;
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         public override bool IncludeAssemblies
         {
@@ -454,7 +454,7 @@ namespace DotNetNuke.Services.Installer.Writers
                         // 2. Module packages only include one module
                         if (!this._IsCore && this._LanguagePack == null)
                         {
-							// Check if language is installed
+                            // Check if language is installed
                             Locale locale = LocaleController.Instance.GetLocale(this._Language.Code);
                             if (locale == null)
                             {
@@ -462,13 +462,13 @@ namespace DotNetNuke.Services.Installer.Writers
                             }
                             else
                             {
-								// Attempt to figure out the Extension
+                                // Attempt to figure out the Extension
                                 foreach (KeyValuePair<int, DesktopModuleInfo> kvp in
                                     DesktopModuleController.GetDesktopModules(Null.NullInteger))
                                 {
                                     if (kvp.Value.FolderName.ToLowerInvariant() == moduleName)
                                     {
-										// Found Module - Get Package
+                                        // Found Module - Get Package
                                         var dependentPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == kvp.Value.PackageID);
                                         this.Package.Name += "_" + dependentPackage.Name;
                                         this.Package.FriendlyName += " " + dependentPackage.FriendlyName;
@@ -498,14 +498,14 @@ namespace DotNetNuke.Services.Installer.Writers
                 }
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected methods"
+        #region "Protected methods"
 
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
-			// Language file starts at the root
+            // Language file starts at the root
             this.ParseFolder(Path.Combine(Globals.ApplicationMapPath, this.BasePath), Globals.ApplicationMapPath);
         }
 
@@ -524,7 +524,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
             if (folder.Name.ToLowerInvariant() == "app_localresources" || folder.Name.ToLowerInvariant() == "app_globalresources" || folder.Name.ToLowerInvariant() == "_default")
             {
-				// Add the Files in the Folder
+                // Add the Files in the Folder
                 FileInfo[] files = folder.GetFiles();
                 foreach (FileInfo file in files)
                 {
@@ -554,6 +554,6 @@ namespace DotNetNuke.Services.Installer.Writers
             }
             languageFileWriter.WriteManifest(writer);
         }
-		#endregion
+        #endregion
     }
 }

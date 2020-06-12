@@ -123,7 +123,7 @@ namespace DotNetNuke.Services.Syndication
         /// The PreRender event is used to set the Caching Policy for the Feed.  This mimics the behavior from the 
         /// OutputCache directive in the old Rss.aspx file.  @OutputCache Duration="60" VaryByParam="moduleid" 
         /// </summary>
-		/// <param name="ea">Event Args.</param>
+        /// <param name="ea">Event Args.</param>
         /// <remarks></remarks>
         protected override void OnPreRender(EventArgs ea)
         {

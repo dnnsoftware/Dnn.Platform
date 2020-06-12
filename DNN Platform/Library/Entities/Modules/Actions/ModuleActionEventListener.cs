@@ -5,8 +5,8 @@
 namespace DotNetNuke.Entities.Modules.Actions
 {
     /// -----------------------------------------------------------------------------
-    /// Project		: DotNetNuke
-    /// Class		: ModuleActionEventListener
+    /// Project     : DotNetNuke
+    /// Class       : ModuleActionEventListener
     ///
     /// -----------------------------------------------------------------------------
     /// <summary>

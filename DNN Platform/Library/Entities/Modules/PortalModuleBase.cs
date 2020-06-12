@@ -27,8 +27,8 @@ using DotNetNuke.UI.Modules;
 namespace DotNetNuke.Entities.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : PortalModuleBase
+    /// Project  : DotNetNuke
+    /// Class    : PortalModuleBase
     ///
     /// -----------------------------------------------------------------------------
     /// <summary>

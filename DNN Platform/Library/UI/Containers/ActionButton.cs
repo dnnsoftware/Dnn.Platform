@@ -13,9 +13,9 @@ using DotNetNuke.Entities.Modules.Actions;
 namespace DotNetNuke.UI.Containers
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Containers
-    /// Class	 : ActionButton
+    /// Class    : ActionButton
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   ActionButton provides a button (or group of buttons) for action(s).

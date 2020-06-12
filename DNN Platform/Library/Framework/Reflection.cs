@@ -19,8 +19,8 @@ namespace DotNetNuke.Framework
 {
     /// -----------------------------------------------------------------------------
     /// Namespace: DotNetNuke.Framework
-    /// Project	 : DotNetNuke
-    /// Class	 : Reflection
+    /// Project  : DotNetNuke
+    /// Class    : Reflection
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// Library responsible for reflection
@@ -30,9 +30,9 @@ namespace DotNetNuke.Framework
     /// -----------------------------------------------------------------------------
     public class Reflection
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Reflection));
-		#region Public Shared Methods
-		
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Reflection));
+        #region Public Shared Methods
+        
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Creates an object
@@ -150,26 +150,26 @@ namespace DotNetNuke.Framework
             ProviderConfiguration objProviderConfiguration = ProviderConfiguration.GetProviderConfiguration(ObjectProviderType);
             if (!String.IsNullOrEmpty(ObjectNamespace) && !String.IsNullOrEmpty(ObjectAssemblyName))
             {
-            	// if both the Namespace and AssemblyName are provided then we will construct an "assembly qualified typename" - ie. "NameSpace.ClassName, AssemblyName" 
+                // if both the Namespace and AssemblyName are provided then we will construct an "assembly qualified typename" - ie. "NameSpace.ClassName, AssemblyName" 
                 if (String.IsNullOrEmpty(ObjectProviderName))
                 {
-					// dynamically create the typename from the constants ( this enables private assemblies to share the same configuration as the base provider ) 
+                    // dynamically create the typename from the constants ( this enables private assemblies to share the same configuration as the base provider ) 
                     TypeName = ObjectNamespace + "." + objProviderConfiguration.DefaultProvider + ", " + ObjectAssemblyName + (fixAssemblyName ? "." + objProviderConfiguration.DefaultProvider : string.Empty);
                 }
                 else
                 {
-					// dynamically create the typename from the constants ( this enables private assemblies to share the same configuration as the base provider ) 
+                    // dynamically create the typename from the constants ( this enables private assemblies to share the same configuration as the base provider ) 
                     TypeName = ObjectNamespace + "." + ObjectProviderName + ", " + ObjectAssemblyName + (fixAssemblyName ? "." + ObjectProviderName : string.Empty);
                 }
             }
             else
             {
-				// if only the Namespace is provided then we will construct an "full typename" - ie. "NameSpace.ClassName" 
+                // if only the Namespace is provided then we will construct an "full typename" - ie. "NameSpace.ClassName" 
                 if (!String.IsNullOrEmpty(ObjectNamespace))
                 {
                     if (String.IsNullOrEmpty(ObjectProviderName))
                     {
-						// dynamically create the typename from the constants ( this enables private assemblies to share the same configuration as the base provider ) 
+                        // dynamically create the typename from the constants ( this enables private assemblies to share the same configuration as the base provider ) 
                         TypeName = ObjectNamespace + "." + objProviderConfiguration.DefaultProvider;
                     }
                     else
@@ -279,7 +279,7 @@ namespace DotNetNuke.Framework
             {
                 type = (Type)DataCache.GetCache(CacheKey);
             }
-			
+            
             // is the type in the cache?
             if (type == null)
             {
@@ -369,8 +369,8 @@ namespace DotNetNuke.Framework
 
             // dynamically create the object
             return Activator.CreateInstance(objType);
-		}
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

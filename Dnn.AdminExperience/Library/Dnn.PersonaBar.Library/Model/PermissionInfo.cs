@@ -16,9 +16,9 @@ using DotNetNuke.Entities.Modules;
 namespace Dnn.PersonaBar.Library.Model
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : MenuPermissionInfo
+    /// Class    : MenuPermissionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// MenuPermissionInfo provides the Entity Layer for Module Permissions

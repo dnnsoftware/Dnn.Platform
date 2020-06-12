@@ -40,7 +40,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         private Mock<IFolderInfo> _folderInfo;
         private Mock<IFolderMappingController> _folderMappingController;
         private Mock<IDirectory> _directory;
-	    private Mock<IFile> _file;
+        private Mock<IFile> _file;
         private Mock<ICBO> _cbo;
         private Mock<IPathUtils> _pathUtils;
         private Mock<IUserSecurityController> _mockUserSecurityController;
@@ -58,7 +58,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._folderMappingController = new Mock<IFolderMappingController>();
             this._directory = new Mock<IDirectory>();
-			this._file = new Mock<IFile>();
+            this._file = new Mock<IFile>();
             this._cbo = new Mock<ICBO>();
             this._pathUtils = new Mock<IPathUtils>();
             this._mockUserSecurityController = new Mock<IUserSecurityController>();
@@ -66,7 +66,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             FolderMappingController.RegisterInstance(this._folderMappingController.Object);
             DirectoryWrapper.RegisterInstance(this._directory.Object);
-			FileWrapper.RegisterInstance(this._file.Object);
+            FileWrapper.RegisterInstance(this._file.Object);
             CBO.SetTestableInstance(this._cbo.Object);
             PathUtils.RegisterInstance(this._pathUtils.Object);
             UserSecurityController.SetTestableInstance(this._mockUserSecurityController.Object);

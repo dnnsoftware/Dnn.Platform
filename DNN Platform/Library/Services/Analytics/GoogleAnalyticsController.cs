@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Analytics
     /// -----------------------------------------------------------------------------
     public class GoogleAnalyticsController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(GoogleAnalyticsController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(GoogleAnalyticsController));
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Handles module upgrades includes a new Google Analytics Asychronous script.

@@ -26,14 +26,14 @@ namespace DotNetNuke.Security.Membership
     /// -----------------------------------------------------------------------------
     public class MembershipProviderConfig
     {
-		#region "Private Shared Members"
-		
+        #region "Private Shared Members"
+        
         private static readonly MembershipProvider memberProvider = MembershipProvider.Instance();
-		
-		#endregion
-		
-		#region "Public Shared Properties"
-		
+        
+        #endregion
+        
+        #region "Public Shared Properties"
+        
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether the Provider Properties can be edited
@@ -244,8 +244,8 @@ namespace DotNetNuke.Security.Membership
             {
                 memberProvider.RequiresUniqueEmail = value;
             }
-			
-			#endregion
+            
+            #endregion
         }
     }
 }

@@ -255,7 +255,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     CultureCode = CultureEsEs,
                     StopWords = "los,de,el",
                 });
-			this._mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
+            this._mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .Returns<string, bool, bool>(new SearchHelperImpl().RephraseSearchText);
             this._mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
             SearchHelper.SetTestableInstance(this._mockSearchHelper.Object);

@@ -20,9 +20,9 @@ using DotNetNuke.UI.WebControls;
 namespace DotNetNuke.UI.Containers
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Containers
-    /// Class	 : ActionsMenu
+    /// Class    : ActionsMenu
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ActionsMenu provides a menu for a collection of actions.
@@ -34,7 +34,7 @@ namespace DotNetNuke.UI.Containers
     /// -----------------------------------------------------------------------------
     public class ActionsMenu : Control, IActionControl
     {
-		#region "Private Members"
+        #region "Private Members"
 
         private ActionManager _ActionManager;
         private ModuleAction _ActionRoot;
@@ -42,9 +42,9 @@ namespace DotNetNuke.UI.Containers
         private NavigationProvider _ProviderControl;
         private string _ProviderName = "DNNMenuNavigationProvider";
 
-		#endregion
+        #endregion
 
-		#region "Protected Properties"
+        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -77,10 +77,10 @@ namespace DotNetNuke.UI.Containers
                 return this._ProviderControl;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -104,20 +104,20 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets and Sets the Path to the Script Library for the provider
-		/// </summary>
-		/// <returns>A String</returns>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets and Sets the Path to the Script Library for the provider
+        /// </summary>
+        /// <returns>A String</returns>
+        /// -----------------------------------------------------------------------------
         public string PathSystemScript { get; set; }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets and Sets whether the Menu should be populated from the client
-		/// </summary>
-		/// <returns>A Boolean</returns>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets and Sets whether the Menu should be populated from the client
+        /// </summary>
+        /// <returns>A Boolean</returns>
+        /// -----------------------------------------------------------------------------
         public bool PopulateNodesFromClient { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -169,10 +169,10 @@ namespace DotNetNuke.UI.Containers
         public IModuleControl ModuleControl { get; set; }
 
         #endregion
-		
-		#endregion
+        
+        #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
 
         /// -----------------------------------------------------------------------------
@@ -196,12 +196,12 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// ProcessNodes proceses a single node and its children
-		/// </summary>
-		/// <param name="objParent">The Node to process</param>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// ProcessNodes proceses a single node and its children
+        /// </summary>
+        /// <param name="objParent">The Node to process</param>
+        /// -----------------------------------------------------------------------------
         private void ProcessNodes(DNNNode objParent)
         {
             if (!String.IsNullOrEmpty(objParent.JSFunction))
@@ -223,7 +223,7 @@ namespace DotNetNuke.UI.Containers
         {
             try
             {
-				//--- original page set attributes ---
+                //--- original page set attributes ---
                 this.ProviderControl.StyleIconWidth = 15;
                 this.ProviderControl.MouseOutHideDelay = 500;
                 this.ProviderControl.MouseOverAction = NavigationProvider.HoverAction.Expand;
@@ -252,10 +252,10 @@ namespace DotNetNuke.UI.Containers
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected Methods"
+        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -322,9 +322,9 @@ namespace DotNetNuke.UI.Containers
             this.BindMenu();
         }
 
-		#endregion
+        #endregion
 
-		#region "Event Handlers"
+        #region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -365,7 +365,7 @@ namespace DotNetNuke.UI.Containers
             this.ProviderControl.ClearNodes(); // since we always bind we need to clear the nodes for providers that maintain their state
             this.BindMenu(Navigation.GetActionNodes(objAction, args.Node, this, this.ExpandDepth));
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

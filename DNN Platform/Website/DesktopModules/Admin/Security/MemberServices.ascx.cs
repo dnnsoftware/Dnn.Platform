@@ -37,13 +37,13 @@ namespace DotNetNuke.Modules.Admin.Security
 
         #endregion
 
-		#region "Events"
+        #region "Events"
 
        public event SubscriptionUpdatedEventHandler SubscriptionUpdated;
 
-		#endregion
+        #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -51,8 +51,8 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// 	<param name="price">The price to format</param>
-        /// 	<returns>The correctly formatted price</returns>
+        ///     <param name="price">The price to format</param>
+        ///     <returns>The correctly formatted price</returns>
         /// -----------------------------------------------------------------------------
         private string FormatPrice(float price)
         {
@@ -116,9 +116,9 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Protected Methods"
+        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -126,8 +126,8 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// 	<param name="expiryDate">The date to format</param>
-        /// 	<returns>The correctly formatted date</returns>
+        ///     <param name="expiryDate">The date to format</param>
+        ///     <returns>The correctly formatted date</returns>
         /// -----------------------------------------------------------------------------
         protected string FormatExpiryDate(DateTime expiryDate)
         {
@@ -159,10 +159,10 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// 	<param name="price">The price to format</param>
+        ///     <param name="price">The price to format</param>
         /// <param name="period">Period of price.</param>
         /// <param name="frequency">Frenquency of price.</param>
-        /// 	<returns>The correctly formatted price</returns>
+        ///     <returns>The correctly formatted price</returns>
         /// -----------------------------------------------------------------------------
         protected string FormatPrice(float price, int period, string frequency)
         {
@@ -196,10 +196,10 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// 	<param name="price">The price to format</param>
+        ///     <param name="price">The price to format</param>
         /// <param name="period">Period of price.</param>
         /// <param name="frequency">Frenquency of price.</param>
-        /// 	<returns>The correctly formatted price</returns>
+        ///     <returns>The correctly formatted price</returns>
         /// -----------------------------------------------------------------------------
         protected string FormatTrial(float price, int period, string frequency)
         {
@@ -236,7 +236,7 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// 	<returns>The correctly formatted url</returns>
+        ///     <returns>The correctly formatted url</returns>
         /// -----------------------------------------------------------------------------
         protected string FormatURL()
         {
@@ -263,9 +263,9 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// 	<param name="subscribed">The service state</param>
-        /// 	<param name="expiryDate">The service expiry date.</param>
-        /// 	<returns>The correctly formatted text</returns>
+        ///     <param name="subscribed">The service state</param>
+        ///     <param name="expiryDate">The service expiry date.</param>
+        ///     <returns>The correctly formatted text</returns>
         /// -----------------------------------------------------------------------------
         protected string ServiceText(bool subscribed, DateTime expiryDate)
         {
@@ -324,7 +324,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
             else if (objRole.IsPublic && objRole.TrialFee == 0.0)
             {
-				// Use Trial?
+                // Use Trial?
                 UserRoleInfo objUserRole = RoleController.Instance.GetUserRole(this.PortalId, this.UserInfo.UserID, roleID);
                 if ((objUserRole == null) || (!objUserRole.IsTrialUsed))
                 {
@@ -334,9 +334,9 @@ namespace DotNetNuke.Modules.Admin.Security
             return showTrial;
         }
 
-		#endregion
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -356,9 +356,9 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Event Methods"
+        #region "Event Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -377,9 +377,9 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Event Handlers"
+        #region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -447,25 +447,25 @@ namespace DotNetNuke.Modules.Admin.Security
             int roleID = Convert.ToInt32(e.CommandArgument);
             if (commandName == Localization.GetString("Subscribe", this.LocalResourceFile) || commandName == Localization.GetString("Renew", this.LocalResourceFile))
             {
-				// Subscribe
+                // Subscribe
                 this.Subscribe(roleID, false);
             }
             else if (commandName == Localization.GetString("Unsubscribe", this.LocalResourceFile))
             {
-				// Unsubscribe
+                // Unsubscribe
                 this.Subscribe(roleID, true);
             }
             else if (commandName == "UseTrial")
             {
-				// Use Trial
+                // Use Trial
                 this.UseTrial(roleID);
             }
-			
-			// Rebind Grid
+            
+            // Rebind Grid
             this.DataBind();
         }
-		
-		#endregion
+        
+        #endregion
 
         #region Nested type: SubscriptionUpdatedEventArgs
 

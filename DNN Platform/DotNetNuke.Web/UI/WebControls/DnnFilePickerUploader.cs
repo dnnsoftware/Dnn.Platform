@@ -24,19 +24,19 @@ using DotNetNuke.Web.Common;
 namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnFilePickerUploader : UserControl, IFilePickerUploader
-	{
-		#region Private Fields
+    {
+        #region Private Fields
         
         private const string MyFileName = "filepickeruploader.ascx";
-	    private int? _portalId = null;
+        private int? _portalId = null;
 
         private string _fileFilter;
         private string _folderPath = String.Empty;
         private bool _folderPathSet = false;
 
-		#endregion
+        #endregion
 
-		#region Protected Properties
+        #region Protected Properties
 
         protected DnnFileDropDownList FilesComboBox;
         protected DnnFolderDropDownList FoldersComboBox;
@@ -75,11 +75,11 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
         
-		#endregion
+        #endregion
 
-		#region Public Properties
+        #region Public Properties
 
-		public bool UsePersonalFolder { get; set; }
+        public bool UsePersonalFolder { get; set; }
         
         public string FilePath
         {
@@ -180,17 +180,17 @@ namespace DotNetNuke.Web.UI.WebControls
         
         public UserInfo User { get; set; }
 
-	    public int PortalId
-	    {
-		    get
-		    {
-			    return !this._portalId.HasValue ? PortalSettings.Current.PortalId : this._portalId.Value;
-		    }
-			set
-			{
-				this._portalId = value;
-			}
-	    }
+        public int PortalId
+        {
+            get
+            {
+                return !this._portalId.HasValue ? PortalSettings.Current.PortalId : this._portalId.Value;
+            }
+            set
+            {
+                this._portalId = value;
+            }
+        }
 
         public bool SupportHost
         {

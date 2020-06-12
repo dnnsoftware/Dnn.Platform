@@ -26,8 +26,8 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class SkinControlPackageWriter : PackageWriterBase
     {
-		#region "Constructors"
-		
+        #region "Constructors"
+        
         public SkinControlPackageWriter(PackageInfo package) : base(package)
         {
             this.SkinControl = SkinControlController.GetSkinControlByPackageID(package.PackageID);
@@ -59,20 +59,20 @@ namespace DotNetNuke.Services.Installer.Writers
             this.BasePath = Path.Combine("DesktopModules", this.Package.Name.ToLowerInvariant()).Replace("/", "\\");
             this.AppCodePath = Path.Combine("App_Code", this.Package.Name.ToLowerInvariant()).Replace("/", "\\");
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets the associated SkinControl
-		/// </summary>
-		/// <value>A SkinControlInfo object</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the associated SkinControl
+        /// </summary>
+        /// <value>A SkinControlInfo object</value>
+        /// -----------------------------------------------------------------------------
         public SkinControlInfo SkinControl { get; set; }
-		
-		#endregion
+        
+        #endregion
 
         private void ReadLegacyManifest(XPathNavigator legacyManifest, bool processModule)
         {
@@ -95,7 +95,7 @@ namespace DotNetNuke.Services.Installer.Writers
                     }
                 }
             }
-			
+            
             // Process legacy files Node
             foreach (XPathNavigator fileNav in folderNav.Select("files/file"))
             {
@@ -104,7 +104,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
                 this.AddFile(Path.Combine(filePath, fileName), fileName);
             }
-			
+            
             // Process resource file Node
             if (!string.IsNullOrEmpty(Util.ReadElement(folderNav, "resourcefile")))
             {
@@ -112,11 +112,11 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-		#region "Protected Methods"
-		
+        #region "Protected Methods"
+        
         protected override void WriteManifestComponent(XmlWriter writer)
         {
-			// Start component Element
+            // Start component Element
             writer.WriteStartElement("component");
             writer.WriteAttributeString("type", "SkinObject");
 
@@ -126,7 +126,7 @@ namespace DotNetNuke.Services.Installer.Writers
             // End component Element
             writer.WriteEndElement();
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

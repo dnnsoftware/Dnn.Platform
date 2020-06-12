@@ -41,15 +41,15 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [SetUp]
         public void Setup()
         {
-			var _mockData = MockComponentProvider.CreateDataProvider();
-			var _mockCache = MockComponentProvider.CreateDataCacheProvider();
-			var _globals = new Mock<IGlobals>();
-			var _cbo = new Mock<ICBO>();
+            var _mockData = MockComponentProvider.CreateDataProvider();
+            var _mockCache = MockComponentProvider.CreateDataCacheProvider();
+            var _globals = new Mock<IGlobals>();
+            var _cbo = new Mock<ICBO>();
 
-			_mockData.Setup(m => m.GetProviderPath()).Returns(String.Empty);
+            _mockData.Setup(m => m.GetProviderPath()).Returns(String.Empty);
 
-			TestableGlobals.SetTestableInstance(_globals.Object);
-			CBO.SetTestableInstance(_cbo.Object);
+            TestableGlobals.SetTestableInstance(_globals.Object);
+            CBO.SetTestableInstance(_cbo.Object);
         }
 
         [TearDown]
@@ -73,15 +73,15 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             Assert.AreEqual("application/octet-stream", contentType);
         }
 
-		[Test]
-		public void GetContentType_Returns_Correct_Value_For_Extension()
-		{
-			const string notManagedExtension = "htm";
+        [Test]
+        public void GetContentType_Returns_Correct_Value_For_Extension()
+        {
+            const string notManagedExtension = "htm";
 
-			var contentType = FileContentTypeManager.Instance.GetContentType(notManagedExtension);
+            var contentType = FileContentTypeManager.Instance.GetContentType(notManagedExtension);
 
-			Assert.AreEqual("text/html", contentType);
-		}
+            Assert.AreEqual("text/html", contentType);
+        }
 
         #endregion
     }

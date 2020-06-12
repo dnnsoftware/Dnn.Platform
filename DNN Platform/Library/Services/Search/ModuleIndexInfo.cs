@@ -14,10 +14,10 @@ using System.Text;
 
 namespace DotNetNuke.Services.Search
 {
-	internal class ModuleIndexInfo
-	{
-		public ModuleInfo ModuleInfo { get; set; }
+    internal class ModuleIndexInfo
+    {
+        public ModuleInfo ModuleInfo { get; set; }
 
-		public bool SupportSearch { get; set; }
-	}
+        public bool SupportSearch { get; set; }
+    }
 }

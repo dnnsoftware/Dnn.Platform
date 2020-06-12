@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-		#region "Private Members"
+        #region "Private Members"
 
         private AuthenticationInfo _AuthSystem;
         private AuthenticationSettingsBase _SettingsControl;
@@ -74,9 +74,9 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 
                 if (this.SettingsControl != null)
                 {
-					// set the control ID to the resource file name ( ie. controlname.ascx = controlname )
+                    // set the control ID to the resource file name ( ie. controlname.ascx = controlname )
                     // this is necessary for the Localization in PageBase
                     this.SettingsControl.ID = Path.GetFileNameWithoutExtension(this.AuthSystem.SettingsControlSrc);
 
@@ -117,9 +117,9 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
         public override void Initialize()
         {
@@ -154,9 +154,9 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Event Handlers"
+        #region "Event Handlers"
 
         protected override void OnLoad(EventArgs e)
         {
@@ -178,6 +178,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 this.Response.Redirect(this._navigationManager.NavigateURL(), true);
         }
 
-		#endregion
+        #endregion
     }
 }

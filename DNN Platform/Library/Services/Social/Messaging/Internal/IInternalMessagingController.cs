@@ -63,9 +63,9 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <returns></returns>
         bool IncludeAttachments(int portalId);
 
-		/// <summary>Whether disable regular users to send message to user/group, default is false.</summary>        
-		/// <param name="portalId">Portal Id</param>    
-	    bool DisablePrivateMessage(int portalId);
+        /// <summary>Whether disable regular users to send message to user/group, default is false.</summary>        
+        /// <param name="portalId">Portal Id</param>    
+        bool DisablePrivateMessage(int portalId);
 
         #endregion
 

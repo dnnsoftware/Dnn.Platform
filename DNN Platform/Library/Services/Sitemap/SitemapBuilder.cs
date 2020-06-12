@@ -29,47 +29,47 @@ namespace DotNetNuke.Services.Sitemap
 
         private const string SITEMAP_VERSION = "0.9";
         private readonly PortalSettings PortalSettings;
-		private string _cacheFileName;
-		private string _cacheIndexFileNameFormat;
+        private string _cacheFileName;
+        private string _cacheIndexFileNameFormat;
 
-		#endregion
+        #endregion
 
-		#region Properties
+        #region Properties
 
-	    public string CacheFileName
-	    {
-		    get
-		    {
-			    if (string.IsNullOrEmpty(this._cacheFileName))
-			    {
+        public string CacheFileName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(this._cacheFileName))
+                {
                     var currentCulture = this.PortalSettings.CultureCode?.ToLowerInvariant();
                     if (string.IsNullOrEmpty(currentCulture))
                     {
                         currentCulture = Localization.Localization.GetPageLocale(this.PortalSettings).Name.ToLowerInvariant();
                     }
 
-					this._cacheFileName = string.Format("sitemap" + ".{0}.xml", currentCulture);   
-			    }
+                    this._cacheFileName = string.Format("sitemap" + ".{0}.xml", currentCulture);   
+                }
 
-			    return this._cacheFileName;
-		    }
-	    }
+                return this._cacheFileName;
+            }
+        }
 
-		public string CacheIndexFileNameFormat
-		{
-			get
-			{
-				if (string.IsNullOrEmpty(this._cacheIndexFileNameFormat))
-				{
-					var currentCulture = Localization.Localization.GetPageLocale(this.PortalSettings).Name.ToLowerInvariant();
-					this._cacheIndexFileNameFormat = string.Format("sitemap_{{0}}" + ".{0}.xml", currentCulture);
-				}
+        public string CacheIndexFileNameFormat
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(this._cacheIndexFileNameFormat))
+                {
+                    var currentCulture = Localization.Localization.GetPageLocale(this.PortalSettings).Name.ToLowerInvariant();
+                    this._cacheIndexFileNameFormat = string.Format("sitemap_{{0}}" + ".{0}.xml", currentCulture);
+                }
 
-				return this._cacheIndexFileNameFormat;
-			}
-		}
+                return this._cacheIndexFileNameFormat;
+            }
+        }
 
-		#endregion
+        #endregion
 
         /// <summary>
         ///   Creates an instance of the sitemap builder class
@@ -95,10 +95,10 @@ namespace DotNetNuke.Services.Sitemap
         {
             int cacheDays = Int32.Parse(PortalController.GetPortalSetting("SitemapCacheDays", this.PortalSettings.PortalId, "1"));
             bool cached = cacheDays > 0;
-			  
+              
             if (cached && this.CacheIsValid())
             {
-				this.WriteSitemapFileToOutput(this.CacheFileName, output);
+                this.WriteSitemapFileToOutput(this.CacheFileName, output);
                 return;
             }
 
@@ -198,7 +198,7 @@ namespace DotNetNuke.Services.Sitemap
 
             if (cached)
             {
-				this.WriteSitemapFileToOutput(this.CacheFileName, output);
+                this.WriteSitemapFileToOutput(this.CacheFileName, output);
             }
         }
 
@@ -212,7 +212,7 @@ namespace DotNetNuke.Services.Sitemap
         /// </remarks>
         public void GetSitemapIndexFile(string index, TextWriter output)
         {
-			var currentCulture = Localization.Localization.GetPageLocale(this.PortalSettings).Name.ToLowerInvariant();
+            var currentCulture = Localization.Localization.GetPageLocale(this.PortalSettings).Name.ToLowerInvariant();
             this.WriteSitemapFileToOutput(string.Format("sitemap_{0}.{1}.xml", index, currentCulture), output);
         }
 

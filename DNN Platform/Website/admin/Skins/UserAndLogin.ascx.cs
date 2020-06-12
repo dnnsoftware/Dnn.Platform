@@ -78,20 +78,20 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-		protected string LoginUrlForClickEvent
-		{
-			get
-			{
-				var url = this.LoginUrl;
+        protected string LoginUrlForClickEvent
+        {
+            get
+            {
+                var url = this.LoginUrl;
 
-				if (this.UsePopUp)
-				{
-					return "return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(this.LoginUrl), this, this.PortalSettings, true, false, 300, 650);
-				}
+                if (this.UsePopUp)
+                {
+                    return "return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(this.LoginUrl), this, this.PortalSettings, true, false, 300, 650);
+                }
 
-				return string.Empty;
-			}
-		}
+                return string.Empty;
+            }
+        }
 
         protected bool UsePopUp
         {
@@ -111,18 +111,18 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-		protected string RegisterUrlForClickEvent
-		{
-			get
-			{
-				if (this.UsePopUp)
-				{
-					return "return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(this.RegisterUrl), this, this.PortalSettings, true, false, 600, 950);
-				}
+        protected string RegisterUrlForClickEvent
+        {
+            get
+            {
+                if (this.UsePopUp)
+                {
+                    return "return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(this.RegisterUrl), this, this.PortalSettings, true, false, 600, 950);
+                }
 
-				return string.Empty;
-			}
-		}
+                return string.Empty;
+            }
+        }
 
         protected string UserProfileUrl
         {

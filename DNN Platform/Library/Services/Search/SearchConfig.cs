@@ -25,17 +25,17 @@ namespace DotNetNuke.Services.Search
     [Serializable]
     public class SearchConfig
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SearchConfig));
-		#region "Private Members"
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SearchConfig));
+        #region "Private Members"
 
         private readonly bool _SearchIncludeCommon;
         private readonly bool _SearchIncludeNumeric;
         private readonly int _SearchMaxWordlLength;
         private readonly int _SearchMinWordlLength;
-		
-		#endregion
+        
+        #endregion
 
-		#region "Constructor(s)"
+        #region "Constructor(s)"
 
         public SearchConfig(int portalID)
             : this(PortalController.Instance.GetPortalSettings(portalID))
@@ -49,10 +49,10 @@ namespace DotNetNuke.Services.Search
             this._SearchMaxWordlLength = this.GetSettingAsInteger("MaxSearchWordLength", settings, Host.SearchMaxWordlLength);
             this._SearchMinWordlLength = this.GetSettingAsInteger("MinSearchWordLength", settings, Host.SearchMinWordlLength);
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -109,10 +109,10 @@ namespace DotNetNuke.Services.Search
                 return this._SearchMinWordlLength;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
 
         private bool GetSettingAsBoolean(string key, Dictionary<string, string> settings, bool defaultValue)
@@ -164,7 +164,7 @@ namespace DotNetNuke.Services.Search
             }
             return retValue;
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

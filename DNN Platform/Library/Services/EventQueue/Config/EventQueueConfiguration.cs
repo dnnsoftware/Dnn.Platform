@@ -21,25 +21,25 @@ namespace DotNetNuke.Services.EventQueue.Config
     [Serializable]
     internal class EventQueueConfiguration
     {
-		#region "Constructors"
-		
+        #region "Constructors"
+        
         internal EventQueueConfiguration()
         {
             this.PublishedEvents = new Dictionary<string, PublishedEvent>();
             this.EventQueueSubscribers = new Dictionary<string, SubscriberInfo>();
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         internal Dictionary<string, SubscriberInfo> EventQueueSubscribers { get; set; }
 
         internal Dictionary<string, PublishedEvent> PublishedEvents { get; set; }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
         private void Deserialize(string configXml)
         {
@@ -126,7 +126,7 @@ namespace DotNetNuke.Services.EventQueue.Config
                 return sb.ToString();
             }
         }
-		#endregion
+        #endregion
         internal static EventQueueConfiguration GetConfig()
         {
             var config = (EventQueueConfiguration)DataCache.GetCache("EventQueueConfig");
@@ -143,7 +143,7 @@ namespace DotNetNuke.Services.EventQueue.Config
                 }
                 else
                 {
-					// make a default config file
+                    // make a default config file
                     config = new EventQueueConfiguration();
                     config.PublishedEvents = new Dictionary<string, PublishedEvent>();
                     config.EventQueueSubscribers = new Dictionary<string, SubscriberInfo>();

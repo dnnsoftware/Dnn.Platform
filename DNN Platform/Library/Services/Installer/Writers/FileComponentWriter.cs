@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class FileComponentWriter
     {
-		#region "Private Members"
+        #region "Private Members"
 
         private readonly string _BasePath;
         private readonly Dictionary<string, InstallFile> _Files;
@@ -32,9 +32,9 @@ namespace DotNetNuke.Services.Installer.Writers
         private int _InstallOrder = Null.NullInteger;
         private int _UnInstallOrder = Null.NullInteger;
 
-		#endregion
+        #endregion
 
-		#region "Constructors"
+        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -50,10 +50,10 @@ namespace DotNetNuke.Services.Installer.Writers
             this._BasePath = basePath;
             this._Package = package;
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected Properties"
+        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -124,10 +124,10 @@ namespace DotNetNuke.Services.Installer.Writers
                 return this._Package;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         public int InstallOrder
         {
@@ -152,10 +152,10 @@ namespace DotNetNuke.Services.Installer.Writers
                 this._UnInstallOrder = value;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected Methods"
+        #region "Protected Methods"
 
 
         /// -----------------------------------------------------------------------------
@@ -189,7 +189,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 }
                 writer.WriteElementString("path", path);
             }
-			
+            
             // Write name
             writer.WriteElementString("name", file.Name);
 
@@ -198,18 +198,18 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 writer.WriteElementString("sourceFileName", file.SourceFileName);
             }
-			
+            
             // Close file Element
             writer.WriteEndElement();
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
         public virtual void WriteManifest(XmlWriter writer)
         {
-			// Start component Element
+            // Start component Element
             writer.WriteStartElement("component");
             writer.WriteAttributeString("type", this.ComponentType);
             if (this.InstallOrder > Null.NullInteger)
@@ -220,7 +220,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 writer.WriteAttributeString("unInstallOrder", this.UnInstallOrder.ToString());
             }
-			
+            
             // Start files element
             writer.WriteStartElement(this.CollectionNodeName);
 
@@ -236,14 +236,14 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 this.WriteFileElement(writer, file);
             }
-			
+            
             // End files Element
             writer.WriteEndElement();
 
             // End component Element
             writer.WriteEndElement();
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

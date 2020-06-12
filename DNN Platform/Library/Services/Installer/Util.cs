@@ -26,8 +26,8 @@ namespace DotNetNuke.Services.Installer
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The InstallerBase class is a Base Class for all Installer
-    /// 	classes that need to use Localized Strings.  It provides these strings
-    /// 	as localized Constants.
+    ///     classes that need to use Localized Strings.  It provides these strings
+    ///     as localized Constants.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -644,95 +644,95 @@ namespace DotNetNuke.Services.Installer
         public static WebResponse GetExternalRequest(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort, bool DoPOST, string UserAgent,
                                                     string Referer, out string Filename)
         {
-	        return GetExternalRequest(URL, Data, Username, Password, Domain, ProxyAddress, ProxyPort, DoPOST, UserAgent, Referer, out Filename, Host.WebRequestTimeout);
+            return GetExternalRequest(URL, Data, Username, Password, Domain, ProxyAddress, ProxyPort, DoPOST, UserAgent, Referer, out Filename, Host.WebRequestTimeout);
         }
 
-		public static WebResponse GetExternalRequest(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort, bool DoPOST, string UserAgent,
-													string Referer, out string Filename, int requestTimeout)
-		{
-			return GetExternalRequest(URL, Data, Username, Password, Domain, ProxyAddress, ProxyPort, string.Empty, string.Empty, DoPOST, UserAgent, Referer, out Filename, requestTimeout);
-		}
+        public static WebResponse GetExternalRequest(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort, bool DoPOST, string UserAgent,
+                                                    string Referer, out string Filename, int requestTimeout)
+        {
+            return GetExternalRequest(URL, Data, Username, Password, Domain, ProxyAddress, ProxyPort, string.Empty, string.Empty, DoPOST, UserAgent, Referer, out Filename, requestTimeout);
+        }
 
-		public static WebResponse GetExternalRequest(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort, 
-													string ProxyUsername, string ProxyPassword, bool DoPOST, string UserAgent, string Referer, out string Filename)
-		{
-			return GetExternalRequest(URL, Data, Username, Password, Domain, ProxyAddress, ProxyPort, ProxyUsername, ProxyPassword, DoPOST, UserAgent, Referer, out Filename, Host.WebRequestTimeout);
-		}
+        public static WebResponse GetExternalRequest(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort, 
+                                                    string ProxyUsername, string ProxyPassword, bool DoPOST, string UserAgent, string Referer, out string Filename)
+        {
+            return GetExternalRequest(URL, Data, Username, Password, Domain, ProxyAddress, ProxyPort, ProxyUsername, ProxyPassword, DoPOST, UserAgent, Referer, out Filename, Host.WebRequestTimeout);
+        }
 
-		public static WebResponse GetExternalRequest(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort,
-													string ProxyUsername, string ProxyPassword, bool DoPOST, string UserAgent, string Referer, out string Filename, int requestTimeout)
-		{
-			if (!DoPOST && Data != null && Data.Length > 0)
-			{
-				string restoftheurl = Encoding.ASCII.GetString(Data);
-				if (URL != null && URL.IndexOf("?") <= 0)
-				{
-					URL = URL + "?";
-				}
-				URL = URL + restoftheurl;
-			}
+        public static WebResponse GetExternalRequest(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort,
+                                                    string ProxyUsername, string ProxyPassword, bool DoPOST, string UserAgent, string Referer, out string Filename, int requestTimeout)
+        {
+            if (!DoPOST && Data != null && Data.Length > 0)
+            {
+                string restoftheurl = Encoding.ASCII.GetString(Data);
+                if (URL != null && URL.IndexOf("?") <= 0)
+                {
+                    URL = URL + "?";
+                }
+                URL = URL + restoftheurl;
+            }
 
-			var wreq = (HttpWebRequest)WebRequest.Create(URL);
-			wreq.UserAgent = UserAgent;
-			wreq.Referer = Referer;
-			wreq.Method = "GET";
-			if (DoPOST)
-			{
-				wreq.Method = "POST";
-			}
+            var wreq = (HttpWebRequest)WebRequest.Create(URL);
+            wreq.UserAgent = UserAgent;
+            wreq.Referer = Referer;
+            wreq.Method = "GET";
+            if (DoPOST)
+            {
+                wreq.Method = "POST";
+            }
 
-			wreq.Timeout = requestTimeout;
+            wreq.Timeout = requestTimeout;
 
-			if (!string.IsNullOrEmpty(ProxyAddress))
-			{
-				var proxy = new WebProxy(ProxyAddress, ProxyPort);
-				if (!string.IsNullOrEmpty(ProxyUsername))
-				{
-					var proxyCredentials = new NetworkCredential(ProxyUsername, ProxyPassword);
-					proxy.Credentials = proxyCredentials;
-				}
-				wreq.Proxy = proxy;
-			}
+            if (!string.IsNullOrEmpty(ProxyAddress))
+            {
+                var proxy = new WebProxy(ProxyAddress, ProxyPort);
+                if (!string.IsNullOrEmpty(ProxyUsername))
+                {
+                    var proxyCredentials = new NetworkCredential(ProxyUsername, ProxyPassword);
+                    proxy.Credentials = proxyCredentials;
+                }
+                wreq.Proxy = proxy;
+            }
 
-			if (Username != null && Password != null && Domain != null && Username.Trim() != "" && Password.Trim() != null && Domain.Trim() != null)
-			{
-				wreq.Credentials = new NetworkCredential(Username, Password, Domain);
-			}
-			else if (Username != null && Password != null && Username.Trim() != "" && Password.Trim() != null)
-			{
-				wreq.Credentials = new NetworkCredential(Username, Password);
-			}
+            if (Username != null && Password != null && Domain != null && Username.Trim() != "" && Password.Trim() != null && Domain.Trim() != null)
+            {
+                wreq.Credentials = new NetworkCredential(Username, Password, Domain);
+            }
+            else if (Username != null && Password != null && Username.Trim() != "" && Password.Trim() != null)
+            {
+                wreq.Credentials = new NetworkCredential(Username, Password);
+            }
 
-			if (DoPOST && Data != null && Data.Length > 0)
-			{
-				wreq.ContentType = "application/x-www-form-urlencoded";
-				Stream request = wreq.GetRequestStream();
-				request.Write(Data, 0, Data.Length);
-				request.Close();
-			}
+            if (DoPOST && Data != null && Data.Length > 0)
+            {
+                wreq.ContentType = "application/x-www-form-urlencoded";
+                Stream request = wreq.GetRequestStream();
+                request.Write(Data, 0, Data.Length);
+                request.Close();
+            }
 
-			Filename = "";
-			WebResponse wrsp = wreq.GetResponse();
-			string cd = wrsp.Headers["Content-Disposition"];
-			if (cd != null && cd.Trim() != string.Empty && cd.StartsWith("attachment"))
-			{
-				if (cd.IndexOf("filename") > -1 && cd.Substring(cd.IndexOf("filename")).IndexOf("=") > -1)
-				{
-					string filenameParam = cd.Substring(cd.IndexOf("filename"));
+            Filename = "";
+            WebResponse wrsp = wreq.GetResponse();
+            string cd = wrsp.Headers["Content-Disposition"];
+            if (cd != null && cd.Trim() != string.Empty && cd.StartsWith("attachment"))
+            {
+                if (cd.IndexOf("filename") > -1 && cd.Substring(cd.IndexOf("filename")).IndexOf("=") > -1)
+                {
+                    string filenameParam = cd.Substring(cd.IndexOf("filename"));
 
-					if (filenameParam.IndexOf("\"") > -1)
-					{
-						Filename = filenameParam.Substring(filenameParam.IndexOf("\"") + 1).TrimEnd(Convert.ToChar("\"")).TrimEnd(Convert.ToChar("\\"));
-					}
-					else
-					{
-						Filename = filenameParam.Substring(filenameParam.IndexOf("=") + 1);
-					}
-				}
-			}
+                    if (filenameParam.IndexOf("\"") > -1)
+                    {
+                        Filename = filenameParam.Substring(filenameParam.IndexOf("\"") + 1).TrimEnd(Convert.ToChar("\"")).TrimEnd(Convert.ToChar("\\"));
+                    }
+                    else
+                    {
+                        Filename = filenameParam.Substring(filenameParam.IndexOf("=") + 1);
+                    }
+                }
+            }
 
-			return wrsp;
-		}
+            return wrsp;
+        }
 
         public static void DeployExtension(WebResponse wr, string myfile, string installFolder)
         {

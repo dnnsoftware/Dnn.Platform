@@ -19,7 +19,7 @@ namespace DotNetNuke.ComponentModel
 {
     public class ProviderInstaller : IComponentInstaller
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProviderInstaller));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProviderInstaller));
         private readonly ComponentLifeStyleType _ComponentLifeStyle;
         private readonly Type _ProviderInterface;
         private readonly string _ProviderType;
@@ -53,14 +53,14 @@ namespace DotNetNuke.ComponentModel
         {
             ProviderConfiguration config = ProviderConfiguration.GetProviderConfiguration(this._ProviderType);
             // Register the default provider first (so it is the first component registered for its service interface
-			if (config != null)
+            if (config != null)
             {
                 this.InstallProvider(container, (Provider)config.Providers[config.DefaultProvider]);
 
                 // Register the others
                 foreach (Provider provider in config.Providers.Values)
                 {
-					// Skip the default because it was registered above
+                    // Skip the default because it was registered above
                     if (!config.DefaultProvider.Equals(provider.Name, StringComparison.OrdinalIgnoreCase))
                     {
                         this.InstallProvider(container, provider);

@@ -218,12 +218,12 @@ namespace DotNetNuke.Common.Utilities
             }
             var popUpUrl = url;
             // ensure delimiters are not used
-	        if (!popUpUrl.Contains("dnnModal.show"))
-	        {
-				popUpUrl = Uri.EscapeUriString(url);
-		        popUpUrl = popUpUrl.Replace("\"", "");
-		        popUpUrl = popUpUrl.Replace("'", "");
-	        }
+            if (!popUpUrl.Contains("dnnModal.show"))
+            {
+                popUpUrl = Uri.EscapeUriString(url);
+                popUpUrl = popUpUrl.Replace("\"", "");
+                popUpUrl = popUpUrl.Replace("'", "");
+            }
 
             var delimiter = popUpUrl.Contains("?") ? "&" : "?";
             var popUpScriptFormat = String.Empty;

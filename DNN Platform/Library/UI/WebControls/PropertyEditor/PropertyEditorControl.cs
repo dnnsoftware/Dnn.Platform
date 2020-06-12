@@ -36,13 +36,13 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public class PropertyEditorControl : WebControl, INamingContainer
     {
-		#region Private Members
+        #region Private Members
 
         private bool _itemChanged;
         private Hashtable _sections;
         #endregion
-		
-		#region Constructors
+        
+        #region Constructors
 
         public PropertyEditorControl()
         {
@@ -60,10 +60,10 @@ namespace DotNetNuke.UI.WebControls
             this.Groups = Null.NullString;
             this.AutoGenerate = true;
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Protected Members
+        #region Protected Members
 
         protected override HtmlTextWriterTag TagKey
         {
@@ -83,10 +83,10 @@ namespace DotNetNuke.UI.WebControls
         {
             get { return this.GetProperties(); }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Public Properties
+        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -240,7 +240,7 @@ namespace DotNetNuke.UI.WebControls
         [Category("Behavior"), PersistenceMode(PersistenceMode.InnerProperty), DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public ArrayList Fields { get; private set; }
 
-		#region "Style Properties"
+        #region "Style Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -325,20 +325,20 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Visibility Control")]
         public Style VisibilityStyle { get; private set; }
-		
-		#endregion
+        
+        #endregion
 
-		#endregion
+        #endregion
 
-		#region Events
+        #region Events
 
         public event PropertyChangedEventHandler ItemAdded;
         public event EditorCreatedEventHandler ItemCreated;
         public event PropertyChangedEventHandler ItemDeleted;
 
-		#endregion
+        #endregion
 
-		#region Private Methods
+        #region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -355,7 +355,7 @@ namespace DotNetNuke.UI.WebControls
         {
             if (this.DataSource != null)
             {
-				// TODO:  We need to add code to support using the cache in the future
+                // TODO:  We need to add code to support using the cache in the future
                 const BindingFlags bindings = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
 
                 var properties = this.DataSource.GetType().GetProperties(bindings);
@@ -405,16 +405,16 @@ namespace DotNetNuke.UI.WebControls
             container.Controls.Add(editor);
         }
 
-		#endregion
+        #endregion
 
-		#region Protected Methods
+        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// AddEditorRow builds a sigle editor row and adds it to the Table, using the
         /// specified adapter
         /// </summary>
-		/// <param name="table">The Table Control to add the row to</param>
+        /// <param name="table">The Table Control to add the row to</param>
         /// <param name="name">The name of property being added</param>
         /// <param name="adapter">An IEditorInfoAdapter</param>
         /// -----------------------------------------------------------------------------
@@ -469,8 +469,8 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <remarks>This method is protected so that classes that inherit from
         /// PropertyEditor can modify how the Row is displayed</remarks>
-		/// <param name="table">The Table Control to add the row to</param>
-		/// <param name="obj">Row Data Info.</param>
+        /// <param name="table">The Table Control to add the row to</param>
+        /// <param name="obj">Row Data Info.</param>
         /// -----------------------------------------------------------------------------
         protected virtual void AddEditorRow(Table table, object obj)
         {
@@ -584,8 +584,8 @@ namespace DotNetNuke.UI.WebControls
                 panel.Controls.Add(new LiteralControl("<hr noshade=\"noshade\" size=\"1\"/>"));
             }
             this.Controls.Add(panel);
-			
-			// Get the Hashtable
+            
+            // Get the Hashtable
             if (this._sections == null)
             {
                 this._sections = new Hashtable();
@@ -615,14 +615,14 @@ namespace DotNetNuke.UI.WebControls
 
             if (!this.AutoGenerate)
             {
-				// Create a new table
+                // Create a new table
                 if (this.DisplayMode == EditorDisplayMode.Div)
                 {
                     this.AddFields();
                 }
                 else
                 {
-					// Add the Table to the Controls Collection
+                    // Add the Table to the Controls Collection
                     table = new Table { ID = "tbl" };
                     this.AddFields(table);
                     this.Controls.Add(table);
@@ -639,34 +639,34 @@ namespace DotNetNuke.UI.WebControls
                         {
                             if (this.DisplayMode == EditorDisplayMode.Div)
                             {
-								var groupData = this.UnderlyingDataSource.Cast<object>().Where(obj => this.GetCategory(obj) == strGroup.Trim() && this.GetRowVisibility(obj));
-	                            if (groupData.Count() > 0)
-	                            {
-		                            // Add header
-		                            var header = new HtmlGenericControl("h2");
-		                            header.Attributes.Add("class", "dnnFormSectionHead");
-		                            header.Attributes.Add("id", strGroup);
-		                            this.Controls.Add(header);
+                                var groupData = this.UnderlyingDataSource.Cast<object>().Where(obj => this.GetCategory(obj) == strGroup.Trim() && this.GetRowVisibility(obj));
+                                if (groupData.Count() > 0)
+                                {
+                                    // Add header
+                                    var header = new HtmlGenericControl("h2");
+                                    header.Attributes.Add("class", "dnnFormSectionHead");
+                                    header.Attributes.Add("id", strGroup);
+                                    this.Controls.Add(header);
 
                                     var localizedGroupName = Localization.GetString("ProfileProperties_" + strGroup + ".Header", this.LocalResourceFile);
-		                            if (string.IsNullOrEmpty(localizedGroupName))
-		                            {
-			                            localizedGroupName = strGroup;
-		                            }
-		                            var link = new HyperLink() { Text = localizedGroupName, NavigateUrl = "#" };
-		                            header.Controls.Add(link);
+                                    if (string.IsNullOrEmpty(localizedGroupName))
+                                    {
+                                        localizedGroupName = strGroup;
+                                    }
+                                    var link = new HyperLink() { Text = localizedGroupName, NavigateUrl = "#" };
+                                    header.Controls.Add(link);
 
-		                            // fieldset to hold properties in group
-		                            var fieldset = new HtmlGenericControl("fieldset");
-		                            var container = new Panel();
-		                            fieldset.Controls.Add(container);
+                                    // fieldset to hold properties in group
+                                    var fieldset = new HtmlGenericControl("fieldset");
+                                    var container = new Panel();
+                                    fieldset.Controls.Add(container);
 
-		                            foreach (object obj in groupData)
-		                            {
-										this.AddEditorRow(container, obj);
-		                            }
-		                            this.Controls.Add(fieldset);
-	                            }
+                                    foreach (object obj in groupData)
+                                    {
+                                        this.AddEditorRow(container, obj);
+                                    }
+                                    this.Controls.Add(fieldset);
+                                }
                             }
                             else
                             {
@@ -701,12 +701,12 @@ namespace DotNetNuke.UI.WebControls
                 }
                 else
                 {
-					// Create a new table
+                    // Create a new table
                     if (this.DisplayMode == EditorDisplayMode.Div)
                     {
                         foreach (object obj in this.UnderlyingDataSource)
                         {
-							// Add the Editor Row to the Table
+                            // Add the Editor Row to the Table
                             if (this.GetRowVisibility(obj))
                             {
                                 this.AddEditorRow(obj);
@@ -723,8 +723,8 @@ namespace DotNetNuke.UI.WebControls
                                 this.AddEditorRow(table, obj);
                             }
                         }
-						
-						// Add the Table to the Controls Collection
+                        
+                        // Add the Table to the Controls Collection
                         this.Controls.Add(table);
                     }
                 }
@@ -803,7 +803,7 @@ namespace DotNetNuke.UI.WebControls
             }
             if (!isVisible && this.EditMode == PropertyEditorMode.Edit)
             {
-				// Check if property is required - as this will need to override visibility
+                // Check if property is required - as this will need to override visibility
                 object[] requiredAttributes = objProperty.GetCustomAttributes(typeof(RequiredAttribute), true);
                 if (requiredAttributes.Length > 0)
                 {
@@ -865,7 +865,7 @@ namespace DotNetNuke.UI.WebControls
         {
             if (this._itemChanged)
             {
-				// Rebind the control to the DataSource to make sure that the dependent
+                // Rebind the control to the DataSource to make sure that the dependent
                 // editors are updated
                 this.DataBind();
             }
@@ -873,8 +873,8 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.CssClass = "dnnForm";
             }
-			
-			// Find the Min/Max buttons
+            
+            // Find the Min/Max buttons
             if (this.GroupByMode == GroupByMode.Section && (this._sections != null))
             {
                 foreach (DictionaryEntry key in this._sections)
@@ -886,10 +886,10 @@ namespace DotNetNuke.UI.WebControls
             }
             base.OnPreRender(e);
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Public Methods
+        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -917,9 +917,9 @@ namespace DotNetNuke.UI.WebControls
             this.ChildControlsCreated = true;
         }
 
-		#endregion
+        #endregion
 
-		#region Event Handlers
+        #region Event Handlers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -960,7 +960,7 @@ namespace DotNetNuke.UI.WebControls
         {
             this._itemChanged = true;
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

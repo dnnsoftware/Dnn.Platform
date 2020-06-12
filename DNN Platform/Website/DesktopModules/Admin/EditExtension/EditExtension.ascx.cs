@@ -237,7 +237,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
         /// -----------------------------------------------------------------------------

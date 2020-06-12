@@ -43,12 +43,12 @@ namespace DotNetNuke.UI.WebControls
             this.ItemType = itemType;
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets and sets whether the column fires a postback when the control changes
-		/// </summary>
-		/// <value>A Boolean</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets and sets whether the column fires a postback when the control changes
+        /// </summary>
+        /// <value>A Boolean</value>
+        /// -----------------------------------------------------------------------------
         public bool AutoPostBack { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -87,12 +87,12 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets or sets the Design Mode of the Column
-		/// </summary>
-		/// <value>A Boolean</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the Design Mode of the Column
+        /// </summary>
+        /// <value>A Boolean</value>
+        /// -----------------------------------------------------------------------------
         public bool DesignMode { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -217,7 +217,7 @@ namespace DotNetNuke.UI.WebControls
         /// InstantiateIn is called when the Template is instantiated by the parent control
         /// </summary>
         /// <param name="container">The container control</param>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         public void InstantiateIn(Control container)
         {
             if (!String.IsNullOrEmpty(this.Text))

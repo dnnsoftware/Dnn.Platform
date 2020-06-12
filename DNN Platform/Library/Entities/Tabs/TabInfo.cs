@@ -172,7 +172,7 @@ namespace DotNetNuke.Entities.Tabs
         public bool HasAVisibleVersion {
             get
             {
-			    return this.HasBeenPublished || TabVersionUtils.CanSeeVersionedPages(this);
+                return this.HasBeenPublished || TabVersionUtils.CanSeeVersionedPages(this);
             }
         }
 

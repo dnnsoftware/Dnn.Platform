@@ -21,7 +21,7 @@ namespace DotNetNuke.Entities.Modules
 {
     public class EventMessageProcessor : EventMessageProcessorBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventMessageProcessor));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventMessageProcessor));
         private static void ImportModule(EventMessage message)
         {
             try
@@ -57,11 +57,11 @@ namespace DotNetNuke.Entities.Modules
                 object controller = Reflection.CreateObject(BusinessControllerClass, "");
                 if (controller is IUpgradeable)
                 {
-					// get the list of applicable versions
+                    // get the list of applicable versions
                     string[] UpgradeVersions = message.Attributes["UpgradeVersionsList"].Split(',');
                     foreach (string Version in UpgradeVersions)
                     {
-						// call the IUpgradeable interface for the module/version
+                        // call the IUpgradeable interface for the module/version
                         string Results = ((IUpgradeable)controller).UpgradeModule(Version);
                         // log the upgrade results
                         var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.MODULE_UPDATED.ToString() };
@@ -159,7 +159,7 @@ namespace DotNetNuke.Entities.Modules
                         ImportModule(message);
                         break;
                     default:
-						// other events can be added here
+                        // other events can be added here
                         break;
                 }
             }

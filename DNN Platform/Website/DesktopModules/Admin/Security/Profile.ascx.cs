@@ -30,7 +30,7 @@ namespace DesktopModules.Admin.Security
     /// -----------------------------------------------------------------------------
     public partial class DNNProfile : ProfileUserControlBase
     {
-		#region Protected Properties
+        #region Protected Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -46,9 +46,9 @@ namespace DesktopModules.Admin.Security
             }
         }
 
-		#endregion
+        #endregion
 
-		#region Public Properties
+        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -115,9 +115,9 @@ namespace DesktopModules.Admin.Security
             }
         }
 
-		#endregion
+        #endregion
 
-		#region Public Methods
+        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -126,10 +126,10 @@ namespace DesktopModules.Admin.Security
         /// -----------------------------------------------------------------------------
         public override void DataBind()
         {
-		
+        
             // Before we bind the Profile to the editor we need to "update" the visible data
             var properties = new ProfilePropertyDefinitionCollection();
-			var imageType = new ListController().GetListEntryInfo("DataType", "Image");
+            var imageType = new ListController().GetListEntryInfo("DataType", "Image");
             foreach (ProfilePropertyDefinition profProperty in this.UserProfile.ProfileProperties)
             {
                 if (this.IsAdmin && !this.IsProfile)
@@ -149,9 +149,9 @@ namespace DesktopModules.Admin.Security
             this.ProfileProperties.DataBind();
         }
 
-		#endregion
+        #endregion
 
-		#region Event Handlers
+        #region Event Handlers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -169,7 +169,7 @@ namespace DesktopModules.Admin.Security
             var basePage = this.Page as PageBase;
             if (basePage != null)
             {
-				// Check if culture is RTL
+                // Check if culture is RTL
                 this.ProfileProperties.LabelMode = basePage.PageCulture.TextInfo.IsRightToLeft ? LabelMode.Right : LabelMode.Left;
             }
             this.ProfileProperties.LocalResourceFile = this.LocalResourceFile;

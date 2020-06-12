@@ -11,9 +11,9 @@ using System.Collections;
 namespace DotNetNuke.Security.Permissions
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : CompareDesktopModulePermissions
+    /// Class    : CompareDesktopModulePermissions
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// CompareDesktopModulePermissions provides the a custom IComparer implementation for

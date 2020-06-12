@@ -18,8 +18,8 @@ using DotNetNuke.Entities.Modules;
 namespace DotNetNuke.UI.Skins
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : SkinPackageInfo
+    /// Project  : DotNetNuke
+    /// Class    : SkinPackageInfo
     /// 
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -31,7 +31,7 @@ namespace DotNetNuke.UI.Skins
     [Serializable]
     public class SkinPackageInfo : BaseEntityInfo, IHydratable
     {
-		#region "Private Members"
+        #region "Private Members"
 
         private int _PackageID = Null.NullInteger;
         private int _PortalID = Null.NullInteger;
@@ -39,10 +39,10 @@ namespace DotNetNuke.UI.Skins
         private int _SkinPackageID = Null.NullInteger;
         private string _SkinType;
         private Dictionary<int, string> _Skins = new Dictionary<int, string>();
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         public int PackageID
         {
@@ -116,8 +116,8 @@ namespace DotNetNuke.UI.Skins
                 this._SkinType = value;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
         #region IHydratable Members
 

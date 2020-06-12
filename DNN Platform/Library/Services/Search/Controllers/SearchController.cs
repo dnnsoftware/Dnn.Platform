@@ -12,9 +12,9 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.Services.Search.Controllers
 {
-	/// <summary>
-	/// Business Layer to manage Search.
-	/// </summary>
+    /// <summary>
+    /// Business Layer to manage Search.
+    /// </summary>
     public class SearchController : ServiceLocator<ISearchController, SearchController>
     {
         protected override Func<ISearchController> GetFactory()

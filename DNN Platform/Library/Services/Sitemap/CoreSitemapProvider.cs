@@ -57,38 +57,38 @@ namespace DotNetNuke.Services.Sitemap
                 currentLanguage = Localization.Localization.GetPageLocale(ps).Name;
             }
             var languagePublished = LocaleController.Instance.GetLocale(ps.PortalId, currentLanguage).IsPublished;
-	        var tabs = TabController.Instance.GetTabsByPortal(portalId).Values
-						.Where(t => !t.IsSystem
-									&& !ps.ContentLocalizationEnabled || (languagePublished && t.CultureCode.Equals(currentLanguage, StringComparison.InvariantCultureIgnoreCase)));
-			foreach (TabInfo tab in tabs)
-			{
-	            try
-	            {
-	                if (!tab.IsDeleted && !tab.DisableLink && tab.TabType == TabType.Normal &&
-	                    (Null.IsNull(tab.StartDate) || tab.StartDate < DateTime.Now) &&
-	                    (Null.IsNull(tab.EndDate) || tab.EndDate > DateTime.Now) && this.IsTabPublic(tab.TabPermissions))
-	                {
-	                    if ((this.includeHiddenPages || tab.IsVisible) && tab.HasBeenPublished)
-	                    {
-							try
-							{
-								pageUrl = this.GetPageUrl(tab, currentLanguage, ps);
-								urls.Add(pageUrl);
-							}
-							catch (Exception)
-							{
-								Logger.ErrorFormat("Error has occurred getting PageUrl for {0}", tab.TabName);
-							}
-	                    }
-	                }
-	            }
-	            catch (Exception ex)
-	            {
-	                Services.Exceptions.Exceptions.LogException(new Exception(Localization.Localization.GetExceptionMessage("SitemapUrlGenerationError",
-	                            "URL sitemap generation for page '{0} - {1}' caused an exception: {2}",
-	                            tab.TabID, tab.TabName, ex.Message)));
-	            }
-	        }
+            var tabs = TabController.Instance.GetTabsByPortal(portalId).Values
+                        .Where(t => !t.IsSystem
+                                    && !ps.ContentLocalizationEnabled || (languagePublished && t.CultureCode.Equals(currentLanguage, StringComparison.InvariantCultureIgnoreCase)));
+            foreach (TabInfo tab in tabs)
+            {
+                try
+                {
+                    if (!tab.IsDeleted && !tab.DisableLink && tab.TabType == TabType.Normal &&
+                        (Null.IsNull(tab.StartDate) || tab.StartDate < DateTime.Now) &&
+                        (Null.IsNull(tab.EndDate) || tab.EndDate > DateTime.Now) && this.IsTabPublic(tab.TabPermissions))
+                    {
+                        if ((this.includeHiddenPages || tab.IsVisible) && tab.HasBeenPublished)
+                        {
+                            try
+                            {
+                                pageUrl = this.GetPageUrl(tab, currentLanguage, ps);
+                                urls.Add(pageUrl);
+                            }
+                            catch (Exception)
+                            {
+                                Logger.ErrorFormat("Error has occurred getting PageUrl for {0}", tab.TabName);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Services.Exceptions.Exceptions.LogException(new Exception(Localization.Localization.GetExceptionMessage("SitemapUrlGenerationError",
+                                "URL sitemap generation for page '{0} - {1}' caused an exception: {2}",
+                                tab.TabID, tab.TabName, ex.Message)));
+                }
+            }
 
             return urls;
         }

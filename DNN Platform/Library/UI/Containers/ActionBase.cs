@@ -20,9 +20,9 @@ using DotNetNuke.UI.WebControls;
 namespace DotNetNuke.UI.Containers
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Containers
-    /// Class	 : ActionBase
+    /// Class    : ActionBase
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ActionBase is an abstract base control for Action objects that inherit from UserControl.
@@ -32,15 +32,15 @@ namespace DotNetNuke.UI.Containers
     /// </remarks>
     public abstract class ActionBase : UserControl, IActionControl
     {
-		#region "Private Members"
-		
+        #region "Private Members"
+        
         private ActionManager _ActionManager;
         private ModuleAction _ActionRoot;
         protected bool m_supportsIcons = true;
-		
-		#endregion
+        
+        #endregion
 
-		#region Protected Properties
+        #region Protected Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -97,10 +97,10 @@ namespace DotNetNuke.UI.Containers
                 return this.ModuleControl.ModuleContext.PortalSettings;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Public Properties
+        #region Public Properties
 
         public bool EditMode
         {
@@ -117,8 +117,8 @@ namespace DotNetNuke.UI.Containers
                 return this.m_supportsIcons;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
         #region IActionControl Members
 
@@ -149,8 +149,8 @@ namespace DotNetNuke.UI.Containers
         public IModuleControl ModuleControl { get; set; }
 
         #endregion
-		
-		#region Protected Methods
+        
+        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -215,10 +215,10 @@ namespace DotNetNuke.UI.Containers
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
 
-			base.OnLoad(e);
+            base.OnLoad(e);
         }
-		
-		
-		#endregion
+        
+        
+        #endregion
     }
 }

@@ -11,9 +11,9 @@ using System;
 namespace DotNetNuke.Entities.Modules.Actions
 {
     /// -----------------------------------------------------------------------------
-    /// Project		: DotNetNuke
+    /// Project     : DotNetNuke
     /// Namespace   : DotNetNuke.Entities.Modules.Actions
-    /// Class		: ActionEventArgs
+    /// Class       : ActionEventArgs
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ActionEventArgs provides a custom EventARgs class for Action Events

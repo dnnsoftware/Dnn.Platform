@@ -14,17 +14,17 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.UI.Skins.Controls
 {
-	public class ControlPanel : SkinObjectBase
-	{
-		public bool IsDockable { get; set; }
+    public class ControlPanel : SkinObjectBase
+    {
+        public bool IsDockable { get; set; }
 
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
 
             if (this.Request.QueryString["dnnprintmode"] != "true" && !UrlUtils.InPopUp())
-			{
-				var objControlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
+            {
+                var objControlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
                 var objForm = (HtmlForm)this.Page.FindControl("Form");
 
                 if (objControlPanel.IncludeInControlHierarchy)
@@ -47,7 +47,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     // register admin.css
                     ClientResourceManager.RegisterAdminStylesheet(this.Page, Globals.HostPath + "admin.css");
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 }

@@ -28,44 +28,44 @@ using Directory = System.IO.Directory;
 
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {
-	/// <summary>
+    /// <summary>
     ///  Testing various aspects of LuceneController
-	/// </summary>
-	[TestFixture]
-	public class LuceneControllerTests
-	{
-		#region Private Properties & Constants
+    /// </summary>
+    [TestFixture]
+    public class LuceneControllerTests
+    {
+        #region Private Properties & Constants
 
-	    private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
-	    private const string SearchIndexFolder = @"App_Data\LuceneTests";
-	    private const string WriteLockFile = "write.lock";
-	    private const string Line1 = "the quick brown fox jumps over the lazy dog";
-	    private const string Line2 = "the quick gold fox jumped over the lazy black dog";
-	    private const string Line3 = "the quick fox jumps over the black dog";
-	    private const string Line4 = "the red fox jumped over the lazy dark gray dog";
+        private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
+        private const string SearchIndexFolder = @"App_Data\LuceneTests";
+        private const string WriteLockFile = "write.lock";
+        private const string Line1 = "the quick brown fox jumps over the lazy dog";
+        private const string Line2 = "the quick gold fox jumped over the lazy black dog";
+        private const string Line3 = "the quick fox jumps over the black dog";
+        private const string Line4 = "the red fox jumped over the lazy dark gray dog";
         private const string Line_Chinese = "这里是中文的内容";
 
         private const string SearchKeyword_Line1 = "fox";
         private const string SearchKeyword_Chinese = "中文";
 
-	    private const string EmptyCustomAnalyzer = "";
-	    private const string InvalidCustomAnalyzer = "Lucene.Net.Analysis.Cn.ChineseInvalidAnalyzer";
+        private const string EmptyCustomAnalyzer = "";
+        private const string InvalidCustomAnalyzer = "Lucene.Net.Analysis.Cn.ChineseInvalidAnalyzer";
         private const string ValidCustomAnalyzer = "Lucene.Net.Analysis.Cn.ChineseAnalyzer, Lucene.Net.Contrib.Analyzers";
-	    private const int DefaultSearchRetryTimes = 5;
+        private const int DefaultSearchRetryTimes = 5;
 
         private Mock<IHostController> _mockHostController;
         private LuceneControllerImpl _luceneController;
         private Mock<CachingProvider> _cachingProvider;
         private Mock<ISearchHelper> _mockSearchHelper;
-	    private Mock<SearchQuery> _mockSearchQuery;
+        private Mock<SearchQuery> _mockSearchQuery;
 
-		#endregion
+        #endregion
 
-		#region Set Up
+        #region Set Up
 
-		[SetUp]
-		public void SetUp()
-		{
+        [SetUp]
+        public void SetUp()
+        {
             ComponentFactory.Container = new SimpleContainer();
             this._cachingProvider = MockComponentProvider.CreateDataCacheProvider();
 
@@ -87,10 +87,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._mockSearchQuery = new Mock<SearchQuery>();
 
             this.DeleteIndexFolder();
-		    this.CreateNewLuceneControllerInstance();
-		}
+            this.CreateNewLuceneControllerInstance();
+        }
 
-	    [TearDown]
+        [TearDown]
         public void TearDown()
         {
             this._luceneController.Dispose();
@@ -99,7 +99,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
 
-		#endregion
+        #endregion
 
         #region Private Methods
 
@@ -598,8 +598,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-	    public void LuceneController_ReaderNotChangedBeforeTimeSpanElapsed()
-	    {
+        public void LuceneController_ReaderNotChangedBeforeTimeSpanElapsed()
+        {
             // Arrange
             const string fieldName = "content";
 
@@ -668,28 +668,28 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         #region Locking Tests
 
-	    [Test]
-	    public void LuceneController_LockFileWhenExistsDoesNotCauseProblemForFirstIController()
-	    {
-	        // Arrange
-	        const string fieldName = "content";
-	        var lockFile = Path.Combine(SearchIndexFolder, WriteLockFile);
-	        if (!Directory.Exists(SearchIndexFolder)) Directory.CreateDirectory(SearchIndexFolder);
-	        if (!File.Exists(lockFile))
-	        {
-	            File.Create(lockFile).Close();
-	        }
+        [Test]
+        public void LuceneController_LockFileWhenExistsDoesNotCauseProblemForFirstIController()
+        {
+            // Arrange
+            const string fieldName = "content";
+            var lockFile = Path.Combine(SearchIndexFolder, WriteLockFile);
+            if (!Directory.Exists(SearchIndexFolder)) Directory.CreateDirectory(SearchIndexFolder);
+            if (!File.Exists(lockFile))
+            {
+                File.Create(lockFile).Close();
+            }
 
-	        // Act 
-	        var doc1 = new Document();
-	        doc1.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(1));
+            // Act 
+            var doc1 = new Document();
+            doc1.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(1));
 
-	        // Assert
+            // Assert
             Assert.True(File.Exists(lockFile));
             Assert.DoesNotThrow(() => this._luceneController.Add(doc1));
-	    }
+        }
 
-	    [Test]
+        [Test]
         public void LuceneController_LockFileCanBeObtainedByOnlySingleController()
         {
             // Arrange
@@ -762,10 +762,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void LuceneController_TestDeleteBeforeOptimize()
         {
             // Arrange
-	        this.AddTestDocs();
+            this.AddTestDocs();
             var delCount = this.DeleteTestDocs();
 
-	        Assert.IsTrue(this._luceneController.HasDeletions());
+            Assert.IsTrue(this._luceneController.HasDeletions());
             Assert.AreEqual(TotalTestDocs2Create, this._luceneController.MaxDocsCount());
             Assert.AreEqual(TotalTestDocs2Create - delCount, this._luceneController.SearchbleDocsCount());
         }

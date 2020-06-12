@@ -39,16 +39,16 @@ using Globals = DotNetNuke.Common.Globals;
 namespace DotNetNuke.UI.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Modules
-    /// Class	 : ModuleHost
+    /// Class    : ModuleHost
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModuleHost hosts a Module Control (or its cached Content).
     /// </summary>
     public sealed class ModuleHost : Panel
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleHost));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleHost));
 
         private static readonly Regex CdfMatchRegex = new Regex(@"<\!--CDF\((?<type>JAVASCRIPT|CSS|JS-LIBRARY)\|(?<path>.+?)(\|(?<provider>.+?)\|(?<priority>\d+?))?\)-->",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -95,7 +95,7 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-				// Make sure the Control tree has been created
+                // Make sure the Control tree has been created
                 this.EnsureChildControls();
                 return this._control as IModuleControl;
             }
@@ -140,7 +140,7 @@ namespace DotNetNuke.UI.Modules
         {
             if (this._moduleConfiguration.IsWebSlice && !Globals.IsAdminControl())
             {
-				// Assign the class - hslice to the Drag-N-Drop Panel
+                // Assign the class - hslice to the Drag-N-Drop Panel
                 this.CssClass = "hslice";
                 var titleLabel = new Label
                                      {
@@ -193,7 +193,7 @@ namespace DotNetNuke.UI.Modules
         /// <returns>A Boolean</returns>
         private bool DisplayContent()
         {
-			// module content visibility options
+            // module content visibility options
             var content = this.PortalSettings.UserMode != PortalSettings.Mode.Layout;
             if (this.Page.Request.QueryString["content"] != null)
             {
@@ -259,12 +259,12 @@ namespace DotNetNuke.UI.Modules
                     // if the module supports caching and caching is enabled for the instance and the user does not have Edit rights or is currently in View mode
                     if (this.SupportsCaching() && IsViewMode(this._moduleConfiguration, this.PortalSettings) && !this.IsVersionRequest())
                     {
-						// attempt to load the cached content
+                        // attempt to load the cached content
                         this._isCached = this.TryLoadCached();
                     }
                     if (!this._isCached)
                     {
-                    	// load the control dynamically
+                        // load the control dynamically
                         this._control = this._moduleControlPipeline.LoadModuleControl(this.Page, this._moduleConfiguration);
                     }
                 }
@@ -274,11 +274,11 @@ namespace DotNetNuke.UI.Modules
                 }
                 if (this.Skin != null)
                 {
-				
-                	// check for IMC
+                
+                    // check for IMC
                     this.Skin.Communicator.LoadCommunicator(this._control);
                 }
-				
+                
                 // add module settings
                 this.ModuleControl.ModuleContext.Configuration = this._moduleConfiguration;
             }
@@ -291,13 +291,13 @@ namespace DotNetNuke.UI.Modules
             catch (Exception exc)
             {
                 Logger.Error(exc);
-				
-				// add module settings
+                
+                // add module settings
                 this._control = this._moduleControlPipeline.CreateModuleControl(this._moduleConfiguration);
                 this.ModuleControl.ModuleContext.Configuration = this._moduleConfiguration;
                 if (TabPermissionController.CanAdminPage())
                 {
-					// only display the error to page administrators
+                    // only display the error to page administrators
                     Exceptions.ProcessModuleLoadException(this._control, exc);
                 }
                 else
@@ -316,7 +316,7 @@ namespace DotNetNuke.UI.Modules
         /// </summary>
         private void LoadUpdatePanel()
         {
-			// register AJAX
+            // register AJAX
             AJAX.RegisterScriptManager();
 
             // enable Partial Rendering
@@ -325,7 +325,7 @@ namespace DotNetNuke.UI.Modules
             {
                 scriptManager.EnablePartialRendering = true;
             }
-			
+            
             // create update panel
             var updatePanel = new UpdatePanel
                                   {
@@ -501,8 +501,8 @@ namespace DotNetNuke.UI.Modules
 
             // Load Module Control (or cached control)
             this.LoadModuleControl();
-			
-			// Optionally Inject AJAX Update Panel
+            
+            // Optionally Inject AJAX Update Panel
             if (this.ModuleControl != null)
             {
                 // if module is dynamically loaded and AJAX is installed and the control supports partial rendering (defined in ModuleControls table )
@@ -546,14 +546,14 @@ namespace DotNetNuke.UI.Modules
         {
             if (this._isCached)
             {
-				// Render the cached control to the output stream
+                // Render the cached control to the output stream
                 base.RenderContents(writer);
             }
             else
             {
                 if (this.SupportsCaching() && IsViewMode(this._moduleConfiguration, this.PortalSettings) && !Globals.IsAdminControl() && !this.IsVersionRequest())
                 {
-					// Render to cache
+                    // Render to cache
                     var tempWriter = new StringWriter();
 
                     this._control.RenderControl(new HtmlTextWriter(tempWriter));
@@ -561,7 +561,7 @@ namespace DotNetNuke.UI.Modules
 
                     if (!string.IsNullOrEmpty(cachedOutput) && (!HttpContext.Current.Request.Browser.Crawler))
                     {
-						// Save content to cache
+                        // Save content to cache
                         var moduleContent = Encoding.UTF8.GetBytes(cachedOutput);
                         var cache = ModuleCachingProvider.Instance(this._moduleConfiguration.GetEffectiveCacheMethod());
 
@@ -570,13 +570,13 @@ namespace DotNetNuke.UI.Modules
                         var cacheKey = cache.GenerateCacheKey(this._moduleConfiguration.TabModuleID, varyBy);
                         cache.SetModule(this._moduleConfiguration.TabModuleID, cacheKey, new TimeSpan(0, 0, this._moduleConfiguration.CacheTime), moduleContent);
                     }
-					
+                    
                     // Render the cached content to Response
                     writer.Write(cachedOutput);
                 }
                 else
                 {
-					// Render the control to Response
+                    // Render the control to Response
                     base.RenderContents(writer);
                 }
             }

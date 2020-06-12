@@ -190,58 +190,58 @@ namespace DotNetNuke.Entities.Tabs
 
         private void CreateLocalizedCopyInternal(TabInfo originalTab, Locale locale, bool allTabsModulesFromDefault, bool clearCache, bool insertAfterOriginal = false)
         {
-			try
-			{
-				Logger.TraceFormat("Localizing TabId: {0}, TabPath: {1}, Locale: {2}", originalTab.TabID, originalTab.TabPath, locale.Code);
-				var defaultLocale = LocaleController.Instance.GetDefaultLocale(originalTab.PortalID);
+            try
+            {
+                Logger.TraceFormat("Localizing TabId: {0}, TabPath: {1}, Locale: {2}", originalTab.TabID, originalTab.TabPath, locale.Code);
+                var defaultLocale = LocaleController.Instance.GetDefaultLocale(originalTab.PortalID);
 
-				// First Clone the Tab
-				TabInfo localizedCopy = originalTab.Clone();
-				localizedCopy.TabID = Null.NullInteger;
-				localizedCopy.StateID = Null.NullInteger;
-			    localizedCopy.ContentItemId = Null.NullInteger;
+                // First Clone the Tab
+                TabInfo localizedCopy = originalTab.Clone();
+                localizedCopy.TabID = Null.NullInteger;
+                localizedCopy.StateID = Null.NullInteger;
+                localizedCopy.ContentItemId = Null.NullInteger;
 
-				// Set Guids and Culture Code
-				localizedCopy.UniqueId = Guid.NewGuid();
-				localizedCopy.VersionGuid = Guid.NewGuid();
-				localizedCopy.LocalizedVersionGuid = Guid.NewGuid();
-				localizedCopy.CultureCode = locale.Code;
-				localizedCopy.TabName = localizedCopy.TabName + " (" + locale.Code + ")";
-			    
+                // Set Guids and Culture Code
+                localizedCopy.UniqueId = Guid.NewGuid();
+                localizedCopy.VersionGuid = Guid.NewGuid();
+                localizedCopy.LocalizedVersionGuid = Guid.NewGuid();
+                localizedCopy.CultureCode = locale.Code;
+                localizedCopy.TabName = localizedCopy.TabName + " (" + locale.Code + ")";
+                
                 // copy page tags
-			    foreach (var term in originalTab.Terms)
-			    {
-			        localizedCopy.Terms.Add(term);
-			    }
+                foreach (var term in originalTab.Terms)
+                {
+                    localizedCopy.Terms.Add(term);
+                }
 
                 if (locale == defaultLocale)
-				{
-					originalTab.DefaultLanguageGuid = localizedCopy.UniqueId;
-					this.UpdateTab(originalTab);
-				}
-				else
-				{
-					localizedCopy.DefaultLanguageGuid = originalTab.UniqueId;
-				}
+                {
+                    originalTab.DefaultLanguageGuid = localizedCopy.UniqueId;
+                    this.UpdateTab(originalTab);
+                }
+                else
+                {
+                    localizedCopy.DefaultLanguageGuid = originalTab.UniqueId;
+                }
 
-				// Copy Permissions from original Tab for Admins only
-				// If original tab is user tab or its parent tab is user tab, then copy full permission
-				// from original tab.
-				PortalInfo portal = PortalController.Instance.GetPortal(originalTab.PortalID);
-				if (originalTab.TabID == portal.UserTabId || originalTab.ParentId == portal.UserTabId)
-				{
-					localizedCopy.TabPermissions.AddRange(originalTab.TabPermissions);
-				}
-				else
-				{
-					localizedCopy.TabPermissions.AddRange(originalTab.TabPermissions.Where(p => p.RoleID == portal.AdministratorRoleId));
-				}
+                // Copy Permissions from original Tab for Admins only
+                // If original tab is user tab or its parent tab is user tab, then copy full permission
+                // from original tab.
+                PortalInfo portal = PortalController.Instance.GetPortal(originalTab.PortalID);
+                if (originalTab.TabID == portal.UserTabId || originalTab.ParentId == portal.UserTabId)
+                {
+                    localizedCopy.TabPermissions.AddRange(originalTab.TabPermissions);
+                }
+                else
+                {
+                    localizedCopy.TabPermissions.AddRange(originalTab.TabPermissions.Where(p => p.RoleID == portal.AdministratorRoleId));
+                }
 
-				// Get the original Tabs Parent
-				// check the original whether have parent.
-				if (!Null.IsNull(originalTab.ParentId))
-				{
-					TabInfo originalParent = this.GetTab(originalTab.ParentId, originalTab.PortalID, false);
+                // Get the original Tabs Parent
+                // check the original whether have parent.
+                if (!Null.IsNull(originalTab.ParentId))
+                {
+                    TabInfo originalParent = this.GetTab(originalTab.ParentId, originalTab.PortalID, false);
 
                     // Get the localized parent
                     TabInfo localizedParent = this.GetTabByCulture(originalParent.TabID, originalParent.PortalID, locale);
@@ -254,52 +254,52 @@ namespace DotNetNuke.Entities.Tabs
                 const bool includeAllModules = false;
                 this.AddTabInternal(localizedCopy, afterTabId, beforeTabId, includeAllModules); // not include modules show on all page, it will handled in copy modules action.
 
-				// if the tab has custom stylesheet defined, then also copy the stylesheet to the localized version.
-				if (originalTab.TabSettings.ContainsKey("CustomStylesheet"))
-				{
-					this.UpdateTabSetting(localizedCopy.TabID, "CustomStylesheet", originalTab.TabSettings["CustomStylesheet"].ToString());
-				}
+                // if the tab has custom stylesheet defined, then also copy the stylesheet to the localized version.
+                if (originalTab.TabSettings.ContainsKey("CustomStylesheet"))
+                {
+                    this.UpdateTabSetting(localizedCopy.TabID, "CustomStylesheet", originalTab.TabSettings["CustomStylesheet"].ToString());
+                }
 
                 /* Tab versioning and workflow is disabled 
-				 * during the creation of the Localized copy
-				 */
+                 * during the creation of the Localized copy
+                 */
                 DisableTabVersioningAndWorkflow(localizedCopy);
 
-				// Make shallow copies of all modules
-				ModuleController.Instance.CopyModules(originalTab, localizedCopy, true, allTabsModulesFromDefault);
+                // Make shallow copies of all modules
+                ModuleController.Instance.CopyModules(originalTab, localizedCopy, true, allTabsModulesFromDefault);
 
-				// Convert these shallow copies to deep copies
-				foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(localizedCopy.TabID))
-				{
-					ModuleController.Instance.LocalizeModule(kvp.Value, locale);
-				}
+                // Convert these shallow copies to deep copies
+                foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(localizedCopy.TabID))
+                {
+                    ModuleController.Instance.LocalizeModule(kvp.Value, locale);
+                }
 
-				// if not copy modules which show on all pages from default language, we need add all modules in current culture.
-				if (!allTabsModulesFromDefault)
-				{
-					AddAllTabsModules(localizedCopy);
-				}
+                // if not copy modules which show on all pages from default language, we need add all modules in current culture.
+                if (!allTabsModulesFromDefault)
+                {
+                    AddAllTabsModules(localizedCopy);
+                }
 
-				// Add Translator Role
-				this.GiveTranslatorRoleEditRights(localizedCopy, null);
+                // Add Translator Role
+                this.GiveTranslatorRoleEditRights(localizedCopy, null);
 
-				/* Tab versioning and workflow is re-enabled  
-				 * when the Localized copy is created
-				 */
-				EnableTabVersioningAndWorkflow(localizedCopy);
-				this.MarkAsPublished(localizedCopy);
-			}
-			catch (Exception ex)
-			{
-				Exceptions.LogException(ex);
-				throw;
-			}
+                /* Tab versioning and workflow is re-enabled  
+                 * when the Localized copy is created
+                 */
+                EnableTabVersioningAndWorkflow(localizedCopy);
+                this.MarkAsPublished(localizedCopy);
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                throw;
+            }
 
-			// Clear the Cache
-			if (clearCache)
-			{
-				this.ClearCache(originalTab.PortalID);
-			}
+            // Clear the Cache
+            if (clearCache)
+            {
+                this.ClearCache(originalTab.PortalID);
+            }
         }
 
         private void ClearTabSettingsCache(int tabId)
@@ -1658,7 +1658,7 @@ namespace DotNetNuke.Entities.Tabs
             this._dataProvider.LocalizeTab(originalTab.TabID, locale.Code, UserController.Instance.GetCurrentUserInfo().UserID);
             if (clearCache)
             {
-				DataCache.ClearTabsCache(originalTab.PortalID);
+                DataCache.ClearTabsCache(originalTab.PortalID);
                 DataCache.ClearModuleCache(originalTab.TabID);
             }
         }
@@ -2977,7 +2977,7 @@ namespace DotNetNuke.Entities.Tabs
 
             // Serialize TabUrls
             var tabUrlsNode = tabNode.AppendChild(tabXml.CreateElement("tabUrls"));
-			foreach (var tabUrl in TabController.Instance.GetTabUrls(tab.TabID, tab.PortalID))
+            foreach (var tabUrl in TabController.Instance.GetTabUrls(tab.TabID, tab.PortalID))
             {
                 var tabUrlXml = new XmlDocument { XmlResolver = null };
                 XmlNode tabUrlNode = tabUrlXml.CreateElement("tabUrl");

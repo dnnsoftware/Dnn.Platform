@@ -33,12 +33,12 @@ namespace DotNetNuke.Web.Api
             }
         }
 
-    	public override bool CanReadType(Type type)
+        public override bool CanReadType(Type type)
         {
             return type == typeof(string);
         }
 
-    	public override bool CanWriteType(Type type)
+        public override bool CanWriteType(Type type)
         {
             return type == typeof(string);
         }

@@ -18,8 +18,8 @@ namespace DotNetNuke.Security.Membership
     public abstract class MembershipProvider
     {
         #region Abstract Properties
-		
-		public abstract bool CanEditProviderProperties { get; }
+        
+        public abstract bool CanEditProviderProperties { get; }
         public abstract int MaxInvalidPasswordAttempts { get; set; }
         public abstract int MinPasswordLength { get; set; }
         public abstract int MinNonAlphanumericCharacters { get; set; }
@@ -30,20 +30,20 @@ namespace DotNetNuke.Security.Membership
         public abstract string PasswordStrengthRegularExpression { get; set; }
         public abstract bool RequiresQuestionAndAnswer { get; set; }
         public abstract bool RequiresUniqueEmail { get; set; }
-		
-		#endregion
-		
-		#region Shared/Static Methods
+        
+        #endregion
+        
+        #region Shared/Static Methods
 
         // return the provider
-		public static MembershipProvider Instance()
+        public static MembershipProvider Instance()
         {
             return ComponentFactory.GetComponent<MembershipProvider>();
         }
-		
-		#endregion
-		
-		#region Abstract Methods
+        
+        #endregion
+        
+        #region Abstract Methods
 
         // Users
         public abstract bool ChangePassword(UserInfo user, string oldPassword, string newPassword);
@@ -92,8 +92,8 @@ namespace DotNetNuke.Security.Membership
         public abstract ArrayList GetUsersByUserName(int portalId, string userNameToMatch, int pageIndex, int pageSize, ref int totalRecords);       
         public abstract ArrayList GetUsersByProfileProperty(int portalId, string propertyName, string propertyValue, int pageIndex, int pageSize, ref int totalRecords);
         
-		#endregion
-		
+        #endregion
+        
         #region Virtual Methods
 
         public virtual UserInfo GetUserByDisplayName(int portalId, string displayName)
@@ -141,10 +141,10 @@ namespace DotNetNuke.Security.Membership
             throw new NotImplementedException();
         }
 
-		public virtual ArrayList GetUsersByDisplayName(int portalId, string nameToMatch, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
-		{
-			throw new NotImplementedException();
-		}
+        public virtual ArrayList GetUsersByDisplayName(int portalId, string nameToMatch, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
+        {
+            throw new NotImplementedException();
+        }
 
         public virtual ArrayList GetUsersByProfileProperty(int portalId, string propertyName, string propertyValue, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
@@ -174,10 +174,10 @@ namespace DotNetNuke.Security.Membership
             throw new NotImplementedException();
         }
 
-		public virtual bool ResetAndChangePassword(UserInfo user, string newPassword, string answer)
-		{
-			throw new NotImplementedException();
-		}
+        public virtual bool ResetAndChangePassword(UserInfo user, string newPassword, string answer)
+        {
+            throw new NotImplementedException();
+        }
 
 
         public virtual void ChangeUsername(int userId, string newUsername)

@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Personalization
             }
             else
             {
-				// Anon User - so try and use cookie.
+                // Anon User - so try and use cookie.
                 HttpContext context = HttpContext.Current;
                 if (context != null && context.Request.Cookies["DNNPersonalization"] != null)
                 {
@@ -130,7 +130,7 @@ namespace DotNetNuke.Services.Personalization
                 }
                 else
                 {
-					// Anon User - so try and use cookie.
+                    // Anon User - so try and use cookie.
                     var context = HttpContext.Current;
                     if (context != null)
                     {

@@ -456,7 +456,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                                           where item.ToString().StartsWith(LegacyPrefix)
                                           select item.ToString().Substring(7)).ToList();
 #pragma warning disable 618
-			foreach (string legacyScript in legacyScripts)
+            foreach (string legacyScript in legacyScripts)
             {
                 switch (legacyScript)
                 {
@@ -543,9 +543,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         }
                         break;
                 }
-			}
+            }
 #pragma warning restore 618
-		}
+        }
 
         #endregion
 
@@ -575,7 +575,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
             return scriptsrc;
 #pragma warning restore 618
-		}
+        }
 
         public static void RegisterClientReference(Page page, ClientAPI.ClientNamespaceReferences reference)
         {

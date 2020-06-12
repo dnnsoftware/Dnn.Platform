@@ -15,16 +15,16 @@ namespace DotNetNuke.Services.Exceptions
     public class PageLoadException : BasePortalException
     {
         // default constructor
-		public PageLoadException()
+        public PageLoadException()
         {
         }
 
-		// constructor with exception message
+        // constructor with exception message
         public PageLoadException(string message) : base(message)
         {
         }
 
-		// constructor with message and inner exception
+        // constructor with message and inner exception
         public PageLoadException(string message, Exception inner) : base(message, inner)
         {
         }

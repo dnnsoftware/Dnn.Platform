@@ -11,9 +11,9 @@ using System.Collections;
 namespace DotNetNuke.Security.Permissions
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : CompareTabPermissions
+    /// Class    : CompareTabPermissions
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// CompareTabPermissions provides the a custom IComparer implementation for

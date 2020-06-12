@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Scheduling
 {
     internal static class Scheduler
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Scheduler));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Scheduler));
         internal static class CoreScheduler
         {
             // This is the heart of the scheduler mechanism.
@@ -305,7 +305,7 @@ namespace DotNetNuke.Services.Scheduling
                 }
             }
 
-	        private delegate void AddToScheduleInProgressDelegate(ScheduleHistoryItem item);
+            private delegate void AddToScheduleInProgressDelegate(ScheduleHistoryItem item);
             public static void FireEvents()
             {
                 // This method uses a thread pool to
@@ -318,65 +318,65 @@ namespace DotNetNuke.Services.Scheduling
                 // Pass in the ScheduleItem to the ProcessGroup
                 // so the ProcessGroup can pass it around for
                 // logging and notifications.
-	            lock (ScheduleQueue)
-	            {
-		            var scheduleList = new List<ScheduleItem>();
-		            using (ScheduleQueue.GetReadLock(LockTimeout))
-		            {
-			            foreach (ScheduleItem scheduleItem in ScheduleQueue)
-			            {
-				            scheduleList.Add(scheduleItem);
-			            }
-		            }
+                lock (ScheduleQueue)
+                {
+                    var scheduleList = new List<ScheduleItem>();
+                    using (ScheduleQueue.GetReadLock(LockTimeout))
+                    {
+                        foreach (ScheduleItem scheduleItem in ScheduleQueue)
+                        {
+                            scheduleList.Add(scheduleItem);
+                        }
+                    }
 
-		            int numToRun = scheduleList.Count;
-		            int numRun = 0;
+                    int numToRun = scheduleList.Count;
+                    int numRun = 0;
 
-		            foreach (ScheduleItem scheduleItem in scheduleList)
-		            {
-			            if (!KeepRunning)
-			            {
-				            return;
-			            }
+                    foreach (ScheduleItem scheduleItem in scheduleList)
+                    {
+                        if (!KeepRunning)
+                        {
+                            return;
+                        }
 
-			            int processGroup = GetProcessGroup();
+                        int processGroup = GetProcessGroup();
 
-			            if (scheduleItem.NextStart <= DateTime.Now &&
-							scheduleItem.Enabled &&
-							!IsInProgress(scheduleItem) &&
-							!HasDependenciesConflict(scheduleItem) &&
-							numRun < numToRun)
-			            {
-				            scheduleItem.ProcessGroup = processGroup;
-			                if (scheduleItem.ScheduleSource == ScheduleSource.NOT_SET)
-			                {
-			                    if (SchedulingProvider.SchedulerMode == SchedulerMode.TIMER_METHOD)
-			                    {
-			                        scheduleItem.ScheduleSource = ScheduleSource.STARTED_FROM_TIMER;
-			                    }
-			                    else if (SchedulingProvider.SchedulerMode == SchedulerMode.REQUEST_METHOD)
-			                    {
-			                        scheduleItem.ScheduleSource = ScheduleSource.STARTED_FROM_BEGIN_REQUEST;
-			                    }
-			                }
+                        if (scheduleItem.NextStart <= DateTime.Now &&
+                            scheduleItem.Enabled &&
+                            !IsInProgress(scheduleItem) &&
+                            !HasDependenciesConflict(scheduleItem) &&
+                            numRun < numToRun)
+                        {
+                            scheduleItem.ProcessGroup = processGroup;
+                            if (scheduleItem.ScheduleSource == ScheduleSource.NOT_SET)
+                            {
+                                if (SchedulingProvider.SchedulerMode == SchedulerMode.TIMER_METHOD)
+                                {
+                                    scheduleItem.ScheduleSource = ScheduleSource.STARTED_FROM_TIMER;
+                                }
+                                else if (SchedulingProvider.SchedulerMode == SchedulerMode.REQUEST_METHOD)
+                                {
+                                    scheduleItem.ScheduleSource = ScheduleSource.STARTED_FROM_BEGIN_REQUEST;
+                                }
+                            }
 
-			                var delegateFunc = new AddToScheduleInProgressDelegate(AddToScheduleInProgress);
+                            var delegateFunc = new AddToScheduleInProgressDelegate(AddToScheduleInProgress);
                             var scheduleHistoryItem = new ScheduleHistoryItem(scheduleItem);
                             scheduleHistoryItem.StartDate = DateTime.Now;
                             delegateFunc.BeginInvoke(scheduleHistoryItem, null, null);
                             Thread.Sleep(1000);
 
-				            _processGroup[processGroup].AddQueueUserWorkItem(scheduleItem);
+                            _processGroup[processGroup].AddQueueUserWorkItem(scheduleItem);
 
-				            LogEventAddedToProcessGroup(scheduleItem);
-				            numRun += 1;
-			            }
-			            else
-			            {
-				            LogWhyTaskNotRun(scheduleItem);
-			            }
-		            }
-	            }
+                            LogEventAddedToProcessGroup(scheduleItem);
+                            numRun += 1;
+                        }
+                        else
+                        {
+                            LogWhyTaskNotRun(scheduleItem);
+                        }
+                    }
+                }
             }
 
             private static void LogWhyTaskNotRun(ScheduleItem scheduleItem)
@@ -592,12 +592,12 @@ namespace DotNetNuke.Services.Scheduling
             /// <param name="sourceOfHalt">Initiator of Halt</param>
             public static void Halt(string sourceOfHalt)
             {
-				// should do nothing if the scheduler havn't start yet.
-            	var currentStatus = GetScheduleStatus();
-				if (currentStatus == ScheduleStatus.NOT_SET || currentStatus == ScheduleStatus.STOPPED)
-				{
-					return;
-				}
+                // should do nothing if the scheduler havn't start yet.
+                var currentStatus = GetScheduleStatus();
+                if (currentStatus == ScheduleStatus.NOT_SET || currentStatus == ScheduleStatus.STOPPED)
+                {
+                    return;
+                }
                 SetScheduleStatus(ScheduleStatus.SHUTTING_DOWN);
                 var log = new LogInfo { LogTypeKey = "SCHEDULER_SHUTTING_DOWN" };
                 log.AddProperty("Initiator", sourceOfHalt);

@@ -138,8 +138,8 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <summary>
         /// The notification is displayed on the UI as a toast notification
         /// </summary>
-		[XmlAttribute]
-		public bool SendToast { get; set; }
+        [XmlAttribute]
+        public bool SendToast { get; set; }
 
         #endregion
 
@@ -174,18 +174,18 @@ namespace DotNetNuke.Services.Social.Notifications
             this.ExpirationDate = Null.SetNullDateTime(dr["ExpirationDate"]);
             this.IncludeDismissAction = Null.SetNullBoolean(dr["IncludeDismissAction"]);
 
-			var schema = dr.GetSchemaTable();
-			if (schema != null)
-			{
-				if (schema.Select("ColumnName = 'SendToast'").Length > 0)
-				{
-					this.SendToast = Null.SetNullBoolean(dr["SendToast"]);
-				}
-				else
-				{
+            var schema = dr.GetSchemaTable();
+            if (schema != null)
+            {
+                if (schema.Select("ColumnName = 'SendToast'").Length > 0)
+                {
+                    this.SendToast = Null.SetNullBoolean(dr["SendToast"]);
+                }
+                else
+                {
                     this.SendToast = false;
-				}
-			}
+                }
+            }
 
             // add audit column data
             this.FillInternal(dr);

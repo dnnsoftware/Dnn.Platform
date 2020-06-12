@@ -19,7 +19,7 @@ namespace DotNetNuke.HttpModules.Exceptions
     /// </summary>
     public class ExceptionModule : IHttpModule
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExceptionModule));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExceptionModule));
         /// <summary>
         /// Gets the name of the module.
         /// </summary>
@@ -60,10 +60,10 @@ namespace DotNetNuke.HttpModules.Exceptions
         {
             try
             {
-				if (HttpContext.Current == null)
-				{
-					return;
-				}
+                if (HttpContext.Current == null)
+                {
+                    return;
+                }
 
                 HttpContext contxt = HttpContext.Current;
                 HttpServerUtility srver = contxt.Server;
@@ -85,17 +85,17 @@ namespace DotNetNuke.HttpModules.Exceptions
                     {
                         objExceptionLog.AddLog(lex);
                     }
-					catch (Exception ex)
-					{
-						Logger.Error(ex);
-					}
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                    }
                 }
             }
             catch (Exception exc)
             {
                 // it is possible when terminating the request for the context not to exist
                 // in this case we just want to exit since there is nothing else we can do
-				Logger.Error(exc);
+                Logger.Error(exc);
             }
         }
     }

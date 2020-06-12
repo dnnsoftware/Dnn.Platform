@@ -13,9 +13,9 @@ using DotNetNuke.Services.Localization;
 namespace DotNetNuke.UI.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Modules
-    /// Class	 : ModuleControlBase
+    /// Class    : ModuleControlBase
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModuleControlBase is a base class for Module Controls that inherits from the

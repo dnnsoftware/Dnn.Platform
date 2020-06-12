@@ -16,9 +16,9 @@ using DotNetNuke.Entities;
 namespace DotNetNuke.Security.Permissions
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : PermissionInfo
+    /// Class    : PermissionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// PermissionInfo provides the Entity Layer for Permissions
@@ -27,11 +27,11 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public class PermissionInfo : BaseEntityInfo
     {
-		#region Private Members
+        #region Private Members
 
         #endregion
-		
-		#region Public Properties
+        
+        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -79,8 +79,8 @@ namespace DotNetNuke.Security.Permissions
         public string PermissionName { get; set; }
 
         #endregion
-		
-		#region "Protected methods"
+        
+        #region "Protected methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -96,8 +96,8 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionCode = Null.SetNullString(dr["PermissionCode"]);
             this.PermissionKey = Null.SetNullString(dr["PermissionKey"]);
             this.PermissionName = Null.SetNullString(dr["PermissionName"]);
-		}
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

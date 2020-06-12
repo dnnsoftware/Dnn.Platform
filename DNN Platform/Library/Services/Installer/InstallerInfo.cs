@@ -32,11 +32,11 @@ namespace DotNetNuke.Services.Installer
     [Serializable]
     public class InstallerInfo
     {
-		#region Private Members
+        #region Private Members
 
         #endregion
 
-		#region Constructors
+        #region Constructors
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -120,10 +120,10 @@ namespace DotNetNuke.Services.Installer
             this.ManifestFile = new InstallFile(Path.Combine(this.TempInstallFolder, package.Name + ".dnn"));
             package.AttachInstallerInfo(this);
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Public Properties
+        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -300,7 +300,7 @@ namespace DotNetNuke.Services.Installer
 
         #endregion
 
-		#region Private Methods
+        #region Private Methods
 
         private void Initialize()
         {
@@ -332,11 +332,11 @@ namespace DotNetNuke.Services.Installer
                 entry.CheckZipEntry();
                 if (!entry.IsDirectory)
                 {
-					// Add file to list
+                    // Add file to list
                     var file = new InstallFile(unzip, entry, this);
                     if (file.Type == InstallFileType.Resources && (file.Name.Equals("containers.zip", StringComparison.InvariantCultureIgnoreCase) || file.Name.Equals("skins.zip", StringComparison.InvariantCultureIgnoreCase)))
                     {
-						// Temporarily save the TempInstallFolder
+                        // Temporarily save the TempInstallFolder
                         string tmpInstallFolder = this.TempInstallFolder;
 
                         // Create Zip Stream from File
@@ -403,11 +403,11 @@ namespace DotNetNuke.Services.Installer
                 this.Log.AddFailure(new Exception(Util.EXCEPTION_FileLoad));
                 this.Log.EndJob(Util.FILES_ReadingEnd);
             }
-			
+            
             // Close the Zip Input Stream as we have finished with it
             inputStream.Close();
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

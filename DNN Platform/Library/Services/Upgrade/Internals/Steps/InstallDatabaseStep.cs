@@ -56,9 +56,9 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                     var exception = Upgrade.ExecuteScript(scriptFile, false);
                     if (!string.IsNullOrEmpty(exception))
                     {
-	                    this.Errors.Add(exception);
-						this.Status = StepStatus.Retry;
-						return;
+                        this.Errors.Add(exception);
+                        this.Status = StepStatus.Retry;
+                        return;
                     }
                     this.Percentage += percentForMiniStep;
                 }
@@ -69,12 +69,12 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 this.Details = Localization.Localization.GetString("InstallingMembershipDatabaseScriptStep", this.LocalInstallResourceFile);
                 // Optionally Install the memberRoleProvider
                 var exceptions = Upgrade.InstallMemberRoleProvider(providerPath, false);
-				if (!string.IsNullOrEmpty(exceptions))
-				{
-					this.Errors.Add(exceptions);
-					this.Status = StepStatus.Retry;
-					return;
-				}
+                if (!string.IsNullOrEmpty(exceptions))
+                {
+                    this.Errors.Add(exceptions);
+                    this.Status = StepStatus.Retry;
+                    return;
+                }
             }
             this.Percentage = percentForEachStep * counter++;
 
@@ -92,13 +92,13 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                     this.Details = description + fileName;
 
                     bool scriptExecuted;
-					var exceptions = Upgrade.UpgradeVersion(scriptFile, false, out scriptExecuted);
-					if (!string.IsNullOrEmpty(exceptions))
-					{
-						this.Errors.Add(exceptions);
-						this.Status = StepStatus.Retry;
-						return;
-					}
+                    var exceptions = Upgrade.UpgradeVersion(scriptFile, false, out scriptExecuted);
+                    if (!string.IsNullOrEmpty(exceptions))
+                    {
+                        this.Errors.Add(exceptions);
+                        this.Status = StepStatus.Retry;
+                        return;
+                    }
 
                     if (scriptExecuted)
                     {
@@ -116,32 +116,32 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 string description = Localization.Localization.GetString("UpgradingVersionApplication", this.LocalInstallResourceFile);
                 this.Details = description + ver;
                 var exceptions = Upgrade.UpgradeApplication(providerPath, ver, false);
-				if (!string.IsNullOrEmpty(exceptions))
-				{
-					this.Errors.Add(exceptions);
-					this.Status = StepStatus.Retry;
-					return;
-				}
+                if (!string.IsNullOrEmpty(exceptions))
+                {
+                    this.Errors.Add(exceptions);
+                    this.Status = StepStatus.Retry;
+                    return;
+                }
                 this.Percentage += percentForMiniStep;
             }
             this.Percentage = percentForEachStep * counter++;
 
 
-			// Step 4 - Execute config file updates
-			foreach (Version ver in versions)
-			{
-				string description = Localization.Localization.GetString("UpdatingConfigFile", this.LocalInstallResourceFile);
-				this.Details = description + ver;
-				var exceptions = Upgrade.UpdateConfig(providerPath, ver, false);
-				if (!string.IsNullOrEmpty(exceptions))
-				{
-					this.Errors.Add(exceptions);
-					this.Status = StepStatus.Retry;
-					return;
-				}
-				this.Percentage += percentForMiniStep;
-			}
-			this.Percentage = percentForEachStep * counter++;
+            // Step 4 - Execute config file updates
+            foreach (Version ver in versions)
+            {
+                string description = Localization.Localization.GetString("UpdatingConfigFile", this.LocalInstallResourceFile);
+                this.Details = description + ver;
+                var exceptions = Upgrade.UpdateConfig(providerPath, ver, false);
+                if (!string.IsNullOrEmpty(exceptions))
+                {
+                    this.Errors.Add(exceptions);
+                    this.Status = StepStatus.Retry;
+                    return;
+                }
+                this.Percentage += percentForMiniStep;
+            }
+            this.Percentage = percentForEachStep * counter++;
 
             // Step 5 - Delete files which are no longer used
             foreach (Version ver in versions)
@@ -149,12 +149,12 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 string description = Localization.Localization.GetString("DeletingOldFiles", this.LocalInstallResourceFile);
                 this.Details = description + ver;
                 var exceptions = Upgrade.DeleteFiles(providerPath, ver, false);
-				if (!string.IsNullOrEmpty(exceptions))
-				{
-					this.Errors.Add(exceptions);
-					this.Status = StepStatus.Retry;
-					return;
-				}
+                if (!string.IsNullOrEmpty(exceptions))
+                {
+                    this.Errors.Add(exceptions);
+                    this.Status = StepStatus.Retry;
+                    return;
+                }
                 this.Percentage += percentForMiniStep;
             }
             this.Percentage = percentForEachStep * counter++;

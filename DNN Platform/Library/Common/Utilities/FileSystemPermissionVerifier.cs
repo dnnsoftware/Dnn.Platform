@@ -22,10 +22,10 @@ namespace DotNetNuke.Common.Utilities
     /// </remarks>
     public class FileSystemPermissionVerifier
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemPermissionVerifier));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemPermissionVerifier));
         private readonly string _basePath;
 
-	    private int _retryTimes = 30;
+        private int _retryTimes = 30;
 
         /// <summary>
         /// Base path need to verify permission.
@@ -40,14 +40,14 @@ namespace DotNetNuke.Common.Utilities
 
         public FileSystemPermissionVerifier(string basePath)
         {
-			this._basePath = basePath;
+            this._basePath = basePath;
         }
 
-		public FileSystemPermissionVerifier(string basePath, int retryTimes) : this(basePath)
-		{
+        public FileSystemPermissionVerifier(string basePath, int retryTimes) : this(basePath)
+        {
 
-			this._retryTimes = retryTimes;
-		}
+            this._retryTimes = retryTimes;
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -123,7 +123,7 @@ namespace DotNetNuke.Common.Utilities
             // Attempt to create the Directory
             try
             {
-				this.Try(() => FolderCreateAction(verifyPath), "Creating verification folder");
+                this.Try(() => FolderCreateAction(verifyPath), "Creating verification folder");
             }
             catch (Exception exc)
             {
@@ -180,9 +180,9 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-		private void Try(Action action, string description)
-		{
-			new RetryableAction(action, description, this._retryTimes, TimeSpan.FromSeconds(1)).TryIt();
-		}
+        private void Try(Action action, string description)
+        {
+            new RetryableAction(action, description, this._retryTimes, TimeSpan.FromSeconds(1)).TryIt();
+        }
     }
 }

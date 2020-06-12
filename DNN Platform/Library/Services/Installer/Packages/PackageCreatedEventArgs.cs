@@ -11,9 +11,9 @@ using System;
 namespace DotNetNuke.Services.Installer.Packages
 {
     /// -----------------------------------------------------------------------------
-    /// Project		: DotNetNuke
+    /// Project     : DotNetNuke
     /// Namespace   : DotNetNuke.Services.Installer.Packages
-    /// Class		: PackageCreatedEventArgs
+    /// Class       : PackageCreatedEventArgs
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// PackageCreatedEventArgs provides a custom EventArgs class for a

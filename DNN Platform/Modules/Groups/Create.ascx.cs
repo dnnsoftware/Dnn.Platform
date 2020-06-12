@@ -66,19 +66,19 @@ namespace DotNetNuke.Modules.Groups
 
 
             var modRoles = new List<RoleInfo>();
-			var modUsers = new List<UserInfo>();
+            var modUsers = new List<UserInfo>();
             foreach (ModulePermissionInfo modulePermissionInfo in ModulePermissionController.GetModulePermissions(this.ModuleId, this.TabId))
             {
                 if (modulePermissionInfo.PermissionKey == "MODGROUP" && modulePermissionInfo.AllowAccess)
                 {
-	                if (modulePermissionInfo.RoleID > int.Parse(Globals.glbRoleNothing))
-	                {
+                    if (modulePermissionInfo.RoleID > int.Parse(Globals.glbRoleNothing))
+                    {
                         modRoles.Add(RoleController.Instance.GetRoleById(this.PortalId, modulePermissionInfo.RoleID));
-	                }
-					else if (modulePermissionInfo.UserID > Null.NullInteger)
-					{
-						modUsers.Add(UserController.GetUserById(this.PortalId, modulePermissionInfo.UserID));
-					}
+                    }
+                    else if (modulePermissionInfo.UserID > Null.NullInteger)
+                    {
+                        modUsers.Add(UserController.GetUserById(this.PortalId, modulePermissionInfo.UserID));
+                    }
                 }
             }
 
@@ -109,29 +109,29 @@ namespace DotNetNuke.Modules.Groups
                 userRoleStatus = RoleStatus.Approved;
             }
 
-	        var roleGroupId = this.DefaultRoleGroupId;
-	        if (roleGroupId < Null.NullInteger)
-	        {
-		        roleGroupId = Null.NullInteger;
-	        }
-			roleInfo.RoleGroupID = roleGroupId;
+            var roleGroupId = this.DefaultRoleGroupId;
+            if (roleGroupId < Null.NullInteger)
+            {
+                roleGroupId = Null.NullInteger;
+            }
+            roleInfo.RoleGroupID = roleGroupId;
 
             roleInfo.RoleID = RoleController.Instance.AddRole(roleInfo);
             roleInfo = RoleController.Instance.GetRoleById(this.PortalId, roleInfo.RoleID);
 
-	        var groupUrl = this._navigationManager.NavigateURL(this.GroupViewTabId, "", new String[] { "groupid=" + roleInfo.RoleID.ToString() });
-			if (groupUrl.StartsWith("http://") || groupUrl.StartsWith("https://"))
-			{
-				const int startIndex = 8; // length of https://
-				groupUrl = groupUrl.Substring(groupUrl.IndexOf("/", startIndex, StringComparison.InvariantCultureIgnoreCase));
-			}
-			roleInfo.Settings.Add("URL", groupUrl);
+            var groupUrl = this._navigationManager.NavigateURL(this.GroupViewTabId, "", new String[] { "groupid=" + roleInfo.RoleID.ToString() });
+            if (groupUrl.StartsWith("http://") || groupUrl.StartsWith("https://"))
+            {
+                const int startIndex = 8; // length of https://
+                groupUrl = groupUrl.Substring(groupUrl.IndexOf("/", startIndex, StringComparison.InvariantCultureIgnoreCase));
+            }
+            roleInfo.Settings.Add("URL", groupUrl);
 
             roleInfo.Settings.Add("GroupCreatorName", this.UserInfo.DisplayName);
             roleInfo.Settings.Add("ReviewMembers", this.chkMemberApproved.Checked.ToString());
 
             RoleController.Instance.UpdateRoleSettings(roleInfo, true);
-	    if (this.inpFile.PostedFile != null && this.inpFile.PostedFile.ContentLength > 0)
+        if (this.inpFile.PostedFile != null && this.inpFile.PostedFile.ContentLength > 0)
             {
                 IFileManager _fileManager = FileManager.Instance;
                 IFolderManager _folderManager = FolderManager.Instance;

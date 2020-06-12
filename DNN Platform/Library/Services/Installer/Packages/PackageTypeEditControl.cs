@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Installer.Packages.WebControls
     [ToolboxData("<{0}:PackageTypeEditControl runat=server></{0}:PackageTypeEditControl>")]
     public class PackageTypeEditControl : TextEditControl
     {
-		#region "Protected Methods"
+        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -54,7 +54,7 @@ namespace DotNetNuke.Services.Installer.Packages.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
             }
-			
+            
             // Render Option Tag
             writer.RenderBeginTag(HtmlTextWriterTag.Option);
             writer.Write("<" + DNNLocalization.GetString("Not_Specified", DNNLocalization.SharedResourceFile) + ">");
@@ -62,25 +62,25 @@ namespace DotNetNuke.Services.Installer.Packages.WebControls
 
             foreach (PackageType type in packageTypes)
             {
-				// Add the Value Attribute
+                // Add the Value Attribute
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, type.PackageType);
 
                 if (type.PackageType == this.StringValue)
                 {
-					// Add the Selected Attribute
+                    // Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
                 }
-				
-				// Render Option Tag
+                
+                // Render Option Tag
                 writer.RenderBeginTag(HtmlTextWriterTag.Option);
                 writer.Write(type.PackageType);
                 writer.RenderEndTag();
             }
-			
+            
             // Close Select Tag
             writer.RenderEndTag();
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

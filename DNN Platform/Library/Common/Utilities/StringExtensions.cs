@@ -39,12 +39,12 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="input">String to normalize</param>
         /// <returns>String without diacritics</returns>
-		public static string NormalizeString(this string input)
-		{
-			return string.IsNullOrEmpty(input)
+        public static string NormalizeString(this string input)
+        {
+            return string.IsNullOrEmpty(input)
                 ? input
                 : Iso8859Encoding.GetString(Encoding.Convert(Encoding.UTF8, Iso8859Encoding, Encoding.UTF8.GetBytes(input))).ToLowerInvariant();
-		}
+        }
 
         /// <summary>
         /// Alternative to <see cref="string.Replace(string, string)"/> that supports case insensitive replacement

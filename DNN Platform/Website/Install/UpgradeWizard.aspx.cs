@@ -279,7 +279,7 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-		private void CompleteUpgrade()
+        private void CompleteUpgrade()
         {
             // Delete the status file.
             try
@@ -374,10 +374,10 @@ namespace DotNetNuke.Services.Install
             this.pnlAcceptTerms.Visible = this.NeedAcceptTerms;
             this.LocalizePage();
 
-			if (this.Request.RawUrl.EndsWith("?complete"))
-			{
-				this.CompleteUpgrade();
-			}
+            if (this.Request.RawUrl.EndsWith("?complete"))
+            {
+                this.CompleteUpgrade();
+            }
             
             // Create Status Files
             if (!this.Page.IsPostBack)

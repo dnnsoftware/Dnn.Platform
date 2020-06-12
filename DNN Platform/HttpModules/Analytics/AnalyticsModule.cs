@@ -26,7 +26,7 @@ namespace DotNetNuke.HttpModules.Analytics
     /// -----------------------------------------------------------------------------
     public class AnalyticsModule : IHttpModule
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsModule));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsModule));
 
         public string ModuleName
         {
@@ -68,7 +68,7 @@ namespace DotNetNuke.HttpModules.Analytics
                 if (page == null) return;
 
                 page.InitComplete += OnPageInitComplete;
-				page.PreRender += OnPagePreRender;
+                page.PreRender += OnPagePreRender;
             }
             catch (Exception ex)
             {

@@ -29,13 +29,13 @@ namespace DotNetNuke.Services.Localization.Internal
         /// <summary>
         /// Detects the current language for the request.
         /// The order in which the language is being detect is:
-        /// 		1. QueryString
-        /// 		2. Cookie
-        /// 		3. User profile (if request is authenticated)
-        /// 		4. Browser preference (if portal has this option enabled)
-        /// 		5. Portal default
-        /// 		6. System default (en-US)
-        /// 	At any point, if a valid language is detected nothing else should be done
+        ///         1. QueryString
+        ///         2. Cookie
+        ///         3. User profile (if request is authenticated)
+        ///         4. Browser preference (if portal has this option enabled)
+        ///         5. Portal default
+        ///         6. System default (en-US)
+        ///     At any point, if a valid language is detected nothing else should be done
         /// </summary>
         /// <param name="portalSettings">Current PortalSettings</param>
         /// <returns>A valid CultureInfo</returns>

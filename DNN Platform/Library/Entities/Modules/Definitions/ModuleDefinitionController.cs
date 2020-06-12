@@ -21,9 +21,9 @@ using DotNetNuke.Services.Search.Entities;
 namespace DotNetNuke.Entities.Modules.Definitions
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities.Modules.Definitions
-    /// Class	 : ModuleDefinitionController
+    /// Class    : ModuleDefinitionController
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModuleDefinitionController provides the Business Layer for Module Definitions
@@ -55,7 +55,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// <summary>
         /// GetModuleDefinitionByID gets a Module Definition by its ID
         /// </summary>
-		/// <param name="objModuleDefinition">The object of the Module Definition</param>
+        /// <param name="objModuleDefinition">The object of the Module Definition</param>
         /// -----------------------------------------------------------------------------
         public void DeleteModuleDefinition(ModuleDefinitionInfo objModuleDefinition)
         {
@@ -70,7 +70,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// -----------------------------------------------------------------------------
         public void DeleteModuleDefinition(int moduleDefinitionId)
         {
-			// Delete associated permissions
+            // Delete associated permissions
             var permissionController = new PermissionController();
             foreach (PermissionInfo permission in permissionController.GetPermissionsByModuleDefID(moduleDefinitionId))
             {
@@ -102,14 +102,14 @@ namespace DotNetNuke.Entities.Modules.Definitions
                    .FirstOrDefault();
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// GetModuleDefinitionByFriendlyName gets a Module Definition by its Friendly
-		/// Name (and DesktopModuleID)
-		/// </summary>
-		/// <param name="friendlyName">The friendly name</param>
-		/// -----------------------------------------------------------------------------
-		public static ModuleDefinitionInfo GetModuleDefinitionByFriendlyName(string friendlyName)
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetModuleDefinitionByFriendlyName gets a Module Definition by its Friendly
+        /// Name (and DesktopModuleID)
+        /// </summary>
+        /// <param name="friendlyName">The friendly name</param>
+        /// -----------------------------------------------------------------------------
+        public static ModuleDefinitionInfo GetModuleDefinitionByFriendlyName(string friendlyName)
         {
             Requires.NotNullOrEmpty("friendlyName", friendlyName);
 
@@ -194,7 +194,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
             int moduleDefinitionID = moduleDefinition.ModuleDefID;
             if (moduleDefinitionID == Null.NullInteger)
             {
-				// Add new Module Definition
+                // Add new Module Definition
                 moduleDefinitionID = dataProvider.AddModuleDefinition(moduleDefinition.DesktopModuleID,
                                                                       moduleDefinition.FriendlyName,
                                                                       moduleDefinition.DefinitionName,
@@ -203,7 +203,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
             }
             else
             {
-				// Upgrade Module Definition
+                // Upgrade Module Definition
                 dataProvider.UpdateModuleDefinition(moduleDefinition.ModuleDefID, moduleDefinition.FriendlyName, moduleDefinition.DefinitionName, moduleDefinition.DefaultCacheTime, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             if (saveChildren)

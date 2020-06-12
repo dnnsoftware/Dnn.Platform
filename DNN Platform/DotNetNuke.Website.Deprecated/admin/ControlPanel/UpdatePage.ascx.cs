@@ -351,19 +351,19 @@ namespace DotNetNuke.UI.ControlPanel
             return Localization.GetString(key, this.LocalResourceFile);
         }
 
-		private bool IsParentTab(TabInfo tab, int parentTabId)
-		{
-			while (tab != null)
-			{
-				if (tab.TabID == parentTabId)
-				{
-					return true;
-				}
+        private bool IsParentTab(TabInfo tab, int parentTabId)
+        {
+            while (tab != null)
+            {
+                if (tab.TabID == parentTabId)
+                {
+                    return true;
+                }
                 tab = tab.ParentId != Null.NullInteger ? TabController.Instance.GetTab(tab.ParentId, tab.PortalID, false) : null;
-			}
+            }
 
-			return false;
-		}
+            return false;
+        }
 
         #endregion
     }

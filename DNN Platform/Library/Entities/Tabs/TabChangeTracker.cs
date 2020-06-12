@@ -61,7 +61,7 @@ namespace DotNetNuke.Entities.Tabs
         
         public void TrackModuleUncopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
         {
-			if (module != null && TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
+            if (module != null && TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
             {
                 TabVersionTracker.Instance.TrackModuleUncopy(module, moduleVersion, originalTabId, userId);
             } 

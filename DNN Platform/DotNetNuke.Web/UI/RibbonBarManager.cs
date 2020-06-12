@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.UI
 {
     public class RibbonBarManager
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RibbonBarManager));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RibbonBarManager));
         public static TabInfo InitTabInfoObject()
         {
             return InitTabInfoObject(null, TabRelativeLocation.AFTER);
@@ -199,17 +199,17 @@ namespace DotNetNuke.Web.UI
             // Validation:
             // Tab name is required
             // Tab name is invalid
-			string invalidType;
-			if (!TabController.IsValidTabName(tab.TabName, out invalidType))
-			{
-				switch (invalidType)
-				{
-					case "EmptyTabName":
-						throw new DotNetNukeException("Page name is required.", DotNetNukeErrorCode.PageNameRequired);
-					case "InvalidTabName":
-						throw new DotNetNukeException("Page name is invalid.", DotNetNukeErrorCode.PageNameInvalid);
-				}
-			}
+            string invalidType;
+            if (!TabController.IsValidTabName(tab.TabName, out invalidType))
+            {
+                switch (invalidType)
+                {
+                    case "EmptyTabName":
+                        throw new DotNetNukeException("Page name is required.", DotNetNukeErrorCode.PageNameRequired);
+                    case "InvalidTabName":
+                        throw new DotNetNukeException("Page name is invalid.", DotNetNukeErrorCode.PageNameInvalid);
+                }
+            }
             else if ((Validate_IsCircularReference(tab.PortalID, tab.TabID)))
             {
                 throw new DotNetNukeException("Cannot move page to that location.", DotNetNukeErrorCode.PageCircularReference);
@@ -384,8 +384,8 @@ namespace DotNetNuke.Web.UI
                 XmlDocument xmlDoc = new XmlDocument { XmlResolver = null };
                 try
                 {
-	                var templateFile = FileManager.Instance.GetFile(Convert.ToInt32(templateFileId));
-					xmlDoc.Load(FileManager.Instance.GetFileContent(templateFile));
+                    var templateFile = FileManager.Instance.GetFile(Convert.ToInt32(templateFileId));
+                    xmlDoc.Load(FileManager.Instance.GetFileContent(templateFile));
                     TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
                     
                     // save tab permissions

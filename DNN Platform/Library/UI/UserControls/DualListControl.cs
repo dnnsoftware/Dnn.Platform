@@ -18,7 +18,7 @@ namespace DotNetNuke.UI.UserControls
 {
     public abstract class DualListControl : UserControlBase
     {
-		#region "Private Members"
+        #region "Private Members"
         protected Label Label1;
         protected Label Label2;
         private string MyFileName = "DualListControl.ascx";
@@ -35,10 +35,10 @@ namespace DotNetNuke.UI.UserControls
         protected LinkButton cmdRemoveAll;
         protected ListBox lstAssigned;
         protected ListBox lstAvailable;
-		
-		#endregion
-		
-		#region "Public Properties"
+        
+        #endregion
+        
+        #region "Public Properties"
 
         public string ListBoxWidth
         {
@@ -121,13 +121,13 @@ namespace DotNetNuke.UI.UserControls
                 this._Enabled = value;
             }
         }
-		
-		#endregion
-		
-		#region "Protected Event Handlers"
+        
+        #endregion
+        
+        #region "Protected Event Handlers"
 
         /// <summary>The Page_Load server event handler on this page is used to populate the role information for the page</summary>
-		protected override void OnLoad(EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
@@ -148,7 +148,7 @@ namespace DotNetNuke.UI.UserControls
 
                 if (!this.Page.IsPostBack)
                 {
-					// set dimensions of control
+                    // set dimensions of control
                     if (!String.IsNullOrEmpty(this._ListBoxWidth))
                     {
                         this.lstAvailable.Width = Unit.Parse(this._ListBoxWidth);
@@ -159,7 +159,7 @@ namespace DotNetNuke.UI.UserControls
                         this.lstAvailable.Height = Unit.Parse(this._ListBoxHeight);
                         this.lstAssigned.Height = Unit.Parse(this._ListBoxHeight);
                     }
-					
+                    
                     // load available
                     this.lstAvailable.DataTextField = this._DataTextField;
                     this.lstAvailable.DataValueField = this._DataValueField;
@@ -252,10 +252,10 @@ namespace DotNetNuke.UI.UserControls
             this.lstAssigned.ClearSelection();
             this.Sort(this.lstAvailable);
         }
-		
-		#endregion
-		
-		#region "Private Methods"
+        
+        #endregion
+        
+        #region "Private Methods"
 
         private void Sort(ListBox ctlListBox)
         {
@@ -271,8 +271,8 @@ namespace DotNetNuke.UI.UserControls
                 ctlListBox.Items.Add(objListItem);
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 
     public class ListItemComparer : IComparer

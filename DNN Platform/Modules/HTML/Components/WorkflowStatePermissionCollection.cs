@@ -11,9 +11,9 @@ using DotNetNuke.Common.Utilities;
 namespace DotNetNuke.Security.Permissions
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : WorkflowStatePermissionCollection
+    /// Class    : WorkflowStatePermissionCollection
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   DesktopModulePermissionCollection provides the a custom collection for WorkflowStatePermissionInfo

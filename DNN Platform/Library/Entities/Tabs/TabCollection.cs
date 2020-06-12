@@ -26,7 +26,7 @@ namespace DotNetNuke.Entities.Tabs
     [Serializable]
     public class TabCollection : Dictionary<int, TabInfo>
     {
-		// This is used to provide a collection of children
+        // This is used to provide a collection of children
         [NonSerialized]
         private readonly Dictionary<int, List<TabInfo>> _children;
 
@@ -116,7 +116,7 @@ namespace DotNetNuke.Entities.Tabs
                 childList = new List<TabInfo>();
                 this._children.Add(tab.ParentId, childList);
             }
-			
+            
             // Add tab to end of child list as children are returned in order
             childList.Add(tab);
             return childList.Count;
@@ -204,7 +204,7 @@ namespace DotNetNuke.Entities.Tabs
 
         public void Add(TabInfo tab)
         {
-			// Call base class to add to base Dictionary
+            // Call base class to add to base Dictionary
             this.Add(tab.TabID, tab);
 
             // Update all child collections
@@ -244,14 +244,14 @@ namespace DotNetNuke.Entities.Tabs
             return new ArrayList(this._list);
         }
 
-		public TabCollection WithCulture(string cultureCode, bool includeNeutral)
-		{
-			return this.WithCulture(cultureCode, includeNeutral, IsLocalizationEnabled());
-		}
+        public TabCollection WithCulture(string cultureCode, bool includeNeutral)
+        {
+            return this.WithCulture(cultureCode, includeNeutral, IsLocalizationEnabled());
+        }
         public TabCollection WithCulture(string cultureCode, bool includeNeutral, bool localizationEnabled)
         {
             TabCollection collection;
-			if (localizationEnabled)
+            if (localizationEnabled)
             {
                 if (string.IsNullOrEmpty(cultureCode))
                 {

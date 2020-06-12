@@ -43,37 +43,37 @@ namespace DotNetNuke.Services.Search
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleIndexer));
         private static readonly int ModuleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
-		private readonly IDictionary<int, IEnumerable<ModuleIndexInfo>> _searchModules;
+        private readonly IDictionary<int, IEnumerable<ModuleIndexInfo>> _searchModules;
 
         #endregion
 
-		#region Constructors
+        #region Constructors
 
-	    public ModuleIndexer() : this(false)
-	    {
-	    }
+        public ModuleIndexer() : this(false)
+        {
+        }
 
-		public ModuleIndexer(bool needSearchModules)
-		{
-			this._searchModules = new Dictionary<int, IEnumerable<ModuleIndexInfo>>();
+        public ModuleIndexer(bool needSearchModules)
+        {
+            this._searchModules = new Dictionary<int, IEnumerable<ModuleIndexInfo>>();
 
-			if (needSearchModules)
-			{
-				var portals = PortalController.Instance.GetPortals();
-				foreach (var portal in portals.Cast<PortalInfo>())
-				{
-					this._searchModules.Add(portal.PortalID, this.GetModulesForIndex(portal.PortalID));
-				}
+            if (needSearchModules)
+            {
+                var portals = PortalController.Instance.GetPortals();
+                foreach (var portal in portals.Cast<PortalInfo>())
+                {
+                    this._searchModules.Add(portal.PortalID, this.GetModulesForIndex(portal.PortalID));
+                }
 
-				this._searchModules.Add(Null.NullInteger, this.GetModulesForIndex(Null.NullInteger));
-			}
-		}
+                this._searchModules.Add(Null.NullInteger, this.GetModulesForIndex(Null.NullInteger));
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region Public Methods
+        #region Public Methods
 
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Returns the number of indexed SearchDocuments for the portal.
         /// </summary>
@@ -88,7 +88,7 @@ namespace DotNetNuke.Services.Search
             var totalIndexed = 0;
             startDateLocal = this.GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
             var searchDocuments = new List<SearchDocument>();
-			var searchModuleCollection = this._searchModules.ContainsKey(portalId)
+            var searchModuleCollection = this._searchModules.ContainsKey(portalId)
                 ? this._searchModules[portalId].Where(m => m.SupportSearch).Select(m => m.ModuleInfo)
                 : this.GetSearchModules(portalId);
 
@@ -180,8 +180,8 @@ namespace DotNetNuke.Services.Search
         public List<SearchDocument> GetModuleMetaData(int portalId, DateTime startDate)
         {
             var searchDocuments = new List<SearchDocument>();
-			var searchModuleCollection = this._searchModules.ContainsKey(portalId) ? 
-											this._searchModules[portalId].Select(m => m.ModuleInfo) : this.GetSearchModules(portalId, true);
+            var searchModuleCollection = this._searchModules.ContainsKey(portalId) ? 
+                                            this._searchModules[portalId].Select(m => m.ModuleInfo) : this.GetSearchModules(portalId, true);
             foreach (ModuleInfo module in searchModuleCollection)
             {
                 try
@@ -274,12 +274,12 @@ namespace DotNetNuke.Services.Search
             return this.GetSearchModules(portalId, false);
         }
 
-		protected IEnumerable<ModuleInfo> GetSearchModules(int portalId, bool allModules)
-		{
-			return from mii in this.GetModulesForIndex(portalId)
-				where allModules || mii.SupportSearch
-				select mii.ModuleInfo;
-		}
+        protected IEnumerable<ModuleInfo> GetSearchModules(int portalId, bool allModules)
+        {
+            return from mii in this.GetModulesForIndex(portalId)
+                where allModules || mii.SupportSearch
+                select mii.ModuleInfo;
+        }
 
 
         #endregion
@@ -310,7 +310,7 @@ namespace DotNetNuke.Services.Search
         {
             var businessControllers = new Hashtable();
             var searchModuleIds = new HashSet<int>();
-			var searchModules = new List<ModuleIndexInfo>();
+            var searchModules = new List<ModuleIndexInfo>();
             // Only get modules that are set to be Indexed.
             var modules = ModuleController.Instance.GetSearchModules(portalId).Cast<ModuleInfo>().Where(m => m.TabModuleSettings["AllowIndex"] == null || bool.Parse(m.TabModuleSettings["AllowIndex"].ToString()));
 

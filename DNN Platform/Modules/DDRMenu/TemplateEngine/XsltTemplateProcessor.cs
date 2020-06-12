@@ -14,14 +14,14 @@ using DotNetNuke.Web.DDRMenu.DNNCommon;
 
 namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 {
-	public class XsltTemplateProcessor : ITemplateProcessor
-	{
-		private XslCompiledTransform xsl;
+    public class XsltTemplateProcessor : ITemplateProcessor
+    {
+        private XslCompiledTransform xsl;
 
-		public bool LoadDefinition(TemplateDefinition baseDefinition)
-		{
-			try
-			{
+        public bool LoadDefinition(TemplateDefinition baseDefinition)
+        {
+            try
+            {
                 var virtualPath = baseDefinition.TemplateVirtualPath;
                 if (!virtualPath.EndsWith(".xsl", StringComparison.InvariantCultureIgnoreCase) &&
                     !virtualPath.EndsWith(".xslt", StringComparison.InvariantCultureIgnoreCase))
@@ -29,76 +29,76 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                     return false;
                 }
 
-				this.xsl = Utilities.CachedXslt(baseDefinition.TemplatePath);
-				return true;
-			}
-			catch (Exception)
-			{
-				return false;
-			}
-		}
+                this.xsl = Utilities.CachedXslt(baseDefinition.TemplatePath);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
-		public void Render(object source, HtmlTextWriter htmlWriter, TemplateDefinition liveDefinition)
-		{
-			var resolver = new PathResolver(liveDefinition.Folder);
-			var hostPage = DNNContext.Current.Page;
+        public void Render(object source, HtmlTextWriter htmlWriter, TemplateDefinition liveDefinition)
+        {
+            var resolver = new PathResolver(liveDefinition.Folder);
+            var hostPage = DNNContext.Current.Page;
 
-			var args = new XsltArgumentList();
-			args.AddExtensionObject("urn:ddrmenu", new XsltFunctions());
-			args.AddExtensionObject("urn:dnngarden", new XsltFunctions());
-			args.AddParam("ControlID", "", DNNContext.Current.HostControl.ClientID);
-			args.AddParam("Options", "", ConvertToJson(liveDefinition.ClientOptions));
-			args.AddParam("DNNPath", "", hostPage.ResolveUrl(resolver.Resolve("/", PathResolver.RelativeTo.Dnn)));
-			args.AddParam("ManifestPath", "", hostPage.ResolveUrl(resolver.Resolve("/", PathResolver.RelativeTo.Manifest)));
-			args.AddParam("PortalPath", "", hostPage.ResolveUrl(resolver.Resolve("/", PathResolver.RelativeTo.Portal)));
-			args.AddParam("SkinPath", "", hostPage.ResolveUrl(resolver.Resolve("/", PathResolver.RelativeTo.Skin)));
-			liveDefinition.TemplateArguments.ForEach(a => args.AddParam(a.Name, "", a.Value));
+            var args = new XsltArgumentList();
+            args.AddExtensionObject("urn:ddrmenu", new XsltFunctions());
+            args.AddExtensionObject("urn:dnngarden", new XsltFunctions());
+            args.AddParam("ControlID", "", DNNContext.Current.HostControl.ClientID);
+            args.AddParam("Options", "", ConvertToJson(liveDefinition.ClientOptions));
+            args.AddParam("DNNPath", "", hostPage.ResolveUrl(resolver.Resolve("/", PathResolver.RelativeTo.Dnn)));
+            args.AddParam("ManifestPath", "", hostPage.ResolveUrl(resolver.Resolve("/", PathResolver.RelativeTo.Manifest)));
+            args.AddParam("PortalPath", "", hostPage.ResolveUrl(resolver.Resolve("/", PathResolver.RelativeTo.Portal)));
+            args.AddParam("SkinPath", "", hostPage.ResolveUrl(resolver.Resolve("/", PathResolver.RelativeTo.Skin)));
+            liveDefinition.TemplateArguments.ForEach(a => args.AddParam(a.Name, "", a.Value));
 
-			HttpContext.Current.Items["Resolver"] = resolver;
+            HttpContext.Current.Items["Resolver"] = resolver;
 
-			using (var xmlStream = new MemoryStream())
-			{
-				Utilities.SerialiserFor(source.GetType()).Serialize(xmlStream, source);
-				xmlStream.Seek(0, SeekOrigin.Begin);
-				this.xsl.Transform(XmlReader.Create(xmlStream), args, htmlWriter);
-			}
-		}
+            using (var xmlStream = new MemoryStream())
+            {
+                Utilities.SerialiserFor(source.GetType()).Serialize(xmlStream, source);
+                xmlStream.Seek(0, SeekOrigin.Begin);
+                this.xsl.Transform(XmlReader.Create(xmlStream), args, htmlWriter);
+            }
+        }
 
-		protected static string ConvertToJson(List<ClientOption> options)
-		{
-			var result = new StringBuilder();
-			result.Append("{");
+        protected static string ConvertToJson(List<ClientOption> options)
+        {
+            var result = new StringBuilder();
+            result.Append("{");
 
-			if (options != null)
-			{
-				foreach (var option in options)
-				{
-					if (option is ClientNumber)
-					{
-						result.AppendFormat("{0}:{1},", option.Name, Utilities.ConvertToJs(Convert.ToDecimal(option.Value)));
-					}
-					else if (option is ClientString)
-					{
-						result.AppendFormat("{0}:{1},", option.Name, Utilities.ConvertToJs(option.Value));
-					}
-					else if (option is ClientBoolean)
-					{
-						result.AppendFormat(
-							"{0}:{1},", option.Name, Utilities.ConvertToJs(Convert.ToBoolean(option.Value.ToLowerInvariant())));
-					}
-					else
-					{
-						result.AppendFormat("{0}:{1},", option.Name, option.Value);
-					}
-				}
-				if (options.Count > 0)
-				{
-					result.Remove(result.Length - 1, 1);
-				}
-			}
+            if (options != null)
+            {
+                foreach (var option in options)
+                {
+                    if (option is ClientNumber)
+                    {
+                        result.AppendFormat("{0}:{1},", option.Name, Utilities.ConvertToJs(Convert.ToDecimal(option.Value)));
+                    }
+                    else if (option is ClientString)
+                    {
+                        result.AppendFormat("{0}:{1},", option.Name, Utilities.ConvertToJs(option.Value));
+                    }
+                    else if (option is ClientBoolean)
+                    {
+                        result.AppendFormat(
+                            "{0}:{1},", option.Name, Utilities.ConvertToJs(Convert.ToBoolean(option.Value.ToLowerInvariant())));
+                    }
+                    else
+                    {
+                        result.AppendFormat("{0}:{1},", option.Name, option.Value);
+                    }
+                }
+                if (options.Count > 0)
+                {
+                    result.Remove(result.Length - 1, 1);
+                }
+            }
 
-			result.Append("}");
-			return result.ToString();
-		}
-	}
+            result.Append("}");
+            return result.ToString();
+        }
+    }
 }

@@ -19,8 +19,8 @@ namespace DotNetNuke.Entities.Portals
         /// The GetActiveTab method gets the active Tab for the current request
         /// </summary>
         /// <returns></returns>
-        /// 	<param name="tabId">The current tab's id</param>
-        /// 	<param name="portalSettings">The current PortalSettings</param>
+        ///     <param name="tabId">The current tab's id</param>
+        ///     <param name="portalSettings">The current PortalSettings</param>
         /// -----------------------------------------------------------------------------
         TabInfo GetActiveTab(int tabId, PortalSettings portalSettings);
 
@@ -29,7 +29,7 @@ namespace DotNetNuke.Entities.Portals
         /// The GetTabModules method gets the list of modules for the active Tab
         /// </summary>
         /// <returns></returns>
-        /// 	<param name="portalSettings">The current PortalSettings</param>
+        ///     <param name="portalSettings">The current PortalSettings</param>
         /// -----------------------------------------------------------------------------
         IList<ModuleInfo> GetTabModules(PortalSettings portalSettings);
 

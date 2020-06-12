@@ -191,10 +191,10 @@ namespace DotNetNuke.Services.FileSystem
             if (folderPath == newFolderPath) return;
 
             var sourceFolder = FolderManager.Instance.GetFolder(folderMapping.PortalID, folderPath);
-			var destinationFolder = FolderManager.Instance.GetFolder(folderMapping.PortalID, newFolderPath);
+            var destinationFolder = FolderManager.Instance.GetFolder(folderMapping.PortalID, newFolderPath);
 
-			Requires.NotNull("sourceFolder", sourceFolder);
-			Requires.NotNull("destinationFolder", destinationFolder);
+            Requires.NotNull("sourceFolder", sourceFolder);
+            Requires.NotNull("destinationFolder", destinationFolder);
 
             using (var fileContent = this.GetFileStream(sourceFolder, fileName))
             {

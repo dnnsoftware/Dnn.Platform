@@ -147,7 +147,7 @@ namespace DotNetNuke.Services.Search.Internals
 
         #region Other Search Helper methods
         Tuple<int, int> GetSearchMinMaxLength();
-		string RephraseSearchText(string searchPhrase, bool useWildCard, bool allowLeadingWildcard = false);
+        string RephraseSearchText(string searchPhrase, bool useWildCard, bool allowLeadingWildcard = false);
         string StripTagsNoAttributes(string html, bool retainSpace);
         #endregion
     }

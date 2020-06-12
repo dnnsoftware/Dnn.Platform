@@ -31,9 +31,9 @@ using Globals = DotNetNuke.Common.Globals;
 namespace DotNetNuke.UI.Skins
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Skins
-    /// Class	 : Pane
+    /// Class    : Pane
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Pane class represents a Pane within the Skin

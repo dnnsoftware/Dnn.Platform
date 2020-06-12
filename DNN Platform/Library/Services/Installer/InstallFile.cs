@@ -27,11 +27,11 @@ namespace DotNetNuke.Services.Installer
     {
         private static readonly Regex FileTypeMatchRegex = new Regex(Util.REGEX_Version + ".txt", RegexOptions.Compiled);
 
-		#region Private Members
+        #region Private Members
 
         #endregion
 
-		#region Constructors
+        #region Constructors
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -105,10 +105,10 @@ namespace DotNetNuke.Services.Installer
             this.Name = fileName;
             this.Path = filePath;
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Public Properties
+        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -251,7 +251,7 @@ namespace DotNetNuke.Services.Installer
 
         #endregion
 
-		#region Private Methods
+        #region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -320,7 +320,7 @@ namespace DotNetNuke.Services.Installer
                         break;
                 }
             }
-			
+            
             // remove [app_code] token
             this.Path = this.Path.Replace("[app_code]", "");
 
@@ -344,10 +344,10 @@ namespace DotNetNuke.Services.Installer
             Util.WriteStream(unzip, this.TempFileName);
             File.SetLastWriteTime(this.TempFileName, entry.DateTime);
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Public Methods
+        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -359,7 +359,7 @@ namespace DotNetNuke.Services.Installer
         {
             this.Version = version;
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

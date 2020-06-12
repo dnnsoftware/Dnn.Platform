@@ -26,22 +26,22 @@ using DotNetNuke.Web.Client;
 namespace DotNetNuke.Entities.Controllers
 {
     /// <summary>
-	/// HostController provides business layer of host settings.
-	/// </summary>
-	/// <example>
-	/// <code lang="C#">
-	/// public static bool CheckUpgrade
+    /// HostController provides business layer of host settings.
+    /// </summary>
+    /// <example>
+    /// <code lang="C#">
+    /// public static bool CheckUpgrade
     /// {
     ///     get
     ///     {
     ///         return HostController.Instance.GetBoolean("CheckUpgrade", true);
     ///     }
     /// }
-	/// </code>
-	/// </example>
+    /// </code>
+    /// </example>
     public class HostController : ComponentBase<IHostController, HostController>, IHostController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(HostController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(HostController));
         
         /// <summary>
         /// Initializes a new instance of the HostController class
@@ -52,24 +52,24 @@ namespace DotNetNuke.Entities.Controllers
 
         #region IHostController Members
 
-		/// <summary>
-		/// Gets the setting value by the specific key.
-		/// </summary>
-		/// <param name="key">The key.</param>
-		/// <returns>host setting's value.</returns>
-		/// <exception cref="System.ArgumentException">key is empty.</exception>
+        /// <summary>
+        /// Gets the setting value by the specific key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>host setting's value.</returns>
+        /// <exception cref="System.ArgumentException">key is empty.</exception>
         public bool GetBoolean(string key)
         {
             return this.GetBoolean(key, Null.NullBoolean);
         }
 
-		/// <summary>
-		/// Gets the setting value by the specific key.
-		/// </summary>
-		/// <param name="key">The key.</param>
-		/// <param name="defaultValue">this value will be return if setting's value is empty.</param>
-		/// <returns>host setting's value.</returns>
-		/// <exception cref="System.ArgumentException">key is empty.</exception>
+        /// <summary>
+        /// Gets the setting value by the specific key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="defaultValue">this value will be return if setting's value is empty.</param>
+        /// <returns>host setting's value.</returns>
+        /// <exception cref="System.ArgumentException">key is empty.</exception>
         public bool GetBoolean(string key, bool defaultValue)
         {
             Requires.NotNullOrEmpty("key", key);
@@ -100,24 +100,24 @@ namespace DotNetNuke.Entities.Controllers
             return retValue;
         }
 
-		/// <summary>
-		/// Gets the setting value by the specific key.
-		/// </summary>
-		/// <param name="key">The key.</param>
-		/// <returns>host setting's value.</returns>
-		/// <exception cref="System.ArgumentException">key is empty.</exception>
+        /// <summary>
+        /// Gets the setting value by the specific key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>host setting's value.</returns>
+        /// <exception cref="System.ArgumentException">key is empty.</exception>
         public double GetDouble(string key)
         {
             return this.GetDouble(key, Null.NullDouble);
         }
 
-		/// <summary>
-		/// Gets the setting value by the specific key.
-		/// </summary>
-		/// <param name="key">The key.</param>
-		/// <param name="defaultValue">this value will be return if setting's value is empty.</param>
-		/// <returns>host setting's value.</returns>
-		/// <exception cref="System.ArgumentException">key is empty.</exception>
+        /// <summary>
+        /// Gets the setting value by the specific key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="defaultValue">this value will be return if setting's value is empty.</param>
+        /// <returns>host setting's value.</returns>
+        /// <exception cref="System.ArgumentException">key is empty.</exception>
         public double GetDouble(string key, double defaultValue)
         {
             Requires.NotNullOrEmpty("key", key);
@@ -132,24 +132,24 @@ namespace DotNetNuke.Entities.Controllers
             return retValue;
         }
 
-		/// <summary>
-		/// Gets the setting value by the specific key.
-		/// </summary>
-		/// <param name="key">The key.</param>
-		/// <returns>host setting's value.</returns>
-		/// <exception cref="System.ArgumentException">key is empty.</exception>
+        /// <summary>
+        /// Gets the setting value by the specific key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>host setting's value.</returns>
+        /// <exception cref="System.ArgumentException">key is empty.</exception>
         public int GetInteger(string key)
         {
             return this.GetInteger(key, Null.NullInteger);
         }
 
-		/// <summary>
-		/// Gets the setting value by the specific key.
-		/// </summary>
-		/// <param name="key">The key.</param>
-		/// <param name="defaultValue">this value will be return if setting's value is empty.</param>
-		/// <returns>host setting's value.</returns>
-		/// <exception cref="System.ArgumentException">key is empty.</exception>
+        /// <summary>
+        /// Gets the setting value by the specific key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="defaultValue">this value will be return if setting's value is empty.</param>
+        /// <returns>host setting's value.</returns>
+        /// <exception cref="System.ArgumentException">key is empty.</exception>
         public int GetInteger(string key, int defaultValue)
         {
             Requires.NotNullOrEmpty("key", key);
@@ -164,10 +164,10 @@ namespace DotNetNuke.Entities.Controllers
             return retValue;
         }
 
-		/// <summary>
-		/// Gets all host settings.
-		/// </summary>
-		/// <returns>host setting.</returns>
+        /// <summary>
+        /// Gets all host settings.
+        /// </summary>
+        /// <returns>host setting.</returns>
         public Dictionary<string, ConfigurationSetting> GetSettings()
         {
             return CBO.GetCachedObject<Dictionary<string, ConfigurationSetting>>(
@@ -178,10 +178,10 @@ namespace DotNetNuke.Entities.Controllers
                                             true);
         }
 
-		/// <summary>
-		/// Gets all host settings as dictionary.
-		/// </summary>
-		/// <returns>host setting's value.</returns>
+        /// <summary>
+        /// Gets all host settings as dictionary.
+        /// </summary>
+        /// <returns>host setting's value.</returns>
         public Dictionary<string, string> GetSettingsDictionary()
         {
             return this.GetSettings().ToDictionary(c => c.Key, c => c.Value.Value);
@@ -203,23 +203,23 @@ namespace DotNetNuke.Entities.Controllers
 
 
         /// <summary>
-		/// Gets the setting value by the specific key.
-		/// </summary>
-		/// <param name="key">The key.</param>
-		/// <returns>host setting's value.</returns>
-		/// <exception cref="System.ArgumentException">key is empty.</exception>
+        /// Gets the setting value by the specific key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>host setting's value.</returns>
+        /// <exception cref="System.ArgumentException">key is empty.</exception>
         public string GetString(string key)
         {
             return this.GetString(key, string.Empty);
         }
 
-		/// <summary>
-		/// Gets the setting value by the specific key.
-		/// </summary>
-		/// <param name="key">The key.</param>
-		/// <param name="defaultValue">this value will be return if setting's value is empty.</param>
-		/// <returns>host setting's value.</returns>
-		/// <exception cref="System.ArgumentException">key is empty.</exception>
+        /// <summary>
+        /// Gets the setting value by the specific key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="defaultValue">this value will be return if setting's value is empty.</param>
+        /// <returns>host setting's value.</returns>
+        /// <exception cref="System.ArgumentException">key is empty.</exception>
         public string GetString(string key, string defaultValue)
         {
             Requires.NotNullOrEmpty("key", key);
@@ -232,10 +232,10 @@ namespace DotNetNuke.Entities.Controllers
             return this.GetSettings()[key].Value;
         }
 
-		/// <summary>
-		/// Updates the specified settings.
-		/// </summary>
-		/// <param name="settings">The settings.</param>
+        /// <summary>
+        /// Updates the specified settings.
+        /// </summary>
+        /// <param name="settings">The settings.</param>
         public void Update(Dictionary<string, string> settings)
         {
             foreach (KeyValuePair<string, string> settingKvp in settings)
@@ -246,20 +246,20 @@ namespace DotNetNuke.Entities.Controllers
             DataCache.ClearHostCache(false);
         }
 
-		/// <summary>
-		/// Updates the specified config.
-		/// </summary>
-		/// <param name="config">The config.</param>
+        /// <summary>
+        /// Updates the specified config.
+        /// </summary>
+        /// <param name="config">The config.</param>
         public void Update(ConfigurationSetting config)
         {
             this.Update(config, true);
         }
 
-		/// <summary>
-		/// Updates the specified config.
-		/// </summary>
-		/// <param name="config">The config.</param>
-		/// <param name="clearCache">if set to <c>true</c> will clear cache after updating the setting.</param>
+        /// <summary>
+        /// Updates the specified config.
+        /// </summary>
+        /// <param name="config">The config.</param>
+        /// <param name="clearCache">if set to <c>true</c> will clear cache after updating the setting.</param>
         public void Update(ConfigurationSetting config, bool clearCache)
         {
             try
@@ -303,22 +303,22 @@ namespace DotNetNuke.Entities.Controllers
             }
         }
 
-		/// <summary>
-		/// Updates the specified key.
-		/// </summary>
-		/// <param name="key">The key.</param>
-		/// <param name="value">The value.</param>
-		/// <param name="clearCache">if set to <c>true</c> will clear cache after update settings.</param>
+        /// <summary>
+        /// Updates the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="clearCache">if set to <c>true</c> will clear cache after update settings.</param>
         public void Update(string key, string value, bool clearCache)
         {
             this.Update(new ConfigurationSetting { Key = key, Value = value }, clearCache);
         }
 
-		/// <summary>
-		/// Updates the setting for a specified key.
-		/// </summary>
-		/// <param name="key">The key.</param>
-		/// <param name="value">The value.</param>
+        /// <summary>
+        /// Updates the setting for a specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
         public void Update(string key, string value)
         {
             this.Update(key, value, true);

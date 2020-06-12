@@ -32,7 +32,7 @@ namespace DotNetNuke.Entities.Users
     [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
     public class UserOnlineController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserOnlineController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserOnlineController));
         private static readonly MembershipProvider memberProvider = MembershipProvider.Instance();
         private static readonly object Locker = new object();
         private static readonly string CacheKey = "OnlineUserList";
@@ -144,8 +144,8 @@ namespace DotNetNuke.Entities.Users
             // Check if the Tracking cookie exists
             HttpCookie cookie = context.Request.Cookies[cookieName];
             // Track Anonymous User
-			if ((cookie == null))
-            {  	
+            if ((cookie == null))
+            {   
                 // Create a temporary userId
                 userID = Guid.NewGuid().ToString();
 
@@ -177,13 +177,13 @@ namespace DotNetNuke.Entities.Users
             {
                 if ((cookie.Value == null))
                 {
-					// Expire the cookie, there is something wrong with it
+                    // Expire the cookie, there is something wrong with it
                     context.Response.Cookies[cookieName].Expires = new DateTime(1999, 10, 12);
 
                     // No need to do anything else
                     return;
                 }
-				
+                
                 // Get userID out of cookie
                 userID = cookie.Value;
 
@@ -193,7 +193,7 @@ namespace DotNetNuke.Entities.Users
                     userList[userID] = new AnonymousUserInfo();
                     ((AnonymousUserInfo)userList[userID]).CreationDate = DateTime.Now;
                 }
-				
+                
                 user = (AnonymousUserInfo)userList[userID];
                 user.UserID = userID;
                 user.PortalID = portalSettings.PortalId;
@@ -293,8 +293,8 @@ namespace DotNetNuke.Entities.Users
 
             // Clear the list
             this.ClearUserList();
-			
-			// Persist the current User List
+            
+            // Persist the current User List
             try
             {
                 memberProvider.UpdateUsersOnline(listToProcess);
@@ -304,7 +304,7 @@ namespace DotNetNuke.Entities.Users
                 Logger.Error(exc);
 
             }
-			
+            
             // Remove users that have expired
             memberProvider.DeleteUsersOnline(this.GetOnlineTimeWindow());
         }

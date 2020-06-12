@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.MemberDirectory
                 {
                     this.groupList.DataSource = this.Model.Groups;
                     this.groupList.DataBind();
-					this.groupList.Items.Insert(0, new ListItem(Localization.GetString("None_Specified"), Null.NullInteger.ToString()));
+                    this.groupList.Items.Insert(0, new ListItem(Localization.GetString("None_Specified"), Null.NullInteger.ToString()));
                 }
                 else
                 {

@@ -27,17 +27,17 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class SkinInstaller : FileInstaller
     {
-		#region "Private Members"
+        #region "Private Members"
 
         private readonly ArrayList _SkinFiles = new ArrayList();
 
         private SkinPackageInfo SkinPackage;
         private SkinPackageInfo TempSkinPackage;
         private string _SkinName = Null.NullString;
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected Properties"
+        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -164,10 +164,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "Skin";
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -182,10 +182,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "ascx, html, htm, css, xml, js, resx, jpg, jpeg, gif, png";
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -197,7 +197,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-				// Attempt to get the Authentication Service
+                // Attempt to get the Authentication Service
                 SkinPackageInfo skinPackage = SkinController.GetSkinByPackageID(this.Package.PackageID);
                 if (skinPackage != null)
                 {
@@ -210,10 +210,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Log.AddFailure(ex);
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected Methods"
+        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -237,8 +237,8 @@ namespace DotNetNuke.Services.Installer.Installers
                     break;
             }
             
-			// Call base method to set up for file processing
-			base.ProcessFile(file, nav);
+            // Call base method to set up for file processing
+            base.ProcessFile(file, nav);
         }
 
         /// -----------------------------------------------------------------------------
@@ -267,21 +267,21 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         protected override void UnInstallFile(InstallFile unInstallFile)
         {
-			// Uninstall file
+            // Uninstall file
             base.UnInstallFile(unInstallFile);
 
             if (unInstallFile.Extension == "htm" || unInstallFile.Extension == "html")
             {
-				// Try to remove "processed file"
+                // Try to remove "processed file"
                 string fileName = unInstallFile.FullName;
                 fileName = fileName.Replace(Path.GetExtension(fileName), ".ascx");
                 Util.DeleteFile(fileName, this.PhysicalBasePath, this.Log);
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -292,7 +292,7 @@ namespace DotNetNuke.Services.Installer.Installers
             bool bAdd = Null.NullBoolean;
             try
             {
-				// Attempt to get the Skin Package
+                // Attempt to get the Skin Package
                 this.TempSkinPackage = SkinController.GetSkinPackage(this.SkinPackage.PortalID, this.SkinPackage.SkinName, this.SkinType);
                 if (this.TempSkinPackage == null)
                 {
@@ -316,12 +316,12 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.SkinPackage.SkinType = this.SkinType;
                 if (bAdd)
                 {
-					// Add new skin package
+                    // Add new skin package
                     this.SkinPackage.SkinPackageID = SkinController.AddSkinPackage(this.SkinPackage);
                 }
                 else
                 {
-					// Update skin package
+                    // Update skin package
                     SkinController.UpdateSkinPackage(this.SkinPackage);
                 }
                 this.Log.AddInfo(string.Format(Util.SKIN_Registered, this.SkinPackage.SkinName));
@@ -375,20 +375,20 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-			// If Temp Skin exists then we need to update the DataStore with this 
+            // If Temp Skin exists then we need to update the DataStore with this 
             if (this.TempSkinPackage == null)
             {
-				// No Temp Skin - Delete newly added Skin
+                // No Temp Skin - Delete newly added Skin
                 this.DeleteSkinPackage();
             }
             else
             {
-				// Temp Skin - Rollback to Temp
+                // Temp Skin - Rollback to Temp
                 SkinController.UpdateSkinPackage(this.TempSkinPackage);
             }
             
-			// Call base class to prcoess files
-			base.Rollback();
+            // Call base class to prcoess files
+            base.Rollback();
         }
 
         /// -----------------------------------------------------------------------------
@@ -403,7 +403,7 @@ namespace DotNetNuke.Services.Installer.Installers
             // Call base class to prcoess files
             base.UnInstall();
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

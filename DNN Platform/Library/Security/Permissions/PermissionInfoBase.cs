@@ -16,9 +16,9 @@ using DotNetNuke.Common.Utilities;
 namespace DotNetNuke.Security.Permissions
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : PermissionInfoBase
+    /// Class    : PermissionInfoBase
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// PermissionInfoBase provides a base class for PermissionInfo classes
@@ -37,7 +37,7 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public abstract class PermissionInfoBase : PermissionInfo
     {
-		#region "Private Members"
+        #region "Private Members"
 
         private bool _AllowAccess;
         private string _DisplayName;
@@ -45,10 +45,10 @@ namespace DotNetNuke.Security.Permissions
         private string _RoleName;
         private int _UserID;
         private string _Username;
-		
-		#endregion
-		
-		#region "Constructors"
+        
+        #endregion
+        
+        #region "Constructors"
 
         public PermissionInfoBase()
         {
@@ -59,10 +59,10 @@ namespace DotNetNuke.Security.Permissions
             this._Username = Null.NullString;
             this._DisplayName = Null.NullString;
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -177,10 +177,10 @@ namespace DotNetNuke.Security.Permissions
                 this._Username = value;
             }
         }
-		
-		#endregion
-		
-		#region "Protected Methods"
+        
+        #endregion
+        
+        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -208,7 +208,7 @@ namespace DotNetNuke.Security.Permissions
             }
             this.AllowAccess = Null.SetNullBoolean(dr["AllowAccess"]);
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

@@ -26,16 +26,16 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public class ImageCommandColumnTemplate : ITemplate
     {
-		#region "Private Members"
+        #region "Private Members"
 
         private ImageCommandColumnEditMode mEditMode = ImageCommandColumnEditMode.Command;
         private ListItemType mItemType = ListItemType.Item;
         private bool mShowImage = true;
         private bool mVisible = true;
-		
-		#endregion
+        
+        #endregion
 
-		#region "Constructors"
+        #region "Constructors"
 
         public ImageCommandColumnTemplate() : this(ListItemType.Item)
         {
@@ -45,25 +45,25 @@ namespace DotNetNuke.UI.WebControls
         {
             this.ItemType = itemType;
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets or sets the CommandName for the Column
-		/// </summary>
-		/// <value>A String</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the CommandName for the Column
+        /// </summary>
+        /// <value>A String</value>
+        /// -----------------------------------------------------------------------------
         public string CommandName { get; set; }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets or sets the Design Mode of the Column
-		/// </summary>
-		/// <value>A Boolean</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the Design Mode of the Column
+        /// </summary>
+        /// <value>A Boolean</value>
+        /// -----------------------------------------------------------------------------
         public bool DesignMode { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -84,12 +84,12 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets or sets the URL of the Image
-		/// </summary>
-		/// <value>A String</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the URL of the Image
+        /// </summary>
+        /// <value>A String</value>
+        /// -----------------------------------------------------------------------------
         public string ImageURL { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -110,36 +110,36 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// The Key Field that provides a Unique key to the data Item
-		/// </summary>
-		/// <value>A String</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The Key Field that provides a Unique key to the data Item
+        /// </summary>
+        /// <value>A String</value>
+        /// -----------------------------------------------------------------------------
         public string KeyField { get; set; }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets or sets the URL of the Link (unless DataBinding through KeyField)
-		/// </summary>
-		/// <value>A String</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the URL of the Link (unless DataBinding through KeyField)
+        /// </summary>
+        /// <value>A String</value>
+        /// -----------------------------------------------------------------------------
         public string NavigateURL { get; set; }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets or sets the URL Formatting string
-		/// </summary>
-		/// <value>A String</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the URL Formatting string
+        /// </summary>
+        /// <value>A String</value>
+        /// -----------------------------------------------------------------------------
         public string NavigateURLFormatString { get; set; }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Javascript text to attach to the OnClick Event
-		/// </summary>
-		/// <value>A String</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Javascript text to attach to the OnClick Event
+        /// </summary>
+        /// <value>A String</value>
+        /// -----------------------------------------------------------------------------
         public string OnClickJS { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -161,12 +161,12 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets or sets the Text (for Header/Footer Templates)
-		/// </summary>
-		/// <value>A String</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the Text (for Header/Footer Templates)
+        /// </summary>
+        /// <value>A String</value>
+        /// -----------------------------------------------------------------------------
         public string Text { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -189,12 +189,12 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// An flag that indicates whether the buttons are visible.
-		/// </summary>
-		/// <value>A Boolean</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// An flag that indicates whether the buttons are visible.
+        /// </summary>
+        /// <value>A Boolean</value>
+        /// -----------------------------------------------------------------------------
         public string VisibleField { get; set; }
 
         #region ITemplate Members
@@ -205,7 +205,7 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// 	<param name="container">The parent container (DataGridItem)</param>
+        ///     <param name="container">The parent container (DataGridItem)</param>
         /// -----------------------------------------------------------------------------
         public void InstantiateIn(Control container)
         {
@@ -285,16 +285,16 @@ namespace DotNetNuke.UI.WebControls
         }
 
         #endregion
-		
-		#endregion
-		
-		#region "Private Methods"
+        
+        #endregion
+        
+        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether theButton is visible
         /// </summary>
-        /// 	<param name="container">The parent container (DataGridItem)</param>
+        ///     <param name="container">The parent container (DataGridItem)</param>
         /// -----------------------------------------------------------------------------
         private bool GetIsVisible(DataGridItem container)
         {
@@ -314,7 +314,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets the value of the key
         /// </summary>
-        /// 	<param name="container">The parent container (DataGridItem)</param>
+        ///     <param name="container">The parent container (DataGridItem)</param>
         /// -----------------------------------------------------------------------------
         private int GetValue(DataGridItem container)
         {
@@ -355,7 +355,7 @@ namespace DotNetNuke.UI.WebControls
             }
             else
             {
-				// Bind Image Button
+                // Bind Image Button
                 if (!String.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                 {
                     var colIcon = (ImageButton)sender;
@@ -366,7 +366,7 @@ namespace DotNetNuke.UI.WebControls
                 }
                 if (!String.IsNullOrEmpty(this.Text) && !this.ShowImage)
                 {
-					// Bind Link Button
+                    // Bind Link Button
                     var colLink = (LinkButton)sender;
                     container = (DataGridItem)colLink.NamingContainer;
                     keyValue = this.GetValue(container);
@@ -375,7 +375,7 @@ namespace DotNetNuke.UI.WebControls
                 }
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

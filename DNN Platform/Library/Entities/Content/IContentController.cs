@@ -48,7 +48,7 @@ namespace DotNetNuke.Entities.Content
 
         /// <summary>Delete a ContentItem object by ID.</summary>
         /// <param name="contentItemId">The ID of the ContentItem object (ContentItemId)</param>
-	    void DeleteContentItem(int contentItemId);
+        void DeleteContentItem(int contentItemId);
         
         /// <summary>
         /// Gets the content item.
@@ -60,7 +60,7 @@ namespace DotNetNuke.Entities.Content
 
         /// <summary>Return ContentItems that have the specified term attached.</summary>
         /// <exception cref="System.ArgumentException">Term name is empty.</exception>
-	    IQueryable<ContentItem> GetContentItemsByTerm(string term);
+        IQueryable<ContentItem> GetContentItemsByTerm(string term);
 
         /// <summary>Return ContentItems that have the specified term attached.</summary>
         /// <exception cref="System.ArgumentException">Term name is empty.</exception>
@@ -70,19 +70,19 @@ namespace DotNetNuke.Entities.Content
         /// Get a list of content items by ContentType ID.
         /// </summary>
         /// <param name="contentTypeId">The Content Type ID of the content items we want to query</param>
-	    IQueryable<ContentItem> GetContentItemsByContentType(int contentTypeId);
+        IQueryable<ContentItem> GetContentItemsByContentType(int contentTypeId);
 
         /// <summary>
         /// Get a list of content items by ContentType.
         /// </summary>
         /// <param name="contentType">The Content Type of the content items we want to query</param>
-	    IQueryable<ContentItem> GetContentItemsByContentType(ContentType contentType);
+        IQueryable<ContentItem> GetContentItemsByContentType(ContentType contentType);
 
         /// <summary>
         /// Return a list of ContentItems that have all of the specified terms attached.
         /// </summary>
         /// <param name="terms">A list of terms that should be attached to the ContentItems returned</param>
-	    IQueryable<ContentItem> GetContentItemsByTerms(IList<Term> terms);
+        IQueryable<ContentItem> GetContentItemsByTerms(IList<Term> terms);
 
         /// <summary>Return a list of ContentItems that have all of the specified terms attached.</summary>
         IQueryable<ContentItem> GetContentItemsByTerms(string[] terms);
@@ -97,18 +97,18 @@ namespace DotNetNuke.Entities.Content
         /// Retrieve all content items associated with the specified module ID, <paramref name="moduleId"/>.
         /// </summary>
         /// <param name="moduleId">The module ID to use in the content item lookup</param>
-	    IQueryable<ContentItem> GetContentItemsByModuleId(int moduleId);
+        IQueryable<ContentItem> GetContentItemsByModuleId(int moduleId);
 
         /// <summary>
         /// Retrieve all content items on the specified page (tab).
         /// </summary>
         /// <param name="tabId">The page ID to use in the lookup of content items</param>
-	    IQueryable<ContentItem> GetContentItemsByTabId(int tabId);
+        IQueryable<ContentItem> GetContentItemsByTabId(int tabId);
 
         /// <summary>
         /// Get a list of content items tagged with terms from the specified Vocabulary ID.
         /// </summary>
-	    IQueryable<ContentItem> GetContentItemsByVocabularyId(int vocabularyId);
+        IQueryable<ContentItem> GetContentItemsByVocabularyId(int vocabularyId);
 
         /// <summary>
         /// Updates the content item.
@@ -143,7 +143,7 @@ namespace DotNetNuke.Entities.Content
         /// <summary>
         /// Similar to DeleteMetaData that requires a value, but this one looks it up for you.
         /// </summary>
-	    void DeleteMetaData(ContentItem contentItem, string name);
+        void DeleteMetaData(ContentItem contentItem, string name);
 
         /// <summary>
         /// Gets the meta data.

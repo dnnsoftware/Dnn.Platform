@@ -12,9 +12,9 @@ using DotNetNuke.UI.Modules;
 namespace DotNetNuke.UI.Containers
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Containers
-    /// Class	 : IActionControl
+    /// Class    : IActionControl
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// IActionControl provides a common INterface for Action Controls

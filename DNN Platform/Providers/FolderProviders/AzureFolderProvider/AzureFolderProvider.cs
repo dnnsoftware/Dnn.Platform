@@ -199,7 +199,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
             // Set the content type
             blob.Properties.ContentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(uri));
-			blob.SetProperties();
+            blob.SetProperties();
 
             this.ClearCache(folderMapping.FolderMappingID);
         }
@@ -225,16 +225,16 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
         {
             Requires.NotNull("file", file);
 
-			var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
-	        var directLink = string.IsNullOrEmpty(GetSetting(folderMapping, Constants.DirectLink)) || GetSetting(folderMapping, Constants.DirectLink).ToLowerInvariant() == "true";
+            var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
+            var directLink = string.IsNullOrEmpty(GetSetting(folderMapping, Constants.DirectLink)) || GetSetting(folderMapping, Constants.DirectLink).ToLowerInvariant() == "true";
 
-	        if (directLink)
-	        {
-	            var folder = FolderManager.Instance.GetFolder(file.FolderId);
+            if (directLink)
+            {
+                var folder = FolderManager.Instance.GetFolder(file.FolderId);
                 var uri = folder.MappedPath + file.FileName;
 
-		        var container = this.GetContainer(folderMapping);
-		        var blob = container.GetBlobReference(uri);
+                var container = this.GetContainer(folderMapping);
+                var blob = container.GetBlobReference(uri);
                 var absuri = blob.Uri.AbsoluteUri;
                 var customDomain = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.CustomDomain);
 
@@ -248,23 +248,23 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
                 const string groupPolicyIdentifier = "DNNFileManagerPolicy";
 
-		        var permissions = container.GetPermissions();
+                var permissions = container.GetPermissions();
 
-		        SharedAccessBlobPolicy policy;
+                SharedAccessBlobPolicy policy;
 
-		        permissions.SharedAccessPolicies.TryGetValue(groupPolicyIdentifier, out policy);
+                permissions.SharedAccessPolicies.TryGetValue(groupPolicyIdentifier, out policy);
 
-		        if (policy == null)
-		        {
-			        policy = new SharedAccessBlobPolicy { Permissions = SharedAccessBlobPermissions.Read, SharedAccessExpiryTime = DateTime.UtcNow.AddYears(100) };
+                if (policy == null)
+                {
+                    policy = new SharedAccessBlobPolicy { Permissions = SharedAccessBlobPermissions.Read, SharedAccessExpiryTime = DateTime.UtcNow.AddYears(100) };
 
-			        permissions.SharedAccessPolicies.Add(groupPolicyIdentifier, policy);
-		        }
-		        else
-		        {
-			        policy.Permissions = SharedAccessBlobPermissions.Read;
-			        policy.SharedAccessExpiryTime = DateTime.UtcNow.AddYears(100);
-		        }
+                    permissions.SharedAccessPolicies.Add(groupPolicyIdentifier, policy);
+                }
+                else
+                {
+                    policy.Permissions = SharedAccessBlobPermissions.Read;
+                    policy.SharedAccessExpiryTime = DateTime.UtcNow.AddYears(100);
+                }
 
                 /*
                  * Workaround for CONTENT-3662
@@ -278,18 +278,18 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                     Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
                 }
 
-	            container.SetPermissions(permissions);
+                container.SetPermissions(permissions);
 
-		        var signature = blob.GetSharedAccessSignature(new SharedAccessBlobPolicy(), groupPolicyIdentifier);
+                var signature = blob.GetSharedAccessSignature(new SharedAccessBlobPolicy(), groupPolicyIdentifier);
 
                 // Reset original Thread Culture
                 if (currentCulture.Name != "en-US")
-	            {
-	                Thread.CurrentThread.CurrentCulture = currentCulture;
-	            }
+                {
+                    Thread.CurrentThread.CurrentCulture = currentCulture;
+                }
 
                 return absuri + signature;
-	        }
+            }
 
             return FileLinkClickController.Instance.GetFileLinkClick(file);
         }

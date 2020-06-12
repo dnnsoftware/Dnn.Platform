@@ -133,7 +133,7 @@ namespace DotNetNuke.Entities.Modules
                 {
                     if (this.PortalSettings.UserTabId != -1)
                     {
-						// user defined tab
+                        // user defined tab
                         if (this.PortalSettings.ActiveTab.TabID == this.PortalSettings.UserTabId)
                         {
                             _IsProfile = true;
@@ -141,7 +141,7 @@ namespace DotNetNuke.Entities.Modules
                     }
                     else
                     {
-						// admin tab
+                        // admin tab
                         if (this.Request.QueryString["ctl"] != null)
                         {
                             string ctl = this.Request.QueryString["ctl"];
@@ -337,30 +337,30 @@ namespace DotNetNuke.Entities.Modules
             _GeoIPFile = "controls/CountryListBox/Data/GeoIP.dat";
             if (this.Page.Request.UserHostAddress == "127.0.0.1")
             {
-				// 'The country cannot be detected because the user is local.
+                // 'The country cannot be detected because the user is local.
                 IsLocal = true;
                 // Set the IP address in case they didn't specify LocalhostCountryCode
                 IP = this.Page.Request.UserHostAddress;
             }
             else
             {
-				// Set the IP address so we can find the country
+                // Set the IP address so we can find the country
                 IP = this.Page.Request.UserHostAddress;
             }
             // Check to see if we need to generate the Cache for the GeoIPData file
             if (this.Context.Cache.Get("GeoIPData") == null && _CacheGeoIPData)
             {
-				// Store it as	well as	setting	a dependency on	the	file
+                // Store it as  well as setting a dependency on the file
                 this.Context.Cache.Insert("GeoIPData", CountryLookup.FileToMemory(this.Context.Server.MapPath(_GeoIPFile)), new CacheDependency(this.Context.Server.MapPath(_GeoIPFile)));
             }
-			
+            
             // Check to see if the request is a localhost request
             // and see if the LocalhostCountryCode is specified
             if (IsLocal)
             {
                 return Null.NullString;
             }
-			
+            
             // Either this is a remote request or it is a local
             // request with no LocalhostCountryCode specified
             CountryLookup _CountryLookup;
@@ -369,12 +369,12 @@ namespace DotNetNuke.Entities.Modules
             // version of the GeoIPData file
             if (_CacheGeoIPData)
             {
-				// Yes, get it from cache
+                // Yes, get it from cache
                 _CountryLookup = new CountryLookup((MemoryStream)this.Context.Cache.Get("GeoIPData"));
             }
             else
             {
-				// No, get it from file
+                // No, get it from file
                 _CountryLookup = new CountryLookup(this.Context.Server.MapPath(_GeoIPFile));
             }
             // Get the country code based on the IP address
@@ -421,14 +421,14 @@ namespace DotNetNuke.Entities.Modules
             var message = ModuleMessage.ModuleMessageType.RedError;
             if (register)
             {
-				// send notification to portal administrator of new user registration
-				// check the receive notification setting first, but if register type is Private, we will always send the notification email.
-				// because the user need administrators to do the approve action so that he can continue use the website.
-				if (this.PortalSettings.EnableRegisterNotification || this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
-				{
-				    strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, this.PortalSettings);
-				    this.SendAdminNotification(newUser, this.PortalSettings);
-				}
+                // send notification to portal administrator of new user registration
+                // check the receive notification setting first, but if register type is Private, we will always send the notification email.
+                // because the user need administrators to do the approve action so that he can continue use the website.
+                if (this.PortalSettings.EnableRegisterNotification || this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
+                {
+                    strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, this.PortalSettings);
+                    this.SendAdminNotification(newUser, this.PortalSettings);
+                }
 
                 var loginStatus = UserLoginStatus.LOGIN_FAILURE;
 
@@ -469,7 +469,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 if (notify)
                 {
-					// Send Notification to User
+                    // Send Notification to User
                     if (this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
                     {
                         strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationVerified, this.PortalSettings);

@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Syndication
     /// </summary>
     internal class RssDownloadManager
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RssDownloadManager));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RssDownloadManager));
         private const string RSS_Dir = "/RSS/";
         private static readonly RssDownloadManager _theManager = new RssDownloadManager();
 
@@ -129,10 +129,10 @@ namespace DotNetNuke.Services.Syndication
                     {
                         File.Delete(rssFilename);
                     }
-					catch (Exception ex)
-					{
-						Logger.Error(ex);
-					}
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                    }
 
                     // try next file
                     continue;

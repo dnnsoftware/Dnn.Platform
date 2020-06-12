@@ -17,9 +17,9 @@ using DotNetNuke.Common.Utilities;
 namespace DotNetNuke.Entities.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities.Modules
-    /// Class	 : SkinControlInfo
+    /// Class    : SkinControlInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// SkinControlInfo provides the Entity Layer for Skin Controls (SkinObjects)

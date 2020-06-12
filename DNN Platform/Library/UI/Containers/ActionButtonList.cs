@@ -24,8 +24,8 @@ namespace DotNetNuke.UI.Containers
     /// </remarks>
     public class ActionButtonList : CompositeControl, IActionControl
     {
-		#region "Private Members"
-		
+        #region "Private Members"
+        
         private ActionManager _ActionManager;
         private ModuleActionCollection _ModuleActions;
         private string _buttonSeparator = "&nbsp;&nbsp;";
@@ -33,9 +33,9 @@ namespace DotNetNuke.UI.Containers
         private bool _displayLink = true;
 
 
-		#endregion
+        #endregion
 
-		#region "Protected Members"
+        #region "Protected Members"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -53,10 +53,10 @@ namespace DotNetNuke.UI.Containers
                 return this._ModuleActions;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -157,10 +157,10 @@ namespace DotNetNuke.UI.Containers
         public IModuleControl ModuleControl { get; set; }
 
         #endregion
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected Methods"
+        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -190,7 +190,7 @@ namespace DotNetNuke.UI.Containers
             {
                 if (action != null && this.ActionManager.IsVisible(action))
                 {
-					// Create a new ActionCommandButton
+                    // Create a new ActionCommandButton
                     var actionButton = new ActionCommandButton();
 
                     // Set all the properties
@@ -212,10 +212,10 @@ namespace DotNetNuke.UI.Containers
             }
             this.Visible = (this.Controls.Count > 0);
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Event Handlers"
+        #region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -225,7 +225,7 @@ namespace DotNetNuke.UI.Containers
         {
             this.OnAction(e);
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

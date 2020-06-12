@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -61,9 +61,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Events"
+        #region "Events"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -81,7 +81,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         #endregion
 
-		#region "Event Methods"
+        #region "Event Methods"
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Raises the MembershipPromoteToSuperuser Event
@@ -187,9 +187,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -198,7 +198,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         public override void DataBind()
         {
-			// disable/enable buttons
+            // disable/enable buttons
             if (this.UserInfo.UserID == this.User.UserID)
             {
                 this.cmdAuthorize.Visible = false;
@@ -253,9 +253,9 @@ namespace DotNetNuke.Modules.Admin.Users
             this.membershipForm.DataBind();
         }
 
-		#endregion
+        #endregion
 
-		#region "Event Handlers"
+        #region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -289,7 +289,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             if (this.Request.IsAuthenticated != true) return;
 
-			// Get the Membership Information from the property editors
+            // Get the Membership Information from the property editors
             this.User.Membership = (UserMembership)this.membershipForm.DataSource;
 
             this.User.Membership.Approved = true;
@@ -356,7 +356,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             if (this.Request.IsAuthenticated != true) return;
 
-			// Get the Membership Information from the property editors
+            // Get the Membership Information from the property editors
             this.User.Membership = (UserMembership)this.membershipForm.DataSource;
 
             this.User.Membership.Approved = false;
@@ -410,7 +410,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             if (this.Request.IsAuthenticated != true) return;
 
-			// update the user record in the database
+            // update the user record in the database
             bool isUnLocked = UserController.UnLockUser(this.User);
 
             if (isUnLocked)
@@ -421,6 +421,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-		#endregion
+        #endregion
     }
 }

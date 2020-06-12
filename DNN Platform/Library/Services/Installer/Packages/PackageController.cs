@@ -37,11 +37,11 @@ namespace DotNetNuke.Services.Installer.Packages
     /// -----------------------------------------------------------------------------
     public class PackageController : ServiceLocator<IPackageController, PackageController>, IPackageController
     {
-		#region Private Members
+        #region Private Members
 
         private static readonly DataProvider provider = DataProvider.Instance();
 
-		#endregion
+        #endregion
 
         protected override Func<IPackageController> GetFactory()
         {
@@ -80,11 +80,11 @@ namespace DotNetNuke.Services.Installer.Packages
                                                 package.FolderName,
                                                 package.IconFile);
 
-	        foreach (var dependency in package.Dependencies)
-	        {
-	            dependency.PackageId = package.PackageID;
-		        SavePackageDependency(dependency);
-	        }
+            foreach (var dependency in package.Dependencies)
+            {
+                dependency.PackageId = package.PackageID;
+                SavePackageDependency(dependency);
+            }
 
             AddLog(package, EventLogController.EventLogType.PACKAGE_CREATED);
 
@@ -142,24 +142,24 @@ namespace DotNetNuke.Services.Installer.Packages
                                    package.FolderName,
                                    package.IconFile);
 
-	        foreach (var dependency in package.Dependencies)
-	        {
+            foreach (var dependency in package.Dependencies)
+            {
                 dependency.PackageId = package.PackageID;
                 SavePackageDependency(dependency);
-	        }
+            }
 
             AddLog(package, EventLogController.EventLogType.PACKAGE_UPDATED);
 
             ClearCache(package.PortalID);
         }
 
-	    private static void SavePackageDependency(PackageDependencyInfo dependency)
-	    {
-	        dependency.PackageDependencyId = provider.SavePackageDependency(dependency.PackageDependencyId, dependency.PackageId, dependency.PackageName,
-					       dependency.Version.ToString());
+        private static void SavePackageDependency(PackageDependencyInfo dependency)
+        {
+            dependency.PackageDependencyId = provider.SavePackageDependency(dependency.PackageDependencyId, dependency.PackageId, dependency.PackageName,
+                           dependency.Version.ToString());
             
             ClearDependenciesCache();
-	    }
+        }
 
         #endregion
 
@@ -602,8 +602,8 @@ namespace DotNetNuke.Services.Installer.Packages
         {
             Instance.SaveExtensionPackage(package);
         }
-		
-		#endregion
+        
+        #endregion
 
     }
 }

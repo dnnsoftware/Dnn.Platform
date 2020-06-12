@@ -56,13 +56,13 @@ namespace DotNetNuke.Entities.Portals
     [Serializable]
     public class PortalInfo : BaseEntityInfo, IHydratable
     {
-		#region "Private Members"
+        #region "Private Members"
 
         private string _administratorRoleName;
         private int _pages = Null.NullInteger;
         private string _registeredRoleName;
-		
-		#endregion
+        
+        #endregion
 
         #region Constructors
 
@@ -658,7 +658,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 if (this._administratorRoleName == Null.NullString && this.AdministratorRoleId > Null.NullInteger)
                 {
-					// Get Role Name
+                    // Get Role Name
                     RoleInfo adminRole = RoleController.Instance.GetRole(this.PortalID, r => r.RoleID == this.AdministratorRoleId);
                     if (adminRole != null)
                     {
@@ -740,7 +740,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 if (this._registeredRoleName == Null.NullString && this.RegisteredRoleId > Null.NullInteger)
                 {
-					// Get Role Name
+                    // Get Role Name
                     RoleInfo regUsersRole = RoleController.Instance.GetRole(this.PortalID, r => r.RoleID == this.RegisteredRoleId);
                     if (regUsersRole != null)
                     {

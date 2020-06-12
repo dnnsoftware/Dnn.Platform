@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Exceptions
         private readonly SearchItemInfo m_SearchItem;
 
         // default constructor
-		public SearchException()
+        public SearchException()
         {
         }
 

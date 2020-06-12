@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-				ExtensionUrlProviderInfo tempUrlProvider = ExtensionUrlProviderController.GetProviders(Null.NullInteger).Where(p => p.ProviderName == this._extensionUrlProvider.ProviderName && p.ProviderType == this._extensionUrlProvider.ProviderType).FirstOrDefault();
+                ExtensionUrlProviderInfo tempUrlProvider = ExtensionUrlProviderController.GetProviders(Null.NullInteger).Where(p => p.ProviderName == this._extensionUrlProvider.ProviderName && p.ProviderType == this._extensionUrlProvider.ProviderType).FirstOrDefault();
                 if (tempUrlProvider != null)
                 {
                     ExtensionUrlProviderController.DeleteProvider(tempUrlProvider);

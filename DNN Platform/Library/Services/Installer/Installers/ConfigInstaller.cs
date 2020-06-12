@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class ConfigInstaller : ComponentInstallerBase
     {
-		#region "Private Members"
+        #region "Private Members"
 
         private string _FileName = Null.NullString;
         private string _InstallConfig = Null.NullString;
@@ -34,9 +34,9 @@ namespace DotNetNuke.Services.Installer.Installers
         private string _UninstallFileName = Null.NullString;
         private XmlMerge _xmlMerge;
 
-		#endregion
+        #endregion
 
-		#region "Protected Properties"
+        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -93,10 +93,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 return this._UnInstallConfig;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
 
         /// -----------------------------------------------------------------------------
@@ -140,7 +140,7 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 if (string.IsNullOrEmpty(this._FileName))
                 {
-					// First backup the config file
+                    // First backup the config file
                     Util.BackupFile(this.TargetFile, this.PhysicalSitePath, this.Log);
 
                     // Create an XmlDocument for the config file
@@ -157,11 +157,11 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
                 else
                 {
-					// Process external file
+                    // Process external file
                     string strConfigFile = Path.Combine(this.Package.InstallerInfo.TempInstallFolder, this._FileName);
                     if (File.Exists(strConfigFile))
                     {
-						// Create XmlMerge instance from config file source
+                        // Create XmlMerge instance from config file source
                         using (var stream = File.OpenText(strConfigFile))
                         {
                             this._xmlMerge = new XmlMerge(stream, this.Package.Version.ToString(3), this.Package.Name + " Install");
@@ -220,7 +220,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-			// Do nothing as the changes are all in memory
+            // Do nothing as the changes are all in memory
             this.Log.AddInfo(Util.CONFIG_RolledBack + " - " + this.TargetFile.Name);
         }
 
@@ -248,11 +248,11 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             else
             {
-				// Process external file
+                // Process external file
                 string strConfigFile = Path.Combine(this.Package.InstallerInfo.TempInstallFolder, this._UninstallFileName);
                 if (File.Exists(strConfigFile))
                 {
-					// Create XmlMerge instance from config file source
+                    // Create XmlMerge instance from config file source
                     StreamReader stream = File.OpenText(strConfigFile);
                     var merge = new XmlMerge(stream, this.Package.Version.ToString(3), this.Package.Name + " UnInstall");
 
@@ -264,7 +264,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

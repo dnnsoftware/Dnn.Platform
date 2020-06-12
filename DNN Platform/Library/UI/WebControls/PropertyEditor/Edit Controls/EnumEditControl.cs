@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.WebControls
     {
         private readonly Type EnumType;
 
-		#region Constructors
+        #region Constructors
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -50,10 +50,10 @@ namespace DotNetNuke.UI.WebControls
             this.SystemType = type;
             this.EnumType = Type.GetType(type);
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Public Properties
+        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -75,9 +75,9 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-		#endregion
+        #endregion
 
-		#region Protected Methods
+        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -125,16 +125,16 @@ namespace DotNetNuke.UI.WebControls
 
                 if (enumValue == propValue)
                 {
-					// Add the Selected Attribute
+                    // Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
                 }
-				
+                
                 // Render Option Tag
                 writer.RenderBeginTag(HtmlTextWriterTag.Option);
                 writer.Write(enumName);
                 writer.RenderEndTag();
             }
-			
+            
             // Close Select Tag
             writer.RenderEndTag();
         }
@@ -155,7 +155,7 @@ namespace DotNetNuke.UI.WebControls
             writer.Write(enumValue);
             writer.RenderEndTag();
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

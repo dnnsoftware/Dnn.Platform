@@ -100,8 +100,8 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// 	<param name="tabId">The current tab</param>
-        /// 	<param name="portalAliasInfo">The current portal</param>
+        ///     <param name="tabId">The current tab</param>
+        ///     <param name="portalAliasInfo">The current portal</param>
         /// -----------------------------------------------------------------------------
         public PortalSettings(int tabId, PortalAliasInfo portalAliasInfo)
         {
@@ -155,67 +155,67 @@ namespace DotNetNuke.Entities.Portals
 
         public TabInfo ActiveTab { get; set; }
 
-		public int AdministratorId { get; set; }
+        public int AdministratorId { get; set; }
 
-		public int AdministratorRoleId { get; set; }
+        public int AdministratorRoleId { get; set; }
 
-		public string AdministratorRoleName { get; set; }
+        public string AdministratorRoleName { get; set; }
 
-		public int AdminTabId { get; set; }
+        public int AdminTabId { get; set; }
 
-		public string BackgroundFile { get; set; }
+        public string BackgroundFile { get; set; }
 
-		public int BannerAdvertising { get; set; }
+        public int BannerAdvertising { get; set; }
 
-		public string CultureCode { get; set; }
+        public string CultureCode { get; set; }
 
-		public string Currency { get; set; }
+        public string Currency { get; set; }
 
-		public string DefaultLanguage { get; set; }
+        public string DefaultLanguage { get; set; }
 
-		public string Description { get; set; }
+        public string Description { get; set; }
 
-		public string Email { get; set; }
+        public string Email { get; set; }
 
         public DateTime ExpiryDate { get; set; }
 
-		public string FooterText { get; set; }
+        public string FooterText { get; set; }
 
-		public Guid GUID { get; set; }
+        public Guid GUID { get; set; }
 
-		public string HomeDirectory { get; set; }
+        public string HomeDirectory { get; set; }
 
-		public string HomeSystemDirectory { get; set; }
+        public string HomeSystemDirectory { get; set; }
 
-		public int HomeTabId { get; set; }
+        public int HomeTabId { get; set; }
 
-		public float HostFee { get; set; }
+        public float HostFee { get; set; }
 
-		public int HostSpace { get; set; }
+        public int HostSpace { get; set; }
 
-		public string KeyWords { get; set; }
+        public string KeyWords { get; set; }
 
-		public int LoginTabId { get; set; }
+        public int LoginTabId { get; set; }
 
-		public string LogoFile { get; set; }
+        public string LogoFile { get; set; }
 
-		public int PageQuota { get; set; }
+        public int PageQuota { get; set; }
 
-		public int Pages { get; set; }
+        public int Pages { get; set; }
 
-		public int PortalId { get; set; }
+        public int PortalId { get; set; }
 
-		public PortalAliasInfo PortalAlias { get; set; }
+        public PortalAliasInfo PortalAlias { get; set; }
 
-		public PortalAliasInfo PrimaryAlias { get; set; }
+        public PortalAliasInfo PrimaryAlias { get; set; }
 
-		public string PortalName { get; set; }
+        public string PortalName { get; set; }
 
-		public int RegisteredRoleId { get; set; }
+        public int RegisteredRoleId { get; set; }
 
-		public string RegisteredRoleName { get; set; }
+        public string RegisteredRoleName { get; set; }
 
-		public int RegisterTabId { get; set; }
+        public int RegisterTabId { get; set; }
 
         public RegistrationSettings Registration { get; set; }
 
@@ -224,21 +224,21 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in 8.0.0. Scheduled removal in v10.0.0.")]
         public int SiteLogHistory { get; set; }
 
-		public int SplashTabId { get; set; }
+        public int SplashTabId { get; set; }
 
-		public int SuperTabId { get; set; }
+        public int SuperTabId { get; set; }
 
-		public int UserQuota { get; set; }
+        public int UserQuota { get; set; }
 
-		public int UserRegistration { get; set; }
+        public int UserRegistration { get; set; }
 
-		public int Users { get; set; }
+        public int Users { get; set; }
 
-		public int UserTabId { get; set; }
+        public int UserTabId { get; set; }
 
         public int TermsTabId { get; set; }
 
-		public int PrivacyTabId { get; set; }
+        public int PrivacyTabId { get; set; }
         
         #endregion
 
@@ -361,14 +361,14 @@ namespace DotNetNuke.Entities.Portals
         public int ErrorPage500 { get; internal set; }
 
         /// -----------------------------------------------------------------------------
-		/// <summary>
-		///   Gets whether folders which are hidden or whose name begins with underscore
-		///   are included in folder synchronization.
-		/// </summary>
-		/// <remarks>
-		///   Defaults to True
-		/// </remarks>
-		/// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets whether folders which are hidden or whose name begins with underscore
+        ///   are included in folder synchronization.
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to True
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
         public bool HideFoldersEnabled { get; internal set; }
 
         /// -----------------------------------------------------------------------------
@@ -384,11 +384,11 @@ namespace DotNetNuke.Entities.Portals
         public string HomeSystemDirectoryMapPath { get; internal set; }
 
         /// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets whether the Inline Editor is enabled
-		/// </summary>
-		/// <remarks>Defaults to True</remarks>
-		/// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets whether the Inline Editor is enabled
+        /// </summary>
+        /// <remarks>Defaults to True</remarks>
+        /// -----------------------------------------------------------------------------
         public bool InlineEditorEnabled { get; internal set; }
 
         /// -----------------------------------------------------------------------------
@@ -496,7 +496,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>Gets the currently logged in user identifier.</summary>
         /// <value>The user identifier.</value>
-		public int UserId
+        public int UserId
         {
             get
             {
@@ -510,7 +510,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>Gets the currently logged in user.</summary>
         /// <value>The current user information.</value>
-		public UserInfo UserInfo
+        public UserInfo UserInfo
         {
             get
             {

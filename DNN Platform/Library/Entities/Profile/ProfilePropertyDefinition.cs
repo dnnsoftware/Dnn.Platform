@@ -13,7 +13,7 @@ using DotNetNuke.UI.WebControls;
 
 namespace DotNetNuke.Entities.Profile
 {
-	/// -----------------------------------------------------------------------------
+    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Profile
     /// Class:      ProfilePropertyDefinition
@@ -35,7 +35,7 @@ namespace DotNetNuke.Entities.Profile
         private string _defaultValue;
         private UserVisibilityMode _defaultVisibility = UserVisibilityMode.AdminOnly;
         private bool _deleted;
-	    private int _length;
+        private int _length;
         private int _moduleDefId = Null.NullInteger;
         private int _portalId;
         private ProfileVisibility _profileVisibility = new ProfileVisibility
@@ -43,7 +43,7 @@ namespace DotNetNuke.Entities.Profile
                                                                 VisibilityMode = UserVisibilityMode.AdminOnly
                                                             };
         private string _propertyCategory;
-	    private string _propertyName;
+        private string _propertyName;
         private string _propertyValue;
         private bool _readOnly;
         private bool _required;
@@ -69,7 +69,7 @@ namespace DotNetNuke.Entities.Profile
             this.PortalId = portalId;
         }
 
-	    #endregion
+        #endregion
 
         #region Public Properties
 
@@ -165,16 +165,16 @@ namespace DotNetNuke.Entities.Profile
             }
         }
 
-	    /// -----------------------------------------------------------------------------
-	    /// <summary>
-	    /// Gets whether the Definition has been modified since it has been retrieved
-	    /// </summary>
-	    /// -----------------------------------------------------------------------------
-	    [Browsable(false)]
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets whether the Definition has been modified since it has been retrieved
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        [Browsable(false)]
         [XmlIgnore]
-	    public bool IsDirty { get; private set; }
+        public bool IsDirty { get; private set; }
 
-	    /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Length of the Profile Property
         /// </summary>
@@ -259,16 +259,16 @@ namespace DotNetNuke.Entities.Profile
             }
         }
 
-	    /// -----------------------------------------------------------------------------
-	    /// <summary>
-	    /// Gets and sets the Id of the ProfilePropertyDefinition
-	    /// </summary>
-	    /// -----------------------------------------------------------------------------
-	    [Browsable(false)]
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets and sets the Id of the ProfilePropertyDefinition
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        [Browsable(false)]
         [XmlIgnore]
-	    public int PropertyDefinitionId { get; set; }
+        public int PropertyDefinitionId { get; set; }
 
-	    /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Name of the Profile Property
         /// </summary>
@@ -441,7 +441,7 @@ namespace DotNetNuke.Entities.Profile
         [Browsable(false)]
         [XmlIgnore]
         public ProfileVisibility ProfileVisibility
-	    {
+        {
             get
             {
                 return this._profileVisibility;
@@ -453,8 +453,8 @@ namespace DotNetNuke.Entities.Profile
                     this.IsDirty = true;
                 }
                 this._profileVisibility = value;
-            }	        
-	    }
+            }           
+        }
 
         #endregion
 

@@ -20,7 +20,7 @@ namespace DotNetNuke.UI.Skins
 
         public void WriteXml(XmlWriter writer)
         {
-			// Write start of main elemenst 
+            // Write start of main elemenst 
             writer.WriteStartElement("skin");
 
             writer.WriteElementString("skinName", this.SkinName);

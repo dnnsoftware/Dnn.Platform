@@ -14,9 +14,9 @@ using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Services.Scheduling
 {
-	/// <summary>
-	/// This class is inherited by any class that wants to run tasks in the scheduler.
-	/// </summary>
+    /// <summary>
+    /// This class is inherited by any class that wants to run tasks in the scheduler.
+    /// </summary>
     public abstract class SchedulerClient
     {
         public SchedulerClient()
@@ -81,11 +81,11 @@ namespace DotNetNuke.Services.Scheduling
         }
 
         /// '''''''''''''''''''''''''''''''''''''''''''''''''''
-		/// <summary>
+        /// <summary>
         /// This is the sub that kicks off the actual
         /// work within the SchedulerClient's subclass
-		/// </summary>
-		/// '''''''''''''''''''''''''''''''''''''''''''''''''''
-		public abstract void DoWork();
+        /// </summary>
+        /// '''''''''''''''''''''''''''''''''''''''''''''''''''
+        public abstract void DoWork();
     }
 }

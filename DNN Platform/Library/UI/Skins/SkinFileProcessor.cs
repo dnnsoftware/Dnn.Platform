@@ -28,8 +28,8 @@ namespace DotNetNuke.UI.Skins
     }
 
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : SkinFileProcessor
+    /// Project  : DotNetNuke
+    /// Class    : SkinFileProcessor
     ///
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -40,7 +40,7 @@ namespace DotNetNuke.UI.Skins
     /// -----------------------------------------------------------------------------
     public class SkinFileProcessor
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinFileProcessor));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinFileProcessor));
         #region "Private Members"
 
         private readonly string DUPLICATE_DETAIL = Util.GetLocalizedString("DuplicateSkinObject.Detail");
@@ -301,8 +301,8 @@ namespace DotNetNuke.UI.Skins
         #region Nested type: ControlParser
 
         /// -----------------------------------------------------------------------------
-        /// Project	 : DotNetNuke
-        /// Class	 : SkinFileProcessor.ControlParser
+        /// Project  : DotNetNuke
+        /// Class    : SkinFileProcessor.ControlParser
         /// 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -569,8 +569,8 @@ namespace DotNetNuke.UI.Skins
         #region Nested type: ObjectParser
 
         /// -----------------------------------------------------------------------------
-        /// Project	 : DotNetNuke
-        /// Class	 : SkinFileProcessor.ObjectParser
+        /// Project  : DotNetNuke
+        /// Class    : SkinFileProcessor.ObjectParser
         /// 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -849,8 +849,8 @@ namespace DotNetNuke.UI.Skins
         #region Nested type: PathParser
 
         /// -----------------------------------------------------------------------------
-        /// Project	 : DotNetNuke
-        /// Class	 : SkinFileProcessor.PathParser
+        /// Project  : DotNetNuke
+        /// Class    : SkinFileProcessor.PathParser
         /// 
         /// -----------------------------------------------------------------------------
         /// <summary>

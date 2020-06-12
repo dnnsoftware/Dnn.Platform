@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.Common.Internal
     /// </summary>
     public class DotNetNukeHttpApplication : HttpApplication
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeHttpApplication));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeHttpApplication));
 
         private void Application_Error(object sender, EventArgs eventArgs)
         {
@@ -208,14 +208,14 @@ namespace DotNetNuke.Web.Common.Internal
             Initialize.RunSchedule(app.Request);
         }
 
-		private void Application_PreSendRequestHeaders(object sender, EventArgs e)
-		{
-			if (HttpContext.Current != null && HttpContext.Current.Handler is PageBase)
-			{
-				var page = HttpContext.Current.Handler as PageBase;
-				page.HeaderIsWritten = true;
-			}
-		}
+        private void Application_PreSendRequestHeaders(object sender, EventArgs e)
+        {
+            if (HttpContext.Current != null && HttpContext.Current.Handler is PageBase)
+            {
+                var page = HttpContext.Current.Handler as PageBase;
+                page.HeaderIsWritten = true;
+            }
+        }
 
         private bool IsInstallInProgress(HttpApplication app)
         {

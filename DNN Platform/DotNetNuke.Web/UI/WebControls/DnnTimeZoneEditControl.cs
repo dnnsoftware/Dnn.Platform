@@ -26,16 +26,16 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-	    public override string EditControlClientId
-	    {
-		    get
-		    {
-			    this.EnsureChildControls();
-			    return this.TimeZones.ClientID;
-		    }
-	    }
+        public override string EditControlClientId
+        {
+            get
+            {
+                this.EnsureChildControls();
+                return this.TimeZones.ClientID;
+            }
+        }
 
-	    #endregion
+        #endregion
 
         protected override void CreateChildControls()
         {

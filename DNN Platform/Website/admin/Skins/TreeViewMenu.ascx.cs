@@ -16,20 +16,20 @@ using DotNetNuke.UI.WebControls;
 
 namespace DotNetNuke.UI.Skins.Controls
 {
-	/// -----------------------------------------------------------------------------
-	/// Project	 : DotNetNuke
-	/// Class	 : TreeViewMenu
-	/// -----------------------------------------------------------------------------
-	/// <summary>
-	/// TreeViewMenu is a Skin Object that creates a Menu using the DNN Treeview Control
-	/// to provide a Windows Explore like Menu.
-	/// </summary>
-	/// <remarks></remarks>
-	/// -----------------------------------------------------------------------------
+    /// -----------------------------------------------------------------------------
+    /// Project  : DotNetNuke
+    /// Class    : TreeViewMenu
+    /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// TreeViewMenu is a Skin Object that creates a Menu using the DNN Treeview Control
+    /// to provide a Windows Explore like Menu.
+    /// </summary>
+    /// <remarks></remarks>
+    /// -----------------------------------------------------------------------------
     public partial class TreeViewMenu : NavObjectBase
     {
-		#region "Private Members"
-		
+        #region "Private Members"
+        
         private const string MyFileName = "TreeViewMenu.ascx";
         private string _bodyCssClass = "";
         private string _cssClass = "";
@@ -52,9 +52,9 @@ namespace DotNetNuke.UI.Skins.Controls
         private int _treeIndentWidth = 10;
         private string _width = "100%";
 
-		#endregion
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         public string BodyCssClass
         {
@@ -302,10 +302,10 @@ namespace DotNetNuke.UI.Skins.Controls
         {
         }
 
-		#endregion
+        #endregion
 
-		#region "Private Methods"
-		
+        #region "Private Methods"
+        
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The BuildTree helper method is used to build the tree
@@ -339,8 +339,8 @@ namespace DotNetNuke.UI.Skins.Controls
                     }
                 }
             }
-			
-			// add goto Parent node
+            
+            // add goto Parent node
             if (blnAddUpNode)
             {
                 var objParentNode = new DNNNode();
@@ -452,9 +452,9 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Event Handlers"
+        #region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -473,36 +473,36 @@ namespace DotNetNuke.UI.Skins.Controls
                 if (this.Page.IsPostBack == false)
                 {
                     this.BuildTree(null, false);
-					
-					// Main Table Properties
+                    
+                    // Main Table Properties
                     if (!String.IsNullOrEmpty(this.Width))
                     {
                         this.tblMain.Width = this.Width;
                     }
-					
+                    
                     if (!String.IsNullOrEmpty(this.CssClass))
                     {
                         this.tblMain.Attributes.Add("class", this.CssClass);
                     }
-					
-					// Header Properties
+                    
+                    // Header Properties
                     if (!String.IsNullOrEmpty(this.HeaderCssClass))
                     {
                         this.cellHeader.Attributes.Add("class", this.HeaderCssClass);
                     }
-					
+                    
                     if (!String.IsNullOrEmpty(this.HeaderTextCssClass))
                     {
                         this.lblHeader.CssClass = this.HeaderTextCssClass;
                     }
-					
-					// Header Text (if set)
+                    
+                    // Header Text (if set)
                     if (!String.IsNullOrEmpty(this.HeaderText))
                     {
                         this.lblHeader.Text = this.HeaderText;
                     }
-					
-					// ResourceKey overrides if found
+                    
+                    // ResourceKey overrides if found
                     if (!String.IsNullOrEmpty(this.ResourceKey))
                     {
                         string strHeader = Localization.GetString(this.ResourceKey, Localization.GetResourceFile(this, MyFileName));
@@ -511,8 +511,8 @@ namespace DotNetNuke.UI.Skins.Controls
                             this.lblHeader.Text = Localization.GetString(this.ResourceKey, Localization.GetResourceFile(this, MyFileName));
                         }
                     }
-					
-					// If still not set get default key
+                    
+                    // If still not set get default key
                     if (String.IsNullOrEmpty(this.lblHeader.Text))
                     {
                         string strHeader = Localization.GetString("Title", Localization.GetResourceFile(this, MyFileName));
@@ -526,8 +526,8 @@ namespace DotNetNuke.UI.Skins.Controls
                         }
                     }
                     this.tblHeader.Visible = this.IncludeHeader;
-					
-					// Main Panel Properties
+                    
+                    // Main Panel Properties
                     if (!String.IsNullOrEmpty(this.BodyCssClass))
                     {
                         this.cellBody.Attributes.Add("class", this.BodyCssClass);
@@ -577,8 +577,8 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnInit(e);
             this.InitializeComponent();
         }
-		
-		#endregion
+        
+        #endregion
 
         #region Nested type: eImageType
 

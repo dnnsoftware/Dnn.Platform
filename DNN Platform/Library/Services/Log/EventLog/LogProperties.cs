@@ -18,8 +18,8 @@ namespace DotNetNuke.Services.Log.EventLog
 {
     public class LogProperties : ArrayList
     {
-		#region "Public Properties"
-		
+        #region "Public Properties"
+        
         public string Summary
         {
             get
@@ -32,10 +32,10 @@ namespace DotNetNuke.Services.Log.EventLog
                 return summary;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
         public void Deserialize(string content)
         {
@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.Log.EventLog
             }
             writer.WriteEndElement();
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

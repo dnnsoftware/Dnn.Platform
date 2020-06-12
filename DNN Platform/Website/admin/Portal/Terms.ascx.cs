@@ -16,27 +16,27 @@ namespace DotNetNuke.Common.Controls
 {
     public partial class Terms : PortalModuleBase
     {
-		#region " Web Form Designer Generated Code "
+        #region " Web Form Designer Generated Code "
 
         // This call is required by the Web Form Designer.
         private void InitializeComponent()
         {
         }
-		
-		#endregion
+        
+        #endregion
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
             
-			// CODEGEN: This method call is required by the Web Form Designer
+            // CODEGEN: This method call is required by the Web Form Designer
             // Do not modify it using the code editor.
-			this.InitializeComponent();
+            this.InitializeComponent();
         }
 
         /// <summary>The Page_Load server event handler on this page is used to populate the role information for the page</summary>
-		protected override void OnLoad(EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             try

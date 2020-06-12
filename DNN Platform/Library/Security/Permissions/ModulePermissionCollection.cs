@@ -17,9 +17,9 @@ using DotNetNuke.Entities.Modules;
 namespace DotNetNuke.Security.Permissions
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : ModulePermissionCollection
+    /// Class    : ModulePermissionCollection
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModulePermissionCollection provides the a custom collection for ModulePermissionInfo

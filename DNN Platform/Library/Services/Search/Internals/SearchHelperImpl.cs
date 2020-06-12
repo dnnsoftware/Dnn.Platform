@@ -397,9 +397,9 @@ namespace DotNetNuke.Services.Search.Internals
         /// </summary>
         /// <param name="searchPhrase"></param>
         /// <param name="useWildCard"></param>
-		/// <param name="allowLeadingWildcard"></param>
+        /// <param name="allowLeadingWildcard"></param>
         /// <returns>cleaned and pre-processed search phrase</returns>
-		public string RephraseSearchText(string searchPhrase, bool useWildCard, bool allowLeadingWildcard = false)
+        public string RephraseSearchText(string searchPhrase, bool useWildCard, bool allowLeadingWildcard = false)
         {
             searchPhrase = this.CleanSearchPhrase(HttpUtility.HtmlDecode(searchPhrase));
 
@@ -479,7 +479,7 @@ namespace DotNetNuke.Services.Search.Internals
             return datim;
         }
 
-		private string FixLastWord(string lastWord, bool allowLeadingWildcard)
+        private string FixLastWord(string lastWord, bool allowLeadingWildcard)
         {
             if (string.IsNullOrEmpty(lastWord))
                 return string.Empty;
@@ -514,8 +514,8 @@ namespace DotNetNuke.Services.Search.Internals
                 if (lastWord.Length > 0 && lastWord != "AND" && lastWord != "OR")
                 {
                     lastWord = (beginIsGroup && endIsGroup)
-						? string.Format("{0} OR {1}{0}*", lastWord, allowLeadingWildcard ? "*" : string.Empty)
-						: string.Format("({0} OR {1}{0}*)", lastWord, allowLeadingWildcard ? "*" : string.Empty);
+                        ? string.Format("{0} OR {1}{0}*", lastWord, allowLeadingWildcard ? "*" : string.Empty)
+                        : string.Format("({0} OR {1}{0}*)", lastWord, allowLeadingWildcard ? "*" : string.Empty);
                 }
 
                 if (beginIsGroup) lastWord = c1 + lastWord;

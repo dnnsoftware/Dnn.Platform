@@ -109,13 +109,13 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             }
         }
 
-		[SetUp]
-		public void SetUp()
-		{
-			AppDomain.CurrentDomain.SetData("APPBASE", this.WebsitePhysicalAppPath);
+        [SetUp]
+        public void SetUp()
+        {
+            AppDomain.CurrentDomain.SetData("APPBASE", this.WebsitePhysicalAppPath);
 
-			LoggerSource.SetTestableInstance(new TestLogSource());
-		}
+            LoggerSource.SetTestableInstance(new TestLogSource());
+        }
 
 // ReSharper disable PossibleNullReferenceException
         [Test]
@@ -493,147 +493,147 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 // ReSharper restore PossibleNullReferenceException
     }
 
-	class TestLogSource : ILoggerSource
-	{
+    class TestLogSource : ILoggerSource
+    {
 
-		public ILog GetLogger(string name)
-		{
-			return new TestLogger();
-		}
+        public ILog GetLogger(string name)
+        {
+            return new TestLogger();
+        }
 
-		public ILog GetLogger(Type type)
-		{
-			return new TestLogger();
-		}
-	}
+        public ILog GetLogger(Type type)
+        {
+            return new TestLogger();
+        }
+    }
 
-	class TestLogger : ILog
-	{
+    class TestLogger : ILog
+    {
 
-		public void Debug(object message, Exception exception)
-		{
-		}
+        public void Debug(object message, Exception exception)
+        {
+        }
 
-		public void Debug(object message)
-		{
-		}
+        public void Debug(object message)
+        {
+        }
 
-		public void DebugFormat(IFormatProvider provider, string format, params object[] args)
-		{
-		}
+        public void DebugFormat(IFormatProvider provider, string format, params object[] args)
+        {
+        }
 
-		public void DebugFormat(string format, params object[] args)
-		{
-		}
+        public void DebugFormat(string format, params object[] args)
+        {
+        }
 
-		public void Error(object message, Exception exception)
-		{
-		}
+        public void Error(object message, Exception exception)
+        {
+        }
 
-		public void Error(object message)
-		{
-		}
+        public void Error(object message)
+        {
+        }
 
-		public void ErrorFormat(IFormatProvider provider, string format, params object[] args)
-		{
-		}
+        public void ErrorFormat(IFormatProvider provider, string format, params object[] args)
+        {
+        }
 
-		public void ErrorFormat(string format, params object[] args)
-		{
-		}
+        public void ErrorFormat(string format, params object[] args)
+        {
+        }
 
-		public void Fatal(object message, Exception exception)
-		{
-		}
+        public void Fatal(object message, Exception exception)
+        {
+        }
 
-		public void Fatal(object message)
-		{
-		}
+        public void Fatal(object message)
+        {
+        }
 
-		public void FatalFormat(IFormatProvider provider, string format, params object[] args)
-		{
-		}
+        public void FatalFormat(IFormatProvider provider, string format, params object[] args)
+        {
+        }
 
-		public void FatalFormat(string format, params object[] args)
-		{
-		}
+        public void FatalFormat(string format, params object[] args)
+        {
+        }
 
-		public void Info(object message, Exception exception)
-		{
-		}
+        public void Info(object message, Exception exception)
+        {
+        }
 
-		public void Info(object message)
-		{
-		}
+        public void Info(object message)
+        {
+        }
 
-		public void InfoFormat(IFormatProvider provider, string format, params object[] args)
-		{
-		}
+        public void InfoFormat(IFormatProvider provider, string format, params object[] args)
+        {
+        }
 
-		public void InfoFormat(string format, params object[] args)
-		{
-		}
+        public void InfoFormat(string format, params object[] args)
+        {
+        }
 
-		public bool IsDebugEnabled
-		{
-			get { return false; }
-		}
+        public bool IsDebugEnabled
+        {
+            get { return false; }
+        }
 
-		public bool IsErrorEnabled
-		{
-			get { return false; }
-		}
+        public bool IsErrorEnabled
+        {
+            get { return false; }
+        }
 
-		public bool IsFatalEnabled
-		{
-			get { return false; }
-		}
+        public bool IsFatalEnabled
+        {
+            get { return false; }
+        }
 
-		public bool IsInfoEnabled
-		{
-			get { return false; }
-		}
+        public bool IsInfoEnabled
+        {
+            get { return false; }
+        }
 
-		public bool IsTraceEnabled
-		{
-			get { return false; }
-		}
+        public bool IsTraceEnabled
+        {
+            get { return false; }
+        }
 
-		public bool IsWarnEnabled
-		{
-			get { return false; }
-		}
+        public bool IsWarnEnabled
+        {
+            get { return false; }
+        }
 
-		public void Trace(object message, Exception exception)
-		{
-		}
+        public void Trace(object message, Exception exception)
+        {
+        }
 
-		public void Trace(object message)
-		{
-		}
+        public void Trace(object message)
+        {
+        }
 
-		public void TraceFormat(IFormatProvider provider, string format, params object[] args)
-		{
-		}
+        public void TraceFormat(IFormatProvider provider, string format, params object[] args)
+        {
+        }
 
-		public void TraceFormat(string format, params object[] args)
-		{
-		}
+        public void TraceFormat(string format, params object[] args)
+        {
+        }
 
-		public void Warn(object message, Exception exception)
-		{
-		}
+        public void Warn(object message, Exception exception)
+        {
+        }
 
-		public void Warn(object message)
-		{
-		}
+        public void Warn(object message)
+        {
+        }
 
-		public void WarnFormat(IFormatProvider provider, string format, params object[] args)
-		{
-		}
+        public void WarnFormat(IFormatProvider provider, string format, params object[] args)
+        {
+        }
 
-		public void WarnFormat(string format, params object[] args)
-		{
-		}
-	}
+        public void WarnFormat(string format, params object[] args)
+        {
+        }
+    }
 }

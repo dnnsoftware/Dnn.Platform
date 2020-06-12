@@ -19,9 +19,9 @@ using DotNetNuke.Entities.Users;
 namespace DotNetNuke.Entities.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities.Modules
-    /// Class	 : ModuleControlController
+    /// Class    : ModuleControlController
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModuleControlController provides the Business Layer for Module Controls
@@ -136,7 +136,7 @@ namespace DotNetNuke.Entities.Modules
             int moduleControlID = moduleControl.ModuleControlID;
             if (moduleControlID == Null.NullInteger)
             {
-				// Add new Module Definition
+                // Add new Module Definition
                 moduleControlID = dataProvider.AddModuleControl(moduleControl.ModuleDefID,
                                                                 moduleControl.ControlKey,
                                                                 moduleControl.ControlTitle,
@@ -151,7 +151,7 @@ namespace DotNetNuke.Entities.Modules
             }
             else
             {
-				// Upgrade Module Control
+                // Upgrade Module Control
                 dataProvider.UpdateModuleControl(moduleControl.ModuleControlID,
                                                  moduleControl.ModuleDefID,
                                                  moduleControl.ControlKey,

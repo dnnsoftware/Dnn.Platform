@@ -26,16 +26,16 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class ScriptInstaller : FileInstaller
     {
-		#region Private Members
+        #region Private Members
 
         private readonly SortedList<Version, InstallFile> _installScripts = new SortedList<Version, InstallFile>();
         private readonly SortedList<Version, InstallFile> _unInstallScripts = new SortedList<Version, InstallFile>();
         private InstallFile _installScript;
         private InstallFile _upgradeScript;
 
-		#endregion
+        #endregion
 
-		#region Protected Properties
+        #region Protected Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -128,10 +128,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 return this._upgradeScript;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Public Properties
+        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -146,10 +146,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "*dataprovider, sql";
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Private Methods
+        #region Private Methods
 
         private bool ExecuteSql(InstallFile scriptFile)
         {
@@ -187,14 +187,14 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             return this.ProviderConfiguration.DefaultProvider.Equals(fileExtension, StringComparison.InvariantCultureIgnoreCase) || fileExtension.Equals("sql", StringComparison.InvariantCultureIgnoreCase);
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Protected Methods
+        #region Protected Methods
 
         private bool InstallScriptFile(InstallFile scriptFile)
         {
-			// Call base InstallFile method to copy file
+            // Call base InstallFile method to copy file
             bool bSuccess = this.InstallFile(scriptFile);
 
             // Process the file if it is an Install Script
@@ -236,7 +236,7 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 if (file.Name.StartsWith("install.", StringComparison.InvariantCultureIgnoreCase))
                 {
-					// This is the initial script when installing
+                    // This is the initial script when installing
                     this._installScript = file;
                 }
                 else if (file.Name.StartsWith("upgrade.", StringComparison.InvariantCultureIgnoreCase))
@@ -245,42 +245,42 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
                 else if (type.Equals("install", StringComparison.InvariantCultureIgnoreCase))
                 {
-					// These are the Install/Upgrade scripts
+                    // These are the Install/Upgrade scripts
                     this.InstallScripts[file.Version] = file;
                 }
                 else
                 {
-					// These are the Uninstall scripts
+                    // These are the Uninstall scripts
                     this.UnInstallScripts[file.Version] = file;
                 }
             }
-			
+            
             // Call base method to set up for file processing
             base.ProcessFile(file, nav);
         }
 
         protected override void UnInstallFile(InstallFile scriptFile)
         {
-			// Process the file if it is an UnInstall Script
+            // Process the file if it is an UnInstall Script
             var extension = Path.GetExtension(scriptFile.Name.ToLowerInvariant());
             if (extension != null && (this.UnInstallScripts.ContainsValue(scriptFile)))
             {
                 string fileExtension = extension.Substring(1);
                 if (scriptFile.Name.StartsWith("uninstall.", StringComparison.InvariantCultureIgnoreCase) && this.IsValidScript(fileExtension))
                 {
-					// Install Script
+                    // Install Script
                     this.Log.AddInfo(Util.SQL_Executing + scriptFile.Name);
                     this.ExecuteSql(scriptFile);
                 }
             }
-			
+            
             // Call base method to delete file
             base.UnInstallFile(scriptFile);
         }
 
-		#endregion
+        #endregion
 
-		#region Public Methods
+        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -315,7 +315,7 @@ namespace DotNetNuke.Services.Installer.Installers
                         installedVersion = this.InstallScript.Version;
                     }
                 }
-				
+                
                 // Then process remain Install/Upgrade Scripts
                 if (bSuccess)
                 {
@@ -331,14 +331,14 @@ namespace DotNetNuke.Services.Installer.Installers
                         }
                     }
                 }
-				
+                
                 // Next process UpgradeScript - this script always runs if present
                 if (this.UpgradeScript != null)
                 {
                     bSuccess = this.InstallScriptFile(this.UpgradeScript);
                     installedVersion = this.UpgradeScript.Version;
                 }
-				
+                
                 // Then process uninstallScripts - these need to be copied but not executed
                 if (bSuccess)
                 {
@@ -385,7 +385,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
             this.Log.AddInfo(Util.SQL_EndUnInstall);
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

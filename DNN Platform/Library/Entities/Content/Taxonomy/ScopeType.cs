@@ -25,14 +25,14 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         public string ScopeType { get; set; }
     }
 
-	/// <summary>
-	/// Class of ScopeType.
-	/// </summary>
-	/// <seealso cref="TermController"/>
+    /// <summary>
+    /// Class of ScopeType.
+    /// </summary>
+    /// <seealso cref="TermController"/>
     [Serializable]
     public class ScopeType : ScopeTypeMemberNameFixer, IHydratable
     {
-	    public ScopeType() : this(Null.NullString)
+        public ScopeType() : this(Null.NullString)
         {
         }
 
@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public int ScopeTypeId { get; set; }
 
-	    public void Fill(IDataReader dr)
+        public void Fill(IDataReader dr)
         {
             this.ScopeTypeId = Null.SetNullInteger(dr["ScopeTypeID"]);
             this.ScopeType = Null.SetNullString(dr["ScopeType"]);

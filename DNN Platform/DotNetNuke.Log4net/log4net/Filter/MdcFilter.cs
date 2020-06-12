@@ -30,22 +30,22 @@ using log4net.Util;
 
 namespace log4net.Filter
 {
-	/// <summary>
-	/// Simple filter to match a keyed string in the <see cref="MDC"/>
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// Simple filter to match a keyed string in the <see cref="MDC"/>
-	/// </para>
-	/// <para>
-	/// As the MDC has been replaced with layered properties the
-	/// <see cref="PropertyFilter"/> should be used instead.
-	/// </para>
-	/// </remarks>
-	/// <author>Nicko Cadell</author>
-	/// <author>Gert Driesen</author>
-	[Obsolete("MdcFilter has been replaced by PropertyFilter. Scheduled removal in v10.0.0.")]
-	public class MdcFilter : PropertyFilter
-	{
-	}
+    /// <summary>
+    /// Simple filter to match a keyed string in the <see cref="MDC"/>
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Simple filter to match a keyed string in the <see cref="MDC"/>
+    /// </para>
+    /// <para>
+    /// As the MDC has been replaced with layered properties the
+    /// <see cref="PropertyFilter"/> should be used instead.
+    /// </para>
+    /// </remarks>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
+    [Obsolete("MdcFilter has been replaced by PropertyFilter. Scheduled removal in v10.0.0.")]
+    public class MdcFilter : PropertyFilter
+    {
+    }
 }

@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Log.EventLog
 {
     public partial class LogController : ServiceLocator<ILogController, LogController>, ILogController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LogController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LogController));
         private const int WriterLockTimeout = 10000; // milliseconds
         private static readonly ReaderWriterLockSlim LockLog = new ReaderWriterLockSlim();
 
@@ -220,21 +220,21 @@ namespace DotNetNuke.Services.Log.EventLog
                         this.AddLogTypeConfigInfo(logTypeConfigInfo);
                     }
 
-	                if (LoggingProvider.Instance() != null)
-	                {
-		                try
-		                {
-							LoggingProvider.Instance().AddLog(logInfo);
-		                }
-		                catch (Exception)
-		                {
-			                if (Globals.Status != Globals.UpgradeStatus.Upgrade) // this may caught exception during upgrade because old logging provider has problem in it.
-			                {
-				                throw;
-			                }
-		                }
-		                
-	                }
+                    if (LoggingProvider.Instance() != null)
+                    {
+                        try
+                        {
+                            LoggingProvider.Instance().AddLog(logInfo);
+                        }
+                        catch (Exception)
+                        {
+                            if (Globals.Status != Globals.UpgradeStatus.Upgrade) // this may caught exception during upgrade because old logging provider has problem in it.
+                            {
+                                throw;
+                            }
+                        }
+                        
+                    }
                 }
                 catch (Exception exc)
                 {

@@ -463,7 +463,7 @@ namespace DotNetNuke.Entities.Urls
             // determine the rewrite parameter
             // for deleted or pages not enabled yet, direct to the home page if the setting is enabled
             // 534 : tab is disabled, mark as deleted (don't want to cause duplicate tab warnings)
-			// DNN-6186: add expired pages in dictionary as admin/host user should able to visit/edit them.
+            // DNN-6186: add expired pages in dictionary as admin/host user should able to visit/edit them.
             bool isDeleted = (tab.IsDeleted || tab.DisableLink);
             if (isDeleted)
             // don't care what setting is, redirect code will decide whether to redirect or 404 - just mark as page deleted && 
@@ -850,7 +850,7 @@ namespace DotNetNuke.Entities.Urls
                         // there is a naming conflict where this alias/tab path could be mistaken 
                         int tabIdOriginal;
                         string tab1Name = "", tab2Name = "";
-	                    var dupInSameCulture = false;
+                        var dupInSameCulture = false;
                         if (int.TryParse(foundTAb.TabIdOriginal, out tabIdOriginal))
                         {
                             Dictionary<int, int> portalDic = PortalController.GetPortalDictionary();
@@ -871,35 +871,35 @@ namespace DotNetNuke.Entities.Urls
                                 tab2Name = tab2.TabName + " [" + tab2.TabPath + "]";
                             }
 
-	                        if (tab1 != null && tab2 != null)
-	                        {
-		                        dupInSameCulture = !PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", portalId, false)
-													|| tab1.CultureCode == tab2.CultureCode;
-	                        }
+                            if (tab1 != null && tab2 != null)
+                            {
+                                dupInSameCulture = !PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", portalId, false)
+                                                    || tab1.CultureCode == tab2.CultureCode;
+                            }
                         }
 
 
-	                    if (dupInSameCulture)
-	                    {
-		                    string msg = "Page naming conflict. Url of (" + foundTAb.TabPath +
-		                                 ") resolves to two separate pages (" + tab1Name + " [tabid = " +
-		                                 foundTAb.TabIdOriginal + "], " + tab2Name + " [tabid = " + tabId.ToString() +
-		                                 "]). Only the second page will be shown for the url.";
-		                    const string msg2 =
-			                    "PLEASE NOTE : this is an information message only, this message does not affect site operations in any way.";
+                        if (dupInSameCulture)
+                        {
+                            string msg = "Page naming conflict. Url of (" + foundTAb.TabPath +
+                                         ") resolves to two separate pages (" + tab1Name + " [tabid = " +
+                                         foundTAb.TabIdOriginal + "], " + tab2Name + " [tabid = " + tabId.ToString() +
+                                         "]). Only the second page will be shown for the url.";
+                            const string msg2 =
+                                "PLEASE NOTE : this is an information message only, this message does not affect site operations in any way.";
 
-		                    // 771 : change to admin alert instead of exception
-		                    // log a host alert
-		                    var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
-		                    log.AddProperty("Advanced Friendly URL Provider Duplicate URL Warning", "Page Naming Conflict");
-		                    log.AddProperty("Duplicate Page Details", msg);
-		                    log.AddProperty("Warning Information", msg2);
-		                    log.AddProperty("Suggested Action", "Rename one or both of the pages to ensure a unique URL");
-		                    log.AddProperty("Hide this message",
-			                    "To stop this message from appearing in the log, uncheck the option for 'Produce an Exception in the Site Log if two pages have the same name/path?' in the Advanced Url Rewriting settings.");
-		                    log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
-		                    LogController.Instance.AddLog(log);
-	                    }
+                            // 771 : change to admin alert instead of exception
+                            // log a host alert
+                            var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
+                            log.AddProperty("Advanced Friendly URL Provider Duplicate URL Warning", "Page Naming Conflict");
+                            log.AddProperty("Duplicate Page Details", msg);
+                            log.AddProperty("Warning Information", msg2);
+                            log.AddProperty("Suggested Action", "Rename one or both of the pages to ensure a unique URL");
+                            log.AddProperty("Hide this message",
+                                "To stop this message from appearing in the log, uncheck the option for 'Produce an Exception in the Site Log if two pages have the same name/path?' in the Advanced Url Rewriting settings.");
+                            log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+                            LogController.Instance.AddLog(log);
+                        }
                     }
                 }
                 else

@@ -16,9 +16,9 @@ using DotNetNuke.UI.WebControls;
 namespace DotNetNuke.UI.Containers
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Containers
-    /// Class	 : ActionCommandButton
+    /// Class    : ActionCommandButton
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ActionCommandButton provides a button for a single action.
@@ -29,14 +29,14 @@ namespace DotNetNuke.UI.Containers
     /// -----------------------------------------------------------------------------
     public class ActionCommandButton : CommandButton, IActionControl
     {
-		#region "Private Members"
+        #region "Private Members"
 
         private ActionManager _ActionManager;
         private ModuleAction _ModuleAction;
 
-		#endregion
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -91,10 +91,10 @@ namespace DotNetNuke.UI.Containers
         public IModuleControl ModuleControl { get; set; }
 
         #endregion
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected Methods"
+        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -103,7 +103,7 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
         {
-			// Call base class method to ensure Control Tree is built
+            // Call base class method to ensure Control Tree is built
             base.CreateChildControls();
 
             // Set Causes Validation and Enables ViewState to false
@@ -177,7 +177,7 @@ namespace DotNetNuke.UI.Containers
                 this.Visible = false;
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

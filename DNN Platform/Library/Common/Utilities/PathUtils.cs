@@ -65,7 +65,7 @@ namespace DotNetNuke.Common.Utilities
                 return "";
             }
 
-			return folderPath.EndsWith("/") ? folderPath.Trim() : folderPath.Trim() + "/";
+            return folderPath.EndsWith("/") ? folderPath.Trim() : folderPath.Trim() + "/";
         }
 
         /// <summary>

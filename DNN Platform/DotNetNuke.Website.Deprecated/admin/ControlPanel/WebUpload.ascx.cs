@@ -34,8 +34,8 @@ namespace DotNetNuke.Modules.Admin.FileManager
     using Host = DotNetNuke.Entities.Host.Host;
 
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : WebUpload
+    /// Project  : DotNetNuke
+    /// Class    : WebUpload
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// Supplies the functionality for uploading files to the Portal
@@ -45,13 +45,13 @@ namespace DotNetNuke.Modules.Admin.FileManager
     /// -----------------------------------------------------------------------------
     public partial class WebUpload : PortalModuleBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(WebUpload));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(WebUpload));
         private readonly INavigationManager _navigationManager;
         public WebUpload()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-		#region "Members"
+        #region "Members"
 
         private string _DestinationFolder;
         private UploadType _FileType;
@@ -59,9 +59,9 @@ namespace DotNetNuke.Modules.Admin.FileManager
         private string _RootFolder;
         private string _UploadRoles;
 
-		#endregion
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         public string DestinationFolder
         {
@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 this._FileType = UploadType.File;
                 if ((this.Request.QueryString["ftype"] != null))
                 {
-					// The select statement ensures that the parameter can be converted to UploadType
+                    // The select statement ensures that the parameter can be converted to UploadType
                     switch (this.Request.QueryString["ftype"].ToLowerInvariant())
                     {
                         case "file":
@@ -161,9 +161,9 @@ namespace DotNetNuke.Modules.Admin.FileManager
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -208,9 +208,9 @@ namespace DotNetNuke.Modules.Admin.FileManager
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -390,6 +390,6 @@ namespace DotNetNuke.Modules.Admin.FileManager
             this.Response.Redirect(this.ReturnURL(), true);
         }
 
-		#endregion
+        #endregion
     }
 }

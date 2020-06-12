@@ -18,8 +18,8 @@ using DotNetNuke.Services.Exceptions;
 namespace DotNetNuke.UI.Containers
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : Containers.Icon
+    /// Project  : DotNetNuke
+    /// Class    : Containers.Icon
     /// 
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -31,13 +31,13 @@ namespace DotNetNuke.UI.Containers
     /// -----------------------------------------------------------------------------
     public partial class PrintModule : ActionBase
     {
-		#region "Public Members"
-		
+        #region "Public Members"
+        
         public string PrintIcon { get; set; }
-		
-		#endregion
-		
-		#region "Event Handlers"
+        
+        #endregion
+        
+        #region "Event Handlers"
 
         protected override void OnLoad(EventArgs e)
         {
@@ -48,7 +48,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     this.DisplayAction(action);
                 }
-				
+                
                 // set visibility
                 if (this.Controls.Count > 0)
                 {
@@ -64,43 +64,43 @@ namespace DotNetNuke.UI.Containers
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-	
-	private void DisplayAction(ModuleAction action)
-	{
-	    if (action.CommandName == ModuleActionType.PrintModule)
-	    {
-		if (action.Visible)
-		{
-		    if ((this.PortalSettings.UserMode == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
-		    {
-			if (this.ModuleContext.Configuration.DisplayPrint)
-			{
-			    var ModuleActionIcon = new ImageButton();
-			    if (!String.IsNullOrEmpty(this.PrintIcon))
-			    {
-				ModuleActionIcon.ImageUrl = this.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1) + this.PrintIcon;
-			    }
-			    else
-			    {
-				ModuleActionIcon.ImageUrl = "~/images/" + action.Icon;
-			    }
-			    ModuleActionIcon.ToolTip = action.Title;
-			    ModuleActionIcon.ID = "ico" + action.ID;
-			    ModuleActionIcon.CausesValidation = false;
+    
+    private void DisplayAction(ModuleAction action)
+    {
+        if (action.CommandName == ModuleActionType.PrintModule)
+        {
+        if (action.Visible)
+        {
+            if ((this.PortalSettings.UserMode == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
+            {
+            if (this.ModuleContext.Configuration.DisplayPrint)
+            {
+                var ModuleActionIcon = new ImageButton();
+                if (!String.IsNullOrEmpty(this.PrintIcon))
+                {
+                ModuleActionIcon.ImageUrl = this.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1) + this.PrintIcon;
+                }
+                else
+                {
+                ModuleActionIcon.ImageUrl = "~/images/" + action.Icon;
+                }
+                ModuleActionIcon.ToolTip = action.Title;
+                ModuleActionIcon.ID = "ico" + action.ID;
+                ModuleActionIcon.CausesValidation = false;
 
-			    ModuleActionIcon.Click += this.IconAction_Click;
+                ModuleActionIcon.Click += this.IconAction_Click;
 
-			    this.Controls.Add(ModuleActionIcon);
-			}
-		    }
-		}
-	    }
-	    
-	    foreach (ModuleAction subAction in action.Actions) 
-	    {
-	    	this.DisplayAction(subAction);
-	    }
-	}
+                this.Controls.Add(ModuleActionIcon);
+            }
+            }
+        }
+        }
+        
+        foreach (ModuleAction subAction in action.Actions) 
+        {
+            this.DisplayAction(subAction);
+        }
+    }
 
         private void IconAction_Click(object sender, ImageClickEventArgs e)
         {
@@ -113,7 +113,7 @@ namespace DotNetNuke.UI.Containers
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

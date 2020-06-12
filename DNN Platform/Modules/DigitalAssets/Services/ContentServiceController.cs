@@ -78,15 +78,15 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         [ValidateAntiForgeryToken]        
         public HttpResponseMessage RenameFile(RenameFileRequest request)
         {
-	        try
-	        {
-		        var itemViewModel = this.DigitalAssetsController.RenameFile(request.FileId, request.NewFileName);
-		        return this.Request.CreateResponse(HttpStatusCode.OK, itemViewModel);
-	        }
-	        catch (FileAlreadyExistsException ex)
-	        {
-				return this.Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
-	        }
+            try
+            {
+                var itemViewModel = this.DigitalAssetsController.RenameFile(request.FileId, request.NewFileName);
+                return this.Request.CreateResponse(HttpStatusCode.OK, itemViewModel);
+            }
+            catch (FileAlreadyExistsException ex)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
             
         }
 

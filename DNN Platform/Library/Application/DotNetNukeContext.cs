@@ -42,9 +42,9 @@ namespace DotNetNuke.Application
             this._skinEventListeners = new NaiveLockingList<SkinEventListener>();
         }
 
-		/// <summary>
-		/// Get the application.
-		/// </summary>
+        /// <summary>
+        /// Get the application.
+        /// </summary>
         public Application Application
         {
             get
@@ -53,14 +53,14 @@ namespace DotNetNuke.Application
             }
         }
 
-		/// <summary>
-		/// Gets the container event listeners. The listeners will be called in each life cycle of load container.
-		/// </summary>
-		/// <see cref="ContainerEventListener"/>
-		/// <seealso cref="DotNetNuke.UI.Containers.Container.OnInit"/>
-		/// <seealso cref="DotNetNuke.UI.Containers.Container.OnLoad"/>
-		/// <seealso cref="DotNetNuke.UI.Containers.Container.OnPreRender"/>
-		/// <seealso cref="DotNetNuke.UI.Containers.Container.OnUnload"/>
+        /// <summary>
+        /// Gets the container event listeners. The listeners will be called in each life cycle of load container.
+        /// </summary>
+        /// <see cref="ContainerEventListener"/>
+        /// <seealso cref="DotNetNuke.UI.Containers.Container.OnInit"/>
+        /// <seealso cref="DotNetNuke.UI.Containers.Container.OnLoad"/>
+        /// <seealso cref="DotNetNuke.UI.Containers.Container.OnPreRender"/>
+        /// <seealso cref="DotNetNuke.UI.Containers.Container.OnUnload"/>
         public IList<ContainerEventListener> ContainerEventListeners
         {
             get
@@ -69,14 +69,14 @@ namespace DotNetNuke.Application
             }
         }
 
-		/// <summary>
-		/// Gets the skin event listeners. The listeners will be called in each life cycle of load skin.
-		/// </summary>
-		/// <see cref="SkinEventListener"/>
-		/// <seealso cref="DotNetNuke.UI.Skins.Skin.OnInit"/>
-		/// <seealso cref="DotNetNuke.UI.Skins.Skin.OnLoad"/>
-		/// <seealso cref="DotNetNuke.UI.Skins.Skin.OnPreRender"/>
-		/// <seealso cref="DotNetNuke.UI.Skins.Skin.OnUnload"/>
+        /// <summary>
+        /// Gets the skin event listeners. The listeners will be called in each life cycle of load skin.
+        /// </summary>
+        /// <see cref="SkinEventListener"/>
+        /// <seealso cref="DotNetNuke.UI.Skins.Skin.OnInit"/>
+        /// <seealso cref="DotNetNuke.UI.Skins.Skin.OnLoad"/>
+        /// <seealso cref="DotNetNuke.UI.Skins.Skin.OnPreRender"/>
+        /// <seealso cref="DotNetNuke.UI.Skins.Skin.OnUnload"/>
         public IList<SkinEventListener> SkinEventListeners
         {
             get
@@ -85,9 +85,9 @@ namespace DotNetNuke.Application
             }
         }
 
-		/// <summary>
-		/// Gets or sets the current app context.
-		/// </summary>
+        /// <summary>
+        /// Gets or sets the current app context.
+        /// </summary>
         public static DotNetNukeContext Current
         {
             get

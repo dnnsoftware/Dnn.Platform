@@ -496,7 +496,7 @@ namespace DotNetNuke.Web.UI.WebControls
             set
             {
                 this.ViewState["Url"] = value;
-				this.txtUrl.Text = string.Empty;
+                this.txtUrl.Text = string.Empty;
 
                 if (this.IsTrackingViewState)
                 {

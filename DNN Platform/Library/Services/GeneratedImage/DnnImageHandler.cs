@@ -126,7 +126,7 @@ namespace DotNetNuke.Services.GeneratedImage
             // which type of image should be generated ?
             string mode = string.IsNullOrEmpty(parameters["mode"]) ? "profilepic" : parameters["mode"].ToLowerInvariant();
 
-            // We need to determine the output format		
+            // We need to determine the output format       
             string format = string.IsNullOrEmpty(parameters["format"]) ? "jpg" : parameters["format"].ToLowerInvariant();
 
             // Lets retrieve the color

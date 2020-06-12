@@ -36,7 +36,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             this.AddIe7StyleSheet();
 
             this.searchBar.Visible = this.DisplaySearch != "None";
-	        this.advancedSearchBar.Visible = this.DisplaySearch == "Both";
+            this.advancedSearchBar.Visible = this.DisplaySearch == "Both";
             this.popUpPanel.Visible = this.EnablePopUp;
             this.loadMore.Visible = !this.DisablePaging;
 
@@ -148,25 +148,25 @@ namespace DotNetNuke.Modules.MemberDirectory
             }
         }
 
-		protected bool DisablePrivateMessage
-		{
-			get
-			{
-				return this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser
-					&& !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
+        protected bool DisablePrivateMessage
+        {
+            get
+            {
+                return this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser
+                    && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
 
-			}
-		}
+            }
+        }
 
-	    protected PortalSettings PortalSettings
-	    {
-		    get { return PortalController.Instance.GetCurrentPortalSettings(); }
-	    }
+        protected PortalSettings PortalSettings
+        {
+            get { return PortalController.Instance.GetCurrentPortalSettings(); }
+        }
 
-		protected UserInfo UserInfo
-		{
-			get { return UserController.Instance.GetCurrentUserInfo(); }
-		}
+        protected UserInfo UserInfo
+        {
+            get { return UserController.Instance.GetCurrentUserInfo(); }
+        }
 
         #region Private Helper Functions
 

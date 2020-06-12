@@ -10,10 +10,10 @@ using System.Linq;
 
 namespace DotNetNuke.Entities.Content.Taxonomy
 {
-	/// <summary>
-	/// Interface of VocabularyController.
-	/// </summary>
-	/// <seealso cref="VocabularyController"/>
+    /// <summary>
+    /// Interface of VocabularyController.
+    /// </summary>
+    /// <seealso cref="VocabularyController"/>
     public interface IVocabularyController
     {
         int AddVocabulary(Vocabulary vocabulary);

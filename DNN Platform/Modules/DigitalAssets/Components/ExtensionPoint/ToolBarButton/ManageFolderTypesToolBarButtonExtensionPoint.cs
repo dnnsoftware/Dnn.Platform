@@ -40,14 +40,14 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
                     return string.Empty;
                 }
 
-	            if (PortalSettings.Current.EnablePopUps)
-	            {
-		            return this.ModuleContext.EditUrl("FolderMappings");
-	            }
-	            else
-	            {
-		            return string.Format("location.href = '{0}';", this.ModuleContext.EditUrl("FolderMappings"));
-	            }
+                if (PortalSettings.Current.EnablePopUps)
+                {
+                    return this.ModuleContext.EditUrl("FolderMappings");
+                }
+                else
+                {
+                    return string.Format("location.href = '{0}';", this.ModuleContext.EditUrl("FolderMappings"));
+                }
             }
         }
 

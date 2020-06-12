@@ -81,11 +81,11 @@ namespace DotNetNuke.Entities.Content
         #endregion
 
         /// <summary>
-		/// Gets or sets the content type id.
-		/// </summary>
-		/// <value>
-		/// The content type id.
-		/// </value>
+        /// Gets or sets the content type id.
+        /// </summary>
+        /// <value>
+        /// The content type id.
+        /// </value>
         public int ContentTypeId { get; set; }
 
         #region IHydratable Implementation

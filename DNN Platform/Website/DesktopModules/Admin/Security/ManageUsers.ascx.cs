@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-		#region Protected Members
+        #region Protected Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -71,11 +71,11 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 string _RedirectURL = "";
 
-				if (this.PortalSettings.Registration.RedirectAfterRegistration == Null.NullInteger)
+                if (this.PortalSettings.Registration.RedirectAfterRegistration == Null.NullInteger)
                 {
                     if (this.Request.QueryString["returnurl"] != null)
                     {
-						// return to the url passed to register
+                        // return to the url passed to register
                         _RedirectURL = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
 
                         // clean the return url to avoid possible XSS attack.
@@ -91,13 +91,13 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                     if (String.IsNullOrEmpty(_RedirectURL))
                     {
-						// redirect to current page
+                        // redirect to current page
                         _RedirectURL = this._navigationManager.NavigateURL();
                     }
                 }
                 else // redirect to after registration page
                 {
-					_RedirectURL = this._navigationManager.NavigateURL(this.PortalSettings.Registration.RedirectAfterRegistration);
+                    _RedirectURL = this._navigationManager.NavigateURL(this.PortalSettings.Registration.RedirectAfterRegistration);
                 }
                 return _RedirectURL;
             }
@@ -183,7 +183,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-		#endregion
+        #endregion
 
         #region IActionable Members
 
@@ -237,13 +237,13 @@ namespace DotNetNuke.Modules.Admin.Users
 
         #endregion
 
-		#region Private Methods
+        #region Private Methods
 
         private void BindData()
         {
             if (this.User != null)
             {
-				// If trying to add a SuperUser - check that user is a SuperUser
+                // If trying to add a SuperUser - check that user is a SuperUser
                 if (this.VerifyUserPermissions() == false)
                 {
                     return;
@@ -374,7 +374,7 @@ namespace DotNetNuke.Modules.Admin.Users
             // Bind the Membership
             if (this.AddUser || (!this.IsAdmin))
             {
-				this.membershipRow.Visible = false;
+                this.membershipRow.Visible = false;
             }
             else
             {
@@ -464,9 +464,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-		#endregion
+        #endregion
 
-		#region Event Handlers
+        #region Event Handlers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -654,8 +654,8 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 this.AddModuleMessage("UserAuthorized", ModuleMessage.ModuleMessageType.GreenSuccess, true);
 
-				// Send Notification to User
-				if (string.IsNullOrEmpty(this.User.Membership.Password) && !MembershipProviderConfig.RequiresQuestionAndAnswer && MembershipProviderConfig.PasswordRetrievalEnabled)
+                // Send Notification to User
+                if (string.IsNullOrEmpty(this.User.Membership.Password) && !MembershipProviderConfig.RequiresQuestionAndAnswer && MembershipProviderConfig.PasswordRetrievalEnabled)
                 {
                     UserInfo user = this.User;
                     this.User.Membership.Password = UserController.GetPassword(ref user, "");
@@ -831,18 +831,18 @@ namespace DotNetNuke.Modules.Admin.Users
 
             if (status == PasswordUpdateStatus.Success)
             {
-				// Send Notification to User
+                // Send Notification to User
                 try
                 {
                     var accessingUser = (UserInfo)HttpContext.Current.Items["UserInfo"];
                     if (accessingUser.UserID != this.User.UserID)
                     {
-						// The password was changed by someone else
+                        // The password was changed by someone else
                         Mail.SendMail(this.User, MessageType.PasswordUpdated, this.PortalSettings);
                     }
                     else
                     {
-						// The User changed his own password
+                        // The User changed his own password
                         Mail.SendMail(this.User, MessageType.UserUpdatedOwnPassword, this.PortalSettings);
                     }
                     this.AddModuleMessage("PasswordChanged", ModuleMessage.ModuleMessageType.GreenSuccess, true);
@@ -984,6 +984,6 @@ namespace DotNetNuke.Modules.Admin.Users
             this.AddModuleMessage(e.Message, ModuleMessage.ModuleMessageType.RedError, true);
         }
 
-		#endregion
+        #endregion
     }
 }

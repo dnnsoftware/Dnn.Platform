@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Search
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     public class SearchCriteriaCollection : CollectionBase
     {
-		#region Constructors
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> class.
@@ -98,10 +98,10 @@ namespace DotNetNuke.Services.Search
                 }
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Properties
+        #region Properties
 
         /// <summary>
         /// Gets the <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> at the specified index in the collection.
@@ -120,10 +120,10 @@ namespace DotNetNuke.Services.Search
                 this.List[index] = value;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Public Methods
+        #region Public Methods
 
         /// <summary>
         /// Add an element of the specified <see cref="SearchCriteria">SearchCriteria</see> to the end of the collection.
@@ -217,7 +217,7 @@ namespace DotNetNuke.Services.Search
             this.CopyTo(arr, 0);
             return arr;
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

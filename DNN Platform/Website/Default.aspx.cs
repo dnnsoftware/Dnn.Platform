@@ -48,8 +48,8 @@ namespace DotNetNuke.Framework
     using Web.Client;
 
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : CDefault
+    /// Project  : DotNetNuke
+    /// Class    : CDefault
     /// 
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -60,7 +60,7 @@ namespace DotNetNuke.Framework
     /// -----------------------------------------------------------------------------
     public partial class DefaultPage : CDefault, IClientAPICallbackEventHandler
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DefaultPage));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DefaultPage));
 
         private static readonly Regex HeaderTextRegex = new Regex("<meta([^>])+name=('|\")robots('|\")",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
@@ -411,12 +411,12 @@ namespace DotNetNuke.Framework
                 this.Title += versionString;
             }
 
-			// register the custom stylesheet of current page
-			if (this.PortalSettings.ActiveTab.TabSettings.ContainsKey("CustomStylesheet") && !string.IsNullOrEmpty(this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString()))
-			{
-				var customStylesheet = Path.Combine(this.PortalSettings.HomeDirectory, this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString());
-				ClientResourceManager.RegisterStyleSheet(this, customStylesheet);
-			}
+            // register the custom stylesheet of current page
+            if (this.PortalSettings.ActiveTab.TabSettings.ContainsKey("CustomStylesheet") && !string.IsNullOrEmpty(this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString()))
+            {
+                var customStylesheet = Path.Combine(this.PortalSettings.HomeDirectory, this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString());
+                ClientResourceManager.RegisterStyleSheet(this, customStylesheet);
+            }
 
             // Cookie Consent
             if (this.PortalSettings.ShowCookieConsent)
@@ -687,11 +687,11 @@ namespace DotNetNuke.Framework
                 this.ViewStateUserKey = this.User.Identity.Name;
             }
 
-			// set the async postback timeout.
-	        if (AJAX.IsEnabled())
-	        {
-		        AJAX.GetScriptManager(this).AsyncPostBackTimeout = Host.AsyncTimeout;
-	        }
+            // set the async postback timeout.
+            if (AJAX.IsEnabled())
+            {
+                AJAX.GetScriptManager(this).AsyncPostBackTimeout = Host.AsyncTimeout;
+            }
         }
         
         /// -----------------------------------------------------------------------------
@@ -743,37 +743,37 @@ namespace DotNetNuke.Framework
                 this.Page.Response.AddHeader("X-UA-Compatible", this.PortalSettings.AddCompatibleHttpHeader);
             }
 
-	        if (!string.IsNullOrEmpty(this.CanonicalLinkUrl))
-	        {
-				// Add Canonical <link> using the primary alias
-				var canonicalLink = new HtmlLink();
-				canonicalLink.Href = this.CanonicalLinkUrl;
-				canonicalLink.Attributes.Add("rel", "canonical");
+            if (!string.IsNullOrEmpty(this.CanonicalLinkUrl))
+            {
+                // Add Canonical <link> using the primary alias
+                var canonicalLink = new HtmlLink();
+                canonicalLink.Href = this.CanonicalLinkUrl;
+                canonicalLink.Attributes.Add("rel", "canonical");
 
-				// Add the HtmlLink to the Head section of the page.
-				this.Page.Header.Controls.Add(canonicalLink);
-	        }
+                // Add the HtmlLink to the Head section of the page.
+                this.Page.Header.Controls.Add(canonicalLink);
+            }
         }
 
-		protected override void Render(HtmlTextWriter writer)
-		{
-			if (this.PortalSettings.UserMode == PortalSettings.Mode.Edit)
-			{
-			    var editClass = "dnnEditState";
+        protected override void Render(HtmlTextWriter writer)
+        {
+            if (this.PortalSettings.UserMode == PortalSettings.Mode.Edit)
+            {
+                var editClass = "dnnEditState";
 
-				var bodyClass = this.Body.Attributes["class"];
-				if (!string.IsNullOrEmpty(bodyClass))
-				{
+                var bodyClass = this.Body.Attributes["class"];
+                if (!string.IsNullOrEmpty(bodyClass))
+                {
                     this.Body.Attributes["class"] = string.Format("{0} {1}", bodyClass, editClass);
-				}
-				else
-				{
+                }
+                else
+                {
                     this.Body.Attributes["class"] = editClass;
-				}
-			}
+                }
+            }
 
-			base.Render(writer);
-		}
+            base.Render(writer);
+        }
 
         #endregion
 

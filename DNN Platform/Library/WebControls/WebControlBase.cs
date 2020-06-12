@@ -18,14 +18,14 @@ namespace DotNetNuke.UI.WebControls
 {
     public abstract class WebControlBase : WebControl
     {
-		#region "Private Members"
+        #region "Private Members"
 
         private string _styleSheetUrl = "";
         private string _theme = "";
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         public string Theme
         {
@@ -70,7 +70,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-            	return Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
+                return Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
             }
         }
 
@@ -82,8 +82,8 @@ namespace DotNetNuke.UI.WebControls
                 return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
-		
-		#endregion
+        
+        #endregion
 
         public abstract string HtmlOutput { get; }
 

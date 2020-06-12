@@ -128,18 +128,18 @@ namespace DotNetNuke.Common.Lists
 
         public bool SystemList { get; set; }
 
-	    internal string ResourceFileRoot
-	    {
-		    get
-		    {
-				var listName = this.ListName.Replace(":", ".");
-				if (listName.IndexOfAny(Path.GetInvalidFileNameChars()) > -1)
-				{
-					listName = Globals.CleanFileName(listName);
-				}
+        internal string ResourceFileRoot
+        {
+            get
+            {
+                var listName = this.ListName.Replace(":", ".");
+                if (listName.IndexOfAny(Path.GetInvalidFileNameChars()) > -1)
+                {
+                    listName = Globals.CleanFileName(listName);
+                }
 
-				return "~/App_GlobalResources/List_" + listName + ".resx";
-		    }
-	    }
+                return "~/App_GlobalResources/List_" + listName + ".resx";
+            }
+        }
     }
 }

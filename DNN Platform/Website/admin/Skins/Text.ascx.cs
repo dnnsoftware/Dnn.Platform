@@ -28,11 +28,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnLoad(e);
             string strText = this.ShowText;
-			
-			// load resources
+            
+            // load resources
             if (!String.IsNullOrEmpty(this.ResourceKey))
             {
-				// localization
+                // localization
                 string strFile = Path.GetFileName(this.Server.MapPath(this.PortalSettings.ActiveTab.SkinSrc));
                 strFile = this.PortalSettings.ActiveTab.SkinPath + Localization.LocalResourceDirectory + "/" + strFile;
                 string strLocalization = Localization.GetString(this.ResourceKey, strFile);
@@ -41,14 +41,14 @@ namespace DotNetNuke.UI.Skins.Controls
                     strText = strLocalization;
                 }
             }
-			
+            
             // If no value is found then use the value set the the Text attribute
             if (string.IsNullOrEmpty(strText))
             {
                 strText = this.ShowText;
             }
-			
-			// token replace
+            
+            // token replace
             if (this.ReplaceTokens)
             {
                 var tr = new TokenReplace();

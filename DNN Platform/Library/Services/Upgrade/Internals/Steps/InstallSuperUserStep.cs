@@ -50,10 +50,10 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             {
                 adminSuperUser.IsSuperUser = true;
                 adminSuperUser.Membership.UpdatePassword = false;
-				// refresh the profile to get definitions for super user.
-	            adminSuperUser.Profile = null;
-				adminSuperUser.Profile.PreferredLocale = installConfig.SuperUser.Locale;
-				adminSuperUser.Profile.PreferredTimeZone = TimeZoneInfo.Local;
+                // refresh the profile to get definitions for super user.
+                adminSuperUser.Profile = null;
+                adminSuperUser.Profile.PreferredLocale = installConfig.SuperUser.Locale;
+                adminSuperUser.Profile.PreferredTimeZone = TimeZoneInfo.Local;
                 UserController.UpdateUser(0, adminSuperUser);
             }
             else

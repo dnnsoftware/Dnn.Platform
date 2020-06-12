@@ -83,37 +83,37 @@ namespace DotNetNuke.Entities.Users.Membership
         /// <returns>true if password has not been used in users history, false otherwise</returns>
         public bool IsPasswordInHistory(int userId, int portalId, string newPassword)
         {
-			return this.IsPasswordInHistory(userId, portalId, newPassword, true);
+            return this.IsPasswordInHistory(userId, portalId, newPassword, true);
         }
 
-		/// <summary>
-		/// checks to see if the password is in history and adds it if it is not
-		/// </summary>
-		/// <param name="portalId">portalid - futureproofing against any setting become site level</param>
-		/// <param name="newPassword">users new password suggestion</param>
-		/// <param name="autoAdd">If set true then add the password into history if its not used yet.</param>
-		/// <returns>true if password has not been used in users history, false otherwise</returns>
-		public bool IsPasswordInHistory(int userId, int portalId, string newPassword, bool autoAdd)
-		{
-			Requires.NotNullOrEmpty("newPassword", newPassword);
-			bool isPreviouslyUsed = false;
-			var settings = new MembershipPasswordSettings(portalId);
-			if (settings.EnablePasswordHistory)
-			{
-				if (!this.IsPasswordPreviouslyUsed(userId, newPassword))
-				{
-					if (autoAdd)
-					{
-						this.AddPasswordHistory(userId, newPassword, settings.NumberOfPasswordsStored, settings.NumberOfDaysBeforePasswordReuse);
-					}
-				}
-				else
-				{
-					isPreviouslyUsed = true;
-				}
-			}
-			return isPreviouslyUsed;
-		}
+        /// <summary>
+        /// checks to see if the password is in history and adds it if it is not
+        /// </summary>
+        /// <param name="portalId">portalid - futureproofing against any setting become site level</param>
+        /// <param name="newPassword">users new password suggestion</param>
+        /// <param name="autoAdd">If set true then add the password into history if its not used yet.</param>
+        /// <returns>true if password has not been used in users history, false otherwise</returns>
+        public bool IsPasswordInHistory(int userId, int portalId, string newPassword, bool autoAdd)
+        {
+            Requires.NotNullOrEmpty("newPassword", newPassword);
+            bool isPreviouslyUsed = false;
+            var settings = new MembershipPasswordSettings(portalId);
+            if (settings.EnablePasswordHistory)
+            {
+                if (!this.IsPasswordPreviouslyUsed(userId, newPassword))
+                {
+                    if (autoAdd)
+                    {
+                        this.AddPasswordHistory(userId, newPassword, settings.NumberOfPasswordsStored, settings.NumberOfDaysBeforePasswordReuse);
+                    }
+                }
+                else
+                {
+                    isPreviouslyUsed = true;
+                }
+            }
+            return isPreviouslyUsed;
+        }
 
         /// <summary>
         /// checks if the new password matches a previously used password when hashed with the same salt

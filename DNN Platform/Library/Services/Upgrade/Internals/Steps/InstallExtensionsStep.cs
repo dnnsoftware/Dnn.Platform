@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     /// -----------------------------------------------------------------------------    
     public class InstallExtensionsStep : BaseInstallationStep
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallExtensionsStep));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallExtensionsStep));
         #region Implementation of IInstallationStep
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 }
                 this.Percentage = percentForEachStep * counter++;
             }
-			this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
+            this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
         }
 
         #endregion

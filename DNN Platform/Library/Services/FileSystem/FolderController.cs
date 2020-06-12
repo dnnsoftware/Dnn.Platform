@@ -18,8 +18,8 @@ using DotNetNuke.Entities.Portals;
 namespace DotNetNuke.Services.FileSystem
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : FolderController
+    /// Project  : DotNetNuke
+    /// Class    : FolderController
     ///
     /// -----------------------------------------------------------------------------
     /// <summary>

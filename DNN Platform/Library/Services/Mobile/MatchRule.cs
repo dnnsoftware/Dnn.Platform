@@ -17,71 +17,71 @@ using DotNetNuke.Entities.Modules;
 namespace DotNetNuke.Services.Mobile
 {
     [Serializable]
-	public class MatchRule : IMatchRule, IHydratable
-	{
-		private int _id = -1;
+    public class MatchRule : IMatchRule, IHydratable
+    {
+        private int _id = -1;
 
-		/// <summary>
-		/// Match rule's primary key.
-		/// </summary>
+        /// <summary>
+        /// Match rule's primary key.
+        /// </summary>
         [XmlAttribute]
-		public int Id
-		{
-			get
-			{
-				return this._id;
-			}
-			set
-			{
-				this._id = value;
-			}
-		}
+        public int Id
+        {
+            get
+            {
+                return this._id;
+            }
+            set
+            {
+                this._id = value;
+            }
+        }
 
-		/// <summary>
-		/// Capability's name.
-		/// </summary>
+        /// <summary>
+        /// Capability's name.
+        /// </summary>
         [XmlAttribute]
         public string Capability
-		{
-			get;
-			set;
-		}
+        {
+            get;
+            set;
+        }
 
-		/// <summary>
-		/// The value to match the capability from request.
-		/// </summary>
+        /// <summary>
+        /// The value to match the capability from request.
+        /// </summary>
         [XmlAttribute]
         public string Expression
-		{
-			get;
-			set;
-		}
+        {
+            get;
+            set;
+        }
 
-		/// <summary>
-		/// IHydratable.KeyID.
-		/// </summary>
+        /// <summary>
+        /// IHydratable.KeyID.
+        /// </summary>
         [XmlAttribute]
         public int KeyID
-		{
-			get
-			{
-				return this.Id;
-			}
-			set
-			{
-				this.Id = value;
-			}
-		}
+        {
+            get
+            {
+                return this.Id;
+            }
+            set
+            {
+                this.Id = value;
+            }
+        }
 
-		/// <summary>
-		/// Fill the object with data from database.
-		/// </summary>
-		/// <param name="dr">the data reader.</param>
-		public void Fill(System.Data.IDataReader dr)
-		{
-			this.Id = Convert.ToInt32(dr["Id"]);
-			this.Capability = dr["Capability"].ToString();
-			this.Expression = dr["Expression"].ToString();
-		}
-	}
+        /// <summary>
+        /// Fill the object with data from database.
+        /// </summary>
+        /// <param name="dr">the data reader.</param>
+        public void Fill(System.Data.IDataReader dr)
+        {
+            this.Id = Convert.ToInt32(dr["Id"]);
+            this.Capability = dr["Capability"].ToString();
+            this.Expression = dr["Expression"].ToString();
+        }
+    }
 }

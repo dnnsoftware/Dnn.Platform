@@ -14,9 +14,9 @@ using DotNetNuke.Services.Localization;
 namespace DotNetNuke.UI.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Modules
-    /// Class	 : ModuleUserControlBase
+    /// Class    : ModuleUserControlBase
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModuleUserControlBase is a base class for Module Controls that inherits from the
@@ -34,10 +34,10 @@ namespace DotNetNuke.UI.Modules
             return Localization.GetString(key, this.LocalResourceFile);
         }
 
-		protected string LocalizeSafeJsString(string key)
-		{
-			return Localization.GetSafeJSString(key, this.LocalResourceFile);
-		}
+        protected string LocalizeSafeJsString(string key)
+        {
+            return Localization.GetSafeJSString(key, this.LocalResourceFile);
+        }
 
         #region IModuleControl Members
 

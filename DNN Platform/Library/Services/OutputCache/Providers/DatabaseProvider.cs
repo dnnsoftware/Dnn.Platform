@@ -95,15 +95,15 @@ namespace DotNetNuke.Services.OutputCache.Providers
                         return false;
                     }
 
-                	var expireTime = Convert.ToDateTime(dr["Expiration"]);
-					if (expireTime < DateTime.UtcNow)
-					{
-						DataProvider.Instance().RemoveOutputCacheItem(tabId);
-						return false;
-					}
+                    var expireTime = Convert.ToDateTime(dr["Expiration"]);
+                    if (expireTime < DateTime.UtcNow)
+                    {
+                        DataProvider.Instance().RemoveOutputCacheItem(tabId);
+                        return false;
+                    }
 
-					context.Response.BinaryWrite(Encoding.Default.GetBytes(dr["Data"].ToString()));
-                	return true;
+                    context.Response.BinaryWrite(Encoding.Default.GetBytes(dr["Data"].ToString()));
+                    return true;
                 }
             }
             finally

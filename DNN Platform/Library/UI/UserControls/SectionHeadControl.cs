@@ -28,7 +28,7 @@ namespace DotNetNuke.UI.UserControls
     /// -----------------------------------------------------------------------------
     public class SectionHeadControl : UserControl
     {
-		#region "Private Members"
+        #region "Private Members"
 
         private bool _includeRule;
         private bool _isExpanded = true;
@@ -38,10 +38,10 @@ namespace DotNetNuke.UI.UserControls
         protected ImageButton imgIcon;
         protected Label lblTitle;
         protected Panel pnlRule;
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
 
         /// -----------------------------------------------------------------------------
@@ -211,10 +211,10 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Event Handlers"
-		
+        #region "Event Handlers"
+        
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Assign resource key to label for localization
@@ -229,7 +229,7 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-				// set the resourcekey attribute to the label
+                // set the resourcekey attribute to the label
                 if (!String.IsNullOrEmpty(this.ResourceKey))
                 {
                     this.lblTitle.Attributes["resourcekey"] = this.ResourceKey;
@@ -262,7 +262,7 @@ namespace DotNetNuke.UI.UserControls
                     this.lblTitle.Attributes.Add("style", "cursor: pointer");
                     DNNClientAPI.EnableMinMax(this.imgIcon, ctl, !this.IsExpanded, this.Page.ResolveUrl(this.MinImageUrl), this.Page.ResolveUrl(this.MaxImageUrl), DNNClientAPI.MinMaxPersistanceType.Page);
                 }
-				
+                
                 // optionlly show hr
                 this.pnlRule.Visible = this._includeRule;
             }
@@ -280,7 +280,7 @@ namespace DotNetNuke.UI.UserControls
                 this.IsExpanded = !this.IsExpanded;
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

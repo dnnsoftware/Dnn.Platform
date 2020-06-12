@@ -293,7 +293,7 @@ namespace DotNetNuke.Common.Utilities
             }
             else if (objField is DateTime)
             {
-				// compare the Date part of the DateTime with the DatePart of the NullDate ( this avoids subtle time differences )
+                // compare the Date part of the DateTime with the DatePart of the NullDate ( this avoids subtle time differences )
                 if (Convert.ToDateTime(objField).Date == NullDate.Date)
                 {
                     returnValue = objDBNull;

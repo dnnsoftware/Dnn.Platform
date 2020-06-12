@@ -41,6 +41,6 @@ namespace DotNetNuke.Modules.Groups.Components {
         internal const string SharedResourcesPath = "~/DesktopModules/SocialGroups/App_LocalResources/SharedResources.resx";
         internal const string ModulePath = "~/DesktopModules/SocialGroups/";
 
-		internal const string DefaultGroupName = "Social Groups";
+        internal const string DefaultGroupName = "Social Groups";
     }
 }

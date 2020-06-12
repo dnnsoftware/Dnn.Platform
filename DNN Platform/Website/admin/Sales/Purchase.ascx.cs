@@ -157,7 +157,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     }
                     if (strPaymentProcessor == "PayPal")
                     {
-						// build secure PayPal URL
+                        // build secure PayPal URL
                         string strPayPalURL = "";
                         strPayPalURL = "https://www.paypal.com/xclick/business=" + Globals.HTTPPOSTEncode(strProcessorUserId);
                         strPayPalURL = strPayPalURL + "&item_name=" +

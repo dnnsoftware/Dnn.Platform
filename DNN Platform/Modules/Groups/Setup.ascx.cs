@@ -58,21 +58,21 @@ namespace DotNetNuke.Modules.Groups
             ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupLoadView, GroupMode.List.ToString());
             ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupViewPage, tab.TabID.ToString(CultureInfo.InvariantCulture));
 
-			// Default Social Groups
-	        var defaultGroup = RoleController.GetRoleGroupByName(this.PortalId, Constants.DefaultGroupName);
-	        var groupId = -2;
-			if (defaultGroup != null)
-			{
-				groupId = defaultGroup.RoleGroupID;
-			}
-			else
-			{
-				var groupInfo = new RoleGroupInfo();
+            // Default Social Groups
+            var defaultGroup = RoleController.GetRoleGroupByName(this.PortalId, Constants.DefaultGroupName);
+            var groupId = -2;
+            if (defaultGroup != null)
+            {
+                groupId = defaultGroup.RoleGroupID;
+            }
+            else
+            {
+                var groupInfo = new RoleGroupInfo();
                 groupInfo.PortalID = this.PortalId;
                 groupInfo.RoleGroupName = Constants.DefaultGroupName;
                 groupInfo.Description = Constants.DefaultGroupName;
-				groupId = RoleController.AddRoleGroup(groupInfo);
-			}
+                groupId = RoleController.AddRoleGroup(groupInfo);
+            }
             ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.DefaultRoleGroupSetting, groupId.ToString());
 
             this.Response.Redirect(this.Request.RawUrl);
@@ -149,7 +149,7 @@ namespace DotNetNuke.Modules.Groups
 
         private int AddModule(TabInfo tab, int portalId, string moduleName, string pane)
         {
-			var module = ModuleController.Instance.GetTabModules(tab.TabID).Values.SingleOrDefault(m => m.DesktopModule.ModuleName == moduleName);
+            var module = ModuleController.Instance.GetTabModules(tab.TabID).Values.SingleOrDefault(m => m.DesktopModule.ModuleName == moduleName);
             int id = -1;
             if (module == null)
             {

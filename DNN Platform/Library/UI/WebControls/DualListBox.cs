@@ -22,7 +22,7 @@ namespace DotNetNuke.UI.WebControls
 {
     public class DualListBox : WebControl, IPostBackEventHandler, IPostBackDataHandler
     {
-		#region Private Members
+        #region Private Members
 
         private readonly Style _AvailableListBoxStyle = new Style();
         private readonly Style _ButtonStyle = new Style();
@@ -32,7 +32,7 @@ namespace DotNetNuke.UI.WebControls
         private List<string> _AddValues;
         private List<string> _RemoveValues;
 
-		#endregion
+        #endregion
 
         public DualListBox()
         {
@@ -42,7 +42,7 @@ namespace DotNetNuke.UI.WebControls
             this.ShowRemoveAllButton = true;
         }
 
-		#region Public Properties
+        #region Public Properties
 
         public string AddAllImageURL { get; set; }
 
@@ -98,7 +98,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-		#region Style Properties
+        #region Style Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -179,9 +179,9 @@ namespace DotNetNuke.UI.WebControls
                 return this._SelectedListBoxStyle;
             }
         }
-		#endregion
-		
-		#endregion
+        #endregion
+        
+        #endregion
 
         #region IPostBackDataHandler Members
 
@@ -239,17 +239,17 @@ namespace DotNetNuke.UI.WebControls
         }
 
         #endregion
-		
-		#region Events
+        
+        #region Events
 
         public event DualListBoxEventHandler AddButtonClick;
         public event EventHandler AddAllButtonClick;
         public event DualListBoxEventHandler RemoveButtonClick;
         public event EventHandler RemoveAllButtonClick;
-		
-		#endregion
+        
+        #endregion
 
-		#region Private Methods
+        #region Private Methods
 
         private NameValueCollection GetList(string listType, object dataSource)
         {
@@ -312,7 +312,7 @@ namespace DotNetNuke.UI.WebControls
                     imageURL = this.RemoveAllImageURL;
                     break;
             }
-			
+            
             // Render Hyperlink
             writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackEventReference(this.GetPostBackOptions(buttonType)));
             writer.AddAttribute(HtmlTextWriterAttribute.Title, buttonText);
@@ -331,7 +331,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.Write(buttonText);
             }
-			
+            
             // End of Hyperlink
             writer.RenderEndTag();
 
@@ -344,7 +344,7 @@ namespace DotNetNuke.UI.WebControls
 
         private void RenderButtons(HtmlTextWriter writer)
         {
-			// render table
+            // render table
             writer.RenderBeginTag(HtmlTextWriterTag.Table);
 
             if (this.ShowAddButton)
@@ -364,7 +364,7 @@ namespace DotNetNuke.UI.WebControls
 
             writer.Write("&nbsp;");
 
-        	// End of Button Cell
+            // End of Button Cell
             writer.RenderEndTag();
 
             // Render end of Button Row
@@ -394,20 +394,20 @@ namespace DotNetNuke.UI.WebControls
                     {
                         style.AddAttributesToRender(writer);
                     }
-					
+                    
                     // Render ListBox
                     writer.AddAttribute(HtmlTextWriterAttribute.Multiple, "multiple");
                     writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_" + listType);
                     writer.RenderBeginTag(HtmlTextWriterTag.Select);
                     for (int i = 0; i <= list.Count - 1; i++)
                     {
-						// Render option tags for each item
+                        // Render option tags for each item
                         writer.AddAttribute(HtmlTextWriterAttribute.Value, list.Get(i));
                         writer.RenderBeginTag(HtmlTextWriterTag.Option);
                         writer.Write(list.GetKey(i));
                         writer.RenderEndTag();
                     }
-					
+                    
                     // Render ListBox end
                     writer.RenderEndTag();
                 }
@@ -416,7 +416,7 @@ namespace DotNetNuke.UI.WebControls
 
         private void RenderHeader(HtmlTextWriter writer)
         {
-			// render Header row
+            // render Header row
             writer.RenderBeginTag(HtmlTextWriterTag.Tr);
             if (this.HeaderStyle != null)
             {
@@ -442,7 +442,7 @@ namespace DotNetNuke.UI.WebControls
 
         private void RenderListBoxes(HtmlTextWriter writer)
         {
-			// render List Boxes row
+            // render List Boxes row
             writer.RenderBeginTag(HtmlTextWriterTag.Tr);
 
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
@@ -472,10 +472,10 @@ namespace DotNetNuke.UI.WebControls
             }
             return postBackOptions;
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Protected Methods
+        #region Protected Methods
 
         protected void OnAddButtonClick(DualListBoxEventArgs e)
         {
@@ -520,7 +520,7 @@ namespace DotNetNuke.UI.WebControls
 
         protected override void RenderContents(HtmlTextWriter writer)
         {
-			// render table
+            // render table
             if (this.ContainerStyle != null)
             {
                 this.ContainerStyle.AddAttributesToRender(writer);
@@ -536,7 +536,7 @@ namespace DotNetNuke.UI.WebControls
             // Render end of table
             writer.RenderEndTag();
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

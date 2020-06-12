@@ -24,16 +24,16 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         private static readonly Regex SrcRegex = new Regex("src=[']?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-		#region "Private Members"
+        #region "Private Members"
 
         private string _alignment;
         private bool _forceLinks = true;
         private bool _includeActiveTab = true;
         private string _level;
 
-		#endregion
+        #endregion
 
-		#region "Public Members"
+        #region "Public Members"
 
         public string Alignment
         {
@@ -88,10 +88,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 this._includeActiveTab = value;
             }
         }
-		
-		#endregion
-		
-		#region "Event Handlers"
+        
+        #endregion
+        
+        #region "Event Handlers"
 
         protected override void OnLoad(EventArgs e)
         {
@@ -110,34 +110,34 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 if (this.Separator.IndexOf("src=", StringComparison.Ordinal) != -1)
                 {
-					// Add the skinpath to image paths
+                    // Add the skinpath to image paths
                     this.Separator = SrcRegex.Replace(this.Separator, "$&" + this.PortalSettings.ActiveTab.SkinPath);
                 }
-				
-				// Wrap in a span
+                
+                // Wrap in a span
                 this.Separator = string.Format("<span class=\"{0}\">{1}</span>", strCssClass, this.Separator);
             }
             else
             {
                 this.Separator = " ";
             }
-			
+            
             // build links
             string strLinks = "";
 
             strLinks = this.BuildLinks(this.Level, strSeparator, strCssClass);
-			
-			// Render links, even if nothing is returned with the currently set level
+            
+            // Render links, even if nothing is returned with the currently set level
             if (String.IsNullOrEmpty(strLinks) && this.ForceLinks)
             {
                 strLinks = this.BuildLinks("", strSeparator, strCssClass);
             }
             this.lblLinks.Text = strLinks;
         }
-		
-		#endregion
-		
-		#region "Private Methods"
+        
+        #endregion
+        
+        #region "Private Methods"
 
         private string BuildLinks(string strLevel, string strSeparator, string strCssClass)
         {
@@ -198,7 +198,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private string ProcessLink(string sLink, int iLinksLength)
         {
-			// wrap in a div if set to vertical
+            // wrap in a div if set to vertical
             if (String.IsNullOrEmpty(sLink))
             {
                 return "";
@@ -209,7 +209,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
             else if (!String.IsNullOrEmpty(this.Separator) && iLinksLength > 0)
             {
-				// If not vertical, then render the separator
+                // If not vertical, then render the separator
                 sLink = string.Concat(this.Separator, sLink);
             }
             return sLink;
@@ -219,7 +219,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             return string.Format("<a class=\"{0}\" href=\"{1}\">{2}</a>", strCssClass, strURL, strTabName);
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

@@ -41,7 +41,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     if (this.ActionRoot.Visible)
                     {
-						// Is Root Menu visible?
+                        // Is Root Menu visible?
                         if (this.Controls.Count > 0)
                         {
                             this.Controls.Clear();
@@ -54,7 +54,7 @@ namespace DotNetNuke.UI.Containers
                         {
                             if (action.Title == "~")
                             {
-								// not supported in this Action object
+                                // not supported in this Action object
                             }
                             else
                             {
@@ -79,7 +79,7 @@ namespace DotNetNuke.UI.Containers
                         }
                     }
                 }
-				
+                
                 // Need to determine if this action list actually has any items.
                 if (this.Controls.Count > 0)
                 {

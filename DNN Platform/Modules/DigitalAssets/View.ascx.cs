@@ -268,8 +268,8 @@ namespace DotNetNuke.Modules.DigitalAssets
 
             this.SetupNodeAttributes(rootNode, this.GetPermissionsForRootFolder(rootFolder.Permissions), rootFolder);
 
-			this.FolderTreeView.Nodes.Clear();
-			this.DestinationTreeView.Nodes.Clear();
+            this.FolderTreeView.Nodes.Clear();
+            this.DestinationTreeView.Nodes.Clear();
 
             this.FolderTreeView.Nodes.Add(rootNode);
             this.DestinationTreeView.Nodes.Add(rootNode.Clone());

@@ -27,15 +27,15 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class CleanupInstaller : FileInstaller
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CleanupInstaller));
-		#region "Private Members"
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CleanupInstaller));
+        #region "Private Members"
 
         private string _fileName;
         private string _glob;
 
-		#endregion
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -47,7 +47,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         #endregion
 
-	#region "Private Methods"
+    #region "Private Methods"
 
         private bool ProcessCleanupFile()
         {
@@ -94,10 +94,10 @@ namespace DotNetNuke.Services.Installer.Installers
             this.Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
             return true;
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected Methods"
+        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -109,13 +109,13 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-				// Backup File
+                // Backup File
                 if (File.Exists(this.PhysicalBasePath + insFile.FullName))
                 {
                     Util.BackupFile(insFile, this.PhysicalBasePath, this.Log);
                 }
-				
-				// Delete file
+                
+                // Delete file
                 Util.DeleteFile(insFile, this.PhysicalBasePath, this.Log);
                 return true;
             }
@@ -160,10 +160,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 Util.RestoreFile(installFile, this.PhysicalBasePath, this.Log);
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
 
         /// -----------------------------------------------------------------------------
@@ -174,7 +174,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
-			// Do nothing
+            // Do nothing
             base.Commit();
         }
 
@@ -231,7 +231,7 @@ namespace DotNetNuke.Services.Installer.Installers
         public override void UnInstall()
         {
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

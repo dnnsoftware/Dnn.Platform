@@ -16,9 +16,9 @@ using DotNetNuke.Entities.Modules;
 namespace DotNetNuke.Security.Permissions
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : TabPermissionInfo
+    /// Class    : TabPermissionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// TabPermissionInfo provides the Entity Layer for Tab Permissions
@@ -28,15 +28,15 @@ namespace DotNetNuke.Security.Permissions
     [XmlRoot("permission")]
     public class TabPermissionInfo : PermissionInfoBase, IHydratable
     {
-		#region "Private Members"
-		
+        #region "Private Members"
+        
         private int _TabID;
         // local property declarations
-		private int _TabPermissionID;
-		
-		#endregion
-		
-		#region "Constructors"
+        private int _TabPermissionID;
+        
+        #endregion
+        
+        #region "Constructors"
 
          /// -----------------------------------------------------------------------------
         /// <summary>
@@ -63,10 +63,10 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionKey = permission.PermissionKey;
             this.PermissionName = permission.PermissionName;
         }
-		
-		#endregion
-		
-		#region "Public Properties"
+        
+        #endregion
+        
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -105,8 +105,8 @@ namespace DotNetNuke.Security.Permissions
                 this._TabID = value;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
         #region IHydratable Members
 
@@ -119,7 +119,7 @@ namespace DotNetNuke.Security.Permissions
         public void Fill(IDataReader dr)
         {
             // Call the base classes fill method to ppoulate base class proeprties
-			base.FillInternal(dr);
+            base.FillInternal(dr);
             this.TabPermissionID = Null.SetNullInteger(dr["TabPermissionID"]);
             this.TabID = Null.SetNullInteger(dr["TabID"]);
         }

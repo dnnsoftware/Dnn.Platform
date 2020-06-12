@@ -105,9 +105,9 @@ namespace DotNetNuke.Modules.Groups.Controls
             };
 
             if (this.RoleGroupId >= -1)
-	        {
-		        whereCls.Add(grp => grp.RoleGroupID == this.RoleGroupId);
-	        }
+            {
+                whereCls.Add(grp => grp.RoleGroupID == this.RoleGroupId);
+            }
 
             if (this.DisplayCurrentUserGroups)
                 whereCls.Add(grp => this.currentUser.IsInRole(grp.RoleName));

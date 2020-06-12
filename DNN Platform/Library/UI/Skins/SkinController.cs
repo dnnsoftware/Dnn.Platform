@@ -29,8 +29,8 @@ using ICSharpCode.SharpZipLib.Zip;
 namespace DotNetNuke.UI.Skins
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : SkinController
+    /// Project  : DotNetNuke
+    /// Class    : SkinController
     ///
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -41,7 +41,7 @@ namespace DotNetNuke.UI.Skins
     /// -----------------------------------------------------------------------------
     public class SkinController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinController));
         private const string GlobalSkinPrefix = "[G]";
         private const string PortalSystemSkinPrefix = "[S]";
         private const string PortalSkinPrefix = "[L]";
@@ -49,8 +49,8 @@ namespace DotNetNuke.UI.Skins
         private static readonly Regex SdirRegex = new Regex("\\[s]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex LdirRegex = new Regex("\\[l]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-		#region Public Shared Properties
-		
+        #region Public Shared Properties
+        
         public static string RootSkin
         {
             get
@@ -66,10 +66,10 @@ namespace DotNetNuke.UI.Skins
                 return "Containers";
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Public Shared Methods
+        #region Public Shared Methods
 
         private static void AddSkinFiles(List<KeyValuePair<string, string>> skins, string skinRoot, string skinFolder, string skinPrefix)
         {
@@ -77,9 +77,9 @@ namespace DotNetNuke.UI.Skins
             {
                 string folder = skinFolder.Substring(skinFolder.LastIndexOf("\\") + 1);
 
-				string key = (skinPrefix == PortalSystemSkinPrefix || skinPrefix == PortalSkinPrefix ? "Site: " : "Host: ") 
-								+ FormatSkinName(folder, Path.GetFileNameWithoutExtension(skinFile));
-				string value = skinPrefix + skinRoot + "/" + folder + "/" + Path.GetFileName(skinFile);
+                string key = (skinPrefix == PortalSystemSkinPrefix || skinPrefix == PortalSkinPrefix ? "Site: " : "Host: ") 
+                                + FormatSkinName(folder, Path.GetFileNameWithoutExtension(skinFile));
+                string value = skinPrefix + skinRoot + "/" + folder + "/" + Path.GetFileName(skinFile);
                 skins.Add(new KeyValuePair<string, string>(key, value)); 
             }
         }
@@ -120,7 +120,7 @@ namespace DotNetNuke.UI.Skins
             {
                 foreach (string skinFolder in Directory.GetDirectories(skinsFolder))
                 {
-					AddSkinFiles(skins, skinRoot, skinFolder, skinPrefix);
+                    AddSkinFiles(skins, skinRoot, skinFolder, skinPrefix);
                 }
             }
         }
@@ -178,7 +178,7 @@ namespace DotNetNuke.UI.Skins
             }
             if (canDelete)
             {
-				// Check if used for Tabs or Modules
+                // Check if used for Tabs or Modules
                 canDelete = DataProvider.Instance().CanDeleteSkin(skinType, skinFolder);
             }
             return canDelete;
@@ -200,18 +200,18 @@ namespace DotNetNuke.UI.Skins
             string message = title;
             if (isError)
             {
-				message = "<span class=\"NormalRed\">" + title + "</span>";
+                message = "<span class=\"NormalRed\">" + title + "</span>";
             }
             switch (level)
             {
                 case -1:
-					message = "<hr /><br /><strong>" + message + "</strong>";
+                    message = "<hr /><br /><strong>" + message + "</strong>";
                     break;
                 case 0:
-					message = "<br /><br /><strong>" + message + "</strong>";
+                    message = "<br /><br /><strong>" + message + "</strong>";
                     break;
                 case 1:
-					message = "<br /><strong>" + message + "</strong>";
+                    message = "<br /><strong>" + message + "</strong>";
                     break;
                 default:
                     message = "<br /><li>" + message + "</li>";
@@ -320,8 +320,8 @@ namespace DotNetNuke.UI.Skins
                 return skinFile;
                 
             }
-			
-			// portal folder
+            
+            // portal folder
             switch (skinFile.ToLowerInvariant())
             {
                 case "skin":
@@ -454,13 +454,13 @@ namespace DotNetNuke.UI.Skins
                 objZipEntry.CheckZipEntry();
                 if (!objZipEntry.IsDirectory)
                 {
-					// validate file extension
+                    // validate file extension
                     strExtension = objZipEntry.Name.Substring(objZipEntry.Name.LastIndexOf(".") + 1);
                     var extraExtensions = new List<string> { ".ASCX", ".HTM", ".HTML", ".CSS", ".SWF", ".RESX", ".XAML", ".JS" };
                     if (Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension, extraExtensions))
                     {
                         // process embedded zip files
-						if (objZipEntry.Name.Equals(RootSkin.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
+                        if (objZipEntry.Name.Equals(RootSkin.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
                         {
                             using (var objMemoryStream = new MemoryStream())
                             {
@@ -498,18 +498,18 @@ namespace DotNetNuke.UI.Skins
                                 strMessage += FormatMessage(CREATE_DIR, Path.GetDirectoryName(strFileName), 2, false);
                                 Directory.CreateDirectory(Path.GetDirectoryName(strFileName));
                             }
-							
-							// remove the old file
+                            
+                            // remove the old file
                             if (File.Exists(strFileName))
                             {
                                 File.SetAttributes(strFileName, FileAttributes.Normal);
                                 File.Delete(strFileName);
                             }
-							
-							// create the new file
+                            
+                            // create the new file
                             objFileStream = File.Create(strFileName);
-							
-							// unzip the file
+                            
+                            // unzip the file
                             strMessage += FormatMessage(WRITE_FILE, Path.GetFileName(strFileName), 2, false);
                             intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
                             while (intSize > 0)
@@ -548,8 +548,8 @@ namespace DotNetNuke.UI.Skins
             // process the list of skin files
             var NewSkin = new SkinFileProcessor(rootPath, skinRoot, skinName);
             strMessage += NewSkin.ProcessList(arrSkinFiles, SkinParser.Portable);
-			
-			// log installation event
+            
+            // log installation event
             try
             {
                 var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
@@ -568,7 +568,7 @@ namespace DotNetNuke.UI.Skins
             }
             return strMessage;
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

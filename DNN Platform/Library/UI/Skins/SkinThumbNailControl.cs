@@ -23,22 +23,22 @@ namespace DotNetNuke.UI.Skins
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// SkinThumbNailControl is a user control that provides that displays the skins
-    /// 	as a Radio ButtonList with Thumbnail Images where available
+    ///     as a Radio ButtonList with Thumbnail Images where available
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public abstract class SkinThumbNailControl : UserControlBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinThumbNailControl));
-		#region "Private Members"
-		
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinThumbNailControl));
+        #region "Private Members"
+        
         protected HtmlGenericControl ControlContainer;
         protected RadioButtonList OptSkin;
-		
-		#endregion
+        
+        #endregion
 
-		#region "Properties"
+        #region "Properties"
 
         public string Border
         {
@@ -111,7 +111,7 @@ namespace DotNetNuke.UI.Skins
             }
             set
             {
-				// select current skin
+                // select current skin
                 int intIndex;
                 for (intIndex = 0; intIndex <= this.OptSkin.Items.Count - 1; intIndex++)
                 {
@@ -139,10 +139,10 @@ namespace DotNetNuke.UI.Skins
                 }
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -197,8 +197,8 @@ namespace DotNetNuke.UI.Skins
             {
                 return strSkinFile;
             }
-			
-			// portal folder
+            
+            // portal folder
             switch (strSkinFile.ToLowerInvariant())
             {
                 case "skin":
@@ -241,58 +241,58 @@ namespace DotNetNuke.UI.Skins
                 try
                 {
                     objImage = Image.FromFile(strImage);
-					
-					// scale the image to prevent distortion
+                    
+                    // scale the image to prevent distortion
                     int intWidth;
                     int intHeight;
                     double dblScale;
                     if (objImage.Height > objImage.Width)
                     {
-						// The height was larger, so scale the width 
+                        // The height was larger, so scale the width 
                         dblScale = (double)intSize / objImage.Height;
                         intHeight = intSize;
                         intWidth = Convert.ToInt32(objImage.Width * dblScale);
                     }
                     else
                     {
-						// The width was larger, so scale the height 
+                        // The width was larger, so scale the height 
                         dblScale = (double)intSize / objImage.Width;
                         intWidth = intSize;
                         intHeight = Convert.ToInt32(objImage.Height * dblScale);
                     }
                     
-					// create the thumbnail image
-					var objThumbnail = objImage.GetThumbnailImage(intWidth, intHeight, null, IntPtr.Zero);
+                    // create the thumbnail image
+                    var objThumbnail = objImage.GetThumbnailImage(intWidth, intHeight, null, IntPtr.Zero);
                     
-					// delete the old file ( if it exists )
-					if (File.Exists(strThumbnail))
+                    // delete the old file ( if it exists )
+                    if (File.Exists(strThumbnail))
                     {
                         File.Delete(strThumbnail);
                     }
                     
-					// save the thumbnail image 
-					objThumbnail.Save(strThumbnail, objImage.RawFormat);
+                    // save the thumbnail image 
+                    objThumbnail.Save(strThumbnail, objImage.RawFormat);
                     
-					// set the file attributes
-					File.SetAttributes(strThumbnail, FileAttributes.Normal);
+                    // set the file attributes
+                    File.SetAttributes(strThumbnail, FileAttributes.Normal);
                     File.SetLastWriteTime(strThumbnail, File.GetLastWriteTime(strImage));
 
                     // tidy up
                     objImage.Dispose();
                     objThumbnail.Dispose();
                 }
-				catch (Exception ex)
-				{
-					Logger.Error(ex);
-				}
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
             }
             strThumbnail = Globals.ApplicationPath + "\\" + strThumbnail.Substring(strThumbnail.IndexOf("portals\\", StringComparison.InvariantCultureIgnoreCase));
             return strThumbnail;
         }
 
-		#endregion
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -321,7 +321,7 @@ namespace DotNetNuke.UI.Skins
             {
                 this.AddDefaultSkin();
             }
-			
+            
             // load host skins (includeNotSpecified = false as we have already added it)
             this.LoadHostSkins(false);
 
@@ -345,8 +345,8 @@ namespace DotNetNuke.UI.Skins
             {
                 this.AddDefaultSkin();
             }
-			
-			// load host skins
+            
+            // load host skins
             var strRoot = Globals.HostMapPath + this.SkinRoot;
             if (Directory.Exists(strRoot))
             {
@@ -376,8 +376,8 @@ namespace DotNetNuke.UI.Skins
             {
                 this.AddDefaultSkin();
             }
-			
-			// load portal skins
+            
+            // load portal skins
             var strRoot = this.PortalSettings.HomeDirectoryMapPath + this.SkinRoot;
             if (Directory.Exists(strRoot))
             {
@@ -417,8 +417,8 @@ namespace DotNetNuke.UI.Skins
                 }
             }
         }
-		
-		#endregion
+        
+        #endregion
 
     }
 }

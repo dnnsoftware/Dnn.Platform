@@ -19,24 +19,24 @@ namespace DotNetNuke.Services.Search
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     public abstract class SearchDataStoreProvider
     {
-		#region "Shared/Static Methods"
+        #region "Shared/Static Methods"
 
         // return the provider
         public static SearchDataStoreProvider Instance()
         {
             return ComponentFactory.GetComponent<SearchDataStoreProvider>();
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Abstract Methods"
+        #region "Abstract Methods"
 
         public abstract void StoreSearchItems(SearchItemInfoCollection searchItems);
 
         public abstract SearchResultsInfoCollection GetSearchResults(int portalId, string criteria);
 
         public abstract SearchResultsInfoCollection GetSearchItems(int portalId, int tabId, int moduleId);
-		
-		#endregion
+        
+        #endregion
     }
 }

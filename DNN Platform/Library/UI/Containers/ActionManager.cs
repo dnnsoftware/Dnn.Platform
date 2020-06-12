@@ -27,9 +27,9 @@ using DotNetNuke.UI.WebControls;
 namespace DotNetNuke.UI.Containers
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Containers
-    /// Class	 : ActionManager
+    /// Class    : ActionManager
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ActionManager is a helper class that provides common Action Behaviours that can
@@ -38,15 +38,15 @@ namespace DotNetNuke.UI.Containers
     /// -----------------------------------------------------------------------------
     public class ActionManager
     {
-		#region Private Members
+        #region Private Members
 
         private readonly PortalSettings PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
         private readonly HttpRequest Request = HttpContext.Current.Request;
         private readonly HttpResponse Response = HttpContext.Current.Response;
 
-		#endregion
+        #endregion
 
-		#region Constructors
+        #region Constructors
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -57,10 +57,10 @@ namespace DotNetNuke.UI.Containers
         {
             this.ActionControl = actionControl;
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Public Properties
+        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -85,13 +85,13 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-		#endregion
+        #endregion
 
-		#region Private Methods
+        #region Private Methods
 
         private void ClearCache(ModuleAction Command)
         {
-			// synchronize cache
+            // synchronize cache
             ModuleController.SynchronizeModule(this.ModuleContext.ModuleId);
 
             // Redirect to the same page to pick up changes
@@ -203,9 +203,9 @@ namespace DotNetNuke.UI.Containers
             this.Response.Redirect(this.Request.RawUrl, true);
         }
 
-		#endregion
+        #endregion
 
-		#region Public Methods
+        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -220,17 +220,17 @@ namespace DotNetNuke.UI.Containers
                 DNNNode objRootNode = objNodes[0];
                 if (objRootNode.HasNodes && objRootNode.DNNNodes.Count == 0)
                 {
-					// if has pending node then display control
+                    // if has pending node then display control
                     return true;
                 }
                 else if (objRootNode.DNNNodes.Count > 0)
                 {
-					// verify that at least one child is not a break
+                    // verify that at least one child is not a break
                     foreach (DNNNode childNode in objRootNode.DNNNodes)
                     {
                         if (!childNode.IsBreak)
                         {
-							// Found a child so make Visible
+                            // Found a child so make Visible
                             return true;
                         }
                     }
@@ -392,7 +392,7 @@ namespace DotNetNuke.UI.Containers
             }
             return bProcessed;
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

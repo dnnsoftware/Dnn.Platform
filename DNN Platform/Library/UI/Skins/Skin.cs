@@ -52,9 +52,9 @@ using Globals = DotNetNuke.Common.Globals;
 namespace DotNetNuke.UI.Skins
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Skins
-    /// Class	 : Skin
+    /// Class    : Skin
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// Skin is the base for the Skins
@@ -72,7 +72,7 @@ namespace DotNetNuke.UI.Skins
         public static string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
 
         public const string OnInitMessage = "Skin_InitMessage";
-		public const string OnInitMessageType = "Skin_InitMessageType";
+        public const string OnInitMessageType = "Skin_InitMessageType";
 
         private readonly ModuleCommunicate _communicator = new ModuleCommunicate();
         // ReSharper restore InconsistentNaming
@@ -480,18 +480,18 @@ namespace DotNetNuke.UI.Skins
             }
             else
             {
-				// If request localized page which haven't complete translate yet, redirect to default language version.
-	            var redirectUrl = Globals.AccessDeniedURL(Localization.GetString("TabAccess.Error"));
+                // If request localized page which haven't complete translate yet, redirect to default language version.
+                var redirectUrl = Globals.AccessDeniedURL(Localization.GetString("TabAccess.Error"));
                 
                 // Current locale will use default if did'nt find any
                 Locale currentLocale = LocaleController.Instance.GetCurrentLocale(this.PortalSettings.PortalId);
-	            if (this.PortalSettings.ContentLocalizationEnabled &&
-	                TabController.CurrentPage.CultureCode != currentLocale.Code)
-	            {
-		            redirectUrl = new LanguageTokenReplace { Language = currentLocale.Code }.ReplaceEnvironmentTokens("[URL]");
-	            }
+                if (this.PortalSettings.ContentLocalizationEnabled &&
+                    TabController.CurrentPage.CultureCode != currentLocale.Code)
+                {
+                    redirectUrl = new LanguageTokenReplace { Language = currentLocale.Code }.ReplaceEnvironmentTokens("[URL]");
+                }
 
-				this.Response.Redirect(redirectUrl, true);
+                this.Response.Redirect(redirectUrl, true);
             }
             return success;
         }
@@ -626,12 +626,12 @@ namespace DotNetNuke.UI.Skins
 
             if (HttpContext.Current != null && HttpContext.Current.Items.Contains(OnInitMessage))
             {
-	            var messageType = ModuleMessage.ModuleMessageType.YellowWarning;
-				if (HttpContext.Current.Items.Contains(OnInitMessageType))
-				{
-					messageType = (ModuleMessage.ModuleMessageType)Enum.Parse(typeof(ModuleMessage.ModuleMessageType), HttpContext.Current.Items[OnInitMessageType].ToString(), true);
-				}
-				AddPageMessage(this, string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType);
+                var messageType = ModuleMessage.ModuleMessageType.YellowWarning;
+                if (HttpContext.Current.Items.Contains(OnInitMessageType))
+                {
+                    messageType = (ModuleMessage.ModuleMessageType)Enum.Parse(typeof(ModuleMessage.ModuleMessageType), HttpContext.Current.Items[OnInitMessageType].ToString(), true);
+                }
+                AddPageMessage(this, string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType);
 
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 ServicesFramework.Instance.RequestAjaxAntiForgerySupport();

@@ -190,17 +190,17 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-		/// <summary>
-		/// Clean Page name to remove page extension.
-		/// </summary>
-		/// <param name="value">page name.</param>
-		/// <param name="settings">friendly url settings.</param>
-		/// <param name="langParms">language.</param>
-		/// <returns></returns>
-	    public static string CleanExtension(string value, FriendlyUrlSettings settings, string langParms)
-		{
-			bool replaced;
-		    return RewriteController.CleanExtension(value, settings, langParms, out replaced);
-	    }
+        /// <summary>
+        /// Clean Page name to remove page extension.
+        /// </summary>
+        /// <param name="value">page name.</param>
+        /// <param name="settings">friendly url settings.</param>
+        /// <param name="langParms">language.</param>
+        /// <returns></returns>
+        public static string CleanExtension(string value, FriendlyUrlSettings settings, string langParms)
+        {
+            bool replaced;
+            return RewriteController.CleanExtension(value, settings, langParms, out replaced);
+        }
     }
 }

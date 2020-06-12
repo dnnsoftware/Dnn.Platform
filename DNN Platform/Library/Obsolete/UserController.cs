@@ -59,19 +59,19 @@ namespace DotNetNuke.Entities.Users
             return GetCurrentUserInternal();
         }
 
-		/// <summary>
-		/// overload will validate the token and if valid change the password
-		/// it does not require an old password as it supports hashed passwords
-		/// errorMessage will define why reset failed
-		/// </summary>
-		/// <param name="newPassword">The new password.</param>
-		/// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
-		/// <returns>A Boolean indicating success or failure.</returns>
-		[Obsolete("Deprecate in 7.4.2, Use ChangePasswordByToken(int portalid, string username, string newPassword, string answer, string resetToken, out string errorMessage).. Scheduled removal in v10.0.0.")]
-		public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string resetToken, out string errorMessage)
-		{
-			return ChangePasswordByToken(portalid, username, newPassword, string.Empty, resetToken, out errorMessage);
-		}
+        /// <summary>
+        /// overload will validate the token and if valid change the password
+        /// it does not require an old password as it supports hashed passwords
+        /// errorMessage will define why reset failed
+        /// </summary>
+        /// <param name="newPassword">The new password.</param>
+        /// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
+        /// <returns>A Boolean indicating success or failure.</returns>
+        [Obsolete("Deprecate in 7.4.2, Use ChangePasswordByToken(int portalid, string username, string newPassword, string answer, string resetToken, out string errorMessage).. Scheduled removal in v10.0.0.")]
+        public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string resetToken, out string errorMessage)
+        {
+            return ChangePasswordByToken(portalid, username, newPassword, string.Empty, resetToken, out errorMessage);
+        }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.1, keep this method to compatible with upgrade wizard.. Scheduled removal in v10.0.0.")]

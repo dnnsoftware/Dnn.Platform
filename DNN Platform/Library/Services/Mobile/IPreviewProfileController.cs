@@ -12,14 +12,14 @@ using System.Collections.Generic;
 
 namespace DotNetNuke.Services.Mobile
 {
-	public interface IPreviewProfileController
-	{
-		void Save(IPreviewProfile profile);
+    public interface IPreviewProfileController
+    {
+        void Save(IPreviewProfile profile);
 
-		void Delete(int portalId, int id);
+        void Delete(int portalId, int id);
 
-		IList<IPreviewProfile> GetProfilesByPortal(int portalId);
+        IList<IPreviewProfile> GetProfilesByPortal(int portalId);
 
-		IPreviewProfile GetProfileById(int portalId, int id);
-	}
+        IPreviewProfile GetProfileById(int portalId, int id);
+    }
 }

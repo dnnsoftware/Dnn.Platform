@@ -155,11 +155,11 @@ namespace DotNetNuke.Services.Search.Entities
         /// <remarks>An empty dictionary means this is property is not used.</remarks>
         public IDictionary<string, int> NumericKeys { get; set; }
 
-		/// <summary>
-		/// Set this to true to allow search in word.
-		/// </summary>
-		/// <remarks>When host setting "Search_AllowLeadingWildcard" set to true, it will always allow search in word but ignore this value.</remarks>
-		public bool AllowLeadingWildcard { get; set; }
+        /// <summary>
+        /// Set this to true to allow search in word.
+        /// </summary>
+        /// <remarks>When host setting "Search_AllowLeadingWildcard" set to true, it will always allow search in word but ignore this value.</remarks>
+        public bool AllowLeadingWildcard { get; set; }
 
         #region constructor
 

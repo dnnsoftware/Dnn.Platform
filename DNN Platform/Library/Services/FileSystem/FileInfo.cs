@@ -23,8 +23,8 @@ using DotNetNuke.Instrumentation;
 namespace DotNetNuke.Services.FileSystem
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : FileInfo
+    /// Project  : DotNetNuke
+    /// Class    : FileInfo
     /// 
     /// -----------------------------------------------------------------------------
     /// <summary>

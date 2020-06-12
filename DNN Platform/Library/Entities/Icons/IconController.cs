@@ -46,7 +46,7 @@ namespace DotNetNuke.Entities.Icons
     /// </remarks>
     public class IconController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IconController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IconController));
         #region Constants
 
         public const string DefaultIconSize = "16X16";
@@ -132,7 +132,7 @@ namespace DotNetNuke.Entities.Icons
                     _iconsStatusOnDisk.Add(path, true);
                     string iconPhysicalPath = Path.Combine(Globals.ApplicationMapPath, path.Replace('/', '\\'));
                     if (!File.Exists(iconPhysicalPath)) 
-						Logger.WarnFormat(string.Format("Icon Not Present on Disk {0}", iconPhysicalPath));
+                        Logger.WarnFormat(string.Format("Icon Not Present on Disk {0}", iconPhysicalPath));
                 }
             }            
         }

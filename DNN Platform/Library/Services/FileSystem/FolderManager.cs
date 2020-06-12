@@ -260,25 +260,25 @@ namespace DotNetNuke.Services.FileSystem
             return compatibleTypes.Contains(folderMappingInfo.FolderProviderType);
         }
 
-		private int FindFolderMappingId(MergedTreeItem item, int portalId)
-		{
-			if (item.ExistsInFolderMapping)
-			{
-				return item.FolderMappingID;
-			}
+        private int FindFolderMappingId(MergedTreeItem item, int portalId)
+        {
+            if (item.ExistsInFolderMapping)
+            {
+                return item.FolderMappingID;
+            }
 
-			if (item.FolderPath.IndexOf('/') != item.FolderPath.LastIndexOf('/'))
-			{
-				var parentPath = item.FolderPath.Substring(0, item.FolderPath.TrimEnd('/').LastIndexOf('/') + 1);
-				var folder = this.GetFolder(portalId, parentPath);
-				if (folder != null)
-				{
-					return folder.FolderMappingID;
-				}
-			}
+            if (item.FolderPath.IndexOf('/') != item.FolderPath.LastIndexOf('/'))
+            {
+                var parentPath = item.FolderPath.Substring(0, item.FolderPath.TrimEnd('/').LastIndexOf('/') + 1);
+                var folder = this.GetFolder(portalId, parentPath);
+                if (folder != null)
+                {
+                    return folder.FolderMappingID;
+                }
+            }
 
-			return FolderMappingController.Instance.GetDefaultFolderMapping(portalId).FolderMappingID;
-		}
+            return FolderMappingController.Instance.GetDefaultFolderMapping(portalId).FolderMappingID;
+        }
         
         private bool DeleteFolderRecursive(IFolderInfo folder, ICollection<IFolderInfo> notDeletedSubfolders, bool isRecursiveDeletionFolder, bool unmap)
         {
@@ -442,7 +442,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.PropertyNotNull("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
-	        folderPath = folderPath.Trim();
+            folderPath = folderPath.Trim();
 
             if (this.FolderExists(folderMapping.PortalID, folderPath))
             {

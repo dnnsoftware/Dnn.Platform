@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         #region Private Members
 
-	    private const int RedirectTimeout = 3000;
+        private const int RedirectTimeout = 3000;
         private string _ipAddress;
 
         private string ResetToken
@@ -68,12 +68,12 @@ namespace DotNetNuke.Modules.Admin.Security
             this._ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-			ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-			ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
-			ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
-			ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
+            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
+            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
+            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
-			ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
+            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
 
             if (this.PortalSettings.LoginTabId != -1 && this.PortalSettings.ActiveTab.TabID != this.PortalSettings.LoginTabId)
             {
@@ -90,8 +90,8 @@ namespace DotNetNuke.Modules.Admin.Security
 
             }
 
-	        var useEmailAsUserName = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);
-			if (useEmailAsUserName)
+            var useEmailAsUserName = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);
+            if (useEmailAsUserName)
             {
                 this.valUsername.Text = Localization.GetString("Email.Required", this.LocalResourceFile);
             }
@@ -105,9 +105,9 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.lblInfo.Text = Localization.GetString("ForcedResetInfo", this.LocalResourceFile);
             }
 
-			this.txtUsername.Attributes.Add("data-default", useEmailAsUserName ? this.LocalizeString("Email") : this.LocalizeString("Username"));
-			this.txtPassword.Attributes.Add("data-default", this.LocalizeString("Password"));
-			this.txtConfirmPassword.Attributes.Add("data-default", this.LocalizeString("Confirm"));
+            this.txtUsername.Attributes.Add("data-default", useEmailAsUserName ? this.LocalizeString("Email") : this.LocalizeString("Username"));
+            this.txtPassword.Attributes.Add("data-default", this.LocalizeString("Password"));
+            this.txtConfirmPassword.Attributes.Add("data-default", this.LocalizeString("Confirm"));
             this.txtAnswer.Attributes.Add("data-default", this.LocalizeString("Answer"));
 
             if (!this.Page.IsPostBack)
@@ -142,42 +142,42 @@ namespace DotNetNuke.Modules.Admin.Security
             if (!string.IsNullOrEmpty(this.lblHelp.Text) || !string.IsNullOrEmpty(this.lblInfo.Text))
                 this.resetMessages.Visible = true;
 
-			var options = new DnnPaswordStrengthOptions();
-			var optionsAsJsonString = Json.Serialize(options);
-			var script = string.Format("dnn.initializePasswordStrength('.{0}', {1});{2}",
-				"password-strength", optionsAsJsonString, Environment.NewLine);
+            var options = new DnnPaswordStrengthOptions();
+            var optionsAsJsonString = Json.Serialize(options);
+            var script = string.Format("dnn.initializePasswordStrength('.{0}', {1});{2}",
+                "password-strength", optionsAsJsonString, Environment.NewLine);
 
-			if (ScriptManager.GetCurrent(this.Page) != null)
-			{
-				// respect MS AJAX
-				ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "PasswordStrength", script, true);
-			}
-			else
-			{
-				this.Page.ClientScript.RegisterStartupScript(this.GetType(), "PasswordStrength", script, true);
-			}
+            if (ScriptManager.GetCurrent(this.Page) != null)
+            {
+                // respect MS AJAX
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "PasswordStrength", script, true);
+            }
+            else
+            {
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "PasswordStrength", script, true);
+            }
 
-			var confirmPasswordOptions = new DnnConfirmPasswordOptions()
-			{
-				FirstElementSelector = ".password-strength",
-				SecondElementSelector = ".password-confirm",
-				ContainerSelector = ".dnnPasswordReset",
-				UnmatchedCssClass = "unmatched",
-				MatchedCssClass = "matched"
-			};
+            var confirmPasswordOptions = new DnnConfirmPasswordOptions()
+            {
+                FirstElementSelector = ".password-strength",
+                SecondElementSelector = ".password-confirm",
+                ContainerSelector = ".dnnPasswordReset",
+                UnmatchedCssClass = "unmatched",
+                MatchedCssClass = "matched"
+            };
 
-			optionsAsJsonString = Json.Serialize(confirmPasswordOptions);
-			script = string.Format("dnn.initializePasswordComparer({0});{1}", optionsAsJsonString, Environment.NewLine);
+            optionsAsJsonString = Json.Serialize(confirmPasswordOptions);
+            script = string.Format("dnn.initializePasswordComparer({0});{1}", optionsAsJsonString, Environment.NewLine);
 
-			if (ScriptManager.GetCurrent(this.Page) != null)
-			{
-				// respect MS AJAX
-				ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "ConfirmPassword", script, true);
-			}
-			else
-			{
-				this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ConfirmPassword", script, true);
-			}
+            if (ScriptManager.GetCurrent(this.Page) != null)
+            {
+                // respect MS AJAX
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "ConfirmPassword", script, true);
+            }
+            else
+            {
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ConfirmPassword", script, true);
+            }
         }
 
         private void cmdChangePassword_Click(object sender, EventArgs e)
@@ -313,8 +313,8 @@ namespace DotNetNuke.Modules.Admin.Security
                 redirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
             }
 
-			this.AddModuleMessage("ChangeSuccessful", ModuleMessage.ModuleMessageType.GreenSuccess, true);
-	        this.resetMessages.Visible = this.divPassword.Visible = false;
+            this.AddModuleMessage("ChangeSuccessful", ModuleMessage.ModuleMessageType.GreenSuccess, true);
+            this.resetMessages.Visible = this.divPassword.Visible = false;
             this.lblHelp.Text = this.lblInfo.Text = string.Empty;
 
             // redirect page after 5 seconds

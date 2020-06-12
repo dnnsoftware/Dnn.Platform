@@ -15,9 +15,9 @@ using DotNetNuke.Entities.Modules;
 namespace DotNetNuke.Security.Permissions
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : DesktopModulePermissionInfo
+    /// Class    : DesktopModulePermissionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// DesktopModulePermissionInfo provides the Entity Layer for DesktopModulePermissionInfo
@@ -27,22 +27,22 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public class DesktopModulePermissionInfo : PermissionInfoBase, IHydratable
     {
-		#region "Private Members"
+        #region "Private Members"
 
         // local property declarations
         private int _desktopModulePermissionID;
         private int _portalDesktopModuleID;
-		
-		#endregion
-		
-		#region "Constructors"
+        
+        #endregion
+        
+        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Constructs a new DesktopModulePermissionInfo
         /// </summary>
         /// -----------------------------------------------------------------------------
-		public DesktopModulePermissionInfo()
+        public DesktopModulePermissionInfo()
         {
             this._desktopModulePermissionID = Null.NullInteger;
             this._portalDesktopModuleID = Null.NullInteger;
@@ -62,10 +62,10 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionKey = permission.PermissionKey;
             this.PermissionName = permission.PermissionName;
         }
-		
-		#endregion
-		
-		#region "Public Properties"
+        
+        #endregion
+        
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -102,8 +102,8 @@ namespace DotNetNuke.Security.Permissions
                 this._portalDesktopModuleID = value;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
         #region IHydratable Members
 
@@ -140,8 +140,8 @@ namespace DotNetNuke.Security.Permissions
 
         #endregion
 
-		#region "Public Methods"
-				
+        #region "Public Methods"
+                
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Compares if two DesktopModulePermissionInfo objects are equivalent/equal
@@ -207,7 +207,7 @@ namespace DotNetNuke.Security.Permissions
                 return (this._desktopModulePermissionID * 397) ^ this._portalDesktopModuleID;
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

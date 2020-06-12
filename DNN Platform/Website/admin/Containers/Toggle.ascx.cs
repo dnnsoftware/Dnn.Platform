@@ -20,77 +20,77 @@ namespace DotNetNuke.UI.Containers.Controls
     /// <summary></summary>
     /// <remarks></remarks>
     /// -----------------------------------------------------------------------------
-	[ParseChildren(false)]
-	[PersistChildren(true)]
+    [ParseChildren(false)]
+    [PersistChildren(true)]
     public partial class Toggle : SkinObjectBase
-	{
-		#region "Private Properties"
+    {
+        #region "Private Properties"
 
-    	private string _target;
+        private string _target;
 
-		#endregion
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
-		public string Class { get; set; }
+        public string Class { get; set; }
 
-    	public string Target
-    	{
-    		get
-    		{
-				if (this.Parent == null || string.IsNullOrEmpty(this._target))
-				{
-					return string.Empty;
-				}
+        public string Target
+        {
+            get
+            {
+                if (this.Parent == null || string.IsNullOrEmpty(this._target))
+                {
+                    return string.Empty;
+                }
 
-    			var targetControl = this.Parent.FindControl(this._target);
-				if (targetControl == null)
-				{
-					return string.Empty;
-				}
-				else
-				{
-					return targetControl.ClientID;
-				}
+                var targetControl = this.Parent.FindControl(this._target);
+                if (targetControl == null)
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    return targetControl.ClientID;
+                }
 
-    		}
-			set
-			{
-				this._target = value;
-			}
-    	}
+            }
+            set
+            {
+                this._target = value;
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region "Event Handlers"
+        #region "Event Handlers"
 
-		protected override void OnPreRender(EventArgs e)
-		{
+        protected override void OnPreRender(EventArgs e)
+        {
             JavaScript.RequestRegistration(CommonJs.jQuery);
             JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
 
-			var toggleScript = string.Format("<script type=\"text/javascript\">(function($){{$(\"#{0}\").find(\"a.toggleHandler\").click(function(e){{$(\"#{1}\").slideToggle();$(this).toggleClass('collapsed');e.preventDefault();}});}})(jQuery);</script>",
-			                                 this.ClientID,
-			                                 this.Target);
-			this.Page.ClientScript.RegisterStartupScript(this.GetType(), this.ClientID, toggleScript);
-		}
+            var toggleScript = string.Format("<script type=\"text/javascript\">(function($){{$(\"#{0}\").find(\"a.toggleHandler\").click(function(e){{$(\"#{1}\").slideToggle();$(this).toggleClass('collapsed');e.preventDefault();}});}})(jQuery);</script>",
+                                             this.ClientID,
+                                             this.Target);
+            this.Page.ClientScript.RegisterStartupScript(this.GetType(), this.ClientID, toggleScript);
+        }
 
-		protected override void Render(HtmlTextWriter writer)
-		{
-			writer.AddAttribute("id", this.ClientID);
-			writer.AddAttribute("class", this.Class);
-			writer.RenderBeginTag("h2");
+        protected override void Render(HtmlTextWriter writer)
+        {
+            writer.AddAttribute("id", this.ClientID);
+            writer.AddAttribute("class", this.Class);
+            writer.RenderBeginTag("h2");
 
-			writer.AddAttribute("href", "#");
-			writer.AddAttribute("class", "toggleHandler");
-			writer.RenderBeginTag("a");
+            writer.AddAttribute("href", "#");
+            writer.AddAttribute("class", "toggleHandler");
+            writer.RenderBeginTag("a");
 
-			this.RenderChildren(writer);
+            this.RenderChildren(writer);
 
-			writer.RenderEndTag();
-			writer.RenderEndTag();
-		}
+            writer.RenderEndTag();
+            writer.RenderEndTag();
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

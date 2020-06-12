@@ -25,7 +25,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     public class MemberDirectoryController : DnnApiController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MemberDirectoryController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MemberDirectoryController));
         #region Private Methods
 
         private static void AddSearchTerm(ref string propertyNames, ref string propertyValues, string name, string value)
@@ -66,11 +66,11 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                                ? (this.PortalSettings.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
                                : (this.PortalSettings.UserInfo.IsInRole(group.RoleName));
 
-			// if current user can view the group page and group is public, then should be able to view members.
-			if (!canView)
-			{
-				canView = ModulePermissionController.CanViewModule(this.ActiveModule) && group.IsPublic;
-			}
+            // if current user can view the group page and group is public, then should be able to view members.
+            if (!canView)
+            {
+                canView = ModulePermissionController.CanViewModule(this.ActiveModule) && group.IsPublic;
+            }
             return canView;
         }
 

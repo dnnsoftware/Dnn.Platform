@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Authentication
     [Serializable]
     public class AuthenticationInfo : BaseEntityInfo, IHydratable
     {
-		#region Private Members
+        #region Private Members
 
         public AuthenticationInfo()
         {
@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.Authentication
 
         #endregion
 
-		#region Public Properties
+        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>

@@ -116,11 +116,11 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnLoad(e);
 
-			JavaScript.RequestRegistration(CommonJs.jQueryUI);
-			ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.js", DotNetNuke.Web.Client.FileOrder.Js.jQuery);
-			ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.css", DotNetNuke.Web.Client.FileOrder.Css.DefaultCss);
+            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.css", DotNetNuke.Web.Client.FileOrder.Css.DefaultCss);
 
             this.InitializeConfig();
         }

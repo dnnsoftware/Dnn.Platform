@@ -5,9 +5,9 @@
 namespace DotNetNuke.Entities.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities.Modules
-    /// Class	 : VisibilityState
+    /// Class    : VisibilityState
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The VisibilityState enum provides an enumeration of the Visibility options

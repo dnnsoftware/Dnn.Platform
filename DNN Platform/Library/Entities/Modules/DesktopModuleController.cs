@@ -33,9 +33,9 @@ using Microsoft.VisualBasic.Logging;
 namespace DotNetNuke.Entities.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities.Modules
-    /// Class	 : DesktopModuleController
+    /// Class    : DesktopModuleController
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// DesktopModuleController provides the Busines Layer for Desktop Modules
@@ -43,7 +43,7 @@ namespace DotNetNuke.Entities.Modules
     /// -----------------------------------------------------------------------------
     public class DesktopModuleController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DesktopModuleController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DesktopModuleController));
         #region Private Methods
 
         private static readonly DataProvider DataProvider = DataProvider.Instance();

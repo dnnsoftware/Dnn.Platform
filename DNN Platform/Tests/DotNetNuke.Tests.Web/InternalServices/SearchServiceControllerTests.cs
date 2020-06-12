@@ -342,7 +342,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             table.Columns.Add("LastModifiedByUserID", typeof(int));
             table.Columns.Add("LastModifiedOnDate", typeof(DateTime));
             
-            table.Rows.Add(56, 5, 0, "Home", null,	0,	"//Home", "C3174A2E-374D-4779-BE5F-BCDFF410E097", "A111A742-C18F-495D-8A23-BD0ECC70BBFE", null, "3A34424A-3CCA-4934-AE15-B9A80EB6D259",	1, null, null, 0, null, null, null, 0, "[G]Skins/Xcillion/Inner.ascx", "[G]Containers/Xcillion/NoTitle.ascx", null, null, null, "false", null, null, 0, 0,	0.5, 86,	"Home",	1,	-1,	null,	0,	null, null, -1,	DateTime.Now, -1, DateTime.Now);
+            table.Rows.Add(56, 5, 0, "Home", null,  0,  "//Home", "C3174A2E-374D-4779-BE5F-BCDFF410E097", "A111A742-C18F-495D-8A23-BD0ECC70BBFE", null, "3A34424A-3CCA-4934-AE15-B9A80EB6D259", 1, null, null, 0, null, null, null, 0, "[G]Skins/Xcillion/Inner.ascx", "[G]Containers/Xcillion/NoTitle.ascx", null, null, null, "false", null, null, 0, 0,  0.5, 86,    "Home", 1,  -1, null,   0,  null, null, -1, DateTime.Now, -1, DateTime.Now);
             table.Rows.Add(57, 13, 0, "About Us", null, 0, "//AboutUs", "26A4236F-3AAA-4E15-8908-45D35675C677", "8426D3BC-E930-49CA-BDEB-4D41F194B6AC", null, "1461572D-97E8-41F8-BB1A-916DCA48890A", 1, null, null, 0, null, null, null, 0, "[G]Skins/Xcillion/Inner.ascx", "[G]Containers/Xcillion/NoTitle.ascx", null, null, null, "true", null, null, 0, 0, 0.5, 97, "About Us", 1, -1, null, 0, null, null, -1, DateTime.Now, -1, DateTime.Now);
             
 

@@ -35,8 +35,8 @@ namespace DotNetNuke.UI.Skins.Controls
     public class SkinsEditControl : EditControl, IPostBackEventHandler
     {
         private string _AddedItem = Null.NullString;
-		
-		#region "Constructors"
+        
+        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -57,10 +57,10 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             this.SystemType = type;
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected Properties"
+        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -184,10 +184,10 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         #endregion
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected Methods"
+        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -243,7 +243,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 foreach (KeyValuePair<int, string> kvp in this.DictionaryValue)
                 {
-					// Render Hyperlink
+                    // Render Hyperlink
                     writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackClientHyperlink(this, "Delete_" + kvp.Key, false));
                     writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "javascript:return confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteItem")) + "');");
                     writer.AddAttribute(HtmlTextWriterAttribute.Title, Localization.GetString("cmdDelete", this.LocalResourceFile));
@@ -326,8 +326,8 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
             }
         }
-		
-		#endregion
+        
+        #endregion
 
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {

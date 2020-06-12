@@ -11,8 +11,8 @@ using System;
 namespace DotNetNuke.UI.Skins
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : SkinInfo
+    /// Project  : DotNetNuke
+    /// Class    : SkinInfo
     /// 
     /// -----------------------------------------------------------------------------
     /// <summary>

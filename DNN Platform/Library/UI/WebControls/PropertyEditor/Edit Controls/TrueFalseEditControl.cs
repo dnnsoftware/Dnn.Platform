@@ -31,8 +31,8 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:TrueFalseEditControl runat=server></{0}:TrueFalseEditControl>")]
     public class TrueFalseEditControl : EditControl
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TrueFalseEditControl));
-		#region "Constructors"
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TrueFalseEditControl));
+        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -44,9 +44,9 @@ namespace DotNetNuke.UI.WebControls
             this.SystemType = "System.Boolean";
         }
 
-		#endregion
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -61,7 +61,7 @@ namespace DotNetNuke.UI.WebControls
                 bool boolValue = Null.NullBoolean;
                 try
                 {
-					// Try and cast the value to an Boolean
+                    // Try and cast the value to an Boolean
                     boolValue = Convert.ToBoolean(this.Value);
                 }
                 catch (Exception exc)
@@ -86,7 +86,7 @@ namespace DotNetNuke.UI.WebControls
                 bool boolValue = Null.NullBoolean;
                 try
                 {
-					// Try and cast the value to an Boolean
+                    // Try and cast the value to an Boolean
                     boolValue = Convert.ToBoolean(this.OldValue);
                 }
                 catch (Exception exc)
@@ -117,9 +117,9 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Protected Methods"
+        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -171,7 +171,7 @@ namespace DotNetNuke.UI.WebControls
             writer.Write(Localization.GetString("False", Localization.SharedResourceFile));
             writer.RenderEndTag();
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

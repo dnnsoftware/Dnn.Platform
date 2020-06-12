@@ -80,8 +80,8 @@ namespace DotNetNuke.Services.Search.Controllers
             {
                 try
                 {
-	                var allowLeadingWildcard = HostController.Instance.GetString("Search_AllowLeadingWildcard", "N") == "Y" || searchQuery.AllowLeadingWildcard;
-					var keywords = SearchHelper.Instance.RephraseSearchText(searchQuery.KeyWords, searchQuery.WildCardSearch, allowLeadingWildcard);
+                    var allowLeadingWildcard = HostController.Instance.GetString("Search_AllowLeadingWildcard", "N") == "Y" || searchQuery.AllowLeadingWildcard;
+                    var keywords = SearchHelper.Instance.RephraseSearchText(searchQuery.KeyWords, searchQuery.WildCardSearch, allowLeadingWildcard);
                     // don't use stemming analyzer for exact matches or non-analyzed fields (e.g. Tags)
                     var analyzer = LuceneController.Instance.GetCustomAnalyzer() ?? new SearchQueryAnalyzer(true);
                     var nonStemmerAnalyzer = new SearchQueryAnalyzer(false);
@@ -90,7 +90,7 @@ namespace DotNetNuke.Services.Search.Controllers
                     {
                         var parserContent = new QueryParser(Constants.LuceneVersion, fieldToSearch,
                             fieldToSearch == Constants.Tag ? nonStemmerAnalyzer : analyzer);
-						parserContent.AllowLeadingWildcard = allowLeadingWildcard;
+                        parserContent.AllowLeadingWildcard = allowLeadingWildcard;
                         var parsedQueryContent = parserContent.Parse(keywords);
                         keywordQuery.Add(parsedQueryContent, Occur.SHOULD);
                     }
@@ -236,7 +236,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 {
                     if (searchTypeId == this._moduleSearchTypeId)
                     {
-			foreach (var moduleDefId in searchQuery.ModuleDefIds.OrderBy(id => id))
+            foreach (var moduleDefId in searchQuery.ModuleDefIds.OrderBy(id => id))
                         {
                             searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.ModuleDefIdTag, moduleDefId, moduleDefId, true, true), Occur.SHOULD);
                         }

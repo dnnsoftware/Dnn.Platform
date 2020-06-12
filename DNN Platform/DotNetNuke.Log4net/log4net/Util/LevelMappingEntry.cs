@@ -28,77 +28,77 @@ using log4net.Core;
 
 namespace log4net.Util
 {
-	/// <summary>
-	/// An entry in the <see cref="LevelMapping"/>
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// This is an abstract base class for types that are stored in the
-	/// <see cref="LevelMapping"/> object.
-	/// </para>
-	/// </remarks>
-	/// <author>Nicko Cadell</author>
-	public abstract class LevelMappingEntry : IOptionHandler
-	{
-		#region Public Instance Constructors
+    /// <summary>
+    /// An entry in the <see cref="LevelMapping"/>
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This is an abstract base class for types that are stored in the
+    /// <see cref="LevelMapping"/> object.
+    /// </para>
+    /// </remarks>
+    /// <author>Nicko Cadell</author>
+    public abstract class LevelMappingEntry : IOptionHandler
+    {
+        #region Public Instance Constructors
 
-		/// <summary>
-		/// Default protected constructor
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// Default protected constructor
-		/// </para>
-		/// </remarks>
-		protected LevelMappingEntry() 
-		{
-		}
+        /// <summary>
+        /// Default protected constructor
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Default protected constructor
+        /// </para>
+        /// </remarks>
+        protected LevelMappingEntry() 
+        {
+        }
 
-		#endregion // Public Instance Constructors
+        #endregion // Public Instance Constructors
 
-		#region Public Instance Properties
+        #region Public Instance Properties
 
-		/// <summary>
-		/// The level that is the key for this mapping 
-		/// </summary>
-		/// <value>
-		/// The <see cref="Level"/> that is the key for this mapping 
-		/// </value>
-		/// <remarks>
-		/// <para>
-		/// Get or set the <see cref="Level"/> that is the key for this
-		/// mapping subclass.
-		/// </para>
-		/// </remarks>
-		public Level Level
-		{
-			get { return this.m_level; }
-			set { this.m_level = value; }
-		}
+        /// <summary>
+        /// The level that is the key for this mapping 
+        /// </summary>
+        /// <value>
+        /// The <see cref="Level"/> that is the key for this mapping 
+        /// </value>
+        /// <remarks>
+        /// <para>
+        /// Get or set the <see cref="Level"/> that is the key for this
+        /// mapping subclass.
+        /// </para>
+        /// </remarks>
+        public Level Level
+        {
+            get { return this.m_level; }
+            set { this.m_level = value; }
+        }
 
-		#endregion // Public Instance Properties
+        #endregion // Public Instance Properties
 
-		#region IOptionHandler Members
+        #region IOptionHandler Members
 
-		/// <summary>
-		/// Initialize any options defined on this entry
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// Should be overridden by any classes that need to initialise based on their options
-		/// </para>
-		/// </remarks>
-		virtual public void ActivateOptions()
-		{
-			// default implementation is to do nothing
-		}
+        /// <summary>
+        /// Initialize any options defined on this entry
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Should be overridden by any classes that need to initialise based on their options
+        /// </para>
+        /// </remarks>
+        virtual public void ActivateOptions()
+        {
+            // default implementation is to do nothing
+        }
 
-		#endregion // IOptionHandler Members
+        #endregion // IOptionHandler Members
 
-		#region Private Instance Fields
+        #region Private Instance Fields
 
-		private Level m_level; 
+        private Level m_level; 
 
-		#endregion // Private Instance Fields
-	}
+        #endregion // Private Instance Fields
+    }
 }

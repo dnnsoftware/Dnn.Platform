@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Exceptions
 {
     public class SecurityException : BasePortalException
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityException));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityException));
         private string m_IP;
         private string m_Querystring;
 
@@ -66,7 +66,7 @@ namespace DotNetNuke.Services.Exceptions
 
         private void InitilizePrivateVariables()
         {
-			// Try and get the Portal settings from httpcontext
+            // Try and get the Portal settings from httpcontext
             try
             {
                 if (HttpContext.Current.Request.UserHostAddress != null)

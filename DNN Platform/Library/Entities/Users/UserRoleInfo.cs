@@ -49,10 +49,10 @@ namespace DotNetNuke.Entities.Users
 
         public override void Fill(IDataReader dr)
         {
-			// Fill base class properties
+            // Fill base class properties
             base.Fill(dr);
 
-			// Fill this class properties
+            // Fill this class properties
             this.UserRoleID = Null.SetNullInteger(dr["UserRoleID"]);
             this.UserID = Null.SetNullInteger(dr["UserID"]);
             this.FullName = Null.SetNullString(dr["DisplayName"]);

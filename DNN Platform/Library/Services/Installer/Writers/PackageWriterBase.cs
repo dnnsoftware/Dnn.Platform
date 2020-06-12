@@ -59,11 +59,11 @@ namespace DotNetNuke.Services.Installer.Writers
             this._Package = package;
             this._Package.AttachInstallerInfo(new InstallerInfo());
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected Properties"
-		
+        #region "Protected Properties"
+        
         protected virtual Dictionary<string, string> Dependencies
         {
             get
@@ -71,10 +71,10 @@ namespace DotNetNuke.Services.Installer.Writers
                 return new Dictionary<string, string>();
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
 
         /// -----------------------------------------------------------------------------
@@ -91,12 +91,12 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-		 /// -----------------------------------------------------------------------------
-		 /// <summary>
-		 /// Gets and sets the Path for the Package's app code files
-		 /// </summary>
-		 /// <value>A String</value>
-		 /// -----------------------------------------------------------------------------
+         /// -----------------------------------------------------------------------------
+         /// <summary>
+         /// Gets and sets the Path for the Package's app code files
+         /// </summary>
+         /// <value>A String</value>
+         /// -----------------------------------------------------------------------------
          public string AppCodePath { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -113,12 +113,12 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-		 /// -----------------------------------------------------------------------------
-		 /// <summary>
-		 /// Gets and sets the Path for the Package's assemblies
-		 /// </summary>
-		 /// <value>A String</value>
-		 /// -----------------------------------------------------------------------------
+         /// -----------------------------------------------------------------------------
+         /// <summary>
+         /// Gets and sets the Path for the Package's assemblies
+         /// </summary>
+         /// <value>A String</value>
+         /// -----------------------------------------------------------------------------
          public string AssemblyPath { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -189,12 +189,12 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-		 /// <summary>
-		 /// Gets and sets whether there are any errors in parsing legacy packages
-		 /// </summary>
-		 /// <value></value>
-		 /// <returns></returns>
-		 /// <remarks></remarks>
+         /// <summary>
+         /// Gets and sets whether there are any errors in parsing legacy packages
+         /// </summary>
+         /// <value></value>
+         /// <returns></returns>
+         /// <remarks></remarks>
          public string LegacyError { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -270,10 +270,10 @@ namespace DotNetNuke.Services.Installer.Writers
                 return this._Versions;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
         private void AddFilesToZip(ZipOutputStream stream, IDictionary<string, InstallFile> files, string basePath)
         {
@@ -359,7 +359,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private void WritePackageEndElement(XmlWriter writer)
         {
-			// Close components Element
+            // Close components Element
             writer.WriteEndElement();
 
             // Close package Element
@@ -368,7 +368,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private void WritePackageStartElement(XmlWriter writer)
         {
-			// Start package Element
+            // Start package Element
             writer.WriteStartElement("package");
             writer.WriteAttributeString("name", this.Package.Name);
             writer.WriteAttributeString("type", this.Package.PackageType);
@@ -380,7 +380,7 @@ namespace DotNetNuke.Services.Installer.Writers
             // Write Description
             writer.WriteElementString("description", this.Package.Description);
             writer.WriteElementString("iconFile", Util.ParsePackageIconFileName(this.Package));
-			
+            
             // Write Author
             writer.WriteStartElement("owner");
 
@@ -411,14 +411,14 @@ namespace DotNetNuke.Services.Installer.Writers
                 }
                 writer.WriteEndElement();
             }
-			
+            
             // Write components Element
             writer.WriteStartElement("components");
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected Methods"
+        #region "Protected Methods"
 
         protected virtual void AddFile(string fileName)
         {
@@ -439,7 +439,7 @@ namespace DotNetNuke.Services.Installer.Writers
             string baseFolder = Path.Combine(Globals.ApplicationMapPath, this.BasePath);
             if (Directory.Exists(baseFolder))
             {
-				// Create the DirectoryInfo object
+                // Create the DirectoryInfo object
                 var folderInfo = new DirectoryInfo(baseFolder);
 
                 // Get the Project File in the folder
@@ -447,7 +447,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
                 if (files.Length == 0) // Assume Dynamic (App_Code based) Module
                 {
-					// Add the files in the DesktopModules Folder
+                    // Add the files in the DesktopModules Folder
                     this.ParseFolder(baseFolder, baseFolder);
 
                     // Add the files in the AppCode Folder
@@ -472,7 +472,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         protected virtual void ParseFiles(DirectoryInfo folder, string rootPath)
         {
-			// Add the Files in the Folder
+            // Add the Files in the Folder
             FileInfo[] files = folder.GetFiles();
             foreach (FileInfo file in files)
             {
@@ -507,8 +507,8 @@ namespace DotNetNuke.Services.Installer.Writers
                         this.ParseFolder(subFolder.FullName, rootPath);
                     }
                 }
-				
-				// Add the Files in the Folder
+                
+                // Add the Files in the Folder
                 this.ParseFiles(folder, rootPath);
             }
         }
@@ -546,21 +546,21 @@ namespace DotNetNuke.Services.Installer.Writers
                     this.AddFile(fileName + ".dll");
                 }
             }
-			
+            
             // Add all the files that are classified as None
             foreach (XPathNavigator itemNav in rootNav.Select("proj:ItemGroup/proj:None", manager))
             {
                 fileName = Util.ReadAttribute(itemNav, "Include");
                 this.AddFile(fileName);
             }
-			
+            
             // Add all the files that are classified as Content
             foreach (XPathNavigator itemNav in rootNav.Select("proj:ItemGroup/proj:Content", manager))
             {
                 fileName = Util.ReadAttribute(itemNav, "Include");
                 this.AddFile(fileName);
             }
-			
+            
             // Add all the files that are classified as Compile
             if (includeSource)
             {
@@ -581,10 +581,10 @@ namespace DotNetNuke.Services.Installer.Writers
         protected virtual void WriteManifestComponent(XmlWriter writer)
         {
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
         public virtual void AddFile(InstallFile file)
         {
@@ -633,16 +633,16 @@ namespace DotNetNuke.Services.Installer.Writers
 
         public void GetFiles(bool includeSource)
         {
-			// Call protected method that does the work
+            // Call protected method that does the work
             this.GetFiles(includeSource, true);
         }
 
-		/// <summary>
-		/// WriteManifest writes an existing manifest
-		/// </summary>
-		/// <param name="manifestName">The name of the manifest file</param>
-		/// <param name="manifest">The manifest</param>
-		/// <remarks>This overload takes a package manifest and writes it to a file</remarks>
+        /// <summary>
+        /// WriteManifest writes an existing manifest
+        /// </summary>
+        /// <param name="manifestName">The name of the manifest file</param>
+        /// <param name="manifest">The manifest</param>
+        /// <remarks>This overload takes a package manifest and writes it to a file</remarks>
         public void WriteManifest(string manifestName, string manifest)
         {
             using (XmlWriter writer = XmlWriter.Create(Path.Combine(Globals.ApplicationMapPath, Path.Combine(this.BasePath, manifestName)), XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
@@ -680,7 +680,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <remarks></remarks>
         public string WriteManifest(bool packageFragment)
         {
-			// Create a writer to create the processed manifest
+            // Create a writer to create the processed manifest
             var sb = new StringBuilder();
             using (XmlWriter writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
             {
@@ -698,10 +698,10 @@ namespace DotNetNuke.Services.Installer.Writers
 
             if (!packageFragment)
             {
-				// Start dotnetnuke element
+                // Start dotnetnuke element
                 WriteManifestStartElement(writer);
             }
-			
+            
             // Start package Element
             this.WritePackageStartElement(writer);
 
@@ -711,14 +711,14 @@ namespace DotNetNuke.Services.Installer.Writers
                 var scriptWriter = new ScriptComponentWriter(this.BasePath, this.Scripts, this.Package);
                 scriptWriter.WriteManifest(writer);
             }
-			
+            
             // write Clean Up Files Component
             if (this.CleanUpFiles.Count > 0)
             {
                 var cleanupFileWriter = new CleanupComponentWriter(this.BasePath, this.CleanUpFiles);
                 cleanupFileWriter.WriteManifest(writer);
             }
-			
+            
             // Write the Custom Component
             this.WriteManifestComponent(writer);
 
@@ -728,33 +728,33 @@ namespace DotNetNuke.Services.Installer.Writers
                 var assemblyWriter = new AssemblyComponentWriter(this.AssemblyPath, this.Assemblies, this.Package);
                 assemblyWriter.WriteManifest(writer);
             }
-			
+            
             // Write AppCode Files Component
             if (this.AppCodeFiles.Count > 0)
             {
                 var fileWriter = new FileComponentWriter(this.AppCodePath, this.AppCodeFiles, this.Package);
                 fileWriter.WriteManifest(writer);
             }
-			
+            
             // write Files Component
             if (this.Files.Count > 0)
             {
                 this.WriteFilesToManifest(writer);
             }
-			
+            
             // write ResourceFiles Component
             if (this.Resources.Count > 0)
             {
                 var fileWriter = new ResourceFileComponentWriter(this.BasePath, this.Resources, this.Package);
                 fileWriter.WriteManifest(writer);
             }
-			
+            
             // Close Package
             this.WritePackageEndElement(writer);
 
             if (!packageFragment)
             {
-				// Close Dotnetnuke Element
+                // Close Dotnetnuke Element
                 WriteManifestEndElement(writer);
             }
             this.Log.EndJob(Util.WRITER_CreatedManifest);
@@ -762,7 +762,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         public static void WriteManifestEndElement(XmlWriter writer)
         {
-			// Close packages Element
+            // Close packages Element
             writer.WriteEndElement();
 
             // Close root Element
@@ -771,7 +771,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         public static void WriteManifestStartElement(XmlWriter writer)
         {
-			// Start the new Root Element
+            // Start the new Root Element
             writer.WriteStartElement("dotnetnuke");
             writer.WriteAttributeString("type", "Package");
             writer.WriteAttributeString("version", "5.0");
@@ -779,7 +779,7 @@ namespace DotNetNuke.Services.Installer.Writers
             // Start packages Element
             writer.WriteStartElement("packages");
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

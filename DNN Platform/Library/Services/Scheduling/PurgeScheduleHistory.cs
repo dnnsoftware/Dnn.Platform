@@ -38,8 +38,8 @@ namespace DotNetNuke.Services.Scheduling
 
                 // notification that we have errored
                 this.Errored(ref exc);
-				
-				// log the exception
+                
+                // log the exception
                 Exceptions.Exceptions.LogException(exc);
             }
         }

@@ -30,18 +30,18 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
         #region Private Properties
         private string LocalizationFolder
-		{
-			get
-			{
+        {
+            get
+            {
                 return string.Format("~/DesktopModules/{0}/App_LocalResources/",
                     DesktopModuleController.GetDesktopModuleByModuleName("DotNetNuke.Modules.CoreMessaging", this.PortalSettings.PortalId).FolderName);
-			}
-		}
+            }
+        }
         #endregion
 
-		#region Public APIs
+        #region Public APIs
 
-	    /// <summary>
+        /// <summary>
         /// Perform a search on Scoring Activities registered in the system.
         /// </summary>
         /// <param name="pageIndex">Page index to begin from (0, 1, 2)</param>
@@ -148,45 +148,45 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-		[HttpGet]
-		[AllowAnonymous]
-		public HttpResponseMessage GetLocalizationTable(string culture)
-		{
-			try
-			{
-				if (!string.IsNullOrEmpty(culture))
-				{
-					Localization.SetThreadCultures(new CultureInfo(culture), this.PortalSettings);
-				}
+        [HttpGet]
+        [AllowAnonymous]
+        public HttpResponseMessage GetLocalizationTable(string culture)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(culture))
+                {
+                    Localization.SetThreadCultures(new CultureInfo(culture), this.PortalSettings);
+                }
 
-				var dictionary = new Dictionary<string, string>();
-                				
-			    var resourcesPath = this.LocalizationFolder;
-				var files =
-					Directory.GetFiles(System.Web.HttpContext.Current.Server.MapPath(resourcesPath)).Select(x => new FileInfo(x).Name).Where(f => !IsLanguageSpecific(f)).ToList();
+                var dictionary = new Dictionary<string, string>();
+                                
+                var resourcesPath = this.LocalizationFolder;
+                var files =
+                    Directory.GetFiles(System.Web.HttpContext.Current.Server.MapPath(resourcesPath)).Select(x => new FileInfo(x).Name).Where(f => !IsLanguageSpecific(f)).ToList();
 
-				foreach (var kvp in files.SelectMany(f => GetLocalizationValues(resourcesPath, f, culture)).Where(kvp => !dictionary.ContainsKey(kvp.Key)))
-				{
-					dictionary.Add(kvp.Key, kvp.Value);
-				}
+                foreach (var kvp in files.SelectMany(f => GetLocalizationValues(resourcesPath, f, culture)).Where(kvp => !dictionary.ContainsKey(kvp.Key)))
+                {
+                    dictionary.Add(kvp.Key, kvp.Value);
+                }
 
-				foreach (var kvp in GetLocalizationValues(SharedResources, culture).Where(kvp => !dictionary.ContainsKey(kvp.Key)))
-				{
-					dictionary.Add(kvp.Key, kvp.Value);
-				}
+                foreach (var kvp in GetLocalizationValues(SharedResources, culture).Where(kvp => !dictionary.ContainsKey(kvp.Key)))
+                {
+                    dictionary.Add(kvp.Key, kvp.Value);
+                }
 
-				return this.Request.CreateResponse(HttpStatusCode.OK, new { Table = dictionary });
-			}
-			catch (Exception ex)
-			{
-				Exceptions.LogException(ex);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Table = dictionary });
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
 
-				return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
-			}
-		}
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
         #endregion
 
-		#region Private Statics Methods
+        #region Private Statics Methods
 
         private static SubscriptionViewModel GetSubscriptionViewModel(Subscription subscription)
         {
@@ -210,95 +210,95 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         }
 
         private static bool IsLanguageSpecific(string fileName)
-		{
-			var components = fileName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-			if (components.Length > 1)
-			{
-				var language = components[components.Length - 2];
+        {
+            var components = fileName.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+            if (components.Length > 1)
+            {
+                var language = components[components.Length - 2];
 
-				if (!string.IsNullOrEmpty(language))
-				{
-					try
-					{
-						CultureInfo.GetCultureInfo(language);
+                if (!string.IsNullOrEmpty(language))
+                {
+                    try
+                    {
+                        CultureInfo.GetCultureInfo(language);
 
-						return true;
-					}
-					catch (CultureNotFoundException)
-					{
-						return false;
-					}
-				}
-			}
+                        return true;
+                    }
+                    catch (CultureNotFoundException)
+                    {
+                        return false;
+                    }
+                }
+            }
 
-			return false;
-		}
+            return false;
+        }
 
-		private static IEnumerable<KeyValuePair<string, string>> GetLocalizationValues(string path, string file, string culture)
-		{
-			return GetLocalizationValues(string.Format("{0}/{1}", path, file), culture);
-		}
+        private static IEnumerable<KeyValuePair<string, string>> GetLocalizationValues(string path, string file, string culture)
+        {
+            return GetLocalizationValues(string.Format("{0}/{1}", path, file), culture);
+        }
 
-		private static IEnumerable<KeyValuePair<string, string>> GetLocalizationValues(string fullPath, string culture)
-		{
-			using (var stream = new FileStream(System.Web.HttpContext.Current.Server.MapPath(fullPath), FileMode.Open, FileAccess.Read))
-			{
-				var document = new XmlDocument { XmlResolver = null };
-				document.Load(stream);
+        private static IEnumerable<KeyValuePair<string, string>> GetLocalizationValues(string fullPath, string culture)
+        {
+            using (var stream = new FileStream(System.Web.HttpContext.Current.Server.MapPath(fullPath), FileMode.Open, FileAccess.Read))
+            {
+                var document = new XmlDocument { XmlResolver = null };
+                document.Load(stream);
 
-				// ReSharper disable AssignNullToNotNullAttribute
-				var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
-				// ReSharper restore AssignNullToNotNullAttribute
+                // ReSharper disable AssignNullToNotNullAttribute
+                var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
+                // ReSharper restore AssignNullToNotNullAttribute
 
-				AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
+                AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
 
-				// ReSharper disable AssignNullToNotNullAttribute
-				foreach (var xmlNode in document.SelectNodes("/root/data").Cast<XmlNode>())
-				// ReSharper restore AssignNullToNotNullAttribute
-				{
-					var name = GetNameAttribute(xmlNode).Replace(".Text", string.Empty);
+                // ReSharper disable AssignNullToNotNullAttribute
+                foreach (var xmlNode in document.SelectNodes("/root/data").Cast<XmlNode>())
+                // ReSharper restore AssignNullToNotNullAttribute
+                {
+                    var name = GetNameAttribute(xmlNode).Replace(".Text", string.Empty);
 
-					if (string.IsNullOrEmpty(name))
-					{
-						continue;
-					}
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        continue;
+                    }
 
-					var value = Localization.GetString(string.Format("{0}.Text", name), fullPath, culture);
+                    var value = Localization.GetString(string.Format("{0}.Text", name), fullPath, culture);
 
-					yield return new KeyValuePair<string, string>(name, value);
-				}
-			}
-		}
+                    yield return new KeyValuePair<string, string>(name, value);
+                }
+            }
+        }
 
-		private static void AssertHeaderValue(IEnumerable<XmlNode> headers, string key, string value)
-		{
-			var header = headers.FirstOrDefault(x => GetNameAttribute(x).Equals(key, StringComparison.InvariantCultureIgnoreCase));
-			if (header != null)
-			{
-				if (!header.InnerText.Equals(value, StringComparison.InvariantCultureIgnoreCase))
-				{
-					throw new ApplicationException(string.Format("Resource header '{0}' != '{1}'", key, value));
-				}
-			}
-			else
-			{
-				throw new ApplicationException(string.Format("Resource header '{0}' is missing", key));
-			}
-		}
+        private static void AssertHeaderValue(IEnumerable<XmlNode> headers, string key, string value)
+        {
+            var header = headers.FirstOrDefault(x => GetNameAttribute(x).Equals(key, StringComparison.InvariantCultureIgnoreCase));
+            if (header != null)
+            {
+                if (!header.InnerText.Equals(value, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    throw new ApplicationException(string.Format("Resource header '{0}' != '{1}'", key, value));
+                }
+            }
+            else
+            {
+                throw new ApplicationException(string.Format("Resource header '{0}' is missing", key));
+            }
+        }
 
-		private static string GetNameAttribute(XmlNode node)
-		{
-			if (node.Attributes != null)
-			{
-				var attribute = node.Attributes.GetNamedItem("name");
-				if (attribute != null)
-				{
-					return attribute.Value;
-				}
-			}
+        private static string GetNameAttribute(XmlNode node)
+        {
+            if (node.Attributes != null)
+            {
+                var attribute = node.Attributes.GetNamedItem("name");
+                if (attribute != null)
+                {
+                    return attribute.Value;
+                }
+            }
 
-			return null;
-		}
-		#endregion
-	}
+            return null;
+        }
+        #endregion
+    }
 }

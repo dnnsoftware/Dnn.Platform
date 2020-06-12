@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Syndication
     /// </summary>
     public class Opml
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Opml));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Opml));
         private DateTime _dateCreated = DateTime.MinValue;
         private DateTime _dateModified = DateTime.MinValue;
         private string _docs = string.Empty;
@@ -469,29 +469,29 @@ namespace DotNetNuke.Services.Syndication
             {
                 newOutline.Created = DateTime.Parse(ParseElement(node, "created"));
             }
-			catch (Exception ex)
-			{
-				Logger.Error(ex);
-			}
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
 
             newOutline.Category = ParseElement(node, "category");
             try
             {
                 newOutline.XmlUrl = new Uri(ParseElement(node, "xmlUrl"));
             }
-			catch (Exception ex)
-			{
-				Logger.Error(ex);
-			}
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
 
             try
             {
                 newOutline.HtmlUrl = new Uri(ParseElement(node, "htmlUrl"));
             }
-			catch (Exception ex)
-			{
-				Logger.Error(ex);
-			}
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
 
             newOutline.Language = ParseElement(node, "language");
             newOutline.Title = ParseElement(node, "title");
@@ -500,10 +500,10 @@ namespace DotNetNuke.Services.Syndication
             {
                 newOutline.Url = new Uri(ParseElement(node, "url"));
             }
-			catch (Exception ex)
-			{
-				Logger.Error(ex);
-			}
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
 
             newOutline.Description = ParseElement(node, "description");
 

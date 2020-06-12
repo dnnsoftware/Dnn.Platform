@@ -122,11 +122,11 @@ namespace DotNetNuke.Services.ModuleCache
                     return false;
                 }
             }
-			catch
-			{
-				// if check expire time failed, then force to expire the cache.
-				return true;
-			}
+            catch
+            {
+                // if check expire time failed, then force to expire the cache.
+                return true;
+            }
             finally
             {
                 if (oRead != null)

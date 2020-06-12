@@ -39,7 +39,7 @@ namespace DotNetNuke.Entities.Users
 
         #region Private Members
 
-		private static bool IsAdminUser(PortalSettings portalSettings, UserInfo accessingUser, UserInfo targetUser)
+        private static bool IsAdminUser(PortalSettings portalSettings, UserInfo accessingUser, UserInfo targetUser)
         {
             bool isAdmin = false;
 
@@ -48,12 +48,12 @@ namespace DotNetNuke.Entities.Users
                 // Is Super User?
                 isAdmin = accessingUser.IsSuperUser;
 
-				if (!isAdmin && targetUser.PortalID != -1)
+                if (!isAdmin && targetUser.PortalID != -1)
                 {
                     // Is Administrator
-	                var administratorRoleName = portalSettings != null
-		                ? portalSettings.AdministratorRoleName
-		                : PortalController.Instance.GetPortal(targetUser.PortalID).AdministratorRoleName;
+                    var administratorRoleName = portalSettings != null
+                        ? portalSettings.AdministratorRoleName
+                        : PortalController.Instance.GetPortal(targetUser.PortalID).AdministratorRoleName;
 
                     isAdmin = accessingUser.IsInRole(administratorRoleName);
                 }
@@ -62,14 +62,14 @@ namespace DotNetNuke.Entities.Users
             return isAdmin;
         }
 
-		private static bool IsMember(UserInfo accessingUser)
+        private static bool IsMember(UserInfo accessingUser)
         {
             return (accessingUser != null && accessingUser.UserID != -1);
         }
 
-		private static bool IsUser(UserInfo accessingUser, UserInfo targetUser)
+        private static bool IsUser(UserInfo accessingUser, UserInfo targetUser)
         {
-			return (accessingUser != null && accessingUser.UserID == targetUser.UserID);
+            return (accessingUser != null && accessingUser.UserID == targetUser.UserID);
         }
 
         #endregion
@@ -86,8 +86,8 @@ namespace DotNetNuke.Entities.Users
 
                 if (property != null)
                 {
-					var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-					if (CheckAccessLevel(portalSettings, property, accessingUser, this.user))
+                    var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                    if (CheckAccessLevel(portalSettings, property, accessingUser, this.user))
                     {
                         switch (property.PropertyName.ToLowerInvariant())
                         {
@@ -105,7 +105,7 @@ namespace DotNetNuke.Entities.Users
 
                 propertyNotFound = true;
                 return property != null && property.PropertyName.Equals("photo", StringComparison.InvariantCultureIgnoreCase)
-					? Globals.ApplicationPath + "/images/no_avatar.gif" : PropertyAccess.ContentLocked;
+                    ? Globals.ApplicationPath + "/images/no_avatar.gif" : PropertyAccess.ContentLocked;
             }
             propertyNotFound = true;
             return string.Empty;

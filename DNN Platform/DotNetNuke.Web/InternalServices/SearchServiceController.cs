@@ -96,7 +96,7 @@ namespace DotNetNuke.Web.InternalServices
         private ModuleInfo GetSearchModule()
         {
             var arrModules = GetModulesByDefinition(this.PortalSettings.PortalId, "Search Results");
-	        ModuleInfo findModule = null;
+            ModuleInfo findModule = null;
             if (arrModules.Count > 1)
             {
                 findModule = arrModules.Cast<ModuleInfo>().FirstOrDefault(searchModule => searchModule.CultureCode == this.PortalSettings.CultureCode);

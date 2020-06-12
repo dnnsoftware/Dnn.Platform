@@ -17,9 +17,9 @@ using DotNetNuke.Services.Exceptions;
 namespace DotNetNuke.Security.Permissions
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : WorkflowStatePermissionController
+    /// Class    : WorkflowStatePermissionController
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   WorkflowStatePermissionController provides the Business Layer for DesktopModule Permissions

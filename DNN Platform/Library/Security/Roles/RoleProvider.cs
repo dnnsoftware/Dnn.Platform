@@ -19,15 +19,15 @@ namespace DotNetNuke.Security.Roles
 {
     public abstract class RoleProvider
     {
-		#region Shared/Static Methods
+        #region Shared/Static Methods
 
         // return the provider
         public static RoleProvider Instance()
         {
             return ComponentFactory.GetComponent<RoleProvider>();
         }
-		
-		#endregion
+        
+        #endregion
 
         #region Role Methods
 
@@ -38,7 +38,7 @@ namespace DotNetNuke.Security.Roles
 
         public virtual void DeleteRole(RoleInfo role)
         {
-			throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public abstract ArrayList GetRoles(int portalId);
@@ -97,7 +97,7 @@ namespace DotNetNuke.Security.Roles
 
         public virtual IList<UserRoleInfo> GetUserRoles(UserInfo user, bool includePrivate)
         {
-			throw new NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

@@ -40,7 +40,7 @@ namespace DotNetNuke.Entities.Content
             this._dataService = dataService;
         }
 
-	    public int AddContentItem(ContentItem contentItem)
+        public int AddContentItem(ContentItem contentItem)
         {
             // Argument Contract
             Requires.NotNull("contentItem", contentItem);
@@ -57,7 +57,7 @@ namespace DotNetNuke.Entities.Content
 
             this.SaveMetadataDelta(contentItem);
 
-	        UpdateContentItemsCache(contentItem);
+            UpdateContentItemsCache(contentItem);
 
             return contentItem.ContentItemId;
         }
@@ -112,14 +112,14 @@ namespace DotNetNuke.Entities.Content
         }
 
         public IQueryable<ContentItem> GetContentItemsByTerm(Term term)
-	    {
-	        return this.GetContentItemsByTerm(term.Name);
-	    }
+        {
+            return this.GetContentItemsByTerm(term.Name);
+        }
 
-	    public IQueryable<ContentItem> GetContentItemsByContentType(int contentTypeId)
-	    {
+        public IQueryable<ContentItem> GetContentItemsByContentType(int contentTypeId)
+        {
             return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItemsByContentType(contentTypeId));
-	    }
+        }
 
         /// <summary>Get a list of content items by ContentType.</summary>
         public IQueryable<ContentItem> GetContentItemsByContentType(ContentType contentType)
@@ -127,12 +127,12 @@ namespace DotNetNuke.Entities.Content
             return this.GetContentItemsByContentType(contentType.ContentTypeId);
         }
 
-	    public IQueryable<ContentItem> GetContentItemsByTerms(IList<Term> terms)
+        public IQueryable<ContentItem> GetContentItemsByTerms(IList<Term> terms)
         {
             return this.GetContentItemsByTerms(terms.Select(t => t.Name).ToArray());
         }
 
-	    public IQueryable<ContentItem> GetContentItemsByTerms(string[] terms)
+        public IQueryable<ContentItem> GetContentItemsByTerms(string[] terms)
         {
             var union = new List<ContentItem>();
 
@@ -150,7 +150,7 @@ namespace DotNetNuke.Entities.Content
             return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItemsByTabId(tabId));
         }
 
-	    public IQueryable<ContentItem> GetContentItemsByVocabularyId(int vocabularyId)
+        public IQueryable<ContentItem> GetContentItemsByVocabularyId(int vocabularyId)
         {
             return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItemsByVocabularyId(vocabularyId));
         }
@@ -232,7 +232,7 @@ namespace DotNetNuke.Entities.Content
                 }
             }
 
-		    return metadata;
+            return metadata;
         }
         
         private void SaveMetadataDelta(ContentItem contentItem)

@@ -17,7 +17,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 {
     public sealed class MvcRoutingManager : IMapRoute
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MvcRoutingManager));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MvcRoutingManager));
         private readonly Dictionary<string, int> _moduleUsage = new Dictionary<string, int>();
         private readonly RouteCollection _routes;
         private readonly PortalAliasMvcRouteManager _portalAliasMvcRouteManager;

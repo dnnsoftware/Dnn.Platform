@@ -42,7 +42,7 @@ namespace DotNetNuke.Services.OutputCache
                     }
                     catch (NotSupportedException exc)
                     {
-						// some output caching providers don't use this feature
+                        // some output caching providers don't use this feature
                         Logger.Debug(exc);
                     }
                 }
@@ -56,8 +56,8 @@ namespace DotNetNuke.Services.OutputCache
 
                 // notification that we have errored
                 this.Errored(ref exc);
-				
-				// log the exception
+                
+                // log the exception
                 Exceptions.Exceptions.LogException(exc); // OPTIONAL
             }
         }

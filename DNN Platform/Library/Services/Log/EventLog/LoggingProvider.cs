@@ -27,18 +27,18 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         #endregion
-		
-		#region "Shared/Static Methods"
+        
+        #region "Shared/Static Methods"
 
         // return the provider
-		public static LoggingProvider Instance()
+        public static LoggingProvider Instance()
         {
             return ComponentFactory.GetComponent<LoggingProvider>();
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Abstract Methods"
+        #region "Abstract Methods"
 
         public abstract void AddLog(LogInfo logInfo);
 
@@ -85,6 +85,6 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public abstract void UpdateLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, string keepMostRecent, string logFileName, bool emailNotificationIsActive, string threshold, string notificationThresholdTime, string notificationThresholdTimeType, string mailFromAddress, string mailToAddress);
 
-		#endregion
+        #endregion
     }
 }

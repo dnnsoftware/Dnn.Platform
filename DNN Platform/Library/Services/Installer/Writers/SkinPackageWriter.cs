@@ -24,14 +24,14 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class SkinPackageWriter : PackageWriterBase
     {
-		#region "Private Members"
+        #region "Private Members"
 
         private readonly SkinPackageInfo _SkinPackage;
         private readonly string _SubFolder;
-		
-		#endregion
+        
+        #endregion
 
-		#region "Constructors"
+        #region "Constructors"
 
         public SkinPackageWriter(PackageInfo package) : base(package)
         {
@@ -57,10 +57,10 @@ namespace DotNetNuke.Services.Installer.Writers
             this._SubFolder = subFolder;
             this.BasePath = Path.Combine(basePath, subFolder);
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected Properties"
+        #region "Protected Properties"
         public override bool IncludeAssemblies
         {
             get
@@ -76,8 +76,8 @@ namespace DotNetNuke.Services.Installer.Writers
                 return this._SkinPackage;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
         public void SetBasePath()
         {
@@ -93,13 +93,13 @@ namespace DotNetNuke.Services.Installer.Writers
 
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
-			// Call base class method with includeAppCode = false
+            // Call base class method with includeAppCode = false
             base.GetFiles(includeSource, false);
         }
 
         protected override void ParseFiles(DirectoryInfo folder, string rootPath)
         {
-			// Add the Files in the Folder
+            // Add the Files in the Folder
             FileInfo[] files = folder.GetFiles();
             foreach (FileInfo file in files)
             {

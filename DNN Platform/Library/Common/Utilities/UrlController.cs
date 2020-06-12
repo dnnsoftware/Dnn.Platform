@@ -74,7 +74,7 @@ namespace DotNetNuke.Common.Utilities
             TabType UrlType = Globals.GetURLType(Url);
             if (UrlType == TabType.File && Url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
             {
-				// to handle legacy scenarios before the introduction of the FileServerHandler
+                // to handle legacy scenarios before the introduction of the FileServerHandler
                 var fileName = Path.GetFileName(Url);
 
                 var folderPath = Url.Substring(0, Url.LastIndexOf(fileName));

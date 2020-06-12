@@ -30,196 +30,196 @@ using log4net.Util;
 
 namespace log4net.Appender
 {
-	/// <summary>
-	/// Appends logging events to the console.
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// ConsoleAppender appends log events to the standard output stream
-	/// or the error output stream using a layout specified by the 
-	/// user.
-	/// </para>
-	/// <para>
-	/// By default, all output is written to the console's standard output stream.
-	/// The <see cref="Target"/> property can be set to direct the output to the
-	/// error stream.
-	/// </para>
-	/// <para>
-	/// NOTE: This appender writes each message to the <c>System.Console.Out</c> or 
-	/// <c>System.Console.Error</c> that is set at the time the event is appended.
-	/// Therefore it is possible to programmatically redirect the output of this appender 
-	/// (for example NUnit does this to capture program output). While this is the desired
-	/// behavior of this appender it may have security implications in your application. 
-	/// </para>
-	/// </remarks>
-	/// <author>Nicko Cadell</author>
-	/// <author>Gert Driesen</author>
-	public class ConsoleAppender : AppenderSkeleton
-	{
-		#region Public Instance Constructors
+    /// <summary>
+    /// Appends logging events to the console.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// ConsoleAppender appends log events to the standard output stream
+    /// or the error output stream using a layout specified by the 
+    /// user.
+    /// </para>
+    /// <para>
+    /// By default, all output is written to the console's standard output stream.
+    /// The <see cref="Target"/> property can be set to direct the output to the
+    /// error stream.
+    /// </para>
+    /// <para>
+    /// NOTE: This appender writes each message to the <c>System.Console.Out</c> or 
+    /// <c>System.Console.Error</c> that is set at the time the event is appended.
+    /// Therefore it is possible to programmatically redirect the output of this appender 
+    /// (for example NUnit does this to capture program output). While this is the desired
+    /// behavior of this appender it may have security implications in your application. 
+    /// </para>
+    /// </remarks>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
+    public class ConsoleAppender : AppenderSkeleton
+    {
+        #region Public Instance Constructors
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ConsoleAppender" /> class.
-		/// </summary>
-		/// <remarks>
-		/// The instance of the <see cref="ConsoleAppender" /> class is set up to write 
-		/// to the standard output stream.
-		/// </remarks>
-		public ConsoleAppender() 
-		{
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConsoleAppender" /> class.
+        /// </summary>
+        /// <remarks>
+        /// The instance of the <see cref="ConsoleAppender" /> class is set up to write 
+        /// to the standard output stream.
+        /// </remarks>
+        public ConsoleAppender() 
+        {
+        }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ConsoleAppender" /> class
-		/// with the specified layout.
-		/// </summary>
-		/// <param name="layout">the layout to use for this appender</param>
-		/// <remarks>
-		/// The instance of the <see cref="ConsoleAppender" /> class is set up to write 
-		/// to the standard output stream.
-		/// </remarks>
-		[Obsolete("Instead use the default constructor and set the Layout property. Scheduled removal in v10.0.0.")]
-		public ConsoleAppender(ILayout layout) : this(layout, false)
-		{
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConsoleAppender" /> class
+        /// with the specified layout.
+        /// </summary>
+        /// <param name="layout">the layout to use for this appender</param>
+        /// <remarks>
+        /// The instance of the <see cref="ConsoleAppender" /> class is set up to write 
+        /// to the standard output stream.
+        /// </remarks>
+        [Obsolete("Instead use the default constructor and set the Layout property. Scheduled removal in v10.0.0.")]
+        public ConsoleAppender(ILayout layout) : this(layout, false)
+        {
+        }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ConsoleAppender" /> class
-		/// with the specified layout.
-		/// </summary>
-		/// <param name="layout">the layout to use for this appender</param>
-		/// <param name="writeToErrorStream">flag set to <c>true</c> to write to the console error stream</param>
-		/// <remarks>
-		/// When <paramref name="writeToErrorStream" /> is set to <c>true</c>, output is written to
-		/// the standard error output stream.  Otherwise, output is written to the standard
-		/// output stream.
-		/// </remarks>
-		[Obsolete("Instead use the default constructor and set the Layout & Target properties. Scheduled removal in v10.0.0.")]
-		public ConsoleAppender(ILayout layout, bool writeToErrorStream) 
-		{
-			this.Layout = layout;
-			this.m_writeToErrorStream = writeToErrorStream;
-		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConsoleAppender" /> class
+        /// with the specified layout.
+        /// </summary>
+        /// <param name="layout">the layout to use for this appender</param>
+        /// <param name="writeToErrorStream">flag set to <c>true</c> to write to the console error stream</param>
+        /// <remarks>
+        /// When <paramref name="writeToErrorStream" /> is set to <c>true</c>, output is written to
+        /// the standard error output stream.  Otherwise, output is written to the standard
+        /// output stream.
+        /// </remarks>
+        [Obsolete("Instead use the default constructor and set the Layout & Target properties. Scheduled removal in v10.0.0.")]
+        public ConsoleAppender(ILayout layout, bool writeToErrorStream) 
+        {
+            this.Layout = layout;
+            this.m_writeToErrorStream = writeToErrorStream;
+        }
 
-		#endregion Public Instance Constructors
+        #endregion Public Instance Constructors
 
-		#region Public Instance Properties
+        #region Public Instance Properties
 
-		/// <summary>
-		/// Target is the value of the console output stream.
-		/// This is either <c>"Console.Out"</c> or <c>"Console.Error"</c>.
-		/// </summary>
-		/// <value>
-		/// Target is the value of the console output stream.
-		/// This is either <c>"Console.Out"</c> or <c>"Console.Error"</c>.
-		/// </value>
-		/// <remarks>
-		/// <para>
-		/// Target is the value of the console output stream.
-		/// This is either <c>"Console.Out"</c> or <c>"Console.Error"</c>.
-		/// </para>
-		/// </remarks>
-		virtual public string Target
-		{
-			get { return this.m_writeToErrorStream ? ConsoleError : ConsoleOut; }
-			set
-			{
-				string v = value.Trim();
+        /// <summary>
+        /// Target is the value of the console output stream.
+        /// This is either <c>"Console.Out"</c> or <c>"Console.Error"</c>.
+        /// </summary>
+        /// <value>
+        /// Target is the value of the console output stream.
+        /// This is either <c>"Console.Out"</c> or <c>"Console.Error"</c>.
+        /// </value>
+        /// <remarks>
+        /// <para>
+        /// Target is the value of the console output stream.
+        /// This is either <c>"Console.Out"</c> or <c>"Console.Error"</c>.
+        /// </para>
+        /// </remarks>
+        virtual public string Target
+        {
+            get { return this.m_writeToErrorStream ? ConsoleError : ConsoleOut; }
+            set
+            {
+                string v = value.Trim();
 
-				if (SystemInfo.EqualsIgnoringCase(ConsoleError, v))
-				{
-					this.m_writeToErrorStream = true;
-				} 
-				else 
-				{
-					this.m_writeToErrorStream = false;
-				}
-			}
-		}
+                if (SystemInfo.EqualsIgnoringCase(ConsoleError, v))
+                {
+                    this.m_writeToErrorStream = true;
+                } 
+                else 
+                {
+                    this.m_writeToErrorStream = false;
+                }
+            }
+        }
 
-		#endregion Public Instance Properties
+        #endregion Public Instance Properties
 
-		#region Override implementation of AppenderSkeleton
+        #region Override implementation of AppenderSkeleton
 
-		/// <summary>
-		/// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
-		/// </summary>
-		/// <param name="loggingEvent">The event to log.</param>
-		/// <remarks>
-		/// <para>
-		/// Writes the event to the console.
-		/// </para>
-		/// <para>
-		/// The format of the output will depend on the appender's layout.
-		/// </para>
-		/// </remarks>
-		override protected void Append(LoggingEvent loggingEvent) 
-		{
+        /// <summary>
+        /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
+        /// </summary>
+        /// <param name="loggingEvent">The event to log.</param>
+        /// <remarks>
+        /// <para>
+        /// Writes the event to the console.
+        /// </para>
+        /// <para>
+        /// The format of the output will depend on the appender's layout.
+        /// </para>
+        /// </remarks>
+        override protected void Append(LoggingEvent loggingEvent) 
+        {
 #if NETCF_1_0
 			// Write to the output stream
 			Console.Write(RenderLoggingEvent(loggingEvent));
 #else
-			if (this.m_writeToErrorStream)
-			{
-				// Write to the error stream
-				Console.Error.Write(this.RenderLoggingEvent(loggingEvent));
-			}
-			else
-			{
-				// Write to the output stream
-				Console.Write(this.RenderLoggingEvent(loggingEvent));
-			}
+            if (this.m_writeToErrorStream)
+            {
+                // Write to the error stream
+                Console.Error.Write(this.RenderLoggingEvent(loggingEvent));
+            }
+            else
+            {
+                // Write to the output stream
+                Console.Write(this.RenderLoggingEvent(loggingEvent));
+            }
 #endif
-		}
+        }
 
-		/// <summary>
-		/// This appender requires a <see cref="Layout"/> to be set.
-		/// </summary>
-		/// <value><c>true</c></value>
-		/// <remarks>
-		/// <para>
-		/// This appender requires a <see cref="Layout"/> to be set.
-		/// </para>
-		/// </remarks>
-		override protected bool RequiresLayout
-		{
-			get { return true; }
-		}
+        /// <summary>
+        /// This appender requires a <see cref="Layout"/> to be set.
+        /// </summary>
+        /// <value><c>true</c></value>
+        /// <remarks>
+        /// <para>
+        /// This appender requires a <see cref="Layout"/> to be set.
+        /// </para>
+        /// </remarks>
+        override protected bool RequiresLayout
+        {
+            get { return true; }
+        }
 
-		#endregion Override implementation of AppenderSkeleton
+        #endregion Override implementation of AppenderSkeleton
 
-		#region Public Static Fields
+        #region Public Static Fields
 
-		/// <summary>
-		/// The <see cref="ConsoleAppender.Target"/> to use when writing to the Console 
-		/// standard output stream.
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The <see cref="ConsoleAppender.Target"/> to use when writing to the Console 
-		/// standard output stream.
-		/// </para>
-		/// </remarks>
-		public const string ConsoleOut = "Console.Out";
+        /// <summary>
+        /// The <see cref="ConsoleAppender.Target"/> to use when writing to the Console 
+        /// standard output stream.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The <see cref="ConsoleAppender.Target"/> to use when writing to the Console 
+        /// standard output stream.
+        /// </para>
+        /// </remarks>
+        public const string ConsoleOut = "Console.Out";
 
-		/// <summary>
-		/// The <see cref="ConsoleAppender.Target"/> to use when writing to the Console 
-		/// standard error output stream.
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// The <see cref="ConsoleAppender.Target"/> to use when writing to the Console 
-		/// standard error output stream.
-		/// </para>
-		/// </remarks>
-		public const string ConsoleError = "Console.Error";
+        /// <summary>
+        /// The <see cref="ConsoleAppender.Target"/> to use when writing to the Console 
+        /// standard error output stream.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The <see cref="ConsoleAppender.Target"/> to use when writing to the Console 
+        /// standard error output stream.
+        /// </para>
+        /// </remarks>
+        public const string ConsoleError = "Console.Error";
 
-		#endregion Public Static Fields
+        #endregion Public Static Fields
 
-		#region Private Instances Fields
+        #region Private Instances Fields
 
-		private bool m_writeToErrorStream = false;
+        private bool m_writeToErrorStream = false;
 
-		#endregion Private Instances Fields
-	}
+        #endregion Private Instances Fields
+    }
 }

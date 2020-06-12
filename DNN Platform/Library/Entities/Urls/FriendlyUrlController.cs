@@ -1047,11 +1047,11 @@ namespace DotNetNuke.Entities.Urls
             {
                 var friendlyUrlSettings = GetCurrentSettings(settings.PortalId);
                 var tabs = TabController.Instance.GetTabsByPortal(settings.PortalId).AsList();
-				// DNN-6492: if content localize enabled, only check tab names in current culture.
-	            if (settings.ContentLocalizationEnabled)
-	            {
-		            tabs = tabs.Where(t => t.CultureCode == settings.CultureCode).ToList();
-	            }
+                // DNN-6492: if content localize enabled, only check tab names in current culture.
+                if (settings.ContentLocalizationEnabled)
+                {
+                    tabs = tabs.Where(t => t.CultureCode == settings.CultureCode).ToList();
+                }
 
                 foreach (TabInfo tab in tabs)
                 {

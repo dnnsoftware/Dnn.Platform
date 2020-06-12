@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Authentication
     [Serializable]
     public class AuthenticationConfig : AuthenticationConfigBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthenticationConfig));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthenticationConfig));
         private const string CACHEKEY = "Authentication.DNN";
 
         protected AuthenticationConfig(int portalID) : base(portalID)
@@ -43,10 +43,10 @@ namespace DotNetNuke.Services.Authentication
                     this.UseCaptcha = bool.Parse(setting);
                 }
             }
-			catch (Exception ex)
-			{
-				Logger.Error(ex);
-			}
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
         }
 
         public bool Enabled { get; set; }

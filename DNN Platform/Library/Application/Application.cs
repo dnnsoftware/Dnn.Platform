@@ -117,7 +117,7 @@ namespace DotNetNuke.Application
         /// Gets the status of the DotnetNuke application
         /// </summary>
         /// <remarks>
-		/// If the value is not be Stable, you will see the exactly status and version in page's title if allow display beta message in host setting.
+        /// If the value is not be Stable, you will see the exactly status and version in page's title if allow display beta message in host setting.
         /// </remarks>
         /// <value>
         /// The value can be: None, Alpha, Beta, RC, Stable
@@ -186,12 +186,12 @@ namespace DotNetNuke.Application
         {
             get
             {
-	            var url = Config.GetSetting("UpdateServiceUrl");
-				if (string.IsNullOrEmpty(url))
-				{
-					return "https://dnnplatform.io";
-				}
-	            return url;
+                var url = Config.GetSetting("UpdateServiceUrl");
+                if (string.IsNullOrEmpty(url))
+                {
+                    return "https://dnnplatform.io";
+                }
+                return url;
             }
         }
 

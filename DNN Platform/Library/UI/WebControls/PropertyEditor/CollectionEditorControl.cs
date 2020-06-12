@@ -33,7 +33,7 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:CollectionEditorControl runat=server></{0}:CollectionEditorControl>")]
     public class CollectionEditorControl : PropertyEditorControl
     {
-		#region Protected Members
+        #region Protected Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -49,9 +49,9 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-		#endregion
+        #endregion
 
-		#region Public Properties
+        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -143,10 +143,10 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that determines the visibility.")]
         public string VisibilityDataField { get; set; }
-		
-		#endregion
+        
+        #endregion
 
-		#region Private Methods
+        #region Private Methods
 
         private Hashtable GetFieldNames()
         {
@@ -163,10 +163,10 @@ namespace DotNetNuke.UI.WebControls
 
             return fields;
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Protected Methods
+        #region Protected Methods
 
         protected override void AddEditorRow(Table table, object obj)
         {
@@ -192,8 +192,8 @@ namespace DotNetNuke.UI.WebControls
         {
             PropertyInfo objProperty;
             string _Category = Null.NullString;
-			
-			// Get Category Field
+            
+            // Get Category Field
             if (!String.IsNullOrEmpty(this.CategoryDataField))
             {
                 objProperty = obj.GetType().GetProperty(this.CategoryDataField);
@@ -217,7 +217,7 @@ namespace DotNetNuke.UI.WebControls
 
             foreach (object obj in arrObjects)
             {
-				// Get Category Field
+                // Get Category Field
                 if (!String.IsNullOrEmpty(this.CategoryDataField))
                 {
                     objProperty = obj.GetType().GetProperty(this.CategoryDataField);
@@ -257,7 +257,7 @@ namespace DotNetNuke.UI.WebControls
             }
             if (!isVisible && this.EditMode == PropertyEditorMode.Edit)
             {
-				// Check if property is required - as this will need to override visibility
+                // Check if property is required - as this will need to override visibility
                 objProperty = obj.GetType().GetProperty(this.RequiredDataField);
                 if (!(objProperty == null || (objProperty.GetValue(obj, null) == null)))
                 {
@@ -266,7 +266,7 @@ namespace DotNetNuke.UI.WebControls
             }
             return isVisible;
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

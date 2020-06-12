@@ -17,13 +17,13 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     /// <summary>
     /// User Profile Picture ImageTransform class
     /// </summary>
-	public class UserProfilePicTransform : ImageTransform
+    public class UserProfilePicTransform : ImageTransform
     {
         #region Properties
         /// <summary>
-		/// Sets the UserID of the profile pic
-		/// </summary>
-		public int UserID { get; set; }
+        /// Sets the UserID of the profile pic
+        /// </summary>
+        public int UserID { get; set; }
 
         /// <summary>
         /// Provides an Unique String for the image transformation
@@ -37,12 +37,12 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         #endregion
 
         public UserProfilePicTransform()
-		{
+        {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;
             this.SmoothingMode = SmoothingMode.HighQuality;
             this.PixelOffsetMode = PixelOffsetMode.HighQuality;
             this.CompositingQuality = CompositingQuality.HighQuality;
-		}
+        }
 
         /// <summary>
         /// Processes an input image returning the user profile picture
@@ -50,23 +50,23 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// <param name="image">Input image</param>
         /// <returns>Image result after image transformation</returns>
         public override Image ProcessImage(Image image)
-		{
+        {
             IFileInfo photoFile;
 
-		    if (this.TryGetPhotoFile(out photoFile))
-		    {
-		        if (!IsImageExtension(photoFile.Extension))
-		        {
-		            return this.GetNoAvatarImage();
-		        }
+            if (this.TryGetPhotoFile(out photoFile))
+            {
+                if (!IsImageExtension(photoFile.Extension))
+                {
+                    return this.GetNoAvatarImage();
+                }
 
-		        using (var content = FileManager.Instance.GetFileContent(photoFile))
-		        {
-		            return this.CopyImage(content);
-		        }
-		    }
-		    return this.GetNoAvatarImage();
-		}
+                using (var content = FileManager.Instance.GetFileContent(photoFile))
+                {
+                    return this.CopyImage(content);
+                }
+            }
+            return this.GetNoAvatarImage();
+        }
 
         /// <summary>
         /// Get the Bitmap of the No Avatar Image

@@ -82,14 +82,14 @@ namespace DotNetNuke.Services.UserProfile
             {
                 if (!this.IsImageExtension(photoFile.Extension))
                 {
-	                try
-	                {
-						context.Response.End();
-	                }
-					catch (ThreadAbortException) // if ThreadAbortException will shown, should catch it and do nothing.
-	                {
-		                
-	                }
+                    try
+                    {
+                        context.Response.End();
+                    }
+                    catch (ThreadAbortException) // if ThreadAbortException will shown, should catch it and do nothing.
+                    {
+                        
+                    }
                     
                 }
 
@@ -162,7 +162,7 @@ namespace DotNetNuke.Services.UserProfile
             var photoProperty = targetUser.Profile.GetProperty("Photo");
             if (photoProperty != null)
             {
-	            isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, targetUser);
+                isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, targetUser);
 
                 if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
                 {

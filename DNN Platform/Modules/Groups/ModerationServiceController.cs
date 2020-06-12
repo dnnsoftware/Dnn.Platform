@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.Groups
     public class ModerationServiceController : DnnApiController
     {
         protected INavigationManager NavigationManager { get; }
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModerationServiceController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModerationServiceController));
         private int _tabId;
         private int _moduleId;
         private int _roleId;

@@ -14,11 +14,11 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     /// Image File ImageTransform class
     /// </summary>
     public class ImageFileTransform : ImageTransform
-	{
-		/// <summary>
-		/// File path of the image
-		/// </summary>
-		public string ImageFilePath { get; set; }
+    {
+        /// <summary>
+        /// File path of the image
+        /// </summary>
+        public string ImageFilePath { get; set; }
 
         /// <summary>
         /// Url of the image
@@ -36,12 +36,12 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         public override string UniqueString => base.UniqueString + "-" + this.ImageFilePath + this.ImageUrl;
 
         public ImageFileTransform()
-		{
+        {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;
             this.SmoothingMode = SmoothingMode.HighQuality;
             this.PixelOffsetMode = PixelOffsetMode.HighQuality;
             this.CompositingQuality = CompositingQuality.HighQuality;
-		}
+        }
 
         /// <summary>
         /// Processes an input image applying a file image transformation.
@@ -92,5 +92,5 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
                 return this.EmptyImage;
             }
         }
-	}
+    }
 }

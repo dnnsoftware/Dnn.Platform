@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.Journal
     [SupportedModules("Journal")]
     public class ServicesController : DnnApiController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServicesController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServicesController));
 
         private const int MentionNotificationLength = 100;
         private const string MentionNotificationSuffix = "...";
@@ -66,10 +66,10 @@ namespace DotNetNuke.Modules.Journal
             }
 
             if (relativePath.Contains("?"))
-	        {
-		        relativePath = relativePath.Substring(0,
-			        relativePath.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
-	        }
+            {
+                relativePath = relativePath.Substring(0,
+                    relativePath.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
+            }
 
             
             var extension = relativePath.Substring(relativePath.LastIndexOf(".",
@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.Journal
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-		[DnnAuthorize(DenyRoles = "Unverified Users")]
+        [DnnAuthorize(DenyRoles = "Unverified Users")]
         public HttpResponseMessage Create(CreateDTO postData)
         {
             try
@@ -317,7 +317,7 @@ namespace DotNetNuke.Modules.Journal
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-		[DnnAuthorize]
+        [DnnAuthorize]
         public HttpResponseMessage PreviewUrl(PreviewDTO postData)
         {
             try
@@ -466,43 +466,43 @@ namespace DotNetNuke.Modules.Journal
             public string key { get; set; }
         }
 
-		[HttpGet]
-		[DnnAuthorize(DenyRoles = "Unverified Users")]
-		public HttpResponseMessage GetSuggestions(string keyword)
-		{
-			try
-			{
+        [HttpGet]
+        [DnnAuthorize(DenyRoles = "Unverified Users")]
+        public HttpResponseMessage GetSuggestions(string keyword)
+        {
+            try
+            {
                 var findedUsers = new List<SuggestDTO>();
-				var relations = RelationshipController.Instance.GetUserRelationships(this.UserInfo);
-				foreach (var ur in relations)
-				{
-					var targetUserId = ur.UserId == this.UserInfo.UserID ? ur.RelatedUserId : ur.UserId;
-					var targetUser = UserController.GetUserById(this.PortalSettings.PortalId, targetUserId);
-					var relationship = RelationshipController.Instance.GetRelationship(ur.RelationshipId);
-					if (ur.Status == RelationshipStatus.Accepted && targetUser != null
-						&& ((relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Followers && ur.RelatedUserId == this.UserInfo.UserID)
-								|| relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Friends)
-						&& (targetUser.DisplayName.ToLowerInvariant().Contains(keyword.ToLowerInvariant())
+                var relations = RelationshipController.Instance.GetUserRelationships(this.UserInfo);
+                foreach (var ur in relations)
+                {
+                    var targetUserId = ur.UserId == this.UserInfo.UserID ? ur.RelatedUserId : ur.UserId;
+                    var targetUser = UserController.GetUserById(this.PortalSettings.PortalId, targetUserId);
+                    var relationship = RelationshipController.Instance.GetRelationship(ur.RelationshipId);
+                    if (ur.Status == RelationshipStatus.Accepted && targetUser != null
+                        && ((relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Followers && ur.RelatedUserId == this.UserInfo.UserID)
+                                || relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Friends)
+                        && (targetUser.DisplayName.ToLowerInvariant().Contains(keyword.ToLowerInvariant())
                                 || targetUser.DisplayName.ToLowerInvariant().Contains(keyword.Replace("-", " ").ToLowerInvariant()))
                         && findedUsers.All(s => s.userId != targetUser.UserID))
-					{
-						findedUsers.Add(new SuggestDTO
-							                {
+                    {
+                        findedUsers.Add(new SuggestDTO
+                                            {
                                                 displayName = targetUser.DisplayName.Replace(" ", "-"),
-											    userId = targetUser.UserID,
-											    avatar = targetUser.Profile.PhotoURL,
+                                                userId = targetUser.UserID,
+                                                avatar = targetUser.Profile.PhotoURL,
                                                 key = keyword
-							                });
-					}
-				}
+                                            });
+                    }
+                }
 
-				return this.Request.CreateResponse(HttpStatusCode.OK, findedUsers.Cast<object>().Take(5));
-			}
-			catch (Exception exc)
-			{
-				Logger.Error(exc);
-				return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-			}
+                return this.Request.CreateResponse(HttpStatusCode.OK, findedUsers.Cast<object>().Take(5));
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
         }
 
         #endregion

@@ -97,8 +97,8 @@ namespace DotNetNuke.Services.Installer
             this.Sender = sender;
             this.SourceConfig = sourceDoc;
         }
-		
-		#endregion
+        
+        #endregion
 
         #region "Public Properties"
 
@@ -165,7 +165,7 @@ namespace DotNetNuke.Services.Installer
 
         #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
         private bool AddNode(XmlNode rootNode, XmlNode actionNode)
         {
@@ -175,7 +175,7 @@ namespace DotNetNuke.Services.Installer
                 if (child.NodeType == XmlNodeType.Element || child.NodeType == XmlNodeType.Comment)
                 {
                     rootNode.AppendChild(this.TargetConfig.ImportNode(child, true));
-					DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddNode:" + child.InnerXml.ToString());
+                    DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddNode:" + child.InnerXml.ToString());
                     changedNode = true;
                 }
             }
@@ -209,7 +209,7 @@ namespace DotNetNuke.Services.Installer
             {
                 if (child.NodeType == XmlNodeType.Element || child.NodeType == XmlNodeType.Comment)
                 {
-					DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "InsertNode:" + child.InnerXml.ToString());
+                    DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "InsertNode:" + child.InnerXml.ToString());
                     switch (mode)
                     {
                         case NodeInsertType.Before:
@@ -235,10 +235,10 @@ namespace DotNetNuke.Services.Installer
             
             string nodeAction = node.Attributes["action"].Value.ToLowerInvariant();
 
-			if (rootNode == null)
-			{
-			    return false; // not every TargetRoot will contain every target node
-			}
+            if (rootNode == null)
+            {
+                return false; // not every TargetRoot will contain every target node
+            }
             
             switch (nodeAction)
             {
@@ -424,7 +424,7 @@ namespace DotNetNuke.Services.Installer
                     if (rootNode.Attributes[attributeName] != null)
                     {
                         rootNode.Attributes.Remove(rootNode.Attributes[attributeName]);
-						DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveAttribute:attributeName=" + attributeName.ToString());
+                        DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveAttribute:attributeName=" + attributeName.ToString());
                         changedNode = true;
                     }
                 }
@@ -445,7 +445,7 @@ namespace DotNetNuke.Services.Installer
                 if (parentNode != null)
                 {
                     parentNode.RemoveChild(node);
-					DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveNode:" + node.InnerXml.ToString());
+                    DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveNode:" + node.InnerXml.ToString());
                     changedNode = true;
                 }
             }
@@ -465,7 +465,7 @@ namespace DotNetNuke.Services.Installer
                 string attributeValue = actionNode.Attributes["value"].Value;
                 if (!string.IsNullOrEmpty(attributeName))
                 {
-					DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateAttribute:attributeName=" + attributeName.ToString());
+                    DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateAttribute:attributeName=" + attributeName.ToString());
                     if (rootNode.Attributes[attributeName] == null)
                     {
                         rootNode.Attributes.Append(this.TargetConfig.CreateAttribute(attributeName));
@@ -493,7 +493,7 @@ namespace DotNetNuke.Services.Installer
             if (actionNode.Attributes["key"] != null)
             {
                 keyAttribute = actionNode.Attributes["key"].Value;
-				DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateNode: keyAttribute=" + keyAttribute.ToString());
+                DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateNode: keyAttribute=" + keyAttribute.ToString());
             }
             foreach (XmlNode child in actionNode.ChildNodes)
             {
@@ -540,8 +540,8 @@ namespace DotNetNuke.Services.Installer
                                                                      DateTime.Now);
                             XmlComment commentHeader = this.TargetConfig.CreateComment(commentHeaderText);
 
-		                    var targetNodeContent = this.GetNodeContentWithoutComment(targetNode);
-							XmlComment commentNode = this.TargetConfig.CreateComment(targetNodeContent);
+                            var targetNodeContent = this.GetNodeContentWithoutComment(targetNode);
+                            XmlComment commentNode = this.TargetConfig.CreateComment(targetNodeContent);
                             var newChild = this.TargetConfig.ImportNode(child, true);
                             rootNode.ReplaceChild(newChild, targetNode);
                             rootNode.InsertBefore(commentHeader, newChild);
@@ -557,38 +557,38 @@ namespace DotNetNuke.Services.Installer
             return changedNode;
         }
 
-	    private string GetNodeContentWithoutComment(XmlNode node)
-	    {
-		    var cloneNode = node.Clone();
-		    this.RemoveCommentNodes(cloneNode);
+        private string GetNodeContentWithoutComment(XmlNode node)
+        {
+            var cloneNode = node.Clone();
+            this.RemoveCommentNodes(cloneNode);
 
-		    return cloneNode.OuterXml;
-	    }
+            return cloneNode.OuterXml;
+        }
 
-	    private void RemoveCommentNodes(XmlNode node)
-	    {
-		    var commentNodes = new List<XmlNode>();
-		    foreach (XmlNode childNode in node.ChildNodes)
-		    {
-			    if (childNode.NodeType == XmlNodeType.Comment)
-			    {
-				    commentNodes.Add(childNode);
-			    }
-				else if (childNode.HasChildNodes)
-				{
-					this.RemoveCommentNodes(childNode);
-				}
-		    }
+        private void RemoveCommentNodes(XmlNode node)
+        {
+            var commentNodes = new List<XmlNode>();
+            foreach (XmlNode childNode in node.ChildNodes)
+            {
+                if (childNode.NodeType == XmlNodeType.Comment)
+                {
+                    commentNodes.Add(childNode);
+                }
+                else if (childNode.HasChildNodes)
+                {
+                    this.RemoveCommentNodes(childNode);
+                }
+            }
 
-		    if (commentNodes.Count > 0)
-		    {
-			    commentNodes.ForEach(n => { node.RemoveChild(n); });
-		    }
-	    }
-		
-		#endregion
+            if (commentNodes.Count > 0)
+            {
+                commentNodes.ForEach(n => { node.RemoveChild(n); });
+            }
+        }
+        
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
 
         /// -----------------------------------------------------------------------------

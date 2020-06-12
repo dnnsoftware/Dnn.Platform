@@ -32,17 +32,17 @@ namespace DotNetNuke.Security.Roles
     [Serializable]
     public class RoleGroupInfo : BaseEntityInfo, IHydratable, IXmlSerializable
     {
-		#region "Private Members"
-		
+        #region "Private Members"
+        
         private string _Description;
         private int _PortalID = Null.NullInteger;
         private int _RoleGroupID = Null.NullInteger;
         private string _RoleGroupName;
         private Dictionary<string, RoleInfo> _Roles;
-		
-		#endregion
-		
-		#region "Constructors"
+        
+        #endregion
+        
+        #region "Constructors"
 
         public RoleGroupInfo()
         {
@@ -57,10 +57,10 @@ namespace DotNetNuke.Security.Roles
                 this.GetRoles();
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -151,8 +151,8 @@ namespace DotNetNuke.Security.Roles
                 return this._Roles;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
         #region IHydratable Members
 
@@ -269,8 +269,8 @@ namespace DotNetNuke.Security.Roles
 
             // Write start of roles
             writer.WriteStartElement("roles");
-			
-			// Iterate through roles
+            
+            // Iterate through roles
             if (this.Roles != null)
             {
                 foreach (RoleInfo role in this.Roles.Values)
@@ -278,7 +278,7 @@ namespace DotNetNuke.Security.Roles
                     role.WriteXml(writer);
                 }
             }
-			
+            
             // Write end of Roles
             writer.WriteEndElement();
 

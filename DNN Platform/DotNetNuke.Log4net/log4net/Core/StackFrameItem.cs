@@ -52,24 +52,24 @@ namespace log4net.Core
             this.m_method = new MethodItem();
             this.m_className = NA;
 
-			try
-			{
-				// get frame values
-				this.m_lineNumber = frame.GetFileLineNumber().ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
-				this.m_fileName = frame.GetFileName();
-				// get method values
-				MethodBase method = frame.GetMethod();
-				if (method != null)
-				{
-					if (method.DeclaringType != null)
-						this.m_className = method.DeclaringType.FullName;
-					this.m_method = new MethodItem(method);
-				}
-			}
-			catch (Exception ex)
-			{
-				LogLog.Error(declaringType, "An exception ocurred while retreiving stack frame information.", ex);
-			}
+            try
+            {
+                // get frame values
+                this.m_lineNumber = frame.GetFileLineNumber().ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
+                this.m_fileName = frame.GetFileName();
+                // get method values
+                MethodBase method = frame.GetMethod();
+                if (method != null)
+                {
+                    if (method.DeclaringType != null)
+                        this.m_className = method.DeclaringType.FullName;
+                    this.m_method = new MethodItem(method);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogLog.Error(declaringType, "An exception ocurred while retreiving stack frame information.", ex);
+            }
 
             // set full info
             this.m_fullInfo = this.m_className + '.' + this.m_method.Name + '(' + this.m_fileName + ':' + this.m_lineNumber + ')';
@@ -172,7 +172,7 @@ namespace log4net.Core
         private readonly string m_fileName;
         private readonly string m_className;
         private readonly string m_fullInfo;
-		private readonly MethodItem m_method;
+        private readonly MethodItem m_method;
 
         #endregion
 

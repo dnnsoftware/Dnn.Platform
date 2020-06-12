@@ -15,9 +15,9 @@ using DotNetNuke.Common.Utilities;
 namespace DotNetNuke.Entities.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities.Modules
-    /// Class	 : ControlInfo
+    /// Class    : ControlInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ControlInfo provides a base class for Module Controls and SkinControls
@@ -45,7 +45,7 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------
-		public string ControlSrc { get; set; }
+        public string ControlSrc { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -54,7 +54,7 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <returns>A Boolean</returns>
         /// -----------------------------------------------------------------------------
-		public bool SupportsPartialRendering { get; set; }
+        public bool SupportsPartialRendering { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -64,7 +64,7 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         protected override void FillInternal(IDataReader dr)
         {
-			// Call EntityBaseInfo's implementation
+            // Call EntityBaseInfo's implementation
             base.FillInternal(dr);
             this.ControlKey = Null.SetNullString(dr["ControlKey"]);
             this.ControlSrc = Null.SetNullString(dr["ControlSrc"]);
@@ -93,7 +93,7 @@ namespace DotNetNuke.Entities.Modules
 
         protected void WriteXmlInternal(XmlWriter writer)
         {
-			// write out properties
+            // write out properties
             writer.WriteElementString("controlKey", this.ControlKey);
             writer.WriteElementString("controlSrc", this.ControlSrc);
             writer.WriteElementString("supportsPartialRendering", this.SupportsPartialRendering.ToString());

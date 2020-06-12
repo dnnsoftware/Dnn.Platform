@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Mail
     /// -----------------------------------------------------------------------------
     public class SendTokenizedBulkEmail : IDisposable
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendTokenizedBulkEmail));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendTokenizedBulkEmail));
         #region AddressMethods enum
 
         /// <summary>
@@ -59,8 +59,8 @@ namespace DotNetNuke.Services.Mail
         // ReSharper restore InconsistentNaming
 
         #endregion
-		
-		#region "Private Members"
+        
+        #region "Private Members"
 
         private readonly List<string> _addressedRoles = new List<string>();
         private readonly List<UserInfo> _addressedUsers = new List<UserInfo>();
@@ -84,8 +84,8 @@ namespace DotNetNuke.Services.Mail
         private bool _isDisposed;
 
         #endregion
-		
-		#region "Constructs"
+        
+        #region "Constructs"
 
         public SendTokenizedBulkEmail()
         {
@@ -111,26 +111,26 @@ namespace DotNetNuke.Services.Mail
             this.SuppressTokenReplace = this.SuppressTokenReplace;
             this.Initialize();
         }
-		
-		#endregion
-		
-		#region "Public Properties"
+        
+        #endregion
+        
+        #region "Public Properties"
 
-		/// <summary>
-		/// Priority of emails to be sent
-		/// </summary>
+        /// <summary>
+        /// Priority of emails to be sent
+        /// </summary>
         public MailPriority Priority { get; set; }
 
-		/// <summary>
-		/// Subject of the emails to be sent
-		/// </summary>
-		/// <remarks>may contain tokens</remarks>
+        /// <summary>
+        /// Subject of the emails to be sent
+        /// </summary>
+        /// <remarks>may contain tokens</remarks>
         public string Subject { get; set; }
 
-		/// <summary>
-		/// body text of the email to be sent
-		/// </summary>
-		/// <remarks>may contain HTML tags and tokens. Side effect: sets BodyFormat autmatically</remarks>
+        /// <summary>
+        /// body text of the email to be sent
+        /// </summary>
+        /// <remarks>may contain HTML tags and tokens. Side effect: sets BodyFormat autmatically</remarks>
         public string Body
         {
             get
@@ -144,15 +144,15 @@ namespace DotNetNuke.Services.Mail
             }
         }
 
-		/// <summary>format of body text for the email to be sent.</summary>
-		/// <remarks>by default activated, if tokens are found in Body and subject.</remarks>
+        /// <summary>format of body text for the email to be sent.</summary>
+        /// <remarks>by default activated, if tokens are found in Body and subject.</remarks>
         public MailFormat BodyFormat { get; set; }
 
-		/// <summary>address method for the email to be sent (TO or BCC)</summary>
-		/// <remarks>TO is default value</remarks>
+        /// <summary>address method for the email to be sent (TO or BCC)</summary>
+        /// <remarks>TO is default value</remarks>
         public AddressMethods AddressMethod { get; set; }
 
-		/// <summary>portal alias http path to be used for links to images, ...</summary>
+        /// <summary>portal alias http path to be used for links to images, ...</summary>
         public string PortalAlias { get; set; }
 
         /// <summary>UserInfo of the user sending the mail</summary>
@@ -192,16 +192,16 @@ namespace DotNetNuke.Services.Mail
             }
         }
 
-		 /// <summary>shall duplicate email addresses be ignored? (default value: false)</summary>
-		 /// <remarks>Duplicate Users (e.g. from multiple role selections) will always be ignored.</remarks>
+         /// <summary>shall duplicate email addresses be ignored? (default value: false)</summary>
+         /// <remarks>Duplicate Users (e.g. from multiple role selections) will always be ignored.</remarks>
         public bool RemoveDuplicates { get; set; }
 
-		 /// <summary>Shall automatic TokenReplace be prohibited?</summary>
-		 /// <remarks>default value: false</remarks>
+         /// <summary>Shall automatic TokenReplace be prohibited?</summary>
+         /// <remarks>default value: false</remarks>
         public bool SuppressTokenReplace { get; set; }
 
-		 /// <summary>Shall List of recipients appended to confirmation report?</summary>
-		 /// <remarks>enabled by default.</remarks>
+         /// <summary>Shall List of recipients appended to confirmation report?</summary>
+         /// <remarks>enabled by default.</remarks>
         public bool ReportRecipients { get; set; }
 
         public string RelayEmailAddress
@@ -217,10 +217,10 @@ namespace DotNetNuke.Services.Mail
         }
 
         public string[] LanguageFilter { get; set; }
-		
-		#endregion
-		
-		#region "Private Methods"
+        
+        #endregion
+        
+        #region "Private Methods"
 
         /// <summary>internal method to initialize used objects, depending on parameters of construct method</summary>
         private void Initialize()
@@ -246,9 +246,9 @@ namespace DotNetNuke.Services.Mail
         /// <param name="recipientList">List of recipients as formatted string</param>
         /// <remarks></remarks>
         private void SendConfirmationMail(int numRecipients, int numMessages, int numErrors, string subject, string startedAt, string mailErrors, string recipientList)
-		{
+        {
             // send confirmation, use resource string like:
-        	// Operation started at: [Custom:0]<br>
+            // Operation started at: [Custom:0]<br>
             // EmailRecipients:      [Custom:1]<b
             // EmailMessages sent:   [Custom:2]<br>
             // Operation Completed:  [Custom:3]<br>
@@ -325,14 +325,14 @@ namespace DotNetNuke.Services.Mail
             }
         }
 
-		private List<Attachment> LoadAttachments()
-		{
-			var attachments = new List<Attachment>();
-			foreach (var attachment in this._attachments)
-			{
+        private List<Attachment> LoadAttachments()
+        {
+            var attachments = new List<Attachment>();
+            foreach (var attachment in this._attachments)
+            {
                 Attachment newAttachment;
                 MemoryStream memoryStream = null;
-				var buffer = new byte[4096];
+                var buffer = new byte[4096];
                 try
                 {
                     memoryStream = new MemoryStream();
@@ -356,20 +356,20 @@ namespace DotNetNuke.Services.Mail
                 {
                     memoryStream?.Dispose();
                 }
-			}
-			return attachments;
-		}
-		
-		#endregion
-		
-		#region "Public Methods"
+            }
+            return attachments;
+        }
+        
+        #endregion
+        
+        #region "Public Methods"
 
         /// <summary>Specify SMTP server to be used</summary>
         /// <param name="smtpServer">name of the SMTP server</param>
-		/// <param name="smtpAuthentication">authentication string (0: anonymous, 1: basic, 2: NTLM)</param>
-		/// <param name="smtpUsername">username to log in SMTP server</param>
-		/// <param name="smtpPassword">password to log in SMTP server</param>
-		/// <param name="smtpEnableSSL">SSL used to connect tp SMTP server</param>
+        /// <param name="smtpAuthentication">authentication string (0: anonymous, 1: basic, 2: NTLM)</param>
+        /// <param name="smtpUsername">username to log in SMTP server</param>
+        /// <param name="smtpPassword">password to log in SMTP server</param>
+        /// <param name="smtpEnableSSL">SSL used to connect tp SMTP server</param>
         /// <returns>always true</returns>
         /// <remarks>if not called, values will be taken from host settings</remarks>
         public bool SetSMTPServer(string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
@@ -466,7 +466,7 @@ namespace DotNetNuke.Services.Mail
             
             try
             {
-				// send to recipients
+                // send to recipients
                 string body = this._body;
                 if (this.BodyFormat == MailFormat.Html) // Add Base Href for any images inserted in to the email.
                 {
@@ -482,7 +482,7 @@ namespace DotNetNuke.Services.Mail
 
                 var mailErrors = new StringBuilder();
                 var mailRecipients = new StringBuilder();
-				
+                
                 switch (this.AddressMethod)
                 {
                     case AddressMethods.Send_TO:
@@ -529,7 +529,7 @@ namespace DotNetNuke.Services.Mail
                                                                 this.BodyFormat,
                                                                 Encoding.UTF8,
                                                                 body,
-																this.LoadAttachments(),
+                                                                this.LoadAttachments(),
                                                                 this._smtpServer,
                                                                 this._smtpAuthenticationMethod,
                                                                 this._smtpUsername,
@@ -565,7 +565,7 @@ namespace DotNetNuke.Services.Mail
                         {
                             if (replaceTokens)
                             {
-								// no access to User properties possible!
+                                // no access to User properties possible!
                                 var tr = new TokenReplace(Scope.Configuration);
                                 body = tr.ReplaceEnvironmentTokens(this._body);
                                 subject = tr.ReplaceEnvironmentTokens(this.Subject);
@@ -585,7 +585,7 @@ namespace DotNetNuke.Services.Mail
                                                        this.BodyFormat,
                                                        Encoding.UTF8,
                                                        body,
-													   this.LoadAttachments(),
+                                                       this.LoadAttachments(),
                                                        this._smtpServer,
                                                        this._smtpAuthenticationMethod,
                                                        this._smtpUsername,
@@ -617,10 +617,10 @@ namespace DotNetNuke.Services.Mail
             }
             finally
             {
-				foreach (var attachment in this._attachments)
-				{
-					attachment.Dispose();
-				}
+                foreach (var attachment in this._attachments)
+                {
+                    attachment.Dispose();
+                }
             }
             return messagesSent;
         }
@@ -631,8 +631,8 @@ namespace DotNetNuke.Services.Mail
             this.EnsureNotDisposed();
             this.SendMails();
         }
-		
-		#endregion
+        
+        #endregion
 
         private void EnsureNotDisposed()
         {

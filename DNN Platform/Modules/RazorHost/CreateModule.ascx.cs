@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.RazorHost
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class CreateModule : ModuleUserControlBase
     {
-		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CreateModule));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CreateModule));
         private readonly INavigationManager _navigationManager;
 
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
@@ -113,36 +113,36 @@ namespace DotNetNuke.Modules.RazorHost
             }
 
             // Create new Manifest in target folder
-			string manifestMapPath = folderMapPath + "/" + this.ModuleControl.Replace(".ascx", ".dnn");
-			try
-			{
-				using (var manifestWriter = new StreamWriter(manifestMapPath))
-				{
-					string manifestTemplate = Localization.GetString("ManifestText.Text", this.LocalResourceFile);
-					string manifest = string.Format(manifestTemplate, this.txtName.Text, this.txtDescription.Text, this.txtFolder.Text, this.ModuleControl, this.scriptList.SelectedValue);
-					manifestWriter.Write(manifest);
-					manifestWriter.Flush();
-				}
-			}
-			catch (Exception ex)
-			{
-				Exceptions.LogException(ex);
-				UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ManifestCreationError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-				return;
-			}
+            string manifestMapPath = folderMapPath + "/" + this.ModuleControl.Replace(".ascx", ".dnn");
+            try
+            {
+                using (var manifestWriter = new StreamWriter(manifestMapPath))
+                {
+                    string manifestTemplate = Localization.GetString("ManifestText.Text", this.LocalResourceFile);
+                    string manifest = string.Format(manifestTemplate, this.txtName.Text, this.txtDescription.Text, this.txtFolder.Text, this.ModuleControl, this.scriptList.SelectedValue);
+                    manifestWriter.Write(manifest);
+                    manifestWriter.Flush();
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ManifestCreationError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                return;
+            }
 
             // Register Module
             ModuleDefinitionInfo moduleDefinition = this.ImportManifest(manifestMapPath);
 
-			// remove the manifest file
-	        try
-	        {
-				FileWrapper.Instance.Delete(manifestMapPath);
-	        }
-	        catch (Exception ex)
-	        {
-				Logger.Error(ex);
-	        }
+            // remove the manifest file
+            try
+            {
+                FileWrapper.Instance.Delete(manifestMapPath);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
 
 
             // Optionally goto new Page

@@ -8,9 +8,9 @@ using System.Collections;
 namespace DotNetNuke.Security.Permissions
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : CompareWorkflowStatePermissions
+    /// Class    : CompareWorkflowStatePermissions
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   CompareWorkflowStatePermissions provides the a custom IComparer implementation for 

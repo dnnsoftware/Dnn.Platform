@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.ClientCapability
         const string SignedRequestParameter = "signed_request";
         public bool IsValid { get; set; }
 
-		public static FacebookRequest GetFacebookDetailsFromRequest(HttpRequest Request)
+        public static FacebookRequest GetFacebookDetailsFromRequest(HttpRequest Request)
         {
             if (Request == null) return null;
             if (Request.RequestType != "POST") return null;
@@ -42,30 +42,30 @@ namespace DotNetNuke.Services.ClientCapability
         {
             if (string.IsNullOrEmpty(rawSignedRequest)) return null;
 
-			try
-			{
-				var facebookRequest = new FacebookRequest();
-				facebookRequest.RawSignedRequest = rawSignedRequest;
-				facebookRequest.IsValid = false;
+            try
+            {
+                var facebookRequest = new FacebookRequest();
+                facebookRequest.RawSignedRequest = rawSignedRequest;
+                facebookRequest.IsValid = false;
 
-				string[] signedRequestSplit = rawSignedRequest.Split('.');
-				string expectedSignature = signedRequestSplit[0];
-				string payload = signedRequestSplit[1];
+                string[] signedRequestSplit = rawSignedRequest.Split('.');
+                string expectedSignature = signedRequestSplit[0];
+                string payload = signedRequestSplit[1];
 
-				var decodedJson = ReplaceSpecialCharactersInSignedRequest(payload);
-				var base64JsonArray = Convert.FromBase64String(decodedJson.PadRight(decodedJson.Length + (4 - decodedJson.Length % 4) % 4, '='));
+                var decodedJson = ReplaceSpecialCharactersInSignedRequest(payload);
+                var base64JsonArray = Convert.FromBase64String(decodedJson.PadRight(decodedJson.Length + (4 - decodedJson.Length % 4) % 4, '='));
 
-				var encoding = new UTF8Encoding();
-				FaceBookData faceBookData = encoding.GetString(base64JsonArray).FromJson<FaceBookData>();
-				
+                var encoding = new UTF8Encoding();
+                FaceBookData faceBookData = encoding.GetString(base64JsonArray).FromJson<FaceBookData>();
+                
                 if (faceBookData.algorithm == "HMAC-SHA256")
                 {
                     facebookRequest.IsValid = true;
                     facebookRequest.Algorithm = faceBookData.algorithm;
                     facebookRequest.ProfileId = faceBookData.profile_id;
                     facebookRequest.AppData = faceBookData.app_data;
-					facebookRequest.OauthToken = !string.IsNullOrEmpty(faceBookData.oauth_token) ? faceBookData.oauth_token : "";
-					facebookRequest.Expires = ConvertToTimestamp(faceBookData.expires);
+                    facebookRequest.OauthToken = !string.IsNullOrEmpty(faceBookData.oauth_token) ? faceBookData.oauth_token : "";
+                    facebookRequest.Expires = ConvertToTimestamp(faceBookData.expires);
                     facebookRequest.IssuedAt = ConvertToTimestamp(faceBookData.issued_at);
                     facebookRequest.UserID = !string.IsNullOrEmpty(faceBookData.user_id) ? faceBookData.user_id : "";
 
@@ -77,14 +77,14 @@ namespace DotNetNuke.Services.ClientCapability
                     facebookRequest.UserCountry = faceBookData.user.country;
                     facebookRequest.UserMinAge = faceBookData.user.age.min;
                     facebookRequest.UserMaxAge = faceBookData.user.age.max;
-				}
+                }
 
-				return facebookRequest;
-			}
-			catch (Exception)
-			{
-				return null;
-			}
+                return facebookRequest;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public static bool IsValidSignature(string rawSignedRequest, string secretKey)

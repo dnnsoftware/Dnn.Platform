@@ -160,16 +160,16 @@ namespace DotNetNuke.UI.ControlPanels
                 multipleSite = this.LoadSiteList();
                 this.LoadVisibilityList();
                 this.AutoSetUserMode();
-	            this.BindPortalsList();
-	            this.BindLanguagesList();
+                this.BindPortalsList();
+                this.BindLanguagesList();
             }
 
             this.LoadTabModuleMessage = multipleSite ? this.GetString("LoadingTabModuleCE.Text") : this.GetString("LoadingTabModule.Text");
-		}
+        }
 
-		#endregion
+        #endregion
 
-		#region Protected Methods
+        #region Protected Methods
 
         protected bool CheckPageQuota()
         {
@@ -217,20 +217,20 @@ namespace DotNetNuke.UI.ControlPanels
                 upgradeIndicator.ID, upgradeIndicator.WebAction, upgradeIndicator.CssClass, this.ResolveClientUrl(upgradeIndicator.ImageUrl), upgradeIndicator.AltText, upgradeIndicator.ToolTip);
         }
 
-		protected string PreviewPopup()
-		{
-			var previewUrl = string.Format("{0}/Default.aspx?ctl={1}&previewTab={2}&TabID={2}",
-										Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias),
-										"MobilePreview",
-										this.PortalSettings.ActiveTab.TabID);
+        protected string PreviewPopup()
+        {
+            var previewUrl = string.Format("{0}/Default.aspx?ctl={1}&previewTab={2}&TabID={2}",
+                                        Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias),
+                                        "MobilePreview",
+                                        this.PortalSettings.ActiveTab.TabID);
 
-			if (this.PortalSettings.EnablePopUps)
-			{
-				return UrlUtils.PopUpUrl(previewUrl, this, this.PortalSettings, true, false, 660, 800);
-			}
+            if (this.PortalSettings.EnablePopUps)
+            {
+                return UrlUtils.PopUpUrl(previewUrl, this, this.PortalSettings, true, false, 660, 800);
+            }
 
             return string.Format("location.href = \"{0}\"", previewUrl);
-		}
+        }
 
         protected IEnumerable<string[]> LoadPaneList()
         {
@@ -402,10 +402,10 @@ namespace DotNetNuke.UI.ControlPanels
             return strURL;
         }
 
-		protected string GetTabURL(string tabName, bool isHostTool)
-		{
-			return this.GetTabURL(tabName, isHostTool, null);
-		}
+        protected string GetTabURL(string tabName, bool isHostTool)
+        {
+            return this.GetTabURL(tabName, isHostTool, null);
+        }
 
         protected string GetTabURL(string tabName, bool isHostTool, int? parentId)
         {
@@ -507,23 +507,23 @@ namespace DotNetNuke.UI.ControlPanels
             if (tab.IsVisible && !tab.IsDeleted && !tab.DisableLink)
             {
                 string name = !string.IsNullOrEmpty(tab.LocalizedTabName) ? tab.LocalizedTabName : tab.Title;
-	            var linkClass = DotNetNukeContext.Current.Application.Name == "DNNCORP.CE" && tab.FullUrl.Contains("ProfessionalFeatures") ? "class=\"PE\"" : string.Empty;
+                var linkClass = DotNetNukeContext.Current.Application.Name == "DNNCORP.CE" && tab.FullUrl.Contains("ProfessionalFeatures") ? "class=\"PE\"" : string.Empty;
                 if (!isRemoveBookmark)
                 {
                     if (!isHideBookmark)
-						return string.Format("<li data-tabname=\"{3}\"><a href=\"{0}\" {4}>{1}</a><a href=\"javascript:void(0)\" class=\"bookmark\" title=\"{2}\"><span></span></a></li>",
+                        return string.Format("<li data-tabname=\"{3}\"><a href=\"{0}\" {4}>{1}</a><a href=\"javascript:void(0)\" class=\"bookmark\" title=\"{2}\"><span></span></a></li>",
                                              tab.FullUrl,
                                              name,
                                              ClientAPI.GetSafeJSString(this.GetString("Tool.AddToBookmarks.ToolTip")),
                                              ClientAPI.GetSafeJSString(tab.TabName),
-											 linkClass);
+                                             linkClass);
                     else
-						return string.Format("<li data-tabname=\"{3}\"><a href=\"{0}\" {4}>{1}</a><a href=\"javascript:void(0)\" class=\"bookmark hideBookmark\" data-title=\"{2}\"><span></span></a></li>",
+                        return string.Format("<li data-tabname=\"{3}\"><a href=\"{0}\" {4}>{1}</a><a href=\"javascript:void(0)\" class=\"bookmark hideBookmark\" data-title=\"{2}\"><span></span></a></li>",
                                             tab.FullUrl,
                                             name,
                                             ClientAPI.GetSafeJSString(this.GetString("Tool.AddToBookmarks.ToolTip")),
                                             ClientAPI.GetSafeJSString(tab.TabName),
-											linkClass);
+                                            linkClass);
                 }
 
                 return string.Format("<li data-tabname=\"{3}\"><a href=\"{0}\" {4}>{1}</a><a href=\"javascript:void(0)\" class=\"removeBookmark\" title=\"{2}\"><span></span></a></li>",
@@ -531,7 +531,7 @@ namespace DotNetNuke.UI.ControlPanels
                                         name,
                                         ClientAPI.GetSafeJSString(this.GetString("Tool.RemoveFromBookmarks.ToolTip")),
                                         ClientAPI.GetSafeJSString(tab.TabName),
-										linkClass);
+                                        linkClass);
             }
             return string.Empty;
         }
@@ -858,9 +858,9 @@ namespace DotNetNuke.UI.ControlPanels
             }
 
             string lastPageId = this.GetLastPageHistory();
-	        var isShowAsCustomError = this.Request.QueryString.AllKeys.Contains("aspxerrorpath");
+            var isShowAsCustomError = this.Request.QueryString.AllKeys.Contains("aspxerrorpath");
 
-			if (lastPageId != pageId && !isShowAsCustomError)
+            if (lastPageId != pageId && !isShowAsCustomError)
             {
                 // navigate between pages
                 if (PortalSettings.Current.UserMode != PortalSettings.Mode.View)
@@ -871,10 +871,10 @@ namespace DotNetNuke.UI.ControlPanels
                 }
             }
 
-	        if (!isShowAsCustomError)
-	        {
-		        this.SetLastPageHistory(pageId);
-	        }
+            if (!isShowAsCustomError)
+            {
+                this.SetLastPageHistory(pageId);
+            }
         }
 
         private void SetLastPageHistory(string pageId)
@@ -899,16 +899,16 @@ namespace DotNetNuke.UI.ControlPanels
             }
         }
 
-		private void BindPortalsList()
-		{
-			foreach (var portal in this.LoadPortalsList())
-			{
-				this.controlBar_SwitchSite.Items.Add(new DnnComboBoxItem(portal[0], portal[1]));
-			}
-		}
+        private void BindPortalsList()
+        {
+            foreach (var portal in this.LoadPortalsList())
+            {
+                this.controlBar_SwitchSite.Items.Add(new DnnComboBoxItem(portal[0], portal[1]));
+            }
+        }
 
-		private void BindLanguagesList()
-		{
+        private void BindLanguagesList()
+        {
             if (this.ShowSwitchLanguagesPanel())
             {
                 const string FlagImageUrlFormatString = "~/images/Flags/{0}.gif";
@@ -925,7 +925,7 @@ namespace DotNetNuke.UI.ControlPanels
                 }
 
             }
-		}
+        }
 
         #endregion
 

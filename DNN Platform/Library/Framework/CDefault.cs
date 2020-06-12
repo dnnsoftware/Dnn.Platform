@@ -20,8 +20,8 @@ using DotNetNuke.UI.Utilities;
 namespace DotNetNuke.Framework
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : CDefault
+    /// Project  : DotNetNuke
+    /// Class    : CDefault
     /// -----------------------------------------------------------------------------
     /// -----------------------------------------------------------------------------
     public class CDefault : PageBase

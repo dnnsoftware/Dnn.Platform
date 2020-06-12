@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.Search
     [Serializable]
     public class SearchResultsInfoCollection : CollectionBase
     {
-		#region "Constructors"
+        #region "Constructors"
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchResultsInfoCollection">SearchResultsInfoCollection</see> class.
@@ -62,9 +62,9 @@ namespace DotNetNuke.Services.Search
             this.AddRange(value);
         }
 
-		#endregion
+        #endregion
 
-		#region "Properties"
+        #region "Properties"
 
         /// <summary>
         /// Gets the <see cref="SearchResultsInfoCollection">SearchResultsInfoCollection</see> at the specified index in the collection.
@@ -84,9 +84,9 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
         /// <summary>
         /// Add an element of the specified <see cref="SearchResultsInfo">SearchResultsInfo</see> to the end of the collection.
@@ -195,7 +195,7 @@ namespace DotNetNuke.Services.Search
             this.CopyTo(arr, 0);
             return arr;
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

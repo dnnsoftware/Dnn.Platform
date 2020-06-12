@@ -17,226 +17,226 @@ using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
 #endregion
-				
+                
 namespace DotNetNuke.UI.UserControls
 {
 
-	/// <summary>
-	/// LabelControl is a user control that provides all the server code to manage a
-	/// label, including localization, 508 support and help.
-	/// </summary>
-	/// <remarks>
-	/// To implement help, the control uses the ClientAPI interface.  In particular
-	///  the javascript function __dnn_Help_OnClick()
-	/// </remarks>
-	public abstract class LabelControl : UserControl
-	{
+    /// <summary>
+    /// LabelControl is a user control that provides all the server code to manage a
+    /// label, including localization, 508 support and help.
+    /// </summary>
+    /// <remarks>
+    /// To implement help, the control uses the ClientAPI interface.  In particular
+    ///  the javascript function __dnn_Help_OnClick()
+    /// </remarks>
+    public abstract class LabelControl : UserControl
+    {
 
-		#region Private Memebers
-				
-		protected LinkButton cmdHelp;
-		protected HtmlGenericControl label;
-		protected Label lblHelp;
-		protected Label lblLabel;
-		protected Panel pnlHelp;
-		protected Label lblNoHelpLabel;
+        #region Private Memebers
+                
+        protected LinkButton cmdHelp;
+        protected HtmlGenericControl label;
+        protected Label lblHelp;
+        protected Label lblLabel;
+        protected Panel pnlHelp;
+        protected Label lblNoHelpLabel;
 
-		#endregion
-		
-		#region Properties
-																									 
-		/// <summary>
-		/// ControlName is the Id of the control that is associated with the label
-		/// </summary>
-		/// <value>A string representing the id of the associated control</value>
-		/// <remarks>
-		/// </remarks>
-		public string ControlName { get; set; }
+        #endregion
+        
+        #region Properties
+                                                                                                     
+        /// <summary>
+        /// ControlName is the Id of the control that is associated with the label
+        /// </summary>
+        /// <value>A string representing the id of the associated control</value>
+        /// <remarks>
+        /// </remarks>
+        public string ControlName { get; set; }
 
-		/// <summary>
-		/// Set the associate control id format, combined used with ControlName for controls
-		///  which have child edit control and want that child control focus when click label.
-		/// </summary>
-		public string AssociateFormat { get; set; }
+        /// <summary>
+        /// Set the associate control id format, combined used with ControlName for controls
+        ///  which have child edit control and want that child control focus when click label.
+        /// </summary>
+        public string AssociateFormat { get; set; }
 
-		/// <summary>
-		/// Css style applied to the asp:label control
-		/// </summary>
-		/// <value>A string representing css class name</value>
-		/// <remarks>
-		/// </remarks>
-		public string CssClass { get; set; }
+        /// <summary>
+        /// Css style applied to the asp:label control
+        /// </summary>
+        /// <value>A string representing css class name</value>
+        /// <remarks>
+        /// </remarks>
+        public string CssClass { get; set; }
 
-		/// <summary>
-		/// HelpKey is the Resource Key for the Help Text
-		/// </summary>
-		/// <value>A string representing the Resource Key for the Help Text</value>
-		/// <remarks>
-		/// </remarks>
-		public string HelpKey { get; set; }
+        /// <summary>
+        /// HelpKey is the Resource Key for the Help Text
+        /// </summary>
+        /// <value>A string representing the Resource Key for the Help Text</value>
+        /// <remarks>
+        /// </remarks>
+        public string HelpKey { get; set; }
 
-		/// <summary>
-		/// HelpText is value of the Help Text if no ResourceKey is provided
-		/// </summary>
-		/// <value>A string representing the Text</value>
-		/// <remarks>
-		/// </remarks>                                   
-		public string HelpText
-		{
-			get
-			{
-				return this.lblHelp.Text;
-			}
-			set
-			{
-				this.lblHelp.Text = value;
-			}
-		}
+        /// <summary>
+        /// HelpText is value of the Help Text if no ResourceKey is provided
+        /// </summary>
+        /// <value>A string representing the Text</value>
+        /// <remarks>
+        /// </remarks>                                   
+        public string HelpText
+        {
+            get
+            {
+                return this.lblHelp.Text;
+            }
+            set
+            {
+                this.lblHelp.Text = value;
+            }
+        }
 
-		public string NoHelpLabelText
-		{
-			get
-			{
-				return this.lblNoHelpLabel.Text;
-			}
-			set
-			{
-				this.lblNoHelpLabel.Text = value;
-			}
-		}
+        public string NoHelpLabelText
+        {
+            get
+            {
+                return this.lblNoHelpLabel.Text;
+            }
+            set
+            {
+                this.lblNoHelpLabel.Text = value;
+            }
+        }
 
-		/// <summary>
-		/// ResourceKey is the Resource Key for the Label Text
-		/// </summary>
-		/// <value>A string representing the Resource Key for the Label Text</value>
-		/// <remarks>
-		/// </remarks>
-		public string ResourceKey { get; set; }
+        /// <summary>
+        /// ResourceKey is the Resource Key for the Label Text
+        /// </summary>
+        /// <value>A string representing the Resource Key for the Label Text</value>
+        /// <remarks>
+        /// </remarks>
+        public string ResourceKey { get; set; }
 
-		/// <summary>
-		/// Suffix is Optional Text that appears after the Localized Label Text
-		/// </summary>
-		/// <value>A string representing the Optional Text</value>
-		/// <remarks>
-		/// </remarks>
-		public string Suffix { get; set; }
+        /// <summary>
+        /// Suffix is Optional Text that appears after the Localized Label Text
+        /// </summary>
+        /// <value>A string representing the Optional Text</value>
+        /// <remarks>
+        /// </remarks>
+        public string Suffix { get; set; }
 
-		/// <summary>
-		/// Text is value of the Label Text if no ResourceKey is provided
-		/// </summary>
-		/// <value>A string representing the Text</value>
-		/// <remarks>
-		/// </remarks>
-		public string Text
-		{
-			get
-			{
-				return this.lblLabel.Text;
-			}
-			set
-			{
-				this.lblLabel.Text = value;
-			}
-		}
+        /// <summary>
+        /// Text is value of the Label Text if no ResourceKey is provided
+        /// </summary>
+        /// <value>A string representing the Text</value>
+        /// <remarks>
+        /// </remarks>
+        public string Text
+        {
+            get
+            {
+                return this.lblLabel.Text;
+            }
+            set
+            {
+                this.lblLabel.Text = value;
+            }
+        }
 
-		/// <summary>
-		/// Width is value of the Label Width
-		/// </summary>
-		/// <value>A string representing the Text</value>
-		/// <remarks>
-		/// </remarks>
-		public Unit Width
-		{
-			get
-			{
-				return this.lblLabel.Width;
-			}
-			set
-			{
-				this.lblLabel.Width = value;
-			}
-		}
+        /// <summary>
+        /// Width is value of the Label Width
+        /// </summary>
+        /// <value>A string representing the Text</value>
+        /// <remarks>
+        /// </remarks>
+        public Unit Width
+        {
+            get
+            {
+                return this.lblLabel.Width;
+            }
+            set
+            {
+                this.lblLabel.Width = value;
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region Event Handlers
+        #region Event Handlers
 
-		/// <summary>
-		/// Page_Load runs when the control is loaded
-		/// </summary>
-		/// <remarks>
-		/// </remarks>
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
-			try
-			{
-				this.RegisterClientDependencies();
-			}
-			catch (Exception exc) // Module failed to load
-			{
-				Exceptions.ProcessModuleLoadException(this, exc);
-			}
-		}
+        /// <summary>
+        /// Page_Load runs when the control is loaded
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            try
+            {
+                this.RegisterClientDependencies();
+            }
+            catch (Exception exc) // Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
 
-		protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
 
-			// get the localised text
-			if (String.IsNullOrEmpty(this.ResourceKey))
-			{
-				// Set Resource Key to the ID of the control
-				this.ResourceKey = this.ID;
-			}
-			if ((!string.IsNullOrEmpty(this.ResourceKey)))
-			{
-				var localText = Localization.GetString(this.ResourceKey, this);
-				if (!string.IsNullOrEmpty(localText))
-				{
-					this.Text = localText + this.Suffix;
-					// NoHelpLabelText = Text;
-				}
-				else
-				{
-					this.Text += this.Suffix;
-					// NoHelpLabelText = Text;
-				}
-			}
+            // get the localised text
+            if (String.IsNullOrEmpty(this.ResourceKey))
+            {
+                // Set Resource Key to the ID of the control
+                this.ResourceKey = this.ID;
+            }
+            if ((!string.IsNullOrEmpty(this.ResourceKey)))
+            {
+                var localText = Localization.GetString(this.ResourceKey, this);
+                if (!string.IsNullOrEmpty(localText))
+                {
+                    this.Text = localText + this.Suffix;
+                    // NoHelpLabelText = Text;
+                }
+                else
+                {
+                    this.Text += this.Suffix;
+                    // NoHelpLabelText = Text;
+                }
+            }
 
-			// Set Help Key to the Resource Key plus ".Help"
-			if (String.IsNullOrEmpty(this.HelpKey))
-			{
-				this.HelpKey = this.ResourceKey + ".Help";
-			}
+            // Set Help Key to the Resource Key plus ".Help"
+            if (String.IsNullOrEmpty(this.HelpKey))
+            {
+                this.HelpKey = this.ResourceKey + ".Help";
+            }
 
-			var helpText = Localization.GetString(this.HelpKey, this);
-			if ((!string.IsNullOrEmpty(helpText)) || (string.IsNullOrEmpty(this.HelpText)))
-			{
-				this.HelpText = helpText;
-			}
+            var helpText = Localization.GetString(this.HelpKey, this);
+            if ((!string.IsNullOrEmpty(helpText)) || (string.IsNullOrEmpty(this.HelpText)))
+            {
+                this.HelpText = helpText;
+            }
 
-			if (string.IsNullOrEmpty(this.HelpText))
-			{
-				this.pnlHelp.Visible = this.cmdHelp.Visible = false;
+            if (string.IsNullOrEmpty(this.HelpText))
+            {
+                this.pnlHelp.Visible = this.cmdHelp.Visible = false;
                 // lblHelp.Visible = false;
                 // lblNoHelpLabel.Visible = true;
-			}
+            }
 
-			if (!string.IsNullOrEmpty(this.CssClass))
-			{
-				this.lblLabel.CssClass = this.CssClass;
-			}
+            if (!string.IsNullOrEmpty(this.CssClass))
+            {
+                this.lblLabel.CssClass = this.CssClass;
+            }
 
-			// find the reference control in the parents Controls collection
-			if (!String.IsNullOrEmpty(this.ControlName))
-			{
-				var c = this.Parent.FindControl(this.ControlName);
-			    var clientId = this.ControlName;
-				if (c != null)
-				{
-					clientId = c.ClientID;
-				}
+            // find the reference control in the parents Controls collection
+            if (!String.IsNullOrEmpty(this.ControlName))
+            {
+                var c = this.Parent.FindControl(this.ControlName);
+                var clientId = this.ControlName;
+                if (c != null)
+                {
+                    clientId = c.ClientID;
+                }
 
                 if (!string.IsNullOrEmpty(this.AssociateFormat))
                 {
@@ -244,16 +244,16 @@ namespace DotNetNuke.UI.UserControls
                 }
                 this.label.Attributes["for"] = clientId;
             }
-		}
+        }
 
-		private void RegisterClientDependencies()
-		{
+        private void RegisterClientDependencies()
+        {
             JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             // ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
-		}
+        }
 
-		#endregion
+        #endregion
 
-	}
+    }
 }

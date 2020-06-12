@@ -19,9 +19,9 @@ using DotNetNuke.Security.Permissions;
 namespace DotNetNuke.Entities.Modules.Definitions
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities.Modules.Definitions
-    /// Class	 : ModuleDefinitionInfo
+    /// Class    : ModuleDefinitionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModuleDefinitionInfo provides the Entity Layer for Module Definitions
@@ -130,10 +130,10 @@ namespace DotNetNuke.Entities.Modules.Definitions
             this.DesktopModuleID = Null.SetNullInteger(dr["DesktopModuleID"]);
             this.DefaultCacheTime = Null.SetNullInteger(dr["DefaultCacheTime"]);
             this.FriendlyName = Null.SetNullString(dr["FriendlyName"]);
-			if (dr.GetSchemaTable().Select("ColumnName = 'DefinitionName'").Length > 0)
-			{
-				this.DefinitionName = Null.SetNullString(dr["DefinitionName"]);
-			}
+            if (dr.GetSchemaTable().Select("ColumnName = 'DefinitionName'").Length > 0)
+            {
+                this.DefinitionName = Null.SetNullString(dr["DefinitionName"]);
+            }
         }
 
         /// -----------------------------------------------------------------------------

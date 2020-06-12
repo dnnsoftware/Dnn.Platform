@@ -13,8 +13,8 @@ using DotNetNuke.Security;
 namespace DotNetNuke.Entities.Modules.Actions
 {
     /// -----------------------------------------------------------------------------
-    /// Project		: DotNetNuke
-    /// Class		: ModuleAction
+    /// Project     : DotNetNuke
+    /// Class       : ModuleAction
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// Each Module Action represents a separate functional action as defined by the

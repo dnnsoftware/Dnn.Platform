@@ -24,8 +24,8 @@ namespace DotNetNuke.UI.UserControls
 {
     public abstract class URLTrackingControl : UserControlBase
     {
-		#region "Private Members"
-		
+        #region "Private Members"
+        
         protected Label Label1;
         protected Label Label2;
         protected Label Label3;
@@ -54,10 +54,10 @@ namespace DotNetNuke.UI.UserControls
         protected TextBox txtStartDate;
         protected CompareValidator valEndDate;
         protected CompareValidator valStartDate;
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         public string FormattedURL
         {
@@ -135,10 +135,10 @@ namespace DotNetNuke.UI.UserControls
                 this._localResourceFile = value;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Event Handlers"
+        #region "Event Handlers"
 
         protected override void OnLoad(EventArgs e)
         {
@@ -148,7 +148,7 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-				// this needs to execute always to the client script code is registred in InvokePopupCal
+                // this needs to execute always to the client script code is registred in InvokePopupCal
                 this.cmdStartCalendar.NavigateUrl = Calendar.InvokePopupCal(this.txtStartDate);
                 this.cmdEndCalendar.NavigateUrl = Calendar.InvokePopupCal(this.txtEndDate);
                 if (!this.Page.IsPostBack)
@@ -254,7 +254,7 @@ namespace DotNetNuke.UI.UserControls
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

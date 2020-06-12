@@ -84,10 +84,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 return this.PhysicalSitePath + "\\";
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -101,11 +101,11 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "dll,pdb";
             }
         }
-		
-		
-		#endregion
+        
+        
+        #endregion
 
-		#region "Protected Methods"
+        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -169,11 +169,11 @@ namespace DotNetNuke.Services.Installer.Installers
                         break;
                     case 2:
                     case 3:
-						// Assembly already Registered
+                        // Assembly already Registered
                         this.Log.AddInfo(Util.ASSEMBLY_Registered + " - " + file.FullName);
                         break;
                 }
-				
+                
                 // If assembly not registered, is newer (or is the same version and we are in repair mode)
                 if (returnCode < 2 || (returnCode == 2 && file.InstallerInfo.RepairInstall))
                 {
@@ -184,8 +184,8 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             return bSuccess;
         }
-		
-		#endregion
+        
+        #endregion
 
         #region "Private Methods"
 

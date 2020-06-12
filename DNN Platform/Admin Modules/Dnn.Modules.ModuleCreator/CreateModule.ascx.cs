@@ -60,7 +60,7 @@ namespace Dnn.Module.ModuleCreator
         private void LoadLanguages()
         {
             this.optLanguage.Items.Clear();
-			var moduleTemplatePath = this.Server.MapPath(this.ControlPath) + "Templates";
+            var moduleTemplatePath = this.Server.MapPath(this.ControlPath) + "Templates";
             string[] folderList = Directory.GetDirectories(moduleTemplatePath);
             foreach (string folderPath in folderList)
             {
@@ -72,7 +72,7 @@ namespace Dnn.Module.ModuleCreator
         private void LoadModuleTemplates()
         {
             this.cboTemplate.Items.Clear();
-			var moduleTemplatePath = this.Server.MapPath(this.ControlPath) + "Templates\\" + this.optLanguage.SelectedValue;
+            var moduleTemplatePath = this.Server.MapPath(this.ControlPath) + "Templates\\" + this.optLanguage.SelectedValue;
             string[] folderList = Directory.GetDirectories(moduleTemplatePath);
             foreach (string folderPath in folderList)
             {
@@ -105,7 +105,7 @@ namespace Dnn.Module.ModuleCreator
 
         private string CreateModuleControl()
         {
-			var moduleTemplatePath = this.Server.MapPath(this.ControlPath) + "Templates\\" + this.optLanguage.SelectedValue + "\\" + this.cboTemplate.SelectedValue + "\\";
+            var moduleTemplatePath = this.Server.MapPath(this.ControlPath) + "Templates\\" + this.optLanguage.SelectedValue + "\\" + this.cboTemplate.SelectedValue + "\\";
 
             EventLogController.Instance.AddLog("Processing Template Folder", moduleTemplatePath, this.PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
 
@@ -280,8 +280,8 @@ namespace Dnn.Module.ModuleCreator
                         objDesktopModule.Dependencies = "";
                         objDesktopModule.Permissions = "";
                         objDesktopModule.PackageID = objPackage.PackageID;
-						objDesktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(objDesktopModule, false, true);
-						objDesktopModule = DesktopModuleController.GetDesktopModule(objDesktopModule.DesktopModuleID, Null.NullInteger);
+                        objDesktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(objDesktopModule, false, true);
+                        objDesktopModule = DesktopModuleController.GetDesktopModule(objDesktopModule.DesktopModuleID, Null.NullInteger);
 
                         // Add OwnerName to the DesktopModule taxonomy and associate it with this module
                         var vocabularyId = -1;

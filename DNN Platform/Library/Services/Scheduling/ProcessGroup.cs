@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Scheduling
 {
     public class ProcessGroup
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProcessGroup));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProcessGroup));
         // ''''''''''''''''''''''''''''''''''''''''''''''''''
         // This class represents a process group for
         // our threads to run in.
@@ -72,7 +72,7 @@ namespace DotNetNuke.Services.Scheduling
                 Process = this.GetSchedulerClient(serviceScope.ServiceProvider, objScheduleHistoryItem.TypeFullName, objScheduleHistoryItem);
                 Process.ScheduleHistoryItem = objScheduleHistoryItem;
                 
-				// Set up the handlers for the CoreScheduler
+                // Set up the handlers for the CoreScheduler
                 Process.ProcessStarted += Scheduler.CoreScheduler.WorkStarted;
                 Process.ProcessProgressing += Scheduler.CoreScheduler.WorkProgressing;
                 Process.ProcessCompleted += Scheduler.CoreScheduler.WorkCompleted;
@@ -80,7 +80,7 @@ namespace DotNetNuke.Services.Scheduling
                 // This kicks off the DoWork method of the class
                 // type specified in the configuration.
 
-				Process.Started();
+                Process.Started();
                 try
                 {
                     Process.ScheduleHistoryItem.Succeeded = false;
@@ -107,14 +107,14 @@ namespace DotNetNuke.Services.Scheduling
                     Process.Completed();
                 }
                 
-				// If all processes in this ProcessGroup have
+                // If all processes in this ProcessGroup have
                 // completed, set the ticksElapsed and raise
                 // the Completed event.
                 // I don't think this is necessary with the
                 // other events.  I'll leave it for now and
                 // will probably take it out later.
 
-				if (processesCompleted == numberOfProcesses)
+                if (processesCompleted == numberOfProcesses)
                 {
                     if (processesCompleted == numberOfProcesses)
                     {

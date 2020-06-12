@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.Social.Notifications
 
         internal const int ConstMaxSubject = 400;
         internal const int ConstMaxTo = 2000;
-	    private const string ToastsCacheKey = "GetToasts_{0}";
+        private const string ToastsCacheKey = "GetToasts_{0}";
 
         #endregion
 
@@ -371,17 +371,17 @@ namespace DotNetNuke.Services.Social.Notifications
 
         #endregion
 
-		#region Toast APIS
+        #region Toast APIS
 
-		public bool IsToastPending(int notificationId)
-		{
-			return this._dataService.IsToastPending(notificationId);
-		}
+        public bool IsToastPending(int notificationId)
+        {
+            return this._dataService.IsToastPending(notificationId);
+        }
 
-		public void MarkReadyForToast(Notification notification, UserInfo userInfo)
-		{
-			this.MarkReadyForToast(notification, userInfo.UserID);
-		}
+        public void MarkReadyForToast(Notification notification, UserInfo userInfo)
+        {
+            this.MarkReadyForToast(notification, userInfo.UserID);
+        }
 
         public void MarkReadyForToast(Notification notification, int userId)
         {
@@ -389,10 +389,10 @@ namespace DotNetNuke.Services.Social.Notifications
             this._dataService.MarkReadyForToast(notification.NotificationID, userId);
         }
 
-		public void MarkToastSent(int notificationId, int userId)
-		{
-			this._dataService.MarkToastSent(notificationId, userId);
-		}
+        public void MarkToastSent(int notificationId, int userId)
+        {
+            this._dataService.MarkToastSent(notificationId, userId);
+        }
 
         public IList<Notification> GetToasts(UserInfo userInfo)
         {

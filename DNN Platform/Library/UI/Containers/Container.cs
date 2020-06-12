@@ -53,9 +53,9 @@ namespace DotNetNuke.UI.Containers
         private ModuleInfo _moduleConfiguration;
         private ModuleHost _moduleHost;
 
-		#endregion
+        #endregion
 
-		#region Protected Properties
+        #region Protected Properties
 
         /// <summary>
         /// Gets the Content Pane Control (Id="ContentPane")
@@ -81,10 +81,10 @@ namespace DotNetNuke.UI.Containers
                 return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Public Properties
+        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -139,7 +139,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-				// This finds a reference to the containing skin
+                // This finds a reference to the containing skin
                 return Skins.Skin.GetParentSkin(this);
             }
         }
@@ -165,10 +165,10 @@ namespace DotNetNuke.UI.Containers
         public string ContainerSrc { get; set; }
 
         internal bool InjectActionMenu { get; set; }
-		
-		#endregion
+        
+        #endregion
 
-		#region Private Helper Methods
+        #region Private Helper Methods
 
         private void AddAdministratorOnlyHighlighting(string message)
         {
@@ -188,7 +188,7 @@ namespace DotNetNuke.UI.Containers
             ISkinControl skinControl;
             foreach (Control childControl in control.Controls)
             {
-				// check if control is an action control
+                // check if control is an action control
                 actions = childControl as IActionControl;
                 if (actions != null)
                 {
@@ -203,7 +203,7 @@ namespace DotNetNuke.UI.Containers
                     actionLink.ModuleControl = this.ModuleControl;
                 }
 
-				// check if control is a skin control
+                // check if control is a skin control
                 skinControl = childControl as ISkinControl;
                 if (skinControl != null)
                 {
@@ -211,7 +211,7 @@ namespace DotNetNuke.UI.Containers
                 }
                 if (childControl.HasControls())
                 {
-					// recursive call for child controls
+                    // recursive call for child controls
                     this.ProcessChildControls(childControl);
                 }
             }
@@ -231,7 +231,7 @@ namespace DotNetNuke.UI.Containers
             this.SetBorder();
 
             // display visual indicator if module is only visible to administrators
-			string viewRoles = this.ModuleConfiguration.InheritViewPermissions
+            string viewRoles = this.ModuleConfiguration.InheritViewPermissions
                                    ? TabPermissionController.GetTabPermissions(this.ModuleConfiguration.TabID, this.ModuleConfiguration.PortalID).ToString("VIEW")
                                    : this.ModuleConfiguration.ModulePermissions.ToString("VIEW");
 
@@ -274,13 +274,13 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         private void ProcessFooter()
         {
-			// inject the footer
+            // inject the footer
             if (!String.IsNullOrEmpty(this.ModuleConfiguration.Footer))
             {
                 var footer = new Literal { Text = this.ModuleConfiguration.Footer };
                 this.ContentPane.Controls.Add(footer);
             }
-			
+            
             // inject an end comment around the module content
             if (!Globals.IsAdminControl())
             {
@@ -296,10 +296,10 @@ namespace DotNetNuke.UI.Containers
         {
             if (!Globals.IsAdminControl())
             {
-				// inject a start comment around the module content
+                // inject a start comment around the module content
                 this.ContentPane.Controls.Add(new LiteralControl("<!-- Start_Module_" + this.ModuleConfiguration.ModuleID + " -->"));
             }
-			
+            
             // inject the header
             if (!String.IsNullOrEmpty(this.ModuleConfiguration.Header))
             {
@@ -319,7 +319,7 @@ namespace DotNetNuke.UI.Containers
 
             if (this.ContentPane != null)
             {
-				// Process Content Pane Attributes
+                // Process Content Pane Attributes
                 this.ProcessContentPane();
 
                 // always add the actions menu as the first item in the content pane.
@@ -344,25 +344,25 @@ namespace DotNetNuke.UI.Containers
 
                 // Process Module Footer
                 this.ProcessFooter();
-				
-				// Process the Action Controls
+                
+                // Process the Action Controls
                 if (this.ModuleHost != null && this.ModuleControl != null)
                 {
                     this.ProcessChildControls(this);
                 }
-				
-				// Add Module Stylesheets
+                
+                // Add Module Stylesheets
                 this.ProcessStylesheets(this.ModuleHost != null);
             }
             if (this._tracelLogger.IsDebugEnabled)
                 this._tracelLogger.Debug($"Container.ProcessModule End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{this.ModuleConfiguration.ModuleDefinition.FriendlyName}')");
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// ProcessStylesheets processes the Module and Container stylesheets and adds
-		/// them to the Page.
-		/// </summary>
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// ProcessStylesheets processes the Module and Container stylesheets and adds
+        /// them to the Page.
+        /// </summary>
         private void ProcessStylesheets(bool includeModuleCss)
         {
             ClientResourceManager.RegisterStyleSheet(this.Page, this.ContainerPath + "container.css", FileOrder.Css.ContainerCss);
@@ -429,10 +429,10 @@ namespace DotNetNuke.UI.Containers
                 this.ContentPane.Style["border-left"] = String.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Protected Methods
+        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -490,10 +490,10 @@ namespace DotNetNuke.UI.Containers
                 }
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Public Methods
+        #region Public Methods
 
         public void SetModuleConfiguration(ModuleInfo configuration)
         {
@@ -501,9 +501,9 @@ namespace DotNetNuke.UI.Containers
             this.ProcessModule();
         }
 
-		#endregion
+        #endregion
 
-		#region Event Handlers
+        #region Event Handlers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -518,18 +518,18 @@ namespace DotNetNuke.UI.Containers
         /// listeners on the Container directly, rather than through the helper method in PortalModuleBase.</remarks>
         private void ModuleActionClick(object sender, ActionEventArgs e)
         {
-			// Search through the listeners
+            // Search through the listeners
             foreach (ModuleActionEventListener listener in this.ParentSkin.ActionEventListeners)
-            {			
-				// If the associated module has registered a listener
+            {           
+                // If the associated module has registered a listener
                 if (e.ModuleConfiguration.ModuleID == listener.ModuleID)
                 {
-					// Invoke the listener to handle the ModuleAction_Click event
+                    // Invoke the listener to handle the ModuleAction_Click event
                     listener.ActionEvent.Invoke(sender, e);
                 }
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

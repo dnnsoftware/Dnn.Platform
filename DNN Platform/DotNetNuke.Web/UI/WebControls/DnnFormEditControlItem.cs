@@ -34,7 +34,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.control.Value = this.Value;
                 this.control.OldValue = this.Value;
                 this.control.ValueChanged += this.ValueChanged;
-	            this.control.DataField = this.DataField;
+                this.control.DataField = this.DataField;
 
                 this.control.CssClass = "dnnFormInput";
 

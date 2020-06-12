@@ -37,7 +37,7 @@ namespace DotNetNuke.Security.Roles
     /// -----------------------------------------------------------------------------
     public class DNNRoleProvider : RoleProvider
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DNNRoleProvider));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DNNRoleProvider));
         private readonly DataProvider dataProvider = DataProvider.Instance();
 
         #region Private Methods
@@ -189,9 +189,9 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-		#endregion
-		
-		#region User Role Methods
+        #endregion
+        
+        #region User Role Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -209,12 +209,12 @@ namespace DotNetNuke.Security.Roles
             bool createStatus = true;
             try
             {
-				// Add UserRole to DNN
+                // Add UserRole to DNN
                 this.AddDNNUserRole(userRole);
             }
             catch (Exception exc)
             {
-				// Clear User (duplicate User information)
+                // Clear User (duplicate User information)
                 Logger.Error(exc);
 
                 createStatus = false;
@@ -310,9 +310,9 @@ namespace DotNetNuke.Security.Roles
                                         (int)userRole.Status, userRole.IsOwner,
                                         userRole.EffectiveDate, userRole.ExpiryDate, 
                                         UserController.Instance.GetCurrentUserInfo().UserID);
-		}
+        }
 
-		#endregion
+        #endregion
 
         #region RoleGroup Methods
 
@@ -410,7 +410,7 @@ namespace DotNetNuke.Security.Roles
                 (roleGroup.Description ?? "").Trim(), UserController.Instance.GetCurrentUserInfo().UserID);
             this.ClearRoleGroupCache(roleGroup.PortalID);
         }
-		
+        
 
         #endregion
     }

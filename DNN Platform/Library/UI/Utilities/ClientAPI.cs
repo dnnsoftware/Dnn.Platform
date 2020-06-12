@@ -21,8 +21,8 @@ using DotNetNuke.Services.Personalization;
 namespace DotNetNuke.UI.Utilities
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : ClientAPI
+    /// Project  : DotNetNuke
+    /// Class    : ClientAPI
     ///
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -465,7 +465,7 @@ namespace DotNetNuke.UI.Utilities
         {
             if (ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.XMLHTTP))
             {
-				// Instead of sending the callback js function down to the client, we are hardcoding
+                // Instead of sending the callback js function down to the client, we are hardcoding
                 // it on the client.  DNN owns the interface, so there is no worry about an outside
                 // entity changing it on us.  We are simply calling this here to register all the appropriate
                 // js libraries

@@ -51,16 +51,16 @@ namespace DotNetNuke.Services.FileSystem
             {
                 var fileName = Path.GetFileName(fileNames[i]);
                 if (!fileName.EndsWith(this.ProtectedExtension, StringComparison.InvariantCultureIgnoreCase))
-				{
+                {
                     var destFileName = fileNames[i] + this.ProtectedExtension;
                     if (FileWrapper.Instance.Exists(destFileName))
                         FileWrapper.Instance.Delete(destFileName);
-					FileWrapper.Instance.Move(fileNames[i], destFileName);
-				}
-				else
-				{
+                    FileWrapper.Instance.Move(fileNames[i], destFileName);
+                }
+                else
+                {
                     fileName = fileName.Substring(0, fileName.LastIndexOf(this.ProtectedExtension, StringComparison.InvariantCultureIgnoreCase));
-				}
+                }
 
                 fileNames[i] = fileName;
             }

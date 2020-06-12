@@ -29,10 +29,10 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:SettingsEditorControl runat=server></{0}:SettingsEditorControl>")]
     public class SettingsEditorControl : PropertyEditorControl
-	{
-		#region "Protected Properties"
+    {
+        #region "Protected Properties"
 
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Underlying DataSource
         /// </summary>
@@ -46,11 +46,11 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the CustomEditors that are used by this control
         /// </summary>
@@ -67,11 +67,11 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public Hashtable Visibility { get; set; }
 
-		#endregion
+        #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetSettings converts the DataSource into an ArrayList (IEnumerable)
         /// </summary>
@@ -94,11 +94,11 @@ namespace DotNetNuke.UI.WebControls
             return arrSettings;
         }
 
-		#endregion
+        #endregion
 
-		#region "Protected Override Methods"
+        #region "Protected Override Methods"
 
-		protected override void AddEditorRow(Table table, object obj)
+        protected override void AddEditorRow(Table table, object obj)
         {
             var info = (SettingInfo)obj;
             this.AddEditorRow(table, info.Name, new SettingsEditorInfoAdapter(this.DataSource, obj, this.ID));
@@ -131,8 +131,8 @@ namespace DotNetNuke.UI.WebControls
                 _IsVisible = Convert.ToBoolean(this.Visibility[info.Name]);
             }
             return _IsVisible;
-		}
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

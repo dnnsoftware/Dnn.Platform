@@ -21,24 +21,24 @@ using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Services.Exceptions
 {
-	/// <summary>
-	/// Base Portal Exception.
-	/// </summary>
+    /// <summary>
+    /// Base Portal Exception.
+    /// </summary>
     public class BasePortalException : Exception
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BasePortalException));
-	    private string m_InnerExceptionString;
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BasePortalException));
+        private string m_InnerExceptionString;
         private string m_Message;
-	    private string m_Source;
+        private string m_Source;
         private string m_StackTrace;
 
-	    // default constructor
-		public BasePortalException()
+        // default constructor
+        public BasePortalException()
         {
         }
 
         // constructor with exception message
-		public BasePortalException(string message) : base(message)
+        public BasePortalException(string message) : base(message)
         {
             this.InitializePrivateVariables();
         }
@@ -75,41 +75,41 @@ namespace DotNetNuke.Services.Exceptions
             this.m_Source = info.GetString("m_Source");
         }
 
-	    public string AssemblyVersion { get; private set; }
+        public string AssemblyVersion { get; private set; }
 
-	    public int PortalID { get; private set; }
+        public int PortalID { get; private set; }
 
-	    public string PortalName { get; private set; }
+        public string PortalName { get; private set; }
 
-	    public int UserID { get; private set; }
+        public int UserID { get; private set; }
 
-	    public string UserName { get; private set; }
+        public string UserName { get; private set; }
 
-	    public int ActiveTabID { get; private set; }
+        public int ActiveTabID { get; private set; }
 
-	    public string ActiveTabName { get; private set; }
+        public string ActiveTabName { get; private set; }
 
-	    public string RawURL { get; private set; }
+        public string RawURL { get; private set; }
 
-	    public string AbsoluteURL { get; private set; }
+        public string AbsoluteURL { get; private set; }
 
-	    public string AbsoluteURLReferrer { get; private set; }
+        public string AbsoluteURLReferrer { get; private set; }
 
-	    public string UserAgent { get; private set; }
+        public string UserAgent { get; private set; }
 
-	    public string DefaultDataProvider { get; private set; }
+        public string DefaultDataProvider { get; private set; }
 
-	    public string ExceptionGUID { get; private set; }
+        public string ExceptionGUID { get; private set; }
 
-	    public string FileName { get; private set; }
+        public string FileName { get; private set; }
 
-	    public int FileLineNumber { get; private set; }
+        public int FileLineNumber { get; private set; }
 
-	    public int FileColumnNumber { get; private set; }
+        public int FileColumnNumber { get; private set; }
 
-	    public string Method { get; private set; }
+        public string Method { get; private set; }
 
-	    [XmlIgnore]
+        [XmlIgnore]
         public new MethodBase TargetSite
         {
             get
@@ -120,7 +120,7 @@ namespace DotNetNuke.Services.Exceptions
 
         private void InitializePrivateVariables()
         {
-			// Try and get the Portal settings from context
+            // Try and get the Portal settings from context
             // If an error occurs getting the context then set the variables to -1
             try
             {

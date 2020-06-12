@@ -14,57 +14,57 @@ using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Core.Services.ClientCapability
 {
-	/// <summary>
-	///   Summary description for FacebookRequestController
-	/// </summary>
-	[TestFixture]
-	public class FacebookRequestControllerTests
-	{
-		#region "Private Properties"
+    /// <summary>
+    ///   Summary description for FacebookRequestController
+    /// </summary>
+    [TestFixture]
+    public class FacebookRequestControllerTests
+    {
+        #region "Private Properties"
 
-		private IDictionary<string, string> _requestDics;
+        private IDictionary<string, string> _requestDics;
 
-		#endregion
+        #endregion
 
-		#region "Set Up"
+        #region "Set Up"
 
-		[SetUp]
-		public void SetUp()
-		{
-			this._requestDics = new Dictionary<string, string>();
-			this._requestDics.Add("Empty", string.Empty);
-			this._requestDics.Add("Valid", "vlXgu64BQGFSQrY0ZcJBZASMvYvTHu9GQ0YM9rjPSso.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsIjAiOiJwYXlsb2FkIiwidXNlcl9pZCI6ICIxIiwiZXhwaXJlcyI6IjEzMjUzNzU5OTkifQ==");
+        [SetUp]
+        public void SetUp()
+        {
+            this._requestDics = new Dictionary<string, string>();
+            this._requestDics.Add("Empty", string.Empty);
+            this._requestDics.Add("Valid", "vlXgu64BQGFSQrY0ZcJBZASMvYvTHu9GQ0YM9rjPSso.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsIjAiOiJwYXlsb2FkIiwidXNlcl9pZCI6ICIxIiwiZXhwaXJlcyI6IjEzMjUzNzU5OTkifQ==");
 
             this._requestDics.Add("ValidForAPage", "ylleuHAFR0DTpZ3bNr0fjMp7X7le_j8_HN3ONpbbgkk.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImlzc3VlZF9hdCI6MTMxOTQ4ODEwNywicGFnZSI6eyJpZCI6IjEzMDYzNDU0MDM3MjcyOCIsImxpa2VkIjpmYWxzZSwiYWRtaW4iOnRydWV9LCJ1c2VyIjp7ImNvdW50cnkiOiJjYSIsImxvY2FsZSI6ImVuX1VTIiwiYWdlIjp7Im1pbiI6MjF9fX0");
             // json data "{\"algorithm\":\"HMAC-SHA256\",\"issued_at\":1319488107,\"page\":{\"id\":\"130634540372728\",\"liked\":false,\"admin\":true},\"user\":{\"country\":\"ca\",\"locale\":\"en_US\",\"age\":{\"min\":21}}}"
 
-			this._requestDics.Add("Invalid", "Invalid Content");
-		}
+            this._requestDics.Add("Invalid", "Invalid Content");
+        }
 
-		#endregion
+        #endregion
 
-		#region "Tests"
+        #region "Tests"
 
-		[Test]
-		public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Empty_Request_String()
-		{
-			var request = FacebookRequestController.GetFacebookDetailsFromRequest(this._requestDics["Empty"]);
-			Assert.IsNull(request);
-		}
+        [Test]
+        public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Empty_Request_String()
+        {
+            var request = FacebookRequestController.GetFacebookDetailsFromRequest(this._requestDics["Empty"]);
+            Assert.IsNull(request);
+        }
 
-		[Test]
-		public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Invalid_Request_String()
-		{
-			var request = FacebookRequestController.GetFacebookDetailsFromRequest(this._requestDics["Invalid"]);
-			Assert.IsNull(request);
-		}
+        [Test]
+        public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Invalid_Request_String()
+        {
+            var request = FacebookRequestController.GetFacebookDetailsFromRequest(this._requestDics["Invalid"]);
+            Assert.IsNull(request);
+        }
 
-		[Test]
-		public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Valid_Request_String()
-		{
-			var request = FacebookRequestController.GetFacebookDetailsFromRequest(this._requestDics["Valid"]);
-			Assert.AreEqual(true, request.IsValid);
-		}
+        [Test]
+        public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Valid_Request_String()
+        {
+            var request = FacebookRequestController.GetFacebookDetailsFromRequest(this._requestDics["Valid"]);
+            Assert.AreEqual(true, request.IsValid);
+        }
 
         [Test]
         public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Valid_Request_String_ForAPage()
@@ -86,59 +86,59 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
             Assert.AreEqual(true, request.PageUserAdmin);
         }
 
-		[Test]
-		public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Empty_Request()
-		{
-			var request = FacebookRequestController.GetFacebookDetailsFromRequest(null as HttpRequest);
-			Assert.IsNull(request);
-		}
+        [Test]
+        public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Empty_Request()
+        {
+            var request = FacebookRequestController.GetFacebookDetailsFromRequest(null as HttpRequest);
+            Assert.IsNull(request);
+        }
 
-		[Test]
-		public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Get_Request()
-		{
-			HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", "");
-			httpRequest.RequestType = "GET";
+        [Test]
+        public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Get_Request()
+        {
+            HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", "");
+            httpRequest.RequestType = "GET";
 
-			var request = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);
-			Assert.IsNull(request);
-		}
+            var request = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);
+            Assert.IsNull(request);
+        }
 
-		[Test]
-		public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Post_Invalid_Request()
-		{
-			HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", "");
-			httpRequest.RequestType = "POST";
-			this.SetReadonly(httpRequest.Form, false);
-			httpRequest.Form.Add("signed_request", this._requestDics["Invalid"]);
+        [Test]
+        public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Post_Invalid_Request()
+        {
+            HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", "");
+            httpRequest.RequestType = "POST";
+            this.SetReadonly(httpRequest.Form, false);
+            httpRequest.Form.Add("signed_request", this._requestDics["Invalid"]);
 
-			var request = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);
-			Assert.IsNull(request);
-		}
+            var request = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);
+            Assert.IsNull(request);
+        }
 
-		[Test]
-		public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Post_Valid_Request()
-		{
-			HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", "");
-			httpRequest.RequestType = "POST";
-			this.SetReadonly(httpRequest.Form, false);
-			httpRequest.Form.Add("signed_request", this._requestDics["Valid"]);
+        [Test]
+        public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Post_Valid_Request()
+        {
+            HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", "");
+            httpRequest.RequestType = "POST";
+            this.SetReadonly(httpRequest.Form, false);
+            httpRequest.Form.Add("signed_request", this._requestDics["Valid"]);
 
-			var request = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);
-			Assert.AreEqual(true, request.IsValid);
-		}
+            var request = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);
+            Assert.AreEqual(true, request.IsValid);
+        }
 
-		#endregion
+        #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
-		private void SetReadonly(NameValueCollection collection, bool readOnly)
-		{
-			var readOnlyProperty = collection.GetType().GetProperty("IsReadOnly", BindingFlags.NonPublic | BindingFlags.Instance);
-			if (readOnlyProperty != null)
-			{
-				readOnlyProperty.SetValue(collection, readOnly, null);
-			}
-		}
+        private void SetReadonly(NameValueCollection collection, bool readOnly)
+        {
+            var readOnlyProperty = collection.GetType().GetProperty("IsReadOnly", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (readOnlyProperty != null)
+            {
+                readOnlyProperty.SetValue(collection, readOnly, null);
+            }
+        }
 
         /// <summary>
         /// method for converting a System.DateTime value to a UNIX Timestamp
@@ -153,6 +153,6 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
             return epoc.AddSeconds((double)value);
         }
 
-		#endregion
-	}
+        #endregion
+    }
 }

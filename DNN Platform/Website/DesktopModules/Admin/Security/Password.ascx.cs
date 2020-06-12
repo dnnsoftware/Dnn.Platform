@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.Admin.Users
     /// </remarks>
     public partial class Password : UserModuleBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Password));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Password));
         protected bool UseCaptcha
         {
             get
@@ -56,8 +56,8 @@ namespace DotNetNuke.Modules.Admin.Users
         public delegate void PasswordUpdatedEventHandler(object sender, PasswordUpdatedEventArgs e);
 
         #endregion
-		
-		#region Public Properties
+        
+        #region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -76,18 +76,18 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-		
-		#endregion
+        
+        #endregion
 
-		#region Events
+        #region Events
 
 
         public event PasswordUpdatedEventHandler PasswordUpdated;
         public event PasswordUpdatedEventHandler PasswordQuestionAnswerUpdated;
 
-		#endregion
+        #endregion
 
-		#region Event Methods
+        #region Event Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -121,9 +121,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-		#endregion
+        #endregion
 
-		#region Public Methods
+        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 this.lblExpires.Text = PasswordConfig.PasswordExpiry > 0 ? this.User.Membership.LastPasswordChangeDate.AddDays(PasswordConfig.PasswordExpiry).ToLongDateString() : Localization.GetString("NoExpiry", this.LocalResourceFile);
             }
-			
+            
            if (((!MembershipProviderConfig.PasswordRetrievalEnabled) && this.IsAdmin && (!this.IsUser)))
             {
                 this.pnlChange.Visible = true;
@@ -154,8 +154,8 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 this.pnlChange.Visible = true;
                 this.cmdUpdate.Visible = true;
-				
-				// Set up Change Password
+                
+                // Set up Change Password
                 if (this.IsAdmin && !this.IsUser)
                 {
                     this.lblChangeHelp.Text = Localization.GetString("AdminChangeHelp", this.LocalResourceFile);
@@ -178,7 +178,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                 }
             }
-			
+            
             // If Password Reset is not enabled then only the Admin can reset the 
             // Password, a User must Update
             if (!MembershipProviderConfig.PasswordResetEnabled)
@@ -190,8 +190,8 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 this.pnlReset.Visible = true;
                 this.cmdReset.Visible = true;
-				
-				// Set up Reset Password
+                
+                // Set up Reset Password
                 if (this.IsAdmin && !this.IsUser)
                 {
                     if (MembershipProviderConfig.RequiresQuestionAndAnswer)
@@ -222,7 +222,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                 }
             }
-			
+            
             // Set up Edit Question and Answer area
             if (MembershipProviderConfig.RequiresQuestionAndAnswer && this.IsUser)
             {
@@ -236,9 +236,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-		#endregion
+        #endregion
 
-		#region Event Handlers
+        #region Event Handlers
 
         protected override void OnLoad(EventArgs e)
         {
@@ -248,12 +248,12 @@ namespace DotNetNuke.Modules.Admin.Users
             this.cmdUpdate.Click += this.cmdUpdate_Click;
             this.cmdUpdateQA.Click += this.cmdUpdateQA_Click;
 
-			if (MembershipProviderConfig.RequiresQuestionAndAnswer && this.User.UserID != UserController.Instance.GetCurrentUserInfo().UserID)
-			{
-				this.pnlChange.Visible = false;
-			    this.cmdUpdate.Visible = false;
-				this.CannotChangePasswordMessage.Visible = true;
-			}
+            if (MembershipProviderConfig.RequiresQuestionAndAnswer && this.User.UserID != UserController.Instance.GetCurrentUserInfo().UserID)
+            {
+                this.pnlChange.Visible = false;
+                this.cmdUpdate.Visible = false;
+                this.CannotChangePasswordMessage.Visible = true;
+            }
 
             if (this.UseCaptcha)
             {
@@ -272,53 +272,53 @@ namespace DotNetNuke.Modules.Admin.Users
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
             ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
-			ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
+            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
 
-			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             base.OnPreRender(e);
 
-			if (Host.EnableStrengthMeter)
-			{
-				this.passwordContainer.CssClass = "password-strength-container";
-				this.txtNewPassword.CssClass = "password-strength";
+            if (Host.EnableStrengthMeter)
+            {
+                this.passwordContainer.CssClass = "password-strength-container";
+                this.txtNewPassword.CssClass = "password-strength";
 
-				var options = new DnnPaswordStrengthOptions();
-				var optionsAsJsonString = Json.Serialize(options);
-				var script = string.Format("dnn.initializePasswordStrength('.{0}', {1});{2}", "password-strength", optionsAsJsonString, Environment.NewLine);
+                var options = new DnnPaswordStrengthOptions();
+                var optionsAsJsonString = Json.Serialize(options);
+                var script = string.Format("dnn.initializePasswordStrength('.{0}', {1});{2}", "password-strength", optionsAsJsonString, Environment.NewLine);
 
-				if (ScriptManager.GetCurrent(this.Page) != null)
-				{
-					// respect MS AJAX
-					ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "PasswordStrength", script, true);
-				}
-				else
-				{
-					this.Page.ClientScript.RegisterStartupScript(this.GetType(), "PasswordStrength", script, true);
-				}
-			}
+                if (ScriptManager.GetCurrent(this.Page) != null)
+                {
+                    // respect MS AJAX
+                    ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "PasswordStrength", script, true);
+                }
+                else
+                {
+                    this.Page.ClientScript.RegisterStartupScript(this.GetType(), "PasswordStrength", script, true);
+                }
+            }
 
-			var confirmPasswordOptions = new DnnConfirmPasswordOptions()
-			{
-				FirstElementSelector = "#" + this.passwordContainer.ClientID + " input[type=password]",
-				SecondElementSelector = ".password-confirm",
-				ContainerSelector = ".dnnPassword",
-				UnmatchedCssClass = "unmatched",
-				MatchedCssClass = "matched"
-			};
+            var confirmPasswordOptions = new DnnConfirmPasswordOptions()
+            {
+                FirstElementSelector = "#" + this.passwordContainer.ClientID + " input[type=password]",
+                SecondElementSelector = ".password-confirm",
+                ContainerSelector = ".dnnPassword",
+                UnmatchedCssClass = "unmatched",
+                MatchedCssClass = "matched"
+            };
 
-			var confirmOptionsAsJsonString = Json.Serialize(confirmPasswordOptions);
-			var confirmScript = string.Format("dnn.initializePasswordComparer({0});{1}", confirmOptionsAsJsonString, Environment.NewLine);
+            var confirmOptionsAsJsonString = Json.Serialize(confirmPasswordOptions);
+            var confirmScript = string.Format("dnn.initializePasswordComparer({0});{1}", confirmOptionsAsJsonString, Environment.NewLine);
 
-			if (ScriptManager.GetCurrent(this.Page) != null)
-			{
-				// respect MS AJAX
-				ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "ConfirmPassword", confirmScript, true);
-			}
-			else
-			{
-				this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ConfirmPassword", confirmScript, true);
-			}
+            if (ScriptManager.GetCurrent(this.Page) != null)
+            {
+                // respect MS AJAX
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "ConfirmPassword", confirmScript, true);
+            }
+            else
+            {
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ConfirmPassword", confirmScript, true);
+            }
         }
 
 
@@ -480,12 +480,12 @@ namespace DotNetNuke.Modules.Admin.Users
                     return;
                 }
                 // 5. Check New Password is not same as username or banned
-				var membershipPasswordController = new MembershipPasswordController();
+                var membershipPasswordController = new MembershipPasswordController();
                 var settings = new MembershipPasswordSettings(this.User.PortalID);
 
                 if (settings.EnableBannedList)
                 {
-					if (membershipPasswordController.FoundBannedPassword(this.txtNewPassword.Text) || this.User.Username == this.txtNewPassword.Text)
+                    if (membershipPasswordController.FoundBannedPassword(this.txtNewPassword.Text) || this.User.Username == this.txtNewPassword.Text)
                     {
                         this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.BannedPasswordUsed));
                         return;
@@ -493,12 +493,12 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 }
 
-				// check new password is not in history
-				if (membershipPasswordController.IsPasswordInHistory(this.User.UserID, this.User.PortalID, this.txtNewPassword.Text, false))
-				{
-					this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
-					return;
-				}
+                // check new password is not in history
+                if (membershipPasswordController.IsPasswordInHistory(this.User.UserID, this.User.PortalID, this.txtNewPassword.Text, false))
+                {
+                    this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
+                    return;
+                }
 
                 if (!this.IsAdmin && this.txtNewPassword.Text == this.txtOldPassword.Text)
                 {
@@ -590,15 +590,15 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.OnPasswordQuestionAnswerUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));
                 return;
             }
-			
+            
             // Try and set password Q and A
             UserInfo objUser = UserController.GetUserById(this.PortalId, this.UserId);
             this.OnPasswordQuestionAnswerUpdated(UserController.ChangePasswordQuestionAndAnswer(objUser, this.txtQAPassword.Text, this.txtEditQuestion.Text, this.txtEditAnswer.Text)
                                                 ? new PasswordUpdatedEventArgs(PasswordUpdateStatus.Success)
                                                 : new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
         }
-		
-		#endregion
+        
+        #endregion
 
         #region Nested type: PasswordUpdatedEventArgs
 

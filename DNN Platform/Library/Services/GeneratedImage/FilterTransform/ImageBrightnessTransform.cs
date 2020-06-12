@@ -10,26 +10,26 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     /// <summary>
     /// Brightness ImageTransform class
     /// </summary>
-	public class ImageBrightnessTransform : ImageTransform
-	{
-		/// <summary>
-		/// Sets the brightness value. Defaultvalue is 0. Range is -255 .. 255
-		/// </summary>
-		public int Brightness { get; set; }
+    public class ImageBrightnessTransform : ImageTransform
+    {
+        /// <summary>
+        /// Sets the brightness value. Defaultvalue is 0. Range is -255 .. 255
+        /// </summary>
+        public int Brightness { get; set; }
         
         /// <summary>
         /// Provides an Unique String for this class
         /// </summary>
-		public override string UniqueString => base.UniqueString + "-" + this.Brightness;
+        public override string UniqueString => base.UniqueString + "-" + this.Brightness;
 
         public ImageBrightnessTransform()
-		{
-			this.InterpolationMode = InterpolationMode.HighQualityBicubic;
-			this.SmoothingMode = SmoothingMode.HighQuality;
-			this.PixelOffsetMode = PixelOffsetMode.HighQuality;
-			this.CompositingQuality = CompositingQuality.HighQuality;
-			this.Brightness = 0;
-		}
+        {
+            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            this.SmoothingMode = SmoothingMode.HighQuality;
+            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            this.CompositingQuality = CompositingQuality.HighQuality;
+            this.Brightness = 0;
+        }
 
         /// <summary>
         /// Processes an input image applying a brightness image transformation
@@ -37,34 +37,34 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         /// <param name="image">Input image</param>
         /// <returns>Image result after image transformation</returns>
         public override Image ProcessImage(Image image)
-		{
-			var temp = (Bitmap)image;
-			var bmap = (Bitmap)temp.Clone();
-			if (this.Brightness < -255) this.Brightness = -255;
-			if (this.Brightness > 255) this.Brightness = 255;
-			Color c;
-			for (int i = 0; i < bmap.Width; i++)
-			{
-				for (int j = 0; j < bmap.Height; j++)
-				{
-					c = bmap.GetPixel(i, j);
-					int cR = c.R + this.Brightness;
-					int cG = c.G + this.Brightness;
-					int cB = c.B + this.Brightness;
+        {
+            var temp = (Bitmap)image;
+            var bmap = (Bitmap)temp.Clone();
+            if (this.Brightness < -255) this.Brightness = -255;
+            if (this.Brightness > 255) this.Brightness = 255;
+            Color c;
+            for (int i = 0; i < bmap.Width; i++)
+            {
+                for (int j = 0; j < bmap.Height; j++)
+                {
+                    c = bmap.GetPixel(i, j);
+                    int cR = c.R + this.Brightness;
+                    int cG = c.G + this.Brightness;
+                    int cB = c.B + this.Brightness;
 
-					if (cR < 0) cR = 1;
-					if (cR > 255) cR = 255;
+                    if (cR < 0) cR = 1;
+                    if (cR > 255) cR = 255;
 
-					if (cG < 0) cG = 1;
-					if (cG > 255) cG = 255;
+                    if (cG < 0) cG = 1;
+                    if (cG > 255) cG = 255;
 
-					if (cB < 0) cB = 1;
-					if (cB > 255) cB = 255;
+                    if (cB < 0) cB = 1;
+                    if (cB > 255) cB = 255;
 
-					bmap.SetPixel(i, j, Color.FromArgb((byte)cR, (byte)cG, (byte)cB));
-				}
-			}
-			return (Bitmap)bmap.Clone();
-		}
-	}
+                    bmap.SetPixel(i, j, Color.FromArgb((byte)cR, (byte)cG, (byte)cB));
+                }
+            }
+            return (Bitmap)bmap.Clone();
+        }
+    }
 }

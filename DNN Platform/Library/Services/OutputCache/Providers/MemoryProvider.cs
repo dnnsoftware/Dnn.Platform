@@ -36,13 +36,13 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
-    	internal static string CachePrefix
-    	{
-    		get
-    		{
-    			return cachePrefix;
-    		}
-    	}
+        internal static string CachePrefix
+        {
+            get
+            {
+                return cachePrefix;
+            }
+        }
 
         #endregion
 
@@ -154,8 +154,8 @@ namespace DotNetNuke.Services.OutputCache.Providers
                 return false;
             }
 
-			context.Response.BinaryWrite(Encoding.Default.GetBytes(Cache[cacheKey].ToString()));
-        	return true;
+            context.Response.BinaryWrite(Encoding.Default.GetBytes(Cache[cacheKey].ToString()));
+            return true;
         }
 
         #endregion

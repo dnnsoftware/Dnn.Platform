@@ -28,24 +28,24 @@ using DotNetNuke.Abstractions;
 namespace DotNetNuke.Modules.Admin.ViewProfile
 {
 
-	/// <summary>
-	///   The ViewProfile ProfileModuleUserControlBase is used to view a Users Profile
-	/// </summary>
+    /// <summary>
+    ///   The ViewProfile ProfileModuleUserControlBase is used to view a Users Profile
+    /// </summary>
     public partial class ViewProfile : ProfileModuleUserControlBase
-	{
+    {
         private readonly INavigationManager _navigationManager;
         public ViewProfile()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-		public override bool DisplayModule
-		{
-			get
-			{
-				return true;
-			}
-		}
+        public override bool DisplayModule
+        {
+            get
+            {
+                return true;
+            }
+        }
 
         public bool IncludeButton
         {
@@ -68,9 +68,9 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
         {
             base.OnInit(e);
 
-			// throw 404 so that deleted profile is not reindexed
-			if (this.ProfileUser == null || this.ProfileUser.IsDeleted)
-			{
+            // throw 404 so that deleted profile is not reindexed
+            if (this.ProfileUser == null || this.ProfileUser.IsDeleted)
+            {
                 UrlUtils.Handle404Exception(this.Response, PortalSettings.Current);
             }
 
@@ -81,17 +81,17 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
             JavaScript.RequestRegistration(CommonJs.Knockout);
         }
 
-		/// <summary>
-		///   Page_Load runs when the control is loaded
-		/// </summary>
-		/// <remarks>
-		/// </remarks>
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        /// <summary>
+        ///   Page_Load runs when the control is loaded
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
 
-			try
-			{
+            try
+            {
                 if (Null.IsNull(this.ProfileUserId))
                 {
                     this.Visible = false;
@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 {
                     template = Localization.GetString("DefaultTemplate", this.LocalResourceFile);
                 }
-			    var editUrl = this._navigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, "Profile", "userId=" + this.ProfileUserId, "pageno=1");
+                var editUrl = this._navigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, "Profile", "userId=" + this.ProfileUserId, "pageno=1");
                 var profileUrl = this._navigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, "Profile", "userId=" + this.ProfileUserId, "pageno=2");
 
                 if (template.Contains("[BUTTON:EDITPROFILE]"))
@@ -143,7 +143,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                     this.buttonPanel.Visible = false;
                 }
 
-			    if (this.ProfileUser.Profile.ProfileProperties.Cast<ProfilePropertyDefinition>().Count(profProperty => profProperty.Visible) == 0)
+                if (this.ProfileUser.Profile.ProfileProperties.Cast<ProfilePropertyDefinition>().Count(profProperty => profProperty.Visible) == 0)
                 {
                     this.noPropertiesLabel.Visible = true;
                     this.profileOutput.Visible = false;
@@ -164,7 +164,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                     this.profileOutput.Visible = true;
                 }
 
-			    var propertyAccess = new ProfilePropertyAccess(this.ProfileUser);
+                var propertyAccess = new ProfilePropertyAccess(this.ProfileUser);
                 StringBuilder sb = new StringBuilder();
                 bool propertyNotFound = false;
 
@@ -200,10 +200,10 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                     sb.Append('\n');
                 }
 
-			    string email = (this.ProfileUserId == this.ModuleContext.PortalSettings.UserId
-			                    || this.ModuleContext.PortalSettings.UserInfo.IsInRole(this.ModuleContext.PortalSettings.AdministratorRoleName))
-			                       ? this.ProfileUser.Email
-			                       : String.Empty;
+                string email = (this.ProfileUserId == this.ModuleContext.PortalSettings.UserId
+                                || this.ModuleContext.PortalSettings.UserInfo.IsInRole(this.ModuleContext.PortalSettings.AdministratorRoleName))
+                                   ? this.ProfileUser.Email
+                                   : String.Empty;
 
                 sb.Append("self.Email = ko.observable('");
                 email = Localization.GetSafeJSString(this.Server.HtmlDecode(email));
@@ -218,36 +218,36 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 this.ProfileProperties = sb.ToString();
 
 
-			}
-			catch (Exception exc)
-			{
-				// Module failed to load
-				Exceptions.ProcessModuleLoadException(this, exc);
-			}
-		}
+            }
+            catch (Exception exc)
+            {
+                // Module failed to load
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
 
-		#endregion
+        #endregion
 
-		#region Private Methods
+        #region Private Methods
 
-		private string GetRedirectUrl()
-		{
-			// redirect user to default page if not specific the home tab, do this action to prevent loop redirect.
-			var homeTabId = this.ModuleContext.PortalSettings.HomeTabId;
-			string redirectUrl;
+        private string GetRedirectUrl()
+        {
+            // redirect user to default page if not specific the home tab, do this action to prevent loop redirect.
+            var homeTabId = this.ModuleContext.PortalSettings.HomeTabId;
+            string redirectUrl;
 
-			if (homeTabId > Null.NullInteger)
-			{
-				redirectUrl = this._navigationManager.NavigateURL(homeTabId);
-			}
-			else
-			{
-				redirectUrl = Globals.GetPortalDomainName(PortalSettings.Current.PortalAlias.HTTPAlias, this.Request, true) +
-							  "/" + Globals.glbDefaultPage;
-			}
+            if (homeTabId > Null.NullInteger)
+            {
+                redirectUrl = this._navigationManager.NavigateURL(homeTabId);
+            }
+            else
+            {
+                redirectUrl = Globals.GetPortalDomainName(PortalSettings.Current.PortalAlias.HTTPAlias, this.Request, true) +
+                              "/" + Globals.glbDefaultPage;
+            }
 
-			return redirectUrl;
-		}
+            return redirectUrl;
+        }
 
         private void ProcessQuerystring()
         {

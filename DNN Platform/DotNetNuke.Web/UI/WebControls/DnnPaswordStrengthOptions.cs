@@ -58,8 +58,8 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "criteriaValidationExpression")]
         public string CriteriaValidationExpressionText;
 
-		[DataMember(Name = "passwordRulesHeadText")]
-		public string PasswordRulesHeadText;
+        [DataMember(Name = "passwordRulesHeadText")]
+        public string PasswordRulesHeadText;
 
         public DnnPaswordStrengthOptions()
         {
@@ -73,7 +73,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.CriteriaAtLeastNSpecialCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNSpecialChars");
             this.CriteriaValidationExpressionText = Utilities.GetLocalizedString("CriteriaValidationExpression");
             
-			this.PasswordRulesHeadText = Utilities.GetLocalizedString("PasswordRulesHeadText");
+            this.PasswordRulesHeadText = Utilities.GetLocalizedString("PasswordRulesHeadText");
 
             this.WeakColor = "#ed1e24";
             this.FairColor = "#f6d50a";

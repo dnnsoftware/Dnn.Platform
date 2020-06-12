@@ -126,7 +126,7 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         [HttpGet]
-		public HttpResponseMessage GetPages(int sortOrder = 0, int portalId = -1, 
+        public HttpResponseMessage GetPages(int sortOrder = 0, int portalId = -1, 
             bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = true, 
             bool includeHostPages = false, string roles = "", bool disabledNotSelectable = false)
         {
@@ -140,7 +140,7 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         [HttpGet]
-		public HttpResponseMessage GetPagesInPortalGroup(int sortOrder = 0)
+        public HttpResponseMessage GetPagesInPortalGroup(int sortOrder = 0)
         {
             var response = new
             {
@@ -325,7 +325,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 portalId = this.GetActivePortalId();
             }
-			var tabs = this.GetPortalPages(portalId, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
+            var tabs = this.GetPortalPages(portalId, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
             var sortedTree = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
             if (tabs == null)
             {
@@ -540,7 +540,7 @@ namespace DotNetNuke.Web.InternalServices
             return tree;
         }
 
-		private List<TabInfo> GetPortalPages(int portalId, bool includeDisabled = false, 
+        private List<TabInfo> GetPortalPages(int portalId, bool includeDisabled = false, 
             bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false,
             string roles = "")
         {
@@ -559,8 +559,8 @@ namespace DotNetNuke.Web.InternalServices
 
             if (portalId > -1)
             {
-      		tabs = TabController.GetPortalTabs(portalId, (includeActive) ? Null.NullInteger : this.PortalSettings.ActiveTab.TabID, false, null, true, false, includeAllTypes, true, false)
-					.Where(t => (!t.DisableLink || includeDisabled) && !t.IsSystem)
+            tabs = TabController.GetPortalTabs(portalId, (includeActive) ? Null.NullInteger : this.PortalSettings.ActiveTab.TabID, false, null, true, false, includeAllTypes, true, false)
+                    .Where(t => (!t.DisableLink || includeDisabled) && !t.IsSystem)
                     .ToList();
 
                 if (this.PortalSettings.UserInfo.IsSuperUser && includeHostPages)
@@ -609,7 +609,7 @@ namespace DotNetNuke.Web.InternalServices
             bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = false,
             bool includeHostPages = false, string roles = "")
         {
-			var pages = this.GetPortalPages(portalId, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
+            var pages = this.GetPortalPages(portalId, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
             var sortedTree = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
             if (pages == null)
             {
@@ -679,7 +679,7 @@ namespace DotNetNuke.Web.InternalServices
             bool includeHostPages = false, string roles = "")
         {
             var tree = DotNetNuke.Common.Utilities.Json.Deserialize<NTree<ItemIdDto>>(treeAsJson);
-			return this.SortPagesInPortalGroupInternal(tree, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
+            return this.SortPagesInPortalGroupInternal(tree, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
         }
 
         private NTree<ItemDto> SortPagesInPortalGroupInternal(NTree<ItemIdDto> openedNode, int sortOrder, 
@@ -715,7 +715,7 @@ namespace DotNetNuke.Web.InternalServices
             return treeNode;
         }
 
-		private static void SortPagesRecursevely(IEnumerable<TabInfo> tabs, NTree<ItemDto> treeNode, NTree<ItemIdDto> openedNode, int sortOrder)
+        private static void SortPagesRecursevely(IEnumerable<TabInfo> tabs, NTree<ItemDto> treeNode, NTree<ItemIdDto> openedNode, int sortOrder)
         {
             if (openedNode == null)
             {

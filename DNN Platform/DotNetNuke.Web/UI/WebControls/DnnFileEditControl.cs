@@ -65,7 +65,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this._fileControl.FileID = this.IntegerValue;
                 this._fileControl.UsePersonalFolder = true;
                 this._fileControl.User = this.User;
-	            this._fileControl.Required = true;
+                this._fileControl.Required = true;
 
                 // Add table to Control
                 this.Controls.Add(this._fileControl);

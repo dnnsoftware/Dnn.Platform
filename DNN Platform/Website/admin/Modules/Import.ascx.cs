@@ -189,9 +189,9 @@ namespace DotNetNuke.Modules.Admin.Modules
             files.AddRange(Globals.GetFileList(this.PortalId, "xml", false, folder.FolderPath));
             foreach (FileItem file in files)
             {
-				if (file.Text.IndexOf("content." + Globals.CleanName(this.Module.DesktopModule.ModuleName) + ".", System.StringComparison.Ordinal) != -1)
+                if (file.Text.IndexOf("content." + Globals.CleanName(this.Module.DesktopModule.ModuleName) + ".", System.StringComparison.Ordinal) != -1)
                 {
-					this.cboFiles.AddItem(file.Text.Replace("content." + Globals.CleanName(this.Module.DesktopModule.ModuleName) + ".", ""), file.Value);
+                    this.cboFiles.AddItem(file.Text.Replace("content." + Globals.CleanName(this.Module.DesktopModule.ModuleName) + ".", ""), file.Value);
                 }
 
                 // legacy support for files which used the FriendlyName
@@ -200,9 +200,9 @@ namespace DotNetNuke.Modules.Admin.Modules
                     continue;
                 }
 
-				if (file.Text.IndexOf("content." + Globals.CleanName(this.Module.DesktopModule.FriendlyName) + ".", System.StringComparison.Ordinal) != -1)
+                if (file.Text.IndexOf("content." + Globals.CleanName(this.Module.DesktopModule.FriendlyName) + ".", System.StringComparison.Ordinal) != -1)
                 {
-					this.cboFiles.AddItem(file.Text.Replace("content." + Globals.CleanName(this.Module.DesktopModule.FriendlyName) + ".", ""), file.Value);
+                    this.cboFiles.AddItem(file.Text.Replace("content." + Globals.CleanName(this.Module.DesktopModule.FriendlyName) + ".", ""), file.Value);
                 }
             }
         }
@@ -213,24 +213,24 @@ namespace DotNetNuke.Modules.Admin.Modules
             var folder = FolderManager.Instance.GetFolder(this.cboFolders.SelectedItemValueAsInt);
             if (folder == null) return;
 
-	        if (string.IsNullOrEmpty(this.cboFiles.SelectedValue) || this.cboFiles.SelectedValue == "-")
-	        {
-				this.txtContent.Text = string.Empty;
-		        return;
-	        }
-	        try
-	        {
-				var fileId = Convert.ToInt32(this.cboFiles.SelectedValue);
-		        var file = DotNetNuke.Services.FileSystem.FileManager.Instance.GetFile(fileId);
-				using (var streamReader = new StreamReader(DotNetNuke.Services.FileSystem.FileManager.Instance.GetFileContent(file)))
-				{
-					this.txtContent.Text = streamReader.ReadToEnd();
-				}
-	        }
-	        catch (Exception)
-	        {
-		        this.txtContent.Text = string.Empty;
-	        }
+            if (string.IsNullOrEmpty(this.cboFiles.SelectedValue) || this.cboFiles.SelectedValue == "-")
+            {
+                this.txtContent.Text = string.Empty;
+                return;
+            }
+            try
+            {
+                var fileId = Convert.ToInt32(this.cboFiles.SelectedValue);
+                var file = DotNetNuke.Services.FileSystem.FileManager.Instance.GetFile(fileId);
+                using (var streamReader = new StreamReader(DotNetNuke.Services.FileSystem.FileManager.Instance.GetFileContent(file)))
+                {
+                    this.txtContent.Text = streamReader.ReadToEnd();
+                }
+            }
+            catch (Exception)
+            {
+                this.txtContent.Text = string.Empty;
+            }
         }
 
         protected void OnImportClick(object sender, EventArgs e)

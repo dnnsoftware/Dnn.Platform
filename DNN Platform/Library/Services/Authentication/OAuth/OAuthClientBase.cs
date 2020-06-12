@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         // oAuth 2
         protected string AuthTokenName { get; set; }        
         protected string Scope { get; set; }
-		protected string AccessToken { get; set; }
+        protected string AccessToken { get; set; }
         protected string VerificationCode
         {
             get { return HttpContext.Current.Request.Params[OAuthCodeKey]; }
@@ -347,14 +347,14 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 request.ContentType = "application/x-www-form-urlencoded";
                 // request.ContentType = "text/xml";
                 request.ContentLength = byteArray.Length;
-				
-				if (!String.IsNullOrEmpty(this.OAuthHeaderCode))
-				{ 
-					byte[] API64 = Encoding.UTF8.GetBytes(this.APIKey + ":" + this.APISecret); 
-					string Api64Encoded = System.Convert.ToBase64String(API64); 
-					// Authentication providers needing an "Authorization: Basic/bearer base64(clientID:clientSecret)" header. OAuthHeaderCode might be: Basic/Bearer/empty.
-					request.Headers.Add("Authorization: " + this.OAuthHeaderCode + " " + Api64Encoded); 
-				}
+                
+                if (!String.IsNullOrEmpty(this.OAuthHeaderCode))
+                { 
+                    byte[] API64 = Encoding.UTF8.GetBytes(this.APIKey + ":" + this.APISecret); 
+                    string Api64Encoded = System.Convert.ToBase64String(API64); 
+                    // Authentication providers needing an "Authorization: Basic/bearer base64(clientID:clientSecret)" header. OAuthHeaderCode might be: Basic/Bearer/empty.
+                    request.Headers.Add("Authorization: " + this.OAuthHeaderCode + " " + Api64Encoded); 
+                }
 
                 if (!String.IsNullOrEmpty(parameters))
                 {

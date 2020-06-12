@@ -44,10 +44,10 @@ namespace DotNetNuke.Web.UI.WebControls
             if (this.InternalPortalId.HasValue)
             {
                 this.Services.Parameters.Add("PortalId", this.InternalPortalId.Value.ToString(CultureInfo.InvariantCulture));
-			}
+            }
 
-			this.Services.Parameters.Add("includeDisabled", this.IncludeDisabledTabs.ToString().ToLowerInvariant());
-			this.Services.Parameters.Add("includeAllTypes", this.IncludeAllTabTypes.ToString().ToLowerInvariant());
+            this.Services.Parameters.Add("includeDisabled", this.IncludeDisabledTabs.ToString().ToLowerInvariant());
+            this.Services.Parameters.Add("includeAllTypes", this.IncludeAllTabTypes.ToString().ToLowerInvariant());
             this.Services.Parameters.Add("includeActive", this.IncludeActiveTab.ToString().ToLowerInvariant());
             this.Services.Parameters.Add("disabledNotSelectable", this.DisabledNotSelectable.ToString().ToLowerInvariant());
             this.Services.Parameters.Add("includeHostPages", (this.IncludeHostPages && UserController.Instance.GetCurrentUserInfo().IsSuperUser).ToString().ToLowerInvariant());
@@ -83,14 +83,14 @@ namespace DotNetNuke.Web.UI.WebControls
         public bool IncludeActiveTab { get; set; }
         
         /// <summary>
-		/// Whether include pages which are disabled.
-		/// </summary>
-		public bool IncludeDisabledTabs { get; set; }
+        /// Whether include pages which are disabled.
+        /// </summary>
+        public bool IncludeDisabledTabs { get; set; }
 
-		/// <summary>
-		/// Whether include pages which tab type is not normal.
-		/// </summary>
-		public bool IncludeAllTabTypes { get; set; }
+        /// <summary>
+        /// Whether include pages which tab type is not normal.
+        /// </summary>
+        public bool IncludeAllTabTypes { get; set; }
 
         /// <summary>
         /// Whether include Host Pages

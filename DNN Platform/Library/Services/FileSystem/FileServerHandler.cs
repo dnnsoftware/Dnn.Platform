@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.FileSystem
 {
     public class FileServerHandler : IHttpHandler
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileServerHandler));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileServerHandler));
         #region IHttpHandler Members
 
         /// -----------------------------------------------------------------------------

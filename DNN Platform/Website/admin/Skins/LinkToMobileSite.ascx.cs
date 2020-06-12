@@ -28,25 +28,25 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         private const string MyFileName = "LinkToMobileSite.ascx";
 
-    	private string _localResourcesFile;
+        private string _localResourcesFile;
 
-    	private string LocalResourcesFile
-    	{
-    		get
-    		{
-    			if (string.IsNullOrEmpty(this._localResourcesFile))
-    			{
-    				this._localResourcesFile = Localization.GetResourceFile(this, MyFileName);
-    			}
+        private string LocalResourcesFile
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(this._localResourcesFile))
+                {
+                    this._localResourcesFile = Localization.GetResourceFile(this, MyFileName);
+                }
 
-    			return this._localResourcesFile;
-    		}
-    	}
+                return this._localResourcesFile;
+            }
+        }
 
         #region "Event Handlers"
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             var redirectionController = new RedirectionController();
             var redirectUrl = redirectionController.GetMobileSiteUrl();

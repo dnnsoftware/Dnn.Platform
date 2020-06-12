@@ -21,8 +21,8 @@ using Globals = DotNetNuke.Common.Globals;
 namespace DotNetNuke.UI.Containers
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : Containers.Visibility
+    /// Project  : DotNetNuke
+    /// Class    : Containers.Visibility
     /// 
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -89,10 +89,10 @@ namespace DotNetNuke.UI.Containers
                 return this.ModuleControl.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleControl.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1);
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Members"
+        #region "Public Members"
 
 
         public int AnimationFrames
@@ -160,14 +160,14 @@ namespace DotNetNuke.UI.Containers
             {
                 if (!this.Page.IsPostBack)
                 {
-					// public attributes
+                    // public attributes
                     if (!String.IsNullOrEmpty(this.BorderWidth))
                     {
                         this.cmdVisibility.BorderWidth = Unit.Parse(this.BorderWidth);
                     }
                     if (this.ModuleControl.ModuleContext.Configuration != null)
                     {
-						// check if Personalization is allowed
+                        // check if Personalization is allowed
                         if (this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.None)
                         {
                             this.cmdVisibility.Enabled = false;
@@ -175,7 +175,7 @@ namespace DotNetNuke.UI.Containers
                         }
                         if (this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized)
                         {
-							// if visibility is set to minimized, then the client needs to set the cookie for maximized only and delete the cookie for minimized,
+                            // if visibility is set to minimized, then the client needs to set the cookie for maximized only and delete the cookie for minimized,
                             // instead of the opposite.  We need to notify the client of this
                             ClientAPI.RegisterClientVariable(this.Page, "__dnn_" + this.ModuleControl.ModuleContext.ModuleId + ":defminimized", "true", true);
                         }
@@ -185,7 +185,7 @@ namespace DotNetNuke.UI.Containers
                             {
                                 if (this.ModuleContent != null)
                                 {
-									// EnableMinMax now done in prerender
+                                    // EnableMinMax now done in prerender
                                 }
                                 else
                                 {
@@ -265,7 +265,7 @@ namespace DotNetNuke.UI.Containers
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

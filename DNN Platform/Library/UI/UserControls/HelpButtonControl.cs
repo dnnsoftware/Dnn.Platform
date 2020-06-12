@@ -29,18 +29,18 @@ namespace DotNetNuke.UI.UserControls
     /// -----------------------------------------------------------------------------
     public abstract class HelpButtonControl : UserControl
     {
-		#region "Private Members"
-		
+        #region "Private Members"
+        
         private string _HelpKey;
         private string _ResourceKey;
         protected LinkButton cmdHelp;
         protected Image imgHelp;
         protected Label lblHelp;
         protected Panel pnlHelp;
-		
-		#endregion
-		
-		#region "Public Properties"
+        
+        #endregion
+        
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -90,8 +90,8 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.lblHelp.Text = value;
                 this.imgHelp.AlternateText = HtmlUtils.Clean(value, false);
-				
-				// hide the help icon if the help text is ""
+                
+                // hide the help icon if the help text is ""
                 if (String.IsNullOrEmpty(value))
                 {
                     this.imgHelp.Visible = false;
@@ -118,10 +118,10 @@ namespace DotNetNuke.UI.UserControls
                 this._ResourceKey = value;
             }
         }
-		
-		#endregion
-		
-		#region "Event Handlers"
+        
+        #endregion
+        
+        #region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -141,7 +141,7 @@ namespace DotNetNuke.UI.UserControls
                 DNNClientAPI.EnableMinMax(this.cmdHelp, this.pnlHelp, true, DNNClientAPI.MinMaxPersistanceType.None);
                 if (String.IsNullOrEmpty(this._HelpKey))
                 {
-					// Set Help Key to the Resource Key plus ".Help"
+                    // Set Help Key to the Resource Key plus ".Help"
                     this._HelpKey = this._ResourceKey + ".Help";
                 }
                 string helpText = Localization.GetString(this._HelpKey, this);
@@ -160,7 +160,7 @@ namespace DotNetNuke.UI.UserControls
         {
             this.pnlHelp.Visible = true;
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

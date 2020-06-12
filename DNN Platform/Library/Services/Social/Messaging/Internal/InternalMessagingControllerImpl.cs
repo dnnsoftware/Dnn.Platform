@@ -227,12 +227,12 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return this.GetPortalSettingAsInteger("MessagingRecipientLimit", portalId, 5);
         }
 
-		/// <summary>Whether disable regular users to send message to user/group, default is false.</summary>        
-		/// <param name="portalId">Portal Id</param>        
-		public virtual bool DisablePrivateMessage(int portalId)
-		{
-			return this.GetPortalSetting("DisablePrivateMessage", portalId, "N") == "Y";
-		}
+        /// <summary>Whether disable regular users to send message to user/group, default is false.</summary>        
+        /// <param name="portalId">Portal Id</param>        
+        public virtual bool DisablePrivateMessage(int portalId)
+        {
+            return this.GetPortalSetting("DisablePrivateMessage", portalId, "N") == "Y";
+        }
 
         #endregion
 

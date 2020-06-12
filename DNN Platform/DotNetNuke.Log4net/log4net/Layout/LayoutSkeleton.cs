@@ -29,120 +29,120 @@ using log4net.Core;
 
 namespace log4net.Layout
 {
-	/// <summary>
-	/// Extend this abstract class to create your own log layout format.
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// This is the base implementation of the <see cref="ILayout"/>
-	/// interface. Most layout objects should extend this class.
-	/// </para>
-	/// </remarks>
-	/// <remarks>
-	/// <note type="inheritinfo">
-	/// <para>
-	/// Subclasses must implement the <see cref="M:Format(TextWriter,LoggingEvent)"/>
-	/// method.
-	/// </para>
-	/// <para>
-	/// Subclasses should set the <see cref="IgnoresException"/> in their default
-	/// constructor.
-	/// </para>
-	/// </note>
-	/// </remarks>
-	/// <author>Nicko Cadell</author>
-	/// <author>Gert Driesen</author>
-	public abstract class LayoutSkeleton : ILayout, IOptionHandler
-	{
-		#region Member Variables
+    /// <summary>
+    /// Extend this abstract class to create your own log layout format.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This is the base implementation of the <see cref="ILayout"/>
+    /// interface. Most layout objects should extend this class.
+    /// </para>
+    /// </remarks>
+    /// <remarks>
+    /// <note type="inheritinfo">
+    /// <para>
+    /// Subclasses must implement the <see cref="M:Format(TextWriter,LoggingEvent)"/>
+    /// method.
+    /// </para>
+    /// <para>
+    /// Subclasses should set the <see cref="IgnoresException"/> in their default
+    /// constructor.
+    /// </para>
+    /// </note>
+    /// </remarks>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
+    public abstract class LayoutSkeleton : ILayout, IOptionHandler
+    {
+        #region Member Variables
 
-		/// <summary>
-		/// The header text
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// See <see cref="Header"/> for more information.
-		/// </para>
-		/// </remarks>
-		private string m_header = null;
+        /// <summary>
+        /// The header text
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// See <see cref="Header"/> for more information.
+        /// </para>
+        /// </remarks>
+        private string m_header = null;
 
-		/// <summary>
-		/// The footer text
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// See <see cref="Footer"/> for more information.
-		/// </para>
-		/// </remarks>
-		private string m_footer = null;
+        /// <summary>
+        /// The footer text
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// See <see cref="Footer"/> for more information.
+        /// </para>
+        /// </remarks>
+        private string m_footer = null;
 
-		/// <summary>
-		/// Flag indicating if this layout handles exceptions
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// <c>false</c> if this layout handles exceptions
-		/// </para>
-		/// </remarks>
-		private bool m_ignoresException = true;
+        /// <summary>
+        /// Flag indicating if this layout handles exceptions
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// <c>false</c> if this layout handles exceptions
+        /// </para>
+        /// </remarks>
+        private bool m_ignoresException = true;
 
-		#endregion
+        #endregion
 
-		#region Constructors
+        #region Constructors
 
-		/// <summary>
-		/// Empty default constructor
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// Empty default constructor
-		/// </para>
-		/// </remarks>
-		protected LayoutSkeleton()
-		{
-		}
+        /// <summary>
+        /// Empty default constructor
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Empty default constructor
+        /// </para>
+        /// </remarks>
+        protected LayoutSkeleton()
+        {
+        }
 
-		#endregion
+        #endregion
 
-		#region Implementation of IOptionHandler
+        #region Implementation of IOptionHandler
 
-		/// <summary>
-		/// Activate component options
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// This is part of the <see cref="IOptionHandler"/> delayed object
-		/// activation scheme. The <see cref="ActivateOptions"/> method must 
-		/// be called on this object after the configuration properties have
-		/// been set. Until <see cref="ActivateOptions"/> is called this
-		/// object is in an undefined state and must not be used. 
-		/// </para>
-		/// <para>
-		/// If any of the configuration properties are modified then 
-		/// <see cref="ActivateOptions"/> must be called again.
-		/// </para>
- 		/// <para>
- 		/// This method must be implemented by the subclass.
- 		/// </para>
-		/// </remarks>
-		abstract public void ActivateOptions();
+        /// <summary>
+        /// Activate component options
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This is part of the <see cref="IOptionHandler"/> delayed object
+        /// activation scheme. The <see cref="ActivateOptions"/> method must 
+        /// be called on this object after the configuration properties have
+        /// been set. Until <see cref="ActivateOptions"/> is called this
+        /// object is in an undefined state and must not be used. 
+        /// </para>
+        /// <para>
+        /// If any of the configuration properties are modified then 
+        /// <see cref="ActivateOptions"/> must be called again.
+        /// </para>
+        /// <para>
+        /// This method must be implemented by the subclass.
+        /// </para>
+        /// </remarks>
+        abstract public void ActivateOptions();
 
-		#endregion
+        #endregion
 
-		#region Implementation of ILayout
+        #region Implementation of ILayout
 
-		/// <summary>
-		/// Implement this method to create your own layout format.
-		/// </summary>
-		/// <param name="writer">The TextWriter to write the formatted event to</param>
-		/// <param name="loggingEvent">The event to format</param>
-		/// <remarks>
-		/// <para>
-		/// This method is called by an appender to format
-		/// the <paramref name="loggingEvent"/> as text.
-		/// </para>
-		/// </remarks>
-		abstract public void Format(TextWriter writer, LoggingEvent loggingEvent);
+        /// <summary>
+        /// Implement this method to create your own layout format.
+        /// </summary>
+        /// <param name="writer">The TextWriter to write the formatted event to</param>
+        /// <param name="loggingEvent">The event to format</param>
+        /// <remarks>
+        /// <para>
+        /// This method is called by an appender to format
+        /// the <paramref name="loggingEvent"/> as text.
+        /// </para>
+        /// </remarks>
+        abstract public void Format(TextWriter writer, LoggingEvent loggingEvent);
 
         /// <summary>
         /// Convenience method for easily formatting the logging event into a string variable.
@@ -158,79 +158,79 @@ namespace log4net.Layout
             return writer.ToString();
         }
 
-	    /// <summary>
-	    /// The content type output by this layout. 
-	    /// </summary>
-	    /// <value>The content type is <c>"text/plain"</c></value>
-	    /// <remarks>
-	    /// <para>
-	    /// The content type output by this layout.
-	    /// </para>
-	    /// <para>
-	    /// This base class uses the value <c>"text/plain"</c>.
-	    /// To change this value a subclass must override this
-	    /// property.
-	    /// </para>
-	    /// </remarks>
-	    virtual public string ContentType
-	    {
-	        get { return "text/plain"; }
-	    }
+        /// <summary>
+        /// The content type output by this layout. 
+        /// </summary>
+        /// <value>The content type is <c>"text/plain"</c></value>
+        /// <remarks>
+        /// <para>
+        /// The content type output by this layout.
+        /// </para>
+        /// <para>
+        /// This base class uses the value <c>"text/plain"</c>.
+        /// To change this value a subclass must override this
+        /// property.
+        /// </para>
+        /// </remarks>
+        virtual public string ContentType
+        {
+            get { return "text/plain"; }
+        }
 
-	    /// <summary>
-	    /// The header for the layout format.
-	    /// </summary>
-	    /// <value>the layout header</value>
-	    /// <remarks>
-	    /// <para>
-	    /// The Header text will be appended before any logging events
-	    /// are formatted and appended.
-	    /// </para>
-	    /// </remarks>
-	    virtual public string Header
-	    {
-	        get { return this.m_header; }
-	        set { this.m_header = value; }
-	    }
+        /// <summary>
+        /// The header for the layout format.
+        /// </summary>
+        /// <value>the layout header</value>
+        /// <remarks>
+        /// <para>
+        /// The Header text will be appended before any logging events
+        /// are formatted and appended.
+        /// </para>
+        /// </remarks>
+        virtual public string Header
+        {
+            get { return this.m_header; }
+            set { this.m_header = value; }
+        }
 
-	    /// <summary>
-	    /// The footer for the layout format.
-	    /// </summary>
-	    /// <value>the layout footer</value>
-	    /// <remarks>
-	    /// <para>
-	    /// The Footer text will be appended after all the logging events
-	    /// have been formatted and appended.
-	    /// </para>
-	    /// </remarks>
-	    virtual public string Footer
-	    {
-	        get { return this.m_footer; }
-	        set { this.m_footer = value; }
-	    }
+        /// <summary>
+        /// The footer for the layout format.
+        /// </summary>
+        /// <value>the layout footer</value>
+        /// <remarks>
+        /// <para>
+        /// The Footer text will be appended after all the logging events
+        /// have been formatted and appended.
+        /// </para>
+        /// </remarks>
+        virtual public string Footer
+        {
+            get { return this.m_footer; }
+            set { this.m_footer = value; }
+        }
 
-	    /// <summary>
-	    /// Flag indicating if this layout handles exceptions
-	    /// </summary>
-	    /// <value><c>false</c> if this layout handles exceptions</value>
-	    /// <remarks>
-	    /// <para>
-	    /// If this layout handles the exception object contained within
-	    /// <see cref="LoggingEvent"/>, then the layout should return
-	    /// <c>false</c>. Otherwise, if the layout ignores the exception
-	    /// object, then the layout should return <c>true</c>.
-	    /// </para>
-	    /// <para>
-	    /// Set this value to override a this default setting. The default
-	    /// value is <c>true</c>, this layout does not handle the exception.
-	    /// </para>
-	    /// </remarks>
-	    virtual public bool IgnoresException 
-	    { 
-	        get { return this.m_ignoresException; }
-	        set { this.m_ignoresException = value; }
-	    }
+        /// <summary>
+        /// Flag indicating if this layout handles exceptions
+        /// </summary>
+        /// <value><c>false</c> if this layout handles exceptions</value>
+        /// <remarks>
+        /// <para>
+        /// If this layout handles the exception object contained within
+        /// <see cref="LoggingEvent"/>, then the layout should return
+        /// <c>false</c>. Otherwise, if the layout ignores the exception
+        /// object, then the layout should return <c>true</c>.
+        /// </para>
+        /// <para>
+        /// Set this value to override a this default setting. The default
+        /// value is <c>true</c>, this layout does not handle the exception.
+        /// </para>
+        /// </remarks>
+        virtual public bool IgnoresException 
+        { 
+            get { return this.m_ignoresException; }
+            set { this.m_ignoresException = value; }
+        }
 
-	    #endregion
-	}
+        #endregion
+    }
 }

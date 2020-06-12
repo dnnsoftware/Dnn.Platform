@@ -55,24 +55,24 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
         }
 
-	    public bool ShowSubscriptionTab
-	    {
-		    get
-		    {
-			    return !this.Settings.ContainsKey("ShowSubscriptionTab") ||
-			           this.Settings["ShowSubscriptionTab"].ToString().Equals("true", StringComparison.InvariantCultureIgnoreCase);
-		    }
-	    }
+        public bool ShowSubscriptionTab
+        {
+            get
+            {
+                return !this.Settings.ContainsKey("ShowSubscriptionTab") ||
+                       this.Settings["ShowSubscriptionTab"].ToString().Equals("true", StringComparison.InvariantCultureIgnoreCase);
+            }
+        }
 
-	    public bool DisablePrivateMessage
-	    {
-		    get
-		    {
-			    return this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser 
-					&& !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
+        public bool DisablePrivateMessage
+        {
+            get
+            {
+                return this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser 
+                    && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
 
-		    }
-	    }
+            }
+        }
 
         #endregion
 
@@ -89,9 +89,9 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
             if (this.UserId != this.ProfileUserId && (this.PortalSettings.ActiveTab.ParentId == this.PortalSettings.UserTabId || this.TabId == this.PortalSettings.UserTabId))
             {
-				// Do not redirect but hide the content of the module.
-				this.CoreMessagingContainer.Visible = false;
-				return;
+                // Do not redirect but hide the content of the module.
+                this.CoreMessagingContainer.Visible = false;
+                return;
             }
             
             if (this.IsEditable && this.PermissionsNotProperlySet())

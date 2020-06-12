@@ -69,14 +69,14 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 if (this.FindItemByText(initial, true) != null)
                 {
-					this.FindItemByText(initial, true).Selected = true;
+                    this.FindItemByText(initial, true).Selected = true;
                 }
             }
             else
             {
-				if (this.FindItemByValue(initial, true) != null)
+                if (this.FindItemByValue(initial, true) != null)
                 {
-					this.FindItemByValue(initial, true).Selected = true;
+                    this.FindItemByValue(initial, true).Selected = true;
                 }
             } 
         }

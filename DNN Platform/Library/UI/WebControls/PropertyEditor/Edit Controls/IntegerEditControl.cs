@@ -29,8 +29,8 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:IntegerEditControl runat=server></{0}:IntegerEditControl>")]
     public class IntegerEditControl : EditControl
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IntegerEditControl));
-		#region "Constructors"
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IntegerEditControl));
+        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -42,9 +42,9 @@ namespace DotNetNuke.UI.WebControls
             this.SystemType = "System.Int32";
         }
 
-		#endregion
+        #endregion
 
-		#region "Protected Properties"
+        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -78,7 +78,7 @@ namespace DotNetNuke.UI.WebControls
                 int intValue = Null.NullInteger;
                 try
                 {
-					// Try and cast the value to an Integer
+                    // Try and cast the value to an Integer
                     if (this.Value != null)
                     {
                         Int32.TryParse(this.Value.ToString(), out intValue);
@@ -106,7 +106,7 @@ namespace DotNetNuke.UI.WebControls
                 int intValue = Null.NullInteger;
                 try
                 {
-					// Try and cast the value to an Integer
+                    // Try and cast the value to an Integer
                     int.TryParse(this.OldValue.ToString(), out intValue);
                 }
                 catch (Exception exc)
@@ -118,9 +118,9 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Protected Methods"
+        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -154,7 +154,7 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

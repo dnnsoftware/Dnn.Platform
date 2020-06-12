@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.Search
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     public class SearchDataStore : SearchDataStoreProvider
     {
-		#region Private Methods
+        #region Private Methods
         
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -78,7 +78,7 @@ namespace DotNetNuke.Services.Search
 
         #endregion
 
-		#region Public Methods
+        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -101,8 +101,8 @@ namespace DotNetNuke.Services.Search
         /// </summary>
         /// <remarks>
         /// </remarks>
-		/// <param name="portalId">A Id of the Portal</param>
-		/// <param name="criteria">The criteria string</param>
+        /// <param name="portalId">A Id of the Portal</param>
+        /// <param name="criteria">The criteria string</param>
         /// -----------------------------------------------------------------------------
         public override SearchResultsInfoCollection GetSearchResults(int portalId, string criteria)
         {
@@ -141,7 +141,7 @@ namespace DotNetNuke.Services.Search
                     {
                         foreach (SearchResultsInfo result in searchResults[criterion.Criteria])
                         {
-							// Add results to dicResults
+                            // Add results to dicResults
                             if (!criterion.MustExclude)
                             {
                                 if (dicResults.ContainsKey(result.SearchItemID))
@@ -156,13 +156,13 @@ namespace DotNetNuke.Services.Search
                                     }
                                     else
                                     {
-										// Add Entry to Sub-Dictionary
+                                        // Add Entry to Sub-Dictionary
                                         dic.Add(result.TabId, result);
                                     }
                                 }
                                 else
                                 {
-									// Create new TabId keyed Dictionary
+                                    // Create new TabId keyed Dictionary
                                     var dic = new Dictionary<int, SearchResultsInfo>();
                                     dic.Add(result.TabId, result);
 
@@ -184,13 +184,13 @@ namespace DotNetNuke.Services.Search
                     {
                         if (criterion.MustInclude)
                         {
-							// Add to mandatory results lookup
+                            // Add to mandatory results lookup
                             mandatoryResults[result.SearchItemID] = true;
                             hasMandatory = true;
                         }
                         else if (criterion.MustExclude)
                         {
-							// Add to exclude results lookup
+                            // Add to exclude results lookup
                             excludedResults[result.SearchItemID] = true;
                             hasExcluded = true;
                         }
@@ -217,7 +217,7 @@ namespace DotNetNuke.Services.Search
                     }
                 }
             }
-			
+            
             // Process results against permissions and mandatory and excluded results
             var results = new SearchResultsInfoCollection();
             foreach (KeyValuePair<int, Dictionary<int, SearchResultsInfo>> kvpResults in dicResults)
@@ -226,11 +226,11 @@ namespace DotNetNuke.Services.Search
                 {
                     if (!result.Delete)
                     {
-						// Check If authorised to View Tab
+                        // Check If authorised to View Tab
                         TabInfo objTab = TabController.Instance.GetTab(result.TabId, portalId, false);
                         if (TabPermissionController.CanViewPage(objTab))
                         {
-							// Check If authorised to View Module
+                            // Check If authorised to View Module
                             ModuleInfo objModule = ModuleController.Instance.GetModule(result.ModuleId, result.TabId, false);
                             if (ModulePermissionController.CanViewModule(objModule))
                             {
@@ -240,7 +240,7 @@ namespace DotNetNuke.Services.Search
                     }
                 }
             }
-			
+            
             // Return Search Results Collection
             return results;
         }

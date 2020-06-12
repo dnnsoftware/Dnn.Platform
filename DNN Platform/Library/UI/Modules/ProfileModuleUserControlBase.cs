@@ -88,7 +88,7 @@ namespace DotNetNuke.UI.Modules
 
         protected override void OnInit(EventArgs e)
         {
-			if (string.IsNullOrEmpty(this.Request.Params["UserId"]) &&
+            if (string.IsNullOrEmpty(this.Request.Params["UserId"]) &&
                             (this.ModuleContext.PortalSettings.ActiveTab.TabID == this.ModuleContext.PortalSettings.UserTabId
                                 || this.ModuleContext.PortalSettings.ActiveTab.ParentId == this.ModuleContext.PortalSettings.UserTabId))
             {

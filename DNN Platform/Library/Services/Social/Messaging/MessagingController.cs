@@ -107,10 +107,10 @@ namespace DotNetNuke.Services.Social.Messaging
                 throw new ArgumentException(Localization.Localization.GetString("MsgRolesOrUsersRequiredError", Localization.Localization.ExceptionsResourceFile));
             }
 
-			if (InternalMessagingController.Instance.DisablePrivateMessage(sender.PortalID) && !this.IsAdminOrHost(sender))
-			{
-				throw new ArgumentException(Localization.Localization.GetString("PrivateMessageDisabledError", Localization.Localization.ExceptionsResourceFile));
-			}
+            if (InternalMessagingController.Instance.DisablePrivateMessage(sender.PortalID) && !this.IsAdminOrHost(sender))
+            {
+                throw new ArgumentException(Localization.Localization.GetString("PrivateMessageDisabledError", Localization.Localization.ExceptionsResourceFile));
+            }
 
             if (!string.IsNullOrEmpty(message.Subject) && message.Subject.Length > ConstMaxSubject)
             {

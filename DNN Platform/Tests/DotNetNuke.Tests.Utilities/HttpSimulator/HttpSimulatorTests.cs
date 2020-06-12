@@ -38,27 +38,27 @@ namespace UnitTests.Subtext
             }
         }
 
-		////[Test]
-		public void CanGetSetSession()
-		{
-			using (new HttpSimulator("/", @"c:\inetpub\").SimulateRequest())
-			{
-				HttpContext.Current.Session["Test"] = "Success";
-				Assert.AreEqual("Success", HttpContext.Current.Session["Test"], "Was not able to retrieve session variable.");
-			}
-		}
+        ////[Test]
+        public void CanGetSetSession()
+        {
+            using (new HttpSimulator("/", @"c:\inetpub\").SimulateRequest())
+            {
+                HttpContext.Current.Session["Test"] = "Success";
+                Assert.AreEqual("Success", HttpContext.Current.Session["Test"], "Was not able to retrieve session variable.");
+            }
+        }
 
-		////[Test]
-		public void CanGetSetApplicationVariables()
-		{
-			using (new HttpSimulator("/", @"c:\inetpub\").SimulateRequest())
-			{
-				HttpContext.Current.Application["Test"] = "Success";
-				Assert.AreEqual("Success", HttpContext.Current.Application["Test"], "Was not able to retrieve application variable.");
-			}
-		}
+        ////[Test]
+        public void CanGetSetApplicationVariables()
+        {
+            using (new HttpSimulator("/", @"c:\inetpub\").SimulateRequest())
+            {
+                HttpContext.Current.Application["Test"] = "Success";
+                Assert.AreEqual("Success", HttpContext.Current.Application["Test"], "Was not able to retrieve application variable.");
+            }
+        }
 
-    	////[Test]
+        ////[Test]
         public void TestHttpHandlerWritesCorrectResponse()
         {
             using (var simulator = new HttpSimulator("/", @"c:\inetpub\"))

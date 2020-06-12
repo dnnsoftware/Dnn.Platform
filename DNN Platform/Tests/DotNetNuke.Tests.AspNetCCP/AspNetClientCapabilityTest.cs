@@ -52,11 +52,11 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         {
             this._clientCapabilityProvider = new Providers.AspNetClientCapabilityProvider.AspNetClientCapabilityProvider();
 
-			ComponentFactory.Container = new SimpleContainer();
-			var dataProvider = MockComponentProvider.CreateDataProvider();
-			dataProvider.Setup(d => d.GetProviderPath()).Returns("");
-			MockComponentProvider.CreateDataCacheProvider();
-			MockComponentProvider.CreateEventLogController();
+            ComponentFactory.Container = new SimpleContainer();
+            var dataProvider = MockComponentProvider.CreateDataProvider();
+            dataProvider.Setup(d => d.GetProviderPath()).Returns("");
+            MockComponentProvider.CreateDataCacheProvider();
+            MockComponentProvider.CreateEventLogController();
         }
 
         [TearDown]

@@ -41,82 +41,82 @@ using log4net.Util;
 
 namespace log4net.Appender
 {
-	/// <summary>
-	/// Send an e-mail when a specific logging event occurs, typically on errors 
-	/// or fatal errors.
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// The number of logging events delivered in this e-mail depend on
-	/// the value of <see cref="BufferingAppenderSkeleton.BufferSize"/> option. The
-	/// <see cref="SmtpAppender"/> keeps only the last
-	/// <see cref="BufferingAppenderSkeleton.BufferSize"/> logging events in its 
-	/// cyclic buffer. This keeps memory requirements at a reasonable level while 
-	/// still delivering useful application context.
-	/// </para>
-	/// <note type="caution">
-	/// Authentication and setting the server Port are only available on the MS .NET 1.1 runtime.
-	/// For these features to be enabled you need to ensure that you are using a version of
-	/// the log4net assembly that is built against the MS .NET 1.1 framework and that you are
-	/// running the your application on the MS .NET 1.1 runtime. On all other platforms only sending
-	/// unauthenticated messages to a server listening on port 25 (the default) is supported.
-	/// </note>
-	/// <para>
-	/// Authentication is supported by setting the <see cref="Authentication"/> property to
-	/// either <see cref="SmtpAuthentication.Basic"/> or <see cref="SmtpAuthentication.Ntlm"/>.
-	/// If using <see cref="SmtpAuthentication.Basic"/> authentication then the <see cref="Username"/>
-	/// and <see cref="Password"/> properties must also be set.
-	/// </para>
-	/// <para>
-	/// To set the SMTP server port use the <see cref="Port"/> property. The default port is 25.
-	/// </para>
-	/// </remarks>
-	/// <author>Nicko Cadell</author>
-	/// <author>Gert Driesen</author>
-	public class SmtpAppender : BufferingAppenderSkeleton
-	{
-		#region Public Instance Constructors
+    /// <summary>
+    /// Send an e-mail when a specific logging event occurs, typically on errors 
+    /// or fatal errors.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The number of logging events delivered in this e-mail depend on
+    /// the value of <see cref="BufferingAppenderSkeleton.BufferSize"/> option. The
+    /// <see cref="SmtpAppender"/> keeps only the last
+    /// <see cref="BufferingAppenderSkeleton.BufferSize"/> logging events in its 
+    /// cyclic buffer. This keeps memory requirements at a reasonable level while 
+    /// still delivering useful application context.
+    /// </para>
+    /// <note type="caution">
+    /// Authentication and setting the server Port are only available on the MS .NET 1.1 runtime.
+    /// For these features to be enabled you need to ensure that you are using a version of
+    /// the log4net assembly that is built against the MS .NET 1.1 framework and that you are
+    /// running the your application on the MS .NET 1.1 runtime. On all other platforms only sending
+    /// unauthenticated messages to a server listening on port 25 (the default) is supported.
+    /// </note>
+    /// <para>
+    /// Authentication is supported by setting the <see cref="Authentication"/> property to
+    /// either <see cref="SmtpAuthentication.Basic"/> or <see cref="SmtpAuthentication.Ntlm"/>.
+    /// If using <see cref="SmtpAuthentication.Basic"/> authentication then the <see cref="Username"/>
+    /// and <see cref="Password"/> properties must also be set.
+    /// </para>
+    /// <para>
+    /// To set the SMTP server port use the <see cref="Port"/> property. The default port is 25.
+    /// </para>
+    /// </remarks>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
+    public class SmtpAppender : BufferingAppenderSkeleton
+    {
+        #region Public Instance Constructors
 
-		/// <summary>
-		/// Default constructor
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// Default constructor
-		/// </para>
-		/// </remarks>
-		public SmtpAppender()
-		{	
-		}
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Default constructor
+        /// </para>
+        /// </remarks>
+        public SmtpAppender()
+        {   
+        }
 
-		#endregion // Public Instance Constructors
+        #endregion // Public Instance Constructors
 
-		#region Public Instance Properties
+        #region Public Instance Properties
 
-		/// <summary>
-		/// Gets or sets a comma- or semicolon-delimited list of recipient e-mail addresses (use semicolon on .NET 1.1 and comma for later versions).
-		/// </summary>
-		/// <value>
+        /// <summary>
+        /// Gets or sets a comma- or semicolon-delimited list of recipient e-mail addresses (use semicolon on .NET 1.1 and comma for later versions).
+        /// </summary>
+        /// <value>
         /// <para>
         /// For .NET 1.1 (System.Web.Mail): A semicolon-delimited list of e-mail addresses.
         /// </para>
         /// <para>
         /// For .NET 2.0 (System.Net.Mail): A comma-delimited list of e-mail addresses.
         /// </para>
-		/// </value>
-		/// <remarks>
+        /// </value>
+        /// <remarks>
         /// <para>
         /// For .NET 1.1 (System.Web.Mail): A semicolon-delimited list of e-mail addresses.
         /// </para>
         /// <para>
         /// For .NET 2.0 (System.Net.Mail): A comma-delimited list of e-mail addresses.
         /// </para>
-		/// </remarks>
-		public string To
-		{
-			get { return this.m_to; }
-			set { this.m_to = MaybeTrimSeparators(value); }
-		}
+        /// </remarks>
+        public string To
+        {
+            get { return this.m_to; }
+            set { this.m_to = MaybeTrimSeparators(value); }
+        }
 
         /// <summary>
         /// Gets or sets a comma- or semicolon-delimited list of recipient e-mail addresses 
@@ -162,171 +162,171 @@ namespace log4net.Appender
             set { this.m_bcc = MaybeTrimSeparators(value); }
         }
 
-		/// <summary>
-		/// Gets or sets the e-mail address of the sender.
-		/// </summary>
-		/// <value>
-		/// The e-mail address of the sender.
-		/// </value>
-		/// <remarks>
-		/// <para>
-		/// The e-mail address of the sender.
-		/// </para>
-		/// </remarks>
-		public string From 
-		{
-			get { return this.m_from; }
-			set { this.m_from = value; }
-		}
+        /// <summary>
+        /// Gets or sets the e-mail address of the sender.
+        /// </summary>
+        /// <value>
+        /// The e-mail address of the sender.
+        /// </value>
+        /// <remarks>
+        /// <para>
+        /// The e-mail address of the sender.
+        /// </para>
+        /// </remarks>
+        public string From 
+        {
+            get { return this.m_from; }
+            set { this.m_from = value; }
+        }
 
-		/// <summary>
-		/// Gets or sets the subject line of the e-mail message.
-		/// </summary>
-		/// <value>
-		/// The subject line of the e-mail message.
-		/// </value>
-		/// <remarks>
-		/// <para>
-		/// The subject line of the e-mail message.
-		/// </para>
-		/// </remarks>
-		public string Subject 
-		{
-			get { return this.m_subject; }
-			set { this.m_subject = value; }
-		}
+        /// <summary>
+        /// Gets or sets the subject line of the e-mail message.
+        /// </summary>
+        /// <value>
+        /// The subject line of the e-mail message.
+        /// </value>
+        /// <remarks>
+        /// <para>
+        /// The subject line of the e-mail message.
+        /// </para>
+        /// </remarks>
+        public string Subject 
+        {
+            get { return this.m_subject; }
+            set { this.m_subject = value; }
+        }
   
-		/// <summary>
-		/// Gets or sets the name of the SMTP relay mail server to use to send 
-		/// the e-mail messages.
-		/// </summary>
-		/// <value>
-		/// The name of the e-mail relay server. If SmtpServer is not set, the 
-		/// name of the local SMTP server is used.
-		/// </value>
-		/// <remarks>
-		/// <para>
-		/// The name of the e-mail relay server. If SmtpServer is not set, the 
-		/// name of the local SMTP server is used.
-		/// </para>
-		/// </remarks>
-		public string SmtpHost
-		{
-			get { return this.m_smtpHost; }
-			set { this.m_smtpHost = value; }
-		}
+        /// <summary>
+        /// Gets or sets the name of the SMTP relay mail server to use to send 
+        /// the e-mail messages.
+        /// </summary>
+        /// <value>
+        /// The name of the e-mail relay server. If SmtpServer is not set, the 
+        /// name of the local SMTP server is used.
+        /// </value>
+        /// <remarks>
+        /// <para>
+        /// The name of the e-mail relay server. If SmtpServer is not set, the 
+        /// name of the local SMTP server is used.
+        /// </para>
+        /// </remarks>
+        public string SmtpHost
+        {
+            get { return this.m_smtpHost; }
+            set { this.m_smtpHost = value; }
+        }
 
-		/// <summary>
-		/// Obsolete
-		/// </summary>
-		/// <remarks>
-		/// Use the BufferingAppenderSkeleton Fix methods instead 
-		/// </remarks>
-		/// <remarks>
-		/// <para>
-		/// Obsolete property.
-		/// </para>
-		/// </remarks>
-		[Obsolete("Use the BufferingAppenderSkeleton Fix methods. Scheduled removal in v10.0.0.")]
-		public bool LocationInfo
-		{
-			get { return false; }
-			set { ; }
-		}
+        /// <summary>
+        /// Obsolete
+        /// </summary>
+        /// <remarks>
+        /// Use the BufferingAppenderSkeleton Fix methods instead 
+        /// </remarks>
+        /// <remarks>
+        /// <para>
+        /// Obsolete property.
+        /// </para>
+        /// </remarks>
+        [Obsolete("Use the BufferingAppenderSkeleton Fix methods. Scheduled removal in v10.0.0.")]
+        public bool LocationInfo
+        {
+            get { return false; }
+            set { ; }
+        }
 
-		/// <summary>
-		/// The mode to use to authentication with the SMTP server
-		/// </summary>
-		/// <remarks>
-		/// <note type="caution">Authentication is only available on the MS .NET 1.1 runtime.</note>
-		/// <para>
-		/// Valid Authentication mode values are: <see cref="SmtpAuthentication.None"/>, 
-		/// <see cref="SmtpAuthentication.Basic"/>, and <see cref="SmtpAuthentication.Ntlm"/>. 
-		/// The default value is <see cref="SmtpAuthentication.None"/>. When using 
-		/// <see cref="SmtpAuthentication.Basic"/> you must specify the <see cref="Username"/> 
-		/// and <see cref="Password"/> to use to authenticate.
-		/// When using <see cref="SmtpAuthentication.Ntlm"/> the Windows credentials for the current
-		/// thread, if impersonating, or the process will be used to authenticate. 
-		/// </para>
-		/// </remarks>
-		public SmtpAuthentication Authentication
-		{
-			get { return this.m_authentication; }
-			set { this.m_authentication = value; }
-		}
+        /// <summary>
+        /// The mode to use to authentication with the SMTP server
+        /// </summary>
+        /// <remarks>
+        /// <note type="caution">Authentication is only available on the MS .NET 1.1 runtime.</note>
+        /// <para>
+        /// Valid Authentication mode values are: <see cref="SmtpAuthentication.None"/>, 
+        /// <see cref="SmtpAuthentication.Basic"/>, and <see cref="SmtpAuthentication.Ntlm"/>. 
+        /// The default value is <see cref="SmtpAuthentication.None"/>. When using 
+        /// <see cref="SmtpAuthentication.Basic"/> you must specify the <see cref="Username"/> 
+        /// and <see cref="Password"/> to use to authenticate.
+        /// When using <see cref="SmtpAuthentication.Ntlm"/> the Windows credentials for the current
+        /// thread, if impersonating, or the process will be used to authenticate. 
+        /// </para>
+        /// </remarks>
+        public SmtpAuthentication Authentication
+        {
+            get { return this.m_authentication; }
+            set { this.m_authentication = value; }
+        }
 
-		/// <summary>
-		/// The username to use to authenticate with the SMTP server
-		/// </summary>
-		/// <remarks>
-		/// <note type="caution">Authentication is only available on the MS .NET 1.1 runtime.</note>
-		/// <para>
-		/// A <see cref="Username"/> and <see cref="Password"/> must be specified when 
-		/// <see cref="Authentication"/> is set to <see cref="SmtpAuthentication.Basic"/>, 
-		/// otherwise the username will be ignored. 
-		/// </para>
-		/// </remarks>
-		public string Username
-		{
-			get { return this.m_username; }
-			set { this.m_username = value; }
-		}
+        /// <summary>
+        /// The username to use to authenticate with the SMTP server
+        /// </summary>
+        /// <remarks>
+        /// <note type="caution">Authentication is only available on the MS .NET 1.1 runtime.</note>
+        /// <para>
+        /// A <see cref="Username"/> and <see cref="Password"/> must be specified when 
+        /// <see cref="Authentication"/> is set to <see cref="SmtpAuthentication.Basic"/>, 
+        /// otherwise the username will be ignored. 
+        /// </para>
+        /// </remarks>
+        public string Username
+        {
+            get { return this.m_username; }
+            set { this.m_username = value; }
+        }
 
-		/// <summary>
-		/// The password to use to authenticate with the SMTP server
-		/// </summary>
-		/// <remarks>
-		/// <note type="caution">Authentication is only available on the MS .NET 1.1 runtime.</note>
-		/// <para>
-		/// A <see cref="Username"/> and <see cref="Password"/> must be specified when 
-		/// <see cref="Authentication"/> is set to <see cref="SmtpAuthentication.Basic"/>, 
-		/// otherwise the password will be ignored. 
-		/// </para>
-		/// </remarks>
-		public string Password
-		{
-			get { return this.m_password; }
-			set { this.m_password = value; }
-		}
+        /// <summary>
+        /// The password to use to authenticate with the SMTP server
+        /// </summary>
+        /// <remarks>
+        /// <note type="caution">Authentication is only available on the MS .NET 1.1 runtime.</note>
+        /// <para>
+        /// A <see cref="Username"/> and <see cref="Password"/> must be specified when 
+        /// <see cref="Authentication"/> is set to <see cref="SmtpAuthentication.Basic"/>, 
+        /// otherwise the password will be ignored. 
+        /// </para>
+        /// </remarks>
+        public string Password
+        {
+            get { return this.m_password; }
+            set { this.m_password = value; }
+        }
 
-		/// <summary>
-		/// The port on which the SMTP server is listening
-		/// </summary>
-		/// <remarks>
-		/// <note type="caution">Server Port is only available on the MS .NET 1.1 runtime.</note>
-		/// <para>
-		/// The port on which the SMTP server is listening. The default
-		/// port is <c>25</c>. The Port can only be changed when running on
-		/// the MS .NET 1.1 runtime.
-		/// </para>
-		/// </remarks>
-		public int Port
-		{
-			get { return this.m_port; }
-			set { this.m_port = value; }
-		}
+        /// <summary>
+        /// The port on which the SMTP server is listening
+        /// </summary>
+        /// <remarks>
+        /// <note type="caution">Server Port is only available on the MS .NET 1.1 runtime.</note>
+        /// <para>
+        /// The port on which the SMTP server is listening. The default
+        /// port is <c>25</c>. The Port can only be changed when running on
+        /// the MS .NET 1.1 runtime.
+        /// </para>
+        /// </remarks>
+        public int Port
+        {
+            get { return this.m_port; }
+            set { this.m_port = value; }
+        }
 
-		/// <summary>
-		/// Gets or sets the priority of the e-mail message
-		/// </summary>
-		/// <value>
-		/// One of the <see cref="MailPriority"/> values.
-		/// </value>
-		/// <remarks>
-		/// <para>
-		/// Sets the priority of the e-mails generated by this
-		/// appender. The default priority is <see cref="MailPriority.Normal"/>.
-		/// </para>
-		/// <para>
-		/// If you are using this appender to report errors then
-		/// you may want to set the priority to <see cref="MailPriority.High"/>.
-		/// </para>
-		/// </remarks>
-		public MailPriority Priority
-		{
-			get { return this.m_mailPriority; }
-			set { this.m_mailPriority = value; }
-		}
+        /// <summary>
+        /// Gets or sets the priority of the e-mail message
+        /// </summary>
+        /// <value>
+        /// One of the <see cref="MailPriority"/> values.
+        /// </value>
+        /// <remarks>
+        /// <para>
+        /// Sets the priority of the e-mails generated by this
+        /// appender. The default priority is <see cref="MailPriority.Normal"/>.
+        /// </para>
+        /// <para>
+        /// If you are using this appender to report errors then
+        /// you may want to set the priority to <see cref="MailPriority.High"/>.
+        /// </para>
+        /// </remarks>
+        public MailPriority Priority
+        {
+            get { return this.m_mailPriority; }
+            set { this.m_mailPriority = value; }
+        }
 
 #if NET_2_0 || MONO_2_0
         /// <summary>
@@ -354,130 +354,130 @@ namespace log4net.Appender
         }
 #endif
 
-		/// <summary>
-		/// Gets or sets the subject encoding to be used.
-		/// </summary>
-		/// <remarks>
-		/// The default encoding is the operating system's current ANSI codepage.
-		/// </remarks>
-		public Encoding SubjectEncoding
-		{
-			get { return this.m_subjectEncoding; }
-			set { this.m_subjectEncoding = value; }
-		}
+        /// <summary>
+        /// Gets or sets the subject encoding to be used.
+        /// </summary>
+        /// <remarks>
+        /// The default encoding is the operating system's current ANSI codepage.
+        /// </remarks>
+        public Encoding SubjectEncoding
+        {
+            get { return this.m_subjectEncoding; }
+            set { this.m_subjectEncoding = value; }
+        }
 
-		/// <summary>
-		/// Gets or sets the body encoding to be used.
-		/// </summary>
-		/// <remarks>
-		/// The default encoding is the operating system's current ANSI codepage.
-		/// </remarks>
-		public Encoding BodyEncoding
-		{
-			get { return this.m_bodyEncoding; }
-			set { this.m_bodyEncoding = value; }
-		}
+        /// <summary>
+        /// Gets or sets the body encoding to be used.
+        /// </summary>
+        /// <remarks>
+        /// The default encoding is the operating system's current ANSI codepage.
+        /// </remarks>
+        public Encoding BodyEncoding
+        {
+            get { return this.m_bodyEncoding; }
+            set { this.m_bodyEncoding = value; }
+        }
 
-		#endregion // Public Instance Properties
+        #endregion // Public Instance Properties
 
-		#region Override implementation of BufferingAppenderSkeleton
+        #region Override implementation of BufferingAppenderSkeleton
 
-		/// <summary>
-		/// Sends the contents of the cyclic buffer as an e-mail message.
-		/// </summary>
-		/// <param name="events">The logging events to send.</param>
-		override protected void SendBuffer(LoggingEvent[] events) 
-		{
-			// Note: this code already owns the monitor for this
-			// appender. This frees us from needing to synchronize again.
-			try 
-			{	  
-				StringWriter writer = new StringWriter(System.Globalization.CultureInfo.InvariantCulture);
+        /// <summary>
+        /// Sends the contents of the cyclic buffer as an e-mail message.
+        /// </summary>
+        /// <param name="events">The logging events to send.</param>
+        override protected void SendBuffer(LoggingEvent[] events) 
+        {
+            // Note: this code already owns the monitor for this
+            // appender. This frees us from needing to synchronize again.
+            try 
+            {     
+                StringWriter writer = new StringWriter(System.Globalization.CultureInfo.InvariantCulture);
 
-				string t = this.Layout.Header;
-				if (t != null)
-				{
-					writer.Write(t);
-				}
+                string t = this.Layout.Header;
+                if (t != null)
+                {
+                    writer.Write(t);
+                }
 
-				for (int i = 0; i < events.Length; i++) 
-				{
-					// Render the event and append the text to the buffer
-					this.RenderLoggingEvent(writer, events[i]);
-				}
+                for (int i = 0; i < events.Length; i++) 
+                {
+                    // Render the event and append the text to the buffer
+                    this.RenderLoggingEvent(writer, events[i]);
+                }
 
-				t = this.Layout.Footer;
-				if (t != null)
-				{
-					writer.Write(t);
-				}
+                t = this.Layout.Footer;
+                if (t != null)
+                {
+                    writer.Write(t);
+                }
 
-				this.SendEmail(writer.ToString());
-			} 
-			catch (Exception e) 
-			{
-				this.ErrorHandler.Error("Error occurred while sending e-mail notification.", e);
-			}
-		}
+                this.SendEmail(writer.ToString());
+            } 
+            catch (Exception e) 
+            {
+                this.ErrorHandler.Error("Error occurred while sending e-mail notification.", e);
+            }
+        }
 
-		#endregion // Override implementation of BufferingAppenderSkeleton
+        #endregion // Override implementation of BufferingAppenderSkeleton
 
-		#region Override implementation of AppenderSkeleton
+        #region Override implementation of AppenderSkeleton
 
-		/// <summary>
-		/// This appender requires a <see cref="Layout"/> to be set.
-		/// </summary>
-		/// <value><c>true</c></value>
-		/// <remarks>
-		/// <para>
-		/// This appender requires a <see cref="Layout"/> to be set.
-		/// </para>
-		/// </remarks>
-		override protected bool RequiresLayout
-		{
-			get { return true; }
-		}
+        /// <summary>
+        /// This appender requires a <see cref="Layout"/> to be set.
+        /// </summary>
+        /// <value><c>true</c></value>
+        /// <remarks>
+        /// <para>
+        /// This appender requires a <see cref="Layout"/> to be set.
+        /// </para>
+        /// </remarks>
+        override protected bool RequiresLayout
+        {
+            get { return true; }
+        }
 
-		#endregion // Override implementation of AppenderSkeleton
+        #endregion // Override implementation of AppenderSkeleton
 
-		#region Protected Methods
+        #region Protected Methods
 
-		/// <summary>
-		/// Send the email message
-		/// </summary>
-		/// <param name="messageBody">the body text to include in the mail</param>
-		virtual protected void SendEmail(string messageBody)
-		{
+        /// <summary>
+        /// Send the email message
+        /// </summary>
+        /// <param name="messageBody">the body text to include in the mail</param>
+        virtual protected void SendEmail(string messageBody)
+        {
 #if NET_2_0 || MONO_2_0
-			// .NET 2.0 has a new API for SMTP email System.Net.Mail
-			// This API supports credentials and multiple hosts correctly.
-			// The old API is deprecated.
+            // .NET 2.0 has a new API for SMTP email System.Net.Mail
+            // This API supports credentials and multiple hosts correctly.
+            // The old API is deprecated.
 
-			// Create and configure the smtp client
-			SmtpClient smtpClient = new SmtpClient();
-			if (!String.IsNullOrEmpty(this.m_smtpHost))
-			{
-				smtpClient.Host = this.m_smtpHost;
-			}
-			smtpClient.Port = this.m_port;
-			smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+            // Create and configure the smtp client
+            SmtpClient smtpClient = new SmtpClient();
+            if (!String.IsNullOrEmpty(this.m_smtpHost))
+            {
+                smtpClient.Host = this.m_smtpHost;
+            }
+            smtpClient.Port = this.m_port;
+            smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
             smtpClient.EnableSsl = this.m_enableSsl;
 
-			if (this.m_authentication == SmtpAuthentication.Basic)
-			{
-				// Perform basic authentication
-				smtpClient.Credentials = new System.Net.NetworkCredential(this.m_username, this.m_password);
-			}
-			else if (this.m_authentication == SmtpAuthentication.Ntlm)
-			{
-				// Perform integrated authentication (NTLM)
-				smtpClient.Credentials = System.Net.CredentialCache.DefaultNetworkCredentials;
-			}
+            if (this.m_authentication == SmtpAuthentication.Basic)
+            {
+                // Perform basic authentication
+                smtpClient.Credentials = new System.Net.NetworkCredential(this.m_username, this.m_password);
+            }
+            else if (this.m_authentication == SmtpAuthentication.Ntlm)
+            {
+                // Perform integrated authentication (NTLM)
+                smtpClient.Credentials = System.Net.CredentialCache.DefaultNetworkCredentials;
+            }
 
             using (MailMessage mailMessage = new MailMessage())
             {
                 mailMessage.Body = messageBody;
-				mailMessage.BodyEncoding = this.m_bodyEncoding;
+                mailMessage.BodyEncoding = this.m_bodyEncoding;
                 mailMessage.From = new MailAddress(this.m_from);
                 mailMessage.To.Add(this.m_to);
                 if (!String.IsNullOrEmpty(this.m_cc))
@@ -499,7 +499,7 @@ namespace log4net.Appender
 #endif
                 }
                 mailMessage.Subject = this.m_subject;
-				mailMessage.SubjectEncoding = this.m_subjectEncoding;
+                mailMessage.SubjectEncoding = this.m_subjectEncoding;
                 mailMessage.Priority = this.m_mailPriority;
 
                 // TODO: Consider using SendAsync to send the message without blocking. This would be a change in
@@ -583,73 +583,73 @@ namespace log4net.Appender
 
 				SmtpMail.Send(mailMessage);
 #endif // if NET_2_0
-		}
+        }
 
-		#endregion // Protected Methods
+        #endregion // Protected Methods
 
-		#region Private Instance Fields
+        #region Private Instance Fields
 
-		private string m_to;
+        private string m_to;
         private string m_cc;
         private string m_bcc;
-		private string m_from;
-		private string m_subject;
-		private string m_smtpHost;
-		private Encoding m_subjectEncoding = Encoding.UTF8;
-		private Encoding m_bodyEncoding = Encoding.UTF8;
+        private string m_from;
+        private string m_subject;
+        private string m_smtpHost;
+        private Encoding m_subjectEncoding = Encoding.UTF8;
+        private Encoding m_bodyEncoding = Encoding.UTF8;
 
-		// authentication fields
-		private SmtpAuthentication m_authentication = SmtpAuthentication.None;
-		private string m_username;
-		private string m_password;
+        // authentication fields
+        private SmtpAuthentication m_authentication = SmtpAuthentication.None;
+        private string m_username;
+        private string m_password;
 
-		// server port, default port 25
-		private int m_port = 25;
+        // server port, default port 25
+        private int m_port = 25;
 
-		private MailPriority m_mailPriority = MailPriority.Normal;
+        private MailPriority m_mailPriority = MailPriority.Normal;
 
 #if NET_2_0 || MONO_2_0
         private bool m_enableSsl = false;
         private string m_replyTo;
 #endif
 
-		#endregion // Private Instance Fields
+        #endregion // Private Instance Fields
 
-		#region SmtpAuthentication Enum
+        #region SmtpAuthentication Enum
 
-		/// <summary>
-		/// Values for the <see cref="SmtpAppender.Authentication"/> property.
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// SMTP authentication modes.
-		/// </para>
-		/// </remarks>
-		public enum SmtpAuthentication
-		{
-			/// <summary>
-			/// No authentication
-			/// </summary>
-			None,
+        /// <summary>
+        /// Values for the <see cref="SmtpAppender.Authentication"/> property.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// SMTP authentication modes.
+        /// </para>
+        /// </remarks>
+        public enum SmtpAuthentication
+        {
+            /// <summary>
+            /// No authentication
+            /// </summary>
+            None,
 
-			/// <summary>
-			/// Basic authentication.
-			/// </summary>
-			/// <remarks>
-			/// Requires a username and password to be supplied
-			/// </remarks>
-			Basic,
+            /// <summary>
+            /// Basic authentication.
+            /// </summary>
+            /// <remarks>
+            /// Requires a username and password to be supplied
+            /// </remarks>
+            Basic,
 
-			/// <summary>
-			/// Integrated authentication
-			/// </summary>
-			/// <remarks>
-			/// Uses the Windows credentials from the current thread or process to authenticate.
-			/// </remarks>
-			Ntlm
-		}
+            /// <summary>
+            /// Integrated authentication
+            /// </summary>
+            /// <remarks>
+            /// Uses the Windows credentials from the current thread or process to authenticate.
+            /// </remarks>
+            Ntlm
+        }
 
-		#endregion // SmtpAuthentication Enum
+        #endregion // SmtpAuthentication Enum
 
             private static readonly char[] ADDRESS_DELIMITERS = new char[] { ',', ';' };
             

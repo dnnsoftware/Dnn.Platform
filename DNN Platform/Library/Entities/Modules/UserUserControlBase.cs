@@ -14,9 +14,9 @@ using DotNetNuke.Security.Membership;
 namespace DotNetNuke.Entities.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 :  DotNetNuke
+    /// Project  :  DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Modules
-    /// Class	 :  UserUserControlBase
+    /// Class    :  UserUserControlBase
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The UserUserControlBase class defines a custom base class for the User Control.
@@ -292,21 +292,21 @@ namespace DotNetNuke.Entities.Modules
 
         #region Nested type: UserRestoredEventArgs
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// The UserRestoredEventArgs class provides a customised EventArgs class for
-		/// the UserRestored Event
-		/// </summary>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The UserRestoredEventArgs class provides a customised EventArgs class for
+        /// the UserRestored Event
+        /// </summary>
+        /// -----------------------------------------------------------------------------
         public class UserRestoredEventArgs : BaseUserEventArgs
         {
-			/// -----------------------------------------------------------------------------
-			/// <summary>
-			/// Constructs a new UserRestoredEventArgs
-			/// </summary>
-			/// <param name="id">The Id of the User</param>
-			/// <param name="name">The user name of the User</param>
-			/// -----------------------------------------------------------------------------
+            /// -----------------------------------------------------------------------------
+            /// <summary>
+            /// Constructs a new UserRestoredEventArgs
+            /// </summary>
+            /// <param name="id">The Id of the User</param>
+            /// <param name="name">The user name of the User</param>
+            /// -----------------------------------------------------------------------------
             public UserRestoredEventArgs(int id, string name)
             {
                 this.UserId = id;
@@ -318,23 +318,23 @@ namespace DotNetNuke.Entities.Modules
 
         #region Nested type: UserRemovedEventArgs
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// The UserRemovedEventArgs class provides a customised EventArgs class for
-		/// the UserRemoved Event
-		/// </summary>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The UserRemovedEventArgs class provides a customised EventArgs class for
+        /// the UserRemoved Event
+        /// </summary>
+        /// -----------------------------------------------------------------------------
 
         public class UserRemovedEventArgs : BaseUserEventArgs
         {
-			/// -----------------------------------------------------------------------------
-			/// <summary>
-			/// Constructs a new UserRemovedEventArgs
-			/// </summary>
-			/// <param name="id">The Id of the User</param>
-			/// <param name="name">The user name of the User</param>
-			/// -----------------------------------------------------------------------------
-			public UserRemovedEventArgs(int id, string name)
+            /// -----------------------------------------------------------------------------
+            /// <summary>
+            /// Constructs a new UserRemovedEventArgs
+            /// </summary>
+            /// <param name="id">The Id of the User</param>
+            /// <param name="name">The user name of the User</param>
+            /// -----------------------------------------------------------------------------
+            public UserRemovedEventArgs(int id, string name)
             {
                 this.UserId = id;
                 this.UserName = name;

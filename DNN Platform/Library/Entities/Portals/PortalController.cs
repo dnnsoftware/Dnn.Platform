@@ -53,12 +53,12 @@ using IAbPortalSettings = DotNetNuke.Abstractions.Portals.IPortalSettings;
 namespace DotNetNuke.Entities.Portals
 {
     /// <summary>
-	/// PoralController provides business layer of poatal.
-	/// </summary>
-	/// <remarks>
-	/// DotNetNuke supports the concept of virtualised sites in a single install. This means that multiple sites, 
-	/// each potentially with multiple unique URL's, can exist in one instance of DotNetNuke i.e. one set of files and one database.
-	/// </remarks>
+    /// PoralController provides business layer of poatal.
+    /// </summary>
+    /// <remarks>
+    /// DotNetNuke supports the concept of virtualised sites in a single install. This means that multiple sites, 
+    /// each potentially with multiple unique URL's, can exist in one instance of DotNetNuke i.e. one set of files and one database.
+    /// </remarks>
     public partial class PortalController : ServiceLocator<IPortalController, PortalController>, IPortalController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));
@@ -832,7 +832,7 @@ namespace DotNetNuke.Entities.Portals
                 // Save new File
                 try
                 {
-                    // Initially, install files are on local system, then we need the Standard folder provider to read the content regardless the target folderprovider					
+                    // Initially, install files are on local system, then we need the Standard folder provider to read the content regardless the target folderprovider                 
                     using (var fileContent = FolderProvider.Instance("StandardFolderProvider").GetFileStream(file))
                     {
                         var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
@@ -2486,10 +2486,10 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-		/// Gets the portal space used bytes.
-		/// </summary>
-		/// <param name="portalId">The portal id.</param>
-		/// <returns>Space used in bytes</returns>
+        /// Gets the portal space used bytes.
+        /// </summary>
+        /// <param name="portalId">The portal id.</param>
+        /// <returns>Space used in bytes</returns>
         public long GetPortalSpaceUsedBytes(int portalId)
         {
             long size = 0;
@@ -2518,7 +2518,7 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>
         /// Verifies if there's enough space to upload a new file on the given portal
         /// </summary>
-		/// <param name="portalId">Id of the portal</param>
+        /// <param name="portalId">Id of the portal</param>
         /// <param name="fileSizeBytes">Size of the file being uploaded</param>
         /// <returns>True if there's enough space available to upload the file</returns>
         public bool HasSpaceAvailable(int portalId, long fileSizeBytes)
@@ -3031,12 +3031,12 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-		/// Deletes the portal setting in this language.
-		/// </summary>
+        /// Deletes the portal setting in this language.
+        /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
-		/// <param name="cultureCode">The culture code.</param>
-		public static void DeletePortalSetting(int portalID, string settingName, string cultureCode)
+        /// <param name="cultureCode">The culture code.</param>
+        public static void DeletePortalSetting(int portalID, string settingName, string cultureCode)
         {
             DataProvider.Instance().DeletePortalSetting(portalID, settingName, cultureCode.ToLowerInvariant());
             EventLogController.Instance.AddLog("SettingName", settingName + ((cultureCode == Null.NullString) ? String.Empty : " (" + cultureCode + ")"), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
@@ -3103,14 +3103,14 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-		/// Gets the portal setting for a specific language (or neutral).
-		/// </summary>
-		/// <param name="settingName">Name of the setting.</param>
-		/// <param name="portalID">The portal ID.</param>
-		/// <param name="defaultValue">The default value.</param>
-		/// <param name="cultureCode">culture code of the language to retrieve (not empty)</param>
-		/// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
-		public static string GetPortalSetting(string settingName, int portalID, string defaultValue, string cultureCode)
+        /// Gets the portal setting for a specific language (or neutral).
+        /// </summary>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="cultureCode">culture code of the language to retrieve (not empty)</param>
+        /// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
+        public static string GetPortalSetting(string settingName, int portalID, string defaultValue, string cultureCode)
         {
             var retValue = Null.NullString;
             try
@@ -3157,14 +3157,14 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-		/// Gets the portal setting as boolean for a specific language (or neutral).
-		/// </summary>
-		/// <param name="key">The key.</param>
-		/// <param name="portalID">The portal ID.</param>
-		/// <param name="defaultValue">default value.</param>
-		/// <param name="cultureCode">culture code of the language to retrieve (not empty)</param>
-		/// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
-		public static bool GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue, string cultureCode)
+        /// Gets the portal setting as boolean for a specific language (or neutral).
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="defaultValue">default value.</param>
+        /// <param name="cultureCode">culture code of the language to retrieve (not empty)</param>
+        /// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
+        public static bool GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue, string cultureCode)
         {
             bool retValue = Null.NullBoolean;
             try
@@ -3218,7 +3218,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-		/// Gets the portal setting as double.
+        /// Gets the portal setting as double.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="portalId">The portal Id.</param>
@@ -3248,14 +3248,14 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-		/// Gets the portal setting as integer for a specific language (or neutral).
-		/// </summary>
-		/// <param name="key">The key.</param>
-		/// <param name="portalID">The portal ID.</param>
-		/// <param name="defaultValue">The default value.</param>
-		/// <param name="cultureCode">culture code of the language to retrieve (not empty)</param>
-		/// <returns>Returns setting's value if portal contains the specific setting (for specified lang, otherwise return defaultValue.</returns>
-		public static int GetPortalSettingAsInteger(string key, int portalID, int defaultValue, string cultureCode)
+        /// Gets the portal setting as integer for a specific language (or neutral).
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="cultureCode">culture code of the language to retrieve (not empty)</param>
+        /// <returns>Returns setting's value if portal contains the specific setting (for specified lang, otherwise return defaultValue.</returns>
+        public static int GetPortalSettingAsInteger(string key, int portalID, int defaultValue, string cultureCode)
         {
             int retValue = Null.NullInteger;
             try
@@ -3307,8 +3307,8 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-		/// Updates a single neutral (not language specific) portal setting, optionally without clearing the cache.
-		/// </summary>
+        /// Updates a single neutral (not language specific) portal setting, optionally without clearing the cache.
+        /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
@@ -3332,30 +3332,30 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-		/// Updates a language specific or neutral portal setting and optionally clears it from the cache.
-		/// </summary>
+        /// Updates a language specific or neutral portal setting and optionally clears it from the cache.
+        /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
         /// <param name="clearCache">if set to <c>true</c> [clear cache].</param>
-		/// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
-		public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
+        /// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
+        public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
         {
             UpdatePortalSetting(portalID, settingName, settingValue, clearCache, cultureCode, false);
         }
 
         /// <summary>
-		/// Updates a language specific or neutral portal setting and optionally clears it from the cache.
+        /// Updates a language specific or neutral portal setting and optionally clears it from the cache.
         /// All overloaded methors will not encrypt the setting value. Therefore, call this method whenever
         /// there is a need to encrypt the setting value before storing it in the datanbase.
-		/// </summary>
+        /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
         /// <param name="clearCache">if set to <c>true</c> [clear cache].</param>
-		/// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
-		/// <param name="isSecure">When true it encrypt the value before storing it in the database</param>
-		public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
+        /// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
+        /// <param name="isSecure">When true it encrypt the value before storing it in the database</param>
+        public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
         {
             Instance.UpdatePortalSetting(portalID, settingName, settingValue, clearCache, cultureCode, isSecure);
         }

@@ -199,7 +199,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 if (profileProperty?.PropertyName == name)
                 {
-					// Found Profile property
+                    // Found Profile property
                     profileItem = profileProperty;
                 }
             }

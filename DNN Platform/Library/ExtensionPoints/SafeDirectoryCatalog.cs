@@ -25,11 +25,11 @@ namespace DotNetNuke.ExtensionPoints
             {
                 try
                 {
-	                var asmCat = new AssemblyCatalog(file);
+                    var asmCat = new AssemblyCatalog(file);
 
-	                // Force MEF to load the plugin and figure out if there are any exports
-	                // good assemblies will not throw the RTLE exception and can be added to the catalog
-	                if (asmCat.Parts.ToList().Count > 0) this._catalog.Catalogs.Add(asmCat);
+                    // Force MEF to load the plugin and figure out if there are any exports
+                    // good assemblies will not throw the RTLE exception and can be added to the catalog
+                    if (asmCat.Parts.ToList().Count > 0) this._catalog.Catalogs.Add(asmCat);
                 }
                 catch (ReflectionTypeLoadException)
                 {

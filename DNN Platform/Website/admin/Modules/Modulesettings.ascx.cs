@@ -145,7 +145,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 {
                     this.startDatePicker.SelectedDate = this.Module.StartDate;
                 }
-				if (!Null.IsNull(this.Module.EndDate) && this.Module.EndDate <= this.endDatePicker.MaxDate)
+                if (!Null.IsNull(this.Module.EndDate) && this.Module.EndDate <= this.endDatePicker.MaxDate)
                 {
                     this.endDatePicker.SelectedDate = this.Module.EndDate;
                 }
@@ -326,7 +326,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 this.cmdDelete.Click += this.OnDeleteClick;
                 this.cmdUpdate.Click += this.OnUpdateClick;
 
-			    JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
                 // get ModuleId
                 if ((this.Request.QueryString["ModuleId"] != null))

@@ -83,7 +83,7 @@ namespace DotNetNuke.UI.ControlPanel
             string errMsg = string.Empty;
             try
             {
-				RibbonBarManager.SaveTabInfoObject(newTab, selectedTab, tabLocation, this.TemplateLst.SelectedValue);
+                RibbonBarManager.SaveTabInfoObject(newTab, selectedTab, tabLocation, this.TemplateLst.SelectedValue);
             }
             catch (DotNetNukeException ex)
             {

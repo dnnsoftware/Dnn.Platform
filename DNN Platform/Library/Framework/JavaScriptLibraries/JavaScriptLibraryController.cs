@@ -17,7 +17,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     {
         private void ClearCache()
         {
-	        DataCache.RemoveCache(DataCache.JavaScriptLibrariesCacheKey);
+            DataCache.RemoveCache(DataCache.JavaScriptLibrariesCacheKey);
         }
 
         protected override Func<IJavaScriptLibraryController> GetFactory()
@@ -61,9 +61,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <returns>A sequence of <see cref="JavaScriptLibrary"/> instances</returns>
         public IEnumerable<JavaScriptLibrary> GetLibraries()
         {
-	    return CBO.GetCachedObject<IEnumerable<JavaScriptLibrary>>(new CacheItemArgs(DataCache.JavaScriptLibrariesCacheKey,
-											DataCache.JavaScriptLibrariesCacheTimeout,
-											DataCache.JavaScriptLibrariesCachePriority),
+        return CBO.GetCachedObject<IEnumerable<JavaScriptLibrary>>(new CacheItemArgs(DataCache.JavaScriptLibrariesCacheKey,
+                                            DataCache.JavaScriptLibrariesCacheTimeout,
+                                            DataCache.JavaScriptLibrariesCachePriority),
                                  c => CBO.FillCollection<JavaScriptLibrary>(DataProvider.Instance().ExecuteReader("GetJavaScriptLibraries")));
         }
 

@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.Groups
         {
             get
             {
-	            var roleGroupId = Null.NullInteger;
+                var roleGroupId = Null.NullInteger;
                 if (this.Settings.ContainsKey(Constants.DefaultRoleGroupSetting))
                 {
                     int id;

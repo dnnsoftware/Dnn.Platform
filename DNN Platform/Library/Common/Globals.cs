@@ -70,7 +70,7 @@ namespace DotNetNuke.Common
     [StandardModule]
     public sealed class Globals
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Globals));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Globals));
 
         public static readonly Regex EmailValidatorRegex = new Regex(glbEmailRegEx, RegexOptions.Compiled);
         public static readonly Regex NonAlphanumericCharacters = new Regex("[^A-Za-z0-9]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
@@ -97,7 +97,7 @@ namespace DotNetNuke.Common
         /// update cache immediately after the data changed.</para>
         /// <para>default cache policy in core api will use cache timeout muitple Host Performance setting's value as cache time(unit: minutes):</para>
         /// <list type="bullet">
-        /// 	<item>HostSettingsCacheTimeOut: 20</item>
+        ///     <item>HostSettingsCacheTimeOut: 20</item>
         /// <item>PortalAliasCacheTimeOut: 200</item>
         /// <item>PortalSettingsCacheTimeOut: 20</item>
         /// <item>More cache timeout definitions see<see cref="DotNetNuke.Common.Utilities.DataCache"/></item>
@@ -1015,7 +1015,7 @@ namespace DotNetNuke.Common
             }
             finally
             {
-			    reader.Close();
+                reader.Close();
             }
 
             return objDataSet;
@@ -1026,42 +1026,42 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="reader">The reader.</param>
         /// <returns>the datatable instance</returns>
-		public static DataTable ConvertDataReaderToDataTable(IDataReader reader)
+        public static DataTable ConvertDataReaderToDataTable(IDataReader reader)
         {
-	        return ConvertDataReaderToDataTable(reader, true);
+            return ConvertDataReaderToDataTable(reader, true);
         }
 
-		/// <summary>
-		/// Converts the datareader to datatable.
-		/// </summary>
-		/// <param name="reader">The reader.</param>
-		/// <param name="closeReader">Whether close reader.</param>
-		/// <returns>the datatable instance</returns>
+        /// <summary>
+        /// Converts the datareader to datatable.
+        /// </summary>
+        /// <param name="reader">The reader.</param>
+        /// <param name="closeReader">Whether close reader.</param>
+        /// <returns>the datatable instance</returns>
         public static DataTable ConvertDataReaderToDataTable(IDataReader reader, bool closeReader)
         {
-		    try
-		    {
+            try
+            {
                 // create datatable from datareader
                 var objDataTable = new DataTable();
-		        int intFieldCount = reader.FieldCount;
-		        int intCounter;
-		        for (intCounter = 0; intCounter <= intFieldCount - 1; intCounter++)
-		        {
-		            objDataTable.Columns.Add(reader.GetName(intCounter), reader.GetFieldType(intCounter));
-		        }
-		        // populate datatable
-		        objDataTable.BeginLoadData();
-		        var objValues = new object[intFieldCount];
-		        while (reader.Read())
-		        {
-		            reader.GetValues(objValues);
-		            objDataTable.LoadDataRow(objValues, true);
-		        }
-		        objDataTable.EndLoadData();
-		        return objDataTable;
-		    }
-		    finally
-		    {
+                int intFieldCount = reader.FieldCount;
+                int intCounter;
+                for (intCounter = 0; intCounter <= intFieldCount - 1; intCounter++)
+                {
+                    objDataTable.Columns.Add(reader.GetName(intCounter), reader.GetFieldType(intCounter));
+                }
+                // populate datatable
+                objDataTable.BeginLoadData();
+                var objValues = new object[intFieldCount];
+                while (reader.Read())
+                {
+                    reader.GetValues(objValues);
+                    objDataTable.LoadDataRow(objValues, true);
+                }
+                objDataTable.EndLoadData();
+                return objDataTable;
+            }
+            finally
+            {
                 if (closeReader)
                 {
                     reader.Close();
@@ -1594,7 +1594,7 @@ namespace DotNetNuke.Common
         /// <remarks>
         /// This overload takes a the PortalId
         /// </remarks>
-        /// 	<param name="PortalID">The Portal Id</param>
+        ///     <param name="PortalID">The Portal Id</param>
         /// -----------------------------------------------------------------------------
         public static void SetApplicationName(int PortalID)
         {
@@ -1608,7 +1608,7 @@ namespace DotNetNuke.Common
         /// <remarks>
         /// This overload takes a the PortalId
         /// </remarks>
-        /// 	<param name="ApplicationName">The Application Name to set</param>
+        ///     <param name="ApplicationName">The Application Name to set</param>
         /// -----------------------------------------------------------------------------
         public static void SetApplicationName(string ApplicationName)
         {
@@ -3530,32 +3530,32 @@ namespace DotNetNuke.Common
         /// <returns><c>true</c> if the tab contains "Account Login" module, otherwise, <c>false</c>.</returns>
         public static bool ValidateLoginTabID(int tabId)
         {
-	        return ValidateModuleInTab(tabId, "Account Login");
+            return ValidateModuleInTab(tabId, "Account Login");
         }
 
-		/// <summary>
-		/// Check whether the tab contains specific module.
-		/// </summary>
-		/// <param name="tabId">The tab id.</param>
-		/// <param name="moduleName">The module need to check.</param>
-		/// <returns><c>true</c> if the tab contains the module, otherwise, <c>false</c>.</returns>
-		public static bool ValidateModuleInTab(int tabId, string moduleName)
-		{
-			bool hasModule = Null.NullBoolean;
+        /// <summary>
+        /// Check whether the tab contains specific module.
+        /// </summary>
+        /// <param name="tabId">The tab id.</param>
+        /// <param name="moduleName">The module need to check.</param>
+        /// <returns><c>true</c> if the tab contains the module, otherwise, <c>false</c>.</returns>
+        public static bool ValidateModuleInTab(int tabId, string moduleName)
+        {
+            bool hasModule = Null.NullBoolean;
             foreach (ModuleInfo objModule in ModuleController.Instance.GetTabModules(tabId).Values)
             {
-				if (objModule.ModuleDefinition.FriendlyName == moduleName)
+                if (objModule.ModuleDefinition.FriendlyName == moduleName)
                 {
                     // We need to ensure that Anonymous Users or All Users have View permissions to the login page
                     TabInfo tab = TabController.Instance.GetTab(tabId, objModule.PortalID, false);
                     if (TabPermissionController.CanViewPage(tab))
                     {
-						hasModule = true;
+                        hasModule = true;
                         break;
                     }
                 }
             }
-			return hasModule;
+            return hasModule;
         }
 
         /// <summary>
@@ -3566,7 +3566,7 @@ namespace DotNetNuke.Common
         /// <returns><c>true</c> if the Filename matches extensions, otherwise, <c>false</c>.</returns>
         private static bool FilenameMatchesExtensions(string filename, string strExtensions)
         {
-			bool result = string.IsNullOrEmpty(strExtensions);
+            bool result = string.IsNullOrEmpty(strExtensions);
             if (!result)
             {
                 filename = filename.ToUpper();

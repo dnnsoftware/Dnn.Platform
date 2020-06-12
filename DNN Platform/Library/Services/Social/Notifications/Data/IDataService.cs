@@ -157,19 +157,19 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         /// <returns>True if the Toast Notification is pending, False if it is not</returns>
         bool IsToastPending(int notificationId);
 
-		/// <summary>
-		/// Mark a Toast ready for sending
-		/// </summary>
-		/// <param name="notificationId">The notification Id </param>
-		/// <param name="userId">The Recipient User Id </param>
-		void MarkReadyForToast(int notificationId, int userId);
+        /// <summary>
+        /// Mark a Toast ready for sending
+        /// </summary>
+        /// <param name="notificationId">The notification Id </param>
+        /// <param name="userId">The Recipient User Id </param>
+        void MarkReadyForToast(int notificationId, int userId);
 
-		/// <summary>
-		/// Mark Toast being already sent
-		/// </summary>
-		/// <param name="notificationId">The notification Id </param>
-		/// <param name="userId">The Recipient User Id </param>
-		void MarkToastSent(int notificationId, int userId);
+        /// <summary>
+        /// Mark Toast being already sent
+        /// </summary>
+        /// <param name="notificationId">The notification Id </param>
+        /// <param name="userId">The Recipient User Id </param>
+        void MarkToastSent(int notificationId, int userId);
 
         /// <summary>
         /// Get a list of Toast Notifications that have not been delivered yet.
@@ -179,6 +179,6 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         /// <returns>DataReader with the retrieved data</returns>
         IDataReader GetToasts(int userId, int portalId);
 
-		#endregion
+        #endregion
     }
 }

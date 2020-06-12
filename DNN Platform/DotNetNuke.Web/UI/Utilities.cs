@@ -110,7 +110,7 @@ namespace DotNetNuke.Web.UI
                 string systemWebControlSkin = string.Empty;
                 if ((!string.IsNullOrEmpty(skinName) && !string.IsNullOrEmpty(skinVirtualFolder)))
                 {
-					systemWebControlSkin = HttpContext.Current.Server.MapPath(skinVirtualFolder);
+                    systemWebControlSkin = HttpContext.Current.Server.MapPath(skinVirtualFolder);
                     systemWebControlSkin = Path.Combine(systemWebControlSkin, "WebControlSkin");
                     systemWebControlSkin = Path.Combine(systemWebControlSkin, skinName);
                     systemWebControlSkin = Path.Combine(systemWebControlSkin, webControlSkinSubFolderName);

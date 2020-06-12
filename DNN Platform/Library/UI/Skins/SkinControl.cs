@@ -23,8 +23,8 @@ namespace DotNetNuke.UI.Skins
 {
     public class SkinControl : UserControlBase
     {
-		#region "Private Members"	
-		
+        #region "Private Members"   
+        
         private string _DefaultKey = "System";
         private string _SkinRoot;
         private string _SkinSrc;
@@ -35,10 +35,10 @@ namespace DotNetNuke.UI.Skins
         protected CommandButton cmdPreview;
         protected RadioButton optHost;
         protected RadioButton optSite;
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         public string DefaultKey
         {
@@ -115,10 +115,10 @@ namespace DotNetNuke.UI.Skins
                 this._localResourceFile = value;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
         private void LoadSkins()
         {
@@ -155,16 +155,16 @@ namespace DotNetNuke.UI.Skins
                 }
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Event Handlers"
+        #region "Event Handlers"
 
         /// <summary>
-		/// The Page_Load server event handler on this page is used
+        /// The Page_Load server event handler on this page is used
         /// to populate the role information for the page
-		/// </summary>
-		protected override void OnLoad(EventArgs e)
+        /// </summary>
+        protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
@@ -178,7 +178,7 @@ namespace DotNetNuke.UI.Skins
 
             try
             {
-				if (this.Request.QueryString["pid"] != null && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
+                if (this.Request.QueryString["pid"] != null && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
                     this._objPortal = PortalController.Instance.GetPortal(Int32.Parse(this.Request.QueryString["pid"]));
                 }
@@ -188,18 +188,18 @@ namespace DotNetNuke.UI.Skins
                 }
                 if (!this.Page.IsPostBack)
                 {
-					// save persistent values
+                    // save persistent values
                     this.ViewState["SkinControlWidth"] = this._Width;
                     this.ViewState["SkinRoot"] = this._SkinRoot;
                     this.ViewState["SkinSrc"] = this._SkinSrc;
-					
-					// set width of control
+                    
+                    // set width of control
                     if (!String.IsNullOrEmpty(this._Width))
                     {
                         this.cboSkin.Width = Unit.Parse(this._Width);
                     }
-					
-					// set selected skin
+                    
+                    // set selected skin
                     if (!String.IsNullOrEmpty(this._SkinSrc))
                     {
                         switch (this._SkinSrc.Substring(0, 3))
@@ -216,7 +216,7 @@ namespace DotNetNuke.UI.Skins
                     }
                     else
                     {
-						// no skin selected, initialized to site skin if any exists
+                        // no skin selected, initialized to site skin if any exists
                         string strRoot = this._objPortal.HomeDirectoryMapPath + this.SkinRoot;
                         if (Directory.Exists(strRoot) && Directory.GetDirectories(strRoot).Length > 0)
                         {
@@ -261,7 +261,7 @@ namespace DotNetNuke.UI.Skins
                 this.Response.Redirect(strURL, true);
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

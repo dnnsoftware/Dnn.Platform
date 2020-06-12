@@ -32,8 +32,8 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class ModulePackageWriter : PackageWriterBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulePackageWriter));
-		#region "Constructors"
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulePackageWriter));
+        #region "Constructors"
 
         public ModulePackageWriter(XPathNavigator manifestNav, InstallerInfo installer)
         {
@@ -83,10 +83,10 @@ namespace DotNetNuke.Services.Installer.Writers
             this.DesktopModule = desktopModule;
             this.Initialize(desktopModule.FolderName);
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected Properties"
+        #region "Protected Properties"
 
         protected override Dictionary<string, string> Dependencies
         {
@@ -104,23 +104,23 @@ namespace DotNetNuke.Services.Installer.Writers
                 return dependencies;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets the associated Desktop Module
-		/// </summary>
-		/// <value>A DesktopModuleInfo object</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the associated Desktop Module
+        /// </summary>
+        /// <value>A DesktopModuleInfo object</value>
+        /// -----------------------------------------------------------------------------
         public DesktopModuleInfo DesktopModule { get; set; }
 
-		#endregion
+        #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
         private void Initialize(string folder)
         {
@@ -140,7 +140,7 @@ namespace DotNetNuke.Services.Installer.Writers
             string controlSrc = Util.ReadElement(controlNav, "src");
             if (!(controlSrc.StartsWith("desktopmodules", StringComparison.InvariantCultureIgnoreCase) || !controlSrc.EndsWith(".ascx", StringComparison.InvariantCultureIgnoreCase)))
             {
-				// this code allows a developer to reference an ASCX file in a different folder than the module folder ( good for ASCX files shared between modules where you want only a single copy )
+                // this code allows a developer to reference an ASCX file in a different folder than the module folder ( good for ASCX files shared between modules where you want only a single copy )
                 // or it allows the developer to use webcontrols rather than usercontrols
 
                 controlSrc = Path.Combine("DesktopModules", Path.Combine(moduleFolder, controlSrc));
@@ -186,7 +186,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private void ProcessModuleFiles(string folder, string basePath)
         {
-			// we are going to drill down through the folders to add the files
+            // we are going to drill down through the folders to add the files
             foreach (string fileName in Directory.GetFiles(folder))
             {
                 string name = fileName.Replace(basePath + "\\", "");
@@ -196,12 +196,12 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private void ProcessModuleFolders(string folder, string basePath)
         {
-			// Process Folders recursively
+            // Process Folders recursively
             foreach (string directoryName in Directory.GetDirectories(folder))
             {
                 this.ProcessModuleFolders(directoryName, basePath);
             }
-			
+            
             // process files
             this.ProcessModuleFiles(folder, basePath);
         }
@@ -216,7 +216,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 definition.DefaultCacheTime = int.Parse(cacheTime);
             }
-			
+            
             // Process legacy controls Node
             foreach (XPathNavigator controlNav in moduleNav.Select("controls/control"))
             {
@@ -229,7 +229,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             if (processModule)
             {
-				// Version 2 of legacy manifest
+                // Version 2 of legacy manifest
                 string name = Util.ReadElement(folderNav, "name");
                 this.DesktopModule.FolderName = name;
                 this.DesktopModule.ModuleName = name;
@@ -279,7 +279,7 @@ namespace DotNetNuke.Services.Installer.Writers
                     this.ProcessModules(moduleNav, this.DesktopModule.FolderName);
                 }
             }
-			
+            
             // Process legacy files Node
             foreach (XPathNavigator fileNav in folderNav.Select("files/file"))
             {
@@ -291,7 +291,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 string sourceFileName;
                 if (filePath.Contains("[app_code]"))
                 {
-					// Special case for App_code - files can be in App_Code\ModuleName or root
+                    // Special case for App_code - files can be in App_Code\ModuleName or root
                     sourceFileName = Path.Combine(filePath, fileName).Replace("[app_code]", "App_Code\\" + this.DesktopModule.FolderName);
                 }
                 else
@@ -303,8 +303,8 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     sourceFileName = fileName;
                 }
-				
-				// In Legacy Modules the assembly is always in "bin" - ignore the path element
+                
+                // In Legacy Modules the assembly is always in "bin" - ignore the path element
                 if (fileName.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
                 {
                     this.AddFile("bin/" + fileName, sourceFileName);
@@ -314,7 +314,7 @@ namespace DotNetNuke.Services.Installer.Writers
                     this.AddFile(Path.Combine(filePath, fileName), sourceFileName);
                 }
             }
-			
+            
             // Process resource file Node
             if (!string.IsNullOrEmpty(Util.ReadElement(folderNav, "resourcefile")))
             {
@@ -324,7 +324,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private void WriteEventMessage(XmlWriter writer)
         {
-			// Start Start eventMessage
+            // Start Start eventMessage
             writer.WriteStartElement("eventMessage");
 
             // Write Processor Type
@@ -364,7 +364,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private void WriteModuleComponent(XmlWriter writer)
         {
-			// Start component Element
+            // Start component Element
             writer.WriteStartElement("component");
             writer.WriteAttributeString("type", "Module");
 
@@ -380,21 +380,21 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 this.WriteEventMessage(writer);
             }
-			
+            
             // End component Element
             writer.WriteEndElement();
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected Methods"
+        #region "Protected Methods"
 
         protected override void WriteManifestComponent(XmlWriter writer)
         {
-			// Write Module Component
+            // Write Module Component
             this.WriteModuleComponent(writer);
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

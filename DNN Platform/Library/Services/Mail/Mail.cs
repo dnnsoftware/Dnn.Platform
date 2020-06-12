@@ -477,23 +477,23 @@ namespace DotNetNuke.Services.Mail
         /// <param name="smtpPassword">SMTP authentication Password. When empty or null, then it takes from the HostSettings.</param>
         /// <param name="smtpEnableSSL">Enable or disable SSL.</param>
         /// <returns>Returns an empty string on success mail sending. Otherwise returns an error description.</returns>
-        /// <example>SendMail(	"admin@email.com",
-        /// 						"user@email.com",
-        /// 						"user1@email.com;user2@email.com",
-        /// 						"user3@email.com",
-        /// 						"no-reply@email.com",
-        /// 						MailPriority.Low,
-        /// 						"This is test email",
-        /// 						MailFormat.Text,
-        /// 						Encoding.UTF8,
-        /// 						"Test body. Test body. Test body.",
-        /// 						new string[] {"d:\documents\doc1.doc","d:\documents\doc2.doc"},
-        /// 						"mail.email.com",
-        /// 						"1",
-        /// 						"admin@email.com",
-        /// 						"AdminPassword",
-        /// 						false);
-        /// 	</example>
+        /// <example>SendMail(  "admin@email.com",
+        ///                         "user@email.com",
+        ///                         "user1@email.com;user2@email.com",
+        ///                         "user3@email.com",
+        ///                         "no-reply@email.com",
+        ///                         MailPriority.Low,
+        ///                         "This is test email",
+        ///                         MailFormat.Text,
+        ///                         Encoding.UTF8,
+        ///                         "Test body. Test body. Test body.",
+        ///                         new string[] {"d:\documents\doc1.doc","d:\documents\doc2.doc"},
+        ///                         "mail.email.com",
+        ///                         "1",
+        ///                         "admin@email.com",
+        ///                         "AdminPassword",
+        ///                         false);
+        ///     </example>
         public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding,
                                       string body, string[] attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {

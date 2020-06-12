@@ -47,7 +47,7 @@ namespace DotNetNuke.HttpModules.Personalization
             {
                 return;
             }
-			
+            
             // Obtain PortalSettings from Current Context
             var _portalSettings = (PortalSettings)context.Items["PortalSettings"];
             if (_portalSettings != null)

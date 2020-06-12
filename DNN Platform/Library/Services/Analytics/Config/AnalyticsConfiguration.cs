@@ -23,15 +23,15 @@ namespace DotNetNuke.Services.Analytics.Config
     [Serializable, XmlRoot("AnalyticsConfig")]
     public class AnalyticsConfiguration
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsConfiguration));
-		#region "Private Members"
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsConfiguration));
+        #region "Private Members"
 
         private AnalyticsRuleCollection _rules;
         private AnalyticsSettingCollection _settings;
 
-		#endregion
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         public AnalyticsSettingCollection Settings
         {
@@ -56,10 +56,10 @@ namespace DotNetNuke.Services.Analytics.Config
                 this._rules = value;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Shared Methods"
+        #region "Shared Methods"
 
         public static AnalyticsConfiguration GetConfig(string analyticsEngineName)
         {
@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.Analytics.Config
                     {
                         return null;
                     }
-					
+                    
                     // Create a FileStream for the Config file
                     fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
 
@@ -114,14 +114,14 @@ namespace DotNetNuke.Services.Analytics.Config
                     }
                     if (File.Exists(filePath))
                     {
-						// Set back into Cache
+                        // Set back into Cache
                         DataCache.SetCache(cacheKey, Config, new DNNCacheDependency(filePath));
                     }
                 }
             }
             catch (Exception ex)
             {
-				// log it
+                // log it
                 var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString() };
                 log.AddProperty("Analytics.AnalyticsConfiguration", "GetConfig Failed");
                 log.AddProperty("FilePath", filePath);
@@ -133,7 +133,7 @@ namespace DotNetNuke.Services.Analytics.Config
             {
                 if (fileReader != null)
                 {
-					// Close the Reader
+                    // Close the Reader
                     fileReader.Close();
                 }
             }
@@ -168,7 +168,7 @@ namespace DotNetNuke.Services.Analytics.Config
                 DataCache.SetCache(cacheKey, config, new DNNCacheDependency(filePath));
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

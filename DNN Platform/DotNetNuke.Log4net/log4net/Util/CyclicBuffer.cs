@@ -27,185 +27,185 @@ using log4net.Core;
 
 namespace log4net.Util
 {
-	/// <summary>
-	/// A fixed size rolling buffer of logging events.
-	/// </summary>
-	/// <remarks>
-	/// <para>
-	/// An array backed fixed size leaky bucket.
-	/// </para>
-	/// </remarks>
-	/// <author>Nicko Cadell</author>
-	/// <author>Gert Driesen</author>
-	public class CyclicBuffer
-	{
-		#region Public Instance Constructors
+    /// <summary>
+    /// A fixed size rolling buffer of logging events.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// An array backed fixed size leaky bucket.
+    /// </para>
+    /// </remarks>
+    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen</author>
+    public class CyclicBuffer
+    {
+        #region Public Instance Constructors
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="maxSize">The maximum number of logging events in the buffer.</param>
-		/// <remarks>
-		/// <para>
-		/// Initializes a new instance of the <see cref="CyclicBuffer" /> class with 
-		/// the specified maximum number of buffered logging events.
-		/// </para>
-		/// </remarks>
-		/// <exception cref="ArgumentOutOfRangeException">The <paramref name="maxSize"/> argument is not a positive integer.</exception>
-		public CyclicBuffer(int maxSize) 
-		{
-			if (maxSize < 1) 
-			{
-				throw SystemInfo.CreateArgumentOutOfRangeException("maxSize", (object)maxSize, "Parameter: maxSize, Value: [" + maxSize + "] out of range. Non zero positive integer required");
-			}
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="maxSize">The maximum number of logging events in the buffer.</param>
+        /// <remarks>
+        /// <para>
+        /// Initializes a new instance of the <see cref="CyclicBuffer" /> class with 
+        /// the specified maximum number of buffered logging events.
+        /// </para>
+        /// </remarks>
+        /// <exception cref="ArgumentOutOfRangeException">The <paramref name="maxSize"/> argument is not a positive integer.</exception>
+        public CyclicBuffer(int maxSize) 
+        {
+            if (maxSize < 1) 
+            {
+                throw SystemInfo.CreateArgumentOutOfRangeException("maxSize", (object)maxSize, "Parameter: maxSize, Value: [" + maxSize + "] out of range. Non zero positive integer required");
+            }
 
-			this.m_maxSize = maxSize;
-			this.m_events = new LoggingEvent[maxSize];
-			this.m_first = 0;
-			this.m_last = 0;
-			this.m_numElems = 0;
-		}
+            this.m_maxSize = maxSize;
+            this.m_events = new LoggingEvent[maxSize];
+            this.m_first = 0;
+            this.m_last = 0;
+            this.m_numElems = 0;
+        }
 
-		#endregion Public Instance Constructors
+        #endregion Public Instance Constructors
 
-		#region Public Instance Methods
-	
-		/// <summary>
-		/// Appends a <paramref name="loggingEvent"/> to the buffer.
-		/// </summary>
-		/// <param name="loggingEvent">The event to append to the buffer.</param>
-		/// <returns>The event discarded from the buffer, if the buffer is full, otherwise <c>null</c>.</returns>
-		/// <remarks>
-		/// <para>
-		/// Append an event to the buffer. If the buffer still contains free space then
-		/// <c>null</c> is returned. If the buffer is full then an event will be dropped
-		/// to make space for the new event, the event dropped is returned.
-		/// </para>
-		/// </remarks>
-		public LoggingEvent Append(LoggingEvent loggingEvent)
-		{	
-			if (loggingEvent == null)
-			{
-				throw new ArgumentNullException("loggingEvent");
-			}
+        #region Public Instance Methods
+    
+        /// <summary>
+        /// Appends a <paramref name="loggingEvent"/> to the buffer.
+        /// </summary>
+        /// <param name="loggingEvent">The event to append to the buffer.</param>
+        /// <returns>The event discarded from the buffer, if the buffer is full, otherwise <c>null</c>.</returns>
+        /// <remarks>
+        /// <para>
+        /// Append an event to the buffer. If the buffer still contains free space then
+        /// <c>null</c> is returned. If the buffer is full then an event will be dropped
+        /// to make space for the new event, the event dropped is returned.
+        /// </para>
+        /// </remarks>
+        public LoggingEvent Append(LoggingEvent loggingEvent)
+        {   
+            if (loggingEvent == null)
+            {
+                throw new ArgumentNullException("loggingEvent");
+            }
 
-			lock (this)
-			{
-				// save the discarded event
-				LoggingEvent discardedLoggingEvent = this.m_events[this.m_last];
+            lock (this)
+            {
+                // save the discarded event
+                LoggingEvent discardedLoggingEvent = this.m_events[this.m_last];
 
-				// overwrite the last event position
-				this.m_events[this.m_last] = loggingEvent;	
-				if (++this.m_last == this.m_maxSize)
-				{
-					this.m_last = 0;
-				}
+                // overwrite the last event position
+                this.m_events[this.m_last] = loggingEvent;  
+                if (++this.m_last == this.m_maxSize)
+                {
+                    this.m_last = 0;
+                }
 
-				if (this.m_numElems < this.m_maxSize)
-				{
-					this.m_numElems++;
-				}
-				else if (++this.m_first == this.m_maxSize)
-				{
-					this.m_first = 0;
-				}
+                if (this.m_numElems < this.m_maxSize)
+                {
+                    this.m_numElems++;
+                }
+                else if (++this.m_first == this.m_maxSize)
+                {
+                    this.m_first = 0;
+                }
 
-				if (this.m_numElems < this.m_maxSize)
-				{
-					// Space remaining
-					return null;
-				}
-				else
-				{
-					// Buffer is full and discarding an event
-					return discardedLoggingEvent;
-				}
-			}
-		}
+                if (this.m_numElems < this.m_maxSize)
+                {
+                    // Space remaining
+                    return null;
+                }
+                else
+                {
+                    // Buffer is full and discarding an event
+                    return discardedLoggingEvent;
+                }
+            }
+        }
 
-		/// <summary>
-		/// Get and remove the oldest event in the buffer.
-		/// </summary>
-		/// <returns>The oldest logging event in the buffer</returns>
-		/// <remarks>
-		/// <para>
-		/// Gets the oldest (first) logging event in the buffer and removes it 
-		/// from the buffer.
-		/// </para>
-		/// </remarks>
-		public LoggingEvent PopOldest() 
-		{
-			lock (this)
-			{
-				LoggingEvent ret = null;
-				if (this.m_numElems > 0) 
-				{
-					this.m_numElems--;
-					ret = this.m_events[this.m_first];
-					this.m_events[this.m_first] = null;
-					if (++this.m_first == this.m_maxSize)
-					{
-						this.m_first = 0;
-					}
-				} 
-				return ret;
-			}
-		}
+        /// <summary>
+        /// Get and remove the oldest event in the buffer.
+        /// </summary>
+        /// <returns>The oldest logging event in the buffer</returns>
+        /// <remarks>
+        /// <para>
+        /// Gets the oldest (first) logging event in the buffer and removes it 
+        /// from the buffer.
+        /// </para>
+        /// </remarks>
+        public LoggingEvent PopOldest() 
+        {
+            lock (this)
+            {
+                LoggingEvent ret = null;
+                if (this.m_numElems > 0) 
+                {
+                    this.m_numElems--;
+                    ret = this.m_events[this.m_first];
+                    this.m_events[this.m_first] = null;
+                    if (++this.m_first == this.m_maxSize)
+                    {
+                        this.m_first = 0;
+                    }
+                } 
+                return ret;
+            }
+        }
 
-		/// <summary>
-		/// Pops all the logging events from the buffer into an array.
-		/// </summary>
-		/// <returns>An array of all the logging events in the buffer.</returns>
-		/// <remarks>
-		/// <para>
-		/// Get all the events in the buffer and clear the buffer.
-		/// </para>
-		/// </remarks>
-		public LoggingEvent[] PopAll()
-		{
-			lock (this)
-			{
-				LoggingEvent[] ret = new LoggingEvent[this.m_numElems];
+        /// <summary>
+        /// Pops all the logging events from the buffer into an array.
+        /// </summary>
+        /// <returns>An array of all the logging events in the buffer.</returns>
+        /// <remarks>
+        /// <para>
+        /// Get all the events in the buffer and clear the buffer.
+        /// </para>
+        /// </remarks>
+        public LoggingEvent[] PopAll()
+        {
+            lock (this)
+            {
+                LoggingEvent[] ret = new LoggingEvent[this.m_numElems];
 
-				if (this.m_numElems > 0)
-				{
-					if (this.m_first < this.m_last)
-					{
-						Array.Copy(this.m_events, this.m_first, ret, 0, this.m_numElems);
-					}
-					else
-					{
-						Array.Copy(this.m_events, this.m_first, ret, 0, this.m_maxSize - this.m_first);
-						Array.Copy(this.m_events, 0, ret, this.m_maxSize - this.m_first, this.m_last);
-					}
-				}
+                if (this.m_numElems > 0)
+                {
+                    if (this.m_first < this.m_last)
+                    {
+                        Array.Copy(this.m_events, this.m_first, ret, 0, this.m_numElems);
+                    }
+                    else
+                    {
+                        Array.Copy(this.m_events, this.m_first, ret, 0, this.m_maxSize - this.m_first);
+                        Array.Copy(this.m_events, 0, ret, this.m_maxSize - this.m_first, this.m_last);
+                    }
+                }
 
-				this.Clear();
+                this.Clear();
 
-				return ret;
-			}
-		}
+                return ret;
+            }
+        }
 
-		/// <summary>
-		/// Clear the buffer
-		/// </summary>
-		/// <remarks>
-		/// <para>
-		/// Clear the buffer of all events. The events in the buffer are lost.
-		/// </para>
-		/// </remarks>
-		public void Clear()
-		{
-			lock (this)
-			{
-				// Set all the elements to null
-				Array.Clear(this.m_events, 0, this.m_events.Length);
+        /// <summary>
+        /// Clear the buffer
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Clear the buffer of all events. The events in the buffer are lost.
+        /// </para>
+        /// </remarks>
+        public void Clear()
+        {
+            lock (this)
+            {
+                // Set all the elements to null
+                Array.Clear(this.m_events, 0, this.m_events.Length);
 
-				this.m_first = 0;
-				this.m_last = 0;
-				this.m_numElems = 0;
-			}
-		}
+                this.m_first = 0;
+                this.m_last = 0;
+                this.m_numElems = 0;
+            }
+        }
 
 #if RESIZABLE_CYCLIC_BUFFER
 		/// <summary>
@@ -266,54 +266,54 @@ namespace log4net.Util
 		}
 #endif
 
-		#endregion Public Instance Methods
+        #endregion Public Instance Methods
 
-		#region Public Instance Properties
+        #region Public Instance Properties
 
-		/// <summary>
-		/// Gets the <paramref name="i"/>th oldest event currently in the buffer.
-		/// </summary>
-		/// <value>The <paramref name="i"/>th oldest event currently in the buffer.</value>
-		/// <remarks>
-		/// <para>
-		/// If <paramref name="i"/> is outside the range 0 to the number of events
-		/// currently in the buffer, then <c>null</c> is returned.
-		/// </para>
-		/// </remarks>
-		public LoggingEvent this[int i] 
-		{
-			get
-			{
-				lock (this)
-				{
-					if (i < 0 || i >= this.m_numElems)
-					{
-						return null;
-					}
+        /// <summary>
+        /// Gets the <paramref name="i"/>th oldest event currently in the buffer.
+        /// </summary>
+        /// <value>The <paramref name="i"/>th oldest event currently in the buffer.</value>
+        /// <remarks>
+        /// <para>
+        /// If <paramref name="i"/> is outside the range 0 to the number of events
+        /// currently in the buffer, then <c>null</c> is returned.
+        /// </para>
+        /// </remarks>
+        public LoggingEvent this[int i] 
+        {
+            get
+            {
+                lock (this)
+                {
+                    if (i < 0 || i >= this.m_numElems)
+                    {
+                        return null;
+                    }
 
-					return this.m_events[(this.m_first + i) % this.m_maxSize];
-				}
-			}
-		}
+                    return this.m_events[(this.m_first + i) % this.m_maxSize];
+                }
+            }
+        }
 
-		/// <summary>
-		/// Gets the maximum size of the buffer.
-		/// </summary>
-		/// <value>The maximum size of the buffer.</value>
-		/// <remarks>
-		/// <para>
-		/// Gets the maximum size of the buffer
-		/// </para>
-		/// </remarks>
-		public int MaxSize 
-		{
-			get 
-			{ 
-				lock (this)
-				{
-					return this.m_maxSize; 
-				}
-			}
+        /// <summary>
+        /// Gets the maximum size of the buffer.
+        /// </summary>
+        /// <value>The maximum size of the buffer.</value>
+        /// <remarks>
+        /// <para>
+        /// Gets the maximum size of the buffer
+        /// </para>
+        /// </remarks>
+        public int MaxSize 
+        {
+            get 
+            { 
+                lock (this)
+                {
+                    return this.m_maxSize; 
+                }
+            }
 #if RESIZABLE_CYCLIC_BUFFER
 			set 
 			{ 
@@ -321,39 +321,39 @@ namespace log4net.Util
 				Resize(value); 
 			}
 #endif
-		}
+        }
 
-		/// <summary>
-		/// Gets the number of logging events in the buffer.
-		/// </summary>
-		/// <value>The number of logging events in the buffer.</value>
-		/// <remarks>
-		/// <para>
-		/// This number is guaranteed to be in the range 0 to <see cref="MaxSize"/>
-		/// (inclusive).
-		/// </para>
-		/// </remarks>
-		public int Length
-		{
-			get 
-			{ 
-				lock (this) 
-				{ 
-					return this.m_numElems; 
-				}
-			}									
-		}
+        /// <summary>
+        /// Gets the number of logging events in the buffer.
+        /// </summary>
+        /// <value>The number of logging events in the buffer.</value>
+        /// <remarks>
+        /// <para>
+        /// This number is guaranteed to be in the range 0 to <see cref="MaxSize"/>
+        /// (inclusive).
+        /// </para>
+        /// </remarks>
+        public int Length
+        {
+            get 
+            { 
+                lock (this) 
+                { 
+                    return this.m_numElems; 
+                }
+            }                                   
+        }
 
-		#endregion Public Instance Properties
+        #endregion Public Instance Properties
 
-		#region Private Instance Fields
+        #region Private Instance Fields
 
-		private LoggingEvent[] m_events;
-		private int m_first; 
-		private int m_last; 
-		private int m_numElems;
-		private int m_maxSize;
+        private LoggingEvent[] m_events;
+        private int m_first; 
+        private int m_last; 
+        private int m_numElems;
+        private int m_maxSize;
 
-		#endregion Private Instance Fields
-	}
+        #endregion Private Instance Fields
+    }
 }

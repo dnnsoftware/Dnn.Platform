@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.ModuleCache
 {
     public class PurgeModuleCache : SchedulerClient
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PurgeModuleCache));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PurgeModuleCache));
         public PurgeModuleCache(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem; // REQUIRED
@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.ModuleCache
                     }
                     catch (NotSupportedException exc)
                     {
-						// some Module caching providers don't use this feature
+                        // some Module caching providers don't use this feature
                         Logger.Debug(exc);
 
                     }
@@ -56,8 +56,8 @@ namespace DotNetNuke.Services.ModuleCache
 
                 // notification that we have errored
                 this.Errored(ref exc); // REQUIRED
-				
-				// log the exception
+                
+                // log the exception
                 Exceptions.Exceptions.LogException(exc); // OPTIONAL
             }
         }

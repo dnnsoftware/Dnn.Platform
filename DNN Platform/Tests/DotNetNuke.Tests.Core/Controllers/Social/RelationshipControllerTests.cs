@@ -26,33 +26,33 @@ using NUnit.Framework;
 
 namespace DotNetNuke.Tests.Core.Controllers.Social
 {
-	/// <summary>
+    /// <summary>
     ///  Testing various aspects of RelationshipController
-	/// </summary>
-	[TestFixture]
-	public class RelationshipControllerTests
-	{
-		#region Private Properties
+    /// </summary>
+    [TestFixture]
+    public class RelationshipControllerTests
+    {
+        #region Private Properties
 
         private Mock<CachingProvider> mockCachingProvider;
-	    private Mock<IPortalController> _portalController;
+        private Mock<IPortalController> _portalController;
         private Mock<IPortalGroupController> _portalGroupController;
 
         private DataTable dtRelationshipTypes;
         private DataTable dtRelationships;
         private DataTable dtUserRelationships;
-        private DataTable dtUserRelationshipPreferences;		
+        private DataTable dtUserRelationshipPreferences;        
 
-		#endregion
+        #endregion
 
-		#region Set Up
+        #region Set Up
 
-		[SetUp]
-		public void SetUp()
-		{
+        [SetUp]
+        public void SetUp()
+        {
             ComponentFactory.Container = new SimpleContainer();
             var mockDataProvider = MockComponentProvider.CreateDataProvider();
-		    mockDataProvider.Setup(dp => dp.GetProviderPath()).Returns("");
+            mockDataProvider.Setup(dp => dp.GetProviderPath()).Returns("");
 
             this.mockCachingProvider = MockComponentProvider.CreateDataCacheProvider();
             MockComponentProvider.CreateEventLogController();
@@ -73,8 +73,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
             this.CreateLocalizationProvider();
 
-            this.SetupDataTables();						
-		}
+            this.SetupDataTables();                     
+        }
 
         [TearDown]
         public void TearDown()
@@ -84,7 +84,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             UserController.ClearInstance();
         }
 
-		#endregion
+        #endregion
 
         #region Constructor Tests
 

@@ -43,10 +43,10 @@ namespace DotNetNuke.Framework.Providers
         {
             XmlAttributeCollection attributeCollection = node.Attributes;
 
-			// Get the default provider
+            // Get the default provider
             this._DefaultProvider = attributeCollection["defaultProvider"].Value;
 
-			// Read child nodes
+            // Read child nodes
             foreach (XmlNode child in node.ChildNodes)
             {
                 if (child.Name == "providers")

@@ -7,32 +7,32 @@ using System.Reflection;
 
 namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 {
-	/// <summary>
-	/// Helper class to simplify common reflection tasks.
-	/// </summary>
-	public static class ReflectionHelper
-	{
-	    /// <summary>
-		/// Returns the value of the private member specified.
-		/// </summary>
-		/// <param name="fieldName">Name of the member.</param>
+    /// <summary>
+    /// Helper class to simplify common reflection tasks.
+    /// </summary>
+    public static class ReflectionHelper
+    {
+        /// <summary>
+        /// Returns the value of the private member specified.
+        /// </summary>
+        /// <param name="fieldName">Name of the member.</param>
         /// <param name="type">Type of the member.</param>
-		public static T GetStaticFieldValue<T>(string fieldName, Type type)
-		{
-			var field = type.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Static);
-			if (field != null)
-			{
-				return (T)field.GetValue(type);
-			}
-			return default(T);
-		}
+        public static T GetStaticFieldValue<T>(string fieldName, Type type)
+        {
+            var field = type.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Static);
+            if (field != null)
+            {
+                return (T)field.GetValue(type);
+            }
+            return default(T);
+        }
 
-	    /// <summary>
-	    /// Returns the value of the private member specified.
-	    /// </summary>
-	    /// <param name="fieldName">Name of the member.</param>
-	    /// <param name="typeName"></param>
-	    public static T GetStaticFieldValue<T>(string fieldName, string typeName)
+        /// <summary>
+        /// Returns the value of the private member specified.
+        /// </summary>
+        /// <param name="fieldName">Name of the member.</param>
+        /// <param name="typeName"></param>
+        public static T GetStaticFieldValue<T>(string fieldName, string typeName)
         {
             var type = Type.GetType(typeName, true);
             var field = type.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Static);
@@ -58,13 +58,13 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             field.SetValue(null, value);
         }
 
-	    /// <summary>
-	    /// Sets the value of the private static member.
-	    /// </summary>
-	    /// <param name="fieldName"></param>
-	    /// <param name="typeName"></param>
-	    /// <param name="value"></param>
-	    public static void SetStaticFieldValue<T>(string fieldName, string typeName, T value)
+        /// <summary>
+        /// Sets the value of the private static member.
+        /// </summary>
+        /// <param name="fieldName"></param>
+        /// <param name="typeName"></param>
+        /// <param name="value"></param>
+        public static void SetStaticFieldValue<T>(string fieldName, string typeName, T value)
         {
             var type = Type.GetType(typeName, true);
             var field = type.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Static);
@@ -74,20 +74,20 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             field.SetValue(null, value);
         }
 
-	    /// <summary>
-		/// Returns the value of the private member specified.
-		/// </summary>
-		/// <param name="fieldName">Name of the member.</param>
-		/// <param name="source">The object that contains the member.</param>
-		public static T GetPrivateInstanceFieldValue<T>(string fieldName, object source)
-		{
-			var field = source.GetType().GetField(fieldName, BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance);
-			if (field != null)
-			{
-				return (T)field.GetValue(source);
-			}
-			return default(T);
-		}
+        /// <summary>
+        /// Returns the value of the private member specified.
+        /// </summary>
+        /// <param name="fieldName">Name of the member.</param>
+        /// <param name="source">The object that contains the member.</param>
+        public static T GetPrivateInstanceFieldValue<T>(string fieldName, object source)
+        {
+            var field = source.GetType().GetField(fieldName, BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance);
+            if (field != null)
+            {
+                return (T)field.GetValue(source);
+            }
+            return default(T);
+        }
 
         /// <summary>
         /// Returns the value of the private member specified.
@@ -109,18 +109,18 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return Instantiate(typeName, null, null);
         }
 
-	    public static object Instantiate(string typeName, Type[] constructorArgumentTypes, params object[] constructorParameterValues)
+        public static object Instantiate(string typeName, Type[] constructorArgumentTypes, params object[] constructorParameterValues)
         {
-	    	return Instantiate(Type.GetType(typeName, true), constructorArgumentTypes, constructorParameterValues);
+            return Instantiate(Type.GetType(typeName, true), constructorArgumentTypes, constructorParameterValues);
         }
 
-		public static object Instantiate(Type type, Type[] constructorArgumentTypes, params object[] constructorParameterValues)
-		{
-			var constructor = type.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, constructorArgumentTypes, null);
-			return constructor.Invoke(constructorParameterValues);
-		}
+        public static object Instantiate(Type type, Type[] constructorArgumentTypes, params object[] constructorParameterValues)
+        {
+            var constructor = type.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, constructorArgumentTypes, null);
+            return constructor.Invoke(constructorParameterValues);
+        }
 
-		/// <summary>
+        /// <summary>
         /// Invokes a non-public static method.
         /// </summary>
         /// <typeparam name="TReturn"></typeparam>
@@ -139,7 +139,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return (TReturn)method.Invoke(null, parameters);
         }
 
-	    public static TReturn InvokeNonPublicMethod<TReturn>(object source, string methodName, params object[] parameters)
+        public static TReturn InvokeNonPublicMethod<TReturn>(object source, string methodName, params object[] parameters)
         {
             var paramTypes = Array.ConvertAll(parameters, o => o.GetType());
             var method = source.GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance, null, paramTypes, null);
@@ -159,7 +159,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return (TReturn)propertyInfo.GetValue(source, null);
         }
 
-	    public static TReturn InvokeNonPublicProperty<TReturn>(object source, string propertyName)
+        public static TReturn InvokeNonPublicProperty<TReturn>(object source, string propertyName)
         {
             var propertyInfo = source.GetType().GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Instance, null, typeof(TReturn), new Type[0], null);
             if (propertyInfo == null)
@@ -176,5 +176,5 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
             return propertyInfo.GetValue(source, null);
         }
-	}
+    }
 }

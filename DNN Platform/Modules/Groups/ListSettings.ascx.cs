@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.Groups
         #endregion
         private void BindGroups() {
             var arrGroups = RoleController.GetRoleGroups(this.PortalId);
-			this.drpRoleGroup.Items.Add(new ListItem(Localization.GetString("AllRoles"), "-2"));
+            this.drpRoleGroup.Items.Add(new ListItem(Localization.GetString("AllRoles"), "-2"));
             this.drpRoleGroup.Items.Add(new ListItem(Localization.GetString("GlobalRoles"), "-1"));
 
             foreach (RoleGroupInfo roleGroup in arrGroups) {

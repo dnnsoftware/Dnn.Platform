@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             try
             {
-				// notification that the event is progressing
+                // notification that the event is progressing
                 this.Progressing(); // OPTIONAL
                 LoggingProvider.Instance().PurgeLogBuffer();
                 this.ScheduleHistoryItem.Succeeded = true; // REQUIRED

@@ -15,7 +15,7 @@ namespace DotNetNuke.Common.Utilities.Internal
     /// </summary>
     public class RetryableAction
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RetryableAction));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RetryableAction));
         /// <summary>
         /// The Action to execute
         /// </summary>

@@ -129,7 +129,7 @@ namespace DotNetNuke.Services.Tokens
             this.PropertySource["ticks"] = new TicksPropertyAccess();
             this.PropertySource["culture"] = new CulturePropertyAccess();
         }
-		
+        
         /// <summary>
         /// Gets/sets the current ModuleID to be used for 'User:' token replacement
         /// </summary>
@@ -214,7 +214,7 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
-		/// <summary>
+        /// <summary>
         /// Replaces tokens in sourceText parameter with the property values
         /// </summary>
         /// <param name="sourceText">String with [Object:Property] tokens</param>

@@ -5,9 +5,9 @@
 namespace DotNetNuke.UI.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Modules
-    /// Class	 : ModuleCachingType
+    /// Class    : ModuleCachingType
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModuleCachingType is an enum that provides the caching types for Module Content

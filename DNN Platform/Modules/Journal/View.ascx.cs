@@ -70,8 +70,8 @@ namespace DotNetNuke.Modules.Journal {
 
             ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Journal/Scripts/journal.js");
             ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Journal/Scripts/journalcomments.js");
-			ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Journal/Scripts/mentionsInput.js");
-			ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/json2.js");
+            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Journal/Scripts/mentionsInput.js");
+            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/json2.js");
 
             var isAdmin = this.UserInfo.IsInRole(RoleController.Instance.GetRoleById(this.PortalId, this.PortalSettings.AdministratorRoleId).RoleName);
             if (!this.Request.IsAuthenticated || (!this.UserInfo.IsSuperUser && !isAdmin && this.UserInfo.IsInRole("Unverified Users")))

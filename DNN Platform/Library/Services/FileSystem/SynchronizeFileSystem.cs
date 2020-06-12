@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             try
             {
-				// notification that the event is progressing
+                // notification that the event is progressing
                 this.Progressing(); // OPTIONAL
 
                 this.Synchronize();
@@ -44,8 +44,8 @@ namespace DotNetNuke.Services.FileSystem
 
                 // notification that we have errored
                 this.Errored(ref exc);
-				
-				// log the exception
+                
+                // log the exception
                 Exceptions.Exceptions.LogException(exc); // OPTIONAL
             }
         }
@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.FileSystem
 
             var portals = PortalController.Instance.GetPortals();
             // Sync Portals
-			for (var intIndex = 0; intIndex <= portals.Count - 1; intIndex++)
+            for (var intIndex = 0; intIndex <= portals.Count - 1; intIndex++)
             {
                 var portal = (PortalInfo)portals[intIndex];
                 folderManager.Synchronize(portal.PortalID);

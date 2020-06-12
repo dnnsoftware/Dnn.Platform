@@ -34,19 +34,19 @@ namespace DotNetNuke.Web.Razor
             get { return this._razorScriptFile; }
         }
 
-	    private RazorEngine _engine;
-	    private RazorEngine Engine
-	    {
-		    get
-		    {
-				if (this._engine == null)
-			    {
-					this._engine = new RazorEngine(this.RazorScriptFile, this.ModuleContext, this.LocalResourceFile);
-			    }
+        private RazorEngine _engine;
+        private RazorEngine Engine
+        {
+            get
+            {
+                if (this._engine == null)
+                {
+                    this._engine = new RazorEngine(this.RazorScriptFile, this.ModuleContext, this.LocalResourceFile);
+                }
 
-			    return this._engine;
-		    }
-	    }
+                return this._engine;
+            }
+        }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected override void OnPreRender(EventArgs e)
@@ -56,23 +56,23 @@ namespace DotNetNuke.Web.Razor
             if (!(string.IsNullOrEmpty(this.RazorScriptFile)))
             {
                 var writer = new StringWriter();
-				this.Engine.Render(writer);
+                this.Engine.Render(writer);
                 this.Controls.Add(new LiteralControl(HttpUtility.HtmlDecode(writer.ToString())));
             }
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public ModuleActionCollection ModuleActions
-		{
-			get
-			{
-				if (this.Engine.Webpage is IActionable)
-				{
-					return (this.Engine.Webpage as IActionable).ModuleActions;
-				}
+        {
+            get
+            {
+                if (this.Engine.Webpage is IActionable)
+                {
+                    return (this.Engine.Webpage as IActionable).ModuleActions;
+                }
 
-				return new ModuleActionCollection();
-			}
-		}
-	}
+                return new ModuleActionCollection();
+            }
+        }
+    }
 }

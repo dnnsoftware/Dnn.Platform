@@ -129,5 +129,5 @@ namespace DotNetNuke.Services.Localization
 
         #endregion
 
-	}
+    }
 }

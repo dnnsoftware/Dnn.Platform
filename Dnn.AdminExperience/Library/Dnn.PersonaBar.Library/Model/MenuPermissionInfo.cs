@@ -16,9 +16,9 @@ using DotNetNuke.Security.Permissions;
 namespace Dnn.PersonaBar.Library.Model
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : MenuPermissionInfo
+    /// Class    : MenuPermissionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// MenuPermissionInfo provides the Entity Layer for Module Permissions
@@ -27,16 +27,16 @@ namespace Dnn.PersonaBar.Library.Model
     [Serializable]
     public class MenuPermissionInfo : PermissionInfoBase, IHydratable
     {
-		#region "Private Members"
-		
+        #region "Private Members"
+        
         private int _menuId;
 
         // local property declarations
         private int _menuPermissionId;
-		
-		#endregion
-		
-		#region "Constructors"
+        
+        #endregion
+        
+        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -63,10 +63,10 @@ namespace Dnn.PersonaBar.Library.Model
             this.PermissionKey = permission.PermissionKey;
             this.PermissionName = permission.PermissionName;
         }
-		
-		#endregion
-		
-		#region "Public Properties"
+        
+        #endregion
+        
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -147,8 +147,8 @@ namespace Dnn.PersonaBar.Library.Model
         }
 
         #endregion
-		
-		#region "Public Methods"
+        
+        #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -215,7 +215,7 @@ namespace Dnn.PersonaBar.Library.Model
                 return (this._menuId * 397) ^ this._menuPermissionId;
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

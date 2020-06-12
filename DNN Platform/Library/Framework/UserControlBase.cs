@@ -27,7 +27,7 @@ namespace DotNetNuke.Framework
         {
             get
             {
-            	return Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
+                return Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
             }
         }
 

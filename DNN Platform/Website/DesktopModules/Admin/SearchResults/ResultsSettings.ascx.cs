@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.SearchResults
 {
     public partial class ResultsSettings : ModuleSettingsBase
     {
-		#region "Base Method Implementations"
+        #region "Base Method Implementations"
 
         public override void LoadSettings()
         {
@@ -161,10 +161,10 @@ namespace DotNetNuke.Modules.SearchResults
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
 
-			DataCache.RemoveCache(string.Format("ModuleInfos{0}", this.PortalSettings.PortalId));
+            DataCache.RemoveCache(string.Format("ModuleInfos{0}", this.PortalSettings.PortalId));
         }
-		
-		#endregion
+        
+        #endregion
 
         protected IEnumerable<string[]> LoadPortalsList()
         {

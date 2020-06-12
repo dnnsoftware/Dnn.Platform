@@ -14,9 +14,9 @@ using DotNetNuke.Services.Localization;
 namespace DotNetNuke.UI.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Modules
-    /// Class	 : CachedModuleControl
+    /// Class    : CachedModuleControl
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// CachedModuleControl represents a cached "ModuleControl".  It inherits from

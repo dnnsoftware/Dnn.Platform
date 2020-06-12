@@ -17,10 +17,10 @@ using DotNetNuke.Entities.Users;
 
 namespace DotNetNuke.Entities.Content.Taxonomy
 {
-	/// <summary>
-	/// VocabularyController provides the business layer of Vocabulary and VocabularyType.
-	/// </summary>
-	/// <seealso cref="TermController"/>
+    /// <summary>
+    /// VocabularyController provides the business layer of Vocabulary and VocabularyType.
+    /// </summary>
+    /// <seealso cref="TermController"/>
     public class VocabularyController : IVocabularyController
     {
         private readonly IDataService _DataService;

@@ -62,13 +62,13 @@ namespace DotNetNuke.Entities.Urls
             {
                 return url;
             }
-			
+            
             // String does not contain a ~, so just return Url
             if ((url.StartsWith("~") == false))
             {
                 return url;
             }
-			
+            
             // There is just the ~ in the Url, return the appPath
             if ((url.Length == 1))
             {
@@ -101,12 +101,12 @@ namespace DotNetNuke.Entities.Urls
             }
 
             if (string.IsNullOrEmpty(omitSettings)) {
-		        omitSettings = "scriptresource.axd|webresource.axd|gif|ico|jpg|jpeg|png|css|js";
-	        }
-	        omitSettings = omitSettings.ToLowerInvariant();
-	        localPath = localPath.ToLowerInvariant();
+                omitSettings = "scriptresource.axd|webresource.axd|gif|ico|jpg|jpeg|png|css|js";
+            }
+            omitSettings = omitSettings.ToLowerInvariant();
+            localPath = localPath.ToLowerInvariant();
 
-	        var omissions = omitSettings.Split(new[] { '|' });
+            var omissions = omitSettings.Split(new[] { '|' });
 
             bool shouldOmit = omissions.Any(x => localPath.EndsWith(x));
 

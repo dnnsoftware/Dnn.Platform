@@ -5,8 +5,8 @@
 namespace DotNetNuke.Entities.Modules.Actions
 {
     /// -----------------------------------------------------------------------------
-    /// Project		: DotNetNuke
-    /// Class		: ModuleActionType
+    /// Project     : DotNetNuke
+    /// Class       : ModuleActionType
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// Identifies common module action types

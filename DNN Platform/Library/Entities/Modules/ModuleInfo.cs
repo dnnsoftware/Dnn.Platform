@@ -31,9 +31,9 @@ using DotNetNuke.Services.Tokens;
 namespace DotNetNuke.Entities.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities.Modules
-    /// Class	 : ModuleInfo
+    /// Class    : ModuleInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModuleInfo provides the Entity Layer for Modules
@@ -43,7 +43,7 @@ namespace DotNetNuke.Entities.Modules
     [Serializable]
     public class ModuleInfo : ContentItem, IPropertyAccess
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleInfo));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleInfo));
         private string _authorizedEditRoles;
         private string _authorizedViewRoles;
         private string _cultureCode;
@@ -535,28 +535,28 @@ namespace DotNetNuke.Entities.Modules
             this.CultureCode = Null.SetNullString(dr["CultureCode"]);
 
             this.PortalID = Null.SetNullInteger(dr["PortalID"]);
-			if (dr.GetSchemaTable().Select("ColumnName = 'OwnerPortalID'").Length > 0)
-			{
-				this.OwnerPortalID = Null.SetNullInteger(dr["OwnerPortalID"]);
-			}
+            if (dr.GetSchemaTable().Select("ColumnName = 'OwnerPortalID'").Length > 0)
+            {
+                this.OwnerPortalID = Null.SetNullInteger(dr["OwnerPortalID"]);
+            }
 
-	        this.ModuleDefID = Null.SetNullInteger(dr["ModuleDefID"]);
+            this.ModuleDefID = Null.SetNullInteger(dr["ModuleDefID"]);
             this.ModuleTitle = Null.SetNullString(dr["ModuleTitle"]);
             this.AllTabs = Null.SetNullBoolean(dr["AllTabs"]);
             this.IsDeleted = Null.SetNullBoolean(dr["IsDeleted"]);
             this.InheritViewPermissions = Null.SetNullBoolean(dr["InheritViewPermissions"]);
 
-			if (dr.GetSchemaTable().Select("ColumnName = 'IsShareable'").Length > 0)
-			{
-				this.IsShareable = Null.SetNullBoolean(dr["IsShareable"]);
-			}
+            if (dr.GetSchemaTable().Select("ColumnName = 'IsShareable'").Length > 0)
+            {
+                this.IsShareable = Null.SetNullBoolean(dr["IsShareable"]);
+            }
 
-			if (dr.GetSchemaTable().Select("ColumnName = 'IsShareableViewOnly'").Length > 0)
-			{
-				this.IsShareableViewOnly = Null.SetNullBoolean(dr["IsShareableViewOnly"]);
-			}
+            if (dr.GetSchemaTable().Select("ColumnName = 'IsShareableViewOnly'").Length > 0)
+            {
+                this.IsShareableViewOnly = Null.SetNullBoolean(dr["IsShareableViewOnly"]);
+            }
 
-	        this.Header = Null.SetNullString(dr["Header"]);
+            this.Header = Null.SetNullString(dr["Header"]);
             this.Footer = Null.SetNullString(dr["Footer"]);
             this.StartDate = Null.SetNullDateTime(dr["StartDate"]);
             this.EndDate = Null.SetNullDateTime(dr["EndDate"]);
@@ -1007,7 +1007,7 @@ namespace DotNetNuke.Entities.Modules
                                     };
 
             // localized properties
-	        this.Clone(objModuleInfo, this);
+            this.Clone(objModuleInfo, this);
             return objModuleInfo;
         }
 

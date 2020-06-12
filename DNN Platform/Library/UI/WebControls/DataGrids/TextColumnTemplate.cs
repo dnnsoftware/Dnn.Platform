@@ -25,13 +25,13 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public class TextColumnTemplate : ITemplate
     {
-		#region "Private Members"
+        #region "Private Members"
 
         private ListItemType mItemType = ListItemType.Item;
-		
-		#endregion
+        
+        #endregion
 
-		#region "Constructors"
+        #region "Constructors"
 
         public TextColumnTemplate() : this(ListItemType.Item)
         {
@@ -41,25 +41,25 @@ namespace DotNetNuke.UI.WebControls
         {
             this.ItemType = itemType;
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// The Data Field is the field that binds to the Text Column
-		/// </summary>
-		/// <value>A String</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The Data Field is the field that binds to the Text Column
+        /// </summary>
+        /// <value>A String</value>
+        /// -----------------------------------------------------------------------------
         public string DataField { get; set; }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets or sets the Design Mode of the Column
-		/// </summary>
-		/// <value>A Boolean</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the Design Mode of the Column
+        /// </summary>
+        /// <value>A Boolean</value>
+        /// -----------------------------------------------------------------------------
         public bool DesignMode { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -80,23 +80,23 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets or sets the Text (for Header/Footer Templates)
-		/// </summary>
-		/// <value>A String</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the Text (for Header/Footer Templates)
+        /// </summary>
+        /// <value>A String</value>
+        /// -----------------------------------------------------------------------------
         public string Text { get; set; }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets or sets the Width of the Column
-		/// </summary>
-		/// <value>A Unit</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the Width of the Column
+        /// </summary>
+        /// <value>A Unit</value>
+        /// -----------------------------------------------------------------------------
         public Unit Width { get; set; }
-		
-		#endregion
+        
+        #endregion
 
         #region ITemplate Members
 
@@ -106,7 +106,7 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// 	<param name="container">The parent container (DataGridItem)</param>
+        ///     <param name="container">The parent container (DataGridItem)</param>
         /// -----------------------------------------------------------------------------
         public void InstantiateIn(Control container)
         {
@@ -135,13 +135,13 @@ namespace DotNetNuke.UI.WebControls
 
         #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of the Data Field
         /// </summary>
-        /// 	<param name="container">The parent container (DataGridItem)</param>
+        ///     <param name="container">The parent container (DataGridItem)</param>
         /// -----------------------------------------------------------------------------
         private string GetValue(DataGridItem container)
         {
@@ -196,7 +196,7 @@ namespace DotNetNuke.UI.WebControls
                     break;
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

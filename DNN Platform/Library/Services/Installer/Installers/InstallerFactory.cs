@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class InstallerFactory
     {
-		#region Public Shared Methods
+        #region Public Shared Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
                     if (entry != null && !string.IsNullOrEmpty(entry.Text))
                     {
-						// The class for the Installer is specified in the Text property
+                        // The class for the Installer is specified in the Text property
                         installer = (ComponentInstallerBase)Reflection.CreateObject(entry.Text, "Installer_" + entry.Value);
                     }
                     break;
@@ -138,7 +138,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     installer.Version = package.Version;
                 }
-				
+                
                 // Read Manifest
                 if (package.InstallerInfo.InstallMode != InstallMode.ManifestOnly || installer.SupportsManifestOnlyInstall)
                 {
@@ -147,7 +147,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             return installer;
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

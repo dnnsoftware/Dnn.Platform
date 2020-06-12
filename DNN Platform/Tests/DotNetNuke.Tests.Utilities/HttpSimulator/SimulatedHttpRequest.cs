@@ -11,16 +11,16 @@ using System.Web.Hosting;
 
 namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 {
-	/// <summary>
-	/// Used to simulate an HttpRequest.
-	/// </summary>
-	public class SimulatedHttpRequest : SimpleWorkerRequest
-	{
-	    Uri _referer;
-	    readonly string _host;
-	    readonly string _verb;
-	    readonly int _port;
-	    readonly string _physicalFilePath;
+    /// <summary>
+    /// Used to simulate an HttpRequest.
+    /// </summary>
+    public class SimulatedHttpRequest : SimpleWorkerRequest
+    {
+        Uri _referer;
+        readonly string _host;
+        readonly string _verb;
+        readonly int _port;
+        readonly string _physicalFilePath;
 
         /// <summary>
         /// Creates a new <see cref="SimulatedHttpRequest"/> instance.
@@ -34,8 +34,8 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <param name="host">Host.</param>
         /// <param name="port">Port to request.</param>
         /// <param name="verb">The HTTP Verb to use.</param>
-	    public SimulatedHttpRequest(string applicationPath, string physicalAppPath, string physicalFilePath, string page, string query, TextWriter output, string host, int port, string verb) : base(applicationPath, physicalAppPath, page, query, output)
-	    {
+        public SimulatedHttpRequest(string applicationPath, string physicalAppPath, string physicalFilePath, string page, string query, TextWriter output, string host, int port, string verb) : base(applicationPath, physicalAppPath, page, query, output)
+        {
             this.Form = new NameValueCollection();
             this.Headers = new NameValueCollection();
             if (host == null)
@@ -49,40 +49,40 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
             this._host = host;
             this._verb = verb;
-	        this._port = port;
+            this._port = port;
             this._physicalFilePath = physicalFilePath;
-	    }
+        }
 
         internal void SetReferer(Uri referer)
         {
             this._referer = referer;
         }
 
-	    /// <summary>
-		/// Returns the specified member of the request header.
-		/// </summary>
-		/// <returns>
-		/// The HTTP verb returned in the request
-		/// header.
-		/// </returns>
-		public override string GetHttpVerbName()
-		{
-			return this._verb;
-		}
-		
-		/// <summary>
-		/// Gets the name of the server.
-		/// </summary>
-		/// <returns></returns>
-		public override string GetServerName()
-		{
-			return this._host;
-		}
-	    
-	    public override int GetLocalPort()
-	    {
+        /// <summary>
+        /// Returns the specified member of the request header.
+        /// </summary>
+        /// <returns>
+        /// The HTTP verb returned in the request
+        /// header.
+        /// </returns>
+        public override string GetHttpVerbName()
+        {
+            return this._verb;
+        }
+        
+        /// <summary>
+        /// Gets the name of the server.
+        /// </summary>
+        /// <returns></returns>
+        public override string GetServerName()
+        {
+            return this._host;
+        }
+        
+        public override int GetLocalPort()
+        {
             return this._port;
-	    }
+        }
 
         public override bool IsSecure()
         {
@@ -94,42 +94,42 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         //    return (_port == 443) ? "https:" : "http:";
         // }
 
-	    /// <summary>
-	    /// Gets the headers.
-	    /// </summary>
-	    /// <value>The headers.</value>
-	    public NameValueCollection Headers { get; private set; }
+        /// <summary>
+        /// Gets the headers.
+        /// </summary>
+        /// <value>The headers.</value>
+        public NameValueCollection Headers { get; private set; }
 
-	    /// <summary>
-	    /// Gets the format exception.
-	    /// </summary>
-	    /// <value>The format exception.</value>
-	    public NameValueCollection Form { get; private set; }
+        /// <summary>
+        /// Gets the format exception.
+        /// </summary>
+        /// <value>The format exception.</value>
+        public NameValueCollection Form { get; private set; }
 
-	    /// <summary>
-		/// Get all nonstandard HTTP header name-value pairs.
-		/// </summary>
-		/// <returns>An array of header name-value pairs.</returns>
-		public override string[][] GetUnknownRequestHeaders()
-		{
-			if (this.Headers == null || this.Headers.Count == 0)
-			{
-				return null;
-			}
-			var headersArray = new string[this.Headers.Count][];
-			for (var i = 0; i < this.Headers.Count; i++)
-			{
-				headersArray[i] = new string[2];
-				headersArray[i][0] = this.Headers.Keys[i];
-				headersArray[i][1] = this.Headers[i];
-			}
-			return headersArray;
-		}
+        /// <summary>
+        /// Get all nonstandard HTTP header name-value pairs.
+        /// </summary>
+        /// <returns>An array of header name-value pairs.</returns>
+        public override string[][] GetUnknownRequestHeaders()
+        {
+            if (this.Headers == null || this.Headers.Count == 0)
+            {
+                return null;
+            }
+            var headersArray = new string[this.Headers.Count][];
+            for (var i = 0; i < this.Headers.Count; i++)
+            {
+                headersArray[i] = new string[2];
+                headersArray[i][0] = this.Headers.Keys[i];
+                headersArray[i][1] = this.Headers[i];
+            }
+            return headersArray;
+        }
 
         public override string GetKnownRequestHeader(int index)
         {
             if (index == 0x24)
-				return this._referer == null ? string.Empty : this._referer.ToString();
+                return this._referer == null ? string.Empty : this._referer.ToString();
 
             if (index == 12 && this._verb == "POST")
                 return "application/x-www-form-urlencoded";
@@ -137,31 +137,31 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return base.GetKnownRequestHeader(index);
         }
 
-	    public override string GetFilePathTranslated()
+        public override string GetFilePathTranslated()
         {
             return this._physicalFilePath;
         }
-		
-		/// <summary>
-		/// Reads request data from the client (when not preloaded).
-		/// </summary>
-		/// <returns>The number of bytes read.</returns>
-		public override byte[] GetPreloadedEntityBody()
-		{
-			return Encoding.UTF8.GetBytes(this.Form.Keys.Cast<string>().Aggregate(string.Empty, (current, key) => current + string.Format("{0}={1}&", key, this.Form[key])));
-		}
-		
-		/// <summary>
-		/// Returns a value indicating whether all request data
-		/// is available and no further reads from the client are required.
-		/// </summary>
-		/// <returns>
-		/// 	<see langword="true"/> if all request data is available; otherwise,
-		/// <see langword="false"/>.
-		/// </returns>
-		public override bool IsEntireEntityBodyIsPreloaded()
-		{
-			return true;
-		}
-	}
+        
+        /// <summary>
+        /// Reads request data from the client (when not preloaded).
+        /// </summary>
+        /// <returns>The number of bytes read.</returns>
+        public override byte[] GetPreloadedEntityBody()
+        {
+            return Encoding.UTF8.GetBytes(this.Form.Keys.Cast<string>().Aggregate(string.Empty, (current, key) => current + string.Format("{0}={1}&", key, this.Form[key])));
+        }
+        
+        /// <summary>
+        /// Returns a value indicating whether all request data
+        /// is available and no further reads from the client are required.
+        /// </summary>
+        /// <returns>
+        ///     <see langword="true"/> if all request data is available; otherwise,
+        /// <see langword="false"/>.
+        /// </returns>
+        public override bool IsEntireEntityBodyIsPreloaded()
+        {
+            return true;
+        }
+    }
 }

@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Installer.Log
     /// -----------------------------------------------------------------------------
     public class Logger
     {
-    	private static readonly ILog DnnLogger = LoggerSource.Instance.GetLogger(typeof(Logger));
+        private static readonly ILog DnnLogger = LoggerSource.Instance.GetLogger(typeof(Logger));
         private readonly IList<LogEntry> _logs;
         private string _errorClass;
         private bool _hasWarnings;
@@ -171,7 +171,7 @@ namespace DotNetNuke.Services.Installer.Log
         public void AddInfo(string info)
         {            
             this._logs.Add(new LogEntry(LogType.Info, info));
-			DnnLogger.Info(info);
+            DnnLogger.Info(info);
         }
 
         /// -----------------------------------------------------------------------------
@@ -183,7 +183,7 @@ namespace DotNetNuke.Services.Installer.Log
         public void AddWarning(string warning)
         {
             this._logs.Add(new LogEntry(LogType.Warning, warning));
-			DnnLogger.Warn(warning);
+            DnnLogger.Warn(warning);
             this._hasWarnings = true;
         }
 

@@ -154,8 +154,8 @@ namespace DotNetNuke.Security.Profile
             // Clear the profile
             user.Profile.ProfileProperties.Clear();
             
-			// Add the properties to the profile
-			foreach (ProfilePropertyDefinition property in properties)
+            // Add the properties to the profile
+            foreach (ProfilePropertyDefinition property in properties)
             {
                 profProperty = property;
                 if (string.IsNullOrEmpty(profProperty.PropertyValue) && !string.IsNullOrEmpty(profProperty.DefaultValue))

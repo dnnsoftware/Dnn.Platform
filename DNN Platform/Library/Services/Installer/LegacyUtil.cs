@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Installer
     /// -----------------------------------------------------------------------------
     public class LegacyUtil
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LegacyUtil));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LegacyUtil));
         private static string AdminModules =
             "Adsense, MarketShare, Authentication, Banners, FeedExplorer, FileManager, HostSettings, Lists, LogViewer, Newsletters, PortalAliases, Portals, RecycleBin, Scheduler, SearchAdmin, SearchInput, SearchResults, Security, SiteLog, SiteWizard, SQL, Tabs, Vendors,";
 
@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.Installer
 
         private static PackageInfo CreateSkinPackage(SkinPackageInfo skin)
         {
-			// Create a Package
+            // Create a Package
             var package = new PackageInfo(new InstallerInfo());
             package.Name = skin.SkinName;
             package.FriendlyName = skin.SkinName;
@@ -132,7 +132,7 @@ namespace DotNetNuke.Services.Installer
 
         private static void ParsePackageName(PackageInfo package, string separator)
         {
-			// See if the Module is using a "Namespace" for its name
+            // See if the Module is using a "Namespace" for its name
             int ownerIndex = package.Name.IndexOf(separator);
             if (ownerIndex > 0)
             {
@@ -153,7 +153,7 @@ namespace DotNetNuke.Services.Installer
                     isCombi = true;
                 }
             }
-			
+            
             // Create a writer to create the processed manifest
             var sb = new StringBuilder();
             using (XmlWriter writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
@@ -256,7 +256,7 @@ namespace DotNetNuke.Services.Installer
                 {
                     HostController.Instance.Update("EnableUrlLanguage", Util.ReadAttribute(urlNav, "enabled", false, null, Null.NullString, "true"));
                 }
-				
+                
                 // Process each language
                 foreach (XPathNavigator nav in doc.CreateNavigator().Select("root/language"))
                 {
@@ -301,7 +301,7 @@ namespace DotNetNuke.Services.Installer
                     }
                 }
             }
-			
+            
             // Process Portal Locales files
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
@@ -339,7 +339,7 @@ namespace DotNetNuke.Services.Installer
                         }
                         if (!bFound)
                         {
-							// Language is enabled - add to portal
+                            // Language is enabled - add to portal
                             Localization.Localization.AddLanguageToPortal(portalID, installedLanguage.LanguageId, false);
                         }
                     }
@@ -348,7 +348,7 @@ namespace DotNetNuke.Services.Installer
                 {
                     foreach (Locale installedLanguage in LocaleController.Instance.GetLocales(Null.NullInteger).Values)
                     {
-						// Language is enabled - add to portal
+                        // Language is enabled - add to portal
                         Localization.Localization.AddLanguageToPortal(portalID, installedLanguage.LanguageId, false);
                     }
                 }
@@ -451,7 +451,7 @@ namespace DotNetNuke.Services.Installer
                 {
                     try
                     {
-						// SkinControl is not affiliated with a Package
+                        // SkinControl is not affiliated with a Package
                         var package = new PackageInfo(new InstallerInfo());
                         package.Name = skinControl.ControlKey;
 
@@ -486,13 +486,13 @@ namespace DotNetNuke.Services.Installer
 
         public static void ProcessLegacySkins()
         {
-			// Process Legacy Skins
+            // Process Legacy Skins
             string skinRootPath = Path.Combine(Globals.HostMapPath, SkinController.RootSkin);
             foreach (string skinFolder in Directory.GetDirectories(skinRootPath))
             {
                 ProcessLegacySkin(skinFolder, "Skin");
             }
-			
+            
             // Process Legacy Containers
             skinRootPath = Path.Combine(Globals.HostMapPath, SkinController.RootContainer);
             foreach (string skinFolder in Directory.GetDirectories(skinRootPath))

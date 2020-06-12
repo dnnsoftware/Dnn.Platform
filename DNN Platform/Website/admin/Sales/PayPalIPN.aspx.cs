@@ -107,12 +107,12 @@ namespace DotNetNuke.Modules.Admin.Sales
                             break;
                     }
                     
-					// reconstruct post for postback validation
-					strPost += string.Format("&{0}={1}", Globals.HTTPPOSTEncode(strName), Globals.HTTPPOSTEncode(strValue));
+                    // reconstruct post for postback validation
+                    strPost += string.Format("&{0}={1}", Globals.HTTPPOSTEncode(strName), Globals.HTTPPOSTEncode(strValue));
                 }
                 
-				// postback to verify the source
-				if (blnValid)
+                // postback to verify the source
+                if (blnValid)
                 {
                     Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(this.PortalSettings.PortalId);
                     string strPayPalURL;
@@ -149,7 +149,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                             break;
                         default:
                             // possible fraud
-							blnValid = false;
+                            blnValid = false;
                             break;
                     }
                 }
@@ -166,7 +166,7 @@ namespace DotNetNuke.Modules.Admin.Sales
 
                     if (intRoleID == intAdministratorRoleId)
                     {
-						// admin portal renewal
+                        // admin portal renewal
                         strProcessorID = Host.ProcessorUserId.ToLowerInvariant();
                         float portalPrice = objPortalInfo.HostFee;
                         if ((portalPrice.ToString() == dblAmount.ToString()) && (HttpUtility.UrlDecode(strPayPalID.ToLowerInvariant()) == strProcessorID))
@@ -187,7 +187,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     }
                     else
                     {
-						// user subscription
+                        // user subscription
                         RoleInfo objRoleInfo = RoleController.Instance.GetRole(intPortalID, r => r.RoleID == intRoleID);
                         float rolePrice = objRoleInfo.ServiceFee;
                         float trialPrice = objRoleInfo.TrialFee;

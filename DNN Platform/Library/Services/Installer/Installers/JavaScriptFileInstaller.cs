@@ -11,7 +11,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     public class JavaScriptFileInstaller : FileInstaller
     {
- 		#region Protected Properties
+        #region Protected Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-		#endregion  
+        #endregion  
  
         #region Public Properties
 

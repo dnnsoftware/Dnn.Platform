@@ -11,9 +11,9 @@ using System;
 namespace DotNetNuke.Entities.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 :  DotNetNuke
+    /// Project  :  DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Modules
-    /// Class	 :  ProfileUserControlBase
+    /// Class    :  ProfileUserControlBase
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ProfileUserControlBase class defines a custom base class for the profile Control.

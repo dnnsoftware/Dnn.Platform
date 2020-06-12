@@ -25,15 +25,15 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class LanguageComponentWriter : FileComponentWriter
     {
-		#region "Private Members"
+        #region "Private Members"
 
         private readonly int _DependentPackageID;
         private readonly Locale _Language;
         private readonly LanguagePackType _PackageType;
 
-		#endregion
+        #endregion
 
-		#region "Constructors"
+        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -65,10 +65,10 @@ namespace DotNetNuke.Services.Installer.Writers
             this._PackageType = languagePack.PackageType;
             this._DependentPackageID = languagePack.DependentPackageID;
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected Properties"
+        #region "Protected Properties"
 
 
         /// -----------------------------------------------------------------------------
@@ -128,7 +128,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// -----------------------------------------------------------------------------
         protected override void WriteCustomManifest(XmlWriter writer)
         {
-			// Write language Elements
+            // Write language Elements
             writer.WriteElementString("code", this._Language.Code);
             if (this._PackageType == LanguagePackType.Core)
             {
@@ -141,7 +141,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 writer.WriteElementString("package", package.Name);
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

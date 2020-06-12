@@ -54,7 +54,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.AutoPostBack = Null.NullBoolean;
             this.CausesValidation = Null.NullBoolean;
             this.ShowFlag = true;
-        	this.ShowModeButtons = true;
+            this.ShowModeButtons = true;
             this.HideLanguagesList = new Dictionary<string, Locale>();
             this.FlagImageUrlFormatString = "~/images/Flags/{0}.gif";
             this._viewTypePersonalizationKey = "ViewType" + this.PortalId;

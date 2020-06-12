@@ -24,10 +24,10 @@ using DotNetNuke.Services.Log.EventLog;
 
 namespace DotNetNuke.Entities.Users.Social
 {
-	/// <summary>
-	/// Business Layer to manage Relationships. Also contains CRUD methods.
-	/// </summary>
-	public class RelationshipController : ServiceLocator<IRelationshipController, RelationshipController>
+    /// <summary>
+    /// Business Layer to manage Relationships. Also contains CRUD methods.
+    /// </summary>
+    public class RelationshipController : ServiceLocator<IRelationshipController, RelationshipController>
     {
         protected override Func<IRelationshipController> GetFactory()
         {

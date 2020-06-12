@@ -107,7 +107,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
             includeVaryByKeys.Add("tabid");
             includeVaryByKeys.Add("portalid");
             includeVaryByKeys.Add("locale");
-			includeVaryByKeys.Add("alias");
+            includeVaryByKeys.Add("alias");
             // make sure to always add keys in lowercase only
 
             if (includeExclude == IncludeExcludeType.ExcludeByDefault)
@@ -188,10 +188,10 @@ namespace DotNetNuke.HttpModules.OutputCaching
             {
                 varyBy.Add("locale", locale);
             }
-			if (!(varyBy.ContainsKey("alias")))
-			{
-				varyBy.Add("alias", portalSettings.PortalAlias.HTTPAlias);
-			}
+            if (!(varyBy.ContainsKey("alias")))
+            {
+                varyBy.Add("alias", portalSettings.PortalAlias.HTTPAlias);
+            }
 
 
             string cacheKey = OutputCachingProvider.Instance(tabOutputCacheProvider).GenerateCacheKey(tabId, includeVaryByKeys, excludeVaryByKeys, varyBy);
@@ -200,8 +200,8 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
             if (returnedFromCache)
             {
-				// output the content type heade when read content from cache.
-				this._app.Context.Response.AddHeader("Content-Type", string.Format("{0}; charset={1}", this._app.Response.ContentType, this._app.Response.Charset));
+                // output the content type heade when read content from cache.
+                this._app.Context.Response.AddHeader("Content-Type", string.Format("{0}; charset={1}", this._app.Response.ContentType, this._app.Response.Charset));
                 // This is to give a site owner the ability
                 // to visually verify that a page was rendered via
                 // the output cache.  Use FireFox FireBug or another

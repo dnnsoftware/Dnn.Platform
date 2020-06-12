@@ -27,9 +27,9 @@ using DotNetNuke.Services.Installer.Packages;
 namespace DotNetNuke.Entities.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities.Modules
-    /// Class	 : DesktopModuleInfo
+    /// Class    : DesktopModuleInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// DesktopModuleInfo provides the Entity Layer for Desktop Modules
@@ -163,7 +163,7 @@ namespace DotNetNuke.Entities.Modules
             this.Shareable = ModuleSharing.Unknown;
         }
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -433,11 +433,11 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-		#endregion
+        #endregion
 
-		#region IHydratable Members
+        #region IHydratable Members
 
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Fills a DesktopModuleInfo from a Data Reader
         /// </summary>
@@ -460,7 +460,7 @@ namespace DotNetNuke.Entities.Modules
             this.CompatibleVersions = Null.SetNullString(dr["CompatibleVersions"]);
             this.Dependencies = Null.SetNullString(dr["Dependencies"]);
             this.Permissions = Null.SetNullString(dr["Permissions"]);
-		    this.Shareable = (ModuleSharing)Null.SetNullInteger(dr["Shareable"]);
+            this.Shareable = (ModuleSharing)Null.SetNullInteger(dr["Shareable"]);
             this.AdminPage = Null.SetNullString(dr["AdminPage"]);
             this.HostPage = Null.SetNullString(dr["HostPage"]);
             // Call the base classes fill method to populate base class proeprties
@@ -567,7 +567,7 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Writes a DesktopModuleInfo to an XmlWriter
         /// </summary>
@@ -587,7 +587,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 writer.WriteElementString("codeSubDirectory", this.CodeSubDirectory);
             }
-			
+            
             // Write out Supported Features
             writer.WriteStartElement("supportedFeatures");
             if (this.IsPortable)
@@ -652,7 +652,7 @@ namespace DotNetNuke.Entities.Modules
 
         #endregion
 
-		#region "Private Helper Methods"
+        #region "Private Helper Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -662,7 +662,7 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         private void ClearFeature(DesktopModuleSupportedFeature feature)
         {
-			// And with the 1's complement of Feature to Clear the Feature flag
+            // And with the 1's complement of Feature to Clear the Feature flag
             this.SupportedFeatures = this.SupportedFeatures & ~((int)feature);
         }
 
@@ -777,16 +777,16 @@ namespace DotNetNuke.Entities.Modules
             {
                 reader.ReadStartElement("moduleDefinition");
 
-				// Create new ModuleDefinition object
+                // Create new ModuleDefinition object
                 var moduleDefinition = new ModuleDefinitionInfo();
 
-				// Load it from the Xml
+                // Load it from the Xml
                 moduleDefinition.ReadXml(reader);
 
-				// Add to the collection
+                // Add to the collection
                 this.ModuleDefinitions.Add(moduleDefinition.FriendlyName, moduleDefinition);
             } while (reader.ReadToNextSibling("moduleDefinition"));
-		}
+        }
 
         private void ReadPageInfo(XmlReader reader)
         {
@@ -805,6 +805,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-		#endregion
-	}
+        #endregion
+    }
 }

@@ -38,9 +38,9 @@ namespace DotNetNuke.Services.Social.Messaging.Data
             return this._provider.ExecuteScalar<int>("CoreMessaging_SaveMessage", message.MessageID, portalId, message.To, message.From, message.Subject, message.Body, message.ConversationId, message.ReplyAllAllowed, message.SenderUserID, createUpdateUserId);
         }
 
-		/// <summary>Gets the message.</summary>
-		/// <param name="messageId">The message identifier.</param>
-		/// <returns>A <see cref="IDataReader"/> containing the message data</returns>
+        /// <summary>Gets the message.</summary>
+        /// <param name="messageId">The message identifier.</param>
+        /// <returns>A <see cref="IDataReader"/> containing the message data</returns>
         public IDataReader GetMessage(int messageId)
         {
             return this._provider.ExecuteReader("CoreMessaging_GetMessage", messageId);

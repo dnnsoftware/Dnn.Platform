@@ -33,7 +33,7 @@ namespace DotNetNuke.HttpModules.Config
     [Serializable, XmlRoot("AnalyticsEngineConfig")]
     public class AnalyticsEngineConfiguration
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsEngineConfiguration));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsEngineConfiguration));
         private AnalyticsEngineCollection _analyticsEngines;
 
         public AnalyticsEngineCollection AnalyticsEngines

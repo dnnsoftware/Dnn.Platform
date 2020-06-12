@@ -47,7 +47,7 @@ namespace DotNetNuke.Entities.Host
             this.RuleType = -1;
         }
 
-        #endregion        	
+        #endregion          
 
         #region Auto_Properties
 

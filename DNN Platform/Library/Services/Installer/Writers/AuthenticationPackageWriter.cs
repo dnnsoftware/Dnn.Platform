@@ -23,8 +23,8 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class AuthenticationPackageWriter : PackageWriterBase
     {
-		#region "Constructors"
-		
+        #region "Constructors"
+        
         public AuthenticationPackageWriter(PackageInfo package) : base(package)
         {
             this.AuthSystem = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
@@ -36,22 +36,22 @@ namespace DotNetNuke.Services.Installer.Writers
             this.AuthSystem = authSystem;
             this.Initialize();
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets the associated Authentication System
-		/// </summary>
-		/// <value>An AuthenticationInfo object</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the associated Authentication System
+        /// </summary>
+        /// <value>An AuthenticationInfo object</value>
+        /// -----------------------------------------------------------------------------
         public AuthenticationInfo AuthSystem { get; set; }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
         private void Initialize()
         {
@@ -62,7 +62,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private void WriteAuthenticationComponent(XmlWriter writer)
         {
-			// Start component Element
+            // Start component Element
             writer.WriteStartElement("component");
             writer.WriteAttributeString("type", "AuthenticationSystem");
 
@@ -80,12 +80,12 @@ namespace DotNetNuke.Services.Installer.Writers
             // End component Element
             writer.WriteEndElement();
         }
-		
-		#endregion
+        
+        #endregion
 
         protected override void WriteManifestComponent(XmlWriter writer)
         {
-			// Write Authentication Component
+            // Write Authentication Component
             this.WriteAuthenticationComponent(writer);
         }
     }

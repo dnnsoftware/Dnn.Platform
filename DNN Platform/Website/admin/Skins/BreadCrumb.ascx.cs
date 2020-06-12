@@ -73,7 +73,7 @@ namespace DotNetNuke.UI.Skins.Controls
         // Do not show when there is no breadcrumb (only has current tab)
         public bool HideWithNoBreadCrumb { get; set; }
 
-		public int ProfileUserId
+        public int ProfileUserId
         {
             get
             {

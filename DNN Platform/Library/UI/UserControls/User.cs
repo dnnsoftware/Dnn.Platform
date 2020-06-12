@@ -25,7 +25,7 @@ namespace DotNetNuke.UI.UserControls
     /// -----------------------------------------------------------------------------
     public abstract class User : UserControlBase
     {
-		#region "Private Members"
+        #region "Private Members"
 
         protected HtmlTableRow ConfirmPasswordRow;
         private string MyFileName = "User.ascx";
@@ -45,11 +45,11 @@ namespace DotNetNuke.UI.UserControls
         private string _Website;
         protected Label lblUsername;
 
-		#endregion
+        #endregion
 
-		#region "Protected Members"
+        #region "Protected Members"
 
-		protected Label lblUsernameAsterisk;
+        protected Label lblUsernameAsterisk;
         protected LabelControl plConfirm;
         protected LabelControl plEmail;
         protected LabelControl plFirstName;
@@ -75,11 +75,11 @@ namespace DotNetNuke.UI.UserControls
         protected RequiredFieldValidator valPassword;
         protected RequiredFieldValidator valUsername;
 
-		#endregion
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
-		public int ModuleId
+        public int ModuleId
         {
             get
             {
@@ -235,11 +235,11 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Event Handlers"
+        #region "Event Handlers"
 
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded
         /// </summary>
@@ -263,7 +263,7 @@ namespace DotNetNuke.UI.UserControls
                     this.txtIM.TabIndex = Convert.ToInt16(this._StartTabIndex + 7);
                     this.txtFirstName.Text = this._FirstName;
                     this.txtLastName.Text = this._LastName;
-                    this.txtEmail.Text = this._Email;		    
+                    this.txtEmail.Text = this._Email;           
                     this.txtUsername.Text = this._UserName;
                     this.lblUsername.Text = this._UserName;
                     this.txtPassword.Text = this._Password;
@@ -274,7 +274,7 @@ namespace DotNetNuke.UI.UserControls
                     {
                         this.txtFirstName.Width = Unit.Parse(this._ControlColumnWidth);
                         this.txtLastName.Width = Unit.Parse(this._ControlColumnWidth);
-                        this.txtEmail.Width = Unit.Parse(this._ControlColumnWidth);			
+                        this.txtEmail.Width = Unit.Parse(this._ControlColumnWidth);         
                         this.txtUsername.Width = Unit.Parse(this._ControlColumnWidth);
                         this.txtPassword.Width = Unit.Parse(this._ControlColumnWidth);
                         this.txtConfirm.Width = Unit.Parse(this._ControlColumnWidth);
@@ -316,8 +316,8 @@ namespace DotNetNuke.UI.UserControls
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
-		}
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

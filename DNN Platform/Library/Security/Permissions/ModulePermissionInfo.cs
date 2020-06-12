@@ -16,9 +16,9 @@ using DotNetNuke.Entities.Modules;
 namespace DotNetNuke.Security.Permissions
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : ModulePermissionInfo
+    /// Class    : ModulePermissionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModulePermissionInfo provides the Entity Layer for Module Permissions
@@ -27,16 +27,16 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public class ModulePermissionInfo : PermissionInfoBase, IHydratable
     {
-		#region "Private Members"
-		
+        #region "Private Members"
+        
         private int _moduleID;
 
         // local property declarations
         private int _modulePermissionID;
-		
-		#endregion
-		
-		#region "Constructors"
+        
+        #endregion
+        
+        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -63,10 +63,10 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionKey = permission.PermissionKey;
             this.PermissionName = permission.PermissionName;
         }
-		
-		#endregion
-		
-		#region "Public Properties"
+        
+        #endregion
+        
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -105,8 +105,8 @@ namespace DotNetNuke.Security.Permissions
                 this._moduleID = value;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
         #region IHydratable Members
 
@@ -143,8 +143,8 @@ namespace DotNetNuke.Security.Permissions
         }
 
         #endregion
-		
-		#region "Public Methods"
+        
+        #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -211,7 +211,7 @@ namespace DotNetNuke.Security.Permissions
                 return (this._moduleID * 397) ^ this._modulePermissionID;
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

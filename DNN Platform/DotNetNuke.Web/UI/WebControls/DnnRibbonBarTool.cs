@@ -141,7 +141,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     this._allTools = new Dictionary<string, RibbonBarToolInfo>
                                     {
-										// Framework
+                                        // Framework
                                         { "PageSettings", new RibbonBarToolInfo("PageSettings", false, false, "", "", "", true) },
                                         { "CopyPage", new RibbonBarToolInfo("CopyPage", false, false, "", "", "", true) },
                                         { "DeletePage", new RibbonBarToolInfo("DeletePage", false, true, "", "", "", true) },
@@ -151,7 +151,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                         { "CopyPermissionsToChildren", new RibbonBarToolInfo("CopyPermissionsToChildren", false, true, "", "", "", false) },
                                         { "CopyDesignToChildren", new RibbonBarToolInfo("CopyDesignToChildren", false, true, "", "", "", false) },
                                         { "Help", new RibbonBarToolInfo("Help", false, false, "_Blank", "", "", false) },
-										// Modules On Tabs
+                                        // Modules On Tabs
                                         { "Console", new RibbonBarToolInfo("Console", false, false, "", "Console", "", false) },
                                         { "HostConsole", new RibbonBarToolInfo("HostConsole", true, false, "", "Console", "", false) },
                                         { "UploadFile", new RibbonBarToolInfo("UploadFile", false, false, "", "", "WebUpload", true) },
@@ -246,7 +246,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     if ((this.HasToolPermissions("ClearCache")))
                     {
                         this.ClearCache();
-						ClientResourceManager.ClearCache();
+                        ClientResourceManager.ClearCache();
                         this.Page.Response.Redirect(this.Page.Request.RawUrl);
                     }
                     break;
@@ -488,8 +488,8 @@ namespace DotNetNuke.Web.UI.WebControls
                         returnValue = TestableGlobals.Instance.FormatHelpUrl(Host.HelpURL, PortalSettings, "Home", version);
                     }
                     break;
-				case "UploadFile":
-				case "HostUploadFile":
+                case "UploadFile":
+                case "HostUploadFile":
                     returnValue = TestableGlobals.Instance.NavigateURL(PortalSettings.ActiveTab.TabID, "WebUpload");
                     break;
                 default:

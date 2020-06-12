@@ -21,9 +21,9 @@ using DotNetNuke.Security.Roles;
 namespace DotNetNuke.Security.Permissions
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : ModulePermissionController
+    /// Class    : ModulePermissionController
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModulePermissionController provides the Business Layer for Module Permissions

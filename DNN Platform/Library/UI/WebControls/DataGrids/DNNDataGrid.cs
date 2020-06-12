@@ -25,13 +25,13 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public class DNNDataGrid : DataGrid
     {
-		#region "Events"
+        #region "Events"
 
         public event DNNDataGridCheckedColumnEventHandler ItemCheckedChanged;
 
-		#endregion
+        #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -46,9 +46,9 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-		#endregion
+        #endregion
 
-		#region "Protected Methods"
+        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -61,7 +61,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 if (ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
                 {
-					// Manage CheckBox column events
+                    // Manage CheckBox column events
                     var cbColumn = (CheckBoxColumn)column;
                     cbColumn.CheckedChanged += this.OnItemCheckedChanged;
                 }
@@ -77,7 +77,7 @@ namespace DotNetNuke.UI.WebControls
         {
             base.PrepareControlHierarchy();
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

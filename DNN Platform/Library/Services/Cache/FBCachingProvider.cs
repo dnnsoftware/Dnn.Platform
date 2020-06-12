@@ -20,16 +20,16 @@ namespace DotNetNuke.Services.Cache
 {
     public class FBCachingProvider : CachingProvider
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FBCachingProvider));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FBCachingProvider));
         internal const string CacheFileExtension = ".resources";
         internal static string CachingDirectory = "Cache\\";
 
-		#region Abstract Method Implementation
+        #region Abstract Method Implementation
 
         public override void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,
                                     CacheItemRemovedCallback onRemoveCallback)
         {
-			// initialize cache dependency
+            // initialize cache dependency
             DNNCacheDependency d = dependency;
 
             // if web farm is enabled
@@ -43,7 +43,7 @@ namespace DotNetNuke.Services.Cache
                 // create a cache dependency on the cache file
                 d = new DNNCacheDependency(f, null, dependency);
             }
-			
+            
             // Call base class method to add obect to cache
             base.Insert(cacheKey, itemToCache, d, absoluteExpiration, slidingExpiration, priority, onRemoveCallback);
         }
@@ -77,10 +77,10 @@ namespace DotNetNuke.Services.Cache
                 DeleteCacheFile(f);
             }
         }
-		
-		#endregion
-		
-		#region Private Methods
+        
+        #endregion
+        
+        #region Private Methods
 
         private static string ByteArrayToString(byte[] arrInput)
         {
@@ -95,18 +95,18 @@ namespace DotNetNuke.Services.Cache
 
         private static void CreateCacheFile(string FileName, string CacheKey)
         {
-			// declare stream
+            // declare stream
             StreamWriter s = null;
             try
             {
-				// if the cache file does not already exist
+                // if the cache file does not already exist
                 if (!File.Exists(FileName))
                 {
-					// create the cache file
+                    // create the cache file
                     s = File.CreateText(FileName);
                     // write the CacheKey to the file to provide a documented link between cache item and cache file
                     s.Write(CacheKey);
-					// close the stream
+                    // close the stream
                 }
             }
             catch (Exception ex)
@@ -157,7 +157,7 @@ namespace DotNetNuke.Services.Cache
             int PurgedFiles = 0;
             int PurgeErrors = 0;
             int i;
-			
+            
             // get list of cache files
             string[] f;
             f = Directory.GetFiles(Folder);
@@ -171,20 +171,20 @@ namespace DotNetNuke.Services.Cache
                 // if the cache file is more than 2 hours old ( no point in checking most recent cache files )
                 if (dtLastWrite < DateTime.Now.Subtract(new TimeSpan(2, 0, 0)))
                 {
-					// get cachekey
+                    // get cachekey
                     string strCacheKey = Path.GetFileNameWithoutExtension(f[i]);
                     // if the cache key does not exist in memory
                     if (DataCache.GetCache(strCacheKey) == null)
                     {
                         try
                         {
-							// delete the file
+                            // delete the file
                             File.Delete(f[i]);
                             PurgedFiles += 1;
                         }
                         catch (Exception exc)
                         {
-							// an error occurred
+                            // an error occurred
                             Logger.Error(exc);
 
                             PurgeErrors += 1;
@@ -192,11 +192,11 @@ namespace DotNetNuke.Services.Cache
                     }
                 }
             }
-			
-        	// return a summary message for the job
+            
+            // return a summary message for the job
             return string.Format("Cache Synchronization Files Processed: " + f.Length + ", Purged: " + PurgedFiles + ", Errors: " + PurgeErrors);
-		}
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

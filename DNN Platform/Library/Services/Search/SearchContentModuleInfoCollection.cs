@@ -24,8 +24,8 @@ namespace DotNetNuke.Services.Search
     #pragma warning disable 0618
     public class SearchContentModuleInfoCollection : CollectionBase
     {
-		#region "Constructors"
-		
+        #region "Constructors"
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchContentModuleInfoCollection">SearchContentModuleInfoCollection</see> class.
         /// </summary>
@@ -50,10 +50,10 @@ namespace DotNetNuke.Services.Search
         {
             this.AddRange(value);
         }
-		
-		#endregion
-		
-		#region "Properties"
+        
+        #endregion
+        
+        #region "Properties"
 
         /// <summary>
         /// Gets the <see cref="SearchContentModuleInfoCollection">SearchContentModuleInfoCollection</see> at the specified index in the collection.
@@ -72,10 +72,10 @@ namespace DotNetNuke.Services.Search
                 this.List[index] = value;
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
         /// <summary>
         /// Add an element of the specified <see cref="SearchContentModuleInfo">SearchContentModuleInfo</see> to the end of the collection.
@@ -122,7 +122,7 @@ namespace DotNetNuke.Services.Search
         /// <returns><b>true</b> if the collection contains the specified object; otherwise, <b>false</b>.</returns>
         public bool Contains(SearchContentModuleInfo value)
         {
-			// If value is not of type SearchContentModuleInfo, this will return false.
+            // If value is not of type SearchContentModuleInfo, this will return false.
             return this.List.Contains(value);
         }
 
@@ -170,8 +170,8 @@ namespace DotNetNuke.Services.Search
             this.CopyTo(arr, 0);
             return arr;
         }
-		
-		#endregion
+        
+        #endregion
     }
     #pragma warning restore 0618
 }

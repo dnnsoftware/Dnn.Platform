@@ -19,7 +19,7 @@ namespace DotNetNuke.Web.InternalServices
 {
     public class UserFileController : DnnApiController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserFileController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserFileController));
         private readonly IFolderManager _folderManager = FolderManager.Instance;
 
         [DnnAuthorize]

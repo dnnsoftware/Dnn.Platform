@@ -28,7 +28,7 @@ namespace Dnn.Modules.Console
 
     public partial class Settings : ModuleSettingsBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Settings));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Settings));
 
         private void BindTabs(int tabId, bool includeParent)
         {
@@ -147,10 +147,10 @@ namespace Dnn.Modules.Console
                     {
                         this.ShowTooltip.Checked = Convert.ToBoolean(this.Settings["ShowTooltip"]);
                     }
-					if (this.Settings.ContainsKey("OrderTabsByHierarchy"))
-					{
-						this.OrderTabsByHierarchy.Checked = Convert.ToBoolean(this.Settings["OrderTabsByHierarchy"]);
-					}
+                    if (this.Settings.ContainsKey("OrderTabsByHierarchy"))
+                    {
+                        this.OrderTabsByHierarchy.Checked = Convert.ToBoolean(this.Settings["OrderTabsByHierarchy"]);
+                    }
                     if (this.Settings.ContainsKey("IncludeHiddenPages"))
                     {
                         this.IncludeHiddenPages.Checked = Convert.ToBoolean(this.Settings["IncludeHiddenPages"]);
@@ -174,7 +174,7 @@ namespace Dnn.Modules.Console
         {
             try
             {
-				// validate console width value
+                // validate console width value
                 var wdth = string.Empty;
                 if ((this.ConsoleWidth.Text.Trim().Length > 0))
                 {
@@ -213,8 +213,8 @@ namespace Dnn.Modules.Console
                 {
                     if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem)
                     {
-	                    var tabPath = (item.FindControl("tabPath") as HiddenField).Value;
-						var visibility = (item.FindControl("tabVisibility") as DnnComboBox).SelectedValue;
+                        var tabPath = (item.FindControl("tabPath") as HiddenField).Value;
+                        var visibility = (item.FindControl("tabVisibility") as DnnComboBox).SelectedValue;
 
                         var key = String.Format("TabVisibility{0}", tabPath.Replace("//", "-"));
                         ModuleController.Instance.UpdateModuleSetting(this.ModuleId, key, visibility);

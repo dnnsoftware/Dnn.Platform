@@ -16,10 +16,10 @@ using DotNetNuke.Entities.Content.Data;
 
 namespace DotNetNuke.Entities.Content.Taxonomy
 {
-	/// <summary>
-	/// ScopeTypeController provides the business layer of ScopeType.
-	/// </summary>
-	/// <seealso cref="TermController"/>
+    /// <summary>
+    /// ScopeTypeController provides the business layer of ScopeType.
+    /// </summary>
+    /// <seealso cref="TermController"/>
     public class ScopeTypeController : IScopeTypeController
     {
         private readonly IDataService _DataService;

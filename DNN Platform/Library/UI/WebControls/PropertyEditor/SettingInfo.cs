@@ -25,7 +25,7 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public class SettingInfo
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SettingInfo));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SettingInfo));
         private Type _Type;
 
         public SettingInfo(object name, object value)

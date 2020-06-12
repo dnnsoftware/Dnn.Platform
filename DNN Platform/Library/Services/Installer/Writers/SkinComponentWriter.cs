@@ -22,13 +22,13 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class SkinComponentWriter : FileComponentWriter
     {
-		#region "Private Members"
+        #region "Private Members"
 
         private readonly string _SkinName;
 
-		#endregion
+        #endregion
 
-		#region "Constructors"
+        #region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -43,10 +43,10 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             this._SkinName = skinName;
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected Properties"
+        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -103,10 +103,10 @@ namespace DotNetNuke.Services.Installer.Writers
                 return "skinName";
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Protected Methods"
+        #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -119,7 +119,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             writer.WriteElementString(this.SkinNameNodeName, this._SkinName);
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

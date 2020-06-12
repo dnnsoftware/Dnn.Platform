@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class LanguageInstaller : FileInstaller
     {
-		#region Private Members
+        #region Private Members
 
         private readonly LanguagePackType LanguagePackType;
         private LanguagePackInfo InstalledLanguagePack;
@@ -33,14 +33,14 @@ namespace DotNetNuke.Services.Installer.Installers
         private LanguagePackInfo LanguagePack;
         private Locale TempLanguage;
 
-		#endregion
+        #endregion
 
         public LanguageInstaller(LanguagePackType type)
         {
             this.LanguagePackType = type;
         }
-		
-		#region Protected Properties
+        
+        #region Protected Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -80,10 +80,10 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get { return "resx, xml, tdf,template"; }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Private Methods
+        #region Private Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -95,7 +95,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-				// Attempt to get the LanguagePack
+                // Attempt to get the LanguagePack
                 LanguagePackInfo tempLanguagePack = LanguagePackController.GetLanguagePackByPackage(this.Package.PackageID);
 
                 // Attempt to get the Locale
@@ -105,7 +105,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     LanguagePackController.DeleteLanguagePack(tempLanguagePack);
                 }
 
-                // fix DNN-26330	 Removing a language pack extension removes the language
+                // fix DNN-26330     Removing a language pack extension removes the language
                 // we should not delete language when deleting language pack, as there is just a loose relationship
                 // if (language != null && tempLanguagePack.PackageType == LanguagePackType.Core)
                 // {
@@ -119,10 +119,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Log.AddFailure(ex);
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Protected Methods
+        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -153,14 +153,14 @@ namespace DotNetNuke.Services.Installer.Installers
                     this.LanguagePack.DependentPackageID = package.PackageID;
                 }
             }
-			
+            
             // Call base class
             base.ReadCustomManifest(nav);
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region Public Methods
+        #region Public Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -243,20 +243,20 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-			// If Temp Language exists then we need to update the DataStore with this 
+            // If Temp Language exists then we need to update the DataStore with this 
             if (this.TempLanguage == null)
             {
-				// No Temp Language - Delete newly added Language
+                // No Temp Language - Delete newly added Language
                 this.DeleteLanguage();
             }
             else
             {
-				// Temp Language - Rollback to Temp
+                // Temp Language - Rollback to Temp
                 Localization.Localization.SaveLanguage(this.TempLanguage);
             }
             
-			// Call base class to prcoess files
-			base.Rollback();
+            // Call base class to prcoess files
+            base.Rollback();
         }
 
         /// -----------------------------------------------------------------------------
@@ -272,6 +272,6 @@ namespace DotNetNuke.Services.Installer.Installers
             base.UnInstall();
         }
 
-		#endregion
+        #endregion
     }
 }

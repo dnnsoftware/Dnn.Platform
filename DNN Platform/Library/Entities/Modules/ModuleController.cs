@@ -48,7 +48,7 @@ namespace DotNetNuke.Entities.Modules
     /// </summary>
     public partial class ModuleController : ServiceLocator<IModuleController, ModuleController>, IModuleController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleController));
         private static readonly DataProvider dataProvider = DataProvider.Instance();
 
         protected override Func<IModuleController> GetFactory()
@@ -164,11 +164,11 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-		private ModulePermissionInfo AddModulePermission(ModuleInfo module, PermissionInfo permission, int roleId, int userId, bool allowAccess)
+        private ModulePermissionInfo AddModulePermission(ModuleInfo module, PermissionInfo permission, int roleId, int userId, bool allowAccess)
         {
             var modulePermission = new ModulePermissionInfo
             {
-				ModuleID = module.ModuleID,
+                ModuleID = module.ModuleID,
                 PermissionID = permission.PermissionID,
                 RoleID = roleId,
                 UserID = userId,
@@ -177,12 +177,12 @@ namespace DotNetNuke.Entities.Modules
             };
 
             // add the permission to the collection
-			if (!module.ModulePermissions.Contains(modulePermission))
+            if (!module.ModulePermissions.Contains(modulePermission))
             {
-				module.ModulePermissions.Add(modulePermission);
+                module.ModulePermissions.Add(modulePermission);
             }
 
-			return modulePermission;
+            return modulePermission;
         }
 
         private static bool CheckIsInstance(int templateModuleID, Hashtable hModules)
@@ -503,7 +503,7 @@ namespace DotNetNuke.Entities.Modules
                     {
                         // save content in eventqueue for processing after an app restart,
                         // as modules Supported Features are not updated yet so we
-                        // cannot determine if the module supports IsPortable								
+                        // cannot determine if the module supports IsPortable                               
                         EventMessageProcessor.CreateImportModuleMessage(module, content, version, portal.AdministratorId);
                     }
                     else
@@ -689,12 +689,12 @@ namespace DotNetNuke.Entities.Modules
                 // Add Module
                 this.AddModuleInternal(newModule);
 
-				// copy module settings
-				DataCache.RemoveCache(string.Format(DataCache.ModuleSettingsCacheKey, sourceModule.TabID));
-				var settings = this.GetModuleSettings(sourceModule.ModuleID, sourceModule.TabID);
+                // copy module settings
+                DataCache.RemoveCache(string.Format(DataCache.ModuleSettingsCacheKey, sourceModule.TabID));
+                var settings = this.GetModuleSettings(sourceModule.ModuleID, sourceModule.TabID);
 
                 // update tabmodule
-				var currentUser = UserController.Instance.GetCurrentUserInfo();
+                var currentUser = UserController.Instance.GetCurrentUserInfo();
                 dataProvider.UpdateTabModule(newModule.TabModuleID,
                                              newModule.TabID,
                                              newModule.ModuleID,
@@ -728,9 +728,9 @@ namespace DotNetNuke.Entities.Modules
 
                 // Copy each setting to the new TabModule instance
                 foreach (DictionaryEntry setting in settings)
-				{
-					this.UpdateModuleSetting(newModule.ModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
-				}
+                {
+                    this.UpdateModuleSetting(newModule.ModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
+                }
 
                 if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
                 {
@@ -797,13 +797,13 @@ namespace DotNetNuke.Entities.Modules
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
                 dr = dataProvider.GetModuleSetting(moduleId, settingName);
 
-	            string existValue = null;
+                string existValue = null;
                 if (dr.Read())
                 {
-	                existValue = dr.GetString(1);
+                    existValue = dr.GetString(1);
                 }
 
-				dr.Close();
+                dr.Close();
 
                 if (existValue == null)
                 {
@@ -832,10 +832,10 @@ namespace DotNetNuke.Entities.Modules
             finally
             {
                 // Ensure DataReader is closed
-	            if (dr != null && !dr.IsClosed)
-	            {
-		            CBO.CloseDataReader(dr, true);
-	            }
+                if (dr != null && !dr.IsClosed)
+                {
+                    CBO.CloseDataReader(dr, true);
+                }
             }
 
             ClearModuleSettingsCache(moduleId);
@@ -1258,19 +1258,19 @@ namespace DotNetNuke.Entities.Modules
 
         /// <summary>
         /// DeleteAllModules deletes all instances of a Module (from a collection), optionally excluding the
-        /// 	current instance, and optionally including deleting the Module itself.
+        ///     current instance, and optionally including deleting the Module itself.
         /// </summary>
         /// <remarks>
-        /// 	Note - the base module is not removed unless both the flags are set, indicating
-        /// 	to delete all instances AND to delete the Base Module
+        ///     Note - the base module is not removed unless both the flags are set, indicating
+        ///     to delete all instances AND to delete the Base Module
         /// </remarks>
-        /// 	<param name="moduleId">The Id of the module to copy</param>
-        /// 	<param name="tabId">The Id of the current tab</param>
+        ///     <param name="moduleId">The Id of the module to copy</param>
+        ///     <param name="tabId">The Id of the current tab</param>
         /// <param name="softDelete">A flag that determines whether the instance should be soft-deleted</param>
-        /// 	<param name="fromTabs">An ArrayList of TabItem objects</param>
-        /// 	<param name="includeCurrent">A flag to indicate whether to delete from the current tab
-        /// 		as identified ny tabId</param>
-        /// 	<param name="deleteBaseModule">A flag to indicate whether to delete the Module itself</param>
+        ///     <param name="fromTabs">An ArrayList of TabItem objects</param>
+        ///     <param name="includeCurrent">A flag to indicate whether to delete from the current tab
+        ///         as identified ny tabId</param>
+        ///     <param name="deleteBaseModule">A flag to indicate whether to delete the Module itself</param>
         public void DeleteAllModules(int moduleId, int tabId, List<TabInfo> fromTabs, bool softDelete, bool includeCurrent, bool deleteBaseModule)
         {
             var moduleInfo = this.GetModule(moduleId, tabId, false); 
@@ -1861,7 +1861,7 @@ namespace DotNetNuke.Entities.Modules
                     else if (!alreadyLocalized)
                     {
                         this.LocalizeModuleInternal(sourceModule);
-				    }
+                    }
                 }
             }
             catch (Exception ex)
@@ -1872,12 +1872,12 @@ namespace DotNetNuke.Entities.Modules
 
         /// <summary>
         /// MoveModule moes a Module from one Tab to another including all the
-        /// 	TabModule settings
+        ///     TabModule settings
         /// </summary>
-        /// 	<param name="moduleId">The Id of the module to move</param>
-        /// 	<param name="fromTabId">The Id of the source tab</param>
-        /// 	<param name="toTabId">The Id of the destination tab</param>
-        /// 	<param name="toPaneName">The name of the Pane on the destination tab where the module will end up</param>
+        ///     <param name="moduleId">The Id of the module to move</param>
+        ///     <param name="fromTabId">The Id of the source tab</param>
+        ///     <param name="toTabId">The Id of the destination tab</param>
+        ///     <param name="toPaneName">The name of the Pane on the destination tab where the module will end up</param>
         public void MoveModule(int moduleId, int fromTabId, int toTabId, string toPaneName)
         {
             // Move the module to the Tab

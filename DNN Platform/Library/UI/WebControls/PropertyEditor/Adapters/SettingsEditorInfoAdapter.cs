@@ -50,7 +50,7 @@ namespace DotNetNuke.UI.WebControls
             // Get the Name of the property
             editInfo.Name = info.Name;
 
-			editInfo.Category = string.Empty;
+            editInfo.Category = string.Empty;
 
             // Get Value Field
             editInfo.Value = info.Value;
@@ -97,7 +97,7 @@ namespace DotNetNuke.UI.WebControls
                 // Do we have the item in the Hashtable being changed
                 if (key == name)
                 {
-					// Set the Value property to the new value
+                    // Set the Value property to the new value
                     if ((!(ReferenceEquals(newValue, oldValue))) || changed)
                     {
                         settings[key] = newValue;

@@ -17,15 +17,15 @@ using DotNetNuke.Security;
 
 namespace DotNetNuke.Entities.Modules
 {
-	/// -----------------------------------------------------------------------------
-	/// Project	 : DotNetNuke
-	/// Namespace: DotNetNuke.Entities.Modules
-	/// Class	 : ModuleControlInfo
-	/// -----------------------------------------------------------------------------
-	/// <summary>
-	/// ModuleControlInfo provides the Entity Layer for Module Controls
-	/// </summary>
-	/// -----------------------------------------------------------------------------
+    /// -----------------------------------------------------------------------------
+    /// Project  : DotNetNuke
+    /// Namespace: DotNetNuke.Entities.Modules
+    /// Class    : ModuleControlInfo
+    /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// ModuleControlInfo provides the Entity Layer for Module Controls
+    /// </summary>
+    /// -----------------------------------------------------------------------------
     [Serializable]
     public class ModuleControlInfo : ControlInfo, IXmlSerializable, IHydratable
     {
@@ -68,16 +68,16 @@ namespace DotNetNuke.Entities.Modules
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------
         public string IconFile { get; set; }
-		
-		/// -----------------------------------------------------------------------------
+        
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Module Control ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
         public int ModuleControlID { get; set; }
-		
-		/// -----------------------------------------------------------------------------
+        
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Module Definition ID
         /// </summary>
@@ -120,7 +120,7 @@ namespace DotNetNuke.Entities.Modules
             this.ControlType = (SecurityAccessLevel)Enum.Parse(typeof(SecurityAccessLevel), Null.SetNullString(dr["ControlType"]));
             this.ViewOrder = Null.SetNullInteger(dr["ViewOrder"]);
             this.SupportsPopUps = Null.SetNullBoolean(dr["SupportsPopUps"]);
-			// Call the base classes fill method to populate base class proeprties
+            // Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
         }
 

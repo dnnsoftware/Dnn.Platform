@@ -18,9 +18,9 @@ using DotNetNuke.Security.Permissions;
 namespace DotNetNuke.UI.WebControls
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.WebControls
-    /// Class	 : ActionLink
+    /// Class    : ActionLink
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ActionLink provides a button for a single action.

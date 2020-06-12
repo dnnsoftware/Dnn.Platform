@@ -36,8 +36,8 @@ namespace DotNetNuke.Services.Cache
 
                 // notification that we have errored
                 this.Errored(ref exc); // REQUIRED
-				
-				// log the exception
+                
+                // log the exception
                 Exceptions.Exceptions.LogException(exc); // OPTIONAL
             }
         }

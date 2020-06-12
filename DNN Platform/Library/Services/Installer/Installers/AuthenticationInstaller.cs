@@ -23,14 +23,14 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class AuthenticationInstaller : ComponentInstallerBase
     {
-		#region "Private Properties"
+        #region "Private Properties"
 
         private AuthenticationInfo AuthSystem;
         private AuthenticationInfo TempAuthSystem;
 
-		#endregion
+        #endregion
 
-		#region "Public Properties"
+        #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -45,10 +45,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "ashx, aspx, ascx, vb, cs, resx, css, js, resources, config, vbproj, csproj, sln, htm, html";
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Private Methods"
+        #region "Private Methods"
 
 
         /// -----------------------------------------------------------------------------
@@ -73,10 +73,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Log.AddFailure(ex);
             }
         }
-		
-		#endregion
+        
+        #endregion
 
-		#region "Public Methods"
+        #region "Public Methods"
 
 
         /// -----------------------------------------------------------------------------
@@ -99,12 +99,12 @@ namespace DotNetNuke.Services.Installer.Installers
             bool bAdd = Null.NullBoolean;
             try
             {
-				// Attempt to get the Authentication Service
+                // Attempt to get the Authentication Service
                 this.TempAuthSystem = AuthenticationController.GetAuthenticationServiceByType(this.AuthSystem.AuthenticationType);
 
                 if (this.TempAuthSystem == null)
                 {
-					// Enable by default
+                    // Enable by default
                     this.AuthSystem.IsEnabled = true;
                     bAdd = true;
                 }
@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
                 else
                 {
-					// Update service
+                    // Update service
                     AuthenticationController.UpdateAuthentication(this.AuthSystem);
                 }
                 this.Completed = true;
@@ -169,15 +169,15 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-			// If Temp Auth System exists then we need to update the DataStore with this 
+            // If Temp Auth System exists then we need to update the DataStore with this 
             if (this.TempAuthSystem == null)
             {
-				// No Temp Auth System - Delete newly added system
+                // No Temp Auth System - Delete newly added system
                 this.DeleteAuthentiation();
             }
             else
             {
-				// Temp Auth System - Rollback to Temp
+                // Temp Auth System - Rollback to Temp
                 AuthenticationController.UpdateAuthentication(this.TempAuthSystem);
             }
         }
@@ -191,7 +191,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             this.DeleteAuthentiation();
         }
-		
-		#endregion
+        
+        #endregion
     }
 }

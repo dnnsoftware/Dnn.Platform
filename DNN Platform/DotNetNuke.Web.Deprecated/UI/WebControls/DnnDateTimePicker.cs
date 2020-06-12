@@ -15,16 +15,16 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnDateTimePicker : RadDateTimePicker
     {
-		protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
-			base.EnableEmbeddedBaseStylesheet = true;
-			Utilities.ApplySkin(this, string.Empty, "DatePicker");
-			this.Calendar.ClientEvents.OnLoad = "$.dnnRadPickerHack";
-			var specialDay = new RadCalendarDay();
-			specialDay.Repeatable = Telerik.Web.UI.Calendar.RecurringEvents.Today;
-			specialDay.ItemStyle.CssClass = "dnnCalendarToday";
-			this.Calendar.SpecialDays.Add(specialDay);
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            base.EnableEmbeddedBaseStylesheet = true;
+            Utilities.ApplySkin(this, string.Empty, "DatePicker");
+            this.Calendar.ClientEvents.OnLoad = "$.dnnRadPickerHack";
+            var specialDay = new RadCalendarDay();
+            specialDay.Repeatable = Telerik.Web.UI.Calendar.RecurringEvents.Today;
+            specialDay.ItemStyle.CssClass = "dnnCalendarToday";
+            this.Calendar.SpecialDays.Add(specialDay);
             this.Calendar.RangeMinDate = (DateTime)SqlDateTime.MinValue;
             this.Calendar.RangeMaxDate = (DateTime)SqlDateTime.MaxValue;
             this.MinDate = (DateTime)SqlDateTime.MinValue;

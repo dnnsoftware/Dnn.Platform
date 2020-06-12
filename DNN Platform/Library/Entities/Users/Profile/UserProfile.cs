@@ -258,7 +258,7 @@ namespace DotNetNuke.Entities.Users
                     UserInfo user = UserController.Instance.GetCurrentUserInfo();
                     PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
 
-	                bool isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, this._user);
+                    bool isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, this._user);
                     if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
                     {
                         var fileInfo = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
@@ -668,11 +668,11 @@ namespace DotNetNuke.Entities.Users
                     var dateValue = (DateTime)value;
                     stringValue = dateValue.ToString(CultureInfo.InvariantCulture);
                 }
-				else if (value is TimeZoneInfo)
-				{
-					var timezoneValue = (TimeZoneInfo)value;
-					stringValue = timezoneValue.Id;
-				}
+                else if (value is TimeZoneInfo)
+                {
+                    var timezoneValue = (TimeZoneInfo)value;
+                    stringValue = timezoneValue.Id;
+                }
                 else
                 {
                     stringValue = Convert.ToString(value);

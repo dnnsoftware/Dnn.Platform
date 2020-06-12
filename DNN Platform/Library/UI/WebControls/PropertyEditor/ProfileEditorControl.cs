@@ -34,7 +34,7 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:ProfileEditorControl runat=server></{0}:ProfileEditorControl>")]
     public class ProfileEditorControl : CollectionEditorControl
     {
-		#region Protected Methods
+        #region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -80,34 +80,34 @@ namespace DotNetNuke.UI.WebControls
                     {
                         if (checkEditor.Editor is DNNCountryEditControl)
                         {
-							if (editor.Editor.Category == checkEditor.Editor.Category)
-							{
-								var countryEdit = (DNNCountryEditControl)checkEditor.Editor;
-								country = Convert.ToString(countryEdit.Value);
-							}
+                            if (editor.Editor.Category == checkEditor.Editor.Category)
+                            {
+                                var countryEdit = (DNNCountryEditControl)checkEditor.Editor;
+                                country = Convert.ToString(countryEdit.Value);
+                            }
                         }
                     }
-					
+                    
                     // Create a ListAttribute for the Region
-					string countryKey = "Unknown";
-					int entryId;
-					if (int.TryParse(country, out entryId))
-					{
-						ListController lc = new ListController();
-						ListEntryInfo item = lc.GetListEntryInfo(entryId);
-						if (item != null)
-						{
-							countryKey = item.Value;
-						}
-					}
-					countryKey = "Country." + countryKey;
+                    string countryKey = "Unknown";
+                    int entryId;
+                    if (int.TryParse(country, out entryId))
+                    {
+                        ListController lc = new ListController();
+                        ListEntryInfo item = lc.GetListEntryInfo(entryId);
+                        if (item != null)
+                        {
+                            countryKey = item.Value;
+                        }
+                    }
+                    countryKey = "Country." + countryKey;
                     var attributes = new object[1];
                     attributes[0] = new ListAttribute("Region", countryKey, ListBoundField.Id, ListBoundField.Text);
                     editor.Editor.CustomAttributes = attributes;
                 }
             }
         }
-		
-		#endregion
+        
+        #endregion
     }
 }
