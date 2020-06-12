@@ -70,7 +70,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-        protected string DisplayMode => (this.Request.QueryString["Display"] ?? "").ToLowerInvariant();
+        protected string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
 
         protected PackageInfo Package
         {

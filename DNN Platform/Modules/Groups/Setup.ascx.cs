@@ -141,7 +141,7 @@ namespace DotNetNuke.Modules.Groups
 
                 if (!File.Exists(HttpContext.Current.Server.MapPath(physicalSkinFile)))
                 {
-                    skinSource = ""; // this will load the default skin
+                    skinSource = string.Empty; // this will load the default skin
                 }
             }
             return skinSource;
@@ -180,7 +180,7 @@ namespace DotNetNuke.Modules.Groups
                     if (moduleName == "DotNetNuke.Modules.MemberDirectory")
                     {
                         ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "FilterBy", "Group");
-                        ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "FilterPropertyValue", "");
+                        ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "FilterPropertyValue", string.Empty);
                         ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "FilterValue", "-1");
                         ModuleController.Instance.UpdateTabModuleSetting(mi.TabModuleID, "DisplaySearch", "False");
                     }

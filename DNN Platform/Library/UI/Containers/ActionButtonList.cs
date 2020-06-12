@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.Containers
         private ActionManager _ActionManager;
         private ModuleActionCollection _ModuleActions;
         private string _buttonSeparator = "&nbsp;&nbsp;";
-        private string _commandName = "";
+        private string _commandName = string.Empty;
         private bool _displayLink = true;
 
 

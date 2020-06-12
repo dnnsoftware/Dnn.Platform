@@ -47,7 +47,7 @@ namespace Dnn.PersonaBar.UI.Services.DTO
             {
                 RoleGroupID = this.Id,
                 RoleGroupName = this.Name,
-                Description = this.Description ?? ""
+                Description = this.Description ?? string.Empty
             };
         }
     }

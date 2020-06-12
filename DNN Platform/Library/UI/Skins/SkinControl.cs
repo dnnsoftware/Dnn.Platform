@@ -28,7 +28,7 @@ namespace DotNetNuke.UI.Skins
         private string _DefaultKey = "System";
         private string _SkinRoot;
         private string _SkinSrc;
-        private string _Width = "";
+        private string _Width = string.Empty;
         private string _localResourceFile;
         private PortalInfo _objPortal;
         protected DropDownList cboSkin;
@@ -86,7 +86,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    return "";
+                    return string.Empty;
                 }
             }
             set
@@ -142,7 +142,7 @@ namespace DotNetNuke.UI.Skins
                 }
             }
 
-            this.cboSkin.Items.Insert(0, new ListItem("<" + Localization.GetString(this.DefaultKey, this.LocalResourceFile) + ">", ""));
+            this.cboSkin.Items.Insert(0, new ListItem("<" + Localization.GetString(this.DefaultKey, this.LocalResourceFile) + ">", string.Empty));
 
 
             // select current skin
@@ -249,7 +249,7 @@ namespace DotNetNuke.UI.Skins
             {
                 string strType = this.SkinRoot.Substring(0, this.SkinRoot.Length - 1);
 
-                string strURL = Globals.ApplicationURL() + "&" + strType + "Src=" + Globals.QueryStringEncode(this.SkinSrc.Replace(".ascx", ""));
+                string strURL = Globals.ApplicationURL() + "&" + strType + "Src=" + Globals.QueryStringEncode(this.SkinSrc.Replace(".ascx", string.Empty));
 
                 if (this.SkinRoot == SkinController.RootContainer)
                 {

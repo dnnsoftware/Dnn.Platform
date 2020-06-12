@@ -66,15 +66,15 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             return new Dictionary<string, object>
             {
-                { "minDate", this.MinDate > DateTime.MinValue ? $"$new Date('{this.MinDate.ToString(this.Format, CultureInfo.InvariantCulture)}')$" : "" },
-                { "maxDate", this.MaxDate > DateTime.MinValue ? $"$new Date('{this.MaxDate.ToString(this.Format, CultureInfo.InvariantCulture)}')$" : "" },
+                { "minDate", this.MinDate > DateTime.MinValue ? $"$new Date('{this.MinDate.ToString(this.Format, CultureInfo.InvariantCulture)}')$" : string.Empty },
+                { "maxDate", this.MaxDate > DateTime.MinValue ? $"$new Date('{this.MaxDate.ToString(this.Format, CultureInfo.InvariantCulture)}')$" : string.Empty },
                 { "format", this.ClientFormat }
             };
         }
 
         private void RegisterClientResources()
         {
-            var settings = Json.Serialize(this.GetSettings()).Replace("\"$", "").Replace("$\"", "");
+            var settings = Json.Serialize(this.GetSettings()).Replace("\"$", string.Empty).Replace("$\"", string.Empty);
             var script = $"$('#{this.ClientID}').pikaday({settings});";
 
             ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "DnnDatePicker" + this.ClientID, script, true);

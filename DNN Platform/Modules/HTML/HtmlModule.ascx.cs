@@ -101,7 +101,7 @@ namespace DotNetNuke.Modules.Html
 
                 // get content
                 HtmlTextInfo htmlTextInfo = null;
-                string contentString = "";
+                string contentString = string.Empty;
 
                 htmlTextInfo = objHTML.GetTopHtmlText(this.ModuleId, !this.IsEditable, this.WorkflowID);
 
@@ -286,8 +286,8 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                     this.GetNextActionID(),
                             Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
                             ModuleActionType.AddContent,
-                            "",
-                            "",
+                            string.Empty,
+                            string.Empty,
                             this.EditUrl(),
                             false,
                             SecurityAccessLevel.Edit,
@@ -315,7 +315,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                                         ModuleActionType.AddContent,
                                         "publish",
                                         "grant.gif",
-                                        "",
+                                        string.Empty,
                                         true,
                                         SecurityAccessLevel.Edit,
                                         true,
@@ -335,7 +335,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                                     this.GetNextActionID(),
                                             Localization.GetString("ApproveContent.Action", this.LocalResourceFile),
                                             ModuleActionType.AddContent,
-                                            "",
+                                            string.Empty,
                                             "grant.gif",
                                             this.EditUrl("action", "approve", "Review"),
                                             false,
@@ -346,7 +346,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                                     this.GetNextActionID(),
                                             Localization.GetString("RejectContent.Action", this.LocalResourceFile),
                                             ModuleActionType.AddContent,
-                                            "",
+                                            string.Empty,
                                             "deny.gif",
                                             this.EditUrl("action", "reject", "Review"),
                                             false,
@@ -363,7 +363,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                     this.GetNextActionID(),
                             Localization.GetString("MyWork.Action", this.LocalResourceFile),
                             "MyWork.Action",
-                            "",
+                            string.Empty,
                             "view.gif",
                             this.EditUrl("MyWork"),
                             false,

@@ -53,14 +53,14 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
             for (userIdx = 1; userIdx <= 2; userIdx++)
             {
                 var unauthorizeLink = string.Format(UnauthorizeApi, this._userIds[userIdx]);
-                response = hostConnector.PostJson(unauthorizeLink, "").Content.ReadAsStringAsync().Result;
+                response = hostConnector.PostJson(unauthorizeLink, string.Empty).Content.ReadAsStringAsync().Result;
                 result = JsonConvert.DeserializeObject<dynamic>(response);
                 Assert.IsTrue(bool.Parse(result.Success.ToString()));
             }
 
             // soft delete the next new user
             var deleteLink = string.Format(DeleteApi, this._userIds[userIdx]);
-            response = hostConnector.PostJson(deleteLink, "").Content.ReadAsStringAsync().Result;
+            response = hostConnector.PostJson(deleteLink, string.Empty).Content.ReadAsStringAsync().Result;
             result = JsonConvert.DeserializeObject<dynamic>(response);
             Assert.IsTrue(bool.Parse(result.Success.ToString()));
         }

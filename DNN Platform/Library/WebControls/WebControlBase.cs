@@ -20,8 +20,8 @@ namespace DotNetNuke.UI.WebControls
     {
         #region "Private Members"
 
-        private string _styleSheetUrl = "";
-        private string _theme = "";
+        private string _styleSheetUrl = string.Empty;
+        private string _theme = string.Empty;
 
         #endregion
 

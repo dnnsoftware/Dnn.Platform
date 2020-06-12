@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             // get the URL
-            string URL = "";
+            string URL = string.Empty;
             if (context.Request.QueryString["fileticket"] != null)
             {
 
@@ -98,7 +98,7 @@ namespace DotNetNuke.Services.FileSystem
                 URL = context.Request.QueryString["link"];
                 if (URL.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    URL = ""; // restrict direct access by FileID
+                    URL = string.Empty; // restrict direct access by FileID
                 }
             }
             if (!string.IsNullOrEmpty(URL))

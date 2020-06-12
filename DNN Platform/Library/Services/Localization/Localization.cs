@@ -725,7 +725,7 @@ namespace DotNetNuke.Services.Localization
             RemoveLanguageFromPortals(language.LanguageId, isInstalling);
 
             DataProvider.Instance().DeleteLanguage(language.LanguageId);
-            EventLogController.Instance.AddLog(language, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGE_DELETED);
+            EventLogController.Instance.AddLog(language, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGE_DELETED);
             DataCache.ClearHostCache(true);
         }
 
@@ -1441,7 +1441,7 @@ namespace DotNetNuke.Services.Localization
         /// -----------------------------------------------------------------------------
         public static string GetSystemMessage(string strLanguage, PortalSettings portalSettings, string messageName, UserInfo userInfo, string resourceFile, ArrayList custom)
         {
-            return GetSystemMessage(strLanguage, portalSettings, messageName, userInfo, resourceFile, custom, null, "", -1);
+            return GetSystemMessage(strLanguage, portalSettings, messageName, userInfo, resourceFile, custom, null, string.Empty, -1);
         }
 
         /// -----------------------------------------------------------------------------
@@ -1544,7 +1544,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name = "selectedValue">Name of the default culture to select</param>
         public static void LoadCultureDropDownList(DropDownList list, CultureDropDownTypes displayType, string selectedValue)
         {
-            LoadCultureDropDownList(list, displayType, selectedValue, "", false);
+            LoadCultureDropDownList(list, displayType, selectedValue, string.Empty, false);
         }
 
         /// <summary>
@@ -1559,7 +1559,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name = "loadHost">Boolean that defines wether or not to load host (ie. all available) locales</param>
         public static void LoadCultureDropDownList(DropDownList list, CultureDropDownTypes displayType, string selectedValue, bool loadHost)
         {
-            LoadCultureDropDownList(list, displayType, selectedValue, "", loadHost);
+            LoadCultureDropDownList(list, displayType, selectedValue, string.Empty, loadHost);
         }
 
         /// <summary>
@@ -1806,7 +1806,7 @@ namespace DotNetNuke.Services.Localization
                 case Globals.glbRoleAllUsersName:
                 case Globals.glbRoleSuperUserName:
                 case Globals.glbRoleUnauthUserName:
-                    string roleKey = role.Replace(" ", "");
+                    string roleKey = role.Replace(" ", string.Empty);
                     localRole = GetString(roleKey);
                     break;
                 default:
@@ -1931,12 +1931,12 @@ namespace DotNetNuke.Services.Localization
             if (locale.LanguageId == Null.NullInteger)
             {
                 locale.LanguageId = DataProvider.Instance().AddLanguage(locale.Code, locale.Text, locale.Fallback, UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog(locale, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGE_CREATED);
+                EventLogController.Instance.AddLog(locale, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGE_CREATED);
             }
             else
             {
                 DataProvider.Instance().UpdateLanguage(locale.LanguageId, locale.Code, locale.Text, locale.Fallback, UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog(locale, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGE_UPDATED);
+                EventLogController.Instance.AddLog(locale, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGE_UPDATED);
             }
             if (clearCache)
                 DataCache.ClearHostCache(true);

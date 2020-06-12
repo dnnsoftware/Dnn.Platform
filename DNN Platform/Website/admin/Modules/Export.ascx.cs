@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         private string ExportModule(int moduleID, string fileName, IFolderInfo folder)
         {
-            var strMessage = "";
+            var strMessage = string.Empty;
             if (this.Module != null)
             {
                 if (!string.IsNullOrEmpty(this.Module.DesktopModule.BusinessControllerClass) && this.Module.DesktopModule.IsPortable)
@@ -162,7 +162,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             int intCounter;
             for (intCounter = 0; intCounter <= strBadChars.Length - 1; intCounter++)
             {
-                strName = strName.Replace(strBadChars.Substring(intCounter, 1), "");
+                strName = strName.Replace(strBadChars.Substring(intCounter, 1), string.Empty);
             }
             return strName;
         }

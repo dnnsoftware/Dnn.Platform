@@ -120,8 +120,8 @@ namespace DotNetNuke.UI.Utilities
 
                 JavaScript.RegisterClientReference(objTitle.Page, ClientAPI.ClientNamespaceReferences.dnn_dom_positioning);
                 ClientAPI.RegisterClientVariable(objTitle.Page, "__dnn_dragDrop", objContainer.ClientID + " " + objTitle.ClientID + " " + ModuleID + ";", false);
-                string strPanes = "";
-                string strPaneNames = "";
+                string strPanes = string.Empty;
+                string strPaneNames = string.Empty;
                 var objPortalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
 
                 Control objCtl;
@@ -152,12 +152,12 @@ namespace DotNetNuke.UI.Utilities
         /// </remarks>
         public static void EnableMinMax(Control objButton, Control objContent, bool blnDefaultMin, MinMaxPersistanceType ePersistanceType)
         {
-            EnableMinMax(objButton, objContent, -1, blnDefaultMin, "", "", ePersistanceType);
+            EnableMinMax(objButton, objContent, -1, blnDefaultMin, string.Empty, string.Empty, ePersistanceType);
         }
 
         public static void EnableMinMax(Control objButton, Control objContent, int intModuleId, bool blnDefaultMin, MinMaxPersistanceType ePersistanceType)
         {
-            EnableMinMax(objButton, objContent, intModuleId, blnDefaultMin, "", "", ePersistanceType);
+            EnableMinMax(objButton, objContent, intModuleId, blnDefaultMin, string.Empty, string.Empty, ePersistanceType);
         }
 
         public static void EnableMinMax(Control objButton, Control objContent, bool blnDefaultMin, string strMinIconLoc, string strMaxIconLoc, MinMaxPersistanceType ePersistanceType)
@@ -260,7 +260,7 @@ namespace DotNetNuke.UI.Utilities
             {
                 if (ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.DHTML))
                 {
-                    AddStyleAttribute(objContent, "display", "");
+                    AddStyleAttribute(objContent, "display", string.Empty);
                 }
                 else
                 {
@@ -469,7 +469,7 @@ namespace DotNetNuke.UI.Utilities
                 // it on the client.  DNN owns the interface, so there is no worry about an outside
                 // entity changing it on us.  We are simply calling this here to register all the appropriate
                 // js libraries
-                ClientAPI.GetCallbackEventReference(objPage, "", "", "", "");
+                ClientAPI.GetCallbackEventReference(objPage, string.Empty, string.Empty, string.Empty, string.Empty);
 
                 // in order to limit the keys that can be accessed and written we are storing the enabled keys
                 // in this shared hash table
@@ -477,7 +477,7 @@ namespace DotNetNuke.UI.Utilities
                 {
                     if (IsPersonalizationKeyRegistered(strNamingContainer + ClientAPI.CUSTOM_COLUMN_DELIMITER + strKey) == false)
                     {
-                        m_objEnabledClientPersonalizationKeys.Add(strNamingContainer + ClientAPI.CUSTOM_COLUMN_DELIMITER + strKey, "");
+                        m_objEnabledClientPersonalizationKeys.Add(strNamingContainer + ClientAPI.CUSTOM_COLUMN_DELIMITER + strKey, string.Empty);
                     }
                 }
                 return true;

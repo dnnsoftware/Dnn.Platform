@@ -113,7 +113,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 else
                 {
-                    returnURL = this._navigationManager.NavigateURL(this.TabId, "", filterParams);
+                    returnURL = this._navigationManager.NavigateURL(this.TabId, string.Empty, filterParams);
                 }
                 return returnURL;
             }
@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.GetNextActionID(),
                             Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
                             ModuleActionType.AddContent,
-                            "",
+                            string.Empty,
                             "add.gif",
                             this.EditUrl("EditProfileProperty"),
                             false,
@@ -161,7 +161,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.GetNextActionID(),
                             Localization.GetString("Cancel.Action", this.LocalResourceFile),
                             ModuleActionType.AddContent,
-                            "",
+                            string.Empty,
                             "lt.gif",
                             this.ReturnUrl,
                             false,

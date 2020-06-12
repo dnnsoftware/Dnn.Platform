@@ -627,7 +627,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 }
             }
 
-            objUserInfo = UserController.ValidateUser(settings.PortalId, userName, "",
+            objUserInfo = UserController.ValidateUser(settings.PortalId, userName, string.Empty,
                                                                 this.Service, token,
                                                                 settings.PortalName, IPAddress,
                                                                 ref loginStatus);
@@ -739,7 +739,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                                {
                                    Key = Encoding.ASCII.GetBytes(string.Format("{0}&{1}", UrlEncode(this.APISecret),
                                                                              string.IsNullOrEmpty(tokenSecret)
-                                                                                 ? ""
+                                                                                 ? string.Empty
                                                                                  : UrlEncode(tokenSecret)))
                                };
 

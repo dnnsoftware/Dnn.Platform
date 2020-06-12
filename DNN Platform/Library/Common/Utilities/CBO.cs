@@ -132,11 +132,11 @@ namespace DotNetNuke.Common.Utilities
                         else if (typeof(TKey).Name.Equals("string", StringComparison.OrdinalIgnoreCase) &&
                                  dr[keyField].GetType().Name.Equals("dbnull", StringComparison.OrdinalIgnoreCase))
                         {
-                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], ""), typeof(TKey));
+                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], string.Empty), typeof(TKey));
                         }
                         else
                         {
-                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], ""), typeof(TKey));
+                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], string.Empty), typeof(TKey));
                         }
                     }
                     // add to dictionary

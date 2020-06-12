@@ -39,7 +39,7 @@ namespace DotNetNuke.UI.Modules.Html5
             if (string.IsNullOrEmpty(resourceFile))
             {
                 var fileName = Path.GetFileName(this._html5File);
-                var path = this._html5File.Replace(fileName, "");
+                var path = this._html5File.Replace(fileName, string.Empty);
                 resourceFile = Path.Combine(path, Localization.LocalResourceDirectory + "/", Path.ChangeExtension(fileName, "resx"));
             }
             if (!string.IsNullOrEmpty(model.Key))

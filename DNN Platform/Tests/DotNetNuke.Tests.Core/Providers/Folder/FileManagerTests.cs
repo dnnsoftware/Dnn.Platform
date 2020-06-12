@@ -306,7 +306,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
                 dataTable.Rows.Add(1, "FileSecurityChecker", "svg",
                     "DotNetNuke.Services.FileSystem.Internal.SecurityCheckers.SvgFileChecker, DotNetNuke",
-                    0, 0, -1, -0, "", -1, 1, "", "", "", 0, 1, 0, -1, DateTime.Now, -1, DateTime.Now);
+                    0, 0, -1, -0, string.Empty, -1, 1, string.Empty, string.Empty, string.Empty, 0, 1, 0, -1, DateTime.Now, -1, DateTime.Now);
 
                 return dataTable.CreateDataReader();
             });
@@ -714,7 +714,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         public void GetFile_Handles_Path_In_Portal_Root()
         {
             this._folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
-            this._folderManager.Setup(x => x.GetFolder(Constants.CONTENT_ValidPortalId, "")).Returns(this._folderInfo.Object).Verifiable();
+            this._folderManager.Setup(x => x.GetFolder(Constants.CONTENT_ValidPortalId, string.Empty)).Returns(this._folderInfo.Object).Verifiable();
             this._mockData.Setup(md => md.GetFile(Constants.FOLDER_ValidFileName, Constants.FOLDER_ValidFolderId, It.IsAny<bool>())).Returns(It.IsAny<IDataReader>()).Verifiable();
 
             this._fileManager.GetFile(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFileName);
@@ -1172,7 +1172,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             inputStream.Setup(s => s.CanSeek).Returns(false);
             inputStream.Setup(s => s.Read(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>())).Returns(0);
 
-            this._mockFileManager.Setup(mfm => mfm.GetHostMapPath()).Returns("").Verifiable();
+            this._mockFileManager.Setup(mfm => mfm.GetHostMapPath()).Returns(string.Empty).Verifiable();
             this._mockFileManager.Setup(mfm => mfm.GetAutoDeleteFileStream(It.Is((string x) => x.EndsWith(".resx")))).Returns(new MemoryStream()).Verifiable();
 
             this._mockFileManager.Object.GetSeekableStream(inputStream.Object);

@@ -57,7 +57,7 @@ namespace DotNetNuke.Framework
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string ObjectProviderType, bool UseCache)
         {
-            return CreateObject(ObjectProviderType, "", "", "", UseCache);
+            return CreateObject(ObjectProviderType, string.Empty, string.Empty, string.Empty, UseCache);
         }
 
         /// -----------------------------------------------------------------------------
@@ -73,7 +73,7 @@ namespace DotNetNuke.Framework
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string ObjectProviderType, string ObjectNamespace, string ObjectAssemblyName)
         {
-            return CreateObject(ObjectProviderType, "", ObjectNamespace, ObjectAssemblyName, true);
+            return CreateObject(ObjectProviderType, string.Empty, ObjectNamespace, ObjectAssemblyName, true);
         }
 
         /// -----------------------------------------------------------------------------
@@ -90,7 +90,7 @@ namespace DotNetNuke.Framework
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string ObjectProviderType, string ObjectNamespace, string ObjectAssemblyName, bool UseCache)
         {
-            return CreateObject(ObjectProviderType, "", ObjectNamespace, ObjectAssemblyName, UseCache);
+            return CreateObject(ObjectProviderType, string.Empty, ObjectNamespace, ObjectAssemblyName, UseCache);
         }
 
         /// -----------------------------------------------------------------------------
@@ -144,7 +144,7 @@ namespace DotNetNuke.Framework
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string ObjectProviderType, string ObjectProviderName, string ObjectNamespace, string ObjectAssemblyName, bool UseCache, bool fixAssemblyName)
         {
-            string TypeName = "";
+            string TypeName = string.Empty;
 
             // get the provider configuration based on the type
             ProviderConfiguration objProviderConfiguration = ProviderConfiguration.GetProviderConfiguration(ObjectProviderType);
@@ -253,12 +253,12 @@ namespace DotNetNuke.Framework
 
         public static Type CreateType(string TypeName)
         {
-            return CreateType(TypeName, "", true, false);
+            return CreateType(TypeName, string.Empty, true, false);
         }
 
         public static Type CreateType(string TypeName, bool IgnoreErrors)
         {
-            return CreateType(TypeName, "", true, IgnoreErrors);
+            return CreateType(TypeName, string.Empty, true, IgnoreErrors);
         }
 
         public static Type CreateType(string TypeName, string CacheKey, bool UseCache)
@@ -308,7 +308,7 @@ namespace DotNetNuke.Framework
         {
             if (Type != null)
             {
-                return Type.InvokeMember("", BindingFlags.CreateInstance, null, null, null, null);
+                return Type.InvokeMember(string.Empty, BindingFlags.CreateInstance, null, null, null, null);
             }
             else
             {
@@ -348,7 +348,7 @@ namespace DotNetNuke.Framework
         [Obsolete("This method has been deprecated. Please use CreateObject(ByVal ObjectProviderType As String, ByVal UseCache As Boolean) As Object. Scheduled removal in v11.0.0.")]
         internal static object CreateObjectNotCached(string ObjectProviderType)
         {
-            string TypeName = "";
+            string TypeName = string.Empty;
             Type objType = null;
 
             // get the provider configuration based on the type

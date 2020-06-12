@@ -57,7 +57,7 @@ namespace DotNetNuke.Web.Services
 
             if (modules.Any())
             {
-                foreach (var moduleName in (moduleList ?? "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var moduleName in (moduleList ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     var dtmRecord = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalId);
                     if (dtmRecord != null)
@@ -87,9 +87,9 @@ namespace DotNetNuke.Web.Services
                 IsAdmin = this.UserInfo.IsInRole("Administrators")
             };
 
-            foreach (var moduleName in (moduleList ?? "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var moduleName in (moduleList ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
-                var modulesCollection = GetTabModules((moduleName ?? "").Trim())
+                var modulesCollection = GetTabModules((moduleName ?? string.Empty).Trim())
                     .Where(tabmodule => TabPermissionController.CanViewPage(tabmodule.TabInfo) &&
                                         ModulePermissionController.CanViewModule(tabmodule.ModuleInfo));
                 foreach (var tabmodule in modulesCollection)

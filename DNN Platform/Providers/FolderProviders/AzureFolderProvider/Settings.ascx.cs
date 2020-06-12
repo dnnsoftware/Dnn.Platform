@@ -43,7 +43,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
             if (this.tbAccountName.Text.Length > 0 && this.tbAccountKey.Text.Length > 0)
             {
-                var bucketName = "";
+                var bucketName = string.Empty;
 
                 if (folderMappingSettings.ContainsKey(Constants.Container))
                 {

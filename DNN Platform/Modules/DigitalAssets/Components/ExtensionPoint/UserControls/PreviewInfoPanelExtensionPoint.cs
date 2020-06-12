@@ -23,12 +23,12 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.UserControl
 
         public string Text
         {
-            get { return ""; }
+            get { return string.Empty; }
         }
 
         public string Icon
         {
-            get { return ""; }
+            get { return string.Empty; }
         }
 
         public int Order

@@ -1196,7 +1196,7 @@ namespace DotNetNuke.Entities.Host
         {
             get
             {
-                return HostController.Instance.GetString("SearchIncludedTagInfoFilter", "");
+                return HostController.Instance.GetString("SearchIncludedTagInfoFilter", string.Empty);
             }
         }
 

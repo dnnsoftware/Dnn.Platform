@@ -452,17 +452,17 @@ namespace DotNetNuke.Services.Installer
 
         public static string ReadAttribute(XPathNavigator nav, string attributeName)
         {
-            return ValidateNode(nav.GetAttribute(attributeName, ""), false, null, "", "");
+            return ValidateNode(nav.GetAttribute(attributeName, string.Empty), false, null, string.Empty, string.Empty);
         }
 
         public static string ReadAttribute(XPathNavigator nav, string attributeName, Logger log, string logmessage)
         {
-            return ValidateNode(nav.GetAttribute(attributeName, ""), true, log, logmessage, "");
+            return ValidateNode(nav.GetAttribute(attributeName, string.Empty), true, log, logmessage, string.Empty);
         }
 
         public static string ReadAttribute(XPathNavigator nav, string attributeName, bool isRequired, Logger log, string logmessage, string defaultValue)
         {
-            return ValidateNode(nav.GetAttribute(attributeName, ""), isRequired, log, logmessage, defaultValue);
+            return ValidateNode(nav.GetAttribute(attributeName, string.Empty), isRequired, log, logmessage, defaultValue);
         }
 
         public static string GetPackageBackupName(PackageInfo package)
@@ -499,17 +499,17 @@ namespace DotNetNuke.Services.Installer
 
         public static string ReadElement(XPathNavigator nav, string elementName)
         {
-            return ValidateNode(XmlUtils.GetNodeValue(nav, elementName), false, null, "", "");
+            return ValidateNode(XmlUtils.GetNodeValue(nav, elementName), false, null, string.Empty, string.Empty);
         }
 
         public static string ReadElement(XPathNavigator nav, string elementName, string defaultValue)
         {
-            return ValidateNode(XmlUtils.GetNodeValue(nav, elementName), false, null, "", defaultValue);
+            return ValidateNode(XmlUtils.GetNodeValue(nav, elementName), false, null, string.Empty, defaultValue);
         }
 
         public static string ReadElement(XPathNavigator nav, string elementName, Logger log, string logmessage)
         {
-            return ValidateNode(XmlUtils.GetNodeValue(nav, elementName), true, log, logmessage, "");
+            return ValidateNode(XmlUtils.GetNodeValue(nav, elementName), true, log, logmessage, string.Empty);
         }
 
         public static string ReadElement(XPathNavigator nav, string elementName, bool isRequired, Logger log, string logmessage, string defaultValue)
@@ -694,11 +694,11 @@ namespace DotNetNuke.Services.Installer
                 wreq.Proxy = proxy;
             }
 
-            if (Username != null && Password != null && Domain != null && Username.Trim() != "" && Password.Trim() != null && Domain.Trim() != null)
+            if (Username != null && Password != null && Domain != null && Username.Trim() != string.Empty && Password.Trim() != null && Domain.Trim() != null)
             {
                 wreq.Credentials = new NetworkCredential(Username, Password, Domain);
             }
-            else if (Username != null && Password != null && Username.Trim() != "" && Password.Trim() != null)
+            else if (Username != null && Password != null && Username.Trim() != string.Empty && Password.Trim() != null)
             {
                 wreq.Credentials = new NetworkCredential(Username, Password);
             }
@@ -711,7 +711,7 @@ namespace DotNetNuke.Services.Installer
                 request.Close();
             }
 
-            Filename = "";
+            Filename = string.Empty;
             WebResponse wrsp = wreq.GetResponse();
             string cd = wrsp.Headers["Content-Disposition"];
             if (cd != null && cd.Trim() != string.Empty && cd.StartsWith("attachment"))

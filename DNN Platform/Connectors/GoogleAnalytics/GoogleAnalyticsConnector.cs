@@ -157,7 +157,7 @@ namespace DNN.Connectors.GoogleAnalytics
             {
                 return "true";
             }
-            return "";
+            return string.Empty;
         }
 
         public bool SaveConfig(int portalId, IDictionary<string, string> values, ref bool validated, out string customErrorMessage)

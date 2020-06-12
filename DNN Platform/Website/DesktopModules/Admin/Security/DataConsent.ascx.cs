@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     case PortalSettings.UserDeleteAction.HardDelete:
                         return this.LocalizeString("HardDelete.Confirm");
                 }
-                return "";
+                return string.Empty;
             }
         }
 

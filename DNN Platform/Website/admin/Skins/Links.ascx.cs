@@ -123,14 +123,14 @@ namespace DotNetNuke.UI.Skins.Controls
             }
 
             // build links
-            string strLinks = "";
+            string strLinks = string.Empty;
 
             strLinks = this.BuildLinks(this.Level, strSeparator, strCssClass);
 
             // Render links, even if nothing is returned with the currently set level
             if (string.IsNullOrEmpty(strLinks) && this.ForceLinks)
             {
-                strLinks = this.BuildLinks("", strSeparator, strCssClass);
+                strLinks = this.BuildLinks(string.Empty, strSeparator, strCssClass);
             }
             this.lblLinks.Text = strLinks;
         }
@@ -193,7 +193,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         break;
                 }
             }
-            return "";
+            return string.Empty;
         }
 
         private string ProcessLink(string sLink, int iLinksLength)
@@ -201,7 +201,7 @@ namespace DotNetNuke.UI.Skins.Controls
             // wrap in a div if set to vertical
             if (string.IsNullOrEmpty(sLink))
             {
-                return "";
+                return string.Empty;
             }
             if (this.Alignment == "vertical")
             {

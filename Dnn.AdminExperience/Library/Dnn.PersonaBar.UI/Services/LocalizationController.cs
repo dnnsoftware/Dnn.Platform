@@ -146,9 +146,9 @@ namespace Dnn.PersonaBar.UI.Services
                 var fallbackCulture = this.GetFallbackCulture(culture);
                 var folder = Path.GetDirectoryName(relativePath)?.Replace("\\", "/");
                 var fileName = Path.GetFileNameWithoutExtension(relativePath)?
-                                .ToLowerInvariant().Replace("." + culture.ToLowerInvariant(), "");
+                                .ToLowerInvariant().Replace("." + culture.ToLowerInvariant(), string.Empty);
                 var culturePart = fallbackCulture.Equals(Localization.SystemLocale, StringComparison.InvariantCultureIgnoreCase)
-                                    ? "" : "." + fallbackCulture;
+                                    ? string.Empty : "." + fallbackCulture;
                 var fallbackFilePath = $"{folder}//{fileName}{culturePart}.resx";
                 if (!File.Exists(HttpContext.Current.Server.MapPath(fallbackFilePath)))
                 {

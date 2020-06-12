@@ -188,7 +188,7 @@ namespace DNN.Integration.Test.Framework
                     { fieldsPrefix + "$txtUsername", this.UserName },
                     { fieldsPrefix + "$txtPassword", password },
                     { "__EVENTTARGET", fieldsPrefix + "$cmdLogin" }, // most important field; button action
-                    { "__EVENTARGUMENT", "" }
+                    { "__EVENTARGUMENT", string.Empty }
                 };
 
             var excludedInputPrefixes = new List<string>();
@@ -641,7 +641,7 @@ namespace DNN.Integration.Test.Framework
                     // but should work with XHTML file input fields; e.g.:
                     //      <input type="file" name="postfile" multiple="multiple" />
                     var text = field.Contains(" multiple") && !field.Contains(" multiple=")
-                        ? field.Replace(" multiple", "")
+                        ? field.Replace(" multiple", string.Empty)
                         : field;
 
                     xe = XElement.Parse(text);
@@ -667,7 +667,7 @@ namespace DNN.Integration.Test.Framework
                             {
                                 if (!postParameters.ContainsKey(inputName.Value))
                                 {
-                                    var value = inputValue == null ? "" : inputValue.Value;
+                                    var value = inputValue == null ? string.Empty : inputValue.Value;
                                     if (formFields.ContainsKey(inputName.Value))
                                         value = formFields[inputName.Value].ToString();
                                     postParameters.Add(inputName.Value, value);

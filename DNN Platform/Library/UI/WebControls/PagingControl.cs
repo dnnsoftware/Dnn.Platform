@@ -38,7 +38,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return string.IsNullOrEmpty(this._CSSClassLinkActive) ? "" : this._CSSClassLinkActive;
+                return string.IsNullOrEmpty(this._CSSClassLinkActive) ? string.Empty : this._CSSClassLinkActive;
             }
             set
             {
@@ -51,7 +51,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return string.IsNullOrEmpty(this._CSSClassLinkInactive) ? "" : this._CSSClassLinkInactive;
+                return string.IsNullOrEmpty(this._CSSClassLinkInactive) ? string.Empty : this._CSSClassLinkInactive;
             }
             set
             {
@@ -64,7 +64,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return string.IsNullOrEmpty(this._CSSClassPagingStatus) ? "" : this._CSSClassPagingStatus;
+                return string.IsNullOrEmpty(this._CSSClassPagingStatus) ? string.Empty : this._CSSClassPagingStatus;
             }
             set
             {
@@ -103,7 +103,7 @@ namespace DotNetNuke.UI.WebControls
 
         public void RaisePostBackEvent(string eventArgument)
         {
-            this.CurrentPage = int.Parse(eventArgument.Replace("Page_", ""));
+            this.CurrentPage = int.Parse(eventArgument.Replace("Page_", string.Empty));
             this.OnPageChanged(new EventArgs());
         }
 
@@ -179,8 +179,8 @@ namespace DotNetNuke.UI.WebControls
             {
                 case PagingControlMode.URL:
                     return !string.IsNullOrEmpty(this.QuerystringParams)
-                               ? (!string.IsNullOrEmpty(CurrentPage) ? TestableGlobals.Instance.NavigateURL(this.TabID, "", this.QuerystringParams, "currentpage=" + CurrentPage) : TestableGlobals.Instance.NavigateURL(this.TabID, "", this.QuerystringParams))
-                               : (!string.IsNullOrEmpty(CurrentPage) ? TestableGlobals.Instance.NavigateURL(this.TabID, "", "currentpage=" + CurrentPage) : TestableGlobals.Instance.NavigateURL(this.TabID));
+                               ? (!string.IsNullOrEmpty(CurrentPage) ? TestableGlobals.Instance.NavigateURL(this.TabID, string.Empty, this.QuerystringParams, "currentpage=" + CurrentPage) : TestableGlobals.Instance.NavigateURL(this.TabID, string.Empty, this.QuerystringParams))
+                               : (!string.IsNullOrEmpty(CurrentPage) ? TestableGlobals.Instance.NavigateURL(this.TabID, string.Empty, "currentpage=" + CurrentPage) : TestableGlobals.Instance.NavigateURL(this.TabID));
                 default:
                     return this.Page.ClientScript.GetPostBackClientHyperlink(this, "Page_" + CurrentPage, false);
             }

@@ -365,7 +365,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             this._folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
 
-            var filesReturned = new[] { "", "", "" };
+            var filesReturned = new[] { string.Empty, string.Empty, string.Empty };
 
             this._directoryWrapper.Setup(dw => dw.GetFiles(Constants.FOLDER_ValidFolderPath)).Returns(filesReturned);
 

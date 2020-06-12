@@ -89,7 +89,7 @@ namespace DotNetNuke.Framework
                 if (modules.Count > 0)
                 {
                     var pmb = new PortalModuleBase();
-                    result = pmb.EditUrl(tab.TabID, "", false, string.Concat("mid=", modules.ElementAt(0).ModuleID), "popUp=true", string.Concat("ReturnUrl=", this.Server.UrlEncode(TestableGlobals.Instance.NavigateURL())));
+                    result = pmb.EditUrl(tab.TabID, string.Empty, false, string.Concat("mid=", modules.ElementAt(0).ModuleID), "popUp=true", string.Concat("ReturnUrl=", this.Server.UrlEncode(TestableGlobals.Instance.NavigateURL())));
                 }
                 else
                 {

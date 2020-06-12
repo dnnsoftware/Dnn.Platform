@@ -144,7 +144,7 @@ namespace log4net.ObjectRenderer
                         log4net.Util.LogLog.Error(declaringType, "Exception while rendering object of type [" + obj.GetType().FullName + "]", ex);
 
                         // return default message
-                        string objectTypeName = "";
+                        string objectTypeName = string.Empty;
                         if (obj != null && obj.GetType() != null)
                         {
                             objectTypeName = obj.GetType().FullName;

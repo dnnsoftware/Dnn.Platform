@@ -73,7 +73,7 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                return "";
+                return string.Empty;
             }
         }
 

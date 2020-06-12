@@ -38,7 +38,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProvider
 
             ComponentFactory.Container = new SimpleContainer();
             var dataProvider = MockComponentProvider.CreateDataProvider();
-            dataProvider.Setup(d => d.GetProviderPath()).Returns("");
+            dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
             MockComponentProvider.CreateDataCacheProvider();
             MockComponentProvider.CreateEventLogController();
 

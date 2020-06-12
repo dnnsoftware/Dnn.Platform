@@ -52,7 +52,7 @@ namespace DotNetNuke.Web.UI.WebControls
             set
             {
                 this._HeaderText = value;
-                base.HeaderText = "";
+                base.HeaderText = string.Empty;
             }
         }
 

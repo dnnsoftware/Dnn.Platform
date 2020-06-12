@@ -19,7 +19,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         public class MyPortalSettings
         {
             [PortalSetting(Prefix = SettingNamePrefix)]
-            public string StringProperty { get; set; } = "";
+            public string StringProperty { get; set; } = string.Empty;
 
             [PortalSetting(Prefix = SettingNamePrefix)]
             public int IntegerProperty { get; set; }

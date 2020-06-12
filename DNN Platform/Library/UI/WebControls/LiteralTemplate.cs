@@ -13,7 +13,7 @@ namespace DotNetNuke.UI.WebControls
     public class LiteralTemplate : ITemplate
     {
         private readonly Control m_objControl;
-        private readonly string m_strHTML = "";
+        private readonly string m_strHTML = string.Empty;
 
         public LiteralTemplate(string html)
         {

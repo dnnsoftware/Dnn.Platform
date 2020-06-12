@@ -78,7 +78,7 @@ namespace DotNetNuke.Services.Search.Internals
         private string GetStringFromField(Document doc, SortField sortField)
         {
             var field = doc.GetField(sortField.Field);
-            return field == null ? "" : field.StringValue;
+            return field == null ? string.Empty : field.StringValue;
         }
 
         private long GetLongFromField(Document doc, SortField sortField)

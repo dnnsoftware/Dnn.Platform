@@ -14,7 +14,7 @@ namespace DNN.Integration.Test.Framework.Helpers
             {
                 if (!_portalId.HasValue)
                 {
-                    var alias = AppConfigHelper.SiteUrl.Replace("http://", "").Replace("https://", "");
+                    var alias = AppConfigHelper.SiteUrl.Replace("http://", string.Empty).Replace("https://", string.Empty);
                     if (alias.EndsWith("/"))
                         alias = alias.Substring(0, alias.Length - 1);
                     var query = string.Format(

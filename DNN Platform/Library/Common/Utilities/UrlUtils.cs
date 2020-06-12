@@ -99,7 +99,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return nameValues[1];
             }
-            return "";
+            return string.Empty;
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         public static string[] GetQSParamsForNavigateURL()
         {
-            string returnValue = "";
+            string returnValue = string.Empty;
             var coll = HttpContext.Current.Request.QueryString;
             string[] keys = coll.AllKeys;
             for (var i = 0; i <= keys.GetUpperBound(0); i++)
@@ -167,7 +167,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static bool IsSslOffloadEnabled(HttpRequest request)
         {
-            var ssloffloadheader = HostController.Instance.GetString("SSLOffloadHeader", "");
+            var ssloffloadheader = HostController.Instance.GetString("SSLOffloadHeader", string.Empty);
 
             // if the ssloffloadheader variable has been set check to see if a request header with that type exists
             if (!string.IsNullOrEmpty(ssloffloadheader))
@@ -221,8 +221,8 @@ namespace DotNetNuke.Common.Utilities
             if (!popUpUrl.Contains("dnnModal.show"))
             {
                 popUpUrl = Uri.EscapeUriString(url);
-                popUpUrl = popUpUrl.Replace("\"", "");
-                popUpUrl = popUpUrl.Replace("'", "");
+                popUpUrl = popUpUrl.Replace("\"", string.Empty);
+                popUpUrl = popUpUrl.Replace("'", string.Empty);
             }
 
             var delimiter = popUpUrl.Contains("?") ? "&" : "?";
@@ -257,7 +257,7 @@ namespace DotNetNuke.Common.Utilities
             }
 
             // Removes the javascript txt for onClick scripts
-            if (onClickEvent && popUpUrl.StartsWith("javascript:")) popUpUrl = popUpUrl.Replace("javascript:", "");
+            if (onClickEvent && popUpUrl.StartsWith("javascript:")) popUpUrl = popUpUrl.Replace("javascript:", string.Empty);
 
             return popUpUrl;
         }
@@ -268,7 +268,7 @@ namespace DotNetNuke.Common.Utilities
             closePopUpStr = "javascript:" + string.Format(closePopUpStr, refresh.ToString().ToLowerInvariant(), "'" + url + "'");
 
             // Removes the javascript txt for onClick scripts)
-            if (onClickEvent && closePopUpStr.StartsWith("javascript:")) closePopUpStr = closePopUpStr.Replace("javascript:", "");
+            if (onClickEvent && closePopUpStr.StartsWith("javascript:")) closePopUpStr = closePopUpStr.Replace("javascript:", string.Empty);
 
             return closePopUpStr;
         }
@@ -310,14 +310,14 @@ namespace DotNetNuke.Common.Utilities
                 url = url.Replace("\\", "/");
                 if (url.ToLowerInvariant().Contains("data:"))
                 {
-                    return "";
+                    return string.Empty;
                 }
 
                 // clean the return url to avoid possible XSS attack.
                 var cleanUrl = PortalSecurity.Instance.InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
                 if (url != cleanUrl)
                 {
-                    return "";
+                    return string.Empty;
                 }
 
                 // redirect url should never contain a protocol ( if it does, it is likely a cross-site request forgery attempt )
@@ -337,13 +337,13 @@ namespace DotNetNuke.Common.Utilities
                     // protocol switching (HTTP <=> HTTPS) is allowed by not being checked here
                     if (!string.Equals(uri1.DnsSafeHost, uri2.DnsSafeHost, StringComparison.CurrentCultureIgnoreCase))
                     {
-                        return "";
+                        return string.Empty;
                     }
 
                     // this check is mainly for child portals
                     if (!uri1.AbsolutePath.StartsWith(uri2.AbsolutePath, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return "";
+                        return string.Empty;
                     }
                 }
 
@@ -359,7 +359,7 @@ namespace DotNetNuke.Common.Utilities
                     // note: this can redirict from parent to childe and vice versa
                     if (!urlWithNoProtocol.StartsWith(portalSettings.PortalAlias.HTTPAlias + "/", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        return "";
+                        return string.Empty;
                     }
                 }
 
@@ -367,7 +367,7 @@ namespace DotNetNuke.Common.Utilities
             }
             catch (UriFormatException)
             {
-                return "";
+                return string.Empty;
             }
         }
 

@@ -107,7 +107,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return this.OptSkin.SelectedItem != null ? this.OptSkin.SelectedItem.Value : "";
+                return this.OptSkin.SelectedItem != null ? this.OptSkin.SelectedItem.Value : string.Empty;
             }
             set
             {
@@ -155,7 +155,7 @@ namespace DotNetNuke.UI.Skins
         {
             var strDefault = Localization.GetString("Not_Specified") + "<br />";
             strDefault += "<img src=\"" + Globals.ApplicationPath.Replace("\\", "/") + "/images/spacer.gif\" width=\"140\" height=\"135\" border=\"0\">";
-            this.OptSkin.Items.Insert(0, new ListItem(strDefault, ""));
+            this.OptSkin.Items.Insert(0, new ListItem(strDefault, string.Empty));
         }
 
         /// -----------------------------------------------------------------------------
@@ -170,10 +170,10 @@ namespace DotNetNuke.UI.Skins
         /// -----------------------------------------------------------------------------
         private void AddSkin(string root, string strFolder, string strFile)
         {
-            var strImage = "";
+            var strImage = string.Empty;
             if (File.Exists(strFile.Replace(".ascx", ".jpg")))
             {
-                strImage += "<a href=\"" + CreateThumbnail(strFile.Replace(".ascx", ".jpg")).Replace("thumbnail_", "") + "\" target=\"_blank\"><img src=\"" +
+                strImage += "<a href=\"" + CreateThumbnail(strFile.Replace(".ascx", ".jpg")).Replace("thumbnail_", string.Empty) + "\" target=\"_blank\"><img src=\"" +
                             CreateThumbnail(strFile.Replace(".ascx", ".jpg")).Replace("\\", "/") + "\" border=\"1\"></a>";
             }
             else

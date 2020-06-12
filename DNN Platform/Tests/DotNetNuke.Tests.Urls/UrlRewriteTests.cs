@@ -105,7 +105,7 @@ namespace DotNetNuke.Tests.Urls
             this.DeleteTab(_testPage);
             this.CreateTab(_testPage);
             this.UpdateTabName(this._tabId, "About Us");
-            this.UpdateTabSkin(this._tabId,  "");
+            this.UpdateTabSkin(this._tabId,  string.Empty);
             CacheController.FlushPageIndexFromCache();
             this.GetDefaultAlias();
             this._redirectMode = PortalController.GetPortalSetting("PortalAliasMapping", this.PortalId, "CANONICALURL");

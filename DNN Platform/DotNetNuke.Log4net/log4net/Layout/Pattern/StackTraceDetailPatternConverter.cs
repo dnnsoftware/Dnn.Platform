@@ -47,11 +47,11 @@ namespace log4net.Layout.Pattern
     {
         internal override string GetMethodInformation(MethodItem method)
         {
-            string returnValue = "";
+            string returnValue = string.Empty;
 
             try
             {
-                string param = "";
+                string param = string.Empty;
                 string[] names = method.Parameters;
                 StringBuilder sb = new StringBuilder();
                 if (names != null && names.GetUpperBound(0) > 0)

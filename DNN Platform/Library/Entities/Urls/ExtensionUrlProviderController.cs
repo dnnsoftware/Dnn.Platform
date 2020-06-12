@@ -173,7 +173,7 @@ namespace DotNetNuke.Entities.Urls
                                                 Guid parentTraceId)
         {
             bool redirected = false;
-            location = "";
+            location = string.Empty;
             ExtensionUrlProvider activeProvider = null;
             try
             {
@@ -203,7 +203,7 @@ namespace DotNetNuke.Entities.Urls
                 LogModuleProviderExceptionInRequest(ex, "500 Internal Server Error", activeProvider, result, messages);
                 // return defaults
                 redirected = false;
-                location = "";
+                location = string.Empty;
                 string providerName = "Unknown";
                 if (activeProvider != null)
                 {
@@ -375,10 +375,10 @@ namespace DotNetNuke.Entities.Urls
                                     if (rewrittenUrlMatch.Groups["qs"].Success)
                                     {
                                         // keep any other querystring remainders
-                                        qsRemainder = rewrittenUrlMatch.Groups["qs"].Captures.Cast<Capture>().Aggregate("", (current, qsCapture) => current + qsCapture.Value); // initialise
+                                        qsRemainder = rewrittenUrlMatch.Groups["qs"].Captures.Cast<Capture>().Aggregate(string.Empty, (current, qsCapture) => current + qsCapture.Value); // initialise
                                     }
                                     // supplied value overwrites existing value, so remove from the rewritten url
-                                    rewrittenUrl = RewrittenUrlRegex.Replace(rewrittenUrl, "");
+                                    rewrittenUrl = RewrittenUrlRegex.Replace(rewrittenUrl, string.Empty);
                                 }
                                 if (rewrittenUrl.Contains("?") == false)
                                 {
@@ -580,7 +580,7 @@ namespace DotNetNuke.Entities.Urls
                 ReplaceChars = settings.ReplaceChars,
                 ReplaceDoubleChars = settings.ReplaceDoubleChars,
                 ReplaceCharWithChar = settings.ReplaceCharacterDictionary,
-                PageExtension = settings.PageExtensionUsageType == PageExtensionUsageType.Never ? "" : settings.PageExtension
+                PageExtension = settings.PageExtensionUsageType == PageExtensionUsageType.Never ? string.Empty : settings.PageExtension
             };
         }
 

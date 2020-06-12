@@ -164,18 +164,18 @@ namespace DotNetNuke.Services.Installer
                     if (Directory.Exists(Path.Combine(tempInstallFolder, "Skins")))
                     {
                         // Add Skin Package Fragment
-                        CreateSkinManifest(writer, skinFolder, "Skin", tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", ""), "Skins");
+                        CreateSkinManifest(writer, skinFolder, "Skin", tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", string.Empty), "Skins");
                     }
                     if (Directory.Exists(Path.Combine(tempInstallFolder, "Containers")))
                     {
                         // Add Container PAckage Fragment
-                        CreateSkinManifest(writer, skinFolder, "Container", tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", ""), "Containers");
+                        CreateSkinManifest(writer, skinFolder, "Container", tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", string.Empty), "Containers");
                     }
                 }
                 else
                 {
                     // Add Package Fragment
-                    CreateSkinManifest(writer, skinFolder, skinType, tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", ""), "");
+                    CreateSkinManifest(writer, skinFolder, skinType, tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", string.Empty), string.Empty);
                 }
                 PackageWriterBase.WriteManifestEndElement(writer);
 
@@ -410,7 +410,7 @@ namespace DotNetNuke.Services.Installer
                 }
                 else
                 {
-                    package.Manifest = ""; // module has no manifest
+                    package.Manifest = string.Empty; // module has no manifest
                 }
 
                 // Save Package

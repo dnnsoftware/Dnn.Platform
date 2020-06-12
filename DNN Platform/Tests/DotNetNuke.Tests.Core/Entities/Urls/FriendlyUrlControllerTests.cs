@@ -245,7 +245,7 @@ namespace DotNetNuke.Tests.Core
                 ReplaceDoubleChars = replaceDoubleChars,
                 ReplaceCharWithChar = replaceCharacterDictionary,
                 PageExtension = (pageExtensionUsageType == PageExtensionUsageType.Never)
-                                        ? ""
+                                        ? string.Empty
                                         : pageExtension
             };
         }

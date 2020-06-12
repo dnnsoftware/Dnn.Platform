@@ -147,7 +147,7 @@ namespace DotNetNuke.Web.DDRMenu
             using (var reader = XmlReader.Create(this.menuSettings.NodeXmlPath))
             {
                 reader.ReadToFollowing("root");
-                this.RootNode = (MenuNode) new XmlSerializer(typeof(MenuNode), "").Deserialize(reader);
+                this.RootNode = (MenuNode) new XmlSerializer(typeof(MenuNode), string.Empty).Deserialize(reader);
             }
             cache.Insert(this.menuSettings.NodeXmlPath, this.RootNode, new CacheDependency(this.menuSettings.NodeXmlPath));
         }
@@ -343,7 +343,7 @@ namespace DotNetNuke.Web.DDRMenu
 
         protected string MapPath(string path)
         {
-            return string.IsNullOrEmpty(path) ? "" : Path.GetFullPath(this.CurrentContext.Server.MapPath(path));
+            return string.IsNullOrEmpty(path) ? string.Empty : Path.GetFullPath(this.CurrentContext.Server.MapPath(path));
         }
 
         private static List<string> SplitAndTrim(string str)

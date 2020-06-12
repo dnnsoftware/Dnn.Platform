@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 if (this.damState == null)
                 {
                     var stateCookie = this.Request.Cookies["damState-" + this.UserId];
-                    this.damState = HttpUtility.ParseQueryString(Uri.UnescapeDataString(stateCookie != null ? stateCookie.Value : ""));
+                    this.damState = HttpUtility.ParseQueryString(Uri.UnescapeDataString(stateCookie != null ? stateCookie.Value : string.Empty));
                 }
 
                 return this.damState;
@@ -149,7 +149,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             get
             {
                 var defaultFolderTypeId = this.controller.GetDefaultFolderTypeId(this.ModuleId);
-                return defaultFolderTypeId.HasValue ? defaultFolderTypeId.ToString() : "";
+                return defaultFolderTypeId.HasValue ? defaultFolderTypeId.ToString() : string.Empty;
             }
         }
 
@@ -574,7 +574,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                         break;
                 }
 
-                var initialPath = "";
+                var initialPath = string.Empty;
                 int folderId;
                 if (int.TryParse(this.Request["folderId"] ?? this.DAMState["folderId"], out folderId))
                 {
@@ -654,11 +654,11 @@ namespace DotNetNuke.Modules.DigitalAssets
                 var actions = new ModuleActionCollection();
                 if (ModulePermissionController.CanManageModule(this.ModuleConfiguration))
                 {
-                    actions.Add(this.GetNextActionID(), Localization.GetString("ManageFolderTypes", this.LocalResourceFile), "", "", "../DesktopModules/DigitalAssets/Images/manageFolderTypes.png", this.EditUrl("FolderMappings"), false, SecurityAccessLevel.Edit, true, false);
+                    actions.Add(this.GetNextActionID(), Localization.GetString("ManageFolderTypes", this.LocalResourceFile), string.Empty, string.Empty, "../DesktopModules/DigitalAssets/Images/manageFolderTypes.png", this.EditUrl("FolderMappings"), false, SecurityAccessLevel.Edit, true, false);
 
                     foreach (var item in this.epm.GetMenuItemExtensionPoints("DigitalAssets", "ModuleActions", this.Filter))
                     {
-                        actions.Add(this.GetNextActionID(), item.Text, "", "", item.Icon, this.EditUrl(item.Value), false, SecurityAccessLevel.Edit, true, false);
+                        actions.Add(this.GetNextActionID(), item.Text, string.Empty, string.Empty, item.Icon, this.EditUrl(item.Value), false, SecurityAccessLevel.Edit, true, false);
                     }
                 }
                 else

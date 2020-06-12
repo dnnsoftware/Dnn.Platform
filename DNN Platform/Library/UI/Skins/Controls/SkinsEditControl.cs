@@ -200,7 +200,7 @@ namespace DotNetNuke.UI.Skins.Controls
             var args = new PropertyEditorEventArgs(this.Name);
             args.Value = this.DictionaryValue;
             args.OldValue = this.OldDictionaryValue;
-            args.StringValue = "";
+            args.StringValue = string.Empty;
             args.Changed = true;
             this.OnValueChanged(args);
         }

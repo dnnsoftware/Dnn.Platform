@@ -14,7 +14,7 @@ namespace DotNetNuke.Tests.Integration.Executers.Builders
         public PageSettingsBuilder()
         {
             this.WithTabId(0);
-            this.WithName("RB" + Guid.NewGuid().ToString().Replace("-", ""));
+            this.WithName("RB" + Guid.NewGuid().ToString().Replace("-", string.Empty));
             this.WithPageType(string.Empty);
             this.WithUrl(string.Empty);
             this.WithPermission(new TabPermissions());
@@ -99,22 +99,22 @@ namespace DotNetNuke.Tests.Integration.Executers.Builders
             var pageSettings = new PageSettings
             {
                 ApplyWorkflowToChildren = false,
-                created = "",
+                created = string.Empty,
                 customUrlEnabled = true,
                 hasChild = false,
-                Hierarchy = "",
+                Hierarchy = string.Empty,
                 IncludeInMenu = true,
                 isCopy = false,
                 isWorkflowCompleted = true,
                 isWorkflowPropagationAvailable = false,
                 keywords = this.GetOrDefault(p => p.keywords),
-                localizedName = "",
+                localizedName = string.Empty,
                 Name = name,
                 pageType = this.GetOrDefault(p => p.pageType),
                 tabId = this.GetOrDefault(p => p.tabId),
-                tags = "",
-                thumbnail = "",
-                title = "",
+                tags = string.Empty,
+                thumbnail = string.Empty,
+                title = string.Empty,
                 trackLinks = false,
                 type = 0,
                 workflowId = this.GetOrDefault(p => p.workflowId),

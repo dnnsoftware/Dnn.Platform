@@ -144,7 +144,7 @@ namespace DotNetNuke.Services.GeneratedImage
             int maxHeight = string.IsNullOrEmpty(parameters["MaxHeight"]) ? 0 : Convert.ToInt32(parameters["MaxHeight"]);
 
             // Any text ?
-            string text = string.IsNullOrEmpty(parameters["text"]) ? "" : parameters["text"];
+            string text = string.IsNullOrEmpty(parameters["text"]) ? string.Empty : parameters["text"];
 
             // Default Image
             this._defaultImageFile = string.IsNullOrEmpty(parameters["NoImage"]) ? string.Empty : parameters["NoImage"];
@@ -324,7 +324,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 TryParseDimension(parameters["w"], out width);
                 TryParseDimension(parameters["h"], out height);
 
-                var size = string.IsNullOrEmpty(parameters["size"]) ? "" : parameters["size"];
+                var size = string.IsNullOrEmpty(parameters["size"]) ? string.Empty : parameters["size"];
 
                 switch (size)
                 {

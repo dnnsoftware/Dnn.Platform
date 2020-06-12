@@ -176,7 +176,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                         DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.CreatedBy + ".DisplayName"),
                         Type = typeof(int),
                         Value = item.CreatedByUserID,
-                        StringValue = createdByUser != null ? createdByUser.DisplayName : ""
+                        StringValue = createdByUser != null ? createdByUser.DisplayName : string.Empty
                     },
                 new Field(DefaultMetadataNames.Modified)
                     {
@@ -190,7 +190,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                         DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.ModifiedBy + ".DisplayName"),
                         Type = typeof(int),
                         Value = item.LastModifiedByUserID,
-                        StringValue = lastModifiedByUser != null ? lastModifiedByUser.DisplayName : ""
+                        StringValue = lastModifiedByUser != null ? lastModifiedByUser.DisplayName : string.Empty
                     }
                 };
         }
@@ -347,7 +347,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             }
 
             var portalId = this.GetCurrentPortalId(moduleId);
-            return this.GetFolderViewModel(FolderManager.Instance.GetFolder(portalId, ""));
+            return this.GetFolderViewModel(FolderManager.Instance.GetFolder(portalId, string.Empty));
         }
 
         public FolderViewModel GetGroupFolder(int groupId, PortalSettings portalSettings)

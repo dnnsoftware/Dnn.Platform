@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.Cryptography
         /// <returns></returns>
         public override string DecryptParameter(string message, string passphrase)
         {
-            string strValue = "";
+            string strValue = string.Empty;
             if (!string.IsNullOrEmpty(passphrase) && !string.IsNullOrEmpty(message))
             {
                 // convert data to byte array and Base64 decode
@@ -106,7 +106,7 @@ namespace DotNetNuke.Services.Cryptography
                 }
                 catch // decryption error
                 {
-                    strValue = "";
+                    strValue = string.Empty;
                 }
             }
             return strValue;

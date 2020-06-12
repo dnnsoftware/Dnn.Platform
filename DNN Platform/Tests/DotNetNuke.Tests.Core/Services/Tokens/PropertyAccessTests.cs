@@ -31,7 +31,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
 
             // Act
             bool propertyNotFound = false;
-            string propertyValue = ticksPropertyAccess.GetProperty(propertyName, "", CultureInfo.InvariantCulture,
+            string propertyValue = ticksPropertyAccess.GetProperty(propertyName, string.Empty, CultureInfo.InvariantCulture,
                                                                    accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
             // Assert
@@ -63,7 +63,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
 
             // Act
             bool propertyNotFound = false;
-            string propertyValue = ticksPropertyAccess.GetProperty(propertyName, "", CultureInfo.InvariantCulture,
+            string propertyValue = ticksPropertyAccess.GetProperty(propertyName, string.Empty, CultureInfo.InvariantCulture,
                                                                    accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
             // Assert
@@ -86,7 +86,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
 
             // Act
             bool propertyNotFound = false;
-            string propertyValue = dtPropertyAccess.GetProperty(propertyName, "", CultureInfo.InvariantCulture,
+            string propertyValue = dtPropertyAccess.GetProperty(propertyName, string.Empty, CultureInfo.InvariantCulture,
                                                                    accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
             // Assert
@@ -130,7 +130,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
 
             // Act
             bool propertyNotFound = false;
-            string propertyValue = dtPropertyAccess.GetProperty(propertyName, "", culture,
+            string propertyValue = dtPropertyAccess.GetProperty(propertyName, string.Empty, culture,
                                                                    accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
             // Assert
@@ -222,7 +222,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
 
             // Act
             bool propertyNotFound = false;
-            string propertyValue = dtPropertyAccess.GetProperty(propertyName, "", culture,
+            string propertyValue = dtPropertyAccess.GetProperty(propertyName, string.Empty, culture,
                                                                    accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
             // Assert

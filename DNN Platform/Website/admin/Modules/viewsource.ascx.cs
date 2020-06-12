@@ -163,7 +163,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 }
                 else
                 {
-                    this.ViewState["UrlReferrer"] = "";
+                    this.ViewState["UrlReferrer"] = string.Empty;
                 }
             }
             this.cmdUpdate.Visible = this.CanEditSource;

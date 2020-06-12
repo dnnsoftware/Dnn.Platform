@@ -55,7 +55,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public string GetMessageLink()
         {
-            return this._navigationManager.NavigateURL(this.GetMessageTab(), "", string.Format("userId={0}", this.PortalSettings.UserId));
+            return this._navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, string.Format("userId={0}", this.PortalSettings.UserId));
         }
 
         public string GetMessageLabel()

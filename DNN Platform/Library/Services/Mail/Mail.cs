@@ -343,8 +343,8 @@ namespace DotNetNuke.Services.Mail
                     break;
             }
 
-            subject = Localize.GetSystemMessage(locale, settings, subject, user, Localize.GlobalResourceFile, custom, "", settings.AdministratorId);
-            body = Localize.GetSystemMessage(locale, settings, body, user, Localize.GlobalResourceFile, custom, "", settings.AdministratorId);
+            subject = Localize.GetSystemMessage(locale, settings, subject, user, Localize.GlobalResourceFile, custom, string.Empty, settings.AdministratorId);
+            body = Localize.GetSystemMessage(locale, settings, body, user, Localize.GlobalResourceFile, custom, string.Empty, settings.AdministratorId);
 
             var fromUser = (UserController.GetUserByEmail(settings.PortalId, settings.Email) != null) ?
                 string.Format("{0} < {1} >", UserController.GetUserByEmail(settings.PortalId, settings.Email).DisplayName, settings.Email) : settings.Email;
@@ -387,7 +387,7 @@ namespace DotNetNuke.Services.Mail
                         break;
                 }
             }
-            return SendMail(mailFrom, mailTo, "", bcc, MailPriority.Normal, subject, bodyFormat, Encoding.UTF8, body, attachment, smtpServer, smtpAuthentication, smtpUsername, smtpPassword);
+            return SendMail(mailFrom, mailTo, string.Empty, bcc, MailPriority.Normal, subject, bodyFormat, Encoding.UTF8, body, attachment, smtpServer, smtpAuthentication, smtpUsername, smtpPassword);
         }
 
         /// -----------------------------------------------------------------------------

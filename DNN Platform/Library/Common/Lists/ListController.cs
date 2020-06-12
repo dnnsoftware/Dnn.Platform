@@ -150,7 +150,7 @@ namespace DotNetNuke.Common.Lists
 
             if (entryId != Null.NullInteger)
             {
-                EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_CREATED);
+                EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LISTENTRY_CREATED);
             }
             if (Thread.CurrentThread.CurrentCulture.Name != Localization.SystemLocale && !this.NonLocalizedLists.Contains(listEntry.ListName))
             {
@@ -259,7 +259,7 @@ namespace DotNetNuke.Common.Lists
 
         public Dictionary<string, ListEntryInfo> GetListEntryInfoDictionary(string listName)
         {
-            return this.GetListEntryInfoDictionary(listName, "", Null.NullInteger);
+            return this.GetListEntryInfoDictionary(listName, string.Empty, Null.NullInteger);
         }
 
         public Dictionary<string, ListEntryInfo> GetListEntryInfoDictionary(string listName, string parentKey)
@@ -282,7 +282,7 @@ namespace DotNetNuke.Common.Lists
 
         public ListInfo GetListInfo(string listName)
         {
-            return this.GetListInfo(listName, "");
+            return this.GetListInfo(listName, string.Empty);
         }
 
         public ListInfo GetListInfo(string listName, string parentKey)
@@ -317,12 +317,12 @@ namespace DotNetNuke.Common.Lists
 
         public ListInfoCollection GetListInfoCollection()
         {
-            return this.GetListInfoCollection("");
+            return this.GetListInfoCollection(string.Empty);
         }
 
         public ListInfoCollection GetListInfoCollection(string listName)
         {
-            return this.GetListInfoCollection(listName, "");
+            return this.GetListInfoCollection(listName, string.Empty);
         }
 
         public ListInfoCollection GetListInfoCollection(string listName, string parentKey)
@@ -369,7 +369,7 @@ namespace DotNetNuke.Common.Lists
                 LocalizationProvider.Instance.SaveString(key, listEntry.TextNonLocalized, listEntry.ResourceFileRoot,
                     Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
             }
-            EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_UPDATED);
+            EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LISTENTRY_UPDATED);
             this.ClearListCache(listEntry.PortalID);
             this.ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
         }
@@ -385,7 +385,7 @@ namespace DotNetNuke.Common.Lists
         [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string) instead. Scheduled removal in v10.0.0."), EditorBrowsable(EditorBrowsableState.Never)]
         public ListEntryInfoCollection GetListEntryInfoCollection(string listName)
         {
-            return this.GetListEntryInfoCollection(listName, "", Null.NullInteger);
+            return this.GetListEntryInfoCollection(listName, string.Empty, Null.NullInteger);
         }
 
         [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead. Scheduled removal in v10.0.0."), EditorBrowsable(EditorBrowsableState.Never)]

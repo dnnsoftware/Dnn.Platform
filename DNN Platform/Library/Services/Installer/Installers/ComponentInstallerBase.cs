@@ -129,7 +129,7 @@ namespace DotNetNuke.Services.Installer.Installers
                                         Priority = MessagePriority.High,
                                         ExpirationDate = DateTime.Now.AddYears(-1),
                                         SentDate = DateTime.Now,
-                                        Body = "",
+                                        Body = string.Empty,
                                         ProcessorType = Util.ReadElement(eventMessageNav, "processorType", this.Log, Util.EVENTMESSAGE_TypeMissing),
                                         ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", this.Log, Util.EVENTMESSAGE_CommandMissing)
                                     };
@@ -142,7 +142,7 @@ namespace DotNetNuke.Services.Installer.Installers
                         if (!string.IsNullOrEmpty(attribValue))
                         {
                             string[] upgradeVersions = attribValue.Split(',');
-                            attribValue = "";
+                            attribValue = string.Empty;
                             foreach (string version in upgradeVersions)
                             {
                                 switch (version.ToLowerInvariant())

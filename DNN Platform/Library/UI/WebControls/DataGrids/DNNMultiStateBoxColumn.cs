@@ -28,8 +28,8 @@ namespace DotNetNuke.UI.WebControls
         private string mDataField = Null.NullString;
         private bool mEnabled = true;
         private string mEnabledField = Null.NullString;
-        private string mImagePath = "";
-        private string mSelectedStateKey = "";
+        private string mImagePath = string.Empty;
+        private string mSelectedStateKey = string.Empty;
         private DNNMultiStateCollection mStates;
 
         /// -----------------------------------------------------------------------------

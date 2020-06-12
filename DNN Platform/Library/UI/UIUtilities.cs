@@ -24,7 +24,7 @@ namespace DotNetNuke.UI
         {
             HttpRequest request = HttpContext.Current.Request;
 
-            string key = "";
+            string key = string.Empty;
             if (request.QueryString["ctl"] != null)
             {
                 key = request.QueryString["ctl"];
@@ -53,7 +53,7 @@ namespace DotNetNuke.UI
         {
             HttpRequest request = HttpContext.Current.Request;
 
-            var renderMode = "";
+            var renderMode = string.Empty;
             if (request.QueryString["render"] != null)
             {
                 renderMode = request.QueryString["render"];
@@ -87,16 +87,16 @@ namespace DotNetNuke.UI
 
             if (request.QueryString["dnnprintmode"] != "true")
             {
-                slaveModule.ModuleTitle = "";
+                slaveModule.ModuleTitle = string.Empty;
             }
 
-            slaveModule.Header = "";
-            slaveModule.Footer = "";
+            slaveModule.Header = string.Empty;
+            slaveModule.Footer = string.Empty;
             slaveModule.StartDate = DateTime.MinValue;
             slaveModule.EndDate = DateTime.MaxValue;
             slaveModule.Visibility = VisibilityState.None;
-            slaveModule.Color = "";
-            slaveModule.Border = "";
+            slaveModule.Color = string.Empty;
+            slaveModule.Border = string.Empty;
             slaveModule.DisplayTitle = true;
             slaveModule.DisplayPrint = false;
             slaveModule.DisplaySyndicate = false;

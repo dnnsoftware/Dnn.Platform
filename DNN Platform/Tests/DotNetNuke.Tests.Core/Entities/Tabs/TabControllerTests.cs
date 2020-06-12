@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.Core.Entities.Tabs
             string invalidType;
 
             // Act
-            var isValid = TabController.IsValidTabName("", out invalidType);
+            var isValid = TabController.IsValidTabName(string.Empty, out invalidType);
 
             // Assert
             Assert.IsFalse(isValid, "An empty tab name is allowed");
@@ -94,7 +94,7 @@ namespace DotNetNuke.Tests.Core.Entities.Tabs
 
             // Assert
             Assert.IsTrue(isValid, "A regular tab name is not allowed");
-            Assert.AreEqual("", invalidType, "The invalidType is not the expected one");
+            Assert.AreEqual(string.Empty, invalidType, "The invalidType is not the expected one");
         }
     }
 }

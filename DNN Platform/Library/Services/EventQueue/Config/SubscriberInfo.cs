@@ -18,9 +18,9 @@ namespace DotNetNuke.Services.EventQueue.Config
         public SubscriberInfo()
         {
             this.ID = Guid.NewGuid().ToString();
-            this.Name = "";
-            this.Description = "";
-            this.Address = "";
+            this.Name = string.Empty;
+            this.Description = string.Empty;
+            this.Address = string.Empty;
             var oPortalSecurity = PortalSecurity.Instance;
             this.PrivateKey = oPortalSecurity.CreateKey(16);
         }

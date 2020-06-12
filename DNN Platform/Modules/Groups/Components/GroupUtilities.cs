@@ -22,7 +22,7 @@ namespace DotNetNuke.Modules.Groups.Components
             var journalController = JournalController.Instance;
             var journalItem = new JournalItem();
 
-            string url = "";
+            string url = string.Empty;
 
             if (roleInfo.Settings.ContainsKey("URL"))
             {

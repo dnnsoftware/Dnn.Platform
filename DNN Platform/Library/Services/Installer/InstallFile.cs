@@ -161,7 +161,7 @@ namespace DotNetNuke.Services.Installer
                 string ext = System.IO.Path.GetExtension(this.Name);
                 if (string.IsNullOrEmpty(ext))
                 {
-                    return "";
+                    return string.Empty;
                 }
                 return ext.Substring(1);
             }
@@ -265,7 +265,7 @@ namespace DotNetNuke.Services.Installer
             if (i < 0)
             {
                 this.Name = fileName.Substring(0, fileName.Length);
-                this.Path = "";
+                this.Path = string.Empty;
             }
             else
             {
@@ -322,7 +322,7 @@ namespace DotNetNuke.Services.Installer
             }
 
             // remove [app_code] token
-            this.Path = this.Path.Replace("[app_code]", "");
+            this.Path = this.Path.Replace("[app_code]", string.Empty);
 
             // remove starting "\"
             if (this.Path.StartsWith("\\"))

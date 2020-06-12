@@ -313,12 +313,12 @@ namespace DotNetNuke.Web.InternalServices
 
                             if (pageID > -1)
                             {
-                                tabModuleId = this.DoAddExistingModule(moduleLstID, pageID, dto.Pane, positionID, "", dto.CopyModule == "true");
+                                tabModuleId = this.DoAddExistingModule(moduleLstID, pageID, dto.Pane, positionID, string.Empty, dto.CopyModule == "true");
                             }
                         }
                         else
                         {
-                            tabModuleId = this.DoAddNewModule("", moduleLstID, dto.Pane, positionID, permissionType, "");
+                            tabModuleId = this.DoAddNewModule(string.Empty, moduleLstID, dto.Pane, positionID, permissionType, string.Empty);
                         }
                     }
 
@@ -446,7 +446,7 @@ namespace DotNetNuke.Web.InternalServices
                 var cookie = this.Request.Headers.GetCookies("StayInEditMode").FirstOrDefault();
                 if (cookie != null && !string.IsNullOrEmpty(cookie["StayInEditMode"].Value))
                 {
-                    var expireCookie = new CookieHeaderValue("StayInEditMode", "");
+                    var expireCookie = new CookieHeaderValue("StayInEditMode", string.Empty);
                     expireCookie.Expires = DateTimeOffset.Now.AddDays(-1);
                     expireCookie.Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/";
                     response.Headers.AddCookies(new List<CookieHeaderValue> { expireCookie });
@@ -724,7 +724,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
 
                 // Add Event Log
-                EventLogController.Instance.AddLog(newModule, PortalSettings.Current, userID, "", EventLogController.EventLogType.MODULE_CREATED);
+                EventLogController.Instance.AddLog(newModule, PortalSettings.Current, userID, string.Empty, EventLogController.EventLogType.MODULE_CREATED);
 
                 return newModule.ModuleID;
             }

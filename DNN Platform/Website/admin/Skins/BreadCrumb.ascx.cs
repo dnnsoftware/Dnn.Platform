@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.Skins.Controls
         private int _rootLevel = 0;
         private bool _showRoot = false;
         private readonly StringBuilder _breadcrumb = new StringBuilder("<span itemscope itemtype=\"http://schema.org/BreadcrumbList\">");
-        private string _homeUrl = "";
+        private string _homeUrl = string.Empty;
         private string _homeTabName = "Root";
         private readonly INavigationManager _navigationManager;
         public BreadCrumb()
@@ -166,12 +166,12 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 if (this.ProfileUserId > -1)
                 {
-                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, "", "UserId=" + this.ProfileUserId);
+                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, string.Empty, "UserId=" + this.ProfileUserId);
                 }
 
                 if (this.GroupId > -1)
                 {
-                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, "", "GroupId=" + this.GroupId);
+                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, string.Empty, "GroupId=" + this.GroupId);
                 }
 
                 // Begin breadcrumb

@@ -534,7 +534,7 @@ namespace DotNetNuke.Services.Install
             // Get current Script time-out
             int scriptTimeOut = this.Server.ScriptTimeout;
 
-            string mode = "";
+            string mode = string.Empty;
             if (this.Request.QueryString["mode"] != null)
             {
                 mode = this.Request.QueryString["mode"].ToLowerInvariant();

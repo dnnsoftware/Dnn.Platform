@@ -19,7 +19,7 @@ namespace DotNetNuke.UI.Containers
 {
     public partial class LinkActions : ActionBase
     {
-        protected string _itemSeparator = "";
+        protected string _itemSeparator = string.Empty;
 
         public string ItemSeparator
         {

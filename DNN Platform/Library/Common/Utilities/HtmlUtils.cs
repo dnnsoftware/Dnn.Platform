@@ -148,7 +148,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string FormatEmail(string Email, bool cloak)
         {
-            string formatEmail = "";
+            string formatEmail = string.Empty;
             if (!string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Email.Trim()))
             {
                 if (Email.IndexOf("@", StringComparison.Ordinal) != -1)
@@ -243,7 +243,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string FormatWebsite(object Website)
         {
-            string formatWebsite = "";
+            string formatWebsite = string.Empty;
             if (Website != DBNull.Value)
             {
                 if (!string.IsNullOrEmpty(Website.ToString().Trim()))
@@ -251,7 +251,7 @@ namespace DotNetNuke.Common.Utilities
                     if (Website.ToString().IndexOf(".", StringComparison.Ordinal) > -1)
                     {
                         formatWebsite = string.Format("<a href=\"{1}{0}\">{0}</a>", Website,
-                            Website.ToString().IndexOf("://", StringComparison.Ordinal) > -1 ? "" : "http://");
+                            Website.ToString().IndexOf("://", StringComparison.Ordinal) > -1 ? string.Empty : "http://");
                     }
                     else
                     {
@@ -296,7 +296,7 @@ namespace DotNetNuke.Common.Utilities
         [Obsolete("This method has been deprecated. Please use System.Web.HtmlUtility.HtmlDecode. Scheduled removal in v11.0.0.")]
         public static string StripEntities(string HTML, bool RetainSpace)
         {
-            var repString = RetainSpace ? " " : "";
+            var repString = RetainSpace ? " " : string.Empty;
             // Replace Entities by replacement String and return mofified string
             return EntityRegEx.Replace(HTML, repString);
         }
@@ -334,7 +334,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The cleaned up string</returns>
         public static string RemoveInlineStyle(string HTML)
         {
-            return RemoveInlineStylesRegEx.Replace(HTML, "");
+            return RemoveInlineStylesRegEx.Replace(HTML, string.Empty);
 
         }
         /// -----------------------------------------------------------------------------
@@ -349,7 +349,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string StripTags(string HTML, bool RetainSpace)
         {
-            return StripTagsRegex.Replace(HTML, RetainSpace ? " " : "");
+            return StripTagsRegex.Replace(HTML, RetainSpace ? " " : string.Empty);
         }
 
 
@@ -375,7 +375,7 @@ namespace DotNetNuke.Common.Utilities
             var result = new StringBuilder();
 
             // Set up Replacement String
-            var repString = retainSpace ? " " : "";
+            var repString = retainSpace ? " " : string.Empty;
 
             // Stripped HTML
             result.Append(StripTagsRegex.Replace(html, repString));
@@ -414,7 +414,7 @@ namespace DotNetNuke.Common.Utilities
             string retHTML = HTML + " "; // Make sure any punctuation at the end of the String is removed
 
             // Set up Replacement String
-            var repString = RetainSpace ? " " : "";
+            var repString = RetainSpace ? " " : string.Empty;
             while (BeforeRegEx.IsMatch(retHTML))
             {
                 retHTML = BeforeRegEx.Replace(retHTML, repString);
@@ -443,7 +443,7 @@ namespace DotNetNuke.Common.Utilities
             if (string.IsNullOrWhiteSpace(HTML))
                 return Null.NullString;
 
-            return StripWhiteSpaceRegex.Replace(HTML, RetainSpace ? " " : "");
+            return StripWhiteSpaceRegex.Replace(HTML, RetainSpace ? " " : string.Empty);
         }
 
         /// -----------------------------------------------------------------------------
@@ -461,7 +461,7 @@ namespace DotNetNuke.Common.Utilities
             if (string.IsNullOrWhiteSpace(HTML))
                 return HTML;
 
-            string RepString = RetainSpace ? " " : "";
+            string RepString = RetainSpace ? " " : string.Empty;
             return StripNonWordRegex.Replace(HTML, RepString);
         }
 
@@ -539,7 +539,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     // Get the time of the feedback
                     TimeSpan timeElapsed = Upgrade.RunTime;
-                    string strMessage = "";
+                    string strMessage = string.Empty;
                     if (showtime)
                     {
                         strMessage += timeElapsed.ToString().Substring(0, timeElapsed.ToString().LastIndexOf(".", StringComparison.Ordinal) + 4) + " -";

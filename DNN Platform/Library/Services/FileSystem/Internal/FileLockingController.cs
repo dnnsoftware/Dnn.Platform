@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
     {
         public bool IsFileLocked(IFileInfo file, out string lockReasonKey)
         {
-            lockReasonKey = "";
+            lockReasonKey = string.Empty;
 
             var allowedUser = UserSecurityController.Instance.IsHostAdminUser(file.PortalId);
             if (allowedUser)

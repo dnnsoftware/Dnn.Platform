@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Authentication
         /// -----------------------------------------------------------------------------
         public static int AddAuthentication(AuthenticationInfo authSystem)
         {
-            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_CREATED);
+            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_CREATED);
             return provider.AddAuthentication(
                 authSystem.PackageID,
                                               authSystem.AuthenticationType,
@@ -123,7 +123,7 @@ namespace DotNetNuke.Services.Authentication
         public static void DeleteAuthentication(AuthenticationInfo authSystem)
         {
             provider.DeleteAuthentication(authSystem.AuthenticationID);
-            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_DELETED);
+            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_DELETED);
         }
 
         /// -----------------------------------------------------------------------------
@@ -288,7 +288,7 @@ namespace DotNetNuke.Services.Authentication
         /// <returns><c>true</c> if OAuth Provider and it is enabled for the portal, Otherwise <c>false</c>.</returns>
         public static bool IsEnabledForPortal(AuthenticationInfo authentication, int portalId)
         {
-            return !string.IsNullOrEmpty(PortalController.GetPortalSetting(authentication.AuthenticationType + "_Enabled", portalId, ""))
+            return !string.IsNullOrEmpty(PortalController.GetPortalSetting(authentication.AuthenticationType + "_Enabled", portalId, string.Empty))
                 ? PortalController.GetPortalSettingAsBoolean(authentication.AuthenticationType + "_Enabled", portalId, false)
                 : HostController.Instance.GetBoolean(authentication.AuthenticationType + "_Enabled", false);
         }
@@ -303,7 +303,7 @@ namespace DotNetNuke.Services.Authentication
         /// -----------------------------------------------------------------------------
         public static string GetLogoffRedirectURL(PortalSettings settings, HttpRequest request)
         {
-            string _RedirectURL = "";
+            string _RedirectURL = string.Empty;
             if (settings.Registration.RedirectAfterLogout == Null.NullInteger)
             {
                 if (TabPermissionController.CanViewPage())
@@ -413,7 +413,7 @@ namespace DotNetNuke.Services.Authentication
                                           authSystem.LoginControlSrc,
                                           authSystem.LogoffControlSrc,
                                           UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_UPDATED);
+            EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.AUTHENTICATION_UPDATED);
         }
 
         #endregion

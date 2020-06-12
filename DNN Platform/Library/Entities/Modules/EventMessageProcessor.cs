@@ -27,7 +27,7 @@ namespace DotNetNuke.Entities.Modules
             try
             {
                 string BusinessControllerClass = message.Attributes["BusinessControllerClass"];
-                object controller = Reflection.CreateObject(BusinessControllerClass, "");
+                object controller = Reflection.CreateObject(BusinessControllerClass, string.Empty);
                 if (controller is IPortable)
                 {
                     int ModuleId = Convert.ToInt32(message.Attributes["ModuleId"]);
@@ -54,7 +54,7 @@ namespace DotNetNuke.Entities.Modules
                 var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
 
                 string BusinessControllerClass = message.Attributes["BusinessControllerClass"];
-                object controller = Reflection.CreateObject(BusinessControllerClass, "");
+                object controller = Reflection.CreateObject(BusinessControllerClass, string.Empty);
                 if (controller is IUpgradeable)
                 {
                     // get the list of applicable versions
@@ -85,7 +85,7 @@ namespace DotNetNuke.Entities.Modules
         private static void UpdateSupportedFeatures(EventMessage message)
         {
             string BusinessControllerClass = message.Attributes["BusinessControllerClass"];
-            object controller = Reflection.CreateObject(BusinessControllerClass, "");
+            object controller = Reflection.CreateObject(BusinessControllerClass, string.Empty);
             UpdateSupportedFeatures(controller, Convert.ToInt32(message.Attributes["DesktopModuleId"]));
         }
 
@@ -127,7 +127,7 @@ namespace DotNetNuke.Entities.Modules
                                            Priority = MessagePriority.High,
                                            ExpirationDate = DateTime.Now.AddYears(-1),
                                            SentDate = DateTime.Now,
-                                           Body = "",
+                                           Body = string.Empty,
                                            ProcessorType = "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke",
                                            ProcessorCommand = "ImportModule"
                                        };

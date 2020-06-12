@@ -95,7 +95,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
                 else
                 {
-                    _ReturnURL = this._navigationManager.NavigateURL(this.TabId, "", FilterParams);
+                    _ReturnURL = this._navigationManager.NavigateURL(this.TabId, string.Empty, FilterParams);
                 }
                 return _ReturnURL;
             }
@@ -479,7 +479,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
             else
             {
-                return "";
+                return string.Empty;
             }
         }
 
@@ -621,7 +621,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
                 else
                 {
-                    this.txtUsers.Text = "";
+                    this.txtUsers.Text = string.Empty;
                 }
             }
             this.BindGrid();

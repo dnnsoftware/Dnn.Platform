@@ -747,7 +747,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 return null;
             }
 
-            object controller = Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, "");
+            object controller = Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, string.Empty);
             if (controller is IVersionable)
             {
                 return controller as IVersionable;

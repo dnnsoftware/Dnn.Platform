@@ -247,7 +247,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="nodeValue">The node value (text value to use).</param>
         private static void AddResourceFileNode(ref XmlNode resxRoot, string elementName, string nodeName, string nodeValue)
         {
-            XmlNode newNode = resxRoot.AddElement(elementName, "").AddAttribute("name", nodeName);
+            XmlNode newNode = resxRoot.AddElement(elementName, string.Empty).AddAttribute("name", nodeName);
             if (elementName == "data")
             {
                 newNode = newNode.AddAttribute("xml:space", "preserve");

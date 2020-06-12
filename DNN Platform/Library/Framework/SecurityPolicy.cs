@@ -30,7 +30,7 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                string strPermissions = "";
+                string strPermissions = string.Empty;
                 if (HasReflectionPermission())
                 {
                     strPermissions += ", " + ReflectionPermission;

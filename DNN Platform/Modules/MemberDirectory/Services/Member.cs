@@ -111,7 +111,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                                                              Scope.DefaultSettings,
                                                              ref propertyNotFound);
 
-                    properties[property.PropertyName] = string.IsNullOrEmpty(value) ? "" : Common.Utilities.HtmlUtils.Clean(HttpUtility.HtmlDecode(value), false);
+                    properties[property.PropertyName] = string.IsNullOrEmpty(value) ? string.Empty : Common.Utilities.HtmlUtils.Clean(HttpUtility.HtmlDecode(value), false);
                 }
                 return properties;
             }

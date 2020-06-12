@@ -125,7 +125,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private void SetupDataProvider()
         {
             // Standard DataProvider Path for Logging
-            this._dataProvider.Setup(d => d.GetProviderPath()).Returns("");
+            this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
 
             var dataTable = new DataTable("Languages");
             var pkId = dataTable.Columns.Add("LanguageID", typeof(int));
@@ -287,7 +287,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._dtMessageThreadsView.Clear();
 
             this._mockDataService.Setup(ds => ds.GetMessageThread(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), ref totalRecords)).Returns(this._dtMessageThreadsView.CreateDataReader()).Verifiable();
-            this._mockInternalMessagingController.Object.GetMessageThread(0, 0, 0, 0, "", false, ref totalRecords);
+            this._mockInternalMessagingController.Object.GetMessageThread(0, 0, 0, 0, string.Empty, false, ref totalRecords);
             this._mockDataService.Verify();
         }
 
@@ -362,7 +362,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 Constants.UserID_User12,
                 0,
                 0,
-                "",
+                string.Empty,
                 false,
                 MessageReadStatus.Any,
                 MessageArchivedStatus.Any);
@@ -377,7 +377,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Setup(mc => mc.GetSentbox(Constants.UserID_User12, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), MessageReadStatus.Any, MessageArchivedStatus.UnArchived))
                 .Verifiable();
 
-            this._mockInternalMessagingController.Object.GetSentbox(Constants.UserID_User12, 0, 0, "", false);
+            this._mockInternalMessagingController.Object.GetSentbox(Constants.UserID_User12, 0, 0, string.Empty, false);
 
             this._mockInternalMessagingController.Verify();
         }
@@ -1113,7 +1113,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var sender = new UserInfo { DisplayName = "user11", UserID = Constants.USER_TenId };
 
             // Act, Assert
-            this._internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, "", null, sender);
+            this._internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, string.Empty, null, sender);
         }
 
         [Test]
@@ -1358,7 +1358,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockInternalMessagingController.Setup(mc => mc.GetPortalSettingAsDouble(It.IsAny<string>(), this._user12UserInfo.PortalID, It.IsAny<double>())).Returns(throttlingInterval);
             this._mockInternalMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(false);
             this._dtMessages.Clear();
-            this._dtMessages.Rows.Add(-1, 1, 1, "", "", "", "", -1, -1, -1, -1, lastMessageDate, -1, Null.NullDate);
+            this._dtMessages.Rows.Add(-1, 1, 1, string.Empty, string.Empty, string.Empty, string.Empty, -1, -1, -1, -1, lastMessageDate, -1, Null.NullDate);
             var dr = this._dtMessages.CreateDataReader();
             var message = CBO.FillObject<Message>(dr);
             this._mockInternalMessagingController.Setup(mc => mc.GetLastSentMessage(It.IsAny<UserInfo>())).Returns(message);
@@ -1383,7 +1383,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             this._mockInternalMessagingController.Setup(mc => mc.GetCurrentUserInfo()).Returns(this._user12UserInfo);
             this._mockDataService.Setup(ds => ds.GetInBoxView(It.IsAny<int>(), Constants.PORTAL_Zero, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), MessageReadStatus.Any, MessageArchivedStatus.Any, MessageSentStatus.Received)).Returns(this._dtMessageConversationView.CreateDataReader()).Verifiable();
-            this._mockInternalMessagingController.Object.GetInbox(0, 0, 0, "", false, MessageReadStatus.Any, MessageArchivedStatus.Any);
+            this._mockInternalMessagingController.Object.GetInbox(0, 0, 0, string.Empty, false, MessageReadStatus.Any, MessageArchivedStatus.Any);
             this._mockDataService.Verify();
         }
 
@@ -1394,7 +1394,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Setup(mc => mc.GetInbox(Constants.UserID_User12, It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<bool>(), MessageReadStatus.Any, MessageArchivedStatus.UnArchived))
                 .Verifiable();
 
-            this._mockInternalMessagingController.Object.GetInbox(Constants.UserID_User12, 0, 0, "", false);
+            this._mockInternalMessagingController.Object.GetInbox(Constants.UserID_User12, 0, 0, string.Empty, false);
 
             this._mockInternalMessagingController.Verify();
         }

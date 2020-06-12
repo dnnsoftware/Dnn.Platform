@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
             {
                 try
                 {
-                    var activationResult = "";
+                    var activationResult = string.Empty;
                     activationResult = Upgrade.ActivateLicense();
 
                     if (!activationResult.ToLowerInvariant().Contains("success"))

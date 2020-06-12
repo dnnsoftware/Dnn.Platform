@@ -34,11 +34,11 @@ namespace DotNetNuke.UI.UserControls
         private const string MyFileName = "Address.ascx";
         private string _cell;
         private string _city;
-        private string _controlColumnWidth = "";
+        private string _controlColumnWidth = string.Empty;
         private string _country;
         private string _countryData = "Text";
         private string _fax;
-        private string _labelColumnWidth = "";
+        private string _labelColumnWidth = string.Empty;
         private int _moduleId;
         private string _postal;
         private string _region;
@@ -192,13 +192,13 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                var retValue = "";
+                var retValue = string.Empty;
                 if (this.cboCountry.SelectedItem != null)
                 {
                     switch (this._countryData.ToLowerInvariant())
                     {
                         case "text":
-                            retValue = this.cboCountry.SelectedIndex == 0 ? "" : this.cboCountry.SelectedItem.Text;
+                            retValue = this.cboCountry.SelectedIndex == 0 ? string.Empty : this.cboCountry.SelectedItem.Text;
                             break;
                         case "value":
                             retValue = this.cboCountry.SelectedItem.Value;
@@ -217,7 +217,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                var retValue = "";
+                var retValue = string.Empty;
                 if (this.cboRegion.Visible)
                 {
                     if (this.cboRegion.SelectedItem != null)
@@ -417,7 +417,7 @@ namespace DotNetNuke.UI.UserControls
                     this.cboRegion.Items.Clear();
                     this.cboRegion.DataSource = entryCollection;
                     this.cboRegion.DataBind();
-                    this.cboRegion.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", ""));
+                    this.cboRegion.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", string.Empty));
                 }
                 if (countryCode.Equals("us", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -489,7 +489,7 @@ namespace DotNetNuke.UI.UserControls
                 else
                 {
                     this.valCountry.Enabled = false;
-                    this.cboCountry.CssClass = "";
+                    this.cboCountry.CssClass = string.Empty;
                 }
                 if (reqRegion)
                 {
@@ -512,8 +512,8 @@ namespace DotNetNuke.UI.UserControls
                 {
                     this.valRegion1.Enabled = false;
                     this.valRegion2.Enabled = false;
-                    this.txtRegion.CssClass = "";
-                    this.cboRegion.CssClass = "";
+                    this.txtRegion.CssClass = string.Empty;
+                    this.cboRegion.CssClass = string.Empty;
                 }
                 if (reqCity)
                 {
@@ -524,7 +524,7 @@ namespace DotNetNuke.UI.UserControls
                 else
                 {
                     this.valCity.Enabled = false;
-                    this.txtCity.CssClass = "";
+                    this.txtCity.CssClass = string.Empty;
                 }
                 if (reqStreet)
                 {
@@ -535,7 +535,7 @@ namespace DotNetNuke.UI.UserControls
                 else
                 {
                     this.valStreet.Enabled = false;
-                    this.txtStreet.CssClass = "";
+                    this.txtStreet.CssClass = string.Empty;
                 }
                 if (reqPostal)
                 {
@@ -546,7 +546,7 @@ namespace DotNetNuke.UI.UserControls
                 else
                 {
                     this.valPostal.Enabled = false;
-                    this.txtPostal.CssClass = "";
+                    this.txtPostal.CssClass = string.Empty;
                 }
                 if (reqTelephone)
                 {
@@ -557,7 +557,7 @@ namespace DotNetNuke.UI.UserControls
                 else
                 {
                     this.valTelephone.Enabled = false;
-                    this.txtTelephone.CssClass = "";
+                    this.txtTelephone.CssClass = string.Empty;
                 }
                 if (reqCell)
                 {
@@ -568,7 +568,7 @@ namespace DotNetNuke.UI.UserControls
                 else
                 {
                     this.valCell.Enabled = false;
-                    this.txtCell.CssClass = "";
+                    this.txtCell.CssClass = string.Empty;
                 }
                 if (reqFax)
                 {
@@ -579,7 +579,7 @@ namespace DotNetNuke.UI.UserControls
                 else
                 {
                     this.valFax.Enabled = false;
-                    this.txtFax.CssClass = "";
+                    this.txtFax.CssClass = string.Empty;
                 }
             }
         }
@@ -595,14 +595,14 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.chkRegion.Checked = false;
             }
-            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addressstreet", this.chkStreet.Checked ? "" : "N");
-            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addresscity", this.chkCity.Checked ? "" : "N");
-            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addresscountry", this.chkCountry.Checked ? "" : "N");
-            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addressregion", this.chkRegion.Checked ? "" : "N");
-            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addresspostal", this.chkPostal.Checked ? "" : "N");
-            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addresstelephone", this.chkTelephone.Checked ? "" : "N");
-            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addresscell", this.chkCell.Checked ? "" : "N");
-            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addressfax", this.chkFax.Checked ? "" : "N");
+            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addressstreet", this.chkStreet.Checked ? string.Empty : "N");
+            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addresscity", this.chkCity.Checked ? string.Empty : "N");
+            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addresscountry", this.chkCountry.Checked ? string.Empty : "N");
+            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addressregion", this.chkRegion.Checked ? string.Empty : "N");
+            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addresspostal", this.chkPostal.Checked ? string.Empty : "N");
+            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addresstelephone", this.chkTelephone.Checked ? string.Empty : "N");
+            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addresscell", this.chkCell.Checked ? string.Empty : "N");
+            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addressfax", this.chkFax.Checked ? string.Empty : "N");
 
             this.ShowRequiredFields();
         }
@@ -663,7 +663,7 @@ namespace DotNetNuke.UI.UserControls
 
                     this.cboCountry.DataSource = entryCollection;
                     this.cboCountry.DataBind();
-                    this.cboCountry.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", ""));
+                    this.cboCountry.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", string.Empty));
 
                     switch (this._countryData.ToLowerInvariant())
                     {

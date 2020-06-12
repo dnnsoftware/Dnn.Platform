@@ -554,7 +554,7 @@ namespace DotNetNuke.Entities
                 return;
             }
 
-            EventLogController.Instance.AddLog(fileInfo, PortalSettings.Current, userId, "", logType);
+            EventLogController.Instance.AddLog(fileInfo, PortalSettings.Current, userId, string.Empty, logType);
         }
     }
 }

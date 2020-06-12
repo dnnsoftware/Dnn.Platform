@@ -58,7 +58,7 @@ namespace log4net.Util
         /// </remarks>
         public OnlyOnceErrorHandler()
         {
-            this.m_prefix = "";
+            this.m_prefix = string.Empty;
         }
 
         /// <summary>

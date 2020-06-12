@@ -377,11 +377,11 @@ namespace DotNetNuke.Services.Exceptions
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (!Host.UseCustomErrorMessages)
             {
-                throw new PageLoadException(exc == null ? "" : exc.Message, exc);
+                throw new PageLoadException(exc == null ? string.Empty : exc.Message, exc);
             }
             else
             {
-                var lex = new PageLoadException(exc == null ? "" : exc.Message, exc);
+                var lex = new PageLoadException(exc == null ? string.Empty : exc.Message, exc);
                 // publish the exception
                 var objExceptionLog = new ExceptionLogController();
                 objExceptionLog.AddLog(lex);

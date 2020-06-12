@@ -189,7 +189,7 @@ namespace DotNetNuke.Services.Installer.Writers
             // we are going to drill down through the folders to add the files
             foreach (string fileName in Directory.GetFiles(folder))
             {
-                string name = fileName.Replace(basePath + "\\", "");
+                string name = fileName.Replace(basePath + "\\", string.Empty);
                 this.AddFile(name, name);
             }
         }

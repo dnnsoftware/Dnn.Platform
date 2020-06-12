@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.Html
             if (this.cboWorkflow.SelectedValue != null)
             {
                 var objWorkflow = new WorkflowStateController();
-                var strDescription = "";
+                var strDescription = string.Empty;
                 var arrStates = objWorkflow.GetWorkflowStates(int.Parse(this.cboWorkflow.SelectedValue));
                 if (arrStates.Count > 0)
                 {

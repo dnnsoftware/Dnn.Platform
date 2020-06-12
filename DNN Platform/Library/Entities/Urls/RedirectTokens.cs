@@ -79,15 +79,15 @@ namespace DotNetNuke.Entities.Urls
                     value = "true";
                     break;
                 default:
-                    token = "";
-                    value = "";
+                    token = string.Empty;
+                    value = string.Empty;
                     break;
             }
         }
 
         private static string GetRedirectReasonRewriteToken(RedirectReason reason)
         {
-            string result = "";
+            string result = string.Empty;
             switch (reason)
             {
                 case RedirectReason.Deleted_Page:
@@ -192,7 +192,7 @@ namespace DotNetNuke.Entities.Urls
                     // the reasonToken helps the rewrite process determine why a redirect is required
                     // after the token is stored in the page dictionary
                     string reasonToken = GetRedirectReasonRewriteToken(reason);
-                    if (reasonToken != "")
+                    if (reasonToken != string.Empty)
                     {
                         result += reasonToken;
                     }
@@ -415,7 +415,7 @@ namespace DotNetNuke.Entities.Urls
         /// <returns></returns>
         internal static string RemoveAnyRedirectReasons(string rewritePath)
         {
-            return RewritePathRx.Replace(rewritePath, "");
+            return RewritePathRx.Replace(rewritePath, string.Empty);
         }
 
         /// <summary>
@@ -440,8 +440,8 @@ namespace DotNetNuke.Entities.Urls
                     val = "true";
                 }
                 // nix the 301 redirect query string value or terminal loops-a-plenty
-                path = path.Replace("&do301=" + val, "");
-                path = path.Replace("?do301=" + val, "");
+                path = path.Replace("&do301=" + val, string.Empty);
+                path = path.Replace("?do301=" + val, string.Empty);
 
                 // 911 : object not set error
                 if (queryStringCol != null)
@@ -453,8 +453,8 @@ namespace DotNetNuke.Entities.Urls
                     val = "true";
                 }
                 // nix the 302 redirect query string value or terminal loops-a-plenty
-                path = path.Replace("&do302=" + val, "");
-                path = path.Replace("?do302=" + val, "");
+                path = path.Replace("&do302=" + val, string.Empty);
+                path = path.Replace("?do302=" + val, string.Empty);
             }
             return path;
         }
@@ -477,7 +477,7 @@ namespace DotNetNuke.Entities.Urls
                 string p = tokenMatch.Groups["p"].Value;
                 if (p == "?")
                 {
-                    result = result.Replace(tokenAndValue, "");
+                    result = result.Replace(tokenAndValue, string.Empty);
                     if (result.Contains("?&"))
                     {
                         result = result.Replace("?&", "?");
@@ -494,7 +494,7 @@ namespace DotNetNuke.Entities.Urls
                 else
                 {
                     // p == "&"
-                    result = result.Replace("&" + tokenAndValue, "");
+                    result = result.Replace("&" + tokenAndValue, string.Empty);
                 }
             }
 

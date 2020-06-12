@@ -115,10 +115,10 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             }
 
             var status = UserLoginStatus.LOGIN_FAILURE;
-            var ipAddress = request.GetIPAddress() ?? "";
+            var ipAddress = request.GetIPAddress() ?? string.Empty;
             var userInfo = UserController.ValidateUser(
                 portalSettings.PortalId,
-                loginData.Username, loginData.Password, "DNN", "", AuthScheme, ipAddress, ref status);
+                loginData.Username, loginData.Password, "DNN", string.Empty, AuthScheme, ipAddress, ref status);
 
             if (userInfo == null)
             {

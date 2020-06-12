@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Search.Controllers
         /// <summary>
         /// Gets the localized search type name.
         /// </summary>
-        public virtual string LocalizedSearchTypeName => "";
+        public virtual string LocalizedSearchTypeName => string.Empty;
 
         #endregion
     }

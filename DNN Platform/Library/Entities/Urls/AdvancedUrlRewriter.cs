@@ -797,7 +797,7 @@ namespace DotNetNuke.Entities.Urls
                 // format up the error message to show
                 const string debugMsg = "{0}, {1}, {2}, {3}, {4}, {5}, {6}";
                 string productVer = DotNetNukeContext.Current.Application.Version.ToString();
-                string portalSettings = "";
+                string portalSettings = string.Empty;
                 string browser = "Unknown";
                 // 949 : don't rely on 'result' being non-null
                 if (result != null)
@@ -917,7 +917,7 @@ namespace DotNetNuke.Entities.Urls
                 bool useDNNTab = false;
                 int errTabId = -1;
                 string errUrl = null;
-                string status = "";
+                string status = string.Empty;
                 bool isPostback = false;
                 if (settings != null)
                 {
@@ -1034,7 +1034,7 @@ namespace DotNetNuke.Entities.Urls
                                 redirect = true;
                                     // redirect postbacks as you can't postback successfully to a server.transfer
                             }
-                            errUrl = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(errTab.TabID, "");
+                            errUrl = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(errTab.TabID, string.Empty);
                             // have to update the portal settings with the new tabid
                             PortalSettings ps = null;
                             if (context != null && context.Items != null)
@@ -1179,7 +1179,7 @@ namespace DotNetNuke.Entities.Urls
                             errorPageHtml.Write("<div>Change this message by configuring a specific 404 Error Page or Url for this website.</div>");
 
                             // output a reason for the 404
-                            string reason = "";
+                            string reason = string.Empty;
                             if (result != null)
                             {
                                 reason = result.Reason.ToString();
@@ -1299,7 +1299,7 @@ namespace DotNetNuke.Entities.Urls
 
         private static bool CheckForDebug(HttpRequest request, NameValueCollection queryStringCol, bool debugEnabled)
         {
-            string debugValue = "";
+            string debugValue = string.Empty;
             bool retVal = false;
 
             if (debugEnabled)
@@ -1630,7 +1630,7 @@ namespace DotNetNuke.Entities.Urls
 
         private string ReplaceDomainName(string url, string replaceDomain, string withDomain)
         {
-            if (replaceDomain != "" && withDomain != "")
+            if (replaceDomain != string.Empty && withDomain != string.Empty)
             {
                 // 951 : change find/replace routine to regex for more accurate replacement
                 // (previous method gives false positives if the SSL Url is contained within the STD url)
@@ -1896,7 +1896,7 @@ namespace DotNetNuke.Entities.Urls
                 if (redirectReason == RedirectReason.Wrong_Portal_Alias_For_Culture ||
                     redirectReason == RedirectReason.Wrong_Portal_Alias_For_Culture_And_Browser)
                 {
-                    destUrl = destUrl.Replace("/language/" + result.CultureCode, "");
+                    destUrl = destUrl.Replace("/language/" + result.CultureCode, string.Empty);
                 }
                 destUrl = CheckForSiteRootRedirect(rightAlias, destUrl);
                 result.FinalUrl = destUrl;
@@ -2270,7 +2270,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     // exact match : that's the alias root
                     isChildPortalRootUrl = true;
-                    aliasQueryString = "";
+                    aliasQueryString = string.Empty;
                 }
                 if (!isChildPortalRootUrl && requestUrl.Contains("?"))
                 {
@@ -2300,8 +2300,8 @@ namespace DotNetNuke.Entities.Urls
         private static string MakeUrlWithAlias(Uri requestUri, string httpAlias)
         {
             return requestUri.AbsoluteUri.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase)
-                             ? "https://" + httpAlias.Replace("*.", "") + "/"
-                             : "http://" + httpAlias.Replace("*.", "") + "/";
+                             ? "https://" + httpAlias.Replace("*.", string.Empty) + "/"
+                             : "http://" + httpAlias.Replace("*.", string.Empty) + "/";
         }
 
         private static string MakeUrlWithAlias(Uri requestUri, PortalAliasInfo alias)
@@ -2501,7 +2501,7 @@ namespace DotNetNuke.Entities.Urls
             // check for ".." escape characters commonly used by hackers to traverse the folder tree on the server
             // the application should always use the exact relative location of the resource it is requesting
             var strURL = request.Url.AbsolutePath;
-            var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.Url.AbsolutePath)) ?? "";
+            var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.Url.AbsolutePath)) ?? string.Empty;
             if (UrlSlashesRegex.Match(strURL).Success || UrlSlashesRegex.Match(strDoubleDecodeURL).Success)
             {
                 throw new HttpException(404, "Not Found");
@@ -2692,16 +2692,16 @@ namespace DotNetNuke.Entities.Urls
                             string cleanPath = RedirectTokens.RemoveAnyRedirectTokensAndReasons(rewritePathOnly);
                             // string cleanPath = rewritePathOnly.Replace("&do301=check","");//remove check parameter if it exists
                             // cleanPath = cleanPath.Replace("&do301=true", "");//don't pass through internal redirect check parameter
-                            cleanPath = cleanPath.Replace("&_aumdebug=true", ""); // remove debug parameter if it exists
+                            cleanPath = cleanPath.Replace("&_aumdebug=true", string.Empty); // remove debug parameter if it exists
 
-                            Match match = RewritePathRx.Match(rewritePathOnly ?? "");
+                            Match match = RewritePathRx.Match(rewritePathOnly ?? string.Empty);
                             if (match.Success)
                             {
                                 // when the pathOnly value ends with '=' it means there is a query string pair with a key and no value
                                 // make the assumption that this was passed in as a page name OTHER than default page
                                 string pageName = match.Groups["parm"].Value; // get the last parameter in the list
 
-                                cleanPath = cleanPath.Replace(match.Value, "");
+                                cleanPath = cleanPath.Replace(match.Value, string.Empty);
                                 // remove the last parameter from the path
 
                                 // generate teh friendly URl name with the last parameter as the page name, not a query string parameter
@@ -2734,9 +2734,9 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 string rawUrlWithHost = StripDebugParameter(urlDecode.ToLowerInvariant());
                                 // string rawUrlWithHost = StripDebugParameter(System.Web.HttpUtility.UrlDecode(scheme + requestUri.Host + requestUri.PathAndQuery).ToLowerInvariant());
-                                string rawUrlWithHostNoScheme = StripDebugParameter(rawUrlWithHost.Replace(scheme, ""));
-                                string bestFriendlyNoScheme = StripDebugParameter(bestFriendlyUrl.ToLowerInvariant().Replace(scheme, ""));
-                                string requestedPathNoScheme = StripDebugParameter(requestUri.AbsoluteUri.Replace(scheme, "").ToLowerInvariant());
+                                string rawUrlWithHostNoScheme = StripDebugParameter(rawUrlWithHost.Replace(scheme, string.Empty));
+                                string bestFriendlyNoScheme = StripDebugParameter(bestFriendlyUrl.ToLowerInvariant().Replace(scheme, string.Empty));
+                                string requestedPathNoScheme = StripDebugParameter(requestUri.AbsoluteUri.Replace(scheme, string.Empty).ToLowerInvariant());
                                 string rawUrlLowerCase = StripDebugParameter(requestUri.AbsoluteUri.ToLowerInvariant());
 
                                 // check to see if just an alias redirect of an internal alias
@@ -2857,7 +2857,7 @@ namespace DotNetNuke.Entities.Urls
 
         private static string StripDebugParameter(string url)
         {
-            return AumDebugRegex.Replace(url, "");
+            return AumDebugRegex.Replace(url, string.Empty);
         }
 
         private static bool CheckFor301RedirectExclusion(int tabId, int portalId, bool checkBaseUrls, out TabInfo tab, FriendlyUrlSettings settings)

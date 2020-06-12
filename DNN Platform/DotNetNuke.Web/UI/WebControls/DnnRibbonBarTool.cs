@@ -142,23 +142,23 @@ namespace DotNetNuke.Web.UI.WebControls
                     this._allTools = new Dictionary<string, RibbonBarToolInfo>
                                     {
                                         // Framework
-                                        { "PageSettings", new RibbonBarToolInfo("PageSettings", false, false, "", "", "", true) },
-                                        { "CopyPage", new RibbonBarToolInfo("CopyPage", false, false, "", "", "", true) },
-                                        { "DeletePage", new RibbonBarToolInfo("DeletePage", false, true, "", "", "", true) },
-                                        { "ImportPage", new RibbonBarToolInfo("ImportPage", false, false, "", "", "", true) },
-                                        { "ExportPage", new RibbonBarToolInfo("ExportPage", false, false, "", "", "", true) },
-                                        { "NewPage", new RibbonBarToolInfo("NewPage", false, false, "", "", "", true) },
-                                        { "CopyPermissionsToChildren", new RibbonBarToolInfo("CopyPermissionsToChildren", false, true, "", "", "", false) },
-                                        { "CopyDesignToChildren", new RibbonBarToolInfo("CopyDesignToChildren", false, true, "", "", "", false) },
-                                        { "Help", new RibbonBarToolInfo("Help", false, false, "_Blank", "", "", false) },
+                                        { "PageSettings", new RibbonBarToolInfo("PageSettings", false, false, string.Empty, string.Empty, string.Empty, true) },
+                                        { "CopyPage", new RibbonBarToolInfo("CopyPage", false, false, string.Empty, string.Empty, string.Empty, true) },
+                                        { "DeletePage", new RibbonBarToolInfo("DeletePage", false, true, string.Empty, string.Empty, string.Empty, true) },
+                                        { "ImportPage", new RibbonBarToolInfo("ImportPage", false, false, string.Empty, string.Empty, string.Empty, true) },
+                                        { "ExportPage", new RibbonBarToolInfo("ExportPage", false, false, string.Empty, string.Empty, string.Empty, true) },
+                                        { "NewPage", new RibbonBarToolInfo("NewPage", false, false, string.Empty, string.Empty, string.Empty, true) },
+                                        { "CopyPermissionsToChildren", new RibbonBarToolInfo("CopyPermissionsToChildren", false, true, string.Empty, string.Empty, string.Empty, false) },
+                                        { "CopyDesignToChildren", new RibbonBarToolInfo("CopyDesignToChildren", false, true, string.Empty, string.Empty, string.Empty, false) },
+                                        { "Help", new RibbonBarToolInfo("Help", false, false, "_Blank", string.Empty, string.Empty, false) },
                                         // Modules On Tabs
-                                        { "Console", new RibbonBarToolInfo("Console", false, false, "", "Console", "", false) },
-                                        { "HostConsole", new RibbonBarToolInfo("HostConsole", true, false, "", "Console", "", false) },
-                                        { "UploadFile", new RibbonBarToolInfo("UploadFile", false, false, "", "", "WebUpload", true) },
-                                        { "NewRole", new RibbonBarToolInfo("NewRole", false, false, "", "Security Roles", "Edit", true) },
-                                        { "NewUser", new RibbonBarToolInfo("NewUser", false, false, "", "User Accounts", "Edit", true) },
-                                        { "ClearCache", new RibbonBarToolInfo("ClearCache", true, true, "", "", "", false) },
-                                        { "RecycleApp", new RibbonBarToolInfo("RecycleApp", true, true, "", "", "", false) }
+                                        { "Console", new RibbonBarToolInfo("Console", false, false, string.Empty, "Console", string.Empty, false) },
+                                        { "HostConsole", new RibbonBarToolInfo("HostConsole", true, false, string.Empty, "Console", string.Empty, false) },
+                                        { "UploadFile", new RibbonBarToolInfo("UploadFile", false, false, string.Empty, string.Empty, "WebUpload", true) },
+                                        { "NewRole", new RibbonBarToolInfo("NewRole", false, false, string.Empty, "Security Roles", "Edit", true) },
+                                        { "NewUser", new RibbonBarToolInfo("NewUser", false, false, string.Empty, "User Accounts", "Edit", true) },
+                                        { "ClearCache", new RibbonBarToolInfo("ClearCache", true, true, string.Empty, string.Empty, string.Empty, false) },
+                                        { "RecycleApp", new RibbonBarToolInfo("RecycleApp", true, true, string.Empty, string.Empty, string.Empty, false) }
                                     };
                 }
 
@@ -408,7 +408,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 default:
                     // if it has a module definition, look it up and check permissions
                     // if it doesn't exist, assume no permission
-                    string friendlyName = "";
+                    string friendlyName = string.Empty;
                     if (this.ToolInfo.ToolName == toolName)
                     {
                         friendlyName = this.ToolInfo.ModuleFriendlyName;

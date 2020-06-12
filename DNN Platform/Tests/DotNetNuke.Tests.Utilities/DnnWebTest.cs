@@ -114,7 +114,7 @@ namespace DotNetNuke.Tests.Utilities
 
         private static void RegisterIfNotAlreadyRegistered<TConcrete>() where TConcrete : class, new()
         {
-            RegisterIfNotAlreadyRegistered<TConcrete, TConcrete>("");
+            RegisterIfNotAlreadyRegistered<TConcrete, TConcrete>(string.Empty);
         }
 
         private static void RegisterIfNotAlreadyRegistered<TAbstract, TConcrete>(string name)

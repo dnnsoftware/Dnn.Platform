@@ -65,7 +65,7 @@ namespace DotNetNuke.UI.Skins
         private string m_strIndicateChildImageRoot;
         private string m_strIndicateChildImageSub;
         private string m_strIndicateChildren;
-        private string m_strLevel = "";
+        private string m_strLevel = string.Empty;
         private string m_strMouseOutHideDelay;
         private string m_strMouseOverAction;
         private string m_strMouseOverDisplay;
@@ -80,7 +80,7 @@ namespace DotNetNuke.UI.Skins
         private string m_strPathImage;
         private string m_strPathSystemImage;
         private string m_strPathSystemScript;
-        private string m_strProviderName = "";
+        private string m_strProviderName = string.Empty;
         private string m_strSeparatorHTML;
         private string m_strSeparatorLeftHTML;
         private string m_strSeparatorLeftHTMLActive;
@@ -102,7 +102,7 @@ namespace DotNetNuke.UI.Skins
         private string m_strStyleSelectionBorderColor;
         private string m_strStyleSelectionColor;
         private string m_strStyleSelectionForeColor;
-        private string m_strToolTip = "";
+        private string m_strToolTip = string.Empty;
         private string m_strWorkImage;
 
         #endregion
@@ -310,7 +310,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                string retValue = "";
+                string retValue = string.Empty;
                 if (this.Control == null)
                 {
                     retValue = this.m_strControlOrientation;
@@ -354,7 +354,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                string retValue = "";
+                string retValue = string.Empty;
                 if (this.Control == null)
                 {
                     retValue = this.m_strControlAlignment;
@@ -488,7 +488,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                string retValue = "";
+                string retValue = string.Empty;
                 if (this.Control == null)
                 {
                     retValue = this.m_strMouseOverDisplay;
@@ -538,7 +538,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                string retValue = "";
+                string retValue = string.Empty;
                 if (this.Control == null)
                 {
                     retValue = this.m_strMouseOverAction;

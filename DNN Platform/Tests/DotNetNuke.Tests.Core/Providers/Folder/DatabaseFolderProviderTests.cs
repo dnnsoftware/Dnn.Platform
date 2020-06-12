@@ -224,9 +224,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var fileInfos = new List<IFileInfo>
             {
-                new FileInfo { FileName = "" },
-                new FileInfo { FileName = "" },
-                new FileInfo { FileName = "" }
+                new FileInfo { FileName = string.Empty },
+                new FileInfo { FileName = string.Empty },
+                new FileInfo { FileName = string.Empty }
             };
 
             this._folderManager.Setup(fm => fm.GetFiles(this._folderInfo.Object)).Returns((IList<IFileInfo>)fileInfos);
@@ -239,13 +239,13 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void GetFiles_Count_Equals_DataProvider_GetFiles_Count()
         {
-            var expectedFiles = new string[] { "", "", "" };
+            var expectedFiles = new string[] { string.Empty, string.Empty, string.Empty };
 
             var fileInfos = new List<IFileInfo>
             {
-                new FileInfo { FileName = "" },
-                new FileInfo { FileName = "" },
-                new FileInfo { FileName = "" }
+                new FileInfo { FileName = string.Empty },
+                new FileInfo { FileName = string.Empty },
+                new FileInfo { FileName = string.Empty }
             };
 
             this._folderManager.Setup(fm => fm.GetFiles(this._folderInfo.Object)).Returns((IList<IFileInfo>)fileInfos);

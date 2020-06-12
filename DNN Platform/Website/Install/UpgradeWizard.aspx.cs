@@ -133,7 +133,7 @@ namespace DotNetNuke.Services.Install
                     {
                         if (nav.NodeType != XPathNodeType.Comment)
                         {
-                            _supportedLanguages.SetValue(nav.GetAttribute("key", ""), i);
+                            _supportedLanguages.SetValue(nav.GetAttribute("key", string.Empty), i);
                         }
                         i++;
                     }
@@ -262,8 +262,8 @@ namespace DotNetNuke.Services.Install
             {
                 progress = percentage,
                 details = status,
-                check0 = upgradeDatabase.Status.ToString() + (upgradeDatabase.Errors.Count == 0 ? "" : " Errors " + upgradeDatabase.Errors.Count),
-                check1 = upgradeExtensions.Status.ToString() + (upgradeExtensions.Errors.Count == 0 ? "" : " Errors " + upgradeExtensions.Errors.Count)
+                check0 = upgradeDatabase.Status.ToString() + (upgradeDatabase.Errors.Count == 0 ? string.Empty : " Errors " + upgradeDatabase.Errors.Count),
+                check1 = upgradeExtensions.Status.ToString() + (upgradeExtensions.Errors.Count == 0 ? string.Empty : " Errors " + upgradeExtensions.Errors.Count)
             };
 
             try
@@ -432,7 +432,7 @@ namespace DotNetNuke.Services.Install
             UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
             var userRequestIpAddressController = UserRequestIPAddressController.Instance;
             var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(HttpContext.Current.Request));
-            UserInfo hostUser = UserController.ValidateUser(-1, accountInfo["username"], accountInfo["password"], "DNN", "", "", ipAddress, ref loginStatus);
+            UserInfo hostUser = UserController.ValidateUser(-1, accountInfo["username"], accountInfo["password"], "DNN", string.Empty, string.Empty, ipAddress, ref loginStatus);
 
             if (loginStatus == UserLoginStatus.LOGIN_FAILURE || !hostUser.IsSuperUser)
             {

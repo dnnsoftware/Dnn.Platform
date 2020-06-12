@@ -265,23 +265,23 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.SMTPMaxIdleTime = settings.GetValueOrDefault("SMTPMaxIdleTime", 100000);
 
             portalSettings.ControlPanelSecurity = PortalSettings.ControlPanelPermission.ModuleEditor;
-            string setting = settings.GetValueOrDefault("ControlPanelSecurity", "");
+            string setting = settings.GetValueOrDefault("ControlPanelSecurity", string.Empty);
             if (setting.Equals("TAB", StringComparison.InvariantCultureIgnoreCase))
             {
                 portalSettings.ControlPanelSecurity = PortalSettings.ControlPanelPermission.TabEditor;
             }
 
             portalSettings.DefaultControlPanelMode = PortalSettings.Mode.View;
-            setting = settings.GetValueOrDefault("ControlPanelMode", "");
+            setting = settings.GetValueOrDefault("ControlPanelMode", string.Empty);
             if (setting.Equals("EDIT", StringComparison.InvariantCultureIgnoreCase))
             {
                 portalSettings.DefaultControlPanelMode = PortalSettings.Mode.Edit;
             }
 
-            setting = settings.GetValueOrDefault("ControlPanelVisibility", "");
+            setting = settings.GetValueOrDefault("ControlPanelVisibility", string.Empty);
             portalSettings.DefaultControlPanelVisibility = !setting.Equals("MIN", StringComparison.InvariantCultureIgnoreCase);
 
-            setting = settings.GetValueOrDefault("TimeZone", "");
+            setting = settings.GetValueOrDefault("TimeZone", string.Empty);
             if (!string.IsNullOrEmpty(setting))
             {
                 var timeZone = TimeZoneInfo.FindSystemTimeZoneById(setting);
@@ -291,7 +291,7 @@ namespace DotNetNuke.Entities.Portals
 
             setting = settings.GetValueOrDefault("DataConsentActive", "False");
             portalSettings.DataConsentActive = bool.Parse(setting);
-            setting = settings.GetValueOrDefault("DataConsentTermsLastChange", "");
+            setting = settings.GetValueOrDefault("DataConsentTermsLastChange", string.Empty);
             if (!string.IsNullOrEmpty(setting))
             {
                 portalSettings.DataConsentTermsLastChange = DateTime.Parse(setting, System.Globalization.CultureInfo.InvariantCulture);

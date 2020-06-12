@@ -68,8 +68,8 @@ namespace DotNetNuke.Web.Api.Auth
             var status = UserLoginStatus.LOGIN_FAILURE;
             string ipAddress = request.GetIPAddress();
 
-            UserInfo user = UserController.ValidateUser(portalId, credentials.UserName, credentials.Password, "DNN", "",
-                                                        "a portal", ipAddress ?? "", ref status);
+            UserInfo user = UserController.ValidateUser(portalId, credentials.UserName, credentials.Password, "DNN", string.Empty,
+                                                        "a portal", ipAddress ?? string.Empty, ref status);
 
             if (user != null)
             {

@@ -289,12 +289,12 @@ namespace DotNetNuke.UI.ControlPanel
 
                         if (pageID > -1)
                         {
-                            this.DoAddExistingModule(moduleLstID, pageID, this.PaneLst.SelectedValue, position, "", this.chkCopyModule.Checked);
+                            this.DoAddExistingModule(moduleLstID, pageID, this.PaneLst.SelectedValue, position, string.Empty, this.chkCopyModule.Checked);
                         }
                     }
                     else
                     {
-                        DoAddNewModule(this.Title.Text, moduleLstID, this.PaneLst.SelectedValue, position, permissionType, "");
+                        DoAddNewModule(this.Title.Text, moduleLstID, this.PaneLst.SelectedValue, position, permissionType, string.Empty);
                     }
                 }
 
@@ -534,7 +534,7 @@ namespace DotNetNuke.UI.ControlPanel
                 }
 
                 // Add Event Log
-                EventLogController.Instance.AddLog(newModule, PortalSettings.Current, userID, "", EventLogController.EventLogType.MODULE_CREATED);
+                EventLogController.Instance.AddLog(newModule, PortalSettings.Current, userID, string.Empty, EventLogController.EventLogType.MODULE_CREATED);
             }
         }
 

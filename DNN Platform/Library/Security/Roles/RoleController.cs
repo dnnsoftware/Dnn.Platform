@@ -57,7 +57,7 @@ namespace DotNetNuke.Security.Roles
                 roleInfo,
                                 PortalController.Instance.GetCurrentPortalSettings(),
                                 UserController.Instance.GetCurrentUserInfo().UserID,
-                                "",
+                                string.Empty,
                                 logType);
 
         }
@@ -94,7 +94,7 @@ namespace DotNetNuke.Security.Roles
                 if (CanRemoveUserFromRole(portal, userId, roleId))
                 {
                     provider.RemoveUserFromRole(portalId, user, userRole);
-                    EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.ROLE_UPDATED);
+                    EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.ROLE_UPDATED);
 
                     // Remove the UserInfo from the Cache, as it has been modified
                     DataCache.ClearUserCache(portalId, user.Username);
@@ -130,7 +130,7 @@ namespace DotNetNuke.Security.Roles
                     Custom.Add(Null.IsNull(objUserRole.ExpiryDate) ? "-" : objUserRole.ExpiryDate.ToString("g", ci));
                     break;
                 case UserRoleActions.delete:
-                    Custom.Add("");
+                    Custom.Add(string.Empty);
                     break;
             }
             var _message = new Message
@@ -206,7 +206,7 @@ namespace DotNetNuke.Security.Roles
                     ExpiryDate = expiryDate
                 };
                 provider.AddUserToRole(portalId, user, userRole);
-                EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_ROLE_CREATED);
+                EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_CREATED);
             }
             else
             {
@@ -215,7 +215,7 @@ namespace DotNetNuke.Security.Roles
                 userRole.EffectiveDate = effectiveDate;
                 userRole.ExpiryDate = expiryDate;
                 provider.UpdateUserRole(userRole);
-                EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_ROLE_UPDATED);
+                EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_UPDATED);
             }
 
             EventManager.Instance.OnRoleJoined(new RoleEventArgs() { Role = this.GetRoleById(portalId, roleId), User = user });
@@ -396,7 +396,7 @@ namespace DotNetNuke.Security.Roles
                     userRole.Status = status;
                     userRole.IsOwner = isOwner;
                     provider.UpdateUserRole(userRole);
-                    EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_ROLE_UPDATED);
+                    EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_UPDATED);
                 }
                 else
                 {
@@ -417,7 +417,7 @@ namespace DotNetNuke.Security.Roles
                 DateTime EffectiveDate = Null.NullDate;
                 bool IsTrialUsed = false;
                 int Period = 0;
-                string Frequency = "";
+                string Frequency = string.Empty;
                 if (userRole != null)
                 {
                     UserRoleId = userRole.UserRoleID;
@@ -481,7 +481,7 @@ namespace DotNetNuke.Security.Roles
                     userRole.Status = status;
                     userRole.IsOwner = isOwner;
                     provider.UpdateUserRole(userRole);
-                    EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_ROLE_UPDATED);
+                    EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_UPDATED);
                 }
                 else
                 {
@@ -509,7 +509,7 @@ namespace DotNetNuke.Security.Roles
         {
             var id = provider.CreateRoleGroup(objRoleGroupInfo);
             EventLogController.Instance.AddLog(objRoleGroupInfo, PortalController.Instance.GetCurrentPortalSettings(),
-                UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_ROLE_CREATED);
+                UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_CREATED);
             return id;
         }
 
@@ -618,7 +618,7 @@ namespace DotNetNuke.Security.Roles
         public static void DeleteRoleGroup(RoleGroupInfo objRoleGroupInfo)
         {
             provider.DeleteRoleGroup(objRoleGroupInfo);
-            EventLogController.Instance.AddLog(objRoleGroupInfo, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_ROLE_DELETED);
+            EventLogController.Instance.AddLog(objRoleGroupInfo, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_DELETED);
         }
 
         /// <summary>
@@ -737,13 +737,13 @@ namespace DotNetNuke.Security.Roles
         public static void UpdateRoleGroup(RoleGroupInfo roleGroup, bool includeRoles)
         {
             provider.UpdateRoleGroup(roleGroup);
-            EventLogController.Instance.AddLog(roleGroup, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.USER_ROLE_UPDATED);
+            EventLogController.Instance.AddLog(roleGroup, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.USER_ROLE_UPDATED);
             if (includeRoles)
             {
                 foreach (RoleInfo role in roleGroup.Roles.Values)
                 {
                     Instance.UpdateRole(role);
-                    EventLogController.Instance.AddLog(role, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.ROLE_UPDATED);
+                    EventLogController.Instance.AddLog(role, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.ROLE_UPDATED);
                 }
             }
         }

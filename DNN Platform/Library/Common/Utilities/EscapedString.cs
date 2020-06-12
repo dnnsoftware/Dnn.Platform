@@ -35,7 +35,7 @@ namespace DotNetNuke.Common.Utilities
         /// The string returned by .ToString() is used as the value of each item in the IEnumerable.</returns>
         public static string Combine(IEnumerable enumerable, char seperator)
         {
-            string result = "";
+            string result = string.Empty;
 
             foreach (var item in enumerable)
             {
@@ -45,7 +45,7 @@ namespace DotNetNuke.Common.Utilities
                 result += s + seperator;
             }
 
-            return string.IsNullOrEmpty(result) ? "" : result.Substring(0, result.Length - 1);
+            return string.IsNullOrEmpty(result) ? string.Empty : result.Substring(0, result.Length - 1);
         }
 
         /// <summary>

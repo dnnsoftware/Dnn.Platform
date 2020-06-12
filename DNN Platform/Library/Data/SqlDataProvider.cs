@@ -76,7 +76,7 @@ namespace DotNetNuke.Data
 
         private string ExecuteScriptInternal(string connectionString, string script, int timeoutSec = 0)
         {
-            string exceptions = "";
+            string exceptions = string.Empty;
 
             var sqlDelimiterRegex = RegexUtils.GetCachedRegex(ScriptDelimiter, RegexOptions.IgnoreCase | RegexOptions.Multiline);
             string[] sqlStatements = sqlDelimiterRegex.Split(script);
@@ -117,7 +117,7 @@ namespace DotNetNuke.Data
             try
             {
                 sql = DataUtil.ReplaceTokens(sql);
-                errorMessage = "";
+                errorMessage = string.Empty;
 
                 if (string.IsNullOrEmpty(connectionString))
                     throw new ArgumentNullException(nameof(connectionString));

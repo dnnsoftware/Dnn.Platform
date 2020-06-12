@@ -58,7 +58,7 @@ namespace DotNetNuke.Web.DDRMenu
                     return Globals.UserProfileURL(objUserInfo.UserID);
                 }
             }
-            return "";
+            return string.Empty;
         }
 
         public static string GetCurrentCulture()

@@ -133,7 +133,7 @@ namespace DotNetNuke.Services.Tokens
                 }
                 else
                 {
-                    return "";
+                    return string.Empty;
                 }
             }
             PropertyNotFound = true;

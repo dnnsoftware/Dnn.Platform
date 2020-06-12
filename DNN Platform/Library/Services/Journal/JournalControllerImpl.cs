@@ -175,7 +175,7 @@ namespace DotNetNuke.Services.Journal
 
         private bool IsImageFile(string fileName)
         {
-            return (Globals.glbImageFileTypes + ",").IndexOf(Path.GetExtension(fileName).Replace(".", "") + ",", StringComparison.InvariantCultureIgnoreCase) > -1;
+            return (Globals.glbImageFileTypes + ",").IndexOf(Path.GetExtension(fileName).Replace(".", string.Empty) + ",", StringComparison.InvariantCultureIgnoreCase) > -1;
         }
 
         private bool ThumbnailCallback()
@@ -264,7 +264,7 @@ namespace DotNetNuke.Services.Journal
 
             // clean up and remove duplicates
             var parts = journalItem.SecuritySet
-                .Replace(" ", "")
+                .Replace(" ", string.Empty)
                 .Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
                 .Distinct()
                 .Except(InvalidSecuritySetsWithoutId)
@@ -675,7 +675,7 @@ namespace DotNetNuke.Services.Journal
         // Journal Comments
         public IList<CommentInfo> GetCommentsByJournalIds(List<int> journalIdList)
         {
-            var journalIds = journalIdList.Aggregate("", (current, journalId) => current + journalId + ";");
+            var journalIds = journalIdList.Aggregate(string.Empty, (current, journalId) => current + journalId + ";");
             return CBO.FillCollection<CommentInfo>(this._dataService.Journal_Comment_ListByJournalIds(journalIds));
         }
 

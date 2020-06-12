@@ -320,7 +320,7 @@ namespace DotNetNuke.UI.Skins.Controls
             try
             {
                 var locales = new Dictionary<string, Locale>();
-                IEnumerable<ListItem> cultureListItems = DotNetNuke.Services.Localization.Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, this.CurrentCulture, "", false);
+                IEnumerable<ListItem> cultureListItems = DotNetNuke.Services.Localization.Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, this.CurrentCulture, string.Empty, false);
                 foreach (Locale loc in LocaleController.Instance.GetLocales(this.PortalSettings.PortalId).Values)
                 {
                     string defaultRoles = PortalController.GetPortalSetting(string.Format("DefaultTranslatorRoles-{0}", loc.Code), this.PortalSettings.PortalId, "Administrators");
@@ -409,7 +409,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 if (litTemplate != null)
                 {
                     // load proper template for this Item
-                    string strTemplate = "";
+                    string strTemplate = string.Empty;
                     switch (e.Item.ItemType)
                     {
                         case ListItemType.Item:

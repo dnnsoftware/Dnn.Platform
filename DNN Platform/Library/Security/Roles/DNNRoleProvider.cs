@@ -75,7 +75,7 @@ namespace DotNetNuke.Security.Roles
                         role.PortalID,
                                                          role.RoleGroupID,
                                                          role.RoleName.Trim(),
-                                                         (role.Description ?? "").Trim(),
+                                                         (role.Description ?? string.Empty).Trim(),
                                                          role.ServiceFee,
                                                          role.BillingPeriod.ToString(CultureInfo.InvariantCulture),
                                                          role.BillingFrequency,
@@ -156,7 +156,7 @@ namespace DotNetNuke.Security.Roles
                 role.RoleID,
                                     role.RoleGroupID,
                                     role.RoleName.Trim(),
-                                    (role.Description ?? "").Trim(),
+                                    (role.Description ?? string.Empty).Trim(),
                                     role.ServiceFee,
                                     role.BillingPeriod.ToString(CultureInfo.InvariantCulture),
                                     role.BillingFrequency,
@@ -342,7 +342,7 @@ namespace DotNetNuke.Security.Roles
         public override int CreateRoleGroup(RoleGroupInfo roleGroup)
         {
             var roleGroupId = this.dataProvider.AddRoleGroup(roleGroup.PortalID, roleGroup.RoleGroupName.Trim(),
-                                                        (roleGroup.Description ?? "").Trim(),
+                                                        (roleGroup.Description ?? string.Empty).Trim(),
                                                         UserController.Instance.GetCurrentUserInfo().UserID);
             this.ClearRoleGroupCache(roleGroup.PortalID);
             return roleGroupId;
@@ -412,7 +412,7 @@ namespace DotNetNuke.Security.Roles
         public override void UpdateRoleGroup(RoleGroupInfo roleGroup)
         {
             this.dataProvider.UpdateRoleGroup(roleGroup.RoleGroupID, roleGroup.RoleGroupName.Trim(),
-                (roleGroup.Description ?? "").Trim(), UserController.Instance.GetCurrentUserInfo().UserID);
+                (roleGroup.Description ?? string.Empty).Trim(), UserController.Instance.GetCurrentUserInfo().UserID);
             this.ClearRoleGroupCache(roleGroup.PortalID);
         }
 

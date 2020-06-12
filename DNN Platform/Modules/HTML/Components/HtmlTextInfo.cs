@@ -22,7 +22,7 @@ namespace DotNetNuke.Modules.Html
     {
         // local property declarations
         private bool _Approved = true;
-        private string _Comment = "";
+        private string _Comment = string.Empty;
         private bool _IsActive = true;
         private int _ItemID = -1;
 

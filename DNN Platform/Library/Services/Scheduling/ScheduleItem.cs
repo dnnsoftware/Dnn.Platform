@@ -166,7 +166,7 @@ namespace DotNetNuke.Services.Scheduling
             }
             else
             {
-                return "";
+                return string.Empty;
             }
         }
 

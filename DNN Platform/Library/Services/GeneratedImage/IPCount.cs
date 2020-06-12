@@ -75,13 +75,13 @@ namespace DotNetNuke.Services.GeneratedImage
                 }
                 else
                 {
-                    File.WriteAllText(CachePath + "_lastpurge", "");
+                    File.WriteAllText(CachePath + "_lastpurge", string.Empty);
                 }
                 return lastPurge;
             }
             set
             {
-                File.WriteAllText(CachePath + "_lastpurge", "");
+                File.WriteAllText(CachePath + "_lastpurge", string.Empty);
             }
         }
 

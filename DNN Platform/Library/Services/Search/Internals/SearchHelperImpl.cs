@@ -572,7 +572,7 @@ namespace DotNetNuke.Services.Search.Internals
             if (hasExactMatch)
             {
                 // remove empty double quotes
-                cleaned = cleaned.Replace("\"\"", "").Replace("\" \"", "");
+                cleaned = cleaned.Replace("\"\"", string.Empty).Replace("\" \"", string.Empty);
             }
 
             return cleaned;
@@ -690,7 +690,7 @@ namespace DotNetNuke.Services.Search.Internals
             string space = string.Empty;
             while (asciiFilter.IncrementToken())
             {
-                sb.AppendFormat("{0}{1}", space ?? "", asciiFilter.GetAttribute<ITermAttribute>().Term);
+                sb.AppendFormat("{0}{1}", space ?? string.Empty, asciiFilter.GetAttribute<ITermAttribute>().Term);
                 if (string.IsNullOrEmpty(space))
                 {
                     space = " ";

@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Urls
                     ReplaceDoubleChars = settings.ReplaceDoubleChars,
                     ReplaceCharWithChar = settings.ReplaceCharacterDictionary,
                     PageExtension = (settings.PageExtensionUsageType == PageExtensionUsageType.Never)
-                                            ? ""
+                                            ? string.Empty
                                             : settings.PageExtension
                 };
             return options;
@@ -64,8 +64,8 @@ namespace DotNetNuke.Entities.Urls
                 MaxUrlPathLength = options.MaxUrlPathLength,
                 ConvertDiacriticChars = options.ConvertDiacriticChars,
                 RegexMatch = options.RegexMatch.Replace("[^", "[^./"),
-                IllegalChars = options.IllegalChars.Replace("/", ""),
-                ReplaceChars = options.ReplaceChars.Replace("/", ""),
+                IllegalChars = options.IllegalChars.Replace("/", string.Empty),
+                ReplaceChars = options.ReplaceChars.Replace("/", string.Empty),
                 ReplaceDoubleChars = options.ReplaceDoubleChars,
                 ReplaceCharWithChar = options.ReplaceCharWithChar,
                 PageExtension = options.PageExtension

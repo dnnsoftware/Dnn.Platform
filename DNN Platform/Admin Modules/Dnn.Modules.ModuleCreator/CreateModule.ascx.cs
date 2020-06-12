@@ -53,7 +53,7 @@ namespace Dnn.Module.ModuleCreator
             }
             else
             {
-                this.lblDescription.Text = "";
+                this.lblDescription.Text = string.Empty;
             }
         }
 
@@ -81,7 +81,7 @@ namespace Dnn.Module.ModuleCreator
                     this.cboTemplate.Items.Add(new ListItem(Path.GetFileName(folderPath)));
                 }
             }
-            this.cboTemplate.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", ""));
+            this.cboTemplate.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", string.Empty));
             if (this.cboTemplate.Items.FindByText("Module - User Control") != null)
             {
                 this.cboTemplate.Items.FindByText("Module - User Control").Selected = true;
@@ -112,7 +112,7 @@ namespace Dnn.Module.ModuleCreator
 
             var controlName = Null.NullString;
             var fileName = Null.NullString;
-            var modulePath = "";
+            var modulePath = string.Empty;
             var sourceCode = Null.NullString;
 
             // iterate through files in template folder
@@ -199,17 +199,17 @@ namespace Dnn.Module.ModuleCreator
 
         private string GetOwner()
         {
-            return this.txtOwner.Text.Replace(" ", "");
+            return this.txtOwner.Text.Replace(" ", string.Empty);
         }
 
         private string GetModule()
         {
-            return this.txtModule.Text.Replace(" ", "");
+            return this.txtModule.Text.Replace(" ", string.Empty);
         }
 
         private string GetControl()
         {
-            return this.txtControl.Text.Replace(" ", "");
+            return this.txtControl.Text.Replace(" ", string.Empty);
         }
 
         private string GetFolderName()
@@ -217,7 +217,7 @@ namespace Dnn.Module.ModuleCreator
             var strFolder = Null.NullString;
             strFolder += this.txtOwner.Text + "/" + this.txtModule.Text;
             // return folder and remove any spaces that might appear in folder structure
-            return strFolder.Replace(" ", "");
+            return strFolder.Replace(" ", string.Empty);
         }
 
         private string GetClassName()
@@ -225,7 +225,7 @@ namespace Dnn.Module.ModuleCreator
             var strClass = Null.NullString;
             strClass += this.txtOwner.Text + "." + this.txtModule.Text;
             // return class and remove any spaces that might appear in class name
-            return strClass.Replace(" ", "");
+            return strClass.Replace(" ", string.Empty);
         }
 
 
@@ -246,7 +246,7 @@ namespace Dnn.Module.ModuleCreator
 
                     // Create module control
                     controlName = this.CreateModuleControl();
-                    if (controlName != "")
+                    if (controlName != string.Empty)
                     {
                         // Create package
                         var objPackage = new PackageInfo();
@@ -255,7 +255,7 @@ namespace Dnn.Module.ModuleCreator
                         objPackage.Description = this.txtDescription.Text;
                         objPackage.Version = new Version(1, 0, 0);
                         objPackage.PackageType = "Module";
-                        objPackage.License = "";
+                        objPackage.License = string.Empty;
                         objPackage.Owner = this.txtOwner.Text;
                         objPackage.Organization = this.txtOwner.Text;
                         objPackage.FolderName = "DesktopModules/" + this.GetFolderName();
@@ -273,12 +273,12 @@ namespace Dnn.Module.ModuleCreator
                         objDesktopModule.IsPremium = false;
                         objDesktopModule.IsAdmin = false;
                         objDesktopModule.Version = "01.00.00";
-                        objDesktopModule.BusinessControllerClass = "";
-                        objDesktopModule.CompatibleVersions = "";
-                        objDesktopModule.AdminPage = "";
-                        objDesktopModule.HostPage = "";
-                        objDesktopModule.Dependencies = "";
-                        objDesktopModule.Permissions = "";
+                        objDesktopModule.BusinessControllerClass = string.Empty;
+                        objDesktopModule.CompatibleVersions = string.Empty;
+                        objDesktopModule.AdminPage = string.Empty;
+                        objDesktopModule.HostPage = string.Empty;
+                        objDesktopModule.Dependencies = string.Empty;
+                        objDesktopModule.Permissions = string.Empty;
                         objDesktopModule.PackageID = objPackage.PackageID;
                         objDesktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(objDesktopModule, false, true);
                         objDesktopModule = DesktopModuleController.GetDesktopModule(objDesktopModule.DesktopModuleID, Null.NullInteger);
@@ -323,12 +323,12 @@ namespace Dnn.Module.ModuleCreator
                         var objModuleControl = new ModuleControlInfo();
                         objModuleControl.ModuleControlID = Null.NullInteger;
                         objModuleControl.ModuleDefID = objModuleDefinition.ModuleDefID;
-                        objModuleControl.ControlKey = "";
+                        objModuleControl.ControlKey = string.Empty;
                         objModuleControl.ControlSrc = "DesktopModules/" + this.GetFolderName() + "/" + controlName;
-                        objModuleControl.ControlTitle = "";
+                        objModuleControl.ControlTitle = string.Empty;
                         objModuleControl.ControlType = SecurityAccessLevel.View;
-                        objModuleControl.HelpURL = "";
-                        objModuleControl.IconFile = "";
+                        objModuleControl.HelpURL = string.Empty;
+                        objModuleControl.IconFile = string.Empty;
                         objModuleControl.ViewOrder = 0;
                         objModuleControl.SupportsPartialRendering = false;
                         objModuleControl.SupportsPopUps = false;

@@ -837,7 +837,7 @@ namespace DotNetNuke.Entities.Urls
 
             if (urlName == null)
             {
-                urlName = "";
+                urlName = string.Empty;
             }
             var result = new StringBuilder(urlName.Length);
             int i = 0;
@@ -884,7 +884,7 @@ namespace DotNetNuke.Entities.Urls
                     // not in replacement list, check if valid char
                     if (regexMatch.IsMatch(ch))
                     {
-                        ch = ""; // not a replacement or allowed char, so doesn't go into Url
+                        ch = string.Empty; // not a replacement or allowed char, so doesn't go into Url
                         replacedUnwantedChars = true;
                         // if we are here, this character isn't going into the output Url
                     }
@@ -914,7 +914,7 @@ namespace DotNetNuke.Entities.Urls
 
             if (doublePeriod)
             {
-                result = result.Replace("..", "");
+                result = result.Replace("..", string.Empty);
             }
             // replace any duplicated replacement characters by doing replace twice
             // replaces -- with - or --- with -  //749 : ampersand not completed replaced
@@ -936,7 +936,7 @@ namespace DotNetNuke.Entities.Urls
         public static string EnsureLeadingChar(string leading, string path)
         {
             if (leading != null && path != null
-                && leading.Length <= path.Length && leading != "")
+                && leading.Length <= path.Length && leading != string.Empty)
             {
                 string start = path.Substring(0, leading.Length);
                 if (string.Compare(start, leading, StringComparison.OrdinalIgnoreCase) != 0)
@@ -951,7 +951,7 @@ namespace DotNetNuke.Entities.Urls
         public static string EnsureNotLeadingChar(string leading, string path)
         {
             if (leading != null && path != null
-                && leading.Length <= path.Length && leading != "")
+                && leading.Length <= path.Length && leading != string.Empty)
             {
                 string start = path.Substring(0, leading.Length);
                 if (string.Compare(start, leading, StringComparison.OrdinalIgnoreCase) == 0)
@@ -1072,7 +1072,7 @@ namespace DotNetNuke.Entities.Urls
                                                                                     friendlyUrlSettings,
                                                                                     Guid.Empty);
 
-                        var tabUrl = path.Replace(Globals.AddHTTP(settings.PortalAlias.HTTPAlias), "");
+                        var tabUrl = path.Replace(Globals.AddHTTP(settings.PortalAlias.HTTPAlias), string.Empty);
 
                         if (tabUrl.Equals("/" + url, StringComparison.InvariantCultureIgnoreCase))
                         {

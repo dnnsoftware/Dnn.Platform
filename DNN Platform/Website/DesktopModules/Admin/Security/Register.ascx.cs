@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 string regex = string.Empty;
                 if (!string.IsNullOrEmpty(this.PortalSettings.Registration.ExcludeTerms))
                 {
-                    regex = @"^(?:(?!" + this.PortalSettings.Registration.ExcludeTerms.Replace(" ", "").Replace(",", "|") + @").)*$\r?\n?";
+                    regex = @"^(?:(?!" + this.PortalSettings.Registration.ExcludeTerms.Replace(" ", string.Empty).Replace(",", "|") + @").)*$\r?\n?";
                 }
                 return regex;
             }
@@ -768,7 +768,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private string GetRedirectUrl(bool checkSetting = true)
         {
-            var redirectUrl = "";
+            var redirectUrl = string.Empty;
             var redirectAfterRegistration = this.PortalSettings.Registration.RedirectAfterRegistration;
             if (checkSetting && redirectAfterRegistration > 0) // redirect to after registration page
             {

@@ -203,7 +203,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
             // Assert
             this._mockData.Verify(c => c.UpdateHostSetting("String_1_S", "MyValue", false, It.IsAny<int>()), Times.Exactly(1));
-            this._mockCache.Verify(c => c.Clear("Host", ""), Times.Exactly(1));
+            this._mockCache.Verify(c => c.Clear("Host", string.Empty), Times.Exactly(1));
         }
 
         #endregion

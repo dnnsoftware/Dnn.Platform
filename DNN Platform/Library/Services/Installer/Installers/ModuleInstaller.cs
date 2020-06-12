@@ -165,7 +165,7 @@ namespace DotNetNuke.Services.Installer.Installers
                                             Priority = MessagePriority.High,
                                             ExpirationDate = DateTime.Now.AddYears(-1),
                                             SentDate = DateTime.Now,
-                                            Body = "",
+                                            Body = string.Empty,
                                             ProcessorType = "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke",
                                             ProcessorCommand = "UpdateSupportedFeatures"
                                         };

@@ -145,7 +145,7 @@ namespace DotNetNuke.Entities.Urls
         /// </remarks>
         internal static string FindFriendlyUrlParmsConfigFilePath(int portalId, out bool portalSpecificFound)
         {
-            string result = "";
+            string result = string.Empty;
             portalSpecificFound = false;
             const string fileName = "friendlyUrlParms.config";
             string rootPath = Globals.ApplicationMapPath + "\\";
@@ -313,7 +313,7 @@ namespace DotNetNuke.Entities.Urls
                     // 807 : look for portal specific files
                     bool portalSpecific;
                     string fileName = FindFriendlyUrlParmsConfigFilePath(portalId, out portalSpecific);
-                    if (fileName != "")
+                    if (fileName != string.Empty)
                     {
                         redirectActions.LoadFromXmlFile(fileName, portalId, portalSpecific, ref messages);
                     }
@@ -924,7 +924,7 @@ namespace DotNetNuke.Entities.Urls
                         break;
                     default:
                         itemName = "Url Rewriter Cache Item";
-                        count = "";
+                        count = string.Empty;
                         break;
                 }
                 // add log values

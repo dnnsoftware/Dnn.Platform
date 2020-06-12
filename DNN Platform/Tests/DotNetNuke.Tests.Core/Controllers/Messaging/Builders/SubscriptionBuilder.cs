@@ -31,7 +31,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
             this.tabId = Null.NullInteger;
             this.objectKey = "content";
             this.description = "my content description";
-            this.objectData = "";
+            this.objectData = string.Empty;
         }
 
         internal SubscriptionBuilder WithSubscriptionId(int subscriptionId)

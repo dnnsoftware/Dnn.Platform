@@ -24,9 +24,9 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
             {
                 return new List<IMenuButtonItemExtensionPoint>
                 {
-                    new DefaultMenuButtonItem("Refresh", "", "first permission_READ permission_BROWSE", LocalizationHelper.GetString("RefreshMenuItemExtensionPoint.Text"), "dnnModule.digitalAssets.refresFolderFromMenu()", "", 0, ""),
-                    new DefaultMenuButtonItem("Sync", "", "medium permission_MANAGE permission_WRITE", LocalizationHelper.GetString("SyncMenuItemExtensionPoint.Text"), "dnnModule.digitalAssets.syncFromMenu(false)", "", 0, ""),
-                    new DefaultMenuButtonItem("SyncRecursively", "", "last permission_MANAGE permission_WRITE", LocalizationHelper.GetString("SyncRecursivelyMenuItemExtensionPoint.Text"), "dnnModule.digitalAssets.syncFromMenu(true)", "", 0, "")
+                    new DefaultMenuButtonItem("Refresh", string.Empty, "first permission_READ permission_BROWSE", LocalizationHelper.GetString("RefreshMenuItemExtensionPoint.Text"), "dnnModule.digitalAssets.refresFolderFromMenu()", string.Empty, 0, string.Empty),
+                    new DefaultMenuButtonItem("Sync", string.Empty, "medium permission_MANAGE permission_WRITE", LocalizationHelper.GetString("SyncMenuItemExtensionPoint.Text"), "dnnModule.digitalAssets.syncFromMenu(false)", string.Empty, 0, string.Empty),
+                    new DefaultMenuButtonItem("SyncRecursively", string.Empty, "last permission_MANAGE permission_WRITE", LocalizationHelper.GetString("SyncRecursivelyMenuItemExtensionPoint.Text"), "dnnModule.digitalAssets.syncFromMenu(true)", string.Empty, 0, string.Empty)
                 };
             }
         }

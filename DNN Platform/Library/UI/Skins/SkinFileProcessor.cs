@@ -60,7 +60,7 @@ namespace DotNetNuke.UI.Skins
         private readonly string m_SkinName;
         private readonly string m_SkinPath;
         private readonly string m_SkinRoot;
-        private string m_Message = "";
+        private string m_Message = string.Empty;
 
         #endregion
 
@@ -324,7 +324,7 @@ namespace DotNetNuke.UI.Skins
         {
             private readonly Hashtable m_ControlList;
             private XmlDocument m_Attributes = new XmlDocument { XmlResolver = null };
-            private string m_ParseMessages = "";
+            private string m_ParseMessages = string.Empty;
             private ArrayList m_RegisterList = new ArrayList();
 
             private static readonly Regex FindTokenInstance =
@@ -475,14 +475,14 @@ namespace DotNetNuke.UI.Skins
                 string ControlName = Token + m.Groups["instance"].Value;
 
                 // if the token has an instance name, use it to look for the corresponding attributes
-                string AttributeNode = Token + (string.IsNullOrEmpty(m.Groups["instance"].Value) ? "" : ":" + m.Groups["instance"].Value);
+                string AttributeNode = Token + (string.IsNullOrEmpty(m.Groups["instance"].Value) ? string.Empty : ":" + m.Groups["instance"].Value);
 
                 this.Messages += SkinController.FormatMessage(TOKEN_PROC, "[" + AttributeNode + "]", 2, false);
 
                 // if the token is a recognized skin control
                 if (this.ControlList.ContainsKey(Token) || Token.IndexOf("CONTENTPANE") != -1)
                 {
-                    string SkinControl = "";
+                    string SkinControl = string.Empty;
 
                     if (this.ControlList.ContainsKey(Token))
                     {
@@ -592,7 +592,7 @@ namespace DotNetNuke.UI.Skins
         private class ObjectParser
         {
             private readonly Hashtable m_ControlList;
-            private string m_ParseMessages = "";
+            private string m_ParseMessages = string.Empty;
             private ArrayList m_RegisterList = new ArrayList();
 
             // define the regular expression to match objects
@@ -732,9 +732,9 @@ namespace DotNetNuke.UI.Skins
                 string[] Attributes = EmbeddedObjectAttributes.Split(' ');
 
                 // declare skin object elements
-                string AttributeNode = "";
-                string Token = "";
-                string ControlName = "";
+                string AttributeNode = string.Empty;
+                string Token = string.Empty;
+                string ControlName = string.Empty;
 
                 // iterate and process valid attributes
                 string[] Attribute;
@@ -746,7 +746,7 @@ namespace DotNetNuke.UI.Skins
                     {
                         Attribute = strAttribute.Split('=');
                         AttributeName = Attribute[0].Trim();
-                        AttributeValue = Attribute[1].Trim().Replace("\"", "");
+                        AttributeValue = Attribute[1].Trim().Replace("\"", string.Empty);
                         switch (AttributeName.ToLowerInvariant())
                         {
                             case "id":
@@ -771,7 +771,7 @@ namespace DotNetNuke.UI.Skins
                     // if the embedded object is a recognized skin object
                     if (this.ControlList.ContainsKey(Token) || Token == "CONTENTPANE")
                     {
-                        string SkinControl = "";
+                        string SkinControl = string.Empty;
 
                         if (this.ControlList.ContainsKey(Token))
                         {
@@ -784,9 +784,9 @@ namespace DotNetNuke.UI.Skins
 
                         // process embedded object params
                         string Parameters = m.Groups["token"].Value.Substring(m.Groups["token"].Value.IndexOf(">") + 1);
-                        Parameters = Parameters.Replace("<param name=\"", "");
-                        Parameters = Parameters.Replace("\" value", "");
-                        Parameters = Parameters.Replace("/>", "");
+                        Parameters = Parameters.Replace("<param name=\"", string.Empty);
+                        Parameters = Parameters.Replace("\" value", string.Empty);
+                        Parameters = Parameters.Replace("/>", string.Empty);
 
                         // convert multiple spaces and carriage returns into single spaces
                         Parameters = MultiSpaceRegex.Replace(Parameters, " ");
@@ -870,8 +870,8 @@ namespace DotNetNuke.UI.Skins
             private readonly string SUBST_DETAIL = Util.GetLocalizedString("Substituting.Detail");
             private readonly ArrayList m_CSSPatterns = new ArrayList();
             private readonly ArrayList m_HTMLPatterns = new ArrayList();
-            private string m_Messages = "";
-            private string m_SkinPath = "";
+            private string m_Messages = string.Empty;
+            private string m_SkinPath = string.Empty;
 
             private const RegexOptions PatternOptions = RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.Compiled;
 
@@ -993,7 +993,7 @@ namespace DotNetNuke.UI.Skins
             /// -----------------------------------------------------------------------------
             public string Parse(ref string Source, ArrayList RegexList, string SkinPath, SkinParser ParseOption)
             {
-                this.m_Messages = "";
+                this.m_Messages = string.Empty;
 
                 // set path propery which is file specific
                 this.SkinPath = SkinPath;
@@ -1051,7 +1051,7 @@ namespace DotNetNuke.UI.Skins
                             if (strNewTag.IndexOf(this.SkinPath) != -1)
                             {
                                 // remove the localized path
-                                strNewTag = strNewTag.Replace(this.SkinPath, "");
+                                strNewTag = strNewTag.Replace(this.SkinPath, string.Empty);
                             }
                             break;
                     }
@@ -1087,7 +1087,7 @@ namespace DotNetNuke.UI.Skins
             private readonly string m_SkinRootPath;
             private readonly string m_WriteFileName;
             private string FILE_FORMAT_DETAIL = Util.GetLocalizedString("FileFormat.Detail");
-            private string m_Messages = "";
+            private string m_Messages = string.Empty;
 
             private static readonly Regex PaneCheck1Regex = new Regex("\\s*id\\s*=\\s*\"" + Globals.glbDefaultPane + "\"", RegexOptions.IgnoreCase | RegexOptions.Compiled);
             private static readonly Regex PaneCheck2Regex = new Regex("\\s*[" + Globals.glbDefaultPane + "]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -1135,7 +1135,7 @@ namespace DotNetNuke.UI.Skins
                 this.m_FileAttributes = SkinAttributes;
 
                 // determine and store path to portals skin root folder
-                string strTemp = FileName.Replace(Path.GetFileName(FileName), "");
+                string strTemp = FileName.Replace(Path.GetFileName(FileName), string.Empty);
                 strTemp = strTemp.Replace("\\", "/");
                 this.m_SkinRootPath = Globals.ApplicationPath + strTemp.Substring(strTemp.ToUpper().IndexOf("/PORTALS"));
 
@@ -1275,8 +1275,8 @@ namespace DotNetNuke.UI.Skins
             /// -----------------------------------------------------------------------------
             public string PrependASCXDirectives(ArrayList Registrations)
             {
-                string Messages = "";
-                string Prefix = "";
+                string Messages = string.Empty;
+                string Prefix = string.Empty;
 
                 // format and save @Control directive
                 Match objMatch = BodyExtractionRegex.Match(this.Contents);

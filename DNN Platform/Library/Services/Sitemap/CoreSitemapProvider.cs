@@ -105,7 +105,7 @@ namespace DotNetNuke.Services.Sitemap
         private SitemapUrl GetPageUrl(TabInfo objTab, string language, PortalSettings ps)
         {
             var pageUrl = new SitemapUrl();
-            var url = TestableGlobals.Instance.NavigateURL(objTab.TabID, objTab.IsSuperTab, ps, "", language);
+            var url = TestableGlobals.Instance.NavigateURL(objTab.TabID, objTab.IsSuperTab, ps, string.Empty, language);
             if ((ps.SSLEnforced || (objTab.IsSecure && ps.SSLEnabled)) && url.StartsWith("http://"))
             {
                 url = "https://" + url.Substring("http://".Length);
@@ -139,7 +139,7 @@ namespace DotNetNuke.Services.Sitemap
                         this.IsTabPublic(localized.TabPermissions) &&
                         (this.includeHiddenPages || localized.IsVisible) && localized.HasBeenPublished)
                     {
-                        string alternateUrl = TestableGlobals.Instance.NavigateURL(localized.TabID, localized.IsSuperTab, ps, "", localized.CultureCode);
+                        string alternateUrl = TestableGlobals.Instance.NavigateURL(localized.TabID, localized.IsSuperTab, ps, string.Empty, localized.CultureCode);
                         alternates.Add(new AlternateUrl()
                         {
                             Url = alternateUrl,
@@ -151,7 +151,7 @@ namespace DotNetNuke.Services.Sitemap
                 if (alternates.Count > 0)
                 {
                     // add default language to the list
-                    string alternateUrl = TestableGlobals.Instance.NavigateURL(currentTab.TabID, currentTab.IsSuperTab, ps, "", currentTab.CultureCode);
+                    string alternateUrl = TestableGlobals.Instance.NavigateURL(currentTab.TabID, currentTab.IsSuperTab, ps, string.Empty, currentTab.CultureCode);
                     alternates.Add(new AlternateUrl()
                     {
                         Url = alternateUrl,
@@ -216,7 +216,7 @@ namespace DotNetNuke.Services.Sitemap
                         // Deny permission
                         if (role.StartsWith("!"))
                         {
-                            string denyRole = role.Replace("!", "");
+                            string denyRole = role.Replace("!", string.Empty);
                             if (denyRole == Globals.glbRoleUnauthUserName || denyRole == Globals.glbRoleAllUsersName)
                             {
                                 hasPublicRole = false;

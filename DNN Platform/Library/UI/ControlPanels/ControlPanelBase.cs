@@ -230,7 +230,7 @@ namespace DotNetNuke.UI.ControlPanels
                 objClone.PaneName = paneName;
                 objClone.Alignment = align;
                 ModuleController.Instance.AddModule(objClone);
-                EventLogController.Instance.AddLog(objClone, this.PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_CREATED);
+                EventLogController.Instance.AddLog(objClone, this.PortalSettings, UserId, string.Empty, EventLogController.EventLogType.MODULE_CREATED);
             }
         }
 

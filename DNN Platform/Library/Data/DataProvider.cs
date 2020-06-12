@@ -1620,7 +1620,7 @@ namespace DotNetNuke.Data
 
         public virtual IDataReader GetFoldersByPortalAndPermissions(int portalId, string permissions, int userId)
         {
-            return this.ExecuteReader("GetFoldersByPermissions", this.GetNull(portalId), this.GetNull(permissions), this.GetNull(userId), -1, "");
+            return this.ExecuteReader("GetFoldersByPermissions", this.GetNull(portalId), this.GetNull(permissions), this.GetNull(userId), -1, string.Empty);
         }
 
         public virtual int GetLegacyFolderCount()
@@ -2028,7 +2028,7 @@ namespace DotNetNuke.Data
 
         public virtual IDataReader GetFolderPermissionsByPortalAndPath(int portalId, string pathName)
         {
-            return this.ExecuteReader("GetFolderPermissionsByPortalAndPath", this.GetNull(portalId), pathName ?? "");
+            return this.ExecuteReader("GetFolderPermissionsByPortalAndPath", this.GetNull(portalId), pathName ?? string.Empty);
         }
 
         public virtual void UpdateFolderPermission(int FolderPermissionID, int FolderID, int PermissionID, int roleID,
@@ -2944,7 +2944,7 @@ namespace DotNetNuke.Data
 
         public virtual IDataReader GetListEntry(int EntryID)
         {
-            return this.ExecuteReader("GetListEntry", "", "", EntryID);
+            return this.ExecuteReader("GetListEntry", string.Empty, string.Empty, EntryID);
         }
 
         public virtual IDataReader GetLists(int PortalID)
@@ -3598,7 +3598,7 @@ namespace DotNetNuke.Data
             int portalID;
             if (logTypeKey == "*")
             {
-                logTypeKey = "";
+                logTypeKey = string.Empty;
             }
             if (logTypePortalID == "*")
             {
@@ -3708,7 +3708,7 @@ namespace DotNetNuke.Data
             int portalID;
             if (logTypeKey == "*")
             {
-                logTypeKey = "";
+                logTypeKey = string.Empty;
             }
             if (logTypePortalID == "*")
             {

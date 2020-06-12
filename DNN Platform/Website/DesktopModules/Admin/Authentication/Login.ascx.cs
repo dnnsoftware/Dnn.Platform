@@ -163,7 +163,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         {
             get
             {
-                var redirectURL = "";
+                var redirectURL = string.Empty;
 
                 var setting = GetSetting(this.PortalId, "Redirect_AfterLogin");
 
@@ -338,7 +338,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         {
             get
             {
-                var userToken = "";
+                var userToken = string.Empty;
                 if (this.ViewState["UserToken"] != null)
                 {
                     userToken = Convert.ToString(this.ViewState["UserToken"]);
@@ -358,7 +358,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         {
             get
             {
-                var userName = "";
+                var userName = string.Empty;
                 if (this.ViewState["UserName"] != null)
                 {
                     userName = Convert.ToString(this.ViewState["UserName"]);
@@ -633,7 +633,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             // Set DisplayName to UserToken if null
             if (string.IsNullOrEmpty(this.User.DisplayName))
             {
-                this.User.DisplayName = this.UserToken.Replace("http://", "").TrimEnd('/');
+                this.User.DisplayName = this.UserToken.Replace("http://", string.Empty).TrimEnd('/');
             }
 
             // Parse DisplayName into FirstName/LastName
@@ -733,7 +733,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
             }
 
-            return this.UserToken.Replace("http://", "").TrimEnd('/');
+            return this.UserToken.Replace("http://", string.Empty).TrimEnd('/');
         }
 
         /// -----------------------------------------------------------------------------
@@ -912,7 +912,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     var redirectUrl = this.RedirectURL;
 
                     // Clear the cookie
-                    HttpContext.Current.Response.Cookies.Set(new HttpCookie("returnurl", "")
+                    HttpContext.Current.Response.Cookies.Set(new HttpCookie("returnurl", string.Empty)
                     {
                         Expires = DateTime.Now.AddDays(-1),
                         Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/"
@@ -965,7 +965,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         // Use the reset password token to identify the user during the redirect
                         UserController.ResetPasswordToken(objUser);
                         objUser = UserController.GetUserById(objUser.PortalID, objUser.UserID);
-                        this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.DataConsentConsentRedirect, "", string.Format("token={0}", objUser.PasswordResetToken)));
+                        this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.DataConsentConsentRedirect, string.Empty, string.Format("token={0}", objUser.PasswordResetToken)));
                     }
                     break;
             }
@@ -1065,7 +1065,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     {
                         parameters[2] = "verificationcode=" + HttpUtility.UrlEncode(this.Request.QueryString["verificationcode"]);
                     }
-                    this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.LoginTabId, "", parameters));
+                    this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, parameters));
                 }
             }
             if (this.Page.IsPostBack == false)
@@ -1137,7 +1137,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                                                                this.txtUsername.Text,
                                                                this.txtPassword.Text,
                                                                "DNN",
-                                                               "",
+                                                               string.Empty,
                                                                this.PortalSettings.PortalName,
                                                                ipAddress,
                                                                ref loginStatus);
@@ -1376,7 +1376,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// </remarks>
         protected void UserCreateCompleted(object sender, UserUserControlBase.UserCreatedEventArgs e)
         {
-            var strMessage = "";
+            var strMessage = string.Empty;
             try
             {
                 if (e.CreateStatus == UserCreateStatus.Success)

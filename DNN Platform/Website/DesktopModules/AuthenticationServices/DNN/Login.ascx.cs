@@ -304,7 +304,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
         protected string GetRedirectUrl(bool checkSettings = true)
         {
-            var redirectUrl = "";
+            var redirectUrl = string.Empty;
             var redirectAfterLogin = this.PortalSettings.Registration.RedirectAfterLogin;
             if (checkSettings && redirectAfterLogin > 0) // redirect to after registration page
             {

@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.UI.WebControls
         public DnnDropDownListOptions()
         {
             this.SelectedItemCss = "selected-item";
-            this.SelectItemDefaultText = "";
+            this.SelectItemDefaultText = string.Empty;
             this.Services = new ItemListServicesOptions();
             this.ItemList = new ItemListOptions();
         }

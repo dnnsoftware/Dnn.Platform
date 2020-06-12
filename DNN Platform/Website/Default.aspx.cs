@@ -88,7 +88,7 @@ namespace DotNetNuke.Framework
             get
             {
                 int pageScrollTop;
-                var scrollValue = this.ScrollTop != null ? this.ScrollTop.Value : "";
+                var scrollValue = this.ScrollTop != null ? this.ScrollTop.Value : string.Empty;
                 if (!int.TryParse(scrollValue, out pageScrollTop) || pageScrollTop < 0)
                 {
                     pageScrollTop = Null.NullInteger;
@@ -276,7 +276,7 @@ namespace DotNetNuke.Framework
                     switch (extension)
                     {
                         case ".mvc":
-                            var segments = slaveModule.ModuleControl.ControlSrc.Replace(".mvc", "").Split('/');
+                            var segments = slaveModule.ModuleControl.ControlSrc.Replace(".mvc", string.Empty).Split('/');
 
                             control.LocalResourceFile = string.Format(
                                 "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
@@ -380,7 +380,7 @@ namespace DotNetNuke.Framework
 
             // META generator
 
-            this.Generator = "";
+            this.Generator = string.Empty;
 
 
             // META Robots - hide it inside popups and if PageHeadText of current tab already contains a robots meta tag

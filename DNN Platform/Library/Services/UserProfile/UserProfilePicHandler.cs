@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.UserProfile
             var userId = -1;
             var width = 55;
             var height = 55;
-            var size = "";
+            var size = string.Empty;
             try
             {
                 if (!string.IsNullOrEmpty(context.Request.QueryString["userid"]))

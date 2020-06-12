@@ -25,7 +25,7 @@ namespace DotNetNuke.Tests.Utilities
             Assert.IsTrue(match.Success, "Could not find content Line! Looking in file: " + emailFileName);
 
             // Convert the EmailAddress content
-            emailContent = match.Groups[2].Value.Replace("\r\n", "");
+            emailContent = match.Groups[2].Value.Replace("\r\n", string.Empty);
 
             byte[] b = Convert.FromBase64String(emailContent);
             string decodedEmailContent = Encoding.ASCII.GetString(b);

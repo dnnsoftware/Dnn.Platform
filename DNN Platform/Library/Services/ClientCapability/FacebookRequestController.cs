@@ -64,10 +64,10 @@ namespace DotNetNuke.Services.ClientCapability
                     facebookRequest.Algorithm = faceBookData.algorithm;
                     facebookRequest.ProfileId = faceBookData.profile_id;
                     facebookRequest.AppData = faceBookData.app_data;
-                    facebookRequest.OauthToken = !string.IsNullOrEmpty(faceBookData.oauth_token) ? faceBookData.oauth_token : "";
+                    facebookRequest.OauthToken = !string.IsNullOrEmpty(faceBookData.oauth_token) ? faceBookData.oauth_token : string.Empty;
                     facebookRequest.Expires = ConvertToTimestamp(faceBookData.expires);
                     facebookRequest.IssuedAt = ConvertToTimestamp(faceBookData.issued_at);
-                    facebookRequest.UserID = !string.IsNullOrEmpty(faceBookData.user_id) ? faceBookData.user_id : "";
+                    facebookRequest.UserID = !string.IsNullOrEmpty(faceBookData.user_id) ? faceBookData.user_id : string.Empty;
 
                     facebookRequest.PageId = faceBookData.page.id;
                     facebookRequest.PageLiked = faceBookData.page.liked;

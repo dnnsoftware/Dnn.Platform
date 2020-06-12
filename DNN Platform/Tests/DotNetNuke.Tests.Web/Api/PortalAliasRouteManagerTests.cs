@@ -120,7 +120,7 @@ namespace DotNetNuke.Tests.Web.Api
             PortalAliasController.SetTestableInstance(mockPortalAliasController.Object);
 
             var mockGlobals = new Mock<IGlobals>();
-            mockGlobals.Setup(x => x.ApplicationPath).Returns("");
+            mockGlobals.Setup(x => x.ApplicationPath).Returns(string.Empty);
             TestableGlobals.SetTestableInstance(mockGlobals.Object);
 
             // Act
@@ -144,7 +144,7 @@ namespace DotNetNuke.Tests.Web.Api
             PortalAliasController.SetTestableInstance(mockPortalAliasController.Object);
 
             var mockGlobals = new Mock<IGlobals>();
-            mockGlobals.Setup(x => x.ApplicationPath).Returns("");
+            mockGlobals.Setup(x => x.ApplicationPath).Returns(string.Empty);
             TestableGlobals.SetTestableInstance(mockGlobals.Object);
 
             // Act
@@ -170,7 +170,7 @@ namespace DotNetNuke.Tests.Web.Api
             PortalAliasController.SetTestableInstance(mockPortalAliasController.Object);
 
             var mockGlobals = new Mock<IGlobals>();
-            mockGlobals.Setup(x => x.ApplicationPath).Returns("");
+            mockGlobals.Setup(x => x.ApplicationPath).Returns(string.Empty);
             TestableGlobals.SetTestableInstance(mockGlobals.Object);
 
             // Act
@@ -253,7 +253,7 @@ namespace DotNetNuke.Tests.Web.Api
 
 
             // Act
-            new PortalAliasRouteManager().GetRouteName(moduleFolderName, "", 0);
+            new PortalAliasRouteManager().GetRouteName(moduleFolderName, string.Empty, 0);
 
             // Assert
         }
@@ -266,7 +266,7 @@ namespace DotNetNuke.Tests.Web.Api
 
 
             // Act
-            new PortalAliasRouteManager().GetRouteName("foo", "", -1);
+            new PortalAliasRouteManager().GetRouteName("foo", string.Empty, -1);
 
             // Assert
         }
@@ -278,7 +278,7 @@ namespace DotNetNuke.Tests.Web.Api
 
 
             // Act
-            new PortalAliasRouteManager().GetAllRouteValues(new PortalAliasInfo { HTTPAlias = "" }, null);
+            new PortalAliasRouteManager().GetAllRouteValues(new PortalAliasInfo { HTTPAlias = string.Empty }, null);
 
             // Assert
             Assert.Pass();
@@ -292,7 +292,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Act
             var result = new PortalAliasRouteManager().GetAllRouteValues(
-                new PortalAliasInfo { HTTPAlias = "" },
+                new PortalAliasInfo { HTTPAlias = string.Empty },
                                                                new { value1 = 1, value2 = 2 });
 
             // Assert

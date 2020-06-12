@@ -26,7 +26,7 @@ namespace DotNetNuke.Security.Permissions.Controls
     {
         #region Private Members
 
-        private string _folderPath = "";
+        private string _folderPath = string.Empty;
         protected FolderPermissionCollection FolderPermissions;
         private List<PermissionInfoBase> _permissionsList;
         private bool _refreshGrid;

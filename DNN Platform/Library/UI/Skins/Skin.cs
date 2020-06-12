@@ -422,7 +422,7 @@ namespace DotNetNuke.UI.Skins
             }
             else
             {
-                AddPageMessage(this, "", message, ModuleMessage.ModuleMessageType.YellowWarning);
+                AddPageMessage(this, string.Empty, message, ModuleMessage.ModuleMessageType.YellowWarning);
             }
         }
 
@@ -474,7 +474,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     AddPageMessage(
                         this,
-                                   "",
+                                   string.Empty,
                                    string.Format(Localization.GetString("ContractExpired.Error"), this.PortalSettings.PortalName, Globals.GetMediumDate(this.PortalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), this.PortalSettings.Email),
                                    ModuleMessage.ModuleMessageType.RedError);
                 }
@@ -718,7 +718,7 @@ namespace DotNetNuke.UI.Skins
 
         public static void AddModuleMessage(PortalModuleBase control, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
-            AddModuleMessage(control, "", message, moduleMessageType, Null.NullString);
+            AddModuleMessage(control, string.Empty, message, moduleMessageType, Null.NullString);
         }
 
         public static void AddModuleMessage(PortalModuleBase control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
@@ -736,7 +736,7 @@ namespace DotNetNuke.UI.Skins
         /// -----------------------------------------------------------------------------
         public static void AddModuleMessage(Control control, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
-            AddModuleMessage(control, "", message, moduleMessageType, Null.NullString);
+            AddModuleMessage(control, string.Empty, message, moduleMessageType, Null.NullString);
         }
 
         /// -----------------------------------------------------------------------------
@@ -1052,7 +1052,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     var skin = new InstalledSkinInfo();
                     skin.SkinName = folder.Substring(folder.LastIndexOf("\\") + 1);
-                    skin.InUse = isFallbackSkin(folder) || !SkinController.CanDeleteSkin(folder, "");
+                    skin.InUse = isFallbackSkin(folder) || !SkinController.CanDeleteSkin(folder, string.Empty);
                     list.Add(skin);
                 }
             }

@@ -141,7 +141,7 @@ namespace DotNetNuke.Entities.Icons
         {
             string iconPhysicalPath = Path.Combine(Globals.ApplicationMapPath, "icons");
             var iconRootDir = new DirectoryInfo(iconPhysicalPath);
-            string result = "";
+            string result = string.Empty;
             foreach (var iconDir in iconRootDir.EnumerateDirectories())
             {
                 string testFile = Path.Combine(iconDir.FullName, "About_16x16_Standard.png");

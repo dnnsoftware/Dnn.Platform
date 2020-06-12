@@ -202,7 +202,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         private void SetupDataProvider()
         {
             // Standard DataProvider Path for Logging
-            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns("");
+            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
 
             this._mockDataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(this.GetPortalsCallBack);
             this._mockDataProvider.Setup(d => d.GetSearchModules(It.IsAny<int>())).Returns(this.GetSearchModules);
@@ -409,44 +409,44 @@ namespace DotNetNuke.Tests.Web.InternalServices
             table.Columns.Add("CultureCode", typeof(string));
 
             table.Rows.Add(0, 0, 56, 57, 368, 116, 1, "contentpane", "Text/HTML", 1200,
-                           "FileModuleCachingProvider", null, null, null, "", 0, 0, 0, null, null, null, null,
+                           "FileModuleCachingProvider", null, null, null, string.Empty, 0, 0, 0, null, null, null, null,
                            "[G]Containers/Xcillion/NoTitle.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
                            74, 1200, 238,
                            "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html", 0, 7, 92,
                            "Text/HTML", 2, null, 0, null, -1, "2014-02-18 10:39:45.170", -1,
                            "2014-02-18 10:39:45.170", "2014-02-18 10:39:45.190",
                            "A0B23459-676C-4DE4-BCA1-33E222F8405A", "85AF4947-EB80-475D-9D8D-0BAD6B026A2B", null,
-                           "664BAA98-7E24-461F-8180-36527619D042", "");
+                           "664BAA98-7E24-461F-8180-36527619D042", string.Empty);
 
             table.Rows.Add(0, 0, 56, 56, 367, 116, 1, "contentpane", "Header Images", 1200,
-                           "FileModuleCachingProvider", null, null, null, "", 0, 0, 0, null, null, null, null,
+                           "FileModuleCachingProvider", null, null, null, string.Empty, 0, 0, 0, null, null, null, null,
                            "[G]Containers/Xcillion/NoTitle.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
                            74, 1200, 238,
                            "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html", 0, 7, 91,
                            "Header Images", 2, null, 0, null, -1, "2014-02-18 10:39:45.170", -1,
                            "2014-02-18 10:39:45.170", "2014-02-18 10:39:45.190",
                            "A0B23459-676C-4DE4-BCA1-33E222F8405A", "85AF4947-EB80-475D-9D8D-0BAD6B026A2B", null,
-                           "664BAA98-7E24-461F-8180-36527619D042", "");
+                           "664BAA98-7E24-461F-8180-36527619D042", string.Empty);
 
             table.Rows.Add(0, 0, 56, 59, 370, 116, 1, "contentpane", "Customer Support", 1200,
-                           "FileModuleCachingProvider", null, null, null, "", 0, 0, 0, null, null, null, null,
+                           "FileModuleCachingProvider", null, null, null, string.Empty, 0, 0, 0, null, null, null, null,
                            "[G]Containers/Xcillion/NoTitle.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
                            74, 1200, 238,
                            "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html", 0, 7, 94,
                            "Customer Support", 2, null, 0, null, -1, "2014-02-18 10:39:45.170", -1,
                            "2014-02-18 10:39:45.170", "2014-02-18 10:39:45.190",
                            "A0B23459-676C-4DE4-BCA1-33E222F8405A", "85AF4947-EB80-475D-9D8D-0BAD6B026A2B", null,
-                           "664BAA98-7E24-461F-8180-36527619D042", "");
+                           "664BAA98-7E24-461F-8180-36527619D042", string.Empty);
 
             table.Rows.Add(0, 0, 57, 67, 378, 116, 1, "contentpane", "About Us", 1200,
-                           "FileModuleCachingProvider", null, null, null, "", 0, 0, 0, null, null, null, null,
+                           "FileModuleCachingProvider", null, null, null, string.Empty, 0, 0, 0, null, null, null, null,
                            "[G]Containers/Xcillion/NoTitle.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
                            74, 1200, 238,
                            "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html", 0, 7, 103,
                            "Text/HTML", 2, null, 0, null, -1, "2014-02-18 10:39:45.170", -1,
                            "2014-02-18 10:39:45.170", "2014-02-18 10:39:45.190",
                            "A0B23459-676C-4DE4-BCA1-33E222F8405A", "85AF4947-EB80-475D-9D8D-0BAD6B026A2B", null,
-                           "664BAA98-7E24-461F-8180-36527619D042", "");
+                           "664BAA98-7E24-461F-8180-36527619D042", string.Empty);
             return table.CreateDataReader();
         }
         // returns 2 moduledefinitions - Text/HTML and Journal

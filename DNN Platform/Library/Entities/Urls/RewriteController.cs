@@ -54,7 +54,7 @@ namespace DotNetNuke.Entities.Urls
         private static string AddQueryStringToRewritePath(string rewritePath, string queryString)
         {
             // now add back querystring if they existed
-            if (queryString != "")
+            if (queryString != string.Empty)
             {
                 bool rewritePathHasQuery = rewritePath.IndexOf("?", StringComparison.Ordinal) != -1;
                 if (queryString.StartsWith("?"))
@@ -118,7 +118,7 @@ namespace DotNetNuke.Entities.Urls
             bool reWritten = false;
 
             string defaultPage = Globals.glbDefaultPage.ToLowerInvariant();
-            string portalAliasUrl = url.ToLowerInvariant().Replace("/" + defaultPage, "");
+            string portalAliasUrl = url.ToLowerInvariant().Replace("/" + defaultPage, string.Empty);
             // if there is a straight match on a portal alias, it's the home page for that portal requested
             var portalAlias = PortalAliasController.Instance.GetPortalAlias(portalAliasUrl);
             if (portalAlias != null)
@@ -268,11 +268,11 @@ namespace DotNetNuke.Entities.Urls
                                                                                       portalAlias.HTTPAlias, culture);
                             if (string.IsNullOrEmpty(skin) == false)
                             {
-                                newUrl = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tabId, "", "skinSrc=" + skin);
+                                newUrl = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tabId, string.Empty, "skinSrc=" + skin);
                             }
                             else
                             {
-                                newUrl = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tabId, "");
+                                newUrl = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tabId, string.Empty);
                             }
 
                             // DNN-3789 always call this method as culture is defined by GetPageLocale
@@ -460,7 +460,7 @@ namespace DotNetNuke.Entities.Urls
             Match langMatch = LangMatchRegex.Match(url);
 
             // searches for a string like language/en-US/ in the url
-            string langParms = "";
+            string langParms = string.Empty;
             if (langMatch.Success)
             {
                 // OK there is a language modifier in the path
@@ -468,7 +468,7 @@ namespace DotNetNuke.Entities.Urls
                 langParms = langMatch.Value.TrimEnd('/'); // in the format of /language/en-US only
                 // it doesn't matter if you get /home.aspx/language/en-US in the url field because the .aspx gets
                 // removed when matching with the tab dictionary
-                url = url.Replace(langParms, "") + langParms;
+                url = url.Replace(langParms, string.Empty) + langParms;
                 result.CultureCode = langMatch.Groups["code"].Value; // get the culture code in the requested url
 
                 var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
@@ -570,7 +570,7 @@ namespace DotNetNuke.Entities.Urls
                 }
             }
             // remove the application path
-            result.RewritePath = result.RewritePath.Replace(result.ApplicationPath + "/", "");
+            result.RewritePath = result.RewritePath.Replace(result.ApplicationPath + "/", string.Empty);
         }
 
         #endregion
@@ -627,7 +627,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     message = "Added SkinSrc : " + skin;
                     changed = true;
-                    rewritePath += rewritePath.Contains("?") ? "&SkinSrc=" + skin.Replace(".ascx", "") : "?SkinSrc=" + skin.Replace(".ascx", "");
+                    rewritePath += rewritePath.Contains("?") ? "&SkinSrc=" + skin.Replace(".ascx", string.Empty) : "?SkinSrc=" + skin.Replace(".ascx", string.Empty);
                 }
             }
             else
@@ -691,7 +691,7 @@ namespace DotNetNuke.Entities.Urls
 
         internal static string CleanExtension(string value, string extension, out bool replaced)
         {
-            return CleanExtension(value, extension, "", out replaced);
+            return CleanExtension(value, extension, string.Empty, out replaced);
         }
 
         internal static string CleanExtension(string value, FriendlyUrlSettings settings, string langParms, out bool replaced)
@@ -701,7 +701,7 @@ namespace DotNetNuke.Entities.Urls
 
         internal static string CleanExtension(string value, FriendlyUrlSettings settings, out bool replaced)
         {
-            return CleanExtension(value, settings.PageExtension, "", out replaced);
+            return CleanExtension(value, settings.PageExtension, string.Empty, out replaced);
         }
 
         internal static string CleanExtension(string value, string extension, string langParms, out bool replaced)
@@ -709,7 +709,7 @@ namespace DotNetNuke.Entities.Urls
             string result = value;
             string ext = extension.ToLowerInvariant();
             replaced = false;
-            if (result.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase) && ext != "")
+            if (result.EndsWith(ext, StringComparison.InvariantCultureIgnoreCase) && ext != string.Empty)
             {
                 result = result.Substring(0, result.Length - ext.Length);
                 replaced = true;
@@ -835,7 +835,7 @@ namespace DotNetNuke.Entities.Urls
                         int tabPathLength = i - curAliasPathDepth;
                         if ((tabPathStart + tabPathLength) <= arraySize)
                         {
-                            string tabPath = "";
+                            string tabPath = string.Empty;
                             if (tabPathLength > -1)
                             {
                                 tabPath = string.Join("/", splitUrl, tabPathStart, tabPathLength);
@@ -901,7 +901,7 @@ namespace DotNetNuke.Entities.Urls
                                     // the [UseBase] moniker is a shortcut hack.  It's used to recognise pages which have been excluded
                                     // from using Friendly Urls.  The request will go on to be processed by the dnn siteurls.config processing.
                                     // this stops the loop and exits the function
-                                    newUrl = newUrl.Replace("[UseBase]", ""); // get rid of usebase hack pattern
+                                    newUrl = newUrl.Replace("[UseBase]", string.Empty); // get rid of usebase hack pattern
                                     SetRewriteParameters(ref result, newUrl); // set result
                                     finished = true;
                                 }
@@ -1051,7 +1051,7 @@ namespace DotNetNuke.Entities.Urls
                                             string[] parms = langParms.Split('/');
                                             if (parms.GetUpperBound(0) >= 1)
                                             {
-                                                if (parms[0] == "" && parms.GetUpperBound(0) > 1)
+                                                if (parms[0] == string.Empty && parms.GetUpperBound(0) > 1)
                                                 {
                                                     newUrl += "&" + parms[1] + "=" + parms[2];
                                                 }
@@ -1167,9 +1167,9 @@ namespace DotNetNuke.Entities.Urls
         {
             // 699: incorrect encoding in absoluteUri.ToString()
             string urlWoutQuery = requestUri.AbsoluteUri;
-            if (requestUri.Query != "")
+            if (requestUri.Query != string.Empty)
             {
-                urlWoutQuery = urlWoutQuery.Replace(requestUri.Query, "");
+                urlWoutQuery = urlWoutQuery.Replace(requestUri.Query, string.Empty);
                 // replace the querystring on the reuqest absolute Uri
             }
             // 926 : do not use querystring.toString() because of encoding errors that restul,
@@ -1179,10 +1179,10 @@ namespace DotNetNuke.Entities.Urls
             fullUrl = urlWoutQuery;
             if (fullUrl.EndsWith("/_noext.aspx", StringComparison.InvariantCultureIgnoreCase))
             {
-                fullUrl = fullUrl.Replace("_noext.aspx", "");
+                fullUrl = fullUrl.Replace("_noext.aspx", string.Empty);
                 // replace this marker pattern so it looks as though it isn't there *(leave on trailing slash)
             }
-            if (querystring != "")
+            if (querystring != string.Empty)
             {
                 // set up the querystring and the fullUrl to include the querystring
                 if (querystring.StartsWith("?") == false)
@@ -1297,9 +1297,9 @@ namespace DotNetNuke.Entities.Urls
             {
                 var url = absoluteUri; // get local copy because it gets hacked around
                 // Remove querystring if exists..
-                if (queryString != "")
+                if (queryString != string.Empty)
                 {
-                    url = url.Replace(queryString, "");
+                    url = url.Replace(queryString, string.Empty);
                 }
 
                 var rules = rewriterConfig.Rules;
@@ -1334,13 +1334,13 @@ namespace DotNetNuke.Entities.Urls
                                 if (urlParams[x].Trim().Length > 0 &&
                                     !urlParams[x].Equals(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
                                 {
-                                    rewritePath = rewritePath + "&" + urlParams[x].Replace(".aspx", "").Trim() + "=";
+                                    rewritePath = rewritePath + "&" + urlParams[x].Replace(".aspx", string.Empty).Trim() + "=";
                                     if (x < (urlParams.Length - 1))
                                     {
                                         x += 1;
-                                        if (urlParams[x].Trim() != "")
+                                        if (urlParams[x].Trim() != string.Empty)
                                         {
-                                            rewritePath = rewritePath + urlParams[x].Replace(".aspx", "");
+                                            rewritePath = rewritePath + urlParams[x].Replace(".aspx", string.Empty);
                                         }
                                     }
                                 }
@@ -1387,9 +1387,9 @@ namespace DotNetNuke.Entities.Urls
                 absoluteUri = absoluteUri.Substring(scheme.Length);
             }
             // Remove QueryString if it exists in the Url value
-            if (queryString != "")
+            if (queryString != string.Empty)
             {
-                absoluteUri = absoluteUri.Replace(queryString, "");
+                absoluteUri = absoluteUri.Replace(queryString, string.Empty);
             }
             absoluteUri = HttpUtility.UrlDecode(absoluteUri); // decode the incoming request
             string rewritePath = GetTabFromDictionary(absoluteUri, queryStringCol, settings, result, parentTraceId);
@@ -1633,7 +1633,7 @@ namespace DotNetNuke.Entities.Urls
                             bool extReplaced;
                             string urlParm = CleanExtension(thisParm, pageExtension, out extReplaced);
 
-                            if (extReplaced && pageExtension == "") // replacing a .aspx extension
+                            if (extReplaced && pageExtension == string.Empty) // replacing a .aspx extension
                             {
                                 result.Action = ActionType.CheckFor301;
                             }

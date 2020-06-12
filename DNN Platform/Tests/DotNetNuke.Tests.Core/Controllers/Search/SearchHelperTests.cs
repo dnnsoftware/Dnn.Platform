@@ -66,7 +66,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private void SetupDataProvider()
         {
             // Standard DataProvider Path for Logging
-            this._dataProvider.Setup(d => d.GetProviderPath()).Returns("");
+            this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
 
             this._dataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(this.GetPortalsCallBack);
 

@@ -209,7 +209,7 @@ namespace Dnn.Module.ModuleCreator
                 this.optLanguage.Items.Add(new ListItem(Path.GetFileName(folderPath)));
             }
 
-            var language = "";
+            var language = string.Empty;
             foreach (ListItem objFile in this.cboFile.Items)
             {
                 if (objFile.Text.EndsWith(".vb"))
@@ -221,7 +221,7 @@ namespace Dnn.Module.ModuleCreator
                     language = "C#";
                 }
             }
-            if (language == "")
+            if (language == string.Empty)
             {
                 this.optLanguage.SelectedIndex = 0;
             }
@@ -240,7 +240,7 @@ namespace Dnn.Module.ModuleCreator
             {
                 this.cboTemplate.Items.Add(new ListItem(Path.GetFileName(folderPath)));
             }
-            this.cboTemplate.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", ""));
+            this.cboTemplate.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", string.Empty));
         }
 
         private void LoadReadMe()
@@ -258,7 +258,7 @@ namespace Dnn.Module.ModuleCreator
             }
             else
             {
-                this.lblDescription.Text = "";
+                this.lblDescription.Text = string.Empty;
             }
 
             // Determine if Control Name is required
@@ -326,21 +326,21 @@ namespace Dnn.Module.ModuleCreator
                 }
 
                 // replace tokens
-                var owner = objPackage.Owner.Replace(" ", "");
+                var owner = objPackage.Owner.Replace(" ", string.Empty);
                 if (string.IsNullOrEmpty(owner))
                 {
                     owner = "DNN";
                 }
                 sourceCode = sourceCode.Replace("_OWNER_", owner);
-                sourceCode = sourceCode.Replace("_MODULE_", objDesktopModule.FriendlyName.Replace(" ", ""));
+                sourceCode = sourceCode.Replace("_MODULE_", objDesktopModule.FriendlyName.Replace(" ", string.Empty));
                 sourceCode = sourceCode.Replace("_CONTROL_", this.GetControl());
                 sourceCode = sourceCode.Replace("_YEAR_", DateTime.Now.Year.ToString());
 
                 // get filename
                 fileName = Path.GetFileName(filePath);
                 fileName = fileName.Replace("template", this.GetControl());
-                fileName = fileName.Replace("_OWNER_", objPackage.Owner.Replace(" ", ""));
-                fileName = fileName.Replace("_MODULE_", objDesktopModule.FriendlyName.Replace(" ", ""));
+                fileName = fileName.Replace("_OWNER_", objPackage.Owner.Replace(" ", string.Empty));
+                fileName = fileName.Replace("_MODULE_", objDesktopModule.FriendlyName.Replace(" ", string.Empty));
                 fileName = fileName.Replace("_CONTROL_", this.GetControl());
 
                 switch (Path.GetExtension(filePath).ToLowerInvariant())
@@ -407,8 +407,8 @@ namespace Dnn.Module.ModuleCreator
                     objModuleControl.ControlSrc = "DesktopModules/" + objDesktopModule.FolderName + "/" + controlName;
                     objModuleControl.ControlTitle = this.txtControl.Text;
                     objModuleControl.ControlType = (SecurityAccessLevel)Enum.Parse(typeof(SecurityAccessLevel), this.cboType.SelectedItem.Value);
-                    objModuleControl.HelpURL = "";
-                    objModuleControl.IconFile = "";
+                    objModuleControl.HelpURL = string.Empty;
+                    objModuleControl.IconFile = string.Empty;
                     objModuleControl.ViewOrder = 0;
                     objModuleControl.SupportsPartialRendering = true;
                     objModuleControl.SupportsPopUps = true;
@@ -428,7 +428,7 @@ namespace Dnn.Module.ModuleCreator
 
         private string GetControl()
         {
-            return this.txtControl.Text.Replace(" ", "");
+            return this.txtControl.Text.Replace(" ", string.Empty);
         }
 
 
@@ -467,7 +467,7 @@ namespace Dnn.Module.ModuleCreator
                 }
                 else
                 {
-                    this.ViewState["UrlReferrer"] = "";
+                    this.ViewState["UrlReferrer"] = string.Empty;
                 }
 
                 this.LoadLanguages();
@@ -521,7 +521,7 @@ namespace Dnn.Module.ModuleCreator
 
         private void OnCreateClick(object sender, EventArgs e)
         {
-            if (this.cboTemplate.SelectedIndex > 0 && this.txtControl.Text != "")
+            if (this.cboTemplate.SelectedIndex > 0 && this.txtControl.Text != string.Empty)
             {
                 var controlSrc = this.CreateModuleControl();
                 this.BindFiles(controlSrc);

@@ -214,8 +214,8 @@ namespace Dnn.PersonaBar.Library.Controllers
         {
             pageIndex = pageIndex < 0 ? 0 : pageIndex;
             pageSize = pageSize > 0 && pageSize <= 100 ? pageSize : 10;
-            moduleName = moduleName?.Replace("*", "");
-            moduleTitle = moduleTitle?.Replace("*", "");
+            moduleName = moduleName?.Replace("*", string.Empty);
+            moduleTitle = moduleTitle?.Replace("*", string.Empty);
             var modules = ModuleController.Instance.GetModules(portalSettings.PortalId)
                     .Cast<ModuleInfo>().Where(ModulePermissionController.CanViewModule);
             if (!string.IsNullOrEmpty(moduleName))

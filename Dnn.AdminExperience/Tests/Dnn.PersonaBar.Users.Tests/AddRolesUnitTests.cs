@@ -55,7 +55,7 @@ namespace Dnn.PersonaBar.Users.Tests
 
             var total = 1;
             this._usersControllerMock
-                .Setup(u => u.GetUserRoles(userInfo, "", out total, -1, -1))
+                .Setup(u => u.GetUserRoles(userInfo, string.Empty, out total, -1, -1))
                 .Returns(userInfoList);
 
             var rolesList = new List<RoleInfo>(
@@ -123,7 +123,7 @@ namespace Dnn.PersonaBar.Users.Tests
 
             var total = 1;
             this._usersControllerMock
-                .Setup(u => u.GetUserRoles(userInfo, "", out total, -1, -1))
+                .Setup(u => u.GetUserRoles(userInfo, string.Empty, out total, -1, -1))
                 .Returns(userInfoList);
 
             var rolesList = new List<RoleInfo>(

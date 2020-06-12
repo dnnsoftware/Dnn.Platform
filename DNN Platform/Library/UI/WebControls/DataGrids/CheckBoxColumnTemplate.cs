@@ -30,7 +30,7 @@ namespace DotNetNuke.UI.WebControls
         private string mEnabledField = Null.NullString;
         private bool mHeaderCheckBox = true;
         private ListItemType mItemType = ListItemType.Item;
-        private string mText = "";
+        private string mText = string.Empty;
 
         public CheckBoxColumnTemplate() : this(ListItemType.Item)
         {

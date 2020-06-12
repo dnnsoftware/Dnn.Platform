@@ -252,7 +252,7 @@ namespace DotNetNuke.Services.Scheduling
 
         public static bool CanRunOnThisServer(string servers)
         {
-            string lwrServers = "";
+            string lwrServers = string.Empty;
             if (servers != null)
             {
                 lwrServers = servers.ToLowerInvariant();

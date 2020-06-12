@@ -527,7 +527,7 @@ namespace DotNetNuke.Services.Search.Internals
         {
             var attributesList = attributes as IList<string> ?? attributes.ToList();
             var strippedString = html;
-            var emptySpace = retainSpace ? " " : "";
+            var emptySpace = retainSpace ? " " : string.Empty;
 
             if (!string.IsNullOrEmpty(strippedString))
             {

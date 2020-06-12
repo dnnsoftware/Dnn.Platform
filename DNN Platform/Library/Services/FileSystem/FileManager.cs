@@ -395,7 +395,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 PortalId = folder.PortalID,
                 FileName = fileName,
-                Extension = (!string.IsNullOrEmpty(extension)) ? extension.Replace(".", "") : string.Empty,
+                Extension = (!string.IsNullOrEmpty(extension)) ? extension.Replace(".", string.Empty) : string.Empty,
                 Width = Null.NullInteger,
                 Height = Null.NullInteger,
                 ContentType = contentType,
@@ -991,7 +991,7 @@ namespace DotNetNuke.Services.FileSystem
 
             Requires.NotNullOrEmpty("relativePath", relativePath);
 
-            var folderPath = "";
+            var folderPath = string.Empty;
             var seperatorIndex = relativePath.LastIndexOf('/');
 
             if (seperatorIndex > 0)
@@ -1109,7 +1109,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The flag as a boolean value.</returns>
         public virtual bool IsImageFile(IFileInfo file)
         {
-            return (Globals.glbImageFileTypes + ",").IndexOf(file.Extension.ToLowerInvariant().Replace(".", "") + ",") > -1;
+            return (Globals.glbImageFileTypes + ",").IndexOf(file.Extension.ToLowerInvariant().Replace(".", string.Empty) + ",") > -1;
         }
 
         /// <summary>
@@ -1134,7 +1134,7 @@ namespace DotNetNuke.Services.FileSystem
                 return file;
             }
 
-            var lockReason = "";
+            var lockReason = string.Empty;
             if (FileLockingController.Instance.IsFileLocked(file, out lockReason))
             {
                 throw new FileLockedException(Localization.Localization.GetExceptionMessage(lockReason, "File locked. The file cannot be updated. Reason: " + lockReason));
@@ -1246,7 +1246,7 @@ namespace DotNetNuke.Services.FileSystem
             file.FileName = newFileName;
             if (Path.HasExtension(newFileName))
             {
-                file.Extension = Path.GetExtension(newFileName).Replace(".", "");
+                file.Extension = Path.GetExtension(newFileName).Replace(".", string.Empty);
             }
             var renamedFile = this.UpdateFile(file);
 
@@ -1859,7 +1859,7 @@ namespace DotNetNuke.Services.FileSystem
 
             // Do not send negative Content-Length (file.Size could be negative due to integer overflow for files > 2GB)
             if (file.Size >= 0) objResponse.AppendHeader("Content-Length", file.Size.ToString(CultureInfo.InvariantCulture));
-            objResponse.ContentType = this.GetContentType(file.Extension.Replace(".", ""));
+            objResponse.ContentType = this.GetContentType(file.Extension.Replace(".", string.Empty));
 
             try
             {
@@ -1979,7 +1979,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private static bool ValidMetadata(IFileInfo file, out string exceptionMessage)
         {
-            exceptionMessage = "";
+            exceptionMessage = string.Empty;
             // TODO check dynamically all required fields from MetadataInfo
 
             // TODO check dynamically all max lengths from MetadataInfo

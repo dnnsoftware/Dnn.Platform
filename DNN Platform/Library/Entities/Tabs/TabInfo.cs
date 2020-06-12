@@ -996,7 +996,7 @@ namespace DotNetNuke.Entities.Tabs
                     url = tabUrl.Url;
                 }
             }
-            return url ?? "";
+            return url ?? string.Empty;
         }
 
         public string GetTags()

@@ -291,7 +291,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 if (!string.IsNullOrEmpty(this.FilePath))
                 {
                     fileName = this.FilePath.Substring(this.FilePath.LastIndexOf("/") + 1);
-                    folderPath = string.IsNullOrEmpty(fileName) ? this.FilePath : this.FilePath.Replace(fileName, "");
+                    folderPath = string.IsNullOrEmpty(fileName) ? this.FilePath : this.FilePath.Replace(fileName, string.Empty);
                 }
                 else
                 {

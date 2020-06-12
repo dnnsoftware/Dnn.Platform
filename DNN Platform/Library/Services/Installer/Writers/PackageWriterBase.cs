@@ -286,14 +286,14 @@ namespace DotNetNuke.Services.Installer.Writers
                 }
                 else
                 {
-                    filepath = Path.Combine(Path.Combine(Globals.ApplicationMapPath, basePath), packageFile.FullName.Replace(basePath + "\\", ""));
+                    filepath = Path.Combine(Path.Combine(Globals.ApplicationMapPath, basePath), packageFile.FullName.Replace(basePath + "\\", string.Empty));
                 }
                 if (File.Exists(filepath))
                 {
                     string packageFilePath = packageFile.Path;
                     if (!string.IsNullOrEmpty(basePath))
                     {
-                        packageFilePath = packageFilePath.Replace(basePath + "\\", "");
+                        packageFilePath = packageFilePath.Replace(basePath + "\\", string.Empty);
                     }
                     FileSystemUtils.AddToZip(ref stream, filepath, packageFile.Name, packageFilePath);
                     this.Log.AddInfo(string.Format(Util.WRITER_SavedFile, packageFile.FullName));
@@ -321,7 +321,7 @@ namespace DotNetNuke.Services.Installer.Writers
                     strmZipStream.SetLevel(CompressionLevel);
 
                     // Add Files To zip
-                    this.AddFilesToZip(strmZipStream, this._Assemblies, "");
+                    this.AddFilesToZip(strmZipStream, this._Assemblies, string.Empty);
                     this.AddFilesToZip(strmZipStream, this._AppCodeFiles, this.AppCodePath);
                     this.AddFilesToZip(strmZipStream, this._Files, this.BasePath);
                     this.AddFilesToZip(strmZipStream, this._CleanUpFiles, this.BasePath);
@@ -476,7 +476,7 @@ namespace DotNetNuke.Services.Installer.Writers
             FileInfo[] files = folder.GetFiles();
             foreach (FileInfo file in files)
             {
-                string filePath = folder.FullName.Replace(rootPath, "");
+                string filePath = folder.FullName.Replace(rootPath, string.Empty);
                 if (filePath.StartsWith("\\"))
                 {
                     filePath = filePath.Substring(1);
@@ -515,7 +515,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         protected void ParseProjectFile(FileInfo projFile, bool includeSource)
         {
-            string fileName = "";
+            string fileName = string.Empty;
 
             // Create an XPathDocument from the Xml
             var doc = new XPathDocument(new FileStream(projFile.FullName, FileMode.Open, FileAccess.Read));
@@ -527,8 +527,8 @@ namespace DotNetNuke.Services.Installer.Writers
             XPathNavigator assemblyNav = rootNav.SelectSingleNode("proj:PropertyGroup/proj:AssemblyName", manager);
             fileName = assemblyNav.Value;
             XPathNavigator buildPathNav = rootNav.SelectSingleNode("proj:PropertyGroup/proj:OutputPath", manager);
-            string buildPath = buildPathNav.Value.Replace("..\\", "");
-            buildPath = buildPath.Replace(this.AssemblyPath + "\\", "");
+            string buildPath = buildPathNav.Value.Replace("..\\", string.Empty);
+            buildPath = buildPath.Replace(this.AssemblyPath + "\\", string.Empty);
             this.AddFile(Path.Combine(buildPath, fileName + ".dll"));
 
             // Check for referenced assemblies

@@ -256,7 +256,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         public readonly object[] NullableCases =
         {
             new object[] { null, null, null, null, },
-            new object[] { "", -1, DateTime.UtcNow, TimeSpan.FromMilliseconds(3215648), },
+            new object[] { string.Empty, -1, DateTime.UtcNow, TimeSpan.FromMilliseconds(3215648), },
             new object[] { "lorem ipsum", 456, DateTime.Now, DateTime.Today - DateTime.Now, },
         };
     }

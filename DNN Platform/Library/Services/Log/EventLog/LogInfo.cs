@@ -25,10 +25,10 @@ namespace DotNetNuke.Services.Log.EventLog
             this.BypassBuffering = false;
             this.LogProperties = new LogProperties();
             this.LogPortalID = -1;
-            this.LogPortalName = "";
+            this.LogPortalName = string.Empty;
             this.LogUserID = -1;
             this.LogEventID = -1;
-            this.LogUserName = "";
+            this.LogUserName = string.Empty;
             this.Exception = new ExceptionInfo();
         }
 

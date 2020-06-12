@@ -77,7 +77,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             }
 
             // Synchronise Host Folder
-            FolderManager.Instance.Synchronize(Null.NullInteger, "", true, true);
+            FolderManager.Instance.Synchronize(Null.NullInteger, string.Empty, true, true);
 
             this.Status = StepStatus.Done;
         }

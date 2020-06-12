@@ -215,7 +215,7 @@ namespace DotNetNuke.Entities.Urls
 
         private static string CheckForDebug(HttpRequest request)
         {
-            string debugValue = "";
+            string debugValue = string.Empty;
             const string debugToken = "_FUGDEBUG";
             // 798 : change reference to debug parameters
             if (request != null)
@@ -271,9 +271,9 @@ namespace DotNetNuke.Entities.Urls
                 // It's true this could be solved by taking the items from the path earlier in the chain (in the original routine that takes them
                 // from the querystring and includes them in the path), but the intention is to leave the primary friendly url generation similar
                 // to the original DNN logic, and have all the 'improved' logic in this routine.
-                if (newPath == "" // no path (no querystring when rewritten)
+                if (newPath == string.Empty // no path (no querystring when rewritten)
                     && (isHomePage && newTabPath == "/") // is the home page, and we're not using 'home' for it
-                    && (langParms == "" || dropLangParms)
+                    && (langParms == string.Empty || dropLangParms)
                     // doesn't have any language parms, or we're intentionally getting rid of them
                     && !builtInUrl) // builtin Url == login, terms, privacy, register
                 {
@@ -307,7 +307,7 @@ namespace DotNetNuke.Entities.Urls
 
         private static string DetermineExtension(bool isHomePage, string pageName, FriendlyUrlSettings settings)
         {
-            string extension = "";
+            string extension = string.Empty;
             if (!isHomePage) // no pageAndExtension for the home page when no query string specified
             {
                 // the ending of the url depends on the current page pageAndExtension settings
@@ -330,12 +330,12 @@ namespace DotNetNuke.Entities.Urls
                     if (string.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) != 0)
                     {
                         // get rid of the .aspx on the page if it was there
-                        extension = "/" + pageName.Replace(".aspx", ""); // +"/"; //610 : don't always end with /
+                        extension = "/" + pageName.Replace(".aspx", string.Empty); // +"/"; //610 : don't always end with /
                     }
                     else
                     {
                         // no pageAndExtension
-                        extension = ""; // 610 dont always end with "/";
+                        extension = string.Empty; // 610 dont always end with "/";
                     }
                 }
             }
@@ -361,13 +361,13 @@ namespace DotNetNuke.Entities.Urls
                     }
                     else
                     {
-                        pageAndExtension = "/" + pageName.Replace(".aspx", ""); // 610 + "/";
+                        pageAndExtension = "/" + pageName.Replace(".aspx", string.Empty); // 610 + "/";
                         // get rid of the .aspx on the page if it was there
                     }
                 }
                 else
                 {
-                    pageAndExtension = ""; // 610 don't end with "/";
+                    pageAndExtension = string.Empty; // 610 don't end with "/";
                     // no pageAndExtension
                 }
             }
@@ -496,7 +496,7 @@ namespace DotNetNuke.Entities.Urls
 
         internal static string GetCultureOfPath(string path)
         {
-            string code = "";
+            string code = string.Empty;
             MatchCollection matches = CodePatternRegex.Matches(path);
             if (matches.Count > 0)
             {
@@ -519,7 +519,7 @@ namespace DotNetNuke.Entities.Urls
         private static string GetCultureOfSettings(PortalSettings portalSettings)
         {
             // note! should be replaced with compiled call to portalSettings.CultureCode property when base supported version is increased.
-            string cultureCode = "";
+            string cultureCode = string.Empty;
             PropertyInfo cultureCodePi = portalSettings.GetType().GetProperty("CultureCode");
             if (cultureCodePi != null)
             {
@@ -587,7 +587,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 cultureSpecificAlias = true;
                             }
-                            else if (redirectAlias.CultureCode == "")
+                            else if (redirectAlias.CultureCode == string.Empty)
                             {
                                 cultureSpecificAlias = true;
                                 // 770: hacking this so that a change is forced to portal settings when a non-chosen alias is requested.
@@ -617,7 +617,7 @@ namespace DotNetNuke.Entities.Urls
                                     // check to see if it was a full skinsrc=xyz pair
                                     if (keyValue.GetUpperBound(0) >= 1)
                                     {
-                                        friendlyPath = path.Replace("&" + parmPair, "");
+                                        friendlyPath = path.Replace("&" + parmPair, string.Empty);
                                     }
                                 }
                             }
@@ -678,16 +678,16 @@ namespace DotNetNuke.Entities.Urls
         {
             string friendlyPath = path;
             Match queryStringMatch = FriendlyPathRegex.Match(friendlyPath);
-            string queryStringSpecialChars = "";
+            string queryStringSpecialChars = string.Empty;
             if (!ReferenceEquals(queryStringMatch, Match.Empty))
             {
                 friendlyPath = queryStringMatch.Groups[1].Value;
-                friendlyPath = DefaultPageRegex.Replace(friendlyPath, "");
+                friendlyPath = DefaultPageRegex.Replace(friendlyPath, string.Empty);
                 if (string.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) != 0)
                 // take out the end page name, it will get re-added
                 {
                     var pgNameRx = RegexUtils.GetCachedRegex(pageName, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                    friendlyPath = pgNameRx.Replace(friendlyPath, "");
+                    friendlyPath = pgNameRx.Replace(friendlyPath, string.Empty);
                 }
                 string queryString = queryStringMatch.Groups[2].Value.Replace("&amp;", "&");
                 if (queryString.StartsWith("?"))
@@ -698,7 +698,7 @@ namespace DotNetNuke.Entities.Urls
                 string[] nameValuePairs = queryString.Split('&');
                 for (int i = 0; i <= nameValuePairs.Length - 1; i++)
                 {
-                    string pathToAppend = "";
+                    string pathToAppend = string.Empty;
                     string[] pair = nameValuePairs[i].Split('=');
 
                     var illegalPageNames = new[] { "con", "aux", "nul", "prn" };
@@ -791,7 +791,7 @@ namespace DotNetNuke.Entities.Urls
                                     {
                                         queryStringSpecialChars = queryStringSpecialChars + "&" + key + "=" + valueBuilder;
                                     }
-                                    pathToAppend = "";
+                                    pathToAppend = string.Empty;
                                 }
                             }
                             else
@@ -912,7 +912,7 @@ namespace DotNetNuke.Entities.Urls
                 if (tabOnlyRegex.IsMatch(friendlyPath))
                 {
                     MatchCollection tabOnlyMatches = tabOnlyRegex.Matches(friendlyPath);
-                    string qs = "";
+                    string qs = string.Empty;
                     if (tabOnlyMatches.Count > 0)
                     {
                         Match rgxMatch = tabOnlyMatches[0];
@@ -925,7 +925,7 @@ namespace DotNetNuke.Entities.Urls
                     // 736: observe the culture code of the tab
                     string cultureCode = tab.CultureCode;
                     bool isDefaultLanguage = false;
-                    if (cultureCode == "")
+                    if (cultureCode == string.Empty)
                     {
                         cultureCode = portalSettings.DefaultLanguage;
                         isDefaultLanguage = true;
@@ -954,8 +954,8 @@ namespace DotNetNuke.Entities.Urls
                     }
 
                     // it is a straight page.aspx reference, with just the tabid to specify parameters, so get the extension that should be used (no pagename is used by design)
-                    string extension = customHttpAlias != null && newTabPath == ""
-                                           ? ""
+                    string extension = customHttpAlias != null && newTabPath == string.Empty
+                                           ? string.Empty
                                            : DetermineExtension(isHomePage, pageName, settings);
 
                     if (customOnly && isCustomUrl || customOnly == false)
@@ -989,9 +989,9 @@ namespace DotNetNuke.Entities.Urls
                         string defaultCode = null;
 
                         const string newPageName = "";
-                        string newPath = "";
-                        string qs = "";
-                        string langParms = "";
+                        string newPath = string.Empty;
+                        string qs = string.Empty;
+                        string langParms = string.Empty;
                         // check we matched on some parms in the path
                         if (rgxMatch.Groups["parms"] != null && rgxMatch.Groups["parms"].Success)
                         {
@@ -1010,7 +1010,7 @@ namespace DotNetNuke.Entities.Urls
                                     // we really want language/en-us/home.aspx
                                     langParms = langMatch.Value;
                                     langParms = langParms.TrimEnd('/');
-                                    newPath = newPath.Replace(langParms, "");
+                                    newPath = newPath.Replace(langParms, string.Empty);
                                     cultureCode = langMatch.Groups["code"].Value;
                                     // obtain the culture code for this language
                                     defaultCode = portalSettings.DefaultLanguage;
@@ -1027,8 +1027,8 @@ namespace DotNetNuke.Entities.Urls
                         // determine if we allow the home page to be shown as the site root.  This is if :
                         // cultureCode = default culture, newPath is blank after removing languageParms
                         // allow site root for home page if it is the default culture and no other path items, or there is a specific alias for this culture and there are no other path items
-                        bool homePageSiteRoot = (cultureCode == defaultCode && newPath == "") || (cultureSpecificAlias && newPath == "");
-                        bool hasPath = newPath != "";
+                        bool homePageSiteRoot = (cultureCode == defaultCode && newPath == string.Empty) || (cultureSpecificAlias && newPath == string.Empty);
+                        bool hasPath = newPath != string.Empty;
 
                         // 871 : case insensitive comparison for culture
                         bool isDefaultLanguage = string.Compare(cultureCode, defaultCode, StringComparison.OrdinalIgnoreCase) == 0;
@@ -1053,11 +1053,11 @@ namespace DotNetNuke.Entities.Urls
 
                             // remove any parts of the path excluded by regex
                             RemoveExcludedPartsOfPath(settings, ref newPath, ref qs);
-                            if (newPath == "" && isHomePage)
+                            if (newPath == string.Empty && isHomePage)
                             {
                                 // 956 : recheck the test for the homePagebeing a site root Url
-                                homePageSiteRoot = (cultureCode == defaultCode && newPath == "") || (cultureSpecificAlias && newPath == "");
-                                hasPath = newPath != "";
+                                homePageSiteRoot = (cultureCode == defaultCode && newPath == string.Empty) || (cultureSpecificAlias && newPath == string.Empty);
+                                hasPath = newPath != string.Empty;
                                 if (homePageSiteRoot)
                                 {
                                     // special case - if the newPath is empty after removing the parameters, and it is the home page, and the home page is only to show the site root
@@ -1156,11 +1156,11 @@ namespace DotNetNuke.Entities.Urls
                             // get the page and extension
                             // 770 : when using a custom http alias, and there is no Url for that path, there's no extension regardless of settings
                             // because it's treated like a site root (quasi home page if you like)
-                            string pageAndExtension = customHttpAlias != null && newTabPath == ""
-                                                          ? ""
+                            string pageAndExtension = customHttpAlias != null && newTabPath == string.Empty
+                                                          ? string.Empty
                                                           : DeterminePageNameAndExtension(ref pageName, settings);
                             // prepend querystring qualifier if necessary
-                            qs = !string.IsNullOrEmpty(qs) ? "?" + qs : "";
+                            qs = !string.IsNullOrEmpty(qs) ? "?" + qs : string.Empty;
 
                             // string it all together
                             if (!dropLangParms)
@@ -1186,7 +1186,7 @@ namespace DotNetNuke.Entities.Urls
 
                             // 702: look for _aumdebug=true|false and remove if so - never want it part of the output friendly url path
 
-                            finalPath = AumDebugRegex.Replace(finalPath, "");
+                            finalPath = AumDebugRegex.Replace(finalPath, string.Empty);
 
                             // 'and we're done!
                             if (customOnly && isCustomUrl || customOnly == false || builtInUrl)
@@ -1241,7 +1241,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 HttpRequest request = HttpContext.Current.Request;
                 string debugCheck = CheckForDebug(request);
-                if (debugCheck != "" && debugCheck != "false")
+                if (debugCheck != string.Empty && debugCheck != "false")
                 {
                     int id = DateTime.Now.Millisecond;
                     // append the friendly url headers
@@ -1344,7 +1344,7 @@ namespace DotNetNuke.Entities.Urls
         {
             // 615 : output simple urls for login, privacy, register and terms urls
             bool builtInUrl = false;
-            if (newPath != "/" && newPath != "" && "/ctl/privacy|/ctl/login|/ctl/register|/ctl/terms".Contains(newPath.ToLowerInvariant()))
+            if (newPath != "/" && newPath != string.Empty && "/ctl/privacy|/ctl/login|/ctl/register|/ctl/terms".Contains(newPath.ToLowerInvariant()))
             {
                 builtInUrl = true;
                 var lowerNewPath = newPath.ToLowerInvariant();
@@ -1352,19 +1352,19 @@ namespace DotNetNuke.Entities.Urls
                 {
                     case "/ctl/privacy":
                         newTabPath = "Privacy";
-                        newPath = lowerNewPath.Replace("/ctl/privacy", "");
+                        newPath = lowerNewPath.Replace("/ctl/privacy", string.Empty);
                         break;
                     case "/ctl/login":
                         newTabPath = "Login";
-                        newPath = lowerNewPath.Replace("/ctl/login", "");
+                        newPath = lowerNewPath.Replace("/ctl/login", string.Empty);
                         break;
                     case "/ctl/register":
                         newTabPath = "Register";
-                        newPath = lowerNewPath.Replace("/ctl/register", "");
+                        newPath = lowerNewPath.Replace("/ctl/register", string.Empty);
                         break;
                     case "/ctl/terms":
                         newTabPath = "Terms";
-                        newPath = lowerNewPath.Replace("/ctl/terms", "");
+                        newPath = lowerNewPath.Replace("/ctl/terms", string.Empty);
                         break;
                 }
             }

@@ -35,7 +35,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
 
             var decrypted = DotNetNuke.Security.FIPSCompliant.DecryptAES(result, Config.GetDecryptionkey(), Host.GUID);
 
-            Assert.AreNotEqual(result, "");
+            Assert.AreNotEqual(result, string.Empty);
             Assert.AreNotEqual(result, decrypted);
             Assert.AreEqual(decrypted, newPassword);
         }

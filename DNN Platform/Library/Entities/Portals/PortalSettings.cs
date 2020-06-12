@@ -576,7 +576,7 @@ namespace DotNetNuke.Entities.Portals
                 if (PortalController.Instance.GetPortalSettings(this.PortalId).TryGetValue("PageHeadText", out setting))
                 {
                     // Hack to store empty string portalsetting with non empty default value
-                    pageHead = (setting == "false") ? "" : setting;
+                    pageHead = (setting == "false") ? string.Empty : setting;
                 }
                 return pageHead;
             }
@@ -610,7 +610,7 @@ namespace DotNetNuke.Entities.Portals
                 if (PortalController.Instance.GetPortalSettings(this.PortalId).TryGetValue("AddCompatibleHttpHeader", out setting))
                 {
                     // Hack to store empty string portalsetting with non empty default value
-                    CompatibleHttpHeader = (setting == "false") ? "" : setting;
+                    CompatibleHttpHeader = (setting == "false") ? string.Empty : setting;
                 }
                 return CompatibleHttpHeader;
             }

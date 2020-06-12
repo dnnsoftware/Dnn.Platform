@@ -33,10 +33,10 @@ namespace DotNetNuke.UI.UserControls
         protected Label Label5;
         protected Label Label6;
         protected Label Label7;
-        private string _FormattedURL = "";
+        private string _FormattedURL = string.Empty;
         private int _ModuleID = -2;
-        private string _TrackingURL = "";
-        private string _URL = "";
+        private string _TrackingURL = string.Empty;
+        private string _URL = string.Empty;
         private string _localResourceFile;
         protected LinkButton cmdDisplay;
         protected HyperLink cmdEndCalendar;

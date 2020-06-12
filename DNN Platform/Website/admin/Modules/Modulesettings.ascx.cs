@@ -114,7 +114,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 this.trnewPages.Visible = this.chkAllTabs.Checked;
                 this.allowIndexRow.Visible = desktopModule.IsSearchable;
                 this.chkAllowIndex.Checked = this.GetBooleanSetting("AllowIndex", true);
-                this.txtMoniker.Text = (string)this.Settings["Moniker"] ?? "";
+                this.txtMoniker.Text = (string)this.Settings["Moniker"] ?? string.Empty;
 
                 this.cboVisibility.SelectedIndex = (int)this.Module.Visibility;
                 this.chkAdminBorder.Checked = this.Settings["hideadminborder"] != null && bool.Parse(this.Settings["hideadminborder"].ToString());
@@ -210,7 +210,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             this.cboCacheProvider.DataBind();
 
             // cboCacheProvider.Items.Insert(0, new ListItem(Localization.GetString("None_Specified"), ""));
-            this.cboCacheProvider.InsertItem(0, Localization.GetString("None_Specified"), "");
+            this.cboCacheProvider.InsertItem(0, Localization.GetString("None_Specified"), string.Empty);
 
             // if (!string.IsNullOrEmpty(Module.GetEffectiveCacheMethod()) && cboCacheProvider.Items.FindByValue(Module.GetEffectiveCacheMethod()) != null)
             if (!string.IsNullOrEmpty(this.Module.GetEffectiveCacheMethod()) && this.cboCacheProvider.FindItemByValue(this.Module.GetEffectiveCacheMethod()) != null)
@@ -567,7 +567,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     // collect these first as any settings update will clear the cache
                     var originalChecked = this.Settings["hideadminborder"] != null && bool.Parse(this.Settings["hideadminborder"].ToString());
                     var allowIndex = this.GetBooleanSetting("AllowIndex", true);
-                    var oldMoniker = ((string)this.Settings["Moniker"] ?? "").TrimToLength(100);
+                    var oldMoniker = ((string)this.Settings["Moniker"] ?? string.Empty).TrimToLength(100);
                     var newMoniker = this.txtMoniker.Text.TrimToLength(100);
                     if (!oldMoniker.Equals(this.txtMoniker.Text))
                     {

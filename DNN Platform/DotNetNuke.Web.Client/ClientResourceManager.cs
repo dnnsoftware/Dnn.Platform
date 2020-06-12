@@ -295,7 +295,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
         public static void RegisterScript(Page page, string filePath, int priority, string provider)
         {
-            RegisterScript(page, filePath, priority, provider, "", "");
+            RegisterScript(page, filePath, priority, provider, string.Empty, string.Empty);
         }
 
         /// <summary>
@@ -358,7 +358,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="provider">The provider name to be used to render the css file on the page.</param>
         public static void RegisterStyleSheet(Page page, string filePath, int priority, string provider)
         {
-            RegisterStyleSheet(page, filePath, priority, provider, "", "");
+            RegisterStyleSheet(page, filePath, priority, provider, string.Empty, string.Empty);
         }
 
         /// <summary>

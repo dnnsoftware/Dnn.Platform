@@ -163,8 +163,8 @@ namespace DotNetNuke.UI.Skins.Controls
                 this.logoffLink.NavigateUrl = this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Logoff");
                 this.editProfileLink.NavigateUrl = this._navigationManager.NavigateURL(this.PortalSettings.UserTabId, "Profile", "userId=" + this.PortalSettings.UserId, "pageno=2");
                 this.accountLink.NavigateUrl = this._navigationManager.NavigateURL(this.PortalSettings.UserTabId, "Profile", "userId=" + this.PortalSettings.UserId, "pageno=1");
-                this.messagesLink.NavigateUrl = this._navigationManager.NavigateURL(this.GetMessageTab(), "", string.Format("userId={0}", this.PortalSettings.UserId));
-                this.notificationsLink.NavigateUrl = this._navigationManager.NavigateURL(this.GetMessageTab(), "", string.Format("userId={0}", this.PortalSettings.UserId), "view=notifications", "action=notifications");
+                this.messagesLink.NavigateUrl = this._navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, string.Format("userId={0}", this.PortalSettings.UserId));
+                this.notificationsLink.NavigateUrl = this._navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, string.Format("userId={0}", this.PortalSettings.UserId), "view=notifications", "action=notifications");
 
                 var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(this.PortalSettings.UserId, this.PortalSettings.PortalId);
                 var unreadAlerts = NotificationsController.Instance.CountNotifications(this.PortalSettings.UserId, this.PortalSettings.PortalId);

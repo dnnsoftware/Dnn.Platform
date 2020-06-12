@@ -142,7 +142,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// -----------------------------------------------------------------------------
         public ModuleAction Add(int ID, string Title, string CmdName, string CmdArg, string Icon, string Url, bool UseActionEvent, SecurityAccessLevel Secure, bool Visible, bool NewWindow)
         {
-            return this.Add(ID, Title, CmdName, CmdArg, Icon, Url, "", UseActionEvent, Secure, Visible, NewWindow);
+            return this.Add(ID, Title, CmdName, CmdArg, Icon, Url, string.Empty, UseActionEvent, Secure, Visible, NewWindow);
         }
 
         /// -----------------------------------------------------------------------------

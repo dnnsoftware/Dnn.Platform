@@ -31,11 +31,11 @@ namespace DotNetNuke.UI.UserControls
         private string MyFileName = "User.ascx";
         protected HtmlTableRow PasswordRow;
         private string _Confirm;
-        private string _ControlColumnWidth = "";
+        private string _ControlColumnWidth = string.Empty;
         private string _Email;
         private string _FirstName;
         private string _IM;
-        private string _LabelColumnWidth = "";
+        private string _LabelColumnWidth = string.Empty;
         private string _LastName;
         private int _ModuleId;
         private string _Password;

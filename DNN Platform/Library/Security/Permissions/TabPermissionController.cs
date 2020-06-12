@@ -257,7 +257,7 @@ namespace DotNetNuke.Security.Permissions
         public static void DeleteTabPermissionsByUser(UserInfo user)
         {
             _provider.DeleteTabPermissionsByUser(user);
-            EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_DELETED);
+            EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TABPERMISSION_DELETED);
             DataCache.ClearTabPermissionsCache(user.PortalID);
         }
 
@@ -309,7 +309,7 @@ namespace DotNetNuke.Security.Permissions
         public static void SaveTabPermissions(TabInfo tab)
         {
             _provider.SaveTabPermissions(tab);
-            EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.TABPERMISSION_UPDATED);
+            EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.TABPERMISSION_UPDATED);
             DataCache.ClearTabPermissionsCache(tab.PortalID);
         }
 

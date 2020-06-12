@@ -134,7 +134,7 @@ namespace DotNetNuke.Entities.Modules
                 var contentController = Util.GetContentController();
                 contentController.UpdateContentItem(module);
 
-                EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), currentUser.UserID, "", EventLogController.EventLogType.MODULE_CREATED);
+                EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), currentUser.UserID, string.Empty, EventLogController.EventLogType.MODULE_CREATED);
 
                 // set module permissions
                 ModulePermissionController.SaveModulePermissions(module);
@@ -221,7 +221,7 @@ namespace DotNetNuke.Entities.Modules
                 if (portalId != tab.PortalID)
                 {
                     portalId = tab.PortalID;
-                    cacheKey = string.Format(DataCache.TabModuleSettingsNameCacheKey, portalId, settingName ?? "");
+                    cacheKey = string.Format(DataCache.TabModuleSettingsNameCacheKey, portalId, settingName ?? string.Empty);
                     DataCache.RemoveCache(cacheKey);
                 }
             }
@@ -362,18 +362,18 @@ namespace DotNetNuke.Entities.Modules
                     module.Visibility = VisibilityState.None;
                     break;
             }
-            module.Color = XmlUtils.GetNodeValue(nodeModule, "color", "");
-            module.Border = XmlUtils.GetNodeValue(nodeModule, "border", "");
-            module.Header = XmlUtils.GetNodeValue(nodeModule, "header", "");
-            module.Footer = XmlUtils.GetNodeValue(nodeModule, "footer", "");
+            module.Color = XmlUtils.GetNodeValue(nodeModule, "color", string.Empty);
+            module.Border = XmlUtils.GetNodeValue(nodeModule, "border", string.Empty);
+            module.Header = XmlUtils.GetNodeValue(nodeModule, "header", string.Empty);
+            module.Footer = XmlUtils.GetNodeValue(nodeModule, "footer", string.Empty);
             module.InheritViewPermissions = XmlUtils.GetNodeValueBoolean(nodeModule, "inheritviewpermissions", false);
             module.IsShareable = XmlUtils.GetNodeValueBoolean(nodeModule, "isshareable", true);
             module.IsShareableViewOnly = XmlUtils.GetNodeValueBoolean(nodeModule, "isshareableviewonly", true);
             module.StartDate = XmlUtils.GetNodeValueDate(nodeModule, "startdate", Null.NullDate);
             module.EndDate = XmlUtils.GetNodeValueDate(nodeModule, "enddate", Null.NullDate);
-            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeModule, "containersrc", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeModule, "containersrc", string.Empty)))
             {
-                module.ContainerSrc = XmlUtils.GetNodeValue(nodeModule, "containersrc", "");
+                module.ContainerSrc = XmlUtils.GetNodeValue(nodeModule, "containersrc", string.Empty);
             }
             module.DisplayTitle = XmlUtils.GetNodeValueBoolean(nodeModule, "displaytitle", true);
             module.DisplayPrint = XmlUtils.GetNodeValueBoolean(nodeModule, "displayprint", true);
@@ -598,7 +598,7 @@ namespace DotNetNuke.Entities.Modules
                                     }
                                     else
                                     {
-                                        settings[dr.GetString(1)] = "";
+                                        settings[dr.GetString(1)] = string.Empty;
                                     }
                                 }
                                 CBO.CloseDataReader(dr, true);
@@ -638,7 +638,7 @@ namespace DotNetNuke.Entities.Modules
                                         }
                                         else
                                         {
-                                            settings[dr.GetString(1)] = "";
+                                            settings[dr.GetString(1)] = string.Empty;
                                         }
                                     }
                                 }
@@ -658,7 +658,7 @@ namespace DotNetNuke.Entities.Modules
                 var newModule = sourceModule.Clone();
                 newModule.ModuleID = Null.NullInteger;
 
-                string translatorRoles = PortalController.GetPortalSetting(string.Format("DefaultTranslatorRoles-{0}", sourceModule.CultureCode), sourceModule.PortalID, "").TrimEnd(';');
+                string translatorRoles = PortalController.GetPortalSetting(string.Format("DefaultTranslatorRoles-{0}", sourceModule.CultureCode), sourceModule.PortalID, string.Empty).TrimEnd(';');
 
                 // Add the default translators for this language, view and edit permissions
                 var permissionController = new PermissionController();
@@ -1974,7 +1974,7 @@ namespace DotNetNuke.Entities.Modules
                 termController.AddTermToContent(term, module);
             }
 
-            EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), currentUser.UserID, "", EventLogController.EventLogType.MODULE_UPDATED);
+            EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), currentUser.UserID, string.Empty, EventLogController.EventLogType.MODULE_UPDATED);
 
             // save module permissions
             ModulePermissionController.SaveModulePermissions(module);
@@ -2019,7 +2019,7 @@ namespace DotNetNuke.Entities.Modules
 
                 DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, module.TabModuleID));
 
-                EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), currentUser.UserID, "", EventLogController.EventLogType.TABMODULE_UPDATED);
+                EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), currentUser.UserID, string.Empty, EventLogController.EventLogType.TABMODULE_UPDATED);
 
                 if (hasModuleOrderOrPaneChanged)
                 {

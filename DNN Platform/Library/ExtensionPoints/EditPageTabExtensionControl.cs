@@ -143,12 +143,12 @@ namespace DotNetNuke.ExtensionPoints
 
         public override void RenderBeginTag(HtmlTextWriter writer)
         {
-            writer.Write("");
+            writer.Write(string.Empty);
         }
 
         public override void RenderEndTag(HtmlTextWriter writer)
         {
-            writer.Write("");
+            writer.Write(string.Empty);
         }
 
         protected override void RenderContents(HtmlTextWriter op)

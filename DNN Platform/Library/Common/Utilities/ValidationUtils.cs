@@ -13,7 +13,7 @@ namespace DotNetNuke.Common.Utilities
         internal static string GetDecryptionKey()
         {
             var machineKey = Config.GetDecryptionkey();
-            var key = $"{machineKey ?? ""}{Host.GUID.Replace("-", string.Empty)}";
+            var key = $"{machineKey ?? string.Empty}{Host.GUID.Replace("-", string.Empty)}";
             return FIPSCompliant.EncryptAES(key, key, Host.GUID);
         }
 

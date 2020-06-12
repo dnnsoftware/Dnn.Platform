@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
                                                 ModuleController.Instance.DeleteTabModule(module.TabID, module.ModuleID, false);
 
                                                 // Add new module to the page
-                                                Upgrade.AddModuleToPage(tab, moduleDefinition.ModuleDefID, "Message Center", "", true);
+                                                Upgrade.AddModuleToPage(tab, moduleDefinition.ModuleDefID, "Message Center", string.Empty, true);
 
                                                 break;
                                             }

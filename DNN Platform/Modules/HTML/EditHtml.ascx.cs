@@ -87,7 +87,7 @@ namespace DotNetNuke.Modules.Html
         {
             get
             {
-                var content = "";
+                var content = string.Empty;
                 if (this.ViewState["TempContent"] != null)
                 {
                     content = this.ViewState["TempContent"].ToString();
@@ -129,7 +129,7 @@ namespace DotNetNuke.Modules.Html
                 if (this.phHistory.Visible)
                     return "HistoryView";
                 else
-                    return "";
+                    return string.Empty;
             }
         }
 

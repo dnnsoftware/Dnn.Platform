@@ -103,7 +103,7 @@ namespace DotNetNuke.Entities.Urls
         private string GetFriendlyAlias(string path, string portalAlias, bool isPagePath)
         {
             string friendlyPath = path;
-            string matchString = "";
+            string matchString = string.Empty;
             if (string.IsNullOrEmpty(portalAlias) == false)
             {
                 string httpAlias = Globals.AddHTTP(portalAlias).ToLowerInvariant();
@@ -190,11 +190,11 @@ namespace DotNetNuke.Entities.Urls
         {
             string friendlyPath = path;
             Match queryStringMatch = FriendlyPathRx.Match(friendlyPath);
-            string queryStringSpecialChars = "";
+            string queryStringSpecialChars = string.Empty;
             if (!ReferenceEquals(queryStringMatch, Match.Empty))
             {
                 friendlyPath = queryStringMatch.Groups[1].Value;
-                friendlyPath = DefaultPageRx.Replace(friendlyPath, "");
+                friendlyPath = DefaultPageRx.Replace(friendlyPath, string.Empty);
                 string queryString = queryStringMatch.Groups[2].Value.Replace("&amp;", "&");
                 if (queryString.StartsWith("?"))
                 {
@@ -203,7 +203,7 @@ namespace DotNetNuke.Entities.Urls
                 string[] nameValuePairs = queryString.Split(Convert.ToChar("&"));
                 for (int i = 0; i <= nameValuePairs.Length - 1; i++)
                 {
-                    string pathToAppend = "";
+                    string pathToAppend = string.Empty;
                     string[] pair = nameValuePairs[i].Split(Convert.ToChar("="));
 
                     // Add name part of name/value pair
@@ -252,7 +252,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     queryStringSpecialChars = queryStringSpecialChars + "&" + pair[0] + "=" + pair[1];
                                 }
-                                pathToAppend = "";
+                                pathToAppend = string.Empty;
                             }
                         }
                         else

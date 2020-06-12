@@ -319,7 +319,7 @@ namespace DotNetNuke.UI.Modules
                                  {
                                      Title = Localization.GetString(ModuleActionType.ModuleHelp, Localization.GlobalResourceFile),
                                      CommandName = ModuleActionType.ModuleHelp,
-                                     CommandArgument = "",
+                                     CommandArgument = string.Empty,
                                      Icon = "action_help.gif",
                                      Url = url,
                                      Secure = SecurityAccessLevel.Edit,
@@ -336,11 +336,11 @@ namespace DotNetNuke.UI.Modules
                              {
                                  Title = Localization.GetString(ModuleActionType.PrintModule, Localization.GlobalResourceFile),
                                  CommandName = ModuleActionType.PrintModule,
-                                 CommandArgument = "",
+                                 CommandArgument = string.Empty,
                                  Icon = "action_print.gif",
                                  Url = this.NavigateUrl(
                                      this.TabId,
-                                                 "",
+                                                 string.Empty,
                                                  false,
                                                  "mid=" + this.ModuleId,
                                                  "SkinSrc=" + Globals.QueryStringEncode("[G]" + SkinController.RootSkin + "/" + Globals.glbHostSkinFolder + "/" + "No Skin"),
@@ -360,9 +360,9 @@ namespace DotNetNuke.UI.Modules
                              {
                                  Title = Localization.GetString(ModuleActionType.SyndicateModule, Localization.GlobalResourceFile),
                                  CommandName = ModuleActionType.SyndicateModule,
-                                 CommandArgument = "",
+                                 CommandArgument = string.Empty,
                                  Icon = "action_rss.gif",
-                                 Url = this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, "", "RSS.aspx", false, "moduleid=" + this.ModuleId),
+                                 Url = this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, string.Empty, "RSS.aspx", false, "moduleid=" + this.ModuleId),
                                  Secure = SecurityAccessLevel.Anonymous,
                                  UseActionEvent = true,
                                  Visible = true,
@@ -394,7 +394,7 @@ namespace DotNetNuke.UI.Modules
                                                ModuleActionType.MoveTop,
                                                this.Configuration.PaneName,
                                                "action_top.gif",
-                                               "",
+                                               string.Empty,
                                                false,
                                                SecurityAccessLevel.View,
                                                true,
@@ -405,7 +405,7 @@ namespace DotNetNuke.UI.Modules
                                                ModuleActionType.MoveUp,
                                                this.Configuration.PaneName,
                                                "action_up.gif",
-                                               "",
+                                               string.Empty,
                                                false,
                                                SecurityAccessLevel.View,
                                                true,
@@ -419,7 +419,7 @@ namespace DotNetNuke.UI.Modules
                                                ModuleActionType.MoveDown,
                                                this.Configuration.PaneName,
                                                "action_down.gif",
-                                               "",
+                                               string.Empty,
                                                false,
                                                SecurityAccessLevel.View,
                                                true,
@@ -430,7 +430,7 @@ namespace DotNetNuke.UI.Modules
                                                ModuleActionType.MoveBottom,
                                                this.Configuration.PaneName,
                                                "action_bottom.gif",
-                                               "",
+                                               string.Empty,
                                                false,
                                                SecurityAccessLevel.View,
                                                true,
@@ -450,7 +450,7 @@ namespace DotNetNuke.UI.Modules
                                                ModuleActionType.MovePane,
                                                pane,
                                                "action_move.gif",
-                                               "",
+                                               string.Empty,
                                                false,
                                                SecurityAccessLevel.View,
                                                true,
@@ -462,7 +462,7 @@ namespace DotNetNuke.UI.Modules
 
         private static string FilterUrl(HttpRequest request)
         {
-            return request.RawUrl.Replace("\"", "");
+            return request.RawUrl.Replace("\"", string.Empty);
         }
 
         /// -----------------------------------------------------------------------------
@@ -558,7 +558,7 @@ namespace DotNetNuke.UI.Modules
                     this.GetNextActionID(),
                              Localization.GetString("ModulePermissions.Action", Localization.GlobalResourceFile),
                              "ModulePermissions",
-                             "",
+                             string.Empty,
                              "action_settings.gif",
                              this.NavigateUrl(this.TabId, "ModulePermissions", false, "ModuleId=" + this.ModuleId, "ReturnURL=" + FilterUrl(request)),
                              false,
@@ -576,7 +576,7 @@ namespace DotNetNuke.UI.Modules
                             this.GetNextActionID(),
                                                           Localization.GetString(ModuleActionType.ModuleSettings, Localization.GlobalResourceFile),
                                                           ModuleActionType.ModuleSettings,
-                                                          "",
+                                                          string.Empty,
                                                           "action_settings.gif",
                                                           this.NavigateUrl(this.TabId, "Module", false, "ModuleId=" + this.ModuleId, "ReturnURL=" + FilterUrl(request)),
                                                           false,
@@ -598,11 +598,11 @@ namespace DotNetNuke.UI.Modules
                             this.GetNextActionID(),
                                      Localization.GetString(ModuleActionType.ExportModule, Localization.GlobalResourceFile),
                                      ModuleActionType.ExportModule,
-                                     "",
+                                     string.Empty,
                                      "action_export.gif",
                                      this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, "ExportModule", false, "moduleid=" + this.ModuleId, "ReturnURL=" + FilterUrl(request)),
 
-                                     "",
+                                     string.Empty,
                                      false,
                                      SecurityAccessLevel.View,
                                      true,
@@ -614,10 +614,10 @@ namespace DotNetNuke.UI.Modules
                             this.GetNextActionID(),
                                      Localization.GetString(ModuleActionType.ImportModule, Localization.GlobalResourceFile),
                                      ModuleActionType.ImportModule,
-                                     "",
+                                     string.Empty,
                                      "action_import.gif",
                                      this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, "ImportModule", false, "moduleid=" + this.ModuleId, "ReturnURL=" + FilterUrl(request)),
-                                     "",
+                                     string.Empty,
                                      false,
                                      SecurityAccessLevel.View,
                                      true,
@@ -652,7 +652,7 @@ namespace DotNetNuke.UI.Modules
                     this.GetNextActionID(),
                              Localization.GetString(ModuleActionType.ViewSource, Localization.GlobalResourceFile),
                              ModuleActionType.ViewSource,
-                             "",
+                             string.Empty,
                              "action_source.gif",
                              this.NavigateUrl(this.TabId, "ViewSource", false, "ModuleId=" + this.ModuleId, "ctlid=" + this.Configuration.ModuleControlId, "ReturnURL=" + FilterUrl(request)),
                              false,
@@ -684,7 +684,7 @@ namespace DotNetNuke.UI.Modules
                                  ModuleActionType.DeleteModule,
                                  this.Configuration.ModuleID.ToString(),
                                  "action_delete.gif",
-                                 "",
+                                 string.Empty,
                                  confirmText,
                                  false,
                                  SecurityAccessLevel.View,
@@ -699,7 +699,7 @@ namespace DotNetNuke.UI.Modules
                                  ModuleActionType.ClearCache,
                                  this.Configuration.ModuleID.ToString(),
                                  "action_refresh.gif",
-                                 "",
+                                 string.Empty,
                                  false,
                                  SecurityAccessLevel.View,
                                  true,
@@ -750,12 +750,12 @@ namespace DotNetNuke.UI.Modules
 
         public string EditUrl()
         {
-            return this.EditUrl("", "", "Edit");
+            return this.EditUrl(string.Empty, string.Empty, "Edit");
         }
 
         public string EditUrl(string controlKey)
         {
-            return this.EditUrl("", "", controlKey);
+            return this.EditUrl(string.Empty, string.Empty, controlKey);
         }
 
         public string EditUrl(string keyName, string keyValue)

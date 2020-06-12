@@ -328,7 +328,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
-            string answer = "";
+            string answer = string.Empty;
             if (MembershipProviderConfig.RequiresQuestionAndAnswer && !this.IsAdmin)
             {
                 if (string.IsNullOrEmpty(this.txtAnswer.Text))

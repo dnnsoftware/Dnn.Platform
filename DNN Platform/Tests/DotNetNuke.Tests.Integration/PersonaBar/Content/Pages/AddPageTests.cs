@@ -26,8 +26,8 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
             {
                 BulkPages = "Page_" + rnd,
                 ParentId = -1,
-                Keywords = "",
-                Tags = "",
+                Keywords = string.Empty,
+                Tags = string.Empty,
                 IncludeInMenu = true,
                 StartDate = null,
                 EndDate = null

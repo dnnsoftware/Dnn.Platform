@@ -29,11 +29,11 @@ namespace DotNetNuke.Services.Analytics
 
             if (config == null)
             {
-                return "";
+                return string.Empty;
             }
 
-            var trackingId = "";
-            var urlParameter = "";
+            var trackingId = string.Empty;
+            var urlParameter = string.Empty;
             var trackForAdmin = true;
 
             foreach (AnalyticsSetting setting in config.Settings)
@@ -57,7 +57,7 @@ namespace DotNetNuke.Services.Analytics
 
             if (string.IsNullOrEmpty(trackingId))
             {
-                return "";
+                return string.Empty;
             }
 
             // check whether setting to not track traffic if current user is host user or website administrator.
@@ -67,7 +67,7 @@ namespace DotNetNuke.Services.Analytics
                  (PortalSettings.Current != null &&
                   UserController.Instance.GetCurrentUserInfo().IsInRole(PortalSettings.Current.AdministratorRoleName))))
             {
-                return "";
+                return string.Empty;
             }
 
             scriptTemplate = scriptTemplate.Replace("[TRACKING_ID]", trackingId);
@@ -77,7 +77,7 @@ namespace DotNetNuke.Services.Analytics
             }
             else
             {
-                scriptTemplate = scriptTemplate.Replace("[PAGE_URL]", "");
+                scriptTemplate = scriptTemplate.Replace("[PAGE_URL]", string.Empty);
             }
 
             scriptTemplate = scriptTemplate.Replace("[CUSTOM_SCRIPT]", this.RenderCustomScript(config));

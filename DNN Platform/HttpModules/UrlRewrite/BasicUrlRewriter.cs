@@ -61,7 +61,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             // check for ".." escape characters commonly used by hackers to traverse the folder tree on the server
             // the application should always use the exact relative location of the resource it is requesting
             var strURL = request.Url.AbsolutePath;
-            var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.RawUrl)) ?? "";
+            var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.RawUrl)) ?? string.Empty;
             if (Globals.FileEscapingRegex.Match(strURL).Success || Globals.FileEscapingRegex.Match(strDoubleDecodeURL).Success)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessHttpException(request);
@@ -88,7 +88,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
             // blank DomainName indicates RewriteUrl couldn't locate a current portal
             // reprocess url for portal alias if auto add is an option
-            if (domainName == "" && CanAutoAddPortalAlias())
+            if (domainName == string.Empty && CanAutoAddPortalAlias())
             {
                 domainName = Globals.GetDomainName(app.Request, true);
             }
@@ -138,7 +138,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     string childAlias = request.QueryString["alias"];
                     if (!Globals.UsePortNumber())
                     {
-                        childAlias = childAlias.Replace(":" + request.Url.Port, "");
+                        childAlias = childAlias.Replace(":" + request.Url.Port, string.Empty);
                     }
 
                     if (PortalAliasController.Instance.GetPortalAlias(childAlias) != null)
@@ -181,11 +181,11 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             {
                                 if (app.Request.Url.AbsoluteUri.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
                                 {
-                                    strURL = "https://" + portalAliasInfo.HTTPAlias.Replace("*.", "");
+                                    strURL = "https://" + portalAliasInfo.HTTPAlias.Replace("*.", string.Empty);
                                 }
                                 else
                                 {
-                                    strURL = "http://" + portalAliasInfo.HTTPAlias.Replace("*.", "");
+                                    strURL = "http://" + portalAliasInfo.HTTPAlias.Replace("*.", string.Empty);
                                 }
                                 if (strURL.IndexOf(domainName, StringComparison.InvariantCultureIgnoreCase) == -1)
                                 {
@@ -295,7 +295,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 if (request.Url.AbsolutePath.EndsWith(".aspx", StringComparison.InvariantCultureIgnoreCase))
                 {
                     // request is for a standard page
-                    strURL = "";
+                    strURL = string.Empty;
                     // if SSL is enabled
                     if (portalSettings.SSLEnabled)
                     {
@@ -392,7 +392,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             string requestedPath = app.Request.Url.AbsoluteUri;
 
 
-            portalAlias = "";
+            portalAlias = string.Empty;
 
             // determine portal alias looking for longest possible match
             string myAlias = Globals.GetDomainName(app.Request, true);
@@ -408,7 +408,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 }
 
                 int slashIndex = myAlias.LastIndexOf('/');
-                myAlias = slashIndex > 1 ? myAlias.Substring(0, slashIndex) : "";
+                myAlias = slashIndex > 1 ? myAlias.Substring(0, slashIndex) : string.Empty;
             } while (myAlias.Length > 0);
 
 
@@ -419,15 +419,15 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             // and processed internally using the following format
             // http://www.domain.com/default.aspx?tabid=###&mid=###&ctl=xxx
             // The system for accomplishing this is based on an extensible Regex rules definition stored in /SiteUrls.config
-            string sendTo = "";
+            string sendTo = string.Empty;
 
             // save and remove the querystring as it gets added back on later
             // path parameter specifications will take precedence over querystring parameters
-            string strQueryString = "";
+            string strQueryString = string.Empty;
             if (!string.IsNullOrEmpty(app.Request.Url.Query))
             {
                 strQueryString = request.QueryString.ToString();
-                requestedPath = requestedPath.Replace(app.Request.Url.Query, "");
+                requestedPath = requestedPath.Replace(app.Request.Url.Query, string.Empty);
             }
 
             // get url rewriting rules
@@ -486,7 +486,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                         string parameterDelimiter = sendTo.IndexOf("?", StringComparison.Ordinal) != -1 ? "&" : "?";
                                         sendTo = sendTo + parameterDelimiter + parameterName;
                                         // get parameter value
-                                        string parameterValue = "";
+                                        string parameterValue = string.Empty;
                                         if (parameterIndex < splitParameters.Length - 1)
                                         {
                                             parameterIndex += 1;
@@ -597,7 +597,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                         if (key.Key.ToLower().Equals(culturePart.ToLower()))
                                         {
                                             cultureCode = key.Value.Code;
-                                            tabPath = tabPath.Replace("/" + culturePart, "");
+                                            tabPath = tabPath.Replace("/" + culturePart, string.Empty);
                                             break;
                                         }
                                     }
@@ -608,7 +608,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         // Check to see if the tab exists (if localization is enable, check for the specified culture)
                         int tabID = TabController.GetTabByTabPath(
                             portalID,
-                                                                  tabPath.Replace("/", "//").Replace(".aspx", ""),
+                                                                  tabPath.Replace("/", "//").Replace(".aspx", string.Empty),
                                                                   cultureCode);
 
                         // Check to see if neutral culture tab exists
@@ -616,7 +616,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         {
                             tabID = TabController.GetTabByTabPath(
                                 portalID,
-                                                                  tabPath.Replace("/", "//").Replace(".aspx", ""), "");
+                                                                  tabPath.Replace("/", "//").Replace(".aspx", string.Empty), string.Empty);
                         }
                         // End of patch
 
@@ -766,7 +766,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             return;
                         }
                         tabPath = tabPath.Replace("/", "//");
-                        tabPath = tabPath.Replace(".aspx", "");
+                        tabPath = tabPath.Replace(".aspx", string.Empty);
                         TabCollection objTabs = TabController.Instance.GetTabsByPortal(tabPath.StartsWith("//host") ? Null.NullInteger : portalID);
                         foreach (KeyValuePair<int, TabInfo> kvp in objTabs)
                         {

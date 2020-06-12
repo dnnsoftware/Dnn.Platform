@@ -81,7 +81,7 @@ namespace DotNetNuke.Entities.Portals
             var folderManager = FolderManager.Instance;
             var folder = folderManager.GetFolder(folderId);
             var permissionController = new PermissionController();
-            foreach (PermissionInfo permission in permissionController.GetPermissionByCodeAndKey("SYSTEM_FOLDER", ""))
+            foreach (PermissionInfo permission in permissionController.GetPermissionByCodeAndKey("SYSTEM_FOLDER", string.Empty))
             {
                 var folderPermission = new FolderPermissionInfo(permission)
                 {
@@ -576,7 +576,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
                     LogTypeFriendlyName = "HTTP Error Code 404 Page Not Found",
-                    LogTypeDescription = "",
+                    LogTypeDescription = string.Empty,
                     LogTypeCSSClass = "OperationFailure",
                     LogTypeOwner = "DotNetNuke.Logging.EventLogType"
                 };
@@ -606,7 +606,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
                     LogTypeFriendlyName = "HTTP Error Code Forbidden IP address rejected",
-                    LogTypeDescription = "",
+                    LogTypeDescription = string.Empty,
                     LogTypeCSSClass = "OperationFailure",
                     LogTypeOwner = "DotNetNuke.Logging.EventLogType"
                 };
@@ -634,7 +634,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     LogTypeKey = EventLogController.EventLogType.TABURL_CREATED.ToString(),
                     LogTypeFriendlyName = "TabURL created",
-                    LogTypeDescription = "",
+                    LogTypeDescription = string.Empty,
                     LogTypeCSSClass = "OperationSuccess",
                     LogTypeOwner = "DotNetNuke.Logging.EventLogType"
                 };
@@ -677,7 +677,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     LogTypeKey = EventLogController.EventLogType.SCRIPT_COLLISION.ToString(),
                     LogTypeFriendlyName = "Javscript library registration resolved script collision",
-                    LogTypeDescription = "",
+                    LogTypeDescription = string.Empty,
                     LogTypeCSSClass = "OperationFailure",
                     LogTypeOwner = "DotNetNuke.Logging.EventLogType"
                 };
@@ -823,7 +823,7 @@ namespace DotNetNuke.Entities.Portals
                     SHA1Hash = XmlUtils.GetNodeValue(node.CreateNavigator(), "sha1hash"),
                     FolderId = folder.FolderID,
                     Folder = folder.FolderPath,
-                    Title = "",
+                    Title = string.Empty,
                     StartDate = DateTime.Now,
                     EndDate = Null.NullDate,
                     EnablePublishPeriod = false,
@@ -1242,7 +1242,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 objProfileDefinition = new ProfilePropertyDefinition(portalId);
                 objProfileDefinition.DataType = typeInfo.EntryID;
-                objProfileDefinition.DefaultValue = "";
+                objProfileDefinition.DefaultValue = string.Empty;
                 objProfileDefinition.ModuleDefId = Null.NullInteger;
                 objProfileDefinition.PropertyCategory = XmlUtils.GetNodeValue(node.CreateNavigator(), "propertycategory");
                 objProfileDefinition.PropertyName = XmlUtils.GetNodeValue(node.CreateNavigator(), "propertyname");
@@ -1293,7 +1293,7 @@ namespace DotNetNuke.Entities.Portals
 
                 objProfileDefinition = new ProfilePropertyDefinition(portalId);
                 objProfileDefinition.DataType = typeInfo.EntryID;
-                objProfileDefinition.DefaultValue = "";
+                objProfileDefinition.DefaultValue = string.Empty;
                 objProfileDefinition.ModuleDefId = Null.NullInteger;
                 objProfileDefinition.PropertyCategory = "Preferences";
                 objProfileDefinition.PropertyName = "PreferredTimeZone";
@@ -1390,46 +1390,46 @@ namespace DotNetNuke.Entities.Portals
             objPortal.DefaultLanguage = XmlUtils.GetNodeValue(nodeSettings, "defaultlanguage", "en-US");
             this.UpdatePortalInfo(objPortal);
 
-            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "skinsrc", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "skinsrc", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "DefaultPortalSkin", XmlUtils.GetNodeValue(nodeSettings, "skinsrc", ""), true, currentCulture);
+                UpdatePortalSetting(portalId, "DefaultPortalSkin", XmlUtils.GetNodeValue(nodeSettings, "skinsrc", string.Empty), true, currentCulture);
             }
-            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "skinsrcadmin", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "skinsrcadmin", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "DefaultAdminSkin", XmlUtils.GetNodeValue(nodeSettings, "skinsrcadmin", ""), true, currentCulture);
+                UpdatePortalSetting(portalId, "DefaultAdminSkin", XmlUtils.GetNodeValue(nodeSettings, "skinsrcadmin", string.Empty), true, currentCulture);
             }
-            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "containersrc", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "containersrc", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "DefaultPortalContainer", XmlUtils.GetNodeValue(nodeSettings, "containersrc", ""), true, currentCulture);
+                UpdatePortalSetting(portalId, "DefaultPortalContainer", XmlUtils.GetNodeValue(nodeSettings, "containersrc", string.Empty), true, currentCulture);
             }
-            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "containersrcadmin", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "containersrcadmin", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "DefaultAdminContainer", XmlUtils.GetNodeValue(nodeSettings, "containersrcadmin", ""), true, currentCulture);
+                UpdatePortalSetting(portalId, "DefaultAdminContainer", XmlUtils.GetNodeValue(nodeSettings, "containersrcadmin", string.Empty), true, currentCulture);
             }
 
             // Enable Skin Widgets Setting
-            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enableskinwidgets", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enableskinwidgets", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "EnableSkinWidgets", XmlUtils.GetNodeValue(nodeSettings, "enableskinwidgets", ""));
+                UpdatePortalSetting(portalId, "EnableSkinWidgets", XmlUtils.GetNodeValue(nodeSettings, "enableskinwidgets", string.Empty));
             }
 
-            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "showcookieconsent", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "showcookieconsent", string.Empty)))
             {
                 UpdatePortalSetting(portalId, "ShowCookieConsent", XmlUtils.GetNodeValue(nodeSettings, "showcookieconsent", "False"));
             }
-            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "cookiemorelink", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "cookiemorelink", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "CookieMoreLink", XmlUtils.GetNodeValue(nodeSettings, "cookiemorelink", ""), true, currentCulture);
+                UpdatePortalSetting(portalId, "CookieMoreLink", XmlUtils.GetNodeValue(nodeSettings, "cookiemorelink", string.Empty), true, currentCulture);
             }
 
             // Enable AutoSAve feature
-            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enableautosave", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enableautosave", string.Empty)))
             {
-                UpdatePortalSetting(portalId, HtmlText_AutoSaveEnabled, XmlUtils.GetNodeValue(nodeSettings, "enableautosave", ""));
+                UpdatePortalSetting(portalId, HtmlText_AutoSaveEnabled, XmlUtils.GetNodeValue(nodeSettings, "enableautosave", string.Empty));
                 // Time to autosave, only if enableautosave exists
-                if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "timetoautosave", "")))
+                if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "timetoautosave", string.Empty)))
                 {
-                    UpdatePortalSetting(portalId, HtmlText_TimeToAutoSave, XmlUtils.GetNodeValue(nodeSettings, "timetoautosave", ""));
+                    UpdatePortalSetting(portalId, HtmlText_TimeToAutoSave, XmlUtils.GetNodeValue(nodeSettings, "timetoautosave", string.Empty));
                 }
             }
 
@@ -1479,25 +1479,25 @@ namespace DotNetNuke.Entities.Portals
             {
                 UpdatePortalSetting(portalId, "ControlPanelVisibility", XmlUtils.GetNodeValue(nodeSettings, "controlpanelvisibility"));
             }
-            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "PageHeadText", XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", ""));
+                UpdatePortalSetting(portalId, "PageHeadText", XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", string.Empty));
             }
-            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "InjectModuleHyperLink", XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", ""));
+                UpdatePortalSetting(portalId, "InjectModuleHyperLink", XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", string.Empty));
             }
-            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "addcompatiblehttpheader", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "addcompatiblehttpheader", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "AddCompatibleHttpHeader", XmlUtils.GetNodeValue(nodeSettings, "addcompatiblehttpheader", ""));
+                UpdatePortalSetting(portalId, "AddCompatibleHttpHeader", XmlUtils.GetNodeValue(nodeSettings, "addcompatiblehttpheader", string.Empty));
             }
-            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "allowuseruiculture", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "allowuseruiculture", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "AllowUserUICulture", XmlUtils.GetNodeValue(nodeSettings, "allowuseruiculture", ""));
+                UpdatePortalSetting(portalId, "AllowUserUICulture", XmlUtils.GetNodeValue(nodeSettings, "allowuseruiculture", string.Empty));
             }
-            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enablebrowserlanguage", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enablebrowserlanguage", string.Empty)))
             {
-                UpdatePortalSetting(portalId, "EnableBrowserLanguage", XmlUtils.GetNodeValue(nodeSettings, "enablebrowserlanguage", ""));
+                UpdatePortalSetting(portalId, "EnableBrowserLanguage", XmlUtils.GetNodeValue(nodeSettings, "enablebrowserlanguage", string.Empty));
             }
         }
 
@@ -1631,7 +1631,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 if (!isNewPortal) // running from wizard: try to find the tab by path
                 {
-                    string parenttabname = "";
+                    string parenttabname = string.Empty;
                     if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "parent")))
                     {
                         parenttabname = XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "parent") + "/";
@@ -1653,7 +1653,7 @@ namespace DotNetNuke.Entities.Portals
                     portal.AdminTabId = tab.TabID;
                 }
                 // when processing the template we can find: hometab, usertab, logintab
-                switch (XmlUtils.GetNodeValue(nodeTab, "tabtype", "").ToLowerInvariant())
+                switch (XmlUtils.GetNodeValue(nodeTab, "tabtype", string.Empty).ToLowerInvariant())
                 {
                     case "splashtab":
                         portal.SplashTabId = tab.TabID;
@@ -1864,9 +1864,9 @@ namespace DotNetNuke.Entities.Portals
 
             var defaultFolderMapping = FolderMappingController.Instance.GetDefaultFolderMapping(portalId);
 
-            if (FolderManager.Instance.GetFolder(portalId, "") == null)
+            if (FolderManager.Instance.GetFolder(portalId, string.Empty) == null)
             {
-                objFolder = FolderManager.Instance.AddFolder(defaultFolderMapping, "");
+                objFolder = FolderManager.Instance.AddFolder(defaultFolderMapping, string.Empty);
                 objFolder.IsProtected = true;
                 FolderManager.Instance.UpdateFolder(objFolder);
 

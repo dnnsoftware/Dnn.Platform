@@ -183,7 +183,7 @@ namespace DotNetNuke.Entities.Users
 
         public static string GetRichValue(ProfilePropertyDefinition property, string formatString, CultureInfo formatProvider)
         {
-            string result = "";
+            string result = string.Empty;
             if (!string.IsNullOrEmpty(property.PropertyValue) || DisplayDataType(property).Equals("image", StringComparison.InvariantCultureIgnoreCase))
             {
                 switch (DisplayDataType(property).ToLowerInvariant())
@@ -244,7 +244,7 @@ namespace DotNetNuke.Entities.Users
         public static string DisplayDataType(ProfilePropertyDefinition definition)
         {
             string cacheKey = string.Format("DisplayDataType:{0}", definition.DataType);
-            string strDataType = Convert.ToString(DataCache.GetCache(cacheKey)) + "";
+            string strDataType = Convert.ToString(DataCache.GetCache(cacheKey)) + string.Empty;
             if (strDataType == string.Empty)
             {
                 var objListController = new ListController();

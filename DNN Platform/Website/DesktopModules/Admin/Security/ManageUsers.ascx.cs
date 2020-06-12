@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             get
             {
-                string _RedirectURL = "";
+                string _RedirectURL = string.Empty;
 
                 if (this.PortalSettings.Registration.RedirectAfterRegistration == Null.NullInteger)
                 {
@@ -111,7 +111,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             get
             {
-                return this._navigationManager.NavigateURL(this.TabId, "", !string.IsNullOrEmpty(this.UserFilter) ? this.UserFilter : "");
+                return this._navigationManager.NavigateURL(this.TabId, string.Empty, !string.IsNullOrEmpty(this.UserFilter) ? this.UserFilter : string.Empty);
             }
         }
 
@@ -123,9 +123,9 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             get
             {
-                string filterString = !string.IsNullOrEmpty(this.Request["filter"]) ? "filter=" + this.Request["filter"] : "";
-                string filterProperty = !string.IsNullOrEmpty(this.Request["filterproperty"]) ? "filterproperty=" + this.Request["filterproperty"] : "";
-                string page = !string.IsNullOrEmpty(this.Request["currentpage"]) ? "currentpage=" + this.Request["currentpage"] : "";
+                string filterString = !string.IsNullOrEmpty(this.Request["filter"]) ? "filter=" + this.Request["filter"] : string.Empty;
+                string filterProperty = !string.IsNullOrEmpty(this.Request["filterproperty"]) ? "filterproperty=" + this.Request["filterproperty"] : string.Empty;
+                string page = !string.IsNullOrEmpty(this.Request["currentpage"]) ? "currentpage=" + this.Request["currentpage"] : string.Empty;
 
                 if (!string.IsNullOrEmpty(filterString))
                 {
@@ -200,7 +200,7 @@ namespace DotNetNuke.Modules.Admin.Users
                             this.GetNextActionID(),
                                     Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
                                     ModuleActionType.AddContent,
-                                    "",
+                                    string.Empty,
                                     "add.gif",
                                     this.EditUrl(),
                                     false,
@@ -213,7 +213,7 @@ namespace DotNetNuke.Modules.Admin.Users
                                 this.GetNextActionID(),
                                         Localization.GetString("ManageProfile.Action", this.LocalResourceFile),
                                         ModuleActionType.AddContent,
-                                        "",
+                                        string.Empty,
                                         "icon_profile_16px.gif",
                                         this.EditUrl("ManageProfile"),
                                         false,
@@ -225,7 +225,7 @@ namespace DotNetNuke.Modules.Admin.Users
                             this.GetNextActionID(),
                                     Localization.GetString("Cancel.Action", this.LocalResourceFile),
                                     ModuleActionType.AddContent,
-                                    "",
+                                    string.Empty,
                                     "lt.gif",
                                     this.ReturnUrl,
                                     false,
@@ -338,7 +338,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         if (this.HasManageUsersModulePermission() == false)
                         {
                             // Display current user's profile
-                            this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.UserTabId, "", "UserID=" + this.UserInfo.UserID), true);
+                            this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, "UserID=" + this.UserInfo.UserID), true);
                         }
                     }
                 }
@@ -661,7 +661,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 if (string.IsNullOrEmpty(this.User.Membership.Password) && !MembershipProviderConfig.RequiresQuestionAndAnswer && MembershipProviderConfig.PasswordRetrievalEnabled)
                 {
                     UserInfo user = this.User;
-                    this.User.Membership.Password = UserController.GetPassword(ref user, "");
+                    this.User.Membership.Password = UserController.GetPassword(ref user, string.Empty);
                 }
 
                 this.BindMembership();

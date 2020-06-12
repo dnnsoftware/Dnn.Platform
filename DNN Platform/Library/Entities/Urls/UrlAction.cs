@@ -27,7 +27,7 @@ namespace DotNetNuke.Entities.Urls
             this.BrowserType = BrowserTypes.Normal;
             this.CanRewrite = StateBoolean.NotSet;
             this.Action = ActionType.Continue;
-            string physicalPath = "";
+            string physicalPath = string.Empty;
             try
             {
                 physicalPath = request.PhysicalPath;
@@ -69,7 +69,7 @@ namespace DotNetNuke.Entities.Urls
                 this.Scheme = scheme;
             }
             this.ApplicationPath = applicationPath;
-            string domainPath = applicationPath.Replace(scheme, "");
+            string domainPath = applicationPath.Replace(scheme, string.Empty);
             this.DomainName = domainPath.Contains("/") ? domainPath.Substring(0, domainPath.IndexOf('/')) : domainPath;
             this.PhysicalPath = physicalPath;
             this.PortalId = -1;

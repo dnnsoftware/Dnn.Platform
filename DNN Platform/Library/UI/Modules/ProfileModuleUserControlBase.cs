@@ -97,7 +97,7 @@ namespace DotNetNuke.UI.Modules
                     // Clicked on breadcrumb - don't know which user
                     this.Response.Redirect(
                         this.Request.IsAuthenticated
-                                          ? this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, "", "UserId=" + this.ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
+                                          ? this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, string.Empty, "UserId=" + this.ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
                                           : this.GetRedirectUrl(), true);
                 }
                 catch (ThreadAbortException)

@@ -23,7 +23,7 @@ namespace DotNetNuke.Modules.Groups {
         }
         public static string NavigateUrl(int TabId, string[] @params)
         {
-            return Globals.DependencyProvider.GetRequiredService<INavigationManager>()?.NavigateURL(TabId, "", @params);
+            return Globals.DependencyProvider.GetRequiredService<INavigationManager>()?.NavigateURL(TabId, string.Empty, @params);
         }
         public static string[] AddParams(string param, string[] currParams)
         {

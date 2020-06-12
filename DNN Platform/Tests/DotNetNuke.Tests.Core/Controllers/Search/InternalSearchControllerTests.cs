@@ -193,7 +193,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private void SetupDataProvider()
         {
             // Standard DataProvider Path for Logging
-            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns("");
+            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
 
             DataTableReader searchTypes = null;
             this._mockDataProvider.Setup(ds => ds.GetAllSearchTypes())

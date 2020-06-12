@@ -155,10 +155,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 // Set default order to next value (ie the same as the size of the collection)
                 int order = this._componentInstallers.Count;
 
-                string type = componentNav.GetAttribute("type", "");
+                string type = componentNav.GetAttribute("type", string.Empty);
                 if (this.InstallMode == InstallMode.Install)
                 {
-                    string installOrder = componentNav.GetAttribute("installOrder", "");
+                    string installOrder = componentNav.GetAttribute("installOrder", string.Empty);
                     if (!string.IsNullOrEmpty(installOrder))
                     {
                         order = int.Parse(installOrder);
@@ -166,7 +166,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
                 else
                 {
-                    string unInstallOrder = componentNav.GetAttribute("unInstallOrder", "");
+                    string unInstallOrder = componentNav.GetAttribute("unInstallOrder", string.Empty);
                     if (!string.IsNullOrEmpty(unInstallOrder))
                     {
                         order = int.Parse(unInstallOrder);
@@ -326,7 +326,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 
             // Get IsSystem
-            this.Package.IsSystemPackage = bool.Parse(Util.ReadAttribute(manifestNav, "isSystem", false, this.Log, "", bool.FalseString));
+            this.Package.IsSystemPackage = bool.Parse(Util.ReadAttribute(manifestNav, "isSystem", false, this.Log, string.Empty, bool.FalseString));
 
             // Get Version
             string strVersion = Util.ReadAttribute(manifestNav, "version", this.Log, Util.EXCEPTION_VersionMissing);
@@ -426,7 +426,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
                     else
                     {
-                        this.Package.IconFile = (string.IsNullOrEmpty(this.Package.FolderName) ? "" : this.Package.FolderName + "/") + iconFileNav.Value;
+                        this.Package.IconFile = (string.IsNullOrEmpty(this.Package.FolderName) ? string.Empty : this.Package.FolderName + "/") + iconFileNav.Value;
                         this.Package.IconFile = (!this.Package.IconFile.StartsWith("~/")) ? "~/" + this.Package.IconFile : this.Package.IconFile;
                     }
                 }

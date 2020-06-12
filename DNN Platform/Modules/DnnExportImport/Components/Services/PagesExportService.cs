@@ -1289,7 +1289,7 @@ namespace Dnn.ExportImport.Components.Services
             var tabModuleSettings = this.Repository.GetRelatedItems<ExportTabModuleSetting>(otherTabModule.Id).ToList();
             foreach (var other in tabModuleSettings)
             {
-                var localValue = isNew ? "" : Convert.ToString(localTabModule.TabModuleSettings[other.SettingName]);
+                var localValue = isNew ? string.Empty : Convert.ToString(localTabModule.TabModuleSettings[other.SettingName]);
                 if (string.IsNullOrEmpty(localValue))
                 {
                     // the next will clear the cache

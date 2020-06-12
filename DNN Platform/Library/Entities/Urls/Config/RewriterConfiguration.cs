@@ -42,7 +42,7 @@ namespace DotNetNuke.Entities.Urls.Config
         {
             var config = new RewriterConfiguration { Rules = new RewriterRuleCollection() };
             FileStream fileReader = null;
-            string filePath = "";
+            string filePath = string.Empty;
             try
             {
                 config = (RewriterConfiguration)DataCache.GetCache("RewriterConfig");

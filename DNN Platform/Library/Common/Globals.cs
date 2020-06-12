@@ -353,7 +353,7 @@ namespace DotNetNuke.Common
                 {
                     if (HttpContext.Current.Request.ApplicationPath == "/")
                     {
-                        _applicationPath = string.IsNullOrEmpty(Config.GetSetting("InstallationSubfolder")) ? "" : (Config.GetSetting("InstallationSubfolder") + "/").ToLowerInvariant();
+                        _applicationPath = string.IsNullOrEmpty(Config.GetSetting("InstallationSubfolder")) ? string.Empty : (Config.GetSetting("InstallationSubfolder") + "/").ToLowerInvariant();
                     }
                     else
                     {
@@ -658,7 +658,7 @@ namespace DotNetNuke.Common
             // If the provider path does not exist, then there can't be any log files
             if (!string.IsNullOrEmpty(providerpath))
             {
-                providerpath = HttpRuntime.AppDomainAppPath + providerpath.Replace("~", "");
+                providerpath = HttpRuntime.AppDomainAppPath + providerpath.Replace("~", string.Empty);
                 if (Directory.Exists(providerpath))
                 {
                     var incrementalcount = Directory.GetFiles(providerpath, Upgrade.GetStringVersion(version) + ".*." + Upgrade.DefaultProvider).Length;
@@ -939,7 +939,7 @@ namespace DotNetNuke.Common
                                     row[arrField[0]] = 0;
                                     break;
                                 case "String":
-                                    row[arrField[0]] = "";
+                                    row[arrField[0]] = string.Empty;
                                     break;
                             }
                         }
@@ -1293,7 +1293,7 @@ namespace DotNetNuke.Common
         /// <returns>file list.</returns>
         public static ArrayList GetFileList()
         {
-            return GetFileList(-1, "", true, "", false);
+            return GetFileList(-1, string.Empty, true, string.Empty, false);
         }
 
         /// <summary>
@@ -1303,7 +1303,7 @@ namespace DotNetNuke.Common
         /// <returns>file list</returns>
         public static ArrayList GetFileList(int portalId)
         {
-            return GetFileList(portalId, "", true, "", false);
+            return GetFileList(portalId, string.Empty, true, string.Empty, false);
         }
 
         /// <summary>
@@ -1314,7 +1314,7 @@ namespace DotNetNuke.Common
         /// <returns>file list</returns>
         public static ArrayList GetFileList(int portalId, string strExtensions)
         {
-            return GetFileList(portalId, strExtensions, true, "", false);
+            return GetFileList(portalId, strExtensions, true, string.Empty, false);
         }
 
         /// <summary>
@@ -1326,7 +1326,7 @@ namespace DotNetNuke.Common
         /// <returns>file list</returns>
         public static ArrayList GetFileList(int portalId, string strExtensions, bool noneSpecified)
         {
-            return GetFileList(portalId, strExtensions, noneSpecified, "", false);
+            return GetFileList(portalId, strExtensions, noneSpecified, string.Empty, false);
         }
 
         /// <summary>
@@ -1356,7 +1356,7 @@ namespace DotNetNuke.Common
             var arrFileList = new ArrayList();
             if (NoneSpecified)
             {
-                arrFileList.Add(new FileItem("", "<" + Localization.GetString("None_Specified") + ">"));
+                arrFileList.Add(new FileItem(string.Empty, "<" + Localization.GetString("None_Specified") + ">"));
             }
 
             var objFolder = FolderManager.Instance.GetFolder(PortalId, Folder);
@@ -1437,8 +1437,8 @@ namespace DotNetNuke.Common
         /// <returns>domain name</returns>
         public static string GetPortalDomainName(string strPortalAlias, HttpRequest Request, bool blnAddHTTP)
         {
-            string strDomainName = "";
-            string strURL = "";
+            string strDomainName = string.Empty;
+            string strURL = string.Empty;
             int intAlias;
             if (Request != null)
             {
@@ -1581,7 +1581,7 @@ namespace DotNetNuke.Common
         /// <returns>encoded value</returns>
         public static string HTTPPOSTEncode(string strPost)
         {
-            strPost = strPost.Replace("\\", "");
+            strPost = strPost.Replace("\\", string.Empty);
             strPost = HttpUtility.UrlEncode(strPost);
             strPost = strPost.Replace("%2f", "/");
             return strPost;
@@ -1627,7 +1627,7 @@ namespace DotNetNuke.Common
         /// <returns></returns>
         public static string FormatAddress(object Unit, object Street, object City, object Region, object Country, object PostalCode)
         {
-            string strAddress = "";
+            string strAddress = string.Empty;
             if (Unit != null)
             {
                 if (!string.IsNullOrEmpty(Unit.ToString().Trim()))
@@ -1719,7 +1719,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted version as a string</returns>
         public static string FormatVersion(Version version, string fieldFormat, int fieldCount, string delimiterCharacter)
         {
-            string strVersion = "";
+            string strVersion = string.Empty;
             int intZero = 0;
             if (version != null)
             {
@@ -1867,7 +1867,7 @@ namespace DotNetNuke.Common
             if (HttpContext.Current != null)
             {
                 string AdminKeys = "tab,module,importmodule,exportmodule,help";
-                string ControlKey = "";
+                string ControlKey = string.Empty;
                 if (HttpContext.Current.Request.QueryString["ctl"] != null)
                 {
                     ControlKey = HttpContext.Current.Request.QueryString["ctl"].ToLowerInvariant();
@@ -1937,12 +1937,12 @@ namespace DotNetNuke.Common
                 while (dr.Read())
                 {
                     int field;
-                    int.TryParse((dr[SyndicateField] ?? "").ToString(), out field);
+                    int.TryParse((dr[SyndicateField] ?? string.Empty).ToString(), out field);
                     if (field > 0)
                     {
                         strRSS.AppendLine(" <item>");
                         strRSS.AppendLine("  <title>" + dr[TitleField] + "</title>");
-                        var drUrl = (dr["URL"] ?? "").ToString();
+                        var drUrl = (dr["URL"] ?? string.Empty).ToString();
                         if (drUrl.IndexOf("://", StringComparison.InvariantCulture) == -1)
                         {
                             strRSS.Append("  <link>");
@@ -2028,7 +2028,7 @@ namespace DotNetNuke.Common
             int S = 0;
             int tLen;
             string strURL;
-            var sbBuff = new StringBuilder("");
+            var sbBuff = new StringBuilder(string.Empty);
             if (!string.IsNullOrEmpty(strHTML))
             {
                 tLen = strToken.Length + 2;
@@ -2307,7 +2307,7 @@ namespace DotNetNuke.Common
         /// <returns>clean name</returns>
         public static string CleanFileName(string FileName)
         {
-            return CleanFileName(FileName, "", "");
+            return CleanFileName(FileName, string.Empty, string.Empty);
         }
 
         /// <summary>
@@ -2318,7 +2318,7 @@ namespace DotNetNuke.Common
         /// <returns>clean name</returns>
         public static string CleanFileName(string FileName, string BadChars)
         {
-            return CleanFileName(FileName, BadChars, "");
+            return CleanFileName(FileName, BadChars, string.Empty);
         }
 
         /// <summary>
@@ -2363,7 +2363,7 @@ namespace DotNetNuke.Common
             int intCounter;
             for (intCounter = 0; intCounter <= strBadChars.Length - 1; intCounter++)
             {
-                strName = strName.Replace(strBadChars.Substring(intCounter, 1), "");
+                strName = strName.Replace(strBadChars.Substring(intCounter, 1), string.Empty);
             }
             return strName;
         }
@@ -2491,7 +2491,7 @@ namespace DotNetNuke.Common
         /// <returns>URL to access denied view</returns>
         public static string AccessDeniedURL()
         {
-            return AccessDeniedURL("");
+            return AccessDeniedURL(string.Empty);
         }
 
         /// <summary>
@@ -2502,7 +2502,7 @@ namespace DotNetNuke.Common
         public static string AccessDeniedURL(string Message)
         {
             var navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
-            string strURL = "";
+            string strURL = string.Empty;
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (HttpContext.Current.Request.IsAuthenticated)
             {
@@ -2591,7 +2591,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted URL.</returns>
         public static string FormatHelpUrl(string HelpUrl, PortalSettings objPortalSettings, string Name)
         {
-            return FormatHelpUrl(HelpUrl, objPortalSettings, Name, "");
+            return FormatHelpUrl(HelpUrl, objPortalSettings, Name, string.Empty);
         }
 
         /// <summary>
@@ -2793,34 +2793,34 @@ namespace DotNetNuke.Common
             switch (urlType)
             {
                 case TabType.File:
-                    if (int.TryParse(url.Replace("FileID=", ""), out intId))
+                    if (int.TryParse(url.Replace("FileID=", string.Empty), out intId))
                     {
                         var objFile = FileManager.Instance.GetFile(intId);
                         if (objFile == null)
                         {
                             // fileId does not exist in the portal
-                            strUrl = "";
+                            strUrl = string.Empty;
                         }
                     }
                     else
                     {
                         // failed to get fileId
-                        strUrl = "";
+                        strUrl = string.Empty;
                     }
                     break;
                 case TabType.Member:
-                    if (int.TryParse(url.Replace("UserID=", ""), out intId))
+                    if (int.TryParse(url.Replace("UserID=", string.Empty), out intId))
                     {
                         if (UserController.GetUserById(portalSettings.PortalId, intId) == null)
                         {
                             // UserId does not exist for this portal
-                            strUrl = "";
+                            strUrl = string.Empty;
                         }
                     }
                     else
                     {
                         // failed to get UserId
-                        strUrl = "";
+                        strUrl = string.Empty;
                     }
                     break;
                 case TabType.Tab:
@@ -2829,13 +2829,13 @@ namespace DotNetNuke.Common
                         if (TabController.Instance.GetTab(intId, portalSettings.PortalId, false) == null)
                         {
                             // the tab does not exist
-                            strUrl = "";
+                            strUrl = string.Empty;
                         }
                     }
                     else
                     {
                         // failed to get TabId
-                        strUrl = "";
+                        strUrl = string.Empty;
                     }
                     break;
             }
@@ -2868,7 +2868,7 @@ namespace DotNetNuke.Common
             {
                 returnUrl = string.Format("returnurl={0}", returnUrl);
             }
-            var popUpParameter = "";
+            var popUpParameter = string.Empty;
             if (HttpUtility.UrlDecode(returnUrl).IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 popUpParameter = "popUp=true";
@@ -2879,8 +2879,8 @@ namespace DotNetNuke.Common
                 if (ValidateLoginTabID(portalSettings.LoginTabId))
                 {
                     loginUrl = string.IsNullOrEmpty(returnUrl)
-                                        ? navigationManager.NavigateURL(portalSettings.LoginTabId, "", popUpParameter)
-                                        : navigationManager.NavigateURL(portalSettings.LoginTabId, "", returnUrl, popUpParameter);
+                                        ? navigationManager.NavigateURL(portalSettings.LoginTabId, string.Empty, popUpParameter)
+                                        : navigationManager.NavigateURL(portalSettings.LoginTabId, string.Empty, returnUrl, popUpParameter);
                 }
                 else
                 {
@@ -2908,10 +2908,10 @@ namespace DotNetNuke.Common
         /// <returns>Formatted url.</returns>
         public static string UserProfileURL(int userId)
         {
-            string strURL = "";
+            string strURL = string.Empty;
             PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
-            strURL = DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(portalSettings.UserTabId, "", string.Format("userId={0}", userId));
+            strURL = DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(portalSettings.UserTabId, string.Empty, string.Format("userId={0}", userId));
 
             return strURL;
         }
@@ -3127,7 +3127,7 @@ namespace DotNetNuke.Common
             if (_portalSettings.RegisterTabId != -1)
             {
                 // user defined tab
-                strURL = navigationManager.NavigateURL(_portalSettings.RegisterTabId, "", extraParams);
+                strURL = navigationManager.NavigateURL(_portalSettings.RegisterTabId, string.Empty, extraParams);
             }
             else
             {
@@ -3268,7 +3268,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted url.</returns>
         public static string LinkClick(string Link, int TabID, int ModuleID)
         {
-            return LinkClick(Link, TabID, ModuleID, true, "");
+            return LinkClick(Link, TabID, ModuleID, true, string.Empty);
         }
 
         /// <summary>
@@ -3281,7 +3281,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted url.</returns>
         public static string LinkClick(string Link, int TabID, int ModuleID, bool TrackClicks)
         {
-            return LinkClick(Link, TabID, ModuleID, TrackClicks, "");
+            return LinkClick(Link, TabID, ModuleID, TrackClicks, string.Empty);
         }
 
         /// <summary>
@@ -3327,7 +3327,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted url.</returns>
         public static string LinkClick(string Link, int TabID, int ModuleID, bool TrackClicks, bool ForceDownload, int PortalId, bool EnableUrlLanguage, string portalGuid)
         {
-            string strLink = "";
+            string strLink = string.Empty;
             TabType UrlType = GetURLType(Link);
             if (UrlType == TabType.Member)
             {
@@ -3672,7 +3672,7 @@ namespace DotNetNuke.Common
                 {
                     Logger.Error(exc);
 
-                    strString = "";
+                    strString = string.Empty;
                 }
                 finally
                 {
@@ -3681,7 +3681,7 @@ namespace DotNetNuke.Common
             }
             else
             {
-                strString = "";
+                strString = string.Empty;
             }
             return strString;
         }
@@ -3775,9 +3775,9 @@ namespace DotNetNuke.Common
             const string query = "/DnnImageHandler.ashx?mode=profilepic&userId={0}&h={1}&w={2}";
             var currentAlias = GetPortalSettings().PortalAlias.HTTPAlias;
             var index = currentAlias.IndexOf('/');
-            var childPortalAlias = index > 0 ? "/" + currentAlias.Substring(index + 1) : "";
+            var childPortalAlias = index > 0 ? "/" + currentAlias.Substring(index + 1) : string.Empty;
 
-            var cdv = "";
+            var cdv = string.Empty;
             if (includeCdv)
             {
                 cdv = "&cdv=" + DateTime.Now.Ticks;
@@ -3834,11 +3834,11 @@ namespace DotNetNuke.Common
                                                                                                           bool NoneSpecified)
         {
             var arrFileList = new ArrayList();
-            string strExtension = "";
+            string strExtension = string.Empty;
 
             if (NoneSpecified)
             {
-                arrFileList.Add(new FileItem("", "<" + Localization.GetString("None_Specified") + ">"));
+                arrFileList.Add(new FileItem(string.Empty, "<" + Localization.GetString("None_Specified") + ">"));
             }
 
             string File = null;

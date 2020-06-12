@@ -24,7 +24,7 @@ namespace Dnn.EditBar.UI.Items
 
         public override string CssClass => string.Empty;
 
-        public override string Template { get; } = "";
+        public override string Template { get; } = string.Empty;
 
         public override string Parent { get; } = Constants.RightMenu;
 

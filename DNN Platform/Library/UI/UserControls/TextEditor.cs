@@ -97,7 +97,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                string strMode = "";
+                string strMode = string.Empty;
                 UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
                 // Check if Personal Preference is set

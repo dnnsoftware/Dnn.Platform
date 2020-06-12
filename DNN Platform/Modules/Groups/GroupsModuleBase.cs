@@ -144,7 +144,7 @@ namespace DotNetNuke.Modules.Groups
                 {
                     return this.Settings[Constants.DefautlGroupViewMode].ToString();
                 }
-                return "";
+                return string.Empty;
             }
         }
         public bool GroupModerationEnabled
@@ -217,14 +217,14 @@ namespace DotNetNuke.Modules.Groups
         {
             get
             {
-                return this.Settings.ContainsKey(Constants.GroupListSortField) ? this.Settings[Constants.GroupListSortField].ToString() : "";
+                return this.Settings.ContainsKey(Constants.GroupListSortField) ? this.Settings[Constants.GroupListSortField].ToString() : string.Empty;
             }
         }
         public string GroupListSortDirection
         {
             get
             {
-                return this.Settings.ContainsKey(Constants.GroupListSortDirection) ? this.Settings[Constants.GroupListSortDirection].ToString() : "";
+                return this.Settings.ContainsKey(Constants.GroupListSortDirection) ? this.Settings[Constants.GroupListSortDirection].ToString() : string.Empty;
             }
         }
         public bool GroupListUserGroupsOnly
@@ -256,7 +256,7 @@ namespace DotNetNuke.Modules.Groups
 
         public string GetClearFilterUrl()
         {
-            return this.NavigationManager.NavigateURL(this.TabId, "");
+            return this.NavigationManager.NavigateURL(this.TabId, string.Empty);
         }
 
         public string GetEditUrl()

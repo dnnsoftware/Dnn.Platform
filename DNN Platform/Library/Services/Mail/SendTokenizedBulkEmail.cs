@@ -70,16 +70,16 @@ namespace DotNetNuke.Services.Mail
         private TokenReplace _tokenReplace;
         private PortalSettings _portalSettings;
         private UserInfo _sendingUser;
-        private string _body = "";
+        private string _body = string.Empty;
         private string _confirmBodyHTML;
         private string _confirmBodyText;
         private string _confirmSubject;
         private string _noError;
         private string _relayEmail;
-        private string _smtpAuthenticationMethod = "";
-        private string _smtpPassword = "";
-        private string _smtpServer = "";
-        private string _smtpUsername = "";
+        private string _smtpAuthenticationMethod = string.Empty;
+        private string _smtpPassword = string.Empty;
+        private string _smtpServer = string.Empty;
+        private string _smtpUsername = string.Empty;
         private string _strSenderLanguage;
         private bool _isDisposed;
 
@@ -92,7 +92,7 @@ namespace DotNetNuke.Services.Mail
             this.ReportRecipients = true;
             this.AddressMethod = AddressMethods.Send_TO;
             this.BodyFormat = MailFormat.Text;
-            this.Subject = "";
+            this.Subject = string.Empty;
             this.Priority = MailPriority.Normal;
             this.Initialize();
         }
@@ -264,9 +264,9 @@ namespace DotNetNuke.Services.Mail
                                      numRecipients.ToString(CultureInfo.InvariantCulture),
                                      numMessages >= 0 ? numMessages.ToString(CultureInfo.InvariantCulture) : "***",
                                      DateTime.Now.ToString(CultureInfo.InvariantCulture),
-                                     numErrors > 0 ? numErrors.ToString(CultureInfo.InvariantCulture) : "",
+                                     numErrors > 0 ? numErrors.ToString(CultureInfo.InvariantCulture) : string.Empty,
                                      mailErrors != string.Empty ? mailErrors : this._noError,
-                                     this.ReportRecipients ? recipientList : ""
+                                     this.ReportRecipients ? recipientList : string.Empty
                                  };
             this._tokenReplace.User = this._sendingUser;
             string body = this._tokenReplace.ReplaceEnvironmentTokens(this.BodyFormat == MailFormat.Html ? this._confirmBodyHTML : this._confirmBodyText, parameters, "Custom");
@@ -522,8 +522,8 @@ namespace DotNetNuke.Services.Mail
                             string mailError = Mail.SendMail(
                                 this._sendingUser.Email,
                                                                 recipient,
-                                                                "",
-                                                                "",
+                                                                string.Empty,
+                                                                string.Empty,
                                                                 this.ReplyTo.Email,
                                                                 this.Priority,
                                                                 subject,
@@ -579,7 +579,7 @@ namespace DotNetNuke.Services.Mail
                             string mailError = Mail.SendMail(
                                 this._sendingUser.Email,
                                                        this._sendingUser.Email,
-                                                       "",
+                                                       string.Empty,
                                                        distributionList.ToString(0, distributionList.Length - 2),
                                                        this.ReplyTo.Email,
                                                        this.Priority,

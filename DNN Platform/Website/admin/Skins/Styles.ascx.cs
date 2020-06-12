@@ -67,7 +67,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     objLink.Attributes["rel"] = "stylesheet";
                     objLink.Attributes["type"] = "text/css";
                     objLink.Href = skinpath + this.StyleSheet;
-                    if (this.Media != "")
+                    if (this.Media != string.Empty)
                     {
                         objLink.Attributes["media"] = this.Media; // NWS: add support for "media" attribute
                     }

@@ -146,7 +146,7 @@ namespace DotNetNuke.Modules.Groups
                             RoleController.Instance.AddUserRole(this.PortalSettings.PortalId, this.UserInfo.UserID, this._roleInfo.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
                             RoleController.Instance.UpdateRole(this._roleInfo);
 
-                            var url = this.NavigationManager.NavigateURL(postData.GroupViewTabId, "", new[] { "groupid=" + this._roleInfo.RoleID });
+                            var url = this.NavigationManager.NavigateURL(postData.GroupViewTabId, string.Empty, new[] { "groupid=" + this._roleInfo.RoleID });
                             return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", URL = url });
 
                         }

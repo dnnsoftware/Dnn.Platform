@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.Groups.Components
 
             this.Template = this.Template.Replace("[GROUPEDITBUTTON]", string.Empty);
 
-            var url = this.NavigationManager.NavigateURL(this.GroupViewTabId, "", new string[] { "groupid=" + this.RoleInfo.RoleID.ToString() });
+            var url = this.NavigationManager.NavigateURL(this.GroupViewTabId, string.Empty, new string[] { "groupid=" + this.RoleInfo.RoleID.ToString() });
 
             this.Template = Utilities.ParseTokenWrapper(this.Template, "IsPendingMember", membershipPending);
             this.Template = this.Template.Replace("[groupviewurl]", url);

@@ -38,7 +38,7 @@ namespace DotNetNuke.UI.Internals
         /// <returns>Path to the favicon file relative to portal root, or empty string when there is no favicon set</returns>
         public string GetSettingPath()
         {
-            return PortalController.GetPortalSetting(SettingName, this._portalId, "");
+            return PortalController.GetPortalSetting(SettingName, this._portalId, string.Empty);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace DotNetNuke.UI.Internals
         /// <param name="fileId">The file id or Null.NullInteger for none</param>
         public void Update(int fileId)
         {
-            PortalController.UpdatePortalSetting(this._portalId, SettingName, fileId != Null.NullInteger ? string.Format("FileID={0}", fileId) : "", /*clearCache*/ true);
+            PortalController.UpdatePortalSetting(this._portalId, SettingName, fileId != Null.NullInteger ? string.Format("FileID={0}", fileId) : string.Empty, /*clearCache*/ true);
             DataCache.ClearCache(GetCacheKey(this._portalId));
         }
 
@@ -71,7 +71,7 @@ namespace DotNetNuke.UI.Internals
                 }
                 else
                 {
-                    headerLink = "";
+                    headerLink = string.Empty;
                 }
 
                 // cache link or empty string to ensure we don't always have a

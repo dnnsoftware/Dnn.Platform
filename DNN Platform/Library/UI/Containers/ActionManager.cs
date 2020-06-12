@@ -112,13 +112,13 @@ namespace DotNetNuke.UI.Containers
                     {
                         // HARD Delete Shared Instance
                         ModuleController.Instance.DeleteTabModule(instance.TabID, instance.ModuleID, false);
-                        EventLogController.Instance.AddLog(instance, this.PortalSettings, user.UserID, "", EventLogController.EventLogType.MODULE_DELETED);
+                        EventLogController.Instance.AddLog(instance, this.PortalSettings, user.UserID, string.Empty, EventLogController.EventLogType.MODULE_DELETED);
                     }
                 }
             }
 
             ModuleController.Instance.DeleteTabModule(this.ModuleContext.TabId, int.Parse(Command.CommandArgument), true);
-            EventLogController.Instance.AddLog(module, this.PortalSettings, user.UserID, "", EventLogController.EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
+            EventLogController.Instance.AddLog(module, this.PortalSettings, user.UserID, string.Empty, EventLogController.EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
 
             // Redirect to the same page to pick up changes
             this.Response.Redirect(this.Request.RawUrl, true);

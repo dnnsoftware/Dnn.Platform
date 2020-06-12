@@ -77,7 +77,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
         public string GetString(string name, string resourceFile)
         {
             var resolver = HttpContext.Current.Items["Resolver"] as PathResolver;
-            var resolvedFile = "";
+            var resolvedFile = string.Empty;
             if (resolver != null)
             {
                 var localFile = resolver.Resolve(

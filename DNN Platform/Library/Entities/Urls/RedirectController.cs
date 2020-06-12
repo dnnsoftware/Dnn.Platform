@@ -204,7 +204,7 @@ namespace DotNetNuke.Entities.Urls
                                     result.DebugMessages.Add(parmRedirect.Name + " redirect matched with (" +
                                                              compareWith + "), replaced with " + parms);
                                 }
-                                string finalUrl = "";
+                                string finalUrl = string.Empty;
                                 // now we need to generate the friendly Url
 
                                 // first check to see if the parameter replacement string has a destination tabid specified
@@ -220,7 +220,7 @@ namespace DotNetNuke.Entities.Urls
                                         {
                                             // changes the tabid of page, effects a page redirect along with a parameter redirect
                                             int.TryParse(parmPart, out tabId);
-                                            parms = parms.Replace("tabid/" + tabId.ToString(), "");
+                                            parms = parms.Replace("tabid/" + tabId.ToString(), string.Empty);
                                             // remove the tabid/xx from the path
                                             break; // that's it, we're finished
                                         }
@@ -251,7 +251,7 @@ namespace DotNetNuke.Entities.Urls
                                         TabInfo tab = TabController.Instance.GetTab(tabId, result.PortalId, false);
                                         if (tab != null)
                                         {
-                                            string path = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tab.TabID, "");
+                                            string path = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tab.TabID, string.Empty);
                                             string friendlyUrlNoParms = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(
                                                 tab,
                                                                                                 path,
@@ -309,7 +309,7 @@ namespace DotNetNuke.Entities.Urls
                                         if (settings.PageExtension != "/" &&
                                             string.IsNullOrEmpty(settings.PageExtension) == false)
                                         {
-                                            finalUrl = finalUrl.Replace(settings.PageExtension, "");
+                                            finalUrl = finalUrl.Replace(settings.PageExtension, string.Empty);
                                         }
                                     }
                                     else
@@ -413,7 +413,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 // use the url, as specified in the dnn tab url property
                 // 776 : when no url, don't redirect
-                if (tab.Url != "")
+                if (tab.Url != string.Empty)
                 {
                     bestFriendlyUrl = tab.Url;
                 }

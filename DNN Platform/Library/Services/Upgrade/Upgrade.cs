@@ -262,7 +262,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         private static int AddModuleDefinition(string desktopModuleName, string description, string moduleDefinitionName, bool premium, bool admin)
         {
-            return AddModuleDefinition(desktopModuleName, description, moduleDefinitionName, "", false, premium, admin);
+            return AddModuleDefinition(desktopModuleName, description, moduleDefinitionName, string.Empty, false, premium, admin);
         }
 
         /// -----------------------------------------------------------------------------
@@ -308,7 +308,7 @@ namespace DotNetNuke.Services.Upgrade
 
                 PackageController.Instance.SaveExtensionPackage(package);
 
-                string moduleName = desktopModuleName.Replace(" ", "");
+                string moduleName = desktopModuleName.Replace(" ", string.Empty);
                 desktopModule = new DesktopModuleInfo
                 {
                     DesktopModuleID = Null.NullInteger,
@@ -424,9 +424,9 @@ namespace DotNetNuke.Services.Upgrade
                     TabID = Null.NullInteger,
                     PortalID = portalId,
                     TabName = tabName,
-                    Title = "",
+                    Title = string.Empty,
                     Description = description,
-                    KeyWords = "",
+                    KeyWords = string.Empty,
                     IsVisible = isVisible,
                     DisableLink = false,
                     ParentId = parentId,
@@ -492,10 +492,10 @@ namespace DotNetNuke.Services.Upgrade
                 AddPagePermission(tabPermissions, "Edit", Convert.ToInt32(portal.AdministratorRoleId));
 
                 // Create New Page (or get existing one)
-                var tab = AddPage(portal.PortalID, Null.NullInteger, "Search Results", "", "", "", false, tabPermissions, false);
+                var tab = AddPage(portal.PortalID, Null.NullInteger, "Search Results", string.Empty, string.Empty, string.Empty, false, tabPermissions, false);
 
                 // Add Module To Page
-                AddModuleToPage(tab, moduleDefId, "Search Results", "");
+                AddModuleToPage(tab, moduleDefId, "Search Results", string.Empty);
             }
         }
 
@@ -794,7 +794,7 @@ namespace DotNetNuke.Services.Upgrade
             // log the results
             try
             {
-                using (var streamWriter = File.CreateText(scriptFile.Replace("." + DefaultProvider, "") + ".log.resources"))
+                using (var streamWriter = File.CreateText(scriptFile.Replace("." + DefaultProvider, string.Empty) + ".log.resources"))
                 {
                     streamWriter.WriteLine(exceptions);
                     streamWriter.Close();
@@ -883,7 +883,7 @@ namespace DotNetNuke.Services.Upgrade
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "InstallMemberRoleProvider");
 
-            string exceptions = "";
+            string exceptions = string.Empty;
 
             bool installMemberRole = true;
             if (Config.GetSetting("InstallMemberRole") != null)
@@ -1159,7 +1159,7 @@ namespace DotNetNuke.Services.Upgrade
                     try
                     {
                         int fileId;
-                        var folder = FolderManager.Instance.GetFolder(portalInfo.PortalID, "");
+                        var folder = FolderManager.Instance.GetFolder(portalInfo.PortalID, string.Empty);
                         if (!FileManager.Instance.FileExists(folder, fileName))
                         {
                             using (var stream = File.OpenRead(localPath))
@@ -1387,9 +1387,9 @@ namespace DotNetNuke.Services.Upgrade
             if (HostTabExists("Dashboard") == false)
             {
                 moduleDefId = AddModuleDefinition("Dashboard", "Provides a snapshot of your DotNetNuke Application.", "Dashboard", true, true);
-                AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/Dashboard/Dashboard.ascx", "icon_dashboard_32px.gif", SecurityAccessLevel.Host, 0);
-                AddModuleControl(moduleDefId, "Export", "", "DesktopModules/Admin/Dashboard/Export.ascx", "", SecurityAccessLevel.Host, 0);
-                AddModuleControl(moduleDefId, "DashboardControls", "", "DesktopModules/Admin/Dashboard/DashboardControls.ascx", "", SecurityAccessLevel.Host, 0);
+                AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/Dashboard/Dashboard.ascx", "icon_dashboard_32px.gif", SecurityAccessLevel.Host, 0);
+                AddModuleControl(moduleDefId, "Export", string.Empty, "DesktopModules/Admin/Dashboard/Export.ascx", string.Empty, SecurityAccessLevel.Host, 0);
+                AddModuleControl(moduleDefId, "DashboardControls", string.Empty, "DesktopModules/Admin/Dashboard/DashboardControls.ascx", string.Empty, SecurityAccessLevel.Host, 0);
 
                 // Create New Host Page (or get existing one)
                 TabInfo dashboardPage = AddHostPage("Dashboard", "Summary view of application and site settings.", "~/images/icon_dashboard_16px.gif", "~/images/icon_dashboard_32px.gif", true);
@@ -1404,21 +1404,21 @@ namespace DotNetNuke.Services.Upgrade
                 // fix path for dashboarcontrols
                 moduleDefId = GetModuleDefinition("Dashboard", "Dashboard");
                 RemoveModuleControl(moduleDefId, "DashboardControls");
-                AddModuleControl(moduleDefId, "DashboardControls", "", "DesktopModules/Admin/Dashboard/DashboardControls.ascx", "", SecurityAccessLevel.Host, 0);
+                AddModuleControl(moduleDefId, "DashboardControls", string.Empty, "DesktopModules/Admin/Dashboard/DashboardControls.ascx", string.Empty, SecurityAccessLevel.Host, 0);
             }
 
             // Add the Extensions Module
             if (CoreModuleExists("Extensions") == false)
             {
-                moduleDefId = AddModuleDefinition("Extensions", "", "Extensions");
-                AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/Extensions/Extensions.ascx", "~/images/icon_extensions_32px.png", SecurityAccessLevel.View, 0);
+                moduleDefId = AddModuleDefinition("Extensions", string.Empty, "Extensions");
+                AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/Extensions/Extensions.ascx", "~/images/icon_extensions_32px.png", SecurityAccessLevel.View, 0);
                 AddModuleControl(moduleDefId, "Edit", "Edit Feature", "DesktopModules/Admin/Extensions/EditExtension.ascx", "~/images/icon_extensions_32px.png", SecurityAccessLevel.Edit, 0);
                 AddModuleControl(moduleDefId, "PackageWriter", "Package Writer", "DesktopModules/Admin/Extensions/PackageWriter.ascx", "~/images/icon_extensions_32px.png", SecurityAccessLevel.Host, 0);
                 AddModuleControl(moduleDefId, "EditControl", "Edit Control", "DesktopModules/Admin/Extensions/Editors/EditModuleControl.ascx", "~/images/icon_extensions_32px.png", SecurityAccessLevel.Host, 0);
                 AddModuleControl(moduleDefId, "ImportModuleDefinition", "Import Module Definition", "DesktopModules/Admin/Extensions/Editors/ImportModuleDefinition.ascx", "~/images/icon_extensions_32px.png", SecurityAccessLevel.Host, 0);
                 AddModuleControl(moduleDefId, "BatchInstall", "Batch Install", "DesktopModules/Admin/Extensions/BatchInstall.ascx", "~/images/icon_extensions_32px.png", SecurityAccessLevel.Host, 0);
                 AddModuleControl(moduleDefId, "NewExtension", "New Extension Wizard", "DesktopModules/Admin/Extensions/ExtensionWizard.ascx", "~/images/icon_extensions_32px.png", SecurityAccessLevel.Host, 0);
-                AddModuleControl(moduleDefId, "UsageDetails", "Usage Information", "DesktopModules/Admin/Extensions/UsageDetails.ascx", "~/images/icon_extensions_32px.png", SecurityAccessLevel.Host, 0, "", true);
+                AddModuleControl(moduleDefId, "UsageDetails", "Usage Information", "DesktopModules/Admin/Extensions/UsageDetails.ascx", "~/images/icon_extensions_32px.png", SecurityAccessLevel.Host, 0, string.Empty, true);
             }
             else
             {
@@ -1429,7 +1429,7 @@ namespace DotNetNuke.Services.Upgrade
                 RemoveModuleControl(moduleDefId, "LanguageSettings");
                 RemoveModuleControl(moduleDefId, "EditResourceKey");
                 RemoveModuleControl(moduleDefId, "EditSkins");
-                AddModuleControl(moduleDefId, "UsageDetails", "Usage Information", "DesktopModules/Admin/Extensions/UsageDetails.ascx", "~/images/icon_extensions_32px.png", SecurityAccessLevel.Host, 0, "", true);
+                AddModuleControl(moduleDefId, "UsageDetails", "Usage Information", "DesktopModules/Admin/Extensions/UsageDetails.ascx", "~/images/icon_extensions_32px.png", SecurityAccessLevel.Host, 0, string.Empty, true);
 
                 // Module was incorrectly assigned as "IsPremium=False"
                 RemoveModuleFromPortals("Extensions");
@@ -1467,14 +1467,14 @@ namespace DotNetNuke.Services.Upgrade
             DesktopModuleController.DeleteDesktopModule("Languages");
 
             // Add new Languages module
-            moduleDefId = AddModuleDefinition("Languages", "", "Languages", false, false);
-            AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/Languages/languageeditor.ascx", "~/images/icon_language_32px.gif", SecurityAccessLevel.View, 0);
+            moduleDefId = AddModuleDefinition("Languages", string.Empty, "Languages", false, false);
+            AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/Languages/languageeditor.ascx", "~/images/icon_language_32px.gif", SecurityAccessLevel.View, 0);
             AddModuleControl(moduleDefId, "Edit", "Edit Language", "DesktopModules/Admin/Languages/EditLanguage.ascx", "~/images/icon_language_32px.gif", SecurityAccessLevel.Edit, 0);
             AddModuleControl(moduleDefId, "EditResourceKey", "Full Language Editor", "DesktopModules/Admin/Languages/languageeditorext.ascx", "~/images/icon_language_32px.gif", SecurityAccessLevel.Edit, 0);
-            AddModuleControl(moduleDefId, "LanguageSettings", "Language Settings", "DesktopModules/Admin/Languages/LanguageSettings.ascx", "", SecurityAccessLevel.Edit, 0);
+            AddModuleControl(moduleDefId, "LanguageSettings", "Language Settings", "DesktopModules/Admin/Languages/LanguageSettings.ascx", string.Empty, SecurityAccessLevel.Edit, 0);
             AddModuleControl(moduleDefId, "TimeZone", "TimeZone Editor", "DesktopModules/Admin/Languages/timezoneeditor.ascx", "~/images/icon_language_32px.gif", SecurityAccessLevel.Host, 0);
-            AddModuleControl(moduleDefId, "Verify", "Resource File Verifier", "DesktopModules/Admin/Languages/resourceverifier.ascx", "", SecurityAccessLevel.Host, 0);
-            AddModuleControl(moduleDefId, "PackageWriter", "Language Pack Writer", "DesktopModules/Admin/Languages/LanguagePackWriter.ascx", "", SecurityAccessLevel.Host, 0);
+            AddModuleControl(moduleDefId, "Verify", "Resource File Verifier", "DesktopModules/Admin/Languages/resourceverifier.ascx", string.Empty, SecurityAccessLevel.Host, 0);
+            AddModuleControl(moduleDefId, "PackageWriter", "Language Pack Writer", "DesktopModules/Admin/Languages/LanguagePackWriter.ascx", string.Empty, SecurityAccessLevel.Host, 0);
 
             // Add Module to Admin Page for all Portals
             AddAdminPages("Languages", "Manage Language Resources.", "~/images/icon_language_16px.gif", "~/images/icon_language_32px.gif", true, moduleDefId, "Language Editor", "~/images/icon_language_32px.gif");
@@ -1486,8 +1486,8 @@ namespace DotNetNuke.Services.Upgrade
             DesktopModuleController.DeleteDesktopModule("Skins");
 
             // Add new Skins module
-            moduleDefId = AddModuleDefinition("Skins", "", "Skins", false, false);
-            AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/Skins/editskins.ascx", "~/images/icon_skins_32px.gif", SecurityAccessLevel.View, 0);
+            moduleDefId = AddModuleDefinition("Skins", string.Empty, "Skins", false, false);
+            AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/Skins/editskins.ascx", "~/images/icon_skins_32px.gif", SecurityAccessLevel.View, 0);
 
             // Add Module to Admin Page for all Portals
             AddAdminPages("Skins", "Manage Skin Resources.", "~/images/icon_skins_16px.gif", "~/images/icon_skins_32px.gif", true, moduleDefId, "Skin Editor", "~/images/icon_skins_32px.gif");
@@ -1498,7 +1498,7 @@ namespace DotNetNuke.Services.Upgrade
 
             // Add new Skin Designer module
             moduleDefId = AddModuleDefinition("Skin Designer", "Allows you to modify skin attributes.", "Skin Designer", true, true);
-            AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/SkinDesigner/Attributes.ascx", "~/images/icon_skins_32px.gif", SecurityAccessLevel.Host, 0);
+            AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/SkinDesigner/Attributes.ascx", "~/images/icon_skins_32px.gif", SecurityAccessLevel.Host, 0);
 
             // Add new Skin Designer to every Admin Skins Tab
             AddModuleToPages("//Admin//Skins", moduleDefId, "Skin Designer", "~/images/icon_skins_32px.gif", true);
@@ -1518,11 +1518,11 @@ namespace DotNetNuke.Services.Upgrade
 
             // add console module
             moduleDefId = AddModuleDefinition("Console", "Display children pages as icon links for navigation.", "Console", "DotNetNuke.Modules.Console.Components.ConsoleController", true, false, false);
-            AddModuleControl(moduleDefId, "", "Console", "DesktopModules/Admin/Console/ViewConsole.ascx", "", SecurityAccessLevel.Anonymous, 0);
-            AddModuleControl(moduleDefId, "Settings", "Console Settings", "DesktopModules/Admin/Console/Settings.ascx", "", SecurityAccessLevel.Admin, 0);
+            AddModuleControl(moduleDefId, string.Empty, "Console", "DesktopModules/Admin/Console/ViewConsole.ascx", string.Empty, SecurityAccessLevel.Anonymous, 0);
+            AddModuleControl(moduleDefId, "Settings", "Console Settings", "DesktopModules/Admin/Console/Settings.ascx", string.Empty, SecurityAccessLevel.Admin, 0);
 
             // add console module to host page
-            moduleId = AddModuleToPage("//Host", Null.NullInteger, moduleDefId, "Basic Features", "", true);
+            moduleId = AddModuleToPage("//Host", Null.NullInteger, moduleDefId, "Basic Features", string.Empty, true);
             int tabId = TabController.GetTabByTabPath(Null.NullInteger, "//Host", Null.NullString);
             TabInfo tab;
 
@@ -1545,7 +1545,7 @@ namespace DotNetNuke.Services.Upgrade
                     tab = TabController.Instance.GetTab(tabId, portal.PortalID, true);
                     if (tab != null)
                     {
-                        moduleId = AddModuleToPage(tab, moduleDefId, "Basic Features", "", true);
+                        moduleId = AddModuleToPage(tab, moduleDefId, "Basic Features", string.Empty, true);
                         AddConsoleModuleSettings(moduleId);
                     }
                 }
@@ -1553,7 +1553,7 @@ namespace DotNetNuke.Services.Upgrade
 
             // Add Google Analytics module
             moduleDefId = AddModuleDefinition("Google Analytics", "Configure Site Google Analytics settings.", "GoogleAnalytics", false, false);
-            AddModuleControl(moduleDefId, "", "Google Analytics", "DesktopModules/Admin/Analytics/GoogleAnalyticsSettings.ascx", "", SecurityAccessLevel.Admin, 0);
+            AddModuleControl(moduleDefId, string.Empty, "Google Analytics", "DesktopModules/Admin/Analytics/GoogleAnalyticsSettings.ascx", string.Empty, SecurityAccessLevel.Admin, 0);
             AddAdminPages("Google Analytics", "Configure Site Google Analytics settings.", "~/images/icon_analytics_16px.gif", "~/images/icon_analytics_32px.gif", true, moduleDefId, "Google Analytics", "~/images/icon_analytics_32px.gif");
         }
 
@@ -1616,11 +1616,11 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpgradeToVersion520()
         {
             // Add new ViewSource control
-            AddModuleControl(Null.NullInteger, "ViewSource", "View Module Source", "Admin/Modules/ViewSource.ascx", "~/images/icon_source_32px.gif", SecurityAccessLevel.Host, 0, "", true);
+            AddModuleControl(Null.NullInteger, "ViewSource", "View Module Source", "Admin/Modules/ViewSource.ascx", "~/images/icon_source_32px.gif", SecurityAccessLevel.Host, 0, string.Empty, true);
 
             // Add Marketplace module definition
             int moduleDefId = AddModuleDefinition("Marketplace", "Search for DotNetNuke modules, extension and skins.", "Marketplace");
-            AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/Marketplace/Marketplace.ascx", "~/images/icon_marketplace_32px.gif", SecurityAccessLevel.Host, 0);
+            AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/Marketplace/Marketplace.ascx", "~/images/icon_marketplace_32px.gif", SecurityAccessLevel.Host, 0);
 
             // Add marketplace Module To Page
             TabInfo newPage = AddHostPage("Marketplace", "Search for DotNetNuke modules, extension and skins.", "~/images/icon_marketplace_16px.gif", "~/images/icon_marketplace_32px.gif", true);
@@ -1645,18 +1645,18 @@ namespace DotNetNuke.Services.Upgrade
         {
             // update languages module
             int moduleDefId = GetModuleDefinition("Languages", "Languages");
-            RemoveModuleControl(moduleDefId, "");
-            AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/Languages/languageEnabler.ascx", "~/images/icon_language_32px.gif", SecurityAccessLevel.View, 0, "", true);
-            AddModuleControl(moduleDefId, "Editor", "", "DesktopModules/Admin/Languages/languageeditor.ascx", "~/images/icon_language_32px.gif", SecurityAccessLevel.View, 0);
+            RemoveModuleControl(moduleDefId, string.Empty);
+            AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/Languages/languageEnabler.ascx", "~/images/icon_language_32px.gif", SecurityAccessLevel.View, 0, string.Empty, true);
+            AddModuleControl(moduleDefId, "Editor", string.Empty, "DesktopModules/Admin/Languages/languageeditor.ascx", "~/images/icon_language_32px.gif", SecurityAccessLevel.View, 0);
 
             // Add new View Profile module
-            moduleDefId = AddModuleDefinition("ViewProfile", "", "ViewProfile", false, false);
-            AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/ViewProfile/ViewProfile.ascx", "~/images/icon_profile_32px.gif", SecurityAccessLevel.View, 0);
+            moduleDefId = AddModuleDefinition("ViewProfile", string.Empty, "ViewProfile", false, false);
+            AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/ViewProfile/ViewProfile.ascx", "~/images/icon_profile_32px.gif", SecurityAccessLevel.View, 0);
             AddModuleControl(moduleDefId, "Settings", "Settings", "DesktopModules/Admin/ViewProfile/Settings.ascx", "~/images/icon_profile_32px.gif", SecurityAccessLevel.Edit, 0);
 
             // Add new Sitemap settings module
-            moduleDefId = AddModuleDefinition("Sitemap", "", "Sitemap", false, false);
-            AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/Sitemap/SitemapSettings.ascx", "~/images/icon_analytics_32px.gif", SecurityAccessLevel.View, 0);
+            moduleDefId = AddModuleDefinition("Sitemap", string.Empty, "Sitemap", false, false);
+            AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/Sitemap/SitemapSettings.ascx", "~/images/icon_analytics_32px.gif", SecurityAccessLevel.View, 0);
             AddAdminPages("Search Engine Sitemap", "Configure the sitemap for submission to common search engines.", "~/images/icon_analytics_16px.gif", "~/images/icon_analytics_32px.gif", true, moduleDefId, "Search Engine Sitemap", "~/images/icon_analytics_32px.gif");
 
 
@@ -1780,7 +1780,7 @@ namespace DotNetNuke.Services.Upgrade
 
             // Add Content List module definition
             int moduleDefId = AddModuleDefinition("ContentList", "This module displays a list of content by tag.", "Content List");
-            AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/ContentList/ContentList.ascx", "", SecurityAccessLevel.View, 0);
+            AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/ContentList/ContentList.ascx", string.Empty, SecurityAccessLevel.View, 0);
 
             // Update registration page
             ArrayList portals = PortalController.Instance.GetPortals();
@@ -1792,7 +1792,7 @@ namespace DotNetNuke.Services.Upgrade
                 // Add ContentList to Search Results Page
                 int tabId = TabController.GetTabByTabPath(portal.PortalID, "//SearchResults", Null.NullString);
                 TabInfo searchPage = TabController.Instance.GetTab(tabId, portal.PortalID, false);
-                AddModuleToPage(searchPage, moduleDefId, "Results", "");
+                AddModuleToPage(searchPage, moduleDefId, "Results", string.Empty);
             }
         }
 
@@ -1819,7 +1819,7 @@ namespace DotNetNuke.Services.Upgrade
         {
             // update languages module
             int moduleDefId = GetModuleDefinition("Languages", "Languages");
-            AddModuleControl(moduleDefId, "TranslationStatus", "", "DesktopModules/Admin/Languages/TranslationStatus.ascx", "~/images/icon_language_32px.gif", SecurityAccessLevel.Edit, 0);
+            AddModuleControl(moduleDefId, "TranslationStatus", string.Empty, "DesktopModules/Admin/Languages/TranslationStatus.ascx", "~/images/icon_language_32px.gif", SecurityAccessLevel.Edit, 0);
 
             // due to an error in 5.3.0 we need to recheck and readd Application_Start_FirstRequest
             AddEventQueueApplicationStartFirstRequest();
@@ -1901,8 +1901,8 @@ namespace DotNetNuke.Services.Upgrade
             HostController.Instance.Update("FileExtensions", Host.AllowedExtensionWhitelist.ToStorageString(toAdd));
 
             // Add new Xml Merge module
-            int moduleDefId = AddModuleDefinition("Configuration Manager", "", "Configuration Manager", false, false);
-            AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/XmlMerge/XmlMerge.ascx", "~/images/icon_configuration_32px.png", SecurityAccessLevel.Host, 0);
+            int moduleDefId = AddModuleDefinition("Configuration Manager", string.Empty, "Configuration Manager", false, false);
+            AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/XmlMerge/XmlMerge.ascx", "~/images/icon_configuration_32px.png", SecurityAccessLevel.Host, 0);
 
             // Add Module To Page
             TabInfo hostPage = AddHostPage("Configuration Manager", "Modify configuration settings for your site", "~/images/icon_configuration_16px.png", "~/images/icon_configuration_32px.png", true);
@@ -1948,8 +1948,8 @@ namespace DotNetNuke.Services.Upgrade
             if (CoreModuleExists("LogViewer") == false)
             {
                 moduleDefId = AddModuleDefinition("LogViewer", "Allows you to view log entries for site events.", "Log Viewer");
-                AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/LogViewer/LogViewer.ascx", "", SecurityAccessLevel.Admin, 0);
-                AddModuleControl(moduleDefId, "Edit", "Edit Log Settings", "DesktopModules/Admin/LogViewer/EditLogTypes.ascx", "", SecurityAccessLevel.Host, 0);
+                AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/LogViewer/LogViewer.ascx", string.Empty, SecurityAccessLevel.Admin, 0);
+                AddModuleControl(moduleDefId, "Edit", "Edit Log Settings", "DesktopModules/Admin/LogViewer/EditLogTypes.ascx", string.Empty, SecurityAccessLevel.Host, 0);
 
                 // Add the Module/Page to all configured portals
                 AddAdminPages("Log Viewer", "View a historical log of database events such as event schedules, exceptions, account logins, module and page changes, user account activities, security role activities, etc.", "icon_viewstats_16px.gif", "icon_viewstats_32px.gif", true, moduleDefId, "Log Viewer", "icon_viewstats_16px.gif");
@@ -1960,10 +1960,10 @@ namespace DotNetNuke.Services.Upgrade
             if (CoreModuleExists("Scheduler") == false)
             {
                 moduleDefId = AddModuleDefinition("Scheduler", "Allows you to schedule tasks to be run at specified intervals.", "Scheduler");
-                AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/Scheduler/ViewSchedule.ascx", "", SecurityAccessLevel.Admin, 0);
-                AddModuleControl(moduleDefId, "Edit", "Edit Schedule", "DesktopModules/Admin/Scheduler/EditSchedule.ascx", "", SecurityAccessLevel.Host, 0);
-                AddModuleControl(moduleDefId, "History", "Schedule History", "DesktopModules/Admin/Scheduler/ViewScheduleHistory.ascx", "", SecurityAccessLevel.Host, 0);
-                AddModuleControl(moduleDefId, "Status", "Schedule Status", "DesktopModules/Admin/Scheduler/ViewScheduleStatus.ascx", "", SecurityAccessLevel.Host, 0);
+                AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/Scheduler/ViewSchedule.ascx", string.Empty, SecurityAccessLevel.Admin, 0);
+                AddModuleControl(moduleDefId, "Edit", "Edit Schedule", "DesktopModules/Admin/Scheduler/EditSchedule.ascx", string.Empty, SecurityAccessLevel.Host, 0);
+                AddModuleControl(moduleDefId, "History", "Schedule History", "DesktopModules/Admin/Scheduler/ViewScheduleHistory.ascx", string.Empty, SecurityAccessLevel.Host, 0);
+                AddModuleControl(moduleDefId, "Status", "Schedule Status", "DesktopModules/Admin/Scheduler/ViewScheduleStatus.ascx", string.Empty, SecurityAccessLevel.Host, 0);
 
                 // Create New Host Page (or get existing one)
                 newPage = AddHostPage("Schedule", "Add, modify and delete scheduled tasks to be run at specified intervals.", "icon_scheduler_16px.gif", "icon_scheduler_32px.gif", true);
@@ -1976,7 +1976,7 @@ namespace DotNetNuke.Services.Upgrade
             if (CoreModuleExists("SearchAdmin") == false)
             {
                 moduleDefId = AddModuleDefinition("SearchAdmin", "The Search Admininstrator provides the ability to manage search settings.", "Search Admin");
-                AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/SearchAdmin/SearchAdmin.ascx", "", SecurityAccessLevel.Host, 0);
+                AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/SearchAdmin/SearchAdmin.ascx", string.Empty, SecurityAccessLevel.Host, 0);
 
                 // Create New Host Page (or get existing one)
                 newPage = AddHostPage("Search Admin", "Manage search settings associated with DotNetNuke's search capability.", "icon_search_16px.gif", "icon_search_32px.gif", true);
@@ -1989,16 +1989,16 @@ namespace DotNetNuke.Services.Upgrade
             if (CoreModuleExists("SearchInput") == false)
             {
                 moduleDefId = AddModuleDefinition("SearchInput", "The Search Input module provides the ability to submit a search to a given search results module.", "Search Input", false, false);
-                AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/SearchInput/SearchInput.ascx", "", SecurityAccessLevel.Anonymous, 0);
-                AddModuleControl(moduleDefId, "Settings", "Search Input Settings", "DesktopModules/Admin/SearchInput/Settings.ascx", "", SecurityAccessLevel.Edit, 0);
+                AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/SearchInput/SearchInput.ascx", string.Empty, SecurityAccessLevel.Anonymous, 0);
+                AddModuleControl(moduleDefId, "Settings", "Search Input Settings", "DesktopModules/Admin/SearchInput/Settings.ascx", string.Empty, SecurityAccessLevel.Edit, 0);
             }
 
             // add the Search Results module
             if (CoreModuleExists("SearchResults") == false)
             {
                 moduleDefId = AddModuleDefinition("SearchResults", "The Search Reasults module provides the ability to display search results.", "Search Results", false, false);
-                AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/SearchResults/SearchResults.ascx", "", SecurityAccessLevel.Anonymous, 0);
-                AddModuleControl(moduleDefId, "Settings", "Search Results Settings", "DesktopModules/Admin/SearchResults/Settings.ascx", "", SecurityAccessLevel.Edit, 0);
+                AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/SearchResults/SearchResults.ascx", string.Empty, SecurityAccessLevel.Anonymous, 0);
+                AddModuleControl(moduleDefId, "Settings", "Search Results Settings", "DesktopModules/Admin/SearchResults/Settings.ascx", string.Empty, SecurityAccessLevel.Edit, 0);
 
                 // Add the Search Module/Page to all configured portals
                 AddSearchResults(moduleDefId);
@@ -2008,7 +2008,7 @@ namespace DotNetNuke.Services.Upgrade
             if (CoreModuleExists("SiteWizard") == false)
             {
                 moduleDefId = AddModuleDefinition("SiteWizard", "The Administrator can use this user-friendly wizard to set up the common Extensions of the Portal/Site.", "Site Wizard");
-                AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/SiteWizard/Sitewizard.ascx", "", SecurityAccessLevel.Admin, 0);
+                AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/SiteWizard/Sitewizard.ascx", string.Empty, SecurityAccessLevel.Admin, 0);
                 AddAdminPages("Site Wizard", "Configure portal settings, page design and apply a site template using a step-by-step wizard.", "icon_wizard_16px.gif", "icon_wizard_32px.gif", true, moduleDefId, "Site Wizard", "icon_wizard_16px.gif");
             }
 
@@ -2016,7 +2016,7 @@ namespace DotNetNuke.Services.Upgrade
             if (HostTabExists("Lists") == false)
             {
                 moduleDefId = AddModuleDefinition("Lists", "Allows you to edit common lists.", "Lists");
-                AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/Lists/ListEditor.ascx", "", SecurityAccessLevel.Host, 0);
+                AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/Lists/ListEditor.ascx", string.Empty, SecurityAccessLevel.Host, 0);
 
                 // Create New Host Page (or get existing one)
                 newPage = AddHostPage("Lists", "Manage common lists.", "icon_lists_16px.gif", "icon_lists_32px.gif", true);
@@ -2049,7 +2049,7 @@ namespace DotNetNuke.Services.Upgrade
             AddModuleControl(moduleDefId, "EditProfileProperty", "Edit Profile Property Definition", "DesktopModules/Admin/Security/EditProfileDefinition.ascx", "icon_users_32px.gif", SecurityAccessLevel.Edit, Null.NullInteger);
             AddModuleControl(moduleDefId, "UserSettings", "Manage User Settings", "DesktopModules/Admin/Security/UserSettings.ascx", "~/images/settings.gif", SecurityAccessLevel.Edit, Null.NullInteger);
             AddModuleControl(Null.NullInteger, "Profile", "Profile", "DesktopModules/Admin/Security/ManageUsers.ascx", "icon_users_32px.gif", SecurityAccessLevel.Anonymous, Null.NullInteger);
-            AddModuleControl(Null.NullInteger, "SendPassword", "Send Password", "DesktopModules/Admin/Security/SendPassword.ascx", "", SecurityAccessLevel.Anonymous, Null.NullInteger);
+            AddModuleControl(Null.NullInteger, "SendPassword", "Send Password", "DesktopModules/Admin/Security/SendPassword.ascx", string.Empty, SecurityAccessLevel.Anonymous, Null.NullInteger);
             AddModuleControl(Null.NullInteger, "ViewProfile", "View Profile", "DesktopModules/Admin/Security/ViewProfile.ascx", "icon_users_32px.gif", SecurityAccessLevel.Anonymous, Null.NullInteger);
 
             // Update Child Portal subHost.aspx
@@ -2059,7 +2059,7 @@ namespace DotNetNuke.Services.Upgrade
             if (CoreModuleExists("Solutions") == false)
             {
                 moduleDefId = AddModuleDefinition("Solutions", "Browse additional solutions for your application.", "Solutions", false, false);
-                AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/Solutions/Solutions.ascx", "", SecurityAccessLevel.Admin, 0);
+                AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/Solutions/Solutions.ascx", string.Empty, SecurityAccessLevel.Admin, 0);
                 AddAdminPages("Solutions", "DotNetNuke Solutions Explorer page provides easy access to locate free and commercial DotNetNuke modules, skin and more.", "icon_solutions_16px.gif", "icon_solutions_32px.gif", true, moduleDefId, "Solutions Explorer", "icon_solutions_32px.gif");
             }
 
@@ -2145,7 +2145,7 @@ namespace DotNetNuke.Services.Upgrade
             HostController.Instance.Update("DisplayBetaNotice", displayBetaNotice ? "Y" : "N");
 
             moduleDefId = GetModuleDefinition("Languages", "Languages");
-            AddModuleControl(moduleDefId, "EnableContent", "Enable Localized Content", "DesktopModules/Admin/Languages/EnableLocalizedContent.ascx", "", SecurityAccessLevel.Host, 0, null, false);
+            AddModuleControl(moduleDefId, "EnableContent", "Enable Localized Content", "DesktopModules/Admin/Languages/EnableLocalizedContent.ascx", string.Empty, SecurityAccessLevel.Host, 0, null, false);
 
             AddDefaultModuleIcons();
 
@@ -2234,7 +2234,7 @@ namespace DotNetNuke.Services.Upgrade
             AddModuleControl(moduleDefId, "LocalizePages", "Localize Pages", "DesktopModules/Admin/Languages/LocalizePages.ascx", "~/images/icon_language_32px.gif", SecurityAccessLevel.Edit, 0, Null.NullString, true);
 
             // add store control
-            moduleDefId = AddModuleDefinition("Extensions", "", "Extensions");
+            moduleDefId = AddModuleDefinition("Extensions", string.Empty, "Extensions");
             AddModuleControl(moduleDefId, "Store", "Store Details", "DesktopModules/Admin/Extensions/Store.ascx", "~/images/icon_extensions_32px.png", SecurityAccessLevel.Host, 0);
 
             EnableModalPopUps();
@@ -2415,7 +2415,7 @@ namespace DotNetNuke.Services.Upgrade
             // Console module should not be IPortable
             var consoleModule = DesktopModuleController.GetDesktopModuleByModuleName("Console", Null.NullInteger);
             consoleModule.SupportedFeatures = 0;
-            consoleModule.BusinessControllerClass = "";
+            consoleModule.BusinessControllerClass = string.Empty;
             DesktopModuleController.SaveDesktopModule(consoleModule, false, false);
         }
 
@@ -2491,11 +2491,11 @@ namespace DotNetNuke.Services.Upgrade
             // add the site Advanced Settings module to the admin tab
             if (CoreModuleExists("AdvancedSettings") == false)
             {
-                var moduleDefId = AddModuleDefinition("AdvancedSettings", "", "Advanced Settings");
-                AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/AdvancedSettings/AdvancedSettings.ascx", "", SecurityAccessLevel.Admin, 0);
+                var moduleDefId = AddModuleDefinition("AdvancedSettings", string.Empty, "Advanced Settings");
+                AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/AdvancedSettings/AdvancedSettings.ascx", string.Empty, SecurityAccessLevel.Admin, 0);
                 AddAdminPages(
                     "Advanced Settings",
-                            "",
+                            string.Empty,
                             "~/Icons/Sigma/AdvancedSettings_16X16_Standard.png",
                             "~/Icons/Sigma/AdvancedSettings_32X32_Standard.png",
                             true,
@@ -2576,7 +2576,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
                 LogTypeFriendlyName = "HTTP Error Code 404 Page Not Found",
-                LogTypeDescription = "",
+                LogTypeDescription = string.Empty,
                 LogTypeCSSClass = "OperationFailure",
                 LogTypeOwner = "DotNetNuke.Logging.EventLogType"
             };
@@ -2607,7 +2607,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
                 LogTypeFriendlyName = "HTTP Error Code 403.6 forbidden ip address rejected",
-                LogTypeDescription = "",
+                LogTypeDescription = string.Empty,
                 LogTypeCSSClass = "OperationFailure",
                 LogTypeOwner = "DotNetNuke.Logging.EventLogType"
             };
@@ -2637,7 +2637,7 @@ namespace DotNetNuke.Services.Upgrade
             var modDef = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Search Admin");
 
             if (modDef != null)
-                AddAdminPages("Search Admin", "Manage search settings associated with DotNetNuke's search capability.", "~/Icons/Sigma/Search_16x16_Standard.png", "~/Icons/Sigma/Search_32x32_Standard.png", true, modDef.ModuleDefID, "Search Admin", "");
+                AddAdminPages("Search Admin", "Manage search settings associated with DotNetNuke's search capability.", "~/Icons/Sigma/Search_16x16_Standard.png", "~/Icons/Sigma/Search_32x32_Standard.png", true, modDef.ModuleDefID, "Search Admin", string.Empty);
 
             CopyGettingStartedStyles();
         }
@@ -2651,7 +2651,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 LogTypeKey = EventLogController.EventLogType.TABURL_CREATED.ToString(),
                 LogTypeFriendlyName = "TabURL created",
-                LogTypeDescription = "",
+                LogTypeDescription = string.Empty,
                 LogTypeCSSClass = "OperationSuccess",
                 LogTypeOwner = "DotNetNuke.Logging.EventLogType"
             };
@@ -2712,7 +2712,7 @@ namespace DotNetNuke.Services.Upgrade
 
             DesktopModuleController.AddModuleCategory("Developer");
             var moduleDefId = AddModuleDefinition("Module Creator", "Development of modules.", "Module Creator");
-            AddModuleControl(moduleDefId, "", "", "DesktopModules/Admin/ModuleCreator/CreateModule.ascx", "~/DesktopModules/Admin/ModuleCreator/icon.png", SecurityAccessLevel.Host, 0);
+            AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/ModuleCreator/CreateModule.ascx", "~/DesktopModules/Admin/ModuleCreator/icon.png", SecurityAccessLevel.Host, 0);
             if (ModuleDefinitionController.GetModuleDefinitionByID(moduleDefId) != null)
             {
                 var desktopModuleId = ModuleDefinitionController.GetModuleDefinitionByID(moduleDefId).DesktopModuleID;
@@ -2810,7 +2810,7 @@ namespace DotNetNuke.Services.Upgrade
                     LogTypeKey =
                                               EventLogController.EventLogType.POTENTIAL_PAYPAL_PAYMENT_FRAUD.ToString(),
                     LogTypeFriendlyName = "Potential Paypal Payment Fraud",
-                    LogTypeDescription = "",
+                    LogTypeDescription = string.Empty,
                     LogTypeCSSClass = "OperationFailure",
                     LogTypeOwner = "DotNetNuke.Logging.EventLogType"
                 };
@@ -3224,7 +3224,7 @@ namespace DotNetNuke.Services.Upgrade
 
                         foreach (var action in actions)
                         {
-                            action.APICall = action.APICall.Replace(".ashx", "");
+                            action.APICall = action.APICall.Replace(".ashx", string.Empty);
                             NotificationsController.Instance.DeleteNotificationTypeAction(
                                 action.NotificationTypeActionId);
                         }
@@ -3266,7 +3266,7 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         NameResourceKey = "FollowBack",
                         DescriptionResourceKey = "FollowBack",
-                        ConfirmResourceKey = "",
+                        ConfirmResourceKey = string.Empty,
                         APICall = "API/InternalServices/RelationshipService/FollowBack"
                     });
                     NotificationsController.Instance.CreateNotificationType(followBackRequestType);
@@ -3308,7 +3308,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 NameResourceKey = "FollowBack",
                 DescriptionResourceKey = "FollowBack",
-                ConfirmResourceKey = "",
+                ConfirmResourceKey = string.Empty,
                 APICall = "API/InternalServices/RelationshipService/FollowBack"
             });
             NotificationsController.Instance.CreateNotificationType(type);
@@ -3370,7 +3370,7 @@ namespace DotNetNuke.Services.Upgrade
                     if (tab != null)
                     {
                         // Add new module to the page
-                        AddModuleToPage(tab, moduleDefinition.ModuleDefID, "Message Center", "", true);
+                        AddModuleToPage(tab, moduleDefinition.ModuleDefID, "Message Center", string.Empty, true);
                     }
 
                     foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(portal.UserTabId))
@@ -3440,7 +3440,7 @@ namespace DotNetNuke.Services.Upgrade
                     if (!string.IsNullOrEmpty(Globals.ApplicationPath))
                     {
                         childPath = childPath.Replace("\\", "/");
-                        childPath = childPath.Replace(Globals.ApplicationPath, "");
+                        childPath = childPath.Replace(Globals.ApplicationPath, string.Empty);
                     }
                     childPath = childPath.Replace("/", "\\");
                     // check if File exists and make sure it's not the site's main default.aspx page
@@ -3794,12 +3794,12 @@ namespace DotNetNuke.Services.Upgrade
             try
             {
                 string hostMapPath = Globals.HostMapPath;
-                string childPath = "";
-                string domain = "";
+                string childPath = string.Empty;
+                string domain = string.Empty;
 
                 if (HttpContext.Current != null)
                 {
-                    domain = Globals.GetDomainName(HttpContext.Current.Request, true).ToLowerInvariant().Replace("/install", "");
+                    domain = Globals.GetDomainName(HttpContext.Current.Request, true).ToLowerInvariant().Replace("/install", string.Empty);
                 }
                 DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddPortal:" + domain);
                 string portalName = XmlUtils.GetNodeValue(node.CreateNavigator(), "portalname");
@@ -3843,7 +3843,7 @@ namespace DotNetNuke.Services.Upgrade
                     // Create default email
                     if (string.IsNullOrEmpty(email))
                     {
-                        email = "admin@" + domain.Replace("www.", "");
+                        email = "admin@" + domain.Replace("www.", string.Empty);
                         // Remove any domain subfolder information ( if it exists )
                         if (email.IndexOf("/") != -1)
                         {
@@ -3988,7 +3988,7 @@ namespace DotNetNuke.Services.Upgrade
             Upgrade.GetInstallTemplate(installTemplate);
             // Parse the root node
             XmlNode rootNode = installTemplate.SelectSingleNode("//dotnetnuke");
-            string currentCulture = "";
+            string currentCulture = string.Empty;
             if (rootNode != null)
             {
                 currentCulture = XmlUtils.GetNodeValue(rootNode.CreateNavigator(), "installCulture");
@@ -4158,7 +4158,7 @@ namespace DotNetNuke.Services.Upgrade
             var stringVersion = GetStringVersionWithRevision(version);
 
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "DeleteFiles:" + stringVersion);
-            string exceptions = "";
+            string exceptions = string.Empty;
             if (writeFeedback)
             {
                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Cleaning Up Files: " + stringVersion);
@@ -4814,7 +4814,7 @@ namespace DotNetNuke.Services.Upgrade
                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 0, "Synchronizing Host Files:<br>");
             }
 
-            FolderManager.Instance.Synchronize(Null.NullInteger, "", true, true);
+            FolderManager.Instance.Synchronize(Null.NullInteger, string.Empty, true, true);
         }
 
         public static bool InstallPackage(string file, string packageType, bool writeFeedback)
@@ -5067,7 +5067,7 @@ namespace DotNetNuke.Services.Upgrade
                     // Look for requestValidationMode attribute
                     XmlDocument configFile = Config.Load();
                     XPathNavigator configNavigator = configFile.CreateNavigator().SelectSingleNode("//configuration/system.web/httpRuntime|//configuration/location/system.web/httpRuntime");
-                    if (configNavigator != null && !string.IsNullOrEmpty(configNavigator.GetAttribute("requestValidationMode", "")))
+                    if (configNavigator != null && !string.IsNullOrEmpty(configNavigator.GetAttribute("requestValidationMode", string.Empty)))
                     {
                         isCurrent = true;
                     }
@@ -5234,7 +5234,7 @@ namespace DotNetNuke.Services.Upgrade
         public static string UpgradeApplication(string providerPath, Version version, bool writeFeedback)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + Localization.Localization.GetString("ApplicationUpgrades", Localization.Localization.GlobalResourceFile) + ": " + version.ToString(3));
-            string exceptions = "";
+            string exceptions = string.Empty;
             if (writeFeedback)
             {
                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, Localization.Localization.GetString("ApplicationUpgrades", Localization.Localization.GlobalResourceFile) + " : " + GetStringVersionWithRevision(version));
@@ -5751,7 +5751,7 @@ namespace DotNetNuke.Services.Upgrade
         public static string UpdateConfig(string configFile, Version version, string reason)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
-            string exceptions = "";
+            string exceptions = string.Empty;
             if (File.Exists(configFile))
             {
                 // Create XmlMerge instance from config file source
@@ -5789,7 +5789,7 @@ namespace DotNetNuke.Services.Upgrade
         public static string UpdateConfig(string providerPath, string configFile, Version version, string reason)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
-            string exceptions = "";
+            string exceptions = string.Empty;
             if (File.Exists(configFile))
             {
                 // Create XmlMerge instance from config file source
@@ -5897,19 +5897,19 @@ namespace DotNetNuke.Services.Upgrade
 
         public static string UpgradeIndicator(Version version, bool isLocal, bool isSecureConnection)
         {
-            return UpgradeIndicator(version, DotNetNukeContext.Current.Application.Type, DotNetNukeContext.Current.Application.Name, "", isLocal, isSecureConnection);
+            return UpgradeIndicator(version, DotNetNukeContext.Current.Application.Type, DotNetNukeContext.Current.Application.Name, string.Empty, isLocal, isSecureConnection);
         }
 
         public static string UpgradeIndicator(Version version, string packageType, string packageName, string culture, bool isLocal, bool isSecureConnection)
         {
-            string url = "";
+            string url = string.Empty;
             if (Host.CheckUpgrade && version != new Version(0, 0, 0))
             {
                 url = DotNetNukeContext.Current.Application.UpgradeUrl + "/update.aspx";
                 // use network path reference so it works in ssl-offload scenarios
                 url = url.Replace("http://", "//");
-                url += "?core=" + Globals.FormatVersion(Assembly.GetExecutingAssembly().GetName().Version, "00", 3, "");
-                url += "&version=" + Globals.FormatVersion(version, "00", 3, "");
+                url += "?core=" + Globals.FormatVersion(Assembly.GetExecutingAssembly().GetName().Version, "00", 3, string.Empty);
+                url += "&version=" + Globals.FormatVersion(version, "00", 3, string.Empty);
                 url += "&type=" + packageType;
                 url += "&name=" + packageName;
                 if (packageType.ToLowerInvariant() == "module")
@@ -5930,9 +5930,9 @@ namespace DotNetNuke.Services.Upgrade
 
                     var portals = PortalController.Instance.GetPortals();
                     url += "&no=" + portals.Count;
-                    url += "&os=" + Globals.FormatVersion(Globals.OperatingSystemVersion, "00", 2, "");
-                    url += "&net=" + Globals.FormatVersion(Globals.NETFrameworkVersion, "00", 2, "");
-                    url += "&db=" + Globals.FormatVersion(Globals.DatabaseEngineVersion, "00", 2, "");
+                    url += "&os=" + Globals.FormatVersion(Globals.OperatingSystemVersion, "00", 2, string.Empty);
+                    url += "&net=" + Globals.FormatVersion(Globals.NETFrameworkVersion, "00", 2, string.Empty);
+                    url += "&db=" + Globals.FormatVersion(Globals.DatabaseEngineVersion, "00", 2, string.Empty);
                     var source = Config.GetSetting("Source");
                     if (!string.IsNullOrEmpty(source))
                     {
@@ -5949,7 +5949,7 @@ namespace DotNetNuke.Services.Upgrade
 
         public static string UpgradeRedirect()
         {
-            return UpgradeRedirect(ApplicationVersion, DotNetNukeContext.Current.Application.Type, DotNetNukeContext.Current.Application.Name, "");
+            return UpgradeRedirect(ApplicationVersion, DotNetNukeContext.Current.Application.Type, DotNetNukeContext.Current.Application.Name, string.Empty);
         }
 
         public static string UpgradeRedirect(Version version, string packageType, string packageName, string culture)
@@ -5962,8 +5962,8 @@ namespace DotNetNuke.Services.Upgrade
             else
             {
                 url = DotNetNukeContext.Current.Application.UpgradeUrl + "/redirect.aspx";
-                url += "?core=" + Globals.FormatVersion(Assembly.GetExecutingAssembly().GetName().Version, "00", 3, "");
-                url += "&version=" + Globals.FormatVersion(version, "00", 3, "");
+                url += "?core=" + Globals.FormatVersion(Assembly.GetExecutingAssembly().GetName().Version, "00", 3, string.Empty);
+                url += "&version=" + Globals.FormatVersion(version, "00", 3, string.Empty);
                 url += "&type=" + packageType;
                 url += "&name=" + packageName;
                 if (!string.IsNullOrEmpty(culture))
@@ -6028,7 +6028,7 @@ namespace DotNetNuke.Services.Upgrade
                 }
                 else
                 {
-                    log.AddProperty("No Warnings", "");
+                    log.AddProperty("No Warnings", string.Empty);
                 }
                 LogController.Instance.AddLog(log);
             }
@@ -6055,7 +6055,7 @@ namespace DotNetNuke.Services.Upgrade
                 }
                 else
                 {
-                    log.AddProperty("No Warnings", "");
+                    log.AddProperty("No Warnings", string.Empty);
                 }
                 LogController.Instance.AddLog(log);
             }
@@ -6108,7 +6108,7 @@ namespace DotNetNuke.Services.Upgrade
         public static string ActivateLicense()
         {
             var isLicensable = File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) || File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll"));
-            var activationResult = "";
+            var activationResult = string.Empty;
 
             if (isLicensable)
             {

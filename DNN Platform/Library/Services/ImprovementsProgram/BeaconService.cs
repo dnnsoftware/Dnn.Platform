@@ -109,7 +109,7 @@ namespace DotNetNuke.Services.ImprovementsProgram
 
             // add package and version to context of request
             string packageName = DotNetNukeContext.Current.Application.Name;
-            string installVersion = Common.Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, "00", 3, "");
+            string installVersion = Common.Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, "00", 3, string.Empty);
             if (!string.IsNullOrEmpty(packageName))
                 qparams["n"] = HttpUtility.UrlEncode(this.GetHash(packageName));
             if (!string.IsNullOrEmpty(installVersion))

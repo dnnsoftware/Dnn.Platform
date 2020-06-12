@@ -71,7 +71,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 TotalUsers = 0,
                 UserNo = 0,
-                UserName = "",
+                UserName = string.Empty,
                 PortalName = portal.PortalName,
                 Stage = "starting"
             };
@@ -100,7 +100,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 TotalUsers = totalUsers,
                 UserNo = totalUsers,
-                UserName = "",
+                UserName = string.Empty,
                 PortalName = portal.PortalName,
                 Stage = "finalizing"
             };
@@ -115,7 +115,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 TotalUsers = totalUsers,
                 UserNo = totalUsers,
-                UserName = "",
+                UserName = string.Empty,
                 PortalName = portal.PortalName,
                 Stage = "finished",
                 PortalGroupId = portalGroup.PortalGroupId
@@ -341,7 +341,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 TotalUsers = 0,
                 UserNo = 0,
-                UserName = "",
+                UserName = string.Empty,
                 PortalName = portal.PortalName,
                 Stage = "startingremove"
             };
@@ -404,7 +404,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 TotalUsers = 1,
                 UserNo = userNo,
-                UserName = "",
+                UserName = string.Empty,
                 PortalName = portal.PortalName,
                 Stage = "finishedremove",
                 PortalGroupId = portalGroup.PortalGroupId

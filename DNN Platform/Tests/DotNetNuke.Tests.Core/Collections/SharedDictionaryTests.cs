@@ -185,7 +185,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             l.Add((SharedDictionary<string, string> d) =>
                       {
-                          string value = "";
+                          string value = string.Empty;
                           d.TryGetValue("key", out value);
                       });
 

@@ -27,7 +27,7 @@ namespace DotNetNuke.Modules.RazorHost
 
             foreach (string script in Directory.GetFiles(this.Server.MapPath(this.razorScriptFolder), "*.??html"))
             {
-                string scriptPath = script.Replace(basePath, "");
+                string scriptPath = script.Replace(basePath, string.Empty);
                 var item = new ListItem(scriptPath, scriptPath);
                 if (! string.IsNullOrEmpty(scriptFileSetting) && scriptPath.ToLowerInvariant() == scriptFileSetting.ToLowerInvariant())
                 {

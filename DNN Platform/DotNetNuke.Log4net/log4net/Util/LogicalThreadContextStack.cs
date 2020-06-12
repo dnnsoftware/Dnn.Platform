@@ -156,7 +156,7 @@ namespace log4net.Util
         {
             // copy current stack
             Stack stack = new Stack(new Stack(this.m_stack));
-            string result = "";
+            string result = string.Empty;
             if (stack.Count > 0)
             {
                 result = ((StackFrame) stack.Pop()).Message;

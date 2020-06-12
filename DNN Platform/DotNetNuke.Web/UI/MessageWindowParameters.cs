@@ -12,8 +12,8 @@ namespace DotNetNuke.Web.UI
 {
     public class MessageWindowParameters
     {
-        private string _Message = "";
-        private string _Title = "";
+        private string _Message = string.Empty;
+        private string _Title = string.Empty;
         private Unit _WindowHeight = Unit.Pixel(175);
         private Unit _WindowWidth = Unit.Pixel(350);
 

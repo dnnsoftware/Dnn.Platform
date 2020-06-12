@@ -200,7 +200,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
             }
             else
             {
-                var rootFolder = folders.SingleOrDefault(f => f.FolderPath == "");
+                var rootFolder = folders.SingleOrDefault(f => f.FolderPath == string.Empty);
                 if (rootFolder != null)
                 {
                     this.ddlFolders.SelectedItem = new ListItem() { Text = DynamicSharedConstants.RootFolder, Value = rootFolder.FolderID.ToString() };
@@ -308,7 +308,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
             try
             {
                 this.CheckSecurity();
-                var strMessage = "";
+                var strMessage = string.Empty;
 
                 var postedFile = this.cmdBrowse.PostedFile;
 

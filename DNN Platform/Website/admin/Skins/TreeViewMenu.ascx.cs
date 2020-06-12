@@ -31,10 +31,10 @@ namespace DotNetNuke.UI.Skins.Controls
         #region "Private Members"
 
         private const string MyFileName = "TreeViewMenu.ascx";
-        private string _bodyCssClass = "";
-        private string _cssClass = "";
-        private string _headerCssClass = "";
-        private string _headerText = "";
+        private string _bodyCssClass = string.Empty;
+        private string _cssClass = string.Empty;
+        private string _headerCssClass = string.Empty;
+        private string _headerText = string.Empty;
         private string _headerTextCssClass = "Head";
         private bool _includeHeader = true;
         private string _nodeChildCssClass = "Normal";
@@ -46,8 +46,8 @@ namespace DotNetNuke.UI.Skins.Controls
         private string _nodeOpenImage = "~/images/folderopen.gif";
         private string _nodeOverCssClass = "Normal";
         private string _nodeSelectedCssClass = "Normal";
-        private string _resourceKey = "";
-        private string _treeCssClass = "";
+        private string _resourceKey = string.Empty;
+        private string _treeCssClass = string.Empty;
         private string _treeGoUpImage = "~/images/folderup.gif";
         private int _treeIndentWidth = 10;
         private string _width = "100%";

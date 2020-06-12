@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         private string ImportModule()
         {
-            var strMessage = "";
+            var strMessage = string.Empty;
             if (this.Module != null)
             {
                 if (!string.IsNullOrEmpty(this.Module.DesktopModule.BusinessControllerClass) && this.Module.DesktopModule.IsPortable)
@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 if (file.Text.IndexOf("content." + Globals.CleanName(this.Module.DesktopModule.ModuleName) + ".", System.StringComparison.Ordinal) != -1)
                 {
-                    this.cboFiles.AddItem(file.Text.Replace("content." + Globals.CleanName(this.Module.DesktopModule.ModuleName) + ".", ""), file.Value);
+                    this.cboFiles.AddItem(file.Text.Replace("content." + Globals.CleanName(this.Module.DesktopModule.ModuleName) + ".", string.Empty), file.Value);
                 }
 
                 // legacy support for files which used the FriendlyName
@@ -202,7 +202,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                 if (file.Text.IndexOf("content." + Globals.CleanName(this.Module.DesktopModule.FriendlyName) + ".", System.StringComparison.Ordinal) != -1)
                 {
-                    this.cboFiles.AddItem(file.Text.Replace("content." + Globals.CleanName(this.Module.DesktopModule.FriendlyName) + ".", ""), file.Value);
+                    this.cboFiles.AddItem(file.Text.Replace("content." + Globals.CleanName(this.Module.DesktopModule.FriendlyName) + ".", string.Empty), file.Value);
                 }
             }
         }

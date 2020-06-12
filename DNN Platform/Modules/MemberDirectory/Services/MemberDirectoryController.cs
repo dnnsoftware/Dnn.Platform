@@ -201,8 +201,8 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                 var searchField3 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField3", "City");
                 var searchField4 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField4", "Country");
 
-                var propertyNames = "";
-                var propertyValues = "";
+                var propertyNames = string.Empty;
+                var propertyValues = string.Empty;
                 AddSearchTerm(ref propertyNames, ref propertyValues, searchField1, searchTerm1);
                 AddSearchTerm(ref propertyNames, ref propertyValues, searchField2, searchTerm2);
                 AddSearchTerm(ref propertyNames, ref propertyValues, searchField3, searchTerm3);
@@ -223,7 +223,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var users = this.GetUsers(-1, groupId, string.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.Trim(), pageIndex, pageSize, "", "");
+                var users = this.GetUsers(-1, groupId, string.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.Trim(), pageIndex, pageSize, string.Empty, string.Empty);
                 return this.Request.CreateResponse(HttpStatusCode.OK, this.GetMembers(users));
             }
             catch (Exception exc)
@@ -256,7 +256,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var names = (from UserInfo user in this.GetUsers(-1, groupId, displayName.Trim(), 0, 10, "", "")
+                var names = (from UserInfo user in this.GetUsers(-1, groupId, displayName.Trim(), 0, 10, string.Empty, string.Empty)
                              select new { label = user.DisplayName, value = user.DisplayName, userId = user.UserID })
                                 .ToList();
 

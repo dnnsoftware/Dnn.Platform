@@ -235,7 +235,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this.ViewState["FileFilter"] != null ? (string)this.ViewState["FileFilter"] : "";
+                return this.ViewState["FileFilter"] != null ? (string)this.ViewState["FileFilter"] : string.Empty;
             }
             set
             {
@@ -323,7 +323,7 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 var cssClass = Convert.ToString(this.ViewState["LabelCssClass"]);
-                return string.IsNullOrEmpty(cssClass) ? "" : cssClass;
+                return string.IsNullOrEmpty(cssClass) ? string.Empty : cssClass;
             }
             set
             {
@@ -503,7 +503,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this._pnlMessage = new Panel { CssClass = "dnnFormMessage dnnFormWarning" };
 
             // Create Label
-            this._lblMessage = new Label { EnableViewState = false, Text = "" };
+            this._lblMessage = new Label { EnableViewState = false, Text = string.Empty };
             this._pnlMessage.Controls.Add(this._lblMessage);
 
             this._pnlLeftDiv.Controls.Add(this._pnlMessage);
@@ -707,7 +707,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 if (!string.IsNullOrEmpty(this.FilePath))
                 {
                     fileName = this.FilePath.Substring(this.FilePath.LastIndexOf("/") + 1);
-                    folderPath = string.IsNullOrEmpty(fileName) ? this.FilePath : this.FilePath.Replace(fileName, "");
+                    folderPath = string.IsNullOrEmpty(fileName) ? this.FilePath : this.FilePath.Replace(fileName, string.Empty);
                 }
                 else
                 {
@@ -802,7 +802,7 @@ namespace DotNetNuke.Web.UI.WebControls
             // if file is selected exit
             if (!string.IsNullOrEmpty(this._txtFile.PostedFile.FileName))
             {
-                var extension = Path.GetExtension(this._txtFile.PostedFile.FileName).Replace(".", "");
+                var extension = Path.GetExtension(this._txtFile.PostedFile.FileName).Replace(".", string.Empty);
 
                 if (!string.IsNullOrEmpty(this.FileFilter) && !this.FileFilter.ToLowerInvariant().Contains(extension.ToLowerInvariant()))
                 {

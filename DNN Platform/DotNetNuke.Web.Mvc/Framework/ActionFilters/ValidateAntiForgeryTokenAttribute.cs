@@ -67,7 +67,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 }
             }
 
-            return "";
+            return string.Empty;
         }
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)

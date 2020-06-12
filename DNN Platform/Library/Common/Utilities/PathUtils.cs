@@ -62,7 +62,7 @@ namespace DotNetNuke.Common.Utilities
             // at the begingin of its name " MyFolder/Test" is not same physical folder as "MyFoler/Test"
             if (string.IsNullOrEmpty(folderPath) || string.IsNullOrEmpty(folderPath.Trim()))
             {
-                return "";
+                return string.Empty;
             }
 
             return folderPath.EndsWith("/") ? folderPath.Trim() : folderPath.Trim() + "/";
@@ -156,7 +156,7 @@ namespace DotNetNuke.Common.Utilities
         {
             const int subfolderSeedLength = 2;
             const int byteOffset = 255;
-            var element = "";
+            var element = string.Empty;
 
             switch (mode)
             {
@@ -246,7 +246,7 @@ namespace DotNetNuke.Common.Utilities
         {
             if (string.IsNullOrEmpty(source))
             {
-                return "";
+                return string.Empty;
             }
 
             if (source.EndsWith("\\") || source.EndsWith("/"))
@@ -268,7 +268,7 @@ namespace DotNetNuke.Common.Utilities
 
             if (originalPath.IndexOf("\\", StringComparison.InvariantCulture) >= 0)
             {
-                return FolderPathRx.Replace(originalPath, "");
+                return FolderPathRx.Replace(originalPath, string.Empty);
             }
 
             return originalPath.StartsWith("0") ? originalPath.Substring(1) : originalPath;

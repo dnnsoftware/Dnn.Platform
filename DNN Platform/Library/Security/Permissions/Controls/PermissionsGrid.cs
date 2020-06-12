@@ -510,7 +510,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
             var idColumn = new BoundColumn
                                 {
-                                    HeaderText = "",
+                                    HeaderText = string.Empty,
                                     DataField = idColumnDataField,
                                     Visible = false
                                 };
@@ -529,7 +529,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
                 var locName = (permission.ModuleDefID <= 0) ? Localization.GetString(permission.PermissionName + ".Permission", PermissionProvider.Instance().LocalResourceFile) // system permission
                                                             : (!string.IsNullOrEmpty(this.ResourceFile) ? Localization.GetString(permission.PermissionName + ".Permission", this.ResourceFile) // custom permission
-                                                                                                    : "");
+                                                                                                    : string.Empty);
                 templateCol.HeaderText = !string.IsNullOrEmpty(locName) ? locName : permission.PermissionName;
                 templateCol.HeaderStyle.Wrap = true;
                 grid.Columns.Add(templateCol);

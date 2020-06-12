@@ -87,7 +87,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private void SetupDataProvider()
         {
             // Standard DataProvider Path for Logging
-            this._dataProvider.Setup(d => d.GetProviderPath()).Returns("");
+            this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
         }
 
         [TearDown]

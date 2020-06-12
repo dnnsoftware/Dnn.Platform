@@ -312,7 +312,7 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            this.StateControl.Value = ""; // for state persistence (stateControl)
+            this.StateControl.Value = string.Empty; // for state persistence (stateControl)
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
 

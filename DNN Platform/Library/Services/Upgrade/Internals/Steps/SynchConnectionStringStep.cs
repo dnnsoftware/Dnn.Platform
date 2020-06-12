@@ -125,7 +125,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
         private string GetUpgradeConnectionStringUserID()
         {
-            string dbUser = "";
+            string dbUser = string.Empty;
             string connection = Config.GetUpgradeConnectionString();
 
             // If connection string does not use integrated security, then get user id.

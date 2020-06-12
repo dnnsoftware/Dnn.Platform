@@ -422,12 +422,12 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             var user = this._userController.GetUserById(workflow.PortalID, userId);
             var datetime = DateTime.UtcNow;
-            var result = text.Replace("[USER]", user != null ? user.DisplayName : "");
+            var result = text.Replace("[USER]", user != null ? user.DisplayName : string.Empty);
             result = result.Replace("[DATE]", datetime.ToString("F", CultureInfo.CurrentCulture));
-            result = result.Replace("[STATE]", state != null ? state.StateName : "");
+            result = result.Replace("[STATE]", state != null ? state.StateName : string.Empty);
             result = result.Replace("[WORKFLOW]", workflow.WorkflowName);
-            result = result.Replace("[CONTENT]", item != null ? item.ContentTitle : "");
-            result = result.Replace("[COMMENT]", !string.IsNullOrEmpty(comment) ? comment : "");
+            result = result.Replace("[CONTENT]", item != null ? item.ContentTitle : string.Empty);
+            result = result.Replace("[COMMENT]", !string.IsNullOrEmpty(comment) ? comment : string.Empty);
             return result;
         }
 

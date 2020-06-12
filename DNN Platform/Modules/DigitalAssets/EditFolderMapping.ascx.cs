@@ -217,7 +217,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 this.FolderProvidersComboBox.AddItem(provider, provider);
             }
-            this.FolderProvidersComboBox.InsertItem(0, "", "");
+            this.FolderProvidersComboBox.InsertItem(0, string.Empty, string.Empty);
         }
 
         private void BindFolderMapping()

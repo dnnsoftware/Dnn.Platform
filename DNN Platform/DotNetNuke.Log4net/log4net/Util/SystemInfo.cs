@@ -1042,7 +1042,7 @@ namespace log4net.Util
                 throw new ArgumentNullException("path");
             }
 
-            string baseDirectory = "";
+            string baseDirectory = string.Empty;
             try
             {
                 string applicationBaseDirectory = SystemInfo.ApplicationBaseDirectory;

@@ -115,8 +115,8 @@ namespace DNN.Integration.Test.Framework.Controllers
         public static string GetTabPath(string tabPath)
         {
             var parts = tabPath.Split("/".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            var path = "";
-            var name = "";
+            var path = string.Empty;
+            var name = string.Empty;
             foreach (var s in parts)
             {
                 path += "//" + s;

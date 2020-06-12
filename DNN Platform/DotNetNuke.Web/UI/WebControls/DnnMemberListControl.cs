@@ -143,7 +143,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            if (this.ItemTemplate == "") return;
+            if (this.ItemTemplate == string.Empty) return;
 
             writer.Write(this.HeaderTemplate);
 

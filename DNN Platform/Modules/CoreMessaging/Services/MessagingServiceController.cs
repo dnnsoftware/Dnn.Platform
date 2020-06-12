@@ -232,7 +232,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 foreach (var notification in notificationsDomainModel)
                 {
                     var user = UserController.Instance.GetUser(this.PortalSettings.PortalId, notification.SenderUserID);
-                    var displayName = user != null ? user.DisplayName : "";
+                    var displayName = user != null ? user.DisplayName : string.Empty;
 
                     var notificationViewModel = new NotificationViewModel
                     {
@@ -269,7 +269,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                         {
                             Name = Localization.GetString("Dismiss.Text"),
                             Description = Localization.GetString("DismissNotification.Text"),
-                            Confirm = "",
+                            Confirm = string.Empty,
                             APICall = "API/InternalServices/NotificationsService/Dismiss"
                         });
                     }
@@ -390,7 +390,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
         private string LocalizeActionString(string key, int desktopModuleId)
         {
-            if (string.IsNullOrEmpty(key)) return "";
+            if (string.IsNullOrEmpty(key)) return string.Empty;
 
             string actionString;
 

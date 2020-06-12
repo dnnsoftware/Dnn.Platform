@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.Common.Internal
         private static bool _handleShutdowns;
         private static bool _shutdownInprogress;
         private static FileSystemWatcher _binOrRootWatcher;
-        private static string _binFolder = "";
+        private static string _binFolder = string.Empty;
 
         internal static void InitializeFcnSettings()
         {
@@ -137,7 +137,7 @@ namespace DotNetNuke.Web.Common.Internal
             if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources"))
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
 
-            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? "").StartsWith(_binFolder, StringComparison.InvariantCultureIgnoreCase))
+            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(_binFolder, StringComparison.InvariantCultureIgnoreCase))
             {
                 ShceduleShutdown();
             }
@@ -148,7 +148,7 @@ namespace DotNetNuke.Web.Common.Internal
             if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources"))
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
 
-            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? "").StartsWith(_binFolder, StringComparison.InvariantCultureIgnoreCase))
+            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(_binFolder, StringComparison.InvariantCultureIgnoreCase))
                 ShceduleShutdown();
         }
 
@@ -157,7 +157,7 @@ namespace DotNetNuke.Web.Common.Internal
             if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources"))
                 Logger.Info($"Watcher Activity: {e.ChangeType}. New Path: {e.FullPath}. Old Path: {e.OldFullPath}");
 
-            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? "").StartsWith(_binFolder, StringComparison.InvariantCultureIgnoreCase))
+            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(_binFolder, StringComparison.InvariantCultureIgnoreCase))
                 ShceduleShutdown();
         }
 
@@ -166,7 +166,7 @@ namespace DotNetNuke.Web.Common.Internal
             if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources"))
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
 
-            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? "").StartsWith(_binFolder, StringComparison.InvariantCultureIgnoreCase))
+            if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(_binFolder, StringComparison.InvariantCultureIgnoreCase))
                 ShceduleShutdown();
         }
 

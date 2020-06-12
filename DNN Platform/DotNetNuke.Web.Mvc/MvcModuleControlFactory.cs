@@ -25,7 +25,7 @@ namespace DotNetNuke.Web.Mvc
         {
             ModuleControlBase moduleControl = base.CreateModuleControl(moduleConfiguration);
 
-            var segments = moduleConfiguration.ModuleControl.ControlSrc.Replace(".mvc", "").Split('/');
+            var segments = moduleConfiguration.ModuleControl.ControlSrc.Replace(".mvc", string.Empty).Split('/');
 
             moduleControl.LocalResourceFile = string.Format(
                 "~/DesktopModules/MVC/{0}/{1}/{2}.resx",

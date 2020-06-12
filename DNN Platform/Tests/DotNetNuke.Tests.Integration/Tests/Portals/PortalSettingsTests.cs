@@ -34,10 +34,10 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
         {
             // Act
             PortalController.UpdatePortalSetting(this.PortalId, this._settingName, this._settingValue, true, null, false);
-            var result = PortalController.GetPortalSetting(this._settingName, this.PortalId, "");
+            var result = PortalController.GetPortalSetting(this._settingName, this.PortalId, string.Empty);
 
             // Assert
-            Assert.AreNotEqual(result, "");
+            Assert.AreNotEqual(result, string.Empty);
             Assert.AreEqual(this._settingValue, result);
         }
 
@@ -47,11 +47,11 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
             // Act
             PortalController.UpdatePortalSetting(this.PortalId, this._settingName, this._settingValue, true, null, true);
 
-            var result = PortalController.GetPortalSetting(this._settingName, this.PortalId, "");
+            var result = PortalController.GetPortalSetting(this._settingName, this.PortalId, string.Empty);
             var decrypted = DotNetNuke.Security.FIPSCompliant.DecryptAES(result, Config.GetDecryptionkey(), Host.GUID);
 
             // Assert
-            Assert.AreNotEqual(result, "");
+            Assert.AreNotEqual(result, string.Empty);
             Assert.AreNotEqual(this._settingValue, result);
             Assert.AreEqual(decrypted, this._settingValue);
         }

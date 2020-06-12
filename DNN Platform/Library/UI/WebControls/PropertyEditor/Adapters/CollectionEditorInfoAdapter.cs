@@ -53,7 +53,7 @@ namespace DotNetNuke.UI.WebControls
             string NameDataField = Convert.ToString(this.FieldNames["Name"]);
             string ValueDataField = Convert.ToString(this.FieldNames["Value"]);
             PropertyInfo objProperty;
-            string PropertyName = "";
+            string PropertyName = string.Empty;
             bool changed = e.Changed;
             string name = e.Name;
             object oldValue = e.OldValue;

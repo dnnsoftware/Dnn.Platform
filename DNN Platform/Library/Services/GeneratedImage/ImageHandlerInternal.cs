@@ -180,7 +180,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 context.Request.UrlReferrer.Host.ToLowerInvariant() != context.Request.Url.Host.ToLowerInvariant())
             {
                 bool allowed = false;
-                string allowedDomains = "";
+                string allowedDomains = string.Empty;
                 foreach (string allowedDomain in this.AllowedDomains)
                 {
                     if (!string.IsNullOrEmpty(allowedDomain))

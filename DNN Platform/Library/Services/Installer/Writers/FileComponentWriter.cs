@@ -184,7 +184,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     if (file.Path.ToLowerInvariant().Contains(this._BasePath.ToLowerInvariant()))
                     {
-                        path = file.Path.ToLowerInvariant().Replace(this._BasePath.ToLowerInvariant() + "\\", "");
+                        path = file.Path.ToLowerInvariant().Replace(this._BasePath.ToLowerInvariant() + "\\", string.Empty);
                     }
                 }
                 writer.WriteElementString("path", path);

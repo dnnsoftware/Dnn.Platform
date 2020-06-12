@@ -34,7 +34,7 @@ namespace DotNetNuke.Web.Razor
                     if (! File.Exists(this.Server.MapPath(scriptFile)))
                     {
                         // Return ""
-                        scriptFile = "";
+                        scriptFile = string.Empty;
                     }
                 }
 

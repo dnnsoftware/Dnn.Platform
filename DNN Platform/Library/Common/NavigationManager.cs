@@ -195,7 +195,7 @@ namespace DotNetNuke.Common
             {
                 if (settings.ContentLocalizationEnabled)
                 {
-                    if (language == "")
+                    if (language == string.Empty)
                     {
                         if (tab != null && !string.IsNullOrEmpty(tab.CultureCode))
                         {
@@ -210,7 +210,7 @@ namespace DotNetNuke.Common
                 else if (settings.EnableUrlLanguage)
                 {
                     // legacy pre 5.5 behavior
-                    if (language == "")
+                    if (language == string.Empty)
                     {
                         url += "&language=" + Thread.CurrentThread.CurrentCulture.Name;
                     }

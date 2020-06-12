@@ -429,7 +429,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         if (!string.IsNullOrEmpty(strURL))
                         {
                             strURL = strURL.Replace("[TEXT]", this.Server.UrlEncode(searchText));
-                            strURL = strURL.Replace("[DOMAIN]", "");
+                            strURL = strURL.Replace("[DOMAIN]", string.Empty);
                             UrlUtils.OpenNewWindow(this.Page, this.GetType(), strURL);
                         }
                         break;

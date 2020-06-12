@@ -20,7 +20,7 @@ namespace DotNetNuke.Entities.Urls
 
         public void SetAliasDepth(string httpAlias)
         {
-            int aliasPathDepth = httpAlias.Length - httpAlias.Replace("/", "").Length;
+            int aliasPathDepth = httpAlias.Length - httpAlias.Replace("/", string.Empty).Length;
             if (aliasPathDepth > this.MaxAliasDepth)
             {
                 this.MaxAliasDepth = aliasPathDepth;

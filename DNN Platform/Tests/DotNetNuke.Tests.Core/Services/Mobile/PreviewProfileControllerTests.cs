@@ -38,7 +38,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         {
             ComponentFactory.Container = new SimpleContainer();
             this._dataProvider = MockComponentProvider.CreateDataProvider();
-            this._dataProvider.Setup(d => d.GetProviderPath()).Returns("");
+            this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
             MockComponentProvider.CreateDataCacheProvider();
             MockComponentProvider.CreateEventLogController();
 
@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                                                                     }
                                                                     else
                                                                     {
-                                                                        id = Convert.ToInt32(this._dtProfiles.Select("", "Id Desc")[0]["Id"]) + 1;
+                                                                        id = Convert.ToInt32(this._dtProfiles.Select(string.Empty, "Id Desc")[0]["Id"]) + 1;
                                                                     }
 
                                                                     var row = this._dtProfiles.NewRow();
@@ -174,12 +174,12 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
         private void PrepareData()
         {
-            this._dtProfiles.Rows.Add(1, 0, "R1", 640, 480, "", 1);
-            this._dtProfiles.Rows.Add(2, 0, "R2", 640, 480, "", 2);
-            this._dtProfiles.Rows.Add(3, 0, "R3", 640, 480, "", 3);
-            this._dtProfiles.Rows.Add(4, 1, "R4", 640, 480, "", 4);
-            this._dtProfiles.Rows.Add(5, 1, "R5", 640, 480, "", 5);
-            this._dtProfiles.Rows.Add(6, 1, "R6", 640, 480, "", 6);
+            this._dtProfiles.Rows.Add(1, 0, "R1", 640, 480, string.Empty, 1);
+            this._dtProfiles.Rows.Add(2, 0, "R2", 640, 480, string.Empty, 2);
+            this._dtProfiles.Rows.Add(3, 0, "R3", 640, 480, string.Empty, 3);
+            this._dtProfiles.Rows.Add(4, 1, "R4", 640, 480, string.Empty, 4);
+            this._dtProfiles.Rows.Add(5, 1, "R5", 640, 480, string.Empty, 5);
+            this._dtProfiles.Rows.Add(6, 1, "R6", 640, 480, string.Empty, 6);
         }
 
         #endregion

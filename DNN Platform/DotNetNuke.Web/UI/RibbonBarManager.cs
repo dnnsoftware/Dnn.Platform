@@ -57,8 +57,8 @@ namespace DotNetNuke.Web.UI
             var newTab = new TabInfo
             {
                 TabID = Null.NullInteger,
-                TabName = "",
-                Title = "",
+                TabName = string.Empty,
+                Title = string.Empty,
                 IsVisible = false,
                 DisableLink = false,
                 IsDeleted = false,
@@ -348,12 +348,12 @@ namespace DotNetNuke.Web.UI
                         TabController.Instance.CreateLocalizedCopies(tab);
                     }
 
-                    TabController.Instance.UpdateTabSetting(tab.TabID, "CacheProvider", "");
-                    TabController.Instance.UpdateTabSetting(tab.TabID, "CacheDuration", "");
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "CacheProvider", string.Empty);
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "CacheDuration", string.Empty);
                     TabController.Instance.UpdateTabSetting(tab.TabID, "CacheIncludeExclude", "0");
-                    TabController.Instance.UpdateTabSetting(tab.TabID, "IncludeVaryBy", "");
-                    TabController.Instance.UpdateTabSetting(tab.TabID, "ExcludeVaryBy", "");
-                    TabController.Instance.UpdateTabSetting(tab.TabID, "MaxVaryByCount", "");
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "IncludeVaryBy", string.Empty);
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "ExcludeVaryBy", string.Empty);
+                    TabController.Instance.UpdateTabSetting(tab.TabID, "MaxVaryByCount", string.Empty);
                 }
                 else
                 {

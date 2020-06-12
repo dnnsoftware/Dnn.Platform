@@ -85,7 +85,7 @@ namespace DotNetNuke.Common.Internal
             string hostHeader = Config.GetSetting("HostHeader");
             if (!string.IsNullOrEmpty(hostHeader))
             {
-                uri = uri.ToLowerInvariant().Replace(hostHeader.ToLowerInvariant(), "");
+                uri = uri.ToLowerInvariant().Replace(hostHeader.ToLowerInvariant(), string.Empty);
             }
             int queryIndex = uri.IndexOf("?", StringComparison.Ordinal);
             if (queryIndex > -1)
@@ -124,7 +124,7 @@ namespace DotNetNuke.Common.Internal
                             }
                         }
                         // non of the exclusionary names found
-                        domainName.Append((!string.IsNullOrEmpty(domainName.ToString()) ? "/" : "") + url[queryIndex]);
+                        domainName.Append((!string.IsNullOrEmpty(domainName.ToString()) ? "/" : string.Empty) + url[queryIndex]);
                         break;
                 }
                 if (needExit)
@@ -138,7 +138,7 @@ namespace DotNetNuke.Common.Internal
                 {
                     if (!Globals.UsePortNumber())
                     {
-                        domainName = domainName.Replace(":" + requestedUri.Port, "");
+                        domainName = domainName.Replace(":" + requestedUri.Port, string.Empty);
                     }
                 }
             }

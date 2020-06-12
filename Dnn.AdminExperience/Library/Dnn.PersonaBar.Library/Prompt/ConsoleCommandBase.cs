@@ -123,7 +123,7 @@ namespace Dnn.PersonaBar.Library.Prompt
             this.User = userInfo;
             this.PortalId = portalSettings.PortalId;
             this.TabId = activeTabId;
-            this.ValidationMessage = "";
+            this.ValidationMessage = string.Empty;
             this.ParseFlags();
             this.Init(args, portalSettings, userInfo, activeTabId);
         }
@@ -175,7 +175,7 @@ namespace Dnn.PersonaBar.Library.Prompt
             flagName = NormalizeFlagName(flagName);
             if (!this.Flags.ContainsKey(flagName)) return defValue;
             var retVal = this.Flags[flagName];
-            if (retVal == null || (string)retVal == "")
+            if (retVal == null || (string)retVal == string.Empty)
                 return defValue;
             var tc = TypeDescriptor.GetConverter(typeof(T));
             return tc.ConvertFrom(retVal);
@@ -207,7 +207,7 @@ namespace Dnn.PersonaBar.Library.Prompt
             {
                 return "DateTime";
             }
-            return "";
+            return string.Empty;
         }
         private static string NormalizeFlagName(string flagName)
         {

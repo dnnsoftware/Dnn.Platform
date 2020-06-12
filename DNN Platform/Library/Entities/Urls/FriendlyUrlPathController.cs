@@ -38,7 +38,7 @@ namespace DotNetNuke.Entities.Urls
             // 688 : allow for other parts to be in the url by capturing more with the regex filters
             string regexPattern;
             rawUserId = null;
-            remainingPath = "";
+            remainingPath = string.Empty;
             // generally the path will start with a / and not end with one, but it's possible to get all sorts of things
             if (!string.IsNullOrEmpty(otherParametersPath))
             {
@@ -97,7 +97,7 @@ namespace DotNetNuke.Entities.Urls
                 // the other parameters path will be automatically provided upon rewrite
                 if (otherParametersPath != null)
                 {
-                    remainingPath = Regex.Replace(remainingPath, Regex.Escape(otherParametersPath), "", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                    remainingPath = Regex.Replace(remainingPath, Regex.Escape(otherParametersPath), string.Empty, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                 }
 
                 if (parmName.Contains("|") && rawUserId != null)
@@ -107,7 +107,7 @@ namespace DotNetNuke.Entities.Urls
                     foreach (string val in vals)
                     {
                         string find = "/?" + Regex.Escape(val + "/" + rawUserId);
-                        remainingPath = Regex.Replace(remainingPath, find, "", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                        remainingPath = Regex.Replace(remainingPath, find, string.Empty, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                     }
                 }
                 if (remainingPath.Length > 0 && remainingPath.StartsWith("/") == false)
@@ -144,7 +144,7 @@ namespace DotNetNuke.Entities.Urls
                                                             Guid parentTraceId)
         {
             bool replaced = false;
-            replacedPath = "";
+            replacedPath = string.Empty;
             changeToSiteRoot = false;
             if (messages == null)
             {
@@ -247,7 +247,7 @@ namespace DotNetNuke.Entities.Urls
                 SplitUserIdFromFriendlyUrlPath(
                     newPath,
                                                 "UserId",
-                                                "",
+                                                string.Empty,
                                                 out rawUserId,
                                                 out remainingPath);
                 if (rawUserId != null)
@@ -293,7 +293,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     // only replace when the child tab path contains the parent path - if it's a custom url that
                                     // doesn't incorporate the parent path, then leave it alone
-                                    childTabPath = childTabPath.Replace(profilePagePath, "");
+                                    childTabPath = childTabPath.Replace(profilePagePath, string.Empty);
                                     childTabPath = childTabPath.Replace("//", "/");
                                     urlName += FriendlyUrlController.EnsureLeadingChar("/", childTabPath);
                                 }

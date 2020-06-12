@@ -108,7 +108,7 @@ namespace DotNetNuke.Web.Mvc
 
             // TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
             var desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(module.DesktopModuleID, module.PortalID);
-            var defaultControl = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey("", module.ModuleDefID);
+            var defaultControl = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey(string.Empty, module.ModuleDefID);
 
             var defaultRouteData = ModuleRoutingProvider.Instance().GetRouteData(null, defaultControl);
 

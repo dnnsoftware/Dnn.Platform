@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     }
                     else
                     {
-                        this.ViewState["UrlReferrer"] = "";
+                        this.ViewState["UrlReferrer"] = string.Empty;
                     }
                 }
                 if (this.RoleID == this.PortalSettings.AdministratorRoleId)
@@ -142,9 +142,9 @@ namespace DotNetNuke.Modules.Admin.Sales
         {
             try
             {
-                string strPaymentProcessor = "";
-                string strProcessorUserId = "";
-                string strProcessorPassword = "";
+                string strPaymentProcessor = string.Empty;
+                string strProcessorUserId = string.Empty;
+                string strProcessorPassword = string.Empty;
 
                 if (this.Page.IsValid)
                 {
@@ -158,7 +158,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     if (strPaymentProcessor == "PayPal")
                     {
                         // build secure PayPal URL
-                        string strPayPalURL = "";
+                        string strPayPalURL = string.Empty;
                         strPayPalURL = "https://www.paypal.com/xclick/business=" + Globals.HTTPPOSTEncode(strProcessorUserId);
                         strPayPalURL = strPayPalURL + "&item_name=" +
                                        Globals.HTTPPOSTEncode(this.PortalSettings.PortalName + " - " + this.lblDescription.Text + " ( " + this.txtUnits.Text + " units @ " + this.lblFee.Text + " " + this.lblFeeCurrency.Text +

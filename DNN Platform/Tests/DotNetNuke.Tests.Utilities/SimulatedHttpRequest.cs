@@ -47,7 +47,7 @@ namespace DotNetNuke.Tests.Instance.Utilities
         /// <returns></returns>
         public override string MapPath(string virtualPath)
         {
-            var path = "";
+            var path = string.Empty;
             var appPath = this.GetAppPath();
 
             if (appPath != null)

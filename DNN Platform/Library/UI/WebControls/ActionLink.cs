@@ -37,8 +37,8 @@ namespace DotNetNuke.UI.WebControls
         {
             this.RequireEditMode = false;
             this.Security = "Edit";
-            this.ControlKey = "";
-            this.Title = "";
+            this.ControlKey = string.Empty;
+            this.Title = string.Empty;
         }
 
         #endregion
@@ -108,11 +108,11 @@ namespace DotNetNuke.UI.WebControls
             if (this.Visible && this.IsVisible((SecurityAccessLevel)Enum.Parse(typeof(SecurityAccessLevel), this.Security)))
             {
                 this.Text = this.Title;
-                this.NavigateUrl = this.ControlKey != ""
+                this.NavigateUrl = this.ControlKey != string.Empty
                                 ? this.ModuleControl.ModuleContext.EditUrl(this.KeyName, this.KeyValue, this.ControlKey)
                                 : this.ModuleControl.ModuleContext.EditUrl(this.Title);
 
-                if (this.CssClass == "")
+                if (this.CssClass == string.Empty)
                 {
                     this.CssClass = "dnnPrimaryAction";
                 }

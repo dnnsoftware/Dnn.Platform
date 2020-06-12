@@ -21,7 +21,7 @@ namespace DotNetNuke.UI.WebControls
         {
             if (string.IsNullOrEmpty(viewPath))
             {
-                this.m_sKey = "";
+                this.m_sKey = string.Empty;
             }
             else if (viewPath.IndexOf("\\") > -1)
             {

@@ -997,7 +997,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 portalId = this.GetActivePortalId();
             }
-            var parentFolder = parentId > -1 ? FolderManager.Instance.GetFolder(parentId) : FolderManager.Instance.GetFolder(portalId, "");
+            var parentFolder = parentId > -1 ? FolderManager.Instance.GetFolder(parentId) : FolderManager.Instance.GetFolder(portalId, string.Empty);
 
             if (parentFolder == null)
             {
@@ -1237,7 +1237,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 portalId = this.GetActivePortalId();
             }
-            var parentFolder = parentId > -1 ? FolderManager.Instance.GetFolder(parentId) : FolderManager.Instance.GetFolder(portalId, "");
+            var parentFolder = parentId > -1 ? FolderManager.Instance.GetFolder(parentId) : FolderManager.Instance.GetFolder(portalId, string.Empty);
 
             if (parentFolder == null)
             {
@@ -1313,7 +1313,7 @@ namespace DotNetNuke.Web.InternalServices
                 const int numResults = 5;
 
                 // GetUsersAdvancedSearch doesn't accept a comma or a single quote in the query so we have to remove them for now. See issue 20224.
-                q = q.Replace(",", "").Replace("'", "");
+                q = q.Replace(",", string.Empty).Replace("'", string.Empty);
                 if (q.Length == 0) return this.Request.CreateResponse<SearchResult>(HttpStatusCode.OK, null);
 
                 var results = UserController.Instance.GetUsersBasicSearch(portalId, 0, numResults, "DisplayName", true, "DisplayName", q)

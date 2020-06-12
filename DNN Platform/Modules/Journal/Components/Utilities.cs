@@ -229,8 +229,8 @@ namespace DotNetNuke.Modules.Journal.Components {
         }
 
         public static string LocalizeControl(string controlText) {
-            string sKey = "";
-            string sReplace = "";
+            string sKey = string.Empty;
+            string sReplace = string.Empty;
             MatchCollection matches = default(MatchCollection);
             matches = ResexRegex.Matches(controlText);
             foreach (Match match in matches) {

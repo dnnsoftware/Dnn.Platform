@@ -67,7 +67,7 @@ namespace DotNetNuke.UI.WebControls
             }
             else
             {
-                writer.AddAttribute(HtmlTextWriterAttribute.Value, "");
+                writer.AddAttribute(HtmlTextWriterAttribute.Value, string.Empty);
             }
 
             writer.AddAttribute("onclick", "this.value = this.checked ? '1' : '';");

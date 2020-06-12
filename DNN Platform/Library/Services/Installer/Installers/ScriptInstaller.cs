@@ -231,7 +231,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         protected override void ProcessFile(InstallFile file, XPathNavigator nav)
         {
-            string type = nav.GetAttribute("type", "");
+            string type = nav.GetAttribute("type", string.Empty);
             if (file != null && this.IsCorrectType(file.Type))
             {
                 if (file.Name.StartsWith("install.", StringComparison.InvariantCultureIgnoreCase))

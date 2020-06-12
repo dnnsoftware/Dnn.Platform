@@ -519,7 +519,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
         private void SetupDataProvider()
         {
-            this._dataProvider.Setup(d => d.GetProviderPath()).Returns("");
+            this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
 
             this._dtRedirections = new DataTable("Redirections");
             var pkCol = this._dtRedirections.Columns.Add("Id", typeof(int));
@@ -566,7 +566,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                                                                     }
                                                                     else
                                                                     {
-                                                                        id = Convert.ToInt32(this._dtRedirections.Select("", "Id Desc")[0]["Id"]) + 1;
+                                                                        id = Convert.ToInt32(this._dtRedirections.Select(string.Empty, "Id Desc")[0]["Id"]) + 1;
                                                                     }
 
                                                                     var row = this._dtRedirections.NewRow();
@@ -628,7 +628,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                         }
                         else
                         {
-                            id = Convert.ToInt32(this._dtRules.Select("", "Id Desc")[0]["Id"]) + 1;
+                            id = Convert.ToInt32(this._dtRules.Select(string.Empty, "Id Desc")[0]["Id"]) + 1;
                         }
 
                         var row = this._dtRules.NewRow();
@@ -752,13 +752,13 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                 table.Columns.Add(col);
             }
 
-            table.Rows.Add(HomePageOnPortal1, Guid.NewGuid(), Guid.NewGuid(), null, Guid.NewGuid(), "3", Portal1, "HomePageOnPortal1", true, null, "0", null, null, false, "", "", "", false, "[G]Skins/DarkKnight/Home-Mega-Menu.ascx", "[G]Containers/DarkKnight/SubTitle_Grey.ascx", "//HomePageOnPortal1", null, null, "", false, null, null, false, false, "0.5", "89", "HomePageOnPortal1", "1", "-1", null, false, null, "-1", DateTime.Now, "-1", DateTime.Now, "0", true, false);
-            table.Rows.Add(HomePageOnPortal0, Guid.NewGuid(), Guid.NewGuid(), null, Guid.NewGuid(), "3", Portal0, "HomePageOnPortal0", true, null, "0", null, null, false, "", "", "", false, "[G]Skins/DarkKnight/Home-Mega-Menu.ascx", "[G]Containers/DarkKnight/SubTitle_Grey.ascx", "//HomePageOnPortal0", null, null, "", false, null, null, false, false, "0.5", "89", "HomePageOnPortal0", "1", "-1", null, false, null, "-1", DateTime.Now, "-1", DateTime.Now, "0", true, false);
-            table.Rows.Add(AnotherPageOnSamePortal, Guid.NewGuid(), Guid.NewGuid(), null, Guid.NewGuid(), "4", Portal0, "AnotherPageOnSamePortal", true, null, "0", null, null, false, "", "", "", false, "[G]Skins/DarkKnight/Home-Mega-Menu.ascx", "[G]Containers/DarkKnight/SubTitle_Grey.ascx", "//AnotherPageOnSamePortal", null, null, "", false, null, null, false, false, "0.5", "89", "HomePageOnPortal0", "1", "-1", null, false, null, "-1", DateTime.Now, "-1", DateTime.Now, "0", true, false);
-            table.Rows.Add(MobileLandingPage, Guid.NewGuid(), Guid.NewGuid(), null, Guid.NewGuid(), "5", Portal0, "MobileLandingPage", true, null, "0", null, null, false, "", "", "", false, "[G]Skins/DarkKnight/Home-Mega-Menu.ascx", "[G]Containers/DarkKnight/SubTitle_Grey.ascx", "//MobileLandingPage", null, null, "", false, null, null, false, false, "0.5", "89", "HomePageOnPortal0", "1", "-1", null, false, null, "-1", DateTime.Now, "-1", DateTime.Now, "0", true, false);
-            table.Rows.Add(TabletLandingPage, Guid.NewGuid(), Guid.NewGuid(), null, Guid.NewGuid(), "6", Portal0, "TabletLandingPage", true, null, "0", null, null, false, "", "", "", false, "[G]Skins/DarkKnight/Home-Mega-Menu.ascx", "[G]Containers/DarkKnight/SubTitle_Grey.ascx", "//TabletLandingPage", null, null, "", false, null, null, false, false, "0.5", "89", "HomePageOnPortal0", "1", "-1", null, false, null, "-1", DateTime.Now, "-1", DateTime.Now, "0", true, false);
-            table.Rows.Add(AllMobileLandingPage, Guid.NewGuid(), Guid.NewGuid(), null, Guid.NewGuid(), "7", Portal0, "AllMobileLandingPage", true, null, "0", null, null, false, "", "", "", false, "[G]Skins/DarkKnight/Home-Mega-Menu.ascx", "[G]Containers/DarkKnight/SubTitle_Grey.ascx", "//AllMobileLandingPage", null, null, "", false, null, null, false, false, "0.5", "89", "HomePageOnPortal0", "1", "-1", null, false, null, "-1", DateTime.Now, "-1", DateTime.Now, "0", true, false);
-            table.Rows.Add(DeletedPageOnSamePortal, Guid.NewGuid(), Guid.NewGuid(), null, Guid.NewGuid(), "8", Portal0, "A Deleted Page", true, null, "0", null, null, false, "", "", "", true, "[G]Skins/DarkKnight/Home-Mega-Menu.ascx", "[G]Containers/DarkKnight/SubTitle_Grey.ascx", "//DeletedPage", null, null, "", false, null, null, false, false, "0.5", "90", "Deleted Page", "1", "-1", null, false, null, "-1", DateTime.Now, "-1", DateTime.Now, "0", true, false);
+            table.Rows.Add(HomePageOnPortal1, Guid.NewGuid(), Guid.NewGuid(), null, Guid.NewGuid(), "3", Portal1, "HomePageOnPortal1", true, null, "0", null, null, false, string.Empty, string.Empty, string.Empty, false, "[G]Skins/DarkKnight/Home-Mega-Menu.ascx", "[G]Containers/DarkKnight/SubTitle_Grey.ascx", "//HomePageOnPortal1", null, null, string.Empty, false, null, null, false, false, "0.5", "89", "HomePageOnPortal1", "1", "-1", null, false, null, "-1", DateTime.Now, "-1", DateTime.Now, "0", true, false);
+            table.Rows.Add(HomePageOnPortal0, Guid.NewGuid(), Guid.NewGuid(), null, Guid.NewGuid(), "3", Portal0, "HomePageOnPortal0", true, null, "0", null, null, false, string.Empty, string.Empty, string.Empty, false, "[G]Skins/DarkKnight/Home-Mega-Menu.ascx", "[G]Containers/DarkKnight/SubTitle_Grey.ascx", "//HomePageOnPortal0", null, null, string.Empty, false, null, null, false, false, "0.5", "89", "HomePageOnPortal0", "1", "-1", null, false, null, "-1", DateTime.Now, "-1", DateTime.Now, "0", true, false);
+            table.Rows.Add(AnotherPageOnSamePortal, Guid.NewGuid(), Guid.NewGuid(), null, Guid.NewGuid(), "4", Portal0, "AnotherPageOnSamePortal", true, null, "0", null, null, false, string.Empty, string.Empty, string.Empty, false, "[G]Skins/DarkKnight/Home-Mega-Menu.ascx", "[G]Containers/DarkKnight/SubTitle_Grey.ascx", "//AnotherPageOnSamePortal", null, null, string.Empty, false, null, null, false, false, "0.5", "89", "HomePageOnPortal0", "1", "-1", null, false, null, "-1", DateTime.Now, "-1", DateTime.Now, "0", true, false);
+            table.Rows.Add(MobileLandingPage, Guid.NewGuid(), Guid.NewGuid(), null, Guid.NewGuid(), "5", Portal0, "MobileLandingPage", true, null, "0", null, null, false, string.Empty, string.Empty, string.Empty, false, "[G]Skins/DarkKnight/Home-Mega-Menu.ascx", "[G]Containers/DarkKnight/SubTitle_Grey.ascx", "//MobileLandingPage", null, null, string.Empty, false, null, null, false, false, "0.5", "89", "HomePageOnPortal0", "1", "-1", null, false, null, "-1", DateTime.Now, "-1", DateTime.Now, "0", true, false);
+            table.Rows.Add(TabletLandingPage, Guid.NewGuid(), Guid.NewGuid(), null, Guid.NewGuid(), "6", Portal0, "TabletLandingPage", true, null, "0", null, null, false, string.Empty, string.Empty, string.Empty, false, "[G]Skins/DarkKnight/Home-Mega-Menu.ascx", "[G]Containers/DarkKnight/SubTitle_Grey.ascx", "//TabletLandingPage", null, null, string.Empty, false, null, null, false, false, "0.5", "89", "HomePageOnPortal0", "1", "-1", null, false, null, "-1", DateTime.Now, "-1", DateTime.Now, "0", true, false);
+            table.Rows.Add(AllMobileLandingPage, Guid.NewGuid(), Guid.NewGuid(), null, Guid.NewGuid(), "7", Portal0, "AllMobileLandingPage", true, null, "0", null, null, false, string.Empty, string.Empty, string.Empty, false, "[G]Skins/DarkKnight/Home-Mega-Menu.ascx", "[G]Containers/DarkKnight/SubTitle_Grey.ascx", "//AllMobileLandingPage", null, null, string.Empty, false, null, null, false, false, "0.5", "89", "HomePageOnPortal0", "1", "-1", null, false, null, "-1", DateTime.Now, "-1", DateTime.Now, "0", true, false);
+            table.Rows.Add(DeletedPageOnSamePortal, Guid.NewGuid(), Guid.NewGuid(), null, Guid.NewGuid(), "8", Portal0, "A Deleted Page", true, null, "0", null, null, false, string.Empty, string.Empty, string.Empty, true, "[G]Skins/DarkKnight/Home-Mega-Menu.ascx", "[G]Containers/DarkKnight/SubTitle_Grey.ascx", "//DeletedPage", null, null, string.Empty, false, null, null, false, false, "0.5", "90", "Deleted Page", "1", "-1", null, false, null, "-1", DateTime.Now, "-1", DateTime.Now, "0", true, false);
 
             return table;
         }
@@ -844,7 +844,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                 table.Columns.Add(col);
             }
 
-            table.Rows.Add(1, 0, "Portal Group", "", "", -1, DateTime.Now, -1, DateTime.Now);
+            table.Rows.Add(1, 0, "Portal Group", string.Empty, string.Empty, -1, DateTime.Now, -1, DateTime.Now);
 
             return table.CreateDataReader();
         }

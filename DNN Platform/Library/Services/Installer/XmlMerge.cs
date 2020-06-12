@@ -489,7 +489,7 @@ namespace DotNetNuke.Services.Installer
             Debug.Assert(actionNode.Attributes != null, "actionNode.Attributes != null");
 
             var changedNode = false;
-            string keyAttribute = "";
+            string keyAttribute = string.Empty;
             if (actionNode.Attributes["key"] != null)
             {
                 keyAttribute = actionNode.Attributes["key"].Value;
@@ -656,7 +656,7 @@ namespace DotNetNuke.Services.Installer
 
                     // Attempt to load TargetFile property from configFile Atribute
                     this.TargetFileName = configNode.Attributes["configfile"].Value;
-                    string targetProductName = "";
+                    string targetProductName = string.Empty;
                     if (configNode.Attributes["productName"] != null)
                     {
                         targetProductName = configNode.Attributes["productName"].Value;

@@ -310,7 +310,7 @@ namespace DotNetNuke.Entities.Users
                         var fileInfo = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
                         if (fileInfo != null)
                         {
-                            string rootFolder = "";
+                            string rootFolder = string.Empty;
                             if (fileInfo.PortalId == Null.NullInteger)
                             {
                                 // Host

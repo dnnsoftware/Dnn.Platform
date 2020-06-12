@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Search
         }
 
         public SearchItemInfo(string Title, string Description, int Author, DateTime PubDate, int ModuleID, string SearchKey, string Content)
-            : this(Title, Description, Author, PubDate, ModuleID, SearchKey, Content, "", Null.NullInteger)
+            : this(Title, Description, Author, PubDate, ModuleID, SearchKey, Content, string.Empty, Null.NullInteger)
         {
         }
 
@@ -55,7 +55,7 @@ namespace DotNetNuke.Services.Search
         }
 
         public SearchItemInfo(string Title, string Description, int Author, DateTime PubDate, int ModuleID, string SearchKey, string Content, int Image)
-            : this(Title, Description, Author, PubDate, ModuleID, SearchKey, Content, "", Image)
+            : this(Title, Description, Author, PubDate, ModuleID, SearchKey, Content, string.Empty, Image)
         {
         }
 

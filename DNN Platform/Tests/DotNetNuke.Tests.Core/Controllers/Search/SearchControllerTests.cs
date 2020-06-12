@@ -241,7 +241,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private void SetupDataProvider()
         {
             // Standard DataProvider Path for Logging
-            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns("");
+            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
 
             DataTableReader searchTypes = null;
             this._mockDataProvider.Setup(ds => ds.GetAllSearchTypes())
@@ -662,7 +662,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private string StipEllipses(string text)
         {
-            return text.Replace("...", "").Trim();
+            return text.Replace("...", string.Empty).Trim();
         }
 
         /// <summary>
@@ -2973,9 +2973,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._mockHostController.Setup(c => c.GetString("Search_AllowLeadingWildcard", It.IsAny<string>())).Returns("N");
 
             // Arrange
-            var doc1 = new SearchDocument { UniqueKey = "key01", Title = "cow is gone", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
-            var doc2 = new SearchDocument { UniqueKey = "key02", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
-            var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+            var doc1 = new SearchDocument { UniqueKey = "key01", Title = "cow is gone", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = string.Empty };
+            var doc2 = new SearchDocument { UniqueKey = "key02", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = string.Empty };
+            var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = string.Empty };
 
             // Act
             this._internalSearchController.AddSearchDocument(doc1);
@@ -2996,9 +2996,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._mockHostController.Setup(c => c.GetString("Search_AllowLeadingWildcard", It.IsAny<string>())).Returns("N");
 
             // Arrange
-            var doc1 = new SearchDocument { UniqueKey = "key01", Title = "cow is gone", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
-            var doc2 = new SearchDocument { UniqueKey = "key02", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
-            var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+            var doc1 = new SearchDocument { UniqueKey = "key01", Title = "cow is gone", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = string.Empty };
+            var doc2 = new SearchDocument { UniqueKey = "key02", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = string.Empty };
+            var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = string.Empty };
 
             // Act
             this._internalSearchController.AddSearchDocument(doc1);
@@ -3020,9 +3020,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._mockHostController.Setup(c => c.GetString("Search_AllowLeadingWildcard", It.IsAny<string>())).Returns("Y");
 
             // Arrange
-            var doc1 = new SearchDocument { UniqueKey = "key01", Title = "cow is gone", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
-            var doc2 = new SearchDocument { UniqueKey = "key02", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
-            var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "" };
+            var doc1 = new SearchDocument { UniqueKey = "key01", Title = "cow is gone", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = string.Empty };
+            var doc2 = new SearchDocument { UniqueKey = "key02", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = string.Empty };
+            var doc3 = new SearchDocument { UniqueKey = "key03", Title = "I'm here", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = string.Empty };
 
             // Act
             this._internalSearchController.AddSearchDocument(doc1);

@@ -65,7 +65,7 @@ namespace DotNetNuke.Security.Permissions
                 objDesktopModulePermission,
                                PortalController.Instance.GetCurrentPortalSettings(),
                                UserController.Instance.GetCurrentUserInfo().UserID,
-                               "",
+                               string.Empty,
                                EventLogController.EventLogType.DESKTOPMODULEPERMISSION_CREATED);
             ClearPermissionCache();
             return Id;
@@ -180,7 +180,7 @@ namespace DotNetNuke.Security.Permissions
                 objDesktopModulePermission,
                                PortalController.Instance.GetCurrentPortalSettings(),
                                UserController.Instance.GetCurrentUserInfo().UserID,
-                               "",
+                               string.Empty,
                                EventLogController.EventLogType.DESKTOPMODULEPERMISSION_UPDATED);
             ClearPermissionCache();
         }

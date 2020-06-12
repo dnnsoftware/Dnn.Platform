@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.DDRMenu
             }
             if (result == "-")
             {
-                result = "";
+                result = string.Empty;
             }
 
             return result;
@@ -35,7 +35,7 @@ namespace DotNetNuke.Web.DDRMenu
 
         protected string GetStringSetting(string name)
         {
-            return this.GetStringSetting(name, "");
+            return this.GetStringSetting(name, string.Empty);
         }
 
         protected int GetIntSetting(string name, int defaultValue)
@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.DDRMenu
         protected bool GetBoolSetting(string name, bool defaultValue)
         {
             var result = this.GetStringSetting(name);
-            return (result == "") ? defaultValue : Convert.ToBoolean(result);
+            return (result == string.Empty) ? defaultValue : Convert.ToBoolean(result);
         }
 
         protected bool GetBoolSetting(string name)

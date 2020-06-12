@@ -776,7 +776,7 @@ namespace log4net.Repository.Hierarchy
                         // This is necessary because while the String is a class it does not have
                         // a default constructor that creates an empty string, which is the behavior
                         // we are trying to simulate and would be expected from CreateObjectFromXml
-                        createdObject = "";
+                        createdObject = string.Empty;
                     }
                     else
                     {

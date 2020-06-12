@@ -130,7 +130,7 @@ namespace DotNetNuke.HttpModules.Membership
         public static void OnUnverifiedUserSkinInit(object sender, SkinEventArgs e)
         {
             var strMessage = Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, CurrentCulture);
-            UI.Skins.Skin.AddPageMessage(e.Skin, "", strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
+            UI.Skins.Skin.AddPageMessage(e.Skin, string.Empty, strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
         }
 
         /// <summary>

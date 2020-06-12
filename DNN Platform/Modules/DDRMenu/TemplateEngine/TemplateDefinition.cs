@@ -91,7 +91,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                                 {
                                     var jsObject = scriptElt.GetAttribute("jsObject");
                                     var scriptPath = string.IsNullOrEmpty(scriptElt.InnerText.Trim())
-                                                        ? ""
+                                                        ? string.Empty
                                                         : Globals.ResolveUrl(GetResolvedPath(scriptElt, resolver));
                                     if (string.IsNullOrEmpty(jsObject))
                                     {
@@ -229,14 +229,14 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
         {
             string result;
 
-            jsObject = jsObject ?? "";
+            jsObject = jsObject ?? string.Empty;
 
             if (string.IsNullOrEmpty(scriptPath))
             {
                 switch (jsObject)
                 {
                     case "DDRjQuery":
-                        scriptPath = "";
+                        scriptPath = string.Empty;
                         break;
                     default:
                         throw new ApplicationException(string.Format("Can't deduce script path for JavaScript object '{0}'", jsObject));
@@ -254,7 +254,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             else
             {
                 result = string.IsNullOrEmpty(scriptPath)
-                            ? ""
+                            ? string.Empty
                             : string.Format(
                                 @"<script type=""text/javascript"">if (!({0})) document.write(unescape('%3Cscript src=""{1}"" type=""text/javascript""%3E%3C/script%3E'));</script>",
                                 GetObjectCheckScript(jsObject),
@@ -369,7 +369,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                 }
             }
 
-            var headContent = string.IsNullOrEmpty(this.TemplateHeadPath) ? "" : Utilities.CachedFileContent(this.TemplateHeadPath);
+            var headContent = string.IsNullOrEmpty(this.TemplateHeadPath) ? string.Empty : Utilities.CachedFileContent(this.TemplateHeadPath);
             var expandedHead = RegexLinks.Replace(headContent, "$1" + DNNContext.Current.ActiveTab.SkinPath + "$3");
             page.Header.Controls.Add(new LiteralControl(expandedHead));
         }

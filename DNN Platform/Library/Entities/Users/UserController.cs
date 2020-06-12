@@ -368,7 +368,7 @@ namespace DotNetNuke.Entities.Users
             // Display name format
             if (settings["Security_DisplayNameFormat"] == null)
             {
-                settings["Security_DisplayNameFormat"] = "";
+                settings["Security_DisplayNameFormat"] = string.Empty;
             }
             if (settings["Registration_RequireConfirmPassword"] == null)
             {
@@ -460,7 +460,7 @@ namespace DotNetNuke.Entities.Users
                                                             user,
                                                             Localization.GlobalResourceFile,
                                                             null,
-                                                            "",
+                                                            string.Empty,
                                                             portalSettings.AdministratorId);
             message.Body = Localization.GetSystemMessage(
                 user.Profile.PreferredLocale,
@@ -469,7 +469,7 @@ namespace DotNetNuke.Entities.Users
                                                          user,
                                                          Localization.GlobalResourceFile,
                                                          null,
-                                                         "",
+                                                         string.Empty,
                                                          portalSettings.AdministratorId);
             message.Status = MessageStatusType.Unread;
             Mail.SendEmail(portalSettings.Email, portalSettings.Email, message.Subject, message.Body);
@@ -577,7 +577,7 @@ namespace DotNetNuke.Entities.Users
             var settings = PortalController.Instance.GetCurrentPortalSettings();
             var currentAlias = settings.PortalAlias.HTTPAlias;
             var index = currentAlias.IndexOf('/');
-            var childPortalAlias = index > 0 ? "/" + currentAlias.Substring(index + 1) : "";
+            var childPortalAlias = index > 0 ? "/" + currentAlias.Substring(index + 1) : string.Empty;
             return childPortalAlias;
         }
 
@@ -895,7 +895,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static bool ChangePasswordQuestionAndAnswer(UserInfo user, string password, string passwordQuestion, string passwordAnswer)
         {
-            EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), GetCurrentUserInternal().UserID, "", EventLogController.EventLogType.USER_UPDATED);
+            EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), GetCurrentUserInternal().UserID, string.Empty, EventLogController.EventLogType.USER_UPDATED);
             return MembershipProvider.Instance().ChangePasswordQuestionAndAnswer(user, password, passwordQuestion, passwordAnswer);
         }
 
@@ -999,7 +999,7 @@ namespace DotNetNuke.Entities.Users
                 user.PasswordResetExpiration = passwordExpiry;
                 user.PasswordResetToken = passwordGuid;
                 UpdateUser(user.PortalID, user);
-                EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), GetCurrentUserInternal().UserID, "", EventLogController.EventLogType.USER_CREATED);
+                EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), GetCurrentUserInternal().UserID, string.Empty, EventLogController.EventLogType.USER_CREATED);
                 CachingProvider.Instance().Remove(string.Format(DataCache.PortalUserCountCacheKey, portalId));
                 if (!user.IsSuperUser)
                 {
@@ -2058,7 +2058,7 @@ namespace DotNetNuke.Entities.Users
                     portalSettings = new PortalSettings(portalId);
                 }
 
-                EventLogController.Instance.AddLog(user, portalSettings, GetCurrentUserInternal().UserID, "", EventLogController.EventLogType.USER_UPDATED);
+                EventLogController.Instance.AddLog(user, portalSettings, GetCurrentUserInternal().UserID, string.Empty, EventLogController.EventLogType.USER_UPDATED);
             }
 
             EventManager.Instance.OnUserUpdated(new UpdateUserEventArgs { User = user, OldUser = oldUser });

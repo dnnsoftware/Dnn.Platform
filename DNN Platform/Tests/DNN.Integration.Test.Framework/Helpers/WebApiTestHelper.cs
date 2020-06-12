@@ -96,13 +96,13 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
                 { registerFieldsPrefix + CodifyInputName("DisplayName", "TextBox", encriptFieldsNames), displayName },
                 { registerFieldsPrefix + CodifyInputName("Email", "TextBox", encriptFieldsNames), email },
                 { "__EVENTTARGET", "dnn$ctr$Register$registerButton" },
-                { "__EVENTARGUMENT", "" },
+                { "__EVENTARGUMENT", string.Empty },
                 { "__ASYNCPOST", "true" }
             };
 
             url = url ?? AppConfigHelper.SiteUrl;
             var excludedInputPrefixes = new List<string>();
-            var connector = WebApiConnector.GetWebConnector(url, "");
+            var connector = WebApiConnector.GetWebConnector(url, string.Empty);
             return connector.PostUserForm(registerRelativeUrl, postData, excludedInputPrefixes, false);
         }
 

@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Log.EventLog
         private string _PropertyName;
         private string _PropertyValue;
 
-        public LogDetailInfo() : this("", "")
+        public LogDetailInfo() : this(string.Empty, string.Empty)
         {
         }
 

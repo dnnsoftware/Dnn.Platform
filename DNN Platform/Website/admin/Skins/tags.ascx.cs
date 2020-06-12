@@ -163,7 +163,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.tagsControl.CssClass = this.CssClass;
 
             this.tagsControl.AllowTagging = this.AllowTagging && this.Request.IsAuthenticated;
-            this.tagsControl.NavigateUrlFormatString = this._navigationManager.NavigateURL(this.PortalSettings.SearchTabId, "", "Tag={0}");
+            this.tagsControl.NavigateUrlFormatString = this._navigationManager.NavigateURL(this.PortalSettings.SearchTabId, string.Empty, "Tag={0}");
             this.tagsControl.RepeatDirection = this.RepeatDirection;
             this.tagsControl.Separator = this.Separator;
             this.tagsControl.ShowCategories = this.ShowCategories;

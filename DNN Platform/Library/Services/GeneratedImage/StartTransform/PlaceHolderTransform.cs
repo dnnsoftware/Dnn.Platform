@@ -53,7 +53,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             this.Color = Color.LightSlateGray;
             this.Width = 0;
             this.Height = 0;
-            this.Text = "";
+            this.Text = string.Empty;
         }
 
         /// <summary>

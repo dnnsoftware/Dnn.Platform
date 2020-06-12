@@ -28,24 +28,24 @@ namespace DotNetNuke.Entities.Modules.Actions
     /// -----------------------------------------------------------------------------
     public class ModuleAction
     {
-        public ModuleAction(int id) : this(id, "", "", "", "", "", "", false, SecurityAccessLevel.Anonymous, true, false)
+        public ModuleAction(int id) : this(id, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
-        public ModuleAction(int id, string title, string cmdName) : this(id, title, cmdName, "", "", "", "", false, SecurityAccessLevel.Anonymous, true, false)
+        public ModuleAction(int id, string title, string cmdName) : this(id, title, cmdName, string.Empty, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
-        public ModuleAction(int id, string title, string cmdName, string cmdArg) : this(id, title, cmdName, cmdArg, "", "", "", false, SecurityAccessLevel.Anonymous, true, false)
+        public ModuleAction(int id, string title, string cmdName, string cmdArg) : this(id, title, cmdName, cmdArg, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
-        public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon) : this(id, title, cmdName, cmdArg, icon, "", "", false, SecurityAccessLevel.Anonymous, true, false)
+        public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon) : this(id, title, cmdName, cmdArg, icon, string.Empty, string.Empty, false, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
         public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon, string url)
-            : this(id, title, cmdName, cmdArg, icon, url, "", false, SecurityAccessLevel.Anonymous, true, false)
+            : this(id, title, cmdName, cmdArg, icon, url, string.Empty, false, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 

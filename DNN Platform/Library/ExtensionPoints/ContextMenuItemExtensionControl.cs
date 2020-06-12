@@ -18,7 +18,7 @@ namespace DotNetNuke.ExtensionPoints
     [ToolboxData("<{0}:ContextMenuItemExtensionControl runat=server></{0}:ContextMenuItemExtensionControl>")]
     public class ContextMenuItemExtensionControl : DefaultExtensionControl
     {
-        private string content = "";
+        private string content = string.Empty;
 
         protected override void OnInit(EventArgs e)
         {

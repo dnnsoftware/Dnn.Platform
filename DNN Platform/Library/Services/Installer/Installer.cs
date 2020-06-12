@@ -235,7 +235,7 @@ namespace DotNetNuke.Services.Installer
 
                 if (this.InstallerInfo.ManifestFile != null)
                 {
-                    log.LogProperties.Add(new LogDetailInfo(eventType + " " + package + ":", this.InstallerInfo.ManifestFile.Name.Replace(".dnn", "")));
+                    log.LogProperties.Add(new LogDetailInfo(eventType + " " + package + ":", this.InstallerInfo.ManifestFile.Name.Replace(".dnn", string.Empty)));
                 }
 
                 foreach (LogEntry objLogEntry in this.InstallerInfo.Log.Logs)

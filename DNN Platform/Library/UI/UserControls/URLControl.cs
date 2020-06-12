@@ -92,7 +92,7 @@ namespace DotNetNuke.UI.UserControls
                 }
                 else
                 {
-                    return "";
+                    return string.Empty;
                 }
             }
             set
@@ -436,8 +436,8 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                string r = "";
-                string strCurrentType = "";
+                string r = string.Empty;
+                string strCurrentType = string.Empty;
                 if (this.optType.Items.Count > 0 && this.optType.SelectedIndex >= 0)
                 {
                     strCurrentType = this.optType.SelectedItem.Value;
@@ -464,7 +464,7 @@ namespace DotNetNuke.UI.UserControls
                             string mCustomUrl = this.txtUrl.Text;
                             if (mCustomUrl.Equals("http://", StringComparison.InvariantCultureIgnoreCase))
                             {
-                                r = "";
+                                r = string.Empty;
                             }
                             else
                             {
@@ -473,7 +473,7 @@ namespace DotNetNuke.UI.UserControls
                         }
                         break;
                     case "T":
-                        string strTab = "";
+                        string strTab = string.Empty;
                         if (this.cboTabs.SelectedItem != null)
                         {
                             strTab = this.cboTabs.SelectedItem.Value;
@@ -492,7 +492,7 @@ namespace DotNetNuke.UI.UserControls
                             }
                             else
                             {
-                                r = "";
+                                r = string.Empty;
                             }
                         }
                         break;
@@ -508,7 +508,7 @@ namespace DotNetNuke.UI.UserControls
                             {
                                 this.lblMessage.Text = Localization.GetString("NoUser", this.LocalResourceFile);
                                 this.ErrorRow.Visible = true;
-                                this.txtUser.Text = "";
+                                this.txtUser.Text = string.Empty;
                             }
                         }
                         break;
@@ -625,7 +625,7 @@ namespace DotNetNuke.UI.UserControls
             // Check to see if this is the 'Root' folder, if so we cannot rely on its text value because it is something and not an empty string that we need to lookup the 'root' folder
             if (this.cboFolders.SelectedValue == string.Empty)
             {
-                FolderName = "";
+                FolderName = string.Empty;
             }
             var objFolderInfo = FolderManager.Instance.GetFolder(this.PortalSettings.PortalId, FolderName);
             if (objFolderInfo != null)
@@ -746,7 +746,7 @@ namespace DotNetNuke.UI.UserControls
         private void DoRenderTypes()
         {
             // We must clear the list to keep the same item order
-            string strCurrent = "";
+            string strCurrent = string.Empty;
             if (this.optType.SelectedIndex >= 0)
             {
                 strCurrent = this.optType.SelectedItem.Value; // Save current selected value
@@ -921,7 +921,7 @@ namespace DotNetNuke.UI.UserControls
                         string strImagesFolder = Path.Combine(Globals.ApplicationMapPath, this.PortalSettings.DefaultIconLocation.Replace('/', '\\'));
                         foreach (string strImage in Directory.GetFiles(strImagesFolder))
                         {
-                            string img = strImage.Replace(strImagesFolder, "").Trim('/').Trim('\\');
+                            string img = strImage.Replace(strImagesFolder, string.Empty).Trim('/').Trim('\\');
                             this.cboImages.Items.Add(new ListItem(img, string.Format("~/{0}/{1}", this.PortalSettings.DefaultIconLocation, img).ToLowerInvariant()));
                         }
 
@@ -1016,7 +1016,7 @@ namespace DotNetNuke.UI.UserControls
                         {
                             // Let's use the new URL
                             FileName = _Url.Substring(_Url.LastIndexOf("/") + 1);
-                            FolderPath = _Url.Replace(FileName, "");
+                            FolderPath = _Url.Replace(FileName, string.Empty);
                         }
                         else
                         {
@@ -1084,7 +1084,7 @@ namespace DotNetNuke.UI.UserControls
                         }
                         else
                         {
-                            this.ViewState["LastFolderPath"] = "";
+                            this.ViewState["LastFolderPath"] = string.Empty;
                         }
                         if (this.cboFiles.SelectedIndex >= 0)
                         {
@@ -1092,7 +1092,7 @@ namespace DotNetNuke.UI.UserControls
                         }
                         else
                         {
-                            this.ViewState["LastFileName"] = "";
+                            this.ViewState["LastFileName"] = string.Empty;
                         }
                         break;
                     case "M": // membership users
@@ -1253,7 +1253,7 @@ namespace DotNetNuke.UI.UserControls
             }
             else
             {
-                this.ViewState["LastFolderPath"] = "";
+                this.ViewState["LastFolderPath"] = string.Empty;
             }
             if (this.cboFiles.SelectedIndex >= 0)
             {
@@ -1261,7 +1261,7 @@ namespace DotNetNuke.UI.UserControls
             }
             else
             {
-                this.ViewState["LastFileName"] = "";
+                this.ViewState["LastFileName"] = string.Empty;
             }
             this._doRenderTypeControls = false; // Must not render on this postback
             this._doRenderTypes = false;
@@ -1333,7 +1333,7 @@ namespace DotNetNuke.UI.UserControls
             }
             ParentFolderName += this.cboFolders.SelectedItem.Value;
 
-            string strExtension = Path.GetExtension(this.txtFile.PostedFile.FileName).Replace(".", "");
+            string strExtension = Path.GetExtension(this.txtFile.PostedFile.FileName).Replace(".", string.Empty);
             if (!string.IsNullOrEmpty(this.FileFilter) && ("," + this.FileFilter.ToLowerInvariant()).IndexOf("," + strExtension.ToLowerInvariant()) == -1)
             {
                 // trying to upload a file not allowed for current filter
@@ -1404,7 +1404,7 @@ namespace DotNetNuke.UI.UserControls
                 }
                 else
                 {
-                    this.ViewState["LastFileName"] = "";
+                    this.ViewState["LastFileName"] = string.Empty;
                 }
             }
             this._doRenderTypeControls = false; // Must not render on this postback

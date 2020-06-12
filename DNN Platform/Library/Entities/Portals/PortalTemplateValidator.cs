@@ -20,7 +20,7 @@ namespace DotNetNuke.Entities.Portals
     {
         public bool Validate(string xmlFilename, string schemaFileName)
         {
-            this.SchemaSet.Add("", schemaFileName);
+            this.SchemaSet.Add(string.Empty, schemaFileName);
             return this.Validate(xmlFilename);
         }
     }

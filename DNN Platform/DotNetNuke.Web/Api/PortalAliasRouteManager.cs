@@ -45,10 +45,10 @@ namespace DotNetNuke.Web.Api
         {
             if (count == 0)
             {
-                return "";
+                return string.Empty;
             }
 
-            string prefix = "";
+            string prefix = string.Empty;
 
             for (int i = count - 1; i >= 0; i--)
             {

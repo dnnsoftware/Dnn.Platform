@@ -113,7 +113,7 @@ namespace DotNetNuke.Services.Search
                     }
                     else
                     {
-                        dicSearchSettings[dr.GetString(0)] = "";
+                        dicSearchSettings[dr.GetString(0)] = string.Empty;
                     }
                 }
             }

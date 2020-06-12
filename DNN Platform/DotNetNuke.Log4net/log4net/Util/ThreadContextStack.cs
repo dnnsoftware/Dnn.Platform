@@ -129,7 +129,7 @@ namespace log4net.Util
             {
                 return ((StackFrame) stack.Pop()).Message;
             }
-            return "";
+            return string.Empty;
         }
 
         /// <summary>

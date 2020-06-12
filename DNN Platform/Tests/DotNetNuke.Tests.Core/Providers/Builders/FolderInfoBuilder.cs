@@ -25,7 +25,7 @@ namespace DotNetNuke.Tests.Core.Providers.Builders
             this.physicalPath = Constants.FOLDER_ValidFolderPath;
             this.folderMappingID = Constants.FOLDER_ValidFolderMappingID;
             this.folderId = Constants.FOLDER_ValidFolderId;
-            this.physicalPath = "";
+            this.physicalPath = string.Empty;
         }
         internal FolderInfoBuilder WithPhysicalPath(string phisicalPath)
         {

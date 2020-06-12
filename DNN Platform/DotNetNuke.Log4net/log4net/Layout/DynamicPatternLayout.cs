@@ -60,12 +60,12 @@ namespace log4net.Layout
         /// <summary>
         /// The header PatternString
         /// </summary>
-        private PatternString m_headerPatternString = new PatternString("");
+        private PatternString m_headerPatternString = new PatternString(string.Empty);
 
         /// <summary>
         /// The footer PatternString
         /// </summary>
-        private PatternString m_footerPatternString = new PatternString("");
+        private PatternString m_footerPatternString = new PatternString(string.Empty);
         #endregion
 
         #region Constructors

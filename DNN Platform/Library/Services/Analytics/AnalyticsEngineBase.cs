@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Analytics
 
         public virtual string RenderCustomScript(AnalyticsConfiguration config)
         {
-            return "";
+            return string.Empty;
         }
     }
 }

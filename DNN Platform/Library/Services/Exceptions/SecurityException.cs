@@ -77,8 +77,8 @@ namespace DotNetNuke.Services.Exceptions
             }
             catch (Exception exc)
             {
-                this.m_IP = "";
-                this.m_Querystring = "";
+                this.m_IP = string.Empty;
+                this.m_Querystring = string.Empty;
                 Logger.Error(exc);
 
             }

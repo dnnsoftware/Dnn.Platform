@@ -951,7 +951,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The number of folder collisions.</returns>
         public virtual int Synchronize(int portalId)
         {
-            var folderCollisions = this.Synchronize(portalId, "", true, true);
+            var folderCollisions = this.Synchronize(portalId, string.Empty, true, true);
 
             DataCache.ClearFolderCache(portalId);
 
@@ -1206,7 +1206,7 @@ namespace DotNetNuke.Services.FileSystem
 
         internal virtual void AddLogEntry(IFolderInfo folder, EventLogController.EventLogType eventLogType)
         {
-            EventLogController.Instance.AddLog(folder, PortalController.Instance.GetCurrentPortalSettings(), this.GetCurrentUserId(), "", eventLogType);
+            EventLogController.Instance.AddLog(folder, PortalController.Instance.GetCurrentPortalSettings(), this.GetCurrentUserId(), string.Empty, eventLogType);
         }
 
         internal virtual void AddLogEntry(string propertyName, string propertyValue, EventLogController.EventLogType eventLogType)
@@ -1978,7 +1978,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 if (item.ExistsInDatabase)
                 {
-                    if (item.FolderPath == "") return; // Do not process root folder
+                    if (item.FolderPath == string.Empty) return; // Do not process root folder
 
                     if (!item.ExistsInFolderMapping)
                     {
@@ -2142,7 +2142,7 @@ namespace DotNetNuke.Services.FileSystem
                 var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folderInfo.FolderMappingID);
                 var provider = FolderProvider.Instance(folderMapping.FolderProviderType);
 
-                var folderPath = newFolderPath + (newFolderPath.EndsWith("/") ? "" : "/") + folderInfo.FolderPath.Substring(originalFolderPath.Length);
+                var folderPath = newFolderPath + (newFolderPath.EndsWith("/") ? string.Empty : "/") + folderInfo.FolderPath.Substring(originalFolderPath.Length);
 
                 var parentFolder = this.GetParentFolder(folder.PortalID, folderPath);
                 folderInfo.ParentID = parentFolder.FolderID;
@@ -2153,7 +2153,7 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     if (provider.SupportsMappedPaths)
                     {
-                        var mappedPath = parentFolder.FolderPath == "" ? "" : folderPath.Replace(parentFolder.FolderPath, string.Empty);
+                        var mappedPath = parentFolder.FolderPath == string.Empty ? string.Empty : folderPath.Replace(parentFolder.FolderPath, string.Empty);
                         folderInfo.MappedPath = PathUtils.Instance.FormatFolderPath(parentFolder.MappedPath + mappedPath);
                     }
                     else

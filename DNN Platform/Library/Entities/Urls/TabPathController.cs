@@ -177,7 +177,7 @@ namespace DotNetNuke.Entities.Urls
                 // this is the new tab path
                 newTabPath = baseTabPath;
                 // 871 : case insensitive compare for culture code, all lookups done on lower case
-                string cultureCodeKey = "";
+                string cultureCodeKey = string.Empty;
                 if (cultureCode != null)
                 {
                     cultureCodeKey = cultureCode.ToLowerInvariant();
@@ -221,9 +221,9 @@ namespace DotNetNuke.Entities.Urls
                                 }
                                 else
                                 {
-                                    if (isDefaultCultureCode && tabpaths.ContainsKey(""))
+                                    if (isDefaultCultureCode && tabpaths.ContainsKey(string.Empty))
                                     {
-                                        customTabPath = tabpaths[""];
+                                        customTabPath = tabpaths[string.Empty];
                                         // dropLangParms = true;//drop the language parms if they exist, because this is the default language
                                     }
                                 }
@@ -242,7 +242,7 @@ namespace DotNetNuke.Entities.Urls
                                     newTabPath = customTabPath;
                                 }
                             }
-                            if (newTabPath == "" && hasPath)
+                            if (newTabPath == string.Empty && hasPath)
                             {
                                 // can't pass back a custom path which is blank if there are path segments to the requested final Url
                                 newTabPath = baseTabPath; // revert back to the standard DNN page path
@@ -347,7 +347,7 @@ namespace DotNetNuke.Entities.Urls
 
         public static string BuildTabPathWithReplacement(TabInfo tab, FriendlyUrlOptions options, Guid parentTraceId)
         {
-            string path = "";
+            string path = string.Empty;
             if (tab.ParentId > -1)
             {
                 TabInfo parentTab = TabController.Instance.GetTab(tab.ParentId, tab.PortalID, false);

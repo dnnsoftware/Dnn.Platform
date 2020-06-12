@@ -52,7 +52,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         {
             ComponentFactory.Container = new SimpleContainer();
             var mockDataProvider = MockComponentProvider.CreateDataProvider();
-            mockDataProvider.Setup(dp => dp.GetProviderPath()).Returns("");
+            mockDataProvider.Setup(dp => dp.GetProviderPath()).Returns(string.Empty);
 
             this.mockCachingProvider = MockComponentProvider.CreateDataCacheProvider();
             MockComponentProvider.CreateEventLogController();

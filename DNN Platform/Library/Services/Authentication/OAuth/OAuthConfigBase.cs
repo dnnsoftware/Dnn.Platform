@@ -25,12 +25,12 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             this.Service = service;
 
-            var portalApiKey = PortalController.GetPortalSetting(this.Service + "_APIKey", portalId, "");
-            var hostApiKey = "";
+            var portalApiKey = PortalController.GetPortalSetting(this.Service + "_APIKey", portalId, string.Empty);
+            var hostApiKey = string.Empty;
 
             if (string.IsNullOrEmpty(portalApiKey))
             {
-                hostApiKey = HostController.Instance.GetString(this.Service + "_APIKey", "");
+                hostApiKey = HostController.Instance.GetString(this.Service + "_APIKey", string.Empty);
                 this.HostConfig = !string.IsNullOrEmpty(hostApiKey);
             }
             else
@@ -41,13 +41,13 @@ namespace DotNetNuke.Services.Authentication.OAuth
             if (this.HostConfig)
             {
                 this.APIKey = hostApiKey;
-                this.APISecret = HostController.Instance.GetString(this.Service + "_APISecret", "");
+                this.APISecret = HostController.Instance.GetString(this.Service + "_APISecret", string.Empty);
                 this.Enabled = HostController.Instance.GetBoolean(this.Service + "_Enabled", false);
             }
             else
             {
                 this.APIKey = portalApiKey;
-                this.APISecret = PortalController.GetPortalSetting(this.Service + "_APISecret", portalId, "");
+                this.APISecret = PortalController.GetPortalSetting(this.Service + "_APISecret", portalId, string.Empty);
                 this.Enabled = PortalController.GetPortalSettingAsBoolean(this.Service + "_Enabled", portalId, false);
             }
         }

@@ -171,7 +171,7 @@ namespace DotNetNuke.Entities.Urls
                                                                                                             ActionType.Redirect301,
                                                                                                             RedirectReason.Custom_Tab_Alias);
                     // add in the entry with the specific redirectAlias
-                    if (redirectTabPath == "")
+                    if (redirectTabPath == string.Empty)
                     {
                         // when adding a blank custom Url, also add in a standard tab path url, because any url that also includes querystring data will use the standard tab path
                         string tabPath = GetTabPath(tab, options, parentTraceId);
@@ -320,7 +320,7 @@ namespace DotNetNuke.Entities.Urls
                             dupCheck,
                             httpAlias,
                             tabPath.Replace("//", "/") + "/ctl/Tab",
-                            CreateRewritePath(tab.TabID, "", "ctl=Tab"),
+                            CreateRewritePath(tab.TabID, string.Empty, "ctl=Tab"),
                             tab.TabID,
                             UrlEnums.TabKeyPreference.TabRedirected,
                             ref tabPathDepth,
@@ -349,7 +349,7 @@ namespace DotNetNuke.Entities.Urls
                                  dupCheck,
                                  httpAlias,
                                  "*",
-                                 "",
+                                 string.Empty,
                                  -1,
                                  UrlEnums.TabKeyPreference.TabOK,
                                  ref tempPathDepth,
@@ -374,7 +374,7 @@ namespace DotNetNuke.Entities.Urls
             int tabDepth = 0; // we ignore tab depth as it is only one for these in-built urls
             // 850 : add in the culture code to the redirect if supplied
             string portalRewritePath = "?PortalId=" + portalId.ToString();
-            string cultureRewritePath = "";
+            string cultureRewritePath = string.Empty;
             if (!string.IsNullOrEmpty(cultureCode))
             {
                 cultureRewritePath += "&language=" + cultureCode;
@@ -475,7 +475,7 @@ namespace DotNetNuke.Entities.Urls
                                                 ref Hashtable homePageSkins,
                                                 Guid parentTraceId)
         {
-            string rewritePath = "";
+            string rewritePath = string.Empty;
             int tabPathDepth = 0;
             bool customAliasUsedAndNotCurrent = !string.IsNullOrEmpty(customHttpAlias) && customHttpAlias != httpAlias;
 
@@ -629,7 +629,7 @@ namespace DotNetNuke.Entities.Urls
                (tab.StartDate > DateTime.Now && tab.StartDate > DateTime.MinValue))
             {
                 string settingsUrl = tabPath.Replace("//", "/") + "/ctl/Tab";
-                string settingsRewritePath = CreateRewritePath(tab.TabID, "", "ctl=tab");
+                string settingsRewritePath = CreateRewritePath(tab.TabID, string.Empty, "ctl=tab");
                 AddToTabDict(
                     tabIndex,
                                 dupCheck,
@@ -813,7 +813,7 @@ namespace DotNetNuke.Entities.Urls
             // remove leading '/' and convert to lower for all keys
             string tabPathSimple = tabPath.Replace("//", "/").ToLowerInvariant();
             // the tabpath depth is only set if it's higher than the running highest tab path depth
-            int thisTabPathDepth = tabPathSimple.Length - tabPathSimple.Replace("/", "").Length;
+            int thisTabPathDepth = tabPathSimple.Length - tabPathSimple.Replace("/", string.Empty).Length;
             if (thisTabPathDepth > tabPathDepth)
             {
                 tabPathDepth = thisTabPathDepth;
@@ -894,7 +894,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         // there is a naming conflict where this alias/tab path could be mistaken
                         int tabIdOriginal;
-                        string tab1Name = "", tab2Name = "";
+                        string tab1Name = string.Empty, tab2Name = string.Empty;
                         var dupInSameCulture = false;
                         if (int.TryParse(foundTAb.TabIdOriginal, out tabIdOriginal))
                         {
@@ -1145,7 +1145,7 @@ namespace DotNetNuke.Entities.Urls
                             // 761 : allow duplicate tab paths between culture-specific aliases
                             // this is done by ascertaining which culture a particular alias belongs to
                             // then checking tab cultures as they are added to the dictionary
-                            string aliasCulture = "";
+                            string aliasCulture = string.Empty;
                             if (chosenAliasesCultures.ContainsKey(httpAlias.ToLowerInvariant()))
                             {
                                 aliasCulture = chosenAliasesCultures[httpAlias.ToLowerInvariant()];
@@ -1153,7 +1153,7 @@ namespace DotNetNuke.Entities.Urls
                             bool ignoreTabWrongCulture = false;
                             // the tab is the wrong culture, so don't add it to the dictionary
 
-                            if (aliasCulture != "")
+                            if (aliasCulture != string.Empty)
                             {
                                 if (tabCulture != aliasCulture
                                     // this is a language-specific alias that's different to the culture for this alias
@@ -1197,7 +1197,7 @@ namespace DotNetNuke.Entities.Urls
                                     string rewritePath = null;
                                     if (tab.TabUrls.Count > 0)
                                     {
-                                        rewritePath = CreateRewritePath(tab.TabID, "");
+                                        rewritePath = CreateRewritePath(tab.TabID, string.Empty);
                                         string rewritePathKeep = rewritePath; // remember this value to compare
                                         AddCustomRedirectsToDictionary(
                                             tabIndex,
@@ -1257,7 +1257,7 @@ namespace DotNetNuke.Entities.Urls
                             }
                             pathSizes.SetTabPathDepth(tabPathDepth);
                         }
-                        if (customHttpAlias != "" && customAliasUsed == false &&
+                        if (customHttpAlias != string.Empty && customAliasUsed == false &&
                             usingHttpAliases.Contains(customHttpAlias))
                         {
                             // this was using a custom Http Alias, so remove this from the using list if it wasn't already there
@@ -1299,7 +1299,7 @@ namespace DotNetNuke.Entities.Urls
                                         dupCheck,
                                         httpAlias,
                                         "*",
-                                        "",
+                                        string.Empty,
                                         -1,
                                         UrlEnums.TabKeyPreference.TabOK,
                                         ref tempPathDepth,
@@ -1377,7 +1377,7 @@ namespace DotNetNuke.Entities.Urls
                                             List<string> customHttpAliasesUsed,
                                             out bool customAliasUsed)
         {
-            string customHttpAlias = "";
+            string customHttpAlias = string.Empty;
             string currentCulture = tabCulture;
             if (string.IsNullOrEmpty(tabCulture))
             {
@@ -1392,7 +1392,7 @@ namespace DotNetNuke.Entities.Urls
             // if there is a custom alias for this tab, and it's not one of the ones in the alias list, put it in
             // so that this tab will be put into the dictionary with not only the standard alias(es) but also
             // the custom alias.  Other logic will decide if to redirect the 'wrong' alias if requested with this tab.
-            if (customAliasUsed == false && customHttpAlias != "")
+            if (customAliasUsed == false && customHttpAlias != string.Empty)
             {
                 httpAliases.Add(customHttpAlias);
                 if (customHttpAliasesUsed.Contains(customHttpAlias) == false)
@@ -1476,7 +1476,7 @@ namespace DotNetNuke.Entities.Urls
             SharedDictionary<int, PathSizes> portalDepths = null;
             SharedDictionary<string, string> dict = null;
             SharedDictionary<string, string> portalTabPathDictionary = null;
-            string reason = "";
+            string reason = string.Empty;
 
             var cc = new CacheController();
             if (bypassCache == false)
@@ -1649,7 +1649,7 @@ namespace DotNetNuke.Entities.Urls
                             retValue = portalAliasInfo;
                             break;
                         }
-                        httpAlias = httpAlias.StartsWith("www.") ? httpAlias.Replace("www.", "") : string.Concat("www.", httpAlias);
+                        httpAlias = httpAlias.StartsWith("www.") ? httpAlias.Replace("www.", string.Empty) : string.Concat("www.", httpAlias);
                         if (httpAlias.StartsWith(portalAlias.ToLowerInvariant()) && portalAliasInfo.PortalID == portalId)
                         {
                             retValue = portalAliasInfo;

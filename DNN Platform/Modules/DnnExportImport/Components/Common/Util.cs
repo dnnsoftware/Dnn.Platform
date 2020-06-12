@@ -219,7 +219,7 @@ namespace Dnn.ExportImport.Components.Common
 
         public static string GetDateTimeString(DateTime? dateTime)
         {
-            return dateTime?.ToString(Thread.CurrentThread.CurrentUICulture) ?? "";
+            return dateTime?.ToString(Thread.CurrentThread.CurrentUICulture) ?? string.Empty;
         }
 
         public static string FormatNumber(int? number)

@@ -173,7 +173,7 @@ namespace log4net.Util
             int FORMAT_MESSAGE_IGNORE_INSERTS = 0x00000200;     // Insert sequences in the message definition are to be ignored
             int FORMAT_MESSAGE_FROM_SYSTEM = 0x00001000;        // The function should search the system message-table resource(s) for the requested message
 
-            string msgBuf = "";             // buffer that will receive the message
+            string msgBuf = string.Empty;             // buffer that will receive the message
             IntPtr sourcePtr = new IntPtr();    // Location of the message definition, will be ignored
             IntPtr argumentsPtr = new IntPtr(); // Pointer to array of values to insert, not supported as it requires unsafe code
 
@@ -223,7 +223,7 @@ namespace log4net.Util
         /// </remarks>
         public override string ToString()
         {
-            return string.Format(CultureInfo.InvariantCulture, "0x{0:x8}", this.Number) + (this.Message != null ? ": " + this.Message : "");
+            return string.Format(CultureInfo.InvariantCulture, "0x{0:x8}", this.Number) + (this.Message != null ? ": " + this.Message : string.Empty);
         }
 
         #endregion // Override Object Implementation

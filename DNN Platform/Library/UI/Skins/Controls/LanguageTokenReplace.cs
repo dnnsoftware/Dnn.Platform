@@ -106,7 +106,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <returns></returns>
         private string[] GetQsParams(string newLanguage, bool isLocalized)
         {
-            string returnValue = "";
+            string returnValue = string.Empty;
             NameValueCollection queryStringCollection = HttpContext.Current.Request.QueryString;
             var rawQueryStringCollection =
                 HttpUtility.ParseQueryString(new Uri(HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.RawUrl).Query);
@@ -184,8 +184,8 @@ namespace DotNetNuke.UI.Skins.Controls
                                                 returnValue += "&";
                                             }
                                             var qsv = arrKeys[i];
-                                            qsv = qsv.Replace("\"", "");
-                                            qsv = qsv.Replace("'", "");
+                                            qsv = qsv.Replace("\"", string.Empty);
+                                            qsv = qsv.Replace("'", string.Empty);
                                             returnValue += qsv + "=" + HttpUtility.UrlEncode(arrValues[j]);
                                         }
                                     }
@@ -199,7 +199,7 @@ namespace DotNetNuke.UI.Skins.Controls
             if (!settings.ContentLocalizationEnabled && LocaleController.Instance.GetLocales(settings.PortalId).Count > 1 && !settings.EnableUrlLanguage)
             {
                 // because useLanguageInUrl is false, navigateUrl won't add a language param, so we need to do that ourselves
-                if (returnValue != "")
+                if (returnValue != string.Empty)
                 {
                     returnValue += "&";
                 }

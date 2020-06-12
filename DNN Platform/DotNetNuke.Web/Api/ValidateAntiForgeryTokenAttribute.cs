@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.Api
 
         internal static void AppendToBypassAuthTypes(string authType)
         {
-            var text = (authType ?? "").Trim();
+            var text = (authType ?? string.Empty).Trim();
             if (text.Length > 0)
             {
                 BypassedAuthTypes.Add(text);
@@ -92,7 +92,7 @@ namespace DotNetNuke.Web.Api
                 }
             }
 
-            return "";
+            return string.Empty;
         }
 
         public override bool AllowMultiple => false;

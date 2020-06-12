@@ -103,7 +103,7 @@ namespace DotNetNuke.Common.Lists
             {
                 var ctlLists = new ListController();
                 string listName = key.Substring(key.IndexOf(":") + 1);
-                string parentKey = key.Replace(listName, "").TrimEnd(':');
+                string parentKey = key.Replace(listName, string.Empty).TrimEnd(':');
                 ListInfo listInfo = ctlLists.GetListInfo(listName, parentKey);
                 // the collection has been cache, so add this entry list into it if specified
                 if (Cache)

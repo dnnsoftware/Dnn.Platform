@@ -98,7 +98,7 @@ namespace DotNetNuke.Services.Installer.Writers
             else if (fileName.StartsWith("Install")) // Install.xx.xx.xx.SqlDataprovider
             {
                 type = "Install";
-                version = fileName.Replace("Install.", "");
+                version = fileName.Replace("Install.", string.Empty);
             }
             else // xx.xx.xx.SqlDataprovider
             {

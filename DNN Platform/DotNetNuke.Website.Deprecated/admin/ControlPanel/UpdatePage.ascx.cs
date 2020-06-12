@@ -91,7 +91,7 @@ namespace DotNetNuke.UI.ControlPanel
                 tab.IsSecure = this.IsSecure.Checked;
                 tab.SkinSrc = this.SkinLst.SelectedValue;
 
-                string errMsg = "";
+                string errMsg = string.Empty;
                 try
                 {
                     RibbonBarManager.SaveTabInfoObject(tab, selectedTab, tabLocation, null);
@@ -217,7 +217,7 @@ namespace DotNetNuke.UI.ControlPanel
 
             string[] arrFolders;
             string[] arrFiles;
-            string strLastFolder = "";
+            string strLastFolder = string.Empty;
             string strRoot = PortalSettings.HomeDirectoryMapPath + SkinController.RootSkin;
             if (Directory.Exists(strRoot))
             {
@@ -325,7 +325,7 @@ namespace DotNetNuke.UI.ControlPanel
             // LocationLst.Items.Add(new ListItem(GetString("After"), "AFTER"));
             // LocationLst.Items.Add(new ListItem(GetString("Child"), "CHILD"));
 
-            this.LocationLst.AddItem(this.GetString("NoLocationSelection"), "");
+            this.LocationLst.AddItem(this.GetString("NoLocationSelection"), string.Empty);
             this.LocationLst.AddItem(this.GetString("Before"), "BEFORE");
             this.LocationLst.AddItem(this.GetString("After"), "AFTER");
             this.LocationLst.AddItem(this.GetString("Child"), "CHILD");

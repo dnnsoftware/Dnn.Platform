@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Localization
                 return null;
             }
 
-            string localResourceFile = "";
+            string localResourceFile = string.Empty;
             if (!string.IsNullOrEmpty(virtualPath))
             {
                 string filename = Path.GetFileName(virtualPath);

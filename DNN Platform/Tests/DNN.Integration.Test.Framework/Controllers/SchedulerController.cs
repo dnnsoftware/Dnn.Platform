@@ -168,21 +168,21 @@ namespace DNN.Integration.Test.Framework.Controllers
             var postData = new Dictionary<string, object>
             {
                 { fieldsPrefix + "$chkEnabled", "on" },
-                { fieldsPrefix + "$txtServers", "" },
+                { fieldsPrefix + "$txtServers", string.Empty },
                 { fieldsPrefix + "$ddlAttachToEvent", "None" },
                 { fieldsPrefix + "$ddlRetainHistoryNum", "100" },
                 { fieldsPrefix + "$ddlRetryTimeLapseMeasurement", "Minutes" },
                 { fieldsPrefix + "$ddlTimeLapseMeasurement", "Hours" },
-                { fieldsPrefix + "$startScheduleDatePicker$dateInput", "" },
-                { fieldsPrefix + "$startScheduleDatePicker", "" },
+                { fieldsPrefix + "$startScheduleDatePicker$dateInput", string.Empty },
+                { fieldsPrefix + "$startScheduleDatePicker", string.Empty },
                 { fieldsPrefix + "$txtFriendlyName", scheduleFriendlyName },
                 { fieldsPrefix + "$txtObjectDependencies", objectDependencies },
                 { fieldsPrefix + "$txtRetryTimeLapse", "30" },
                 { fieldsPrefix + "$txtTimeLapse", "1" },
                 { fieldsPrefix + "$txtType", scheduleTypeName },
                 { "__EVENTTARGET", fieldsPrefix + "$cmdRun" }, // button action; if missing, no click action is performed
-                { "__EVENTARGUMENT", "" },
-                { "__ASYNCPOST", "" },
+                { "__EVENTARGUMENT", string.Empty },
+                { "__ASYNCPOST", string.Empty },
                 // all other inputs/fields are left as is
             };
 

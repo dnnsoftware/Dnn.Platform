@@ -84,7 +84,7 @@ namespace DotNetNuke.Common.Utils
 
             var ipByte = new byte[4];
             // 4 octets
-            string addr = "";
+            string addr = string.Empty;
             // accumulator for address
 
             long mask8 = MaskFromCidr(8);

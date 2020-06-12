@@ -65,12 +65,12 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             var user = UserController.GetUserById(portalID, userID);
             var datetime = DateTime.Now;
-            var result = text.Replace("[USER]", user != null ? user.DisplayName : "");
+            var result = text.Replace("[USER]", user != null ? user.DisplayName : string.Empty);
             result = result.Replace("[DATE]", datetime.ToString("d-MMM-yyyy hh:mm") + datetime.ToString("tt").ToLowerInvariant());
-            result = result.Replace("[STATE]", state != null ? state.StateName : "");
-            result = result.Replace("[WORKFLOW]", workflow != null ? workflow.WorkflowName : "");
-            result = result.Replace("[CONTENT]", item != null ? item.ContentTitle : "");
-            result = result.Replace("[COMMENT]", !string.IsNullOrEmpty(comment) ? comment : "");
+            result = result.Replace("[STATE]", state != null ? state.StateName : string.Empty);
+            result = result.Replace("[WORKFLOW]", workflow != null ? workflow.WorkflowName : string.Empty);
+            result = result.Replace("[CONTENT]", item != null ? item.ContentTitle : string.Empty);
+            result = result.Replace("[COMMENT]", !string.IsNullOrEmpty(comment) ? comment : string.Empty);
 
             return result;
         }

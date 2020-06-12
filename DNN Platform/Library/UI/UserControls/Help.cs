@@ -113,7 +113,7 @@ namespace DotNetNuke.UI.UserControls
                 }
                 else
                 {
-                    this.ViewState["UrlReferrer"] = "";
+                    this.ViewState["UrlReferrer"] = string.Empty;
                 }
             }
         }

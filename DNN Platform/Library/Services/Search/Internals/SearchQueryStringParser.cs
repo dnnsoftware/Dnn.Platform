@@ -69,7 +69,7 @@ namespace DotNetNuke.Services.Search.Internals
         public DateTime GetLastModifiedDate(string keywords, out string outputKeywords)
         {
             var m = DateRegex.Match(keywords);
-            var date = "";
+            var date = string.Empty;
             while (m.Success && string.IsNullOrEmpty(date))
             {
                 date = m.Groups[1].ToString();
@@ -111,7 +111,7 @@ namespace DotNetNuke.Services.Search.Internals
         public IList<string> GetSearchTypeList(string keywords, out string outputKeywords)
         {
             var m = TypeRegex.Match(keywords);
-            var types = "";
+            var types = string.Empty;
             while (m.Success && string.IsNullOrEmpty(types))
             {
                 types = m.Groups[1].ToString().Trim();

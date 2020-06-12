@@ -156,7 +156,7 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID,
-                            "", EventLogController.EventLogType.TAB_CREATED);
+                            string.Empty, EventLogController.EventLogType.TAB_CREATED);
 
             // Add Tab Permissions
             TabPermissionController.SaveTabPermissions(tab);
@@ -329,7 +329,7 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     var url = TestableGlobals.Instance.NavigateURL(tab.TabID);
 
-                    url = url.Replace(domainRoot, "");
+                    url = url.Replace(domainRoot, string.Empty);
 
                     var seqNum = (tab.TabUrls.Count > 0) ? tab.TabUrls.Max(t => t.SeqNum) + 1 : 1;
                     var tabUrl = new TabUrlInfo
@@ -643,7 +643,7 @@ namespace DotNetNuke.Entities.Tabs
                                     }
                                     else
                                     {
-                                        settings[dr.GetString(1)] = "";
+                                        settings[dr.GetString(1)] = string.Empty;
                                     }
                                 }
                             }
@@ -789,7 +789,7 @@ namespace DotNetNuke.Entities.Tabs
                         ModuleController.Instance.DeleteTabModule(m.TabID, m.ModuleID, true);
                     }
 
-                    EventLogController.Instance.AddLog(tabToDelete, portalSettings, portalSettings.UserId, "",
+                    EventLogController.Instance.AddLog(tabToDelete, portalSettings, portalSettings.UserId, string.Empty,
                                               EventLogController.EventLogType.TAB_SENT_TO_RECYCLE_BIN);
                     deleted = true;
 
@@ -1561,7 +1561,7 @@ namespace DotNetNuke.Entities.Tabs
             var permissionCtrl = new PermissionController();
             ArrayList permissionsList = permissionCtrl.GetPermissionByCodeAndKey("SYSTEM_TAB", "EDIT");
 
-            string translatorRoles = PortalController.GetPortalSetting(string.Format("DefaultTranslatorRoles-{0}", localizedTab.CultureCode), localizedTab.PortalID, "");
+            string translatorRoles = PortalController.GetPortalSetting(string.Format("DefaultTranslatorRoles-{0}", localizedTab.CultureCode), localizedTab.PortalID, string.Empty);
             foreach (string translatorRole in translatorRoles.Split(';'))
             {
                 if (users != null)
@@ -1873,7 +1873,7 @@ namespace DotNetNuke.Entities.Tabs
                 this.UpdateTab(localizedtab);
             }
 
-            EventLogController.Instance.AddLog(tab, portalSettings, portalSettings.UserId, "", EventLogController.EventLogType.TAB_RESTORED);
+            EventLogController.Instance.AddLog(tab, portalSettings, portalSettings.UserId, string.Empty, EventLogController.EventLogType.TAB_RESTORED);
 
             ArrayList allTabsModules = ModuleController.Instance.GetAllTabsModules(tab.PortalID, true);
             var tabModules = ModuleController.Instance.GetTabModules(tab.TabID);
@@ -2045,7 +2045,7 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             EventLogController.Instance.AddLog(updatedTab, PortalController.Instance.GetCurrentPortalSettings(),
-                                      UserController.Instance.GetCurrentUserInfo().UserID, "",
+                                      UserController.Instance.GetCurrentUserInfo().UserID, string.Empty,
                                       EventLogController.EventLogType.TAB_UPDATED);
 
             // Update Tab permissions
@@ -2194,7 +2194,7 @@ namespace DotNetNuke.Entities.Tabs
                     UpdateTabVersion(tab.TabID);
 
                     EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(),
-                                              UserController.Instance.GetCurrentUserInfo().UserID, "",
+                                              UserController.Instance.GetCurrentUserInfo().UserID, string.Empty,
                                               EventLogController.EventLogType.TAB_UPDATED);
                     clearCache = true;
                 }
@@ -2362,13 +2362,13 @@ namespace DotNetNuke.Entities.Tabs
                 DeserializeTabSettings(tabNode.SelectNodes("tabsettings/tabsetting"), tab);
 
                 // set tab skin and container
-                if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode, "skinsrc", "")))
+                if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode, "skinsrc", string.Empty)))
                 {
-                    tab.SkinSrc = XmlUtils.GetNodeValue(tabNode, "skinsrc", "");
+                    tab.SkinSrc = XmlUtils.GetNodeValue(tabNode, "skinsrc", string.Empty);
                 }
-                if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode, "containersrc", "")))
+                if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode, "containersrc", string.Empty)))
                 {
-                    tab.ContainerSrc = XmlUtils.GetNodeValue(tabNode, "containersrc", "");
+                    tab.ContainerSrc = XmlUtils.GetNodeValue(tabNode, "containersrc", string.Empty);
                 }
 
                 tabName = tab.TabName;

@@ -72,7 +72,7 @@ namespace DotNetNuke.Services.Tokens
                 }
                 if (string.IsNullOrEmpty(model.Provider))
                 {
-                    ClientResourceManager.RegisterScript(this._page, model.Path, model.Priority, "", model.JsName, model.Version);
+                    ClientResourceManager.RegisterScript(this._page, model.Path, model.Priority, string.Empty, model.JsName, model.Version);
                 }
                 else
                 {

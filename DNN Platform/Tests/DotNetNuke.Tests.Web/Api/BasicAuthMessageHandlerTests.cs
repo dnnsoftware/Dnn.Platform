@@ -50,7 +50,7 @@ namespace DotNetNuke.Tests.Web.Api
         {
             // Arrange
             var response = new HttpResponseMessage(HttpStatusCode.Unauthorized) { RequestMessage = new HttpRequestMessage() };
-            response.RequestMessage.Headers.Add("X-REQUESTED-WITH", "");
+            response.RequestMessage.Headers.Add("X-REQUESTED-WITH", string.Empty);
 
             // Act
             var handler = new BasicAuthMessageHandler(true, false);

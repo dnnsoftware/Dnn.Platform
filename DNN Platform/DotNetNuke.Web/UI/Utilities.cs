@@ -43,17 +43,17 @@ namespace DotNetNuke.Web.UI
 
         public static void ApplySkin(Control telerikControl)
         {
-            ApplySkin(telerikControl, "", "", "");
+            ApplySkin(telerikControl, string.Empty, string.Empty, string.Empty);
         }
 
         public static void ApplySkin(Control telerikControl, string fallBackEmbeddedSkinName)
         {
-            ApplySkin(telerikControl, "", "", fallBackEmbeddedSkinName);
+            ApplySkin(telerikControl, string.Empty, string.Empty, fallBackEmbeddedSkinName);
         }
 
         public static void ApplySkin(Control telerikControl, string fallBackEmbeddedSkinName, string controlName)
         {
-            ApplySkin(telerikControl, "", controlName, fallBackEmbeddedSkinName);
+            ApplySkin(telerikControl, string.Empty, controlName, fallBackEmbeddedSkinName);
         }
 
         // Use selected skin's webcontrol skin if one exists
@@ -80,14 +80,14 @@ namespace DotNetNuke.Web.UI
                 }
 
 
-                string skinVirtualFolder = "";
+                string skinVirtualFolder = string.Empty;
                 if (PortalSettings.Current != null)
                     skinVirtualFolder = PortalSettings.Current.ActiveTab.SkinPath.Replace('\\', '/').Replace("//", "/");
                 else
                     skinVirtualFolder = telerikControl.ResolveUrl("~/Portals/_default/skins/_default/Aphelia"); // developer skin Aphelia
 
-                string skinName = "";
-                string webControlSkinName = "";
+                string skinName = string.Empty;
+                string webControlSkinName = string.Empty;
                 if (skinProperty != null)
                 {
                     var v = skinProperty.GetValue(telerikControl, null);
@@ -119,7 +119,7 @@ namespace DotNetNuke.Web.UI
                     // Check if the selected skin has the webcontrol skin
                     if (!File.Exists(systemWebControlSkin))
                     {
-                        systemWebControlSkin = "";
+                        systemWebControlSkin = string.Empty;
                     }
 
                     // No skin, try default folder
@@ -143,7 +143,7 @@ namespace DotNetNuke.Web.UI
 
                             if (!File.Exists(systemWebControlSkin))
                             {
-                                systemWebControlSkin = "";
+                                systemWebControlSkin = string.Empty;
                             }
                         }
                     }

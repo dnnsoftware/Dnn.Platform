@@ -79,7 +79,7 @@ namespace DotNetNuke.Security
             this.DisplayNameFormat = settings.GetValueOrDefault("Security_DisplayNameFormat", this.DisplayNameFormat);
             this.EmailValidator = settings.GetValueOrDefault("Security_EmailValidation", this.EmailValidator);
 
-            this.ExcludeTermsRegex = "^(?:(?!" + this.ExcludeTerms.Replace(" ", "").Replace(",", "|") + ").)*$\\r?\\n?";
+            this.ExcludeTermsRegex = "^(?:(?!" + this.ExcludeTerms.Replace(" ", string.Empty).Replace(",", "|") + ").)*$\\r?\\n?";
         }
         #endregion
 

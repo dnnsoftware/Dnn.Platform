@@ -66,7 +66,7 @@ namespace DotNetNuke.UI.WebControls
         private readonly Style _ErrorStyle = new Style();
         private readonly Style _TextBoxStyle = new Style();
         private Color _BackGroundColor = Color.Transparent;
-        private string _BackGroundImage = "";
+        private string _BackGroundImage = string.Empty;
         private string _CaptchaChars = CHARS_DEFAULT;
         private Unit _CaptchaHeight = Unit.Pixel(100);
         private int _CaptchaLength = LENGTH_DEFAULT;
@@ -75,7 +75,7 @@ namespace DotNetNuke.UI.WebControls
         private int _Expiration;
         private bool _IsValid;
         private string _RenderUrl = RENDERURL_DEFAULT;
-        private string _UserText = "";
+        private string _UserText = string.Empty;
         private Image _image;
 
         #endregion
@@ -801,7 +801,7 @@ namespace DotNetNuke.UI.WebControls
             }
             else
             {
-                writer.AddAttribute(HtmlTextWriterAttribute.Value, "");
+                writer.AddAttribute(HtmlTextWriterAttribute.Value, string.Empty);
             }
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();

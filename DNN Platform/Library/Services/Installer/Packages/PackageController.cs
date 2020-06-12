@@ -56,7 +56,7 @@ namespace DotNetNuke.Services.Installer.Packages
                 package,
                         PortalController.Instance.GetCurrentPortalSettings(),
                         UserController.Instance.GetCurrentUserInfo().UserID,
-                        "",
+                        string.Empty,
                         logType);
 
         }
@@ -415,7 +415,7 @@ namespace DotNetNuke.Services.Installer.Packages
                                         package.FriendlyName = package.Name;
                                     }
                                     package.Description = XmlUtils.GetNodeValue(nav, "description");
-                                    package.FileName = file.Replace(installPath + "\\", "");
+                                    package.FileName = file.Replace(installPath + "\\", string.Empty);
 
                                     XPathNavigator foldernameNav;
                                     switch (package.PackageType)
@@ -457,7 +457,7 @@ namespace DotNetNuke.Services.Installer.Packages
                                             }
                                             else
                                             {
-                                                package.IconFile = (string.IsNullOrEmpty(package.FolderName) ? "" : package.FolderName + "/") + iconFileNav.Value;
+                                                package.IconFile = (string.IsNullOrEmpty(package.FolderName) ? string.Empty : package.FolderName + "/") + iconFileNav.Value;
                                                 package.IconFile = (!package.IconFile.StartsWith("~/")) ? "~/" + package.IconFile : package.IconFile;
                                             }
                                         }

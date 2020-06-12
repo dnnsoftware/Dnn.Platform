@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.UserControls
 
         private static readonly Regex CheckDateColumnRegex = new Regex(@"^-?\d+$", RegexOptions.Compiled);
 
-        private string DisplayMode => (this.Request.QueryString["Display"] ?? "").ToLowerInvariant();
+        private string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
 
         [Serializable]
         private class EntityInfo

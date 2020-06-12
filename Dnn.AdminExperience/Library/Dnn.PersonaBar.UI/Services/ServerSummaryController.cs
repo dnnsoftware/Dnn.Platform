@@ -125,7 +125,7 @@ namespace Dnn.PersonaBar.UI.Services
                         using (var sha256 = SHA256.Create())
                         {
                             hash =
-                                BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
+                                BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", string.Empty).ToLowerInvariant();
                             DataCache.SetCache(cacheKey, hash, (DNNCacheDependency)null,
                                 Cache.NoAbsoluteExpiration, TimeSpan.FromDays(1), CacheItemPriority.Normal, null);
                         }

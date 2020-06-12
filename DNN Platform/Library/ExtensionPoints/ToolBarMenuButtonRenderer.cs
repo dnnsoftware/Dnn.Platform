@@ -36,8 +36,8 @@ namespace DotNetNuke.ExtensionPoints
             str.AppendFormat(
                 "<span id='{0}_text' style='{1} background-image: url(\"{2}\");'>{3}</span>",
                 extension.ButtonId,
-                !extension.ShowText ? "text-indent: -10000000px;" : "",
-                extension.ShowIcon ? icon : "",
+                !extension.ShowText ? "text-indent: -10000000px;" : string.Empty,
+                extension.ShowIcon ? icon : string.Empty,
                 extension.Text);
             str.AppendLine("</button>");
             str.AppendFormat("<div class='{0}_menu dnnClear'>", extension.MenuCssClass);

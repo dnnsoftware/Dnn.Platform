@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.Journal.Components
         UserInfo CurrentUser { get; set; }
         int OwnerPortalId { get; set; }
         public int JournalId { get; set; }
-        private readonly string url = "";
+        private readonly string url = string.Empty;
         private bool isAdmin;
         private bool isUnverifiedUser;
         private const string ResxPath = "~/DesktopModules/Journal/App_LocalResources/SharedResources.resx";

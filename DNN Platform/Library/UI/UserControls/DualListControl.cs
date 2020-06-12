@@ -24,11 +24,11 @@ namespace DotNetNuke.UI.UserControls
         private string MyFileName = "DualListControl.ascx";
         private ArrayList _Assigned;
         private ArrayList _Available;
-        private string _DataTextField = "";
-        private string _DataValueField = "";
+        private string _DataTextField = string.Empty;
+        private string _DataValueField = string.Empty;
         private bool _Enabled = true;
-        private string _ListBoxHeight = "";
-        private string _ListBoxWidth = "";
+        private string _ListBoxHeight = string.Empty;
+        private string _ListBoxWidth = string.Empty;
         protected LinkButton cmdAdd;
         protected LinkButton cmdAddAll;
         protected LinkButton cmdRemove;

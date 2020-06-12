@@ -144,9 +144,9 @@ namespace DotNetNuke.Services.Exceptions
                 else
                 {
                     this.PortalID = -1;
-                    this.PortalName = "";
+                    this.PortalName = string.Empty;
                     this.ActiveTabID = -1;
-                    this.ActiveTabName = "";
+                    this.ActiveTabName = string.Empty;
                 }
 
                 var currentUserInfo = UserController.Instance.GetCurrentUserInfo();
@@ -155,11 +155,11 @@ namespace DotNetNuke.Services.Exceptions
                 if (this.UserID != -1)
                 {
                     currentUserInfo = UserController.GetUserById(this.PortalID, this.UserID);
-                    this.UserName = currentUserInfo != null ? currentUserInfo.Username : "";
+                    this.UserName = currentUserInfo != null ? currentUserInfo.Username : string.Empty;
                 }
                 else
                 {
-                    this.UserName = "";
+                    this.UserName = string.Empty;
                 }
 
                 if (context != null)
@@ -170,14 +170,14 @@ namespace DotNetNuke.Services.Exceptions
                     {
                         this.AbsoluteURLReferrer = HttpUtility.HtmlEncode(context.Request.UrlReferrer.AbsoluteUri);
                     }
-                    this.UserAgent = HttpUtility.HtmlEncode(context.Request.UserAgent ?? "");
+                    this.UserAgent = HttpUtility.HtmlEncode(context.Request.UserAgent ?? string.Empty);
                 }
                 else
                 {
-                    this.RawURL = "";
-                    this.AbsoluteURL = "";
-                    this.AbsoluteURLReferrer = "";
-                    this.UserAgent = "";
+                    this.RawURL = string.Empty;
+                    this.AbsoluteURL = string.Empty;
+                    this.AbsoluteURLReferrer = string.Empty;
+                    this.UserAgent = string.Empty;
                 }
                 try
                 {
@@ -190,7 +190,7 @@ namespace DotNetNuke.Services.Exceptions
                 {
                     Logger.Error(exc);
 
-                    this.DefaultDataProvider = "";
+                    this.DefaultDataProvider = string.Empty;
                 }
 
                 this.ExceptionGUID = Guid.NewGuid().ToString();
@@ -204,10 +204,10 @@ namespace DotNetNuke.Services.Exceptions
                 }
                 else
                 {
-                    this.FileName = "";
+                    this.FileName = string.Empty;
                     this.FileLineNumber = -1;
                     this.FileColumnNumber = -1;
-                    this.Method = "";
+                    this.Method = string.Empty;
                 }
 
                 try
@@ -218,7 +218,7 @@ namespace DotNetNuke.Services.Exceptions
                 {
                     Logger.Error(exc);
 
-                    this.m_StackTrace = "";
+                    this.m_StackTrace = string.Empty;
                 }
                 try
                 {
@@ -228,7 +228,7 @@ namespace DotNetNuke.Services.Exceptions
                 {
                     Logger.Error(exc);
 
-                    this.m_Message = "";
+                    this.m_Message = string.Empty;
                 }
                 try
                 {
@@ -238,7 +238,7 @@ namespace DotNetNuke.Services.Exceptions
                 {
                     Logger.Error(exc);
 
-                    this.m_Source = "";
+                    this.m_Source = string.Empty;
                 }
             }
             catch (Exception exc)
@@ -247,20 +247,20 @@ namespace DotNetNuke.Services.Exceptions
                 this.UserID = -1;
                 this.AssemblyVersion = "-1";
                 this.ActiveTabID = -1;
-                this.ActiveTabName = "";
-                this.RawURL = "";
-                this.AbsoluteURL = "";
-                this.AbsoluteURLReferrer = "";
-                this.UserAgent = "";
-                this.DefaultDataProvider = "";
-                this.ExceptionGUID = "";
-                this.FileName = "";
+                this.ActiveTabName = string.Empty;
+                this.RawURL = string.Empty;
+                this.AbsoluteURL = string.Empty;
+                this.AbsoluteURLReferrer = string.Empty;
+                this.UserAgent = string.Empty;
+                this.DefaultDataProvider = string.Empty;
+                this.ExceptionGUID = string.Empty;
+                this.FileName = string.Empty;
                 this.FileLineNumber = -1;
                 this.FileColumnNumber = -1;
-                this.Method = "";
-                this.m_StackTrace = "";
-                this.m_Message = "";
-                this.m_Source = "";
+                this.Method = string.Empty;
+                this.m_StackTrace = string.Empty;
+                this.m_Message = string.Empty;
+                this.m_Source = string.Empty;
                 Logger.Error(exc);
 
             }

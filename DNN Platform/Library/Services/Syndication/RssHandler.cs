@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.Syndication
         {
             var item = new GenericRssElement();
             var url = searchResult.Url;
-            if (url.Trim() == "")
+            if (url.Trim() == string.Empty)
             {
                 url = TestableGlobals.Instance.NavigateURL(searchResult.TabId);
                 if (url.IndexOf(HttpContext.Current.Request.Url.Host, StringComparison.InvariantCultureIgnoreCase) == -1)

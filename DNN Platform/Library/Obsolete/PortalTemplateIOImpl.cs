@@ -61,7 +61,7 @@ namespace DotNetNuke.Entities.Portals.Internal
                 return path;
             }
 
-            return "";
+            return string.Empty;
         }
 
         #endregion

@@ -144,7 +144,7 @@ namespace DotNetNuke.Modules.MemberDirectory
         {
             get
             {
-                return this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.UserTabId, "", "userId=PROFILEUSER");
+                return this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.UserTabId, string.Empty, "userId=PROFILEUSER");
             }
         }
 

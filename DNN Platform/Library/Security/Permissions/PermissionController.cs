@@ -47,7 +47,7 @@ namespace DotNetNuke.Security.Permissions
 
         public int AddPermission(PermissionInfo permission)
         {
-            EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PERMISSION_CREATED);
+            EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_CREATED);
             var permissionId = Convert.ToInt32(provider.AddPermission(
                 permission.PermissionCode,
                                                        permission.ModuleDefID,
@@ -96,7 +96,7 @@ namespace DotNetNuke.Security.Permissions
 
         public void UpdatePermission(PermissionInfo permission)
         {
-            EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PERMISSION_UPDATED);
+            EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_UPDATED);
             provider.UpdatePermission(
                 permission.PermissionID,
                                       permission.PermissionCode,
@@ -119,7 +119,7 @@ namespace DotNetNuke.Security.Permissions
                 if (PermissionKey.Equals(permission.PermissionKey, StringComparison.InvariantCultureIgnoreCase))
                 {
                     // Deny permissions are prefixed with a "!"
-                    string prefix = !permission.AllowAccess ? "!" : "";
+                    string prefix = !permission.AllowAccess ? "!" : string.Empty;
 
                     // encode permission
                     string permissionString;

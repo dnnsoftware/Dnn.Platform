@@ -56,7 +56,7 @@ namespace DotNetNuke.Services.Analytics
                             var fileEncoding = new ASCIIEncoding();
                             using (var md5 = new MD5CryptoServiceProvider())
                             {
-                                string currFileHashValue = "";
+                                string currFileHashValue = string.Empty;
 
                                 // calculate md5 hash of existing file
                                 currFileHashValue = Convert.ToBase64String(md5.ComputeHash(fileEncoding.GetBytes(fileReader.ReadToEnd())));
@@ -89,7 +89,7 @@ namespace DotNetNuke.Services.Analytics
         private StreamReader GetConfigFile()
         {
             StreamReader fileReader = null;
-            string filePath = "";
+            string filePath = string.Empty;
             try
             {
                 filePath = Globals.ApplicationMapPath + "\\SiteAnalytics.config";

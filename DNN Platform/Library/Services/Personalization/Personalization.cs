@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.Personalization
         /// <returns></returns>
         public static object GetProfile(PersonalizationInfo personalization, string namingContainer, string key)
         {
-            return personalization != null ? personalization.Profile[namingContainer + ":" + key] : "";
+            return personalization != null ? personalization.Profile[namingContainer + ":" + key] : string.Empty;
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace DotNetNuke.Services.Personalization
                 var ps = PortalSecurity.Instance;
                 return ps.DecryptString(personalization.Profile[namingContainer + ":" + key].ToString(), Config.GetDecryptionkey());
             }
-            return "";
+            return string.Empty;
         }
 
         /// <summary>

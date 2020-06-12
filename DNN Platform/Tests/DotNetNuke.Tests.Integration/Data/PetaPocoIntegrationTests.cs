@@ -41,18 +41,18 @@ namespace DotNetNuke.Tests.Data
                 { "name", "SqlDataProvider" },
                 { "type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke" },
                 { "connectionStringName", "SiteSqlServer" },
-                { "objectQualifier", "" },
+                { "objectQualifier", string.Empty },
                 { "databaseOwner", "dbo." }
             });
 
-            var dogMapper = new FluentMapper<Dog>("")
+            var dogMapper = new FluentMapper<Dog>(string.Empty)
                     .TableName(Constants.PETAPOCO_DogTableName)
                     .PrimaryKey("ID")
                     .Property(d => d.ID, "ID")
                     .Property(d => d.Age, "Age")
                     .Property(d => d.Name, "Name");
 
-            var catMapper = new FluentMapper<Cat>("")
+            var catMapper = new FluentMapper<Cat>(string.Empty)
                     .TableName(Constants.PETAPOCO_DogTableName)
                     .Property(d => d.Age, "Age")
                     .Property(d => d.Name, "Name");

@@ -184,10 +184,10 @@ namespace DotNetNuke.Services.Installer.Writers
                                 filePath = "DesktopModules\\Admin\\FileManager\\App_LocalResources";
                                 break;
                             case "host":
-                                switch (fileName.Replace(extendedExtension, ""))
+                                switch (fileName.Replace(extendedExtension, string.Empty))
                                 {
                                     case "authentication.ascx":
-                                        filePath = "";
+                                        filePath = string.Empty;
                                         break;
                                     case "friendlyurls.ascx":
                                         filePath = "DesktopModules\\Admin\\HostSettings\\App_LocalResources";
@@ -204,7 +204,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                 filePath = "DesktopModules\\Admin\\Lists\\App_LocalResources";
                                 break;
                             case "localization":
-                                switch (fileName.Replace(extendedExtension, ""))
+                                switch (fileName.Replace(extendedExtension, string.Empty))
                                 {
                                     case "languageeditor.ascx":
                                         filePath = "DesktopModules\\Admin\\Extensions\\Editors\\App_LocalResources";
@@ -219,7 +219,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "DesktopModules\\Admin\\Extensions\\Editors\\App_LocalResources";
                                         break;
                                     default:
-                                        filePath = "";
+                                        filePath = string.Empty;
                                         break;
                                 }
                                 break;
@@ -227,7 +227,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                 filePath = "DesktopModules\\Admin\\LogViewer\\App_LocalResources";
                                 break;
                             case "moduledefinitions":
-                                switch (fileName.Replace(extendedExtension, ""))
+                                switch (fileName.Replace(extendedExtension, string.Empty))
                                 {
                                     case "editmodulecontrol.ascx":
                                         filePath = "DesktopModules\\Admin\\Extensions\\Editors\\App_LocalResources";
@@ -239,7 +239,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "DesktopModules\\Admin\\Extensions\\Editors\\App_LocalResources";
                                         break;
                                     default:
-                                        filePath = "";
+                                        filePath = string.Empty;
                                         break;
                                 }
                                 break;
@@ -250,7 +250,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                 filePath = "DesktopModules\\Admin\\Extensions\\App_LocalResources";
                                 break;
                             case "portal":
-                                switch (fileName.Replace(extendedExtension, ""))
+                                switch (fileName.Replace(extendedExtension, string.Empty))
                                 {
                                     case "editportalalias.ascx":
                                         filePath = "DesktopModules\\Admin\\Portals\\App_LocalResources";
@@ -277,7 +277,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "DesktopModules\\Admin\\SQL\\App_LocalResources";
                                         break;
                                     case "systemmessages.ascx":
-                                        filePath = "";
+                                        filePath = string.Empty;
                                         break;
                                     case "template.ascx":
                                         filePath = "DesktopModules\\Admin\\Portals\\App_LocalResources";
@@ -291,7 +291,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                 filePath = "DesktopModules\\Admin\\Scheduler\\App_LocalResources";
                                 break;
                             case "search":
-                                switch (fileName.Replace(extendedExtension, ""))
+                                switch (fileName.Replace(extendedExtension, string.Empty))
                                 {
                                     case "inputsettings.ascx":
                                         filePath = "DesktopModules\\Admin\\SearchInput\\App_LocalResources";
@@ -311,13 +311,13 @@ namespace DotNetNuke.Services.Installer.Writers
                                 }
                                 break;
                             case "security":
-                                switch (fileName.Replace(extendedExtension, ""))
+                                switch (fileName.Replace(extendedExtension, string.Empty))
                                 {
                                     case "accessdenied.ascx":
                                         filePath = "Admin\\Security\\App_LocalResources";
                                         break;
                                     case "authenticationsettings.ascx":
-                                        filePath = "";
+                                        filePath = string.Empty;
                                         break;
                                     case "editgroups.ascx":
                                         filePath = "DesktopModules\\Admin\\Security\\App_LocalResources";
@@ -326,7 +326,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "DesktopModules\\Admin\\Security\\App_LocalResources";
                                         break;
                                     case "register.ascx":
-                                        filePath = "";
+                                        filePath = string.Empty;
                                         break;
                                     case "roles.ascx":
                                         filePath = "DesktopModules\\Admin\\Security\\App_LocalResources";
@@ -338,7 +338,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "Admin\\Security\\App_LocalResources";
                                         break;
                                     case "signin.ascx":
-                                        filePath = "";
+                                        filePath = string.Empty;
                                         break;
                                 }
                                 break;
@@ -349,7 +349,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                 filePath = "DesktopModules\\Admin\\FeedExplorer\\App_LocalResources";
                                 break;
                             case "tabs":
-                                switch (fileName.Replace(extendedExtension, ""))
+                                switch (fileName.Replace(extendedExtension, string.Empty))
                                 {
                                     case "export.ascx":
                                         filePath = "Admin\\Tabs\\App_LocalResources";
@@ -369,7 +369,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                 }
                                 break;
                             case "users":
-                                switch (fileName.Replace(extendedExtension, ""))
+                                switch (fileName.Replace(extendedExtension, string.Empty))
                                 {
                                     case "bulkemail.ascx":
                                         filePath = "DesktopModules\\Admin\\Newsletters\\App_LocalResources";
@@ -411,13 +411,13 @@ namespace DotNetNuke.Services.Installer.Writers
                                 }
                                 break;
                             case "vendors":
-                                switch (fileName.Replace(extendedExtension, ""))
+                                switch (fileName.Replace(extendedExtension, string.Empty))
                                 {
                                     case "adsense.ascx":
-                                        filePath = "";
+                                        filePath = string.Empty;
                                         break;
                                     case "editadsense.ascx":
-                                        filePath = "";
+                                        filePath = string.Empty;
                                         break;
                                     case "affiliates.ascx":
                                         filePath = "DesktopModules\\Admin\\Vendors\\App_LocalResources";
@@ -528,7 +528,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 FileInfo[] files = folder.GetFiles();
                 foreach (FileInfo file in files)
                 {
-                    string filePath = folder.FullName.Replace(rootPath, "");
+                    string filePath = folder.FullName.Replace(rootPath, string.Empty);
                     if (filePath.StartsWith("\\"))
                     {
                         filePath = filePath.Substring(1);

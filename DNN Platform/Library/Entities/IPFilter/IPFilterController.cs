@@ -103,7 +103,7 @@ namespace DotNetNuke.Entities.Host
         {
             if (this.CheckIfBannedIPAddress(ipAddress))
             {// should throw 403.6
-            throw new HttpException(403, "");
+            throw new HttpException(403, string.Empty);
             }
         }
 

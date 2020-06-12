@@ -489,12 +489,12 @@ namespace Dnn.Modules.Console
                 var tabUrl = tab.FullUrl;
                 if (this.ProfileUserId > -1)
                 {
-                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, "", "UserId=" + this.ProfileUserId.ToString(CultureInfo.InvariantCulture));
+                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, string.Empty, "UserId=" + this.ProfileUserId.ToString(CultureInfo.InvariantCulture));
                 }
 
                 if (this.GroupId > -1)
                 {
-                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, "", "GroupId=" + this.GroupId.ToString(CultureInfo.InvariantCulture));
+                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, string.Empty, "GroupId=" + this.GroupId.ToString(CultureInfo.InvariantCulture));
                 }
 
                 returnValue += string.Format(

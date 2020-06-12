@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.Analytics.Config
             Config.Settings = new AnalyticsSettingCollection();
 
             FileStream fileReader = null;
-            string filePath = "";
+            string filePath = string.Empty;
             try
             {
                 Config = (AnalyticsConfiguration)DataCache.GetCache(cacheKey);
@@ -147,7 +147,7 @@ namespace DotNetNuke.Services.Analytics.Config
             {
                 // Create a new Xml Serializer
                 var ser = new XmlSerializer(typeof(AnalyticsConfiguration));
-                string filePath = "";
+                string filePath = string.Empty;
 
                 // Create a FileStream for the Config file
                 filePath = PortalSettings.Current.HomeDirectoryMapPath + "\\" + analyticsEngineName + ".config";

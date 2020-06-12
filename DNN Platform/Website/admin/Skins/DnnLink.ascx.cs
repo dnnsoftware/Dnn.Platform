@@ -34,7 +34,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
             string url = "http://www.dnnsoftware.com/community?utm_source=dnn-install&utm_medium=web-link&utm_content=gravity-skin-link&utm_campaign=dnn-install";
             string utmTerm = "&utm_term=cms-by-dnn";
-            string hostName = this.Request.Url.Host.ToLowerInvariant().Replace("www.", "");
+            string hostName = this.Request.Url.Host.ToLowerInvariant().Replace("www.", string.Empty);
             int charPos = 0;
             string linkText = "CMS by DNN";
             if (hostName.Length > 0)

@@ -235,7 +235,7 @@ namespace log4net.Appender
                         writer.WriteLine("From: " + this.m_from);
                         writer.WriteLine("Subject: " + this.m_subject);
                         writer.WriteLine("Date: " + DateTime.UtcNow.ToString("r"));
-                        writer.WriteLine("");
+                        writer.WriteLine(string.Empty);
 
                         string t = this.Layout.Header;
                         if (t != null)
@@ -255,7 +255,7 @@ namespace log4net.Appender
                             writer.Write(t);
                         }
 
-                        writer.WriteLine("");
+                        writer.WriteLine(string.Empty);
                         writer.WriteLine(".");
                     }
                 }

@@ -454,7 +454,7 @@ namespace log4net.Appender
             private AnsiColor m_foreColor;
             private AnsiColor m_backColor;
             private AnsiAttributes m_attributes;
-            private string m_combinedColor = "";
+            private string m_combinedColor = string.Empty;
 
             /// <summary>
             /// The mapped foreground color for the specified level

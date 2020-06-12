@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.Groups
         {
             if (!this.Page.IsValid) return;
 
-            this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId, "", "filter=" + this.txtFilter.Text.Trim()));
+            this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId, string.Empty, "filter=" + this.txtFilter.Text.Trim()));
         }
     }
 }

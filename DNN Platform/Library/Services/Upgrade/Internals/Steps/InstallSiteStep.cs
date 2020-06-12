@@ -69,10 +69,10 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
         private void CreateSite(PortalConfig portal, InstallConfig installConfig)
         {
 
-            var domain = "";
+            var domain = string.Empty;
             if (HttpContext.Current != null)
             {
-                domain = Globals.GetDomainName(HttpContext.Current.Request, true).ToLowerInvariant().Replace("/install/launchautoinstall", "").Replace("/install", "").Replace("/runinstall", "");
+                domain = Globals.GetDomainName(HttpContext.Current.Request, true).ToLowerInvariant().Replace("/install/launchautoinstall", string.Empty).Replace("/install", string.Empty).Replace("/runinstall", string.Empty);
             }
 
             var serverPath = Globals.ApplicationMapPath + "\\";
@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             var email = portal.AdminEmail;
             if (string.IsNullOrEmpty(email))
             {
-                email = "admin@" + domain.Replace("www.", "");
+                email = "admin@" + domain.Replace("www.", string.Empty);
                 // Remove any domain subfolder information ( if it exists )
                 if (email.IndexOf("/") != -1)
                 {
@@ -174,7 +174,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
             // Log user in to site
             var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-            UserController.UserLogin(portalId, userInfo.Username, installConfig.SuperUser.Password, "", "", "", ref loginStatus, false);
+            UserController.UserLogin(portalId, userInfo.Username, installConfig.SuperUser.Password, string.Empty, string.Empty, string.Empty, ref loginStatus, false);
 
             InstallController.Instance.RemoveFromInstallConfig("//dotnetnuke/superuser/password");
         }

@@ -308,7 +308,7 @@ namespace DotNetNuke.Entities.Modules
                                                                 desktopModule.ContentItemId,
                                                                 UserController.Instance.GetCurrentUserInfo().UserID,
                                                                 desktopModule.AdminPage, desktopModule.HostPage);
-                EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.DESKTOPMODULE_CREATED);
+                EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.DESKTOPMODULE_CREATED);
             }
             else
             {
@@ -350,7 +350,7 @@ namespace DotNetNuke.Entities.Modules
                     }
                 }
 
-                EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.DESKTOPMODULE_UPDATED);
+                EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.DESKTOPMODULE_UPDATED);
             }
             if (saveChildren)
             {
@@ -374,7 +374,7 @@ namespace DotNetNuke.Entities.Modules
 
         public void UpdateModuleInterfaces(ref DesktopModuleInfo desktopModuleInfo)
         {
-            this.UpdateModuleInterfaces(ref desktopModuleInfo, (UserController.Instance.GetCurrentUserInfo() == null) ? "" : UserController.Instance.GetCurrentUserInfo().Username, true);
+            this.UpdateModuleInterfaces(ref desktopModuleInfo, (UserController.Instance.GetCurrentUserInfo() == null) ? string.Empty : UserController.Instance.GetCurrentUserInfo().Username, true);
         }
 
         public void UpdateModuleInterfaces(ref DesktopModuleInfo desktopModuleInfo, string sender, bool forceAppRestart)
@@ -386,7 +386,7 @@ namespace DotNetNuke.Entities.Modules
                 Priority = MessagePriority.High,
                 ExpirationDate = DateTime.Now.AddYears(-1),
                 SentDate = DateTime.Now,
-                Body = "",
+                Body = string.Empty,
                 ProcessorType = "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke",
                 ProcessorCommand = "UpdateSupportedFeatures"
             };

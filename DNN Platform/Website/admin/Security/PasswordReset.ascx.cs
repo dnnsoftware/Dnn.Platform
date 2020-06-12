@@ -264,7 +264,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     // Log user in to site
                     this.LogSuccess();
                     var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-                    UserController.UserLogin(this.PortalSettings.PortalId, username, this.txtPassword.Text, "", "", "", ref loginStatus, false);
+                    UserController.UserLogin(this.PortalSettings.PortalId, username, this.txtPassword.Text, string.Empty, string.Empty, string.Empty, ref loginStatus, false);
                     this.RedirectAfterLogin();
                 }
             }
@@ -272,7 +272,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         protected void RedirectAfterLogin()
         {
-            var redirectURL = "";
+            var redirectURL = string.Empty;
 
             var setting = GetSetting(this.PortalId, "Redirect_AfterLogin");
 

@@ -165,7 +165,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
                             if (filter.InnerText == "*.*")
                             {
                                 changed = true;
-                                filter.InnerXml = "";
+                                filter.InnerXml = string.Empty;
                                 foreach (var extension in allowedDocExtensions)
                                 {
                                     var node = doc.CreateElement("item");
@@ -199,7 +199,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
         {
             const string defaultValue = "MDEyMzQ1Njc4OUFCQ0RFRjAxMjM0NTY3ODlBQkNERUYwMTIzNDU2Nzg5QUJDREVG";
 
-            var strError = "";
+            var strError = string.Empty;
             var currentKey = Config.GetSetting(keyName);
             if (string.IsNullOrEmpty(currentKey) || defaultValue.Equals(currentKey) || currentKey.Length < 40)
             {

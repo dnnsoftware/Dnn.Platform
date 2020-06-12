@@ -273,7 +273,7 @@ namespace DotNetNuke.UI.ControlPanels
                                     currentCulture = l.CurrentUICulture;
                                 }
                                 // Localization.LoadCultureDropDownList(ddlUICulture, CultureDropDownTypes.NativeName, currentCulture);
-                                IEnumerable<ListItem> cultureListItems = Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, currentCulture, "", false);
+                                IEnumerable<ListItem> cultureListItems = Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, currentCulture, string.Empty, false);
                                 foreach (var cultureItem in cultureListItems)
                                 {
                                     this.ddlUICulture.AddItem(cultureItem.Text, cultureItem.Value);

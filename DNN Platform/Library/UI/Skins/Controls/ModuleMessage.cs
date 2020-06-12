@@ -76,7 +76,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
             try
             {
-                var strMessage = "";
+                var strMessage = string.Empty;
 
                 // check to see if a url
                 // was passed in for an icon

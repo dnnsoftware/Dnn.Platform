@@ -416,8 +416,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                string r = "";
-                string strCurrentType = "";
+                string r = string.Empty;
+                string strCurrentType = string.Empty;
                 if (this.optType.Items.Count > 0 && this.optType.SelectedIndex >= 0)
                 {
                     strCurrentType = this.optType.SelectedItem.Value;
@@ -444,7 +444,7 @@ namespace DotNetNuke.Web.UI.WebControls
                             string mCustomUrl = this.txtUrl.Text;
                             if (mCustomUrl.Equals("http://", StringComparison.InvariantCultureIgnoreCase))
                             {
-                                r = "";
+                                r = string.Empty;
                             }
                             else
                             {
@@ -453,7 +453,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         }
                         break;
                     case "T":
-                        string strTab = "";
+                        string strTab = string.Empty;
                         if (this.cboTabs.SelectedItem != null)
                         {
                             strTab = this.cboTabs.SelectedItem.Value;
@@ -471,7 +471,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         }
                         else
                         {
-                            r = "";
+                            r = string.Empty;
                         }
                         break;
                     case "M":
@@ -486,7 +486,7 @@ namespace DotNetNuke.Web.UI.WebControls
                             {
                                 this.lblMessage.Text = Localization.GetString("NoUser", this.LocalResourceFile);
                                 this.ErrorRow.Visible = true;
-                                this.txtUser.Text = "";
+                                this.txtUser.Text = string.Empty;
                             }
                         }
                         break;
@@ -659,7 +659,7 @@ namespace DotNetNuke.Web.UI.WebControls
         private void DoRenderTypes()
         {
             // We must clear the list to keep the same item order
-            string strCurrent = "";
+            string strCurrent = string.Empty;
             if (this.optType.SelectedIndex >= 0)
             {
                 strCurrent = this.optType.SelectedItem.Value; // Save current selected value
@@ -834,7 +834,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         string strImagesFolder = Path.Combine(Globals.ApplicationMapPath, this.PortalSettings.DefaultIconLocation.Replace('/', '\\'));
                         foreach (string strImage in Directory.GetFiles(strImagesFolder))
                         {
-                            string img = strImage.Replace(strImagesFolder, "").Trim('/').Trim('\\');
+                            string img = strImage.Replace(strImagesFolder, string.Empty).Trim('/').Trim('\\');
                             this.cboImages.Items.Add(new ListItem(img, string.Format("~/{0}/{1}", this.PortalSettings.DefaultIconLocation, img).ToLowerInvariant()));
                         }
 
@@ -914,7 +914,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         {
                             // Let's use the new URL
                             FileName = _Url.Substring(_Url.LastIndexOf("/") + 1);
-                            FolderPath = _Url.Replace(FileName, "");
+                            FolderPath = _Url.Replace(FileName, string.Empty);
                         }
                         else
                         {

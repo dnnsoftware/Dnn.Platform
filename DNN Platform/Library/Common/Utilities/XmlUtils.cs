@@ -200,7 +200,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string GetAttributeValue(XPathNavigator nav, string attributeName)
         {
-            return nav.GetAttribute(attributeName, "");
+            return nav.GetAttribute(attributeName, string.Empty);
         }
 
         public static bool GetAttributeValueAsBoolean(XPathNavigator navigator, string attributeName, bool defaultValue)
@@ -641,7 +641,7 @@ namespace DotNetNuke.Common.Utilities
             }
             else
             {
-                strString = "";
+                strString = string.Empty;
             }
             return strString;
         }

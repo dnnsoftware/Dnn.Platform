@@ -65,7 +65,7 @@ namespace DotNetNuke.Entities.Profile
             var propertyDefinition = new ProfilePropertyDefinition(portalId)
             {
                 DataType = typeInfo.EntryID,
-                DefaultValue = "",
+                DefaultValue = string.Empty,
                 ModuleDefId = Null.NullInteger,
                 PropertyCategory = category,
                 PropertyName = name,
@@ -271,7 +271,7 @@ namespace DotNetNuke.Entities.Profile
                                                                definition.Length,
                                                                (int)definition.DefaultVisibility,
                                                                UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
+            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
             ClearProfileDefinitionCache(definition.PortalId);
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
             return intDefinition;
@@ -297,7 +297,7 @@ namespace DotNetNuke.Entities.Profile
         public static void DeletePropertyDefinition(ProfilePropertyDefinition definition)
         {
             _dataProvider.DeletePropertyDefinition(definition.PropertyDefinitionId);
-            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
+            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
             ClearProfileDefinitionCache(definition.PortalId);
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
         }
@@ -488,7 +488,7 @@ namespace DotNetNuke.Entities.Profile
                                               definition.Length,
                                               (int)definition.DefaultVisibility,
                                               UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_UPDATED);
+            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_UPDATED);
             ClearProfileDefinitionCache(definition.PortalId);
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
         }

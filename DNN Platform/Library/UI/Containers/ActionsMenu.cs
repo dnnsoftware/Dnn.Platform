@@ -58,7 +58,7 @@ namespace DotNetNuke.UI.Containers
             {
                 if (this._ActionRoot == null)
                 {
-                    this._ActionRoot = new ModuleAction(this.ModuleControl.ModuleContext.GetNextActionID(), " ", "", "", "action.gif");
+                    this._ActionRoot = new ModuleAction(this.ModuleControl.ModuleContext.GetNextActionID(), " ", string.Empty, string.Empty, "action.gif");
                 }
                 return this._ActionRoot;
             }

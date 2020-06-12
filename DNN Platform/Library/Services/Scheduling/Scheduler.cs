@@ -1108,7 +1108,7 @@ namespace DotNetNuke.Services.Scheduling
                         // collection with the new NextStart date.
                         scheduleHistoryItem.StartDate = Null.NullDate;
                         scheduleHistoryItem.EndDate = Null.NullDate;
-                        scheduleHistoryItem.LogNotes = "";
+                        scheduleHistoryItem.LogNotes = string.Empty;
                         scheduleHistoryItem.ProcessGroup = -1;
                         AddToScheduleQueue(scheduleHistoryItem);
                     }
@@ -1198,7 +1198,7 @@ namespace DotNetNuke.Services.Scheduling
                         // collection with the new NextStart date.
                         scheduleHistoryItem.StartDate = Null.NullDate;
                         scheduleHistoryItem.EndDate = Null.NullDate;
-                        scheduleHistoryItem.LogNotes = "";
+                        scheduleHistoryItem.LogNotes = string.Empty;
                         scheduleHistoryItem.ProcessGroup = -1;
                         AddToScheduleQueue(scheduleHistoryItem);
                     }
@@ -1445,7 +1445,7 @@ namespace DotNetNuke.Services.Scheduling
                             // collection with the new NextStart date.
                             scheduleHistoryItem.StartDate = Null.NullDate;
                             scheduleHistoryItem.EndDate = Null.NullDate;
-                            scheduleHistoryItem.LogNotes = "";
+                            scheduleHistoryItem.LogNotes = string.Empty;
                             scheduleHistoryItem.ProcessGroup = -1;
                             AddToScheduleQueue(scheduleHistoryItem);
                         }

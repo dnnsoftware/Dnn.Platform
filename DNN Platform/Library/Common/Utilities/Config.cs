@@ -189,7 +189,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string GetConnectionString(string name)
         {
-            string connectionString = "";
+            string connectionString = string.Empty;
             // First check if connection string is specified in <connectionstrings> (ASP.NET 2.0 / DNN v4.x)
             if (!string.IsNullOrEmpty(name))
             {
@@ -516,7 +516,7 @@ namespace DotNetNuke.Common.Utilities
             if (!string.IsNullOrEmpty(xmlDoc.DocumentElement.GetAttribute("xmlns")))
             {
                 // remove namespace
-                string strDoc = xmlDoc.InnerXml.Replace("xmlns=\"http://schemas.microsoft.com/.NetConfiguration/v2.0\"", "");
+                string strDoc = xmlDoc.InnerXml.Replace("xmlns=\"http://schemas.microsoft.com/.NetConfiguration/v2.0\"", string.Empty);
                 xmlDoc.LoadXml(strDoc);
             }
             return xmlDoc;
@@ -689,7 +689,7 @@ namespace DotNetNuke.Common.Utilities
         {
             string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
             var xmlConfig = new XmlDocument { XmlResolver = null };
-            string strError = "";
+            string strError = string.Empty;
 
             // save the current config files
             BackupConfig();
@@ -736,7 +736,7 @@ namespace DotNetNuke.Common.Utilities
         {
             string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
             var xmlConfig = new XmlDocument { XmlResolver = null };
-            string strError = "";
+            string strError = string.Empty;
 
             // save the current config files
             BackupConfig();
@@ -831,7 +831,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns></returns>
         public static string UpdateInstallVersion(Version version)
         {
-            string strError = "";
+            string strError = string.Empty;
 
             var installVersion = GetSetting("InstallVersion");
             if (string.IsNullOrEmpty(installVersion))
@@ -906,7 +906,7 @@ namespace DotNetNuke.Common.Utilities
                 // in case of error installation shouldn't be stopped, log into log4net
                 Logger.Error(ex);
             }
-            return "";
+            return string.Empty;
         }
     }
 }

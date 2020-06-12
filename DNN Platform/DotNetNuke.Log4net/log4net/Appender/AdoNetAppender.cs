@@ -540,7 +540,7 @@ namespace log4net.Appender
         virtual protected void SendBuffer(IDbTransaction dbTran, LoggingEvent[] events)
         {
             // string.IsNotNullOrWhiteSpace() does not exist in ancient .NET frameworks
-            if (this.CommandText != null && this.CommandText.Trim() != "")
+            if (this.CommandText != null && this.CommandText.Trim() != string.Empty)
             {
                 using (IDbCommand dbCmd = this.Connection.CreateCommand())
                 {
@@ -614,7 +614,7 @@ namespace log4net.Appender
             if (this.Layout == null)
             {
                 this.ErrorHandler.Error("AdoNetAppender: No Layout specified.");
-                return "";
+                return string.Empty;
             }
             else
             {

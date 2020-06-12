@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.Journal {
                 ModuleController.Instance.UpdateModuleSetting(this.ModuleId, Constants.AllowResizePhotos, this.chkAllowResize.Checked.ToString());
                 ModuleController.Instance.UpdateModuleSetting(this.ModuleId, Constants.JournalEditorEnabled, this.chkEnableEditor.Checked.ToString());
                 ModuleController.Instance.UpdateModuleSetting(this.ModuleId, Constants.MaxCharacters, this.drpMaxMessageLength.SelectedItem.Value);
-                string journalTypes = "";
+                string journalTypes = string.Empty;
                 bool allTypes = true;
                 foreach (ListItem li in this.chkJournalFilters.Items) {
                     if (!li.Selected) {

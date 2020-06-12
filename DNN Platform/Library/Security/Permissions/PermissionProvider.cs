@@ -1191,7 +1191,7 @@ namespace DotNetNuke.Security.Permissions
                 if (objCurrentTabPermissions.Count > 0)
                 {
                     this.dataProvider.DeleteTabPermissionsByTabID(tab.TabID);
-                    EventLogController.Instance.AddLog(tab, portalSettings, userId, "", EventLogController.EventLogType.TABPERMISSION_DELETED);
+                    EventLogController.Instance.AddLog(tab, portalSettings, userId, string.Empty, EventLogController.EventLogType.TABPERMISSION_DELETED);
                 }
 
                 if (tab.TabPermissions != null && tab.TabPermissions.Count > 0)
@@ -1206,7 +1206,7 @@ namespace DotNetNuke.Security.Permissions
                             objTabPermission.UserID,
                             userId);
                     }
-                    EventLogController.Instance.AddLog(tab, portalSettings, userId, "", EventLogController.EventLogType.TABPERMISSION_CREATED);
+                    EventLogController.Instance.AddLog(tab, portalSettings, userId, string.Empty, EventLogController.EventLogType.TABPERMISSION_CREATED);
                 }
             }
         }

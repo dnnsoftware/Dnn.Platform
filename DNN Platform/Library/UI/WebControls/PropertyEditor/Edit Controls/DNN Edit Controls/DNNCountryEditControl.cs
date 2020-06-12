@@ -35,7 +35,7 @@ namespace DotNetNuke.UI.WebControls
         {
             this.AutoPostBack = true;
             this.ListName = "Country";
-            this.ParentKey = "";
+            this.ParentKey = string.Empty;
             this.TextField = ListBoundField.Text;
             this.ValueField = ListBoundField.Id;
             this.ItemChanged += this.OnItemChanged;

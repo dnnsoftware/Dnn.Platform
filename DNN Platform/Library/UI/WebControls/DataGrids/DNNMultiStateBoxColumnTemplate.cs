@@ -28,11 +28,11 @@ namespace DotNetNuke.UI.WebControls
         private string mDataField = Null.NullString;
         private bool mEnabled = true;
         private string mEnabledField = Null.NullString;
-        private string mImagePath = "";
+        private string mImagePath = string.Empty;
         private ListItemType mItemType = ListItemType.Item;
-        private string mSelectedStateKey = "";
+        private string mSelectedStateKey = string.Empty;
         private DNNMultiStateCollection mStates;
-        private string mText = "";
+        private string mText = string.Empty;
 
         public DNNMultiStateBoxColumnTemplate() : this(ListItemType.Item)
         {
@@ -253,7 +253,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 if (this.DesignMode)
                 {
-                    box.SelectedStateKey = "";
+                    box.SelectedStateKey = string.Empty;
                 }
                 else
                 {

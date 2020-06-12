@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.Journal
                 // fix any filename issues that would cause double escaping exceptions
                 if (IsImageExtension(Path.GetExtension(fileName)))
                 {
-                    fileName = fileName.Replace("+", "");
+                    fileName = fileName.Replace("+", string.Empty);
                 }
 
                 try

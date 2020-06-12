@@ -520,7 +520,7 @@ namespace DotNetNuke.Services.Mobile
         /// <returns>List of redirection.</returns>
         public IList<IRedirection> GetAllRedirections()
         {
-            var cacheArg = new CacheItemArgs(this.AllRedirectionsCacheKey, DataCache.RedirectionsCacheTimeOut, DataCache.RedirectionsCachePriority, "");
+            var cacheArg = new CacheItemArgs(this.AllRedirectionsCacheKey, DataCache.RedirectionsCacheTimeOut, DataCache.RedirectionsCachePriority, string.Empty);
             return CBO.GetCachedObject<IList<IRedirection>>(cacheArg, this.GetAllRedirectionsCallBack);
         }
 

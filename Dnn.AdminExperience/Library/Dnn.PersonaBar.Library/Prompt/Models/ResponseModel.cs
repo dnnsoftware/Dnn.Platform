@@ -13,7 +13,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
         {
             this.IsError = err;
             this.Message = msg;
-            this.Data = "";
+            this.Data = string.Empty;
         }
         public ResponseModel(bool err, string msg, string data)
         {

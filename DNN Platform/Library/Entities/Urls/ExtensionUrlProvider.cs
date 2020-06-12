@@ -47,7 +47,7 @@ namespace DotNetNuke.Entities.Urls
 
         protected string CreateQueryStringFromParameters(string[] urlParms, int skipUpToPosition)
         {
-            string result = "";
+            string result = string.Empty;
             int i = 0;
             bool odd = true;
             int size = urlParms.GetUpperBound(0) - skipUpToPosition;

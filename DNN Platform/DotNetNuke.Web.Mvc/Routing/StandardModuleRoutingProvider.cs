@@ -41,7 +41,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             if (string.IsNullOrEmpty(controlKey))
             {
                 additionalParams.Insert(0, "moduleId=" + moduleContext.Configuration.ModuleID);
-                url = this.NavigationManager.NavigateURL("", additionalParams.ToArray());
+                url = this.NavigationManager.NavigateURL(string.Empty, additionalParams.ToArray());
             }
             else
             {
@@ -53,7 +53,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         public override RouteData GetRouteData(HttpContextBase httpContext, ModuleControlInfo moduleControl)
         {
-            var segments = moduleControl.ControlSrc.Replace(".mvc", "").Split('/');
+            var segments = moduleControl.ControlSrc.Replace(".mvc", string.Empty).Split('/');
             string routeNamespace = string.Empty;
             string routeControllerName;
             string routeActionName;

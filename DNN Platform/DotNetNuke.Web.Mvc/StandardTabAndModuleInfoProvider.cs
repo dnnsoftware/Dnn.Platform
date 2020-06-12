@@ -142,7 +142,7 @@ namespace DotNetNuke.Web.Mvc
 
         private static int GetTabModuleInfoFromMoniker(string monikerValue)
         {
-            monikerValue = (monikerValue ?? "").Trim();
+            monikerValue = (monikerValue ?? string.Empty).Trim();
             if (monikerValue.Length > 0)
             {
                 var ids = TabModulesController.Instance.GetTabModuleIdsBySetting(MonikerSettingsKey, monikerValue);

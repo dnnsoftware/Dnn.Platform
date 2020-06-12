@@ -36,13 +36,13 @@ namespace DotNetNuke.UI.WebControls
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DNNListEditControl));
         private List<ListEntryInfo> _listEntries;
-        private string _listName = "";
+        private string _listName = string.Empty;
 
         public DNNListEditControl()
         {
             this.ValueField = ListBoundField.Value;
             this.TextField = ListBoundField.Text;
-            this.ParentKey = "";
+            this.ParentKey = string.Empty;
             this.SortAlphabetically = false;
         }
 

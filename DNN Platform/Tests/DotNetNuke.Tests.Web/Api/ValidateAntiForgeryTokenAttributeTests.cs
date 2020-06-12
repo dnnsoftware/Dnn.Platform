@@ -47,7 +47,7 @@ namespace DotNetNuke.Tests.Web.Api
             var config = new HttpConfiguration();
             var controllerContext = new HttpControllerContext(config, new HttpRouteData(new HttpRoute()), request);
             var actionContext = new HttpActionContext(controllerContext, new Mock<HttpActionDescriptor>().Object);
-            var authFilterContext = new AuthFilterContext(actionContext, "");
+            var authFilterContext = new AuthFilterContext(actionContext, string.Empty);
             var mockAntiForgery = new Mock<IAntiForgery>();
             mockAntiForgery.Setup(x => x.CookieName).Returns(cookieName);
             AntiForgery.SetTestableInstance(mockAntiForgery.Object);
@@ -71,7 +71,7 @@ namespace DotNetNuke.Tests.Web.Api
             var config = new HttpConfiguration();
             var controllerContext = new HttpControllerContext(config, new HttpRouteData(new HttpRoute()), request);
             var actionContext = new HttpActionContext(controllerContext, new Mock<HttpActionDescriptor>().Object);
-            var authFilterContext = new AuthFilterContext(actionContext, "");
+            var authFilterContext = new AuthFilterContext(actionContext, string.Empty);
             var mockAntiForgery = new Mock<IAntiForgery>();
             mockAntiForgery.Setup(x => x.CookieName).Returns(cookieName);
             AntiForgery.SetTestableInstance(mockAntiForgery.Object);

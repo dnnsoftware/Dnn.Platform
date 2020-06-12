@@ -305,7 +305,7 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority WorkflowsCachePriority = CacheItemPriority.Low;
         public const int WorkflowsCacheTimeout = 2;
 
-        private static string _CachePersistenceEnabled = "";
+        private static string _CachePersistenceEnabled = string.Empty;
 
         public const string ScopeTypesCacheKey = "ScopeTypes";
         public const string VocabularyCacheKey = "Vocabularies";
@@ -406,7 +406,7 @@ namespace DotNetNuke.Common.Utilities
             }
             else
             {
-                CachingProvider.Instance().Clear("Host", "");
+                CachingProvider.Instance().Clear("Host", string.Empty);
             }
         }
 

@@ -236,7 +236,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             Requires.NotNull("folderMapping", folderMapping);
 
             // the root folder should always exist.
-            if (folderPath == "")
+            if (folderPath == string.Empty)
             {
                 return true;
             }
@@ -274,7 +274,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             var pattern = "^" + mappedPath;
             return (from i in list
                     let f = i.Key
-                     let r = !string.IsNullOrEmpty(mappedPath) ? Regex.Replace(f, pattern, "", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2)) : f
+                     let r = !string.IsNullOrEmpty(mappedPath) ? Regex.Replace(f, pattern, string.Empty, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2)) : f
                     where f.StartsWith(mappedPath, true, CultureInfo.InvariantCulture) && f.Length > mappedPath.Length && r.IndexOf("/", StringComparison.Ordinal) == -1
                     select Path.GetFileName(f)).ToArray();
 
@@ -360,7 +360,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
                 let f = o.Key
                 let r =
                     !string.IsNullOrEmpty(folderPath)
-                        ? Regex.Replace(f,  pattern, "", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2))
+                        ? Regex.Replace(f,  pattern, string.Empty, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2))
                         : f
                 where f.StartsWith(folderPath, StringComparison.InvariantCultureIgnoreCase)
                                    && f.Length > folderPath.Length

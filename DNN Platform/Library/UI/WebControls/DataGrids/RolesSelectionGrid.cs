@@ -317,7 +317,7 @@ namespace DotNetNuke.UI.WebControls
             var textCol = new BoundColumn { HeaderText = "&nbsp;", DataField = "RoleName" };
             textCol.ItemStyle.Width = Unit.Parse("150px");
             this.dgRoleSelection.Columns.Add(textCol);
-            var idCol = new BoundColumn { HeaderText = "", DataField = "roleid", Visible = false };
+            var idCol = new BoundColumn { HeaderText = string.Empty, DataField = "roleid", Visible = false };
             this.dgRoleSelection.Columns.Add(idCol);
             var checkCol = new TemplateColumn();
             var columnTemplate = new CheckBoxColumnTemplate { DataField = "Selected" };

@@ -32,7 +32,7 @@ namespace DotNetNuke.UI.UserControls
         #endregion
 
         private string MyFileName = "LocaleSelectorControl.ascx";
-        private string _ViewType = "";
+        private string _ViewType = string.Empty;
 
         private CultureDropDownTypes DisplayType
         {

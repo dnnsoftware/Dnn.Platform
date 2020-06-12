@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             get
             {
-                var _RedirectURL = "";
+                var _RedirectURL = string.Empty;
 
                 object setting = GetSetting(this.PortalId, "Redirect_AfterRegistration");
 

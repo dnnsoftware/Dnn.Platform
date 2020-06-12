@@ -145,7 +145,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                                             {
                                                 // This overload allows control of the page size. You can return all remaining results by passing null for the maxResults parameter,
                                                 // or by calling a different overload.
-                                                resultSegment = container.ListBlobsSegmented("", true, BlobListingDetails.All, synchBatchSize, continuationToken, null, null);
+                                                resultSegment = container.ListBlobsSegmented(string.Empty, true, BlobListingDetails.All, synchBatchSize, continuationToken, null, null);
                                                 foreach (var blobItem in resultSegment.Results)
                                                 {
                                                     list.Add(new AzureRemoteStorageItem { Blob = new AzureBlob(blobItem as CloudBlob) });

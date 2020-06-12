@@ -196,7 +196,7 @@ namespace DotNetNuke.Entities.Portals
         {
             culture = null;
             browserType = BrowserTypes.Normal;
-            skin = "";
+            skin = string.Empty;
             foreach (var cpa in aliases)
             {
                 if (cpa.PortalID == portalId && string.Compare(alias, cpa.HTTPAlias, StringComparison.OrdinalIgnoreCase) == 0)

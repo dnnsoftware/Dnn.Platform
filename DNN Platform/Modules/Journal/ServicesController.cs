@@ -178,7 +178,7 @@ namespace DotNetNuke.Modules.Journal
                 UserId = this.UserInfo.UserID,
                 SocialGroupId = postData.GroupId,
                 ProfileId = postData.ProfileId,
-                Summary = postData.Text ?? "",
+                Summary = postData.Text ?? string.Empty,
                 SecuritySet = postData.SecuritySet
             };
             ji.Title = HttpUtility.HtmlDecode(HttpUtility.UrlDecode(ji.Title));

@@ -46,10 +46,10 @@ namespace DotNetNuke.Web.Mvc.Routing
         {
             if (count == 0)
             {
-                return "";
+                return string.Empty;
             }
 
-            var prefix = "";
+            var prefix = string.Empty;
 
             for (var i = count - 1; i >= 0; i--)
             {

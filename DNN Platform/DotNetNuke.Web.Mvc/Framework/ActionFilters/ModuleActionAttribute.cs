@@ -64,7 +64,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 -1,
                                 (!string.IsNullOrEmpty(this.TitleKey)) ? controller.LocalizeString(this.TitleKey) : this.Title,
                                 ModuleActionType.AddContent,
-                                "",
+                                string.Empty,
                                 this.Icon,
                                 controller.ModuleContext.EditUrl(this.ControlKey),
                                 false,

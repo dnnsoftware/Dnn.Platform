@@ -119,7 +119,7 @@ namespace DotNetNuke.Services.ClientCapability
         {
             get
             {
-                throw new NotImplementedException("");
+                throw new NotImplementedException(string.Empty);
             }
         }
 

@@ -77,19 +77,19 @@ namespace DotNetNuke.Tests.Core
         [Test]
         public void EmptyElement()
         {
-            this.DoTest(new[] { "first", "", "third" }, "first,,third");
+            this.DoTest(new[] { "first", string.Empty, "third" }, "first,,third");
         }
 
         [Test]
         public void MultipleEmptyElements()
         {
-            this.DoTest(new[] { "", "", "" }, ",,");
+            this.DoTest(new[] { string.Empty, string.Empty, string.Empty }, ",,");
         }
 
         [Test]
         public void EmptyEnumerable()
         {
-            this.DoTest(new object[] { }, "");
+            this.DoTest(new object[] { }, string.Empty);
         }
 
         [Test]

@@ -29,7 +29,7 @@ namespace DotNetNuke.Tests.Data
                 { "name", "SqlDataProvider" },
                 { "type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke" },
                 { "connectionStringName", "SiteSqlServer" },
-                { "objectQualifier", "" },
+                { "objectQualifier", string.Empty },
                 { "databaseOwner", "dbo." }
             });
         }

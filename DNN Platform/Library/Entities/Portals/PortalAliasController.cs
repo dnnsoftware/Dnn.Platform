@@ -75,7 +75,7 @@ namespace DotNetNuke.Entities.Portals
                 if (httpAlias.StartsWith("www.", StringComparison.InvariantCultureIgnoreCase))
                 {
                     // try alias without the "www." prefix
-                    strPortalAlias = httpAlias.Replace("www.", "");
+                    strPortalAlias = httpAlias.Replace("www.", string.Empty);
                 }
                 else // try the alias with the "www." prefix
                 {
@@ -135,7 +135,7 @@ namespace DotNetNuke.Entities.Portals
         private static void LogEvent(PortalAliasInfo portalAlias, EventLogController.EventLogType logType)
         {
             int userId = UserController.Instance.GetCurrentUserInfo().UserID;
-            EventLogController.Instance.AddLog(portalAlias, PortalController.Instance.GetCurrentPortalSettings(), userId, "", logType);
+            EventLogController.Instance.AddLog(portalAlias, PortalController.Instance.GetCurrentPortalSettings(), userId, string.Empty, logType);
         }
 
         private static bool ValidateAlias(string portalAlias, bool ischild, bool isDomain)
@@ -292,7 +292,7 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Portal alias.</returns>
         public static string GetPortalAliasByPortal(int portalId, string portalAlias)
         {
-            string retValue = "";
+            string retValue = string.Empty;
             bool foundAlias = false;
             PortalAliasInfo portalAliasInfo = Instance.GetPortalAlias(portalAlias, portalId);
             if (portalAliasInfo != null)
@@ -322,7 +322,7 @@ namespace DotNetNuke.Entities.Portals
                         retValue = currentAlias.Value.HTTPAlias;
                         break;
                     }
-                    httpAlias = httpAlias.StartsWith("www.") ? httpAlias.Replace("www.", "") : string.Concat("www.", httpAlias);
+                    httpAlias = httpAlias.StartsWith("www.") ? httpAlias.Replace("www.", string.Empty) : string.Concat("www.", httpAlias);
                     if (httpAlias.StartsWith(portalAlias.ToLowerInvariant()) && currentAlias.Value.PortalID == portalId)
                     {
                         retValue = currentAlias.Value.HTTPAlias;

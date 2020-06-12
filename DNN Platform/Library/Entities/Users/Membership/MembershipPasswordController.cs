@@ -175,10 +175,10 @@ namespace DotNetNuke.Entities.Users.Membership
             var listController = new ListController();
             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
 
-            IEnumerable<ListEntryInfo> listEntryHostInfos = listController.GetListEntryInfoItems(listName, "",
+            IEnumerable<ListEntryInfo> listEntryHostInfos = listController.GetListEntryInfoItems(listName, string.Empty,
                 Null.NullInteger);
             IEnumerable<ListEntryInfo> listEntryPortalInfos =
-                listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, "", settings.PortalId);
+                listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
 
             IEnumerable<ListEntryInfo> query2 = listEntryHostInfos.Where(test => test.Text == inputString);
             IEnumerable<ListEntryInfo> query3 = listEntryPortalInfos.Where(test => test.Text == inputString);

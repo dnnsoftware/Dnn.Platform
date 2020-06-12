@@ -447,7 +447,7 @@ namespace DotNetNuke.Services.Log.EventLog
             foreach (LogTypeConfigInfo typeConfigInfo in configInfos)
             {
                 IDataReader dr = DataProvider.Instance().GetEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.ID));
-                string log = "";
+                string log = string.Empty;
                 try
                 {
                     while (dr.Read())

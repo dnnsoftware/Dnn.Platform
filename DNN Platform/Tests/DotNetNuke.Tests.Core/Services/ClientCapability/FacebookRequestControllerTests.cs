@@ -96,7 +96,7 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
         [Test]
         public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Get_Request()
         {
-            HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", "");
+            HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", string.Empty);
             httpRequest.RequestType = "GET";
 
             var request = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);
@@ -106,7 +106,7 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
         [Test]
         public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Post_Invalid_Request()
         {
-            HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", "");
+            HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", string.Empty);
             httpRequest.RequestType = "POST";
             this.SetReadonly(httpRequest.Form, false);
             httpRequest.Form.Add("signed_request", this._requestDics["Invalid"]);
@@ -118,7 +118,7 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
         [Test]
         public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Post_Valid_Request()
         {
-            HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", "");
+            HttpRequest httpRequest = new HttpRequest("unittest.aspx", "http://localhost/unittest.aspx", string.Empty);
             httpRequest.RequestType = "POST";
             this.SetReadonly(httpRequest.Form, false);
             httpRequest.Form.Add("signed_request", this._requestDics["Valid"]);

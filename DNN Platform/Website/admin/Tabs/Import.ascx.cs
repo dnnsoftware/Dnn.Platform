@@ -81,7 +81,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     var files = Globals.GetFileList(this.PortalId, "page.template", false, folder.FolderPath);
                     foreach (FileItem file in files)
                     {
-                        this.cboTemplate.AddItem(file.Text.Replace(".page.template", ""), file.Value);
+                        this.cboTemplate.AddItem(file.Text.Replace(".page.template", string.Empty), file.Value);
                     }
                     this.cboTemplate.InsertItem(0, "<" + Localization.GetString("None_Specified") + ">", "None_Specified");
                     this.cboTemplate.SelectedIndex = 0;
@@ -244,7 +244,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     {
                         objTab.TabID = TabController.Instance.AddTab(objTab);
                     }
-                    EventLogController.Instance.AddLog(objTab, this.PortalSettings, this.UserId, "", EventLogController.EventLogType.TAB_CREATED);
+                    EventLogController.Instance.AddLog(objTab, this.PortalSettings, this.UserId, string.Empty, EventLogController.EventLogType.TAB_CREATED);
 
                     objTab = TabController.DeserializeTab(tabNodes[0], objTab, this.PortalId, PortalTemplateModuleAction.Replace);
 

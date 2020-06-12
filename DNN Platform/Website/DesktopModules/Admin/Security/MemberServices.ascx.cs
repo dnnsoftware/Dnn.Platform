@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
                 else
                 {
-                    formatPrice = "";
+                    formatPrice = string.Empty;
                 }
             }
             catch (Exception exc) // Module failed to load
@@ -395,7 +395,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
             this.cmdRSVP.Click += this.cmdRSVP_Click;
             this.grdServices.ItemCommand += this.grdServices_ItemCommand;
-            this.lblRSVP.Text = "";
+            this.lblRSVP.Text = string.Empty;
         }
 
         /// -----------------------------------------------------------------------------
@@ -432,7 +432,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     this.lblRSVP.Text = Localization.GetString("RSVPSuccess", this.LocalResourceFile);
                     // Reset RSVP Code field
-                    this.txtRSVPCode.Text = "";
+                    this.txtRSVPCode.Text = string.Empty;
                 }
                 else
                 {

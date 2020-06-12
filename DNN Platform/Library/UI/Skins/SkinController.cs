@@ -133,7 +133,7 @@ namespace DotNetNuke.UI.Skins
 
         public static int AddSkinPackage(SkinPackageInfo skinPackage)
         {
-            EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINPACKAGE_CREATED);
+            EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINPACKAGE_CREATED);
             return DataProvider.Instance().AddSkinPackage(skinPackage.PackageID, skinPackage.PortalID, skinPackage.SkinName, skinPackage.SkinType, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
@@ -145,17 +145,17 @@ namespace DotNetNuke.UI.Skins
             if (folderPath.IndexOf(Globals.HostMapPath, StringComparison.InvariantCultureIgnoreCase) != -1)
             {
                 skinType = "G";
-                skinFolder = folderPath.ToLowerInvariant().Replace(Globals.HostMapPath.ToLowerInvariant(), "").Replace("\\", "/");
+                skinFolder = folderPath.ToLowerInvariant().Replace(Globals.HostMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
             }
             else if (folderPath.IndexOf(PortalSettings.Current.HomeSystemDirectoryMapPath, StringComparison.InvariantCultureIgnoreCase) != -1)
             {
                 skinType = "S";
-                skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), "").Replace("\\", "/");
+                skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
             }
             else // to be compliant with all versions
             {
                 skinType = "L";
-                skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), "").Replace("\\", "/");
+                skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
             }
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
@@ -192,7 +192,7 @@ namespace DotNetNuke.UI.Skins
         public static void DeleteSkinPackage(SkinPackageInfo skinPackage)
         {
             DataProvider.Instance().DeleteSkinPackage(skinPackage.SkinPackageID);
-            EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINPACKAGE_DELETED);
+            EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINPACKAGE_DELETED);
         }
 
         public static string FormatMessage(string title, string body, int level, bool isError)
@@ -418,7 +418,7 @@ namespace DotNetNuke.UI.Skins
                                                       skinPackage.SkinName,
                                                       skinPackage.SkinType,
                                                       UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.SKINPACKAGE_UPDATED);
+            EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINPACKAGE_UPDATED);
             foreach (KeyValuePair<int, string> kvp in skinPackage.Skins)
             {
                 UpdateSkin(kvp.Key, kvp.Value);
@@ -435,7 +435,7 @@ namespace DotNetNuke.UI.Skins
             FileStream objFileStream;
             int intSize = 2048;
             var arrData = new byte[2048];
-            string strMessage = "";
+            string strMessage = string.Empty;
             var arrSkinFiles = new ArrayList();
 
             // Localized Strings

@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 {
                     intRoleId = int.Parse(this.Request.QueryString["roleid"]);
                 }
-                string strProcessorUserId = "";
+                string strProcessorUserId = string.Empty;
                 PortalInfo objPortalInfo = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
                 if (objPortalInfo != null)
                 {
@@ -148,7 +148,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                             {
                                 ListEntryInfo colList = ctlList.GetListEntryInfo("Region", objUserInfo.Profile.Region);
                                 strPayPalURL += "&address1=" +
-                                                Globals.HTTPPOSTEncode(Convert.ToString(!string.IsNullOrEmpty(objUserInfo.Profile.Unit) ? objUserInfo.Profile.Unit + " " : "") +
+                                                Globals.HTTPPOSTEncode(Convert.ToString(!string.IsNullOrEmpty(objUserInfo.Profile.Unit) ? objUserInfo.Profile.Unit + " " : string.Empty) +
                                                                        objUserInfo.Profile.Street);
                                 strPayPalURL += "&city=" + Globals.HTTPPOSTEncode(objUserInfo.Profile.City);
                                 strPayPalURL += "&state=" + Globals.HTTPPOSTEncode(colList.Value);

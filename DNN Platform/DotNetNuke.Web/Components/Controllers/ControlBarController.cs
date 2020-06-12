@@ -66,7 +66,7 @@ namespace DotNetNuke.Web.Components.Controllers
 
         public string GetBookmarkCategory(int portalId)
         {
-            var bookmarkCategory = PortalController.GetPortalSetting(BookmarkCategoryProperty, portalId, "");
+            var bookmarkCategory = PortalController.GetPortalSetting(BookmarkCategoryProperty, portalId, string.Empty);
             if (string.IsNullOrEmpty(bookmarkCategory))
             {
                 PortalController.UpdatePortalSetting(portalId, BookmarkCategoryProperty, "Common");
@@ -105,7 +105,7 @@ namespace DotNetNuke.Web.Components.Controllers
                 WebAction = "location.href='" + navigateUrl + "'; return false;",
                 AltText = alt,
                 ToolTip = toolTip,
-                CssClass = ""
+                CssClass = string.Empty
             };
         }
 

@@ -383,7 +383,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             var page = HttpContextSource.Current.Handler as Page;
             if (page != null)
             {
-                Skin.AddPageMessage(page, "", strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
+                Skin.AddPageMessage(page, string.Empty, strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
             }
         }
 
@@ -596,7 +596,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
                     ClientResourceManager.RegisterScript(page, ClientAPI.ScriptPath + "dnn.js", 12);
                     HttpContextSource.Current.Items.Add(LegacyPrefix + "dnn.js", true);
-                    page.ClientScript.RegisterClientScriptBlock(page.GetType(), "dnn.js", "");
+                    page.ClientScript.RegisterClientScriptBlock(page.GetType(), "dnn.js", string.Empty);
 
                     if (!ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.SingleCharDelimiters))
                     {

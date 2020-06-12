@@ -78,7 +78,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                             connectionConfig.Integrated = value.ToLowerInvariant() == "true";
                             break;
                         case "attachdbfilename":
-                            connectionConfig.File = value.Replace("|DataDirectory|", "");
+                            connectionConfig.File = value.Replace("|DataDirectory|", string.Empty);
                             break;
                     }
                 }
@@ -632,7 +632,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
         private void GetLanguagePack(string downloadUrl, string installFolder)
         {
-            string myfile = "";
+            string myfile = string.Empty;
             WebResponse wr = Util.GetExternalRequest(
                 downloadUrl,
                                                      null,

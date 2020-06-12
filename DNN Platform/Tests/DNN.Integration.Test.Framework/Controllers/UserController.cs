@@ -102,7 +102,7 @@ namespace DNN.Integration.Test.Framework.Controllers
                 .Replace(IsSuperUserMarker, parms.SuperUser ? "1" : "0")
                 .Replace(CreateFriendsMarker, parms.AutoCreateFriends ? "1" : "0")
                 .Replace(CreateFollowersMarker, parms.AutoCreateFollowersAndFollowings ? "1" : "0")
-                .Replace(RoleMarker, string.IsNullOrEmpty(parms.Role) ? "" : parms.Role);
+                .Replace(RoleMarker, string.IsNullOrEmpty(parms.Role) ? string.Empty : parms.Role);
             DatabaseHelper.ExecuteQuery(script.ToString());
             return GetUserId(username);
         }

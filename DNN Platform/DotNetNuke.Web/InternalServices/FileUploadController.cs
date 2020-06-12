@@ -145,11 +145,11 @@ namespace DotNetNuke.Web.InternalServices
                             switch (name.ToUpper())
                             {
                                 case "\"FOLDER\"":
-                                    folder = item.ReadAsStringAsync().Result ?? "";
+                                    folder = item.ReadAsStringAsync().Result ?? string.Empty;
                                     break;
 
                                 case "\"FILTER\"":
-                                    filter = item.ReadAsStringAsync().Result ?? "";
+                                    filter = item.ReadAsStringAsync().Result ?? string.Empty;
                                     break;
 
                                 case "\"OVERWRITE\"":
@@ -165,7 +165,7 @@ namespace DotNetNuke.Web.InternalServices
                                     break;
 
                                 case "\"POSTFILE\"":
-                                    fileName = item.Headers.ContentDisposition.FileName.Replace("\"", "");
+                                    fileName = item.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
                                     if (fileName.IndexOf("\\", StringComparison.Ordinal) != -1)
                                     {
                                         fileName = Path.GetFileName(fileName);
@@ -175,7 +175,7 @@ namespace DotNetNuke.Web.InternalServices
                             }
                         }
 
-                        var errorMessage = "";
+                        var errorMessage = string.Empty;
                         var alreadyExists = false;
                         if (!string.IsNullOrEmpty(fileName) && stream != null)
                         {
@@ -231,7 +231,7 @@ namespace DotNetNuke.Web.InternalServices
             var savedFileDto = new SavedFileDTO();
             try
             {
-                var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", "");
+                var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", string.Empty);
                 if (!string.IsNullOrEmpty(filter) && !filter.ToLowerInvariant().Contains(extension.ToLowerInvariant()))
                 {
                     errorMessage = GetLocalizedString("ExtensionNotAllowed");
@@ -277,7 +277,7 @@ namespace DotNetNuke.Web.InternalServices
                     FileManager.Instance.DeleteFile(file);
                 }
 
-                errorMessage = "";
+                errorMessage = string.Empty;
                 savedFileDto.FileId = file.FileId.ToString(CultureInfo.InvariantCulture);
                 savedFileDto.FilePath = FileManager.Instance.GetUrl(file);
                 return savedFileDto;
@@ -409,7 +409,7 @@ namespace DotNetNuke.Web.InternalServices
                     throw new InvalidOperationException("Bad Request");
                 }
 
-                var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", "");
+                var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", string.Empty);
                 result.FileIconUrl = IconController.GetFileIconUrl(extension);
 
                 if (!string.IsNullOrEmpty(filter) && !filter.ToLowerInvariant().Contains(extension.ToLowerInvariant()))
@@ -581,11 +581,11 @@ namespace DotNetNuke.Web.InternalServices
                         switch (name.ToUpper())
                         {
                             case "\"FOLDER\"":
-                                folder = item.ReadAsStringAsync().Result ?? "";
+                                folder = item.ReadAsStringAsync().Result ?? string.Empty;
                                 break;
 
                             case "\"FILTER\"":
-                                filter = item.ReadAsStringAsync().Result ?? "";
+                                filter = item.ReadAsStringAsync().Result ?? string.Empty;
                                 break;
 
                             case "\"OVERWRITE\"":
@@ -607,10 +607,10 @@ namespace DotNetNuke.Web.InternalServices
                                 }
                                 break;
                             case "\"VALIDATIONCODE\"":
-                                validationCode = item.ReadAsStringAsync().Result ?? "";
+                                validationCode = item.ReadAsStringAsync().Result ?? string.Empty;
                                 break;
                             case "\"POSTFILE\"":
-                                fileName = item.Headers.ContentDisposition.FileName.Replace("\"", "");
+                                fileName = item.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
                                 if (fileName.IndexOf("\\", StringComparison.Ordinal) != -1)
                                 {
                                     fileName = Path.GetFileName(fileName);

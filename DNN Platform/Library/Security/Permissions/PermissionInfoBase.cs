@@ -204,7 +204,7 @@ namespace DotNetNuke.Security.Permissions
             else
             {
                 this.RoleID = int.Parse(Globals.glbRoleNothing);
-                this.RoleName = "";
+                this.RoleName = string.Empty;
             }
             this.AllowAccess = Null.SetNullBoolean(dr["AllowAccess"]);
         }

@@ -195,7 +195,7 @@ namespace DotNetNuke.UI.ControlPanel
             ArrayList templateFiles = Globals.GetFileList(PortalSettings.PortalId, "page.template", false, "Templates/");
             foreach (FileItem dnnFile in templateFiles)
             {
-                var item = new DnnComboBoxItem(dnnFile.Text.Replace(".page.template", ""), dnnFile.Value);
+                var item = new DnnComboBoxItem(dnnFile.Text.Replace(".page.template", string.Empty), dnnFile.Value);
                 this.TemplateLst.Items.Add(item);
                 if (item.Text == "Default")
                 {
@@ -203,7 +203,7 @@ namespace DotNetNuke.UI.ControlPanel
                 }
             }
 
-            this.TemplateLst.InsertItem(0, this.GetString("NoTemplate"), "");
+            this.TemplateLst.InsertItem(0, this.GetString("NoTemplate"), string.Empty);
         }
 
         private void LoadLocationList()

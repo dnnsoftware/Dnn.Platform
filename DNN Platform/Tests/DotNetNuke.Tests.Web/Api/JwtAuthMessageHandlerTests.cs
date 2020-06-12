@@ -51,7 +51,7 @@ namespace DotNetNuke.Tests.Web.Api
             this._mockUserController = new Mock<IUserController>();
             this._mockMembership = MockComponentProvider.CreateNew<MembershipProvider>();
 
-            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns("");
+            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
             this._mockDataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(GetPortalsCallBack);
             this._mockDataProvider.Setup(d => d.GetUser(It.IsAny<int>(), It.IsAny<int>())).Returns(GetUser);
             this._mockDataService.Setup(ds => ds.GetPortalGroups()).Returns(this.GetPortalGroups);

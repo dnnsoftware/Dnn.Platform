@@ -222,7 +222,7 @@ namespace DotNetNuke.Security
                     // Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
                     if (settings != null && !(settings.PortalId == user.PortalID && user.IsInRole(settings.AdministratorRoleName)))
                     {
-                        string denyRole = roleName.Replace("!", "");
+                        string denyRole = roleName.Replace("!", string.Empty);
                         if (denyRole == Globals.glbRoleAllUsersName || user.IsInRole(denyRole))
                         {
                             roleAllowed = false;
@@ -347,7 +347,7 @@ namespace DotNetNuke.Security
         /// -----------------------------------------------------------------------------
         private static string FormatAngleBrackets(string strInput)
         {
-            var tempInput = new StringBuilder(strInput).Replace("<", "").Replace(">", "");
+            var tempInput = new StringBuilder(strInput).Replace("<", string.Empty).Replace(">", string.Empty);
             return tempInput.ToString();
         }
 
@@ -455,7 +455,7 @@ namespace DotNetNuke.Security
         {
             if (userInput == null)
             {
-                return "";
+                return string.Empty;
             }
             var tempInput = userInput;
             if ((filterType & FilterFlag.NoAngleBrackets) == FilterFlag.NoAngleBrackets)
@@ -524,19 +524,19 @@ namespace DotNetNuke.Security
                     switch (filterScope)
                     {
                         case FilterScope.SystemList:
-                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, "", Null.NullInteger);
+                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, string.Empty, Null.NullInteger);
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", removeItem.Value, options));
                             break;
                         case FilterScope.SystemAndPortalList:
                             settings = PortalController.Instance.GetCurrentPortalSettings();
-                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, "", Null.NullInteger);
-                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, "", settings.PortalId);
+                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, string.Empty, Null.NullInteger);
+                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", removeItem.Value, options));
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", removeItem.Value, options));
                             break;
                         case FilterScope.PortalList:
                             settings = PortalController.Instance.GetCurrentPortalSettings();
-                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, "", settings.PortalId);
+                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", removeItem.Value, options));
                             break;
                     }
@@ -585,19 +585,19 @@ namespace DotNetNuke.Security
                     switch (filterScope)
                     {
                         case FilterScope.SystemList:
-                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, "", Null.NullInteger);
+                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, string.Empty, Null.NullInteger);
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", string.Empty, options));
                             break;
                         case FilterScope.SystemAndPortalList:
                             settings = PortalController.Instance.GetCurrentPortalSettings();
-                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, "", Null.NullInteger);
-                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, "", settings.PortalId);
+                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, string.Empty, Null.NullInteger);
+                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", string.Empty, options));
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", string.Empty, options));
                             break;
                         case FilterScope.PortalList:
                             settings = PortalController.Instance.GetCurrentPortalSettings();
-                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, "", settings.PortalId);
+                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", string.Empty, options));
                             break;
                     }
@@ -740,14 +740,14 @@ namespace DotNetNuke.Security
             var httpCookie = HttpContext.Current.Response.Cookies["language"];
             if (httpCookie != null)
             {
-                httpCookie.Value = "";
+                httpCookie.Value = string.Empty;
             }
 
             // remove authentication type cookie
             var cookie = HttpContext.Current.Response.Cookies["authentication"];
             if (cookie != null)
             {
-                cookie.Value = "";
+                cookie.Value = string.Empty;
             }
 
             // expire cookies
@@ -923,7 +923,7 @@ namespace DotNetNuke.Security
                             // Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
                             if (settings != null && !(settings.PortalId == objUserInfo.PortalID && objUserInfo.IsInRole(settings.AdministratorRoleName)))
                             {
-                                string denyRole = role.Replace("!", "");
+                                string denyRole = role.Replace("!", string.Empty);
                                 if (denyRole == Globals.glbRoleAllUsersName || objUserInfo.IsInRole(denyRole))
                                 {
                                     isDenied = true;

@@ -44,7 +44,7 @@ namespace DotNetNuke.Common.Utilities
 
         private static string CreateFile(IFolderInfo folder, string fileName, string contentType, Stream fileContent, bool unzip, bool overwrite, bool checkPermissions)
         {
-            var strMessage = "";
+            var strMessage = string.Empty;
             var fileManager = FileManager.Instance;
 
             try
@@ -85,7 +85,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         private static string GetFileName(string filePath)
         {
-            return Path.GetFileName(filePath).Replace(Globals.glbProtectedExtension, "");
+            return Path.GetFileName(filePath).Replace(Globals.glbProtectedExtension, string.Empty);
         }
 
         private static int GetFolderPortalID(PortalSettings settings)
@@ -386,10 +386,10 @@ namespace DotNetNuke.Common.Utilities
 
         public static string DeleteFiles(Array arrPaths)
         {
-            var strExceptions = "";
+            var strExceptions = string.Empty;
             for (var i = 0; i < arrPaths.Length; i++)
             {
-                var strPath = (arrPaths.GetValue(i) ?? "").ToString();
+                var strPath = (arrPaths.GetValue(i) ?? string.Empty).ToString();
                 var pos = strPath.IndexOf("'", StringComparison.Ordinal);
                 if (pos != -1)
                 {

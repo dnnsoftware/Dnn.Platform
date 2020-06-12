@@ -39,7 +39,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
                 saveUrl = new
                 {
                     SiteAliasKey = 1,
-                    Path = "/Path" + Guid.NewGuid().ToString().Replace("-", ""),
+                    Path = "/Path" + Guid.NewGuid().ToString().Replace("-", string.Empty),
                     QueryString = string.Empty,
                     LocaleKey = 1,
                     StatusCodeKey = 200,

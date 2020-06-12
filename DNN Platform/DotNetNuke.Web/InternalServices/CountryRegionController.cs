@@ -23,7 +23,7 @@ namespace DotNetNuke.Web.InternalServices
         [HttpGet()]
         public HttpResponseMessage Countries()
         {
-            var searchString = (HttpContext.Current.Request.Params["SearchString"] ?? "").NormalizeString();
+            var searchString = (HttpContext.Current.Request.Params["SearchString"] ?? string.Empty).NormalizeString();
             var countries = CachedCountryList.GetCountryList(Thread.CurrentThread.CurrentCulture.Name);
             return this.Request.CreateResponse(HttpStatusCode.OK, countries.Values.Where(
                 x => x.NormalizedFullName.IndexOf(searchString, StringComparison.CurrentCulture) > -1).OrderBy(x => x.NormalizedFullName));

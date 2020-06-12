@@ -740,7 +740,7 @@ namespace log4net.Core
                 {
                     if (this.m_message == null)
                     {
-                        this.m_data.Message = "";
+                        this.m_data.Message = string.Empty;
                     }
                     else if (this.m_message is string)
                     {
@@ -914,7 +914,7 @@ namespace log4net.Core
                         }
                         else
                         {
-                            this.m_data.UserName = "";
+                            this.m_data.UserName = string.Empty;
                         }
                     }
                     catch (System.Security.SecurityException)
@@ -923,7 +923,7 @@ namespace log4net.Core
                         // some undefined set of SecurityPermission flags.
                         LogLog.Debug(declaringType, "Security exception while trying to get current windows identity. Error Ignored. Empty user name.");
 
-                        this.m_data.UserName = "";
+                        this.m_data.UserName = string.Empty;
                     }
 #endif
                 }
@@ -963,7 +963,7 @@ namespace log4net.Core
                         }
                         else
                         {
-                            this.m_data.Identity = "";
+                            this.m_data.Identity = string.Empty;
                         }
                     }
                     catch (ObjectDisposedException)
@@ -973,7 +973,7 @@ namespace log4net.Core
                         // Seen to happen on IIS 7 or greater with windows authentication.
                         LogLog.Debug(declaringType, "Object disposed exception while trying to get current thread principal. Error Ignored. Empty identity name.");
 
-                        this.m_data.Identity = "";
+                        this.m_data.Identity = string.Empty;
                     }
                     catch (System.Security.SecurityException)
                     {
@@ -981,7 +981,7 @@ namespace log4net.Core
                         // some undefined set of SecurityPermission flags.
                         LogLog.Debug(declaringType, "Security exception while trying to get current thread principal. Error Ignored. Empty identity name.");
 
-                        this.m_data.Identity = "";
+                        this.m_data.Identity = string.Empty;
                     }
 #endif
                 }
@@ -1215,7 +1215,7 @@ namespace log4net.Core
                 }
                 else
                 {
-                    this.m_data.ExceptionString = "";
+                    this.m_data.ExceptionString = string.Empty;
                 }
             }
             return this.m_data.ExceptionString;

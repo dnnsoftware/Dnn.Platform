@@ -45,7 +45,7 @@ namespace DotNetNuke.Tests.Web.Api
         {
             MockComponentProvider.CreateDataCacheProvider();
             this._mockDataProvider = MockComponentProvider.CreateDataProvider();
-            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns("");
+            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
             this._mockDataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(GetPortalsCallBack);
 
             this.RegisterMock(ModuleController.SetTestableInstance, out this._mockModuleController, out this._moduleController);

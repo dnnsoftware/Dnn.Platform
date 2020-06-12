@@ -461,7 +461,7 @@ namespace DotNetNuke.Modules.Html
             int S = 0;
             int tLen = 0;
             string strURL = null;
-            var sbBuff = new StringBuilder("");
+            var sbBuff = new StringBuilder(string.Empty);
 
             if (!string.IsNullOrEmpty(strHTML))
             {
@@ -717,7 +717,7 @@ namespace DotNetNuke.Modules.Html
         /// <param name = "moduleId">The Id of the module to be exported</param>
         public string ExportModule(int moduleId)
         {
-            string xml = "";
+            string xml = string.Empty;
 
             ModuleInfo module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
             int workflowID = this.GetWorkflow(moduleId, module.TabID, module.PortalID).Value;

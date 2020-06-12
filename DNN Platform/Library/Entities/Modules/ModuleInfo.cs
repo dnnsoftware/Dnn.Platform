@@ -1059,7 +1059,7 @@ namespace DotNetNuke.Entities.Modules
             this.DisplayPrint = false;
             this.DisplaySyndicate = Null.NullBoolean;
             this.IsWebSlice = Null.NullBoolean;
-            this.WebSliceTitle = "";
+            this.WebSliceTitle = string.Empty;
             this.WebSliceExpiryDate = Null.NullDate;
             this.WebSliceTTL = 0;
             this.InheritViewPermissions = Null.NullBoolean;

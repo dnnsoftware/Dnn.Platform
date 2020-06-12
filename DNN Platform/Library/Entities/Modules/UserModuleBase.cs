@@ -417,7 +417,7 @@ namespace DotNetNuke.Entities.Modules
 
         protected string CompleteUserCreation(UserCreateStatus createStatus, UserInfo newUser, bool notify, bool register)
         {
-            var strMessage = "";
+            var strMessage = string.Empty;
             var message = ModuleMessage.ModuleMessageType.RedError;
             if (register)
             {
@@ -447,11 +447,11 @@ namespace DotNetNuke.Entities.Modules
                         break;
                     case (int)Globals.PortalRegistrationType.PublicRegistration:
                         Mail.SendMail(newUser, MessageType.UserRegistrationPublic, this.PortalSettings);
-                        UserController.UserLogin(this.PortalSettings.PortalId, newUser.Username, newUser.Membership.Password, "", this.PortalSettings.PortalName, "", ref loginStatus, false);
+                        UserController.UserLogin(this.PortalSettings.PortalId, newUser.Username, newUser.Membership.Password, string.Empty, this.PortalSettings.PortalName, string.Empty, ref loginStatus, false);
                         break;
                     case (int)Globals.PortalRegistrationType.VerifiedRegistration:
                         Mail.SendMail(newUser, MessageType.UserRegistrationVerified, this.PortalSettings);
-                        UserController.UserLogin(this.PortalSettings.PortalId, newUser.Username, newUser.Membership.Password, "", this.PortalSettings.PortalName, "", ref loginStatus, false);
+                        UserController.UserLogin(this.PortalSettings.PortalId, newUser.Username, newUser.Membership.Password, string.Empty, this.PortalSettings.PortalName, string.Empty, ref loginStatus, false);
                         break;
                 }
                 // store preferredlocale in cookie
@@ -513,7 +513,7 @@ namespace DotNetNuke.Entities.Modules
         private string LocalizeNotificationText(string text, string locale, UserInfo user, PortalSettings portalSettings)
         {
             // This method could need a custom ArrayList in future notification types. Currently it is null
-            return Localization.GetSystemMessage(locale, portalSettings, text, user, Localization.GlobalResourceFile, null, "", portalSettings.AdministratorId);
+            return Localization.GetSystemMessage(locale, portalSettings, text, user, Localization.GlobalResourceFile, null, string.Empty, portalSettings.AdministratorId);
         }
 
         private string GetNotificationSubject(string locale, UserInfo newUser, PortalSettings portalSettings)

@@ -671,7 +671,7 @@ namespace DotNetNuke.UI.ControlPanels
                 }
 
 
-                IEnumerable<ListItem> cultureListItems = Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, this.CurrentUICulture, "", false);
+                IEnumerable<ListItem> cultureListItems = Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, this.CurrentUICulture, string.Empty, false);
                 foreach (var cultureItem in cultureListItems)
                 {
                     var selected = cultureItem.Value == this.CurrentUICulture ? "true" : "false";
@@ -707,7 +707,7 @@ namespace DotNetNuke.UI.ControlPanels
                      }
                  }
 
-                 IEnumerable<ListItem> cultureListItems = Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, this.CurrentUICulture, "", false);
+                 IEnumerable<ListItem> cultureListItems = Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, this.CurrentUICulture, string.Empty, false);
                  return cultureListItems.Count() > 1;
              }
 

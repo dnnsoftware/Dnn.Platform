@@ -41,7 +41,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
         {
             this._request = request;
             this._portalId = portalId;
-            this._ipAddress = ipAddress ?? "";
+            this._ipAddress = ipAddress ?? string.Empty;
             this.AuthenticateRequest();
         }
 
@@ -71,11 +71,11 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             {
                 return null;
             }
-            var password = UserController.GetPassword(ref user, "");
+            var password = UserController.GetPassword(ref user, string.Empty);
 
             // Try to validate user
             var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-            user = UserController.ValidateUser(this._portalId, user.Username, password, "DNN", "", this._ipAddress, ref loginStatus);
+            user = UserController.ValidateUser(this._portalId, user.Username, password, "DNN", string.Empty, this._ipAddress, ref loginStatus);
 
             return user != null ? password : null;
         }
@@ -107,7 +107,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             // Services.Logging.LoggingController.SimpleLog(String.Format("Creating Hash for {0}", val))
             // Services.Logging.LoggingController.SimpleLog(String.Format("Back and forth: {0}", Encoding.Default.GetString(Encoding.Default.GetBytes(val))))
             byte[] bha1 = Md5.ComputeHash(Encoding.Default.GetBytes(val));
-            string ha1 = "";
+            string ha1 = string.Empty;
             for (int i = 0; i <= 15; i++)
             {
                 ha1 += string.Format("{0:x02}", bha1[i]);

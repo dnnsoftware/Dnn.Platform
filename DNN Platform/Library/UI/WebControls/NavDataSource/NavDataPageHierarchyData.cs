@@ -150,7 +150,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this.GetSafeValue(this.m_objNode.Text, "");
+                return this.GetSafeValue(this.m_objNode.Text, string.Empty);
             }
         }
 
@@ -178,7 +178,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this.GetSafeValue(this.m_objNode.NavigateURL, "");
+                return this.GetSafeValue(this.m_objNode.NavigateURL, string.Empty);
             }
         }
 
@@ -192,7 +192,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return this.GetSafeValue(this.m_objNode.ToolTip, "");
+                return this.GetSafeValue(this.m_objNode.ToolTip, string.Empty);
             }
         }
 
@@ -231,14 +231,14 @@ namespace DotNetNuke.UI.WebControls
         private string GetValuePath(DNNNode objNode)
         {
             DNNNode objParent = objNode.ParentNode;
-            string strPath = this.GetSafeValue(objNode.Key, "");
+            string strPath = this.GetSafeValue(objNode.Key, string.Empty);
             do
             {
                 if (objParent == null || objParent.Level == -1)
                 {
                     break;
                 }
-                strPath = this.GetSafeValue(objParent.Key, "") + "\\" + strPath;
+                strPath = this.GetSafeValue(objParent.Key, string.Empty) + "\\" + strPath;
                 objParent = objParent.ParentNode;
             } while (true);
             return strPath;

@@ -200,7 +200,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 string targetFileName = nodeNav.Value;
                 if (!string.IsNullOrEmpty(targetFileName))
                 {
-                    this._TargetFile = new InstallFile(targetFileName, "", this.Package.InstallerInfo);
+                    this._TargetFile = new InstallFile(targetFileName, string.Empty, this.Package.InstallerInfo);
                 }
                 // Get the Install config changes
                 nodeNav = nav.SelectSingleNode("install");

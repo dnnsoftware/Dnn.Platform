@@ -101,7 +101,7 @@ namespace DotNetNuke.Web.Api
 
             // if the attribute opted in explicitly for specific authentication types, then
             // use it; otherwise use the defaults according to settings in the web.config.
-            var currentAuthType = (identity.AuthenticationType ?? "").Trim();
+            var currentAuthType = (identity.AuthenticationType ?? string.Empty).Trim();
             if (currentAuthType.Length > 0)
             {
                 if (this._authTypesSplit.Any())

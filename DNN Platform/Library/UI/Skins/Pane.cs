@@ -416,7 +416,7 @@ namespace DotNetNuke.UI.Skins
                 return false;
             }
 
-            object controller = Framework.Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, "");
+            object controller = Framework.Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, string.Empty);
             return controller is IVersionable;
         }
 
@@ -571,7 +571,7 @@ namespace DotNetNuke.UI.Skins
                     }
                     else
                     {
-                        this.PaneControl.Attributes["class"] = cssclass.Replace(CPaneOutline, "").Trim().Replace("  ", " ") + " " + CPaneOutline;
+                        this.PaneControl.Attributes["class"] = cssclass.Replace(CPaneOutline, string.Empty).Trim().Replace("  ", " ") + " " + CPaneOutline;
                     }
                     // display pane name
                     var ctlLabel = new Label { Text = "<center>" + this.Name + "</center><br />", CssClass = "SubHead" };

@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.Groups.Components
 
                     foreach (var action in actions)
                     {
-                        action.APICall = action.APICall.Replace(".ashx", "");
+                        action.APICall = action.APICall.Replace(".ashx", string.Empty);
                         NotificationsController.Instance.DeleteNotificationTypeAction(action.NotificationTypeActionId);
                     }
 
@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.Groups.Components
                                 {
                                     NameResourceKey = "Approve",
                                     DescriptionResourceKey = "ApproveGroupMember",
-                                    ConfirmResourceKey = "",
+                                    ConfirmResourceKey = string.Empty,
                                     APICall = "API/SocialGroups/ModerationService/ApproveMember"
                                 });
                 actions.Add(new NotificationTypeAction

@@ -305,7 +305,7 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = importJob.PortalId;
             if (folder == null) return false;
 
-            var existingFolder = CBO.FillObject<ExportFolder>(DotNetNuke.Data.DataProvider.Instance().GetFolder(portalId, folder.FolderPath ?? ""));
+            var existingFolder = CBO.FillObject<ExportFolder>(DotNetNuke.Data.DataProvider.Instance().GetFolder(portalId, folder.FolderPath ?? string.Empty));
             var isUpdate = false;
             var modifiedBy = Util.GetUserIdByName(importJob, folder.LastModifiedByUserId, folder.LastModifiedByUserName);
             if (existingFolder != null)
@@ -321,7 +321,7 @@ namespace Dnn.ExportImport.Components.Services
                         throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
             }
-            folder.FolderPath = string.IsNullOrEmpty(folder.FolderPath) ? "" : folder.FolderPath;
+            folder.FolderPath = string.IsNullOrEmpty(folder.FolderPath) ? string.Empty : folder.FolderPath;
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, folder.FolderMappingName);
             if (folderMapping == null) return false;
             var workFlowId = this.GetLocalWorkFlowId(folder.WorkflowId);
@@ -348,7 +348,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (folder.ParentId != null && folder.ParentId > 0)
                 {
                     // Find the previously created parent folder id.
-                    folder.ParentId = CBO.FillObject<ExportFolder>(DotNetNuke.Data.DataProvider.Instance().GetFolder(portalId, folder.ParentFolderPath ?? ""))?.FolderId;
+                    folder.ParentId = CBO.FillObject<ExportFolder>(DotNetNuke.Data.DataProvider.Instance().GetFolder(portalId, folder.ParentFolderPath ?? string.Empty))?.FolderId;
                 }
                 // ignore folders which start with Users but are not user folders.
                 if (!folder.FolderPath.StartsWith(DefaultUsersFoldersPath))
