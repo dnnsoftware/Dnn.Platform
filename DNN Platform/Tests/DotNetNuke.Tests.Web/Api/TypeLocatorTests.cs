@@ -21,9 +21,9 @@ namespace DotNetNuke.Tests.Web.Api
             var assembly = new Mock<IAssembly>();
             assembly.Setup(x => x.GetTypes()).Returns(new[] { typeof(TypeLocatorTests), typeof(ServiceRoutingManagerTests) });
             var assemblyLocator = new Mock<IAssemblyLocator>();
-            assemblyLocator.Setup(x => x.Assemblies).Returns(new[] { assembly.Object});
+            assemblyLocator.Setup(x => x.Assemblies).Returns(new[] { assembly.Object });
 
-            var typeLocator = new TypeLocator { AssemblyLocator = assemblyLocator.Object};
+            var typeLocator = new TypeLocator { AssemblyLocator = assemblyLocator.Object };
 
             var types = typeLocator.GetAllMatchingTypes(x => true).ToList();
 

@@ -417,7 +417,7 @@ namespace DotNetNuke.Entities.Urls
 
 		            if (!newUrl.Contains(currentLocale))
 		            {
-			            var tabPath = tabLookUpKey.Split(new[] { "::"}, StringSplitOptions.None)[1];
+			            var tabPath = tabLookUpKey.Split(new[] { "::" }, StringSplitOptions.None)[1];
 			            using (tabDict.GetReadLock())
 			            {
 				            foreach (var key in tabDict.Keys.Where(k => k.EndsWith("::" + tabPath)))

@@ -43,7 +43,7 @@ namespace DotNetNuke.Tests.Core.Collections
                 }
             }
 
-            CollectionAssert.AreEqual(new List<string> { value}, sharedList.BackingList);
+            CollectionAssert.AreEqual(new List<string> { value }, sharedList.BackingList);
         }
 
         [Test, ExpectedException(typeof(WriteLockRequiredException)), TestCaseSource("GetWriteMethods")]

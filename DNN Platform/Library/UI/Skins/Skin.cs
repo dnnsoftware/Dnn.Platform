@@ -488,7 +488,7 @@ namespace DotNetNuke.UI.Skins
 	            if (this.PortalSettings.ContentLocalizationEnabled &&
 	                TabController.CurrentPage.CultureCode != currentLocale.Code)
 	            {
-		            redirectUrl = new LanguageTokenReplace { Language = currentLocale.Code}.ReplaceEnvironmentTokens("[URL]");
+		            redirectUrl = new LanguageTokenReplace { Language = currentLocale.Code }.ReplaceEnvironmentTokens("[URL]");
 	            }
 
 				this.Response.Redirect(redirectUrl, true);

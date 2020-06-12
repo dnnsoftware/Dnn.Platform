@@ -45,7 +45,7 @@ namespace DotNetNuke.Tests.UI.Validation
         public void ValidateObject_Returns_Successful_Result_If_All_Attributes_On_All_Properties_Validate()
         {
             // Arrange
-            TestClass cls = new TestClass { Foo = new object(), Bar = "Baz"};
+            TestClass cls = new TestClass { Foo = new object(), Bar = "Baz" };
             DataAnnotationsObjectValidator validator = new DataAnnotationsObjectValidator();
 
             // Act
@@ -59,7 +59,7 @@ namespace DotNetNuke.Tests.UI.Validation
         public void ValidateObject_Returns_Failed_Result_If_Any_Attribute_Does_Not_Validate()
         {
             // Arrange
-            TestClass cls = new TestClass { Foo = new object(), Bar = "BarBaz"};
+            TestClass cls = new TestClass { Foo = new object(), Bar = "BarBaz" };
             DataAnnotationsObjectValidator validator = new DataAnnotationsObjectValidator();
 
             // Act
@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.UI.Validation
         public void ValidateObject_Collects_Error_Messages_From_Validation_Attributes()
         {
             // Arrange
-            TestClass cls = new TestClass { Foo = null, Bar = "BarBaz"};
+            TestClass cls = new TestClass { Foo = null, Bar = "BarBaz" };
             DataAnnotationsObjectValidator validator = new DataAnnotationsObjectValidator();
 
             // Act
@@ -89,7 +89,7 @@ namespace DotNetNuke.Tests.UI.Validation
         public void ValidateObject_Collects_ValidationAttribute_Objects_From_Failed_Validation()
         {
             // Arrange
-            TestClass cls = new TestClass { Foo = null, Bar = "BarBaz"};
+            TestClass cls = new TestClass { Foo = null, Bar = "BarBaz" };
             DataAnnotationsObjectValidator validator = new DataAnnotationsObjectValidator();
 
             // Act

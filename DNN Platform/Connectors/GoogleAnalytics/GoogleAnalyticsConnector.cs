@@ -134,10 +134,10 @@ namespace DNN.Connectors.GoogleAnalytics
             var configItems = new Dictionary<string, string>
             {
                 { "TrackingID", trackingId },
-                { "UrlParameter", urlParameter},
-                { "TrackAdministrators", trackForAdmin},
-                { "AnonymizeIp", anonymizeIp},
-                { "TrackUserId", trackUserId},
+                { "UrlParameter", urlParameter },
+                { "TrackAdministrators", trackForAdmin },
+                { "AnonymizeIp", anonymizeIp },
+                { "TrackUserId", trackUserId },
                 { "DataConsent", this.HandleCustomBoolean(portalSettings.DataConsentActive.ToString()) },
                 { "isDeactivating", this.HandleCustomBoolean("false") }
             };

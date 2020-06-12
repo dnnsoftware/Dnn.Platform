@@ -273,7 +273,7 @@ namespace DotNetNuke.Entities.Modules
                 return false;
             }
 
-            var translatorSettingKey = $"DefaultTranslatorRoles-{culture }";
+            var translatorSettingKey = $"DefaultTranslatorRoles-{culture}";
 
             var translatorSettingValue = 
                 PortalController.GetPortalSetting(translatorSettingKey, portalId, null) ?? 

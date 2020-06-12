@@ -19,7 +19,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 	{
 		private XslCompiledTransform xsl;
 		private static readonly Dictionary<string, string> aliases = new Dictionary<string, string>
-		                                                             { { "page", "node"}, { "name", "text"}};
+		                                                             { { "page", "node" }, { "name", "text" } };
 
         private static readonly Regex TemplatesRegex =
                 new Regex(

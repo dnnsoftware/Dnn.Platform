@@ -120,7 +120,7 @@ namespace DotNetNuke.Tests.Content
             fileController.AddFileToContent(contentId, ContentTestHelper.CreateValidFile(0));
 
             dataService.Verify(
-                ds => ds.AddMetaData(It.IsAny<ContentItem>(), FileController.FilesKey, new[] { 0}.ToJson()));
+                ds => ds.AddMetaData(It.IsAny<ContentItem>(), FileController.FilesKey, new[] { 0 }.ToJson()));
         }
 
         [Test]

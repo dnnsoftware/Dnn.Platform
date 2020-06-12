@@ -59,7 +59,7 @@ namespace DotNetNuke.UI.WebControls
 
 		#region Private Members
 
-		private static readonly string[] _FontFamilies = { "Arial", "Comic Sans MS", "Courier New", "Georgia", "Lucida Console", "MS Sans Serif", "Tahoma", "Times New Roman", "Trebuchet MS", "Verdana"};
+		private static readonly string[] _FontFamilies = { "Arial", "Comic Sans MS", "Courier New", "Georgia", "Lucida Console", "MS Sans Serif", "Tahoma", "Times New Roman", "Trebuchet MS", "Verdana" };
 
 		private static readonly Random _Rand = new Random();
 		private static string _Separator = ":-:";
@@ -638,7 +638,7 @@ namespace DotNetNuke.UI.WebControls
 			PointF p3 = RandomPoint(0, intWrange, rect.Height - (intHrange - Convert.ToInt32(p1.Y)), rect.Height);
 			PointF p4 = RandomPoint(rect.Width - (intWrange - Convert.ToInt32(p3.X)), rect.Width, rect.Height - (intHrange - Convert.ToInt32(p2.Y)), rect.Height);
 
-			var points = new[] { p1, p2, p3, p4};
+			var points = new[] { p1, p2, p3, p4 };
 			var m = new Matrix();
 			m.Translate(0, 0);
 			textPath.Warp(points, rectF, m, WarpMode.Perspective, 0);
@@ -659,7 +659,7 @@ namespace DotNetNuke.UI.WebControls
 			{
 				throw new InvalidOperationException("Must specify size of control in pixels.");
 			}
-			this._image = new Image { BorderColor = this.BorderColor, BorderStyle = this.BorderStyle, BorderWidth = this.BorderWidth, ToolTip = this.ToolTip, EnableViewState = false};
+			this._image = new Image { BorderColor = this.BorderColor, BorderStyle = this.BorderStyle, BorderWidth = this.BorderWidth, ToolTip = this.ToolTip, EnableViewState = false };
 			this.Controls.Add(this._image);
 		}
 

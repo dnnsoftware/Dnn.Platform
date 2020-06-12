@@ -212,7 +212,7 @@ namespace DotNetNuke.UI.ControlPanel
             this.SkinLst.Items.Add(new RadComboBoxItem(this.GetString("DefaultSkin"), string.Empty));
 
             // load portal skins
-            var portalSkinsHeader = new RadComboBoxItem(this.GetString("PortalSkins"), string.Empty) { Enabled = false, CssClass = "SkinListHeader"};
+            var portalSkinsHeader = new RadComboBoxItem(this.GetString("PortalSkins"), string.Empty) { Enabled = false, CssClass = "SkinListHeader" };
             this.SkinLst.Items.Add(portalSkinsHeader);
 
             string[] arrFolders;
@@ -249,7 +249,7 @@ namespace DotNetNuke.UI.ControlPanel
             }
 
             // load host skins
-            var hostSkinsHeader = new RadComboBoxItem(this.GetString("HostSkins"), string.Empty) { Enabled = false, CssClass = "SkinListHeader"};
+            var hostSkinsHeader = new RadComboBoxItem(this.GetString("HostSkins"), string.Empty) { Enabled = false, CssClass = "SkinListHeader" };
             this.SkinLst.Items.Add(hostSkinsHeader);
 
             strRoot = Globals.HostMapPath + SkinController.RootSkin;
@@ -293,7 +293,7 @@ namespace DotNetNuke.UI.ControlPanel
 
         private RadComboBoxItem GetSeparatorItem()
         {
-            return new RadComboBoxItem(this.GetString("SkinLstSeparator"), string.Empty) { CssClass = "SkinLstSeparator", Enabled = false};
+            return new RadComboBoxItem(this.GetString("SkinLstSeparator"), string.Empty) { CssClass = "SkinLstSeparator", Enabled = false };
         }
 
         private static string FormatSkinName(string strSkinFolder, string strSkinFile)

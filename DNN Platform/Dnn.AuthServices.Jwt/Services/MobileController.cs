@@ -22,7 +22,7 @@ namespace Dnn.AuthServices.Jwt.Services
         [HttpGet]
         public IHttpActionResult Logout()
         {
-            return JwtController.Instance.LogoutUser(this.Request) ? (IHttpActionResult)this.Ok(new { success = true}) : this.Unauthorized();
+            return JwtController.Instance.LogoutUser(this.Request) ? (IHttpActionResult)this.Ok(new { success = true }) : this.Unauthorized();
         }
 
         /// <summary>

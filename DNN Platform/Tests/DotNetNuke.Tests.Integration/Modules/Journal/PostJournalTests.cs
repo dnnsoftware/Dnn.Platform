@@ -151,7 +151,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             var connector2 = this.PrepareNewUser(out userId2, out username2, out fileId2);
 
             // ADD FRIENDS
-            connector1.PostJson("/API/MemberDirectory/MemberDirectory/AddFriend", new { friendId = userId2}, this.GetRequestHeaders("Member Directory"));
+            connector1.PostJson("/API/MemberDirectory/MemberDirectory/AddFriend", new { friendId = userId2 }, this.GetRequestHeaders("Member Directory"));
 
             var notificationId = DatabaseHelper.ExecuteScalar<int>($"SELECT TOP 1 MessageID FROM {{objectQualifier}}CoreMessaging_Messages WHERE SenderUserID = {userId1}");
             connector2.PostJson("/API/InternalServices/RelationshipService/AcceptFriend", new { NotificationId  = notificationId }, this.GetRequestHeaders());

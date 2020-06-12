@@ -43,7 +43,7 @@ namespace DotNetNuke.Services.Analytics
         public void UpgradeModule(string Version)
         {
             // MD5 Hash value of the old synchronous script config file (from previous module versions)
-            string[] TRADITIONAL_FILEHASHES = { "aRUf9NsElvrpiASJHHlmZg==", "+R2k5mvFvVhWsCm4WinyAA=="};
+            string[] TRADITIONAL_FILEHASHES = { "aRUf9NsElvrpiASJHHlmZg==", "+R2k5mvFvVhWsCm4WinyAA==" };
 
             switch (Version)
             {

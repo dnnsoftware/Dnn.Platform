@@ -245,7 +245,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 return;
             }
             logInfo.LogConfigID = logTypeConfigInfo.ID;
-            var logQueueItem = new LogQueueItem { LogInfo = logInfo, LogTypeConfigInfo = logTypeConfigInfo};
+            var logQueueItem = new LogQueueItem { LogInfo = logInfo, LogTypeConfigInfo = logTypeConfigInfo };
             SchedulingProvider scheduler = SchedulingProvider.Instance();
             if (scheduler == null || logInfo.BypassBuffering || SchedulingProvider.Enabled == false 
                 || scheduler.GetScheduleStatus() == ScheduleStatus.STOPPED || !Host.EventLogBuffer)

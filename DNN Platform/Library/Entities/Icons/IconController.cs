@@ -148,7 +148,7 @@ namespace DotNetNuke.Entities.Icons
                 if (File.Exists(testFile))
                     result += iconDir.Name + ",";
             }
-            return result.Split(new[] { ','}, StringSplitOptions.RemoveEmptyEntries);
+            return result.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace DotNetNuke.Tests.Utilities
     {
         public static ContentItem CreateValidContentItem()
         {
-            ContentItem content = new ContentItem { Content = Constants.CONTENT_ValidContent, ContentKey = Constants.CONTENT_ValidContentKey, Indexed = Constants.CONTENT_IndexedFalse};
+            ContentItem content = new ContentItem { Content = Constants.CONTENT_ValidContent, ContentKey = Constants.CONTENT_ValidContentKey, Indexed = Constants.CONTENT_IndexedFalse };
             return content;
         }
 
@@ -28,7 +28,7 @@ namespace DotNetNuke.Tests.Utilities
 
         public static Term CreateValidHeirarchicalTerm(int vocabularyId, int parentId)
         {
-            Term term = new Term(vocabularyId) { Name = Constants.TERM_ValidName, Description = Constants.TERM_ValidName, Weight = Constants.TERM_ValidWeight, ParentTermId = parentId};
+            Term term = new Term(vocabularyId) { Name = Constants.TERM_ValidName, Description = Constants.TERM_ValidName, Weight = Constants.TERM_ValidWeight, ParentTermId = parentId };
             return term;
         }
 
@@ -40,7 +40,7 @@ namespace DotNetNuke.Tests.Utilities
 
         public static Term CreateValidSimpleTerm(int vocabularyId)
         {
-            Term term = new Term(vocabularyId) { Name = Constants.TERM_ValidName, Description = Constants.TERM_ValidName, Weight = Constants.TERM_ValidWeight};
+            Term term = new Term(vocabularyId) { Name = Constants.TERM_ValidName, Description = Constants.TERM_ValidName, Weight = Constants.TERM_ValidWeight };
             return term;
         }
 

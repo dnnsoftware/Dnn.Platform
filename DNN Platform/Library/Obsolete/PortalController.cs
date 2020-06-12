@@ -47,7 +47,7 @@ namespace DotNetNuke.Entities.Portals
                 LastName = lastName,
                 Username = username,
                 DisplayName = firstName + " " + lastName,
-                Membership = { Password = password},
+                Membership = { Password = password },
                 Email = email,
                 IsSuperUser = false
             };

@@ -691,7 +691,7 @@ namespace DotNetNuke.Entities.Urls
                     string pathToAppend = "";
                     string[] pair = nameValuePairs[i].Split('=');
 
-                    var illegalPageNames = new[] { "con", "aux", "nul", "prn"};
+                    var illegalPageNames = new[] { "con", "aux", "nul", "prn" };
 
                     if (!illegalPageNames.Contains(pair[0].ToLowerInvariant()) && (pair.Length == 1 || !illegalPageNames.Contains(pair[1].ToLowerInvariant())))
                     {

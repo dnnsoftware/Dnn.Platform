@@ -463,7 +463,7 @@ namespace DotNetNuke.UI.WebControls
 
         protected virtual PostBackOptions GetPostBackOptions(string argument)
         {
-            var postBackOptions = new PostBackOptions(this, argument) { RequiresJavaScriptProtocol = true};
+            var postBackOptions = new PostBackOptions(this, argument) { RequiresJavaScriptProtocol = true };
 
             if (this.CausesValidation && this.Page.GetValidators(this.ValidationGroup).Count > 0)
             {

@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
 			if (result == null)
 			{
 				result = new XslCompiledTransform();
-				using (var reader = XmlReader.Create(filename, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore}))
+				using (var reader = XmlReader.Create(filename, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore }))
 					result.Load(reader);
 				cache.Insert(filename, result, new CacheDependency(filename));
 			}
@@ -67,7 +67,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
 				lock (serialisers)
 				{
 					result = (t.Name == "MenuXml")
-					         	? new XmlSerializer(t, new XmlRootAttribute { ElementName = "Root"})
+					         	? new XmlSerializer(t, new XmlRootAttribute { ElementName = "Root" })
 					         	: new XmlSerializer(t);
 					if (!serialisers.ContainsKey(t))
 					{

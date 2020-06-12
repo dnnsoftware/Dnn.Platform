@@ -384,7 +384,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                                 }
                             }
                         }
-                        installConfig.Settings.Add(new HostSettingConfig { Name = settingNode.Name, Value = settingNode.InnerText, IsSecure = settingIsSecure});
+                        installConfig.Settings.Add(new HostSettingConfig { Name = settingNode.Name, Value = settingNode.InnerText, IsSecure = settingIsSecure });
                     }
                 }
             }
@@ -451,7 +451,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 string serverVersion = sqlConnection.ServerVersion;
                 if (serverVersion != null)
                 {
-                    string[] serverVersionDetails = serverVersion.Split(new[] { "."}, StringSplitOptions.None);
+                    string[] serverVersionDetails = serverVersion.Split(new[] { "." }, StringSplitOptions.None);
 
                     int versionNumber = int.Parse(serverVersionDetails[0]);
 

@@ -263,7 +263,7 @@ namespace DotNetNuke.Services.GeneratedImage
                             }
                             this.ContentType = GetImageFormat(extension);
                         }
-                        var imageFileTrans = new ImageFileTransform { ImageFilePath = imgFile, ImageUrl = imgUrl};
+                        var imageFileTrans = new ImageFileTransform { ImageFilePath = imgFile, ImageUrl = imgUrl };
                         this.ImageTransforms.Add(imageFileTrans);
                         break;
 

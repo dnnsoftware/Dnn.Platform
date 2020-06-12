@@ -45,7 +45,7 @@ namespace DotNetNuke.Tests.Core.Collections
                 }
             }
 
-            CollectionAssert.AreEqual(new Dictionary<string, string> { { KEY, VALUE}}, sharedDictionary.BackingDictionary);
+            CollectionAssert.AreEqual(new Dictionary<string, string> { { KEY, VALUE } }, sharedDictionary.BackingDictionary);
         }
 
         [Test, ExpectedException(typeof(WriteLockRequiredException)), TestCaseSource("GetWriteMethods")]

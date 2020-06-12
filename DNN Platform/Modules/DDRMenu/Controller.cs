@@ -167,7 +167,7 @@ namespace DotNetNuke.Web.DDRMenu
 
 		private static void CleanOldAssemblies()
 		{
-			var assembliesToRemove = new[] { "DNNDoneRight.DDRMenu.dll", "DNNGarden.DDRMenu.dll"};
+			var assembliesToRemove = new[] { "DNNDoneRight.DDRMenu.dll", "DNNGarden.DDRMenu.dll" };
 
 			var server = HttpContext.Current.Server;
 			var assemblyPath = server.MapPath("~/bin/");

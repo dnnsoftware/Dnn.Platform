@@ -275,7 +275,7 @@ namespace DotNetNuke.Services.Mail
             {
                 strSubject = this._tokenReplace.ReplaceEnvironmentTokens(strSubject);
             }
-            var message = new Message { FromUserID = this._sendingUser.UserID, ToUserID = this._sendingUser.UserID, Subject = strSubject, Body = body, Status = MessageStatusType.Unread};
+            var message = new Message { FromUserID = this._sendingUser.UserID, ToUserID = this._sendingUser.UserID, Subject = strSubject, Body = body, Status = MessageStatusType.Unread };
 
             Mail.SendEmail(this._sendingUser.Email, this._sendingUser.Email, message.Subject, message.Body);
         }

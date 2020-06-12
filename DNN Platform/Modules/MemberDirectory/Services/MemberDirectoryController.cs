@@ -277,7 +277,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             {
                 var friend = UserController.GetUserById(this.PortalSettings.PortalId, postData.FriendId);
                 FriendsController.Instance.AcceptFriend(friend);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
             catch (Exception exc)
             {
@@ -294,7 +294,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             {
                 var friend = UserController.GetUserById(this.PortalSettings.PortalId, postData.FriendId);
                 FriendsController.Instance.AddFriend(friend);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
             catch (Exception exc)
             {
@@ -311,7 +311,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             {
                 var follow = UserController.GetUserById(this.PortalSettings.PortalId, postData.FollowId);
                 FollowersController.Instance.FollowUser(follow);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
             catch (Exception exc)
             {
@@ -328,7 +328,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             {
                 var friend = UserController.GetUserById(this.PortalSettings.PortalId, postData.FriendId);
                 FriendsController.Instance.DeleteFriend(friend);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
             catch (Exception exc)
             {
@@ -345,7 +345,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             {
                 var follow = UserController.GetUserById(this.PortalSettings.PortalId, postData.FollowId);
                 FollowersController.Instance.UnFollowUser(follow);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
             catch (Exception exc)
             {

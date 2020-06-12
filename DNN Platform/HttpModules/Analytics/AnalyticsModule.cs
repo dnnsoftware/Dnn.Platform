@@ -132,7 +132,7 @@ namespace DotNetNuke.HttpModules.Analytics
                     var element = (HtmlContainerControl)page.FindControl(engine.ElementId);
                     if (element == null) continue;
 
-                    var scriptControl = new LiteralControl { Text = script};
+                    var scriptControl = new LiteralControl { Text = script };
                     if (engine.InjectTop)
                     {
                         element.Controls.AddAt(0, scriptControl);

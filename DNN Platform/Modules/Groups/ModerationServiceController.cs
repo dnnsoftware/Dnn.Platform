@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.Groups
                 notifications.AddGroupNotification(Constants.GroupApprovedNotification, this._tabId, this._moduleId, this._roleInfo, siteAdmin, new List<RoleInfo> { this._roleInfo });
                 NotificationsController.Instance.DeleteAllNotificationRecipients(postData.NotificationId);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
             catch (Exception exc)
             {
@@ -112,7 +112,7 @@ namespace DotNetNuke.Modules.Groups
                 var role = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == this._roleId);
                 RoleController.Instance.DeleteRole(role);
                 NotificationsController.Instance.DeleteAllNotificationRecipients(postData.NotificationId);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
             catch (Exception exc)
             {
@@ -207,7 +207,7 @@ namespace DotNetNuke.Modules.Groups
 
             if (success)
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
             
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unknown Error");
@@ -247,7 +247,7 @@ namespace DotNetNuke.Modules.Groups
                     notifications.AddMemberNotification(Constants.MemberApprovedNotification, this._tabId, this._moduleId, this._roleInfo, groupOwner, member);
                     NotificationsController.Instance.DeleteAllNotificationRecipients(postData.NotificationId);
 
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
                 }
             } catch (Exception exc)
             {
@@ -289,7 +289,7 @@ namespace DotNetNuke.Modules.Groups
                     notifications.AddMemberNotification(Constants.MemberRejectedNotification, this._tabId, this._moduleId, this._roleInfo, groupOwner, member);
                     NotificationsController.Instance.DeleteAllNotificationRecipients(postData.NotificationId);
 
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
                 }
             } catch (Exception exc)
             {

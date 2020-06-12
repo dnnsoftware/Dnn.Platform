@@ -102,7 +102,7 @@ namespace DotNetNuke.Entities.Urls.Config
         {
             if (rules != null)
             {
-                var config = new RewriterConfiguration { Rules = rules};
+                var config = new RewriterConfiguration { Rules = rules };
                 
 				// Create a new Xml Serializer
 				var ser = new XmlSerializer(typeof(RewriterConfiguration));

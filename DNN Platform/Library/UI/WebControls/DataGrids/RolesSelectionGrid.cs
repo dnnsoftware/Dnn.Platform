@@ -314,13 +314,13 @@ namespace DotNetNuke.UI.WebControls
 		private void SetUpRolesGrid()
 		{
 			this.dgRoleSelection.Columns.Clear();
-		    var textCol = new BoundColumn { HeaderText = "&nbsp;", DataField = "RoleName"};
+		    var textCol = new BoundColumn { HeaderText = "&nbsp;", DataField = "RoleName" };
 		    textCol.ItemStyle.Width = Unit.Parse("150px");
 			this.dgRoleSelection.Columns.Add(textCol);
-		    var idCol = new BoundColumn { HeaderText = "", DataField = "roleid", Visible = false};
+		    var idCol = new BoundColumn { HeaderText = "", DataField = "roleid", Visible = false };
 		    this.dgRoleSelection.Columns.Add(idCol);
 		    var checkCol = new TemplateColumn();
-		    var columnTemplate = new CheckBoxColumnTemplate { DataField = "Selected"};
+		    var columnTemplate = new CheckBoxColumnTemplate { DataField = "Selected" };
 		    checkCol.ItemTemplate = columnTemplate;
 			checkCol.HeaderText = Localization.GetString("SelectedRole");
 			checkCol.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
@@ -354,7 +354,7 @@ namespace DotNetNuke.UI.WebControls
 				{
 				    string state = Convert.ToString(myState[1]);
 				    this.CurrentRoleSelection = state != string.Empty 
-                                        ? new List<string>(state.Split(new[] { "##"}, StringSplitOptions.None)) 
+                                        ? new List<string>(state.Split(new[] { "##" }, StringSplitOptions.None)) 
                                         : new List<string>();
 				}
 			}
@@ -393,7 +393,7 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		protected override void CreateChildControls()
 		{
-		    this.pnlRoleSlections = new Panel { CssClass = "dnnRolesGrid"};
+		    this.pnlRoleSlections = new Panel { CssClass = "dnnRolesGrid" };
 
 		    // Optionally Add Role Group Filter
 			PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -405,10 +405,10 @@ namespace DotNetNuke.UI.WebControls
 
 				this.pnlRoleSlections.Controls.Add(new LiteralControl("&nbsp;&nbsp;"));
 
-			    this.cboRoleGroups = new DropDownList { AutoPostBack = true};
+			    this.cboRoleGroups = new DropDownList { AutoPostBack = true };
 
 			    this.cboRoleGroups.Items.Add(new ListItem(Localization.GetString("AllRoles"), "-2"));
-			    var liItem = new ListItem(Localization.GetString("GlobalRoles"), "-1") { Selected = true};
+			    var liItem = new ListItem(Localization.GetString("GlobalRoles"), "-1") { Selected = true };
 			    this.cboRoleGroups.Items.Add(liItem);
 				foreach (RoleGroupInfo roleGroup in arrGroups)
 				{
@@ -418,7 +418,7 @@ namespace DotNetNuke.UI.WebControls
 
 				this.pnlRoleSlections.Controls.Add(new LiteralControl("<br/><br/>"));
 			}
-		    this.dgRoleSelection = new DataGrid { AutoGenerateColumns = false, CellSpacing = 0, GridLines = GridLines.None};
+		    this.dgRoleSelection = new DataGrid { AutoGenerateColumns = false, CellSpacing = 0, GridLines = GridLines.None };
 		    this.dgRoleSelection.FooterStyle.CssClass = "dnnGridFooter";
 			this.dgRoleSelection.HeaderStyle.CssClass = "dnnGridHeader";
 			this.dgRoleSelection.ItemStyle.CssClass = "dnnGridItem";

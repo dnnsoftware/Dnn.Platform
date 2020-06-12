@@ -25,7 +25,7 @@ namespace DotNetNuke.Tests.Core
         [Test]
         public void CombinesWithSpecifiedSeperator()
         {
-            string result = EscapedString.Combine(new[] { "first", "second"}, ';');
+            string result = EscapedString.Combine(new[] { "first", "second" }, ';');
 
             Assert.AreEqual("first;second", result);
         }
@@ -35,7 +35,7 @@ namespace DotNetNuke.Tests.Core
         {
             IEnumerable<string> result = EscapedString.Seperate("first]second", ']');
 
-            CollectionAssert.AreEqual(new[] { "first", "second"}, result);
+            CollectionAssert.AreEqual(new[] { "first", "second" }, result);
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace DotNetNuke.Tests.Core
         [Test]
         public void MultipleEmptyElements()
         {
-            this.DoTest(new[] { "", "", ""}, ",,");
+            this.DoTest(new[] { "", "", "" }, ",,");
         }
 
         [Test]
@@ -95,25 +95,25 @@ namespace DotNetNuke.Tests.Core
         [Test]
         public void SingleElement()
         {
-            this.DoTest(new [] { "only item here"}, "only item here");
+            this.DoTest(new [] { "only item here" }, "only item here");
         }
 
         [Test]
         public void AllEscapeChars()
         {
-            this.DoTest(new [] { @"\", @"\\", @"\\\"}, @"\\,\\\\,\\\\\\");
+            this.DoTest(new [] { @"\", @"\\", @"\\\" }, @"\\,\\\\,\\\\\\");
         }
 
         [Test]
         public void AllSeperatorChars()
         {
-            this.DoTest(new [] { ",", ",,", ",,,"}, @"\,,\,\,,\,\,\,");
+            this.DoTest(new [] { ",", ",,", ",,," }, @"\,,\,\,,\,\,\,");
         }
 
         [Test]
         public void AllEscapedSeperators()
         {
-            this.DoTest(new [] { @"\,", @"\,\,", @"\,\,\,"}, @"\\\,,\\\,\\\,,\\\,\\\,\\\,");
+            this.DoTest(new [] { @"\,", @"\,\,", @"\,\,\," }, @"\\\,,\\\,\\\,,\\\,\\\,\\\,");
         }
 
         private void DoTest(IEnumerable enumerable, string s)

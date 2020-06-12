@@ -37,7 +37,7 @@ namespace DNN.Integration.Test.Framework.Controllers
         public static int CreateRegisteredUser(string firstName = IntegrationConstants.RuFirstName,
             string lastName = IntegrationConstants.RuLastName, int portalId = 0)
         {
-            return CreateUser(new CreateUserParams { FirstName = firstName, LastName = lastName, PortalId = portalId});
+            return CreateUser(new CreateUserParams { FirstName = firstName, LastName = lastName, PortalId = portalId });
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace DNN.Integration.Test.Framework.Controllers
         /// <remarks>Username created is firstname.lastname</remarks>
         public static int CreateSuperUser(string firstName, string lastName, int portalId = 0)
         {
-            return CreateUser(new CreateUserParams { FirstName = firstName, LastName = lastName, PortalId = portalId, SuperUser = true});
+            return CreateUser(new CreateUserParams { FirstName = firstName, LastName = lastName, PortalId = portalId, SuperUser = true });
         }
 
         /// <summary>

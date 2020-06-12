@@ -297,7 +297,7 @@ namespace DotNetNuke.Modules.Journal
                 if (ji.UserId == this.UserInfo.UserID || ji.ProfileId == this.UserInfo.UserID || this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
                 {
                     jc.SoftDeleteJournalItem(this.PortalSettings.PortalId, this.UserInfo.UserID, postData.JournalId);
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
                 }
 
                 return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "access denied");

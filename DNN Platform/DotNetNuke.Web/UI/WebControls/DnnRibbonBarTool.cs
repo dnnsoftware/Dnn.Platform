@@ -115,7 +115,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 if ((this._dnnLinkButton == null))
                 {
                     // Appending _CPCommandBtn is also assumed in the RibbonBar.ascx. If changed, one would need to change in both places.
-                    this._dnnLinkButton = new DnnTextButton { ID = this.ID + "_CPCommandBtn"};
+                    this._dnnLinkButton = new DnnTextButton { ID = this.ID + "_CPCommandBtn" };
                 }
                 return this._dnnLinkButton;
             }

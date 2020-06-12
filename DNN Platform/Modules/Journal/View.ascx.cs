@@ -192,7 +192,7 @@ namespace DotNetNuke.Modules.Journal {
                 this.BaseUrl = this.BaseUrl.EndsWith("/") ? this.BaseUrl : this.BaseUrl + "/";
                 this.BaseUrl += "DesktopModules/Journal/";
 
-                this.ProfilePage = this._navigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId=xxx"});
+                this.ProfilePage = this._navigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId=xxx" });
 
                 if (!String.IsNullOrEmpty(this.Request.QueryString["userId"]))
                 {

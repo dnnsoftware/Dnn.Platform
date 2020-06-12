@@ -74,7 +74,7 @@ namespace Dnn.PersonaBar.UI.Services
             UpdateType updateType;
             var url = this.NeedUpdate(out updateType) ? Upgrade.UpgradeRedirect() : string.Empty;
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Url = url, Type = updateType});
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Url = url, Type = updateType });
         }
 
         private bool GetVisibleSetting(string settingName)

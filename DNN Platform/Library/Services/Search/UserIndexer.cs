@@ -389,7 +389,7 @@ namespace DotNetNuke.Services.Search
         {
             var query = new BooleanQuery
             {
-                { NumericRangeQuery.NewIntRange(Constants.PortalIdTag, portalId, portalId, true, true), Occur.MUST},
+                { NumericRangeQuery.NewIntRange(Constants.PortalIdTag, portalId, portalId, true, true), Occur.MUST },
                 {
                     NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, UserSearchTypeId, UserSearchTypeId, true, true),
                     Occur.MUST

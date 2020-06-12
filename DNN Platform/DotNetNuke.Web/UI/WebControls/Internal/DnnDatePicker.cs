@@ -66,8 +66,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             return new Dictionary<string, object>
             {
-                { "minDate", this.MinDate > DateTime.MinValue ? $"$new Date('{this.MinDate.ToString(this.Format, CultureInfo.InvariantCulture)}')$" : ""},
-                { "maxDate", this.MaxDate > DateTime.MinValue ? $"$new Date('{this.MaxDate.ToString(this.Format, CultureInfo.InvariantCulture)}')$" : ""},
+                { "minDate", this.MinDate > DateTime.MinValue ? $"$new Date('{this.MinDate.ToString(this.Format, CultureInfo.InvariantCulture)}')$" : "" },
+                { "maxDate", this.MaxDate > DateTime.MinValue ? $"$new Date('{this.MaxDate.ToString(this.Format, CultureInfo.InvariantCulture)}')$" : "" },
                 { "format", this.ClientFormat }
             };
         } 

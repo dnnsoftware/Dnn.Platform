@@ -206,7 +206,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 					throw new ApplicationException(String.Format("Can't find processor for manifest {0}", manifestPath));
 				}
 
-				cache.Insert(manifestPath, baseDef, new CacheDependency(new[] { manifestPath, baseDef.TemplatePath}));
+				cache.Insert(manifestPath, baseDef, new CacheDependency(new[] { manifestPath, baseDef.TemplatePath }));
 			}
 
 			var result = baseDef.Clone();

@@ -434,7 +434,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(1, hits.Results.Count());
 
             query = NumericRangeQuery.NewLongRange(fieldName, long.Parse(DateTime.Now.AddDays(-368).ToString(Constants.DateTimeFormat)), long.Parse(DateTime.Now.ToString(Constants.DateTimeFormat)), true, true);
-            hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query}));
+            hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query }));
             Assert.AreEqual(2, hits.Results.Count());
         }
 

@@ -192,7 +192,7 @@ namespace log4net.Util
 				if (messageSize > 0) 
 				{
 					// Remove trailing null-terminating characters (\r\n) from the message
-					msgBuf = msgBuf.TrimEnd(new char[] { '\r', '\n'});
+					msgBuf = msgBuf.TrimEnd(new char[] { '\r', '\n' });
 				}
 				else 
 				{

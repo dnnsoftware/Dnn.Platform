@@ -32,7 +32,7 @@ namespace DotNetNuke.Web.DDRMenu
 			try
 			{
 				var templateDef = TemplateDefinition.FromName(menuStyle, "*menudef.xml");
-				return new MenuBase { TemplateDef = templateDef};
+				return new MenuBase { TemplateDef = templateDef };
 			}
 			catch (Exception exc)
 			{
@@ -53,9 +53,9 @@ namespace DotNetNuke.Web.DDRMenu
 
 		private readonly Dictionary<string, string> nodeSelectorAliases = new Dictionary<string, string>
 																		  {
-																			{ "rootonly", "*,0,0"},
-																			{ "rootchildren", "+0"},
-																			{ "currentchildren", "."}
+																			{ "rootonly", "*,0,0" },
+																			{ "rootchildren", "+0" },
+																			{ "currentchildren", "." }
 																		  };
 
 		internal void ApplySettings(Settings settings)
@@ -122,7 +122,7 @@ namespace DotNetNuke.Web.DDRMenu
 
 			this.TemplateDef.AddClientOptions(new List<ClientOption> { new ClientString("MenuStyle", this.menuSettings.MenuStyle) }, false);
 
-			this.TemplateDef.Render(new MenuXml { root = this.RootNode, user = user}, htmlWriter);
+			this.TemplateDef.Render(new MenuXml { root = this.RootNode, user = user }, htmlWriter);
 		}
 
 		private void LoadNodeXml()

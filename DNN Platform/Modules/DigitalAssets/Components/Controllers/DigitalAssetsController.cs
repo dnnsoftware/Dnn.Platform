@@ -640,7 +640,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             var destinationFolder = FolderManager.Instance.GetFolder(file.FolderId);
             var invalidFiles = new List<string>();
             var filesCount = FileManager.Instance.UnzipFile(file, destinationFolder, invalidFiles);
-            return new ZipExtractViewModel() { Ok = true, InvalidFiles = invalidFiles, TotalCount = filesCount};
+            return new ZipExtractViewModel() { Ok = true, InvalidFiles = invalidFiles, TotalCount = filesCount };
         }
 
         public virtual int GetInitialTab(NameValueCollection requestParams, NameValueCollection damState)

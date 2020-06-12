@@ -402,9 +402,9 @@ namespace DotNetNuke.Services.Install
             {
             // {new AddFcnModeStep(), 1},
                 { iisVerification, 1 },
-                { upgradeDatabase, 49}, 
-                { upgradeExtensions, 49}, 
-                { new InstallVersionStep(), 1}
+                { upgradeDatabase, 49 }, 
+                { upgradeExtensions, 49 }, 
+                { new InstallVersionStep(), 1 }
             };
 
         static UpgradeWizard()

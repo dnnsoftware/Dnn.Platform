@@ -842,7 +842,7 @@ namespace DotNetNuke.UI.ControlPanel
                 var portals = PortalController.Instance.GetPortals().Cast<PortalInfo>().ToArray();
 
                 this.SiteList.DataSource = portals.Select(
-                    x => new { Value = x.PortalID, Name = x.PortalName, GroupID = x.PortalGroupID}).ToList();
+                    x => new { Value = x.PortalID, Name = x.PortalName, GroupID = x.PortalGroupID }).ToList();
                 this.SiteList.DataTextField = "Name";
                 this.SiteList.DataValueField = "Value";
                 this.SiteList.DataBind();
@@ -854,7 +854,7 @@ namespace DotNetNuke.UI.ControlPanel
 			this.VisibilityLst.Enabled = !this.AddExistingModule.Checked;
 			if ((this.VisibilityLst.Enabled))
 			{
-				var items = new Dictionary<string, string> { { "0", this.GetString("PermissionView") }, { "1", this.GetString("PermissionEdit") }};
+				var items = new Dictionary<string, string> { { "0", this.GetString("PermissionView") }, { "1", this.GetString("PermissionEdit") } };
 
 				this.VisibilityLst.Items.Clear();
 				this.VisibilityLst.DataValueField = "key";

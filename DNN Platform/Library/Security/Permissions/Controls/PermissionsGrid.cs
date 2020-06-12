@@ -635,7 +635,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 this.cboSelectRole.Items.Add(new ListItem(role.RoleName, role.RoleID.ToString(CultureInfo.InvariantCulture)));
             }            
-            int[] defaultRoleIds = { this.AllUsersRoleId, portalSettings.RegisteredRoleId, portalSettings.AdministratorRoleId};            
+            int[] defaultRoleIds = { this.AllUsersRoleId, portalSettings.RegisteredRoleId, portalSettings.AdministratorRoleId };            
             var itemToSelect = this.cboSelectRole.Items.Cast<ListItem>().FirstOrDefault(i => !defaultRoleIds.Contains(int.Parse(i.Value)));
             if (itemToSelect != null)
             {
@@ -818,8 +818,8 @@ namespace DotNetNuke.Security.Permissions.Controls
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var arrGroups = RoleController.GetRoleGroups(portalSettings.PortalId);
 
-            var addRoleControls = new Panel { CssClass = "dnnFormItem"};
-            var divRoleGroups = new Panel { CssClass = "leftGroup"};
+            var addRoleControls = new Panel { CssClass = "dnnFormItem" };
+            var divRoleGroups = new Panel { CssClass = "leftGroup" };
             var divSelectRole = new Panel { CssClass = "rightGroup" };
 
             this.lblGroups = new Label { Text = Localization.GetString("RoleGroupFilter") };
@@ -829,7 +829,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
             this.cboRoleGroups.SelectedIndexChanged += this.RoleGroupsSelectedIndexChanged;
             this.cboRoleGroups.Items.Add(new ListItem(Localization.GetString("AllRoles"), "-2"));
-            var liItem = new ListItem(Localization.GetString("GlobalRoles"), "-1") { Selected = true};
+            var liItem = new ListItem(Localization.GetString("GlobalRoles"), "-1") { Selected = true };
             this.cboRoleGroups.Items.Add(liItem);
             foreach (RoleGroupInfo roleGroup in arrGroups)
             {
@@ -849,7 +849,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.cmdRole = new LinkButton { Text = Localization.GetString("Add"), CssClass = "dnnSecondaryAction" };
             this.cmdRole.Click += this.AddRole;
             divSelectRole.Controls.Add(this.cmdRole);
-            this.roleField = new HiddenField() { ID = "roleField"};
+            this.roleField = new HiddenField() { ID = "roleField" };
             addRoleControls.Controls.Add(this.roleField);
 
             addRoleControls.Controls.Add(divSelectRole);

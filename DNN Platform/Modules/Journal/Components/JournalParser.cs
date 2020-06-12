@@ -146,7 +146,7 @@ namespace DotNetNuke.Modules.Journal.Components
                 ctl.LikeLink = String.Empty;
                 ctl.CommentLink = String.Empty;
 
-                ctl.AuthorNameLink = "<a href=\"" + this.NavigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId=" + ji.JournalAuthor.Id}) + "\">" + ji.JournalAuthor.Name + "</a>";
+                ctl.AuthorNameLink = "<a href=\"" + this.NavigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId=" + ji.JournalAuthor.Id }) + "\">" + ji.JournalAuthor.Name + "</a>";
                 if (this.CurrentUser.UserID > 0 &&  !this.isUnverifiedUser)
                 {
                     if (!ji.CommentsDisabled)

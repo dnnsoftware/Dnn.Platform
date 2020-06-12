@@ -87,14 +87,14 @@ namespace DotNetNuke.Modules.SearchResults
                         var filterList = this.LoadSeachContentSourcesList();
                         foreach (var filter in filterList)
                         {
-                            var item = new ListItem(filter, filter) { Selected = true};
+                            var item = new ListItem(filter, filter) { Selected = true };
                             this.comboBoxFilters.Items.Add(item);
                         }
                     }
 
                     var scopeForRoles = 
                         PortalController.GetPortalSetting("SearchResult_ScopeForRoles", this.PortalId, string.Empty)
-                        .Split(new [] { ','}, StringSplitOptions.RemoveEmptyEntries);
+                        .Split(new [] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     var roles = RoleController.Instance.GetRoles(this.PortalId, r => !r.IsSystemRole || r.RoleName == "Registered Users");
                     roles.Insert(0, new RoleInfo() { RoleName = "Superusers" });
 

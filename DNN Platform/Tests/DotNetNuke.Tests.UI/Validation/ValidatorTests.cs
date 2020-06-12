@@ -66,7 +66,7 @@ namespace DotNetNuke.Tests.UI.Validation
             // Assert
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(2, result.Errors.Count());
-            EnumerableAssert.ElementsMatch(new[] { FailedResult, AnotherFailedResult}, result.Errors, (e, a) => ReferenceEquals(e.Errors.First(), a));
+            EnumerableAssert.ElementsMatch(new[] { FailedResult, AnotherFailedResult }, result.Errors, (e, a) => ReferenceEquals(e.Errors.First(), a));
         }
 
         #endregion

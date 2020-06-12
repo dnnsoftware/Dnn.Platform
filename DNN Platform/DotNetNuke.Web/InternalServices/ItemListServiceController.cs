@@ -1357,7 +1357,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 terms.AddRange(new[] { from t in termRep.GetTermsByVocabulary(v.VocabularyId)
                                       where string.IsNullOrEmpty(q) || t.Name.IndexOf(q, StringComparison.InvariantCultureIgnoreCase) > -1
-                                        select new { text = t.Name, value = t.TermId}});
+                                        select new { text = t.Name, value = t.TermId } });
             }
 
             return this.Request.CreateResponse(HttpStatusCode.OK, terms);

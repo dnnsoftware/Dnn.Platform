@@ -66,7 +66,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             PortalController.SetTestableInstance(this._mockPortalController.Object);
             this._mockPortalController.Setup(x => x.GetPortal(It.IsAny<int>())).Returns(
-                new PortalInfo { PortalID = 0, PortalGroupID = -1, UserTabId = 55});
+                new PortalInfo { PortalID = 0, PortalGroupID = -1, UserTabId = 55 });
             this._mockPortalController.Setup(x => x.GetPortalSettings(It.IsAny<int>())).Returns((int portalId) => new Dictionary<string, string>());
             this._mockPortalController.Setup(x => x.GetCurrentPortalSettings()).Returns(() => new PortalSettings());
 
@@ -188,11 +188,11 @@ namespace DotNetNuke.Tests.Web.Api
                 switch (userId)
                 {
                     case 1:
-                        return new UserInfo { UserID = userId, Username = "host", DisplayName = "Host User"};
+                        return new UserInfo { UserID = userId, Username = "host", DisplayName = "Host User" };
                     case 2:
-                        return new UserInfo { UserID = userId, Username = "admin", DisplayName = "Admin User"};
+                        return new UserInfo { UserID = userId, Username = "admin", DisplayName = "Admin User" };
                     case 3:
-                        return new UserInfo { UserID = userId, Username = "reguser", DisplayName = "Registered User"};
+                        return new UserInfo { UserID = userId, Username = "reguser", DisplayName = "Registered User" };
                 }
             }
 

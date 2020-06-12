@@ -260,7 +260,7 @@ namespace DotNetNuke.Modules.Admin.Users
             var createStatus = UserController.CreateUser(ref user);
 
             var args = (createStatus == UserCreateStatus.Success)
-                                            ? new UserCreatedEventArgs(this.User) { Notify = this.chkNotify.Checked} 
+                                            ? new UserCreatedEventArgs(this.User) { Notify = this.chkNotify.Checked } 
                                             : new UserCreatedEventArgs(null);
             args.CreateStatus = createStatus;
             this.OnUserCreated(args);

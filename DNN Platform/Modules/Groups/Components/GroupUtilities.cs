@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.Groups.Components
             journalItem.ProfileId = createdBy.UserID;
             journalItem.UserId = createdBy.UserID;
             journalItem.Title = roleInfo.RoleName;
-            journalItem.ItemData = new ItemData { Url = url};
+            journalItem.ItemData = new ItemData { Url = url };
             journalItem.SocialGroupId = roleInfo.RoleID;
             journalItem.Summary = roleInfo.Description;
             journalItem.Body = null;

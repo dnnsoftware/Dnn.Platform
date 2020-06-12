@@ -58,7 +58,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
                                 for (int i = 0; i < fields.Length; i++)
                                 {
                                     string key = headers[i].Trim(new[] { '\t', '"' });
-                                    string val = fields[i].Trim(new[] { '\t', '"'});
+                                    string val = fields[i].Trim(new[] { '\t', '"' });
 
                                     fieldList[key] = val;
                                 }

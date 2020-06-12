@@ -138,9 +138,9 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
         {
             var mappingCapabilites = new Dictionary<string, string>
             {
-                { "is_wireless_device", "IsMobile"},
-                { "resolution_width", "ScreenPixelsWidth"},
-                { "resolution_height", "ScreenPixelsHeight"}
+                { "is_wireless_device", "IsMobile" },
+                { "resolution_width", "ScreenPixelsWidth" },
+                { "resolution_height", "ScreenPixelsHeight" }
             };
 
             if (DotNetNukeContext.Current.Application.Name != "DNNCORP.CE")

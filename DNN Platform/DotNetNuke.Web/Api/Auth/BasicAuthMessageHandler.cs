@@ -97,7 +97,7 @@ namespace DotNetNuke.Web.Api.Auth
 
             string decoded = this._encoding.GetString(Convert.FromBase64String(authorization));
 
-            string[] parts = decoded.Split(new[] { ':'}, 2);
+            string[] parts = decoded.Split(new[] { ':' }, 2);
             if (parts.Length < 2)
             {
                 return null;

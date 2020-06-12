@@ -21,7 +21,7 @@ namespace DotNetNuke.Web.Validators
 
         protected virtual ValidationError CreateError(string propertyName, ValidationAttribute attribute)
         {
-            return new ValidationError { ErrorMessage = attribute.FormatErrorMessage(propertyName), PropertyName = propertyName, Validator = attribute};
+            return new ValidationError { ErrorMessage = attribute.FormatErrorMessage(propertyName), PropertyName = propertyName, Validator = attribute };
         }
     }
 }

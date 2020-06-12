@@ -333,7 +333,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             var action = CreateNewNotificationTypeAction();
             action.NameResourceKey = name;
-            this._notificationsController.SetNotificationTypeActions(new [] { action}, Constants.Messaging_NotificationTypeId);
+            this._notificationsController.SetNotificationTypeActions(new [] { action }, Constants.Messaging_NotificationTypeId);
         }
 
         [Test]
@@ -398,7 +398,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Returns(expectedNotificationTypeAction);
             
             var action = CreateNewNotificationTypeAction();
-            this._mockNotificationsController.Object.SetNotificationTypeActions(new [] { action}, expectedNotificationTypeAction.NotificationTypeId);
+            this._mockNotificationsController.Object.SetNotificationTypeActions(new [] { action }, expectedNotificationTypeAction.NotificationTypeId);
 
             Assert.IsTrue(new NotificationTypeActionComparer().Equals(expectedNotificationTypeAction, action));
         }
@@ -1213,7 +1213,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
         private static PortalInfo CreatePortalInfo(int portalId, int portalGroupId)
         {
-            var mockPortalInfo = new PortalInfo { PortalID = portalId, PortalGroupID = portalGroupId};
+            var mockPortalInfo = new PortalInfo { PortalID = portalId, PortalGroupID = portalGroupId };
             return mockPortalInfo;
         }
 

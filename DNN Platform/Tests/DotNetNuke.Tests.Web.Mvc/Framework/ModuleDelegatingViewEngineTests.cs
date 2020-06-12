@@ -31,7 +31,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         {
             // Arrange
             var mockEngines = new Mock<ViewEngineCollection>();
-            var result = new ViewEngineResult(new[] { "foo", "bar", "baz"});
+            var result = new ViewEngineResult(new[] { "foo", "bar", "baz" });
             var controller = new Mock<DnnController>();
             controller.SetupAllProperties();
             var context = MockHelper.CreateMockControllerContext(controller.Object);
@@ -60,7 +60,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         {
             // Arrange
             var mockEngines = new Mock<ViewEngineCollection>();
-            var result = new ViewEngineResult(new[] { "foo", "bar", "baz"});
+            var result = new ViewEngineResult(new[] { "foo", "bar", "baz" });
             var controller = new Mock<DnnController>();
             controller.SetupAllProperties();
             var context = MockHelper.CreateMockControllerContext(controller.Object);

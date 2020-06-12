@@ -425,7 +425,7 @@ namespace DotNetNuke.UI.WebControls
 		/// <param name="editInfo">The EditorInfo object for this control</param>
 		private PropertyLabelControl BuildLabel(EditorInfo editInfo)
 		{
-			var propLabel = new PropertyLabelControl { ID = editInfo.Name + "_Label"};
+			var propLabel = new PropertyLabelControl { ID = editInfo.Name + "_Label" };
 		    propLabel.HelpStyle.CopyFrom(this.HelpStyle);
 			propLabel.LabelStyle.CopyFrom(this.LabelStyle);
 			var strValue = editInfo.Value as string;

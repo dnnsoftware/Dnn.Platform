@@ -257,7 +257,7 @@ namespace DotNetNuke.Entities.Modules
         {
             if (portalId == Null.NullInteger)
             {
-                HostController.Instance.Update(new ConfigurationSetting { Value = setting, Key = key});
+                HostController.Instance.Update(new ConfigurationSetting { Value = setting, Key = key });
             }
             else
             {

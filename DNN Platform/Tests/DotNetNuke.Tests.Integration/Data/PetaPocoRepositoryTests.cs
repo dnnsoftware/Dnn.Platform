@@ -37,11 +37,11 @@ namespace DotNetNuke.Tests.Data
             ComponentFactory.RegisterComponentInstance<DataProvider>(new SqlDataProvider());
             ComponentFactory.RegisterComponentSettings<SqlDataProvider>(new Dictionary<string, string>()
             {
-                { "name", "SqlDataProvider"},
-                { "type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke"},
-                { "connectionStringName", "SiteSqlServer"},
-                { "objectQualifier", ""},
-                { "databaseOwner", "dbo."}
+                { "name", "SqlDataProvider" },
+                { "type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke" },
+                { "connectionStringName", "SiteSqlServer" },
+                { "objectQualifier", "" },
+                { "databaseOwner", "dbo." }
             });
         }
 

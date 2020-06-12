@@ -117,7 +117,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     if (string.IsNullOrEmpty(notification.Context))
                     {
-                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
                     }
 
                     var source = notification.Context;

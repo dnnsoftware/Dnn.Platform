@@ -155,7 +155,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
         public void View_Returns_DnnViewResult_With_Correct_ViewEngines()
         {
             // Arrange
-            var dog = new Dog() { Name = "Fluffy"};
+            var dog = new Dog() { Name = "Fluffy" };
             HttpContextBase httpContextBase = MockHelper.CreateMockHttpContext();
 
             // Act

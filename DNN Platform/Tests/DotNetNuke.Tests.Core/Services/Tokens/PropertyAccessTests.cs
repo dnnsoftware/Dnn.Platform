@@ -81,7 +81,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         {
             // Arrange
             var dtPropertyAccess = new DateTimePropertyAccess();
-            var accessingUser = new UserInfo { Profile = new UserProfile { PreferredTimeZone = TimeZoneInfo.Local}};
+            var accessingUser = new UserInfo { Profile = new UserProfile { PreferredTimeZone = TimeZoneInfo.Local } };
 
 
             // Act

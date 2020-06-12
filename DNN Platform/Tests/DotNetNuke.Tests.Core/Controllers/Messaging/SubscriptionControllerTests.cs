@@ -77,7 +77,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var subscription = new SubscriptionBuilder()
                 .Build();
 
-            var subscriptionCollection = new[] { subscription};
+            var subscriptionCollection = new[] { subscription };
 
             this.mockDataService.Setup(ds => ds.IsSubscribed(
                 subscription.PortalId,

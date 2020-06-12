@@ -25,7 +25,7 @@ namespace DotNetNuke.Tests.Web.Api
     {
         // ReSharper disable UnusedMember.Local
         private readonly List<string[]> _emptyStringArrays = new List<string[]>
-                                                        { null, new string[0], new[] { ""}, new string[] { null}};
+                                                        { null, new string[0], new[] { "" }, new string[] { null } };
         // ReSharper restore UnusedMember.Local
         private Mock<IPortalController> _mockPortalController;
         private IPortalController _portalController;
@@ -68,7 +68,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             assemblyLocator.Setup(x => x.Assemblies).Returns(assembliesToReflect);
 
-            var locator = new TypeLocator { AssemblyLocator = assemblyLocator.Object};
+            var locator = new TypeLocator { AssemblyLocator = assemblyLocator.Object };
 
             List<Type> types = locator.GetAllMatchingTypes(ServicesRoutingManager.IsValidServiceRouteMapper).ToList();
 
@@ -105,9 +105,9 @@ namespace DotNetNuke.Tests.Web.Api
                                                               typeof(FakeServiceRouteMapper)
                                                           });
             var al = new Mock<IAssemblyLocator>();
-            al.Setup(x => x.Assemblies).Returns(new[] { assembly.Object});
-            var tl = new TypeLocator { AssemblyLocator = al.Object};
-            var srm = new ServicesRoutingManager(new RouteCollection()) { TypeLocator = tl};
+            al.Setup(x => x.Assemblies).Returns(new[] { assembly.Object });
+            var tl = new TypeLocator { AssemblyLocator = al.Object };
+            var srm = new ServicesRoutingManager(new RouteCollection()) { TypeLocator = tl };
 
             srm.RegisterRoutes();
 
@@ -121,9 +121,9 @@ namespace DotNetNuke.Tests.Web.Api
             var assembly = new Mock<IAssembly>();
             assembly.Setup(x => x.GetTypes()).Returns(new[] { typeof(FakeServiceRouteMapper) });
             var al = new Mock<IAssemblyLocator>();
-            al.Setup(x => x.Assemblies).Returns(new[] { assembly.Object});
-            var tl = new TypeLocator { AssemblyLocator = al.Object};
-            var srm = new ServicesRoutingManager(new RouteCollection()) { TypeLocator = tl};
+            al.Setup(x => x.Assemblies).Returns(new[] { assembly.Object });
+            var tl = new TypeLocator { AssemblyLocator = al.Object };
+            var srm = new ServicesRoutingManager(new RouteCollection()) { TypeLocator = tl };
 
             srm.RegisterRoutes();
 

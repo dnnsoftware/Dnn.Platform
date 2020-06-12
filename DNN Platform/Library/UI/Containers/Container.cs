@@ -277,7 +277,7 @@ namespace DotNetNuke.UI.Containers
 			// inject the footer
             if (!String.IsNullOrEmpty(this.ModuleConfiguration.Footer))
             {
-                var footer = new Literal { Text = this.ModuleConfiguration.Footer};
+                var footer = new Literal { Text = this.ModuleConfiguration.Footer };
                 this.ContentPane.Controls.Add(footer);
             }
 			
@@ -303,7 +303,7 @@ namespace DotNetNuke.UI.Containers
             // inject the header
             if (!String.IsNullOrEmpty(this.ModuleConfiguration.Header))
             {
-                var header = new Literal { Text = this.ModuleConfiguration.Header};
+                var header = new Literal { Text = this.ModuleConfiguration.Header };
                 this.ContentPane.Controls.Add(header);
             }
         }

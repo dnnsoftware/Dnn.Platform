@@ -609,7 +609,7 @@ namespace DotNetNuke.Entities.Urls
                     // just store the cache key - it doesn't really matter
                     // create a log event
                     string productVer = DotNetNukeContext.Current.Application.Version.ToString();
-                    var log = new LogInfo { LogTypeKey = "GENERAL_EXCEPTION"};
+                    var log = new LogInfo { LogTypeKey = "GENERAL_EXCEPTION" };
                     log.AddProperty("Url Rewriting Extension Url Provider Exception",
                                          "Exception in Url Rewriting Process");
                     log.AddProperty("Provider Name", moduleProviderName);

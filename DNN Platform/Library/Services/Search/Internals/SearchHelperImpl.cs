@@ -484,7 +484,7 @@ namespace DotNetNuke.Services.Search.Internals
             if (string.IsNullOrEmpty(lastWord))
                 return string.Empty;
 
-            if (lastWord.IndexOfAny(new[] { '~', '*'}) < 0)
+            if (lastWord.IndexOfAny(new[] { '~', '*' }) < 0)
             {
                 var beginIsGroup = false;
                 var endIsGroup = false;

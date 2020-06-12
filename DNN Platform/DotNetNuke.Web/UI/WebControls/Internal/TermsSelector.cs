@@ -40,7 +40,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 {
                     var termRep = Util.GetTermController();
 
-                    var termIds = this.Value.Split(new char[] { ','}, StringSplitOptions.RemoveEmptyEntries);
+                    var termIds = this.Value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var i in termIds)
                     {
                         if (!string.IsNullOrEmpty(i.Trim()))
@@ -62,7 +62,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 this.Value = string.Join(",", value.Select(t => t.TermId.ToString()));
 
                 this.Items.Clear();
-                value.Select(t => new ListItem(t.Name, t.TermId.ToString()) { Selected = true}).ToList().ForEach(this.Items.Add);
+                value.Select(t => new ListItem(t.Name, t.TermId.ToString()) { Selected = true }).ToList().ForEach(this.Items.Add);
             }
         }
 

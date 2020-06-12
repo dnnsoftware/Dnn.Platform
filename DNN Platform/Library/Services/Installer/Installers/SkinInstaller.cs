@@ -352,7 +352,7 @@ namespace DotNetNuke.Services.Installer.Installers
                                 break;
                         }
                     }
-                    Array arrMessage = strMessage.Split(new[] { "<br />"}, StringSplitOptions.None);
+                    Array arrMessage = strMessage.Split(new[] { "<br />" }, StringSplitOptions.None);
                     foreach (string strRow in arrMessage)
                     {
                         this.Log.AddInfo(HtmlUtils.StripTags(strRow, true));

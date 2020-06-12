@@ -52,7 +52,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
         {
             // Arrange
             var mockController = new Mock<ControllerBase>();
-            var viewContext = new ViewContext { Controller = mockController.Object};
+            var viewContext = new ViewContext { Controller = mockController.Object };
 
             // Act,Assert
             Assert.Throws<InvalidOperationException>(() => new DnnUrlHelper(viewContext));
@@ -66,7 +66,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var mockDnnController = mockController.As<IDnnController>();
             var expectedContext = new ModuleInstanceContext();
             mockDnnController.Setup(c => c.ModuleContext).Returns(expectedContext);
-            var viewContext = new ViewContext { Controller = mockController.Object};
+            var viewContext = new ViewContext { Controller = mockController.Object };
 
             // Act
             var helper = new DnnUrlHelper(viewContext);

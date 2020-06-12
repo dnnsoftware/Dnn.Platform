@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.Groups.Components
             var deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName("Social Groups").DesktopModuleID;
 
             // GroupPendingNotification
-            var type = new NotificationType { Name = "GroupPendingNotification", Description = "Group Pending Notification", DesktopModuleId = deskModuleId};
+            var type = new NotificationType { Name = "GroupPendingNotification", Description = "Group Pending Notification", DesktopModuleId = deskModuleId };
             if (NotificationsController.Instance.GetNotificationType(type.Name) == null)
             {
                 actions.Add(new NotificationTypeAction

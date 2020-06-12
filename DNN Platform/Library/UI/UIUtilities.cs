@@ -77,7 +77,7 @@ namespace DotNetNuke.UI
 
             if (slaveModule == null)
             {
-                slaveModule = (new ModuleInfo { ModuleID = moduleId, ModuleDefID = -1, TabID = tabId, InheritViewPermissions = true});
+                slaveModule = (new ModuleInfo { ModuleID = moduleId, ModuleDefID = -1, TabID = tabId, InheritViewPermissions = true });
             }
 
             if (request.QueryString["moduleid"] != null && (key.ToLowerInvariant() == "module" || key.ToLowerInvariant() == "help"))

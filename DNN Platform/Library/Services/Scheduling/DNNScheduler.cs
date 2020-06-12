@@ -217,7 +217,7 @@ namespace DotNetNuke.Services.Scheduling
         {
             if (Enabled)
             {
-                var newThread = new Thread(this.Start) { IsBackground = true};
+                var newThread = new Thread(this.Start) { IsBackground = true };
                 newThread.Start();
 
                 // wait for up to 30 seconds for thread

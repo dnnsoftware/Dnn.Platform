@@ -381,11 +381,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             var searchTypes = new List<SearchType>
                 {
-                    new SearchType { SearchTypeId = ModuleSearchTypeId, SearchTypeName = ModuleSearchTypeName, SearchResultClass = FakeResultControllerClass},
-                    new SearchType { SearchTypeId = TabSearchTypeId, SearchTypeName = TabSearchTypeName, SearchResultClass = FakeResultControllerClass},
-                    new SearchType { SearchTypeId = OtherSearchTypeId, SearchTypeName = OtherSearchTypeName, SearchResultClass = FakeResultControllerClass},
-                    new SearchType { SearchTypeId = DocumentSearchTypeId, SearchTypeName = DocumentSearchTypeName, SearchResultClass = NoPermissionFakeResultControllerClass},
-                    new SearchType { SearchTypeId = UrlSearchTypeId, SearchTypeName = UrlSearchTypeName, SearchResultClass = FakeResultControllerClass}
+                    new SearchType { SearchTypeId = ModuleSearchTypeId, SearchTypeName = ModuleSearchTypeName, SearchResultClass = FakeResultControllerClass },
+                    new SearchType { SearchTypeId = TabSearchTypeId, SearchTypeName = TabSearchTypeName, SearchResultClass = FakeResultControllerClass },
+                    new SearchType { SearchTypeId = OtherSearchTypeId, SearchTypeName = OtherSearchTypeName, SearchResultClass = FakeResultControllerClass },
+                    new SearchType { SearchTypeId = DocumentSearchTypeId, SearchTypeName = DocumentSearchTypeName, SearchResultClass = NoPermissionFakeResultControllerClass },
+                    new SearchType { SearchTypeId = UrlSearchTypeId, SearchTypeName = UrlSearchTypeName, SearchResultClass = FakeResultControllerClass }
                 };
 
             return searchTypes;
@@ -435,10 +435,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private IEnumerable<SearchDocument> GetSearchDocsForCustomBoost(int searchTypeId = ModuleSearchTypeId)
         {
             var searchDocs = new List<SearchDocument> {
-                new SearchDocument { PortalId = PortalId0, Title = Line1, Keywords = { { "title", "Hello"}}, Body = "Hello1 World"},
-                new SearchDocument { PortalId = PortalId0, Title = Line2, Keywords = { { "subject", "Hello"}}, Body = "Hello2 World" },
-                new SearchDocument { PortalId = PortalId0, Title = Line3, Keywords = { { "comments", "Hello"}}, Body = "Hello3 World" },
-                new SearchDocument { PortalId = PortalId0, Title = Line4, Keywords = { { "authorname", "Hello"}}, Body = "Hello4 World" },
+                new SearchDocument { PortalId = PortalId0, Title = Line1, Keywords = { { "title", "Hello" } }, Body = "Hello1 World" },
+                new SearchDocument { PortalId = PortalId0, Title = Line2, Keywords = { { "subject", "Hello" } }, Body = "Hello2 World" },
+                new SearchDocument { PortalId = PortalId0, Title = Line3, Keywords = { { "comments", "Hello" } }, Body = "Hello3 World" },
+                new SearchDocument { PortalId = PortalId0, Title = Line4, Keywords = { { "authorname", "Hello" } }, Body = "Hello4 World" },
             };
 
             var now = DateTime.UtcNow.AddYears(-searchDocs.Count);
@@ -523,7 +523,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue1000 } },
             };
 
-            var docs = new List<SearchDocument>() { doc1, doc2, doc3, doc4, doc5};
+            var docs = new List<SearchDocument>() { doc1, doc2, doc3, doc4, doc5 };
 
             this._internalSearchController.AddSearchDocuments(docs);
 
@@ -1837,7 +1837,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_GetResult_Sorty_By_Title_Ascending_Returns_Alphabetic_Ascending()
         {
-            var titles = new List<string> { "cat", "ant", "dog", "antelope", "zebra", "yellow", " "};
+            var titles = new List<string> { "cat", "ant", "dog", "antelope", "zebra", "yellow", " " };
 
             var added = this.AddDocuments(titles, "animal");
 
@@ -2724,7 +2724,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._internalSearchController.AddSearchDocument(doc1);
             this._internalSearchController.AddSearchDocument(doc2);
 
-            var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { OtherSearchTypeId }, RoleId = 0};
+            var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { OtherSearchTypeId }, RoleId = 0 };
 
             // Act
             var result = this._searchController.SiteSearch(query);

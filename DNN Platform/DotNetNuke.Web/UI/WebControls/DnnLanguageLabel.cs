@@ -69,7 +69,7 @@ namespace DotNetNuke.Web.UI.WebControls
             // First clear the controls collection
             this.Controls.Clear();
 
-            this._Flag = new Image { ViewStateMode = ViewStateMode.Disabled};
+            this._Flag = new Image { ViewStateMode = ViewStateMode.Disabled };
             this.Controls.Add(this._Flag);
 
             this.Controls.Add(new LiteralControl("&nbsp;"));

@@ -314,7 +314,7 @@ namespace log4net.Util
 #if NETSTANDARD1_3
 						return meth.Invoke(target, new[] { txt });
 #else
-						return meth.Invoke(null, BindingFlags.InvokeMethod, null, new object[] { txt}, CultureInfo.InvariantCulture);
+						return meth.Invoke(null, BindingFlags.InvokeMethod, null, new object[] { txt }, CultureInfo.InvariantCulture);
 #endif
 					}
 					else

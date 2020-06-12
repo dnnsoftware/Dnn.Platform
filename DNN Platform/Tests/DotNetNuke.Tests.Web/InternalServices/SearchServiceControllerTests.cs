@@ -556,7 +556,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             // first tab with 2 modules
             var doc1 = new SearchDocument { UniqueKey = "key01", TabId = TabId1, Url = tabUrl1, Title = keyword, SearchTypeId = TabSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
-            var doc2 = new SearchDocument { UniqueKey = "key02", TabId = TabId1, Title = keyword, Url = tabUrl1, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = HtmlModuleDefId, ModuleId = HtmlModuleId2, Body = moduleBody, RoleId = 731};
+            var doc2 = new SearchDocument { UniqueKey = "key02", TabId = TabId1, Title = keyword, Url = tabUrl1, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = HtmlModuleDefId, ModuleId = HtmlModuleId2, Body = moduleBody, RoleId = 731 };
             var doc3 = new SearchDocument { UniqueKey = "key03", TabId = TabId1, Title = keyword, Url = tabUrl1, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = HtmlModuleDefId, ModuleId = HtmlModuleId1, Body = moduleBody, RoleId = 731 };
            
             // second tab with 1 module
@@ -670,7 +670,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 PortalId = PortalId0,
                 RoleId = RoleId731,
                 Keywords = { { "description", "mycontent" } },
-                NumericKeys = { { "points", 5} }
+                NumericKeys = { { "points", 5 } }
             };
 
             this._internalSearchController.AddSearchDocument(originalDocument);

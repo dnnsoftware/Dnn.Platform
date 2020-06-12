@@ -67,12 +67,12 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 
 		public TabInfo LocaliseTab(TabInfo tab, int portalId)
 		{
-			return (this.locTab == null) ? null : (TabInfo)this.locTab.Invoke(this.locApi, new object[] { tab, portalId});
+			return (this.locTab == null) ? null : (TabInfo)this.locTab.Invoke(this.locApi, new object[] { tab, portalId });
 		}
 
 		public DNNNodeCollection LocaliseNodes(DNNNodeCollection nodes)
 		{
-			return (this.locNodes == null) ? null : (DNNNodeCollection)this.locNodes.Invoke(this.locApi, new object[] { nodes});
+			return (this.locNodes == null) ? null : (DNNNodeCollection)this.locNodes.Invoke(this.locApi, new object[] { nodes });
 		}
 	}
 }
