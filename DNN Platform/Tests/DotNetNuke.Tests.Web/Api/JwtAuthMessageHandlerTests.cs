@@ -315,7 +315,6 @@ namespace DotNetNuke.Tests.Web.Api
         //    if (mod != 0) b64Str += new string('=', 4 - mod);
         //    return Encoding.UTF8.GetString(Convert.FromBase64String(b64Str));
         // }
-
         private static string EncodeBase64(byte[] data)
         {
             return Convert.ToBase64String(data).TrimEnd('=');

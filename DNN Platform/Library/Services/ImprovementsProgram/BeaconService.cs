@@ -110,7 +110,6 @@ namespace DotNetNuke.Services.ImprovementsProgram
             // f: page name / tab path
             // n: Product Edition - hashed
             // v: Version - hashed
-
             var uid = user.UserID.ToString("D") + user.CreatedOnDate.ToString("O");
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             var qparams = new Dictionary<string, string>

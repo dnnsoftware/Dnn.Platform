@@ -16,7 +16,6 @@ namespace DotNetNuke.Modules.Html.Components
     public class DataProvider
     {
         // singleton reference to the instantiated object
-
         private static readonly DataProvider provider;
 
         // constructor

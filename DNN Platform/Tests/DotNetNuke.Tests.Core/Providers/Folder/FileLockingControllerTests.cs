@@ -234,7 +234,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         public void IsFileOutOfPublishPeriod_ReturnsFalse_WhenPublishPeriodIsDisabled()
         {
             // Arrange
-
             var fileInfo = new FileInfoBuilder().Build();
             this._mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(It.IsAny<int>(), It.IsAny<int>())).Returns(false);
 

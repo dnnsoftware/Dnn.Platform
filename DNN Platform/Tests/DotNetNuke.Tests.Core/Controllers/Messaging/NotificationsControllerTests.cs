@@ -338,7 +338,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 //                    Constants.Messaging_NotificationTypeActionAPICall,
 //                    Constants.UserID_User12))
 //                .Verifiable();
-
             this._mockNotificationsController.Setup(nc => nc.GetNotificationTypeAction(It.IsAny<int>()));
 
             this._mockNotificationsController.Object.SetNotificationTypeActions(

@@ -270,7 +270,6 @@ namespace DotNetNuke.Services.Journal
                 .Where(p => p.IndexOfAny(ValidSecurityDescriptors) >= 0);
 
             // TODO: validate existence and visibility/accessability of all Roles added to the set (if any)
-
             journalItem.SecuritySet = string.Join(",", parts);
         }
 
@@ -689,7 +688,6 @@ namespace DotNetNuke.Services.Journal
             }
             // TODO: enable once the profanity filter is working properly.
             // objCommentInfo.Comment = portalSecurity.Remove(objCommentInfo.Comment, DotNetNuke.Security.PortalSecurity.ConfigType.ListController, "ProfanityFilter", DotNetNuke.Security.PortalSecurity.FilterScope.PortalList);
-
             string xml = null;
             if (comment.CommentXML != null)
             {

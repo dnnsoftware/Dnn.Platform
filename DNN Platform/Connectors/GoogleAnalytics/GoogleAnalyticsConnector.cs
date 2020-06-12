@@ -153,7 +153,6 @@ namespace DNN.Connectors.GoogleAnalytics
         {
             // Delete / Deactivation functionality added into SaveConfig because
             // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
-
             customErrorMessage = string.Empty;
             bool isValid;
 

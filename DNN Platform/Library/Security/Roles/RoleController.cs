@@ -583,7 +583,6 @@ namespace DotNetNuke.Security.Roles
             // [DNN-4285] Refactored this check into a method for use in SecurityRoles.ascx.vb
             // HACK: Duplicated in CanRemoveUserFromRole(PortalSettings, Integer, Integer) method above
             // changes to this method should be reflected in the other method as well
-
             return !((PortalInfo.AdministratorId == UserId && PortalInfo.AdministratorRoleId == RoleId) || PortalInfo.RegisteredRoleId == RoleId);
         }
 

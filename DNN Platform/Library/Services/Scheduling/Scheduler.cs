@@ -902,7 +902,6 @@ namespace DotNetNuke.Services.Scheduling
                             }
                             // Load the queue to determine which schedule
                             // items need to be run.
-
                             LoadQueueFromTimer();
 
                             // Keep track of when the queue was last refreshed

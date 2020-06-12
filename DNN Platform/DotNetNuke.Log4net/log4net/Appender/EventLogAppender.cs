@@ -496,7 +496,6 @@ namespace log4net.Appender
             }
 
             // Use default behavior
-
             if (level >= Level.Error)
             {
                 return EventLogEntryType.Error;

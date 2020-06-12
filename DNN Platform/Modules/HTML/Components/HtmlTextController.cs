@@ -155,7 +155,6 @@ namespace DotNetNuke.Modules.Html
                     strBody = strBody.Replace("[STATE]", objHtmlText.StateName);
 
                     // process user notification collection
-
                     foreach (int intUserID in arrUsers)
                     {
                         // create user notification record
@@ -296,7 +295,6 @@ namespace DotNetNuke.Modules.Html
         public static string FormatHtmlText(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, Page page)
         {
             // token replace
-
             if (settings.ReplaceTokens)
             {
                 var tr = new HtmlTokenReplace(page)

@@ -4,7 +4,6 @@
 
 using System;
 // ReSharper disable InconsistentNaming
-
 namespace Dnn.ExportImport.Components.Common
 {
     public class Constants

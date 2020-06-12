@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -67,7 +66,6 @@ namespace log4net.Util
         {
             string stringData = MaskXmlInvalidCharacters(textData, invalidCharReplacement);
             // Write either escaped text or CDATA sections
-
             int weightCData = 12 * (1 + CountSubstrings(stringData, CDATA_END));
             int weightStringEscapes = (3 * (CountSubstrings(stringData, "<") + CountSubstrings(stringData, ">"))) + (4 * CountSubstrings(stringData, "&"));
 
@@ -79,7 +77,6 @@ namespace log4net.Util
             else
             {
                 // Write string using CDATA section
-
                 int end = stringData.IndexOf(CDATA_END);
 
                 if (end < 0)

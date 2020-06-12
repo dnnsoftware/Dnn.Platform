@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -193,7 +192,6 @@ namespace DotNetNuke.Entities.Urls
                 {
                     // if not ignoring the custom redirects, look for the Url of the page in this list
                     // this will be used as the page path if there is one.
-
                     using (urlDict.GetReadLock())
                     {
                         if (urlDict.ContainsKey(tab.TabID))

@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Linq;
 using System.Text;
@@ -240,7 +239,6 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
         private void ProcessQuerystring()
         {
             // in case someone is being redirected to here from an e-mail link action we need to process that here
-
             var action = this.Request.QueryString["action"];
 
             if (!this.Request.IsAuthenticated && !string.IsNullOrEmpty(action)) // action requested but not logged in.

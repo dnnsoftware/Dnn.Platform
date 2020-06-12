@@ -10,7 +10,6 @@ using DotNetNuke.ComponentModel;
 using DotNetNuke.ExtensionPoints;
 using DotNetNuke.Instrumentation;
 // ReSharper disable ConvertPropertyToExpressionBody
-
 namespace DotNetNuke.Common.Internal
 {
     internal class EventHandlersContainer<T> : ComponentBase<IEventHandlersContainer<T>, EventHandlersContainer<T>>, IEventHandlersContainer<T>

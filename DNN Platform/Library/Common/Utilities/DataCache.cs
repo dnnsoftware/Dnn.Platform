@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -514,7 +513,6 @@ namespace DotNetNuke.Common.Utilities
                     objObject = GetCache(cacheItemArgs.CacheKey);
 
                     // if object was still not retrieved
-
                     if (objObject == null)
                     {
                         // get object from data source using delegate
@@ -545,7 +543,6 @@ namespace DotNetNuke.Common.Utilities
                                 cacheItemArgs.CacheCallback);
 
                             // check if the item was actually saved in the cache
-
                             if (GetCache(cacheItemArgs.CacheKey) == null)
                             {
                                 // log the event if the item was not saved in the cache ( likely because we are out of memory )

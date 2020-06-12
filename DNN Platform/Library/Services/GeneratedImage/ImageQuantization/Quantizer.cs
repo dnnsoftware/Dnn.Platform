@@ -150,7 +150,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 IntPtr pDestinationPixel = pDestinationRow;
 
                 // And convert the first pixel, so that I have values going into the loop
-
                 byte pixelValue = this.QuantizePixel(new Color32(pSourcePixel));
 
                 // Assign the value of the first pixel

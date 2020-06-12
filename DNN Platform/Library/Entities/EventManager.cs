@@ -17,7 +17,6 @@ using DotNetNuke.Services.FileSystem.EventArgs;
 using DotNetNuke.Services.Log.EventLog;
 
 // ReSharper disable UseNullPropagation
-
 namespace DotNetNuke.Entities
 {
     public class EventManager : ServiceLocator<IEventManager, EventManager>, IEventManager

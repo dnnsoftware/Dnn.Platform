@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
 using System;
 using System.Collections;
 using log4net.Appender;
@@ -710,7 +709,6 @@ namespace log4net.Repository.Hierarchy
             // Synchronize to prevent write conflicts. Read conflicts (in
             // GetEffectiveLevel() method) are possible only if variable
             // assignments are non-atomic.
-
             lock (this.m_ht)
             {
                 Logger logger = null;

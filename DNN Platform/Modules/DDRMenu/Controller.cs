@@ -92,7 +92,6 @@ namespace DotNetNuke.Web.DDRMenu
 // ReSharper disable PossibleNullReferenceException
             var addProvider = navProviders.SelectSingleNode("add[@name='" + navName + "']") as XmlElement;
 // ReSharper restore PossibleNullReferenceException
-
             var needsUpdate = true;
             if (addProvider == null)
             {

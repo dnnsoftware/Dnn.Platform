@@ -21,7 +21,6 @@ namespace DotNetNuke.Tests.Core.Collections
         // Complicated threading tests would be nice, but are not practical as the
         // NaiveLockList releases all locks immediately making it impossible to ensure
         // a lock is held while launching another thread in the test
-
         [Test]
         public void Add()
         {

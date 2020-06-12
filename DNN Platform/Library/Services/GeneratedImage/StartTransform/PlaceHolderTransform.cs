@@ -88,7 +88,6 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
                 objGraphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
 
                 // Fill bitmap with backcolor
-
                 objGraphics.FillRectangle(backColorBrush, 0, 0, this.Width, this.Height);
 
                 // Draw border

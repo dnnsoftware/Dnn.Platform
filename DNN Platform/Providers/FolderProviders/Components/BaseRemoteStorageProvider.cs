@@ -258,7 +258,6 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             //        let r = (!string.IsNullOrEmpty(mappedPath) ? f.Replace(mappedPath, "") : f)
             //        where f.StartsWith(mappedPath, true, CultureInfo.InvariantCulture) && f.Length > mappedPath.Length && r.IndexOf("/", StringComparison.Ordinal) == -1
             //        select Path.GetFileName(f)).ToArray();
-
             var pattern = "^" + mappedPath;
             return (from i in list
                     let f = i.Key

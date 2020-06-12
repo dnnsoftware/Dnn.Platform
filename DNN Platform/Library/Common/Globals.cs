@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -677,7 +676,6 @@ namespace DotNetNuke.Common
             // This calculation ensures that you have a more than one item that indicates you have already installed DNN.
             // While it is possible that you might not have an installation date or that you have deleted log files
             // it is unlikely that you have removed every trace of an installation and yet still have a working install
-
             bool isInstalled = (!IsInstallationURL()) && ((installationdatefactor + dataproviderfactor + htmlmodulefactor + portaldirectoryfactor + localexecutionfactor) >= c_PassingScore);
 
             // we need to tighten this check. We now are enforcing the existence of the InstallVersion value in web.config. If
@@ -3782,7 +3780,6 @@ namespace DotNetNuke.Common
         // ****************************************************************************************
         // Constants are inlined in code and would require a rebuild of any module or skinobject
         // that may be using these constants.
-
         [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.HtmlUtils.FormatEmail. Scheduled removal in v11.0.0.")]
         public static string FormatEmail(string Email)
         {

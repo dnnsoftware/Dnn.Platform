@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using Version = Lucene.Net.Util.Version;
 
@@ -47,7 +46,6 @@ namespace DotNetNuke.Services.Search.Internals
         // internal const string FileIdTag = "fileid";
         // internal const string FolderNameTag = "foldername";
         // internal const string FileNameTag = "filename";
-
         internal const string DateTimeFormat = "yyyyMMddHHmmssfff";
         internal const string ReindexDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
 

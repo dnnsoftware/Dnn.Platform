@@ -10,7 +10,6 @@ using DotNetNuke.Web.Api;
 namespace DotNetNuke.Tests.Web.Api
 {
     // various ServiceRouteMappers that will be reflected upon by the tests
-
     public class ReflectedServiceRouteMappers
     {
         public class EmbeddedServiceRouteMapper : IServiceRouteMapper

@@ -167,7 +167,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
         // _fileWrapper.Verify(fw => fw.Delete(Constants.FOLDER_ValidFilePath), Times.Never());
         // }
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ExistsFile_Throws_On_Null_Folder()
@@ -302,7 +301,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
         // Assert.AreEqual(expectedFileAttributes, result);
         // }
-
         [Test]
         public void GetFileAttributes_Returns_Null_When_File_Does_Not_Exist()
         {
@@ -465,7 +463,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
         // Assert.AreEqual(expectedDate, result);
         // }
-
         [Test]
         public void GetLastModificationTime_Returns_Null_Date_When_File_Does_Not_Exist()
         {
@@ -697,7 +694,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
         // _fileWrapper.Verify(fw => fw.SetAttributes(Constants.FOLDER_ValidFilePath, validFileAttributes), Times.Once());
         // }
-
         [Test]
         public void SupportsFileAttributes_Returns_True()
         {

@@ -40,7 +40,6 @@ namespace DotNetNuke.Instrumentation
             // add custom logging levels (below trace value of 20000)
 //            internal static Level LevelLogInfo = new Level(10001, "LogInfo");
 //            internal static Level LevelLogError = new Level(10002, "LogError");
-
             private readonly Type _stackBoundary = typeof(DnnLogger);
             private const string ConfigFile = "DotNetNuke.log4net.config";
             private static bool _configured;

@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Collections.Specialized;
 using System.Globalization;
@@ -148,7 +147,6 @@ namespace DotNetNuke.UI.Skins.Controls
                                     // skip parameter as it is part of a querystring param that has the following form
                                     // [friendlyURL]/?param=value
                                     // gemini 25516
-
                                     if (!DotNetNuke.Entities.Host.Host.UseFriendlyUrls)
                                     {
                                         if (!string.IsNullOrEmpty(returnValue))

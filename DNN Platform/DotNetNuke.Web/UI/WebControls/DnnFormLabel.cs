@@ -45,7 +45,6 @@ namespace DotNetNuke.Web.UI.WebControls
             // var outerPanel = new Panel();
             // outerPanel.CssClass = "dnnLabel";
             // Controls.Add(outerPanel);
-
             var outerLabel = new System.Web.UI.HtmlControls.HtmlGenericControl { TagName = "label" };
             this.Controls.Add(outerLabel);
 
@@ -63,7 +62,6 @@ namespace DotNetNuke.Web.UI.WebControls
             if (!string.IsNullOrEmpty(toolTipText))
             {
                 // CssClass += "dnnLabel";
-
                 var tooltipPanel = new Panel() { CssClass = "dnnTooltip" };
                 this.Controls.Add(tooltipPanel);
 

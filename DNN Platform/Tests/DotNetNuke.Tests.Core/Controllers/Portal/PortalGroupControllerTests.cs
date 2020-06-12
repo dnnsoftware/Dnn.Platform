@@ -22,7 +22,6 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Core.Controllers.Portal
 {
     // ReSharper disable InconsistentNaming
-
     [TestFixture]
     public class PortalGroupControllerTests
     {

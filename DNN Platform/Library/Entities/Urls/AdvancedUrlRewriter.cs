@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -1190,7 +1189,6 @@ namespace DotNetNuke.Entities.Urls
                     else
                     {
                         // error, especially if invalid result object
-
                         errorPageHtml.Write("500 Server Error<br><div style='font-weight:bolder'>An error occured during processing : if possible, check the event log of the server</div>");
                         response.StatusCode = 500;
                         response.Status = "500 Internal Server Error";
@@ -2670,7 +2668,6 @@ namespace DotNetNuke.Entities.Urls
                             // get what the friendly Url for this tab should be
                             string bestFriendlyUrl;
                             // 819 : leaving /do301/check in Url because not using cleanPath to remove from
-
                             string cleanPath = RedirectTokens.RemoveAnyRedirectTokensAndReasons(rewritePathOnly);
                             // string cleanPath = rewritePathOnly.Replace("&do301=check","");//remove check parameter if it exists
                             // cleanPath = cleanPath.Replace("&do301=true", "");//don't pass through internal redirect check parameter

@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
 using System;
 using System.Collections;
 using System.Globalization;
@@ -1305,7 +1304,6 @@ namespace log4net.Appender
             if (this.FileExists(fileName))
             {
                 // We may not have permission to delete the file, or the file may be locked
-
                 string fileToDelete = fileName;
 
                 // Try to move the file to temp name.

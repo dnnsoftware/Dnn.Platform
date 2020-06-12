@@ -18,7 +18,6 @@ namespace DotNetNuke.Tests.Data
     public class DataContextTests
     {
         // ReSharper disable InconsistentNaming
-
         [SetUp]
         public void SetUp()
         {

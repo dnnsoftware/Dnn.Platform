@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
 using System;
 using System.Collections;
 using System.Globalization;
@@ -348,7 +347,6 @@ namespace log4net.Util
         private void AddConverter(PatternConverter pc)
         {
             // Add the pattern converter to the list.
-
             if (this.m_head == null)
             {
                 this.m_head = this.m_tail = pc;

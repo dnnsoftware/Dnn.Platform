@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Linq;
 using System.Web.UI.HtmlControls;
@@ -634,7 +633,6 @@ namespace DotNetNuke.UI.UserControls
                     // Dim objRegionalController As New RegionalController
                     // cboCountry.DataSource = objRegionalController.GetCountries
                     // <this test using method 2: get empty collection then get each entry list on demand & store into cache
-
                     var ctlEntry = new ListController();
                     var entryCollection = ctlEntry.GetListEntryInfoItems("Country");
 

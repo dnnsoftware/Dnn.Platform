@@ -75,7 +75,6 @@ namespace DotNetNuke.Modules.Journal.Components
             // }
 
             // return strXML;
-
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
@@ -99,7 +98,6 @@ namespace DotNetNuke.Modules.Journal.Components
             //    objJournal.CreatedByUser = UserID;
             //    AddJournal(objJournal);
             // }
-
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 

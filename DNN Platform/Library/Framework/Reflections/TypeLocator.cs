@@ -10,7 +10,6 @@ using System.Reflection;
 using DotNetNuke.Framework.Internal.Reflection;
 
 // ReSharper disable ConvertPropertyToExpressionBody
-
 namespace DotNetNuke.Framework.Reflections
 {
     public class TypeLocator : ITypeLocator, IAssemblyLocator

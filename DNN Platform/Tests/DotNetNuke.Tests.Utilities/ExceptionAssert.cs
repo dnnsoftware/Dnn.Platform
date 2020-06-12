@@ -21,7 +21,6 @@ namespace DotNetNuke.Tests.Utilities
         // {
         //    Throws<TException>(act, ex => ex.Message.Equals(message, StringComparison.Ordinal));
         // }
-
         public static void Throws<TException>(string message, Action act, Predicate<TException> checker)
             where TException : Exception
         {

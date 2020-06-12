@@ -11,7 +11,6 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 // Review the values of the assembly attributes
-
 [assembly: AssemblyTitle("Dnn.EditBar.UI")]
 [assembly: AssemblyDescription("Dnn.EditBar.UI")]
 [assembly: CLSCompliant(true)]
@@ -19,6 +18,5 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-
 [assembly: Guid("4D33BE6B-CF0F-49D3-956D-9955E42C4524")]
 [assembly: AssemblyDelaySign(false)]

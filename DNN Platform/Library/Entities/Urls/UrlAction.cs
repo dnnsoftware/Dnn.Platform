@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -257,7 +256,6 @@ namespace DotNetNuke.Entities.Urls
             {
                 this.RedirectAllowed = true; // default : true, unless regex allows it.  So if regex causes an exception
                 // then we should allow the redirect
-
                 UrlRewriterUtils.LogExceptionInRequest(ex, "Not Set", this);
                 this.Ex = ex;
             }

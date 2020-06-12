@@ -159,7 +159,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
         // _mockFolderManager.Verify();
         // }
-
         [Test]
         [ExpectedException(typeof(FolderAlreadyExistsException))]
         public void AddFolder_Throws_When_Folder_Already_Exists()
@@ -392,7 +391,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
 
             // _mockFolder.Setup(mf => mf.DeleteFolder(folderInfo));
-
             this._mockFolderManager.Setup(mfm => mfm.DeleteFolder(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath));
             this._mockFolderManager.Setup(mfm => mfm.GetFolders(folderInfo)).Returns(new List<IFolderInfo>());
 
@@ -1148,7 +1146,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         //        Assert.True(mergedTreeItem.ExistsInFolderMappings.Contains(Constants.FOLDER_ValidFolderMappingID));
         //    }
         // }
-
         [Test]
         public void MergeFolderLists_Returns_Empty_List_When_Both_Lists_Are_Empty()
         {
@@ -2082,7 +2079,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         //    _mockFolderManager.Verify(mfm => mfm.DeleteFolder(It.IsAny<int>(), It.IsAny<string>()), Times.Never());
         //    _directory.Verify(d => d.Delete(It.IsAny<string>(), It.IsAny<bool>()), Times.Never());
         // }
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void MoveFolder_Throws_On_Null_Folder()
@@ -2187,7 +2183,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
         // _mockFolderManager.Verify();
         // }
-
         [Test]
         public void OverwriteFolder_Calls_MoveFile_For_Each_File_In_Source_Folder()
         {

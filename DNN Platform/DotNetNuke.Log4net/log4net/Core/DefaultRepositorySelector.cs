@@ -677,7 +677,6 @@ namespace log4net.Core
                 // Try to configure the default repository using an AppSettings specified config file
                 // Do this even if the repository has been configured (or claims to be), this allows overriding
                 // of the default config files etc, if that is required.
-
                 string repositoryConfigFile = SystemInfo.GetAppSetting("log4net.Config");
                 if (repositoryConfigFile != null && repositoryConfigFile.Length > 0)
                 {

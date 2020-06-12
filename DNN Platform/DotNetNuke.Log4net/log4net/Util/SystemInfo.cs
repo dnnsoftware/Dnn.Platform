@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
 using System;
 
 #if NETSTANDARD1_3
@@ -766,7 +765,6 @@ namespace log4net.Util
             {
                 // Includes explicit assembly name
                 // LogLog.Debug(declaringType, "SystemInfo: Loading type ["+typeName+"] from global Type");
-
 #if NETCF
 				// In NETCF 2 and 3 arg versions seem to behave differently
 				// https://issues.apache.org/jira/browse/LOG4NET-113

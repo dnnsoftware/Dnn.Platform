@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Web;
 using DotNetNuke.Services.Localization;
@@ -32,7 +31,6 @@ namespace DotNetNuke.UI.Skins.Controls
                 this.aDnnLink.Target = this.Target;
             }
             // set home page link to community URL
-
             string url = "http://www.dnnsoftware.com/community?utm_source=dnn-install&utm_medium=web-link&utm_content=gravity-skin-link&utm_campaign=dnn-install";
             string utmTerm = "&utm_term=cms-by-dnn";
             string hostName = this.Request.Url.Host.ToLowerInvariant().Replace("www.", string.Empty);

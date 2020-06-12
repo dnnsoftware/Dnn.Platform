@@ -21,7 +21,6 @@ namespace DNN.Integration.Test.Framework.Controllers
     public static class SchedulerController
     {
         // private const string SchedulerModeName = "SchedulerMode";
-
         public static void DisableAllSchedulers(bool clearCache = true)
         {
             SetSchedulingMode(SchedulingMode.Disabled, clearCache);

@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
 using System;
 using System.Globalization;
 
@@ -137,7 +136,6 @@ namespace log4net.Util.TypeConverters
             // i.e. getting a type converter for a base of sourceType
 
             // TODO: Is destinationType required? We don't use it for anything.
-
             lock (s_type2converter)
             {
                 // Lookup in the static registry
@@ -176,7 +174,6 @@ namespace log4net.Util.TypeConverters
         {
             // TODO: Support inheriting type converters.
             // i.e. getting a type converter for a base of destinationType
-
             lock (s_type2converter)
             {
                 // Lookup in the static registry

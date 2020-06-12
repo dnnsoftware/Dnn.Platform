@@ -17,7 +17,6 @@ namespace DotNetNuke.Tests.Data
     public class PetaPocoMapperTests
     {
         // ReSharper disable InconsistentNaming
-
         [Test]
         public void PetaPocoMapper_Constructor_Initialises_TablePrefix_Property()
         {

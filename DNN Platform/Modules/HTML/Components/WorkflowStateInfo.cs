@@ -21,7 +21,6 @@ namespace DotNetNuke.Modules.Html
     public class WorkflowStateInfo
     {
         // local property declarations
-
         private bool _IsActive = true;
 
         // public properties

@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -846,7 +845,6 @@ namespace DotNetNuke.Entities.Urls
                             // make up the index that is looked for in the Tab Dictionary
                             string urlPart = aliasPath + "::" + tabPath;
                             // the :: allows separation of pagename and portal alias
-
                             string tabKeyVal = urlPart.ToLowerInvariant(); // force lower case lookup, all keys are lower case
 
                             // Try with querystring first If last Index
@@ -1305,7 +1303,6 @@ namespace DotNetNuke.Entities.Urls
                     {
                         var sendTo = rules[i].SendTo;
                         // get a new rewritePath location
-
                         var rewritePath = RewriterUtils.ResolveUrl(applicationPath, re.Replace(url, sendTo)); // no rewrite path unless we match by regex the intended tab
                         var sesMatch = re.Match(url);
                         var sesUrlParams = sesMatch.Groups[2].Value;

@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -211,7 +210,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 // {
                 //    settingsNode.RemoveAll();
                 // }
-
                 foreach (HostSettingConfig setting in installConfig.Settings)
                 {
                     XmlNode settingNode = AppendNewXmlNode(ref installTemplate, ref settingsNode, setting.Name, setting.Value);
@@ -434,7 +432,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
         public bool IsValidSqlServerVersion(string connectionString)
         {
             // todo: check if we can use globals.DatabaseEngineVersion instead
-
             bool isValidVersion = false;
             var sqlConnection = new SqlConnection(connectionString);
             try

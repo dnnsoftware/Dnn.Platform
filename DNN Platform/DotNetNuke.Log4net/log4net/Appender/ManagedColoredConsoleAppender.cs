@@ -44,7 +44,6 @@
 // For this reason, we always reset the colors and only set those
 // explicitly specified in the configuration (Console.BackgroundColor
 // isn't set if ommited).
-
 using System;
 using log4net.Util;
 

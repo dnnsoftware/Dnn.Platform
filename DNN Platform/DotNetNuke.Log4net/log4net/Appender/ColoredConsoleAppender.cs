@@ -372,7 +372,6 @@ namespace log4net.Appender
                 // Note that none of the above is visible while the console buffer is scrollable
                 // within the console window viewport, the effects only arise when the actual
                 // buffer is full and needs to be scrolled.
-
                 char[] messageCharArray = strLoggingMessage.ToCharArray();
                 int arrayLength = messageCharArray.Length;
                 bool appendNewline = false;

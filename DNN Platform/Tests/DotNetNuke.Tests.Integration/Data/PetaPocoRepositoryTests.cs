@@ -24,7 +24,6 @@ namespace DotNetNuke.Tests.Data
     public class PetaPocoRepositoryTests
     {
         // ReSharper disable InconsistentNaming
-
         private const string connectionStringName = "PetaPoco";
         private readonly string[] _dogAges = Constants.PETAPOCO_DogAges.Split(',');
         private readonly string[] _dogNames = Constants.PETAPOCO_DogNames.Split(',');

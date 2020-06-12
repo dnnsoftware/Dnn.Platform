@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -55,7 +54,6 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-
 #if CLI_1_0
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-.CLI 1.0")]
 [assembly: AssemblyTitle("Apache log4net for CLI 1.0 Compatible Frameworks")]
@@ -142,4 +140,3 @@ using System.Runtime.CompilerServices;
 #endif
 // We do not use a CSP key for strong naming
 // [assembly: AssemblyKeyName("")]
-

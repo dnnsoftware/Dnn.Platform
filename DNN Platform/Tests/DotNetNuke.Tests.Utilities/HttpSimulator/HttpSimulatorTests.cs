@@ -32,7 +32,6 @@ namespace UnitTests.Subtext
 
                 // Imagine, if you will, a bunch of complex interesting
                 // and fascinating logic here.
-
                 context.Response.Write(physicalPath + ":" + username + ":" + id + ":" + referer);
             }
 

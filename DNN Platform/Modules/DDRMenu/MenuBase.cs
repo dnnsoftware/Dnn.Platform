@@ -310,7 +310,6 @@ namespace DotNetNuke.Web.DDRMenu
 // ReSharper disable PossibleNullReferenceException
             this.RootNode = new MenuNode(newRoot.Children);
 // ReSharper restore PossibleNullReferenceException
-
             if (selectorSplit.Count > 1)
             {
                 for (var n = Convert.ToInt32(selectorSplit[1]); n > 0; n--)

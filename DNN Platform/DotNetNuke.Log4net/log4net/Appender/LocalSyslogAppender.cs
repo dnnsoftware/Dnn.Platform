@@ -443,7 +443,6 @@ namespace log4net.Appender
             }
 
             // Fallback to sensible default values
-
             if (level >= Level.Alert)
             {
                 return SyslogSeverity.Alert;

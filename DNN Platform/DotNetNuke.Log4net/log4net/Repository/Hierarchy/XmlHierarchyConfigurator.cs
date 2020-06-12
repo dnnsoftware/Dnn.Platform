@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
 using System;
 using System.Collections;
 using System.Globalization;
@@ -348,7 +347,6 @@ namespace log4net.Repository.Hierarchy
             catch (Exception ex)
             {
                 // Yes, it's ugly.  But all exceptions point to the same problem: we can't create an Appender
-
                 LogLog.Error(declaringType, "Could not create Appender [" + appenderName + "] of type [" + typeName + "]. Reported error follows.", ex);
                 return null;
             }
@@ -699,7 +697,6 @@ namespace log4net.Repository.Hierarchy
 
                     // Now try to convert the string value to an acceptable type
                     // to pass to this property.
-
                     object convertedValue = this.ConvertStringTo(propertyType, propertyValue);
 
                     // Check if we need to do an additional conversion
@@ -1045,7 +1042,6 @@ namespace log4net.Repository.Hierarchy
             }
 
             // Ok object should be initialized
-
             if (requiresConversion)
             {
                 // Convert the object type

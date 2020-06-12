@@ -15,7 +15,6 @@ using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Mvc.Framework.Controllers;
 
 // ReSharper disable ConvertPropertyToExpressionBody
-
 namespace DotNetNuke.Web.Mvc.Helpers
 {
     public class DnnHelper

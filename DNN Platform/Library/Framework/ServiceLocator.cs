@@ -21,7 +21,6 @@ namespace DotNetNuke.Framework
         private static TContract _testableInstance;
         private static bool _useTestable;
 // ReSharper restore StaticFieldInGenericType
-
         protected static Func<TContract> Factory { get; set; }
 
         private static TContract InitInstance()

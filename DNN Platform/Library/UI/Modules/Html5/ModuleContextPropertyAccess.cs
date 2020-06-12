@@ -7,7 +7,6 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Tokens;
 
 // ReSharper disable ConvertPropertyToExpressionBody
-
 namespace DotNetNuke.UI.Modules.Html5
 {
     public class ModuleContextPropertyAccess : IPropertyAccess

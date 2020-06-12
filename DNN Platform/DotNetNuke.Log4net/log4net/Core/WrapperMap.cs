@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
 using System;
 using System.Collections;
 
@@ -115,7 +114,6 @@ namespace log4net.Core
                 {
                     // Hierarchy does not exist in map.
                     // Must register with hierarchy
-
                     wrappersMap = new Hashtable();
                     this.m_repositories[logger.Repository] = wrappersMap;
 

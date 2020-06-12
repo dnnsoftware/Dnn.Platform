@@ -298,7 +298,6 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
         // var permissionProvider = new CorePermissionProvider();
         //    Assert.IsFalse(permissionProvider.HasModuleAccess(SecurityAccessLevel.View, "", module));
         // }
-
         private static PortalSettings SetupPortalSettings()
         {
             var mockPortalController = new Mock<IPortalController>();

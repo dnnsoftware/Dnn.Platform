@@ -80,7 +80,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
         public void AnonymousUser_IsAllowed_If_AllowAnonymousAtribute_IsAtActionLevel()
         {
             // Arrange
-
             var sut = this._mockDnnAuthorizeAttribute.Object;
 
             this._mockActionDescriptor.Setup(x => x.IsDefined(typeof(AllowAnonymousAttribute), true)).Returns(true);
@@ -99,7 +98,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
         public void RegisteredUser_IsAllowed_ByDefault()
         {
             // Arrange
-
             this._mockDnnAuthorizeAttribute.Protected().Setup<bool>("IsAuthenticated").Returns(true);
             this._mockDnnAuthorizeAttribute.Protected().Setup("HandleAuthorizedRequest", ItExpr.IsAny<AuthorizationContext>());
             var sut = this._mockDnnAuthorizeAttribute.Object;

@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -89,7 +88,6 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
             // from this point on we are dealing with a "standard" querystring ( ie. http://www.domain.com/default.aspx?tabid=## )
             // if the portal/url was succesfully identified
-
             int tabId = Null.NullInteger;
             int portalId = Null.NullInteger;
             string portalAlias = null;
@@ -606,7 +604,6 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 tabPath.Replace("/", "//").Replace(".aspx", string.Empty), string.Empty);
                         }
                         // End of patch
-
                         if (tabID != Null.NullInteger)
                         {
                             string sendToUrl = "~/" + Globals.glbDefaultPage + "?TabID=" + tabID;

@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
@@ -217,7 +216,6 @@ namespace DotNetNuke.Services.Search
             DateTime indexSince;
             var indexedCount = 0;
             // DateTime startDate
-
             foreach (var portal in portals.Cast<PortalInfo>())
             {
                 indexSince = this.FixedIndexingStartDate(portal.PortalID);

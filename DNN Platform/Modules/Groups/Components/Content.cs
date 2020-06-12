@@ -57,7 +57,6 @@ namespace DotNetNuke.Entities.Groups
             // Add Terms
             // var cntTerm = new Terms();
             // cntTerm.ManageQuestionTerms(objPost, objContent);
-
             return objContent;
         }
 
@@ -104,7 +103,6 @@ namespace DotNetNuke.Entities.Groups
             // remove any metadata/terms associated first (perhaps we should just rely on ContentItem cascade delete here?)
             // var cntTerms = new Terms();
             // cntTerms.RemoveQuestionTerms(objContent);
-
             Util.GetContentController().DeleteContentItem(objContent);
         }
 

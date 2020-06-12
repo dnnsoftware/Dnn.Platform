@@ -5,7 +5,6 @@
 using System;
 
 // ReSharper disable InconsistentNaming
-
 namespace Dnn.ExportImport.Dto.Taxonomy
 {
     public class TaxonomyVocabulary : BasicExportImportDto

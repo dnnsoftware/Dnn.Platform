@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -1169,7 +1168,6 @@ namespace DotNetNuke.Entities.Urls
                                 isHomePage);
 
                             // 702: look for _aumdebug=true|false and remove if so - never want it part of the output friendly url path
-
                             finalPath = AumDebugRegex.Replace(finalPath, string.Empty);
 
                             // 'and we're done!

@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -258,7 +257,6 @@ namespace Dnn.Modules.Console
                 {
                     // visibilityDropDown.Items.Add(new ListItem(LocalizeString("Friends"), "Friends"));
                     // visibilityDropDown.Items.Add(new ListItem(LocalizeString("User"), "User"));
-
                     visibilityDropDown.AddItem(this.LocalizeString("Friends"), "Friends");
                     visibilityDropDown.AddItem(this.LocalizeString("User"), "User");
                 }
@@ -266,7 +264,6 @@ namespace Dnn.Modules.Console
                 {
                     // visibilityDropDown.Items.Add(new ListItem(LocalizeString("Owner"), "Owner"));
                     // visibilityDropDown.Items.Add(new ListItem(LocalizeString("Members"), "Members"));
-
                     visibilityDropDown.AddItem(this.LocalizeString("Owner"), "Owner");
                     visibilityDropDown.AddItem(this.LocalizeString("Members"), "Members");
                 }

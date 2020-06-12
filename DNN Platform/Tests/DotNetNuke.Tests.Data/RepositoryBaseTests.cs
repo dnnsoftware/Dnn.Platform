@@ -24,7 +24,6 @@ namespace DotNetNuke.Tests.Data
     public class RepositoryBaseTests
     {
         // ReSharper disable InconsistentNaming
-
         [SetUp]
         public void SetUp()
         {

@@ -686,7 +686,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             t.Start(); // start running 'proc' thread wrapper
             // from docs: "The Start method does not return until the new thread has started running."
-
             if (t.Join(timeout) == false)
             {
                 t.Abort(); // die evil thread!
@@ -2215,7 +2214,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         // Note: these tests needs to pass through the analyzer which is utilized
         //       in SearchControllerImpl but not LuceneControllerImpl.
-
         [Test]
         public void SearchController_SearchFindsAccentedAndNonAccentedWords()
         {

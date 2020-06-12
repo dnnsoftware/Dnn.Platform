@@ -102,7 +102,6 @@ namespace DotNetNuke.HttpModules.OutputCaching
             includeVaryByKeys.Add("locale");
             includeVaryByKeys.Add("alias");
             // make sure to always add keys in lowercase only
-
             if (includeExclude == IncludeExcludeType.ExcludeByDefault)
             {
                 string includeVaryByKeysSettings = string.Empty;

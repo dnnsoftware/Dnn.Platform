@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Reflection;
 using System.Threading;
@@ -21,7 +20,6 @@ namespace DotNetNuke.Services.Scheduling
         // This class represents a process group for
         // our threads to run in.
         // ''''''''''''''''''''''''''''''''''''''''''''''''''
-
         public delegate void CompletedEventHandler();
 
         private static int numberOfProcessesInQueue;
@@ -74,7 +72,6 @@ namespace DotNetNuke.Services.Scheduling
                 Process.ProcessErrored += Scheduler.CoreScheduler.WorkErrored;
                 // This kicks off the DoWork method of the class
                 // type specified in the configuration.
-
                 Process.Started();
                 try
                 {
@@ -108,7 +105,6 @@ namespace DotNetNuke.Services.Scheduling
                 // I don't think this is necessary with the
                 // other events.  I'll leave it for now and
                 // will probably take it out later.
-
                 if (processesCompleted == numberOfProcesses)
                 {
                     if (processesCompleted == numberOfProcesses)

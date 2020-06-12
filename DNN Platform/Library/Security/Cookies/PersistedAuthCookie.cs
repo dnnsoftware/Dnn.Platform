@@ -8,7 +8,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Entities.Modules;
 // ReSharper disable MemberCanBePrivate.Global
-
 namespace DotNetNuke.Security.Cookies
 {
     [Serializable]

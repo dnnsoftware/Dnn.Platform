@@ -18,7 +18,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
 #if NET_3_5 || NET_4_0 || MONO_3_5 || MONO_4_0 || NETSTANDARD1_3
 
 using System;

@@ -24,7 +24,6 @@ namespace DotNetNuke.Security.Permissions
     public class WorkflowStatePermissionInfo : PermissionInfoBase, IHydratable
     {
         // local property declarations
-
         private int _StateID;
         private int _WorkflowStatePermissionID;
 

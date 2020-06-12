@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -72,7 +71,6 @@ namespace DotNetNuke.UI.Skins
         private readonly ModuleCommunicate _communicator = new ModuleCommunicate();
 
         // ReSharper restore InconsistentNaming
-
         private ArrayList _actionEventListeners;
         private Control _controlPanel;
         private Dictionary<string, Pane> _panes;

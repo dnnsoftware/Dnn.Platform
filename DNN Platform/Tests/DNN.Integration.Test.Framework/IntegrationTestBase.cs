@@ -16,7 +16,6 @@ namespace DNN.Integration.Test.Framework
         public static string ConnectionString { get; }
 
         // public static string DatabaseName { get; }
-
         static IntegrationTestBase()
         {
             ServicePointManager.Expect100Continue = false;

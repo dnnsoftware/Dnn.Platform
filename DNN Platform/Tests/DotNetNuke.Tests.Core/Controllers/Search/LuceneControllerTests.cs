@@ -253,7 +253,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._luceneController.Add(doc);
             // DONOT commit here to enable testing near-realtime of search writer
             // _luceneController.Commit();
-
             var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) }));
 
             // Assert
@@ -639,7 +638,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // var lastAcccess = Directory.GetLastWriteTime(_luceneController.IndexFolder);
             // Directory.SetLastWriteTime(_luceneController.IndexFolder, lastAcccess + TimeSpan.FromSeconds(1));
-
             Assert.AreNotSame(reader, this._luceneController.GetSearcher());
         }
 

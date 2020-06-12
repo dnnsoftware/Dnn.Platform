@@ -111,7 +111,6 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         // ReSharper restore LoopCanBeConvertedToQuery
-
         private string GetThumbUrl(IFileInfo file)
         {
             if (IsImageFile(file.RelativePath))

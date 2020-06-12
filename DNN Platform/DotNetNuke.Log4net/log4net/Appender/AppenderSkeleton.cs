@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
 using System;
 using System.Collections;
 using System.IO;
@@ -278,7 +277,6 @@ namespace log4net.Appender
             // of the message in a multi-threaded environment.  Without
             // this, the message may be broken up into elements from
             // multiple thread contexts (like get the wrong thread ID).
-
             lock (this)
             {
                 if (this.m_closed)
@@ -371,7 +369,6 @@ namespace log4net.Appender
             // of the message in a multi-threaded environment.  Without
             // this, the message may be broken up into elements from
             // multiple thread contexts (like get the wrong thread ID).
-
             lock (this)
             {
                 if (this.m_closed)

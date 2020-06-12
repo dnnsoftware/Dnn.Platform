@@ -38,7 +38,6 @@ using TermHelper = DotNetNuke.Entities.Content.Taxonomy.TermHelper;
 using Util = Dnn.ExportImport.Components.Common.Util;
 
 // ReSharper disable SuggestBaseTypeForParameter
-
 namespace Dnn.ExportImport.Components.Services
 {
     /// <summary>
@@ -401,7 +400,6 @@ namespace Dnn.ExportImport.Components.Services
             // 3. Find corresponding id of local default lang tab
             // 4. Take UniqueId of local default lang tab and set it for the page we are going to create/update
             // 5. Use fallback value if something from above scenario does not work
-
             if (exportedTab.DefaultLanguageGuid == Null.NullGuid)
             {
                 return;

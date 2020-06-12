@@ -5,7 +5,6 @@
 using System;
 
 // ReSharper disable InconsistentNaming
-
 namespace Dnn.ExportImport.Dto.Pages
 {
     public class ExportTabModuleSetting : BasicExportImportDto

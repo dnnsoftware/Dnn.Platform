@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -128,7 +127,6 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 // this code allows a developer to reference an ASCX file in a different folder than the module folder ( good for ASCX files shared between modules where you want only a single copy )
                 // or it allows the developer to use webcontrols rather than usercontrols
-
                 controlSrc = Path.Combine("DesktopModules", Path.Combine(moduleFolder, controlSrc));
             }
             controlSrc = controlSrc.Replace('\\', '/');

@@ -54,7 +54,6 @@ namespace DNN.Integration.Test.Framework
         // private const string LogoffPath = "/Home/ctl/Logoff.aspx";
         // private const string LogoffPath = "/Logoff.aspx");
         // private const string LogoffPath = "/Home/tabid/55/ctl/LogOff/Default.aspx");
-
         private const string UploadFileRequestPath = "API/internalservices/fileupload/postfile";
         private const string ActivityStreamUploadFilePath = "API/DNNCorp/ActivityStream/FileUpload/UploadFile";
 
@@ -725,7 +724,6 @@ namespace DNN.Integration.Test.Framework
 
         // ==============================================================================
         // Adapted from http://www.briangrinstead.com/blog/multipart-form-post-in-c#
-
         private static readonly Encoding Encoding = Encoding.UTF8;
 
         public HttpWebResponse MultipartFormDataPost(string relativeUrl, IDictionary<string, object> postParameters, IDictionary<string, string> headers = null, bool followRedirect = false)

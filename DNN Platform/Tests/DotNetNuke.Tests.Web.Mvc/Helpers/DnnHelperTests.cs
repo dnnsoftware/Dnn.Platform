@@ -10,7 +10,6 @@ using DotNetNuke.Web.Mvc.Helpers;
 using Moq;
 using NUnit.Framework;
 // ReSharper disable ObjectCreationAsStatement
-
 namespace DotNetNuke.Tests.Web.Mvc.Helpers
 {
     [TestFixture]

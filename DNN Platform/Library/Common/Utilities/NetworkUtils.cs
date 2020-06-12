@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Linq;
 using System.Net;
@@ -57,12 +56,10 @@ namespace DotNetNuke.Common.Utils
         public static long IPtoLong(IPAddress ip)
         {
             // convert IP to number
-
             byte[] addressBytes = ip.GetAddressBytes();
             // get the octets
             long addr = 0;
             // accumulator for address
-
             for (int x = 0; x <= 3; x++)
             {
                 addr = addr | (Convert.ToInt64(addressBytes[x]) << ((3 - x) * 8));
@@ -78,12 +75,10 @@ namespace DotNetNuke.Common.Utils
         public static string LongToIp(long ip)
         {
             // convert number back to IP
-
             var ipByte = new byte[4];
             // 4 octets
             string addr = string.Empty;
             // accumulator for address
-
             long mask8 = MaskFromCidr(8);
             // create eight bit mask
 

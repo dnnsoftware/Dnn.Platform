@@ -16,7 +16,6 @@ namespace DotNetNuke.Common.Utilities
             where TObject : new();
 
         // SortedList<TKey, TValue> FillSortedList<TKey, TValue>(string keyField, IDataReader dr);
-
         TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary);
     }
 }

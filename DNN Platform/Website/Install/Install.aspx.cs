@@ -60,7 +60,6 @@ namespace DotNetNuke.Services.Install
             // the application uses a two step installation process. The first step is used to update
             // the Web.config with any configuration settings - which forces an application restart.
             // The second step finishes the installation process and provisions the site.
-
             string installationDate = Config.GetSetting("InstallationDate");
 
             if (installationDate == null || string.IsNullOrEmpty(installationDate))

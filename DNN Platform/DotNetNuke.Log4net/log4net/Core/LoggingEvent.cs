@@ -19,7 +19,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-
 using System;
 using System.Collections;
 using System.IO;
@@ -1091,7 +1090,6 @@ namespace log4net.Core
         {
             // The caller must call FixVolatileData before this object
             // can be serialized.
-
             info.AddValue("LoggerName", this.m_data.LoggerName);
             info.AddValue("Level", this.m_data.Level);
             info.AddValue("Message", this.m_data.Message);

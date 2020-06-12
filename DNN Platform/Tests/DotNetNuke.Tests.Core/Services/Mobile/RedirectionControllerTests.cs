@@ -293,7 +293,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         //    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), _redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
         //    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), _redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 2));
         // }
-
         [Test]
         public void RedirectionController_GetRedirectionUrl_Returns_ExternalSite_When_Surfing_AnyPageOfCurrentPortal_OnMobile()
         {
@@ -377,7 +376,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
         // //Assert.AreEqual(string.Empty, url);
         // }
-
         [Test]
         public void RedirectionController_GetFullSiteUrl_When_Redirect_To_DifferentUrl()
         {
@@ -433,7 +431,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         // //First Page returns link to home page of other portal
         //    Assert.AreEqual(Globals.AddHTTP(PortalAlias1), mobileUrlForPage1);
         // }
-
         [Test]
         public void RedirectionController_GetMobileSiteUrl_When_Redirect_To_DifferentUrl()
         {

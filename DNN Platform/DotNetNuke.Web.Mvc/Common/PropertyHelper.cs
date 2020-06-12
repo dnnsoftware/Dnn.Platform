@@ -94,7 +94,6 @@ namespace DotNetNuke.Web.Mvc.Common
         public object GetValue(object instance)
         {
             // Contract.Assert(_valueGetter != null, "Must call Initialize before using this object");
-
             return this._valueGetter(instance);
         }
 

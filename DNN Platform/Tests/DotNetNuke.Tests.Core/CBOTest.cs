@@ -37,7 +37,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             cboTable.Rows.Add(colValue);
 
             // Assert.AreEqual(12, moq.Object["TestColumn"]);
-
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
             Assert.IsInstanceOf<IntPoco>(result);
@@ -54,7 +53,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             cboTable.Rows.Add(colValue);
 
             // Assert.AreEqual(12, moq.Object["TestColumn"]);
-
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
             Assert.IsInstanceOf<IntPoco>(result);
@@ -72,7 +70,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             cboTable.Rows.Add(colValue);
 
             // Assert.AreEqual(12, moq.Object["TestColumn"]);
-
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
             Assert.IsInstanceOf<IntPoco>(result);

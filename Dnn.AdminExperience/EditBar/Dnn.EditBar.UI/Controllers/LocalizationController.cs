@@ -91,7 +91,6 @@ namespace Dnn.EditBar.UI.Controllers
                 // ReSharper disable AssignNullToNotNullAttribute
                 var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
                 // ReSharper restore AssignNullToNotNullAttribute
-
                 AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
 
                 // ReSharper disable AssignNullToNotNullAttribute

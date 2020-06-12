@@ -6,7 +6,6 @@ using System.Web.Caching;
 using DotNetNuke.Entities.Content.Taxonomy;
 
 // ReSharper disable InconsistentNaming
-
 namespace DotNetNuke.Tests.Utilities
 {
     public class Constants

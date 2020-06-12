@@ -2,7 +2,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -2051,7 +2050,6 @@ namespace DotNetNuke.Services.Upgrade
             AddSkinControl("TEXT", "DotNetNuke.TextSkinObject", "Admin/Skins/Text.ascx");
 
             // Add Styles Skin Object
-
             AddSkinControl("STYLES", "DotNetNuke.StylesSkinObject", "Admin/Skins/Styles.ascx");
         }
 
@@ -5071,7 +5069,6 @@ namespace DotNetNuke.Services.Upgrade
         public static void StartTimer()
         {
             // Start Upgrade Timer
-
             _startTime = DateTime.Now;
         }
 
@@ -5091,7 +5088,6 @@ namespace DotNetNuke.Services.Upgrade
                             FileSystemUtils.DeleteFile(Path.Combine(Globals.ApplicationMapPath, "bin\\System.Web.Extensions.dll"));
 
                             // Log Upgrade
-
                             EventLogController.Instance.AddLog("UpgradeNet", "Upgraded Site to .NET 3.5", PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.HOST_ALERT);
                         }
                         else

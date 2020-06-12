@@ -529,7 +529,6 @@ namespace DotNetNuke.Modules.DigitalAssets
                 base.OnLoad(e);
 
                 // if (IsPostBack) return;
-
                 switch (SettingsRepository.GetMode(this.ModuleId))
                 {
                     case DigitalAssestsMode.Group:

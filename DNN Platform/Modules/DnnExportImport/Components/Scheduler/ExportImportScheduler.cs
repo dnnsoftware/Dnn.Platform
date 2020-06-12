@@ -46,7 +46,6 @@ namespace Dnn.ExportImport.Components.Scheduler
             try
             {
                 // TODO: do some clean-up for very old import/export jobs/logs
-
                 var job = EntitiesController.Instance.GetFirstActiveJob();
                 if (job == null)
                 {

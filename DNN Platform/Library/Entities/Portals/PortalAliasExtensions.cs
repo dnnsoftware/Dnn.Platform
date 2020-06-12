@@ -140,7 +140,6 @@ namespace DotNetNuke.Entities.Portals
                        .FirstOrDefault();
             }
             // END DNN-4882
-
             if (foundAlias != null)
             {
                 if (result != null && result.PortalAlias != null)
