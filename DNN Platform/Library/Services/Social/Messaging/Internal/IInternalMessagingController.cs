@@ -40,22 +40,22 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         /// <summary>How long a user needs to wait before user is allowed sending the next message</summary>
         /// <returns>Time in seconds. Returns zero if user has never sent a message</returns>
-        /// <param name="sender">Sender's UserInfo</param>        
+        /// <param name="sender">Sender's UserInfo</param>
         int WaitTimeForNextMessage(UserInfo sender);
 
         /// <summary>Last message sent by the User</summary>
         /// <returns>Message. Null when no message was sent</returns>
-        /// <param name="sender">Sender's UserInfo</param>        
+        /// <param name="sender">Sender's UserInfo</param>
         Message GetLastSentMessage(UserInfo sender);
 
-        /// <summary>Maximum number of Recipients allowed</summary>        
+        /// <summary>Maximum number of Recipients allowed</summary>
         /// <returns>Count. Message to a Role is considered a single Recipient. Each User in the To list is counted as one User each.</returns>
-        /// <param name="portalId">Portal Id</param>        
+        /// <param name="portalId">Portal Id</param>
         int RecipientLimit(int portalId);
 
-        /// <summary>Are attachments allowed</summary>        
+        /// <summary>Are attachments allowed</summary>
         /// <returns>True or False</returns>
-        /// <param name="portalId">Portal Id</param>        
+        /// <param name="portalId">Portal Id</param>
         bool AttachmentsAllowed(int portalId);
 
         /// <summary>Whether or not to includes the attachment in the email message.</summary>
@@ -63,8 +63,8 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <returns></returns>
         bool IncludeAttachments(int portalId);
 
-        /// <summary>Whether disable regular users to send message to user/group, default is false.</summary>        
-        /// <param name="portalId">Portal Id</param>    
+        /// <summary>Whether disable regular users to send message to user/group, default is false.</summary>
+        /// <param name="portalId">Portal Id</param>
         bool DisablePrivateMessage(int portalId);
 
         #endregion

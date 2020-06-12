@@ -209,7 +209,7 @@ namespace DotNetNuke.Services.Search
             }
             return retValue;
         }
-        
+
         #endregion
     }
 }

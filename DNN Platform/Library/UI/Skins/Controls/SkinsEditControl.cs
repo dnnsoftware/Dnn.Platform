@@ -35,7 +35,7 @@ namespace DotNetNuke.UI.Skins.Controls
     public class SkinsEditControl : EditControl, IPostBackEventHandler
     {
         private string _AddedItem = Null.NullString;
-        
+
         #region "Constructors"
 
         /// -----------------------------------------------------------------------------
@@ -57,7 +57,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             this.SystemType = type;
         }
-        
+
         #endregion
 
         #region "Protected Properties"
@@ -184,7 +184,7 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         #endregion
-        
+
         #endregion
 
         #region "Protected Methods"
@@ -326,7 +326,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
             }
         }
-        
+
         #endregion
 
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)

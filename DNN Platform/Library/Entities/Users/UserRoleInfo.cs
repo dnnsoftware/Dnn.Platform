@@ -40,7 +40,7 @@ namespace DotNetNuke.Entities.Users
         public DateTime ExpiryDate { get; set; }
 
         public bool IsOwner { get; set; }
-        
+
         public bool IsTrialUsed { get; set; }
 
         public bool Subscribed { get; set; }

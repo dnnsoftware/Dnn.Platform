@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             get
             {
                 string template;
-                using (StreamReader sr = new StreamReader(HttpContext.Current.Server.MapPath(templatePath + "AlternateItemTemplate.htm"))) 
+                using (StreamReader sr = new StreamReader(HttpContext.Current.Server.MapPath(templatePath + "AlternateItemTemplate.htm")))
                 {
                     template = sr.ReadToEnd();
                 }
@@ -124,10 +124,10 @@ namespace DotNetNuke.Modules.MemberDirectory
 
                 var profileResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
 
-                
+
                 System.Web.UI.WebControls.ListItemCollection propertiesCollection = this.GetPropertiesCollection(profileResourceFile);
-                    
-                
+
+
                 // Bind the ListItemCollection to the list
                 this.propertyList.DataSource = propertiesCollection;
                 this.propertyList.DataBind();
@@ -184,7 +184,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             {
                 result.Add(new ListItem(this.GetLocalizeName(property.PropertyName, profileResourceFile), property.PropertyName));
             }
-            
+
             return result;
         }
 
@@ -250,7 +250,7 @@ namespace DotNetNuke.Modules.MemberDirectory
 
             this.Model.TabModuleSettings["DisablePaging"] = this.disablePager.Checked.ToString(CultureInfo.InvariantCulture);
             this.Model.TabModuleSettings["PageSize"] = this.pageSize.Text;
-            
+
             this.Model.TabModuleSettings["ExcludeHostUsers"] = this.ExcludeHostUsersCheckBox.Checked.ToString(CultureInfo.InvariantCulture);
 
             base.OnSavingSettings();

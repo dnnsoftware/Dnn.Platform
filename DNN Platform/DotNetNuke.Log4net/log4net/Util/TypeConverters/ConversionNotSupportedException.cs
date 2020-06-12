@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -46,7 +46,7 @@ namespace log4net.Util.TypeConverters
 #if NETSTANDARD1_3
 	public class ConversionNotSupportedException : Exception
 #else
-    public class ConversionNotSupportedException : ApplicationException 
+    public class ConversionNotSupportedException : ApplicationException
 #endif
     {
         #region Public Instance Constructors
@@ -73,10 +73,10 @@ namespace log4net.Util.TypeConverters
         /// with the specified message.
         /// </para>
         /// </remarks>
-        public ConversionNotSupportedException(String message) : base(message) 
+        public ConversionNotSupportedException(String message) : base(message)
         {
         }
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -88,7 +88,7 @@ namespace log4net.Util.TypeConverters
         /// with the specified message and inner exception.
         /// </para>
         /// </remarks>
-        public ConversionNotSupportedException(String message, Exception innerException) : base(message, innerException) 
+        public ConversionNotSupportedException(String message, Exception innerException) : base(message, innerException)
         {
         }
 
@@ -104,11 +104,11 @@ namespace log4net.Util.TypeConverters
         /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
         /// <remarks>
         /// <para>
-        /// Initializes a new instance of the <see cref="ConversionNotSupportedException" /> class 
+        /// Initializes a new instance of the <see cref="ConversionNotSupportedException" /> class
         /// with serialized data.
         /// </para>
         /// </remarks>
-        protected ConversionNotSupportedException(SerializationInfo info, StreamingContext context) : base(info, context) 
+        protected ConversionNotSupportedException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
 #endif

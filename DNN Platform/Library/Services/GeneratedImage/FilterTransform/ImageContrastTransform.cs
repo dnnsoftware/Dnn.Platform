@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         /// Sets the contrast value. Defaultvalue is 0. Range is -100 .. 100
         /// </summary>
         public double Contrast { get; set; }
-        
+
         /// <summary>
         /// Provides an Unique String for this class
         /// </summary>

@@ -267,7 +267,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return this._modulePermissions ?? 
+                return this._modulePermissions ??
                     (this._modulePermissions = this.ModuleID > 0
                             ? new ModulePermissionCollection(ModulePermissionController.GetModulePermissions(this.ModuleID, this.TabID))
                             : new ModulePermissionCollection());

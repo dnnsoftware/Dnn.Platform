@@ -57,7 +57,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 return;
             }
 
-            // URL validation 
+            // URL validation
             // check for ".." escape characters commonly used by hackers to traverse the folder tree on the server
             // the application should always use the exact relative location of the resource it is requesting
             var strURL = request.Url.AbsolutePath;
@@ -175,7 +175,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         if (String.IsNullOrEmpty(portalAlias))
                         {
                             // if the TabId is not for the correct domain
-                            // see if the correct domain can be found and redirect it 
+                            // see if the correct domain can be found and redirect it
                             portalAliasInfo = PortalAliasController.Instance.GetPortalAlias(domainName);
                             if (portalAliasInfo != null && !request.Url.LocalPath.ToLowerInvariant().EndsWith("/linkclick.aspx"))
                             {
@@ -253,7 +253,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 app.Context.Items.Add("HostSettingsDictionary", HostController.Instance.GetSettingsDictionary());
 
 
-                if (portalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.Redirect 
+                if (portalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.Redirect
                     && portalAliasInfo != null && !portalAliasInfo.IsPrimary
                     && !string.IsNullOrWhiteSpace(portalSettings.DefaultPortalAlias)) // don't redirect if no primary alias is defined
                  {
@@ -311,7 +311,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     // if SSL is enforced
                     if (portalSettings.SSLEnforced)
                     {
-                        // if page is not secure and connection is secure 
+                        // if page is not secure and connection is secure
                         if ((!portalSettings.ActiveTab.IsSecure && request.IsSecureConnection))
                         {
                             // check if connection has already been forced to secure orelse ssloffload is disabled
@@ -335,7 +335,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             // when switching to an unsecure page, use a clientside redirector to avoid the browser security warning
                         {
                             response.Clear();
-                            // add a refresh header to the response 
+                            // add a refresh header to the response
                             response.AddHeader("Refresh", "0;URL=" + strURL);
                             // add the clientside javascript redirection script
                             response.Write("<html><head><title></title>");
@@ -430,14 +430,14 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 requestedPath = requestedPath.Replace(app.Request.Url.Query, "");
             }
 
-            // get url rewriting rules 
+            // get url rewriting rules
             RewriterRuleCollection rules = RewriterConfiguration.GetConfig().Rules;
 
             // iterate through list of rules
             int matchIndex = -1;
             for (int ruleIndex = 0; ruleIndex <= rules.Count - 1; ruleIndex++)
             {
-                // check for the existence of the LookFor value 
+                // check for the existence of the LookFor value
                 string pattern = "^" +
                                  RewriterUtils.ResolveUrl(app.Context.Request.ApplicationPath, rules[ruleIndex].LookFor) +
                                  "$";
@@ -461,7 +461,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         // icreate a well formed querystring based on the array of parameters
                         for (int parameterIndex = 0; parameterIndex < splitParameters.Length; parameterIndex++)
                         {
-                            // ignore the page name 
+                            // ignore the page name
                             if (
                                 splitParameters[parameterIndex].IndexOf(".aspx",
                                                                         StringComparison.InvariantCultureIgnoreCase) ==
@@ -471,7 +471,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 string parameterName = splitParameters[parameterIndex].Trim();
                                 if (parameterName.Length > 0)
                                 {
-                                    // add parameter to SendTo if it does not exist already  
+                                    // add parameter to SendTo if it does not exist already
                                     if (
                                         sendTo.IndexOf("?" + parameterName + "=",
                                                        StringComparison.InvariantCultureIgnoreCase) == -1 &&
@@ -564,7 +564,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     if (objPortalAlias != null)
                     {
                         int portalID = objPortalAlias.PortalID;
-                        // Identify Tab Name 
+                        // Identify Tab Name
                         string tabPath = url;
                         if (tabPath.StartsWith(myAlias))
                         {

@@ -64,7 +64,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
                                 }
 
                                 testName += "_";
- 
+
                                 testName += fields[0];
 
                                 testData.Add(new TestCaseData(fieldList).SetName(testName));

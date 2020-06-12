@@ -165,7 +165,7 @@ namespace DotNetNuke.Web.InternalServices
             if (portalId == -1) portalId = this.PortalSettings.ActiveTab.PortalID;
             if (portalId > -1 && !list.Contains(portalId)) list.Add(portalId);
 
-            // Add Host 
+            // Add Host
             var userInfo = this.UserInfo;
             if (userInfo.IsSuperUser)
                 list.Add(-1);
@@ -260,7 +260,7 @@ namespace DotNetNuke.Web.InternalServices
 
             var groups = new List<GroupedDetailView>();
             var tabGroups = new Dictionary<string, IList<SearchResult>>();
-           
+
             foreach (var result in searchResults.Results)
             {
                 // var key = result.TabId + result.Url;
@@ -376,7 +376,7 @@ namespace DotNetNuke.Web.InternalServices
                     if (match.Success)
                     {
                         var userid = Convert.ToInt32(match.Groups[2].Value);
-                        var user = UserController.Instance.GetUserById(portalId, userid); 
+                        var user = UserController.Instance.GetUserById(portalId, userid);
                         if (user != null)
                         {
                             preview.Attributes.Add("Avatar", user.Profile.PhotoURL);
@@ -489,7 +489,7 @@ namespace DotNetNuke.Web.InternalServices
             var tags = SearchQueryStringParser.Instance.GetTags(keywords, out cleanedKeywords);
             var beginModifiedTimeUtc = SearchQueryStringParser.Instance.GetLastModifiedDate(cleanedKeywords, out cleanedKeywords);
             var searchTypes = SearchQueryStringParser.Instance.GetSearchTypeList(keywords, out cleanedKeywords);
-            
+
             var contentSources = this.GetSearchContentSources(searchTypes);
             var settings = this.GetSearchModuleSettings();
             var searchTypeIds = GetSearchTypeIds(settings, contentSources);
@@ -516,7 +516,7 @@ namespace DotNetNuke.Web.InternalServices
                     TitleSnippetLength = 40,
                     BodySnippetLength = 100,
                     CultureCode = culture,
-                    WildCardSearch = forceWild > 0 
+                    WildCardSearch = forceWild > 0
                 };
 
                 try
@@ -552,7 +552,7 @@ namespace DotNetNuke.Web.InternalServices
             var more = false;
             var totalHits = 0;
             var results = new List<GroupedDetailView>();
-            if (portalIds.Any() && searchTypeIds.Any() && 
+            if (portalIds.Any() && searchTypeIds.Any() &&
                 (!string.IsNullOrEmpty(cleanedKeywords) || tags.Any()))
             {
                 var query = new SearchQuery
@@ -585,7 +585,7 @@ namespace DotNetNuke.Web.InternalServices
 
             return this.Request.CreateResponse(HttpStatusCode.OK, new { results, totalHits, more });
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [SupportedModules("SearchAdmin")]

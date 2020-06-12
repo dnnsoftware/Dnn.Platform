@@ -44,7 +44,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         #region Public Properties
-        
+
         /// <summary>
         /// Caption
         /// </summary>
@@ -105,11 +105,11 @@ namespace DotNetNuke.UI.WebControls
                             sb.Append(relationship.RelationshipId.ToString(CultureInfo.InvariantCulture) + ",");
                         }
                     }
-                    
+
                     this.Value = new ProfileVisibility(this.User.PortalID, sb.ToString())
                                     {
                                         VisibilityMode = postedVisibility
-                                    };                    
+                                    };
                 }
                 else
                 {
@@ -136,11 +136,11 @@ namespace DotNetNuke.UI.WebControls
         }
 
         #endregion
-        
+
         #region Events
 
         public event PropertyChangedEventHandler VisibilityChanged;
-        
+
         #endregion
 
         #region Private Methods
@@ -195,7 +195,7 @@ namespace DotNetNuke.UI.WebControls
         {
             foreach (var group in this.User.Social.Roles.Where((role) => role.SecurityMode != SecurityMode.SecurityRole))
             {
-                this.RenderCheckboxItem(writer, ":group_", group.RoleID.ToString(CultureInfo.InvariantCulture), 
+                this.RenderCheckboxItem(writer, ":group_", group.RoleID.ToString(CultureInfo.InvariantCulture),
                                         group.RoleName,
                                         this.Visibility.RoleVisibilities.Count(r => r.RoleID == group.RoleID) == 1);
             }
@@ -205,7 +205,7 @@ namespace DotNetNuke.UI.WebControls
         {
             foreach (var relationship in this.User.Social.Relationships)
             {
-                this.RenderCheckboxItem(writer, ":relationship_", relationship.RelationshipId.ToString(CultureInfo.InvariantCulture), 
+                this.RenderCheckboxItem(writer, ":relationship_", relationship.RelationshipId.ToString(CultureInfo.InvariantCulture),
                                         relationship.Name,
                                         this.Visibility.RelationshipVisibilities.Count(r => r.RelationshipId == relationship.RelationshipId) == 1);
             }
@@ -263,7 +263,7 @@ namespace DotNetNuke.UI.WebControls
 
             // writer.AddAttribute(HtmlTextWriterAttribute.Src, IconController.IconURL("Lock"));
             // writer.RenderBeginTag(HtmlTextWriterTag.Img);
-            
+
             // Close Image Tag
             // writer.RenderEndTag();
 
@@ -308,7 +308,7 @@ namespace DotNetNuke.UI.WebControls
             // Close Div
             writer.RenderEndTag();
         }
-        
+
         #endregion
     }
 }

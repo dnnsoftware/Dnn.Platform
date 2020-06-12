@@ -10,9 +10,9 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models
     {
         public FolderViewModel()
         {
-            this.Attributes = new List<KeyValuePair<string, object>>(); 
+            this.Attributes = new List<KeyValuePair<string, object>>();
         }
-        
+
         public int FolderID { get; set; }
 
         public int FolderMappingID { get; set; }
@@ -31,6 +31,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models
 
         public IEnumerable<PermissionViewModel> Permissions { get; set; }
 
-        public IList<KeyValuePair<string, object>> Attributes { get; set; } 
+        public IList<KeyValuePair<string, object>> Attributes { get; set; }
     }
 }

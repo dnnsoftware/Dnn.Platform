@@ -1564,7 +1564,7 @@ namespace DotNetNuke.Services.FileSystem
 
             var isDatabaseMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID).MappingName == "Database";
 
-            // If the file does not exist, then the field would not has value. 
+            // If the file does not exist, then the field would not has value.
             // Currently, first upload has not version file
             if (oldFile == null || !oldFile.HasBeenPublished)
             {
@@ -1912,7 +1912,7 @@ namespace DotNetNuke.Services.FileSystem
         /// Update file info to database.
         /// </summary>
         /// <param name="file">File info.</param>
-        /// <param name="updateLazyload">Whether to update the lazy load properties: Width, Height, Sha1Hash.</param>        
+        /// <param name="updateLazyload">Whether to update the lazy load properties: Width, Height, Sha1Hash.</param>
         /// <returns>The file info</returns>
         internal virtual IFileInfo UpdateFile(IFileInfo file, bool updateLazyload)
         {

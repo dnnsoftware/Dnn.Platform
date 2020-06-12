@@ -101,7 +101,7 @@ namespace DotNetNuke.Modules.Journal.Components {
             string sTitle = string.Empty;
             string sDescription = string.Empty;
             string sImage = string.Empty;
-            
+
             link.URL = URL;
             link.Images = new List<ImageInfo>();
             Match m = PageRegex.Match(sPage);
@@ -123,7 +123,7 @@ namespace DotNetNuke.Modules.Journal.Components {
                     if (subM.Groups[4].Value.Equals("OG:TITLE", StringComparison.InvariantCultureIgnoreCase)) {
                         link.Title = subM.Groups[9].Value;
                     }
-                    
+
                     if (subM.Groups[4].Value.Equals("OG:IMAGE", StringComparison.InvariantCultureIgnoreCase)) {
                         sImage = subM.Groups[9].Value;
                         ImageInfo img = new ImageInfo();
@@ -147,7 +147,7 @@ namespace DotNetNuke.Modules.Journal.Components {
             string hostUrl = string.Empty;
             if (!URL.Contains("http")) {
                 URL = "http://" + URL;
-            } 
+            }
             Uri uri = new Uri(URL);
             hostUrl = uri.Host;
             if (URL.Contains("https:")) {
@@ -164,7 +164,7 @@ namespace DotNetNuke.Modules.Journal.Components {
                     if (!sImg.Contains("http")) {
                         sImg = hostUrl + sImg;
                     }
-                  
+
                     ImageInfo img = new ImageInfo();
                     img.URL = sImg;
                     if (!imgList.Contains(sImg)) {
@@ -179,7 +179,7 @@ namespace DotNetNuke.Modules.Journal.Components {
                         }
                     }
                     if (i == 10) {
-                        break; 
+                        break;
                     }
                 }
 
@@ -223,7 +223,7 @@ namespace DotNetNuke.Modules.Journal.Components {
             } catch (Exception ex) {
                 Services.Exceptions.Exceptions.LogException(ex);
             }
-            
+
             return sHTML;
         }
 
@@ -235,7 +235,7 @@ namespace DotNetNuke.Modules.Journal.Components {
             foreach (Match match in matches) {
                 sKey = match.Value;
                 sReplace = GetSharedResource(sKey);
-                
+
                 string newValue = match.Value;
                 if (!string.IsNullOrEmpty(sReplace)) {
                     newValue = sReplace;

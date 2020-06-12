@@ -10,12 +10,12 @@ using DotNetNuke.Services.Upgrade;
 namespace Dnn.Modules.Console.Components
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class BusinessController : IUpgradeable
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="version"></param>
         /// <returns></returns>

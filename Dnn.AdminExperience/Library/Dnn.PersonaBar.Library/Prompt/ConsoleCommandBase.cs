@@ -43,7 +43,7 @@ namespace Dnn.PersonaBar.Library.Prompt
         {
             this.ValidationMessage += message;
         }
-        
+
         /// <summary>
         /// Get the flag value
         /// </summary>

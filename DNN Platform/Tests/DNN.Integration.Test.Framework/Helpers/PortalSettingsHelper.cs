@@ -18,7 +18,7 @@ namespace DNN.Integration.Test.Framework.Helpers
                                         FROM {{objectQualifier}}PortalSettings 
                                         WHERE SettingName = '{0}' 
                                             AND PortalId = {1}", settingName, portalId);
-            
+
             return DatabaseHelper.ExecuteScalar<string>(query);
         }
 

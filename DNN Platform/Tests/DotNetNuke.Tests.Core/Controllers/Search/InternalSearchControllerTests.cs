@@ -369,7 +369,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Throws_On_Null_SearchDocument()
         {
-            // Arrange            
+            // Arrange
 
             // Act, Assert
             Assert.Throws<ArgumentNullException>(() => this._internalSearchController.AddSearchDocument(null));
@@ -378,7 +378,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Throws_On_Null_Or_Empty_UniqueuKey()
         {
-            // Arrange            
+            // Arrange
 
             // Act, Assert
             Assert.Throws<ArgumentException>(() => this._internalSearchController.AddSearchDocument(new SearchDocument()));
@@ -387,7 +387,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Throws_On_Null_OrEmpty_Title()
         {
-            // Arrange            
+            // Arrange
 
             // Act, Assert
             Assert.Throws<ArgumentOutOfRangeException>(
@@ -398,7 +398,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_AddSearchDcoumets_Does_Not_Throw_On_Null_OrEmpty_Title()
         {
-            // Arrange            
+            // Arrange
             var documents = new List<SearchDocument> { new SearchDocument { UniqueKey = Guid.NewGuid().ToString() } };
 
             // Act, Assert
@@ -408,7 +408,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_AddSearchDcoumets_Does_Not_Throw_On_Empty_Search_Document()
         {
-            // Arrange            
+            // Arrange
             var documents = new List<SearchDocument> { new SearchDocument() };
 
             // Act, Assert
@@ -418,7 +418,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Throws_On_Zero_SearchTypeId()
         {
-            // Arrange            
+            // Arrange
 
             // Act, Assert
             Assert.Throws<ArgumentOutOfRangeException>(
@@ -428,7 +428,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Throws_On_Negative_SearchTypeId()
         {
-            // Arrange            
+            // Arrange
 
             // Act, Assert
             Assert.Throws<ArgumentOutOfRangeException>(
@@ -439,7 +439,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Throws_On_DateTimeMin_ModifiedTimeUtc()
         {
-            // Arrange            
+            // Arrange
 
             // Act, Assert
             Assert.Throws<ArgumentException>(

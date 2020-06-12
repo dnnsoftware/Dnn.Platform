@@ -36,7 +36,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Gets DateTime Offset of current DB 
+        /// Gets DateTime Offset of current DB
         /// </summary>
         /// <returns>DateTimeOffset object</returns>
         public static TimeZoneInfo GetDatabaseDateTimeOffset()

@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -30,42 +30,42 @@ using log4net.Core;
 namespace log4net.Appender
 {
     /// <summary>
-    /// Abstract base class implementation of <see cref="IAppender"/> that 
+    /// Abstract base class implementation of <see cref="IAppender"/> that
     /// buffers events in a fixed size buffer.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This base class should be used by appenders that need to buffer a 
-    /// number of events before logging them. For example the <see cref="AdoNetAppender"/> 
-    /// buffers events and then submits the entire contents of the buffer to 
+    /// This base class should be used by appenders that need to buffer a
+    /// number of events before logging them. For example the <see cref="AdoNetAppender"/>
+    /// buffers events and then submits the entire contents of the buffer to
     /// the underlying database in one go.
     /// </para>
     /// <para>
     /// Subclasses should override the <see cref="M:SendBuffer(LoggingEvent[])"/>
     /// method to deliver the buffered events.
     /// </para>
-    /// <para>The BufferingAppenderSkeleton maintains a fixed size cyclic 
-    /// buffer of events. The size of the buffer is set using 
+    /// <para>The BufferingAppenderSkeleton maintains a fixed size cyclic
+    /// buffer of events. The size of the buffer is set using
     /// the <see cref="BufferSize"/> property.
     /// </para>
-    /// <para>A <see cref="ITriggeringEventEvaluator"/> is used to inspect 
-    /// each event as it arrives in the appender. If the <see cref="Evaluator"/> 
-    /// triggers, then the current buffer is sent immediately 
-    /// (see <see cref="M:SendBuffer(LoggingEvent[])"/>). Otherwise the event 
-    /// is stored in the buffer. For example, an evaluator can be used to 
+    /// <para>A <see cref="ITriggeringEventEvaluator"/> is used to inspect
+    /// each event as it arrives in the appender. If the <see cref="Evaluator"/>
+    /// triggers, then the current buffer is sent immediately
+    /// (see <see cref="M:SendBuffer(LoggingEvent[])"/>). Otherwise the event
+    /// is stored in the buffer. For example, an evaluator can be used to
     /// deliver the events immediately when an ERROR event arrives.
     /// </para>
     /// <para>
-    /// The buffering appender can be configured in a <see cref="Lossy"/> mode. 
-    /// By default the appender is NOT lossy. When the buffer is full all 
+    /// The buffering appender can be configured in a <see cref="Lossy"/> mode.
+    /// By default the appender is NOT lossy. When the buffer is full all
     /// the buffered events are sent with <see cref="M:SendBuffer(LoggingEvent[])"/>.
-    /// If the <see cref="Lossy"/> property is set to <c>true</c> then the 
-    /// buffer will not be sent when it is full, and new events arriving 
-    /// in the appender will overwrite the oldest event in the buffer. 
+    /// If the <see cref="Lossy"/> property is set to <c>true</c> then the
+    /// buffer will not be sent when it is full, and new events arriving
+    /// in the appender will overwrite the oldest event in the buffer.
     /// In lossy mode the buffer will only be sent when the <see cref="Evaluator"/>
-    /// triggers. This can be useful behavior when you need to know about 
-    /// ERROR events but not about events with a lower level, configure an 
-    /// evaluator that will trigger when an ERROR event arrives, the whole 
+    /// triggers. This can be useful behavior when you need to know about
+    /// ERROR events but not about events with a lower level, configure an
+    /// evaluator that will trigger when an ERROR event arrives, the whole
     /// buffer will be sent which gives a history of events leading up to
     /// the ERROR event.
     /// </para>
@@ -99,7 +99,7 @@ namespace log4net.Appender
         /// </para>
         /// <para>
         /// The <paramref name="eventMustBeFixed"/> should be set if the subclass
-        /// expects the events delivered to be fixed even if the 
+        /// expects the events delivered to be fixed even if the
         /// <see cref="BufferSize"/> is set to zero, i.e. when no buffering occurs.
         /// </para>
         /// </remarks>
@@ -120,11 +120,11 @@ namespace log4net.Appender
         /// </value>
         /// <remarks>
         /// <para>
-        /// This appender uses a buffer to store logging events before 
+        /// This appender uses a buffer to store logging events before
         /// delivering them. A triggering event causes the whole buffer
         /// to be send to the remote sink. If the buffer overruns before
         /// a triggering event then logging events could be lost. Set
-        /// <see cref="Lossy"/> to <c>false</c> to prevent logging events 
+        /// <see cref="Lossy"/> to <c>false</c> to prevent logging events
         /// from being lost.
         /// </para>
         /// <para>If <see cref="Lossy"/> is set to <c>true</c> then an
@@ -137,7 +137,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or sets the size of the cyclic buffer used to hold the 
+        /// Gets or sets the size of the cyclic buffer used to hold the
         /// logging events.
         /// </summary>
         /// <value>
@@ -146,7 +146,7 @@ namespace log4net.Appender
         /// <remarks>
         /// <para>
         /// The <see cref="BufferSize"/> option takes a positive integer
-        /// representing the maximum number of logging events to collect in 
+        /// representing the maximum number of logging events to collect in
         /// a cyclic buffer. When the <see cref="BufferSize"/> is reached,
         /// oldest events are deleted as new events are added to the
         /// buffer. By default the size of the cyclic buffer is 512 events.
@@ -166,7 +166,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="ITriggeringEventEvaluator"/> that causes the 
+        /// Gets or sets the <see cref="ITriggeringEventEvaluator"/> that causes the
         /// buffer to be sent immediately.
         /// </summary>
         /// <value>
@@ -175,8 +175,8 @@ namespace log4net.Appender
         /// </value>
         /// <remarks>
         /// <para>
-        /// The evaluator will be called for each event that is appended to this 
-        /// appender. If the evaluator triggers then the current buffer will 
+        /// The evaluator will be called for each event that is appended to this
+        /// appender. If the evaluator triggers then the current buffer will
         /// immediately be sent (see <see cref="M:SendBuffer(LoggingEvent[])"/>).
         /// </para>
         /// <para>If <see cref="Lossy"/> is set to <c>true</c> then an
@@ -196,8 +196,8 @@ namespace log4net.Appender
         /// </value>
         /// <remarks>
         /// <para>
-        /// The evaluator will be called for each event that is discarded from this 
-        /// appender. If the evaluator triggers then the current buffer will immediately 
+        /// The evaluator will be called for each event that is discarded from this
+        /// appender. If the evaluator triggers then the current buffer will immediately
         /// be sent (see <see cref="M:SendBuffer(LoggingEvent[])"/>).
         /// </para>
         /// </remarks>
@@ -212,7 +212,7 @@ namespace log4net.Appender
         /// should be fixed.
         /// </summary>
         /// <value>
-        /// <c>true</c> if the appender should only fix part of the logging event 
+        /// <c>true</c> if the appender should only fix part of the logging event
         /// data, otherwise <c>false</c>. The default is <c>false</c>.
         /// </value>
         /// <remarks>
@@ -228,8 +228,8 @@ namespace log4net.Appender
         virtual public bool OnlyFixPartialEventData
         {
             get { return (this.Fix == FixFlags.Partial); }
-            set 
-            { 
+            set
+            {
                 if (value)
                 {
                     this.Fix = FixFlags.Partial;
@@ -249,7 +249,7 @@ namespace log4net.Appender
         /// </value>
         /// <remarks>
         /// <para>
-        /// The logging event needs to have certain thread specific values 
+        /// The logging event needs to have certain thread specific values
         /// captured before it can be buffered. See <see cref="LoggingEvent.Fix"/>
         /// for details.
         /// </para>
@@ -305,7 +305,7 @@ namespace log4net.Appender
         /// <para>
         /// If the appender is buffering in <see cref="Lossy"/> mode then the contents
         /// of the buffer will only be flushed if <paramref name="flushLossyBuffer" /> is <c>true</c>.
-        /// In this case the contents of the buffer will be tested against the 
+        /// In this case the contents of the buffer will be tested against the
         /// <see cref="LossyEvaluator"/> and if triggering will be output. All other buffered
         /// events will be discarded.
         /// </para>
@@ -374,17 +374,17 @@ namespace log4net.Appender
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
-        /// activation scheme. The <see cref="ActivateOptions"/> method must 
+        /// activation scheme. The <see cref="ActivateOptions"/> method must
         /// be called on this object after the configuration properties have
         /// been set. Until <see cref="ActivateOptions"/> is called this
-        /// object is in an undefined state and must not be used. 
+        /// object is in an undefined state and must not be used.
         /// </para>
         /// <para>
-        /// If any of the configuration properties are modified then 
+        /// If any of the configuration properties are modified then
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// </remarks>
-        override public void ActivateOptions() 
+        override public void ActivateOptions()
         {
             base.ActivateOptions();
 
@@ -393,7 +393,7 @@ namespace log4net.Appender
             // therefore check we have an evaluator.
             if (this.m_lossy && this.m_evaluator == null)
             {
-                this.ErrorHandler.Error("Appender [" + this.Name + "] is Lossy but has no Evaluator. The buffer will never be sent!"); 
+                this.ErrorHandler.Error("Appender [" + this.Name + "] is Lossy but has no Evaluator. The buffer will never be sent!");
             }
 
             if (this.m_bufferSize > 1)
@@ -416,18 +416,18 @@ namespace log4net.Appender
         /// <remarks>
         /// <para>
         /// Close this appender instance. If this appender is marked
-        /// as not <see cref="Lossy"/> then the remaining events in 
+        /// as not <see cref="Lossy"/> then the remaining events in
         /// the buffer must be sent when the appender is closed.
         /// </para>
         /// </remarks>
-        override protected void OnClose() 
+        override protected void OnClose()
         {
             // Flush the buffer on close
             this.Flush(true);
         }
 
         /// <summary>
-        /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method. 
+        /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
         /// </summary>
         /// <param name="loggingEvent">the event to log</param>
         /// <remarks>
@@ -435,7 +435,7 @@ namespace log4net.Appender
         /// Stores the <paramref name="loggingEvent"/> in the cyclic buffer.
         /// </para>
         /// <para>
-        /// The buffer will be sent (i.e. passed to the <see cref="SendBuffer"/> 
+        /// The buffer will be sent (i.e. passed to the <see cref="SendBuffer"/>
         /// method) if one of the following conditions is met:
         /// </para>
         /// <list type="bullet">
@@ -456,7 +456,7 @@ namespace log4net.Appender
         /// is processed.
         /// </para>
         /// </remarks>
-        override protected void Append(LoggingEvent loggingEvent) 
+        override protected void Append(LoggingEvent loggingEvent)
         {
             // If the buffer size is set to 1 or less then the buffer will be
             // sent immediately because there is not enough space in the buffer
@@ -465,8 +465,8 @@ namespace log4net.Appender
             if (this.m_cb == null || this.m_bufferSize <= 1)
             {
                 // Only send the event if we are in non lossy mode or the event is a triggering event
-                if ((!this.m_lossy) || 
-                    (this.m_evaluator != null && this.m_evaluator.IsTriggeringEvent(loggingEvent)) || 
+                if ((!this.m_lossy) ||
+                    (this.m_evaluator != null && this.m_evaluator.IsTriggeringEvent(loggingEvent)) ||
                     (this.m_lossyEvaluator != null && this.m_lossyEvaluator.IsTriggeringEvent(loggingEvent)))
                 {
                     if (this.m_eventMustBeFixed)
@@ -614,21 +614,21 @@ namespace log4net.Appender
         /// </summary>
         /// <remarks>
         /// The object that is used to determine if an event causes the entire
-        /// buffer to be sent immediately. This field can be <c>null</c>, which 
+        /// buffer to be sent immediately. This field can be <c>null</c>, which
         /// indicates that event triggering is not to be done. The evaluator
         /// can be set using the <see cref="Evaluator"/> property. If this appender
-        /// has the <see cref="m_lossy"/> (<see cref="Lossy"/> property) set to 
+        /// has the <see cref="m_lossy"/> (<see cref="Lossy"/> property) set to
         /// <c>true</c> then an <see cref="Evaluator"/> must be set.
         /// </remarks>
         private ITriggeringEventEvaluator m_evaluator;
 
         /// <summary>
-        /// Indicates if the appender should overwrite events in the cyclic buffer 
-        /// when it becomes full, or if the buffer should be flushed when the 
+        /// Indicates if the appender should overwrite events in the cyclic buffer
+        /// when it becomes full, or if the buffer should be flushed when the
         /// buffer is full.
         /// </summary>
         /// <remarks>
-        /// If this field is set to <c>true</c> then an <see cref="Evaluator"/> must 
+        /// If this field is set to <c>true</c> then an <see cref="Evaluator"/> must
         /// be set.
         /// </remarks>
         private bool m_lossy = false;
@@ -638,9 +638,9 @@ namespace log4net.Appender
         /// </summary>
         /// <remarks>
         /// The object that is used to determine if an event that is discarded should
-        /// really be discarded or if it should be sent to the appenders. 
+        /// really be discarded or if it should be sent to the appenders.
         /// This field can be <c>null</c>, which indicates that all discarded events will
-        /// be discarded. 
+        /// be discarded.
         /// </remarks>
         private ITriggeringEventEvaluator m_lossyEvaluator;
 

@@ -42,7 +42,7 @@ namespace DotNetNuke.HttpModules.DependencyInjection
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, 
+        /// Performs application-defined tasks associated with freeing,
         /// releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
@@ -51,7 +51,7 @@ namespace DotNetNuke.HttpModules.DependencyInjection
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, 
+        /// Performs application-defined tasks associated with freeing,
         /// releasing, or resetting unmanaged resources.
         /// </summary>
         /// <param name="disposing">

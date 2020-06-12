@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -35,7 +35,7 @@ namespace log4net.Util
     /// </summary>
     /// <remarks>
     /// <para>
-    /// While this collection is serializable only member 
+    /// While this collection is serializable only member
     /// objects that are serializable will
     /// be serialized along with this collection.
     /// </para>
@@ -81,7 +81,7 @@ namespace log4net.Util
 
 #if !(NETCF || NETSTANDARD1_3)
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertiesDictionary" /> class 
+        /// Initializes a new instance of the <see cref="PropertiesDictionary" /> class
         /// with serialized data.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data.</param>

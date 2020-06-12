@@ -17,7 +17,7 @@ namespace DotNetNuke.Modules.Html
 {
 
     /// <summary>
-    ///   The Settings ModuleSettingsBase is used to manage the 
+    ///   The Settings ModuleSettingsBase is used to manage the
     ///   settings for the HTML Module
     /// </summary>
     /// <remarks>

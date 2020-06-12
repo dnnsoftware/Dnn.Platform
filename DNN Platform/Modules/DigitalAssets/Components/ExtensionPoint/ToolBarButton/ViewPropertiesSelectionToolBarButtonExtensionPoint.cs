@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
             get
             {
                 return IconController.IconURL("ViewProperties", "16x16", "ToolBar");
-            } 
+            }
         }
 
         public int Order

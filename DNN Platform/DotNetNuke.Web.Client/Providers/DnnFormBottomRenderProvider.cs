@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.Client.Providers
                 return string.Empty;
 
             var sb = new StringBuilder();
-            
+
             if (http.IsDebuggingEnabled || !this.EnableCompositeFiles)
             {
                 foreach (var dependency in jsDependencies)
@@ -111,7 +111,7 @@ namespace DotNetNuke.Web.Client.Providers
         /// <remarks>
         /// For some reason ampersands that aren't html escaped are not compliant to HTML standards when they exist in 'link' or 'script' tags in URLs,
         /// we need to replace the ampersands with &amp; . This is only required for this one w3c compliancy, the URL itself is a valid URL.
-        /// 
+        ///
         /// </remarks>
         protected override void RegisterDependencies(HttpContextBase http, string js, string css)
         {

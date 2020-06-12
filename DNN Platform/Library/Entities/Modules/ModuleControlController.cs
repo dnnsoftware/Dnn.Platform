@@ -40,9 +40,9 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         private static Dictionary<int, ModuleControlInfo> GetModuleControls()
         {
-            return CBO.GetCachedObject<Dictionary<int, ModuleControlInfo>>(new CacheItemArgs(DataCache.ModuleControlsCacheKey, 
-                                                                                    DataCache.ModuleControlsCacheTimeOut, 
-                                                                                    DataCache.ModuleControlsCachePriority), 
+            return CBO.GetCachedObject<Dictionary<int, ModuleControlInfo>>(new CacheItemArgs(DataCache.ModuleControlsCacheKey,
+                                                                                    DataCache.ModuleControlsCacheTimeOut,
+                                                                                    DataCache.ModuleControlsCachePriority),
                                                                             GetModuleControlsCallBack);
         }
 
@@ -89,7 +89,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="moduleControlID">The ID of the Module Control to fetch</param>
         /// -----------------------------------------------------------------------------
         public static ModuleControlInfo GetModuleControl(int moduleControlID)
-        {           
+        {
             return (from kvp in GetModuleControls()
                     where kvp.Key == moduleControlID
                     select kvp.Value)

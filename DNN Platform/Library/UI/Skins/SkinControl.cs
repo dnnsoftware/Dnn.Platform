@@ -23,8 +23,8 @@ namespace DotNetNuke.UI.Skins
 {
     public class SkinControl : UserControlBase
     {
-        #region "Private Members"   
-        
+        #region "Private Members"
+
         private string _DefaultKey = "System";
         private string _SkinRoot;
         private string _SkinSrc;
@@ -35,7 +35,7 @@ namespace DotNetNuke.UI.Skins
         protected CommandButton cmdPreview;
         protected RadioButton optHost;
         protected RadioButton optSite;
-        
+
         #endregion
 
         #region "Public Properties"
@@ -115,7 +115,7 @@ namespace DotNetNuke.UI.Skins
                 this._localResourceFile = value;
             }
         }
-        
+
         #endregion
 
         #region "Private Methods"
@@ -155,7 +155,7 @@ namespace DotNetNuke.UI.Skins
                 }
             }
         }
-        
+
         #endregion
 
         #region "Event Handlers"
@@ -192,13 +192,13 @@ namespace DotNetNuke.UI.Skins
                     this.ViewState["SkinControlWidth"] = this._Width;
                     this.ViewState["SkinRoot"] = this._SkinRoot;
                     this.ViewState["SkinSrc"] = this._SkinSrc;
-                    
+
                     // set width of control
                     if (!String.IsNullOrEmpty(this._Width))
                     {
                         this.cboSkin.Width = Unit.Parse(this._Width);
                     }
-                    
+
                     // set selected skin
                     if (!String.IsNullOrEmpty(this._SkinSrc))
                     {
@@ -261,7 +261,7 @@ namespace DotNetNuke.UI.Skins
                 this.Response.Redirect(strURL, true);
             }
         }
-        
+
         #endregion
     }
 }

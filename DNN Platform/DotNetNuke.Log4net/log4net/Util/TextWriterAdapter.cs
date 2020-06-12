@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -83,7 +83,7 @@ namespace log4net.Util
         /// Gets or sets the underlying <see cref="TextWriter" />.
         /// </para>
         /// </remarks>
-        protected TextWriter Writer 
+        protected TextWriter Writer
         {
             get { return this.m_writer; }
             set { this.m_writer = value; }
@@ -92,7 +92,7 @@ namespace log4net.Util
         #endregion Protected Instance Properties
 
         #region Public Properties
-    
+
         /// <summary>
         /// The Encoding in which the output is written
         /// </summary>
@@ -104,7 +104,7 @@ namespace log4net.Util
         /// The Encoding in which the output is written
         /// </para>
         /// </remarks>
-        override public Encoding Encoding 
+        override public Encoding Encoding
         {
             get { return this.m_writer.Encoding; }
         }
@@ -120,7 +120,7 @@ namespace log4net.Util
         /// Gets an object that controls formatting
         /// </para>
         /// </remarks>
-        override public IFormatProvider FormatProvider 
+        override public IFormatProvider FormatProvider
         {
             get { return this.m_writer.FormatProvider; }
         }
@@ -136,7 +136,7 @@ namespace log4net.Util
         /// Gets or sets the line terminator string used by the TextWriter
         /// </para>
         /// </remarks>
-        override public String NewLine 
+        override public String NewLine
         {
             get { return this.m_writer.NewLine; }
             set { this.m_writer.NewLine = value; }
@@ -159,7 +159,7 @@ namespace log4net.Util
 			m_writer.Dispose();
 		}
 #else
-        override public void Close() 
+        override public void Close()
         {
             this.m_writer.Close();
         }
@@ -187,11 +187,11 @@ namespace log4net.Util
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Clears all buffers for the writer and causes any buffered data to be written 
+        /// Clears all buffers for the writer and causes any buffered data to be written
         /// to the underlying device
         /// </para>
         /// </remarks>
-        override public void Flush() 
+        override public void Flush()
         {
             this.m_writer.Flush();
         }
@@ -205,11 +205,11 @@ namespace log4net.Util
         /// Writes a character to the wrapped TextWriter
         /// </para>
         /// </remarks>
-        override public void Write(char value) 
+        override public void Write(char value)
         {
             this.m_writer.Write(value);
         }
-    
+
         /// <summary>
         /// Writes a character buffer to the wrapped TextWriter
         /// </summary>
@@ -221,11 +221,11 @@ namespace log4net.Util
         /// Writes a character buffer to the wrapped TextWriter
         /// </para>
         /// </remarks>
-        override public void Write(char[] buffer, int index, int count) 
+        override public void Write(char[] buffer, int index, int count)
         {
             this.m_writer.Write(buffer, index, count);
         }
-    
+
         /// <summary>
         /// Writes a string to the wrapped TextWriter
         /// </summary>
@@ -235,7 +235,7 @@ namespace log4net.Util
         /// Writes a string to the wrapped TextWriter
         /// </para>
         /// </remarks>
-        override public void Write(String value) 
+        override public void Write(String value)
         {
             this.m_writer.Write(value);
         }

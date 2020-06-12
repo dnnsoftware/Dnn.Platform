@@ -26,7 +26,7 @@ namespace DotNetNuke.Data
         /// <summary>
         /// Find items from the repository based on a sql condition
         /// </summary>
-        /// <remarks>Find supports both full SQL statements such as "SELECT * FROM table WHERE ..." 
+        /// <remarks>Find supports both full SQL statements such as "SELECT * FROM table WHERE ..."
         /// as well as a SQL condition like "WHERE ..."</remarks>
         /// <param name="sqlCondition">The sql condition e.g. "WHERE ArticleId = @0"</param>
         /// <param name="args">A collection of arguments to be mapped to the tokens in the sqlCondition</param>
@@ -37,7 +37,7 @@ namespace DotNetNuke.Data
         /// <summary>
         /// Find a GetPage of items from the repository based on a sql condition
         /// </summary>
-        /// <remarks>Find supports both full SQL statements such as "SELECT * FROM table WHERE ..." 
+        /// <remarks>Find supports both full SQL statements such as "SELECT * FROM table WHERE ..."
         /// as well as a SQL condition like "WHERE ..."</remarks>
         /// <param name="pageIndex">The page Index to fetch</param>
         /// <param name="pageSize">The size of the page to fetch</param>
@@ -56,8 +56,8 @@ namespace DotNetNuke.Data
         /// Returns an enumerable list of items filtered by scope
         /// </summary>
         /// <remarks>
-        /// This overload should be used to get a list of items for a specific module 
-        /// instance or for a specific portal dependening on how the items in the repository 
+        /// This overload should be used to get a list of items for a specific module
+        /// instance or for a specific portal dependening on how the items in the repository
         /// are scoped.
         /// </remarks>
         /// <typeparam name="TScopeType">The type of the scope field</typeparam>
@@ -78,7 +78,7 @@ namespace DotNetNuke.Data
         /// </summary>
         /// <remarks>
         /// This overload should be used to get an item for a specific module
-        /// instance or for a specific portal dependening on how the items in the repository 
+        /// instance or for a specific portal dependening on how the items in the repository
         /// are scoped. This will allow the relevant cache to be searched first.
         /// </remarks>
         /// <typeparam name="TProperty">The type of the Id field</typeparam>
@@ -100,8 +100,8 @@ namespace DotNetNuke.Data
         /// Returns a page of items in the repository as a paged list filtered by scope
         /// </summary>
         /// <remarks>
-        /// This overload should be used to get a list of items for a specific module 
-        /// instance or for a specific portal dependening on how the items in the repository 
+        /// This overload should be used to get a list of items for a specific module
+        /// instance or for a specific portal dependening on how the items in the repository
         /// are scoped.
         /// </remarks>
         /// <typeparam name="TScopeType">The type of the scope field</typeparam>

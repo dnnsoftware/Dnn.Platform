@@ -33,8 +33,8 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// Provides an Unique String for the image transformation
         /// </summary>
         public override string UniqueString => base.UniqueString + this.SecureFile.FileId;
-        #endregion 
-       
+        #endregion
+
         public SecureFileTransform()
         {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;

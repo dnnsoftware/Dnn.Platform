@@ -138,7 +138,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     }
                 }
             }
-            
+
             var path = BuildFilePath(ipAddress);
             var count = 1;
             lock (FileLock)
@@ -173,7 +173,7 @@ namespace DotNetNuke.Services.GeneratedImage
         [Obsolete("Deprecated in 9.2.0. Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress. Scheduled removal in v11.0.0.")]
         public static string GetVisitorIPAddress(HttpContextBase context)
         {
-            return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(context.Request);            
+            return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(context.Request);
         }
     }
 }

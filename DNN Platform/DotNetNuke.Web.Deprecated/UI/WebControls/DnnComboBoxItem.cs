@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         public DnnComboBoxItem()
         {
-        }       
+        }
 
         public DnnComboBoxItem(string text) : base(text)
         {
@@ -25,7 +25,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public string ResourceKey { 
+        public string ResourceKey {
             get
             {
                 if (this.ViewState["ResourceKey"] != null)

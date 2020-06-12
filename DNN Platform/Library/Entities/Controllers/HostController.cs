@@ -42,7 +42,7 @@ namespace DotNetNuke.Entities.Controllers
     public class HostController : ComponentBase<IHostController, HostController>, IHostController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(HostController));
-        
+
         /// <summary>
         /// Initializes a new instance of the HostController class
         /// </summary>
@@ -171,10 +171,10 @@ namespace DotNetNuke.Entities.Controllers
         public Dictionary<string, ConfigurationSetting> GetSettings()
         {
             return CBO.GetCachedObject<Dictionary<string, ConfigurationSetting>>(
-                                            new CacheItemArgs(DataCache.HostSettingsCacheKey, 
-                                                    DataCache.HostSettingsCacheTimeOut, 
-                                                    DataCache.HostSettingsCachePriority), 
-                                            GetSettingsDictionaryCallBack, 
+                                            new CacheItemArgs(DataCache.HostSettingsCacheKey,
+                                                    DataCache.HostSettingsCacheTimeOut,
+                                                    DataCache.HostSettingsCachePriority),
+                                            GetSettingsDictionaryCallBack,
                                             true);
         }
 
@@ -373,8 +373,8 @@ namespace DotNetNuke.Entities.Controllers
                     string key = dr.GetString(0);
                     var config = new ConfigurationSetting
                                      {
-                                         Key = key, 
-                                         IsSecure = Convert.ToBoolean(dr[2]), 
+                                         Key = key,
+                                         IsSecure = Convert.ToBoolean(dr[2]),
                                          Value = dr.IsDBNull(1) ? string.Empty : dr.GetString(1)
                                      };
 

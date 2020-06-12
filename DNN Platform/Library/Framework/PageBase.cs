@@ -161,7 +161,7 @@ namespace DotNetNuke.Framework
         public string CanonicalLinkUrl { get; set; }
 
         /// <summary>
-        /// Indicate whether http headers has been sent to client. 
+        /// Indicate whether http headers has been sent to client.
         /// </summary>
         public bool HeaderIsWritten { get; internal set; }
 
@@ -315,7 +315,7 @@ namespace DotNetNuke.Framework
             // {
             //    jQuery.RegisterHoverIntent(Page);
             // }
-            
+
             if (ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired)
             {
                 ServicesFrameworkInternal.Instance.RegisterAjaxAntiForgery(this.Page);
@@ -333,7 +333,7 @@ namespace DotNetNuke.Framework
             AJAX.RemoveScriptManager(this);
             base.Render(writer);
 
-            this.LogDnnTrace("PageBase.Render", "End", $"{this.Page.Request.Url.AbsoluteUri}");            
+            this.LogDnnTrace("PageBase.Render", "End", $"{this.Page.Request.Url.AbsoluteUri}");
         }
 
 
@@ -345,8 +345,8 @@ namespace DotNetNuke.Framework
         /// <para>GetControlAttribute looks a the type of control and does it's best to find an AttributeCollection.</para>
         /// </summary>
         /// <param name="control">Control to find the AttributeCollection on</param>
-        /// <param name="affectedControls">ArrayList that hold the controls that have been localized. This is later used for the removal of the key attribute.</param>              
-        /// <param name="attributeName">Name of key to search for.</param>              
+        /// <param name="affectedControls">ArrayList that hold the controls that have been localized. This is later used for the removal of the key attribute.</param>
+        /// <param name="attributeName">Name of key to search for.</param>
         /// <returns>A string containing the key for the specified control or null if a key attribute wasn't found</returns>
         internal static string GetControlAttribute(Control control, ArrayList affectedControls, string attributeName)
         {
@@ -488,7 +488,7 @@ namespace DotNetNuke.Framework
         /// <para>ProcessControl peforms the high level localization for a single control and optionally it's children.</para>
         /// </summary>
         /// <param name="control">Control to find the AttributeCollection on</param>
-        /// <param name="affectedControls">ArrayList that hold the controls that have been localized. This is later used for the removal of the key attribute.</param>              
+        /// <param name="affectedControls">ArrayList that hold the controls that have been localized. This is later used for the removal of the key attribute.</param>
         /// <param name="includeChildren">If true, causes this method to process children of this controls.</param>
         /// <param name="resourceFileRoot">Root Resource File.</param>
         internal void ProcessControl(Control control, ArrayList affectedControls, bool includeChildren, string resourceFileRoot)
@@ -504,7 +504,7 @@ namespace DotNetNuke.Framework
                 this.LocalizeControl(control, value);
             }
 
-            // Translate listcontrol items here 
+            // Translate listcontrol items here
             var listControl = control as ListControl;
             if (listControl != null)
             {
@@ -599,7 +599,7 @@ namespace DotNetNuke.Framework
             {
                 // Cache results from reflection calls for performance
                 var pi = control.GetType().GetProperty("LocalResourceFile");
-                if (pi != null) 
+                if (pi != null)
                 {
                     // Attempt to get property value
                     var pv = pi.GetValue(control, null);
@@ -621,10 +621,10 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        /// <para>RemoveKeyAttribute remove the key attribute from the control. If this isn't done, then the HTML output will have 
+        /// <para>RemoveKeyAttribute remove the key attribute from the control. If this isn't done, then the HTML output will have
         /// a bad attribute on it which could cause some older browsers problems.</para>
         /// </summary>
-        /// <param name="affectedControls">ArrayList that hold the controls that have been localized. This is later used for the removal of the key attribute.</param>      
+        /// <param name="affectedControls">ArrayList that hold the controls that have been localized. This is later used for the removal of the key attribute.</param>
         public static void RemoveKeyAttribute(ArrayList affectedControls)
         {
             if (affectedControls == null)

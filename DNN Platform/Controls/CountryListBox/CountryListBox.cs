@@ -109,14 +109,14 @@ namespace DotNetNuke.UI.WebControls
                     // Set the IP address so we can find the country
                     IP = this.Page.Request.UserHostAddress;
                 }
-                
+
                 // Check to see if we need to generate the Cache for the GeoIPData file
                 if (this.Context.Cache.Get("GeoIPData") == null && this._CacheGeoIPData)
                 {
                     // Store it as  well as setting a dependency on the file
                     this.Context.Cache.Insert("GeoIPData", CountryLookup.FileToMemory(this.Context.Server.MapPath(this._GeoIPFile)), new CacheDependency(this.Context.Server.MapPath(this._GeoIPFile)));
                 }
-                
+
                 // Check to see if the request is a localhost request
                 // and see if the LocalhostCountryCode is specified
                 if (IsLocal && !String.IsNullOrEmpty(this._LocalhostCountryCode))

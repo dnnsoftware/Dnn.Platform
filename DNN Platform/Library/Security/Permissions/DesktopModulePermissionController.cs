@@ -177,7 +177,7 @@ namespace DotNetNuke.Security.Permissions
                                EventLogController.EventLogType.DESKTOPMODULEPERMISSION_UPDATED);
             ClearPermissionCache();
         }
-        
+
         #endregion
     }
 }

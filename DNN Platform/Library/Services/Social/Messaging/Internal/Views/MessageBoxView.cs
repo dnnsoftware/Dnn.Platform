@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
     /// The MessageBoxView contains the View of Inbox, Sent or Archived messages
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public class MessageBoxView 
+    public class MessageBoxView
     {
         /// <summary>
         /// Total Number of Coversations

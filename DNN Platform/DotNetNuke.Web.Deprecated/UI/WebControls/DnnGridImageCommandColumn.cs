@@ -101,7 +101,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// </summary>
         /// <value>A String</value>
         public string OnClickJs { get; set; }
-        
+
 
         /// <summary>
         /// Gets or sets whether an Image is displayed

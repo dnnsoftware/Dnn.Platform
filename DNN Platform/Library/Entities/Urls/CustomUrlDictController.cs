@@ -23,7 +23,7 @@ namespace DotNetNuke.Entities.Urls
 
         /// <summary>
         /// Returns a list of tab and redirects from the database, for the specified portal
-        /// Assumes that the dictionary should have any existing items replaced if the portalid is specified 
+        /// Assumes that the dictionary should have any existing items replaced if the portalid is specified
         /// and the portal tabs already exist in the dictionary.
         /// </summary>
         /// <param name="existingTabs"></param>
@@ -31,13 +31,13 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="settings"></param>
         /// <param name="customAliasTabs"></param>
         /// <remarks>
-        ///    Each dictionary entry in the return value is a complex data type of another dictionary that is indexed by the url culture.  If there is 
+        ///    Each dictionary entry in the return value is a complex data type of another dictionary that is indexed by the url culture.  If there is
         ///    only one culture for the Url, it will be that culture.
         /// </remarks>
         /// <returns></returns>
-        private static SharedDictionary<int, SharedDictionary<string, string>> BuildUrlDictionary(SharedDictionary<int, SharedDictionary<string, string>> existingTabs, 
+        private static SharedDictionary<int, SharedDictionary<string, string>> BuildUrlDictionary(SharedDictionary<int, SharedDictionary<string, string>> existingTabs,
                                                     int portalId,
-                                                    FriendlyUrlSettings settings, 
+                                                    FriendlyUrlSettings settings,
                                                     ref SharedDictionary<string, string> customAliasTabs)
         {
             // fetch tabs with redirects
@@ -50,9 +50,9 @@ namespace DotNetNuke.Entities.Urls
             {
                 customAliasTabs = new SharedDictionary<string, string>();
             }
-            
 
-            // go through each tab in the found list            
+
+            // go through each tab in the found list
             foreach (TabInfo tab in tabs.Values)
             {
                 // check the custom alias tabs collection and add to the dictionary where necessary
@@ -154,11 +154,11 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="customAliasForTabs"></param>
         /// <param name="parentTraceId"></param>
         /// <returns></returns>
-        internal static SharedDictionary<int, SharedDictionary<string, string>> FetchCustomUrlDictionary(int portalId, 
-                                    bool forceRebuild, 
-                                    bool bypassCache, 
+        internal static SharedDictionary<int, SharedDictionary<string, string>> FetchCustomUrlDictionary(int portalId,
+                                    bool forceRebuild,
+                                    bool bypassCache,
                                     FriendlyUrlSettings settings,
-                                    out SharedDictionary<string, string> customAliasForTabs, 
+                                    out SharedDictionary<string, string> customAliasForTabs,
                                     Guid parentTraceId)
         {
             SharedDictionary<int, SharedDictionary<string, string>> urlDict;
@@ -179,7 +179,7 @@ namespace DotNetNuke.Entities.Urls
                 // check to see if this portal has been included in the dict
                 if (urlPortals.Contains(portalId) == false)
                 {
-                    // ok, there is a url dictionary, but this portal isn't in it, so 
+                    // ok, there is a url dictionary, but this portal isn't in it, so
                     // put it in and get the urls for this portal
                     // this call appends extra portals to the list
                     urlDict = BuildUrlDictionary(urlDict, portalId, settings, ref customAliasForTabs);

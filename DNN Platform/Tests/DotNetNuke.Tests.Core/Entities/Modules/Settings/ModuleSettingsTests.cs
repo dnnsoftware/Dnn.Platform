@@ -26,7 +26,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
             [ModuleSetting(Prefix = SettingNamePrefix)]
             public double DoubleProperty { get; set; }
-            
+
             [ModuleSetting(Prefix = SettingNamePrefix)]
             public bool BooleanProperty { get; set; }
 
@@ -109,7 +109,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             this.SaveSettings_CallsUpdateModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
         }
 
-        private void SaveSettings_CallsUpdateModuleSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue, 
+        private void SaveSettings_CallsUpdateModuleSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue,
             bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
             // Arrange
@@ -162,7 +162,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             // Assert
             this.MockRepository.VerifyAll();
         }
-        
+
         [Test]
         public void GetSettings_CallsGetCachedObject()
         {

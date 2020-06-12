@@ -32,7 +32,7 @@ namespace DotNetNuke.Services.Installer
         private IDictionary<string, XmlDocument> _pendingDocuments;
 
         #endregion
-        
+
         #region "Constructors"
 
         /// -----------------------------------------------------------------------------
@@ -97,7 +97,7 @@ namespace DotNetNuke.Services.Installer
             this.Sender = sender;
             this.SourceConfig = sourceDoc;
         }
-        
+
         #endregion
 
         #region "Public Properties"
@@ -232,14 +232,14 @@ namespace DotNetNuke.Services.Installer
             Debug.Assert(node.Attributes != null, "node.Attributes != null");
 
             XmlNode rootNode = this.FindMatchingNode(targetRoot, node, "path");
-            
+
             string nodeAction = node.Attributes["action"].Value.ToLowerInvariant();
 
             if (rootNode == null)
             {
                 return false; // not every TargetRoot will contain every target node
             }
-            
+
             switch (nodeAction)
             {
                 case "add":
@@ -289,7 +289,7 @@ namespace DotNetNuke.Services.Installer
             {
                 adjustedPath = ".";
             }
-            
+
             return adjustedPath;
         }
 
@@ -323,7 +323,7 @@ namespace DotNetNuke.Services.Installer
                         {
                             continue;
                         }
-                        
+
                         if (hits.Count == 1)
                         {
                             changedNodes = this.ProcessNode(node, hits[0]) || changedNodes;
@@ -348,7 +348,7 @@ namespace DotNetNuke.Services.Installer
                         }
                     }
                 }
-                
+
                 if (saveConfig && changedNodes)
                 {
                     Config.Save(this.TargetConfig, this.TargetFileName);
@@ -399,7 +399,7 @@ namespace DotNetNuke.Services.Installer
         private IEnumerable<XmlNode> GetTargetRoots()
         {
             yield return this.TargetConfig.DocumentElement;
-            
+
             var locations = this.TargetConfig.SelectNodes("/configuration/location");
             if (locations != null)
             {
@@ -585,7 +585,7 @@ namespace DotNetNuke.Services.Installer
                 commentNodes.ForEach(n => { node.RemoveChild(n); });
             }
         }
-        
+
         #endregion
 
         #region "Public Methods"
@@ -633,7 +633,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The UpdateConfigs method processes the source file and updates the various config 
+        /// The UpdateConfigs method processes the source file and updates the various config
         /// files
         /// </summary>
         /// -----------------------------------------------------------------------------

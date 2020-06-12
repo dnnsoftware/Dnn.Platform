@@ -22,14 +22,14 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
         /// </summary>
         /// <returns>Subscription types</returns>
         IDataReader GetSubscriptionTypes();
-        
+
         /// <summary>
         /// Deletes a Subscription Type
         /// </summary>
         /// <param name="subscriptionTypeId">Subscription Type Id</param>
         /// <returns>True if the subscription type has been deleted, false otherwise</returns>
         bool DeleteSubscriptionType(int subscriptionTypeId);
-        
+
         /// <summary>
         /// Adds a Subscription
         /// </summary>
@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
         /// <param name="objectKey">Object Key</param>
         /// <returns>Collection of Subscriptions</returns>
         IDataReader GetSubscriptionsByContent(int portalId, int subscriptionTypeId, string objectKey);
-        
+
         /// <summary>
         /// Checks if the user is subscribed to an ObjectKey
         /// </summary>
@@ -73,7 +73,7 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
         /// <param name="tabId">Tab Id</param>
         /// <returns>Subscription</returns>
         IDataReader IsSubscribed(int portalId, int userId, int subscriptionTypeId, string objectKey, int moduleId, int tabId);
-        
+
         /// <summary>
         /// Deletes a Subscription
         /// </summary>

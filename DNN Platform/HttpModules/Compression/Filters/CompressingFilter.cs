@@ -16,7 +16,7 @@ namespace DotNetNuke.HttpModules.Compression
     /// </summary>
     /// <remarks>
     /// When implementing this class, you need to implement a <see cref="HttpOutputFilter"/>
-    /// along with a <see cref="CompressingFilter.ContentEncoding"/>.  The latter corresponds to a 
+    /// along with a <see cref="CompressingFilter.ContentEncoding"/>.  The latter corresponds to a
     /// content coding (see http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.5)
     /// that your implementation will support.
     /// </remarks>
@@ -58,7 +58,7 @@ namespace DotNetNuke.HttpModules.Compression
         internal void WriteHeaders()
         {
             // this is dangerous.  if Response.End is called before the filter is used, directly or indirectly,
-            // the content will not pass through the filter.  However, this header will still be appended.  
+            // the content will not pass through the filter.  However, this header will still be appended.
             // Look for handling cases in PreRequestSendHeaders and Pre
             HttpContext.Current.Response.AppendHeader("Content-Encoding", this.ContentEncoding);
             HttpContext.Current.Response.AppendHeader("X-Compressed-By", "DotNetNuke-Compression");

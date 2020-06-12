@@ -70,7 +70,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 { "maxDate", this.MaxDate > DateTime.MinValue ? $"$new Date('{this.MaxDate.ToString(this.Format, CultureInfo.InvariantCulture)}')$" : "" },
                 { "format", this.ClientFormat }
             };
-        } 
+        }
 
         private void RegisterClientResources()
         {

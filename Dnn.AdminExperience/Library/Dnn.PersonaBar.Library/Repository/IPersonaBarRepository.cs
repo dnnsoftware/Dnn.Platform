@@ -10,7 +10,7 @@ namespace Dnn.PersonaBar.Library.Repository
     /// Interface responsible to get the Persona Bar menu structure from the data layer
     /// </summary>
     public interface IPersonaBarRepository
-    {        
+    {
         /// <summary>
         /// Gets the menu structure of the persona bar
         /// </summary>

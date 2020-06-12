@@ -51,13 +51,13 @@ namespace DotNetNuke.UI.Skins.Controls
             var redirectionController = new RedirectionController();
             var redirectUrl = redirectionController.GetMobileSiteUrl();
             if (!string.IsNullOrEmpty(redirectUrl))
-            {                
-                this.lnkPortal.NavigateUrl = redirectUrl;                
+            {
+                this.lnkPortal.NavigateUrl = redirectUrl;
                 this.lnkPortal.Text = Localization.GetString("lnkPortal", this.LocalResourcesFile);
             }
             else
             {
-                this.Visible = false;                    
+                this.Visible = false;
             }
         }
 

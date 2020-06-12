@@ -34,7 +34,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         WorkflowState GetWorkflowState(int stateId);
 
         /// <summary>
-        /// This method adds a new State to a workflow. The new state is always added as next to last state. 
+        /// This method adds a new State to a workflow. The new state is always added as next to last state.
         /// </summary>
         /// <remarks>This method also takes care on state reordering.</remarks>
         /// <param name="state">State entity</param>
@@ -88,7 +88,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowInvalidOperationException">Thrown when state cannot be moved (i.e.: is the first/last state, etc...)</exception>
         /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowInvalidOperationException">Thrown when index is not a valid value (index = 0 or index >= number of states - 2)</exception>
         void MoveState(int stateId, int index);
-        
+
         /// <summary>
         /// This method returns the list of State Permission of a specific state
         /// </summary>

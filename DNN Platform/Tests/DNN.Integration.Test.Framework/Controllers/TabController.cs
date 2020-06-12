@@ -131,7 +131,7 @@ namespace DNN.Integration.Test.Framework.Controllers
                     SELECT TOP(1) TabModuleID FROM {{objectQualifier}}TabModules
                     WHERE TabID = {0} AND ModuleID = {1};", tabId, moduledId));
         }
-        
+
         /// <summary>
         /// Returns all the tab urls
         /// </summary>

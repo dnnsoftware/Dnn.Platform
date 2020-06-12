@@ -51,7 +51,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CacheKey gets the root value of the key used to identify the cached collection 
+        /// CacheKey gets the root value of the key used to identify the cached collection
         /// in the ASP.NET Cache.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -71,7 +71,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// CacheByProperty gets and sets the property that is used to cache collections
-        /// of the object.  For example: Modules are cached by the "TabId" proeprty.  Tabs 
+        /// of the object.  For example: Modules are cached by the "TabId" proeprty.  Tabs
         /// are cached by the PortalId property.
         /// </summary>
         /// <remarks>If empty, a collection of all the instances of the object is cached.</remarks>

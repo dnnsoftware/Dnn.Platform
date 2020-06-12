@@ -19,9 +19,9 @@ namespace DotNetNuke.Entities.Users.Social
     /// Class:      UserRelationship
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The UserRelationship class defines the membership of the relationship. 
-    /// The user initiating the relationship is UserId. 
-    /// The target of the relationship is RelatedUserId.  
+    /// The UserRelationship class defines the membership of the relationship.
+    /// The user initiating the relationship is UserId.
+    /// The target of the relationship is RelatedUserId.
     /// Status tracks relationship status as Initiated, Approved, Rejected etc.
     /// </summary>
     /// -----------------------------------------------------------------------------
@@ -46,7 +46,7 @@ namespace DotNetNuke.Entities.Users.Social
         public int UserId { get; set; }
 
         /// <summary>
-        /// The UserId of the Related User 
+        /// The UserId of the Related User
         /// </summary>
         [XmlAttribute]
         public int RelatedUserId { get; set; }

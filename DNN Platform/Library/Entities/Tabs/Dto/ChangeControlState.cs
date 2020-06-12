@@ -21,7 +21,7 @@ namespace DotNetNuke.Entities.Tabs.Dto
         /// The portal id.
         /// </value>
         public int PortalId { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the tab id.
         /// </summary>

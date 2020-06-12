@@ -8,12 +8,12 @@ using DotNetNuke.Entities.Modules;
 namespace Dnn.ExportImport.Components.Controllers
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class BusinessController : IUpgradeable
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="version"></param>
         /// <returns></returns>

@@ -180,7 +180,7 @@ namespace DotNetNuke.Services.Search
         public List<SearchDocument> GetModuleMetaData(int portalId, DateTime startDate)
         {
             var searchDocuments = new List<SearchDocument>();
-            var searchModuleCollection = this._searchModules.ContainsKey(portalId) ? 
+            var searchModuleCollection = this._searchModules.ContainsKey(portalId) ?
                                             this._searchModules[portalId].Select(m => m.ModuleInfo) : this.GetSearchModules(portalId, true);
             foreach (ModuleInfo module in searchModuleCollection)
             {
@@ -223,7 +223,7 @@ namespace DotNetNuke.Services.Search
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Converts a SearchItemInfo into a SearchDocument.
-        /// 
+        ///
         /// SearchItemInfo object was used in the old version of search.
         /// </summary>
         /// <param name="searchItem"></param>
@@ -322,7 +322,7 @@ namespace DotNetNuke.Services.Search
                     // Only index modules on tabs that are set to be Indexed.
                     if (tab.TabSettings["AllowIndex"] == null || (tab.TabSettings["AllowIndex"] != null && bool.Parse(tab.TabSettings["AllowIndex"].ToString())))
                     {
-                        // Check if the business controller is in the Hashtable                        
+                        // Check if the business controller is in the Hashtable
                         var controller = businessControllers[module.DesktopModule.BusinessControllerClass];
                         if (!String.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass))
                         {

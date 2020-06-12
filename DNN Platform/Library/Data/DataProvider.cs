@@ -1739,7 +1739,7 @@ namespace DotNetNuke.Data
         /// <summary>
         /// This is an internal method for communication between DNN business layer and SQL database.
         /// Do not use in custom modules, please use API (DotNetNuke.Services.FileSystem.FileManager.UpdateFile)
-        /// 
+        ///
         /// Stores information about a specific file, stored in DNN filesystem
         /// calling petapoco method to call the underlying stored procedure "UpdateFile"
         /// </summary>

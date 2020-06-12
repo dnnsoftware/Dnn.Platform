@@ -54,7 +54,7 @@ namespace DotNetNuke.Services.Installer.Packages.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
             }
-            
+
             // Render Option Tag
             writer.RenderBeginTag(HtmlTextWriterTag.Option);
             writer.Write("<" + DNNLocalization.GetString("Not_Specified", DNNLocalization.SharedResourceFile) + ">");
@@ -70,17 +70,17 @@ namespace DotNetNuke.Services.Installer.Packages.WebControls
                     // Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
                 }
-                
+
                 // Render Option Tag
                 writer.RenderBeginTag(HtmlTextWriterTag.Option);
                 writer.Write(type.PackageType);
                 writer.RenderEndTag();
             }
-            
+
             // Close Select Tag
             writer.RenderEndTag();
         }
-        
+
         #endregion
     }
 }

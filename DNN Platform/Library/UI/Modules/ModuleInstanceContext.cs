@@ -622,7 +622,7 @@ namespace DotNetNuke.UI.Modules
 
             // help module actions available to content editors and administrators
             const string permisisonList = "CONTENT,DELETE,EDIT,EXPORT,IMPORT,MANAGE";
-            if (ModulePermissionController.HasModulePermission(this.Configuration.ModulePermissions, permisisonList) 
+            if (ModulePermissionController.HasModulePermission(this.Configuration.ModulePermissions, permisisonList)
                     && request.QueryString["ctl"] != "Help"
                     && !Globals.IsAdminControl())
             {

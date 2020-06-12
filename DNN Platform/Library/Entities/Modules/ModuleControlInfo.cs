@@ -68,7 +68,7 @@ namespace DotNetNuke.Entities.Modules
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------
         public string IconFile { get; set; }
-        
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Module Control ID
@@ -76,7 +76,7 @@ namespace DotNetNuke.Entities.Modules
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
         public int ModuleControlID { get; set; }
-        
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Module Definition ID

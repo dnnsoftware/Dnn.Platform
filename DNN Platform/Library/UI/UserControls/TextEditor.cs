@@ -108,7 +108,7 @@ namespace DotNetNuke.UI.UserControls
                         strMode = Convert.ToString(Personalization.GetProfile("DotNetNuke.TextEditor", "PreferredTextEditor"));
                     }
                 }
-                
+
                 // If no Preference Check if Viewstate has been saved
                 if (String.IsNullOrEmpty(strMode))
                 {
@@ -117,7 +117,7 @@ namespace DotNetNuke.UI.UserControls
                         strMode = Convert.ToString(this.ViewState["DesktopMode"]);
                     }
                 }
-                
+
                 // Finally if still no value Use default
                 if (String.IsNullOrEmpty(strMode))
                 {
@@ -250,7 +250,7 @@ namespace DotNetNuke.UI.UserControls
                 return this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" + MyFileName;
             }
         }
-        
+
         #endregion
 
         #region Private Methods
@@ -329,7 +329,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.OptView.SelectedIndex = 0;
             }
-            
+
             // Set the text render mode for basic mode
             if (this.OptRender.SelectedIndex != -1)
             {
@@ -406,7 +406,7 @@ namespace DotNetNuke.UI.UserControls
 
             this.OptRender.SelectedIndexChanged += this.OptRenderSelectedIndexChanged;
             this.OptView.SelectedIndexChanged += this.OptViewSelectedIndexChanged;
-            
+
             try
             {
                 // Populate Radio Button Lists
@@ -510,7 +510,7 @@ namespace DotNetNuke.UI.UserControls
             }
             this.SetPanels();
         }
-        
+
         #endregion
 
     }

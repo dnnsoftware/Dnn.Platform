@@ -74,7 +74,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         /// <summary>
         /// ReplyAllAllowed is a bit value to indicate if the reply to the message can be sent to all the recipients or just the sender
         /// </summary>
-        
+
         public bool ReplyAllAllowed { get; set; }
 
         /// <summary>

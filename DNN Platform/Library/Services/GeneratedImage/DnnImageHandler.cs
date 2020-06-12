@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.GeneratedImage
     public class DnnImageHandler : ImageHandler
     {
         /// <summary>
-        /// While list of server folders where the system allow the dnn image handler to 
+        /// While list of server folders where the system allow the dnn image handler to
         /// read to serve image files from it and its subfolders
         /// </summary>
         private static readonly string[] WhiteListFolderPaths = {
@@ -126,7 +126,7 @@ namespace DotNetNuke.Services.GeneratedImage
             // which type of image should be generated ?
             string mode = string.IsNullOrEmpty(parameters["mode"]) ? "profilepic" : parameters["mode"].ToLowerInvariant();
 
-            // We need to determine the output format       
+            // We need to determine the output format
             string format = string.IsNullOrEmpty(parameters["format"]) ? "jpg" : parameters["format"].ToLowerInvariant();
 
             // Lets retrieve the color
@@ -139,7 +139,7 @@ namespace DotNetNuke.Services.GeneratedImage
             // Do we have a resizemode defined ?
             var resizeMode = string.IsNullOrEmpty(parameters["resizemode"]) ? ImageResizeMode.Fit : (ImageResizeMode)Enum.Parse(typeof(ImageResizeMode), parameters["ResizeMode"], true);
 
-            // Maximum sizes 
+            // Maximum sizes
             int maxWidth = string.IsNullOrEmpty(parameters["MaxWidth"]) ? 0 : Convert.ToInt32(parameters["MaxWidth"]);
             int maxHeight = string.IsNullOrEmpty(parameters["MaxHeight"]) ? 0 : Convert.ToInt32(parameters["MaxHeight"]);
 
@@ -224,7 +224,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         var imgFile = string.Empty;
                         var imgUrl = string.Empty;
 
-                        // Lets determine the 2 types of Image Source: Single file, file url  
+                        // Lets determine the 2 types of Image Source: Single file, file url
                         var filePath = parameters["File"];
                         if (!string.IsNullOrEmpty(filePath))
                         {
@@ -429,7 +429,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 this.ImageTransforms.Add(invertTrans);
             }
 
-            // Rotate / Flip 
+            // Rotate / Flip
             if (!string.IsNullOrEmpty(parameters["RotateFlip"]))
             {
                 var rotateFlipTrans = new ImageRotateFlipTransform();

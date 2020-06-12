@@ -19,8 +19,8 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             {
                 throw new InvalidOperationException("This attribute can only be applied to Controllers that implement IDnnController");
             }
-            
-            this.LogException(filterContext.Exception);            
+
+            this.LogException(filterContext.Exception);
         }
 
         protected virtual void LogException(Exception exception)

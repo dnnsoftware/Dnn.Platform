@@ -960,11 +960,11 @@ namespace Dnn.ExportImport.Components.Services
 
             return count;
         }
-        
+
         /*
-            Update Modules.IsDeleted with ExportModule.IsDeleted and not ExportTabModule.IsDeleted. 
+            Update Modules.IsDeleted with ExportModule.IsDeleted and not ExportTabModule.IsDeleted.
             ExportTabModule.IsDeleted may different from ExportModule.IsDeleted when Module is deleted.
-            Change ModuleInfo.IsDeleted to ExportModule.IsDeleted and reverting to ExportMabModule.IsDeleted after 
+            Change ModuleInfo.IsDeleted to ExportModule.IsDeleted and reverting to ExportMabModule.IsDeleted after
             updating Modules.
         */
         private void UpdateModuleWithIsDeletedHandling(ExportTabModule exportTabModule, ExportModule exportModule, ModuleInfo importModule)

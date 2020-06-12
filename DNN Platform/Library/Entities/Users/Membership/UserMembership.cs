@@ -60,7 +60,7 @@ namespace DotNetNuke.Entities.Users
                 }
 
                 this._approved = value;
-            } 
+            }
         }
 
         internal bool Approving { get; private set; }

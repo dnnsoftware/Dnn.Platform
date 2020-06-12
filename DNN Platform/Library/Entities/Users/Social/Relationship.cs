@@ -23,11 +23,11 @@ namespace DotNetNuke.Entities.Users.Social
     /// Class:      Relationship
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The Relationship class describes the relationships that a user or portal owns.  
-    /// A handful of default Portal-Level Relationships will be be present for every portal (e.g. Friends, Followers, Family).  
+    /// The Relationship class describes the relationships that a user or portal owns.
+    /// A handful of default Portal-Level Relationships will be be present for every portal (e.g. Friends, Followers, Family).
     /// Portal-Level Relationship will have a -1 in UserId field.
     /// Any custom User-Level Relationship created by user will also be defined by this class (e.g. My InLaws, Engineering Group).
-    /// User-Relationship will always have an associcated PortalId. User-Level Relationship will always be tied to a specific Portal.    
+    /// User-Relationship will always have an associcated PortalId. User-Level Relationship will always be tied to a specific Portal.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -84,8 +84,8 @@ namespace DotNetNuke.Entities.Users.Social
         /// Is this a Portal-Level Relationship
         /// </summary>
         [XmlIgnore]
-        public bool IsPortalList 
-        { 
+        public bool IsPortalList
+        {
             get
             {
                 return this.UserId == Null.NullInteger && this.PortalId >= 0;
@@ -105,7 +105,7 @@ namespace DotNetNuke.Entities.Users.Social
         }
 
         /// <summary>
-        /// Is this a USer-Level Relationship 
+        /// Is this a USer-Level Relationship
         /// </summary>
         [XmlIgnore]
         public bool IsUserList

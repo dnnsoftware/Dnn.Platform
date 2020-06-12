@@ -7,7 +7,7 @@ using DotNetNuke.Entities.Content.Workflow.Entities;
 namespace DotNetNuke.Entities.Content.Workflow
 {
     /// <summary>
-    /// This class is responsible to manage the system workflows of the portal. 
+    /// This class is responsible to manage the system workflows of the portal.
     /// It provides creation operation methods and methods to get specifically all system workflows
     /// </summary>
     public interface ISystemWorkflowManager
@@ -24,7 +24,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <param name="portalId">Portal Id</param>
         /// <returns>The 'Direct Publish' workflow</returns>
         Entities.Workflow GetDirectPublishWorkflow(int portalId);
-        
+
         /// <summary>
         /// Get the 'Save Draft' system workflow of a specific portal
         /// </summary>
@@ -38,14 +38,14 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <param name="portalId">Portal Id</param>
         /// <returns>The 'Content Approval' workflow</returns>
         Entities.Workflow GetContentApprovalWorkflow(int portalId);
-        
+
         /// <summary>
         /// Gets a default definition of the 'Draft' system state
         /// </summary>
         /// <param name="order">Order number to be included in the state definition</param>
         /// <returns>A 'Draft' state definition</returns>
         WorkflowState GetDraftStateDefinition(int order);
-        
+
         /// <summary>
         /// Gets a default definition of the 'Published' system state
         /// </summary>

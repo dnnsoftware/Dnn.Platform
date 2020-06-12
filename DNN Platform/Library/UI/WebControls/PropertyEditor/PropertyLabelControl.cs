@@ -41,14 +41,14 @@ namespace DotNetNuke.UI.WebControls
         protected Label lblLabel;
         protected Panel pnlTooltip;
         protected Panel pnlHelp;
-        
+
         #endregion
 
         #region Protected Members
 
         public PropertyLabelControl()
         {
-            
+
         }
 
 
@@ -165,7 +165,7 @@ namespace DotNetNuke.UI.WebControls
                 this.cmdHelp.Visible = value;
             }
         }
-        
+
         #region Data Properties
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace DotNetNuke.UI.WebControls
             this.pnlHelp = new Panel { ID = this.ID + "_pnlHelp", EnableViewState = false, CssClass = "dnnFormHelpContent dnnClear" };
 
             this.pnlTooltip.Controls.Add(this.pnlHelp);
-          
+
             this.lblHelp = new Label { ID = this.ID + "_lblHelp", EnableViewState = false };
             this.pnlHelp.Controls.Add(this.lblHelp);
 

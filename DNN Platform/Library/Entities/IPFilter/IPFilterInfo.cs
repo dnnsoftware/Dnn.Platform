@@ -47,7 +47,7 @@ namespace DotNetNuke.Entities.Host
             this.RuleType = -1;
         }
 
-        #endregion          
+        #endregion
 
         #region Auto_Properties
 
@@ -61,7 +61,7 @@ namespace DotNetNuke.Entities.Host
 
         #endregion
 
-        
+
         #region IHydratable Members
 
         /// <summary>
@@ -80,14 +80,14 @@ namespace DotNetNuke.Entities.Host
             }
             catch (IndexOutOfRangeException)
             {
-            
+
                 // else swallow the error
             }
 
             this.IPAddress = Null.SetNullString(dr["IPAddress"]);
             this.SubnetMask = Null.SetNullString(dr["SubnetMask"]);
             this.RuleType = Null.SetNullInteger(dr["RuleType"]);
-            
+
             this.FillInternal(dr);
         }
 

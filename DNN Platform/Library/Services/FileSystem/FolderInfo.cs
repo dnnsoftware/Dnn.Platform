@@ -36,7 +36,7 @@ namespace DotNetNuke.Services.FileSystem
         #region Constructors
 
         public FolderInfo() : this(false)
-        {            
+        {
         }
 
         internal FolderInfo(bool initialiseEmptyPermissions)
@@ -44,11 +44,11 @@ namespace DotNetNuke.Services.FileSystem
             this.FolderID = Null.NullInteger;
             this.UniqueId = Guid.NewGuid();
             this.VersionGuid = Guid.NewGuid();
-            this.WorkflowID = Null.NullInteger;            
+            this.WorkflowID = Null.NullInteger;
             if (initialiseEmptyPermissions)
             {
-                this._folderPermissions = new FolderPermissionCollection();   
-            }            
+                this._folderPermissions = new FolderPermissionCollection();
+            }
         }
         #endregion
 
@@ -203,7 +203,7 @@ namespace DotNetNuke.Services.FileSystem
         [XmlElement("folderpermissions")]
         public FolderPermissionCollection FolderPermissions
         {
-            get 
+            get
             {
                 return this._folderPermissions ?? (this._folderPermissions = new FolderPermissionCollection(FolderPermissionController.GetFolderPermissionsCollectionByFolder(this.PortalID, this.FolderPath)));
             }
@@ -246,7 +246,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 var folderMapping = FolderMappingController.Instance.GetFolderMapping(this.PortalID, this.FolderMappingID);
                 return FolderProvider.Instance(folderMapping.FolderProviderType).IsStorageSecure;
-            }   
+            }
         }
 
         #endregion
@@ -275,7 +275,7 @@ namespace DotNetNuke.Services.FileSystem
             this.IsVersioned = Null.SetNullBoolean(dr["IsVersioned"]);
             this.WorkflowID = Null.SetNullInteger(dr["WorkflowID"]);
             this.ParentID = Null.SetNullInteger(dr["ParentID"]);
-            this.FillBaseProperties(dr);            
+            this.FillBaseProperties(dr);
         }
 
         /// -----------------------------------------------------------------------------

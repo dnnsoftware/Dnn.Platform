@@ -19,7 +19,7 @@ namespace DotNetNuke.Entities.Users.Social
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The UserRelationshipPreference class defines the relationship preference per user
-    /// The user initiating the relationship is UserId. 
+    /// The user initiating the relationship is UserId.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -77,7 +77,7 @@ namespace DotNetNuke.Entities.Users.Social
         public void Fill(IDataReader dr)
         {
             this.PreferenceId = Convert.ToInt32(dr["PreferenceID"]);
-            this.UserId = Convert.ToInt32(dr["UserID"]);            
+            this.UserId = Convert.ToInt32(dr["UserID"]);
             this.RelationshipId = Convert.ToInt32(dr["RelationshipID"]);
             this.DefaultResponse = (RelationshipStatus)Convert.ToInt32(dr["DefaultResponse"]);
 

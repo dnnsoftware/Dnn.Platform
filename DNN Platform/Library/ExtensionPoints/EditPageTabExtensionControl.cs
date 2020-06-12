@@ -44,11 +44,11 @@ namespace DotNetNuke.ExtensionPoints
                 this.ViewState["PanelControlId"] = value;
             }
         }
-        
+
         protected override void OnInit(EventArgs e)
         {
             var extensionPointManager = new ExtensionPointManager();
-            
+
             var tabs = (HtmlGenericControl)this.Parent.FindControl(this.TabControlId);
             var panel = this.Parent.FindControl(this.PanelControlId);
 
@@ -149,13 +149,13 @@ namespace DotNetNuke.ExtensionPoints
         public override void RenderEndTag(HtmlTextWriter writer)
         {
             writer.Write("");
-        } 
+        }
 
         protected override void RenderContents(HtmlTextWriter op)
         {
             op.Write("<div class=\"ehccContent dnnClear\" id=\"" + this.PanelId + "\">");
             base.RenderContents(op);
             op.Write("</div>");
-        } 
+        }
     }
 }

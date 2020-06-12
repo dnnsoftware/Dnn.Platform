@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.EventQueue
     public class EventMessage
     {
         #region "Private Members"
-        
+
         private NameValueCollection _attributes;
         private string _authorizedRoles = Null.NullString;
         private string _body = Null.NullString;
@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.EventQueue
         private string _sender = Null.NullString;
         private DateTime _sentDate;
         private string _subscribers = Null.NullString;
-        
+
         #endregion
 
         #region "Constructors"
@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.EventQueue
         {
             this._attributes = new NameValueCollection();
         }
-        
+
         #endregion
 
         #region "Public Properties"
@@ -246,7 +246,7 @@ namespace DotNetNuke.Services.EventQueue
                 this._attributes = value;
             }
         }
-        
+
         #endregion
 
         #region "Public Methods"
@@ -280,7 +280,7 @@ namespace DotNetNuke.Services.EventQueue
                     {
                         reader.Read();
                     }
-                    
+
                     // Add attribute to the collection
                     this._attributes.Add(attName, attValue);
                 } while (reader.ReadToNextSibling("Attribute"));
@@ -332,7 +332,7 @@ namespace DotNetNuke.Services.EventQueue
                 return sb.ToString();
             }
         }
-        
+
         #endregion
     }
 }

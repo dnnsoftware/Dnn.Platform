@@ -285,7 +285,7 @@ namespace Dnn.Modules.Console
                 var key = String.Format("TabVisibility{0}", tab.TabPath.Replace("//", "-"));
                 this.SelectDropDownListItem(ref visibilityDropDown, key);
             }
-        }    
+        }
 
         private void SelectDropDownListItem(ref DnnComboBox ddl, string key)
         {

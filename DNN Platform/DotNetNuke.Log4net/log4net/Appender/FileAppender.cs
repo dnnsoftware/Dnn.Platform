@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -44,9 +44,9 @@ namespace log4net.Appender
     /// the <see cref="File"/> property.
     /// </para>
     /// <para>
-    /// The file can be opened in either append or overwrite mode 
+    /// The file can be opened in either append or overwrite mode
     /// by specifying the <see cref="AppendToFile"/> property.
-    /// If the file path is relative it is taken as relative from 
+    /// If the file path is relative it is taken as relative from
     /// the application base directory. The file encoding can be
     /// specified by setting the <see cref="Encoding"/> property.
     /// </para>
@@ -67,7 +67,7 @@ namespace log4net.Appender
     /// <para>
     /// The <see cref="FileAppender"/> supports pluggable file locking models via
     /// the <see cref="LockingModel"/> property.
-    /// The default behavior, implemented by <see cref="FileAppender.ExclusiveLock"/> 
+    /// The default behavior, implemented by <see cref="FileAppender.ExclusiveLock"/>
     /// is to obtain an exclusive write lock on the file until this appender is closed.
     /// The alternative models only hold a
     /// write lock while the appender is writing a logging event (<see cref="FileAppender.MinimalLock"/>)
@@ -137,7 +137,7 @@ namespace log4net.Appender
         #region LockingStream Inner Class
 
         /// <summary>
-        /// Write only <see cref="Stream"/> that uses the <see cref="LockingModelBase"/> 
+        /// Write only <see cref="Stream"/> that uses the <see cref="LockingModelBase"/>
         /// to manage access to an underlying resource.
         /// </summary>
         private sealed class LockingStream : Stream, IDisposable
@@ -221,7 +221,7 @@ namespace log4net.Appender
 
             public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
             {
-                this.AssertLocked(); 
+                this.AssertLocked();
                 return base.WriteAsync(buffer, offset, count, cancellationToken);
             }
 #endif
@@ -383,7 +383,7 @@ namespace log4net.Appender
             /// <param name="encoding">The encoding to use</param>
             /// <remarks>
             /// <para>
-            /// Open the file specified and prepare for logging. 
+            /// Open the file specified and prepare for logging.
             /// No writes will be made until <see cref="AcquireLock"/> is called.
             /// Must be called before any calls to <see cref="AcquireLock"/>,
             /// <see cref="ReleaseLock"/> and <see cref="CloseFile"/>.
@@ -417,7 +417,7 @@ namespace log4net.Appender
             /// <returns>A stream that is ready to be written to.</returns>
             /// <remarks>
             /// <para>
-            /// Acquire the lock on the file in preparation for writing to it. 
+            /// Acquire the lock on the file in preparation for writing to it.
             /// Return a stream pointing to the file. <see cref="ReleaseLock"/>
             /// must be called to release the lock on the output file.
             /// </para>
@@ -429,7 +429,7 @@ namespace log4net.Appender
             /// </summary>
             /// <remarks>
             /// <para>
-            /// Release the lock on the file. No further writes will be made to the 
+            /// Release the lock on the file. No further writes will be made to the
             /// stream until <see cref="AcquireLock"/> is called again.
             /// </para>
             /// </remarks>
@@ -465,7 +465,7 @@ namespace log4net.Appender
             /// </summary>
             /// <remarks>
             /// <para>
-            /// Typically called during OpenFile or AcquireLock. 
+            /// Typically called during OpenFile or AcquireLock.
             /// </para>
             /// <para>
             /// If the directory portion of the <paramref name="filename"/> does not exist, it is created
@@ -516,7 +516,7 @@ namespace log4net.Appender
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Open the file once for writing and hold it open until <see cref="CloseFile"/> is called. 
+        /// Open the file once for writing and hold it open until <see cref="CloseFile"/> is called.
         /// Maintains an exclusive lock on the file during this time.
         /// </para>
         /// </remarks>
@@ -532,7 +532,7 @@ namespace log4net.Appender
             /// <param name="encoding">The encoding to use</param>
             /// <remarks>
             /// <para>
-            /// Open the file specified and prepare for logging. 
+            /// Open the file specified and prepare for logging.
             /// No writes will be made until <see cref="AcquireLock"/> is called.
             /// Must be called before any calls to <see cref="AcquireLock"/>,
             /// <see cref="ReleaseLock"/> and <see cref="CloseFile"/>.
@@ -613,9 +613,9 @@ namespace log4net.Appender
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Opens the file once for each <see cref="AcquireLock"/>/<see cref="ReleaseLock"/> cycle, 
+        /// Opens the file once for each <see cref="AcquireLock"/>/<see cref="ReleaseLock"/> cycle,
         /// thus holding the lock for the minimal amount of time. This method of locking
-        /// is considerably slower than <see cref="FileAppender.ExclusiveLock"/> but allows 
+        /// is considerably slower than <see cref="FileAppender.ExclusiveLock"/> but allows
         /// other processes to move/delete the log file whilst logging continues.
         /// </para>
         /// </remarks>
@@ -633,7 +633,7 @@ namespace log4net.Appender
             /// <param name="encoding">The encoding to use</param>
             /// <remarks>
             /// <para>
-            /// Open the file specified and prepare for logging. 
+            /// Open the file specified and prepare for logging.
             /// No writes will be made until <see cref="AcquireLock"/> is called.
             /// Must be called before any calls to <see cref="AcquireLock"/>,
             /// <see cref="ReleaseLock"/> and <see cref="CloseFile"/>.
@@ -664,7 +664,7 @@ namespace log4net.Appender
             /// <returns>A stream that is ready to be written to.</returns>
             /// <remarks>
             /// <para>
-            /// Acquire the lock on the file in preparation for writing to it. 
+            /// Acquire the lock on the file in preparation for writing to it.
             /// Return a stream pointing to the file. <see cref="ReleaseLock"/>
             /// must be called to release the lock on the output file.
             /// </para>
@@ -691,7 +691,7 @@ namespace log4net.Appender
             /// </summary>
             /// <remarks>
             /// <para>
-            /// Release the lock on the file. No further writes will be made to the 
+            /// Release the lock on the file. No further writes will be made to the
             /// stream until <see cref="AcquireLock"/> is called again.
             /// </para>
             /// </remarks>
@@ -738,7 +738,7 @@ namespace log4net.Appender
             /// <param name="encoding">The encoding to use</param>
             /// <remarks>
             /// <para>
-            /// Open the file specified and prepare for logging. 
+            /// Open the file specified and prepare for logging.
             /// No writes will be made until <see cref="AcquireLock"/> is called.
             /// Must be called before any calls to <see cref="AcquireLock"/>,
             /// -<see cref="ReleaseLock"/> and <see cref="CloseFile"/>.
@@ -945,7 +945,7 @@ namespace log4net.Appender
         /// </value>
         /// <remarks>
         /// <para>
-        /// If the path is relative it is taken as relative from 
+        /// If the path is relative it is taken as relative from
         /// the application base directory.
         /// </para>
         /// </remarks>
@@ -964,7 +964,7 @@ namespace log4net.Appender
         /// </value>
         /// <remarks>
         /// <para>
-        /// If the value is set to false then the file will be overwritten, if 
+        /// If the value is set to false then the file will be overwritten, if
         /// it is set to true then the file will be appended to.
         /// </para>
         /// The default value is true.
@@ -1047,7 +1047,7 @@ namespace log4net.Appender
         /// </para>
         /// <para>
         /// There are three built in locking models, <see cref="FileAppender.ExclusiveLock"/>, <see cref="FileAppender.MinimalLock"/> and <see cref="FileAppender.InterProcessLock"/> .
-        /// The first locks the file from the start of logging to the end, the 
+        /// The first locks the file from the start of logging to the end, the
         /// second locks only for the minimal amount of time when logging each message
         /// and the last synchronizes processes using a named system wide Mutex.
         /// </para>
@@ -1067,18 +1067,18 @@ namespace log4net.Appender
         #region Override implementation of AppenderSkeleton
 
         /// <summary>
-        /// Activate the options on the file appender. 
+        /// Activate the options on the file appender.
         /// </summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
-        /// activation scheme. The <see cref="ActivateOptions"/> method must 
+        /// activation scheme. The <see cref="ActivateOptions"/> method must
         /// be called on this object after the configuration properties have
         /// been set. Until <see cref="ActivateOptions"/> is called this
-        /// object is in an undefined state and must not be used. 
+        /// object is in an undefined state and must not be used.
         /// </para>
         /// <para>
-        /// If any of the configuration properties are modified then 
+        /// If any of the configuration properties are modified then
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// <para>
@@ -1160,13 +1160,13 @@ namespace log4net.Appender
 
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/>
-        /// method. 
+        /// method.
         /// </summary>
         /// <param name="loggingEvent">The event to log.</param>
         /// <remarks>
         /// <para>
-        /// Writes a log statement to the output stream if the output stream exists 
-        /// and is writable.  
+        /// Writes a log statement to the output stream if the output stream exists
+        /// and is writable.
         /// </para>
         /// <para>
         /// The format of the output will depend on the appender's layout.
@@ -1189,7 +1189,7 @@ namespace log4net.Appender
 
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent[])"/>
-        /// method. 
+        /// method.
         /// </summary>
         /// <param name="loggingEvents">The array of events to log.</param>
         /// <remarks>
@@ -1402,7 +1402,7 @@ namespace log4net.Appender
         /// <remarks>
         /// <para>
         /// This implementation of <see cref="M:SetQWForFiles(Stream)"/> creates a <see cref="StreamWriter"/>
-        /// over the <paramref name="fileStream"/> and passes it to the 
+        /// over the <paramref name="fileStream"/> and passes it to the
         /// <see cref="M:SetQWForFiles(TextWriter)"/> method.
         /// </para>
         /// <para>
@@ -1444,7 +1444,7 @@ namespace log4net.Appender
         /// <para>
         /// Converts the path specified to a fully
         /// qualified path. If the path is relative it is
-        /// taken as relative from the application base 
+        /// taken as relative from the application base
         /// directory.
         /// </para>
         /// </remarks>

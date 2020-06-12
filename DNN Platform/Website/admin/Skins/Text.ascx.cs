@@ -28,7 +28,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnLoad(e);
             string strText = this.ShowText;
-            
+
             // load resources
             if (!String.IsNullOrEmpty(this.ResourceKey))
             {
@@ -41,13 +41,13 @@ namespace DotNetNuke.UI.Skins.Controls
                     strText = strLocalization;
                 }
             }
-            
+
             // If no value is found then use the value set the the Text attribute
             if (string.IsNullOrEmpty(strText))
             {
                 strText = this.ShowText;
             }
-            
+
             // token replace
             if (this.ReplaceTokens)
             {

@@ -65,7 +65,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this._PackageType = languagePack.PackageType;
             this._DependentPackageID = languagePack.DependentPackageID;
         }
-        
+
         #endregion
 
         #region "Protected Properties"
@@ -141,7 +141,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 writer.WriteElementString("package", package.Name);
             }
         }
-        
+
         #endregion
     }
 }

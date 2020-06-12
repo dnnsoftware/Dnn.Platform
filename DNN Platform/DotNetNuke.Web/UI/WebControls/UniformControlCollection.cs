@@ -168,7 +168,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
         /// <exception cref="T:System.NotSupportedException">
-        /// The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only. 
+        /// The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
         /// </exception>
         public void Clear()
         {

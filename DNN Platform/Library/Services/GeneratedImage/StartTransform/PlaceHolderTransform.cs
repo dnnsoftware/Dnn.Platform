@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
                 this.Width = this.Height;
             if (this.Width > 0 && this.Height == 0)
                 this.Height = this.Width;
-            
+
             var bitmap = new Bitmap(this.Width, this.Height);
             Brush backColorBrush = new SolidBrush(this.BackColor);
             Brush colorBrush = new SolidBrush(this.Color);
@@ -83,9 +83,9 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
                 objGraphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
 
                 // Fill bitmap with backcolor
-                
+
                 objGraphics.FillRectangle(backColorBrush, 0, 0, this.Width, this.Height);
-                
+
                 // Draw border
                 objGraphics.DrawRectangle(colorPen, 1, 1, this.Width - 3, this.Height - 3);
 

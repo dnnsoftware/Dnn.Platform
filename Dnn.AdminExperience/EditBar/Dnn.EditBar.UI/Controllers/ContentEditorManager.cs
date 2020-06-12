@@ -194,7 +194,7 @@ namespace Dnn.EditBar.UI.Controllers
                         if (moduleControl != null && moduleInfo != null && moduleContainer.Parent is HtmlContainerControl)
                         {
                             ((HtmlContainerControl)moduleContainer.Parent).Attributes["data-module-title"] = moduleInfo.ModuleTitle;
-                            
+
                             if (this.HaveContentLayoutModuleOnPage())
                             {
                                 this.Page.Items[typeof(ProxyPage)] = moduleControl;

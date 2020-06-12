@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -93,14 +93,14 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// Reading the value for a key is faster than setting the value.
-        /// When the value is written a new read only copy of 
+        /// When the value is written a new read only copy of
         /// the properties is created.
         /// </para>
         /// </remarks>
         override public object this[string key]
         {
-            get 
-            { 
+            get
+            {
                 return this.m_readOnlyProperties[key];
             }
             set
@@ -127,7 +127,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// Removing an entry from the global context properties is relatively expensive compared
-        /// with reading a value. 
+        /// with reading a value.
         /// </para>
         /// </remarks>
         public void Remove(string key)

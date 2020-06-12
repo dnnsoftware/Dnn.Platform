@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -85,17 +85,17 @@ namespace log4net.Filter
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
-        /// activation scheme. The <see cref="ActivateOptions"/> method must 
+        /// activation scheme. The <see cref="ActivateOptions"/> method must
         /// be called on this object after the configuration properties have
         /// been set. Until <see cref="ActivateOptions"/> is called this
-        /// object is in an undefined state and must not be used. 
+        /// object is in an undefined state and must not be used.
         /// </para>
         /// <para>
-        /// If any of the configuration properties are modified then 
+        /// If any of the configuration properties are modified then
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// </remarks>
-        override public void ActivateOptions() 
+        override public void ActivateOptions()
         {
             if (this.m_stringRegexToMatch != null)
             {
@@ -116,7 +116,7 @@ namespace log4net.Filter
         /// <para>
         /// The <see cref="AcceptOnMatch"/> property is a flag that determines
         /// the behavior when a matching <see cref="Level"/> is found. If the
-        /// flag is set to true then the filter will <see cref="FilterDecision.Accept"/> the 
+        /// flag is set to true then the filter will <see cref="FilterDecision.Accept"/> the
         /// logging event, otherwise it will <see cref="FilterDecision.Neutral"/> the event.
         /// </para>
         /// <para>
@@ -190,7 +190,7 @@ namespace log4net.Filter
         /// <see cref="FilterDecision.Deny"/> is returned.
         /// </para>
         /// </remarks>
-        override public FilterDecision Decide(LoggingEvent loggingEvent) 
+        override public FilterDecision Decide(LoggingEvent loggingEvent)
         {
             if (loggingEvent == null)
             {
@@ -206,7 +206,7 @@ namespace log4net.Filter
                 // to continue processing
                 return FilterDecision.Neutral;
             }
-    
+
             // Firstly check if we are matching using a regex
             if (this.m_regexToMatch != null)
             {
@@ -215,29 +215,29 @@ namespace log4net.Filter
                 {
                     // No match, continue processing
                     return FilterDecision.Neutral;
-                } 
+                }
 
                 // we've got a match
-                if (this.m_acceptOnMatch) 
+                if (this.m_acceptOnMatch)
                 {
                     return FilterDecision.Accept;
-                } 
+                }
                 return FilterDecision.Deny;
             }
             else if (this.m_stringToMatch != null)
             {
                 // Check substring match
-                if (msg.IndexOf(this.m_stringToMatch) == -1) 
+                if (msg.IndexOf(this.m_stringToMatch) == -1)
                 {
                     // No match, continue processing
                     return FilterDecision.Neutral;
-                } 
+                }
 
                 // we've got a match
-                if (this.m_acceptOnMatch) 
+                if (this.m_acceptOnMatch)
                 {
                     return FilterDecision.Accept;
-                } 
+                }
                 return FilterDecision.Deny;
             }
             return FilterDecision.Neutral;

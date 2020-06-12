@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 if (!this._singlePass)
                     this.FirstPass(sourceData, width, height);
 
-                // Then set the color palette on the output bitmap. I'm passing in the current palette 
+                // Then set the color palette on the output bitmap. I'm passing in the current palette
                 // as there's no way to construct a new, empty palette.
                 output.Palette = this.GetPalette(output.Palette);
 
@@ -103,7 +103,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         protected virtual void FirstPass(BitmapData sourceData, int width, int height)
         {
             // Define the source data pointers. The source row is a byte to
-            // keep addition of the stride value easier (as this is in bytes)              
+            // keep addition of the stride value easier (as this is in bytes)
             IntPtr pSourceRow = sourceData.Scan0;
 
             // Loop through each row
@@ -114,8 +114,8 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 
                 // And loop through each column
                 for (int col = 0; col < width; col++)
-                {            
-                    this.InitialQuantizePixel(new Color32(pSourcePixel)); 
+                {
+                    this.InitialQuantizePixel(new Color32(pSourcePixel));
                     pSourcePixel = (IntPtr)((Int64)pSourcePixel + this._pixelSize);
                 }   // Now I have the pixel, call the FirstPassQuantize function...
 
@@ -234,7 +234,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// </summary>
         private bool _singlePass;
         private int _pixelSize;
-        
+
         /// <summary>
         /// Struct that defines a 32 bpp colour
         /// </summary>
@@ -250,7 +250,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             public Color32(IntPtr pSourcePixel)
             {
               this = (Color32)Marshal.PtrToStructure(pSourcePixel, typeof(Color32));
-                           
+
             }
 
             /// <summary>

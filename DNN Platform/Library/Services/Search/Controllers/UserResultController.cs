@@ -58,11 +58,11 @@ namespace DotNetNuke.Services.Search.Controllers
             if (searchResult.UniqueKey.Contains("adminonly"))
             {
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
-                return currentUser.IsSuperUser 
+                return currentUser.IsSuperUser
                         || currentUser.IsInRole("Administrators")
                         || currentUser.UserID == userId;
             }
-            
+
             if (searchResult.UniqueKey.Contains("friendsandgroups"))
             {
                 var extendedVisibility = searchResult.UniqueKey.IndexOf("_") != searchResult.UniqueKey.LastIndexOf("_")

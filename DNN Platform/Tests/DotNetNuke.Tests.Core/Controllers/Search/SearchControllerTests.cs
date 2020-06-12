@@ -1523,7 +1523,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var added = this.AddStandardSearchDocs();
             var stypeIds = new List<int> { ModuleSearchTypeId };
             var utcNow = DateTime.UtcNow.AddDays(1);
-            const SortFields sfield = SortFields.LastModified; 
+            const SortFields sfield = SortFields.LastModified;
 
             // Act and Assert - just a bit later
             var query = new SearchQuery { SearchTypeIds = stypeIds, SortField = sfield, BeginModifiedTimeUtc = utcNow.AddSeconds(1), EndModifiedTimeUtc = utcNow.AddDays(1) };
@@ -1737,7 +1737,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             this._searchController.SiteSearch(query);
         }
-        
+
         [Test]
         public void SearchController_GetResult_Sorty_By_Date_Returns_Latest_Docs_First()
         {
@@ -2566,7 +2566,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             // Arrange
             this.AddFoldersAndFiles();
-            
+
             // Act
             var result1 = this.SearchForKeyword("kw-folderName:Images/*");
             var result2 = this.SearchForKeyword("kw-folderName:Images/DNN/*");
@@ -2759,7 +2759,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId731 };
             var doc2 = new SearchDocument { UniqueKey = "key02", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId532 };
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = AnswersModuleDefId, ModuleId = AnswersModuleId };
-         
+
             this._internalSearchController.AddSearchDocument(doc1);
             this._internalSearchController.AddSearchDocument(doc2);
             this._internalSearchController.AddSearchDocument(doc3);
@@ -2947,7 +2947,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
 
             this.AddDocumentsWithKeywords();
-            
+
             // Act
             var query = new SearchQuery
             {

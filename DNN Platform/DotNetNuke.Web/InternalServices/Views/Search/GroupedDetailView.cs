@@ -28,7 +28,7 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
 
         /// <summary>
         /// Results of the Search
-        /// </summary>   
+        /// </summary>
         public List<DetailedView> Results { get; set; }
 
         #region constructor

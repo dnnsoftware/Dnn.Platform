@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.Admin.Users
         public delegate void PasswordUpdatedEventHandler(object sender, PasswordUpdatedEventArgs e);
 
         #endregion
-        
+
         #region Public Properties
 
         /// -----------------------------------------------------------------------------
@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        
+
         #endregion
 
         #region Events
@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 this.lblExpires.Text = PasswordConfig.PasswordExpiry > 0 ? this.User.Membership.LastPasswordChangeDate.AddDays(PasswordConfig.PasswordExpiry).ToLongDateString() : Localization.GetString("NoExpiry", this.LocalResourceFile);
             }
-            
+
            if (((!MembershipProviderConfig.PasswordRetrievalEnabled) && this.IsAdmin && (!this.IsUser)))
             {
                 this.pnlChange.Visible = true;
@@ -154,7 +154,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 this.pnlChange.Visible = true;
                 this.cmdUpdate.Visible = true;
-                
+
                 // Set up Change Password
                 if (this.IsAdmin && !this.IsUser)
                 {
@@ -178,8 +178,8 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                 }
             }
-            
-            // If Password Reset is not enabled then only the Admin can reset the 
+
+            // If Password Reset is not enabled then only the Admin can reset the
             // Password, a User must Update
             if (!MembershipProviderConfig.PasswordResetEnabled)
             {
@@ -190,7 +190,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 this.pnlReset.Visible = true;
                 this.cmdReset.Visible = true;
-                
+
                 // Set up Reset Password
                 if (this.IsAdmin && !this.IsUser)
                 {
@@ -222,7 +222,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                 }
             }
-            
+
             // Set up Edit Question and Answer area
             if (MembershipProviderConfig.RequiresQuestionAndAnswer && this.IsUser)
             {
@@ -261,7 +261,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.ctlCaptcha.ErrorMessage = Localization.GetString("InvalidCaptcha", this.LocalResourceFile);
                 this.ctlCaptcha.Text = Localization.GetString("CaptchaText", this.LocalResourceFile);
             }
-           
+
         }
 
 
@@ -358,7 +358,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.LogFailure(message);
                 }
 
-               
+
                 UI.Skins.Skin.AddModuleMessage(this, message, moduleMessageType);
             }
             catch (ArgumentException exc)
@@ -523,7 +523,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                     catch (ThreadAbortException)
                     {
-                        // Do nothing we are not logging ThreadAbortxceptions caused by redirects    
+                        // Do nothing we are not logging ThreadAbortxceptions caused by redirects
                     }
                     catch (Exception exc)
                     {
@@ -550,7 +550,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                     catch (ThreadAbortException)
                     {
-                        // Do nothing we are not logging ThreadAbortxceptions caused by redirects    
+                        // Do nothing we are not logging ThreadAbortxceptions caused by redirects
                     }
                     catch (Exception exc)
                     {
@@ -590,14 +590,14 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.OnPasswordQuestionAnswerUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));
                 return;
             }
-            
+
             // Try and set password Q and A
             UserInfo objUser = UserController.GetUserById(this.PortalId, this.UserId);
             this.OnPasswordQuestionAnswerUpdated(UserController.ChangePasswordQuestionAndAnswer(objUser, this.txtQAPassword.Text, this.txtEditQuestion.Text, this.txtEditAnswer.Text)
                                                 ? new PasswordUpdatedEventArgs(PasswordUpdateStatus.Success)
                                                 : new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
         }
-        
+
         #endregion
 
         #region Nested type: PasswordUpdatedEventArgs

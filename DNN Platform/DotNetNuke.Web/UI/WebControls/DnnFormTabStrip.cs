@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnFormTabStrip : ListControl 
+    public class DnnFormTabStrip : ListControl
     {
 
         protected override void Render(HtmlTextWriter writer)
@@ -19,7 +19,7 @@ namespace DotNetNuke.Web.UI.WebControls
             foreach (ListItem item in this.Items)
             {
                 writer.RenderBeginTag(HtmlTextWriterTag.Li);
-                
+
                 writer.AddAttribute(HtmlTextWriterAttribute.Href, item.Value);
                 writer.RenderBeginTag(HtmlTextWriterTag.A);
                 writer.Write(item.Text);

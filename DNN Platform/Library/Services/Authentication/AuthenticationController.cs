@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Authentication
         {
             return CBO.FillCollection<AuthenticationInfo>(provider.GetAuthenticationServices());
         }
-        
+
         #endregion
 
         #region "Public Shared Methods"
@@ -354,7 +354,7 @@ namespace DotNetNuke.Services.Authentication
                 {
                     return;
                 }
-                
+
                 // save the authenticationmethod as a cookie
                 HttpCookie cookie = null;
                 cookie = Response.Cookies.Get("authentication");
@@ -411,7 +411,7 @@ namespace DotNetNuke.Services.Authentication
                                           UserController.Instance.GetCurrentUserInfo().UserID);
             EventLogController.Instance.AddLog(authSystem, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.AUTHENTICATION_UPDATED);
         }
-        
+
         #endregion
     }
 }

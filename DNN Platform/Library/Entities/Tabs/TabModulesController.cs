@@ -126,7 +126,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 return TabVersionBuilder.Instance.GetVersionModules(tab.TabID, urlVersion);
             }
-            
+
             if (Globals.IsEditMode())
             {
                 return TabVersionBuilder.Instance.GetUnPublishedVersionModules(tab.TabID);

@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -24,9 +24,9 @@
 // MONO 1.0 Beta mcs does not like #if !A && !B && !C syntax
 
 // .NET Compact Framework 1.0 has no support for Win32 Console API's
-#if !NETCF 
+#if !NETCF
 // .Mono 1.0 has no support for Win32 Console API's
-#if !MONO 
+#if !MONO
 // SSCLI 1.0 has no support for Win32 Console API's
 #if !SSCLI
 // We don't want framework or platform specific code in the CLI version of log4net
@@ -47,7 +47,7 @@ namespace log4net.Appender
     /// <remarks>
     /// <para>
     /// ColoredConsoleAppender appends log events to the standard output stream
-    /// or the error output stream using a layout specified by the 
+    /// or the error output stream using a layout specified by the
     /// user. It also allows the color of a specific type of message to be set.
     /// </para>
     /// <para>
@@ -162,10 +162,10 @@ namespace log4net.Appender
         /// Initializes a new instance of the <see cref="ColoredConsoleAppender" /> class.
         /// </summary>
         /// <remarks>
-        /// The instance of the <see cref="ColoredConsoleAppender" /> class is set up to write 
+        /// The instance of the <see cref="ColoredConsoleAppender" /> class is set up to write
         /// to the standard output stream.
         /// </remarks>
-        public ColoredConsoleAppender() 
+        public ColoredConsoleAppender()
         {
         }
 
@@ -175,7 +175,7 @@ namespace log4net.Appender
         /// </summary>
         /// <param name="layout">the layout to use for this appender</param>
         /// <remarks>
-        /// The instance of the <see cref="ColoredConsoleAppender" /> class is set up to write 
+        /// The instance of the <see cref="ColoredConsoleAppender" /> class is set up to write
         /// to the standard output stream.
         /// </remarks>
         [Obsolete("Instead use the default constructor and set the Layout property. Scheduled removal in v10.0.0.")]
@@ -195,7 +195,7 @@ namespace log4net.Appender
         /// output stream.
         /// </remarks>
         [Obsolete("Instead use the default constructor and set the Layout & Target properties. Scheduled removal in v10.0.0.")]
-        public ColoredConsoleAppender(ILayout layout, bool writeToErrorStream) 
+        public ColoredConsoleAppender(ILayout layout, bool writeToErrorStream)
         {
             this.Layout = layout;
             this.m_writeToErrorStream = writeToErrorStream;
@@ -225,12 +225,12 @@ namespace log4net.Appender
             set
             {
                 string v = value.Trim();
-                
-                if (string.Compare(ConsoleError, v, true, CultureInfo.InvariantCulture) == 0) 
+
+                if (string.Compare(ConsoleError, v, true, CultureInfo.InvariantCulture) == 0)
                 {
                     this.m_writeToErrorStream = true;
-                } 
-                else 
+                }
+                else
                 {
                     this.m_writeToErrorStream = false;
                 }
@@ -273,7 +273,7 @@ namespace log4net.Appender
         [System.Security.SecuritySafeCritical]
 #endif
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand, UnmanagedCode = true)]
-        override protected void Append(log4net.Core.LoggingEvent loggingEvent) 
+        override protected void Append(log4net.Core.LoggingEvent loggingEvent)
         {
             if (this.m_consoleOutputWriter != null)
             {
@@ -314,13 +314,13 @@ namespace log4net.Appender
                 // Followed by a larger buffer, say 20,000 chars
                 // then WriteConsoleW will fail, last error 8
                 // 'Not enough storage is available to process this command.'
-                // 
+                //
                 // Although the documentation states that the buffer must
                 // be less that 64KB (i.e. 32,000 WCHARs) the longest string
                 // that I can write out a the first call to WriteConsoleW
                 // is only 30,704 chars.
                 //
-                // Unlike the WriteFile API the WriteConsoleW method does not 
+                // Unlike the WriteFile API the WriteConsoleW method does not
                 // seem to be able to partially write out from the input buffer.
                 // It does have a lpNumberOfCharsWritten parameter, but this is
                 // either the length of the input buffer if any output was written,
@@ -338,9 +338,9 @@ namespace log4net.Appender
                 //     out (UInt32)ignoreWrittenCount,
                 //     IntPtr.Zero);
                 //
-                // Instead of calling WriteConsoleW we use WriteFile which 
+                // Instead of calling WriteConsoleW we use WriteFile which
                 // handles large buffers correctly. Because WriteFile does not
-                // handle the codepage conversion as WriteConsoleW does we 
+                // handle the codepage conversion as WriteConsoleW does we
                 // need to use a System.IO.StreamWriter with the appropriate
                 // Encoding. The WriteFile calls are wrapped up in the
                 // System.IO.__ConsoleStream internal class obtained through
@@ -353,9 +353,9 @@ namespace log4net.Appender
                 // The windows console uses ScrollConsoleScreenBuffer internally to
                 // scroll the console buffer when the display buffer of the console
                 // has been used up. ScrollConsoleScreenBuffer fills the area uncovered
-                // by moving the current content with the background color 
+                // by moving the current content with the background color
                 // currently specified on the console. This means that it fills the
-                // whole line in front of the cursor position with the current 
+                // whole line in front of the cursor position with the current
                 // background color.
                 // This causes an issue when writing out text with a non default
                 // background color. For example; We write a message with a Blue
@@ -368,7 +368,7 @@ namespace log4net.Appender
                 // Black background). We write some text to the console, the text is
                 // written correctly in White with a Black background, however the
                 // remainder of the line still has a Blue background.
-                // 
+                //
                 // This causes a disjointed appearance to the output where the background
                 // colors change.
                 //
@@ -481,24 +481,24 @@ namespace log4net.Appender
         #region Public Static Fields
 
         /// <summary>
-        /// The <see cref="ColoredConsoleAppender.Target"/> to use when writing to the Console 
+        /// The <see cref="ColoredConsoleAppender.Target"/> to use when writing to the Console
         /// standard output stream.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The <see cref="ColoredConsoleAppender.Target"/> to use when writing to the Console 
+        /// The <see cref="ColoredConsoleAppender.Target"/> to use when writing to the Console
         /// standard output stream.
         /// </para>
         /// </remarks>
         public const string ConsoleOut = "Console.Out";
 
         /// <summary>
-        /// The <see cref="ColoredConsoleAppender.Target"/> to use when writing to the Console 
+        /// The <see cref="ColoredConsoleAppender.Target"/> to use when writing to the Console
         /// standard error output stream.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The <see cref="ColoredConsoleAppender.Target"/> to use when writing to the Console 
+        /// The <see cref="ColoredConsoleAppender.Target"/> to use when writing to the Console
         /// standard error output stream.
         /// </para>
         /// </remarks>
@@ -562,29 +562,29 @@ namespace log4net.Appender
             UInt32 type);
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct COORD 
+        private struct COORD
         {
-            public UInt16 x; 
-            public UInt16 y; 
+            public UInt16 x;
+            public UInt16 y;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct SMALL_RECT 
+        private struct SMALL_RECT
         {
-            public UInt16 Left; 
-            public UInt16 Top; 
-            public UInt16 Right; 
-            public UInt16 Bottom; 
+            public UInt16 Left;
+            public UInt16 Top;
+            public UInt16 Right;
+            public UInt16 Bottom;
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct CONSOLE_SCREEN_BUFFER_INFO 
-        { 
-            public COORD dwSize; 
-            public COORD dwCursorPosition; 
-            public ushort wAttributes; 
-            public SMALL_RECT srWindow; 
-            public COORD dwMaximumWindowSize; 
+        private struct CONSOLE_SCREEN_BUFFER_INFO
+        {
+            public COORD dwSize;
+            public COORD dwCursorPosition;
+            public ushort wAttributes;
+            public SMALL_RECT srWindow;
+            public COORD dwMaximumWindowSize;
         }
 
         #endregion // Win32 Methods
@@ -651,7 +651,7 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// The combined <see cref="ForeColor"/> and <see cref="BackColor"/> suitable for 
+            /// The combined <see cref="ForeColor"/> and <see cref="BackColor"/> suitable for
             /// setting the console color.
             /// </summary>
             internal ushort CombinedColor

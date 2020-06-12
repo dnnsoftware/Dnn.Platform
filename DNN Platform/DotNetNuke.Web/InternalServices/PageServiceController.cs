@@ -40,12 +40,12 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage PublishPage(PublishPageDto dto)
         {
             var tabId = this.Request.FindTabId();
-            
+
             TabPublishingController.Instance.SetTabPublishing(tabId, this.PortalId, dto.Publish);
-            
+
             return this.Request.CreateResponse(HttpStatusCode.OK);
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateCustomUrl(SaveUrlDto dto)
@@ -54,7 +54,7 @@ namespace DotNetNuke.Web.InternalServices
             bool modified;
             // Clean Url
             var options = UrlRewriterUtils.ExtendOptionsForCustomURLs(UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(this.PortalSettings.PortalId)));
-            
+
             // now clean the path
             urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
             if (modified)

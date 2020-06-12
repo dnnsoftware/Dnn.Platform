@@ -20,7 +20,7 @@ namespace DotNetNuke.UI.Skins
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : SkinPackageInfo
-    /// 
+    ///
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///     Handles the Business Object for Skins
@@ -39,7 +39,7 @@ namespace DotNetNuke.UI.Skins
         private int _SkinPackageID = Null.NullInteger;
         private string _SkinType;
         private Dictionary<int, string> _Skins = new Dictionary<int, string>();
-        
+
         #endregion
 
         #region "Public Properties"
@@ -116,7 +116,7 @@ namespace DotNetNuke.UI.Skins
                 this._SkinType = value;
             }
         }
-        
+
         #endregion
 
         #region IHydratable Members

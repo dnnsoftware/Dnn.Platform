@@ -30,7 +30,7 @@ namespace DotNetNuke.Security.Permissions
     ///   - UserID
     ///   - Username
     ///   - DisplayName
-    /// 
+    ///
     /// and these are implemented in this base class
     /// </remarks>
     /// -----------------------------------------------------------------------------
@@ -45,9 +45,9 @@ namespace DotNetNuke.Security.Permissions
         private string _RoleName;
         private int _UserID;
         private string _Username;
-        
+
         #endregion
-        
+
         #region "Constructors"
 
         public PermissionInfoBase()
@@ -59,7 +59,7 @@ namespace DotNetNuke.Security.Permissions
             this._Username = Null.NullString;
             this._DisplayName = Null.NullString;
         }
-        
+
         #endregion
 
         #region "Public Properties"
@@ -177,9 +177,9 @@ namespace DotNetNuke.Security.Permissions
                 this._Username = value;
             }
         }
-        
+
         #endregion
-        
+
         #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
@@ -208,7 +208,7 @@ namespace DotNetNuke.Security.Permissions
             }
             this.AllowAccess = Null.SetNullBoolean(dr["AllowAccess"]);
         }
-        
+
         #endregion
     }
 }

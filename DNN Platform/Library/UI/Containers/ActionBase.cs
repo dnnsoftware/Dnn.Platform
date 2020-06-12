@@ -33,11 +33,11 @@ namespace DotNetNuke.UI.Containers
     public abstract class ActionBase : UserControl, IActionControl
     {
         #region "Private Members"
-        
+
         private ActionManager _ActionManager;
         private ModuleAction _ActionRoot;
         protected bool m_supportsIcons = true;
-        
+
         #endregion
 
         #region Protected Properties
@@ -97,7 +97,7 @@ namespace DotNetNuke.UI.Containers
                 return this.ModuleControl.ModuleContext.PortalSettings;
             }
         }
-        
+
         #endregion
 
         #region Public Properties
@@ -117,7 +117,7 @@ namespace DotNetNuke.UI.Containers
                 return this.m_supportsIcons;
             }
         }
-        
+
         #endregion
 
         #region IActionControl Members
@@ -149,7 +149,7 @@ namespace DotNetNuke.UI.Containers
         public IModuleControl ModuleControl { get; set; }
 
         #endregion
-        
+
         #region Protected Methods
 
         /// -----------------------------------------------------------------------------
@@ -217,8 +217,8 @@ namespace DotNetNuke.UI.Containers
 
             base.OnLoad(e);
         }
-        
-        
+
+
         #endregion
     }
 }

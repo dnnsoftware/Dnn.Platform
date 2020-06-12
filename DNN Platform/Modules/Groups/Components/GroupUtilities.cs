@@ -21,9 +21,9 @@ namespace DotNetNuke.Modules.Groups.Components
         {
             var journalController = JournalController.Instance;
             var journalItem = new JournalItem();
-            
+
             string url = "";
-            
+
             if (roleInfo.Settings.ContainsKey("URL"))
             {
                 url = roleInfo.Settings["URL"];
@@ -39,17 +39,17 @@ namespace DotNetNuke.Modules.Groups.Components
             journalItem.Body = null;
             journalItem.JournalTypeId = journalController.GetJournalType("groupcreate").JournalTypeId;
             journalItem.ObjectKey = string.Format("groupcreate:{0}:{1}", roleInfo.RoleID.ToString(CultureInfo.InvariantCulture), createdBy.UserID.ToString(CultureInfo.InvariantCulture));
-            
+
             if (journalController.GetJournalItemByKey(roleInfo.PortalID, journalItem.ObjectKey) != null)
                 journalController.DeleteJournalItemByKey(roleInfo.PortalID, journalItem.ObjectKey);
-            
-            
+
+
             journalItem.SecuritySet = string.Empty;
-            
+
             if (roleInfo.IsPublic)
                 journalItem.SecuritySet += "E,";
-            
-            
+
+
             journalController.SaveJournalItem(journalItem, null);
         }
     }

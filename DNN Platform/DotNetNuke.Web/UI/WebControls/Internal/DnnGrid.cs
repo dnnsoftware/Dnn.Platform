@@ -28,7 +28,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             get
             {
                 return this.PageIndex;
-                
+
             }
             set { this.PageIndex = value; }
         }

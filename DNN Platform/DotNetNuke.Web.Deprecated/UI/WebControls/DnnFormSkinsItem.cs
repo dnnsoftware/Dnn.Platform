@@ -74,7 +74,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             // _skinCombo = new DropDownList { ID = ID + "_SkinComboBox" };
             this._skinCombo = new DnnComboBox { ID = this.ID + "_SkinComboBox" };
-            this._skinCombo.CssClass += "dnnFormSkinInput"; 
+            this._skinCombo.CssClass += "dnnFormSkinInput";
             this._skinCombo.SelectedIndexChanged += this.SkinIndexChanged;
             panel.Controls.Add(this._skinCombo);
 

@@ -202,7 +202,7 @@ namespace DotNetNuke.Modules.Admin.Users
                             break;
                         case "DisplayName":
                             this.AddField(trimmedField, String.Empty, true, this.ExcludeTerms, TextBoxMode.SingleLine);
-                            break;  
+                            break;
                         case "Email":
                             this.AddField("Email", String.Empty, true, this.PortalSettings.Registration.EmailValidator, TextBoxMode.SingleLine);
                             break;

@@ -56,7 +56,7 @@ namespace DotNetNuke.Entities.Portals
     /// PoralController provides business layer of poatal.
     /// </summary>
     /// <remarks>
-    /// DotNetNuke supports the concept of virtualised sites in a single install. This means that multiple sites, 
+    /// DotNetNuke supports the concept of virtualised sites in a single install. This means that multiple sites,
     /// each potentially with multiple unique URL's, can exist in one instance of DotNetNuke i.e. one set of files and one database.
     /// </remarks>
     public partial class PortalController : ServiceLocator<IPortalController, PortalController>, IPortalController
@@ -832,7 +832,7 @@ namespace DotNetNuke.Entities.Portals
                 // Save new File
                 try
                 {
-                    // Initially, install files are on local system, then we need the Standard folder provider to read the content regardless the target folderprovider                 
+                    // Initially, install files are on local system, then we need the Standard folder provider to read the content regardless the target folderprovider
                     using (var fileContent = FolderProvider.Instance("StandardFolderProvider").GetFileStream(file))
                     {
                         var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
@@ -1706,12 +1706,12 @@ namespace DotNetNuke.Entities.Portals
         {
             // used to control if modules are true modules or instances
             // will hold module ID from template / new module ID so new instances can reference right moduleid
-            // only first one from the template will be create as a true module, 
+            // only first one from the template will be create as a true module,
             // others will be moduleinstances (tabmodules)
             Hashtable hModules = new Hashtable();
             Hashtable hTabs = new Hashtable();
 
-            // if running from wizard we need to pre populate htabs with existing tabs so ParseTab 
+            // if running from wizard we need to pre populate htabs with existing tabs so ParseTab
             // can find all existing ones
             if (!isNewPortal)
             {

@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.Groups
                 {
                     this.BindGroups();
                     this.BindPages();
-                    
+
                     if (this.Settings.ContainsKey(Constants.DefaultRoleGroupSetting)) {
                         this.drpRoleGroup.SelectedIndex = this.drpRoleGroup.Items.IndexOf(this.drpRoleGroup.Items.FindByValue(this.Settings[Constants.DefaultRoleGroupSetting].ToString()));
                     }
@@ -62,7 +62,7 @@ namespace DotNetNuke.Modules.Groups
                         this.txtViewTemplate.Text = this.Settings[Constants.GroupViewTemplate].ToString();
                     }
 
-                    if (this.Settings.ContainsKey(Constants.GroupModerationEnabled)) 
+                    if (this.Settings.ContainsKey(Constants.GroupModerationEnabled))
                     {
                         this.chkGroupModeration.Checked = Convert.ToBoolean(this.Settings[Constants.GroupModerationEnabled].ToString());
                     }
@@ -141,20 +141,20 @@ namespace DotNetNuke.Modules.Groups
             }
         }
         private void BindPages() {
-            foreach (ModuleInfo moduleInfo in ModuleController.Instance.GetModules(this.PortalId)) 
+            foreach (ModuleInfo moduleInfo in ModuleController.Instance.GetModules(this.PortalId))
             {
                 if (moduleInfo.DesktopModule.ModuleName.Contains("Social Groups") && moduleInfo.IsDeleted == false)
                 {
                     TabInfo tabInfo = TabController.Instance.GetTab(moduleInfo.TabID, this.PortalId, false);
-                    if (tabInfo != null) 
+                    if (tabInfo != null)
                     {
-                        if (tabInfo.IsDeleted == false) 
+                        if (tabInfo.IsDeleted == false)
                         {
-                            foreach (KeyValuePair<string, ModuleDefinitionInfo> def in moduleInfo.DesktopModule.ModuleDefinitions) 
+                            foreach (KeyValuePair<string, ModuleDefinitionInfo> def in moduleInfo.DesktopModule.ModuleDefinitions)
                             {
-                                if (moduleInfo.ModuleDefinition.FriendlyName == def.Key) 
+                                if (moduleInfo.ModuleDefinition.FriendlyName == def.Key)
                                 {
-                                    if (this.drpGroupViewPage.Items.FindByValue(tabInfo.TabID.ToString()) == null) 
+                                    if (this.drpGroupViewPage.Items.FindByValue(tabInfo.TabID.ToString()) == null)
                                     {
                                         this.drpGroupViewPage.Items.Add(new ListItem(tabInfo.TabName + " - " + def.Key, tabInfo.TabID.ToString()));
                                     }

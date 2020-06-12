@@ -17,7 +17,7 @@ namespace DotNetNuke.Entities.Profile
     /// Class:      ProfilePropertyDefinitionCollection
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ProfilePropertyDefinitionCollection class provides Business Layer methods for 
+    /// The ProfilePropertyDefinitionCollection class provides Business Layer methods for
     /// a collection of property Definitions
     /// </summary>
     /// <remarks>

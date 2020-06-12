@@ -110,7 +110,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
                         {
                             if (String.IsNullOrEmpty(fileName))
                                 return resolvedPath.Replace('\\', '/');
-    
+
                             var matches = Directory.GetFileSystemEntries(mappedDir, fileName);
                             if (matches.Length > 0)
                             {

@@ -28,7 +28,7 @@ namespace Dnn.PersonaBar.Library
         public static readonly TimeSpan TwelveHours = TimeSpan.FromHours(12);
         public static readonly TimeSpan OneDay = TimeSpan.FromDays(1);
         public static readonly TimeSpan OneWeek = TimeSpan.FromDays(7);
-        
+
         public const string AdminsRoleName = "Administrators";
     }
 }

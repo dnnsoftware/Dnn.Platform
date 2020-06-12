@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.UserProfile
             if (height > 128) { height = 128; }
             if (width > 128) { width = 128; }
 
-           
+
             this.CalculateSize(ref height, ref width, ref size);
 
             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
@@ -88,9 +88,9 @@ namespace DotNetNuke.Services.UserProfile
                     }
                     catch (ThreadAbortException) // if ThreadAbortException will shown, should catch it and do nothing.
                     {
-                        
+
                     }
-                    
+
                 }
 
                 var folder = FolderManager.Instance.GetFolder(photoFile.FolderId);

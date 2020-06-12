@@ -32,7 +32,7 @@ namespace DotNetNuke.Services.Search
         private readonly bool _SearchIncludeNumeric;
         private readonly int _SearchMaxWordlLength;
         private readonly int _SearchMinWordlLength;
-        
+
         #endregion
 
         #region "Constructor(s)"
@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.Search
             this._SearchMaxWordlLength = this.GetSettingAsInteger("MaxSearchWordLength", settings, Host.SearchMaxWordlLength);
             this._SearchMinWordlLength = this.GetSettingAsInteger("MinSearchWordLength", settings, Host.SearchMinWordlLength);
         }
-        
+
         #endregion
 
         #region "Public Properties"
@@ -109,7 +109,7 @@ namespace DotNetNuke.Services.Search
                 return this._SearchMinWordlLength;
             }
         }
-        
+
         #endregion
 
         #region "Private Methods"
@@ -164,7 +164,7 @@ namespace DotNetNuke.Services.Search
             }
             return retValue;
         }
-        
+
         #endregion
     }
 }

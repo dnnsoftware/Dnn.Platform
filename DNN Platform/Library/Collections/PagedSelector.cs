@@ -21,7 +21,7 @@ namespace DotNetNuke.Collections
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PageSelector{T}"/> for use on the specified data store 
+        /// Initializes a new instance of the <see cref="PageSelector{T}"/> for use on the specified data store
         /// </summary>
         /// <param name = "source">The data store to page</param>
         /// <param name = "pageSize">The size of each page</param>
@@ -40,7 +40,7 @@ namespace DotNetNuke.Collections
         /// </summary>
         /// <param name = "pageIndex">The index (zero-based) of the page to retrieve</param>
         /// <returns>
-        /// An <see cref = "IPagedList{T}" /> containing the page of data, or an 
+        /// An <see cref = "IPagedList{T}" /> containing the page of data, or an
         /// empty list if the page does not exist
         /// </returns>
         public IPagedList<T> GetPage(int pageIndex)

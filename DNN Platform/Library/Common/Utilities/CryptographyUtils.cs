@@ -39,7 +39,7 @@ namespace DotNetNuke.Common.Utilities
         private const string _SHA512Cng = "System.Security.Cryptography.SHA512Cng";
 
         private const string _SHA512CryptoServiceProvider = "System.Security.Cryptography.SHA512CryptoServiceProvider";
-        
+
         public static SHA1 CreateSHA1()
         {
             return SHA1.Create(CryptoConfig.AllowOnlyFipsAlgorithms ? _SHA1CryptoServiceProvider : _SHA1Cng);

@@ -25,11 +25,11 @@ namespace DotNetNuke.Common.Controls
     public partial class Privacy : PortalModuleBase
     {
         #region " Web Form Designer Generated Code "
-        
+
         private void InitializeComponent()
         {
         }
-        
+
         #endregion
 
         #region "Event Handlers"
@@ -66,7 +66,7 @@ namespace DotNetNuke.Common.Controls
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-        
+
         #endregion
     }
 }

@@ -64,7 +64,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             else
             {
-                this.ClientSettings.Scrolling.AllowScroll = false;                
+                this.ClientSettings.Scrolling.AllowScroll = false;
             }
         }
     }

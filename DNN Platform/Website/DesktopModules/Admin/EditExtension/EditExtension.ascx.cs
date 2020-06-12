@@ -153,7 +153,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             this.cmdUpdate.Visible = this.IsSuperTab;
             if (this.Package != null)
             {
-                
+
                 if (this.PackageEditor == null || this.PackageID == Null.NullInteger)
                 {
                     this.extensionSection.Visible = false;
@@ -172,9 +172,9 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 
                     this.Package.IconFile = Util.ParsePackageIconFileName(this.Package);
                 }
-                
+
                 switch (this.Package.PackageType)
-                {                                        
+                {
                     case "Auth_System":
                     case "Container":
                     case "Module":
@@ -187,7 +187,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                         this.Package.IconFile = "Not Available";
                         break;
                 }
-                
+
                 if (this.Mode != "All")
                 {
                     this.packageType.Visible = false;

@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -65,7 +65,7 @@ namespace log4net.Util
         /// Only static methods are exposed from this type.
         /// </para>
         /// </remarks>
-        private SystemInfo() 
+        private SystemInfo()
         {
         }
 
@@ -148,7 +148,7 @@ namespace log4net.Util
         /// </remarks>
         public static string ApplicationBaseDirectory
         {
-            get 
+            get
             {
 #if NETCF
 -				return System.IO.Path.GetDirectoryName(SystemInfo.EntryAssemblyLocation) + System.IO.Path.DirectorySeparatorChar;
@@ -176,7 +176,7 @@ namespace log4net.Util
         /// </remarks>
         public static string ConfigurationFileLocation
         {
-            get 
+            get
             {
 #if NETCF || NETSTANDARD1_3
 				return SystemInfo.EntryAssemblyLocation+".config";
@@ -197,7 +197,7 @@ namespace log4net.Util
         /// </remarks>
         public static string EntryAssemblyLocation
         {
-            get 
+            get
             {
 #if NETCF
 				return SystemInfo.NativeEntryAssemblyLocation;
@@ -216,24 +216,24 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// On the .NET framework, the <c>AppDomain.GetCurrentThreadId</c> method
-        /// is used to obtain the thread ID for the current thread. This is the 
+        /// is used to obtain the thread ID for the current thread. This is the
         /// operating system ID for the thread.
         /// </para>
         /// <para>
-        /// On the .NET Compact Framework 1.0 it is not possible to get the 
-        /// operating system thread ID for the current thread. The native method 
+        /// On the .NET Compact Framework 1.0 it is not possible to get the
+        /// operating system thread ID for the current thread. The native method
         /// <c>GetCurrentThreadId</c> is implemented inline in a header file
         /// and cannot be called.
         /// </para>
         /// <para>
         /// On the .NET Framework 2.0 the <c>Thread.ManagedThreadId</c> is used as this
-        /// gives a stable id unrelated to the operating system thread ID which may 
+        /// gives a stable id unrelated to the operating system thread ID which may
         /// change if the runtime is using fibers.
         /// </para>
         /// </remarks>
         public static int CurrentThreadId
         {
-            get 
+            get
             {
 #if NETCF_1_0
 				return System.Threading.Thread.CurrentThread.GetHashCode();
@@ -351,7 +351,7 @@ namespace log4net.Util
                     }
                     catch (System.Security.SecurityException)
                     {
-                        // This security exception will occur if the caller does not have 
+                        // This security exception will occur if the caller does not have
                         // some undefined set of SecurityPermission flags.
                         LogLog.Debug(declaringType, "Security exception while trying to get current domain friendly name. Error Ignored.");
                     }
@@ -545,8 +545,8 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets the fully qualified name of the <see cref="Type" />, including 
-        /// the name of the assembly from which the <see cref="Type" /> was 
+        /// Gets the fully qualified name of the <see cref="Type" />, including
+        /// the name of the assembly from which the <see cref="Type" /> was
         /// loaded.
         /// </summary>
         /// <param name="type">The <see cref="Type" /> to get the fully qualified name for.</param>
@@ -575,8 +575,8 @@ namespace log4net.Util
         /// <returns>The short name of the <see cref="Assembly" />.</returns>
         /// <remarks>
         /// <para>
-        /// The short name of the assembly is the <see cref="Assembly.FullName" /> 
-        /// without the version, culture, or public key. i.e. it is just the 
+        /// The short name of the assembly is the <see cref="Assembly.FullName" />
+        /// without the version, culture, or public key. i.e. it is just the
         /// assembly's file name without the extension.
         /// </para>
         /// <para>
@@ -586,7 +586,7 @@ namespace log4net.Util
         /// <para>
         /// Because of a FileIOPermission security demand we cannot do
         /// the obvious Assembly.GetName().Name. We are allowed to get
-        /// the <see cref="Assembly.FullName" /> of the assembly so we 
+        /// the <see cref="Assembly.FullName" /> of the assembly so we
         /// start from there and strip out just the assembly name.
         /// </para>
         /// </remarks>
@@ -600,8 +600,8 @@ namespace log4net.Util
             }
             return name.Trim();
 
-            // TODO: Do we need to unescape the assembly name string? 
-            // Doc says '\' is an escape char but has this already been 
+            // TODO: Do we need to unescape the assembly name string?
+            // Doc says '\' is an escape char but has this already been
             // done by the string loader?
         }
 
@@ -650,13 +650,13 @@ namespace log4net.Util
         /// <returns>The type loaded or <c>null</c> if it could not be loaded.</returns>
         /// <remarks>
         /// <para>
-        /// If the type name is fully qualified, i.e. if contains an assembly name in 
-        /// the type name, the type will be loaded from the system using 
+        /// If the type name is fully qualified, i.e. if contains an assembly name in
+        /// the type name, the type will be loaded from the system using
         /// <see cref="M:Type.GetType(string,bool)"/>.
         /// </para>
         /// <para>
         /// If the type name is not fully qualified, it will be loaded from the assembly
-        /// containing the specified relative type. If the type is not found in the assembly 
+        /// containing the specified relative type. If the type is not found in the assembly
         /// then all the loaded assemblies will be searched for the type.
         /// </para>
         /// </remarks>
@@ -676,16 +676,16 @@ namespace log4net.Util
         /// <param name="typeName">The name of the type to load.</param>
         /// <param name="throwOnError">Flag set to <c>true</c> to throw an exception if the type cannot be loaded.</param>
         /// <param name="ignoreCase"><c>true</c> to ignore the case of the type name; otherwise, <c>false</c></param>
-        /// <returns>The type loaded or <c>null</c> if it could not be loaded.</returns>        
+        /// <returns>The type loaded or <c>null</c> if it could not be loaded.</returns>
         /// <remarks>
         /// <para>
-        /// If the type name is fully qualified, i.e. if contains an assembly name in 
-        /// the type name, the type will be loaded from the system using 
+        /// If the type name is fully qualified, i.e. if contains an assembly name in
+        /// the type name, the type will be loaded from the system using
         /// <see cref="M:Type.GetType(string,bool)"/>.
         /// </para>
         /// <para>
         /// If the type name is not fully qualified it will be loaded from the
-        /// assembly that is directly calling this method. If the type is not found 
+        /// assembly that is directly calling this method. If the type is not found
         /// in the assembly then all the loaded assemblies will be searched for the type.
         /// </para>
         /// </remarks>
@@ -705,13 +705,13 @@ namespace log4net.Util
         /// <returns>The type loaded or <c>null</c> if it could not be loaded.</returns>
         /// <remarks>
         /// <para>
-        /// If the type name is fully qualified, i.e. if contains an assembly name in 
-        /// the type name, the type will be loaded from the system using 
+        /// If the type name is fully qualified, i.e. if contains an assembly name in
+        /// the type name, the type will be loaded from the system using
         /// <see cref="M:Type.GetType(string,bool)"/>.
         /// </para>
         /// <para>
         /// If the type name is not fully qualified it will be loaded from the specified
-        /// assembly. If the type is not found in the assembly then all the loaded assemblies 
+        /// assembly. If the type is not found in the assembly then all the loaded assemblies
         /// will be searched for the type.
         /// </para>
         /// </remarks>
@@ -749,7 +749,7 @@ namespace log4net.Util
                 {
                     Type fallback = null;
                     // Search the loaded assemblies for the type
-                    foreach (Assembly assembly in loadedAssemblies) 
+                    foreach (Assembly assembly in loadedAssemblies)
                     {
                         Type t = assembly.GetType(typeName, false, ignoreCase);
                         if (t != null)
@@ -823,8 +823,8 @@ namespace log4net.Util
         /// <returns>the ArgumentOutOfRangeException object</returns>
         /// <remarks>
         /// <para>
-        /// Create a new instance of the <see cref="ArgumentOutOfRangeException"/> class 
-        /// with a specified error message, the parameter name, and the value 
+        /// Create a new instance of the <see cref="ArgumentOutOfRangeException"/> class
+        /// with a specified error message, the parameter name, and the value
         /// of the argument.
         /// </para>
         /// <para>
@@ -971,7 +971,7 @@ namespace log4net.Util
             // Initialise out param
             val = 0;
 
-            try 
+            try
             {
                 double doubleVal;
                 if (Double.TryParse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out doubleVal))
@@ -1028,7 +1028,7 @@ namespace log4net.Util
         /// <para>
         /// Converts the path specified to a fully
         /// qualified path. If the path is relative it is
-        /// taken as relative from the application base 
+        /// taken as relative from the application base
         /// directory.
         /// </para>
         /// <para>
@@ -1070,7 +1070,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Creates a new case-insensitive instance of the <see cref="Hashtable"/> class with the default initial capacity. 
+        /// Creates a new case-insensitive instance of the <see cref="Hashtable"/> class with the default initial capacity.
         /// </summary>
         /// <returns>A new case-insensitive instance of the <see cref="Hashtable"/> class with the default initial capacity</returns>
         /// <remarks>

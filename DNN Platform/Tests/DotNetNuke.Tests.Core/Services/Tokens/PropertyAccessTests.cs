@@ -37,7 +37,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             // Assert
             Assert.AreEqual(expected, propertyNotFound);
         }
-        
+
         [Test]
         [TestCase("today")]
         [TestCase("ticksperday")]

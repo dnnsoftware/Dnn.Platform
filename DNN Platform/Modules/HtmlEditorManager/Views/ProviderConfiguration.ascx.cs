@@ -70,6 +70,6 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
                 Globals.Redirect(Globals.AccessDeniedURL(this.LocalizeString("CannotManageHTMLEditorProviders")), true);
             }
             base.OnInit(e);
-        }        
+        }
     }
 }

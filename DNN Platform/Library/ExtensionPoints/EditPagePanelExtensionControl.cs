@@ -21,20 +21,20 @@ namespace DotNetNuke.ExtensionPoints
             control.ID = Path.GetFileNameWithoutExtension(extension.UserControlSrc);
             editPanel.Controls.Add(control);
             this.Controls.Add(editPanel);
-            
+
         }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
             var extensionPointManager = new ExtensionPointManager();
-            
+
             if (!String.IsNullOrEmpty(this.Name))
             {
                 var extension = extensionPointManager.GetEditPagePanelExtensionPointFirstByPriority(this.Module, this.Name);
                 if (extension != null)
                 {
-                    this.LoadControl(extension);                    
+                    this.LoadControl(extension);
                 }
             }
             else
@@ -43,7 +43,7 @@ namespace DotNetNuke.ExtensionPoints
                 {
                     if (extension != null)
                     {
-                        this.LoadControl(extension);                        
+                        this.LoadControl(extension);
                     }
                 }
             }

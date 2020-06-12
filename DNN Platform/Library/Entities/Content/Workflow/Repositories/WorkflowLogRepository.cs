@@ -20,7 +20,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             {
                 var rep = context.GetRepository<WorkflowLog>();
                 var workflowLogs = rep.Find("WHERE (ContentItemID = @0 AND WorkflowID = @1)", contentItemId, workflowId).ToArray();
-                
+
                 return workflowLogs;
             }
         }
@@ -51,5 +51,5 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             return () => new WorkflowLogRepository();
         }
         #endregion
-    }    
+    }
 }

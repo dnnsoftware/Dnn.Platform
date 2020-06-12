@@ -111,7 +111,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 localeName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(culture.EnglishName);
             }
-            
+
             // Add the Value Attribute
             writer.AddAttribute(HtmlTextWriterAttribute.Value, culture.Name);
 
@@ -119,7 +119,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
             }
-            
+
             // Render Option Tag
             writer.RenderBeginTag(HtmlTextWriterTag.Option);
             writer.Write(localeName);
@@ -265,7 +265,7 @@ function onLocaleChanged(element){
             // close div
             writer.RenderEndTag();
         }
-        
+
         #endregion
     }
 }

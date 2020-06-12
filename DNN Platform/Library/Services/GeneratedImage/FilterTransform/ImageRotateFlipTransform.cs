@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             this.CompositingQuality = CompositingQuality.HighQuality;
             this.RotateFlip = RotateFlipType.RotateNoneFlipNone;
         }
-        
+
         /// <summary>
         /// Processes an input image applying a rotation image transformation
         /// </summary>

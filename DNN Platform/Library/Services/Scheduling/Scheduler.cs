@@ -36,7 +36,7 @@ namespace DotNetNuke.Services.Scheduling
             private static int _maxThreadCount;
             private static int _activeThreadCount;
 
-            // If KeepRunning gets switched to false, 
+            // If KeepRunning gets switched to false,
             // the scheduler stops running.
             private static bool _forceReloadSchedule;
             private static bool _debug;
@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Scheduling
             private static readonly ReaderWriterLockSlim StatusLock = new ReaderWriterLockSlim();
             private static ScheduleStatus _status = ScheduleStatus.STOPPED;
 
-            // If KeepRunning gets switched to false, 
+            // If KeepRunning gets switched to false,
             // the scheduler stops running.
             public static bool KeepThreadAlive = true;
             public static bool KeepRunning = true;
@@ -179,7 +179,7 @@ namespace DotNetNuke.Services.Scheduling
                         var item = ScheduleInProgress.FirstOrDefault(si => si.ScheduleID == scheduleItem.ScheduleID);
                         return item;
                     }
-                    
+
                 }
                 catch (ApplicationException ex)
                 {
@@ -254,7 +254,7 @@ namespace DotNetNuke.Services.Scheduling
                     // catches edge-case where schedule runs before webserver registration
                     return null;
                 }
-                    
+
             }
 
             public static ScheduleHistoryItem AddScheduleHistory(ScheduleHistoryItem scheduleHistoryItem)
@@ -575,7 +575,7 @@ namespace DotNetNuke.Services.Scheduling
                         {
                             StatusLock.ExitReadLock();
                         }
-                        
+
                     }
                 }
                 catch (ApplicationException)
@@ -615,7 +615,7 @@ namespace DotNetNuke.Services.Scheduling
                     }
                     Thread.Sleep(1000);
                 }
-                
+
                 _activeThreadCount = 0;
             }
 
@@ -698,7 +698,7 @@ namespace DotNetNuke.Services.Scheduling
                 }
 
                 bool runningInAGroup = !String.IsNullOrEmpty(thisServer.ServerGroup);
-                
+
                 var serverGroupServers = ServerGroupServers(thisServer);
 
 
@@ -784,7 +784,7 @@ namespace DotNetNuke.Services.Scheduling
                     // As long as we have an open thread, continue.
 
                     // Load the queue to determine which schedule
-                    // items need to be run. 
+                    // items need to be run.
                     LoadQueueFromEvent(eventName);
 
                     while (GetScheduleQueueCount() > 0)
@@ -873,7 +873,7 @@ namespace DotNetNuke.Services.Scheduling
                     {
                         try
                         {
-                            if (Common.Globals.ElapsedSinceAppStart.TotalSeconds < SchedulingProvider.DelayAtAppStart) 
+                            if (Common.Globals.ElapsedSinceAppStart.TotalSeconds < SchedulingProvider.DelayAtAppStart)
                             {
                                 if (!KeepThreadAlive)
                                     return;
@@ -891,7 +891,7 @@ namespace DotNetNuke.Services.Scheduling
                                 SetScheduleStatus(ScheduleStatus.RUNNING_REQUEST_SCHEDULE);
                             }
                             // Load the queue to determine which schedule
-                            // items need to be run. 
+                            // items need to be run.
 
                             LoadQueueFromTimer();
 
@@ -900,7 +900,7 @@ namespace DotNetNuke.Services.Scheduling
                             DateTime lastQueueRefresh = DateTime.Now;
                             bool refreshQueueSchedule = false;
 
-                            // We allow for [MaxThreadCount] threads to run 
+                            // We allow for [MaxThreadCount] threads to run
                             // simultaneously.  As long as we have an open thread
                             // and we don't have to refresh the queue, continue
                             // to loop.
@@ -1284,7 +1284,7 @@ namespace DotNetNuke.Services.Scheduling
                     // object property to note the start time.
                     scheduleHistoryItem.StartDate = DateTime.Now;
                     AddScheduleHistory(scheduleHistoryItem);
-                    
+
                     if (scheduleHistoryItem.RetainHistoryNum > 0)
                     {
                         // Write out the log entry for this event

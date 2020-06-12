@@ -81,7 +81,7 @@ namespace DotNetNuke.UI
                 }
                 else
                 {
-                    // if action is visible and user has permission 
+                    // if action is visible and user has permission
                     if (action.Visible &&
                         (action.Secure != SecurityAccessLevel.Anonymous ||
                             (!ModuleHost.IsViewMode(actionControl.ModuleControl.ModuleContext.Configuration, PortalSettings.Current))
@@ -368,7 +368,7 @@ namespace DotNetNuke.UI
                     }
                     else if ((intNavNodeOptions & (int)NavNodeOptions.IncludeSelf) == 0 && objTab.ParentId == intStartTabId)
                     {
-                        // if not including self and parent is the start id then add 
+                        // if not including self and parent is the start id then add
                         AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
                     }
                 }
@@ -435,7 +435,7 @@ namespace DotNetNuke.UI
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This function provides a central location to obtain a generic node collection of the actions associated 
+        /// This function provides a central location to obtain a generic node collection of the actions associated
         /// to a module based off of the current user's context
         /// </summary>
         /// <param name="objActionRoot">Root module action</param>
@@ -470,7 +470,7 @@ namespace DotNetNuke.UI
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This function provides a central location to obtain a generic node collection of the actions associated 
+        /// This function provides a central location to obtain a generic node collection of the actions associated
         /// to a module based off of the current user's context
         /// </summary>
         /// <param name="objActionRoot">Root module action</param>

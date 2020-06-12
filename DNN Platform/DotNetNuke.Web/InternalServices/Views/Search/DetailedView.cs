@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
         /// Tags associated with Document
         /// </summary>
         public IEnumerable<string> Tags { get; set; }
-        
+
         /// <summary>
         /// Time when Content was last modified (in Utc)
         /// </summary>
@@ -54,6 +54,6 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
         /// </summary>
         /// <remarks>Content with more Views is ranked higher.</remarks>
         public int Views { get; set; }
-        
+
     }
 }

@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.Installer.Installers
         private SkinPackageInfo SkinPackage;
         private SkinPackageInfo TempSkinPackage;
         private string _SkinName = Null.NullString;
-        
+
         #endregion
 
         #region "Protected Properties"
@@ -164,7 +164,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "Skin";
             }
         }
-        
+
         #endregion
 
         #region "Public Properties"
@@ -182,7 +182,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "ascx, html, htm, css, xml, js, resx, jpg, jpeg, gif, png";
             }
         }
-        
+
         #endregion
 
         #region "Private Methods"
@@ -210,7 +210,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Log.AddFailure(ex);
             }
         }
-        
+
         #endregion
 
         #region "Protected Methods"
@@ -236,7 +236,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
                     break;
             }
-            
+
             // Call base method to set up for file processing
             base.ProcessFile(file, nav);
         }
@@ -278,7 +278,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 Util.DeleteFile(fileName, this.PhysicalBasePath, this.Log);
             }
         }
-        
+
         #endregion
 
         #region "Public Methods"
@@ -369,13 +369,13 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Rollback method undoes the installation of the component in the event 
+        /// The Rollback method undoes the installation of the component in the event
         /// that one of the other components fails
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-            // If Temp Skin exists then we need to update the DataStore with this 
+            // If Temp Skin exists then we need to update the DataStore with this
             if (this.TempSkinPackage == null)
             {
                 // No Temp Skin - Delete newly added Skin
@@ -386,7 +386,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 // Temp Skin - Rollback to Temp
                 SkinController.UpdateSkinPackage(this.TempSkinPackage);
             }
-            
+
             // Call base class to prcoess files
             base.Rollback();
         }
@@ -403,7 +403,7 @@ namespace DotNetNuke.Services.Installer.Installers
             // Call base class to prcoess files
             base.UnInstall();
         }
-        
+
         #endregion
     }
 }

@@ -32,10 +32,10 @@ namespace DotNetNuke.UI.Skins
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinThumbNailControl));
         #region "Private Members"
-        
+
         protected HtmlGenericControl ControlContainer;
         protected RadioButtonList OptSkin;
-        
+
         #endregion
 
         #region "Properties"
@@ -139,7 +139,7 @@ namespace DotNetNuke.UI.Skins
                 }
             }
         }
-        
+
         #endregion
 
         #region "Private Methods"
@@ -197,7 +197,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return strSkinFile;
             }
-            
+
             // portal folder
             switch (strSkinFile.ToLowerInvariant())
             {
@@ -236,43 +236,43 @@ namespace DotNetNuke.UI.Skins
             }
             if (blnCreate)
             {
-                const int intSize = 140; // size of the thumbnail 
+                const int intSize = 140; // size of the thumbnail
                 Image objImage;
                 try
                 {
                     objImage = Image.FromFile(strImage);
-                    
+
                     // scale the image to prevent distortion
                     int intWidth;
                     int intHeight;
                     double dblScale;
                     if (objImage.Height > objImage.Width)
                     {
-                        // The height was larger, so scale the width 
+                        // The height was larger, so scale the width
                         dblScale = (double)intSize / objImage.Height;
                         intHeight = intSize;
                         intWidth = Convert.ToInt32(objImage.Width * dblScale);
                     }
                     else
                     {
-                        // The width was larger, so scale the height 
+                        // The width was larger, so scale the height
                         dblScale = (double)intSize / objImage.Width;
                         intWidth = intSize;
                         intHeight = Convert.ToInt32(objImage.Height * dblScale);
                     }
-                    
+
                     // create the thumbnail image
                     var objThumbnail = objImage.GetThumbnailImage(intWidth, intHeight, null, IntPtr.Zero);
-                    
+
                     // delete the old file ( if it exists )
                     if (File.Exists(strThumbnail))
                     {
                         File.Delete(strThumbnail);
                     }
-                    
-                    // save the thumbnail image 
+
+                    // save the thumbnail image
                     objThumbnail.Save(strThumbnail, objImage.RawFormat);
-                    
+
                     // set the file attributes
                     File.SetAttributes(strThumbnail, FileAttributes.Normal);
                     File.SetLastWriteTime(strThumbnail, File.GetLastWriteTime(strImage));
@@ -321,7 +321,7 @@ namespace DotNetNuke.UI.Skins
             {
                 this.AddDefaultSkin();
             }
-            
+
             // load host skins (includeNotSpecified = false as we have already added it)
             this.LoadHostSkins(false);
 
@@ -345,7 +345,7 @@ namespace DotNetNuke.UI.Skins
             {
                 this.AddDefaultSkin();
             }
-            
+
             // load host skins
             var strRoot = Globals.HostMapPath + this.SkinRoot;
             if (Directory.Exists(strRoot))
@@ -376,7 +376,7 @@ namespace DotNetNuke.UI.Skins
             {
                 this.AddDefaultSkin();
             }
-            
+
             // load portal skins
             var strRoot = this.PortalSettings.HomeDirectoryMapPath + this.SkinRoot;
             if (Directory.Exists(strRoot))
@@ -417,7 +417,7 @@ namespace DotNetNuke.UI.Skins
                 }
             }
         }
-        
+
         #endregion
 
     }

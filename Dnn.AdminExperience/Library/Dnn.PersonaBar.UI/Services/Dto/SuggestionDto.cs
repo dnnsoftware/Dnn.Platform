@@ -8,7 +8,7 @@ namespace Dnn.PersonaBar.UI.Services.DTO
 {
     [DataContract]
     public class SuggestionDto
-    {  
+    {
         [DataMember(Name = "value")]
         public int Value { get; set; }
 

@@ -106,11 +106,11 @@ namespace DotNetNuke.Modules.Admin.Sales
 //                            strEmail = strValue;
                             break;
                     }
-                    
+
                     // reconstruct post for postback validation
                     strPost += string.Format("&{0}={1}", Globals.HTTPPOSTEncode(strName), Globals.HTTPPOSTEncode(strValue));
                 }
-                
+
                 // postback to verify the source
                 if (blnValid)
                 {

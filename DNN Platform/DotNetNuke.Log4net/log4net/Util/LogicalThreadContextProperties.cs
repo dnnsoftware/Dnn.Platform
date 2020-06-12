@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -43,7 +43,7 @@ namespace log4net.Util
     /// <c>log4net.Util.LogicalThreadContextProperties</c>.
     /// </para>
     /// <para>
-    /// The <see cref="CallContext"/> requires a link time 
+    /// The <see cref="CallContext"/> requires a link time
     /// <see cref="System.Security.Permissions.SecurityPermission"/> for the
     /// <see cref="System.Security.Permissions.SecurityPermissionFlag.Infrastructure"/>.
     /// If the calling code does not have this permission then this context will be disabled.
@@ -54,12 +54,12 @@ namespace log4net.Util
     public sealed class LogicalThreadContextProperties : ContextPropertiesBase
     {
         private const string c_SlotName = "log4net.Util.LogicalThreadContextProperties";
-        
+
         /// <summary>
         /// Flag used to disable this context if we don't have permission to access the CallContext.
         /// </summary>
         private bool m_disabled = false;
-        
+
         #region Public Instance Constructors
 
         /// <summary>
@@ -91,17 +91,17 @@ namespace log4net.Util
         /// </remarks>
         override public object this[string key]
         {
-            get 
-            { 
+            get
+            {
                 // Don't create the dictionary if it does not already exist
                 PropertiesDictionary dictionary = this.GetProperties(false);
                 if (dictionary != null)
                 {
-                    return dictionary[key]; 
+                    return dictionary[key];
                 }
                 return null;
             }
-            set 
+            set
             {
                 // Force the dictionary to be created
                 PropertiesDictionary props = this.GetProperties(true);
@@ -167,7 +167,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The collection returned is only to be used on the calling thread. If the
-        /// caller needs to share the collection between different threads then the 
+        /// caller needs to share the collection between different threads then the
         /// caller must clone the collection before doings so.
         /// </para>
         /// </remarks>
@@ -188,12 +188,12 @@ namespace log4net.Util
                 catch (SecurityException secEx)
                 {
                     this.m_disabled = true;
-                    
+
                     // Thrown if we don't have permission to read or write the CallContext
                     LogLog.Warn(declaringType, "SecurityException while accessing CallContext. Disabling LogicalThreadContextProperties", secEx);
                 }
             }
-            
+
             // Only get here is we are disabled because of a security exception
             if (create)
             {

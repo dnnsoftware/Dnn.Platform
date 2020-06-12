@@ -62,7 +62,7 @@ namespace DotNetNuke.Modules.Groups
 
                 var groupParser = new GroupViewParser(this.PortalSettings, role, this.UserInfo, template, this.TabId);
                 groupParser.GroupEditUrl = this.GetEditUrl();
-                
+
                 this.litOutput.Text = groupParser.ParseView();
 
             }

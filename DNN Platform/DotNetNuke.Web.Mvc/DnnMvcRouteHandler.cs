@@ -13,7 +13,7 @@ namespace DotNetNuke.Web.Mvc
     public class DnnMvcRouteHandler : IRouteHandler
     {
         private readonly IControllerFactory _controllerFactory;
-       
+
         public DnnMvcRouteHandler()
         {
         }

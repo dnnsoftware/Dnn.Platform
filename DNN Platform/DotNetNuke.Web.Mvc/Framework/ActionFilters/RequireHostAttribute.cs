@@ -22,7 +22,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             {
                 return false;
             }
-            
+
             if (this._user != null)
             {
                 return this._user.IsSuperUser;

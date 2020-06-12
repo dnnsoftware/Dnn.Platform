@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -48,7 +48,7 @@ namespace log4net.Repository.Hierarchy
     {
         private enum ConfigUpdateMode
         {
-            Merge, 
+            Merge,
             Overwrite
         }
 
@@ -64,7 +64,7 @@ namespace log4net.Repository.Hierarchy
         /// with the specified <see cref="Hierarchy" />.
         /// </para>
         /// </remarks>
-        public XmlHierarchyConfigurator(Hierarchy hierarchy) 
+        public XmlHierarchyConfigurator(Hierarchy hierarchy)
         {
             this.m_hierarchy = hierarchy;
             this.m_appenderBag = new Hashtable();
@@ -83,7 +83,7 @@ namespace log4net.Repository.Hierarchy
         /// Configure the hierarchy by parsing a DOM tree of XML elements.
         /// </para>
         /// </remarks>
-        public void Configure(XmlElement element) 
+        public void Configure(XmlElement element)
         {
             if (element == null || this.m_hierarchy == null)
             {
@@ -120,18 +120,18 @@ namespace log4net.Repository.Hierarchy
                 string debugAttribute = element.GetAttribute(INTERNAL_DEBUG_ATTR);
                 LogLog.Debug(declaringType, INTERNAL_DEBUG_ATTR + " attribute [" + debugAttribute + "].");
 
-                if (debugAttribute.Length > 0 && debugAttribute != "null") 
-                {     
+                if (debugAttribute.Length > 0 && debugAttribute != "null")
+                {
                     LogLog.InternalDebugging = OptionConverter.ToBoolean(debugAttribute, true);
                 }
-                else 
+                else
                 {
                     LogLog.Debug(declaringType, "Ignoring " + INTERNAL_DEBUG_ATTR + " attribute.");
                 }
 
                 string confDebug = element.GetAttribute(CONFIG_DEBUG_ATTR);
                 if (confDebug.Length > 0 && confDebug != "null")
-                {     
+                {
                     LogLog.Warn(declaringType, "The \"" + CONFIG_DEBUG_ATTR + "\" attribute is deprecated.");
                     LogLog.Warn(declaringType, "Use the \"" + INTERNAL_DEBUG_ATTR + "\" attribute instead.");
                     LogLog.InternalDebugging = OptionConverter.ToBoolean(confDebug, true);
@@ -174,23 +174,23 @@ namespace log4net.Repository.Hierarchy
 
             foreach (XmlNode currentNode in element.ChildNodes)
             {
-                if (currentNode.NodeType == XmlNodeType.Element) 
+                if (currentNode.NodeType == XmlNodeType.Element)
                 {
                     XmlElement currentElement = (XmlElement)currentNode;
 
                     if (currentElement.LocalName == LOGGER_TAG)
                     {
                         this.ParseLogger(currentElement);
-                    } 
+                    }
                     else if (currentElement.LocalName == CATEGORY_TAG)
                     {
                         // TODO: deprecated use of category
                         this.ParseLogger(currentElement);
-                    } 
+                    }
                     else if (currentElement.LocalName == ROOT_TAG)
                     {
                         this.ParseRoot(currentElement);
-                    } 
+                    }
                     else if (currentElement.LocalName == RENDERER_TAG)
                     {
                         this.ParseRenderer(currentElement);
@@ -211,7 +211,7 @@ namespace log4net.Repository.Hierarchy
             // Lastly set the hierarchy threshold
             string thresholdStr = element.GetAttribute(THRESHOLD_ATTR);
             LogLog.Debug(declaringType, "Hierarchy Threshold [" + thresholdStr + "]");
-            if (thresholdStr.Length > 0 && thresholdStr != "null") 
+            if (thresholdStr.Length > 0 && thresholdStr != "null")
             {
                 Level thresholdLevel = (Level)this.ConvertStringTo(typeof(Level), thresholdStr);
                 if (thresholdLevel != null)
@@ -238,20 +238,20 @@ namespace log4net.Repository.Hierarchy
         /// <returns>The instance of the appender that the ref refers to.</returns>
         /// <remarks>
         /// <para>
-        /// Parse an XML element that represents an appender and return 
+        /// Parse an XML element that represents an appender and return
         /// the appender.
         /// </para>
         /// </remarks>
-        protected IAppender FindAppenderByReference(XmlElement appenderRef) 
-        {   
+        protected IAppender FindAppenderByReference(XmlElement appenderRef)
+        {
             string appenderName = appenderRef.GetAttribute(REF_ATTR);
 
             IAppender appender = (IAppender)this.m_appenderBag[appenderName];
-            if (appender != null) 
+            if (appender != null)
             {
                 return appender;
-            } 
-            else 
+            }
+            else
             {
                 // Find the element with that id
                 XmlElement element = null;
@@ -268,11 +268,11 @@ namespace log4net.Repository.Hierarchy
                     }
                 }
 
-                if (element == null) 
+                if (element == null)
                 {
-                    LogLog.Error(declaringType, "XmlHierarchyConfigurator: No appender named [" + appenderName + "] could be found."); 
+                    LogLog.Error(declaringType, "XmlHierarchyConfigurator: No appender named [" + appenderName + "] could be found.");
                     return null;
-                } 
+                }
                 else
                 {
                     appender = this.ParseAppender(element);
@@ -282,7 +282,7 @@ namespace log4net.Repository.Hierarchy
                     }
                     return appender;
                 }
-            } 
+            }
         }
 
         /// <summary>
@@ -296,13 +296,13 @@ namespace log4net.Repository.Hierarchy
         /// the appender instance.
         /// </para>
         /// </remarks>
-        protected IAppender ParseAppender(XmlElement appenderElement) 
+        protected IAppender ParseAppender(XmlElement appenderElement)
         {
             string appenderName = appenderElement.GetAttribute(NAME_ATTR);
             string typeName = appenderElement.GetAttribute(TYPE_ATTR);
 
             LogLog.Debug(declaringType, "Loading Appender [" + appenderName + "] type: [" + typeName + "]");
-            try 
+            try
             {
 #if NETSTANDARD1_3
 				IAppender appender = (IAppender)Activator.CreateInstance(SystemInfo.GetTypeFromString(this.GetType().GetTypeInfo().Assembly, typeName, true, true));
@@ -314,7 +314,7 @@ namespace log4net.Repository.Hierarchy
                 foreach (XmlNode currentNode in appenderElement.ChildNodes)
                 {
                     /* We're only interested in Elements */
-                    if (currentNode.NodeType == XmlNodeType.Element) 
+                    if (currentNode.NodeType == XmlNodeType.Element)
                     {
                         XmlElement currentElement = (XmlElement)currentNode;
 
@@ -324,7 +324,7 @@ namespace log4net.Repository.Hierarchy
                             string refName = currentElement.GetAttribute(REF_ATTR);
 
                             IAppenderAttachable appenderContainer = appender as IAppenderAttachable;
-                            if (appenderContainer != null) 
+                            if (appenderContainer != null)
                             {
                                 LogLog.Debug(declaringType, "Attaching appender named [" + refName + "] to appender named [" + appender.Name + "].");
 
@@ -333,8 +333,8 @@ namespace log4net.Repository.Hierarchy
                                 {
                                     appenderContainer.AddAppender(referencedAppender);
                                 }
-                            } 
-                            else 
+                            }
+                            else
                             {
                                 LogLog.Error(declaringType, "Requesting attachment of appender named [" + refName + "] to appender named [" + appender.Name + "] which does not implement log4net.Core.IAppenderAttachable.");
                             }
@@ -348,15 +348,15 @@ namespace log4net.Repository.Hierarchy
                 }
 
                 IOptionHandler optionHandler = appender as IOptionHandler;
-                if (optionHandler != null) 
+                if (optionHandler != null)
                 {
                     optionHandler.ActivateOptions();
                 }
 
-                LogLog.Debug(declaringType, "Created Appender [" + appenderName + "]"); 
+                LogLog.Debug(declaringType, "Created Appender [" + appenderName + "]");
                 return appender;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 // Yes, it's ugly.  But all exceptions point to the same problem: we can't create an Appender
 
@@ -374,7 +374,7 @@ namespace log4net.Repository.Hierarchy
         /// Parse an XML element that represents a logger.
         /// </para>
         /// </remarks>
-        protected void ParseLogger(XmlElement loggerElement) 
+        protected void ParseLogger(XmlElement loggerElement)
         {
             // Create a new log4net.Logger object from the <logger> element.
             string loggerName = loggerElement.GetAttribute(NAME_ATTR);
@@ -385,10 +385,10 @@ namespace log4net.Repository.Hierarchy
             // Setting up a logger needs to be an atomic operation, in order
             // to protect potential log operations while logger
             // configuration is in progress.
-            lock (log) 
+            lock (log)
             {
                 bool additivity = OptionConverter.ToBoolean(loggerElement.GetAttribute(ADDITIVITY_ATTR), true);
-    
+
                 LogLog.Debug(declaringType, "Setting [" + log.Name + "] additivity to [" + additivity + "].");
                 log.Additivity = additivity;
                 this.ParseChildrenOfLoggerElement(loggerElement, log, false);
@@ -404,12 +404,12 @@ namespace log4net.Repository.Hierarchy
         /// Parse an XML element that represents the root logger.
         /// </para>
         /// </remarks>
-        protected void ParseRoot(XmlElement rootElement) 
+        protected void ParseRoot(XmlElement rootElement)
         {
             Logger root = this.m_hierarchy.Root;
             // logger configuration needs to be atomic
-            lock (root) 
-            {   
+            lock (root)
+            {
                 this.ParseChildrenOfLoggerElement(rootElement, root, true);
             }
         }
@@ -425,7 +425,7 @@ namespace log4net.Repository.Hierarchy
         /// Parse the child elements of a &lt;logger&gt; element.
         /// </para>
         /// </remarks>
-        protected void ParseChildrenOfLoggerElement(XmlElement catElement, Logger log, bool isRoot) 
+        protected void ParseChildrenOfLoggerElement(XmlElement catElement, Logger log, bool isRoot)
         {
             // Remove all existing appenders from log. They will be
             // reconstructed if need be.
@@ -433,10 +433,10 @@ namespace log4net.Repository.Hierarchy
 
             foreach (XmlNode currentNode in catElement.ChildNodes)
             {
-                if (currentNode.NodeType == XmlNodeType.Element) 
+                if (currentNode.NodeType == XmlNodeType.Element)
                 {
                     XmlElement currentElement = (XmlElement)currentNode;
-    
+
                     if (currentElement.LocalName == APPENDER_REF_TAG)
                     {
                         IAppender appender = this.FindAppenderByReference(currentElement);
@@ -446,15 +446,15 @@ namespace log4net.Repository.Hierarchy
                             LogLog.Debug(declaringType, "Adding appender named [" + refName + "] to logger [" + log.Name + "].");
                             log.AddAppender(appender);
                         }
-                        else 
+                        else
                         {
                             LogLog.Error(declaringType, "Appender named [" + refName + "] not found.");
                         }
-                    } 
-                    else if (currentElement.LocalName == LEVEL_TAG || currentElement.LocalName == PRIORITY_TAG) 
+                    }
+                    else if (currentElement.LocalName == LEVEL_TAG || currentElement.LocalName == PRIORITY_TAG)
                     {
-                        this.ParseLevel(currentElement, log, isRoot);   
-                    } 
+                        this.ParseLevel(currentElement, log, isRoot);
+                    }
                     else
                     {
                         this.SetParameter(currentElement, log);
@@ -463,7 +463,7 @@ namespace log4net.Repository.Hierarchy
             }
 
             IOptionHandler optionHandler = log as IOptionHandler;
-            if (optionHandler != null) 
+            if (optionHandler != null)
             {
                 optionHandler.ActivateOptions();
             }
@@ -478,29 +478,29 @@ namespace log4net.Repository.Hierarchy
         /// Parse an XML element that represents a renderer.
         /// </para>
         /// </remarks>
-        protected void ParseRenderer(XmlElement element) 
+        protected void ParseRenderer(XmlElement element)
         {
             string renderingClassName = element.GetAttribute(RENDERING_TYPE_ATTR);
             string renderedClassName = element.GetAttribute(RENDERED_TYPE_ATTR);
 
             LogLog.Debug(declaringType, "Rendering class [" + renderingClassName + "], Rendered class [" + renderedClassName + "].");
             IObjectRenderer renderer = (IObjectRenderer)OptionConverter.InstantiateByClassName(renderingClassName, typeof(IObjectRenderer), null);
-            if (renderer == null) 
+            if (renderer == null)
             {
                 LogLog.Error(declaringType, "Could not instantiate renderer [" + renderingClassName + "].");
                 return;
-            } 
-            else 
+            }
+            else
             {
-                try 
+                try
                 {
 #if NETSTANDARD1_3
 					m_hierarchy.RendererMap.Put(SystemInfo.GetTypeFromString(this.GetType().GetTypeInfo().Assembly, renderedClassName, true, true), renderer);
 #else
                     this.m_hierarchy.RendererMap.Put(SystemInfo.GetTypeFromString(renderedClassName, true, true), renderer);
 #endif
-                } 
-                catch (Exception e) 
+                }
+                catch (Exception e)
                 {
                     LogLog.Error(declaringType, "Could not find class [" + renderedClassName + "].", e);
                 }
@@ -518,30 +518,30 @@ namespace log4net.Repository.Hierarchy
         /// Parse an XML element that represents a level.
         /// </para>
         /// </remarks>
-        protected void ParseLevel(XmlElement element, Logger log, bool isRoot) 
+        protected void ParseLevel(XmlElement element, Logger log, bool isRoot)
         {
             string loggerName = log.Name;
-            if (isRoot) 
+            if (isRoot)
             {
                 loggerName = "root";
             }
 
             string levelStr = element.GetAttribute(VALUE_ATTR);
             LogLog.Debug(declaringType, "Logger [" + loggerName + "] Level string is [" + levelStr + "].");
-    
-            if (INHERITED == levelStr) 
+
+            if (INHERITED == levelStr)
             {
-                if (isRoot) 
+                if (isRoot)
                 {
                     LogLog.Error(declaringType, "Root level cannot be inherited. Ignoring directive.");
-                } 
-                else 
+                }
+                else
                 {
-                    LogLog.Debug(declaringType, "Logger [" + loggerName + "] level set to inherit from parent.");   
+                    LogLog.Debug(declaringType, "Logger [" + loggerName + "] level set to inherit from parent.");
                     log.Level = null;
                 }
-            } 
-            else 
+            }
+            else
             {
                 log.Level = log.Hierarchy.LevelMap[levelStr];
                 if (log.Level == null)
@@ -550,7 +550,7 @@ namespace log4net.Repository.Hierarchy
                 }
                 else
                 {
-                    LogLog.Debug(declaringType, "Logger [" + loggerName + "] level set to [name=\"" + log.Level.Name + "\",value=" + log.Level.Value + "].");   
+                    LogLog.Debug(declaringType, "Logger [" + loggerName + "] level set to [name=\"" + log.Level.Name + "\",value=" + log.Level.Value + "].");
                 }
             }
         }
@@ -571,7 +571,7 @@ namespace log4net.Repository.Hierarchy
         /// string argument and return a value that can be used to
         /// set the property.
         /// </remarks>
-        protected void SetParameter(XmlElement element, object target) 
+        protected void SetParameter(XmlElement element, object target)
         {
             // Get the property name
             string name = element.GetAttribute(NAME_ATTR);
@@ -654,8 +654,8 @@ namespace log4net.Repository.Hierarchy
                     }
                     catch (System.Security.SecurityException)
                     {
-                        // This security exception will occur if the caller does not have 
-                        // unrestricted environment permission. If this occurs the expansion 
+                        // This security exception will occur if the caller does not have
+                        // unrestricted environment permission. If this occurs the expansion
                         // will be skipped with the following warning message.
                         LogLog.Debug(declaringType, "Security exception while trying to expand environment variables. Error Ignored. No Expansion.");
                     }
@@ -711,7 +711,7 @@ namespace log4net.Repository.Hierarchy
                     // to pass to this property.
 
                     object convertedValue = this.ConvertStringTo(propertyType, propertyValue);
-                    
+
                     // Check if we need to do an additional conversion
                     if (convertedValue != null && parsedObjectConversionTargetType != null)
                     {
@@ -929,7 +929,7 @@ namespace log4net.Repository.Hierarchy
         /// <param name="value">The string value to use as the value of the object.</param>
         /// <returns>
         /// <para>
-        /// An object of type <paramref name="type"/> with value <paramref name="value"/> or 
+        /// An object of type <paramref name="type"/> with value <paramref name="value"/> or
         /// <c>null</c> when the conversion could not be performed.
         /// </para>
         /// </returns>
@@ -970,7 +970,7 @@ namespace log4net.Repository.Hierarchy
         /// <paramref name="typeConstraint"/> type.
         /// </para>
         /// </remarks>
-        protected object CreateObjectFromXml(XmlElement element, Type defaultTargetType, Type typeConstraint) 
+        protected object CreateObjectFromXml(XmlElement element, Type defaultTargetType, Type typeConstraint)
         {
             Type objectType = null;
 
@@ -1041,7 +1041,7 @@ namespace log4net.Repository.Hierarchy
             // Set any params on object
             foreach (XmlNode currentNode in element.ChildNodes)
             {
-                if (currentNode.NodeType == XmlNodeType.Element) 
+                if (currentNode.NodeType == XmlNodeType.Element)
                 {
                     this.SetParameter((XmlElement)currentNode, createdObject);
                 }
@@ -1108,7 +1108,7 @@ namespace log4net.Repository.Hierarchy
         private const string CONFIGURATION_TAG = "log4net";
         private const string RENDERER_TAG = "renderer";
         private const string APPENDER_TAG = "appender";
-        private const string APPENDER_REF_TAG = "appender-ref";  
+        private const string APPENDER_REF_TAG = "appender-ref";
         private const string PARAM_TAG = "param";
 
         // TODO: Deprecate use of category tags
@@ -1123,7 +1123,7 @@ namespace log4net.Repository.Hierarchy
         private const string ROOT_TAG = "root";
         private const string LEVEL_TAG = "level";
         private const string REF_ATTR = "ref";
-        private const string ADDITIVITY_ATTR = "additivity";  
+        private const string ADDITIVITY_ATTR = "additivity";
         private const string THRESHOLD_ATTR = "threshold";
         private const string CONFIG_DEBUG_ATTR = "configDebug";
         private const string INTERNAL_DEBUG_ATTR = "debug";

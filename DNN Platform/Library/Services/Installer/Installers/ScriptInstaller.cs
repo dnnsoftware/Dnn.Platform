@@ -128,7 +128,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 return this._upgradeScript;
             }
         }
-        
+
         #endregion
 
         #region Public Properties
@@ -146,7 +146,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "*dataprovider, sql";
             }
         }
-        
+
         #endregion
 
         #region Private Methods
@@ -187,7 +187,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             return this.ProviderConfiguration.DefaultProvider.Equals(fileExtension, StringComparison.InvariantCultureIgnoreCase) || fileExtension.Equals("sql", StringComparison.InvariantCultureIgnoreCase);
         }
-        
+
         #endregion
 
         #region Protected Methods
@@ -254,7 +254,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     this.UnInstallScripts[file.Version] = file;
                 }
             }
-            
+
             // Call base method to set up for file processing
             base.ProcessFile(file, nav);
         }
@@ -273,7 +273,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     this.ExecuteSql(scriptFile);
                 }
             }
-            
+
             // Call base method to delete file
             base.UnInstallFile(scriptFile);
         }
@@ -315,7 +315,7 @@ namespace DotNetNuke.Services.Installer.Installers
                         installedVersion = this.InstallScript.Version;
                     }
                 }
-                
+
                 // Then process remain Install/Upgrade Scripts
                 if (bSuccess)
                 {
@@ -331,14 +331,14 @@ namespace DotNetNuke.Services.Installer.Installers
                         }
                     }
                 }
-                
+
                 // Next process UpgradeScript - this script always runs if present
                 if (this.UpgradeScript != null)
                 {
                     bSuccess = this.InstallScriptFile(this.UpgradeScript);
                     installedVersion = this.UpgradeScript.Version;
                 }
-                
+
                 // Then process uninstallScripts - these need to be copied but not executed
                 if (bSuccess)
                 {
@@ -362,7 +362,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Rollback method undoes the installation of the script component in the event 
+        /// The Rollback method undoes the installation of the script component in the event
         /// that one of the other components fails
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -385,7 +385,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
             this.Log.AddInfo(Util.SQL_EndUnInstall);
         }
-        
+
         #endregion
     }
 }

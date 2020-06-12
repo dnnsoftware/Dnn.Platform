@@ -61,7 +61,7 @@ namespace DotNetNuke.Framework
             JavaScript.RegisterClientReference(page, ClientAPI.ClientNamespaceReferences.dnn);
             ClientAPI.RegisterClientVariable(page, "sf_siteRoot", path, /*overwrite*/ true);
             ClientAPI.RegisterClientVariable(page, "sf_tabId", PortalSettings.Current.ActiveTab.TabID.ToString(CultureInfo.InvariantCulture), /*overwrite*/ true);
-                        
+
             string scriptPath;
             if (HttpContextSource.Current.IsDebuggingEnabled)
             {
@@ -71,7 +71,7 @@ namespace DotNetNuke.Framework
             {
                 scriptPath = "~/js/dnn.servicesframework.js";
             }
-            
+
             ClientResourceManager.RegisterScript(page, scriptPath);
         }
 

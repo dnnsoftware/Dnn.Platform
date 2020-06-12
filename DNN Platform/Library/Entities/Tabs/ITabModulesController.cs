@@ -13,7 +13,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>
         /// Returns an array of Modules well configured to be used into a Skin
         /// </summary>
-        /// <param name="tab">TabInfo object</param>       
+        /// <param name="tab">TabInfo object</param>
         ArrayList GetTabModules(TabInfo tab);
 
         /// <summary>

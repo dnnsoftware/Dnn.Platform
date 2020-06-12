@@ -17,7 +17,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Gets the ID of the <see cref="T:DotNetNuke.Web.Mvc.HtmlHelper"/> string.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML ID attribute value for the object that is represented by the expression.
         /// </returns>
@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Gets the ID of the <see cref="T:DotNetNuke.Web.Mvc.HtmlHelper"/> string
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML ID attribute value for the object that is represented by the expression.
         /// </returns>
@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Gets the ID of the <see cref="T:DotNetNuke.Web.Mvc.HtmlHelper"/> string.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML ID attribute value for the object that is represented by the expression.
         /// </returns>
@@ -56,7 +56,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Gets the full HTML field name for the object that is represented by the expression.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The full HTML field name for the object that is represented by the expression.
         /// </returns>
@@ -69,7 +69,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Gets the full HTML field name for the object that is represented by the expression.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The full HTML field name for the object that is represented by the expression.
         /// </returns>
@@ -82,7 +82,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Gets the full HTML field name for the object that is represented by the expression.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The full HTML field name for the object that is represented by the expression.
         /// </returns>

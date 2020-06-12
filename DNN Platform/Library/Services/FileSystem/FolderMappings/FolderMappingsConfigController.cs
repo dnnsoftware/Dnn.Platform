@@ -21,8 +21,8 @@ namespace DotNetNuke.Services.FileSystem
         public FolderMappingsConfigController()
         {
             this.FolderMappings = new Dictionary<string, string>();
-            this.FolderTypes = new List<FolderTypeConfig>();    
-            this.LoadConfig();     
+            this.FolderTypes = new List<FolderTypeConfig>();
+            this.LoadConfig();
         }
         #endregion
 
@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private void FillFolderMappings(XmlDocument configDocument)
         {
-            var folderMappingsNode = configDocument.SelectSingleNode(this.ConfigNode + "/folderMappings");            
+            var folderMappingsNode = configDocument.SelectSingleNode(this.ConfigNode + "/folderMappings");
             if (folderMappingsNode == null)
             {
                 return;
@@ -63,7 +63,7 @@ namespace DotNetNuke.Services.FileSystem
             var folderType = new FolderTypeConfig()
             {
                 Name = XmlUtils.GetAttributeValue(nodeNavigator, "name"),
-                Provider = XmlUtils.GetNodeValue(nodeNavigator, "provider"),                
+                Provider = XmlUtils.GetNodeValue(nodeNavigator, "provider"),
             };
             XmlNodeList settingsNode = node.SelectNodes("settings/setting");
             if (settingsNode != null)
@@ -87,8 +87,8 @@ namespace DotNetNuke.Services.FileSystem
         #endregion
 
         #region public Properties
-        public IList<FolderTypeConfig> FolderTypes { get; internal set; } 
-        
+        public IList<FolderTypeConfig> FolderTypes { get; internal set; }
+
         private const string configNode = "folderMappingsSettings";
         public string ConfigNode
         {
@@ -100,7 +100,7 @@ namespace DotNetNuke.Services.FileSystem
         public void LoadConfig()
         {
             try
-            {                
+            {
                 if (File.Exists(defaultConfigFilePath))
                 {
                     var configDocument = new XmlDocument { XmlResolver = null };
@@ -116,7 +116,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         public void SaveConfig(string folderMappinsSettings)
-        {            
+        {
             if (!File.Exists(defaultConfigFilePath))
             {
                 var folderMappingsConfigContent = "<" + this.ConfigNode + ">" + folderMappinsSettings + "</" + this.ConfigNode + ">";

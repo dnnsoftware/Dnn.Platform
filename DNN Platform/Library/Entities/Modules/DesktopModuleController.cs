@@ -394,13 +394,13 @@ namespace DotNetNuke.Entities.Modules
             {
                 Config.Touch();
             }
-            
+
         }
 
         private void CheckInterfacesImplementation(ref DesktopModuleInfo desktopModuleInfo)
         {
             var businessController = Reflection.CreateType(desktopModuleInfo.BusinessControllerClass);
-            var controller = Reflection.CreateObject(desktopModuleInfo.BusinessControllerClass, desktopModuleInfo.BusinessControllerClass);   
+            var controller = Reflection.CreateObject(desktopModuleInfo.BusinessControllerClass, desktopModuleInfo.BusinessControllerClass);
 
             desktopModuleInfo.IsPortable = businessController.GetInterfaces().Contains(typeof(IPortable));
 #pragma warning disable 0618
@@ -490,7 +490,7 @@ namespace DotNetNuke.Entities.Modules
                     {
                         AddDesktopModuleToPortal(portalId, desktopModule.DesktopModuleID, !desktopModule.IsAdmin, false);
                     }
-                    
+
                 }
             }
             DataCache.ClearPortalCache(portalId, true);

@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -44,7 +44,7 @@ namespace log4net.Util
     /// </para>
     /// <para>
     /// This class functions similarly to the <see cref="log4net.Layout.PatternLayout"/>
-    /// in that it accepts a pattern and renders it to a string. Unlike the 
+    /// in that it accepts a pattern and renders it to a string. Unlike the
     /// <see cref="log4net.Layout.PatternLayout"/> however the <c>PatternString</c>
     /// does not render the properties of a specific <see cref="LoggingEvent"/> but
     /// of the process in general.
@@ -78,12 +78,12 @@ namespace log4net.Util
     ///         <term>date</term>
     ///         <description>
     ///             <para>
-    ///             Used to output the current date and time in the local time zone. 
+    ///             Used to output the current date and time in the local time zone.
     ///             To output the date in universal time use the <c>%utcdate</c> pattern.
-    ///             The date conversion 
-    ///             specifier may be followed by a <i>date format specifier</i> enclosed 
+    ///             The date conversion
+    ///             specifier may be followed by a <i>date format specifier</i> enclosed
     ///             between braces. For example, <b>%date{HH:mm:ss,fff}</b> or
-    ///             <b>%date{dd MMM yyyy HH:mm:ss,fff}</b>.  If no date format specifier is 
+    ///             <b>%date{dd MMM yyyy HH:mm:ss,fff}</b>.  If no date format specifier is
     ///             given then ISO8601 format is
     ///             assumed (<see cref="log4net.DateFormatter.Iso8601DateFormatter"/>).
     ///             </para>
@@ -94,10 +94,10 @@ namespace log4net.Util
     ///             <para>
     ///             For better results it is recommended to use the log4net date
     ///             formatters. These can be specified using one of the strings
-    ///             "ABSOLUTE", "DATE" and "ISO8601" for specifying 
-    ///             <see cref="log4net.DateFormatter.AbsoluteTimeDateFormatter"/>, 
-    ///             <see cref="log4net.DateFormatter.DateTimeDateFormatter"/> and respectively 
-    ///             <see cref="log4net.DateFormatter.Iso8601DateFormatter"/>. For example, 
+    ///             "ABSOLUTE", "DATE" and "ISO8601" for specifying
+    ///             <see cref="log4net.DateFormatter.AbsoluteTimeDateFormatter"/>,
+    ///             <see cref="log4net.DateFormatter.DateTimeDateFormatter"/> and respectively
+    ///             <see cref="log4net.DateFormatter.Iso8601DateFormatter"/>. For example,
     ///             <b>%date{ISO8601}</b> or <b>%date{ABSOLUTE}</b>.
     ///             </para>
     ///             <para>
@@ -110,7 +110,7 @@ namespace log4net.Util
     ///         <term>env</term>
     ///         <description>
     ///             <para>
-    ///             Used to output the a specific environment variable. The key to 
+    ///             Used to output the a specific environment variable. The key to
     ///             lookup must be specified within braces and directly following the
     ///             pattern specifier, e.g. <b>%env{COMPUTERNAME}</b> would include the value
     ///             of the <c>COMPUTERNAME</c> environment variable.
@@ -137,10 +137,10 @@ namespace log4net.Util
     ///             characters.
     ///             </para>
     ///             <para>
-    ///             This conversion pattern name offers the same performance as using 
-    ///             non-portable line separator strings such as "\n", or "\r\n". 
+    ///             This conversion pattern name offers the same performance as using
+    ///             non-portable line separator strings such as "\n", or "\r\n".
     ///             Thus, it is the preferred way of specifying a line separator.
-    ///             </para> 
+    ///             </para>
     ///         </description>
     ///     </item>
     ///     <item>
@@ -155,13 +155,13 @@ namespace log4net.Util
     ///         <term>property</term>
     ///         <description>
     ///             <para>
-    ///             Used to output a specific context property. The key to 
+    ///             Used to output a specific context property. The key to
     ///             lookup must be specified within braces and directly following the
     ///             pattern specifier, e.g. <b>%property{user}</b> would include the value
     ///             from the property that is keyed by the string 'user'. Each property value
     ///             that is to be included in the log must be specified separately.
-    ///             Properties are stored in logging contexts. By default 
-    ///             the <c>log4net:HostName</c> property is set to the name of machine on 
+    ///             Properties are stored in logging contexts. By default
+    ///             the <c>log4net:HostName</c> property is set to the name of machine on
     ///             which the event was originally logged.
     ///             </para>
     ///             <para>
@@ -183,7 +183,7 @@ namespace log4net.Util
     ///                 <item>
     ///                     <term>the global properties</term>
     ///                     <description>
-    ///                     The <see cref="GlobalContext.Properties"/> that are set globally. These 
+    ///                     The <see cref="GlobalContext.Properties"/> that are set globally. These
     ///                     properties are shared by all the threads in the AppDomain.
     ///                     </description>
     ///                 </item>
@@ -214,11 +214,11 @@ namespace log4net.Util
     ///         <term>utcdate</term>
     ///         <description>
     ///             <para>
-    ///             Used to output the date of the logging event in universal time. 
-    ///             The date conversion 
-    ///             specifier may be followed by a <i>date format specifier</i> enclosed 
+    ///             Used to output the date of the logging event in universal time.
+    ///             The date conversion
+    ///             specifier may be followed by a <i>date format specifier</i> enclosed
     ///             between braces. For example, <b>%utcdate{HH:mm:ss,fff}</b> or
-    ///             <b>%utcdate{dd MMM yyyy HH:mm:ss,fff}</b>.  If no date format specifier is 
+    ///             <b>%utcdate{dd MMM yyyy HH:mm:ss,fff}</b>.  If no date format specifier is
     ///             given then ISO8601 format is
     ///             assumed (<see cref="log4net.DateFormatter.Iso8601DateFormatter"/>).
     ///             </para>
@@ -229,10 +229,10 @@ namespace log4net.Util
     ///             <para>
     ///             For better results it is recommended to use the log4net date
     ///             formatters. These can be specified using one of the strings
-    ///             "ABSOLUTE", "DATE" and "ISO8601" for specifying 
-    ///             <see cref="log4net.DateFormatter.AbsoluteTimeDateFormatter"/>, 
-    ///             <see cref="log4net.DateFormatter.DateTimeDateFormatter"/> and respectively 
-    ///             <see cref="log4net.DateFormatter.Iso8601DateFormatter"/>. For example, 
+    ///             "ABSOLUTE", "DATE" and "ISO8601" for specifying
+    ///             <see cref="log4net.DateFormatter.AbsoluteTimeDateFormatter"/>,
+    ///             <see cref="log4net.DateFormatter.DateTimeDateFormatter"/> and respectively
+    ///             <see cref="log4net.DateFormatter.Iso8601DateFormatter"/>. For example,
     ///             <b>%utcdate{ISO8601}</b> or <b>%utcdate{ABSOLUTE}</b>.
     ///             </para>
     ///             <para>
@@ -256,7 +256,7 @@ namespace log4net.Util
     /// <see cref="M:AddConverter(string, Type)" />.
     /// </para>
     /// <para>
-    /// See the <see cref="log4net.Layout.PatternLayout"/> for details on the 
+    /// See the <see cref="log4net.Layout.PatternLayout"/> for details on the
     /// <i>format modifiers</i> supported by the patterns.
     /// </para>
     /// </remarks>
@@ -273,12 +273,12 @@ namespace log4net.Util
         #endregion Static Fields
 
         #region Member Variables
-    
+
         /// <summary>
         /// the pattern
         /// </summary>
         private string m_pattern;
-  
+
         /// <summary>
         /// the head of the pattern converter chain
         /// </summary>
@@ -360,7 +360,7 @@ namespace log4net.Util
         }
 
         #endregion
-  
+
         /// <summary>
         /// Gets or sets the pattern formatting string
         /// </summary>
@@ -388,17 +388,17 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
-        /// activation scheme. The <see cref="ActivateOptions"/> method must 
+        /// activation scheme. The <see cref="ActivateOptions"/> method must
         /// be called on this object after the configuration properties have
         /// been set. Until <see cref="ActivateOptions"/> is called this
-        /// object is in an undefined state and must not be used. 
+        /// object is in an undefined state and must not be used.
         /// </para>
         /// <para>
-        /// If any of the configuration properties are modified then 
+        /// If any of the configuration properties are modified then
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// </remarks>
-        virtual public void ActivateOptions() 
+        virtual public void ActivateOptions()
         {
             this.m_head = this.CreatePatternParser(this.m_pattern).Parse();
         }
@@ -417,7 +417,7 @@ namespace log4net.Util
         /// custom conversion pattern name.
         /// </para>
         /// </remarks>
-        private PatternParser CreatePatternParser(string pattern) 
+        private PatternParser CreatePatternParser(string pattern)
         {
             PatternParser patternParser = new PatternParser(pattern);
 
@@ -437,7 +437,7 @@ namespace log4net.Util
 
             return patternParser;
         }
-  
+
         /// <summary>
         /// Produces a formatted string as specified by the conversion pattern.
         /// </summary>
@@ -447,7 +447,7 @@ namespace log4net.Util
         /// Format the pattern to the <paramref name="writer"/>.
         /// </para>
         /// </remarks>
-        public void Format(TextWriter writer) 
+        public void Format(TextWriter writer)
         {
             if (writer == null)
             {
@@ -457,7 +457,7 @@ namespace log4net.Util
             PatternConverter c = this.m_head;
 
             // loop through the chain of pattern converters
-            while (c != null) 
+            while (c != null)
             {
                 c.Format(writer, null);
                 c = c.Next;
@@ -473,7 +473,7 @@ namespace log4net.Util
         /// Format the pattern to a string.
         /// </para>
         /// </remarks>
-        public string Format() 
+        public string Format()
         {
             StringWriter writer = new StringWriter(System.Globalization.CultureInfo.InvariantCulture);
             this.Format(writer);

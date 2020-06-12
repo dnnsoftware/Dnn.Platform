@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnFormPanel : WebControl 
+    public class DnnFormPanel : WebControl
     {
 
         public bool Expanded { get; set; }

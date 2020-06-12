@@ -497,7 +497,7 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets current time in User's timezone
         /// </summary>
-        /// -----------------------------------------------------------------------------        
+        /// -----------------------------------------------------------------------------
         public DateTime LocalTime()
         {
             return this.LocalTime(DateUtils.GetDatabaseUtcTime());
@@ -508,7 +508,7 @@ namespace DotNetNuke.Entities.Users
         /// Convert utc time in User's timezone
         /// </summary>
         /// <param name="utcTime">Utc time to convert</param>
-        /// -----------------------------------------------------------------------------       
+        /// -----------------------------------------------------------------------------
         public DateTime LocalTime(DateTime utcTime)
         {
             if (this.UserID > Null.NullInteger)

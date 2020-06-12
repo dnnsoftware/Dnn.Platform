@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -48,7 +48,7 @@ namespace log4net.Core
     /// </summary>
     /// <remarks>
     /// <para>
-    /// A <see cref="IRepositorySelector.LoggerRepositoryCreatedEvent"/> 
+    /// A <see cref="IRepositorySelector.LoggerRepositoryCreatedEvent"/>
     /// event is raised every time a <see cref="ILoggerRepository"/> is created.
     /// </para>
     /// </remarks>
@@ -97,8 +97,8 @@ namespace log4net.Core
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The <see cref="LogManager"/> uses a <see cref="IRepositorySelector"/> 
-    /// to specify the policy for selecting the correct <see cref="ILoggerRepository"/> 
+    /// The <see cref="LogManager"/> uses a <see cref="IRepositorySelector"/>
+    /// to specify the policy for selecting the correct <see cref="ILoggerRepository"/>
     /// to return to the caller.
     /// </para>
     /// </remarks>
@@ -179,7 +179,7 @@ namespace log4net.Core
         /// <remarks>
         /// <para>
         /// Test if a named repository exists. Use <see cref="M:CreateRepository(Assembly, Type)"/>
-        /// to create a new repository and <see cref="M:GetRepository(Assembly)"/> to retrieve 
+        /// to create a new repository and <see cref="M:GetRepository(Assembly)"/> to retrieve
         /// a repository.
         /// </para>
         /// </remarks>
@@ -189,7 +189,7 @@ namespace log4net.Core
         /// Gets an array of all currently defined repositories.
         /// </summary>
         /// <returns>
-        /// An array of the <see cref="ILoggerRepository"/> instances created by 
+        /// An array of the <see cref="ILoggerRepository"/> instances created by
         /// this <see cref="IRepositorySelector"/>.</returns>
         /// <remarks>
         /// <para>

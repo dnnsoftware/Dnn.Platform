@@ -19,7 +19,7 @@ namespace DotNetNuke.Tests.Core.Providers.Builders
         private DateTime endDate;
         private bool enablePublishPeriod;
         private int folderMappingID;
-        
+
         internal FileInfoBuilder()
         {
             this.fileId = Constants.FOLDER_ValidFileId;

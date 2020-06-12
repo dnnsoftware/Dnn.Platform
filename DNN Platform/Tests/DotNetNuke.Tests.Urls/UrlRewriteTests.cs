@@ -25,7 +25,7 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Urls
 {
     [TestFixture]
-    public class UrlRewriteTests : UrlTestBase 
+    public class UrlRewriteTests : UrlTestBase
     {
         private const string _defaultPage = Globals.glbDefaultPage;
         private int _tabId;
@@ -302,7 +302,7 @@ namespace DotNetNuke.Tests.Urls
             {
                 TabController.Instance.UpdateTab(tab);
             }
-            
+
         }
 
         private void UpdateTabName(int tabId, string newName)

@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Installer.Writers
     public class AuthenticationPackageWriter : PackageWriterBase
     {
         #region "Constructors"
-        
+
         public AuthenticationPackageWriter(PackageInfo package) : base(package)
         {
             this.AuthSystem = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
@@ -36,7 +36,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.AuthSystem = authSystem;
             this.Initialize();
         }
-        
+
         #endregion
 
         #region "Public Properties"
@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <value>An AuthenticationInfo object</value>
         /// -----------------------------------------------------------------------------
         public AuthenticationInfo AuthSystem { get; set; }
-        
+
         #endregion
 
         #region "Private Methods"
@@ -80,7 +80,7 @@ namespace DotNetNuke.Services.Installer.Writers
             // End component Element
             writer.WriteEndElement();
         }
-        
+
         #endregion
 
         protected override void WriteManifestComponent(XmlWriter writer)

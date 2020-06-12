@@ -240,9 +240,9 @@ namespace DotNetNuke.UI.Modules
             else
             {
                 viewMode = !(ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString,
-                                                              moduleInfo)); 
+                                                              moduleInfo));
             }
-            
+
             return viewMode || settings.UserMode == PortalSettings.Mode.View;
         }
 
@@ -274,11 +274,11 @@ namespace DotNetNuke.UI.Modules
                 }
                 if (this.Skin != null)
                 {
-                
+
                     // check for IMC
                     this.Skin.Communicator.LoadCommunicator(this._control);
                 }
-                
+
                 // add module settings
                 this.ModuleControl.ModuleContext.Configuration = this._moduleConfiguration;
             }
@@ -291,7 +291,7 @@ namespace DotNetNuke.UI.Modules
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                
+
                 // add module settings
                 this._control = this._moduleControlPipeline.CreateModuleControl(this._moduleConfiguration);
                 this.ModuleControl.ModuleContext.Configuration = this._moduleConfiguration;
@@ -306,7 +306,7 @@ namespace DotNetNuke.UI.Modules
                     new ExceptionLogController().AddLog(exc);
                 }
             }
-            
+
             // Enable ViewState
             this._control.ViewStateMode = ViewStateMode.Enabled;
         }
@@ -325,11 +325,11 @@ namespace DotNetNuke.UI.Modules
             {
                 scriptManager.EnablePartialRendering = true;
             }
-            
+
             // create update panel
             var updatePanel = new UpdatePanel
                                   {
-                                      UpdateMode = UpdatePanelUpdateMode.Conditional, 
+                                      UpdateMode = UpdatePanelUpdateMode.Conditional,
                                       ID = this._control.ID + "_UP"
                                   };
 
@@ -351,7 +351,7 @@ namespace DotNetNuke.UI.Modules
             // inject updateprogress into the panel
             var updateProgress = new UpdateProgress
                                      {
-                                         AssociatedUpdatePanelID = updatePanel.ID, 
+                                         AssociatedUpdatePanelID = updatePanel.ID,
                                          ID = updatePanel.ID + "_Prog",
 
                                          ProgressTemplate = new LiteralTemplate(progressTemplate)
@@ -501,7 +501,7 @@ namespace DotNetNuke.UI.Modules
 
             // Load Module Control (or cached control)
             this.LoadModuleControl();
-            
+
             // Optionally Inject AJAX Update Panel
             if (this.ModuleControl != null)
             {
@@ -570,7 +570,7 @@ namespace DotNetNuke.UI.Modules
                         var cacheKey = cache.GenerateCacheKey(this._moduleConfiguration.TabModuleID, varyBy);
                         cache.SetModule(this._moduleConfiguration.TabModuleID, cacheKey, new TimeSpan(0, 0, this._moduleConfiguration.CacheTime), moduleContent);
                     }
-                    
+
                     // Render the cached content to Response
                     writer.Write(cachedOutput);
                 }

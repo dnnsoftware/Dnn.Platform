@@ -161,7 +161,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
                     rsc.GetFriendRelationship(It.Is<UserInfo>(u => u.UserID == Constants.USER_TenId), It.Is<UserInfo>(u => u.UserID == Constants.USER_ValidId)))
                         .Returns(new UserRelationship() { Status = RelationshipStatus.Accepted });
             RelationshipController.SetTestableInstance(mockRelationShipController.Object);
-            
+
             var portalSettings = SetupPortalSettings();
 
             // Act and Assert

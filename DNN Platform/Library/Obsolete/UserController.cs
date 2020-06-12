@@ -17,9 +17,9 @@ namespace DotNetNuke.Entities.Users
     /// The UserController class provides Business Layer methods for Users
     /// </summary>
     /// <remarks>
-    /// DotNetNuke user management is base on asp.net membership provider, but  the default implementation of these providers 
-    /// do not satisfy the broad set of use cases which we need to support in DotNetNuke. so The dependency of DotNetNuke on the 
-    /// MemberRole (ASP.NET 2 Membership) components will be abstracted into a DotNetNuke Membership Provider, in order to allow 
+    /// DotNetNuke user management is base on asp.net membership provider, but  the default implementation of these providers
+    /// do not satisfy the broad set of use cases which we need to support in DotNetNuke. so The dependency of DotNetNuke on the
+    /// MemberRole (ASP.NET 2 Membership) components will be abstracted into a DotNetNuke Membership Provider, in order to allow
     /// developers complete flexibility in implementing alternate Membership approaches.
     /// <list type="bullet">
     /// <item>This will allow for a number of enhancements to be added</item>

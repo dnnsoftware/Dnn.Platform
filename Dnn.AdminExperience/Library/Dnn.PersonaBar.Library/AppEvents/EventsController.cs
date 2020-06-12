@@ -21,8 +21,8 @@ namespace Dnn.PersonaBar.Library.AppEvents
 
         private static readonly object LockThis = new object();
         private static bool _isInitialized;
-        
-        #region 
+
+        #region
 
         protected override Func<IEventsController> GetFactory()
         {
@@ -104,7 +104,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
             }
         }
 
-        private static IEnumerable<Type> GetAllEventTypes<T>() where T : class 
+        private static IEnumerable<Type> GetAllEventTypes<T>() where T : class
         {
             var typeLocator = new TypeLocator();
             return typeLocator.GetAllMatchingTypes(
@@ -132,7 +132,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
 
             if (!matched)
             {
-                Logger.InfoFormat("Type \"{0}\"'s version ({1}) doesn't match current version({2}) so ignored", 
+                Logger.InfoFormat("Type \"{0}\"'s version ({1}) doesn't match current version({2}) so ignored",
                     t.FullName, typeVersion, currentVersion);
             }
 

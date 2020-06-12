@@ -42,7 +42,7 @@ namespace DotNetNuke.Security.Permissions
         }
 
         #region Public Methods
-        
+
         public int AddPermission(PermissionInfo permission)
         {
             EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PERMISSION_CREATED);
@@ -101,9 +101,9 @@ namespace DotNetNuke.Security.Permissions
                                       UserController.Instance.GetCurrentUserInfo().UserID);
             this.ClearCache();
         }
-        
+
         #endregion
-        
+
         #region Shared Methods
 
         public static string BuildPermissions(IList Permissions, string PermissionKey)
@@ -115,7 +115,7 @@ namespace DotNetNuke.Security.Permissions
                 {
                     // Deny permissions are prefixed with a "!"
                     string prefix = !permission.AllowAccess ? "!" : "";
-                    
+
                     // encode permission
                     string permissionString;
                     if (Null.IsNull(permission.UserID))
@@ -126,7 +126,7 @@ namespace DotNetNuke.Security.Permissions
                     {
                         permissionString = prefix + "[" + permission.UserID + "];";
                     }
-                    
+
                     // build permissions string ensuring that Deny permissions are inserted at the beginning and Grant permissions at the end
                     if (prefix == "!")
                     {
@@ -138,7 +138,7 @@ namespace DotNetNuke.Security.Permissions
                     }
                 }
             }
-            
+
             // get string
             string permissionsString = permissionsBuilder.ToString();
 
@@ -221,7 +221,7 @@ namespace DotNetNuke.Security.Permissions
 
             return result;
         }
-        
+
         #endregion
 
         [Obsolete("Deprecated in DNN 7.3.0. Replaced by GetPermissionsByModule(int, int). Scheduled removal in v10.0.0.")]

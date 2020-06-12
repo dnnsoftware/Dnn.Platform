@@ -26,7 +26,7 @@ namespace DotNetNuke.Security.Roles
         {
             return ComponentFactory.GetComponent<RoleProvider>();
         }
-        
+
         #endregion
 
         #region Role Methods
@@ -47,14 +47,14 @@ namespace DotNetNuke.Security.Roles
 
         public virtual IDictionary<string, string> GetRoleSettings(int roleId)
         {
-           return new Dictionary<string, string>(); 
+           return new Dictionary<string, string>();
         }
 
         public abstract void UpdateRole(RoleInfo role);
 
         public virtual void UpdateRoleSettings(RoleInfo role)
         {
-            
+
         }
 
         #endregion

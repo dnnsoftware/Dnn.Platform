@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Social.Notifications
     /// <summary>
     /// Provides the methods to work with Notifications, NotificationTypes, NotificationTypeActions and NotificationActions.
     /// </summary>
-    public class NotificationsController 
+    public class NotificationsController
                         : ServiceLocator<INotificationsController, NotificationsController>,
                         INotificationsController
     {
@@ -249,7 +249,7 @@ namespace DotNetNuke.Services.Social.Notifications
                                                                                       notificationType.Description,
                                                                                       (int)notificationType.TimeToLive.TotalMinutes == 0 ? Null.NullInteger : (int)notificationType.TimeToLive.TotalMinutes,
                                                                                       notificationType.DesktopModuleId,
-                                                                                      this.GetCurrentUserId(), 
+                                                                                      this.GetCurrentUserId(),
                                                                                       notificationType.IsTask);
         }
 

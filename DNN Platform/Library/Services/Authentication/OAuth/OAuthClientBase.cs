@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         private readonly Random random = new Random();
 
         private const string UnreservedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~";
-        
+
         // DNN-6265 - Support OAuth V2 optional parameter resource, which is required by Microsoft Azure Active
         // Directory implementation of OAuth V2
         private const string OAuthResourceKey = "resource";
@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         protected OAuthClientBase(int portalId, AuthMode mode, string service)
         {
-            // Set default Expiry to 14 days 
+            // Set default Expiry to 14 days
             // oAuth v1 tokens do not expire
             // oAuth v2 tokens have an expiry
             this.AuthTokenExpiry = new TimeSpan(14, 0, 0, 0);
@@ -89,7 +89,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         protected const string OAuthTokenKey = "oauth_token";
 
-        protected virtual string UserGuidKey 
+        protected virtual string UserGuidKey
         {
             get { return String.Empty; }
         }
@@ -119,14 +119,14 @@ namespace DotNetNuke.Services.Authentication.OAuth
         protected string OAuthHeaderCode { get; set; }
 
         // oAuth 2
-        protected string AuthTokenName { get; set; }        
+        protected string AuthTokenName { get; set; }
         protected string Scope { get; set; }
         protected string AccessToken { get; set; }
         protected string VerificationCode
         {
             get { return HttpContext.Current.Request.Params[OAuthCodeKey]; }
         }
-        
+
         // DNN-6265 Support "Optional" Resource Parameter required by Azure AD Oauth V2 Solution
         protected string APIResource { get; set; }
 
@@ -347,13 +347,13 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 request.ContentType = "application/x-www-form-urlencoded";
                 // request.ContentType = "text/xml";
                 request.ContentLength = byteArray.Length;
-                
+
                 if (!String.IsNullOrEmpty(this.OAuthHeaderCode))
-                { 
-                    byte[] API64 = Encoding.UTF8.GetBytes(this.APIKey + ":" + this.APISecret); 
-                    string Api64Encoded = System.Convert.ToBase64String(API64); 
+                {
+                    byte[] API64 = Encoding.UTF8.GetBytes(this.APIKey + ":" + this.APISecret);
+                    string Api64Encoded = System.Convert.ToBase64String(API64);
                     // Authentication providers needing an "Authorization: Basic/bearer base64(clientID:clientSecret)" header. OAuthHeaderCode might be: Basic/Bearer/empty.
-                    request.Headers.Add("Authorization: " + this.OAuthHeaderCode + " " + Api64Encoded); 
+                    request.Headers.Add("Authorization: " + this.OAuthHeaderCode + " " + Api64Encoded);
                 }
 
                 if (!String.IsNullOrEmpty(parameters))
@@ -616,7 +616,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 objUserInfo = MembershipProvider.Instance().GetUserByUserName(settings.PortalId, userName);
                 if (objUserInfo != null)
                 {
-                    // user already exists... lets check for a token next... 
+                    // user already exists... lets check for a token next...
                     var dnnAuthToken = MembershipProvider.Instance().GetUserByAuthToken(settings.PortalId, token, this.Service);
                     if (dnnAuthToken == null)
                     {

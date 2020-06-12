@@ -65,7 +65,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProvider
         public void AspNetClientCapabilityProvider_GetClientCapabilityById_ThrowsException_For_Empty_ClientCapabilityId()
         {
             // Act
-            string nullClientCapabilityId = String.Empty;         
+            string nullClientCapabilityId = String.Empty;
             var clientCapabilitiesByNullId = this._clientCapabilityProvider.GetClientCapabilityById(nullClientCapabilityId);
         }
 

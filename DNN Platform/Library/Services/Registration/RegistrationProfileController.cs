@@ -35,11 +35,11 @@ namespace DotNetNuke.Services.Registration
             this.AddProperty(results, "PasswordQuestion", searchTerm);
             this.AddProperty(results, "PasswordAnswer", searchTerm);
 
-            return results;            
+            return results;
         }
 
         private void AddProperty(List<string> results, string field, string searchTerm)
-        {         
+        {
             if (field.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant().Trim()))
             {
                 results.Add(field);

@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.Journal.Internal
                 CBO.FillCollection<JournalItem>(this._dataService.Journal_ListForSummary(portalId, moduleId, currentUserId,
                                                                                     rowIndex, maxRows));
         }
-        
+
         public void DeleteFilters(int portalId, int moduleId)
         {
             this._dataService.Journal_TypeFilters_Delete(portalId, moduleId);

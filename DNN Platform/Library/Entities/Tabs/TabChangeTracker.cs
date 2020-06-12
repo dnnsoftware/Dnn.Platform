@@ -45,7 +45,7 @@ namespace DotNetNuke.Entities.Tabs
                 TabWorkflowTracker.Instance.TrackModuleModification(module, moduleVersion, userId);
             }
         }
-        
+
         public void TrackModuleDeletion(ModuleInfo module, int moduleVersion, int userId)
         {
             var unPublishedVersion = TabVersionBuilder.Instance.GetUnPublishedVersion(module.TabID);
@@ -58,23 +58,23 @@ namespace DotNetNuke.Entities.Tabs
                 TabWorkflowTracker.Instance.TrackModuleDeletion(module, moduleVersion, userId);
             }
         }
-        
+
         public void TrackModuleUncopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
         {
             if (module != null && TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
             {
                 TabVersionTracker.Instance.TrackModuleUncopy(module, moduleVersion, originalTabId, userId);
-            } 
+            }
         }
-        
+
         public void TrackModuleCopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
         {
             if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
             {
                 TabVersionTracker.Instance.TrackModuleCopy(module, moduleVersion, originalTabId, userId);
-            }            
+            }
         }
-        
+
         protected override Func<ITabChangeTracker> GetFactory()
         {
             return () => new TabChangeTracker();

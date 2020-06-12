@@ -27,10 +27,10 @@ namespace DotNetNuke.Services.Localization
     /// LocaleContrller provides method to manage all pages with localization content.
     /// </summary>
     /// <remarks>
-    /// Content localization in DotNetNuke will allow you to easily manage your web pages in a primary language 
-    /// and then utilize translators to keep the content synchronized in multiple secondary languages.  
-    /// Whether you are maintaining your site in a single language or dozens of languages, the content localization system 
-    /// will help guide your content editors and translators through the process.  Although content localization required 
+    /// Content localization in DotNetNuke will allow you to easily manage your web pages in a primary language
+    /// and then utilize translators to keep the content synchronized in multiple secondary languages.
+    /// Whether you are maintaining your site in a single language or dozens of languages, the content localization system
+    /// will help guide your content editors and translators through the process.  Although content localization required
     /// extensive changes to the core platform, we have been able to add this new feature while still improving overall system performance.
     /// </remarks>
     public class LocaleController : ComponentBase<ILocaleController, LocaleController>, ILocaleController

@@ -62,7 +62,7 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
             this.CreateNewPage(tabId, out copyTabId);
         }
 
-        
+
 
         #endregion
 

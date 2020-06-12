@@ -69,8 +69,8 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 securitySet = "E",
                 itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}"
             };
-            
-            
+
+
             connector.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
         }
 
@@ -103,7 +103,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 exceptionThrown = true;
                 exceptionMessage = Json.Deserialize<dynamic>(ex.Body).ExceptionMessage;
             }
-            
+
             Assert.IsTrue(exceptionThrown, "Should throw out exception");
             Assert.AreEqual("you have no permission to attach files not belongs to you.", exceptionMessage);
         }

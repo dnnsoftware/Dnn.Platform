@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -33,15 +33,15 @@ namespace log4net.Appender
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The application configuration file can be used to control what listeners 
-    /// are actually used. See the MSDN documentation for the 
+    /// The application configuration file can be used to control what listeners
+    /// are actually used. See the MSDN documentation for the
     /// <see cref="System.Diagnostics.Trace"/> class for details on configuring the
     /// trace system.
     /// </para>
     /// <para>
     /// Events are written using the <c>System.Diagnostics.Trace.Write(string,string)</c>
-    /// method. The event's logger name is the default value for the category parameter 
-    /// of the Write method. 
+    /// method. The event's logger name is the default value for the category parameter
+    /// of the Write method.
     /// </para>
     /// <para>
     /// <b>Compact Framework</b><br />
@@ -72,7 +72,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TraceAppender" /> 
+        /// Initializes a new instance of the <see cref="TraceAppender" />
         /// with a specified layout.
         /// </summary>
         /// <param name="layout">The layout to use with this appender.</param>
@@ -92,16 +92,16 @@ namespace log4net.Appender
         #region Public Instance Properties
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the appender will 
+        /// Gets or sets a value that indicates whether the appender will
         /// flush at the end of each write.
         /// </summary>
         /// <remarks>
-        /// <para>The default behavior is to flush at the end of each 
-        /// write. If the option is set to<c>false</c>, then the underlying 
-        /// stream can defer writing to physical medium to a later time. 
+        /// <para>The default behavior is to flush at the end of each
+        /// write. If the option is set to<c>false</c>, then the underlying
+        /// stream can defer writing to physical medium to a later time.
         /// </para>
         /// <para>
-        /// Avoiding the flush operation at the end of each append results 
+        /// Avoiding the flush operation at the end of each append results
         /// in a performance gain of 10 to 20 percent. However, there is safety
         /// trade-off involved in skipping flushing. Indeed, when flushing is
         /// skipped, then it is likely that the last few log events will not
@@ -120,11 +120,11 @@ namespace log4net.Appender
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Defaults to %logger which will use the logger name of the current 
+        /// Defaults to %logger which will use the logger name of the current
         /// <see cref="LoggingEvent"/> as the category parameter.
         /// </para>
         /// <para>
-        /// </para> 
+        /// </para>
         /// </remarks>
         public PatternLayout Category
         {
@@ -145,7 +145,7 @@ namespace log4net.Appender
         /// Writes the logging event to the <see cref="System.Diagnostics.Trace"/> system.
         /// </para>
         /// </remarks>
-        override protected void Append(LoggingEvent loggingEvent) 
+        override protected void Append(LoggingEvent loggingEvent)
         {
             //
             // Write the string to the Trace system
@@ -155,18 +155,18 @@ namespace log4net.Appender
 #else
             System.Diagnostics.Trace.Write(this.RenderLoggingEvent(loggingEvent), this.m_category.Format(loggingEvent));
 #endif
-     
+
             //
             // Flush the Trace system if needed
             //
-            if (this.m_immediateFlush) 
+            if (this.m_immediateFlush)
             {
 #if NETCF
 				System.Diagnostics.Debug.Flush();
 #else
                 System.Diagnostics.Trace.Flush();
 #endif
-            } 
+            }
         }
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace log4net.Appender
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Immediate flush is slower but ensures that each append request is 
+        /// Immediate flush is slower but ensures that each append request is
         /// actually written. If <see cref="ImmediateFlush"/> is set to
         /// <c>false</c>, then there is a good chance that the last few
         /// logs events are not actually written to persistent media if and

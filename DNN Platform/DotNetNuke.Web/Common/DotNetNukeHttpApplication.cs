@@ -109,7 +109,7 @@ namespace DotNetNuke.Web.Common.Internal
             DotNetNuke.Services.Zip.SharpZipLibRedirect.RegisterSharpZipLibRedirect();
             // DotNetNukeSecurity.Initialize();
         }
-        
+
         private static void RegisterIfNotAlreadyRegistered<TConcrete>() where TConcrete : class, new()
         {
             RegisterIfNotAlreadyRegistered<TConcrete, TConcrete>("");

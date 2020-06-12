@@ -30,7 +30,7 @@ namespace DotNetNuke.UI.UserControls
     {
 
         #region Private Members
-        
+
         private const string MyFileName = "Address.ascx";
         private string _cell;
         private string _city;
@@ -100,7 +100,7 @@ namespace DotNetNuke.UI.UserControls
         protected RequiredFieldValidator valRegion2;
         protected RequiredFieldValidator valStreet;
         protected RequiredFieldValidator valTelephone;
-        
+
         #endregion
 
         #region Constructors
@@ -109,7 +109,7 @@ namespace DotNetNuke.UI.UserControls
         {
             this.StartTabIndex = 1;
         }
-        
+
         #endregion
 
         #region Properties
@@ -391,7 +391,7 @@ namespace DotNetNuke.UI.UserControls
                 return Localization.GetResourceFile(this, MyFileName);
             }
         }
-        
+
         #endregion
 
         #region Private Methods
@@ -756,7 +756,7 @@ namespace DotNetNuke.UI.UserControls
                     this.ShowRequiredFields();
                 }
             }
-            catch (Exception exc) 
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -792,7 +792,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.UpdateRequiredFields();
             }
-            catch (Exception exc) 
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -804,7 +804,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.UpdateRequiredFields();
             }
-            catch (Exception exc) 
+            catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -869,7 +869,7 @@ namespace DotNetNuke.UI.UserControls
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-        
+
         #endregion
 
     }

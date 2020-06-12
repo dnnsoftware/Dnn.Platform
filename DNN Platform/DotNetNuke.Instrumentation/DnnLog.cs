@@ -24,7 +24,7 @@ namespace DotNetNuke.Instrumentation
 
         // use a single static logger to avoid the performance impact of type reflection on every call for logging
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(DnnLog));
-        
+
         private static readonly object ConfigLock = new object();
 
         private static StackFrame CallingFrame
@@ -186,7 +186,7 @@ namespace DotNetNuke.Instrumentation
                 }
                 else
                 {
-                    Logger.DebugFormat(format, args);    
+                    Logger.DebugFormat(format, args);
                 }
             }
         }
@@ -234,7 +234,7 @@ namespace DotNetNuke.Instrumentation
                 }
                 else
                 {
-                    Logger.InfoFormat(format, args);    
+                    Logger.InfoFormat(format, args);
                 }
             }
         }
@@ -298,9 +298,9 @@ namespace DotNetNuke.Instrumentation
             if (Logger.Logger.IsEnabledFor(DnnLogger.LevelError))
             {
                 Logger.Error(message, exception);
-            }  
+            }
 
-            
+
         }
 
         public static void Error(object message)

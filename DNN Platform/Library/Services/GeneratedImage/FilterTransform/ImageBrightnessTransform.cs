@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         /// Sets the brightness value. Defaultvalue is 0. Range is -255 .. 255
         /// </summary>
         public int Brightness { get; set; }
-        
+
         /// <summary>
         /// Provides an Unique String for this class
         /// </summary>

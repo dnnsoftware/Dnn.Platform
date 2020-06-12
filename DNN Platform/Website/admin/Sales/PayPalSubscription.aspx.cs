@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                             {
                                 intBillingPeriod = objRole.BillingPeriod;
                             }
-                            
+
                             // explicitely format numbers using en-US so numbers are correctly built
                             var enFormat = new CultureInfo("en-US");
                             string strService = string.Format(enFormat.NumberFormat, "{0:#####0.00}", objRole.ServiceFee);
@@ -160,7 +160,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                             // issue getting user address
                             Logger.Error(ex);
                         }
-                        
+
                         // Return URL
                         if (settings.ContainsKey("paypalsubscriptionreturn") && !string.IsNullOrEmpty(settings["paypalsubscriptionreturn"]))
                         {
@@ -170,7 +170,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         {
                             strPayPalURL += "&return=" + Globals.HTTPPOSTEncode(Globals.AddHTTP(Globals.GetDomainName(this.Request)));
                         }
-                        
+
                         // Cancellation URL
                         if (settings.ContainsKey("paypalsubscriptioncancelreturn") && !string.IsNullOrEmpty(settings["paypalsubscriptioncancelreturn"]))
                         {
@@ -180,7 +180,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         {
                             strPayPalURL += "&cancel_return=" + Globals.HTTPPOSTEncode(Globals.AddHTTP(Globals.GetDomainName(this.Request)));
                         }
-                        
+
                         // Instant Payment Notification URL
                         if (settings.ContainsKey("paypalsubscriptionnotifyurl") && !string.IsNullOrEmpty(settings["paypalsubscriptionnotifyurl"]))
                         {
@@ -192,7 +192,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         }
                         strPayPalURL += "&sra=1"; // reattempt on failure
                     }
-                    
+
                     // redirect to PayPal
                     this.Response.Redirect(strPayPalURL, true);
                 }
@@ -206,7 +206,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     {
                         strPayPalURL = Globals.AddHTTP(Globals.GetDomainName(this.Request));
                     }
-                    
+
                     // redirect to PayPal
                     this.Response.Redirect(strPayPalURL, true);
                 }

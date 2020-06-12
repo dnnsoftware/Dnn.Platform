@@ -69,7 +69,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="cultureCode"></param>
         /// <param name="clearCache"></param>
         void ConvertTabToNeutralLanguage(int portalId, int tabId, string cultureCode, bool clearCache);
-            
+
         /// <summary>
         /// Creates content item for the tab..
         /// </summary>
@@ -122,7 +122,7 @@ namespace DotNetNuke.Entities.Tabs
         void DeleteTabSettings(int tabId);
 
         /// <summary>
-        /// Delete a taburl 
+        /// Delete a taburl
         /// </summary>
         /// <param name="tabUrl">the taburl</param>
         /// <param name="portalId">the portal</param>
@@ -221,7 +221,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="forHost">if set to <c>true</c> [for host].</param>
         /// <returns>tab collection</returns>
         IDictionary<int, TabInfo> GetTabsByPackageID(int portalID, int packageID, bool forHost);
-        
+
         /// <summary>
         /// Gets the tabs by portal.
         /// </summary>
@@ -231,11 +231,11 @@ namespace DotNetNuke.Entities.Tabs
 
 
         /// <summary>
-        /// Get the actual visible tabs for a given portal id. 
+        /// Get the actual visible tabs for a given portal id.
         /// System Tabs and Admin Tabs are excluded from the result set.
         /// </summary>
         /// <param name="portalId"></param>
-        /// 
+        ///
         /// <returns>tab collection</returns>
         TabCollection GetTabsByPortal(int portalId);
 
@@ -245,7 +245,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="tabModuleId">The tabmodule ID.</param>
         /// <returns>tab collection</returns>
         IDictionary<int, TabInfo> GetTabsByTabModuleID(int tabModuleId);
-        
+
         /// <summary>
         /// read all settings for a tab from TabSettings table
         /// </summary>
@@ -269,7 +269,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="localizedTab">The localized tab.</param>
         /// <param name="users">The users.</param>
         void GiveTranslatorRoleEditRights(TabInfo localizedTab, Dictionary<int, UserInfo> users);
-        
+
         /// <summary>
         /// Returns True if a page is missing a translated version in at least one other language
         /// </summary>
@@ -291,7 +291,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="tab">The tab info.</param>
         /// <returns></returns>
         bool IsHostOrAdminPage(TabInfo tab);
-        
+
         /// <summary>
         /// Localizes the tab.
         /// </summary>
@@ -359,7 +359,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="tab">The Tab to be marked</param>
         void MarkAsPublished(TabInfo tab);
-        
+
         /// <summary>
         /// Restores the tab.
         /// </summary>

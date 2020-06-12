@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     /// </summary>
     public class ClientResourceLoader : ClientDependencyLoader
     {
-        private bool AsyncPostBackHandlerEnabled 
+        private bool AsyncPostBackHandlerEnabled
         {
             get
             {

@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                 this.isRootFolder = rootFolder.FolderID == folderId;
                 this.folderViewModel = this.isRootFolder ? rootFolder : this.controller.GetFolder(folderId);
-                
+
                 // Setup controls
                 this.CancelButton.Click += this.OnCancelClick;
                 this.SaveButton.Click += this.OnSaveClick;
@@ -143,7 +143,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 this.Page.CloseClientDialog(true);
             }
             catch (ThreadAbortException)
-            {                
+            {
             }
             catch (DotNetNukeException dnnex)
             {

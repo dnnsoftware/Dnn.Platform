@@ -625,7 +625,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             // Load any Profile properties that may have been returned
             this.UpdateProfile(this.User, false);
 
-            // Set UserName to authentication Token            
+            // Set UserName to authentication Token
             this.User.Username = this.GenerateUserName();
 
             // Set DisplayName to UserToken if null
@@ -695,7 +695,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
             }
 
-            // Try First Name + space + First letter last name            
+            // Try First Name + space + First letter last name
             if (!string.IsNullOrEmpty(this.User.LastName) && !string.IsNullOrEmpty(this.User.FirstName))
             {
                 var newUserName = this.User.FirstName + " " + this.User.LastName.Substring(0, 1);

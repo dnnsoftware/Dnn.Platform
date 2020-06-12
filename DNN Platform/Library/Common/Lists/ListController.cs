@@ -122,7 +122,7 @@ namespace DotNetNuke.Common.Lists
         #endregion
 
         /// <summary>
-        /// Adds a new list entry to the database. If the current thread locale is not "en-US" then the text value will also be 
+        /// Adds a new list entry to the database. If the current thread locale is not "en-US" then the text value will also be
         /// persisted to a resource file under App_GlobalResources using the list's name and the value as key.
         /// </summary>
         /// <param name="listEntry">The list entry.</param>
@@ -342,7 +342,7 @@ namespace DotNetNuke.Common.Lists
 
         /// <summary>
         /// Updates the list entry in the database using the values set on the listEntry. Note that if the current thread locale is not "en-US" then the
-        /// text value will be persisted to a resource file under App_GlobalResources using the list's name and the value as key. Also the supplied text value 
+        /// text value will be persisted to a resource file under App_GlobalResources using the list's name and the value as key. Also the supplied text value
         /// will *not* be written to the database in this case (i.e. we expect the text value in the database to be the en-US text value).
         /// </summary>
         /// <param name="listEntry">The list entry info item to update.</param>
@@ -361,7 +361,7 @@ namespace DotNetNuke.Common.Lists
                     ? listEntry.Value + ".Text"
                     : listEntry.ParentKey + "." + listEntry.Value + ".Text";
 
-                LocalizationProvider.Instance.SaveString(key, listEntry.TextNonLocalized, listEntry.ResourceFileRoot, 
+                LocalizationProvider.Instance.SaveString(key, listEntry.TextNonLocalized, listEntry.ResourceFileRoot,
                     Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
             }
             EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_UPDATED);

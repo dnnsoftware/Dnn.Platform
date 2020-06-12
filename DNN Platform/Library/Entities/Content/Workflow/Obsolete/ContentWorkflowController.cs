@@ -29,13 +29,13 @@ namespace DotNetNuke.Entities.Content.Workflow
         private const string ContentWorkflowNotificationType = "ContentWorkflowNotification";
 
         private ContentWorkflowController()
-        {            
+        {
             this.contentController = new ContentController();
         }
 
         #region Public Methods
         #region Obsolete Methods
-        
+
         #region Engine
 
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine. Scheduled removal in v10.0.0.")]
@@ -506,7 +506,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             var workflow = this.GetWorkflow(item);
 
-            var logComment = this.ReplaceNotificationTokens(this.GetWorkflowActionComment(ContentWorkflowLogType.CommentProvided), workflow, item, workflow.States.FirstOrDefault(s => s.StateID == item.StateID), workflow.PortalID, userID, userComment);            
+            var logComment = this.ReplaceNotificationTokens(this.GetWorkflowActionComment(ContentWorkflowLogType.CommentProvided), workflow, item, workflow.States.FirstOrDefault(s => s.StateID == item.StateID), workflow.PortalID, userID, userComment);
             this.AddWorkflowLog(workflow.WorkflowID, item, this.GetWorkflowActionText(ContentWorkflowLogType.CommentProvided), logComment, userID);
         }
 
@@ -529,7 +529,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             var roles = this.GetRolesFromPermissions(settings, permissions);
             var replacedSubject = this.ReplaceNotificationTokens(subject, workflow, item, this.GetWorkflowStateByID(destinationStateID), settings.PortalId, actionUserID);
             var replacedBody = this.ReplaceNotificationTokens(body, workflow, item, this.GetWorkflowStateByID(destinationStateID), settings.PortalId, actionUserID);
-            
+
             this.SendNotification(state.SendEmail, state.SendMessage, settings, roles, users, replacedSubject, replacedBody, comment, actionUserID, source, parameters);
         }
 
@@ -543,7 +543,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             }
 
             var notification = new Notification
-            {                
+            {
                 NotificationTypeID = NotificationsController.Instance.GetNotificationType(ContentWorkflowNotificationType).NotificationTypeId,
                 Subject = subject,
                 Body = fullbody,
@@ -568,7 +568,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             return body + "<br><br>" + comment;
         }
-        
+
         private void SendEmailNotifications(PortalSettings settings, IEnumerable<RoleInfo> roles, IEnumerable<UserInfo> users, string subject, string body, string comment)
         {
             var fullbody = this.GetFullBody(body, comment);
@@ -580,7 +580,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             }
 
             foreach (var userMail in emailUsers.Select(u => u.Email).Distinct())
-            {                
+            {
                 Mail.SendEmail(settings.Email, userMail, subject, fullbody);
             }
         }
@@ -588,7 +588,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         private IEnumerable<RoleInfo> GetRolesFromPermissions(PortalSettings settings, IEnumerable<ContentWorkflowStatePermission> permissions)
         {
             var roles = new List<RoleInfo>();
-            
+
             foreach (var permission in permissions)
             {
                 if (permission.AllowAccess && permission.RoleID > Null.NullInteger)

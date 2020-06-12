@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.Cache
         private string[] _cacheKeys;
         private string[] _fileNames;
         private CacheDependency _systemCacheDependency;
-        
+
         #endregion
 
         #region "Constructors"
@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Cache
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors an array of paths (to files or directories), 
+        /// Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors an array of paths (to files or directories),
         /// an array of cache keys, or both for changes.
         /// </summary>
         /// <param name="filenames">The filenames.</param>
@@ -97,7 +97,7 @@ namespace DotNetNuke.Services.Cache
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors an array of paths (to files or directories), 
+        /// Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors an array of paths (to files or directories),
         /// an array of cache keys, or both for changes.
         /// </summary>
         /// <param name="filenames">The filenames.</param>
@@ -111,7 +111,7 @@ namespace DotNetNuke.Services.Cache
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DNNCacheDependency"/> classthat monitors an array of paths (to files or directories), 
+        /// Initializes a new instance of the <see cref="DNNCacheDependency"/> classthat monitors an array of paths (to files or directories),
         /// an array of cache keys, or both for changes. It also makes itself dependent upon a separate instance of the <see cref="DNNCacheDependency"/> class.
         /// </summary>
         /// <param name="filenames">The filenames.</param>
@@ -125,8 +125,8 @@ namespace DotNetNuke.Services.Cache
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors an array of paths (to files or directories), 
-        /// an array of cache keys, or both for changes. 
+        /// Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors an array of paths (to files or directories),
+        /// an array of cache keys, or both for changes.
         /// It also makes itself dependent upon another instance of the <see cref="DNNCacheDependency"/> class and a time when the change monitoring begins.
         /// </summary>
         /// <param name="filenames">The filenames.</param>
@@ -140,7 +140,7 @@ namespace DotNetNuke.Services.Cache
             this._cacheKeys = cachekeys;
             this._cacheDependency = dependency;
         }
-        
+
         #endregion
 
         #region "Public Properties"
@@ -235,7 +235,7 @@ namespace DotNetNuke.Services.Cache
                 return this.SystemCacheDependency.UtcLastModified;
             }
         }
-        
+
         #endregion
 
         #region IDisposable Members
@@ -269,7 +269,7 @@ namespace DotNetNuke.Services.Cache
                 this._systemCacheDependency = null;
             }
         }
-        
+
         #endregion
     }
 }

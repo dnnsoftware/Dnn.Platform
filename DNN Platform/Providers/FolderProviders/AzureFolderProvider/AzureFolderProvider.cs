@@ -153,7 +153,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                                                 continuationToken = resultSegment.ContinuationToken;
                                             }
                                             while (continuationToken != null);
-                                            
+
                                             return list;
                                         });
 

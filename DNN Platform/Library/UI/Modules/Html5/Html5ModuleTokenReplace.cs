@@ -34,7 +34,7 @@ namespace DotNetNuke.UI.Modules.Html5
 
             // DNN-7750
             var bizClass = moduleContext.Configuration.DesktopModule.BusinessControllerClass;
-            
+
             var businessController = this.GetBusinessController(bizClass);
             if (businessController != null)
             {
@@ -69,7 +69,7 @@ namespace DotNetNuke.UI.Modules.Html5
             {
                 Logger.Error(exc);
             }
-           
+
             return null;
         }
     }

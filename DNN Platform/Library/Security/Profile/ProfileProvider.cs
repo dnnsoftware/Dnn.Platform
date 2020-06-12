@@ -14,23 +14,23 @@ namespace DotNetNuke.Security.Profile
     public abstract class ProfileProvider
     {
         #region "Abstract Properties"
-        
+
         public abstract bool CanEditProviderProperties { get; }
-        
+
         #endregion
 
         #region "Shared/Static Methods"
 
-        // return the provider      
+        // return the provider
         public static ProfileProvider Instance()
         {
             return ComponentFactory.GetComponent<ProfileProvider>();
         }
-        
+
         #endregion
 
         #region "Abstract Methods"
-        
+
         public abstract void GetUserProfile(ref UserInfo user);
 
         public abstract void UpdateUserProfile(UserInfo user);

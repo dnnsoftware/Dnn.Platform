@@ -132,13 +132,13 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="changeToSiteRoot"></param>
         /// <param name="parentTraceId"></param>
         /// <returns></returns>
-        internal static bool CheckParameterRegexReplacement(string parameterPath, 
+        internal static bool CheckParameterRegexReplacement(string parameterPath,
                                                             TabInfo tab,
-                                                            FriendlyUrlSettings settings, 
+                                                            FriendlyUrlSettings settings,
                                                             int portalId,
-                                                            out string replacedPath, 
+                                                            out string replacedPath,
                                                             ref List<string> messages,
-                                                            out bool changeToSiteRoot, 
+                                                            out bool changeToSiteRoot,
                                                             Guid parentTraceId)
         {
             bool replaced = false;
@@ -238,7 +238,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 int userId;
                 string rawUserId, remainingPath;
-                // split the userid and other profile parameters from the friendly url path, 
+                // split the userid and other profile parameters from the friendly url path,
                 // and return the userid and remaining parts as separate items
                 SplitUserIdFromFriendlyUrlPath(newPath,
                                                 "UserId",
@@ -254,8 +254,8 @@ namespace DotNetNuke.Entities.Urls
                     meessages.Add("User Profile Url : RawUserId = " + "null" + " remainingPath = " + remainingPath);
                 }
 
-                // the rawuserid is just the string representation of the userid from the path.  
-                // It should be considered 'untrusted' until cleaned up, 
+                // the rawuserid is just the string representation of the userid from the path.
+                // It should be considered 'untrusted' until cleaned up,
                 // converted to an int and checked against the database
                 if (!String.IsNullOrEmpty(rawUserId) && Int32.TryParse(rawUserId, out userId))
                 {
@@ -286,7 +286,7 @@ namespace DotNetNuke.Entities.Urls
                                 string profilePagePath = TabIndexController.GetTabPath(profilePage, options, parentTraceId);
                                 if (childTabPath.Contains(profilePagePath))
                                 {
-                                    // only replace when the child tab path contains the parent path - if it's a custom url that 
+                                    // only replace when the child tab path contains the parent path - if it's a custom url that
                                     // doesn't incorporate the parent path, then leave it alone
                                     childTabPath = childTabPath.Replace(profilePagePath, "");
                                     childTabPath = childTabPath.Replace("//", "/");

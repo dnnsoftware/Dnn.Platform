@@ -73,7 +73,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the selected state of the DNNMultiStateBox (unless DataBound) 
+        /// Gets and sets the selected state of the DNNMultiStateBox (unless DataBound)
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------
@@ -149,7 +149,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the image path of the DNNMultiStateBox 
+        /// Gets and sets the image path of the DNNMultiStateBox
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------
@@ -167,7 +167,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the state collection of the DNNMultiStateBox 
+        /// Gets and sets the state collection of the DNNMultiStateBox
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------

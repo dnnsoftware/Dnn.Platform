@@ -38,7 +38,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DefaultFormat is a string that will be used to format the date in the absence of a 
+        /// DefaultFormat is a string that will be used to format the date in the absence of a
         /// FormatAttribute
         /// </summary>
         /// <value>A String representing the default format to use to render the date</value>
@@ -155,7 +155,7 @@ namespace DotNetNuke.UI.WebControls
             }
             if (postedHours != "12" || this.is24HourClock)
             {
-                int hours = 0;                
+                int hours = 0;
                 if (Int32.TryParse(postedHours, out hours)) postedValue = postedValue.AddHours(hours);
             }
             postedValue = postedValue.AddMinutes(Int32.Parse(postedMinutes));

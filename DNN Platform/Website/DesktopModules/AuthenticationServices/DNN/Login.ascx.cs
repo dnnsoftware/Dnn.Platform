@@ -246,25 +246,25 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             if ((this.UseCaptcha && this.ctlCaptcha.IsValid) || !this.UseCaptcha)
             {
                 var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-                string userName = PortalSecurity.Instance.InputFilter(this.txtUsername.Text, 
-                                        PortalSecurity.FilterFlag.NoScripting | 
-                                        PortalSecurity.FilterFlag.NoAngleBrackets | 
+                string userName = PortalSecurity.Instance.InputFilter(this.txtUsername.Text,
+                                        PortalSecurity.FilterFlag.NoScripting |
+                                        PortalSecurity.FilterFlag.NoAngleBrackets |
                                         PortalSecurity.FilterFlag.NoMarkup);
 
                 // DNN-6093
                 // check if we use email address here rather than username
                 UserInfo userByEmail = null;
-                var emailUsedAsUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);                
+                var emailUsedAsUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);
 
                 if (emailUsedAsUsername)
                 {
                     // one additonal call to db to see if an account with that email actually exists
-                    userByEmail = UserController.GetUserByEmail(PortalController.GetEffectivePortalId(this.PortalId), userName);                     
+                    userByEmail = UserController.GetUserByEmail(PortalController.GetEffectivePortalId(this.PortalId), userName);
 
                     if (userByEmail != null)
                     {
                         // we need the username of the account in order to authenticate in the next step
-                        userName = userByEmail.Username; 
+                        userName = userByEmail.Username;
                     }
                 }
 
@@ -285,11 +285,11 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 {
                     authenticated = (loginStatus != UserLoginStatus.LOGIN_FAILURE);
                 }
-                
+
                 // Raise UserAuthenticated Event
                 var eventArgs = new UserAuthenticatedEventArgs(objUser, userName, loginStatus, "DNN")
                                     {
-                                        Authenticated = authenticated, 
+                                        Authenticated = authenticated,
                                         Message = message,
                                         RememberMe = this.chkCookie.Checked
                                     };

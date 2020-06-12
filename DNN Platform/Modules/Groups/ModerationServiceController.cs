@@ -148,7 +148,7 @@ namespace DotNetNuke.Modules.Groups
 
                             var url = this.NavigationManager.NavigateURL(postData.GroupViewTabId, "", new[] { "groupid=" + this._roleInfo.RoleID });
                             return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", URL = url });
-                        
+
                         }
                         if (this._roleInfo.IsPublic && requireApproval)
                         {
@@ -209,10 +209,10 @@ namespace DotNetNuke.Modules.Groups
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
-            
+
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unknown Error");
         }
-       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage ApproveMember(NotificationDTO postData)
@@ -241,7 +241,7 @@ namespace DotNetNuke.Modules.Groups
                     var memberRoleInfo = RoleController.Instance.GetUserRole(this.PortalSettings.PortalId, this._memberId, this._roleInfo.RoleID);
                     memberRoleInfo.Status = RoleStatus.Approved;
                     RoleController.Instance.UpdateUserRole(this.PortalSettings.PortalId, this._memberId, this._roleInfo.RoleID, RoleStatus.Approved, false, false);
-                    
+
                     var notifications = new Notifications();
                     var groupOwner = UserController.GetUserById(this.PortalSettings.PortalId, this._roleInfo.CreatedByUserID);
                     notifications.AddMemberNotification(Constants.MemberApprovedNotification, this._tabId, this._moduleId, this._roleInfo, groupOwner, member);
@@ -299,7 +299,7 @@ namespace DotNetNuke.Modules.Groups
 
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unknown Error");
         }
-        
+
         private void ParseKey(string key)
         {
             this._tabId = -1;

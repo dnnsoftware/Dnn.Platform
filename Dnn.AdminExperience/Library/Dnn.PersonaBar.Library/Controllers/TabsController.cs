@@ -343,9 +343,9 @@ namespace Dnn.PersonaBar.Library.Controllers
 
             var filterTabs = this.FilterTabsByRole(tabs, roles, disabledNotSelectable);
             foreach (var tab in tabs.Where(
-                x => x.ParentId == parentId && 
+                x => x.ParentId == parentId &&
                 (
-                    includeDeletedChildren || 
+                    includeDeletedChildren ||
                     !x.IsDeleted)))
             {
                 string tooltip;

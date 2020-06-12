@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.DesktopModule = desktopModule;
             this.Initialize(desktopModule.FolderName);
         }
-        
+
         #endregion
 
         #region "Protected Properties"
@@ -104,7 +104,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 return dependencies;
             }
         }
-        
+
         #endregion
 
         #region "Public Properties"
@@ -201,7 +201,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 this.ProcessModuleFolders(directoryName, basePath);
             }
-            
+
             // process files
             this.ProcessModuleFiles(folder, basePath);
         }
@@ -216,7 +216,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 definition.DefaultCacheTime = int.Parse(cacheTime);
             }
-            
+
             // Process legacy controls Node
             foreach (XPathNavigator controlNav in moduleNav.Select("controls/control"))
             {
@@ -279,7 +279,7 @@ namespace DotNetNuke.Services.Installer.Writers
                     this.ProcessModules(moduleNav, this.DesktopModule.FolderName);
                 }
             }
-            
+
             // Process legacy files Node
             foreach (XPathNavigator fileNav in folderNav.Select("files/file"))
             {
@@ -303,7 +303,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     sourceFileName = fileName;
                 }
-                
+
                 // In Legacy Modules the assembly is always in "bin" - ignore the path element
                 if (fileName.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -314,7 +314,7 @@ namespace DotNetNuke.Services.Installer.Writers
                     this.AddFile(Path.Combine(filePath, fileName), sourceFileName);
                 }
             }
-            
+
             // Process resource file Node
             if (!string.IsNullOrEmpty(Util.ReadElement(folderNav, "resourcefile")))
             {
@@ -380,11 +380,11 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 this.WriteEventMessage(writer);
             }
-            
+
             // End component Element
             writer.WriteEndElement();
         }
-        
+
         #endregion
 
         #region "Protected Methods"
@@ -394,7 +394,7 @@ namespace DotNetNuke.Services.Installer.Writers
             // Write Module Component
             this.WriteModuleComponent(writer);
         }
-        
+
         #endregion
     }
 }

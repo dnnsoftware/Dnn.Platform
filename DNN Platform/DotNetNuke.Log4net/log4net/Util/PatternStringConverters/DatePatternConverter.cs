@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -34,11 +34,11 @@ namespace log4net.Util.PatternStringConverters
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Date pattern converter, uses a <see cref="IDateFormatter"/> to format 
+    /// Date pattern converter, uses a <see cref="IDateFormatter"/> to format
     /// the current date and time to the writer as a string.
     /// </para>
     /// <para>
-    /// The value of the <see cref="log4net.Util.PatternConverter.Option"/> determines 
+    /// The value of the <see cref="log4net.Util.PatternConverter.Option"/> determines
     /// the formatting of the date. The following values are allowed:
     /// <list type="definition">
     ///         <listheader>
@@ -48,31 +48,31 @@ namespace log4net.Util.PatternStringConverters
     ///         <item>
     ///         <term>ISO8601</term>
     ///         <description>
-    ///         Uses the <see cref="Iso8601DateFormatter"/> formatter. 
+    ///         Uses the <see cref="Iso8601DateFormatter"/> formatter.
     ///         Formats using the <c>"yyyy-MM-dd HH:mm:ss,fff"</c> pattern.
     ///         </description>
     ///     </item>
     ///     <item>
     ///         <term>DATE</term>
     ///         <description>
-    ///         Uses the <see cref="DateTimeDateFormatter"/> formatter. 
+    ///         Uses the <see cref="DateTimeDateFormatter"/> formatter.
     ///         Formats using the <c>"dd MMM yyyy HH:mm:ss,fff"</c> for example, <c>"06 Nov 1994 15:49:37,459"</c>.
     ///         </description>
     ///     </item>
     ///     <item>
     ///         <term>ABSOLUTE</term>
     ///         <description>
-    ///         Uses the <see cref="AbsoluteTimeDateFormatter"/> formatter. 
+    ///         Uses the <see cref="AbsoluteTimeDateFormatter"/> formatter.
     ///         Formats using the <c>"HH:mm:ss,fff"</c> for example, <c>"15:49:37,459"</c>.
     ///         </description>
     ///     </item>
     ///     <item>
     ///         <term>other</term>
     ///         <description>
-    ///         Any other pattern string uses the <see cref="SimpleDateFormatter"/> formatter. 
-    ///         This formatter passes the pattern string to the <see cref="DateTime"/> 
+    ///         Any other pattern string uses the <see cref="SimpleDateFormatter"/> formatter.
+    ///         This formatter passes the pattern string to the <see cref="DateTime"/>
     ///         <see cref="M:DateTime.ToString(string)"/> method.
-    ///         For details on valid patterns see 
+    ///         For details on valid patterns see
     ///         <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpref/html/frlrfsystemglobalizationdatetimeformatinfoclasstopic.asp">DateTimeFormatInfo Class</a>.
     ///         </description>
     ///     </item>
@@ -95,7 +95,7 @@ namespace log4net.Util.PatternStringConverters
         /// </para>
         /// </remarks>
         protected IDateFormatter m_dateFormatter;
-    
+
         #region Implementation of IOptionHandler
 
         /// <summary>
@@ -104,13 +104,13 @@ namespace log4net.Util.PatternStringConverters
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
-        /// activation scheme. The <see cref="ActivateOptions"/> method must 
+        /// activation scheme. The <see cref="ActivateOptions"/> method must
         /// be called on this object after the configuration properties have
         /// been set. Until <see cref="ActivateOptions"/> is called this
-        /// object is in an undefined state and must not be used. 
+        /// object is in an undefined state and must not be used.
         /// </para>
         /// <para>
-        /// If any of the configuration properties are modified then 
+        /// If any of the configuration properties are modified then
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// </remarks>
@@ -122,7 +122,7 @@ namespace log4net.Util.PatternStringConverters
             {
                 dateFormatStr = AbsoluteTimeDateFormatter.Iso8601TimeDateFormat;
             }
-            
+
             if (SystemInfo.EqualsIgnoringCase(dateFormatStr, AbsoluteTimeDateFormatter.Iso8601TimeDateFormat))
             {
                 this.m_dateFormatter = new Iso8601DateFormatter();
@@ -137,15 +137,15 @@ namespace log4net.Util.PatternStringConverters
             }
             else
             {
-                try 
+                try
                 {
                     this.m_dateFormatter = new SimpleDateFormatter(dateFormatStr);
                 }
-                catch (Exception e) 
+                catch (Exception e)
                 {
                     LogLog.Error(declaringType, "Could not instantiate SimpleDateFormatter with [" + dateFormatStr + "]", e);
                     this.m_dateFormatter = new Iso8601DateFormatter();
-                }   
+                }
             }
         }
 
@@ -165,13 +165,13 @@ namespace log4net.Util.PatternStringConverters
         /// The date and time passed is in the local time zone.
         /// </para>
         /// </remarks>
-        override protected void Convert(TextWriter writer, object state) 
+        override protected void Convert(TextWriter writer, object state)
         {
-            try 
+            try
             {
                 this.m_dateFormatter.FormatDate(DateTime.Now, writer);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 LogLog.Error(declaringType, "Error occurred while converting date.", ex);
             }

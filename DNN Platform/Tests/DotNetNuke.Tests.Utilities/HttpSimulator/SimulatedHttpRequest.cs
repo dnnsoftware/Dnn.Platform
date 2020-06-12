@@ -69,7 +69,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         {
             return this._verb;
         }
-        
+
         /// <summary>
         /// Gets the name of the server.
         /// </summary>
@@ -78,7 +78,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         {
             return this._host;
         }
-        
+
         public override int GetLocalPort()
         {
             return this._port;
@@ -133,7 +133,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
             if (index == 12 && this._verb == "POST")
                 return "application/x-www-form-urlencoded";
-            
+
             return base.GetKnownRequestHeader(index);
         }
 
@@ -141,7 +141,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         {
             return this._physicalFilePath;
         }
-        
+
         /// <summary>
         /// Reads request data from the client (when not preloaded).
         /// </summary>
@@ -150,7 +150,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         {
             return Encoding.UTF8.GetBytes(this.Form.Keys.Cast<string>().Aggregate(string.Empty, (current, key) => current + string.Format("{0}={1}&", key, this.Form[key])));
         }
-        
+
         /// <summary>
         /// Returns a value indicating whether all request data
         /// is available and no further reads from the client are required.

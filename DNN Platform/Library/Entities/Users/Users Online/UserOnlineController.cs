@@ -145,7 +145,7 @@ namespace DotNetNuke.Entities.Users
             HttpCookie cookie = context.Request.Cookies[cookieName];
             // Track Anonymous User
             if ((cookie == null))
-            {   
+            {
                 // Create a temporary userId
                 userID = Guid.NewGuid().ToString();
 
@@ -183,7 +183,7 @@ namespace DotNetNuke.Entities.Users
                     // No need to do anything else
                     return;
                 }
-                
+
                 // Get userID out of cookie
                 userID = cookie.Value;
 
@@ -193,7 +193,7 @@ namespace DotNetNuke.Entities.Users
                     userList[userID] = new AnonymousUserInfo();
                     ((AnonymousUserInfo)userList[userID]).CreationDate = DateTime.Now;
                 }
-                
+
                 user = (AnonymousUserInfo)userList[userID];
                 user.UserID = userID;
                 user.PortalID = portalSettings.PortalId;
@@ -293,7 +293,7 @@ namespace DotNetNuke.Entities.Users
 
             // Clear the list
             this.ClearUserList();
-            
+
             // Persist the current User List
             try
             {
@@ -304,7 +304,7 @@ namespace DotNetNuke.Entities.Users
                 Logger.Error(exc);
 
             }
-            
+
             // Remove users that have expired
             memberProvider.DeleteUsersOnline(this.GetOnlineTimeWindow());
         }

@@ -39,13 +39,13 @@ namespace DotNetNuke.Security.Permissions
         }
 
         #endregion
-        
+
         #region Private Members
-        
+
         private static readonly PermissionProvider _provider = PermissionProvider.Instance();
-        
+
         #endregion
-        
+
         #region Public Shared Methods
 
         /// <summary>

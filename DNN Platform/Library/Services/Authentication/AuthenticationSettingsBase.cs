@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Authentication
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The AuthenticationSettingsBase class provides a base class for Authentiication 
+    /// The AuthenticationSettingsBase class provides a base class for Authentiication
     /// Settings controls
     /// </summary>
     /// -----------------------------------------------------------------------------

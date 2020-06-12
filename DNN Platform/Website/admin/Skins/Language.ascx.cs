@@ -42,7 +42,7 @@ namespace DotNetNuke.UI.Skins.Controls
         private LanguageTokenReplace _localTokenReplace;
         private string _separatorTemplate;
         private bool _showMenu = true;
-        
+
         #endregion
 
         #region Public Properties
@@ -218,7 +218,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        
+
         protected string LocalResourceFile
         {
             get
@@ -262,7 +262,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     // for non data items use page culture
                     this.LocalTokenReplace.Language = this.CurrentCulture;
                 }
-                
+
                 // perform token replacements
                 strReturnValue = this.LocalTokenReplace.ReplaceEnvironmentTokens(strReturnValue);
             }
@@ -466,7 +466,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 Exceptions.ProcessPageLoadException(ex, this.Request.RawUrl);
             }
         }
-        
+
         #endregion
     }
 }

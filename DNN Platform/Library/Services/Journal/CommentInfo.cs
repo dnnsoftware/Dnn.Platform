@@ -32,7 +32,7 @@ namespace DotNetNuke.Services.Journal {
                 this.CommentId = value;
             }
         }
-       
+
         public void Fill(System.Data.IDataReader dr) {
             this.CommentId = Null.SetNullInteger(dr["CommentId"]);
             this.JournalId = Null.SetNullInteger(dr["JournalId"]);
@@ -53,7 +53,7 @@ namespace DotNetNuke.Services.Journal {
             get {
                 return CacheLevel.fullyCacheable;
             }
-            
+
         }
 
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound) {

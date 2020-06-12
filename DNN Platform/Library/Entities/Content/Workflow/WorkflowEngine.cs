@@ -208,7 +208,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             catch (Exception ex)
             {
                 Services.Exceptions.Exceptions.LogException(ex);
-            }            
+            }
         }
 
         private void SendNotificationToWorkflowStarter(StateTransaction stateTransaction, Entities.Workflow workflow, ContentItem contentItem, int starterUserId, WorkflowActionTypes workflowActionType)
@@ -239,7 +239,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             {
                 Services.Exceptions.Exceptions.LogException(ex);
             }
-            
+
         }
 
         private void SendNotificationsToReviewers(ContentItem contentItem, WorkflowState state, StateTransaction stateTransaction, WorkflowActionTypes workflowActionType, PortalSettings portalSettings)
@@ -273,7 +273,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             catch (Exception ex)
             {
                 Services.Exceptions.Exceptions.LogException(ex);
-            }            
+            }
         }
 
         private Notification GetNotification(string workflowContext, StateTransaction stateTransaction,
@@ -331,8 +331,8 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         private static List<RoleInfo> GetRolesFromPermissions(PortalSettings settings, IEnumerable<WorkflowStatePermission> permissions)
         {
-            return (from permission in permissions 
-                         where permission.AllowAccess && permission.RoleID > Null.NullInteger 
+            return (from permission in permissions
+                         where permission.AllowAccess && permission.RoleID > Null.NullInteger
                          select RoleController.Instance.GetRoleById(settings.PortalId, permission.RoleID)).ToList();
         }
 
@@ -519,7 +519,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             // Send notifications to stater
             if (workflow.WorkflowID != this._systemWorkflowManager.GetDirectPublishWorkflow(workflow.PortalID).WorkflowID) // This notification is not sent in Direct Publish WF
             {
-                this.SendNotificationToWorkflowStarter(initialTransaction, workflow, contentItem, userId, WorkflowActionTypes.StartWorkflow);                
+                this.SendNotificationToWorkflowStarter(initialTransaction, workflow, contentItem, userId, WorkflowActionTypes.StartWorkflow);
             }
 
             // Delete previous logs
@@ -542,7 +542,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             {
                 return;
             }
-            
+
             if (this.IsWorkflowCompleted(contentItem)
                         && !(workflow.IsSystem && workflow.States.Count() == 1))
             {
@@ -585,7 +585,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                     : WorkflowLogType.StateInitiated, stateTransaction.UserId);
 
             this.SendNotificationsToReviewers(contentItem, nextState, stateTransaction, WorkflowActionTypes.CompleteState, new PortalSettings(workflow.PortalID));
-            
+
             this.DeleteWorkflowNotifications(contentItem, currentState);
 
             // after-change action
@@ -603,10 +603,10 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             var isFirstState = workflow.FirstState.StateID == contentItem.StateID;
             var isLastState = workflow.LastState.StateID == contentItem.StateID;
-            
+
             if (isLastState)
             {
-                throw new WorkflowInvalidOperationException(Localization.GetExceptionMessage("WorkflowCannotDiscard", "Cannot discard on last workflow state")); 
+                throw new WorkflowInvalidOperationException(Localization.GetExceptionMessage("WorkflowCannotDiscard", "Cannot discard on last workflow state"));
             }
 
             if (!isFirstState && !this._workflowSecurity.HasStateReviewerPermission(workflow.PortalID, stateTransaction.UserId, contentItem.StateID))
@@ -652,7 +652,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             // after-change action
             this.PerformWorkflowActionOnStateChanged(stateTransaction, WorkflowActionTypes.DiscardState);
         }
-        
+
         public bool IsWorkflowCompleted(int contentItemId)
         {
             var contentItem = this._contentController.GetContentItem(contentItemId);
@@ -723,7 +723,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             var workflow = this._workflowManager.GetWorkflow(contentItem);
             this.UpdateContentItemWorkflowState(workflow.LastState.StateID, contentItem);
-            
+
             // Logs
             this.AddWorkflowCommentLog(contentItem, stateTransaction.UserId, stateTransaction.Message.UserComment);
             this.AddWorkflowLog(contentItem, WorkflowLogType.WorkflowApproved, stateTransaction.UserId);

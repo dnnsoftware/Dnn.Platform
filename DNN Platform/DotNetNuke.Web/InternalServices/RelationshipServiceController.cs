@@ -50,7 +50,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 Logger.Error(exc);
             }
-            
+
             if (success)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });

@@ -63,9 +63,9 @@ namespace DotNetNuke.Services.Search.Entities
         /// <summary>
         /// Locale to restrict Search to. This field can be left empty for single language site
         /// </summary>
-        /// <remarks>E.g. A value en-US or nl-NL can specified to restrict search to a single locale .</remarks> 
+        /// <remarks>E.g. A value en-US or nl-NL can specified to restrict search to a single locale .</remarks>
         public string Locale { get; set; }
-        
+
         /// <summary>
         /// Begin Date of the time when Content was last modified (in Utc). This field is optional.
         /// </summary>
@@ -178,6 +178,6 @@ namespace DotNetNuke.Services.Search.Entities
             this.NumericKeys = new Dictionary<string, int>();
         }
 
-        #endregion 
+        #endregion
     }
 }

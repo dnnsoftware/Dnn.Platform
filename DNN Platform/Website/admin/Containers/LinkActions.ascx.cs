@@ -79,7 +79,7 @@ namespace DotNetNuke.UI.Containers
                         }
                     }
                 }
-                
+
                 // Need to determine if this action list actually has any items.
                 if (this.Controls.Count > 0)
                 {

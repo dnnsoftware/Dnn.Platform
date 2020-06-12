@@ -59,7 +59,7 @@ namespace DotNetNuke.Services.Installer.Log
                 {
                     return "...";
                 }
-                
+
                 return this._description;
             }
         }

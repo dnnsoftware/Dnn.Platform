@@ -33,9 +33,9 @@ namespace DotNetNuke.Data.PetaPoco
             bool includeColumn = true;
 
             // Check if the class has the ExplictColumnsAttribute
-            bool declareColumns = pocoProperty.DeclaringType != null 
+            bool declareColumns = pocoProperty.DeclaringType != null
                             && pocoProperty.DeclaringType.GetCustomAttributes(typeof(DeclareColumnsAttribute), true).Length > 0;
-            
+
             if (declareColumns)
             {
                 if (pocoProperty.GetCustomAttributes(typeof(IncludeColumnAttribute), true).Length == 0)

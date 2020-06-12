@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Search
     public class SearchContentModuleInfoCollection : CollectionBase
     {
         #region "Constructors"
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchContentModuleInfoCollection">SearchContentModuleInfoCollection</see> class.
         /// </summary>
@@ -50,9 +50,9 @@ namespace DotNetNuke.Services.Search
         {
             this.AddRange(value);
         }
-        
+
         #endregion
-        
+
         #region "Properties"
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace DotNetNuke.Services.Search
                 this.List[index] = value;
             }
         }
-        
+
         #endregion
 
         #region "Public Methods"
@@ -170,7 +170,7 @@ namespace DotNetNuke.Services.Search
             this.CopyTo(arr, 0);
             return arr;
         }
-        
+
         #endregion
     }
     #pragma warning restore 0618

@@ -38,7 +38,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             // Setup SUT
             this.subscriptionController = new SubscriptionController();
         }
-        
+
         [TearDown]
         public void TearDown()
         {
@@ -62,7 +62,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 subscription.ObjectKey,
                 It.IsAny<int>(),
                 It.IsAny<int>())).Returns(SubscriptionDataReaderMockHelper.CreateEmptySubscriptionReader());
-            
+
             // Act
             var isSubscribed = this.subscriptionController.IsSubscribed(subscription);
 
@@ -196,21 +196,21 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             // Act, Assert
             Assert.Throws<ArgumentNullException>(() => this.subscriptionController.AddSubscription(subscription));
         }
-        
+
         [Test]
         public void AddSubscription_ShouldCallDataService_WhenNoError()
         {
             // Arrange
             var subscription = new SubscriptionBuilder()
                 .Build();
-            
+
             this.mockDataService.Setup(ds => ds.AddSubscription(
-                subscription.UserId, 
-                subscription.PortalId, 
-                subscription.SubscriptionTypeId, 
-                subscription.ObjectKey, 
-                subscription.Description, 
-                subscription.ModuleId, 
+                subscription.UserId,
+                subscription.PortalId,
+                subscription.SubscriptionTypeId,
+                subscription.ObjectKey,
+                subscription.Description,
+                subscription.ModuleId,
                 subscription.TabId,
                 subscription.ObjectData)).Verifiable();
 
@@ -280,7 +280,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 It.IsAny<int>())).Returns(SubscriptionDataReaderMockHelper.CreateSubscriptionReader(new[] { subscription }));
 
             this.mockDataService.Setup(ds => ds.DeleteSubscription(It.IsAny<int>())).Verifiable();
-            
+
             // Act
             this.subscriptionController.DeleteSubscription(subscription);
 

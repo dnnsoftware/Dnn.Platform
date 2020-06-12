@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.UI.WebControls
         private object _value;
         private string _requiredMessageSuffix = ".Required";
         private string _validationMessageSuffix = ".RegExError";
-        
+
         protected DnnFormItemBase()
         {
             this.FormMode = DnnFormMode.Inherit;
@@ -59,8 +59,8 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 Type type = this.DataSource.GetType();
                 IList<PropertyInfo> props = new List<PropertyInfo>(type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static));
-                return !String.IsNullOrEmpty(this.DataMember) 
-                           ? props.SingleOrDefault(p => p.Name == this.DataMember) 
+                return !String.IsNullOrEmpty(this.DataMember)
+                           ? props.SingleOrDefault(p => p.Name == this.DataMember)
                            : props.SingleOrDefault(p => p.Name == this.DataField);
             }
         }
@@ -144,7 +144,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 var requiredValidator = new RequiredFieldValidator
                                             {
-                                                ID = this.ID + "_Required", 
+                                                ID = this.ID + "_Required",
                                                 ErrorMessage = this.ResourceKey + this.RequiredMessageSuffix
                                             };
                 this.Validators.Add(requiredValidator);
@@ -154,8 +154,8 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 var regexValidator = new RegularExpressionValidator
                                          {
-                                             ID = this.ID + "_RegEx", 
-                                             ErrorMessage = this.ResourceKey + this.ValidationMessageSuffix, 
+                                             ID = this.ID + "_RegEx",
+                                             ErrorMessage = this.ResourceKey + this.ValidationMessageSuffix,
                                              ValidationExpression = this.ValidationExpression
                                          };
                 if (!String.IsNullOrEmpty(value))
@@ -173,7 +173,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     validator.ControlToValidate = controlId;
                     validator.Display = ValidatorDisplay.Dynamic;
                     validator.ErrorMessage = this.LocalizeString(validator.ErrorMessage);
-                    validator.CssClass = "dnnFormMessage dnnFormError";                   
+                    validator.CssClass = "dnnFormMessage dnnFormError";
                     this.Controls.Add(validator);
                 }
             }
@@ -205,10 +205,10 @@ namespace DotNetNuke.Web.UI.WebControls
             }
 
             // Add Label
-            var label = new DnnFormLabel 
+            var label = new DnnFormLabel
                                 {
-                                    LocalResourceFile = this.LocalResourceFile, 
-                                    ResourceKey = this.ResourceKey + ".Text", 
+                                    LocalResourceFile = this.LocalResourceFile,
+                                    ResourceKey = this.ResourceKey + ".Text",
                                     ToolTipKey = this.ResourceKey + ".Help",
                                     ViewStateMode = ViewStateMode.Disabled
                                 };
@@ -266,7 +266,7 @@ namespace DotNetNuke.Web.UI.WebControls
                             // ReSharper disable PossibleNullReferenceException
                             value = this.Property.GetValue(this.DataSource, null);
                             // ReSharper restore PossibleNullReferenceException
-                        } 
+                        }
                     }
                     else
                     {
@@ -384,7 +384,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         }
                     }
                 }
-            }           
+            }
         }
 
         protected void UpdateDataSource(object oldValue, object newValue, string dataField)

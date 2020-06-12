@@ -84,7 +84,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 return this.PhysicalSitePath + "\\";
             }
         }
-        
+
         #endregion
 
         #region "Public Properties"
@@ -101,8 +101,8 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "dll,pdb";
             }
         }
-        
-        
+
+
         #endregion
 
         #region "Protected Methods"
@@ -119,9 +119,9 @@ namespace DotNetNuke.Services.Installer.Installers
             if (DataProvider.Instance().UnRegisterAssembly(this.Package.PackageID, file.Name))
             {
                 this.Log.AddInfo(Util.ASSEMBLY_UnRegistered + " - " + file.FullName);
-                
+
                 this.RemoveBindingRedirect(file);
-                
+
                 // Call base class version to deleteFile file from \bin
                 base.DeleteFile(file);
             }
@@ -173,7 +173,7 @@ namespace DotNetNuke.Services.Installer.Installers
                         this.Log.AddInfo(Util.ASSEMBLY_Registered + " - " + file.FullName);
                         break;
                 }
-                
+
                 // If assembly not registered, is newer (or is the same version and we are in repair mode)
                 if (returnCode < 2 || (returnCode == 2 && file.InstallerInfo.RepairInstall))
                 {
@@ -184,7 +184,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             return bSuccess;
         }
-        
+
         #endregion
 
         #region "Private Methods"
@@ -230,7 +230,7 @@ namespace DotNetNuke.Services.Installer.Installers
             var xmlMergeDoc = GetXmlMergeDoc(xmlMergePath, name, publicKeyToken, OldVersion, newVersion);
             var xmlMerge = new XmlMerge(xmlMergeDoc, file.Version.ToString(), this.Package.Name);
             xmlMerge.UpdateConfigs();
-            
+
             return true;
         }
 
@@ -264,7 +264,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 return null;
             }
         }
-        
+
         private static string ReadPublicKey(AssemblyName assemblyName)
         {
             if (assemblyName == null || !assemblyName.Flags.HasFlag(AssemblyNameFlags.PublicKey))

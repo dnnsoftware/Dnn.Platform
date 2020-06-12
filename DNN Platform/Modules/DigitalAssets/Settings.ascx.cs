@@ -91,7 +91,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             try
             {
                 SettingsRepository.SaveDefaultFolderTypeId(this.ModuleId, Convert.ToInt32(this.DefaultFolderTypeComboBox.SelectedValue));
-                
+
                 SettingsRepository.SaveMode(this.ModuleId, this.SelectedDigitalAssestsMode);
 
                 this.UpdateFilterViewSettings();
@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
             this.FilterOptionsRadioButtonsList.SelectedValue = SettingsRepository.GetFilterCondition(this.ModuleId).ToString();
             this.SubfolderFilterRadioButtonList.SelectedValue = SettingsRepository.GetSubfolderFilter(this.ModuleId).ToString();
-            
+
             if (this.FilterOptionsRadioButtonsList.SelectedValue == FilterCondition.FilterByFolder.ToString())
             {
                 var folderId = SettingsRepository.GetRootFolderId(this.ModuleId);

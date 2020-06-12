@@ -48,10 +48,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Mocks
         private static void AddSubscriptionToTable(DataTable table, Subscription subscription)
         {
             table.Rows.Add(new object[] {
-                subscription.SubscriptionId, 
+                subscription.SubscriptionId,
                 subscription.UserId,
-                subscription.PortalId, 
-                subscription.SubscriptionTypeId, 
+                subscription.PortalId,
+                subscription.SubscriptionTypeId,
                 subscription.ObjectKey,
                 subscription.Description,
                 subscription.CreatedOnDate,

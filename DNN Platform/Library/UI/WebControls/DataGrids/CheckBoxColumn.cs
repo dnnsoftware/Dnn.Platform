@@ -31,7 +31,7 @@ namespace DotNetNuke.UI.WebControls
         private bool mEnabled = true;
         private string mEnabledField = Null.NullString;
         private bool mHeaderCheckBox = true;
-        
+
         #endregion
 
         #region "Constructors"
@@ -56,15 +56,15 @@ namespace DotNetNuke.UI.WebControls
         {
             this.AutoPostBack = autoPostBack;
         }
-        
+
         #endregion
-        
+
         #region "Public Properties"
 
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the column fires a postback when any check box is 
+        /// Gets and sets whether the column fires a postback when any check box is
         /// changed
         /// </summary>
         /// <value>A Boolean</value>
@@ -83,7 +83,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the checkbox is checked (unless DataBound) 
+        /// Gets and sets whether the checkbox is checked (unless DataBound)
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------
@@ -165,13 +165,13 @@ namespace DotNetNuke.UI.WebControls
                 this.mHeaderCheckBox = value;
             }
         }
-        
+
         #endregion
 
         #region "Events"
 
         public event DNNDataGridCheckedColumnEventHandler CheckedChanged;
-        
+
         #endregion
 
         #region "Private Methods"
@@ -223,7 +223,7 @@ namespace DotNetNuke.UI.WebControls
                 this.CheckedChanged(sender, e);
             }
         }
-        
+
         #endregion
 
         #region "Public Methods"
@@ -247,7 +247,7 @@ namespace DotNetNuke.UI.WebControls
             this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
             this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
         }
-        
+
         #endregion
     }
 }

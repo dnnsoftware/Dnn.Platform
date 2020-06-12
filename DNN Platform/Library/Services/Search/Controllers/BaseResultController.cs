@@ -13,7 +13,7 @@ using DotNetNuke.Services.Search.Entities;
 namespace DotNetNuke.Services.Search.Controllers
 {
     /// <summary>
-    /// BaseResult to be implemented by the different Crawlers to provide Permission and Url Services 
+    /// BaseResult to be implemented by the different Crawlers to provide Permission and Url Services
     /// </summary>
     /// <remarks>The abstract methods in this Class will be called by Search Result engine for every Hit found in Search Index.</remarks>
     [Serializable]
@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Search.Controllers
         /// <returns>Url</returns>
         /// <remarks>The Query Strings in the Document (if present) should be appended while returning the Url</remarks>
         public abstract string GetDocUrl(SearchResult searchResult);
-        
+
         /// <summary>
         /// Gets the localized search type name.
         /// </summary>

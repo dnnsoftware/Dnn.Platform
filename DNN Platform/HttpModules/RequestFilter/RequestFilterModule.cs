@@ -55,7 +55,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
 
             // Carry out first time initialization tasks
             Initialize.Init(app);
-            
+
             // only do this if we havn't already attempted an install.  This prevents PreSendRequestHeaders from
             // trying to add this item way to late.  We only want the first run through to do anything.
             // also, we use the context to store whether or not we've attempted an add, as it's thread-safe and

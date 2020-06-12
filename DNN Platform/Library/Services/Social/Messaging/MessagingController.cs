@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Social.Messaging
     /// </summary>
     /// <remarks>
     /// </remarks>
-    public class MessagingController 
+    public class MessagingController
                                 : ServiceLocator<IMessagingController, MessagingController>,
                                 IMessagingController
     {
@@ -145,7 +145,7 @@ namespace DotNetNuke.Services.Social.Messaging
             {
                 throw new ArgumentException(Localization.Localization.GetString("MsgEmptyToListFoundError", Localization.Localization.ExceptionsResourceFile));
             }
-            
+
             if (sbTo.Length > ConstMaxTo)
             {
                 throw new ArgumentException(string.Format(Localization.Localization.GetString("MsgToListTooBigError", Localization.Localization.ExceptionsResourceFile), ConstMaxTo, sbTo.Length));
@@ -230,7 +230,7 @@ namespace DotNetNuke.Services.Social.Messaging
                 var recipient = InternalMessagingController.Instance.GetMessageRecipient(message.MessageID, sender.UserID);
 
                 if (recipient == null)
-                { 
+                {
                     // add sender as a recipient of the message
                     recipient = new MessageRecipient { MessageID = message.MessageID, UserID = sender.UserID, Read = false, RecipientID = Null.NullInteger };
                     recipient.RecipientID = this._dataService.SaveMessageRecipient(recipient, UserController.Instance.GetCurrentUserInfo().UserID);

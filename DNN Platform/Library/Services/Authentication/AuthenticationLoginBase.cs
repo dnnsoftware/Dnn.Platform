@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Authentication
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The AuthenticationLoginBase class provides a bas class for Authentiication 
+    /// The AuthenticationLoginBase class provides a bas class for Authentiication
     /// Login controls
     /// </summary>
     /// -----------------------------------------------------------------------------
@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.Authentication
         /// Gets the Authentication mode of the control (Login or Register)
         /// </summary>
         /// <remarks>This property may be overriden in the inherited class</remarks>
-        /// -----------------------------------------------------------------------------        
+        /// -----------------------------------------------------------------------------
         public virtual AuthMode Mode { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -99,7 +99,7 @@ namespace DotNetNuke.Services.Authentication
         [Obsolete("Deprecated in 9.2.0. Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress. Scheduled removal in v11.0.0.")]
         public static string GetIPAddress()
         {
-            return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(HttpContext.Current.Request));                        
+            return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(HttpContext.Current.Request));
         }
     }
 }

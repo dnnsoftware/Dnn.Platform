@@ -19,10 +19,10 @@ namespace DotNetNuke.UI.Containers
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : DotNetNuke.UI.Containers.Icon
-    /// 
+    ///
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// Contains the attributes of an Icon.  
+    /// Contains the attributes of an Icon.
     /// These are read into the PortalModuleBase collection as attributes for the icons within the module controls.
     /// </summary>
     /// <remarks>
@@ -33,7 +33,7 @@ namespace DotNetNuke.UI.Containers
 
         public string BorderWidth { get; set; }
         public string CssClass { get; set; }
-        
+
         #endregion
 
         #region "Event Handlers"

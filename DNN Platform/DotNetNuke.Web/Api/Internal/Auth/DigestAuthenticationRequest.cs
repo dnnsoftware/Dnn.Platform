@@ -41,10 +41,10 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             }
             catch (Exception)
             {
-                
+
                 // suppress any issue e.g. another 401 from a different auth method
             }
-            
+
         }
 
         public NameValueCollection RequestParams { get; set; }

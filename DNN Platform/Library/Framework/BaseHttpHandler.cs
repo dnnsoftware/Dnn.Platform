@@ -41,7 +41,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        ///   Gets the <see cref = "HttpResponse" /> object associated with the Page object. This object 
+        ///   Gets the <see cref = "HttpResponse" /> object associated with the Page object. This object
         ///   allows you to send HTTP response data to a client and contains information about that response.
         /// </summary>
         public HttpResponse Response
@@ -88,7 +88,7 @@ namespace DotNetNuke.Framework
         ///   has the necessary permissions.
         /// </summary>
         /// <remarks>
-        ///   By default all authenticated users have permssions.  
+        ///   By default all authenticated users have permssions.
         ///   This property is only enforced if <see cref = "RequiresAuthentication" /> is <c>true</c>
         /// </remarks>
         /// <value>
@@ -172,7 +172,7 @@ namespace DotNetNuke.Framework
         ///   business logic.
         /// </summary>
         /// <remarks>
-        ///   <p>This method should result in a call to one 
+        ///   <p>This method should result in a call to one
         ///     (or more) of the following methods:</p>
         ///   <p><code>context.Response.BinaryWrite();</code></p>
         ///   <p><code>context.Response.Write();</code></p>
@@ -184,8 +184,8 @@ namespace DotNetNuke.Framework
         ///   </p>
         ///   <p>etc...</p>
         ///   <p>
-        ///     If you want a download box to show up with a 
-        ///     pre-populated filename, add this call here 
+        ///     If you want a download box to show up with a
+        ///     pre-populated filename, add this call here
         ///     (supplying a real filename).
         ///   </p>
         ///   <p>

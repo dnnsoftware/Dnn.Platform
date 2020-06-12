@@ -123,7 +123,7 @@ namespace DotNetNuke.Entities.Host
         /// <summary>
         /// setting to control where the control panel is loaded by the core and allowed to control it's own visibility.
         /// this is useful when the control panel needs to be visible for all users regardless of edit page/module permissions.
-        /// it's also for backwards compatibility, prior to 7.2 the control panel was always loaded. 
+        /// it's also for backwards compatibility, prior to 7.2 the control panel was always loaded.
         /// </summary>
         public static bool AllowControlPanelToDetermineVisibility
         {
@@ -367,7 +367,7 @@ namespace DotNetNuke.Entities.Host
                 return HostController.Instance.GetBoolean("EnableBannedList", true);
             }
         }
-        
+
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -563,7 +563,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to False
         /// </remarks>
-        /// ----------------------------------------------------------------------------- 
+        /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public static bool EnableUsersOnline
         {
@@ -592,7 +592,7 @@ namespace DotNetNuke.Entities.Host
                 return HostController.Instance.GetBoolean("SMTPEnableSSL", false);
             }
         }
-        
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets whether the Event Log Buffer is Enabled
@@ -1292,7 +1292,7 @@ namespace DotNetNuke.Entities.Host
                     return false;
                 }
 
-                // we don't want to load the portal smtp server when on a host tab. 
+                // we don't want to load the portal smtp server when on a host tab.
                 if (portalSettings.ActiveTab.PortalID == Null.NullInteger)
                 {
                     return false;

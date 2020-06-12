@@ -77,7 +77,7 @@ namespace DotNetNuke.UI.Containers
                 return this._ProviderControl;
             }
         }
-        
+
         #endregion
 
         #region "Public Properties"
@@ -169,7 +169,7 @@ namespace DotNetNuke.UI.Containers
         public IModuleControl ModuleControl { get; set; }
 
         #endregion
-        
+
         #endregion
 
         #region "Private Methods"
@@ -239,7 +239,7 @@ namespace DotNetNuke.UI.Containers
                 this.ProviderControl.CSSNodeHover = "ModuleTitle_MenuItemSel";
                 this.ProviderControl.CSSIndicateChildSub = "ModuleTitle_MenuArrow";
                 this.ProviderControl.CSSIndicateChildRoot = "ModuleTitle_RootMenuArrow";
-                
+
                 this.ProviderControl.PathImage = Globals.ApplicationPath + "/Images/";
                 this.ProviderControl.PathSystemImage = Globals.ApplicationPath + "/Images/";
                 this.ProviderControl.IndicateChildImageSub = "action_right.gif";
@@ -252,7 +252,7 @@ namespace DotNetNuke.UI.Containers
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-        
+
         #endregion
 
         #region "Protected Methods"
@@ -365,7 +365,7 @@ namespace DotNetNuke.UI.Containers
             this.ProviderControl.ClearNodes(); // since we always bind we need to clear the nodes for providers that maintain their state
             this.BindMenu(Navigation.GetActionNodes(objAction, args.Node, this, this.ExpandDepth));
         }
-        
+
         #endregion
     }
 }

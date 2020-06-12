@@ -76,7 +76,7 @@ namespace DotNetNuke.UI.Modules.Html5
             var cacheKey = string.Format(DataCache.SpaModulesFileExistsCacheKey, filepath);
             return CBO.GetCachedObject<bool>(new CacheItemArgs(cacheKey,
                 DataCache.SpaModulesHtmlFileTimeOut,
-                DataCache.SpaModulesHtmlFileCachePriority), 
+                DataCache.SpaModulesHtmlFileCachePriority),
                 c => File.Exists(this.Page.Server.MapPath(filepath)));
         }
 

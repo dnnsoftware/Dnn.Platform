@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Search.Internals
     /// Internal Search Controller Interface.
     /// <remarks>This is an Internal interface and should not be used outside of Core.</remarks>
     /// </summary>
-    public interface IInternalSearchController 
+    public interface IInternalSearchController
     {
         /// <summary>
         /// Get a List of Search Content Source that participate in Search
@@ -33,9 +33,9 @@ namespace DotNetNuke.Services.Search.Internals
         /// <summary>
         /// Get Friendly Display Name for the Search Result
         /// </summary>
-        /// <remarks>SearchTypeId is used primarily to obtain this value. Multiple SearchTypeId can map to same Display Name, 
+        /// <remarks>SearchTypeId is used primarily to obtain this value. Multiple SearchTypeId can map to same Display Name,
         /// e.g. Tab, Module, Html/Module all map to Pages.
-        /// For SearchTypeId=module, ModuleDefitionId is also used. Module's display name is used unless an entry is found in 
+        /// For SearchTypeId=module, ModuleDefitionId is also used. Module's display name is used unless an entry is found in
         /// ~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx for the Module_[MODULENAME].txt is found.</remarks>
         string GetSearchDocumentTypeDisplayName(SearchResult searchResult);
 
@@ -88,7 +88,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// </summary>
         /// <remarks>
         /// This is a costly operation which consumes substantial CPU and I/O resources, therefore use it
-        /// judiciously. If your site has a a single server that performs both indexing and searching, then 
+        /// judiciously. If your site has a a single server that performs both indexing and searching, then
         /// you should consider running the optimize operation after hours or over the weekend so that it
         /// does not interfere with ongoing search activities.
         /// </remarks>

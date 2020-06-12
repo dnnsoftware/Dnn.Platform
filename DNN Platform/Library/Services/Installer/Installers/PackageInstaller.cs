@@ -27,15 +27,15 @@ namespace DotNetNuke.Services.Installer.Installers
     public class PackageInstaller : ComponentInstallerBase
     {
         #region Private Members
-    
+
         private readonly SortedList<int, ComponentInstallerBase> _componentInstallers = new SortedList<int, ComponentInstallerBase>();
         private PackageInfo _installedPackage;
         private EventMessage _eventMessage;
-        
+
         #endregion
 
         #region Constructors
-        
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This Constructor creates a new PackageInstaller instance
@@ -91,7 +91,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.ReadManifest(nav);
             }
         }
-        
+
         #endregion
 
         #region Public Properties
@@ -112,7 +112,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <value>A Boolean value</value>
         /// -----------------------------------------------------------------------------
         public bool IsValid { get; private set; }
-        
+
         #endregion
 
         #region Private Methods
@@ -154,7 +154,7 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 // Set default order to next value (ie the same as the size of the collection)
                 int order = this._componentInstallers.Count;
-                
+
                 string type = componentNav.GetAttribute("type", "");
                 if (this.InstallMode == InstallMode.Install)
                 {
@@ -253,7 +253,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     this.Package.PackageID = this._installedPackage.PackageID;
                 }
-                
+
                 // Save Package
                 PackageController.Instance.SaveExtensionPackage(this.Package);
 
@@ -350,11 +350,11 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 this._installedPackage = PackageController.Instance.GetExtensionPackage(this.Package.PortalID, p => p.Name.Equals(this.Package.Name, StringComparison.OrdinalIgnoreCase)
                                                                                                             && p.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase)
-                                                                                                            && p.Version == this.Package.Version);                
+                                                                                                            && p.Version == this.Package.Version);
             }
             else
             {
-                this._installedPackage = PackageController.Instance.GetExtensionPackage(this.Package.PortalID, p => p.Name.Equals(this.Package.Name, StringComparison.OrdinalIgnoreCase) 
+                this._installedPackage = PackageController.Instance.GetExtensionPackage(this.Package.PortalID, p => p.Name.Equals(this.Package.Name, StringComparison.OrdinalIgnoreCase)
                                                                                                             && p.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase));
             }
 
@@ -440,7 +440,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Package.Url = Util.ReadElement(authorNav, "url");
                 this.Package.Email = Util.ReadElement(authorNav, "email");
             }
-            
+
             // Get License
             XPathNavigator licenseNav = manifestNav.SelectSingleNode("license");
             if (licenseNav != null)
@@ -461,7 +461,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 // Legacy Packages have no license
                 this.Package.License = Util.PACKAGE_NoLicense;
             }
-            
+
             // Get Release Notes
             XPathNavigator relNotesNav = manifestNav.SelectSingleNode("releaseNotes");
             if (relNotesNav != null)
@@ -523,8 +523,8 @@ namespace DotNetNuke.Services.Installer.Installers
                     this.Log.AddInfo(Util.COMPONENT_RolledBack + " - " + compInstaller.Type);
                 }
             }
-            
-            // If Previously Installed Package exists then we need to update the DataStore with this 
+
+            // If Previously Installed Package exists then we need to update the DataStore with this
             if (this._installedPackage == null)
             {
                 // No Previously Installed Package - Delete newly added Package
@@ -566,11 +566,11 @@ namespace DotNetNuke.Services.Installer.Installers
                     this.Log.AddWarning(Util.UNINSTALL_WarningsComp + " - " + compInstaller.Type);
                 }
             }
-            
+
             // Remove the Package information from the Data Store
             PackageController.Instance.DeleteExtensionPackage(this.Package);
         }
-        
+
         #endregion
     }
 }

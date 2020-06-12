@@ -6,7 +6,7 @@ using System;
 using DotNetNuke.Entities.Users;
 
 namespace DotNetNuke.Entities.Profile
-{    
+{
     public class ProfileEventArgs : EventArgs
     {
         /// <summary>

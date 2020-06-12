@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -74,9 +74,9 @@ namespace log4net.Core
         /// </para>
         /// </remarks>
         void Log(Type callerStackBoundaryDeclaringType, Level level, object message, Exception exception);
-  
+
         /// <summary>
-        /// This is the most generic printing method that is intended to be used 
+        /// This is the most generic printing method that is intended to be used
         /// by wrappers.
         /// </summary>
         /// <param name="logEvent">The event being logged.</param>
@@ -102,7 +102,7 @@ namespace log4net.Core
         bool IsEnabledFor(Level level);
 
         /// <summary>
-        /// Gets the <see cref="ILoggerRepository"/> where this 
+        /// Gets the <see cref="ILoggerRepository"/> where this
         /// <c>Logger</c> instance is attached to.
         /// </summary>
         /// <value>
@@ -110,7 +110,7 @@ namespace log4net.Core
         /// </value>
         /// <remarks>
         /// <para>
-        /// Gets the <see cref="ILoggerRepository"/> where this 
+        /// Gets the <see cref="ILoggerRepository"/> where this
         /// <c>Logger</c> instance is attached to.
         /// </para>
         /// </remarks>

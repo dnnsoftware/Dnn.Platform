@@ -117,7 +117,7 @@ namespace DotNetNuke.Web.UI.WebControls
         ///   Loads the Post Back Data and determines whether the value has change
         /// </summary>
         /// <remarks>
-        ///   In this case because the <see cref = "_fileControl" /> is a contained control, we do not need 
+        ///   In this case because the <see cref = "_fileControl" /> is a contained control, we do not need
         ///   to process the PostBackData (it has been handled by the File Control).  We just use
         ///   this method as the Framework calls it for us.
         /// </remarks>

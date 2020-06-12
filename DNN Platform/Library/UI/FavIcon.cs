@@ -33,7 +33,7 @@ namespace DotNetNuke.UI.Internals
         /// <summary>
         /// Get the path of the favicon file relative to the portal root
         /// </summary>
-        /// <remarks>This relative path is only relevant to use with Host/Portal Settings the path is not guaranteed any 
+        /// <remarks>This relative path is only relevant to use with Host/Portal Settings the path is not guaranteed any
         /// physical relevance in the local file system</remarks>
         /// <returns>Path to the favicon file relative to portal root, or empty string when there is no favicon set</returns>
         public string GetSettingPath()
@@ -96,7 +96,7 @@ namespace DotNetNuke.UI.Internals
         {
             var path = this.GetSettingPath();
             if (!String.IsNullOrEmpty(path))
-            { 
+            {
                 return FileManager.Instance.GetFile(this._portalId, path);
             }
 

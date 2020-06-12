@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.Mail
 
 
             // Only modify senderAdress if smtpAuthentication is enabled
-            // Can be "0", empty or Null - anonymous, "1" - basic, "2" - NTLM. 
+            // Can be "0", empty or Null - anonymous, "1" - basic, "2" - NTLM.
             if (smtpAuthentication == "1" || smtpAuthentication == "2")
             {
                 // if the senderAddress is the email address of the Host then switch it smtpUsername if different

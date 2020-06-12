@@ -31,7 +31,7 @@ namespace DotNetNuke.Tests.Core.Services.Localization
         {
             const string fallback = "fallback";
             // Arrange
-            
+
             // Act
             var ret = TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(new string[0], fallback);
 
@@ -44,7 +44,7 @@ namespace DotNetNuke.Tests.Core.Services.Localization
         public void CultureCodesCannotBeNull()
         {
             // Arrange
-            
+
 
             // Act
             TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(null);
@@ -57,7 +57,7 @@ namespace DotNetNuke.Tests.Core.Services.Localization
         public void FallBackCannotBeNull()
         {
             // Arrange
-            
+
 
             // Act
             TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(new string[0], null);
@@ -126,7 +126,7 @@ namespace DotNetNuke.Tests.Core.Services.Localization
             foreach (var standardCultureCode in this._standardCultureCodes)
             {
                 var f = fileName + "." + standardCultureCode + ".resx";
-                Assert.AreEqual(f.GetLocaleCodeFromFileName(), standardCultureCode);               
+                Assert.AreEqual(f.GetLocaleCodeFromFileName(), standardCultureCode);
             }
         }
 

@@ -62,7 +62,7 @@ namespace DotNetNuke.Tests.Web.Api
             var configuration = new HttpConfiguration();
             var controllerTypeResolver = new Mock<IHttpControllerTypeResolver>();
             configuration.Services.Replace(typeof(IHttpControllerTypeResolver), controllerTypeResolver.Object);
-            
+
             Type controllerType = GetMockControllerType(controllerName, unexpectedNamespace);
             controllerTypeResolver
                 .Setup(c => c.GetControllerTypes(It.IsAny<IAssembliesResolver>()))

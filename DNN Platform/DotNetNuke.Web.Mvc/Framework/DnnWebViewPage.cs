@@ -13,7 +13,7 @@ namespace DotNetNuke.Web.Mvc.Framework
 
         public new DnnHtmlHelper<object> Html { get; set; }
 
-        public new DnnUrlHelper Url { get; set; } 
+        public new DnnUrlHelper Url { get; set; }
 
         public override void InitHelpers()
         {

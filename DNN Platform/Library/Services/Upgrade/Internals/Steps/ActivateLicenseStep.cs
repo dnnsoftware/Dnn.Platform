@@ -11,7 +11,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
     /// <summary>
     /// DatabaseVerificationStep - Step that performs database verification checks prior to installation
     /// </summary>
-    /// ------------------------------------------------------------------------------------------------  
+    /// ------------------------------------------------------------------------------------------------
     public class ActivateLicenseStep : BaseInstallationStep
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ActivateLicenseStep));
@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
             this.Details = Localization.Localization.GetString("LicenseActivation", this.LocalInstallResourceFile);
             var installConfig = InstallController.Instance.GetInstallConfig();
-            var licenseConfig = (installConfig != null) ? installConfig.License : null;            
+            var licenseConfig = (installConfig != null) ? installConfig.License : null;
 
             if (licenseConfig != null && (!string.IsNullOrEmpty(licenseConfig.AccountEmail) && !string.IsNullOrEmpty(licenseConfig.InvoiceNumber)
                                 && !string.IsNullOrEmpty(licenseConfig.LicenseType) && !string.IsNullOrEmpty(licenseConfig.WebServer)))

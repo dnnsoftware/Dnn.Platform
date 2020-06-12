@@ -24,7 +24,7 @@ namespace DNN.Integration.Test.Framework.Controllers
                 .ToString();
 
             var timeZoneString = DatabaseHelper.ExecuteQuery(script).First()["SettingValue"].ToString();
-           
+
             return TimeZoneInfo.FindSystemTimeZoneById(timeZoneString);
         }
     }

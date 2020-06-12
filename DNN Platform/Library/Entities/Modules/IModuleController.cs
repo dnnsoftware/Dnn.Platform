@@ -218,7 +218,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name = "moduleID">ID of the Module</param>
         /// <returns>ArrayList of ModuleInfo</returns>
         IList<ModuleInfo> GetTabModulesByModule(int moduleID);
-        
+
         void InitialModulePermission(ModuleInfo module, int tabId, int permissionType);
 
         void LocalizeModule(ModuleInfo sourceModule, Locale locale);
@@ -291,7 +291,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="module">A ModuleInfo object to be checked</param>
         /// <returns>True is TabId points to a different tab from initial Tab where the module was added. Otherwise, False</returns>
         bool IsSharedModule(ModuleInfo module);
-        
+
         /// <summary>
         /// Get the Tab ID corresponding to the initial Tab where the module was added
         /// </summary>

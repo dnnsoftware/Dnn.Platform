@@ -22,7 +22,7 @@ namespace DotNetNuke.Entities.Users.Social
     /// Class:      UserSocial
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The UserSocial is a high-level class describing social details of a user. 
+    /// The UserSocial is a high-level class describing social details of a user.
     /// As an example, this class contains Friends, Followers, Follows lists.
     /// </summary>
     /// -----------------------------------------------------------------------------
@@ -59,7 +59,7 @@ namespace DotNetNuke.Entities.Users.Social
                 var _friendsRelationship = RelationshipController.Instance.GetFriendsRelationshipByPortal(this._userInfo.PortalID);
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
                 return this.UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == _friendsRelationship.RelationshipId
-                                                                && 
+                                                                &&
                                                                 (ur.UserId == this._userInfo.UserID &&
                                                                  ur.RelatedUserId == currentUser.UserID
                                                                  ||
@@ -136,11 +136,11 @@ namespace DotNetNuke.Entities.Users.Social
         [XmlAttribute]
         public IList<UserRoleInfo> Roles
         {
-            get 
+            get
             {
                 return this._roles ?? (this._roles = (this._userInfo.PortalID == -1 && this._userInfo.UserID == -1)
                                             ? new List<UserRoleInfo>(0)
-                                            : RoleController.Instance.GetUserRoles(this._userInfo, true)); 
+                                            : RoleController.Instance.GetUserRoles(this._userInfo, true));
             }
         }
 

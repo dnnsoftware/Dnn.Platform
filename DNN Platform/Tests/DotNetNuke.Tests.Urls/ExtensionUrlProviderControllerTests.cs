@@ -85,7 +85,7 @@ namespace DotNetNuke.Tests.Urls
 
             var providerTabsTable = getExtensionUrlProvidersDataSet.Tables.Add();
             providerTabsTable.Columns.AddRange(new[] { new DataColumn("ExtensionUrlProviderID", typeof(int)), new DataColumn("TabId", typeof(int)), });
-            
+
             return getExtensionUrlProvidersDataSet;
         }
 
@@ -111,7 +111,7 @@ namespace DotNetNuke.Tests.Urls
                 throw new NotImplementedException();
             }
 
-            public override string ChangeFriendlyUrl(TabInfo tab, string friendlyUrlPath, FriendlyUrlOptions options, string cultureCode, ref string endingPageName, out bool useDnnPagePath, ref List<string> messages) 
+            public override string ChangeFriendlyUrl(TabInfo tab, string friendlyUrlPath, FriendlyUrlOptions options, string cultureCode, ref string endingPageName, out bool useDnnPagePath, ref List<string> messages)
             {
                 throw new NotImplementedException();
             }

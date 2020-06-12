@@ -31,7 +31,7 @@ namespace DotNetNuke.HttpModules
             this._providerToUse = DotNetNuke.Common.Utilities.Config.GetFriendlyUrlProvider();
 
             // bind events depending on currently configured friendly url provider
-            // note that the current configured friendly url provider determines what type 
+            // note that the current configured friendly url provider determines what type
             // of url rewriting is required.
 
             switch (this._providerToUse)

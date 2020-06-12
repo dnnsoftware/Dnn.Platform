@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -33,16 +33,16 @@ namespace log4net
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The <c>GlobalContext</c> provides a location for global debugging 
+    /// The <c>GlobalContext</c> provides a location for global debugging
     /// information to be stored.
     /// </para>
     /// <para>
-    /// The global context has a properties map and these properties can 
+    /// The global context has a properties map and these properties can
     /// be included in the output of log messages. The <see cref="log4net.Layout.PatternLayout"/>
     /// supports selecting and outputing these properties.
     /// </para>
     /// <para>
-    /// By default the <c>log4net:HostName</c> property is set to the name of 
+    /// By default the <c>log4net:HostName</c> property is set to the name of
     /// the current machine.
     /// </para>
     /// </remarks>
@@ -58,7 +58,7 @@ namespace log4net
         #region Private Instance Constructors
 
         /// <summary>
-        /// Private Constructor. 
+        /// Private Constructor.
         /// </summary>
         /// <remarks>
         /// Uses a private access modifier to prevent instantiation of this class.

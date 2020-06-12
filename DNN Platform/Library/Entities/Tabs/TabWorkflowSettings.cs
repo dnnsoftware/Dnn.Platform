@@ -43,7 +43,7 @@ namespace DotNetNuke.Entities.Tabs
                 workflowId = (workflow != null) ? workflow.WorkflowID : Null.NullInteger;
                 if (workflowId != Null.NullInteger)
                 {
-                    PortalController.UpdatePortalSetting(portalId, DefaultTabWorkflowKey, workflowId.ToString(CultureInfo.InvariantCulture), true);                    
+                    PortalController.UpdatePortalSetting(portalId, DefaultTabWorkflowKey, workflowId.ToString(CultureInfo.InvariantCulture), true);
                 }
             }
             return workflowId;

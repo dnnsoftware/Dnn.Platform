@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -34,12 +34,12 @@ namespace log4net.Filter
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The works very similar to the <see cref="LevelMatchFilter"/>. It admits two 
-    /// options <see cref="LoggerToMatch"/> and <see cref="AcceptOnMatch"/>. If the 
-    /// <see cref="LoggingEvent.LoggerName"/> of the <see cref="LoggingEvent"/> starts 
-    /// with the value of the <see cref="LoggerToMatch"/> option, then the 
-    /// <see cref="Decide"/> method returns <see cref="FilterDecision.Accept"/> in 
-    /// case the <see cref="AcceptOnMatch"/> option value is set to <c>true</c>, 
+    /// The works very similar to the <see cref="LevelMatchFilter"/>. It admits two
+    /// options <see cref="LoggerToMatch"/> and <see cref="AcceptOnMatch"/>. If the
+    /// <see cref="LoggingEvent.LoggerName"/> of the <see cref="LoggingEvent"/> starts
+    /// with the value of the <see cref="LoggerToMatch"/> option, then the
+    /// <see cref="Decide"/> method returns <see cref="FilterDecision.Accept"/> in
+    /// case the <see cref="AcceptOnMatch"/> option value is set to <c>true</c>,
     /// if it is <c>false</c> then <see cref="FilterDecision.Deny"/> is returned.
     /// </para>
     /// </remarks>
@@ -80,7 +80,7 @@ namespace log4net.Filter
         /// <para>
         /// The <see cref="AcceptOnMatch"/> property is a flag that determines
         /// the behavior when a matching <see cref="Level"/> is found. If the
-        /// flag is set to true then the filter will <see cref="FilterDecision.Accept"/> the 
+        /// flag is set to true then the filter will <see cref="FilterDecision.Accept"/> the
         /// logging event, otherwise it will <see cref="FilterDecision.Deny"/> the event.
         /// </para>
         /// <para>
@@ -111,7 +111,7 @@ namespace log4net.Filter
             set { this.m_loggerToMatch = value; }
         }
 
-        #endregion 
+        #endregion
 
         #region Override implementation of FilterSkeleton
 
@@ -123,7 +123,7 @@ namespace log4net.Filter
         /// <remarks>
         /// <para>
         /// The rendered message is matched against the <see cref="LoggerToMatch"/>.
-        /// If the <see cref="LoggerToMatch"/> equals the beginning of 
+        /// If the <see cref="LoggerToMatch"/> equals the beginning of
         /// the incoming <see cref="LoggingEvent.LoggerName"/> (<see cref="M:String.StartsWith(string)"/>)
         /// then a match will have occurred. If no match occurs
         /// this function will return <see cref="FilterDecision.Neutral"/>
@@ -133,7 +133,7 @@ namespace log4net.Filter
         /// <see cref="FilterDecision.Deny"/> is returned.
         /// </para>
         /// </remarks>
-        override public FilterDecision Decide(LoggingEvent loggingEvent) 
+        override public FilterDecision Decide(LoggingEvent loggingEvent)
         {
             if (loggingEvent == null)
             {
@@ -141,14 +141,14 @@ namespace log4net.Filter
             }
 
             // Check if we have been setup to filter
-            if ((this.m_loggerToMatch != null && this.m_loggerToMatch.Length != 0) && 
+            if ((this.m_loggerToMatch != null && this.m_loggerToMatch.Length != 0) &&
                 loggingEvent.LoggerName.StartsWith(this.m_loggerToMatch))
             {
                 // we've got a match
-                if (this.m_acceptOnMatch) 
+                if (this.m_acceptOnMatch)
                 {
                     return FilterDecision.Accept;
-                } 
+                }
                 return FilterDecision.Deny;
             }
             else

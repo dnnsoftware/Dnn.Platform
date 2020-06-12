@@ -25,6 +25,6 @@ namespace DotNetNuke.Modules.DigitalAssets
         }
 
         public List<Field> Fields { get; set; }
-    
+
     }
 }

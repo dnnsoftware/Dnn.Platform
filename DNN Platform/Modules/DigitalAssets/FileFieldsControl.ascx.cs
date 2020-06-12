@@ -60,19 +60,19 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             base.OnLoad(e);
             if (!this.Page.IsPostBack)
-            {                
+            {
                 this.PrepareProperties();
                 this.FileAttributesContainer.Visible = this.File.SupportsFileAttributes;
                 if (this.File.SupportsFileAttributes)
                 {
                     this.PrepareFileAttributes();
-                }                
+                }
             }
         }
 
         public void SetController(IDigitalAssetsController damController)
         {
-            this.Controller = damController;            
+            this.Controller = damController;
         }
 
         public void SetModuleConfiguration(ModuleInfo moduleConfiguration)
@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             this.Item = itemViewModel;
         }
-        
+
         public virtual void SetPropertiesAvailability(bool availability)
         {
             this.FileNameInput.Enabled = availability;

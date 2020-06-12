@@ -28,11 +28,11 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
             var ex = Assert.Throws<InvalidOperationException>(() => sut.OnException(exceptionContext));
             Assert.AreEqual(expectedMessage, ex.Message);
         }
-        
+
         [Test]
         public void OnException_Logs_TheException()
         {
-            // Arrange                        
+            // Arrange
             var testException = new Exception();
             var exceptionContext = new ExceptionContext
             {
@@ -42,7 +42,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
 
             var mockDnnHandleErrorAttribute = new Mock<DnnHandleErrorAttribute> { CallBase = true };
             mockDnnHandleErrorAttribute.Protected().Setup("LogException", testException);
-            
+
             var sut = mockDnnHandleErrorAttribute.Object;
 
             // Act

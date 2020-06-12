@@ -450,7 +450,7 @@ namespace DotNetNuke.Security.Permissions
                 RoleController.Instance.GetRoleById(portalId,
                     PortalController.Instance.GetPortal(portalId).AdministratorRoleId)
             };
-        } 
+        }
 
 #endregion
 
@@ -675,9 +675,9 @@ namespace DotNetNuke.Security.Permissions
                         // Try to add Read permission
                         var newFolderPerm = new FolderPermissionInfo(readPerm)
                                                 {
-                                                    FolderID = folderPermission.FolderID, 
-                                                    RoleID = folderPermission.RoleID, 
-                                                    UserID = folderPermission.UserID, 
+                                                    FolderID = folderPermission.FolderID,
+                                                    RoleID = folderPermission.RoleID,
+                                                    UserID = folderPermission.UserID,
                                                     AllowAccess = true
                                                 };
 
@@ -686,9 +686,9 @@ namespace DotNetNuke.Security.Permissions
                         // Try to add Browse permission
                         newFolderPerm = new FolderPermissionInfo(browsePerm)
                                             {
-                                                FolderID = folderPermission.FolderID, 
-                                                RoleID = folderPermission.RoleID, 
-                                                UserID = folderPermission.UserID, 
+                                                FolderID = folderPermission.FolderID,
+                                                RoleID = folderPermission.RoleID,
+                                                UserID = folderPermission.UserID,
                                                 AllowAccess = true
                                             };
 
@@ -710,7 +710,7 @@ namespace DotNetNuke.Security.Permissions
                                                         folderPermission.AllowAccess,
                                                         folderPermission.UserID,
                                                         UserController.Instance.GetCurrentUserInfo().UserID);
-                }                
+                }
             }
         }
 
@@ -941,7 +941,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 hasPermission = PortalSecurity.IsInRoles(modulePermissions.ToString(permissionKey));
             }
-            return hasPermission; 
+            return hasPermission;
         }
 
         /// -----------------------------------------------------------------------------
@@ -1002,7 +1002,7 @@ namespace DotNetNuke.Security.Permissions
         public virtual IEnumerable<RoleInfo> ImplicitRolesForFolders(int portalId)
         {
             return this.DefaultImplicitRoles(portalId);
-        } 
+        }
 
         /// <summary>
         /// Returns a flag indicating whether the current user can add content to a page

@@ -35,9 +35,9 @@ namespace DotNetNuke.UI.UserControls
         protected LinkButton cmdRemoveAll;
         protected ListBox lstAssigned;
         protected ListBox lstAvailable;
-        
+
         #endregion
-        
+
         #region "Public Properties"
 
         public string ListBoxWidth
@@ -121,9 +121,9 @@ namespace DotNetNuke.UI.UserControls
                 this._Enabled = value;
             }
         }
-        
+
         #endregion
-        
+
         #region "Protected Event Handlers"
 
         /// <summary>The Page_Load server event handler on this page is used to populate the role information for the page</summary>
@@ -159,7 +159,7 @@ namespace DotNetNuke.UI.UserControls
                         this.lstAvailable.Height = Unit.Parse(this._ListBoxHeight);
                         this.lstAssigned.Height = Unit.Parse(this._ListBoxHeight);
                     }
-                    
+
                     // load available
                     this.lstAvailable.DataTextField = this._DataTextField;
                     this.lstAvailable.DataValueField = this._DataValueField;
@@ -252,9 +252,9 @@ namespace DotNetNuke.UI.UserControls
             this.lstAssigned.ClearSelection();
             this.Sort(this.lstAvailable);
         }
-        
+
         #endregion
-        
+
         #region "Private Methods"
 
         private void Sort(ListBox ctlListBox)
@@ -271,7 +271,7 @@ namespace DotNetNuke.UI.UserControls
                 ctlListBox.Items.Add(objListItem);
             }
         }
-        
+
         #endregion
     }
 

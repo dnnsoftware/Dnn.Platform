@@ -18,8 +18,8 @@ namespace DotNetNuke.Web.Mvc.Routing
     /// <remarks>
     /// This validation is only applicable when the <see cref="System.Web.Routing.Route" /> is one that we created. A user-defined
     /// type that is derived from <see cref="System.Web.Routing.RouteBase" /> may have different semantics.
-    /// 
-    /// The logic here is duplicated from System.Web, but we need it to validate correctness of routes on startup. Since we can't 
+    ///
+    /// The logic here is duplicated from System.Web, but we need it to validate correctness of routes on startup. Since we can't
     /// change System.Web, this just lives in a static class for MVC.
     /// </remarks>
     internal static class ConstraintValidation

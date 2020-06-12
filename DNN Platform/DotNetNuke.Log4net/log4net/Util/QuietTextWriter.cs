@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -33,7 +33,7 @@ namespace log4net.Util
     /// </summary>
     /// <remarks>
     /// <para>
-    /// <see cref="QuietTextWriter"/> does not throw exceptions when things go wrong. 
+    /// <see cref="QuietTextWriter"/> does not throw exceptions when things go wrong.
     /// Instead, it delegates error handling to its <see cref="IErrorHandler"/>.
     /// </para>
     /// </remarks>
@@ -89,7 +89,7 @@ namespace log4net.Util
                 }
                 this.m_errorHandler = value;
             }
-        }   
+        }
 
         /// <summary>
         /// Gets a value indicating whether this writer is closed.
@@ -120,18 +120,18 @@ namespace log4net.Util
         /// Writes a character to the underlying writer
         /// </para>
         /// </remarks>
-        public override void Write(char value) 
+        public override void Write(char value)
         {
-            try 
+            try
             {
                 base.Write(value);
-            } 
-            catch (Exception e) 
+            }
+            catch (Exception e)
             {
                 this.m_errorHandler.Error("Failed to write [" + value + "].", e, ErrorCode.WriteFailure);
             }
         }
-    
+
         /// <summary>
         /// Writes a buffer to the underlying writer
         /// </summary>
@@ -143,18 +143,18 @@ namespace log4net.Util
         /// Writes a buffer to the underlying writer
         /// </para>
         /// </remarks>
-        public override void Write(char[] buffer, int index, int count) 
+        public override void Write(char[] buffer, int index, int count)
         {
-            try 
+            try
             {
                 base.Write(buffer, index, count);
-            } 
-            catch (Exception e) 
+            }
+            catch (Exception e)
             {
                 this.m_errorHandler.Error("Failed to write buffer.", e, ErrorCode.WriteFailure);
             }
         }
-    
+
         /// <summary>
         /// Writes a string to the output.
         /// </summary>
@@ -164,13 +164,13 @@ namespace log4net.Util
         /// Writes a string to the output.
         /// </para>
         /// </remarks>
-        override public void Write(string value) 
+        override public void Write(string value)
         {
-            try 
+            try
             {
                 base.Write(value);
-            } 
-            catch (Exception e) 
+            }
+            catch (Exception e)
             {
                 this.m_errorHandler.Error("Failed to write [" + value + "].", e, ErrorCode.WriteFailure);
             }

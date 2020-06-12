@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -37,8 +37,8 @@ namespace log4net.Filter
     /// The filter admits three options <see cref="LevelMin"/> and <see cref="LevelMax"/>
     /// that determine the range of priorities that are matched, and
     /// <see cref="AcceptOnMatch"/>. If there is a match between the range
-    /// of priorities and the <see cref="Level"/> of the <see cref="LoggingEvent"/>, then the 
-    /// <see cref="Decide"/> method returns <see cref="FilterDecision.Accept"/> in case the <see cref="AcceptOnMatch"/> 
+    /// of priorities and the <see cref="Level"/> of the <see cref="LoggingEvent"/>, then the
+    /// <see cref="Decide"/> method returns <see cref="FilterDecision.Accept"/> in case the <see cref="AcceptOnMatch"/>
     /// option value is set to <c>true</c>, if it is <c>false</c>
     /// then <see cref="FilterDecision.Deny"/> is returned. If there is no match, <see cref="FilterDecision.Deny"/> is returned.
     /// </para>
@@ -84,7 +84,7 @@ namespace log4net.Filter
         /// <para>
         /// The <see cref="AcceptOnMatch"/> property is a flag that determines
         /// the behavior when a matching <see cref="Level"/> is found. If the
-        /// flag is set to true then the filter will <see cref="FilterDecision.Accept"/> the 
+        /// flag is set to true then the filter will <see cref="FilterDecision.Accept"/> the
         /// logging event, otherwise it will <see cref="FilterDecision.Neutral"/> the event.
         /// </para>
         /// <para>
@@ -102,7 +102,7 @@ namespace log4net.Filter
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The minimum level that this filter will attempt to match against the 
+        /// The minimum level that this filter will attempt to match against the
         /// <see cref="LoggingEvent"/> level. If a match is found then
         /// the result depends on the value of <see cref="AcceptOnMatch"/>.
         /// </para>
@@ -118,7 +118,7 @@ namespace log4net.Filter
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The maximum level that this filter will attempt to match against the 
+        /// The maximum level that this filter will attempt to match against the
         /// <see cref="LoggingEvent"/> level. If a match is found then
         /// the result depends on the value of <see cref="AcceptOnMatch"/>.
         /// </para>
@@ -146,38 +146,38 @@ namespace log4net.Filter
         /// <see cref="FilterDecision.Neutral"/> is returned.
         /// </para>
         /// </remarks>
-        override public FilterDecision Decide(LoggingEvent loggingEvent) 
+        override public FilterDecision Decide(LoggingEvent loggingEvent)
         {
             if (loggingEvent == null)
             {
                 throw new ArgumentNullException("loggingEvent");
             }
 
-            if (this.m_levelMin != null) 
+            if (this.m_levelMin != null)
             {
-                if (loggingEvent.Level < this.m_levelMin) 
+                if (loggingEvent.Level < this.m_levelMin)
                 {
                     // level of event is less than minimum
                     return FilterDecision.Deny;
                 }
             }
 
-            if (this.m_levelMax != null) 
+            if (this.m_levelMax != null)
             {
-                if (loggingEvent.Level > this.m_levelMax) 
+                if (loggingEvent.Level > this.m_levelMax)
                 {
                     // level of event is greater than maximum
                     return FilterDecision.Deny;
                 }
             }
 
-            if (this.m_acceptOnMatch) 
+            if (this.m_acceptOnMatch)
             {
                 // this filter set up to bypass later filters and always return
                 // accept if level in range
                 return FilterDecision.Accept;
             }
-            else 
+            else
             {
                 // event is ok for this filter; allow later filters to have a look..
                 return FilterDecision.Neutral;

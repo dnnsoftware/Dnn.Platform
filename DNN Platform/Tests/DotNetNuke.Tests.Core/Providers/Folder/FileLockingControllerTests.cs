@@ -21,9 +21,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     [TestFixture]
     public class FileLockingControllerTests
     {
-        private Mock<IWorkflowEngine> _mockWorkFlowEngine;        
+        private Mock<IWorkflowEngine> _mockWorkFlowEngine;
         private Mock<IUserSecurityController> _mockUserSecurityController;
-        
+
         [SetUp]
         public void Setup()
         {
@@ -37,8 +37,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
         [TearDown]
         public void TearDown()
-        {        
-            UserSecurityController.ClearInstance(); 
+        {
+            UserSecurityController.ClearInstance();
             MockComponentProvider.ResetContainer();
         }
 
@@ -74,7 +74,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         public void IsFileLocked_ReturnsTrue_WhenWorkflowIsNotComplete()
         {
             // Arrange
-            var fileInfo = new FileInfoBuilder()                
+            var fileInfo = new FileInfoBuilder()
                 .WithEndDate(DateTime.Today.AddDays(2))
                 .WithEnablePublishPeriod(true)
                 .WithContentItemId(It.IsAny<int>())
@@ -115,7 +115,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         public void IsFileLocked_ReturnsFalse_WhenPublishPeriodIsIn()
         {
             // Arrange
-            var fileInfo = new FileInfoBuilder()                
+            var fileInfo = new FileInfoBuilder()
                 .WithEndDate(DateTime.Today.AddDays(2))
                 .WithEnablePublishPeriod(true)
                 .Build();
@@ -174,7 +174,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 .WithEnablePublishPeriod(true)
                 .Build();
             this._mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(It.IsAny<int>(), It.IsAny<int>())).Returns(false);
-            
+
             // Act
             var result = FileLockingController.Instance.IsFileOutOfPublishPeriod(fileInfo, It.IsAny<int>(), It.IsAny<int>());
 
@@ -204,7 +204,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         public void IsFileOutOfPublishPeriod_ReturnsFalse_WhenPublishPeriodIsIn()
         {
             // Arrange
-            var fileInfo = new FileInfoBuilder()                
+            var fileInfo = new FileInfoBuilder()
                 .WithEndDate(DateTime.Today.AddDays(2))
                 .WithEnablePublishPeriod(true)
                 .Build();
@@ -221,7 +221,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         public void IsFileOutOfPublishPeriod_ReturnsFalse_WhenPublishPeriodHasNotEndDate()
         {
             // Arrange
-            var fileInfo = new FileInfoBuilder()                
+            var fileInfo = new FileInfoBuilder()
                 .WithEndDate(DateTime.Today.AddDays(2))
                 .WithEnablePublishPeriod(true)
                 .Build();

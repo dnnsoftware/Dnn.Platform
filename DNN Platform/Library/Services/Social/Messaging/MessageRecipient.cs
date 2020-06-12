@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.Social.Messaging
         /// </summary>
         [XmlAttribute]
         public bool Archived { get; set; }
-       
+
         /// <summary>
         /// IHydratable.KeyID.
         /// </summary>
@@ -98,10 +98,10 @@ namespace DotNetNuke.Services.Social.Messaging
             this.UserID = Convert.ToInt32(dr["UserID"]);
             this.Archived = Null.SetNullBoolean(dr["Archived"]);
             this.Read = Null.SetNullBoolean(dr["Read"]);
-            
+
             // add audit column data
             this.FillInternal(dr);
-            
+
         }
     }
 }

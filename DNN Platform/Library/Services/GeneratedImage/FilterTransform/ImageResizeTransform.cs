@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         /// Sets the resize mode. The default value is Fit.
         /// </summary>
         public ImageResizeMode Mode { get; set; }
-        
+
         /// <summary>
         /// Sets the width of the resulting image
         /// </summary>
@@ -99,7 +99,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Sets the Backcolor 
+        /// Sets the Backcolor
         /// </summary>
         public Color BackColor { get; set; } = Color.White;
 
@@ -119,7 +119,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         public override Image ProcessImage(Image image)
         {
             if (image == null)
-                return null;    
+                return null;
 
             if (this.MaxWidth > 0)
             {
@@ -154,7 +154,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             }
             return procImage;
         }
-        
+
         private static void CheckValue(int value)
         {
             if (value < 0)
@@ -195,7 +195,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 
             graphics.FillRectangle(new SolidBrush(this.BackColor), new Rectangle(0, 0, resizeWidth + 2 * this._border, resizeHeight + 2 * this._border));
             graphics.DrawImage(img, this._border, this._border, resizeWidth, resizeHeight);
-            
+
             return newimage;
         }
 
@@ -237,7 +237,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
                 resizeWidth = this.Width;
                 resizeHeight = scaledHeight;
             }
-            else 
+            else
             {
                 resizeWidth = scaledWidth;
                 resizeHeight = this.Height;
@@ -260,7 +260,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         {
             int resizeHeight = this.Height;
             int resizeWidth = this.Width;
-            
+
             var newImage = new Bitmap(this.Width, this.Height);
             var graphics = Graphics.FromImage(newImage);
 

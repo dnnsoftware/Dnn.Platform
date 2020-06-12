@@ -78,7 +78,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     this.FindItemByValue(initial, true).Selected = true;
                 }
-            } 
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
     {
         private Mock<IPortalTemplateIO> _mockPortalTemplateIO;
         private const string HostMapPath = @"C:\path";
-        
+
         private const string DefaultName = "Default";
         private static readonly string DefaultPath = MakePath(DefaultName);
         private static readonly string DefaultDePath = MakePath(DefaultName, "de-DE");
@@ -90,12 +90,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         {
             PortalTemplateIO.ClearInstance();
         }
-        
+
         [Test]
         public void NoTemplatesReturnsEmptyList()
         {
             // Arrange
-            
+
 
             // Act
             var templates = PortalController.Instance.GetAvailablePortalTemplates();
@@ -123,7 +123,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             // Arrange
             this._mockPortalTemplateIO.Setup(x => x.EnumerateTemplates()).Returns(this.ToEnumerable(StaticPath));
             this._mockPortalTemplateIO.Setup(x => x.OpenTextReader(StaticPath)).Returns(this.CreateTemplateFileReader(StaticDescription));
-            
+
             // Act
             var templates = PortalController.Instance.GetAvailablePortalTemplates();
 

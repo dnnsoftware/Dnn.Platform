@@ -17,7 +17,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for the value.
         /// </returns>
@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for the value.
         /// </returns>
@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for the value.
         /// </returns>
@@ -56,7 +56,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for the value.
         /// </returns>
@@ -69,7 +69,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for the value.
         /// </returns>
@@ -82,7 +82,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Provides a mechanism to create custom HTML markup compatible with the ASP.NET MVC model binders and templates.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The HTML markup for the value.
         /// </returns>

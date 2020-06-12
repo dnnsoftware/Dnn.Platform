@@ -88,9 +88,9 @@ namespace DotNetNuke.UI.Skins.Controls
                 this._includeActiveTab = value;
             }
         }
-        
+
         #endregion
-        
+
         #region "Event Handlers"
 
         protected override void OnLoad(EventArgs e)
@@ -113,7 +113,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     // Add the skinpath to image paths
                     this.Separator = SrcRegex.Replace(this.Separator, "$&" + this.PortalSettings.ActiveTab.SkinPath);
                 }
-                
+
                 // Wrap in a span
                 this.Separator = string.Format("<span class=\"{0}\">{1}</span>", strCssClass, this.Separator);
             }
@@ -121,12 +121,12 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 this.Separator = " ";
             }
-            
+
             // build links
             string strLinks = "";
 
             strLinks = this.BuildLinks(this.Level, strSeparator, strCssClass);
-            
+
             // Render links, even if nothing is returned with the currently set level
             if (String.IsNullOrEmpty(strLinks) && this.ForceLinks)
             {
@@ -134,9 +134,9 @@ namespace DotNetNuke.UI.Skins.Controls
             }
             this.lblLinks.Text = strLinks;
         }
-        
+
         #endregion
-        
+
         #region "Private Methods"
 
         private string BuildLinks(string strLevel, string strSeparator, string strCssClass)
@@ -219,7 +219,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             return string.Format("<a class=\"{0}\" href=\"{1}\">{2}</a>", strCssClass, strURL, strTabName);
         }
-        
+
         #endregion
     }
 }

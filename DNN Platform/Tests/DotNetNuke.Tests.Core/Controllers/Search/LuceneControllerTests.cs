@@ -142,7 +142,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private void AddStandardDocs()
         {
             string[] lines = {
-                Line1, Line2, Line3, Line4 
+                Line1, Line2, Line3, Line4
                 };
 
             this.AddLinesAsSearchDocs(lines);
@@ -176,7 +176,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void LuceneController_Add_Throws_On_Null_Document()
         {
-            // Arrange          
+            // Arrange
 
             // Act, Assert
             Assert.Throws<ArgumentNullException>(() => this._luceneController.Add(null));
@@ -184,7 +184,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         public void LuceneController_Add_Throws_On_Null_Query()
         {
-            // Arrange          
+            // Arrange
 
             // Act, Assert
             Assert.Throws<ArgumentNullException>(() => this._luceneController.Delete(null));
@@ -193,8 +193,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void LuceneController_Add_Empty_FiledsCollection_DoesNot_Create_Index()
         {
-            // Arrange     
-            
+            // Arrange
+
             // Act
             this._luceneController.Add(new Document());
             this._luceneController.Commit();
@@ -212,7 +212,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string fieldName = "content";
             const string fieldValue = Line1;
 
-            // Act 
+            // Act
             var field = new Field(fieldName, fieldValue, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
             var doc = new Document();
             doc.Add(field);
@@ -236,7 +236,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string expectedResult = " src=&#39;<b>fox</b>&#39; type=&#39;text/javascript&#39;&gt;&lt;/script&gt;";
             // Note that we mustn't get " src='<b>fox</b>' type='text/javascript'></script>" as this causes browser rendering issues
 
-            // Act 
+            // Act
             var field = new Field(fieldName, fieldValue, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
             var doc = new Document();
             doc.Add(field);
@@ -258,7 +258,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string fieldName = "content";
             const string fieldValue = Line1;
 
-            // Act 
+            // Act
             var field = new Field(fieldName, fieldValue, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
             var doc = new Document();
             doc.Add(field);
@@ -322,7 +322,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.AddStandardDocs();
 
             var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")), PageIndex = 1, PageSize = 4 }));
-            
+
             // Assert
             Assert.AreEqual(4, hits.TotalHits);
             Assert.AreEqual(4, hits.Results.Count());
@@ -377,7 +377,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Arrange
             const string fieldName = "content";
 
-            // Act 
+            // Act
 
             // Add first numeric field
             var doc1 = new Document();
@@ -413,7 +413,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string fieldName = "content";
             var dates = new List<DateTime> { DateTime.Now.AddYears(-3), DateTime.Now.AddYears(-2), DateTime.Now.AddYears(-1), DateTime.Now };
 
-            // Act 
+            // Act
             foreach (var date in dates)
             {
                 var doc = new Document();
@@ -473,7 +473,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string fieldName = "content";
             const string fieldValue = Line_Chinese;
 
-            // Act 
+            // Act
             var field = new Field(fieldName, fieldValue, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
             var doc = new Document();
             doc.Add(field);
@@ -512,7 +512,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string fieldName = "content";
             const string fieldValue = Line1;
 
-            // Act 
+            // Act
             var field = new Field(fieldName, fieldValue, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
             var doc = new Document();
             doc.Add(field);
@@ -540,7 +540,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void LuceneController_Search_Single_FuzzyQuery()
         {
-            // Arrange  
+            // Arrange
             string[] docs = {
                 "fuzzy",
                 "wuzzy"
@@ -560,7 +560,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void LuceneController_Search_Double_FuzzyQuery()
         {
-            // Arrange  
+            // Arrange
             string[] docs = {
                 "home",
                 "homez", // note home and homes could be returned by PorterFilter
@@ -603,7 +603,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Arrange
             const string fieldName = "content";
 
-            // Act 
+            // Act
 
             // Add first numeric field
             var doc1 = new Document();
@@ -623,7 +623,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Arrange
             const string fieldName = "content";
 
-            // Act 
+            // Act
 
             // Add first numeric field
             var doc1 = new Document();
@@ -643,7 +643,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Arrange
             const string fieldName = "content";
 
-            // Act 
+            // Act
 
             // Add first numeric field
             var doc1 = new Document();
@@ -680,7 +680,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 File.Create(lockFile).Close();
             }
 
-            // Act 
+            // Act
             var doc1 = new Document();
             doc1.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(1));
 
@@ -696,7 +696,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string fieldName = "content";
             var lockFile = Path.Combine(SearchIndexFolder, WriteLockFile);
 
-            // Act 
+            // Act
             var doc1 = new Document();
             doc1.Add(new NumericField(fieldName, Field.Store.YES, true).SetIntValue(1));
             this._luceneController.Add(doc1);
@@ -719,7 +719,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private int AddTestDocs()
         {
-            // Act 
+            // Act
             for (var i = 0; i < TotalTestDocs2Create; i++)
             {
                 var doc = new Document();
@@ -734,8 +734,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private int DeleteTestDocs()
         {
-            // Act 
-            // delete odd docs => [1, 3] 
+            // Act
+            // delete odd docs => [1, 3]
             var delCount = 0;
             for (var i = 1; i < TotalTestDocs2Create; i += 2)
             {

@@ -33,7 +33,7 @@ namespace DotNetNuke.Entities.Urls
             result.Action = ActionType.Continue;
             result.Reason = RedirectReason.Not_Redirected;
             result.FinalUrl = null;
-            // clean the path for the rewrite 
+            // clean the path for the rewrite
             NameValueCollection queryString = null;
             if (context != null)
             {
@@ -59,20 +59,20 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="settings"></param>
         /// <param name="parentTraceId"></param>
         /// <returns></returns>
-        internal static bool CheckForModuleProviderRedirect(Uri requestUri, 
+        internal static bool CheckForModuleProviderRedirect(Uri requestUri,
                                                                 ref UrlAction result,
                                                                 NameValueCollection queryStringCol,
-                                                                FriendlyUrlSettings settings, 
+                                                                FriendlyUrlSettings settings,
                                                                 Guid parentTraceId)
         {
             var messages = new List<string>();
             string location;
-            bool redirected = ExtensionUrlProviderController.CheckForRedirect(requestUri, 
-                                                                                result, 
-                                                                                queryStringCol, 
+            bool redirected = ExtensionUrlProviderController.CheckForRedirect(requestUri,
+                                                                                result,
+                                                                                queryStringCol,
                                                                                 settings,
-                                                                                out location, 
-                                                                                ref messages, 
+                                                                                out location,
+                                                                                ref messages,
                                                                                 parentTraceId);
             if (messages != null)
             {
@@ -87,13 +87,13 @@ namespace DotNetNuke.Entities.Urls
             return redirected;
         }
 
-        internal static bool CheckForParameterRedirect(Uri requestUri, 
+        internal static bool CheckForParameterRedirect(Uri requestUri,
                                                             ref UrlAction result,
-                                                            NameValueCollection queryStringCol, 
+                                                            NameValueCollection queryStringCol,
                                                             FriendlyUrlSettings settings)
         {
-            // check for parameter replaced works by inspecting the parameters on a rewritten request, comparing 
-            // them agains the list of regex expressions on the friendlyurls.config file, and redirecting to the same page 
+            // check for parameter replaced works by inspecting the parameters on a rewritten request, comparing
+            // them agains the list of regex expressions on the friendlyurls.config file, and redirecting to the same page
             // but with new parameters, if there was a match
             bool redirect = false;
             // get the redirect actions for this portal
@@ -206,7 +206,7 @@ namespace DotNetNuke.Entities.Urls
                                 // first check to see if the parameter replacement string has a destination tabid specified
                                 if (parms.ToLowerInvariant().Contains("tabid/"))
                                 {
-                                    // if so, using a feature whereby the dest tabid can be changed within the parameters, which will 
+                                    // if so, using a feature whereby the dest tabid can be changed within the parameters, which will
                                     // redirect the page as well as redirecting the parameter values
                                     string[] parmParts = parms.Split('/');
                                     bool tabIdNext = false;
@@ -248,12 +248,12 @@ namespace DotNetNuke.Entities.Urls
                                         if (tab != null)
                                         {
                                             string path = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(tab.TabID, "");
-                                            string friendlyUrlNoParms = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(tab, 
+                                            string friendlyUrlNoParms = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(tab,
                                                                                                 path,
                                                                                                 Globals.glbDefaultPage,
-                                                                                                result.HttpAlias, 
+                                                                                                result.HttpAlias,
                                                                                                 false,
-                                                                                                settings, 
+                                                                                                settings,
                                                                                                 Guid.Empty);
                                             if (friendlyUrlNoParms.EndsWith("/") == false)
                                             {
@@ -374,11 +374,11 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="parentTraceId"></param>
         /// <returns></returns>
         /// <remarks>823 : Moved from CheckForRedirects to allow call earlier in pipeline</remarks>
-        internal static string GetTabRedirectUrl(TabInfo tab, 
-                                                    FriendlyUrlSettings settings, 
+        internal static string GetTabRedirectUrl(TabInfo tab,
+                                                    FriendlyUrlSettings settings,
                                                     string cleanPath,
-                                                    UrlAction result, 
-                                                    out bool permRedirect, 
+                                                    UrlAction result,
+                                                    out bool permRedirect,
                                                     Guid parentTraceId)
         {
             string bestFriendlyUrl = null;
@@ -392,11 +392,11 @@ namespace DotNetNuke.Entities.Urls
                 if (redirectTab != null)
                 {
                     // now get the friendly url for that tab
-                    bestFriendlyUrl = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(redirectTab, 
+                    bestFriendlyUrl = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(redirectTab,
                                                                                         cleanPath,
                                                                                         Globals.glbDefaultPage,
-                                                                                        result.HttpAlias, 
-                                                                                        false, 
+                                                                                        result.HttpAlias,
+                                                                                        false,
                                                                                         settings,
                                                                                         parentTraceId);
                 }
@@ -404,7 +404,7 @@ namespace DotNetNuke.Entities.Urls
             else
             {
                 // use the url, as specified in the dnn tab url property
-                // 776 : when no url, don't redirect 
+                // 776 : when no url, don't redirect
                 if (tab.Url != "")
                 {
                     bestFriendlyUrl = tab.Url;

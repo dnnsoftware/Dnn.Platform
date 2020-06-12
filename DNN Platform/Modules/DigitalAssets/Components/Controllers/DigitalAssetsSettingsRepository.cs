@@ -81,10 +81,10 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             SubfolderFilter excludeSubfolders;
             return !Enum.TryParse(setting, true, out excludeSubfolders) ? SubfolderFilter.IncludeSubfoldersFolderStructure : excludeSubfolders;
         }
-        
+
         public void SaveDefaultFolderTypeId(int moduleId, int defaultFolderTypeId)
         {
-            ModuleController.Instance.UpdateModuleSetting(moduleId, DefaultFolderTypeIdSetting, defaultFolderTypeId.ToString(CultureInfo.InvariantCulture));            
+            ModuleController.Instance.UpdateModuleSetting(moduleId, DefaultFolderTypeIdSetting, defaultFolderTypeId.ToString(CultureInfo.InvariantCulture));
         }
 
         public void SaveMode(int moduleId, DigitalAssestsMode mode)
@@ -110,8 +110,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         private string GetSettingByKey(int moduleId, string key)
         {
             var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
-            var moduleSettings = module.ModuleSettings; 
-            return (string)moduleSettings[key];               
+            var moduleSettings = module.ModuleSettings;
+            return (string)moduleSettings[key];
         }
 
         internal bool SettingExists(int moduleId, string settingName)

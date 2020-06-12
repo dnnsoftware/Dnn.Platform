@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
         /// <param name="subscriptionTypeId">Subscription Type Id</param>
         /// <returns>Collection of subscriptions</returns>
         IEnumerable<Subscription> GetUserSubscriptions(UserInfo user, int portalId, int subscriptionTypeId = -1);
-        
+
         /// <summary>
         /// Returns the Content Subscriptions.
         /// </summary>
@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
         /// <param name="subscription">Subscription</param>
         /// <returns>True if the user is subscribed to the content, false otherwise</returns>
         bool IsSubscribed(Subscription subscription);
-        
+
         /// <summary>
         /// Adds a new Subscription.
         /// If the operation succeed the SubscriptionId property of the Subscription entity will be filled up.

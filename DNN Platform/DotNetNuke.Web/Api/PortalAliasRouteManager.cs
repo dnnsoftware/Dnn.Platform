@@ -22,7 +22,7 @@ namespace DotNetNuke.Web.Api
         {
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
             Requires.NotNegative("count", count);
-            
+
             return moduleFolderName + "-" + routeName + "-" + count.ToString(CultureInfo.InvariantCulture);
         }
 
@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.Api
             {
                 return "";
             }
-            
+
             string prefix = "";
 
             for (int i = count - 1; i >= 0; i--)
@@ -63,7 +63,7 @@ namespace DotNetNuke.Web.Api
             var allRouteValues = new HttpRouteValueDictionary(routeValues);
 
             var segments = portalAliasInfo.HTTPAlias.Split('/');
-            
+
             if (segments.Length > 1)
             {
                   for (int i = 1; i < segments.Length; i++)
@@ -107,9 +107,9 @@ namespace DotNetNuke.Web.Api
                 // prefixCounts are required for each route that is mapped but they only change
                 // when a new portal is added so cache them until that time
 
-                
+
                 var portals = PortalController.Instance.GetPortals();
-               
+
 
                 var segmentCounts1 = new List<int>();
 

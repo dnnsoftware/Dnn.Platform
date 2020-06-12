@@ -10,9 +10,9 @@ namespace DotNetNuke.Entities.Urls
 {
     /// <summary>
     /// This class contains helpers which set the redirect action and reason tokens.  These are fake additions to the rewritten query string
-    /// which are used as a type of property to store intent of a particular url in the page index.  This is done to keep the base type 
+    /// which are used as a type of property to store intent of a particular url in the page index.  This is done to keep the base type
     /// stored in the page index dictionary as a value type (string) rather than a object type with properties.  So the two 'properties'
-    /// of a Url are the action (ie 301 redirect, 302 redirect, 404, etc) and the reason (home page redirect, etc) are stored as 
+    /// of a Url are the action (ie 301 redirect, 302 redirect, 404, etc) and the reason (home page redirect, etc) are stored as
     /// part of the rewritten querystring in the index.   These then have to be removed and translated back to 'action' parameters
     /// when the rewriting actually happens.  So all methods in this class are to do with either storing or retrieving these tokens.
     /// </summary>
@@ -207,7 +207,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// DetermineRedirectReasonAndAction extracts the redirect value from the rewrite url and 
+        /// DetermineRedirectReasonAndAction extracts the redirect value from the rewrite url and
         /// returns the new rewritten url, and the reason for the redirection, and an action value for the type of redirect
         /// </summary>
         /// <param name="rewrittenUrl">Rewritten url as found in page dictionary</param>
@@ -219,12 +219,12 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="newUrl">Url to used for rewrite process</param>
         /// <returns>the new Url, with any replacements done.  Replacements occur when a reason token
         /// was stored in the tab dictionary entry just to indicate a redirect reason.</returns>
-        internal static void DetermineRedirectReasonAndAction(string rewrittenUrl, 
-                                                                UrlAction result, 
+        internal static void DetermineRedirectReasonAndAction(string rewrittenUrl,
+                                                                UrlAction result,
                                                                 bool wasParms,
-                                                                FriendlyUrlSettings settings, 
+                                                                FriendlyUrlSettings settings,
                                                                 out string newUrl,
-                                                                out RedirectReason reason, 
+                                                                out RedirectReason reason,
                                                                 out ActionType action)
         {
             // init parms
@@ -283,7 +283,7 @@ namespace DotNetNuke.Entities.Urls
 
                     case "dl":
                     case "db":
-                        // deleted tab dl 
+                        // deleted tab dl
                         // disabled tab db
                         clearActionToken = true;
                         // 626 Deleted tab hanlding not working properyly - override
@@ -422,7 +422,7 @@ namespace DotNetNuke.Entities.Urls
         /// <returns></returns>
         internal static string RemoveAnyRedirectTokens(string path, NameValueCollection queryStringCol)
         {
-            // don't really care what the value is, but need it for replacing 
+            // don't really care what the value is, but need it for replacing
             // the do301 is an internal value, used to control redirects from the page index
             if (string.IsNullOrEmpty(path) == false)
             {
@@ -435,7 +435,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     val = "true";
                 }
-                // nix the 301 redirect query string value or terminal loops-a-plenty 
+                // nix the 301 redirect query string value or terminal loops-a-plenty
                 path = path.Replace("&do301=" + val, "");
                 path = path.Replace("?do301=" + val, "");
 
@@ -448,7 +448,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     val = "true";
                 }
-                // nix the 302 redirect query string value or terminal loops-a-plenty 
+                // nix the 302 redirect query string value or terminal loops-a-plenty
                 path = path.Replace("&do302=" + val, "");
                 path = path.Replace("?do302=" + val, "");
             }
@@ -482,7 +482,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         if (result.EndsWith("?") || result.EndsWith("&"))
                         {
-                            // trim end 
+                            // trim end
                             result = result.Substring(0, result.Length - 1);
                         }
                     }

@@ -29,7 +29,7 @@ namespace DotNetNuke.Entities.Host
         #region Private
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IPFilterController));
-        
+
         private enum FilterType
         {
             Allow = 1,
@@ -80,15 +80,15 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// get an IP filter 
+        /// get an IP filter
         /// </summary>
         /// <param name="ipFilter">filter details</param>
         /// <returns>the selected IP filter</returns>
         public IPFilterInfo GetIPFilter(int ipFilter)
         {
-            return CBO.FillObject<IPFilterInfo>(DataProvider.Instance().GetIPFilter(ipFilter));       
+            return CBO.FillObject<IPFilterInfo>(DataProvider.Instance().GetIPFilter(ipFilter));
         }
-    
+
         /// <summary>
         /// get the list of IP filters
         /// </summary>
@@ -148,7 +148,7 @@ namespace DotNetNuke.Entities.Host
             return ipAllowed;
         }
 
-        
+
 
         private void LogBannedIPAttempt(string ipAddress)
         {

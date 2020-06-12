@@ -49,7 +49,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         [Test]
         public void Run_GetPageWithValidCommand_ShouldSuccessResponse()
         {
-            // Arrange         
+            // Arrange
             this._tabControllerMock.Setup(t => t.GetTab(this._tabId, this._testPortalId)).Returns(this._tab);
 
             this.SetupCommand();
@@ -67,7 +67,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         [Test]
         public void Run_GetPageWithValidCommandForNonExistingTab_ShouldErrorResponse()
         {
-            // Arrange            
+            // Arrange
             this._tab = null;
 
             this._tabControllerMock.Setup(t => t.GetTab(this._tabId, this._testPortalId)).Returns(this._tab);
@@ -85,7 +85,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         [Test]
         public void Run_GetPageWithValidCommandForRequestedPortalNotAllowed_ShouldErrorResponse()
         {
-            // Arrange            
+            // Arrange
             this._contentVerifierMock.Setup(c => c.IsContentExistsForRequestedPortal(this._testPortalId, this._portalSettings, false)).Returns(false);
 
             this.SetupCommand();

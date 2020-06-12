@@ -14,22 +14,22 @@ namespace DotNetNuke.Entities.Users.Social
         /// <summary>
         /// Delete RelationshipType
         /// </summary>
-        /// <param name="relationshipType">RelationshipType</param>        
+        /// <param name="relationshipType">RelationshipType</param>
         /// -----------------------------------------------------------------------------
         void DeleteRelationshipType(RelationshipType relationshipType);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Get list of All RelationshipTypes defined in system
-        /// </summary>        
+        /// </summary>
         /// -----------------------------------------------------------------------------
         IList<RelationshipType> GetAllRelationshipTypes();
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Get RelationshipType By RelationshipTypeId
-        /// </summary>        
-        /// <param name="relationshipTypeId">RelationshipTypeId</param>        
+        /// </summary>
+        /// <param name="relationshipTypeId">RelationshipTypeId</param>
         /// -----------------------------------------------------------------------------
         RelationshipType GetRelationshipType(int relationshipTypeId);
 
@@ -37,9 +37,9 @@ namespace DotNetNuke.Entities.Users.Social
         /// <summary>
         /// Save RelationshipType
         /// </summary>
-        /// <param name="relationshipType">RelationshipType object</param>        
+        /// <param name="relationshipType">RelationshipType object</param>
         /// <remarks>
-        /// If RelationshipTypeId is -1 (Null.NullIntger), then a new RelationshipType is created, 
+        /// If RelationshipTypeId is -1 (Null.NullIntger), then a new RelationshipType is created,
         /// else existing RelationshipType is updated
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -53,31 +53,31 @@ namespace DotNetNuke.Entities.Users.Social
         /// <summary>
         /// Delete Relationship
         /// </summary>
-        /// <param name="relationship">Relationship</param>        
+        /// <param name="relationship">Relationship</param>
         /// -----------------------------------------------------------------------------
         void DeleteRelationship(Relationship relationship);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Get Relationship By RelationshipId
-        /// </summary>        
-        /// <param name="relationshipId">RelationshipId</param>        
+        /// </summary>
+        /// <param name="relationshipId">RelationshipId</param>
         /// -----------------------------------------------------------------------------
         Relationship GetRelationship(int relationshipId);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Get Relationships By UserId
-        /// </summary>        
-        /// <param name="userId">UserId</param>        
+        /// </summary>
+        /// <param name="userId">UserId</param>
         /// -----------------------------------------------------------------------------
         IList<Relationship> GetRelationshipsByUserId(int userId);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Get Relationships By PortalId
-        /// </summary>        
-        /// <param name="portalId">PortalId</param>        
+        /// </summary>
+        /// <param name="portalId">PortalId</param>
         /// -----------------------------------------------------------------------------
         IList<Relationship> GetRelationshipsByPortalId(int portalId);
 
@@ -85,9 +85,9 @@ namespace DotNetNuke.Entities.Users.Social
         /// <summary>
         /// Save Relationship
         /// </summary>
-        /// <param name="relationship">Relationship object</param>        
+        /// <param name="relationship">Relationship object</param>
         /// <remarks>
-        /// If RelationshipId is -1 (Null.NullIntger), then a new Relationship is created, 
+        /// If RelationshipId is -1 (Null.NullIntger), then a new Relationship is created,
         /// else existing Relationship is updated
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -101,25 +101,25 @@ namespace DotNetNuke.Entities.Users.Social
         /// <summary>
         /// Delete UserRelationship
         /// </summary>
-        /// <param name="userRelationship">UserRelationship to delete</param>        
+        /// <param name="userRelationship">UserRelationship to delete</param>
         /// -----------------------------------------------------------------------------
         void DeleteUserRelationship(UserRelationship userRelationship);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Get UserRelationship By UserRelationshipId
-        /// </summary>        
-        /// <param name="userRelationshipId">UserRelationshipId</param>        
+        /// </summary>
+        /// <param name="userRelationshipId">UserRelationshipId</param>
         /// -----------------------------------------------------------------------------
         UserRelationship GetUserRelationship(int userRelationshipId);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Get UserRelationship by its members
-        /// </summary>        
-        /// <param name="user">User</param>        
-        /// <param name="relatedUser">Related User</param>   
-        /// <param name="relationship">Relationship Object</param>             
+        /// </summary>
+        /// <param name="user">User</param>
+        /// <param name="relatedUser">Related User</param>
+        /// <param name="relationship">Relationship Object</param>
         /// -----------------------------------------------------------------------------
         UserRelationship GetUserRelationship(UserInfo user, UserInfo relatedUser, Relationship relationship);
 
@@ -134,9 +134,9 @@ namespace DotNetNuke.Entities.Users.Social
         /// <summary>
         /// Save UserRelationship
         /// </summary>
-        /// <param name="userRelationship">UserRelationship object</param>        
+        /// <param name="userRelationship">UserRelationship object</param>
         /// <remarks>
-        /// If UserRelationshipId is -1 (Null.NullIntger), then a new UserRelationship is created, 
+        /// If UserRelationshipId is -1 (Null.NullIntger), then a new UserRelationship is created,
         /// else existing UserRelationship is updated
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -150,24 +150,24 @@ namespace DotNetNuke.Entities.Users.Social
         /// <summary>
         /// Delete UserRelationshipPreference
         /// </summary>
-        /// <param name="userRelationshipPreference">UserRelationshipPreference to delete</param>        
+        /// <param name="userRelationshipPreference">UserRelationshipPreference to delete</param>
         /// -----------------------------------------------------------------------------
         void DeleteUserRelationshipPreference(UserRelationshipPreference userRelationshipPreference);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Get UserRelationshipPreference By RelationshipTypeId
-        /// </summary>        
-        /// <param name="preferenceId">PreferenceId</param>        
+        /// </summary>
+        /// <param name="preferenceId">PreferenceId</param>
         /// -----------------------------------------------------------------------------
         UserRelationshipPreference GetUserRelationshipPreference(int preferenceId);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Get UserRelationshipPreference By UserId and RelationshipId
-        /// </summary>        
-        /// <param name="userId">UserId</param>        
-        /// <param name="relationshipId">RelationshipId</param>        
+        /// </summary>
+        /// <param name="userId">UserId</param>
+        /// <param name="relationshipId">RelationshipId</param>
         /// -----------------------------------------------------------------------------
         UserRelationshipPreference GetUserRelationshipPreference(int userId, int relationshipId);
 
@@ -175,9 +175,9 @@ namespace DotNetNuke.Entities.Users.Social
         /// <summary>
         /// Save UserRelationshipPreference
         /// </summary>
-        /// <param name="userRelationshipPreference">UserRelationshipPreference object</param>        
+        /// <param name="userRelationshipPreference">UserRelationshipPreference object</param>
         /// <remarks>
-        /// If PreferenceId is -1 (Null.NullIntger), then a new UserRelationshipPreference is created, 
+        /// If PreferenceId is -1 (Null.NullIntger), then a new UserRelationshipPreference is created,
         /// else existing UserRelationshipPreference is updated
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -188,11 +188,11 @@ namespace DotNetNuke.Entities.Users.Social
         #region Relationship Business APIs
 
         UserRelationship InitiateUserRelationship(UserInfo initiatingUser, UserInfo targetUser, Relationship relationship);
-       
+
         void AcceptUserRelationship(int userRelationshipId);
 
         void RemoveUserRelationship(int userRelationshipId);
-                      
+
         #endregion
 
         #region Easy Wrapper APIs

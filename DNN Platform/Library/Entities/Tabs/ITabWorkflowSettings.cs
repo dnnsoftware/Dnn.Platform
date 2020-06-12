@@ -16,7 +16,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <remarks>If no default workflow is defined for a portal the method returns the Direct Publish system workflow</remarks>
         /// <returns>The workflow Id of the portal default workflow</returns>
         int GetDefaultTabWorkflowId(int portalId);
-        
+
         /// <summary>
         /// This method sets the default workflow for a portal
         /// </summary>

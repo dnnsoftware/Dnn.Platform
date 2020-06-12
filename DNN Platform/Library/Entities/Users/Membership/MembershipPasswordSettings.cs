@@ -77,7 +77,7 @@ namespace DotNetNuke.Entities.Users.Membership
         #region initialization methods
 
         /// <summary>
-        /// Initialiser for MembershipPasswordSettings provider object.  
+        /// Initialiser for MembershipPasswordSettings provider object.
         /// </summary>
         public MembershipPasswordSettings(int portalId)
         {

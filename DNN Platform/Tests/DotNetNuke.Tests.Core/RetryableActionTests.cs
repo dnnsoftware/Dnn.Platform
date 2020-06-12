@@ -134,7 +134,7 @@ namespace DotNetNuke.Tests.Core
                 {
                     this._failuresRemaining--;
                 }
-                
+
                 throw new Exception("it failed");
             }
         }

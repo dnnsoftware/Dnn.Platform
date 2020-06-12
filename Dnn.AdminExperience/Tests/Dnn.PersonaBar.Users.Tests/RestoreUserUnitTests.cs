@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_RestoreValidUserId_ReturnSuccessResponse()
         {
-            // Arrange    
+            // Arrange
             var userId = 2;
             UserInfo userInfo = this.GetUser(userId, true);
             this._userValidatorMock
@@ -54,7 +54,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_RecycleBinControllerRestoringError_ReturnErrorResponse()
         {
-            // Arrange        
+            // Arrange
             var userId = 2;
             UserInfo userInfo = this.GetUser(userId, true);
             this._userValidatorMock
@@ -73,7 +73,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_RestoreNotDeletedUser_ReturnErrorResponse()
         {
-            // Arrange        
+            // Arrange
             var userId = 2;
             UserInfo userinfo = this.GetUser(userId, false);
             this._userValidatorMock
@@ -90,7 +90,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_RestoreNullUserId_ReturnErrorResponse()
         {
-            // Arrange        
+            // Arrange
             this.errorResultModel = new ConsoleErrorResultModel();
 
             UserInfo userinfo;

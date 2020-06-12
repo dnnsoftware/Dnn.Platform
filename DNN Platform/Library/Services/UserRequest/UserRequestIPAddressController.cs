@@ -27,8 +27,8 @@ namespace DotNetNuke.Services.UserRequest
             if (request.Headers.AllKeys.Contains(userRequestIPHeader))
             {
                 userIPAddress = request.Headers[userRequestIPHeader];
-                userIPAddress = userIPAddress.Split(',')[0];                
-            }            
+                userIPAddress = userIPAddress.Split(',')[0];
+            }
 
             if (string.IsNullOrEmpty(userIPAddress))
             {
@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.UserRequest
             {
                 userIPAddress = string.Empty;
             }
-            
+
             if (!string.IsNullOrEmpty(userIPAddress) && !this.ValidateIP(userIPAddress, ipFamily))
             {
                 userIPAddress = string.Empty;
@@ -63,13 +63,13 @@ namespace DotNetNuke.Services.UserRequest
             if (IPAddress.TryParse(ipString, out address))
             {
                 if (ipFamily == IPAddressFamily.IPv4 &&
-                    address.AddressFamily == AddressFamily.InterNetwork && 
+                    address.AddressFamily == AddressFamily.InterNetwork &&
                     ipString.Split('.').Length == 4)
                 {
                     return true;
                 }
 
-                if (ipFamily == IPAddressFamily.IPv6 && 
+                if (ipFamily == IPAddressFamily.IPv6 &&
                     address.AddressFamily == AddressFamily.InterNetworkV6)
                 {
                     return true;

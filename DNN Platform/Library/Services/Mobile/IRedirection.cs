@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.Mobile
         string Name { get; set; }
 
         /// <summary>
-        /// if redirect by visit the whole portal, this value should be -1; 
+        /// if redirect by visit the whole portal, this value should be -1;
         /// otherwise should be the exactly page id for redirection.
         /// </summary>
         int SourceTabId { get; set; }

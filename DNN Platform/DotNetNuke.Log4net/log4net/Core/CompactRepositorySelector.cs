@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -107,10 +107,10 @@ namespace log4net.Core
         /// <remarks>
         /// <para>
         /// The <paramref name="assembly"/> argument is not used. This selector does not create a
-        /// separate repository for each assembly. 
+        /// separate repository for each assembly.
         /// </para>
         /// <para>
-        /// As a named repository is not specified the default repository is 
+        /// As a named repository is not specified the default repository is
         /// returned. The default repository is named <c>log4net-default-repository</c>.
         /// </para>
         /// </remarks>
@@ -126,8 +126,8 @@ namespace log4net.Core
         /// <returns>The named <see cref="ILoggerRepository"/></returns>
         /// <remarks>
         /// <para>
-        /// Get the named <see cref="ILoggerRepository"/>. The default 
-        /// repository is <c>log4net-default-repository</c>. Other repositories 
+        /// Get the named <see cref="ILoggerRepository"/>. The default
+        /// repository is <c>log4net-default-repository</c>. Other repositories
         /// must be created using the <see cref="M:CreateRepository(string, Type)"/>.
         /// If the named repository does not exist an exception is thrown.
         /// </para>
@@ -154,7 +154,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Create a new repository for the assembly specified 
+        /// Create a new repository for the assembly specified
         /// </summary>
         /// <param name="assembly">not used</param>
         /// <param name="repositoryType">the type of repository to create, must implement <see cref="ILoggerRepository"/></param>
@@ -162,14 +162,14 @@ namespace log4net.Core
         /// <remarks>
         /// <para>
         /// The <paramref name="assembly"/> argument is not used. This selector does not create a
-        /// separate repository for each assembly. 
+        /// separate repository for each assembly.
         /// </para>
         /// <para>
         /// If the <paramref name="repositoryType"/> is <c>null</c> then the
         /// default repository type specified to the constructor is used.
         /// </para>
         /// <para>
-        /// As a named repository is not specified the default repository is 
+        /// As a named repository is not specified the default repository is
         /// returned. The default repository is named <c>log4net-default-repository</c>.
         /// </para>
         /// </remarks>
@@ -194,7 +194,7 @@ namespace log4net.Core
                 }
 
                 return rep;
-            }       
+            }
         }
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace log4net.Core
         /// If the named repository already exists an exception will be thrown.
         /// </para>
         /// <para>
-        /// If <paramref name="repositoryType"/> is <c>null</c> then the default 
+        /// If <paramref name="repositoryType"/> is <c>null</c> then the default
         /// repository type specified to the constructor is used.
         /// </para>
         /// </remarks>
@@ -272,7 +272,7 @@ namespace log4net.Core
         /// <remarks>
         /// <para>
         /// Test if a named repository exists. Use <see cref="M:CreateRepository(string, Type)"/>
-        /// to create a new repository and <see cref="M:GetRepository(string)"/> to retrieve 
+        /// to create a new repository and <see cref="M:GetRepository(string)"/> to retrieve
         /// a repository.
         /// </para>
         /// </remarks>

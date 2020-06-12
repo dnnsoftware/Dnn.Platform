@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.Cache
 
         private static System.Web.Caching.Cache _cache;
         private const string CachePrefix = "DNN_";
-        
+
         #endregion
 
         #region Protected Properties
@@ -73,7 +73,7 @@ namespace DotNetNuke.Services.Cache
         /// </summary>
         /// <remarks>This setting shouldn't affect current server, cache should always expire in current server even this setting set to True.</remarks>
         protected static bool CacheExpirationDisable { get; private set; }
-        
+
         #endregion
 
         #region Shared/Static Methods
@@ -140,11 +140,11 @@ namespace DotNetNuke.Services.Cache
             DataCache.ClearHostCache(true);
             Logger.Warn("Enable cache expiration.");
         }
-        
+
     #endregion
 
         #region Private Methods
-    
+
         private void ClearCacheInternal(string prefix, bool clearRuntime)
         {
             foreach (DictionaryEntry objDictionaryEntry in HttpRuntime.Cache)
@@ -287,7 +287,7 @@ namespace DotNetNuke.Services.Cache
                     this.RemoveCacheKey("GetModuleSettings" + moduleInfo.ModuleID, clearRuntime);
                 }
             }
-            
+
             // Clear "portal keys" for Portal
             this.ClearFolderCacheInternal(portalId, clearRuntime);
             this.ClearCacheKeysByPortalInternal(portalId, clearRuntime);
@@ -351,7 +351,7 @@ namespace DotNetNuke.Services.Cache
                 this.Remove(string.Format(GetCacheKey(CacheKeyBase), parameters));
             }
         }
-        
+
         #endregion
 
         #region Protected Methods

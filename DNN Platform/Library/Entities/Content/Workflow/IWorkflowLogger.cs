@@ -8,7 +8,7 @@ using DotNetNuke.Entities.Content.Workflow.Entities;
 namespace DotNetNuke.Entities.Content.Workflow
 {
     /// <summary>
-    /// This class is responsible to manage the workflows logs. 
+    /// This class is responsible to manage the workflows logs.
     /// It provides addition and get operation methods
     /// </summary>
     public interface IWorkflowLogger
@@ -32,7 +32,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <param name="comment">Comment to be added</param>
         /// <param name="userId">User Id who adds the log</param>
         void AddWorkflowLog(int contentItemId, int workflowId, string action, string comment, int userId);
-        
+
         /// <summary>
         /// Gets all logs regarding a specific workflow
         /// </summary>

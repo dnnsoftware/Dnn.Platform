@@ -48,7 +48,7 @@ namespace DotNetNuke.Entities.Portals
     ///            End If
     ///            Return _PhysicalPath.Replace("/", "\")
     ///        End Get
-    /// End Property 
+    /// End Property
     /// </code>
     /// </example>
     /// </remarks>
@@ -61,7 +61,7 @@ namespace DotNetNuke.Entities.Portals
         private string _administratorRoleName;
         private int _pages = Null.NullInteger;
         private string _registeredRoleName;
-        
+
         #endregion
 
         #region Constructors
@@ -148,7 +148,7 @@ namespace DotNetNuke.Entities.Portals
         public string BackgroundFile { get; set; }
 
         /// <summary>
-        /// Current host version 
+        /// Current host version
         /// </summary>
         [XmlElement("crmversion")]
         public string CrmVersion { get; set; }
@@ -787,7 +787,7 @@ namespace DotNetNuke.Entities.Portals
 
                 // else swallow the error
             }
-            
+
             this.PortalName = Null.SetNullString(dr["PortalName"]);
             this.LogoFile = Null.SetNullString(dr["LogoFile"]);
             this.FooterText = Null.SetNullString(dr["FooterText"]);

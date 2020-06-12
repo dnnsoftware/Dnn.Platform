@@ -81,7 +81,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// Whether include active page.
         /// </summary>
         public bool IncludeActiveTab { get; set; }
-        
+
         /// <summary>
         /// Whether include pages which are disabled.
         /// </summary>
@@ -145,7 +145,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>
         /// Specific to only show tabs which have view permission on these roles.
         /// </summary>
-        public IList<int> Roles { get; set; } 
+        public IList<int> Roles { get; set; }
 
     }
 }

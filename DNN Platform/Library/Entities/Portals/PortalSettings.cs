@@ -23,7 +23,7 @@ namespace DotNetNuke.Entities.Portals
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The PortalSettings class encapsulates all of the settings for the Portal, 
+    /// The PortalSettings class encapsulates all of the settings for the Portal,
     /// as well as the configuration settings required to execute the current tab
     /// view within the portal.
     /// </summary>
@@ -239,7 +239,7 @@ namespace DotNetNuke.Entities.Portals
         public int TermsTabId { get; set; }
 
         public int PrivacyTabId { get; set; }
-        
+
         #endregion
 
         #region Read-Only Properties
@@ -584,10 +584,10 @@ namespace DotNetNuke.Entities.Portals
 
         /*
          * add <a name="[moduleid]"></a> on the top of the module
-         * 
+         *
          * Desactivate this remove the html5 compatibility warnings
          * (and make the output smaller)
-         * 
+         *
          */
         public bool InjectModuleHyperLink
         {
@@ -598,8 +598,8 @@ namespace DotNetNuke.Entities.Portals
         }
         /*
          * generates a : Page.Response.AddHeader("X-UA-Compatible", "");
-         * 
-         
+         *
+
          */
         public string AddCompatibleHttpHeader
         {
@@ -644,7 +644,7 @@ namespace DotNetNuke.Entities.Portals
         public bool DataConsentActive { get; internal set; }
 
         /// <summary>
-        /// Last time the terms and conditions have been changed. This will determine if the user needs to 
+        /// Last time the terms and conditions have been changed. This will determine if the user needs to
         /// reconsent or not. Legally once the terms have changed, users need to sign again. This value is set
         /// by the "reset consent" button on the UI.
         /// </summary>
@@ -658,7 +658,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>
         /// Sets what should happen to the user account if a user has been deleted. This is important as
-        /// under certain circumstances you may be required by law to destroy the user's data within a 
+        /// under certain circumstances you may be required by law to destroy the user's data within a
         /// certain timeframe after a user has requested deletion.
         /// </summary>
         public UserDeleteAction DataConsentUserDeleteAction { get; internal set; }

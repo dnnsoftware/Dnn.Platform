@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Search.Entities
         /// Search Type Id
         /// </summary>
         public int SearchTypeId { get; set; }
-        
+
         /// <summary>
         /// Search Type Name
         /// </summary>

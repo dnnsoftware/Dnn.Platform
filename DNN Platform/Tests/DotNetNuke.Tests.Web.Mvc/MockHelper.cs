@@ -38,7 +38,7 @@ namespace DotNetNuke.Tests.Web.Mvc
                        .Returns(mockRequest.Object);
             mockContext.SetupGet(c => c.Response)
                        .Returns(mockResponse.Object);
-            
+
             return mockContext.Object;
         }
 

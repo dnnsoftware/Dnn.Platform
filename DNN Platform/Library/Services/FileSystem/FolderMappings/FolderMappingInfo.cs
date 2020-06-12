@@ -56,7 +56,7 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     this._imageUrl = FolderProvider.Instance(this.FolderProviderType).GetFolderProviderIconPath();
                 }
-                
+
                 return this._imageUrl;
             }
         }

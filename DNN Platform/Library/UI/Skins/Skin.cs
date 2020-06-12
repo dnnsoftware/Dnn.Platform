@@ -115,7 +115,7 @@ namespace DotNetNuke.UI.Skins
         #endregion
 
         #region Friend Properties
-        
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the ModuleCommunicate instance for the skin
@@ -264,7 +264,7 @@ namespace DotNetNuke.UI.Skins
             // if querystring dnnprintmode=true, controlpanel will not be shown
             if (this.Request.QueryString["dnnprintmode"] != "true" && !UrlUtils.InPopUp() && this.Request.QueryString["hidecommandbar"] != "true")
             {
-                if (Host.AllowControlPanelToDetermineVisibility || (ControlPanelBase.IsPageAdminInternal() || ControlPanelBase.IsModuleAdminInternal())) 
+                if (Host.AllowControlPanelToDetermineVisibility || (ControlPanelBase.IsPageAdminInternal() || ControlPanelBase.IsModuleAdminInternal()))
                 {
                     // ControlPanel processing
                     var controlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
@@ -408,7 +408,7 @@ namespace DotNetNuke.UI.Skins
         }
 
         /// <summary>
-        /// Handle access denied errors by displaying an error message 
+        /// Handle access denied errors by displaying an error message
         /// or by performing a redirect to a predefined "access denied URL"
         /// </summary>
         /// <param name="redirect"></param>
@@ -482,7 +482,7 @@ namespace DotNetNuke.UI.Skins
             {
                 // If request localized page which haven't complete translate yet, redirect to default language version.
                 var redirectUrl = Globals.AccessDeniedURL(Localization.GetString("TabAccess.Error"));
-                
+
                 // Current locale will use default if did'nt find any
                 Locale currentLocale = LocaleController.Instance.GetCurrentLocale(this.PortalSettings.PortalId);
                 if (this.PortalSettings.ContentLocalizationEnabled &&
@@ -502,7 +502,7 @@ namespace DotNetNuke.UI.Skins
             if (tabInfo.ContentItemId == Null.NullInteger && tabInfo.TabID != Null.NullInteger)
             {
                 TabController.Instance.CreateContentItem(tabInfo);
-                TabController.Instance.UpdateTab(tabInfo);    
+                TabController.Instance.UpdateTab(tabInfo);
             }
         }
 
@@ -547,7 +547,7 @@ namespace DotNetNuke.UI.Skins
             {
                 slaveModule.ModuleControlId = moduleControl.ModuleControlID;
                 slaveModule.IconFile = moduleControl.IconFile;
-                
+
                 string permissionKey;
                 switch (slaveModule.ModuleControl.ControlSrc)
                 {
@@ -999,11 +999,11 @@ namespace DotNetNuke.UI.Skins
                     if (profileModule == null || profileModule.DisplayModule)
                     {
                         pane.InjectModule(module);
-                    }                    
+                    }
                 }
                 else
                 {
-                    pane.InjectModule(module);                   
+                    pane.InjectModule(module);
                 }
 
             }

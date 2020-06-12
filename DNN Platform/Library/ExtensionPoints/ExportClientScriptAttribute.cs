@@ -11,7 +11,7 @@ namespace DotNetNuke.ExtensionPoints
     {
         public ExportClientScriptAttribute()
             : base(typeof(IScriptItemExtensionPoint))
-        {            
+        {
         }
     }
 }

@@ -263,7 +263,7 @@ namespace DotNetNuke.UI.UserControls
                     this.txtIM.TabIndex = Convert.ToInt16(this._StartTabIndex + 7);
                     this.txtFirstName.Text = this._FirstName;
                     this.txtLastName.Text = this._LastName;
-                    this.txtEmail.Text = this._Email;           
+                    this.txtEmail.Text = this._Email;
                     this.txtUsername.Text = this._UserName;
                     this.lblUsername.Text = this._UserName;
                     this.txtPassword.Text = this._Password;
@@ -274,7 +274,7 @@ namespace DotNetNuke.UI.UserControls
                     {
                         this.txtFirstName.Width = Unit.Parse(this._ControlColumnWidth);
                         this.txtLastName.Width = Unit.Parse(this._ControlColumnWidth);
-                        this.txtEmail.Width = Unit.Parse(this._ControlColumnWidth);         
+                        this.txtEmail.Width = Unit.Parse(this._ControlColumnWidth);
                         this.txtUsername.Width = Unit.Parse(this._ControlColumnWidth);
                         this.txtPassword.Width = Unit.Parse(this._ControlColumnWidth);
                         this.txtConfirm.Width = Unit.Parse(this._ControlColumnWidth);

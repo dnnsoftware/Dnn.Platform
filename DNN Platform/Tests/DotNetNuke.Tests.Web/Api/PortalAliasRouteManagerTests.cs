@@ -218,7 +218,7 @@ namespace DotNetNuke.Tests.Web.Api
         public void GetRouteNameHashesNameInCorrectFormat(string moduleFolderName, string routeName, int count, string expected)
         {
             // Arrange
-            
+
 
             // Act
             var result = new PortalAliasRouteManager().GetRouteName(moduleFolderName, routeName, count);
@@ -250,7 +250,7 @@ namespace DotNetNuke.Tests.Web.Api
         public void GetRouteNameThrowsOnEmptyModuleFolderName(string moduleFolderName)
         {
             // Arrange
-            
+
 
             // Act
             new PortalAliasRouteManager().GetRouteName(moduleFolderName, "", 0);
@@ -263,7 +263,7 @@ namespace DotNetNuke.Tests.Web.Api
         public void GetRouteNameThrowsOnCountLessThan0()
         {
             // Arrange
-            
+
 
             // Act
             new PortalAliasRouteManager().GetRouteName("foo", "", -1);
@@ -275,7 +275,7 @@ namespace DotNetNuke.Tests.Web.Api
         public void GetAllRouteValuesWorksWithNullRouteValues()
         {
             // Arrange
-            
+
 
             // Act
             new PortalAliasRouteManager().GetAllRouteValues(new PortalAliasInfo { HTTPAlias = "" }, null);
@@ -288,7 +288,7 @@ namespace DotNetNuke.Tests.Web.Api
         public void GetAllRouteValuesPreservesPassedInRouteValues()
         {
             // Arrange
-            
+
 
             // Act
             var result = new PortalAliasRouteManager().GetAllRouteValues(new PortalAliasInfo { HTTPAlias = "" },
@@ -303,7 +303,7 @@ namespace DotNetNuke.Tests.Web.Api
         public void GetAllRouteValuesExtractsChildPortalParams()
         {
             // Arrange
-            
+
 
             // Act
             var result =

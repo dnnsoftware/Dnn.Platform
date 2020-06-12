@@ -164,7 +164,7 @@ namespace DotNetNuke.Tests.Core.Common
         [Ignore]
         public void NavigateUrl_ControlKey_AccessDenied()
         {
-            // TODO - We can't properly test this until we migrate 
+            // TODO - We can't properly test this until we migrate
             // Globals.AccessDeniedURL to an interface in the abstraction
             // project. The dependencies go very deep and make it very
             // difficult to properly test just the NavigationManager logic.

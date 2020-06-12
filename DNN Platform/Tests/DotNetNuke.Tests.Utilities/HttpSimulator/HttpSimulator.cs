@@ -25,14 +25,14 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
     }
 
     /// <summary>
-    /// Useful class for simulating the HttpContext. This does not actually 
-    /// make an HttpRequest, it merely simulates the state that your code 
-    /// would be in "as if" handling a request. Thus the HttpContext.Current 
+    /// Useful class for simulating the HttpContext. This does not actually
+    /// make an HttpRequest, it merely simulates the state that your code
+    /// would be in "as if" handling a request. Thus the HttpContext.Current
     /// property is populated.
     /// </summary>
     public class HttpSimulator : IDisposable
     {
-        private static readonly string WebsitePhysicalAppPath = ConfigurationManager.AppSettings["DefaultPhysicalAppPath"]; 
+        private static readonly string WebsitePhysicalAppPath = ConfigurationManager.AppSettings["DefaultPhysicalAppPath"];
         private StringBuilder _builder;
         private Uri _referer;
         private readonly NameValueCollection _formVars = new NameValueCollection();
@@ -44,7 +44,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
         public HttpSimulator(string applicationPath) : this(applicationPath, WebsitePhysicalAppPath)
         {
-            
+
         }
 
         public HttpSimulator(string applicationPath, string physicalApplicationPath)
@@ -158,7 +158,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             this.InitializeSession();
 
             InitializeApplication();
-            
+
             #region Console Debug INfo
 
             // Console.WriteLine("host: " + Host);
@@ -184,7 +184,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             // Console.WriteLine("HostingEnvironment.ApplicationVirtualPath: " + HostingEnvironment.ApplicationVirtualPath);
 
             #endregion
-            
+
             return this;
         }
 
@@ -218,7 +218,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             ///
             public void Abandon()
             {
-                this.BaseClear();   
+                this.BaseClear();
             }
 
             /// <summary>
@@ -436,7 +436,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 get { return this._syncRoot; }
             }
 
-            
+
 
             /// <summary>
             /// Gets a value indicating whether access to the collection of session-state values is synchronized (thread safe).
@@ -558,14 +558,14 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         private string _applicationPath = "/";
 
         /// <summary>
-        /// The same thing as the IIS Virtual directory. It's 
+        /// The same thing as the IIS Virtual directory. It's
         /// what gets returned by Request.ApplicationPath.
         /// </summary>
         public string ApplicationPath
         {
             get { return this._applicationPath; }
-            set 
-            { 
+            set
+            {
                 this._applicationPath = value ?? "/";
                 this._applicationPath = NormalizeSlashes(this._applicationPath);
             }
@@ -579,7 +579,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         public string PhysicalApplicationPath
         {
             get { return this._physicalApplicationPath; }
-            set 
+            set
             {
                 this._physicalApplicationPath = value ?? WebsitePhysicalAppPath;
                 // strip trailing backslashes.
@@ -624,7 +624,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
             // get singleton property value
             var runtime = ReflectionHelper.GetStaticFieldValue<HttpRuntime>("_theRuntime", typeof(HttpRuntime));
-           
+
             // set app path property value
             ReflectionHelper.SetPrivateInstanceFieldValue("_appDomainAppPath", runtime, this.PhysicalApplicationPath);
             // set app virtual path property value

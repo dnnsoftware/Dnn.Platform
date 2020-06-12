@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.FileSystem
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : FileInfo
-    /// 
+    ///
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   Represents the File object and holds the Properties of that object
@@ -453,7 +453,7 @@ namespace DotNetNuke.Services.FileSystem
         #region Private methods
 
         private void LoadImageProperties()
-        {            
+        {
             var fileManager = (FileManager)FileManager.Instance;
             if (!fileManager.IsImageFile(this))
             {
@@ -496,7 +496,7 @@ namespace DotNetNuke.Services.FileSystem
                     image.Dispose();
                 }
                 fileContent.Position = 0;
-            }    
+            }
             fileContent.Close();
         }
 
@@ -509,7 +509,7 @@ namespace DotNetNuke.Services.FileSystem
                 this._sha1Hash = currentHashCode;
                 fileManager.UpdateFile(this);
             }
-            
+
         }
 
         #endregion

@@ -230,5 +230,5 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
             }
             return strError;
         }
-    } 
+    }
 }

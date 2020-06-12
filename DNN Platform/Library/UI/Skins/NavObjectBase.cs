@@ -20,7 +20,7 @@ namespace DotNetNuke.UI.Skins
     public class NavObjectBase : SkinObjectBase
     {
         #region "Private Members"
-        
+
         private readonly List<CustomAttribute> m_objCustomAttributes = new List<CustomAttribute>();
         private bool m_blnPopulateNodesFromClient = true;
         private int m_intExpandDepth = -1;
@@ -119,7 +119,7 @@ namespace DotNetNuke.UI.Skins
         }
 
         public bool ShowHiddenTabs { get; set; }
-      
+
         public string ProviderName
         {
             get

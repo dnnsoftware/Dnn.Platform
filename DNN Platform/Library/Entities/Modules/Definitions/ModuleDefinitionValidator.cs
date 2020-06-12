@@ -74,7 +74,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
             };
             xmlReader.MoveToContent();
 
-            // This test assumes provides a simple validation 
+            // This test assumes provides a simple validation
             switch (xmlReader.LocalName.ToLowerInvariant())
             {
                 case "module":

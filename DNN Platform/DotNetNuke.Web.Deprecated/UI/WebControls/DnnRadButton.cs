@@ -76,6 +76,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        #endregion   
+        #endregion
     }
 }

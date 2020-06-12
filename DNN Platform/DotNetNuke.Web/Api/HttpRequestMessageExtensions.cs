@@ -58,7 +58,7 @@ namespace DotNetNuke.Web.Api
 
             return fallback;
         }
-        
+
         public static HttpContextBase GetHttpContext(this HttpRequestMessage request)
         {
             object context;

@@ -47,7 +47,7 @@ namespace DotNetNuke.Entities.Content.Data
         void AddMetaData(ContentItem contentItem, string name, string value);
 
         void DeleteMetaData(ContentItem contentItem, string name, string value);
-        
+
         IDataReader GetMetaData(int contentItemId);
 
         void SynchronizeMetaData(ContentItem contentItem,
@@ -62,7 +62,7 @@ namespace DotNetNuke.Entities.Content.Data
         IDataReader GetContentTypes();
 
         void UpdateContentType(ContentType contentType);
-        
+
         // ScopeType Methods
         int AddScopeType(ScopeType scopeType);
 

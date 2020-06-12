@@ -50,10 +50,10 @@ namespace DotNetNuke.Framework
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : CDefault
-    /// 
+    ///
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -138,7 +138,7 @@ namespace DotNetNuke.Framework
                 return ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).ActiveTab.SkinPath;
             }
         }
-        
+
         #endregion
 
         #region IClientAPICallbackEventHandler Members
@@ -379,7 +379,7 @@ namespace DotNetNuke.Framework
             // META generator
 
             this.Generator = "";
-            
+
 
             // META Robots - hide it inside popups and if PageHeadText of current tab already contains a robots meta tag
             if (!UrlUtils.InPopUp() &&
@@ -477,7 +477,7 @@ namespace DotNetNuke.Framework
         }
 
         // I realize the parsing of this is rather primitive.  A better solution would be to use json serialization
-        // unfortunately, I don't have the time to write it.  When we officially adopt MS AJAX, we will get this type of 
+        // unfortunately, I don't have the time to write it.  When we officially adopt MS AJAX, we will get this type of
         // functionality and this should be changed to utilize it for its plumbing.
         private Dictionary<string, string> ParsePageCallBackArgs(string strArg)
         {
@@ -693,10 +693,10 @@ namespace DotNetNuke.Framework
                 AJAX.GetScriptManager(this).AsyncPostBackTimeout = Host.AsyncTimeout;
             }
         }
-        
+
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Initialize the Scrolltop html control which controls the open / closed nature of each module 
+        /// Initialize the Scrolltop html control which controls the open / closed nature of each module
         /// </summary>
         /// <param name="e"></param>
         /// <remarks>
@@ -728,7 +728,7 @@ namespace DotNetNuke.Framework
                 this.MetaAuthor.Content = this.PortalSettings.PortalName;
                 /*
                  * Never show to be html5 compatible and stay backward compatible
-                 * 
+                 *
                  * MetaCopyright.Content = Copyright;
                  * MetaCopyright.Visible = (!String.IsNullOrEmpty(Copyright));
                  */

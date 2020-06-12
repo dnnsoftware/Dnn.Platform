@@ -23,7 +23,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint
         }
 
         public virtual void DataBindItem()
-        {            
-        }        
+        {
+        }
     }
 }

@@ -237,7 +237,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// <summary>
         /// Checks whether module VIEW permission is inherited from its tab
-        /// </summary> 
+        /// </summary>
         /// <param name="module">The module</param>
         /// <param name="permission">The module permission.</param>
         private bool IsModuleViewPermissionInherited(ModuleInfo module, ModulePermissionInfo permission)
@@ -254,7 +254,7 @@ namespace DotNetNuke.Entities.Modules
             }
 
             var tabPermissions = TabPermissionController.GetTabPermissions(module.TabID, module.PortalID);
-            
+
             return tabPermissions?.Where(x => x.RoleID == permission.RoleID && x.PermissionKey == permissionViewKey).Any() == true;
         }
 
@@ -275,8 +275,8 @@ namespace DotNetNuke.Entities.Modules
 
             var translatorSettingKey = $"DefaultTranslatorRoles-{culture}";
 
-            var translatorSettingValue = 
-                PortalController.GetPortalSetting(translatorSettingKey, portalId, null) ?? 
+            var translatorSettingValue =
+                PortalController.GetPortalSetting(translatorSettingKey, portalId, null) ??
                 HostController.Instance.GetString(translatorSettingKey, null);
 
             var translatorRoles =
@@ -305,7 +305,7 @@ namespace DotNetNuke.Entities.Modules
                     continue;
                 }
 
-                // need to force vew permission to be copied 
+                // need to force vew permission to be copied
                 permission.PermissionKey = newModule.InheritViewPermissions && permission.PermissionKey == "VIEW" ?
                     null :
                     permission.PermissionKey;
@@ -497,13 +497,13 @@ namespace DotNetNuke.Entities.Modules
                 {
                     var portal = PortalController.Instance.GetPortal(PortalId);
 
-                    // Determine if the Module is copmpletely installed 
+                    // Determine if the Module is copmpletely installed
                     // (ie are we running in the same request that installed the module).
                     if (module.DesktopModule.SupportedFeatures == Null.NullInteger)
                     {
                         // save content in eventqueue for processing after an app restart,
                         // as modules Supported Features are not updated yet so we
-                        // cannot determine if the module supports IsPortable                               
+                        // cannot determine if the module supports IsPortable
                         EventMessageProcessor.CreateImportModuleMessage(module, content, version, portal.AdministratorId);
                     }
                     else
@@ -753,7 +753,7 @@ namespace DotNetNuke.Entities.Modules
                             {
                                 SetCloneModuleContext(false);
                             }
-                            
+
                         }
                     }
                     catch (Exception ex)
@@ -811,7 +811,7 @@ namespace DotNetNuke.Entities.Modules
                     EventLogController.AddSettingLog(EventLogController.EventLogType.MODULE_SETTING_CREATED,
                         "ModuleId", moduleId, settingName, settingValue,
                         currentUser.UserID);
-                } 
+                }
                 else if (existValue != settingValue)
                 {
                     dataProvider.UpdateModuleSetting(moduleId, settingName, settingValue, currentUser.UserID);
@@ -882,10 +882,10 @@ namespace DotNetNuke.Entities.Modules
 
         private void UncopyModule(int tabId, int moduleId, bool softDelete, int originalTabId)
         {
-            ModuleInfo moduleInfo = this.GetModule(moduleId, tabId, false);            
+            ModuleInfo moduleInfo = this.GetModule(moduleId, tabId, false);
             this.DeleteTabModuleInternal(moduleInfo, softDelete, true);
             var userId = UserController.Instance.GetCurrentUserInfo().UserID;
-            TabChangeTracker.Instance.TrackModuleUncopy(moduleInfo, Null.NullInteger, originalTabId, userId);            
+            TabChangeTracker.Instance.TrackModuleUncopy(moduleInfo, Null.NullInteger, originalTabId, userId);
         }
 
         private void DeleteTabModuleInternal(ModuleInfo moduleInfo, bool softDelete, bool uncopy = false)
@@ -907,7 +907,7 @@ namespace DotNetNuke.Entities.Modules
                     this.UpdateTabModuleOrder(moduleInfo.TabID);
                     // ModuleRemove is only raised when doing a soft delete of the module
                     if (softDelete)
-                    { 
+                    {
                         EventManager.Instance.OnModuleRemoved(new ModuleEventArgs { Module = moduleInfo });
                     }
                 }
@@ -918,7 +918,7 @@ namespace DotNetNuke.Entities.Modules
                     // hard delete the module
                     this.DeleteModule(moduleInfo.ModuleID);
                 }
-                
+
                 DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, moduleInfo.TabModuleID));
                 this.ClearCache(moduleInfo.TabID);
             }
@@ -1116,7 +1116,7 @@ namespace DotNetNuke.Entities.Modules
                      !String.IsNullOrEmpty(destinationModule.CultureCode))
             {
                 // tab is localized, but the source is not in the default language (it was on a single culture page)
-                // this wires up all the connections 
+                // this wires up all the connections
                 sourceModule.DefaultLanguageGuid = destinationModule.UniqueId;
                 this.UpdateModule(sourceModule);
             }
@@ -1273,14 +1273,14 @@ namespace DotNetNuke.Entities.Modules
         ///     <param name="deleteBaseModule">A flag to indicate whether to delete the Module itself</param>
         public void DeleteAllModules(int moduleId, int tabId, List<TabInfo> fromTabs, bool softDelete, bool includeCurrent, bool deleteBaseModule)
         {
-            var moduleInfo = this.GetModule(moduleId, tabId, false); 
+            var moduleInfo = this.GetModule(moduleId, tabId, false);
 
             // Iterate through collection deleting the module from each Tab (except the current)
             foreach (TabInfo objTab in fromTabs)
             {
                 if (objTab.TabID != tabId || includeCurrent)
                 {
-                    this.UncopyModule(objTab.TabID, moduleId, softDelete, tabId); // uncopy existing modules                    
+                    this.UncopyModule(objTab.TabID, moduleId, softDelete, tabId); // uncopy existing modules
                 }
             }
             // Optionally delete the Module
@@ -1359,7 +1359,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="softDelete">A flag that determines whether the instance should be soft-deleted</param>
         public void DeleteTabModule(int tabId, int moduleId, bool softDelete)
         {
-            ModuleInfo moduleInfo = this.GetModule(moduleId, tabId, false);            
+            ModuleInfo moduleInfo = this.GetModule(moduleId, tabId, false);
             this.DeleteTabModuleInternal(moduleInfo, softDelete);
             var userId = UserController.Instance.GetCurrentUserInfo().UserID;
             if (softDelete)
@@ -1743,7 +1743,7 @@ namespace DotNetNuke.Entities.Modules
         private Dictionary<int, ModuleInfo> GetModulesCurrentPage(int tabId)
         {
             var modules = CBO.FillCollection<ModuleInfo>(DataProvider.Instance().GetTabModules(tabId));
-            
+
             var dictionary = new Dictionary<int, ModuleInfo>();
             foreach (var module in modules)
             {
@@ -1826,7 +1826,7 @@ namespace DotNetNuke.Entities.Modules
         {
             try
             {
-                // we could be working from a single culture page that is not in the default language, 
+                // we could be working from a single culture page that is not in the default language,
                 // so we need to test whether or not the module is going to be localized for the default locale
                 var defaultLocale = LocaleController.Instance.GetDefaultLocale(sourceModule.PortalID);
                 ModuleInfo defaultModule = locale.Code == defaultLocale.Code ? sourceModule : sourceModule.DefaultLanguageModule;
@@ -2008,7 +2008,7 @@ namespace DotNetNuke.Entities.Modules
                 if (hasModuleOrderOrPaneChanged)
                 {
                     // update module order in pane
-                    this.UpdateModuleOrder(module.TabID, module.ModuleID, module.ModuleOrder, module.PaneName);   
+                    this.UpdateModuleOrder(module.TabID, module.ModuleID, module.ModuleOrder, module.PaneName);
                 }
 
                 // set the default module
@@ -2092,7 +2092,7 @@ namespace DotNetNuke.Entities.Modules
 
             EventManager.Instance.OnModuleUpdated(new ModuleEventArgs { Module = module });
         }
-        
+
         /// <summary>
         /// set/change the module position within a pane on a page
         /// </summary>
@@ -2105,7 +2105,7 @@ namespace DotNetNuke.Entities.Modules
             ModuleInfo moduleInfo = this.GetModule(moduleId, tabId, false);
             if (moduleInfo != null)
             {
-                // adding a module to a new pane - places the module at the bottom of the pane 
+                // adding a module to a new pane - places the module at the bottom of the pane
                 if (moduleOrder == -1)
                 {
                     IDataReader dr = null;
@@ -2474,7 +2474,7 @@ namespace DotNetNuke.Entities.Modules
                 // support for localized templates
                 // moduleNode.RemoveChild(moduleNode.SelectSingleNode("uniqueId"));
                 // moduleNode.RemoveChild(moduleNode.SelectSingleNode("defaultLanguageGuid"));
-                // moduleNode.RemoveChild(moduleNode.SelectSingleNode("cultureCode"));                
+                // moduleNode.RemoveChild(moduleNode.SelectSingleNode("cultureCode"));
 
                 if (Null.IsNull(module.DefaultLanguageGuid))
                     moduleNode.RemoveChild(moduleNode.SelectSingleNode("defaultLanguageGuid"));

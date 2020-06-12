@@ -31,6 +31,6 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// A user-owned custom-list, e.g. my best friends
         /// </summary>
-        CustomList = 3        
+        CustomList = 3
     }
 }

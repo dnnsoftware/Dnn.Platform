@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -52,11 +52,11 @@ namespace log4net.Util
         /// <param name="pattern">The pattern to parse.</param>
         /// <remarks>
         /// <para>
-        /// Initializes a new instance of the <see cref="PatternParser" /> class 
+        /// Initializes a new instance of the <see cref="PatternParser" /> class
         /// with the specified pattern string.
         /// </para>
         /// </remarks>
-        public PatternParser(string pattern) 
+        public PatternParser(string pattern)
         {
             this.m_pattern = pattern;
         }
@@ -168,7 +168,7 @@ namespace log4net.Util
 
                 return s2.Length.CompareTo(s1.Length);
             }
-        
+
             #endregion
         }
 
@@ -281,7 +281,7 @@ namespace log4net.Util
                                         {
                                             // Seen option start
                                             offset++;
-                                            
+
                                             int optEnd = pattern.IndexOf('}', offset);
                                             if (optEnd < 0)
                                             {
@@ -347,7 +347,7 @@ namespace log4net.Util
                     LogLog.Error(declaringType, "Failed to create instance of Type [" + converterInfo.Type.FullName + "] using default constructor. Exception: " + createInstanceEx.ToString());
                 }
 
-                // formattingInfo variable is an instance variable, occasionally reset 
+                // formattingInfo variable is an instance variable, occasionally reset
                 // and used over and over again
                 pc.FormattingInfo = formattingInfo;
                 pc.Option = option;
@@ -364,19 +364,19 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Resets the internal state of the parser and adds the specified pattern converter 
+        /// Resets the internal state of the parser and adds the specified pattern converter
         /// to the chain.
         /// </summary>
         /// <param name="pc">The pattern converter to add.</param>
-        private void AddConverter(PatternConverter pc) 
+        private void AddConverter(PatternConverter pc)
         {
             // Add the pattern converter to the list.
 
-            if (this.m_head == null) 
+            if (this.m_head == null)
             {
                 this.m_head = this.m_tail = pc;
             }
-            else 
+            else
             {
                 // Set the next converter on the tail
                 // Update the tail reference
@@ -391,7 +391,7 @@ namespace log4net.Util
         #region Private Constants
 
         private const char ESCAPE_CHAR = '%';
-  
+
         #endregion Private Constants
 
         #region Private Instance Fields

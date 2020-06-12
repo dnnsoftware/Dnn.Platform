@@ -56,7 +56,7 @@ namespace DotNetNuke.Services.OutputCache
 
                 // notification that we have errored
                 this.Errored(ref exc);
-                
+
                 // log the exception
                 Exceptions.Exceptions.LogException(exc); // OPTIONAL
             }

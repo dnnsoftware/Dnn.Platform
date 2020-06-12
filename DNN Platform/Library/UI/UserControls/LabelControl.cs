@@ -17,7 +17,7 @@ using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
 #endregion
-                
+
 namespace DotNetNuke.UI.UserControls
 {
 
@@ -33,7 +33,7 @@ namespace DotNetNuke.UI.UserControls
     {
 
         #region Private Memebers
-                
+
         protected LinkButton cmdHelp;
         protected HtmlGenericControl label;
         protected Label lblHelp;
@@ -42,9 +42,9 @@ namespace DotNetNuke.UI.UserControls
         protected Label lblNoHelpLabel;
 
         #endregion
-        
+
         #region Properties
-                                                                                                     
+
         /// <summary>
         /// ControlName is the Id of the control that is associated with the label
         /// </summary>
@@ -80,7 +80,7 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <value>A string representing the Text</value>
         /// <remarks>
-        /// </remarks>                                   
+        /// </remarks>
         public string HelpText
         {
             get

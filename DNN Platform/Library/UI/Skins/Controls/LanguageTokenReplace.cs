@@ -125,7 +125,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         case "language": // skip parameter
                             break;
                         case "mid":
-                        case "moduleid": // start of patch (Manzoni Fausto) gemini 14205 
+                        case "moduleid": // start of patch (Manzoni Fausto) gemini 14205
                             if (isLocalized)
                             {
                                 string ModuleIdKey = arrKeys[i].ToLowerInvariant();
@@ -242,7 +242,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             tabId = localizedTab.TabID;
                             break;
                         case TabType.Tab:
-                            // alternate tab url                                
+                            // alternate tab url
                             fullurl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(localizedTab.Url));
                             break;
                         case TabType.File:

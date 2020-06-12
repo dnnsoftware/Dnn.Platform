@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -38,7 +38,7 @@ namespace log4net.Util.PatternStringConverters
     /// </para>
     /// </remarks>
     /// <author>Nicko Cadell</author>
-    internal sealed class AppDomainPatternConverter : PatternConverter 
+    internal sealed class AppDomainPatternConverter : PatternConverter
     {
         /// <summary>
         /// Write the name of the current AppDomain to the output
@@ -50,7 +50,7 @@ namespace log4net.Util.PatternStringConverters
         /// Writes name of the current AppDomain to the output <paramref name="writer"/>.
         /// </para>
         /// </remarks>
-        override protected void Convert(TextWriter writer, object state) 
+        override protected void Convert(TextWriter writer, object state)
         {
             writer.Write(SystemInfo.ApplicationFriendlyName);
         }

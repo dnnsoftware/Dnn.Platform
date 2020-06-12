@@ -38,7 +38,7 @@ namespace DotNetNuke.UI.UserControls
         protected ImageButton imgIcon;
         protected Label lblTitle;
         protected Panel pnlRule;
-        
+
         #endregion
 
         #region "Public Properties"
@@ -214,7 +214,7 @@ namespace DotNetNuke.UI.UserControls
         #endregion
 
         #region "Event Handlers"
-        
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Assign resource key to label for localization
@@ -262,7 +262,7 @@ namespace DotNetNuke.UI.UserControls
                     this.lblTitle.Attributes.Add("style", "cursor: pointer");
                     DNNClientAPI.EnableMinMax(this.imgIcon, ctl, !this.IsExpanded, this.Page.ResolveUrl(this.MinImageUrl), this.Page.ResolveUrl(this.MaxImageUrl), DNNClientAPI.MinMaxPersistanceType.Page);
                 }
-                
+
                 // optionlly show hr
                 this.pnlRule.Visible = this._includeRule;
             }
@@ -280,7 +280,7 @@ namespace DotNetNuke.UI.UserControls
                 this.IsExpanded = !this.IsExpanded;
             }
         }
-        
+
         #endregion
     }
 }

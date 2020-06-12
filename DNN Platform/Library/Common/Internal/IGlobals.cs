@@ -9,7 +9,7 @@ using DotNetNuke.Entities.Tabs;
 
 namespace DotNetNuke.Common.Internal
 {
-    
+
     public interface IGlobals
     {
         /// <summary>
@@ -24,7 +24,7 @@ namespace DotNetNuke.Common.Internal
         string HostMapPath { get; }
 
         /// <summary>
-        /// Returns the folder path under the root for the portal 
+        /// Returns the folder path under the root for the portal
         /// </summary>
         /// <param name="fileNamePath">The folder the absolute path</param>
         /// <param name="portalId">Portal Id.</param>
@@ -85,7 +85,7 @@ namespace DotNetNuke.Common.Internal
         /// <param name="blnAddHTTP">if set to <c>true</c> calls <see cref="AddHTTP"/> on the result.</param>
         /// <returns>domain name</returns>
         string GetPortalDomainName(string strPortalAlias, HttpRequest Request, bool blnAddHTTP);
-        
+
         /// <summary>
         /// Gets the name of the domain.
         /// </summary>
@@ -292,7 +292,7 @@ namespace DotNetNuke.Common.Internal
         /// Generates the correctly formatted friendly URL
         /// </summary>
         /// <remarks>
-        /// This overload includes an optional page to include in the URL, and the portal 
+        /// This overload includes an optional page to include in the URL, and the portal
         /// settings for the site
         /// </remarks>
         /// <param name="tab">The current tab</param>
@@ -306,7 +306,7 @@ namespace DotNetNuke.Common.Internal
         /// Generates the correctly formatted friendly url
         /// </summary>
         /// <remarks>
-        /// This overload includes an optional page to include in the url, and the portal 
+        /// This overload includes an optional page to include in the url, and the portal
         /// alias for the site
         /// </remarks>
         /// <param name="tab">The current tab</param>

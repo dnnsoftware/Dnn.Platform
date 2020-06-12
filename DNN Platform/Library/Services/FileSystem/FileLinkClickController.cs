@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         PortalGUID = Host.GUID,
                         EnableUrlLanguage = Host.EnableUrlLanguage
-                    };            
+                    };
             }
             var portalSettings = new PortalSettings(portalId);
             return new LinkClickPortalSettings
@@ -57,7 +57,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("file", file);
             var portalId = file.PortalId;
             var linkClickPortalSettigns = this.GetPortalSettingsForLinkClick(portalId);
-            
+
             return TestableGlobals.Instance.LinkClick(String.Format("fileid={0}", file.FileId), Null.NullInteger, Null.NullInteger, true, false, portalId, linkClickPortalSettigns.EnableUrlLanguage, linkClickPortalSettigns.PortalGUID);
         }
 

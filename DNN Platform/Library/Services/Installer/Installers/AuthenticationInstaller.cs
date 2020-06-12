@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "ashx, aspx, ascx, vb, cs, resx, css, js, resources, config, vbproj, csproj, sln, htm, html";
             }
         }
-        
+
         #endregion
 
         #region "Private Methods"
@@ -73,7 +73,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Log.AddFailure(ex);
             }
         }
-        
+
         #endregion
 
         #region "Public Methods"
@@ -129,7 +129,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             catch (Exception ex)
             {
-            
+
                 this.Log.AddFailure(ex);
             }
         }
@@ -163,13 +163,13 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Rollback method undoes the installation of the component in the event 
+        /// The Rollback method undoes the installation of the component in the event
         /// that one of the other components fails
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-            // If Temp Auth System exists then we need to update the DataStore with this 
+            // If Temp Auth System exists then we need to update the DataStore with this
             if (this.TempAuthSystem == null)
             {
                 // No Temp Auth System - Delete newly added system
@@ -191,7 +191,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             this.DeleteAuthentiation();
         }
-        
+
         #endregion
     }
 }

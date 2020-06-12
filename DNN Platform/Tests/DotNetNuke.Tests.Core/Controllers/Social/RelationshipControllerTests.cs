@@ -41,7 +41,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         private DataTable dtRelationshipTypes;
         private DataTable dtRelationships;
         private DataTable dtUserRelationships;
-        private DataTable dtUserRelationshipPreferences;        
+        private DataTable dtUserRelationshipPreferences;
 
         #endregion
 
@@ -62,7 +62,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
             this._portalGroupController = new Mock<IPortalGroupController>();
             PortalGroupController.RegisterInstance(this._portalGroupController.Object);
-            
+
             var mockHostController = new Mock<IHostController>();
             mockHostController.Setup(c => c.GetString("PerformanceSetting")).Returns("0");
             HostController.RegisterInstance(mockHostController.Object);
@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
             this.CreateLocalizationProvider();
 
-            this.SetupDataTables();                     
+            this.SetupDataTables();
         }
 
         [TearDown]
@@ -430,10 +430,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             this.dtRelationships.Clear();
             for (int i = 1; i <= 5; i++)
             {
-                this.dtRelationships.Rows.Add(i, DefaultRelationshipTypes.Friends, DefaultRelationshipTypes.Friends.ToString(), 
-                                            DefaultRelationshipTypes.Friends.ToString(), 
-                                            Constants.PORTAL_Zero, 
-                                            Constants.USER_ValidId, 
+                this.dtRelationships.Rows.Add(i, DefaultRelationshipTypes.Friends, DefaultRelationshipTypes.Friends.ToString(),
+                                            DefaultRelationshipTypes.Friends.ToString(),
+                                            Constants.PORTAL_Zero,
+                                            Constants.USER_ValidId,
                                             RelationshipStatus.None);
             }
             mockDataService.Setup(md => md.GetRelationshipsByUserId(Constants.USER_ValidId)).Returns(this.dtRelationships.CreateDataReader());
@@ -512,7 +512,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Constants.PORTALGROUP_ValidPortalGroupId);
             this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
-            List<PortalGroupInfo> portalGroups = new List<PortalGroupInfo>() { CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero) }; // CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero);                
+            List<PortalGroupInfo> portalGroups = new List<PortalGroupInfo>() { CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero) }; // CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero);
             this._portalGroupController.Setup(pgc => pgc.GetPortalGroups()).Returns(portalGroups);
 
             // Act
@@ -885,7 +885,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             // Arrange
             var mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.GetUserRelationshipPreference(It.IsAny<int>(), It.IsAny<int>()))
-                            .Returns(this.dtUserRelationshipPreferences.CreateDataReader); 
+                            .Returns(this.dtUserRelationshipPreferences.CreateDataReader);
             var relationshipController = this.CreateRelationshipController(mockDataService);
 
             // Act
@@ -971,16 +971,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
             // Act, Assert
             relationshipController.InitiateUserRelationship(initiatingUser, targetUser, relationship);
-        }     
+        }
 
-        [Test]       
+        [Test]
         public void RelationshipController_InitiateUserRelationship_Returns_Status_Accepted_When_Default_Relationship_Action_Is_Accepted()
         {
             // Arrange
             var initiatingUser = new UserInfo { UserID = Constants.USER_TenId, PortalID = Constants.PORTAL_Zero };
             var targetUser = new UserInfo { UserID = Constants.USER_ElevenId, PortalID = Constants.PORTAL_Zero };
             var relationship = new Relationship { RelationshipId = Constants.SOCIAL_FollowerRelationshipID, RelationshipTypeId = Constants.SOCIAL_FollowerRelationshipTypeID, DefaultResponse = RelationshipStatus.Accepted };
-           
+
             this.dtUserRelationships.Rows.Clear();
             this.dtUserRelationshipPreferences.Rows.Clear();
 
@@ -1126,7 +1126,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         #endregion
 
         #region Verify Update of UserRelationship Status calls Data Layer
-        
+
         [Test]
         public void RelationshipController_AcceptUserRelationship_Calls_DataService_On_Valid_RelationshipID()
         {

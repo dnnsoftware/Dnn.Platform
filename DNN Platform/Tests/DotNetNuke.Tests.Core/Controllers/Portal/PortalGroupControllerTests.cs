@@ -22,7 +22,7 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Core.Controllers.Portal
 {
     // ReSharper disable InconsistentNaming
-    
+
     [TestFixture]
     public class PortalGroupControllerTests
     {
@@ -519,7 +519,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
 
         private static PortalGroupInfo CreateValidPortalGroup()
         {
-            var portalGroup = new PortalGroupInfo 
+            var portalGroup = new PortalGroupInfo
                                         {
                                             PortalGroupName = Constants.PORTALGROUP_ValidName,
                                             PortalGroupDescription = Constants.PORTALGROUP_ValidDescription,
@@ -542,7 +542,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                                    {
                                        i,
                                        -1,
-                                       name, 
+                                       name,
                                        description,
                                        domain,
                                        userId
@@ -551,7 +551,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
 
             return table.CreateDataReader();
         }
- 
+
     }
 
     // ReSharper restore InconsistentNaming

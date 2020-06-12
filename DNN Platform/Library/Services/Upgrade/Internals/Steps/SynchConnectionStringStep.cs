@@ -20,14 +20,14 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     /// The connection information stored in DotNetNuke.Install.Config takes precendence (if present)
     /// Synchornization only happens when settings are different
     /// </summary>
-    /// -----------------------------------------------------------------------------    
+    /// -----------------------------------------------------------------------------
     public class SynchConnectionStringStep : BaseInstallationStep
     {
         #region Implementation of IInstallationStep
 
         /// <summary>
         /// Main method to execute the step
-        /// </summary>        
+        /// </summary>
         public override void Execute()
         {
             this.Percentage = 0;
@@ -48,14 +48,14 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             }
 
             if (string.IsNullOrEmpty(connectionConfig.File) && string.IsNullOrEmpty(connectionConfig.Database))
-            {                    
+            {
                 this.Errors.Add(Localization.Localization.GetString("RequiresFileOrDatabase", this.LocalInstallResourceFile));
                 this.Status = StepStatus.Abort;
                 return;
             }
 
             var builder = DataProvider.Instance().GetConnectionStringBuilder();
-            
+
             if (!string.IsNullOrEmpty(connectionConfig.Server))
                 builder["Data Source"] = connectionConfig.Server;
 
@@ -87,7 +87,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                                            ? connectionConfig.User + "."
                                            : this.GetUpgradeConnectionStringUserID();
             }
-                
+
             var connectionString = builder.ToString();
 
             // load web.config connection string for comparison

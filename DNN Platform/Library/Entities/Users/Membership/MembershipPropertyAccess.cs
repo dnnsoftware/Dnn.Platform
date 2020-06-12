@@ -29,7 +29,7 @@ namespace DotNetNuke.Entities.Users
             UserMembership objMembership = this.objUser.Membership;
             bool UserQueriesHimself = (this.objUser.UserID == AccessingUser.UserID && this.objUser.UserID != -1);
             if (CurrentScope < Scope.DefaultSettings || (CurrentScope == Scope.DefaultSettings && !UserQueriesHimself) ||
-                ((CurrentScope != Scope.SystemMessages || this.objUser.IsSuperUser) 
+                ((CurrentScope != Scope.SystemMessages || this.objUser.IsSuperUser)
                     && (propertyName.Equals("password", StringComparison.InvariantCultureIgnoreCase) || propertyName.Equals("passwordanswer", StringComparison.InvariantCultureIgnoreCase) || propertyName.Equals("passwordquestion", StringComparison.InvariantCultureIgnoreCase))))
             {
                 PropertyNotFound = true;

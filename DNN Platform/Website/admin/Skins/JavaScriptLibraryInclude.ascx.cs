@@ -16,7 +16,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         protected override void OnInit(EventArgs e)
         {
-            if (this.Version == null) 
+            if (this.Version == null)
             {
                 JavaScript.RequestRegistration(this.Name);
             }

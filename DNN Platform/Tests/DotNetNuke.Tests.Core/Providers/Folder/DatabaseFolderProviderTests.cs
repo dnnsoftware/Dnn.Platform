@@ -493,7 +493,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         public void UpdateFile_Throws_On_Null_Folder()
         {
             var stream = new Mock<Stream>();
-            
+
             this._dfp.UpdateFile(null, Constants.FOLDER_ValidFileName, stream.Object);
         }
 

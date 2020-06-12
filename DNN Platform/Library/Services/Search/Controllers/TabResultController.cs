@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
             return viewable;
         }
-        
+
         public override string GetDocUrl(SearchResult searchResult)
         {
             var url = Localization.Localization.GetString("SEARCH_NoLink");
@@ -64,7 +64,7 @@ namespace DotNetNuke.Services.Search.Controllers
                     url = TestableGlobals.Instance.NavigateURL(searchResult.TabId, string.Empty, searchResult.QueryString);
                 }
             }
-            
+
             return url;
         }
 

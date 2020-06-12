@@ -45,8 +45,8 @@ namespace DotNetNuke.Web.Api
         /// ModuleInfo for the current module
         /// <remarks>Will be null unless a valid pair of module and tab ids were provided in the request</remarks>
         /// </summary>
-        public ModuleInfo ActiveModule { 
-            get { return this._activeModule.Value; } 
+        public ModuleInfo ActiveModule {
+            get { return this._activeModule.Value; }
         }
     }
 }

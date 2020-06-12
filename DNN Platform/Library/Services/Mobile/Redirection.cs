@@ -44,13 +44,13 @@ namespace DotNetNuke.Services.Mobile
         /// </summary>
         [XmlAttribute]
         public int PortalId { get; set; }
-        
+
         /// <summary>
         /// Redirection name.
         /// </summary>
         [XmlAttribute]
         public string Name { get; set; }
-        
+
         /// <summary>
         /// The redirection's match source tab. if this value is Null.NullInteger(-1) means should redirect when request the whole current portal;
         /// otherwise means this redirection will be available for the specific tab.
@@ -64,19 +64,19 @@ namespace DotNetNuke.Services.Mobile
         /// </summary>
         [XmlAttribute]
         public bool IncludeChildTabs { get; set; }
-                
+
         /// <summary>
         /// Redirection Type: Mobile, Tablet, Both or Other.
         /// </summary>
         [XmlAttribute]
         public RedirectionType Type { get; set; }
-        
+
         [XmlIgnore]
         private IList<IMatchRule> _matchRules;
 
         /// <summary>
         /// When redirection type is RedirectionType.Other, should use this collection to match the request by capability info.
-        /// </summary>        
+        /// </summary>
         [XmlIgnore]
         public IList<IMatchRule> MatchRules
         {
@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.Mobile
         /// </summary>
         [XmlAttribute]
         public TargetType TargetType { get; set; }
-        
+
         /// <summary>
         /// the redirection's target value, this value will determine by TargetType as:
         /// <list type="bullet">
@@ -119,19 +119,19 @@ namespace DotNetNuke.Services.Mobile
         /// </summary>
         [XmlAttribute]
         public object TargetValue { get; set; }
-        
+
         /// <summary>
         /// Whether this redirection is available.
         /// </summary>
         [XmlAttribute]
         public bool Enabled { get; set; }
-        
+
         /// <summary>
         /// Redirection's piority.
         /// </summary>
         [XmlAttribute]
         public int SortOrder { get; set; }
-        
+
         /// <summary>
         /// IHydratable.KeyID.
         /// </summary>

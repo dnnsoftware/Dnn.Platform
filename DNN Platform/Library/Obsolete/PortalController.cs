@@ -30,7 +30,7 @@ namespace DotNetNuke.Entities.Portals
     /// PoralController provides business layer of poatal.
     /// </summary>
     /// <remarks>
-    /// DotNetNuke supports the concept of virtualised sites in a single install. This means that multiple sites, 
+    /// DotNetNuke supports the concept of virtualised sites in a single install. This means that multiple sites,
     /// each potentially with multiple unique URL's, can exist in one instance of DotNetNuke i.e. one set of files and one database.
     /// </remarks>
     public partial class PortalController

@@ -156,7 +156,7 @@ namespace DotNetNuke.UI.WebControls
                 this.Value = DateTime.Parse(value);
             }
         }
-        
+
         #endregion
 
         protected override void CreateChildControls()

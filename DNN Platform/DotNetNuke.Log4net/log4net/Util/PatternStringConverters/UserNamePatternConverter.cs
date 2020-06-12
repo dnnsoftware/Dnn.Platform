@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -38,7 +38,7 @@ namespace log4net.Util.PatternStringConverters
     /// </para>
     /// </remarks>
     /// <author>Nicko Cadell</author>
-    internal sealed class UserNamePatternConverter : PatternConverter 
+    internal sealed class UserNamePatternConverter : PatternConverter
     {
         /// <summary>
         /// Write the current threads username to the output
@@ -50,7 +50,7 @@ namespace log4net.Util.PatternStringConverters
         /// Write the current threads username to the output <paramref name="writer"/>.
         /// </para>
         /// </remarks>
-        override protected void Convert(TextWriter writer, object state) 
+        override protected void Convert(TextWriter writer, object state)
         {
 #if (NETCF || SSCLI || NETSTANDARD1_3)
 			// On compact framework there's no notion of current Windows user
@@ -67,7 +67,7 @@ namespace log4net.Util.PatternStringConverters
             }
             catch (System.Security.SecurityException)
             {
-                // This security exception will occur if the caller does not have 
+                // This security exception will occur if the caller does not have
                 // some undefined set of SecurityPermission flags.
                 LogLog.Debug(declaringType, "Security exception while trying to get current windows identity. Error Ignored.");
 

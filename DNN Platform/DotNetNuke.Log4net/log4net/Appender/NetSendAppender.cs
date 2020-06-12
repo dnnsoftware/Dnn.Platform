@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -24,9 +24,9 @@
 // MONO 1.0 Beta mcs does not like #if !A && !B && !C syntax
 
 // .NET Compact Framework 1.0 has no support for Win32 NetMessageBufferSend API
-#if !NETCF 
+#if !NETCF
 // MONO 1.0 has no support for Win32 NetMessageBufferSend API
-#if !MONO 
+#if !MONO
 // SSCLI 1.0 has no support for Win32 NetMessageBufferSend API
 #if !SSCLI
 // We don't want framework or platform specific code in the CLI version of log4net
@@ -41,22 +41,22 @@ using log4net.Layout;
 using log4net.Core;
 
 
-namespace log4net.Appender 
+namespace log4net.Appender
 {
     /// <summary>
-    /// Logs entries by sending network messages using the 
+    /// Logs entries by sending network messages using the
     /// <see cref="NetMessageBufferSend" /> native function.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// You can send messages only to names that are active 
-    /// on the network. If you send the message to a user name, 
-    /// that user must be logged on and running the Messenger 
+    /// You can send messages only to names that are active
+    /// on the network. If you send the message to a user name,
+    /// that user must be logged on and running the Messenger
     /// service to receive the message.
     /// </para>
     /// <para>
-    /// The receiver will get a top most window displaying the 
-    /// messages one at a time, therefore this appender should 
+    /// The receiver will get a top most window displaying the
+    /// messages one at a time, therefore this appender should
     /// not be used to deliver a high volume of messages.
     /// </para>
     /// <para>
@@ -123,15 +123,15 @@ namespace log4net.Appender
     /// </list>
     /// </para>
     /// <para>
-    /// <b>Note :</b> security restrictions apply for sending 
-    /// network messages, see <see cref="NetMessageBufferSend" /> 
+    /// <b>Note :</b> security restrictions apply for sending
+    /// network messages, see <see cref="NetMessageBufferSend" />
     /// for more information.
     /// </para>
     /// </remarks>
     /// <example>
     /// <para>
-    /// An example configuration section to log information 
-    /// using this appender from the local machine, named 
+    /// An example configuration section to log information
+    /// using this appender from the local machine, named
     /// LOCAL_PC, to machine OPERATOR_PC :
     /// </para>
     /// <code lang="XML" escaped="true">
@@ -144,7 +144,7 @@ namespace log4net.Appender
     /// </example>
     /// <author>Nicko Cadell</author>
     /// <author>Gert Driesen</author>
-    public class NetSendAppender : AppenderSkeleton 
+    public class NetSendAppender : AppenderSkeleton
     {
         #region Member Variables
 
@@ -178,7 +178,7 @@ namespace log4net.Appender
         /// <remarks>
         /// The default constructor initializes all fields to their default values.
         /// </remarks>
-        public NetSendAppender() 
+        public NetSendAppender()
         {
         }
 
@@ -195,7 +195,7 @@ namespace log4net.Appender
         /// <remarks>
         /// If this property is not specified, the message is sent from the local computer.
         /// </remarks>
-        public string Sender 
+        public string Sender
         {
             get { return this.m_sender; }
             set { this.m_sender = value; }
@@ -210,12 +210,12 @@ namespace log4net.Appender
         /// <remarks>
         /// This property should always be specified in order to send a message.
         /// </remarks>
-        public string Recipient 
+        public string Recipient
         {
             get { return this.m_recipient; }
             set { this.m_recipient = value; }
         }
-        
+
         /// <summary>
         /// Gets or sets the DNS or NetBIOS name of the remote server on which the function is to execute.
         /// </summary>
@@ -227,10 +227,10 @@ namespace log4net.Appender
         /// For Windows NT 4.0 and earlier, the string should begin with \\.
         /// </para>
         /// <para>
-        /// If this property is not specified, the local computer is used. 
+        /// If this property is not specified, the local computer is used.
         /// </para>
         /// </remarks>
-        public string Server 
+        public string Server
         {
             get { return this.m_server; }
             set { this.m_server = value; }
@@ -250,7 +250,7 @@ namespace log4net.Appender
         /// of the current thread.
         /// </para>
         /// </remarks>
-        public SecurityContext SecurityContext 
+        public SecurityContext SecurityContext
         {
             get { return this.m_securityContext; }
             set { this.m_securityContext = value; }
@@ -266,13 +266,13 @@ namespace log4net.Appender
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
-        /// activation scheme. The <see cref="ActivateOptions"/> method must 
+        /// activation scheme. The <see cref="ActivateOptions"/> method must
         /// be called on this object after the configuration properties have
         /// been set. Until <see cref="ActivateOptions"/> is called this
-        /// object is in an undefined state and must not be used. 
+        /// object is in an undefined state and must not be used.
         /// </para>
         /// <para>
-        /// If any of the configuration properties are modified then 
+        /// If any of the configuration properties are modified then
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// <para>
@@ -283,8 +283,8 @@ namespace log4net.Appender
         public override void ActivateOptions()
         {
             base.ActivateOptions();
-    
-            if (this.Recipient == null) 
+
+            if (this.Recipient == null)
             {
                 throw new ArgumentNullException("Recipient", "The required property 'Recipient' was not specified.");
             }
@@ -314,7 +314,7 @@ namespace log4net.Appender
 #if !NETSTANDARD1_3
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand, UnmanagedCode = true)]
 #endif
-        protected override void Append(LoggingEvent loggingEvent) 
+        protected override void Append(LoggingEvent loggingEvent)
         {
             NativeError nativeError = null;
 
@@ -324,10 +324,10 @@ namespace log4net.Appender
             using (this.m_securityContext.Impersonate(this))
             {
                 // Send the message
-                int returnValue = NetMessageBufferSend(this.Server, this.Recipient, this.Sender, renderedLoggingEvent, renderedLoggingEvent.Length * Marshal.SystemDefaultCharSize);   
+                int returnValue = NetMessageBufferSend(this.Server, this.Recipient, this.Sender, renderedLoggingEvent, renderedLoggingEvent.Length * Marshal.SystemDefaultCharSize);
 
                 // Log the error if the message could not be sent
-                if (returnValue != 0) 
+                if (returnValue != 0)
                 {
                     // Lookup the native error
                     nativeError = NativeError.GetError(returnValue);
@@ -384,7 +384,7 @@ namespace log4net.Appender
         ///             No special group membership is required to send a network message.
         ///             </para>
         ///             <para>
-        ///             Admin, Accounts, Print, or Server Operator group membership is required to 
+        ///             Admin, Accounts, Print, or Server Operator group membership is required to
         ///             successfully send a network message on a remote server.
         ///             </para>
         ///         </description>
@@ -393,12 +393,12 @@ namespace log4net.Appender
         ///         <term>Windows 2000 or later</term>
         ///         <description>
         ///             <para>
-        ///             If you send a message on a domain controller that is running Active Directory, 
-        ///             access is allowed or denied based on the access control list (ACL) for the securable 
-        ///             object. The default ACL permits only Domain Admins and Account Operators to send a network message. 
+        ///             If you send a message on a domain controller that is running Active Directory,
+        ///             access is allowed or denied based on the access control list (ACL) for the securable
+        ///             object. The default ACL permits only Domain Admins and Account Operators to send a network message.
         ///             </para>
         ///             <para>
-        ///             On a member server or workstation, only Administrators and Server Operators can send a network message. 
+        ///             On a member server or workstation, only Administrators and Server Operators can send a network message.
         ///             </para>
         ///         </description>
         ///     </item>
@@ -413,7 +413,7 @@ namespace log4net.Appender
         /// If the function succeeds, the return value is zero.
         /// </para>
         /// </returns>
-        [DllImport("netapi32.dll", SetLastError=true)] 
+        [DllImport("netapi32.dll", SetLastError=true)]
         protected static extern int NetMessageBufferSend(
             [MarshalAs(UnmanagedType.LPWStr)] string serverName,
             [MarshalAs(UnmanagedType.LPWStr)] string msgName,

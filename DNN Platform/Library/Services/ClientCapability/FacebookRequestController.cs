@@ -14,9 +14,9 @@ using DotNetNuke.Common.Utilities;
 namespace DotNetNuke.Services.ClientCapability
 {
     /// <summary>
-    /// Make modules that are aware of Facebook’s signed_request – a parameter that is POSTed to the web page being loaded in the iFrame, 
+    /// Make modules that are aware of Facebook’s signed_request – a parameter that is POSTed to the web page being loaded in the iFrame,
     /// giving it variables such as if the Page has been Liked, and the age range of the user.
-    /// 
+    ///
     /// </summary>
     public class FacebookRequestController
     {
@@ -57,7 +57,7 @@ namespace DotNetNuke.Services.ClientCapability
 
                 var encoding = new UTF8Encoding();
                 FaceBookData faceBookData = encoding.GetString(base64JsonArray).FromJson<FaceBookData>();
-                
+
                 if (faceBookData.algorithm == "HMAC-SHA256")
                 {
                     facebookRequest.IsValid = true;
@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.ClientCapability
                     var encoding = new UTF8Encoding();
                     var hmac = SignWithHmac(encoding.GetBytes(payload), encoding.GetBytes(secretKey));
                     var hmacBase64 = Base64UrlDecode(Convert.ToBase64String(hmac));
-                    if (hmacBase64 == expectedSignature) 
+                    if (hmacBase64 == expectedSignature)
                         return true;
                 }
             }
@@ -178,6 +178,6 @@ namespace DotNetNuke.Services.ClientCapability
         public long expires { get; set; }
         public string app_data { get; set; }
         public Page page { get; set; }
-        public long profile_id { get; set; }        
+        public long profile_id { get; set; }
     }
 }

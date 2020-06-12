@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -36,7 +36,7 @@ namespace log4net.Layout
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This is an abstract class that must be subclassed by an implementation 
+    /// This is an abstract class that must be subclassed by an implementation
     /// to conform to a specific schema.
     /// </para>
     /// <para>
@@ -68,15 +68,15 @@ namespace log4net.Layout
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The <paramref name="locationInfo" /> parameter determines whether 
-        /// location information will be output by the layout. If 
-        /// <paramref name="locationInfo" /> is set to <c>true</c>, then the 
-        /// file name and line number of the statement at the origin of the log 
-        /// statement will be output. 
+        /// The <paramref name="locationInfo" /> parameter determines whether
+        /// location information will be output by the layout. If
+        /// <paramref name="locationInfo" /> is set to <c>true</c>, then the
+        /// file name and line number of the statement at the origin of the log
+        /// statement will be output.
         /// </para>
         /// <para>
         /// If you are embedding this layout within an SMTPAppender
-        /// then make sure to set the <b>LocationInfo</b> option of that 
+        /// then make sure to set the <b>LocationInfo</b> option of that
         /// appender as well.
         /// </para>
         /// </remarks>
@@ -91,22 +91,22 @@ namespace log4net.Layout
         #region Public Instance Properties
 
         /// <summary>
-        /// Gets a value indicating whether to include location information in 
+        /// Gets a value indicating whether to include location information in
         /// the XML events.
         /// </summary>
         /// <value>
-        /// <c>true</c> if location information should be included in the XML 
+        /// <c>true</c> if location information should be included in the XML
         /// events; otherwise, <c>false</c>.
         /// </value>
         /// <remarks>
         /// <para>
-        /// If <see cref="LocationInfo" /> is set to <c>true</c>, then the file 
-        /// name and line number of the statement at the origin of the log 
-        /// statement will be output. 
+        /// If <see cref="LocationInfo" /> is set to <c>true</c>, then the file
+        /// name and line number of the statement at the origin of the log
+        /// statement will be output.
         /// </para>
         /// <para>
         /// If you are embedding this layout within an <c>SMTPAppender</c>
-        /// then make sure to set the <b>LocationInfo</b> option of that 
+        /// then make sure to set the <b>LocationInfo</b> option of that
         /// appender as well.
         /// </para>
         /// </remarks>
@@ -123,7 +123,7 @@ namespace log4net.Layout
         /// string to replace those that can not with. This defaults to a ?. Set it
         /// to the empty string to simply remove offending characters. For more
         /// details on the allowed character ranges see http://www.w3.org/TR/REC-xml/#charsets
-        /// Character replacement will occur in  the log message, the property names 
+        /// Character replacement will occur in  the log message, the property names
         /// and the property values.
         /// </para>
         /// </remarks>
@@ -143,17 +143,17 @@ namespace log4net.Layout
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
-        /// activation scheme. The <see cref="ActivateOptions"/> method must 
+        /// activation scheme. The <see cref="ActivateOptions"/> method must
         /// be called on this object after the configuration properties have
         /// been set. Until <see cref="ActivateOptions"/> is called this
-        /// object is in an undefined state and must not be used. 
+        /// object is in an undefined state and must not be used.
         /// </para>
         /// <para>
-        /// If any of the configuration properties are modified then 
+        /// If any of the configuration properties are modified then
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// </remarks>
-        override public void ActivateOptions() 
+        override public void ActivateOptions()
         {
             // nothing to do
         }
@@ -163,7 +163,7 @@ namespace log4net.Layout
         #region Override implementation of LayoutSkeleton
 
         /// <summary>
-        /// Gets the content type output by this layout. 
+        /// Gets the content type output by this layout.
         /// </summary>
         /// <value>
         /// As this is the XML layout, the value is always <c>"text/xml"</c>.
@@ -189,12 +189,12 @@ namespace log4net.Layout
         /// </para>
         /// <para>
         /// This method creates an <see cref="XmlTextWriter"/> that writes to the
-        /// <paramref name="writer"/>. The <see cref="XmlTextWriter"/> is passed 
+        /// <paramref name="writer"/>. The <see cref="XmlTextWriter"/> is passed
         /// to the <see cref="FormatXml"/> method. Subclasses should override the
         /// <see cref="FormatXml"/> method rather than this method.
         /// </para>
         /// </remarks>
-        override public void Format(TextWriter writer, LoggingEvent loggingEvent) 
+        override public void Format(TextWriter writer, LoggingEvent loggingEvent)
         {
             if (loggingEvent == null)
             {
@@ -242,7 +242,7 @@ namespace log4net.Layout
         #endregion Protected Instance Methods
 
         #region Private Instance Fields
-  
+
         /// <summary>
         /// Flag to indicate if location information should be included in
         /// the XML events.

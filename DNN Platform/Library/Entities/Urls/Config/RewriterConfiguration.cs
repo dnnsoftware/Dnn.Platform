@@ -103,10 +103,10 @@ namespace DotNetNuke.Entities.Urls.Config
             if (rules != null)
             {
                 var config = new RewriterConfiguration { Rules = rules };
-                
+
                 // Create a new Xml Serializer
                 var ser = new XmlSerializer(typeof(RewriterConfiguration));
-                
+
                 // Create a FileStream for the Config file
                 var filePath = Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.SiteUrls);
                 if (File.Exists(filePath))

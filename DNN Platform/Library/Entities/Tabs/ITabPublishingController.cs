@@ -12,7 +12,7 @@ namespace DotNetNuke.Entities.Tabs
         /// Check if a page is published or not.
         /// </summary>
         /// <param name="tabID">Tha tab Id</param>
-        /// <param name="portalID">The portal ID where the tab is</param>        
+        /// <param name="portalID">The portal ID where the tab is</param>
         bool IsTabPublished(int tabID, int portalID);
 
         /// <summary>

@@ -18,7 +18,7 @@ namespace DotNetNuke.Security.Membership
     public abstract class MembershipProvider
     {
         #region Abstract Properties
-        
+
         public abstract bool CanEditProviderProperties { get; }
         public abstract int MaxInvalidPasswordAttempts { get; set; }
         public abstract int MinPasswordLength { get; set; }
@@ -30,9 +30,9 @@ namespace DotNetNuke.Security.Membership
         public abstract string PasswordStrengthRegularExpression { get; set; }
         public abstract bool RequiresQuestionAndAnswer { get; set; }
         public abstract bool RequiresUniqueEmail { get; set; }
-        
+
         #endregion
-        
+
         #region Shared/Static Methods
 
         // return the provider
@@ -40,9 +40,9 @@ namespace DotNetNuke.Security.Membership
         {
             return ComponentFactory.GetComponent<MembershipProvider>();
         }
-        
+
         #endregion
-        
+
         #region Abstract Methods
 
         // Users
@@ -87,20 +87,20 @@ namespace DotNetNuke.Security.Membership
         public abstract UserInfo GetUserByUserName(int portalId, string username);
         public abstract ArrayList GetUnAuthorizedUsers(int portalId);
         public abstract ArrayList GetDeletedUsers(int portalId);
-        public abstract ArrayList GetUsers(int portalId, int pageIndex, int pageSize, ref int totalRecords);                     
+        public abstract ArrayList GetUsers(int portalId, int pageIndex, int pageSize, ref int totalRecords);
         public abstract ArrayList GetUsersByEmail(int portalId, string emailToMatch, int pageIndex, int pageSize, ref int totalRecords);
-        public abstract ArrayList GetUsersByUserName(int portalId, string userNameToMatch, int pageIndex, int pageSize, ref int totalRecords);       
+        public abstract ArrayList GetUsersByUserName(int portalId, string userNameToMatch, int pageIndex, int pageSize, ref int totalRecords);
         public abstract ArrayList GetUsersByProfileProperty(int portalId, string propertyName, string propertyValue, int pageIndex, int pageSize, ref int totalRecords);
-        
+
         #endregion
-        
+
         #region Virtual Methods
 
         public virtual UserInfo GetUserByDisplayName(int portalId, string displayName)
         {
             return null;
         }
-        
+
         public virtual UserInfo GetUserByVanityUrl(int portalId, string vanityUrl)
         {
             return null;
@@ -160,7 +160,7 @@ namespace DotNetNuke.Security.Membership
                                                     bool isAdmin, int pageIndex, int pageSize, string sortColumn,
                                                     bool sortAscending, string propertyNames, string propertyValues)
         {
-            throw new NotImplementedException();            
+            throw new NotImplementedException();
         }
 
         public virtual IList<UserInfo> GetUsersBasicSearch(int portalId, int pageIndex, int pageSize, string sortColumn,

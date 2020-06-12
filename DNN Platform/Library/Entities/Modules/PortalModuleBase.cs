@@ -51,14 +51,14 @@ namespace DotNetNuke.Entities.Modules
         private ModuleInstanceContext _moduleContext;
 
         /// <summary>
-        /// Gets or sets the Dependency Provider to resolve registered 
+        /// Gets or sets the Dependency Provider to resolve registered
         /// services with the container.
         /// </summary>
         /// <value>
         /// The Dependency Service.
         /// </value>
         protected IServiceProvider DependencyProvider { get; }
-        
+
         public PortalModuleBase()
         {
             this.DependencyProvider = Globals.DependencyProvider;
@@ -88,7 +88,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The EditMode property is used to determine whether the user is in the 
+        /// The EditMode property is used to determine whether the user is in the
         /// Administrator role
         /// Cache
         /// </summary>
@@ -363,7 +363,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Helper method that can be used to add an ActionEventHandler to the Skin for this 
+        /// Helper method that can be used to add an ActionEventHandler to the Skin for this
         /// Module Control
         /// </summary>
         /// <remarks>

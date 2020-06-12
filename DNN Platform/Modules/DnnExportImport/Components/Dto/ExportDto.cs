@@ -63,7 +63,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// <summary>
         /// Whether to include item files in the exported file.
         /// This applies for user files and content files.
-        /// In case the folder's and files were included in the 
+        /// In case the folder's and files were included in the
         /// <see cref="ItemsToExport"/> then, this flag will be set to false.
         /// </summary>
         public bool IncludeFiles { get; set; }
@@ -84,7 +84,7 @@ namespace Dnn.ExportImport.Components.Dto
         public bool IncludeTemplates { get; set; }
 
         /// <summary>
-        /// Whether to include profile properties in exported file. 
+        /// Whether to include profile properties in exported file.
         /// When this flag is enabled only then userprofile would be exported.
         /// </summary>
         public bool IncludeProperfileProperties { get; set; }
@@ -120,7 +120,7 @@ namespace Dnn.ExportImport.Components.Dto
         public DateTime? FromDateUtc { get; set; }
 
         /// <summary>
-        /// Date when job was created. 
+        /// Date when job was created.
         /// NOTE: This will be set internally only by the engine and not by the UI
         /// </summary>
         [JsonProperty("ToDate")]

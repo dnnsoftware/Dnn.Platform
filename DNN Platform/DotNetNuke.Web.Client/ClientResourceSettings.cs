@@ -45,7 +45,7 @@ namespace DotNetNuke.Web.Client
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public Boolean IsOverridingDefaultSettingsEnabled()

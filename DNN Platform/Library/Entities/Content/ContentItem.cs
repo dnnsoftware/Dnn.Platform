@@ -31,11 +31,11 @@ namespace DotNetNuke.Entities.Content
     /// Content Items are a collection of individual pieces of content in a DotNetNuke site. Each content item is associated with a single Content Type.
     /// </para>
     /// <para>
-    /// Only modules that implement content items (done so by the module developers) can take advantage of some of its benefits, such as Taxonomy. 
+    /// Only modules that implement content items (done so by the module developers) can take advantage of some of its benefits, such as Taxonomy.
     /// </para>
     /// <para>
-    /// Because ContentItem already implements IHydratable, you will not do so in your custom entity class. Instead, 
-    /// you will need to create overrides of the KeyID property and the Fill method already implemented in the ContentItem class. 
+    /// Because ContentItem already implements IHydratable, you will not do so in your custom entity class. Instead,
+    /// you will need to create overrides of the KeyID property and the Fill method already implemented in the ContentItem class.
     /// Don't forget to call ContentItem's FillInternal method in your Fill method override.
     /// </para>
     /// </remarks>
@@ -57,7 +57,7 @@ namespace DotNetNuke.Entities.Content
     ///             Version = Null.SetNullString(dr["Version"]);
     ///             base.FillInternal(dr);
     ///         }
-    ///         
+    ///
     ///         #endregion
     /// }
     /// </code>
@@ -72,7 +72,7 @@ namespace DotNetNuke.Entities.Content
         private List<IFileInfo> _files;
         private List<IFileInfo> _videos;
         private List<IFileInfo> _images;
-        
+
         public ContentItem()
         {
             this.TabID = Null.NullInteger;
@@ -278,7 +278,7 @@ namespace DotNetNuke.Entities.Content
             cloneItem.Indexed = originalItem.Indexed;
             cloneItem.StateID = originalItem.StateID;
         }
-        
+
         #endregion
 
         #region IHydratable Implementation

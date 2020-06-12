@@ -79,11 +79,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             DataService.RegisterInstance(this._mockDataService.Object);
             DotNetNuke.Services.Social.Messaging.Data.DataService.RegisterInstance(this._mockMessagingDataService.Object);
-            
+
             this.SetupDataProvider();
             this.SetupDataTables();
         }
-        
+
         private void SetupDataProvider()
         {
             // Standard DataProvider Path for Logging
@@ -396,7 +396,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockNotificationsController
                 .Setup(nc => nc.GetNotificationTypeAction(expectedNotificationTypeAction.NotificationTypeActionId))
                 .Returns(expectedNotificationTypeAction);
-            
+
             var action = CreateNewNotificationTypeAction();
             this._mockNotificationsController.Object.SetNotificationTypeActions(new[] { action }, expectedNotificationTypeAction.NotificationTypeId);
 
@@ -635,7 +635,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
             this._notificationsController.SendNotification(
-                notification, 
+                notification,
                 Constants.PORTAL_Zero,
                 new List<RoleInfo>(),
                 new List<UserInfo>());
@@ -770,11 +770,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             };
 
             this._mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(10);
-            
+
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Constants.PORTALGROUP_ValidPortalGroupId);
             this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
-            List<PortalGroupInfo> portalGroups = new List<PortalGroupInfo>() { CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero) }; // CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero);                
+            List<PortalGroupInfo> portalGroups = new List<PortalGroupInfo>() { CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero) }; // CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero);
             this._portalGroupController.Setup(pgc => pgc.GetPortalGroups()).Returns(portalGroups);
 
             var roles = new List<RoleInfo>();
@@ -878,7 +878,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                             {
                                 new UserInfo
                                     {
-                                        UserID = Constants.UserID_User12, 
+                                        UserID = Constants.UserID_User12,
                                         DisplayName = Constants.UserDisplayName_User12
                                     }
                             };
@@ -897,10 +897,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             this._mockMessagingDataService
                 .Setup(mds => mds.SaveMessageRecipient(
-                    It.Is<MessageRecipient>(mr => 
-                                            mr.MessageID == Constants.Messaging_MessageId_1 && 
-                                            mr.UserID == Constants.UserID_User12 && 
-                                            mr.Read == false && 
+                    It.Is<MessageRecipient>(mr =>
+                                            mr.MessageID == Constants.Messaging_MessageId_1 &&
+                                            mr.UserID == Constants.UserID_User12 &&
+                                            mr.Read == false &&
                                             mr.RecipientID == Null.NullInteger),
                     It.IsAny<int>()))
                 .Verifiable();
@@ -942,7 +942,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                             {
                                 new UserInfo
                                     {
-                                        UserID = Constants.UserID_User12, 
+                                        UserID = Constants.UserID_User12,
                                         DisplayName = Constants.UserDisplayName_User12
                                     }
                             };
@@ -982,7 +982,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             this._mockNotificationsController.Object.SendNotification(
                 notification,
-                Constants.PORTAL_Zero, 
+                Constants.PORTAL_Zero,
                 roles,
                 users);
 
@@ -1022,7 +1022,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
             this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
-            
+
             this._notificationsController.GetNotifications(Constants.UserID_User12, Constants.PORTAL_Zero, 0, 10);
             this._mockDataService.Verify();
         }
@@ -1038,7 +1038,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Constants.PORTALGROUP_ValidPortalGroupId);
             this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
-            List<PortalGroupInfo> portalGroups = new List<PortalGroupInfo>() { CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero) }; // CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero);                
+            List<PortalGroupInfo> portalGroups = new List<PortalGroupInfo>() { CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero) }; // CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero);
             this._portalGroupController.Setup(pgc => pgc.GetPortalGroups()).Returns(portalGroups);
 
             this._notificationsController.GetNotifications(Constants.UserID_User12, Constants.PORTAL_Zero, 0, 10);
@@ -1103,7 +1103,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockInternalMessagingController.Setup(mc => mc.DeleteMessageRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12));
             this._mockInternalMessagingController.Setup(mc => mc.GetMessageRecipients(Constants.Messaging_MessageId_1)).Returns(messageRecipients);
             this._mockNotificationsController.Object.DeleteNotificationRecipient(Constants.Messaging_MessageId_1, Constants.UserID_User12);
-            
+
             this._mockNotificationsController.Verify(nc => nc.DeleteNotification(Constants.Messaging_MessageId_1), Times.Never());
         }
 
@@ -1125,7 +1125,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             var recipients = new List<MessageRecipient>
                                  {
-                                     new MessageRecipient { RecipientID = Constants.Messaging_RecipientId_1 }, 
+                                     new MessageRecipient { RecipientID = Constants.Messaging_RecipientId_1 },
                                      new MessageRecipient { RecipientID = Constants.Messaging_RecipientId_2 }
                                  };
 
@@ -1226,7 +1226,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 PortalGroupName = Constants.PORTALGROUP_ValidName,
                 PortalGroupDescription = Constants.PORTALGROUP_ValidDescription
             };
-            
+
             return mockPortalGroupInfo;
         }
 
@@ -1315,7 +1315,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 throw new NotImplementedException();
             }
         }
-        
+
         private class NotificationComparer : IEqualityComparer<Notification>
         {
             public bool Equals(Notification x, Notification y)

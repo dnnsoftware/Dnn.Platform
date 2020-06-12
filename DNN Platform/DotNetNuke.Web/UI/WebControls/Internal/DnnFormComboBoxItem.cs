@@ -62,7 +62,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 // comboBox.Select(selectedValue);
                 var selectedItem = comboBox.FindItemByValue(selectedValue);
                 if (selectedItem != null)
-                    selectedItem.Selected = true;                
+                    selectedItem.Selected = true;
             }
         }
 

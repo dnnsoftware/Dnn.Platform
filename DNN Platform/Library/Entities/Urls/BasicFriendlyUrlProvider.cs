@@ -129,7 +129,7 @@ namespace DotNetNuke.Entities.Urls
 
                     if ((String.IsNullOrEmpty(matchString)))
                     {
-                        // Manage the special case of child portals 
+                        // Manage the special case of child portals
                         // http://www.domain.com/child/default.aspx
                         string tempurl = HttpContext.Current.Request.Url.Host + Globals.ResolveUrl(friendlyPath);
                         if (!tempurl.Contains(portalAlias))
@@ -333,15 +333,15 @@ namespace DotNetNuke.Entities.Urls
                     {
                         if (!tab.IsNeutralCulture)
                         {
-                            friendlyPath = this.GetFriendlyAlias("~/" + tab.CultureCode + "/" + tab.TabPath.Replace("//", "/").TrimStart('/') + ".aspx", 
-                                                portalAlias, 
+                            friendlyPath = this.GetFriendlyAlias("~/" + tab.CultureCode + "/" + tab.TabPath.Replace("//", "/").TrimStart('/') + ".aspx",
+                                                portalAlias,
                                                 true)
                                                 .ToLowerInvariant();
                         }
                         else
                         {
-                            friendlyPath = this.GetFriendlyAlias("~/" + queryStringDic["language"] + "/" + tab.TabPath.Replace("//", "/").TrimStart('/') + ".aspx", 
-                                                portalAlias, 
+                            friendlyPath = this.GetFriendlyAlias("~/" + queryStringDic["language"] + "/" + tab.TabPath.Replace("//", "/").TrimStart('/') + ".aspx",
+                                                portalAlias,
                                                 true)
                                             .ToLowerInvariant();
                         }
@@ -359,13 +359,13 @@ namespace DotNetNuke.Entities.Urls
                                     friendlyPath = this.GetFriendlyAlias("~/privacy.aspx", portalAlias, true);
                                     break;
                                 case "login":
-                                    friendlyPath = (queryStringDic.ContainsKey("returnurl")) 
-                                                    ? this.GetFriendlyAlias("~/login.aspx?ReturnUrl=" + queryStringDic["returnurl"], portalAlias, true) 
+                                    friendlyPath = (queryStringDic.ContainsKey("returnurl"))
+                                                    ? this.GetFriendlyAlias("~/login.aspx?ReturnUrl=" + queryStringDic["returnurl"], portalAlias, true)
                                                     : this.GetFriendlyAlias("~/login.aspx", portalAlias, true);
                                     break;
                                 case "register":
-                                    friendlyPath = (queryStringDic.ContainsKey("returnurl")) 
-                                                    ? this.GetFriendlyAlias("~/register.aspx?returnurl=" + queryStringDic["returnurl"], portalAlias, true) 
+                                    friendlyPath = (queryStringDic.ContainsKey("returnurl"))
+                                                    ? this.GetFriendlyAlias("~/register.aspx?returnurl=" + queryStringDic["returnurl"], portalAlias, true)
                                                     : this.GetFriendlyAlias("~/register.aspx", portalAlias, true);
                                     break;
                                 default:

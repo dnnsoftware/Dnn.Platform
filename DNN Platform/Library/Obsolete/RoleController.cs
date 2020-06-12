@@ -19,7 +19,7 @@ namespace DotNetNuke.Security.Roles
     /// The RoleController class provides Business Layer methods for Roles
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class RoleController 
+    public partial class RoleController
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.0. This function has been replaced by AddUserRole with additional params. Scheduled removal in v10.0.0.")]

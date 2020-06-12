@@ -25,10 +25,10 @@ namespace Dnn.EditBar.UI.Helpers
         public static bool IsPageEditor(int tabId, PortalSettings portalSettings)
         {
             var tabPermissions = TabPermissionController.GetTabPermissions(tabId, portalSettings.PortalId);
-            return TabPermissionController.HasTabPermission(tabPermissions, "EDIT,CONTENT,MANAGE") 
+            return TabPermissionController.HasTabPermission(tabPermissions, "EDIT,CONTENT,MANAGE")
                 || IsModuleAdmin(portalSettings, TabController.Instance.GetTab(tabId, portalSettings.PortalId));
         }
-        
+
         /// <summary>
         /// Checks if current user is page admin of the currentpage
         /// </summary>
@@ -72,6 +72,6 @@ namespace Dnn.EditBar.UI.Helpers
             }
             return portalSettings.ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && isModuleAdmin;
         }
-        
+
     }
 }

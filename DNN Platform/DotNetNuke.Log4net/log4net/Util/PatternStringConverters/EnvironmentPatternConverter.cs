@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -40,7 +40,7 @@ namespace log4net.Util.PatternStringConverters
     /// <remarks>
     /// <para>
     /// Write an environment variable to the output writer.
-    /// The value of the <see cref="log4net.Util.PatternConverter.Option"/> determines 
+    /// The value of the <see cref="log4net.Util.PatternConverter.Option"/> determines
     /// the name of the variable to output.
     /// </para>
     /// </remarks>
@@ -60,16 +60,16 @@ namespace log4net.Util.PatternStringConverters
         /// property.
         /// </para>
         /// </remarks>
-        override protected void Convert(TextWriter writer, object state) 
+        override protected void Convert(TextWriter writer, object state)
         {
-            try 
+            try
             {
                 if (this.Option != null && this.Option.Length > 0)
                 {
                     // Lookup the environment variable
                     string envValue = Environment.GetEnvironmentVariable(this.Option);
 
-#if NET_2_0                 
+#if NET_2_0
                     // If we didn't see it for the process, try a user level variable.
                     if (envValue == null)
                     {
@@ -81,7 +81,7 @@ namespace log4net.Util.PatternStringConverters
                     {
                         envValue = Environment.GetEnvironmentVariable(this.Option, EnvironmentVariableTarget.Machine);
                     }
-#endif                  
+#endif
 
                     if (envValue != null && envValue.Length > 0)
                     {
@@ -91,12 +91,12 @@ namespace log4net.Util.PatternStringConverters
             }
             catch (System.Security.SecurityException secEx)
             {
-                // This security exception will occur if the caller does not have 
-                // unrestricted environment permission. If this occurs the expansion 
+                // This security exception will occur if the caller does not have
+                // unrestricted environment permission. If this occurs the expansion
                 // will be skipped with the following warning message.
                 LogLog.Debug(declaringType, "Security exception while trying to expand environment variables. Error Ignored. No Expansion.", secEx);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 LogLog.Error(declaringType, "Error occurred while converting environment variable.", ex);
             }

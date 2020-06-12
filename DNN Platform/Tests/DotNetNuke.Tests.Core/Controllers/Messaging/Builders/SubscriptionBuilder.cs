@@ -69,7 +69,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
             this.description = description;
             return this;
         }
-        
+
         internal SubscriptionBuilder WithModuleId(int moduleId)
         {
             this.moduleId = moduleId;
@@ -80,7 +80,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
         {
             this.tabId = tabId;
             return this;
-        } 
+        }
 
         internal Subscription Build()
         {

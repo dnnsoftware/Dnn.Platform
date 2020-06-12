@@ -98,7 +98,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <remarks>
         /// If this method is not overrided it returns false
-        /// </remarks>        
+        /// </remarks>
         public virtual bool SupportsMappedPaths
         {
             get
@@ -294,7 +294,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull(nameof(folderMappingSettings), folderMappingSettings);
             Requires.NotNullOrEmpty(nameof(settingName), settingName);
-            
+
             return PortalSecurity.Instance.Decrypt(Host.GUID, folderMappingSettings[settingName]?.ToString());
         }
 

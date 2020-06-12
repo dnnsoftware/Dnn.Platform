@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -114,7 +114,7 @@ namespace log4net.Repository
         /// <remarks>
         /// <para>
         /// The name of this repository. The name is
-        /// used to store and lookup the repositories 
+        /// used to store and lookup the repositories
         /// stored by the <see cref="IRepositorySelector"/>.
         /// </para>
         /// </remarks>
@@ -139,10 +139,10 @@ namespace log4net.Repository
         {
             get { return this.m_threshold; }
             set
-            { 
+            {
                 if (value != null)
                 {
-                    this.m_threshold = value; 
+                    this.m_threshold = value;
                 }
                 else
                 {
@@ -259,7 +259,7 @@ namespace log4net.Repository
         /// listeners and all attached plugins of the shutdown event.
         /// </para>
         /// </remarks>
-        virtual public void Shutdown() 
+        virtual public void Shutdown()
         {
             // Shutdown attached plugins
             foreach (IPlugin plugin in this.PluginMap.AllPlugins)
@@ -287,7 +287,7 @@ namespace log4net.Repository
         /// block all logging until it is completed.
         /// </para>
         /// </remarks>
-        virtual public void ResetConfiguration() 
+        virtual public void ResetConfiguration()
         {
             // Clear internal data structures
             this.m_rendererMap.Clear();
@@ -310,7 +310,7 @@ namespace log4net.Repository
         /// <remarks>
         /// <para>
         /// This method should not normally be used to log.
-        /// The <see cref="ILog"/> interface should be used 
+        /// The <see cref="ILog"/> interface should be used
         /// for routine logging. This interface can be obtained
         /// using the <see cref="M:log4net.LogManager.GetLogger(string)"/> method.
         /// </para>
@@ -332,14 +332,14 @@ namespace log4net.Repository
         /// Flag indicates if this repository has been configured.
         /// </para>
         /// </remarks>
-        virtual public bool Configured 
-        { 
+        virtual public bool Configured
+        {
             get { return this.m_configured; }
             set { this.m_configured = value; }
         }
 
         /// <summary>
-        /// Contains a list of internal messages captures during the 
+        /// Contains a list of internal messages captures during the
         /// last configuration.
         /// </summary>
         virtual public ICollection ConfigurationMessages
@@ -409,9 +409,9 @@ namespace log4net.Repository
         /// <remarks>
         /// These properties can be specified on a repository specific basis
         /// </remarks>
-        public PropertiesDictionary Properties 
-        { 
-            get { return this.m_properties; } 
+        public PropertiesDictionary Properties
+        {
+            get { return this.m_properties; }
         }
 
         /// <summary>
@@ -448,17 +448,17 @@ namespace log4net.Repository
             // Unrecoverable errors
             this.m_levelMap.Add(Level.Emergency);
             this.m_levelMap.Add(Level.Fatal);
-            this.m_levelMap.Add(Level.Alert); 
+            this.m_levelMap.Add(Level.Alert);
 
             // Recoverable errors
-            this.m_levelMap.Add(Level.Critical); 
-            this.m_levelMap.Add(Level.Severe); 
-            this.m_levelMap.Add(Level.Error); 
+            this.m_levelMap.Add(Level.Critical);
+            this.m_levelMap.Add(Level.Severe);
+            this.m_levelMap.Add(Level.Error);
             this.m_levelMap.Add(Level.Warn);
 
             // Information
-            this.m_levelMap.Add(Level.Notice); 
-            this.m_levelMap.Add(Level.Info); 
+            this.m_levelMap.Add(Level.Notice);
+            this.m_levelMap.Add(Level.Info);
 
             // Debug
             this.m_levelMap.Add(Level.Debug);
@@ -472,16 +472,16 @@ namespace log4net.Repository
         }
 
         /// <summary>
-        /// Adds an object renderer for a specific class. 
+        /// Adds an object renderer for a specific class.
         /// </summary>
         /// <param name="typeToRender">The type that will be rendered by the renderer supplied.</param>
         /// <param name="rendererInstance">The object renderer used to render the object.</param>
         /// <remarks>
         /// <para>
-        /// Adds an object renderer for a specific class. 
+        /// Adds an object renderer for a specific class.
         /// </para>
         /// </remarks>
-        virtual public void AddRenderer(Type typeToRender, IObjectRenderer rendererInstance) 
+        virtual public void AddRenderer(Type typeToRender, IObjectRenderer rendererInstance)
         {
             if (typeToRender == null)
             {

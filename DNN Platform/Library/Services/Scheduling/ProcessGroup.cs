@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Scheduling
                 serviceScope = Globals.DependencyProvider.CreateScope();
                 Process = this.GetSchedulerClient(serviceScope.ServiceProvider, objScheduleHistoryItem.TypeFullName, objScheduleHistoryItem);
                 Process.ScheduleHistoryItem = objScheduleHistoryItem;
-                
+
                 // Set up the handlers for the CoreScheduler
                 Process.ProcessStarted += Scheduler.CoreScheduler.WorkStarted;
                 Process.ProcessProgressing += Scheduler.CoreScheduler.WorkProgressing;
@@ -106,7 +106,7 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     Process.Completed();
                 }
-                
+
                 // If all processes in this ProcessGroup have
                 // completed, set the ticksElapsed and raise
                 // the Completed event.
@@ -141,7 +141,7 @@ namespace DotNetNuke.Services.Scheduling
                 }
                 else
                 {
-                    // when the schedule has invalid config and can't initialize the Process, 
+                    // when the schedule has invalid config and can't initialize the Process,
                     // we need also trigger work errored event so that the schedule can remove from inprogress and inqueue list to prevent endless loop.
                     Scheduler.CoreScheduler.WorkStarted(objScheduleHistoryItem);
                     objScheduleHistoryItem.Succeeded = false;
@@ -175,7 +175,7 @@ namespace DotNetNuke.Services.Scheduling
             this.Run((ScheduleHistoryItem)objScheduleHistoryItem);
         }
 
-        // Add a queue request to Threadpool with a 
+        // Add a queue request to Threadpool with a
         // callback to RunPooledThread which calls Run()
         public void AddQueueUserWorkItem(ScheduleItem s)
         {

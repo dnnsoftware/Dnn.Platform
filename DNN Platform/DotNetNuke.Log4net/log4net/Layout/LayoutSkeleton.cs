@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -112,13 +112,13 @@ namespace log4net.Layout
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
-        /// activation scheme. The <see cref="ActivateOptions"/> method must 
+        /// activation scheme. The <see cref="ActivateOptions"/> method must
         /// be called on this object after the configuration properties have
         /// been set. Until <see cref="ActivateOptions"/> is called this
-        /// object is in an undefined state and must not be used. 
+        /// object is in an undefined state and must not be used.
         /// </para>
         /// <para>
-        /// If any of the configuration properties are modified then 
+        /// If any of the configuration properties are modified then
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// <para>
@@ -159,7 +159,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// The content type output by this layout. 
+        /// The content type output by this layout.
         /// </summary>
         /// <value>The content type is <c>"text/plain"</c></value>
         /// <remarks>
@@ -225,8 +225,8 @@ namespace log4net.Layout
         /// value is <c>true</c>, this layout does not handle the exception.
         /// </para>
         /// </remarks>
-        virtual public bool IgnoresException 
-        { 
+        virtual public bool IgnoresException
+        {
             get { return this.m_ignoresException; }
             set { this.m_ignoresException = value; }
         }

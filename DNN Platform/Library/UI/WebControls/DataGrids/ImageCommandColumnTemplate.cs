@@ -32,7 +32,7 @@ namespace DotNetNuke.UI.WebControls
         private ListItemType mItemType = ListItemType.Item;
         private bool mShowImage = true;
         private bool mVisible = true;
-        
+
         #endregion
 
         #region "Constructors"
@@ -45,7 +45,7 @@ namespace DotNetNuke.UI.WebControls
         {
             this.ItemType = itemType;
         }
-        
+
         #endregion
 
         #region "Public Properties"
@@ -285,9 +285,9 @@ namespace DotNetNuke.UI.WebControls
         }
 
         #endregion
-        
+
         #endregion
-        
+
         #region "Private Methods"
 
         /// -----------------------------------------------------------------------------
@@ -375,7 +375,7 @@ namespace DotNetNuke.UI.WebControls
                 }
             }
         }
-        
+
         #endregion
     }
 }

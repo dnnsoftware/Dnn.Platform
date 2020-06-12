@@ -42,6 +42,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
             result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue(forceDownload ? "attachment" : "inline");
             result.Content.Headers.ContentDisposition.FileName = fileName;
             return result;
-        }             
+        }
     }
 }

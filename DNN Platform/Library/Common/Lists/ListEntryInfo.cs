@@ -58,7 +58,7 @@ namespace DotNetNuke.Common.Lists
 
         private string _Text = Null.NullString;
         /// <summary>
-        /// Localized text value of the list entry item. An attempt is made to look up the key "[ParentKey].[Value].Text" in the resource file 
+        /// Localized text value of the list entry item. An attempt is made to look up the key "[ParentKey].[Value].Text" in the resource file
         /// "App_GlobalResources/List_[ListName]". If not found the original (database) value is used.
         /// </summary>
         /// <value>

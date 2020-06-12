@@ -45,7 +45,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             // Assert
             Assert.IsNotNull(this._actionInvoker.ResultOfLastInvoke);
             Assert.IsInstanceOf<ViewResult>(this._actionInvoker.ResultOfLastInvoke);
-        }        
+        }
 
         [Test]
         public void ActionInvoker_InvokeExceptionFilters_IsExceptionHandled_True()

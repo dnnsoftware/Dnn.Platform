@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -70,12 +70,12 @@ namespace log4net.Plugin
         /// repository must be a unique name.
         /// </para>
         /// <para>
-        /// The name of the plugin must not change one the 
+        /// The name of the plugin must not change one the
         /// plugin has been attached to a repository.
         /// </para>
         /// </remarks>
-        public virtual string Name 
-        { 
+        public virtual string Name
+        {
             get { return this.m_name; }
             set { this.m_name = value; }
         }
@@ -102,7 +102,7 @@ namespace log4net.Plugin
         /// </summary>
         /// <remarks>
         /// <para>
-        /// This method is called to notify the plugin that 
+        /// This method is called to notify the plugin that
         /// it should stop operating and should detach from
         /// the repository.
         /// </para>
@@ -123,11 +123,11 @@ namespace log4net.Plugin
         /// </value>
         /// <remarks>
         /// <para>
-        /// Gets or sets the <see cref="ILoggerRepository" /> that this plugin is 
+        /// Gets or sets the <see cref="ILoggerRepository" /> that this plugin is
         /// attached to.
         /// </para>
         /// </remarks>
-        protected virtual ILoggerRepository LoggerRepository 
+        protected virtual ILoggerRepository LoggerRepository
         {
             get { return this.m_repository; }
             set { this.m_repository = value; }

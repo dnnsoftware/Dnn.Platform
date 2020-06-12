@@ -22,7 +22,7 @@ namespace DotNetNuke.Modules.Journal {
             this.btnUp.Click += new System.EventHandler(this.btnUp_Upload);
         }
         protected void Page_Load(object sender, EventArgs e) {
-      
+
         }
         protected void btnUp_Upload(object sender, EventArgs e) {
             var folderManager = FolderManager.Instance;
@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.Journal {
             }
             if (String.IsNullOrEmpty(message) && fi != null) {
                 this.litOut.Text = "<script type=\"text/javascript\">var fileInfo=" + JsonExtensionsWeb.ToJsonString(fi) + ";alert(fileInfo.FileName);</script>";
-                
+
             } else {
                 this.litOut.Text = message;
             }

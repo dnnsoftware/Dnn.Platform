@@ -93,7 +93,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         /// <summary>
         /// Synchronize a folder within the File System
         /// </summary>
-        /// <param name="folderId">Reference to the folder is going to be synchronized</param>        
+        /// <param name="folderId">Reference to the folder is going to be synchronized</param>
         /// <param name="recursive">Indicates if subfolders are going to be synchronized</param>
         void SyncFolderContent(int folderId, bool recursive);
 
@@ -186,8 +186,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         /// <param name="fileId">File reference to the source file</param>
         /// <param name="overwrite">Overwrite destination if a file with the same name already exists</param>
         /// <returns>The response object with the result of the action</returns>
-        ZipExtractViewModel UnzipFile(int fileId, bool overwrite);        
-        
+        ZipExtractViewModel UnzipFile(int fileId, bool overwrite);
+
         /// <summary>
         /// Returns all invalid chars for folder and file names
         /// </summary>
@@ -199,7 +199,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         /// </summary>
         /// <returns>The error text to show when a name contains an invalid character</returns>
         string GetInvalidCharsErrorText();
-        
+
         /// <summary>
         /// Get the URL of a file
         /// </summary>

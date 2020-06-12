@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         public HttpResponseMessage UpdateSystemSubscription(InboxSubscriptionViewModel post)
         {
             try
-            {               
+            {
                 var userPreferencesController = UserPreferencesController.Instance;
                 var userPreference = new UserPreference
                     {
@@ -116,7 +116,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                         NotificationsEmailFrequency = (Frequency)post.NotifyFreq
                     };
                 userPreferencesController.SetUserPreference(userPreference);
-                
+
                 return this.Request.CreateResponse(HttpStatusCode.OK, userPreferencesController.GetUserPreference(this.UserInfo));
             }
             catch (Exception ex)
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                                           .SingleOrDefault(s => s.SubscriptionId == subscription.SubscriptionId);
                 if (sub != null)
                 {
-                    SubscriptionController.Instance.DeleteSubscription(sub);                    
+                    SubscriptionController.Instance.DeleteSubscription(sub);
                 }
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, "unsubscribed");
@@ -160,7 +160,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 }
 
                 var dictionary = new Dictionary<string, string>();
-                                
+
                 var resourcesPath = this.LocalizationFolder;
                 var files =
                     Directory.GetFiles(System.Web.HttpContext.Current.Server.MapPath(resourcesPath)).Select(x => new FileInfo(x).Name).Where(f => !IsLanguageSpecific(f)).ToList();

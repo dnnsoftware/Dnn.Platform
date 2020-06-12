@@ -22,14 +22,14 @@ namespace DotNetNuke.Common.Controls
         private void InitializeComponent()
         {
         }
-        
+
         #endregion
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            
+
             // CODEGEN: This method call is required by the Web Form Designer
             // Do not modify it using the code editor.
             this.InitializeComponent();

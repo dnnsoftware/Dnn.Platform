@@ -185,7 +185,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 // Open File Stream
                 fs = File.OpenRead(FixPath(filePath));
-                
+
                 // Read file into byte array buffer
                 var buffer = new byte[fs.Length];
 
@@ -234,7 +234,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Deletes file in areas with a high degree of concurrent file access (i.e. caching, logging) 
+        /// Deletes file in areas with a high degree of concurrent file access (i.e. caching, logging)
         /// This solves file concurrency issues under heavy load.
         /// </summary>
         /// <param name="fileName">String</param>

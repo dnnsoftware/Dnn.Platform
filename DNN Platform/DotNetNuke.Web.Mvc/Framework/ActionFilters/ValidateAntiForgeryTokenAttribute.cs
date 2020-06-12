@@ -24,7 +24,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 {
                     var headers = httpContext.Request.Headers;
                     var form = httpContext.Request.Form;
-                    // Try to fetch the token from Headers. (Used with Dnn service framework.). 
+                    // Try to fetch the token from Headers. (Used with Dnn service framework.).
                     // If not found then fetch it from form fields. (Would be used with standard MVC call).
                     var token = headers.AllKeys.Contains("RequestVerificationToken") ? headers.GetValues("RequestVerificationToken").FirstOrDefault()
                         : (

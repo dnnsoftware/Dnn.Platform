@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Library.Model
         {
             base.FillInternal(dr);
 
-            
+
             this.PermissionId = Null.SetNullInteger(dr["PermissionId"]);
             this.MenuId = Null.SetNullInteger(dr["MenuId"]);
             this.PermissionKey = Null.SetNullString(dr["PermissionKey"]);

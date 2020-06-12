@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This Constructor creates a new Installer instance from a string representing
-        /// the physical path to the temporary install folder and a string representing 
+        /// the physical path to the temporary install folder and a string representing
         /// the physical path to the root of the site
         /// </summary>
         /// <param name="tempFolder">The physical path to the zip file containg the package</param>
@@ -130,7 +130,7 @@ namespace DotNetNuke.Services.Installer
                 this.ReadManifest(new FileStream(manifest, FileMode.Open, FileAccess.Read));
             }
         }
-        
+
         #endregion
 
         #region Public Properties
@@ -167,7 +167,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets 
+        /// Gets
         /// </summary>
         /// <value>A Dictionary(Of String, PackageInstaller)</value>
         /// -----------------------------------------------------------------------------
@@ -444,7 +444,7 @@ namespace DotNetNuke.Services.Installer
             {
                 Logger.Error("Exception deleting folder " + this.TempInstallFolder + " while installing " + this.InstallerInfo.ManifestFile.Name, ex);
                 Exceptions.Exceptions.LogException(ex);
-            }            
+            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -468,7 +468,7 @@ namespace DotNetNuke.Services.Installer
             }
             catch (Exception ex)
             {
-            
+
                 this.InstallerInfo.Log.AddFailure(ex);
                 bStatus = false;
             }
@@ -490,7 +490,7 @@ namespace DotNetNuke.Services.Installer
                 this.InstallerInfo.Log.EndJob(Util.INSTALL_Failed);
                 bStatus = false;
             }
-            
+
             // log installation event
             this.LogInstallEvent("Package", "Install");
 
@@ -570,7 +570,7 @@ namespace DotNetNuke.Services.Installer
             this.LogInstallEvent("Package", "UnInstall");
             return true;
         }
-        
+
         #endregion
     }
 }

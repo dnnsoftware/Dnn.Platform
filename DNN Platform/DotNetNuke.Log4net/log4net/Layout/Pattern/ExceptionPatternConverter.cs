@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -44,7 +44,7 @@ namespace log4net.Layout.Pattern
     /// </para>
     /// </remarks>
     /// <author>Nicko Cadell</author>
-    internal sealed class ExceptionPatternConverter : PatternLayoutConverter 
+    internal sealed class ExceptionPatternConverter : PatternLayoutConverter
     {
         /// <summary>
         /// Default constructor
@@ -91,7 +91,7 @@ namespace log4net.Layout.Pattern
         ///         </item>
         ///         <item>
         ///             <description>HelpLink</description>
-        ///         </item>     
+        ///         </item>
         /// </list>
         /// </remarks>
         override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
@@ -103,7 +103,7 @@ namespace log4net.Layout.Pattern
                     case "message":
                         WriteObject(writer, loggingEvent.Repository, loggingEvent.ExceptionObject.Message);
                         break;
-#if !NETCF                      
+#if !NETCF
                     case "source":
                         WriteObject(writer, loggingEvent.Repository, loggingEvent.ExceptionObject.Source);
                         break;
@@ -118,7 +118,7 @@ namespace log4net.Layout.Pattern
                     case "helplink":
                         WriteObject(writer, loggingEvent.Repository, loggingEvent.ExceptionObject.HelpLink);
                         break;
-#endif                      
+#endif
                     default:
                         // do not output SystemInfo.NotAvailableText
                         break;
@@ -127,7 +127,7 @@ namespace log4net.Layout.Pattern
             else
             {
                 string exceptionString = loggingEvent.GetExceptionString();
-                if (exceptionString != null && exceptionString.Length > 0) 
+                if (exceptionString != null && exceptionString.Length > 0)
                 {
                     writer.WriteLine(exceptionString);
                 }

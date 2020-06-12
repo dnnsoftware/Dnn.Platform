@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.Search
         {
             return ComponentFactory.GetComponent<SearchDataStoreProvider>();
         }
-        
+
         #endregion
 
         #region "Abstract Methods"
@@ -36,7 +36,7 @@ namespace DotNetNuke.Services.Search
         public abstract SearchResultsInfoCollection GetSearchResults(int portalId, string criteria);
 
         public abstract SearchResultsInfoCollection GetSearchItems(int portalId, int tabId, int moduleId);
-        
+
         #endregion
     }
 }

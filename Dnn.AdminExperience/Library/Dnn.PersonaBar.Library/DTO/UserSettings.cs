@@ -29,7 +29,7 @@ namespace Dnn.PersonaBar.Library.DTO
             set
             {
                 this["expandPersonaBar"] = value;
-            } 
+            }
         }
 
         public XmlSchema GetSchema()
@@ -58,7 +58,7 @@ namespace Dnn.PersonaBar.Library.DTO
         }
 
         public void WriteXml(XmlWriter writer)
-        {            
+        {
             writer.WriteStartElement("data");
             writer.WriteCData(Json.Serialize(this));
             writer.WriteEndElement();

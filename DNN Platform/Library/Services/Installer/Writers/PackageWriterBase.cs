@@ -59,11 +59,11 @@ namespace DotNetNuke.Services.Installer.Writers
             this._Package = package;
             this._Package.AttachInstallerInfo(new InstallerInfo());
         }
-        
+
         #endregion
 
         #region "Protected Properties"
-        
+
         protected virtual Dictionary<string, string> Dependencies
         {
             get
@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 return new Dictionary<string, string>();
             }
         }
-        
+
         #endregion
 
         #region "Public Properties"
@@ -270,7 +270,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 return this._Versions;
             }
         }
-        
+
         #endregion
 
         #region "Private Methods"
@@ -380,7 +380,7 @@ namespace DotNetNuke.Services.Installer.Writers
             // Write Description
             writer.WriteElementString("description", this.Package.Description);
             writer.WriteElementString("iconFile", Util.ParsePackageIconFileName(this.Package));
-            
+
             // Write Author
             writer.WriteStartElement("owner");
 
@@ -411,11 +411,11 @@ namespace DotNetNuke.Services.Installer.Writers
                 }
                 writer.WriteEndElement();
             }
-            
+
             // Write components Element
             writer.WriteStartElement("components");
         }
-        
+
         #endregion
 
         #region "Protected Methods"
@@ -507,7 +507,7 @@ namespace DotNetNuke.Services.Installer.Writers
                         this.ParseFolder(subFolder.FullName, rootPath);
                     }
                 }
-                
+
                 // Add the Files in the Folder
                 this.ParseFiles(folder, rootPath);
             }
@@ -546,21 +546,21 @@ namespace DotNetNuke.Services.Installer.Writers
                     this.AddFile(fileName + ".dll");
                 }
             }
-            
+
             // Add all the files that are classified as None
             foreach (XPathNavigator itemNav in rootNav.Select("proj:ItemGroup/proj:None", manager))
             {
                 fileName = Util.ReadAttribute(itemNav, "Include");
                 this.AddFile(fileName);
             }
-            
+
             // Add all the files that are classified as Content
             foreach (XPathNavigator itemNav in rootNav.Select("proj:ItemGroup/proj:Content", manager))
             {
                 fileName = Util.ReadAttribute(itemNav, "Include");
                 this.AddFile(fileName);
             }
-            
+
             // Add all the files that are classified as Compile
             if (includeSource)
             {
@@ -581,7 +581,7 @@ namespace DotNetNuke.Services.Installer.Writers
         protected virtual void WriteManifestComponent(XmlWriter writer)
         {
         }
-        
+
         #endregion
 
         #region "Public Methods"
@@ -701,7 +701,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 // Start dotnetnuke element
                 WriteManifestStartElement(writer);
             }
-            
+
             // Start package Element
             this.WritePackageStartElement(writer);
 
@@ -711,14 +711,14 @@ namespace DotNetNuke.Services.Installer.Writers
                 var scriptWriter = new ScriptComponentWriter(this.BasePath, this.Scripts, this.Package);
                 scriptWriter.WriteManifest(writer);
             }
-            
+
             // write Clean Up Files Component
             if (this.CleanUpFiles.Count > 0)
             {
                 var cleanupFileWriter = new CleanupComponentWriter(this.BasePath, this.CleanUpFiles);
                 cleanupFileWriter.WriteManifest(writer);
             }
-            
+
             // Write the Custom Component
             this.WriteManifestComponent(writer);
 
@@ -728,27 +728,27 @@ namespace DotNetNuke.Services.Installer.Writers
                 var assemblyWriter = new AssemblyComponentWriter(this.AssemblyPath, this.Assemblies, this.Package);
                 assemblyWriter.WriteManifest(writer);
             }
-            
+
             // Write AppCode Files Component
             if (this.AppCodeFiles.Count > 0)
             {
                 var fileWriter = new FileComponentWriter(this.AppCodePath, this.AppCodeFiles, this.Package);
                 fileWriter.WriteManifest(writer);
             }
-            
+
             // write Files Component
             if (this.Files.Count > 0)
             {
                 this.WriteFilesToManifest(writer);
             }
-            
+
             // write ResourceFiles Component
             if (this.Resources.Count > 0)
             {
                 var fileWriter = new ResourceFileComponentWriter(this.BasePath, this.Resources, this.Package);
                 fileWriter.WriteManifest(writer);
             }
-            
+
             // Close Package
             this.WritePackageEndElement(writer);
 
@@ -779,7 +779,7 @@ namespace DotNetNuke.Services.Installer.Writers
             // Start packages Element
             writer.WriteStartElement("packages");
         }
-        
+
         #endregion
     }
 }

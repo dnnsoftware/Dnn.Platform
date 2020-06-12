@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -33,7 +33,7 @@ using log4net.Appender;
 using log4net.Util;
 using log4net.Layout;
 
-namespace log4net.Appender 
+namespace log4net.Appender
 {
     /// <summary>
     /// Logs events to a local syslog service.
@@ -44,7 +44,7 @@ namespace log4net.Appender
     /// If these functions are not available on the local system then this appender will not work!
     /// </note>
     /// <para>
-    /// The functions <c>openlog</c>, <c>syslog</c>, and <c>closelog</c> are specified in SUSv2 and 
+    /// The functions <c>openlog</c>, <c>syslog</c>, and <c>closelog</c> are specified in SUSv2 and
     /// POSIX 1003.1-2001 standards. These are used to log messages to the local syslog service.
     /// </para>
     /// <para>
@@ -55,20 +55,20 @@ namespace log4net.Appender
     /// <para>
     /// Syslog messages must have a facility and and a severity. The severity
     /// is derived from the Level of the logging event.
-    /// The facility must be chosen from the set of defined syslog 
+    /// The facility must be chosen from the set of defined syslog
     /// <see cref="SyslogFacility"/> values. The facilities list is predefined
     /// and cannot be extended.
     /// </para>
     /// <para>
     /// An identifier is specified with each log message. This can be specified
-    /// by setting the <see cref="Identity"/> property. The identity (also know 
+    /// by setting the <see cref="Identity"/> property. The identity (also know
     /// as the tag) must not contain white space. The default value for the
     /// identity is the application name (from <see cref="SystemInfo.ApplicationFriendlyName"/>).
     /// </para>
     /// </remarks>
     /// <author>Rob Lyon</author>
     /// <author>Nicko Cadell</author>
-    public class LocalSyslogAppender : AppenderSkeleton 
+    public class LocalSyslogAppender : AppenderSkeleton
     {
         #region Enumerations
 
@@ -265,24 +265,24 @@ namespace log4net.Appender
         /// Initializes a new instance of the <see cref="LocalSyslogAppender" /> class.
         /// </summary>
         /// <remarks>
-        /// This instance of the <see cref="LocalSyslogAppender" /> class is set up to write 
+        /// This instance of the <see cref="LocalSyslogAppender" /> class is set up to write
         /// to a local syslog service.
         /// </remarks>
-        public LocalSyslogAppender() 
+        public LocalSyslogAppender()
         {
         }
 
         #endregion // Public Instance Constructors
 
         #region Public Instance Properties
-        
+
         /// <summary>
         /// Message identity
         /// </summary>
         /// <remarks>
         /// <para>
         /// An identifier is specified with each log message. This can be specified
-        /// by setting the <see cref="Identity"/> property. The identity (also know 
+        /// by setting the <see cref="Identity"/> property. The identity (also know
         /// as the tag) must not contain white space. The default value for the
         /// identity is the application name (from <see cref="SystemInfo.ApplicationFriendlyName"/>).
         /// </para>
@@ -306,7 +306,7 @@ namespace log4net.Appender
             get { return this.m_facility; }
             set { this.m_facility = value; }
         }
-        
+
         #endregion // Public Instance Properties
 
         /// <summary>
@@ -331,13 +331,13 @@ namespace log4net.Appender
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
-        /// activation scheme. The <see cref="ActivateOptions"/> method must 
+        /// activation scheme. The <see cref="ActivateOptions"/> method must
         /// be called on this object after the configuration properties have
         /// been set. Until <see cref="ActivateOptions"/> is called this
-        /// object is in an undefined state and must not be used. 
+        /// object is in an undefined state and must not be used.
         /// </para>
         /// <para>
-        /// If any of the configuration properties are modified then 
+        /// If any of the configuration properties are modified then
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// </remarks>
@@ -347,7 +347,7 @@ namespace log4net.Appender
         public override void ActivateOptions()
         {
             base.ActivateOptions();
-            
+
             this.m_levelMapping.ActivateOptions();
 
             string identString = this.m_identity;
@@ -388,7 +388,7 @@ namespace log4net.Appender
 #if !NETSTANDARD1_3
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand, UnmanagedCode = true)]
 #endif
-        protected override void Append(LoggingEvent loggingEvent) 
+        protected override void Append(LoggingEvent loggingEvent)
         {
             int priority = GeneratePriority(this.m_facility, this.GetSeverity(loggingEvent.Level));
             string message = this.RenderLoggingEvent(loggingEvent);
@@ -422,7 +422,7 @@ namespace log4net.Appender
             {
                 // Ignore dll not found at this point
             }
-        
+
             if (this.m_handleToIdentity != IntPtr.Zero)
             {
                 // free global ident
@@ -470,30 +470,30 @@ namespace log4net.Appender
             // Fallback to sensible default values
             //
 
-            if (level >= Level.Alert) 
+            if (level >= Level.Alert)
             {
                 return SyslogSeverity.Alert;
-            } 
-            else if (level >= Level.Critical) 
+            }
+            else if (level >= Level.Critical)
             {
                 return SyslogSeverity.Critical;
-            } 
-            else if (level >= Level.Error) 
+            }
+            else if (level >= Level.Error)
             {
                 return SyslogSeverity.Error;
-            } 
-            else if (level >= Level.Warn) 
+            }
+            else if (level >= Level.Warn)
             {
                 return SyslogSeverity.Warning;
-            } 
-            else if (level >= Level.Notice) 
+            }
+            else if (level >= Level.Notice)
             {
                 return SyslogSeverity.Notice;
-            } 
-            else if (level >= Level.Info) 
+            }
+            else if (level >= Level.Info)
             {
                 return SyslogSeverity.Informational;
-            } 
+            }
             // Default setting
             return SyslogSeverity.Debug;
         }
@@ -542,7 +542,7 @@ namespace log4net.Appender
         #endregion // Private Instances Fields
 
         #region External Members
-        
+
         /// <summary>
         /// Open connection to system logger.
         /// </summary>
@@ -557,7 +557,7 @@ namespace log4net.Appender
         /// The libc syslog method takes a format string and a variable argument list similar
         /// to the classic printf function. As this type of vararg list is not supported
         /// by C# we need to specify the arguments explicitly. Here we have specified the
-        /// format string with a single message argument. The caller must set the format 
+        /// format string with a single message argument. The caller must set the format
         /// string to <c>"%s"</c>.
         /// </para>
         /// </remarks>

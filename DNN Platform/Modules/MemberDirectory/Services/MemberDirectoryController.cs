@@ -91,7 +91,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         private IEnumerable<UserInfo> GetUsers(int userId, int groupId, string searchTerm, int pageIndex, int pageSize, string propertyNames, string propertyValues)
         {
-            var portalId = this.PortalSettings.PortalId;            
+            var portalId = this.PortalSettings.PortalId;
             var isAdmin = this.PortalSettings.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
 
             var filterBy = GetSetting(this.ActiveModule.ModuleSettings, "FilterBy", String.Empty);
@@ -174,7 +174,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                     break;
             }
             if (excludeHostUsers)
-            {                
+            {
                 return this.FilterExcludedUsers(users);
             }
             return users;
@@ -195,7 +195,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             try
             {
                 if (userId < 0) userId = this.PortalSettings.UserId;
-                
+
                 var searchField1 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField1", "DisplayName");
                 var searchField2 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField2", "Email");
                 var searchField3 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField3", "City");

@@ -109,7 +109,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the value of the Field that is bound to the EditControl's 
+        /// Gets and sets the value of the Field that is bound to the EditControl's
         /// Expression DynamicContentValidator
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
@@ -143,7 +143,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that determines the visibility.")]
         public string VisibilityDataField { get; set; }
-        
+
         #endregion
 
         #region Private Methods
@@ -163,7 +163,7 @@ namespace DotNetNuke.UI.WebControls
 
             return fields;
         }
-        
+
         #endregion
 
         #region Protected Methods
@@ -192,7 +192,7 @@ namespace DotNetNuke.UI.WebControls
         {
             PropertyInfo objProperty;
             string _Category = Null.NullString;
-            
+
             // Get Category Field
             if (!String.IsNullOrEmpty(this.CategoryDataField))
             {
@@ -266,7 +266,7 @@ namespace DotNetNuke.UI.WebControls
             }
             return isVisible;
         }
-        
+
         #endregion
     }
 }

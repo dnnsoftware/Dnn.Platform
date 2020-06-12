@@ -45,7 +45,7 @@ namespace DotNetNuke.ExtensionPoints
                     str.AppendFormat(this.btnRenderer.GetOutput(extension));
                 }
             }
-            
+
             output.Write(str.ToString());
         }
 

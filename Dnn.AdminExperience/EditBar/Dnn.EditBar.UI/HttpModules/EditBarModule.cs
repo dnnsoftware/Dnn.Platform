@@ -64,7 +64,7 @@ namespace Dnn.EditBar.UI.HttpModules
 
             var request = e.Skin.Page.Request;
             var isSpecialPageMode = request.QueryString["dnnprintmode"] == "true" || request.QueryString["popUp"] == "true";
-            if (isSpecialPageMode 
+            if (isSpecialPageMode
                     || Globals.IsAdminControl())
             {
                 return;

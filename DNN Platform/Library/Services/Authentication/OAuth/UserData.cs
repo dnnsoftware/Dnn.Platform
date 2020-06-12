@@ -61,8 +61,8 @@ namespace DotNetNuke.Services.Authentication.OAuth
         [DataMember(Name = "name")]
         public virtual string Name { get; set; }
 
-        public string PreferredEmail 
-        { 
+        public string PreferredEmail
+        {
             get
             {
                 if (this.Emails == null)

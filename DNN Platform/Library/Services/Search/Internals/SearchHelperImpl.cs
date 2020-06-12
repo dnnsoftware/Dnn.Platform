@@ -407,7 +407,7 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 return searchPhrase;
             }
-            
+
             // we have a quotation marks and/or wildcard search, adjust accordingly
             var chars = this.FoldToASCII(searchPhrase).ToCharArray();
             var insideQuote = false;
@@ -622,7 +622,7 @@ namespace DotNetNuke.Services.Search.Internals
             var cultureCode = splittedKeys[2];
 
             this.EnsurePortalDefaultsAreSet(portalId);
-            
+
             return CBO.FillCollection<SearchStopWords>(DataProvider.Instance().GetSearchStopWords(portalId, cultureCode));
         }
 
@@ -632,7 +632,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             // check portal settings first
             if (PortalController.GetPortalSetting(setting, portalId, "false") != "false") return;
-            
+
             // Portal may not be present, especially during installation
             if (PortalController.Instance.GetPortal(portalId) == null) return;
 
@@ -640,7 +640,7 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 var resourceFile = this.GetResourceFile(locale.Code);
 
-                var currentStopWords = CBO.FillCollection<SearchStopWords>(DataProvider.Instance().GetSearchStopWords(portalId, locale.Code)); 
+                var currentStopWords = CBO.FillCollection<SearchStopWords>(DataProvider.Instance().GetSearchStopWords(portalId, locale.Code));
                 if (currentStopWords == null || currentStopWords.Count == 0)
                 {
                     // Add Default StopWord
@@ -676,13 +676,13 @@ namespace DotNetNuke.Services.Search.Internals
 
             return CBO.FillCollection<SynonymsGroup>(DataProvider.Instance().GetAllSynonymsGroups(portalId, cultureCode));
         }
-        
+
         private string FoldToASCII(string searchPhrase)
         {
             var sb = new StringBuilder();
 
             var cleanedPhrase = searchPhrase.Trim('\0');
-            
+
             var asciiFilter = new ASCIIFoldingFilter(new WhitespaceTokenizer((TextReader)new StringReader(cleanedPhrase)));
 
             string space = string.Empty;

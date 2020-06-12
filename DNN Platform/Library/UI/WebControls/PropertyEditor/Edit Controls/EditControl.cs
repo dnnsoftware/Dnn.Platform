@@ -22,7 +22,7 @@ namespace DotNetNuke.UI.WebControls
     /// Class:      EditControl
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The EditControl control provides a standard UI component for editing 
+    /// The EditControl control provides a standard UI component for editing
     /// properties.
     /// </summary>
     /// <remarks>
@@ -198,7 +198,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         #endregion
-        
+
         #region "Events"
 
         public event PropertyChangedEventHandler ItemAdded;
@@ -324,7 +324,7 @@ namespace DotNetNuke.UI.WebControls
                 this.RenderViewMode(writer);
             }
         }
-        
+
         #endregion
     }
 }

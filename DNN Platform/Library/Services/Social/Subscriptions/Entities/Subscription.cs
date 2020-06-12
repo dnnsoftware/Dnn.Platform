@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Social.Subscriptions.Entities
         /// The type of subscription.
         /// </summary>
         public int SubscriptionTypeId { get; set; }
-        
+
         /// <summary>
         /// Object key that represent the content which user is subscribed to.
         /// The format of the ObjectKey is up to the consumer. (i.e.: blog:12, where 12 represents the post identifier).
@@ -53,17 +53,17 @@ namespace DotNetNuke.Services.Social.Subscriptions.Entities
         /// The date the user subscribed.
         /// </summary>
         public DateTime CreatedOnDate { get; set; }
-        
+
         /// <summary>
         /// Associates the subscription with an instance of a module.
-        /// If set it uses to apply to Security Trimming. 
+        /// If set it uses to apply to Security Trimming.
         /// If the user does not have view permission on that module the Subscription won't be retrieved by the SubscriptionController.
         /// </summary>
         public int ModuleId { get; set; }
 
         /// <summary>
-        /// Associates the subscription with a tab. 
-        /// If set it uses to apply to Security Trimming. 
+        /// Associates the subscription with a tab.
+        /// If set it uses to apply to Security Trimming.
         /// If the user does not have view permission on that tab the Subscription won't be retrieved by the SubscriptionController.
         /// </summary>
         public int TabId { get; set; }

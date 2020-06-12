@@ -49,7 +49,7 @@ namespace DotNetNuke.UI
                     target = FindControl<T>(control.Parent, id, true);
                 }
             }
- 
+
             return target;
         }
 
@@ -62,11 +62,11 @@ namespace DotNetNuke.UI
         {
           if (predicate(control)) return control as T;
 
-          foreach (Control childControl in control.Controls) 
+          foreach (Control childControl in control.Controls)
           {
-            T descendent = FindFirstDescendent<T>(childControl, predicate); 
-            if (descendent != null)      
-              return descendent; 
+            T descendent = FindFirstDescendent<T>(childControl, predicate);
+            if (descendent != null)
+              return descendent;
           }
 
           return null;

@@ -11,7 +11,7 @@ using System.Web.UI;
 namespace DotNetNuke.Entities.Modules.Communications
 {
     /// <summary>
-    /// Specifies communications between modules. 
+    /// Specifies communications between modules.
     /// There are listeners and communicators
     /// </summary>
     public class ModuleCommunicate
@@ -55,13 +55,13 @@ namespace DotNetNuke.Entities.Modules.Communications
         /// <param name="ctrl">The control.</param>
         public void LoadCommunicator(Control ctrl)
         {
-            // Check and see if the module implements IModuleCommunicator 
+            // Check and see if the module implements IModuleCommunicator
             if (ctrl is IModuleCommunicator)
             {
                 this.Add((IModuleCommunicator)ctrl);
             }
 
-            // Check and see if the module implements IModuleListener 
+            // Check and see if the module implements IModuleListener
             if (ctrl is IModuleListener)
             {
                 this.Add((IModuleListener)ctrl);

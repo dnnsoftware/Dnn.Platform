@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -32,8 +32,8 @@ namespace log4net.DateFormatter
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Formats a <see cref="DateTime"/> in the format 
-    /// <c>"dd MMM yyyy HH:mm:ss,fff"</c> for example, 
+    /// Formats a <see cref="DateTime"/> in the format
+    /// <c>"dd MMM yyyy HH:mm:ss,fff"</c> for example,
     /// <c>"06 Nov 1994 15:49:37,459"</c>.
     /// </para>
     /// </remarks>
@@ -79,15 +79,15 @@ namespace log4net.DateFormatter
         override protected void FormatDateWithoutMillis(DateTime dateToFormat, StringBuilder buffer)
         {
             int day = dateToFormat.Day;
-            if (day < 10) 
+            if (day < 10)
             {
                 buffer.Append('0');
             }
             buffer.Append(day);
-            buffer.Append(' ');     
+            buffer.Append(' ');
 
             buffer.Append(this.m_dateTimeFormatInfo.GetAbbreviatedMonthName(dateToFormat.Month));
-            buffer.Append(' '); 
+            buffer.Append(' ');
 
             buffer.Append(dateToFormat.Year);
             buffer.Append(' ');

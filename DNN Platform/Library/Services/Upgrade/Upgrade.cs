@@ -2251,7 +2251,7 @@ namespace DotNetNuke.Services.Upgrade
                 }
             }
 
-            // Add List module to Admin page of every portal                      
+            // Add List module to Admin page of every portal
             ModuleDefinitionInfo mDef = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Lists");
             if (mDef != null)
             {
@@ -2398,7 +2398,7 @@ namespace DotNetNuke.Services.Upgrade
             // Convert old Messages to new schema
             ConvertOldMessages();
 
-            // Replace old Messaging module on User Profile with new 
+            // Replace old Messaging module on User Profile with new
             ReplaceMessagingModule();
 
             // Move Photo Property to the end of the propert list.
@@ -2980,12 +2980,12 @@ namespace DotNetNuke.Services.Upgrade
             var skinFolder = string.Format("{0}Skins\\DarkKnightMobile", Globals.HostMapPath);
             if (!Directory.Exists(skinFolder))
             {
-                UninstallPackage("DarkKnightMobile", "Skin"); // Skin  
+                UninstallPackage("DarkKnightMobile", "Skin"); // Skin
             }
 
             if (!Directory.Exists(containerFolder))
             {
-                UninstallPackage("DarkKnightMobile", "Container"); // Container  
+                UninstallPackage("DarkKnightMobile", "Container"); // Container
             }
         }
 
@@ -3458,7 +3458,7 @@ namespace DotNetNuke.Services.Upgrade
                                 File.SetAttributes(childDefaultPage, FileAttributes.Normal);
                             }
 
-                            // Rename existing file                                
+                            // Rename existing file
                             File.Copy(childDefaultPage, childPath + "\\old_" + Globals.glbDefaultPage, true);
 
                             // copy file
@@ -4482,7 +4482,7 @@ namespace DotNetNuke.Services.Upgrade
 
             foreach (string file in files)
             {
-                // script file name must conform to ##.##.##.DefaultProviderName 
+                // script file name must conform to ##.##.##.DefaultProviderName
                 if (file != null)
                 {
                     if (GetFileName(file).Length == 9 + DefaultProvider.Length)
@@ -4724,7 +4724,7 @@ namespace DotNetNuke.Services.Upgrade
                 IInstallationStep ensureLpAndTemplate = new UpdateLanguagePackStep();
                 ensureLpAndTemplate.Execute();
 
-                // install LP that contains templates if installing in a different language   
+                // install LP that contains templates if installing in a different language
                 var installConfig = InstallController.Instance.GetInstallConfig();
                 string culture = installConfig.InstallCulture;
                 if (!culture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))

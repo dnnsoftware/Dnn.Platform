@@ -20,10 +20,10 @@ namespace DotNetNuke.UI.Containers
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : Containers.Icon
-    /// 
+    ///
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// Contains the attributes of an Icon.  
+    /// Contains the attributes of an Icon.
     /// These are read into the PortalModuleBase collection as attributes for the icons within the module controls.
     /// </summary>
     /// <remarks>
@@ -32,11 +32,11 @@ namespace DotNetNuke.UI.Containers
     public partial class PrintModule : ActionBase
     {
         #region "Public Members"
-        
+
         public string PrintIcon { get; set; }
-        
+
         #endregion
-        
+
         #region "Event Handlers"
 
         protected override void OnLoad(EventArgs e)
@@ -48,7 +48,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     this.DisplayAction(action);
                 }
-                
+
                 // set visibility
                 if (this.Controls.Count > 0)
                 {
@@ -64,7 +64,7 @@ namespace DotNetNuke.UI.Containers
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-    
+
     private void DisplayAction(ModuleAction action)
     {
         if (action.CommandName == ModuleActionType.PrintModule)
@@ -95,8 +95,8 @@ namespace DotNetNuke.UI.Containers
             }
         }
         }
-        
-        foreach (ModuleAction subAction in action.Actions) 
+
+        foreach (ModuleAction subAction in action.Actions)
         {
             this.DisplayAction(subAction);
         }
@@ -113,7 +113,7 @@ namespace DotNetNuke.UI.Containers
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-        
+
         #endregion
     }
 }

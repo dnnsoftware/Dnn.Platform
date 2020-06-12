@@ -38,7 +38,7 @@ namespace DotNetNuke.Entities.Content
             var contentItem = this._contentController.GetContentItem(contentItemId);
 
             action(contentItem);
-            
+
             this._contentController.UpdateContentItem(contentItem);
         }
 
@@ -51,7 +51,7 @@ namespace DotNetNuke.Entities.Content
         {
             this.AddToContent(contentItemId, contentItem => contentItem.Files.AddRange(fileInfo));
         }
-        
+
         public void AddVideoToContent(int contentItemId, IFileInfo fileInfo)
         {
             this.AddVideosToContent(contentItemId, new[] { fileInfo });
@@ -159,7 +159,7 @@ namespace DotNetNuke.Entities.Content
             {
                 yield break;
             }
-            
+
             foreach (var file in content.FromJson<int[]>().ToArray())
             {
                 IFileInfo fileInfo = null;

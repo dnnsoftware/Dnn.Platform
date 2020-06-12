@@ -11,8 +11,8 @@ namespace DotNetNuke.Entities.Content.Workflow
     /// <summary>
     /// This entity represents a Workflow State
     /// </summary>
-    [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]    
-    public class ContentWorkflowState 
+    [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
+    public class ContentWorkflowState
     {
         /// <summary>
         /// State Id
@@ -37,7 +37,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         public bool SendEmail { get; set; }
 
-        public bool SendMessage { get; set; } 
+        public bool SendMessage { get; set; }
 
         public bool IsDisposalState { get; set; }
 

@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         private SkinControlInfo InstalledSkinControl;
         private SkinControlInfo SkinControl;
-        
+
         #endregion
 
         #region "Public Properties"
@@ -47,7 +47,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "ascx, vb, cs, js, resx, xml, vbproj, csproj, sln";
             }
         }
-        
+
         #endregion
 
         #region "Private Methods"
@@ -74,7 +74,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Log.AddFailure(ex);
             }
         }
-        
+
         #endregion
 
         #region "Public Methods"
@@ -105,7 +105,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     this.SkinControl.SkinControlID = this.InstalledSkinControl.SkinControlID;
                 }
-                
+
                 // Save SkinControl
                 this.SkinControl.PackageID = this.Package.PackageID;
                 this.SkinControl.SkinControlID = SkinControlController.SaveSkinControl(this.SkinControl);
@@ -137,13 +137,13 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Rollback method undoes the installation of the component in the event 
+        /// The Rollback method undoes the installation of the component in the event
         /// that one of the other components fails
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-            // If Temp SkinControl exists then we need to update the DataStore with this 
+            // If Temp SkinControl exists then we need to update the DataStore with this
             if (this.InstalledSkinControl == null)
             {
                 // No Temp SkinControl - Delete newly added SkinControl
@@ -165,7 +165,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             this.DeleteSkinControl();
         }
-        
+
         #endregion
     }
 }

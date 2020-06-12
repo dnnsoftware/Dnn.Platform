@@ -13,7 +13,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="module">Module which tracks the change</param>
         /// <param name="moduleVersion">Version number corresponding to the change</param>
-        /// <param name="userId">User Id who provokes the change</param>        
+        /// <param name="userId">User Id who provokes the change</param>
         void TrackModuleAddition(ModuleInfo module, int moduleVersion, int userId);
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="module">Module which tracks the change</param>
         /// <param name="moduleVersion">Version number corresponding to the change</param>
-        /// <param name="originalTabId">Tab Id where the module originally is</param>       
+        /// <param name="originalTabId">Tab Id where the module originally is</param>
         /// <param name="userId">User Id who provokes the change</param>
         void TrackModuleUncopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId);
     }

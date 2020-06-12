@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Localization
         bool SaveString(string key, string value, string resourceFileRoot, string language, PortalSettings portalSettings, DotNetNuke.Services.Localization.LocalizationProvider.CustomizedLocale resourceType, bool addFile, bool addKey);
 
         /// <summary>
-        /// Gets a compiled resource file for a specific language and portal. This takes the original resource file 
+        /// Gets a compiled resource file for a specific language and portal. This takes the original resource file
         /// and overwrites it with any keys found in localized and overridden resource files according to .net and DNN rules.
         /// </summary>
         /// <param name="portalSettings">The portal settings for the requesting portal. Only used to retrieve PortalId and DefaultLanguage.</param>

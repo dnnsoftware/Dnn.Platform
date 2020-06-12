@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.FileSystem
         /// }
         /// </example>
         public abstract void LoadSettings(Hashtable folderMappingSettings);
-        
+
         /// <summary>
         /// Use this method to update the provider's concrete settings for the specified folder mapping.
         /// </summary>

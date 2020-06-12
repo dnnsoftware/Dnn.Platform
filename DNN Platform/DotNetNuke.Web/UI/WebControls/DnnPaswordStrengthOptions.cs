@@ -72,7 +72,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.CriteriaAtLeastNCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNChars");
             this.CriteriaAtLeastNSpecialCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNSpecialChars");
             this.CriteriaValidationExpressionText = Utilities.GetLocalizedString("CriteriaValidationExpression");
-            
+
             this.PasswordRulesHeadText = Utilities.GetLocalizedString("PasswordRulesHeadText");
 
             this.WeakColor = "#ed1e24";

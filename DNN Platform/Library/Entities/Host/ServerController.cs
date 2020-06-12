@@ -113,7 +113,7 @@ namespace DotNetNuke.Entities.Host
         {
             var existServer = GetServers().FirstOrDefault(s => s.ServerName == server.ServerName && s.IISAppName == server.IISAppName);
             var serverId = DataProvider.Instance().UpdateServerActivity(server.ServerName, server.IISAppName, server.CreatedDate, server.LastActivityDate, server.PingFailureCount, server.Enabled);
-            
+
             server.ServerID = serverId;
             if (existServer == null
                 || string.IsNullOrEmpty(existServer.Url)
@@ -127,13 +127,13 @@ namespace DotNetNuke.Entities.Host
                 UpdateServer(server);
             }
 
-            
+
             // log the server info
             var log = new LogInfo();
             log.AddProperty(existServer != null ? "Server Updated" : "Add New Server", server.ServerName);
             log.AddProperty("IISAppName", server.IISAppName);
             log.AddProperty("Last Activity Date", server.LastActivityDate.ToString());
-            log.LogTypeKey = existServer != null ? EventLogController.EventLogType.WEBSERVER_UPDATED.ToString() 
+            log.LogTypeKey = existServer != null ? EventLogController.EventLogType.WEBSERVER_UPDATED.ToString()
                                         : EventLogController.EventLogType.WEBSERVER_CREATED.ToString();
             LogController.Instance.AddLog(log);
 

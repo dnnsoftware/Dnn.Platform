@@ -90,7 +90,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
 
             var postData = new Dictionary<string, object>
             {
-                { registerFieldsPrefix + CodifyInputName("Username", "TextBox", encriptFieldsNames), userName }, 
+                { registerFieldsPrefix + CodifyInputName("Username", "TextBox", encriptFieldsNames), userName },
                 { registerFieldsPrefix + CodifyInputName("Password", "TextBox", encriptFieldsNames), password },
                 { registerFieldsPrefix + CodifyInputName("PasswordConfirm", "TextBox", encriptFieldsNames), password },
                 { registerFieldsPrefix + CodifyInputName("DisplayName", "TextBox", encriptFieldsNames), displayName },
@@ -171,7 +171,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
         }
 
         /// <summary>
-        /// Creates a Registered User and performs Login for that user in as well. 
+        /// Creates a Registered User and performs Login for that user in as well.
         /// Password used is same as that for Host. Existing user is used if it's already present.
         /// </summary>
         /// <returns>IWebApiConnector object to perform more actions</returns>
@@ -181,7 +181,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             url = url ?? AppConfigHelper.SiteUrl;
             var username = firstName + "." + lastName;
             var key = string.Join("_", url, username);
-            if (!CachedConnections.TryGetValue(key, out connector) || 
+            if (!CachedConnections.TryGetValue(key, out connector) ||
                 connector.LoggedInAtTime < DateTime.Now.AddMinutes(-19.5))
             {
                 var portalId = GetPortalFromUrl(url);
@@ -200,7 +200,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
         }
 
         /// <summary>
-        /// Creates an Administrator and performs Login for that user in as well. 
+        /// Creates an Administrator and performs Login for that user in as well.
         /// Password used is same as that for Host. Existing user is used if it's already present.
         /// </summary>
         /// <returns>WebApiConnector object to perform more actions</returns>

@@ -50,7 +50,7 @@ namespace DotNetNuke.UI.Skins
         private static readonly Regex LdirRegex = new Regex("\\[l]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         #region Public Shared Properties
-        
+
         public static string RootSkin
         {
             get
@@ -66,7 +66,7 @@ namespace DotNetNuke.UI.Skins
                 return "Containers";
             }
         }
-        
+
         #endregion
 
         #region Public Shared Methods
@@ -77,10 +77,10 @@ namespace DotNetNuke.UI.Skins
             {
                 string folder = skinFolder.Substring(skinFolder.LastIndexOf("\\") + 1);
 
-                string key = (skinPrefix == PortalSystemSkinPrefix || skinPrefix == PortalSkinPrefix ? "Site: " : "Host: ") 
+                string key = (skinPrefix == PortalSystemSkinPrefix || skinPrefix == PortalSkinPrefix ? "Site: " : "Host: ")
                                 + FormatSkinName(folder, Path.GetFileNameWithoutExtension(skinFile));
                 string value = skinPrefix + skinRoot + "/" + folder + "/" + Path.GetFileName(skinFile);
-                skins.Add(new KeyValuePair<string, string>(key, value)); 
+                skins.Add(new KeyValuePair<string, string>(key, value));
             }
         }
 
@@ -107,7 +107,7 @@ namespace DotNetNuke.UI.Skins
             var skins = new List<KeyValuePair<string, string>>();
 
             if (portalInfo != null)
-            {                
+            {
                 ProcessSkinsFolder(skins, portalInfo.HomeSystemDirectoryMapPath + skinRoot, skinRoot, PortalSystemSkinPrefix);
                 ProcessSkinsFolder(skins, portalInfo.HomeDirectoryMapPath + skinRoot, skinRoot, PortalSkinPrefix); // to be compliant with all versions
             }
@@ -115,7 +115,7 @@ namespace DotNetNuke.UI.Skins
         }
 
         private static void ProcessSkinsFolder(List<KeyValuePair<string, string>> skins, string skinsFolder, string skinRoot, string skinPrefix)
-        {            
+        {
             if (Directory.Exists(skinsFolder))
             {
                 foreach (string skinFolder in Directory.GetDirectories(skinsFolder))
@@ -318,9 +318,9 @@ namespace DotNetNuke.UI.Skins
             {
                 // host folder
                 return skinFile;
-                
+
             }
-            
+
             // portal folder
             switch (skinFile.ToLowerInvariant())
             {
@@ -347,7 +347,7 @@ namespace DotNetNuke.UI.Skins
             return skinSrc.Contains(Globals.HostPath);
         }
 
-      
+
         public static void SetSkin(string skinRoot, int portalId, SkinType skinType, string skinSrc)
         {
             var selectedCultureCode = LocaleController.Instance.GetCurrentLocale(portalId).Code;
@@ -498,17 +498,17 @@ namespace DotNetNuke.UI.Skins
                                 strMessage += FormatMessage(CREATE_DIR, Path.GetDirectoryName(strFileName), 2, false);
                                 Directory.CreateDirectory(Path.GetDirectoryName(strFileName));
                             }
-                            
+
                             // remove the old file
                             if (File.Exists(strFileName))
                             {
                                 File.SetAttributes(strFileName, FileAttributes.Normal);
                                 File.Delete(strFileName);
                             }
-                            
+
                             // create the new file
                             objFileStream = File.Create(strFileName);
-                            
+
                             // unzip the file
                             strMessage += FormatMessage(WRITE_FILE, Path.GetFileName(strFileName), 2, false);
                             intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
@@ -548,7 +548,7 @@ namespace DotNetNuke.UI.Skins
             // process the list of skin files
             var NewSkin = new SkinFileProcessor(rootPath, skinRoot, skinName);
             strMessage += NewSkin.ProcessList(arrSkinFiles, SkinParser.Portable);
-            
+
             // log installation event
             try
             {
@@ -568,7 +568,7 @@ namespace DotNetNuke.UI.Skins
             }
             return strMessage;
         }
-        
+
         #endregion
     }
 }

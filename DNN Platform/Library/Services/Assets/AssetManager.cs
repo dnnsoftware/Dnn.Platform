@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.Assets
         private const string FolderAlreadyExistsDefaultMessage = "Cannot create folder ({0}), folder already exists in this location";
         private const string FolderFileNameHasInvalidcharactersDefaultMessage = "The name contains invalid character(s). Please specify a name without {0}";
         private const string DefaultMessageDefaultMessage = "The folder does not exist";
-        
+
         #endregion
 
         private static readonly Regex MappedPathRegex = new Regex(@"^(?!\s*[\\/]).*$", RegexOptions.Compiled);

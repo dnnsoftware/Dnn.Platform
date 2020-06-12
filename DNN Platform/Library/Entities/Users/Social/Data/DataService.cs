@@ -16,7 +16,7 @@ using DotNetNuke.Data;
 
 namespace DotNetNuke.Entities.Users.Social.Data
 {
-    internal class DataService : ComponentBase<IDataService, DataService>, IDataService        
+    internal class DataService : ComponentBase<IDataService, DataService>, IDataService
     {
         private readonly DataProvider _provider = DataProvider.Instance();
 
@@ -33,7 +33,7 @@ namespace DotNetNuke.Entities.Users.Social.Data
         }
 
         public void DeleteRelationshipType(int relationshipTypeId)
-        {            
+        {
             this._provider.ExecuteNonQuery("DeleteRelationshipType", relationshipTypeId);
         }
 

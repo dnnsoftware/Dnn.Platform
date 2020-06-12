@@ -13,7 +13,7 @@ using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Common.Internal
 {
-    internal class EventHandlersContainer<T> : ComponentBase<IEventHandlersContainer<T>, EventHandlersContainer<T>>, IEventHandlersContainer<T>        
+    internal class EventHandlersContainer<T> : ComponentBase<IEventHandlersContainer<T>, EventHandlersContainer<T>>, IEventHandlersContainer<T>
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventHandlersContainer<T>));
 
@@ -28,7 +28,7 @@ namespace DotNetNuke.Common.Internal
                 {
                     return;
                 }
-                ExtensionPointManager.ComposeParts(this);             
+                ExtensionPointManager.ComposeParts(this);
             }
             catch (Exception ex)
             {

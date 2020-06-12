@@ -22,11 +22,11 @@ namespace DotNetNuke.Collections
         {
             var data = items.ToArray();
 
-            if (!data.Any()) 
+            if (!data.Any())
                 return null;
 
             var dt = new DataTable();
-            
+
             // Create the columns
             foreach (var key in ((IDictionary<string, object>)data[0]).Keys)
             {

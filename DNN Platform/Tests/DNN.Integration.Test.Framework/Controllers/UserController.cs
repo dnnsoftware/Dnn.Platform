@@ -83,7 +83,7 @@ namespace DNN.Integration.Test.Framework.Controllers
                 return uid;
 
             // create role if not present
-            RoleController.CreateRoleIfNotPresent(parms.Role);  
+            RoleController.CreateRoleIfNotPresent(parms.Role);
 
             var fileContent = SqlScripts.SingleUserCreation;
             var masterScript = new StringBuilder(fileContent)
@@ -112,7 +112,7 @@ namespace DNN.Integration.Test.Framework.Controllers
                 .Replace(UserIdMarker, userId.ToString(CultureInfo.InvariantCulture))
                 .Replace("{objectQualifier}", AppConfigHelper.ObjectQualifier)
                 .ToString();
-          
+
             DatabaseHelper.ExecuteQuery(script);
         }
 

@@ -27,7 +27,7 @@ namespace DotNetNuke.Entities.Host
             if (HttpContext.Current != null)
             {
                 domainName = Globals.GetDomainName(HttpContext.Current.Request);
-                
+
                 if (domainName.Contains("/"))
                 {
                     domainName = domainName.Substring(0, domainName.IndexOf("/"));

@@ -27,7 +27,7 @@ namespace DotNetNuke.Entities.Tabs.Internal
         TabInfo GetTab(int tabId, int portalId);
 
         Dictionary<string, string> GetCustomAliases(int tabId, int portalId);
-            
+
         List<TabAliasSkinInfo> GetAliasSkins(int tabId, int portalId);
 
         List<TabUrlInfo> GetTabUrls(int tabId, int portalId);

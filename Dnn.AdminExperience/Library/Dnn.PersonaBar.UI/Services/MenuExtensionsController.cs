@@ -29,7 +29,7 @@ namespace Dnn.PersonaBar.UI.Services
         #region Public API methods
 
         /// <summary>
-        /// Retrieve a list of extensions for menu. 
+        /// Retrieve a list of extensions for menu.
         /// </summary>
         [HttpGet]
         public HttpResponseMessage GetExtensions(string menu)

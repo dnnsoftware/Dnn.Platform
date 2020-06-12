@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.ClientCapability
         /// </summary>
         /// <returns>
         /// List of IClientCapability present
-        /// </returns>        
+        /// </returns>
         IQueryable<IClientCapability> GetAllClientCapabilities();
 
         /// <summary>

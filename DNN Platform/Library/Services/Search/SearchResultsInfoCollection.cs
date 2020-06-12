@@ -195,7 +195,7 @@ namespace DotNetNuke.Services.Search
             this.CopyTo(arr, 0);
             return arr;
         }
-        
+
         #endregion
     }
 }

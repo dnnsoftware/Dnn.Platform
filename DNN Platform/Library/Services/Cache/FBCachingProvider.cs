@@ -43,7 +43,7 @@ namespace DotNetNuke.Services.Cache
                 // create a cache dependency on the cache file
                 d = new DNNCacheDependency(f, null, dependency);
             }
-            
+
             // Call base class method to add obect to cache
             base.Insert(cacheKey, itemToCache, d, absoluteExpiration, slidingExpiration, priority, onRemoveCallback);
         }
@@ -77,9 +77,9 @@ namespace DotNetNuke.Services.Cache
                 DeleteCacheFile(f);
             }
         }
-        
+
         #endregion
-        
+
         #region Private Methods
 
         private static string ByteArrayToString(byte[] arrInput)
@@ -157,7 +157,7 @@ namespace DotNetNuke.Services.Cache
             int PurgedFiles = 0;
             int PurgeErrors = 0;
             int i;
-            
+
             // get list of cache files
             string[] f;
             f = Directory.GetFiles(Folder);
@@ -192,7 +192,7 @@ namespace DotNetNuke.Services.Cache
                     }
                 }
             }
-            
+
             // return a summary message for the job
             return string.Format("Cache Synchronization Files Processed: " + f.Length + ", Purged: " + PurgedFiles + ", Errors: " + PurgeErrors);
         }

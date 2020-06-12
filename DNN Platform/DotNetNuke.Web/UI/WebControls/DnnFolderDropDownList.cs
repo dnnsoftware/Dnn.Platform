@@ -56,7 +56,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 this.ExpandPath = folderLevel.TrimEnd(',');
             }
-            
+
         }
 
         /// <summary>

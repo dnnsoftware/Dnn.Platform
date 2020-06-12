@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             this.LanguagePackType = type;
         }
-        
+
         #region Protected Properties
 
         /// -----------------------------------------------------------------------------
@@ -80,7 +80,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get { return "resx, xml, tdf,template"; }
         }
-        
+
         #endregion
 
         #region Private Methods
@@ -119,7 +119,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Log.AddFailure(ex);
             }
         }
-        
+
         #endregion
 
         #region Protected Methods
@@ -153,11 +153,11 @@ namespace DotNetNuke.Services.Installer.Installers
                     this.LanguagePack.DependentPackageID = package.PackageID;
                 }
             }
-            
+
             // Call base class
             base.ReadCustomManifest(nav);
         }
-        
+
         #endregion
 
         #region Public Methods
@@ -172,7 +172,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             if (this.LanguagePackType == LanguagePackType.Core || this.LanguagePack.DependentPackageID > 0)
             {
-               base.Commit();             
+               base.Commit();
             }
             else
             {
@@ -237,13 +237,13 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Rollback method undoes the installation of the component in the event 
+        /// The Rollback method undoes the installation of the component in the event
         /// that one of the other components fails
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-            // If Temp Language exists then we need to update the DataStore with this 
+            // If Temp Language exists then we need to update the DataStore with this
             if (this.TempLanguage == null)
             {
                 // No Temp Language - Delete newly added Language
@@ -254,7 +254,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 // Temp Language - Rollback to Temp
                 Localization.Localization.SaveLanguage(this.TempLanguage);
             }
-            
+
             // Call base class to prcoess files
             base.Rollback();
         }

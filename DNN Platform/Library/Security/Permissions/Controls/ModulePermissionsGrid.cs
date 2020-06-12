@@ -230,21 +230,21 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, RoleInfo role)
         {
-            // Search TabPermission Collection for the user 
+            // Search TabPermission Collection for the user
             if (
                 this._ModulePermissions.Cast<ModulePermissionInfo>().Any(p => p.RoleID == role.RoleID))
             {
                 return;
             }
 
-            // role not found so add new            
+            // role not found so add new
             foreach (PermissionInfo objPermission in permissions)
             {
                 if (objPermission.PermissionKey == "VIEW")
                 {
                     this.AddPermission(objPermission, role.RoleID, role.RoleName, Null.NullInteger, Null.NullString, true);
                 }
-            }            
+            }
         }
 
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
@@ -345,8 +345,8 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
             else
             {
-                permission = role.RoleID == this.AdministratorRoleId 
-                                ? PermissionTypeGrant 
+                permission = role.RoleID == this.AdministratorRoleId
+                                ? PermissionTypeGrant
                                 : base.GetPermission(objPerm, role, column, defaultState);
             }
             return permission;

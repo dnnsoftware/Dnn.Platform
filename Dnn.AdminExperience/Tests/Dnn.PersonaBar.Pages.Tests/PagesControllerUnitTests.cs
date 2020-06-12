@@ -57,7 +57,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             var tab = new TabInfo();
             var portalSettings = new PortalSettings();
             var friendlyOptions = new FriendlyUrlOptions();
-            
+
             this._urlRewriterUtilsWrapperMock.Setup(d => d.GetExtendOptionsForURLs(It.IsAny<int>())).Returns(friendlyOptions);
             this._friendlyUrlWrapperMock.Setup(d => d.CleanNameForUrl(It.IsAny<string>(), friendlyOptions, out modified)).Returns(expected);
             this._friendlyUrlWrapperMock.Setup(d => d.ValidateUrl(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<PortalSettings>(), out modified));
@@ -78,7 +78,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             this._urlRewriterUtilsWrapperMock.VerifyAll();
             this._friendlyUrlWrapperMock.Verify(d => d.CleanNameForUrl(expected, friendlyOptions, out modified), Times.Once());
         }
-                
+
         [Test]
         public void GetPageSettings_CallGetCurrentPortalSettings_WhenSettingParameterIsNull()
         {

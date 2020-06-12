@@ -19,15 +19,15 @@ namespace DotNetNuke.Security.Permissions
     public class FolderPermissionInfo : PermissionInfoBase, IHydratable
     {
         #region "Private Members"
-        
+
         // local property declarations
         private int _folderID;
         private string _folderPath;
         private int _folderPermissionID;
         private int _portalID;
-        
+
         #endregion
-        
+
         #region "Constructors"
 
         /// -----------------------------------------------------------------------------
@@ -57,9 +57,9 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionKey = permission.PermissionKey;
             this.PermissionName = permission.PermissionName;
         }
-        
+
         #endregion
-        
+
         #region "Public Properties"
 
         [XmlIgnore]
@@ -113,7 +113,7 @@ namespace DotNetNuke.Security.Permissions
                 this._folderPath = value;
             }
         }
-        
+
         #endregion
 
         #region IHydratable Members

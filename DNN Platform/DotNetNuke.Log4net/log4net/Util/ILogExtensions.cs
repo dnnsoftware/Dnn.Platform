@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -43,9 +43,9 @@ namespace log4net.Util
     /// <example>Simple example of logging messages
     /// <code lang="C#">
     /// using log4net.Util;
-    /// 
+    ///
     /// ILog log = LogManager.GetLogger("application-log");
-    /// 
+    ///
     /// log.InfoExt("Application Start");
     /// log.DebugExt("This is a debug message");
     /// </code>
@@ -75,16 +75,16 @@ namespace log4net.Util
         /// This method first checks if this logger is <c>INFO</c>
         /// enabled by reading the value <seealso cref="ILog.IsDebugEnabled"/> property.
         /// This check happens always and does not depend on the <seealso cref="ILog"/>
-        /// implementation.  If this logger is <c>INFO</c> enabled, then it converts 
-        /// the message object (retrieved by invocation of the provided callback) to a 
+        /// implementation.  If this logger is <c>INFO</c> enabled, then it converts
+        /// the message object (retrieved by invocation of the provided callback) to a
         /// string by invoking the appropriate <see cref="log4net.ObjectRenderer.IObjectRenderer"/>.
-        /// It then proceeds to call all the registered appenders in this logger 
-        /// and also higher in the hierarchy depending on the value of 
+        /// It then proceeds to call all the registered appenders in this logger
+        /// and also higher in the hierarchy depending on the value of
         /// the additivity flag.
         /// </para>
-        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/> 
-        /// to this method will print the name of the <see cref="Exception"/> 
-        /// but no stack trace. To print a stack trace use the 
+        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/>
+        /// to this method will print the name of the <see cref="Exception"/>
+        /// but no stack trace. To print a stack trace use the
         /// <see cref="DebugExt(ILog,Func{object},Exception)"/> form instead.
         /// </para>
         /// </remarks>
@@ -150,16 +150,16 @@ namespace log4net.Util
         /// This method first checks if this logger is <c>INFO</c>
         /// enabled by reading the value <seealso cref="ILog.IsDebugEnabled"/> property.
         /// This check happens always and does not depend on the <seealso cref="ILog"/>
-        /// implementation. If this logger is <c>INFO</c> enabled, then it converts 
+        /// implementation. If this logger is <c>INFO</c> enabled, then it converts
         /// the message object (passed as parameter) to a string by invoking the appropriate
-        /// <see cref="log4net.ObjectRenderer.IObjectRenderer"/>. It then 
-        /// proceeds to call all the registered appenders in this logger 
-        /// and also higher in the hierarchy depending on the value of 
+        /// <see cref="log4net.ObjectRenderer.IObjectRenderer"/>. It then
+        /// proceeds to call all the registered appenders in this logger
+        /// and also higher in the hierarchy depending on the value of
         /// the additivity flag.
         /// </para>
-        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/> 
-        /// to this method will print the name of the <see cref="Exception"/> 
-        /// but no stack trace. To print a stack trace use the 
+        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/>
+        /// to this method will print the name of the <see cref="Exception"/>
+        /// but no stack trace. To print a stack trace use the
         /// <see cref="DebugExt(ILog,object,Exception)"/> form instead.
         /// </para>
         /// </remarks>
@@ -411,16 +411,16 @@ namespace log4net.Util
         /// This method first checks if this logger is <c>INFO</c>
         /// enabled by reading the value <seealso cref="ILog.IsInfoEnabled"/> property.
         /// This check happens always and does not depend on the <seealso cref="ILog"/>
-        /// implementation.  If this logger is <c>INFO</c> enabled, then it converts 
-        /// the message object (retrieved by invocation of the provided callback) to a 
+        /// implementation.  If this logger is <c>INFO</c> enabled, then it converts
+        /// the message object (retrieved by invocation of the provided callback) to a
         /// string by invoking the appropriate <see cref="log4net.ObjectRenderer.IObjectRenderer"/>.
-        /// It then proceeds to call all the registered appenders in this logger 
-        /// and also higher in the hierarchy depending on the value of 
+        /// It then proceeds to call all the registered appenders in this logger
+        /// and also higher in the hierarchy depending on the value of
         /// the additivity flag.
         /// </para>
-        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/> 
-        /// to this method will print the name of the <see cref="Exception"/> 
-        /// but no stack trace. To print a stack trace use the 
+        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/>
+        /// to this method will print the name of the <see cref="Exception"/>
+        /// but no stack trace. To print a stack trace use the
         /// <see cref="InfoExt(ILog,Func{object},Exception)"/> form instead.
         /// </para>
         /// </remarks>
@@ -486,16 +486,16 @@ namespace log4net.Util
         /// This method first checks if this logger is <c>INFO</c>
         /// enabled by reading the value <seealso cref="ILog.IsInfoEnabled"/> property.
         /// This check happens always and does not depend on the <seealso cref="ILog"/>
-        /// implementation. If this logger is <c>INFO</c> enabled, then it converts 
+        /// implementation. If this logger is <c>INFO</c> enabled, then it converts
         /// the message object (passed as parameter) to a string by invoking the appropriate
-        /// <see cref="log4net.ObjectRenderer.IObjectRenderer"/>. It then 
-        /// proceeds to call all the registered appenders in this logger 
-        /// and also higher in the hierarchy depending on the value of 
+        /// <see cref="log4net.ObjectRenderer.IObjectRenderer"/>. It then
+        /// proceeds to call all the registered appenders in this logger
+        /// and also higher in the hierarchy depending on the value of
         /// the additivity flag.
         /// </para>
-        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/> 
-        /// to this method will print the name of the <see cref="Exception"/> 
-        /// but no stack trace. To print a stack trace use the 
+        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/>
+        /// to this method will print the name of the <see cref="Exception"/>
+        /// but no stack trace. To print a stack trace use the
         /// <see cref="InfoExt(ILog,object,Exception)"/> form instead.
         /// </para>
         /// </remarks>
@@ -747,16 +747,16 @@ namespace log4net.Util
         /// This method first checks if this logger is <c>WARN</c>
         /// enabled by reading the value <seealso cref="ILog.IsWarnEnabled"/> property.
         /// This check happens always and does not depend on the <seealso cref="ILog"/>
-        /// implementation.  If this logger is <c>WARN</c> enabled, then it converts 
-        /// the message object (retrieved by invocation of the provided callback) to a 
+        /// implementation.  If this logger is <c>WARN</c> enabled, then it converts
+        /// the message object (retrieved by invocation of the provided callback) to a
         /// string by invoking the appropriate <see cref="log4net.ObjectRenderer.IObjectRenderer"/>.
-        /// It then proceeds to call all the registered appenders in this logger 
-        /// and also higher in the hierarchy depending on the value of 
+        /// It then proceeds to call all the registered appenders in this logger
+        /// and also higher in the hierarchy depending on the value of
         /// the additivity flag.
         /// </para>
-        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/> 
-        /// to this method will print the name of the <see cref="Exception"/> 
-        /// but no stack trace. To print a stack trace use the 
+        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/>
+        /// to this method will print the name of the <see cref="Exception"/>
+        /// but no stack trace. To print a stack trace use the
         /// <see cref="WarnExt(ILog,Func{object},Exception)"/> form instead.
         /// </para>
         /// </remarks>
@@ -822,16 +822,16 @@ namespace log4net.Util
         /// This method first checks if this logger is <c>WARN</c>
         /// enabled by reading the value <seealso cref="ILog.IsWarnEnabled"/> property.
         /// This check happens always and does not depend on the <seealso cref="ILog"/>
-        /// implementation. If this logger is <c>WARN</c> enabled, then it converts 
+        /// implementation. If this logger is <c>WARN</c> enabled, then it converts
         /// the message object (passed as parameter) to a string by invoking the appropriate
-        /// <see cref="log4net.ObjectRenderer.IObjectRenderer"/>. It then 
-        /// proceeds to call all the registered appenders in this logger 
-        /// and also higher in the hierarchy depending on the value of 
+        /// <see cref="log4net.ObjectRenderer.IObjectRenderer"/>. It then
+        /// proceeds to call all the registered appenders in this logger
+        /// and also higher in the hierarchy depending on the value of
         /// the additivity flag.
         /// </para>
-        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/> 
-        /// to this method will print the name of the <see cref="Exception"/> 
-        /// but no stack trace. To print a stack trace use the 
+        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/>
+        /// to this method will print the name of the <see cref="Exception"/>
+        /// but no stack trace. To print a stack trace use the
         /// <see cref="WarnExt(ILog,object,Exception)"/> form instead.
         /// </para>
         /// </remarks>
@@ -1083,16 +1083,16 @@ namespace log4net.Util
         /// This method first checks if this logger is <c>ERROR</c>
         /// enabled by reading the value <seealso cref="ILog.IsErrorEnabled"/> property.
         /// This check happens always and does not depend on the <seealso cref="ILog"/>
-        /// implementation.  If this logger is <c>ERROR</c> enabled, then it converts 
-        /// the message object (retrieved by invocation of the provided callback) to a 
+        /// implementation.  If this logger is <c>ERROR</c> enabled, then it converts
+        /// the message object (retrieved by invocation of the provided callback) to a
         /// string by invoking the appropriate <see cref="log4net.ObjectRenderer.IObjectRenderer"/>.
-        /// It then proceeds to call all the registered appenders in this logger 
-        /// and also higher in the hierarchy depending on the value of 
+        /// It then proceeds to call all the registered appenders in this logger
+        /// and also higher in the hierarchy depending on the value of
         /// the additivity flag.
         /// </para>
-        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/> 
-        /// to this method will print the name of the <see cref="Exception"/> 
-        /// but no stack trace. To print a stack trace use the 
+        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/>
+        /// to this method will print the name of the <see cref="Exception"/>
+        /// but no stack trace. To print a stack trace use the
         /// <see cref="ErrorExt(ILog,Func{object},Exception)"/> form instead.
         /// </para>
         /// </remarks>
@@ -1158,16 +1158,16 @@ namespace log4net.Util
         /// This method first checks if this logger is <c>ERROR</c>
         /// enabled by reading the value <seealso cref="ILog.IsErrorEnabled"/> property.
         /// This check happens always and does not depend on the <seealso cref="ILog"/>
-        /// implementation. If this logger is <c>ERROR</c> enabled, then it converts 
+        /// implementation. If this logger is <c>ERROR</c> enabled, then it converts
         /// the message object (passed as parameter) to a string by invoking the appropriate
-        /// <see cref="log4net.ObjectRenderer.IObjectRenderer"/>. It then 
-        /// proceeds to call all the registered appenders in this logger 
-        /// and also higher in the hierarchy depending on the value of 
+        /// <see cref="log4net.ObjectRenderer.IObjectRenderer"/>. It then
+        /// proceeds to call all the registered appenders in this logger
+        /// and also higher in the hierarchy depending on the value of
         /// the additivity flag.
         /// </para>
-        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/> 
-        /// to this method will print the name of the <see cref="Exception"/> 
-        /// but no stack trace. To print a stack trace use the 
+        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/>
+        /// to this method will print the name of the <see cref="Exception"/>
+        /// but no stack trace. To print a stack trace use the
         /// <see cref="ErrorExt(ILog,object,Exception)"/> form instead.
         /// </para>
         /// </remarks>
@@ -1419,16 +1419,16 @@ namespace log4net.Util
         /// This method first checks if this logger is <c>FATAL</c>
         /// enabled by reading the value <seealso cref="ILog.IsFatalEnabled"/> property.
         /// This check happens always and does not depend on the <seealso cref="ILog"/>
-        /// implementation.  If this logger is <c>FATAL</c> enabled, then it converts 
-        /// the message object (retrieved by invocation of the provided callback) to a 
+        /// implementation.  If this logger is <c>FATAL</c> enabled, then it converts
+        /// the message object (retrieved by invocation of the provided callback) to a
         /// string by invoking the appropriate <see cref="log4net.ObjectRenderer.IObjectRenderer"/>.
-        /// It then proceeds to call all the registered appenders in this logger 
-        /// and also higher in the hierarchy depending on the value of 
+        /// It then proceeds to call all the registered appenders in this logger
+        /// and also higher in the hierarchy depending on the value of
         /// the additivity flag.
         /// </para>
-        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/> 
-        /// to this method will print the name of the <see cref="Exception"/> 
-        /// but no stack trace. To print a stack trace use the 
+        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/>
+        /// to this method will print the name of the <see cref="Exception"/>
+        /// but no stack trace. To print a stack trace use the
         /// <see cref="FatalExt(ILog,Func{object},Exception)"/> form instead.
         /// </para>
         /// </remarks>
@@ -1494,16 +1494,16 @@ namespace log4net.Util
         /// This method first checks if this logger is <c>FATAL</c>
         /// enabled by reading the value <seealso cref="ILog.IsFatalEnabled"/> property.
         /// This check happens always and does not depend on the <seealso cref="ILog"/>
-        /// implementation. If this logger is <c>FATAL</c> enabled, then it converts 
+        /// implementation. If this logger is <c>FATAL</c> enabled, then it converts
         /// the message object (passed as parameter) to a string by invoking the appropriate
-        /// <see cref="log4net.ObjectRenderer.IObjectRenderer"/>. It then 
-        /// proceeds to call all the registered appenders in this logger 
-        /// and also higher in the hierarchy depending on the value of 
+        /// <see cref="log4net.ObjectRenderer.IObjectRenderer"/>. It then
+        /// proceeds to call all the registered appenders in this logger
+        /// and also higher in the hierarchy depending on the value of
         /// the additivity flag.
         /// </para>
-        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/> 
-        /// to this method will print the name of the <see cref="Exception"/> 
-        /// but no stack trace. To print a stack trace use the 
+        /// <para><b>WARNING</b> Note that passing an <see cref="Exception"/>
+        /// to this method will print the name of the <see cref="Exception"/>
+        /// but no stack trace. To print a stack trace use the
         /// <see cref="FatalExt(ILog,object,Exception)"/> form instead.
         /// </para>
         /// </remarks>

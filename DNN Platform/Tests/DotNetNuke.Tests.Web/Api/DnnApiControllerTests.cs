@@ -66,7 +66,7 @@ namespace DotNetNuke.Tests.Web.Api
             Assert.AreEqual(expectedPortalSettings, result);
         }
 
-        // A test that would be nice to run, but I see not good way to test the source of the 
+        // A test that would be nice to run, but I see not good way to test the source of the
         // userinfo
 //        [Test]
 //        public void UserInfoComesFromPortalSettings()

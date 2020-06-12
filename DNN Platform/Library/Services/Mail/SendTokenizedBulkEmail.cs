@@ -59,7 +59,7 @@ namespace DotNetNuke.Services.Mail
         // ReSharper restore InconsistentNaming
 
         #endregion
-        
+
         #region "Private Members"
 
         private readonly List<string> _addressedRoles = new List<string>();
@@ -84,7 +84,7 @@ namespace DotNetNuke.Services.Mail
         private bool _isDisposed;
 
         #endregion
-        
+
         #region "Constructs"
 
         public SendTokenizedBulkEmail()
@@ -111,9 +111,9 @@ namespace DotNetNuke.Services.Mail
             this.SuppressTokenReplace = this.SuppressTokenReplace;
             this.Initialize();
         }
-        
+
         #endregion
-        
+
         #region "Public Properties"
 
         /// <summary>
@@ -217,9 +217,9 @@ namespace DotNetNuke.Services.Mail
         }
 
         public string[] LanguageFilter { get; set; }
-        
+
         #endregion
-        
+
         #region "Private Methods"
 
         /// <summary>internal method to initialize used objects, depending on parameters of construct method</summary>
@@ -359,9 +359,9 @@ namespace DotNetNuke.Services.Mail
             }
             return attachments;
         }
-        
+
         #endregion
-        
+
         #region "Public Methods"
 
         /// <summary>Specify SMTP server to be used</summary>
@@ -426,7 +426,7 @@ namespace DotNetNuke.Services.Mail
 
             var userList = new List<UserInfo>();
             var keyList = new List<string>();
-            
+
             foreach (string roleName in this._addressedRoles)
             {
                 string role = roleName;
@@ -444,12 +444,12 @@ namespace DotNetNuke.Services.Mail
                     }
                 }
             }
-            
+
             foreach (UserInfo objUser in this._addressedUsers)
             {
                 this.ConditionallyAddUser(objUser, ref keyList, ref userList);
             }
-            
+
             return userList;
         }
 
@@ -459,11 +459,11 @@ namespace DotNetNuke.Services.Mail
         public int SendMails()
         {
             this.EnsureNotDisposed();
-            
+
             int recipients = 0;
             int messagesSent = 0;
             int errors = 0;
-            
+
             try
             {
                 // send to recipients
@@ -482,7 +482,7 @@ namespace DotNetNuke.Services.Mail
 
                 var mailErrors = new StringBuilder();
                 var mailRecipients = new StringBuilder();
-                
+
                 switch (this.AddressMethod)
                 {
                     case AddressMethods.Send_TO:
@@ -631,7 +631,7 @@ namespace DotNetNuke.Services.Mail
             this.EnsureNotDisposed();
             this.SendMails();
         }
-        
+
         #endregion
 
         private void EnsureNotDisposed()

@@ -138,7 +138,7 @@ namespace DotNetNuke.Tests.Data
             var baseRepo = repo as RepositoryBase<Cat>;
             Assert.IsTrue(Util.GetPrivateMember<RepositoryBase<Cat>, bool>(baseRepo, "IsScoped"));
         }
-        
+
         [Test]
         public void RepositoryBase_Constructor_Sets_IsScoped_True_If_Cacheable_And_Scoped()
         {

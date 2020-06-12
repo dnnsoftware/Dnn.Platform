@@ -112,7 +112,7 @@ namespace DotNetNuke.Tests.Core
             {
                 sw.WriteLine("48");
             }
-            
+
             FileSystemUtils.DeleteFile(testPath);
 
             // Assert

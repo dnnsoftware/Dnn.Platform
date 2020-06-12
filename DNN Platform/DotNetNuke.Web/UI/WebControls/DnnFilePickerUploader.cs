@@ -26,7 +26,7 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnFilePickerUploader : UserControl, IFilePickerUploader
     {
         #region Private Fields
-        
+
         private const string MyFileName = "filepickeruploader.ascx";
         private int? _portalId = null;
 
@@ -74,16 +74,16 @@ namespace DotNetNuke.Web.UI.WebControls
                 return Localization.GetString("DropFile", Localization.GetResourceFile(this, MyFileName));
             }
         }
-        
+
         #endregion
 
         #region Public Properties
 
         public bool UsePersonalFolder { get; set; }
-        
+
         public string FilePath
         {
-            get 
+            get
             {
                 this.EnsureChildControls();
 
@@ -117,13 +117,13 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
             }
         }
-        
+
         public int FileID
         {
             get
             {
                 this.EnsureChildControls();
-                
+
                 return this.FilesComboBox.SelectedFile != null ? this.FilesComboBox.SelectedFile.FileId : Null.NullInteger;
             }
 
@@ -139,17 +139,17 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        public string FolderPath 
-        { 
-            get 
+        public string FolderPath
+        {
+            get
             {
                 return this._folderPathSet
-                            ? this._folderPath 
-                            : this.FoldersComboBox.SelectedFolder != null 
-                                ? this.FoldersComboBox.SelectedFolder.FolderPath 
-                                : string.Empty; 
+                            ? this._folderPath
+                            : this.FoldersComboBox.SelectedFolder != null
+                                ? this.FoldersComboBox.SelectedFolder.FolderPath
+                                : string.Empty;
             }
-            set 
+            set
             {
                 this._folderPath = value;
                 this._folderPathSet = true;
@@ -175,9 +175,9 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
             }
         }
-        
+
         public bool Required { get; set; }
-        
+
         public UserInfo User { get; set; }
 
         public int PortalId
@@ -236,7 +236,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     this.FoldersComboBox.SelectedItem = new ListItem
                                                    {
-                                                       Text = FolderManager.Instance.MyFolderName, 
+                                                       Text = FolderManager.Instance.MyFolderName,
                                                        Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture)
                                                    };
                 }
@@ -263,7 +263,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.FileUploadControl.Options.FolderPicker.InitialState = new DnnDropDownListState
                                                                           {
                                                                               SelectedItem = selectedItem
-                                                                                  
+
                                                                           };
                 this.FileUploadControl.Options.FolderPath = this.FoldersComboBox.SelectedFolder.FolderPath;
             }

@@ -104,7 +104,7 @@ namespace DotNetNuke.Tests.Content
 
             // Return empty set of metadata.
             dataService.Setup(ds => ds.GetMetaData(It.IsAny<int>())).Returns(MockHelper.CreateEmptyMetaDataReader);
-            
+
             var content = ContentTestHelper.CreateValidContentItem();
             content.Metadata.Clear();
 
@@ -141,7 +141,7 @@ namespace DotNetNuke.Tests.Content
                 ds =>
                     ds.GetMetaData(It.IsAny<int>())).Returns(
                         () => MockHelper.CreateMetaDataReaderWithFiles(files, new IFileInfo[0], new IFileInfo[0]));
-            
+
             var contentItem = Util.GetContentController().GetContentItem(Constants.CONTENT_ValidContentItemId);
             Assert.IsNotNull(contentItem);
 
@@ -166,7 +166,7 @@ namespace DotNetNuke.Tests.Content
 
             // Use a closure to store the metadata locally in this method.
             var data = new Dictionary<string, string>();
-            
+
             dataService.Setup(
                 ds =>
                     ds.GetMetaData(It.IsAny<int>())).Returns(
@@ -207,7 +207,7 @@ namespace DotNetNuke.Tests.Content
 
             dataService.Verify(
                 ds => ds.AddMetaData(It.IsAny<ContentItem>(), FileController.FilesKey, "[0]"), Times.Once());
-            
+
             dataService.Verify(
                 ds => ds.AddMetaData(It.IsAny<ContentItem>(), FileController.FilesKey, "[0,1]"), Times.Once());
         }
@@ -275,7 +275,7 @@ namespace DotNetNuke.Tests.Content
             dataService.Verify(ds => ds.DeleteMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Never());
 
             contentItem.ContentTitle = "Foobar";
-            
+
             contentController.UpdateContentItem(contentItem);
 
             dataService.Verify(ds => ds.AddMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Once());
@@ -298,7 +298,7 @@ namespace DotNetNuke.Tests.Content
             dataService.Verify(ds => ds.AddMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Exactly(2));
             dataService.Verify(ds => ds.DeleteMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Once());
         }
-        
+
         #endregion
     }
 }

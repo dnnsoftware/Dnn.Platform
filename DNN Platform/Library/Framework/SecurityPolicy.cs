@@ -68,7 +68,7 @@ namespace DotNetNuke.Framework
                     // code access security error
                     m_ReflectionPermission = false;
                 }
-                
+
                 // test WebPermission
                 try
                 {
@@ -81,7 +81,7 @@ namespace DotNetNuke.Framework
                     // code access security error
                     m_WebPermission = false;
                 }
-                
+
                 // test WebHosting Permission (Full Trust)
                 try
                 {

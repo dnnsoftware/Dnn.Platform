@@ -67,7 +67,7 @@ namespace DotNetNuke.Modules.NavigationProvider
         }
 
         #endregion
-        
+
         #region "Properties"
 
         public abstract Control NavigationControl { get; }
@@ -922,10 +922,10 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
             }
         }
-        
-        
+
+
         #endregion
-        
+
         #region "Methods"
 
         public event NodeClickEventHandler NodeClick;
@@ -975,7 +975,7 @@ namespace DotNetNuke.Modules.NavigationProvider
                 this.PopulateOnDemand(new NavigationEventArgs(strID, null));
             }
         }
-        
+
         #endregion
     }
 

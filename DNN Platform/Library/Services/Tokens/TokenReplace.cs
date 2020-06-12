@@ -129,7 +129,7 @@ namespace DotNetNuke.Services.Tokens
             this.PropertySource["ticks"] = new TicksPropertyAccess();
             this.PropertySource["culture"] = new CulturePropertyAccess();
         }
-        
+
         /// <summary>
         /// Gets/sets the current ModuleID to be used for 'User:' token replacement
         /// </summary>
@@ -264,22 +264,22 @@ namespace DotNetNuke.Services.Tokens
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary> 
-        /// Replaces tokens in sourceText parameter with the property values 
-        /// </summary> 
-        /// <param name="sourceText">String with [Object:Property] tokens</param> 
-        /// <param name="custom">NameValueList for replacing [custom:name] tokens, where 'custom' is specified in next param and name is either thekey or the index number in the string </param> 
-        /// <param name="customCaptions">Token names to be used inside token [custom:name], where 'custom' is one of the values in the string array </param> 
-        /// <returns>string containing replaced values</returns> 
+        /// <summary>
+        /// Replaces tokens in sourceText parameter with the property values
+        /// </summary>
+        /// <param name="sourceText">String with [Object:Property] tokens</param>
+        /// <param name="custom">NameValueList for replacing [custom:name] tokens, where 'custom' is specified in next param and name is either thekey or the index number in the string </param>
+        /// <param name="customCaptions">Token names to be used inside token [custom:name], where 'custom' is one of the values in the string array </param>
+        /// <returns>string containing replaced values</returns>
         public string ReplaceEnvironmentTokens(string sourceText, IDictionary custom, string[] customCaptions)
         {
             foreach (var customCaption in customCaptions)
             {
-                this.PropertySource[customCaption.ToLowerInvariant()] = new DictionaryPropertyAccess(custom);    
-            }           
+                this.PropertySource[customCaption.ToLowerInvariant()] = new DictionaryPropertyAccess(custom);
+            }
             return this.ReplaceTokens(sourceText);
         }
-        
+
         /// <summary>
         /// Replaces tokens in sourceText parameter with the property values
         /// </summary>

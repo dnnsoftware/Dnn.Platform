@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -50,7 +50,7 @@ namespace log4net.Core
     /// lookup and create repositories. The selector can be set either programmatically using
     /// the <see cref="RepositorySelector"/> property, or by setting the <c>log4net.RepositorySelector</c>
     /// AppSetting in the applications config file to the fully qualified type name of the
-    /// selector to use. 
+    /// selector to use.
     /// </para>
     /// </remarks>
     /// <author>Nicko Cadell</author>
@@ -67,7 +67,7 @@ namespace log4net.Core
         /// Private constructor to prevent instances. Only static methods should be used.
         /// </para>
         /// </remarks>
-        private LoggerManager() 
+        private LoggerManager()
         {
         }
 
@@ -80,8 +80,8 @@ namespace log4net.Core
         /// </summary>
         /// <remarks>
         /// <para>
-        /// On the full .NET runtime, the static constructor hooks up the 
-        /// <c>AppDomain.ProcessExit</c> and <c>AppDomain.DomainUnload</c>> events. 
+        /// On the full .NET runtime, the static constructor hooks up the
+        /// <c>AppDomain.ProcessExit</c> and <c>AppDomain.DomainUnload</c>> events.
         /// These are used to shutdown the log4net system as the application exits.
         /// </para>
         /// </remarks>
@@ -149,7 +149,7 @@ namespace log4net.Core
                 }
             }
 #endif
-            // Create the DefaultRepositorySelector if not configured above 
+            // Create the DefaultRepositorySelector if not configured above
             if (s_repositorySelector == null)
             {
                 s_repositorySelector = new DefaultRepositorySelector(typeof(log4net.Repository.Hierarchy.Hierarchy));
@@ -266,7 +266,7 @@ namespace log4net.Core
         /// <c>null</c>.
         /// </para>
         /// </remarks>
-        public static ILogger Exists(string repository, string name) 
+        public static ILogger Exists(string repository, string name)
         {
             if (repository == null)
             {
@@ -295,7 +295,7 @@ namespace log4net.Core
         /// <c>null</c>.
         /// </para>
         /// </remarks>
-        public static ILogger Exists(Assembly repositoryAssembly, string name) 
+        public static ILogger Exists(Assembly repositoryAssembly, string name)
         {
             if (repositoryAssembly == null)
             {
@@ -408,7 +408,7 @@ namespace log4net.Core
                 throw new ArgumentNullException("name");
             }
             return RepositorySelector.GetRepository(repositoryAssembly).GetLogger(name);
-        }   
+        }
 
         /// <summary>
         /// Shorthand for <see cref="M:LogManager.GetLogger(string)"/>.
@@ -421,7 +421,7 @@ namespace log4net.Core
         /// Gets the logger for the fully qualified name of the type specified.
         /// </para>
         /// </remarks>
-        public static ILogger GetLogger(string repository, Type type) 
+        public static ILogger GetLogger(string repository, Type type)
         {
             if (repository == null)
             {
@@ -445,7 +445,7 @@ namespace log4net.Core
         /// Gets the logger for the fully qualified name of the type specified.
         /// </para>
         /// </remarks>
-        public static ILogger GetLogger(Assembly repositoryAssembly, Type type) 
+        public static ILogger GetLogger(Assembly repositoryAssembly, Type type)
         {
             if (repositoryAssembly == null)
             {
@@ -456,7 +456,7 @@ namespace log4net.Core
                 throw new ArgumentNullException("type");
             }
             return RepositorySelector.GetRepository(repositoryAssembly).GetLogger(type.FullName);
-        }   
+        }
 
         /// <summary>
         /// Shuts down the log4net system.
@@ -468,7 +468,7 @@ namespace log4net.Core
         /// default repositories.
         /// </para>
         /// <para>
-        /// Some appenders need to be closed before the application exists. 
+        /// Some appenders need to be closed before the application exists.
         /// Otherwise, pending logging events might be lost.
         /// </para>
         /// <para>
@@ -478,7 +478,7 @@ namespace log4net.Core
         /// and again to a nested appender.
         /// </para>
         /// </remarks>
-        public static void Shutdown() 
+        public static void Shutdown()
         {
             foreach (ILoggerRepository repository in GetAllRepositories())
             {
@@ -497,7 +497,7 @@ namespace log4net.Core
         /// repository for the <paramref name="repository"/> specified.
         /// </para>
         /// <para>
-        /// Some appenders need to be closed before the application exists. 
+        /// Some appenders need to be closed before the application exists.
         /// Otherwise, pending logging events might be lost.
         /// </para>
         /// <para>
@@ -507,7 +507,7 @@ namespace log4net.Core
         /// and again to a nested appender.
         /// </para>
         /// </remarks>
-        public static void ShutdownRepository(string repository) 
+        public static void ShutdownRepository(string repository)
         {
             if (repository == null)
             {
@@ -528,7 +528,7 @@ namespace log4net.Core
         /// the <paramref name="repositoryAssembly"/> specified.
         /// </para>
         /// <para>
-        /// Some appenders need to be closed before the application exists. 
+        /// Some appenders need to be closed before the application exists.
         /// Otherwise, pending logging events might be lost.
         /// </para>
         /// <para>
@@ -538,7 +538,7 @@ namespace log4net.Core
         /// and again to a nested appender.
         /// </para>
         /// </remarks>
-        public static void ShutdownRepository(Assembly repositoryAssembly) 
+        public static void ShutdownRepository(Assembly repositoryAssembly)
         {
             if (repositoryAssembly == null)
             {
@@ -559,9 +559,9 @@ namespace log4net.Core
         /// sets their additivity flag to <c>true</c> and sets the level
         /// of the root logger to <see cref="Level.Debug"/>. Moreover,
         /// message disabling is set its default "off" value.
-        /// </para>     
+        /// </para>
         /// </remarks>
-        public static void ResetConfiguration(string repository) 
+        public static void ResetConfiguration(string repository)
         {
             if (repository == null)
             {
@@ -582,9 +582,9 @@ namespace log4net.Core
         /// sets their additivity flag to <c>true</c> and sets the level
         /// of the root logger to <see cref="Level.Debug"/>. Moreover,
         /// message disabling is set its default "off" value.
-        /// </para>     
+        /// </para>
         /// </remarks>
-        public static void ResetConfiguration(Assembly repositoryAssembly) 
+        public static void ResetConfiguration(Assembly repositoryAssembly)
         {
             if (repositoryAssembly == null)
             {
@@ -769,13 +769,13 @@ namespace log4net.Core
         /// </value>
         /// <remarks>
         /// <para>
-        /// The repository selector (<see cref="IRepositorySelector"/>) is used by 
-        /// the <see cref="LogManager"/> to create and select repositories 
+        /// The repository selector (<see cref="IRepositorySelector"/>) is used by
+        /// the <see cref="LogManager"/> to create and select repositories
         /// (<see cref="ILoggerRepository"/>).
         /// </para>
         /// <para>
-        /// The caller to <see cref="LogManager"/> supplies either a string name 
-        /// or an assembly (if not supplied the assembly is inferred using 
+        /// The caller to <see cref="LogManager"/> supplies either a string name
+        /// or an assembly (if not supplied the assembly is inferred using
         /// <see cref="M:Assembly.GetCallingAssembly()"/>).
         /// </para>
         /// <para>

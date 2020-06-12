@@ -183,7 +183,7 @@ namespace DotNetNuke.Services.Log.EventLog
                             }
                         }
                     }
-                    
+
                     // Get portal name if name isn't set
                     if (logInfo.LogPortalID != Null.NullInteger && String.IsNullOrEmpty(logInfo.LogPortalName))
                     {
@@ -233,7 +233,7 @@ namespace DotNetNuke.Services.Log.EventLog
                                 throw;
                             }
                         }
-                        
+
                     }
                 }
                 catch (Exception exc)

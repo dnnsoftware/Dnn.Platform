@@ -22,7 +22,7 @@ namespace DotNetNuke.Entities.Users
         public static void NotifyAdministrator(UserInfo user)
         {
             // avoid self-notification (i.e. on site installation/super user creation)
-            if (CurrentUser != null && 
+            if (CurrentUser != null &&
                 (CurrentUser.UserID == Null.NullInteger || CurrentUser.UserID == user.UserID))
             {
                 return;

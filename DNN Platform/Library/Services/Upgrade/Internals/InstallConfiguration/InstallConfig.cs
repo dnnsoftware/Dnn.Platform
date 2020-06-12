@@ -16,8 +16,8 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
     /// InstallConfig - A class that represents DotNetNuke.Install.Config XML configuration file
     /// TODO This class may not capture all the details from the config file
     /// </summary>
-    /// -----------------------------------------------------------------------------    
-        
+    /// -----------------------------------------------------------------------------
+
     public class InstallConfig
     {
         public IList<string> Scripts { get; set; }
@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
         public IList<PortalConfig> Portals { get; set; }
         public IList<HostSettingConfig> Settings { get; set; }
 
-        public string FolderMappingsSettings { get; set; } 
+        public string FolderMappingsSettings { get; set; }
 
         public bool SupportLocalization { get; set; }
 

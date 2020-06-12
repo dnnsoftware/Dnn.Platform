@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Cryptography
                 // convert data to byte array
                 byte[] byteData = Encoding.UTF8.GetBytes(message);
 
-                // encrypt 
+                // encrypt
                 using (var objDes = new DESCryptoServiceProvider())
                 using (var objMemoryStream = new MemoryStream())
                 using (var objCryptoStream = new CryptoStream(objMemoryStream, objDes.CreateEncryptor(byteKey, byteVector),
@@ -141,13 +141,13 @@ namespace DotNetNuke.Services.Cryptography
                 }
                 finally
                 {
-                    // Clear the TripleDes and Hashprovider services of any sensitive information 
+                    // Clear the TripleDes and Hashprovider services of any sensitive information
                     tdesAlgorithm.Clear();
                     hashProvider.Clear();
                 }
             }
 
-            // Return the encrypted string as a base64 encoded string 
+            // Return the encrypted string as a base64 encoded string
             return Convert.ToBase64String(results);
         }
 
@@ -183,7 +183,7 @@ namespace DotNetNuke.Services.Cryptography
                 }
                 finally
                 {
-                    // Clear the TripleDes and Hashprovider services of any sensitive information 
+                    // Clear the TripleDes and Hashprovider services of any sensitive information
                     tdesAlgorithm.Clear();
                     hashProvider.Clear();
                 }

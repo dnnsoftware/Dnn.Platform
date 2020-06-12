@@ -94,7 +94,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             return portalSettingsDictionary;
         }
-        
+
         private PortalSettings GetPortalSettingsMock()
         {
             var portalSettingsMock = new Mock<PortalSettings>();
@@ -606,7 +606,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         [TestCase("(")]
         [TestCase(")")]
-        [TestCase("")]        
+        [TestCase("")]
         public void GetFileUrl_ReturnsStandardUrl_WhenFileUrlDoesNotContainInvalidCharactes(string fileNameChar)
         {
             // Arrange
@@ -615,14 +615,14 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             sfp.Setup(fp => fp.GetPortalSettings(Constants.CONTENT_ValidPortalId)).Returns(portalSettingsMock);
             this._fileInfo.Setup(f => f.FileName).Returns($"MyFileName {fileNameChar} Copy");
             this._fileInfo.Setup(f => f.PortalId).Returns(Constants.CONTENT_ValidPortalId);
-            
+
             // Act
             var fileUrl = sfp.Object.GetFileUrl(this._fileInfo.Object);
 
             // Assert
             Assert.IsFalse(fileUrl.ToLowerInvariant().Contains("linkclick"));
         }
-        
+
         [Test]
         [TestCase("?")]
         [TestCase("&")]

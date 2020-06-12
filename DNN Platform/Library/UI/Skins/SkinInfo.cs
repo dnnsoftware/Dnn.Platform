@@ -13,7 +13,7 @@ namespace DotNetNuke.UI.Skins
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : SkinInfo
-    /// 
+    ///
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///     Handles the Business Object for Skins

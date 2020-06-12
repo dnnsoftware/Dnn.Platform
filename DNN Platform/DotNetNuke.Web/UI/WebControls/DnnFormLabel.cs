@@ -36,28 +36,28 @@ namespace DotNetNuke.Web.UI.WebControls
             if (string.IsNullOrEmpty(this.CssClass))
                 this.CssClass = "dnnLabel";
 
-            else if (!this.CssClass.Contains("dnnLabel"))                           
+            else if (!this.CssClass.Contains("dnnLabel"))
                 this.CssClass += " dnnLabel";
-            
+
 
             // var outerPanel = new Panel();
             // outerPanel.CssClass = "dnnLabel";
-            // Controls.Add(outerPanel);            
+            // Controls.Add(outerPanel);
 
             var outerLabel = new System.Web.UI.HtmlControls.HtmlGenericControl { TagName = "label" };
             this.Controls.Add(outerLabel);
-            
+
             var label = new Label { ID = "Label", Text = this.LocalizeString(this.ResourceKey) };
             if (this.RequiredField)
             {
                 label.CssClass += " dnnFormRequired";
             }
-            outerLabel.Controls.Add(label);         
+            outerLabel.Controls.Add(label);
 
             var link = new LinkButton { ID = "Link", CssClass = "dnnFormHelp", TabIndex = -1 };
             link.Attributes.Add("aria-label", "Help");
             this.Controls.Add(link);
-            
+
             if (!String.IsNullOrEmpty(toolTipText))
             {
                 // CssClass += "dnnLabel";
@@ -65,9 +65,9 @@ namespace DotNetNuke.Web.UI.WebControls
                 var tooltipPanel = new Panel() { CssClass = "dnnTooltip" };
                 this.Controls.Add(tooltipPanel);
 
-                var panel = new Panel { ID = "Help", CssClass = "dnnFormHelpContent dnnClear" };                
+                var panel = new Panel { ID = "Help", CssClass = "dnnFormHelpContent dnnClear" };
                 tooltipPanel.Controls.Add(panel);
-                
+
                 var helpLabel = new Label { ID = "Text", CssClass = "dnnHelpText", Text = this.LocalizeString(this.ToolTipKey) };
                 panel.Controls.Add(helpLabel);
 

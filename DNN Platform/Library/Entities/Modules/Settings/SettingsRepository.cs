@@ -111,7 +111,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             if (mapping == null)
             {
                 mapping = this.CreateMapping();
-                // HARDCODED: 2 hour expiration. 
+                // HARDCODED: 2 hour expiration.
                 // Note that "caching" can also be accomplished with a static dictionary since the Attribute/Property mapping does not change unless the module is updated.
                 CachingProvider.Instance().Insert(cacheKey, mapping, (DNNCacheDependency)null, DateTime.Now.AddHours(2), Cache.NoSlidingExpiration);
             }

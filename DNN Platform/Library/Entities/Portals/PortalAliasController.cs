@@ -28,9 +28,9 @@ namespace DotNetNuke.Entities.Portals
     /// PortalAliasController provides method to manage portal alias.
     /// </summary>
     /// <remarks>
-    /// For DotNetNuke to know what site a request should load, it uses a system of portal aliases. 
-    /// When a request is recieved by DotNetNuke from IIS, it extracts the domain name portion and does a comparison against 
-    /// the list of portal aliases and then redirects to the relevant portal to load the approriate page. 
+    /// For DotNetNuke to know what site a request should load, it uses a system of portal aliases.
+    /// When a request is recieved by DotNetNuke from IIS, it extracts the domain name portion and does a comparison against
+    /// the list of portal aliases and then redirects to the relevant portal to load the approriate page.
     /// </remarks>
     public partial class PortalAliasController : ServiceLocator<IPortalAliasController, PortalAliasController>, IPortalAliasController
     {
@@ -84,7 +84,7 @@ namespace DotNetNuke.Entities.Portals
                 // perform the lookup
                 portalAlias = this.GetPortalAliasLookupInternal(strPortalAlias.ToLowerInvariant());
             }
-            // allow domain wildcards 
+            // allow domain wildcards
             if (portalAlias == null)
             {
                 // remove the domain prefix ( ie. anything.domain.com = domain.com )
@@ -128,7 +128,7 @@ namespace DotNetNuke.Entities.Portals
                 }
             }
             return portalAlias;
-            
+
         }
 
         private static void LogEvent(PortalAliasInfo portalAlias, EventLogController.EventLogType logType)

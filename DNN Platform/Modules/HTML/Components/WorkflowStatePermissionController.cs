@@ -37,7 +37,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   GetWorkflowStatePermissions gets a Dictionary of WorkflowStatePermissionCollections by 
+        ///   GetWorkflowStatePermissions gets a Dictionary of WorkflowStatePermissionCollections by
         ///   WorkflowState.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -49,7 +49,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   GetWorkflowStatePermissionsCallBack gets a Dictionary of WorkflowStatePermissionCollections by 
+        ///   GetWorkflowStatePermissionsCallBack gets a Dictionary of WorkflowStatePermissionCollections by
         ///   WorkflowState from the the Database.
         /// </summary>
         /// <param name = "cacheItemArgs">The CacheItemArgs object that contains the parameters needed for the database call</param>

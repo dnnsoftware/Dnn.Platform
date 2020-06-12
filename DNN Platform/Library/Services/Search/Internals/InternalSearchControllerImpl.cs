@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.Search.Internals
                         {
                             if (!modDefIds.Contains(module.ModuleDefID)) modDefIds.Add(module.ModuleDefID);
                         }
-                        
+
                         var list = modDefIds.Select(ModuleDefinitionController.GetModuleDefinitionByID).ToList();
 
                         foreach (var def in list)
@@ -120,7 +120,7 @@ namespace DotNetNuke.Services.Search.Internals
                     default:
 
                         var resultControllerType = Reflection.CreateType(crawler.SearchResultClass);
-                        var resultController = (BaseResultController)Reflection.CreateObject(resultControllerType);                       
+                        var resultController = (BaseResultController)Reflection.CreateObject(resultControllerType);
                         var localizedName = Localization.Localization.GetSafeJSString(resultController.LocalizedSearchTypeName);
 
                         results.Add(new SearchContentSource
@@ -192,7 +192,7 @@ namespace DotNetNuke.Services.Search.Internals
             Requires.NotNegative("SearchTypeId", searchDocument.SearchTypeId);
             Requires.PropertyNotEqualTo("searchDocument", "SearchTypeId", searchDocument.SearchTypeId, 0);
             Requires.PropertyNotEqualTo("searchDocument", "ModifiedTimeUtc", searchDocument.ModifiedTimeUtc.ToString(CultureInfo.InvariantCulture), DateTime.MinValue.ToString(CultureInfo.InvariantCulture));
-            
+
             if (searchDocument.SearchTypeId == this._moduleSearchTypeId)
             {
                 if (searchDocument.ModuleDefId <= 0)
@@ -321,7 +321,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             if (!string.IsNullOrEmpty(searchDocument.CultureCode))
                 query.Add(NumericValueQuery(Constants.LocaleTag, Localization.Localization.GetCultureLanguageID(searchDocument.CultureCode)), Occur.MUST);
-            
+
             LuceneController.Instance.Delete(query);
 
             if (autoCommit)

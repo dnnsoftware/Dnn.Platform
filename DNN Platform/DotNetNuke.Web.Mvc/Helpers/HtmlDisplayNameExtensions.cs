@@ -18,7 +18,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Gets the display name.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The display name.
         /// </returns>
@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Gets the display name for the model.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The display name for the model.
         /// </returns>
@@ -44,7 +44,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Gets the display name for the model.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The display name for the model.
         /// </returns>
@@ -57,7 +57,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Gets the display name for the model.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The display name for the model.
         /// </returns>

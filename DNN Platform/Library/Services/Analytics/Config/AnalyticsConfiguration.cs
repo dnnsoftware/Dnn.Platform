@@ -56,7 +56,7 @@ namespace DotNetNuke.Services.Analytics.Config
                 this._rules = value;
             }
         }
-        
+
         #endregion
 
         #region "Shared Methods"
@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.Analytics.Config
                     {
                         return null;
                     }
-                    
+
                     // Create a FileStream for the Config file
                     fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
 
@@ -168,7 +168,7 @@ namespace DotNetNuke.Services.Analytics.Config
                 DataCache.SetCache(cacheKey, config, new DNNCacheDependency(filePath));
             }
         }
-        
+
         #endregion
     }
 }

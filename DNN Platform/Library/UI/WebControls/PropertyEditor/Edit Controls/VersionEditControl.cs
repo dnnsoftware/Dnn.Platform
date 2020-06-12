@@ -52,7 +52,7 @@ namespace DotNetNuke.UI.WebControls
                 return this.Value as Version;
             }
         }
-        
+
         #endregion
 
         protected void RenderDropDownList(HtmlTextWriter writer, string type, int val)
@@ -71,17 +71,17 @@ namespace DotNetNuke.UI.WebControls
                     // Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
                 }
-                
+
                 // Render Option Tag
                 writer.RenderBeginTag(HtmlTextWriterTag.Option);
                 writer.Write(i.ToString("00"));
                 writer.RenderEndTag();
             }
-            
+
             // Close Select Tag
             writer.RenderEndTag();
         }
-        
+
         #region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
@@ -177,7 +177,7 @@ namespace DotNetNuke.UI.WebControls
             }
             return dataChanged;
         }
-        
+
         #endregion
     }
 }

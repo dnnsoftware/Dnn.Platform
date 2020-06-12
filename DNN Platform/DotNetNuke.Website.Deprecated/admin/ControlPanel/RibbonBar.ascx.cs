@@ -348,8 +348,8 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string PreviewPopup()
         {
-            var previewUrl = string.Format("{0}/Default.aspx?ctl={1}&previewTab={2}&TabID={2}", 
-                                        Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias), 
+            var previewUrl = string.Format("{0}/Default.aspx?ctl={1}&previewTab={2}&TabID={2}",
+                                        Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias),
                                         "MobilePreview",
                                         this.PortalSettings.ActiveTab.TabID);
 

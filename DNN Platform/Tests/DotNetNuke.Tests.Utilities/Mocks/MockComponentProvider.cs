@@ -94,7 +94,7 @@ namespace DotNetNuke.Tests.Utilities.Mocks
 
         public static Mock<ILocaleController> CreateLocaleController()
         {
-            return CreateNew<ILocaleController>(); 
+            return CreateNew<ILocaleController>();
         }
 
         public static Mock<RoleProvider> CreateRoleProvider()

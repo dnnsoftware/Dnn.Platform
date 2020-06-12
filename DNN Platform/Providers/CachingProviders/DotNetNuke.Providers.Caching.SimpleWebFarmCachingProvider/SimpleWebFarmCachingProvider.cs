@@ -29,8 +29,8 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
         {
             // Do not send notifications to other servers if currently upgrading
             if (Globals.Status != Globals.UpgradeStatus.None)
-                return; 
-            
+                return;
+
             // Get all servers currently in the database that could be used for synchronization, excluding this one
             // But focus on only servers that could be used for this application and notifications
             // including activity within 60 minutes
@@ -61,7 +61,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
                 // Create a cookie container so we can get cookies and use default credentials
                 notificationRequest.CookieContainer = new CookieContainer();
                 notificationRequest.UseDefaultCredentials = true;
-                
+
                 // Start the asynchronous request
                 var result = (notificationRequest.BeginGetResponse(this.OnServerNotificationCompleteCallback, notificationRequest));
 
@@ -139,7 +139,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
         }
         #endregion
 
-        #region Default Caching Implementation Overrides 
+        #region Default Caching Implementation Overrides
 
         public override void Clear(string type, string data)
         {

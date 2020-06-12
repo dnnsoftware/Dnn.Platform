@@ -113,10 +113,10 @@ namespace DotNetNuke.Entities.Urls
             // 857 : use cache dependency for portal alias cache
             if (settings != null)
             {
-                DataCache.SetCache(key, 
-                                    value, 
-                                    new DNNCacheDependency(GetPortalsCacheDependency()), 
-                                    absoluteExpiration, 
+                DataCache.SetCache(key,
+                                    value,
+                                    new DNNCacheDependency(GetPortalsCacheDependency()),
+                                    absoluteExpiration,
                                     Cache.NoSlidingExpiration);
             }
             else
@@ -561,7 +561,7 @@ namespace DotNetNuke.Entities.Urls
         /// This method stores a list of tabIds for the specific portal in the cache
         /// This is used to lookup and see if there are any providers to load for a tab,
         /// without having to store individual tabid/portaldId provider lists for every tab
-        /// If a tab doesn't appear on this cached list, then the cache isn't checked 
+        /// If a tab doesn't appear on this cached list, then the cache isn't checked
         /// for that particular tabid/portalId combination
         /// </summary>
         /// <param name="providers"></param>
@@ -657,7 +657,7 @@ namespace DotNetNuke.Entities.Urls
                 if (provider.AlwaysUsesDnnPagePath(portalId) == false)
                 {
                     List<ExtensionUrlProvider> noPathProviders;
-                    // add this one 
+                    // add this one
                     if (tabsProviders.ContainsKey(RewriteController.SiteRootRewrite))
                     {
                         noPathProviders = tabsProviders[RewriteController.SiteRootRewrite];
@@ -748,10 +748,10 @@ namespace DotNetNuke.Entities.Urls
 
         internal void StoreTabPathsInCache(int portalId, SharedDictionary<string, string> tabPathDictionary, FriendlyUrlSettings settings)
         {
-            SetPageCache(string.Format(TabPathsKey, portalId), 
-                        tabPathDictionary, 
-                        new DNNCacheDependency(this.GetTabsCacheDependency(new List<int> { portalId })), 
-                        settings, 
+            SetPageCache(string.Format(TabPathsKey, portalId),
+                        tabPathDictionary,
+                        new DNNCacheDependency(this.GetTabsCacheDependency(new List<int> { portalId })),
+                        settings,
                         null);
         }
 

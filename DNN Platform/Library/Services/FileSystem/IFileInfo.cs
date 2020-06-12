@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.FileSystem
 
         /// <summary>
         /// Gets or sets the date on which the file ends to be published
-        /// </summary>        
+        /// </summary>
         DateTime EndDate { get; set; }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.FileSystem
         /// Gets or sets the published version number of the file
         /// </summary>
         int PublishedVersion { get; set; }
-        
+
         /// <summary>
         /// Gets a flag which says whether the file has ever been published
         /// </summary>

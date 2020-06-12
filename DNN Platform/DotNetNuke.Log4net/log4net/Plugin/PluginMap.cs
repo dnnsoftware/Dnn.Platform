@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -50,7 +50,7 @@ namespace log4net.Plugin
         /// <param name="repository">The repository that the plugins should be attached to.</param>
         /// <remarks>
         /// <para>
-        /// Initialize a new instance of the <see cref="PluginMap" /> class with a 
+        /// Initialize a new instance of the <see cref="PluginMap" /> class with a
         /// repository that the plugins should be attached to.
         /// </para>
         /// </remarks>
@@ -68,7 +68,7 @@ namespace log4net.Plugin
         /// </summary>
         /// <param name="name">The name of the <see cref="IPlugin" /> to lookup.</param>
         /// <returns>
-        /// The <see cref="IPlugin" /> from the map with the name specified, or 
+        /// The <see cref="IPlugin" /> from the map with the name specified, or
         /// <c>null</c> if no plugin is found.
         /// </returns>
         /// <remarks>
@@ -112,7 +112,7 @@ namespace log4net.Plugin
                 }
             }
         }
-        
+
         #endregion Public Instance Properties
 
         #region Public Instance Methods
@@ -126,7 +126,7 @@ namespace log4net.Plugin
         /// The <see cref="IPlugin" /> will be attached to the repository when added.
         /// </para>
         /// <para>
-        /// If there already exists a plugin with the same name 
+        /// If there already exists a plugin with the same name
         /// attached to the repository then the old plugin will
         /// be <see cref="IPlugin.Shutdown"/> and replaced with
         /// the new plugin.

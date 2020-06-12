@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -79,13 +79,13 @@ namespace log4net.Repository
     public delegate void LoggerRepositoryConfigurationChangedEventHandler(object sender, EventArgs e);
 
     #endregion
-    
+
     /// <summary>
     /// Interface implemented by logger repositories.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This interface is implemented by logger repositories. e.g. 
+    /// This interface is implemented by logger repositories. e.g.
     /// <see cref="Hierarchy"/>.
     /// </para>
     /// <para>
@@ -256,7 +256,7 @@ namespace log4net.Repository
         /// <remarks>
         /// <para>
         /// This method should not normally be used to log.
-        /// The <see cref="ILog"/> interface should be used 
+        /// The <see cref="ILog"/> interface should be used
         /// for routine logging. This interface can be obtained
         /// using the <see cref="M:log4net.LogManager.GetLogger(string)"/> method.
         /// </para>
@@ -281,7 +281,7 @@ namespace log4net.Repository
         bool Configured { get; set; }
 
         /// <summary>
-        /// Collection of internal messages captured during the most 
+        /// Collection of internal messages captured during the most
         /// recent configuration process.
         /// </summary>
         ICollection ConfigurationMessages { get; set; }

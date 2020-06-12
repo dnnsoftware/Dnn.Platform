@@ -253,7 +253,7 @@ namespace DotNetNuke.Services.FileSystem
 
             return RegexUtils.GetCachedRegex(pattern, RegexOptions.IgnoreCase);
         }
-        
+
         private static bool IsStandardFolderProviderType(FolderMappingInfo folderMappingInfo)
         {
             var compatibleTypes = new[] { "StandardFolderProvider", "SecureFolderProvider", "DatabaseFolderProvider" };
@@ -279,7 +279,7 @@ namespace DotNetNuke.Services.FileSystem
 
             return FolderMappingController.Instance.GetDefaultFolderMapping(portalId).FolderMappingID;
         }
-        
+
         private bool DeleteFolderRecursive(IFolderInfo folder, ICollection<IFolderInfo> notDeletedSubfolders, bool isRecursiveDeletionFolder, bool unmap)
         {
             Requires.NotNull("folder", folder);
@@ -307,11 +307,11 @@ namespace DotNetNuke.Services.FileSystem
                     }
                     else
                     {
-                        FileDeletionController.Instance.DeleteFile(file);                        
+                        FileDeletionController.Instance.DeleteFile(file);
                     }
                     this.OnFileDeleted(file, this.GetCurrentUserId(), true);
-                }    
-                
+                }
+
                 if (allSubFoldersHasBeenDeleted)
                 {
                     if (unmap)
@@ -320,7 +320,7 @@ namespace DotNetNuke.Services.FileSystem
                     }
                     else
                     {
-                        this.DeleteFolderInternal(folder, !isRecursiveDeletionFolder);                        
+                        this.DeleteFolderInternal(folder, !isRecursiveDeletionFolder);
                     }
                     return true;
                 }
@@ -538,8 +538,8 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="System.ArgumentNullException">Thrown when folder is null.</exception>
         /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
         public virtual void DeleteFolder(IFolderInfo folder)
-        {                
-            this.DeleteFolderInternal(folder, false);         
+        {
+            this.DeleteFolderInternal(folder, false);
         }
 
         public virtual void UnlinkFolder(IFolderInfo folder)
@@ -822,23 +822,23 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("destinationFolder", destinationFolder);
 
             var newFolderPath = PathUtils.Instance.FormatFolderPath(destinationFolder.FolderPath + folder.FolderName + "/");
-            
+
             if (folder.FolderPath == destinationFolder.FolderPath) return folder;
 
             if (this.FolderExists(folder.PortalID, newFolderPath))
             {
                 throw new InvalidOperationException(string.Format(
-                    Localization.Localization.GetExceptionMessage("CannotMoveFolderAlreadyExists", 
+                    Localization.Localization.GetExceptionMessage("CannotMoveFolderAlreadyExists",
                     "The folder with name '{0}' cannot be moved. A folder with that name already exists under the folder '{1}'.", folder.FolderName, destinationFolder.FolderName)));
             }
-            
+
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
             var destinationFolderMapping = FolderMappingController.Instance.GetFolderMapping(destinationFolder.PortalID, destinationFolder.FolderMappingID);
 
             if (!this.CanMoveBetweenFolderMappings(folderMapping, destinationFolderMapping))
             {
                 throw new InvalidOperationException(string.Format(
-                    Localization.Localization.GetExceptionMessage("CannotMoveFolderBetweenFolderType", 
+                    Localization.Localization.GetExceptionMessage("CannotMoveFolderBetweenFolderType",
                     "The folder with name '{0}' cannot be moved. Move Folder operation between this two folder types is not allowed", folder.FolderName)));
             }
 
@@ -1030,7 +1030,7 @@ namespace DotNetNuke.Services.FileSystem
 
             return 0;
         }
-        
+
         /// <summary>
         /// Updates metadata of the specified folder.
         /// </summary>
@@ -1041,7 +1041,7 @@ namespace DotNetNuke.Services.FileSystem
             var updatedFolder = this.UpdateFolderInternal(folder, true);
 
             this.AddLogEntry(updatedFolder, EventLogController.EventLogType.FOLDER_UPDATED);
-            
+
             this.SaveFolderPermissions(updatedFolder);
 
             return updatedFolder;
@@ -1120,19 +1120,19 @@ namespace DotNetNuke.Services.FileSystem
                 if (SyncFoldersData[threadId].FolderPath == relativePath && SyncFoldersData[threadId].PortalId == portalId)
                 {
                     return SyncFoldersData[threadId].Permissions;
-                }                
+                }
                 permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
                 SyncFoldersData[threadId] = new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions };
                 return permissions;
             }
             permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
             SyncFoldersData.Add(threadId, new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions });
-            
+
             return permissions;
         }
 
         /// <summary>
-        /// Sets specific folder permissions for the given role to the given folder.        
+        /// Sets specific folder permissions for the given role to the given folder.
         /// </summary>
         /// <param name="folder">The folder to set permission to</param>
         /// <param name="permissionId">The id of the permission to assign</param>
@@ -1174,7 +1174,7 @@ namespace DotNetNuke.Services.FileSystem
         /// Sets folder permissions for administrator role to the given folder.
         /// </summary>
         /// <param name="folder">The folder to set permission to</param>
-        /// <param name="administratorRoleId">The administrator role id to assign the permission to</param>  
+        /// <param name="administratorRoleId">The administrator role id to assign the permission to</param>
         public virtual void SetFolderPermissions(IFolderInfo folder, int administratorRoleId)
         {
             Requires.NotNull("folder", folder);
@@ -1217,8 +1217,8 @@ namespace DotNetNuke.Services.FileSystem
                 foreach (var fileId in fileIds)
                 {
                     DataCache.RemoveCache("GetFileById" + fileId);
-                }    
-            }            
+                }
+            }
         }
 
 
@@ -1721,7 +1721,7 @@ namespace DotNetNuke.Services.FileSystem
 
             // Update ExistsInFolderMapping if the Parent Does Not ExistsInFolderMapping
             var margedTreeItems = mergedTree.Values;
-            foreach (var mergedItem in margedTreeItems.Where(m => m.ExistsInFolderMapping 
+            foreach (var mergedItem in margedTreeItems.Where(m => m.ExistsInFolderMapping
                                        && margedTreeItems.Any(mt2 => !mt2.ExistsInFolderMapping && m.FolderPath.StartsWith(mt2.FolderPath))))
             {
                 mergedItem.ExistsInFolderMapping = false;
@@ -1845,7 +1845,7 @@ namespace DotNetNuke.Services.FileSystem
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual void MoveFolderWithinProvider(IFolderInfo folder, IFolderInfo destinationFolder)
-        {            
+        {
             var newFolderPath = destinationFolder.FolderPath + folder.FolderName + "/";
             this.RenameFolderInFileSystem(folder, newFolderPath);
 
@@ -1870,7 +1870,7 @@ namespace DotNetNuke.Services.FileSystem
             foreach (var folderInfo in folderInfos)
             {
                 var folderPath = newFolderPath + folderInfo.FolderPath.Substring(tmpFolderPath.Length);
-                
+
                 var parentFolder = this.GetParentFolder(folder.PortalID, folderPath);
                 folderInfo.ParentID = parentFolder.FolderID;
                 folderInfo.FolderPath = folderPath;
@@ -1899,7 +1899,7 @@ namespace DotNetNuke.Services.FileSystem
                 foldersToDelete.Add(sourceFolder.FolderPath, sourceFolder);
             }
         }
-        
+
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual void ProcessMergedTreeItemInAddMode(MergedTreeItem item, int portalId)
         {
@@ -1951,7 +1951,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             else
             {
-                SyncFoldersData.Add(threadId, new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions });                
+                SyncFoldersData.Add(threadId, new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions });
             }
         }
 
@@ -1960,7 +1960,7 @@ namespace DotNetNuke.Services.FileSystem
             var threadId = Thread.CurrentThread.ManagedThreadId;
             if (SyncFoldersData.ContainsKey(threadId))
             {
-                SyncFoldersData.Remove(threadId);                
+                SyncFoldersData.Remove(threadId);
             }
         }
 
@@ -2129,7 +2129,7 @@ namespace DotNetNuke.Services.FileSystem
             var originalFolderPath = folder.FolderPath;
 
             var folderInfos = this.GetFolders(folder.PortalID).Where(f => f.FolderPath != string.Empty && f.FolderPath.StartsWith(originalFolderPath)).ToArray();
-            
+
             foreach (var folderInfo in folderInfos)
             {
                 var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folderInfo.FolderMappingID);
@@ -2185,7 +2185,7 @@ namespace DotNetNuke.Services.FileSystem
             return IsStandardFolderProviderType(sourceFolderMapping) && IsStandardFolderProviderType(destinationFolderMapping);
         }
         #endregion
-        
+
         #region Internal Classes
 
         /// <summary>

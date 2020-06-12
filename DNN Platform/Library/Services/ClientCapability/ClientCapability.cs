@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.ClientCapability
         {
             this._capabilities = new Dictionary<string, string>();
         }
-    
+
         #region Implementation of IClientCapability
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.ClientCapability
         /// <summary>
         ///   Is request coming from a tablet device.
         /// </summary>
-        public bool IsTablet { get; set; }        
+        public bool IsTablet { get; set; }
 
         /// <summary>
         ///   Does the requesting device supports touch screen.
@@ -57,9 +57,9 @@ namespace DotNetNuke.Services.ClientCapability
         ///   FacebookRequest property is filled when request is coming though Facebook iFrame (e.g. fan pages).
         /// </summary>
         /// <remarks>
-        ///   FacebookRequest property is populated based on data in "signed_request" headers coming from Facebook.  
+        ///   FacebookRequest property is populated based on data in "signed_request" headers coming from Facebook.
         ///   In order to ensure request is coming from Facebook, FacebookRequest.IsValidSignature method should be called with the secrety key provided by Facebook.
-        /// </remarks>         
+        /// </remarks>
         public FacebookRequest FacebookRequest { get; set; }
 
         /// <summary>
@@ -86,12 +86,12 @@ namespace DotNetNuke.Services.ClientCapability
             get
             {
                 return this._capabilities;
-                
+
             }
             set
             {
                 this._capabilities = value;
-                
+
             }
         }
 
@@ -115,7 +115,7 @@ namespace DotNetNuke.Services.ClientCapability
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public virtual string this[string name] 
+        public virtual string this[string name]
         {
             get
             {

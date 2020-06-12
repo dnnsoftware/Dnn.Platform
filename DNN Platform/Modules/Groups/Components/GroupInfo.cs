@@ -16,11 +16,11 @@ using System;
 
 namespace DotNetNuke.Entities.Groups
 {
-    public class GroupInfo : RoleInfo, IPropertyAccess 
+    public class GroupInfo : RoleInfo, IPropertyAccess
     {
         // private RoleInfo roleInfo;
         public GroupInfo() {
-        
+
         }
         public GroupInfo(RoleInfo roleInfo) {
             this.RoleID = roleInfo.RoleID;
@@ -31,7 +31,7 @@ namespace DotNetNuke.Entities.Groups
             this.ServiceFee = roleInfo.ServiceFee;
             this.RSVPCode = roleInfo.RSVPCode;
 
-          
+
 
 
 
@@ -49,10 +49,10 @@ namespace DotNetNuke.Entities.Groups
         //        return RoleID;
         //    }
         // }
-       
+
         // public int ModuleId { get; set; }
 
-           
+
         public string Street {
             get {
                 return this.GetString("Street", string.Empty);
@@ -106,7 +106,7 @@ namespace DotNetNuke.Entities.Groups
             }
         }
 
-  
+
         public bool Featured {
             get {
                 return Convert.ToBoolean(this.GetString("Featured", "false"));
@@ -117,8 +117,8 @@ namespace DotNetNuke.Entities.Groups
         }
 
 
-      
-       
+
+
         private string GetString(string keyName, string defaultValue) {
             if (this.Settings == null) {
                 return defaultValue;
@@ -136,6 +136,6 @@ namespace DotNetNuke.Entities.Groups
                 this.Settings.Add(keyName, value);
             }
         }
-       
+
     }
 }

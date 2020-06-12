@@ -176,7 +176,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("file", file);
 
             var portalSettings = file.PortalId == PortalSettings.Current?.PortalId ?
-                PortalSettings.Current : 
+                PortalSettings.Current :
                 this.GetPortalSettings(file.PortalId);
 
             var rootFolder = file.PortalId == Null.NullInteger ? Globals.HostPath : portalSettings.HomeDirectory;
@@ -186,13 +186,13 @@ namespace DotNetNuke.Services.FileSystem
             // check if a filename has a character that is not valid for urls
             if (fullPath.IndexOfAny(InvalidFileUrlChars) >= 0)
             {
-                return Globals.LinkClick($"fileid={file.FileId}", 
-                    Null.NullInteger, 
-                    Null.NullInteger, 
-                    true, 
-                    false, 
-                    portalSettings.PortalId, 
-                    portalSettings.EnableUrlLanguage, 
+                return Globals.LinkClick($"fileid={file.FileId}",
+                    Null.NullInteger,
+                    Null.NullInteger,
+                    true,
+                    false,
+                    portalSettings.PortalId,
+                    portalSettings.EnableUrlLanguage,
                     portalSettings.GUID.ToString());
             }
 

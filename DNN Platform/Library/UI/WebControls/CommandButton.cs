@@ -170,7 +170,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                this.EnsureChildControls();                
+                this.EnsureChildControls();
                 if (string.IsNullOrEmpty(this.icon.ImageUrl))
                     this.icon.ImageUrl = Entities.Icons.IconController.IconURL(this.IconKey, this.IconSize, this.IconStyle);
 

@@ -81,7 +81,7 @@ namespace DotNetNuke.UI.Containers
                 return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
-        
+
         #endregion
 
         #region Public Properties
@@ -165,7 +165,7 @@ namespace DotNetNuke.UI.Containers
         public string ContainerSrc { get; set; }
 
         internal bool InjectActionMenu { get; set; }
-        
+
         #endregion
 
         #region Private Helper Methods
@@ -280,7 +280,7 @@ namespace DotNetNuke.UI.Containers
                 var footer = new Literal { Text = this.ModuleConfiguration.Footer };
                 this.ContentPane.Controls.Add(footer);
             }
-            
+
             // inject an end comment around the module content
             if (!Globals.IsAdminControl())
             {
@@ -299,7 +299,7 @@ namespace DotNetNuke.UI.Containers
                 // inject a start comment around the module content
                 this.ContentPane.Controls.Add(new LiteralControl("<!-- Start_Module_" + this.ModuleConfiguration.ModuleID + " -->"));
             }
-            
+
             // inject the header
             if (!String.IsNullOrEmpty(this.ModuleConfiguration.Header))
             {
@@ -344,13 +344,13 @@ namespace DotNetNuke.UI.Containers
 
                 // Process Module Footer
                 this.ProcessFooter();
-                
+
                 // Process the Action Controls
                 if (this.ModuleHost != null && this.ModuleControl != null)
                 {
                     this.ProcessChildControls(this);
                 }
-                
+
                 // Add Module Stylesheets
                 this.ProcessStylesheets(this.ModuleHost != null);
             }
@@ -368,7 +368,7 @@ namespace DotNetNuke.UI.Containers
             ClientResourceManager.RegisterStyleSheet(this.Page, this.ContainerPath + "container.css", FileOrder.Css.ContainerCss);
             ClientResourceManager.RegisterStyleSheet(this.Page, this.ContainerSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificContainerCss);
 
-            // process the base class module properties 
+            // process the base class module properties
             if (includeModuleCss)
             {
                 string controlSrc = this.ModuleConfiguration.ModuleControl.ControlSrc;
@@ -429,7 +429,7 @@ namespace DotNetNuke.UI.Containers
                 this.ContentPane.Style["border-left"] = String.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
             }
         }
-        
+
         #endregion
 
         #region Protected Methods
@@ -490,7 +490,7 @@ namespace DotNetNuke.UI.Containers
                 }
             }
         }
-        
+
         #endregion
 
         #region Public Methods
@@ -509,10 +509,10 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// ModuleAction_Click runs when a ModuleAction is clicked.
         /// </summary>
-        /// <remarks>The Module Action must be configured to fire an event (it may be configured 
+        /// <remarks>The Module Action must be configured to fire an event (it may be configured
         /// to redirect to a new url).  The event handler finds the Parent Container and invokes each
         /// registered ModuleActionEventListener delegate.
-        /// 
+        ///
         /// Note: with the refactoring of this to the Container, this could be handled at the container level.
         /// However, for legacy purposes this is left this way, as many modules would have registered their
         /// listeners on the Container directly, rather than through the helper method in PortalModuleBase.</remarks>
@@ -520,7 +520,7 @@ namespace DotNetNuke.UI.Containers
         {
             // Search through the listeners
             foreach (ModuleActionEventListener listener in this.ParentSkin.ActionEventListeners)
-            {           
+            {
                 // If the associated module has registered a listener
                 if (e.ModuleConfiguration.ModuleID == listener.ModuleID)
                 {
@@ -529,7 +529,7 @@ namespace DotNetNuke.UI.Containers
                 }
             }
         }
-        
+
         #endregion
     }
 }

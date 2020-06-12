@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Library.DTO
         protected abstract void LoadPermissionDefinitions();
 
         protected Permissions() : this(false)
-        {            
+        {
         }
 
         protected Permissions(bool needDefinitions)

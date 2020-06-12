@@ -45,7 +45,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
         private DataTable _dtRedirections;
         private DataTable _dtRules;
-        
+
         public const string iphoneUserAgent = "Mozilla/5.0 (iPod; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7";
         public const string wp7UserAgent = "Mozilla/4.0 (compatible; MSIE 7.0; Windows Phone OS 7.0; Trident/3.1; IEMobile/7.0) Asus;Galaxy6";
         public const string msIE8UserAgent = "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; InfoPath.3; Creative AutoUpdate v1.40.02)";
@@ -251,7 +251,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         {
             this._redirectionController.GetRedirectUrl(null, Portal0, 0);
         }
-        
+
         [Test]
         public void RedirectionController_GetRedirectionUrl_Returns_EmptyString_When_Redirection_IsNotSet()
         {
@@ -263,7 +263,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         {
             this.PrepareSingleDisabledRedirectionRule();
             Assert.AreEqual(string.Empty, this._redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, HomePageOnPortal0));
-        }        
+        }
 
         [Test]
         public void RedirectionController_GetRedirectionUrl_Returns_EmptyString_When_UserAgent_Is_Desktop()
@@ -306,7 +306,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         // {
         //    PrepareHomePageToHomePageRedirectionRule();
         //    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), _redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
-        //    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), _redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 2));            
+        //    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), _redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 2));
         // }
 
         [Test]
@@ -322,7 +322,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         {
             this.PrepareMobileAndTabletRedirectionRuleWithMobileFirst();
             Assert.AreEqual(this.NavigateUrl(MobileLandingPage), this._redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
-            Assert.AreEqual(this.NavigateUrl(TabletLandingPage), this._redirectionController.GetRedirectUrl(iPadTabletUserAgent, Portal0, 1));                        
+            Assert.AreEqual(this.NavigateUrl(TabletLandingPage), this._redirectionController.GetRedirectUrl(iPadTabletUserAgent, Portal0, 1));
         }
 
         [Test]
@@ -364,7 +364,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             this.PrepareOperaBrowserOnIPhoneOSRedirectionRule();
             Assert.AreEqual(string.Empty, this._redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
         }
-                
+
 
         #endregion
 
@@ -384,7 +384,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         //    _dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, -1, EnabledFlag, (int)TargetType.Portal, "1", 1);
 
         // var url = _redirectionController.GetFullSiteUrl(Portal1, HomePageOnPortal1);
-            
+
         // Assert.AreEqual(Globals.AddHTTP(PortalAlias0), url);
         // }
 
@@ -441,7 +441,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
             // Second Page returns link to second url
             Assert.AreEqual(String.Format("{0}?nomo=0", redirectUrlPage2), mobileUrlForPage2);
-            
+
             // Third Page returns link to first url - as this is the first found url and third page has no redirect defined
             Assert.AreEqual(mobileUrlForPage3, String.Format("{0}?nomo=0", redirectUrlPage1));
         }
@@ -450,7 +450,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         // public void RedirectionController_GetMobileSiteUrl_Works_When_Page_Redirects_To_Another_Portal()
         // {
         //    //first page goes to one second portal
-        //    _dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, -1, EnabledFlag, (int)TargetType.Portal, Portal1, 1);            
+        //    _dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, -1, EnabledFlag, (int)TargetType.Portal, Portal1, 1);
 
         // var mobileUrlForPage1 = _redirectionController.GetMobileSiteUrl(Portal0, Page1);
 
@@ -485,7 +485,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         {
             var app = this.GenerateApplication();
             app.Context.Request.QueryString.Add(DisableMobileRedirectQueryStringName, "1");
-            
+
             Assert.IsFalse(this._redirectionController.IsRedirectAllowedForTheSession(app));
             Assert.IsNotNull(app.Request.Cookies[DisableMobileRedirectCookieName]);
             Assert.IsNotNull(app.Request.Cookies[DisableRedirectPresistCookieName]);
@@ -672,7 +672,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         }
 
         private void SetupClientCapabilityProvider()
-        {           
+        {
             this._clientCapabilityProvider.Setup(p => p.GetClientCapability(It.IsAny<string>())).Returns<string>(this.GetClientCapabilityCallBack);
         }
 
@@ -868,7 +868,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                 clientCapability.Capabilities.Add("mobile_browser", "Opera Mini");
                 clientCapability.Capabilities.Add("device_os", "Symbian OS");
             }
-            
+
             return clientCapability;
         }
 
@@ -940,12 +940,12 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         {
             this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.Tablet, 1, -1, DisabledFlag, (int)TargetType.Tab, TabletLandingPage, EnabledFlag);
             this._dtRedirections.Rows.Add(2, Portal0, "R2", (int)RedirectionType.MobilePhone, 2, -1, DisabledFlag, (int)TargetType.Tab, MobileLandingPage, EnabledFlag);
-            
+
         }
 
         private void PrepareAllMobileRedirectionRule()
         {
-            this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.AllMobile, 1, -1, DisabledFlag, (int)TargetType.Tab, AllMobileLandingPage, EnabledFlag);            
+            this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.AllMobile, 1, -1, DisabledFlag, (int)TargetType.Tab, AllMobileLandingPage, EnabledFlag);
         }
 
         private void PrepareSingleDisabledRedirectionRule()

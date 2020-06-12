@@ -180,7 +180,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
         #endregion
-        
+
         #endregion
 
         #region IPostBackDataHandler Members
@@ -239,14 +239,14 @@ namespace DotNetNuke.UI.WebControls
         }
 
         #endregion
-        
+
         #region Events
 
         public event DualListBoxEventHandler AddButtonClick;
         public event EventHandler AddAllButtonClick;
         public event DualListBoxEventHandler RemoveButtonClick;
         public event EventHandler RemoveAllButtonClick;
-        
+
         #endregion
 
         #region Private Methods
@@ -288,31 +288,31 @@ namespace DotNetNuke.UI.WebControls
             switch (buttonType)
             {
                 case "Add":
-                    buttonText = string.IsNullOrEmpty(this.AddKey) 
-                                    ? this.AddText 
+                    buttonText = string.IsNullOrEmpty(this.AddKey)
+                                    ? this.AddText
                                     : Localization.GetString(this.AddKey, this.LocalResourceFile);
                     imageURL = this.AddImageURL;
                     break;
                 case "AddAll":
-                    buttonText = string.IsNullOrEmpty(this.AddAllKey) 
-                                    ? this.AddAllText 
+                    buttonText = string.IsNullOrEmpty(this.AddAllKey)
+                                    ? this.AddAllText
                                     : Localization.GetString(this.AddAllKey, this.LocalResourceFile);
                     imageURL = this.AddAllImageURL;
                     break;
                 case "Remove":
-                    buttonText = string.IsNullOrEmpty(this.RemoveKey) 
-                                    ? this.RemoveText 
+                    buttonText = string.IsNullOrEmpty(this.RemoveKey)
+                                    ? this.RemoveText
                                     : Localization.GetString(this.RemoveKey, this.LocalResourceFile);
                     imageURL = this.RemoveImageURL;
                     break;
                 case "RemoveAll":
-                    buttonText = string.IsNullOrEmpty(this.RemoveAllKey) 
-                                    ? this.RemoveAllText 
+                    buttonText = string.IsNullOrEmpty(this.RemoveAllKey)
+                                    ? this.RemoveAllText
                                     : Localization.GetString(this.RemoveAllKey, this.LocalResourceFile);
                     imageURL = this.RemoveAllImageURL;
                     break;
             }
-            
+
             // Render Hyperlink
             writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackEventReference(this.GetPostBackOptions(buttonType)));
             writer.AddAttribute(HtmlTextWriterAttribute.Title, buttonText);
@@ -331,7 +331,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.Write(buttonText);
             }
-            
+
             // End of Hyperlink
             writer.RenderEndTag();
 
@@ -394,7 +394,7 @@ namespace DotNetNuke.UI.WebControls
                     {
                         style.AddAttributesToRender(writer);
                     }
-                    
+
                     // Render ListBox
                     writer.AddAttribute(HtmlTextWriterAttribute.Multiple, "multiple");
                     writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_" + listType);
@@ -407,7 +407,7 @@ namespace DotNetNuke.UI.WebControls
                         writer.Write(list.GetKey(i));
                         writer.RenderEndTag();
                     }
-                    
+
                     // Render ListBox end
                     writer.RenderEndTag();
                 }
@@ -472,7 +472,7 @@ namespace DotNetNuke.UI.WebControls
             }
             return postBackOptions;
         }
-        
+
         #endregion
 
         #region Protected Methods
@@ -536,7 +536,7 @@ namespace DotNetNuke.UI.WebControls
             // Render end of table
             writer.RenderEndTag();
         }
-        
+
         #endregion
     }
 }

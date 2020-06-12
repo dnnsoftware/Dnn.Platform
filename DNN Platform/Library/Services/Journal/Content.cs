@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.Journal {
     public class Content {
 
         /// <summary>
-        /// This should only run after the Post exists in the data store. 
+        /// This should only run after the Post exists in the data store.
         /// </summary>
         /// <returns>The newly created ContentItemID from the data store.</returns>
         /// <remarks>This is for the first question in the thread. Not for replies or items with ParentID > 0.</remarks>
@@ -31,9 +31,9 @@ namespace DotNetNuke.Services.Journal {
             } else {
                 contentTypeID = CreateContentType(contentTypeName);
             }
-            
+
             var objContent = new ContentItem {
-                Content = GetContentBody(objJournalItem),                
+                Content = GetContentBody(objJournalItem),
                 ContentTypeId = contentTypeID,
                 Indexed = false,
                 ContentKey = "journalid=" + objJournalItem.JournalId,
@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.Journal {
 
                 Util.GetContentController().UpdateContentItem(objContent);
             }
-            
+
 
             // Update Terms
             // var cntTerm = new Terms();

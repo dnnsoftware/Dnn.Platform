@@ -54,7 +54,7 @@ namespace DotNetNuke.UI.WebControls
         #region Friend Constants
 
         internal const string KEY = "captcha";
-        
+
         #endregion
 
         #region Private Members
@@ -77,7 +77,7 @@ namespace DotNetNuke.UI.WebControls
         private string _RenderUrl = RENDERURL_DEFAULT;
         private string _UserText = "";
         private Image _image;
-        
+
         #endregion
 
         #region Constructors
@@ -88,7 +88,7 @@ namespace DotNetNuke.UI.WebControls
             this.Text = Localization.GetString("CaptchaText.Text", Localization.SharedResourceFile);
             this._Expiration = HostController.Instance.GetInteger("EXPIRATION_DEFAULT", EXPIRATION_DEFAULT);
         }
-        
+
         #endregion
 
         #region Private Properties
@@ -100,7 +100,7 @@ namespace DotNetNuke.UI.WebControls
                 return HttpContext.Current == null;
             }
         }
-        
+
         #endregion
 
         #region Public Properties
@@ -321,7 +321,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RaisePostDataChangedEvent runs when the PostBackData has changed. 
+        /// RaisePostDataChangedEvent runs when the PostBackData has changed.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void RaisePostDataChangedEvent()
@@ -329,14 +329,14 @@ namespace DotNetNuke.UI.WebControls
         }
 
         #endregion
-        
+
         #endregion
 
         #region Public Events
 
 
         public event ServerValidateEventHandler UserValidated;
-        
+
         #endregion
 
         #region Private Methods
@@ -569,7 +569,7 @@ namespace DotNetNuke.UI.WebControls
                     {
                         g.FillPath(b1, textPath);
                     }
-                }               
+                }
             }
             catch (Exception exc)
             {
@@ -668,7 +668,7 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         protected virtual string GetNextCaptcha()
         {
-            
+
             var sb = new StringBuilder();
             var rand = new Random();
             int n;
@@ -715,7 +715,7 @@ namespace DotNetNuke.UI.WebControls
             }
             // var cacheKey = string.Format(DataCache.CaptchaCacheKey, masterPortalId);
             // _CaptchaText
-                
+
         }
 
         /// <summary>
@@ -767,7 +767,7 @@ namespace DotNetNuke.UI.WebControls
             }
             writer.RenderBeginTag(HtmlTextWriterTag.Img);
             writer.RenderEndTag();
-            
+
             // Render Help Text
             if (!String.IsNullOrEmpty(this.Text))
             {
@@ -775,7 +775,7 @@ namespace DotNetNuke.UI.WebControls
                 writer.Write(this.Text);
                 writer.RenderEndTag();
             }
-            
+
             // Render text box <input> Tag
             this.TextBoxStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
@@ -813,7 +813,7 @@ namespace DotNetNuke.UI.WebControls
                 writer.Write(this.ErrorMessage);
                 writer.RenderEndTag();
             }
-            
+
             // Render </div>
             writer.RenderEndTag();
         }
@@ -831,7 +831,7 @@ namespace DotNetNuke.UI.WebControls
                 this._CaptchaText = this.GetNextCaptcha();
             }
             allStates[1] = this._CaptchaText;
-     
+
             return allStates;
         }
 
@@ -857,11 +857,11 @@ namespace DotNetNuke.UI.WebControls
                 this._IsValid = true;
                 DataCache.RemoveCache(cacheKey);
             }
-            
+
             this.OnUserValidated(new ServerValidateEventArgs(this._CaptchaText, this._IsValid));
             return this._IsValid;
         }
-        
+
         #endregion
 
     }

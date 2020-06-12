@@ -5,7 +5,7 @@
 namespace Dnn.PersonaBar.Library
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public enum ServiceScope
     {

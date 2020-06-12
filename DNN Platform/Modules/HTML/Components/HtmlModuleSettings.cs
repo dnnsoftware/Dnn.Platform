@@ -13,7 +13,7 @@ namespace DotNetNuke.Modules.Html.Components
     /// An example implementation of the <see cref="ModuleSettingAttribute"/>
     /// </summary>
     /// <remarks>
-    /// HtmlModuleSettings provides a strongly typed list of properties used by 
+    /// HtmlModuleSettings provides a strongly typed list of properties used by
     /// the HTML module.  Settings will automatically be serialized and deserialized
     /// for storage in the underlying settings table.
     /// </remarks>

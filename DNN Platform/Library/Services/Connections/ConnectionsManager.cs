@@ -69,8 +69,8 @@ namespace DotNetNuke.Services.Connections
                 try
                 {
                     var processor = Activator.CreateInstance(type) as IConnector;
-                    if (processor != null 
-                            && !string.IsNullOrEmpty(processor.Name) 
+                    if (processor != null
+                            && !string.IsNullOrEmpty(processor.Name)
                             && !_processors.ContainsKey(processor.Name))
                     {
                         _processors.Add(processor.Name, processor);

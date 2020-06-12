@@ -25,7 +25,7 @@ namespace DotNetNuke.UI.Containers
     public class ActionButtonList : CompositeControl, IActionControl
     {
         #region "Private Members"
-        
+
         private ActionManager _ActionManager;
         private ModuleActionCollection _ModuleActions;
         private string _buttonSeparator = "&nbsp;&nbsp;";
@@ -53,7 +53,7 @@ namespace DotNetNuke.UI.Containers
                 return this._ModuleActions;
             }
         }
-        
+
         #endregion
 
         #region "Public Properties"
@@ -157,7 +157,7 @@ namespace DotNetNuke.UI.Containers
         public IModuleControl ModuleControl { get; set; }
 
         #endregion
-        
+
         #endregion
 
         #region "Protected Methods"
@@ -212,7 +212,7 @@ namespace DotNetNuke.UI.Containers
             }
             this.Visible = (this.Controls.Count > 0);
         }
-        
+
         #endregion
 
         #region "Event Handlers"
@@ -225,7 +225,7 @@ namespace DotNetNuke.UI.Containers
         {
             this.OnAction(e);
         }
-        
+
         #endregion
     }
 }

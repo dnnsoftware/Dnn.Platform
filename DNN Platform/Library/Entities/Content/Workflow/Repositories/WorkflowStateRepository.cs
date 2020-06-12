@@ -39,7 +39,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                     }
                 });
         }
-        
+
         public void AddWorkflowState(WorkflowState state)
         {
             Requires.NotNull("state", state);
@@ -58,7 +58,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
             this.CacheWorkflowState(state);
         }
-        
+
         public void UpdateWorkflowState(WorkflowState state)
         {
             Requires.NotNull("state", state);

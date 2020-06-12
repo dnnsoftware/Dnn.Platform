@@ -171,7 +171,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <remarks>
         ///   Defaults to PortalSettings.PortalId
         /// </remarks>
-        /// <value>An Integer</value>        
+        /// <value>An Integer</value>
         protected int PortalId
         {
             get
@@ -185,7 +185,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     return this.PortalSettings.PortalId;
                 }
 
-                return Null.NullInteger;                
+                return Null.NullInteger;
             }
         }
 
@@ -487,7 +487,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private void GeneratePreviewImage()
         {
@@ -522,7 +522,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 effectivePortalId = PortalController.GetEffectivePortalId(this.PortalId);
             }
-            this._cboFiles.DataSource = Globals.GetFileList(effectivePortalId, this.FileFilter, !this.Required, this._cboFolders.SelectedItem.Value);                           
+            this._cboFiles.DataSource = Globals.GetFileList(effectivePortalId, this.FileFilter, !this.Required, this._cboFolders.SelectedItem.Value);
             this._cboFiles.DataBind();
         }
 
@@ -678,7 +678,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this._pnlRightDiv = new Panel { CssClass = "dnnLeft" };
 
             this.GeneratePreviewImage();
-        
+
             this._pnlContainer.Controls.Add(this._pnlRightDiv);
 
             this.Controls.Add(this._pnlContainer);

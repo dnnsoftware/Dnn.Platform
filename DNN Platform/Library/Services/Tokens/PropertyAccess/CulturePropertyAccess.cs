@@ -97,7 +97,7 @@ namespace DotNetNuke.Services.Tokens
                     return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(country.NativeName), format);
                 }
 
-                
+
             }
             PropertyNotFound = true;
             return string.Empty;

@@ -72,7 +72,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
                 return null;
             }
             var password = UserController.GetPassword(ref user, "");
-            
+
             // Try to validate user
             var loginStatus = UserLoginStatus.LOGIN_FAILURE;
             user = UserController.ValidateUser(this._portalId, user.Username, password, "DNN", "", this._ipAddress, ref loginStatus);

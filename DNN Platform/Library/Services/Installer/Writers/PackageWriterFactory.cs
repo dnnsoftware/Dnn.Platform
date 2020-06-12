@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Installer.Writers
     public class PackageWriterFactory
     {
         #region "Public Shared Methods"
-        
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The GetWriter method instantiates the relevant PackageWriter Installer
@@ -77,7 +77,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
             return writer;
         }
-        
+
         #endregion
     }
 }

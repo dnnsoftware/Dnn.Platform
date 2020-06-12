@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.Api
         /// <param name="url">The parameterized portion of the route</param>
         /// <param name="namespaces">The namespace(s) in which to search for the controllers for this route</param>
         /// <returns>A list of all routes that were registered.</returns>
-        /// <remarks>The combination of moduleFolderName and routeName must be unique for each route</remarks> 
+        /// <remarks>The combination of moduleFolderName and routeName must be unique for each route</remarks>
         IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, string[] namespaces);
     }
 }

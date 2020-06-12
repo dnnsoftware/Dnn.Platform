@@ -64,7 +64,7 @@ namespace DotNetNuke.Web.Api
                 tcs.SetResult(actionContext.Response);
                 return tcs.Task;
             }
-            
+
             return continuation();
         }
     }

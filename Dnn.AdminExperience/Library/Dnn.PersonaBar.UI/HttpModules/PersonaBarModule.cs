@@ -19,7 +19,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
 
         private static readonly object LockAppStarted = new object();
         private static bool _hasAppStarted = false;
-        
+
         public void Init(HttpApplication application)
         {
             if (_hasAppStarted)

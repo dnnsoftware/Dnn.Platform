@@ -191,8 +191,8 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var controller = new PortalSettingsController();
             var portal = new PortalInfo()
             {
-                Users = 2, 
-                Pages = 5, 
+                Users = 2,
+                Pages = 5,
                 DefaultLanguage = Localization.SystemLocale,
                 HomeDirectory = "Portals/0"
             };

@@ -44,12 +44,12 @@ namespace DotNetNuke.UI.Skins.Controls
             // vary link by first letter of host name
             if (charPos <= 5)
             {
-                linkText = "Open Source ASP.NET CMS by DNN"; 
+                linkText = "Open Source ASP.NET CMS by DNN";
                 utmTerm = "&utm_term=open+source+asp.net+by+dnn";
             }
             if (charPos > 5 && charPos <= 10)
             {
-                linkText = "DNN - .NET Open Source CMS"; 
+                linkText = "DNN - .NET Open Source CMS";
                 utmTerm = "&utm_term=dnn+.net+open+source+cms";
             }
 
@@ -61,16 +61,16 @@ namespace DotNetNuke.UI.Skins.Controls
 
             if (charPos > 15 && charPos <= 20)
             {
-                linkText = "DNN .NET CMS"; 
+                linkText = "DNN .NET CMS";
                 utmTerm = "&utm_term=dnn+.net+cms";
             }
 
             if (charPos > 20 && charPos <= 25)
             {
-                linkText = "WCM by DNN"; 
+                linkText = "WCM by DNN";
                 utmTerm = "&utm_term=wcm+by+dnn";
             }
-            
+
 
             this.aDnnLink.InnerText = linkText;
             this.aDnnLink.HRef = HttpUtility.HtmlEncode(url + utmTerm);

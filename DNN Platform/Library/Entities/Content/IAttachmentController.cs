@@ -41,7 +41,7 @@ namespace DotNetNuke.Entities.Content
         IList<IFileInfo> GetFilesByContent(int contentItemId);
 
         IList<IFileInfo> GetVideosByContent(int contentItemId);
-        
+
         IList<IFileInfo> GetImagesByContent(int contentItemId);
     }
 }

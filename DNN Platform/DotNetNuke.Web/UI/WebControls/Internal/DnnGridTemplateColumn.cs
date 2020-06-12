@@ -15,6 +15,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// </remarks>
     public class DnnGridTemplateColumn : TemplateField
     {
-        
+
     }
 }

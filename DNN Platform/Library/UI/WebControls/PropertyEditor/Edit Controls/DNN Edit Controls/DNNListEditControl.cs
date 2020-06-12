@@ -59,7 +59,7 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected bool SortAlphabetically { get; set; }
-        
+
         #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
@@ -241,7 +241,7 @@ namespace DotNetNuke.UI.WebControls
                 }
             }
         }
-        
+
         #endregion
 
         #region IPostBackEventHandler Members
@@ -257,7 +257,7 @@ namespace DotNetNuke.UI.WebControls
         #endregion
 
         public event PropertyChangedEventHandler ItemChanged;
-        
+
         #region "Private Methods"
 
         private PropertyEditorEventArgs GetEventArgs()
@@ -278,7 +278,7 @@ namespace DotNetNuke.UI.WebControls
             args.StringValue = this.StringValue;
             return args;
         }
-        
+
         #endregion
 
         #region "Protected Methods"
@@ -376,7 +376,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.Write(entryText);
             }
-            
+
             // Close Select Tag
             writer.RenderEndTag();
         }
@@ -422,11 +422,11 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderBeginTag(HtmlTextWriterTag.Option);
             writer.Write(defaultText);
             writer.RenderEndTag();
-            
+
             foreach (ListEntryInfo item in this.ListEntries)
             {
                 string itemValue = Null.NullString;
-                
+
                 // Add the Value Attribute
                 switch (this.ValueField)
                 {
@@ -446,7 +446,7 @@ namespace DotNetNuke.UI.WebControls
                     // Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
                 }
-                
+
                 // Render Option Tag
                 writer.RenderBeginTag(HtmlTextWriterTag.Option);
                 switch (this.TextField)
@@ -463,11 +463,11 @@ namespace DotNetNuke.UI.WebControls
                 }
                 writer.RenderEndTag();
             }
-            
+
             // Close Select Tag
             writer.RenderEndTag();
         }
-        
+
         #endregion
     }
 }

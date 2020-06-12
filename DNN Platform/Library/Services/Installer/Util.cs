@@ -595,7 +595,7 @@ namespace DotNetNuke.Services.Installer
                 }
                 catch (IOException)
                 {
-                    // Init only once and only if needed. Prevent against many instantiation in case of multhreaded 
+                    // Init only once and only if needed. Prevent against many instantiation in case of multhreaded
                     // file access concurrency (if file is frequently accessed by someone else). Better memory usage.
                     if (tuple == null)
                     {
@@ -653,7 +653,7 @@ namespace DotNetNuke.Services.Installer
             return GetExternalRequest(URL, Data, Username, Password, Domain, ProxyAddress, ProxyPort, string.Empty, string.Empty, DoPOST, UserAgent, Referer, out Filename, requestTimeout);
         }
 
-        public static WebResponse GetExternalRequest(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort, 
+        public static WebResponse GetExternalRequest(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort,
                                                     string ProxyUsername, string ProxyPassword, bool DoPOST, string UserAgent, string Referer, out string Filename)
         {
             return GetExternalRequest(URL, Data, Username, Password, Domain, ProxyAddress, ProxyPort, ProxyUsername, ProxyPassword, DoPOST, UserAgent, Referer, out Filename, Host.WebRequestTimeout);
@@ -765,7 +765,7 @@ namespace DotNetNuke.Services.Installer
             }
             finally
             {
-                // Close the response and streams objects here 
+                // Close the response and streams objects here
                 // to make sure they're closed even if an exception
                 // is thrown at some point
                 if (remoteStream != null)

@@ -19,7 +19,7 @@ namespace DotNetNuke.Entities.Profile
     /// Class:      ProfilePropertyDefinition
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ProfilePropertyDefinition class provides a Business Layer entity for 
+    /// The ProfilePropertyDefinition class provides a Business Layer entity for
     /// property Definitions
     /// </summary>
     /// <remarks>
@@ -453,7 +453,7 @@ namespace DotNetNuke.Entities.Profile
                     this.IsDirty = true;
                 }
                 this._profileVisibility = value;
-            }           
+            }
         }
 
         #endregion

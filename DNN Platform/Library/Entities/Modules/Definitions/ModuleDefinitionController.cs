@@ -145,7 +145,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// -----------------------------------------------------------------------------
         public static Dictionary<int, ModuleDefinitionInfo> GetModuleDefinitions()
         {
-            return CBO.GetCachedObject<Dictionary<int, ModuleDefinitionInfo>>(new CacheItemArgs(DataCache.ModuleDefinitionCacheKey, 
+            return CBO.GetCachedObject<Dictionary<int, ModuleDefinitionInfo>>(new CacheItemArgs(DataCache.ModuleDefinitionCacheKey,
                                                                                         DataCache.ModuleDefinitionCachePriority),
                                                                               GetModuleDefinitionsCallBack);
         }

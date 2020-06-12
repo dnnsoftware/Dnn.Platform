@@ -141,7 +141,7 @@ namespace DotNetNuke.Modules.Groups.Controls
             this.ItemTemplate = this.ItemTemplate.Replace("{resx:Pending}", Localization.GetString("Pending", Constants.SharedResourcesPath));
             this.ItemTemplate = this.ItemTemplate.Replace("{resx:LeaveGroup}", Localization.GetString("LeaveGroup", Constants.SharedResourcesPath));
             this.ItemTemplate = this.ItemTemplate.Replace("[GroupViewTabId]", this.GroupViewTabId.ToString());
-            
+
             if (roles.Count == 0)
                 output.Write(String.Format("<div class=\"dnnFormMessage dnnFormInfo\"><span>{0}</span></div>", Localization.GetString("NoGroupsFound", Constants.SharedResourcesPath)));
 

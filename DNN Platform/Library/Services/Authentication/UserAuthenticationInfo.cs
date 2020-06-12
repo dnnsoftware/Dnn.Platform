@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Authentication
 {
     /// <summary>
     /// DNN-4016
-    /// The UserAuthenticationInfo class provides the Entity Layer for the 
+    /// The UserAuthenticationInfo class provides the Entity Layer for the
     /// user information in the Authentication Systems.
     /// </summary>
     [Serializable]

@@ -207,7 +207,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     break;
             }
         }
-        
+
         public IOrderedDictionary ExtractValues(Control container)
         {
             // do nothing we don't really support databinding

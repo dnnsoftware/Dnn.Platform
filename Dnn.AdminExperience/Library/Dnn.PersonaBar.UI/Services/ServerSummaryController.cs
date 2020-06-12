@@ -88,7 +88,7 @@ namespace Dnn.PersonaBar.UI.Services
         private bool NeedUpdate(out UpdateType updateType)
         {
             updateType = UpdateType.None;
-            
+
             if (HttpContext.Current == null || !Host.CheckUpgrade || !this.UserInfo.IsSuperUser)
             {
                 return false;

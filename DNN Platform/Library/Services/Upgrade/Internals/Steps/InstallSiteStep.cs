@@ -26,14 +26,14 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     /// <summary>
     /// InstallSiteStep - Step that installs Website
     /// </summary>
-    /// -----------------------------------------------------------------------------    
+    /// -----------------------------------------------------------------------------
     public class InstallSiteStep : BaseInstallationStep
     {
         #region Implementation of IInstallationStep
 
         /// <summary>
         /// Main method to execute the step
-        /// </summary>        
+        /// </summary>
         public override void Execute()
         {
             this.Percentage = 0;

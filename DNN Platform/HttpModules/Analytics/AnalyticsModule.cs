@@ -61,9 +61,9 @@ namespace DotNetNuke.HttpModules.Analytics
 
                 if (HttpContext.Current == null) return;
                 var context = HttpContext.Current;
-                
+
                 if (context == null) return;
-                
+
                 var page = context.Handler as CDefault;
                 if (page == null) return;
 

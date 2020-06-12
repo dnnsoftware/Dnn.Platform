@@ -200,13 +200,13 @@ namespace DotNetNuke.Entities.Modules
             {
                 Term term = (from Term t in this.Terms select t).FirstOrDefault();
                 return (term != null) ? term.Name : String.Empty;
-            } 
+            }
             set
             {
                 this.Terms.Clear();
                 ITermController termController = Util.GetTermController();
-                var term = (from Term t in termController.GetTermsByVocabulary("Module_Categories") 
-                            where t.Name == value 
+                var term = (from Term t in termController.GetTermsByVocabulary("Module_Categories")
+                            where t.Name == value
                             select t)
                             .FirstOrDefault();
                 if (term != null)
@@ -346,7 +346,7 @@ namespace DotNetNuke.Entities.Modules
         public ModuleSharing Shareable
         {
             get;
-            set; 
+            set;
         }
 
         /// -----------------------------------------------------------------------------
@@ -587,7 +587,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 writer.WriteElementString("codeSubDirectory", this.CodeSubDirectory);
             }
-            
+
             // Write out Supported Features
             writer.WriteStartElement("supportedFeatures");
             if (this.IsPortable)

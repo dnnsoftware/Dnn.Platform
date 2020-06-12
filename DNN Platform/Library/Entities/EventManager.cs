@@ -29,7 +29,7 @@ namespace DotNetNuke.Entities
         private event EventHandler<FileMovedEventArgs> FileMoved;
         private event EventHandler<FileChangedEventArgs> FileOverwritten;
         private event EventHandler<FileRenamedEventArgs> FileRenamed;
-        private event EventHandler<FileDownloadedEventArgs> FileDownloaded; 
+        private event EventHandler<FileDownloadedEventArgs> FileDownloaded;
 
         private event EventHandler<FolderChangedEventArgs> FolderAdded;
         private event EventHandler<FolderDeletedEventArgs> FolderDeleted;

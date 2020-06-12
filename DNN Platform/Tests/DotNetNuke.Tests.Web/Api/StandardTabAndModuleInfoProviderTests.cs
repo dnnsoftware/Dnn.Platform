@@ -127,7 +127,7 @@ namespace DotNetNuke.Tests.Web.Api
             var request = new HttpRequestMessage();
             request.Headers.Add("tabid", ValidTabId.ToString(CultureInfo.InvariantCulture));
             request.Headers.Add("moduleid", ValidModuleId.ToString(CultureInfo.InvariantCulture));
-            
+
             // Act
             ModuleInfo returnedModuleInfo;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
@@ -208,7 +208,7 @@ namespace DotNetNuke.Tests.Web.Api
             // no tabid
             var request = new HttpRequestMessage();
             request.Headers.Add("moduleid", ValidModuleId.ToString(CultureInfo.InvariantCulture));
-            
+
             // Act
             ModuleInfo returnedModuleInfo;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
@@ -245,7 +245,7 @@ namespace DotNetNuke.Tests.Web.Api
             var request = new HttpRequestMessage();
             request.Headers.Add("tabid", ValidTabId.ToString(CultureInfo.InvariantCulture));
             request.RequestUri = new Uri(string.Format("http://foo.com?{0}={1}", "tabid", ValidTabId + 1));
-            
+
             // Act
             int tabId;
             var result = new StandardTabAndModuleInfoProvider().TryFindTabId(request, out tabId);

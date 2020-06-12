@@ -32,8 +32,8 @@ namespace DotNetNuke.Services.Localization
         {
             var inputParams = new CodeExpression[]
                                   {
-                                      new CodePrimitiveExpression(entry.Expression.Trim()), 
-                                      new CodeTypeOfExpression(entry.DeclaringType), 
+                                      new CodePrimitiveExpression(entry.Expression.Trim()),
+                                      new CodeTypeOfExpression(entry.DeclaringType),
                                       new CodePrimitiveExpression(entry.PropertyInfo.Name),
                                       new CodePrimitiveExpression(context.VirtualPath)
                                   };
@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.Localization
                 PropertyDescriptor propDesc = TypeDescriptor.GetProperties(targetType)[propertyName];
                 if (propDesc != null && propDesc.PropertyType != value.GetType())
                 {
-                    // Type mismatch - make sure that the value can be converted to the Web control property type 
+                    // Type mismatch - make sure that the value can be converted to the Web control property type
                     if (propDesc.Converter != null)
                     {
                         if (propDesc.Converter.CanConvertFrom(value.GetType()) == false)
@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.Localization
                 }
             }
 
-            // If we reach here, no type mismatch - return the value 
+            // If we reach here, no type mismatch - return the value
             return value;
         }
 

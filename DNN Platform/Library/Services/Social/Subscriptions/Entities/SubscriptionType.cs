@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Social.Subscriptions.Entities
         public string FriendlyName { get; set; }
 
         /// <summary>
-        /// The Desktop Module Id associated with the subscription type. 
+        /// The Desktop Module Id associated with the subscription type.
         /// This is an optional field but it should be set if the Subscription Type belongs to a specific module.
         /// </summary>
         public int DesktopModuleId { get; set; }

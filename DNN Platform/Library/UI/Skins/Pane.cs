@@ -296,7 +296,7 @@ namespace DotNetNuke.UI.Skins
             }
             return container;
         }
-        
+
         private Containers.Container LoadModuleContainer(ModuleInfo module)
         {
             var containerSrc = Null.NullString;
@@ -375,7 +375,7 @@ namespace DotNetNuke.UI.Skins
             // Set container path
             module.ContainerPath = SkinController.FormatSkinPath(containerSrc);
 
-            // set container id to an explicit short name to reduce page payload 
+            // set container id to an explicit short name to reduce page payload
             container.ID = "ctr";
             // make the container id unique for the page
             if (module.ModuleID > -1)
@@ -415,7 +415,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return false;
             }
-            
+
             object controller = Framework.Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, "");
             return controller is IVersionable;
         }

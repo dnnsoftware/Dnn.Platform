@@ -209,7 +209,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             mockViewContext.Setup(c => c.Controller).Returns(mockController.Object);
             mockViewPage.Object.ViewContext = mockViewContext.Object;
             mockViewPage.Object.InitHelpers();
-            
+
             // Act
             mockViewPage.Object.Html.EnableClientValidation(true);
 

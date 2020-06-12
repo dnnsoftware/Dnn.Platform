@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
     /// <summary>
     /// BaseInstallationStep - Abstract class to perform common tasks for the various installation steps
     /// </summary>
-    /// -----------------------------------------------------------------------------    
+    /// -----------------------------------------------------------------------------
     public abstract class BaseInstallationStep : IInstallationStep
     {
         #region Protected
@@ -35,13 +35,13 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         {
             this.Percentage = 0;
             this.Errors = new List<string>();
-        }        
+        }
 
         #region Implementation of IInstallationStep
 
         /// <summary>
         /// Any details of the task while it's executing
-        /// </summary>        
+        /// </summary>
         public string Details
         {
             get
@@ -59,22 +59,22 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
         /// <summary>
         /// Percentage done
-        /// </summary>        
+        /// </summary>
         public int Percentage { get; set; }
 
         /// <summary>
         /// Step Status
-        /// </summary>        
+        /// </summary>
         public StepStatus Status { get; set; }
 
         /// <summary>
         /// List of Errors
-        /// </summary>        
+        /// </summary>
         public IList<string> Errors { get; set; }
 
         /// <summary>
         /// Main method to execute the step
-        /// </summary>        
+        /// </summary>
         public abstract void Execute();
 
         /// <summary>

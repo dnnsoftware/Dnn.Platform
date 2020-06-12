@@ -16,7 +16,7 @@ namespace DotNetNuke.Web.InternalServices
 {
     [DnnAuthorize]
     public class NewUserNotificationServiceController : DnnApiController
-    {        
+    {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Authorize(NotificationDTO postData)
@@ -94,7 +94,7 @@ namespace DotNetNuke.Web.InternalServices
                 return null;
             }
 
-            return UserController.GetUserById(this.PortalSettings.PortalId, userId);            
+            return UserController.GetUserById(this.PortalSettings.PortalId, userId);
         }
     }
 }

@@ -130,13 +130,13 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Rollback method undoes the installation of the component in the event 
+        /// The Rollback method undoes the installation of the component in the event
         /// that one of the other components fails
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-            // If Temp Provider exists then we need to update the DataStore with this 
+            // If Temp Provider exists then we need to update the DataStore with this
             if (this._installedExtensionUrlProvider == null)
             {
                 // No Temp Provider - Delete newly added module

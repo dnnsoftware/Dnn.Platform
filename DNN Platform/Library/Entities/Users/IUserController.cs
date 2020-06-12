@@ -85,14 +85,14 @@ namespace DotNetNuke.Entities.Users
         /// <param name="height">Height in pixel</param>
         /// <returns>Relative url, e.g. /DnnImageHandler.ashx?userid=1&amp;h=32&amp;w=32 considering child portal</returns>
         /// <remarks>IMPORTANT NOTE: this overloaded method does not depend on the current portal setting so it can be used
-        /// in background threads or scheduler jobs. 
+        /// in background threads or scheduler jobs.
         /// </remarks>
         string GetUserProfilePictureUrl(int portalId, int userId, int width, int height);
 
         /// <summary>
         /// Check username parameter against :
-        /// Invalid charaters, 
-        /// length check for 5 chars, 
+        /// Invalid charaters,
+        /// length check for 5 chars,
         /// for space between username
         /// </summary>
         /// <param name="userName">UserName as string</param>

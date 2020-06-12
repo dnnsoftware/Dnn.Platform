@@ -36,7 +36,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
         public string WorkflowName { get; set; }
 
         /// <summary>
-        /// Workflow Key. This property can be used to 
+        /// Workflow Key. This property can be used to
         /// </summary>
         [StringLength(40)]
         public string WorkflowKey { get; set; }

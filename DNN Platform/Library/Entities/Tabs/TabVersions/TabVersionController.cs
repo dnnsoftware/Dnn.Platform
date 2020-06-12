@@ -23,7 +23,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             return this.GetTabVersions(tabId, ignoreCache).SingleOrDefault(tv => tv.TabVersionId == tabVersionId);
         }
-        
+
         public IEnumerable<TabVersion> GetTabVersions(int tabId, bool ignoreCache = false)
         {
             // if we are not using the cache, then remove from cache and re-add loaded items when needed later
@@ -69,7 +69,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 }
                 newVersion = lastTabVersion.Version + 1;
             }
-            
+
             var tabVersionId = Provider.SaveTabVersion(0, tabId, DateTime.UtcNow, newVersion, isPublished, createdByUserID, createdByUserID);
             this.ClearCache(tabId);
 

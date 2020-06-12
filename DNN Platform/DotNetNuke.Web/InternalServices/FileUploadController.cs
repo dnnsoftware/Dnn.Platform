@@ -190,9 +190,9 @@ namespace DotNetNuke.Web.InternalServices
 
                         }
 
-                        /* Response Content Type cannot be application/json 
-                         * because IE9 with iframe-transport manages the response 
-                         * as a file download 
+                        /* Response Content Type cannot be application/json
+                         * because IE9 with iframe-transport manages the response
+                         * as a file download
                          */
                         var mediaTypeFormatter = new JsonMediaTypeFormatter();
                         mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
@@ -637,9 +637,9 @@ namespace DotNetNuke.Web.InternalServices
                     var mediaTypeFormatter = new JsonMediaTypeFormatter();
                     mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
 
-                    /* Response Content Type cannot be application/json 
-                     * because IE9 with iframe-transport manages the response 
-                     * as a file download 
+                    /* Response Content Type cannot be application/json
+                     * because IE9 with iframe-transport manages the response
+                     * as a file download
                      */
                     return this.Request.CreateResponse(
                         HttpStatusCode.OK,
@@ -697,9 +697,9 @@ namespace DotNetNuke.Web.InternalServices
                 result = UploadFile(responseStream, portalId, this.UserInfo, dto.Folder.ValueOrEmpty(), dto.Filter.ValueOrEmpty(),
                     fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip, dto.ValidationCode);
 
-                /* Response Content Type cannot be application/json 
-                    * because IE9 with iframe-transport manages the response 
-                    * as a file download 
+                /* Response Content Type cannot be application/json
+                    * because IE9 with iframe-transport manages the response
+                    * as a file download
                     */
                 return this.Request.CreateResponse(
                     HttpStatusCode.OK,

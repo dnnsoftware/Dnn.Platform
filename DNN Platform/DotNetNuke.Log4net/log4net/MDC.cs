@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -57,7 +57,7 @@ namespace log4net
         #region Private Instance Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MDC" /> class. 
+        /// Initializes a new instance of the <see cref="MDC" /> class.
         /// </summary>
         /// <remarks>
         /// Uses a private access modifier to prevent instantiation of this class.
@@ -117,7 +117,7 @@ namespace log4net
         /// </para>
         /// <para>
         /// If a value is already defined for the <paramref name="key" />
-        /// specified then the value will be replaced. If the <paramref name="value" /> 
+        /// specified then the value will be replaced. If the <paramref name="value" />
         /// is specified as <c>null</c> then the key value mapping will be removed.
         /// </para>
         /// </remarks>

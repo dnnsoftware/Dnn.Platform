@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.Components.Controllers
         public IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetBookmarkedDesktopModules(int portalId, int userId, string searchTerm = "")
         {
             var formattedSearchTerm = String.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.ToLower(CultureInfo.InvariantCulture);
-            
+
             IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> bookmarkedModules = this.GetBookmarkedModules(PortalSettings.Current.PortalId, userId)
                 .Where(kvp => kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm));
 
@@ -56,7 +56,7 @@ namespace DotNetNuke.Web.Components.Controllers
             {
                 ensuredBookmarkValue = this.EnsureBookmarkValue(portalId, ensuredBookmarkValue);
             }
-            
+
             var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
             var personalization = personalizationController.LoadProfile(userId, portalId);
             personalization.Profile["ControlBar:" + bookmarkTitle + portalId] = ensuredBookmarkValue;
@@ -78,7 +78,7 @@ namespace DotNetNuke.Web.Components.Controllers
         public UpgradeIndicatorViewModel GetUpgradeIndicator(Version version, bool isLocal, bool isSecureConnection)
         {
             var imageUrl = Upgrade.UpgradeIndicator(version, isLocal, isSecureConnection);
-            return !String.IsNullOrEmpty(imageUrl) ? this.GetDefaultUpgradeIndicator(imageUrl) : null;            
+            return !String.IsNullOrEmpty(imageUrl) ? this.GetDefaultUpgradeIndicator(imageUrl) : null;
         }
 
         public string GetControlBarLogoURL()
@@ -106,7 +106,7 @@ namespace DotNetNuke.Web.Components.Controllers
                 AltText = alt,
                 ToolTip = toolTip,
                 CssClass = ""
-            };            
+            };
         }
 
         private MenuItemViewModel GetMenuItemFromExtensionPoint(IUserControlExtensionPoint userControlExtensionPoint)
@@ -122,7 +122,7 @@ namespace DotNetNuke.Web.Components.Controllers
 
         private string EnsureBookmarkValue(int portalId, string bookmarkValue)
         {
-            var bookmarkCategoryModules = this.GetCategoryDesktopModules(portalId, this.GetBookmarkCategory(portalId));            
+            var bookmarkCategoryModules = this.GetCategoryDesktopModules(portalId, this.GetBookmarkCategory(portalId));
             var ensuredModules = bookmarkValue.Split(',').Where(desktopModuleId => bookmarkCategoryModules.All(m => m.Value.DesktopModuleID.ToString(CultureInfo.InvariantCulture) != desktopModuleId)).ToList();
             return String.Join(",", ensuredModules.Distinct());
         }
@@ -142,7 +142,7 @@ namespace DotNetNuke.Web.Components.Controllers
 
             return bookmarkedModules;
         }
-        
+
         protected override Func<IControlBarController> GetFactory()
         {
             return () => new ControlBarController();

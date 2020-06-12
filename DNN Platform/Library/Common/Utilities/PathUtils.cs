@@ -59,7 +59,7 @@ namespace DotNetNuke.Common.Utilities
         public virtual string FormatFolderPath(string folderPath)
         {
             // Can not call trim on folderpath since folder passed in might have a legit space
-            // at the begingin of its name " MyFolder/Test" is not same physical folder as "MyFoler/Test" 
+            // at the begingin of its name " MyFolder/Test" is not same physical folder as "MyFoler/Test"
             if (String.IsNullOrEmpty(folderPath) || String.IsNullOrEmpty(folderPath.Trim()))
             {
                 return "";
@@ -140,7 +140,7 @@ namespace DotNetNuke.Common.Utilities
         {
             return FolderManager.Instance.GetUserFolder(user).FolderPath;
         }
-        
+
         /// <summary>
         /// Get elements from the user folder path.
         /// </summary>
@@ -169,8 +169,8 @@ namespace DotNetNuke.Common.Utilities
             }
 
             return element;
-        } 
-        
+        }
+
         internal string GetUserFolderPathInternal(UserInfo user)
         {
             var rootFolder = this.GetUserFolderPathElementInternal(user.UserID, UserFolderElement.Root);
@@ -198,12 +198,12 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// The MapPath method maps the specified relative or virtual path to the corresponding physical directory on the server.
         /// </summary>
-        /// <param name="path">Specifies the relative or virtual path to map to a physical directory. If Path starts with either 
-        /// a forward (/) or backward slash (\), the MapPath method returns a path as if Path were a full, virtual path. If Path 
+        /// <param name="path">Specifies the relative or virtual path to map to a physical directory. If Path starts with either
+        /// a forward (/) or backward slash (\), the MapPath method returns a path as if Path were a full, virtual path. If Path
         /// doesn't start with a slash, the MapPath method returns a path relative to the directory of the .asp file being processed</param>
         /// <returns></returns>
         /// <remarks>
-        /// If path is a null reference (Nothing in Visual Basic), then the MapPath method returns the full physical path 
+        /// If path is a null reference (Nothing in Visual Basic), then the MapPath method returns the full physical path
         /// of the directory that contains the current application
         /// </remarks>
         public virtual string MapPath(string path)

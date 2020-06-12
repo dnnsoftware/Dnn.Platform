@@ -13,9 +13,9 @@ namespace DotNetNuke.Web.UI.WebControls
     /// Creates a control that renders its childs as a bulleted list.
     /// </summary>
     /// <remarks>
-    /// Control renders an unordered list HTML contol. 
+    /// Control renders an unordered list HTML contol.
     /// Each child control in <see cref="DnnUnsortedList"/> is rendered as a separate list item.
-    /// To obtain a control over list item style, add a <see cref="DnnUnsortedListItem" /> to a controls list, 
+    /// To obtain a control over list item style, add a <see cref="DnnUnsortedListItem" /> to a controls list,
     /// and tune this object appropriately.
     /// </remarks>
     public class DnnUnsortedList : WebControl, INamingContainer

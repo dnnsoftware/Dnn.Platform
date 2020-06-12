@@ -33,14 +33,14 @@ namespace DotNetNuke.UI.Skins.Controls
 
         #endregion
         #region "Private Members"
-        
+
         protected Panel dnnSkinMessage;
         protected Label lblHeading;
         protected Label lblMessage;
         protected Control scrollScript;
-        
+
         #endregion
-        
+
         #region "Public Members"
 
         public string Text { get; set; }
@@ -77,7 +77,7 @@ namespace DotNetNuke.UI.Skins.Controls
             try
             {
                 var strMessage = "";
-                
+
                 // check to see if a url
                 // was passed in for an icon
                 if (!String.IsNullOrEmpty(this.IconImage))
@@ -128,7 +128,7 @@ namespace DotNetNuke.UI.Skins.Controls
             // set the scroll js only shown for module message and in postback mode.
             this.scrollScript.Visible = this.IsPostBack && this.IsModuleMessage;
         }
-        
+
         #endregion
     }
 }

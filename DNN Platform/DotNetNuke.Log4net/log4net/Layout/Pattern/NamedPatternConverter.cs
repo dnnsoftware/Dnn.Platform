@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -53,18 +53,18 @@ namespace log4net.Layout.Pattern
         #region Implementation of IOptionHandler
 
         /// <summary>
-        /// Initialize the converter 
+        /// Initialize the converter
         /// </summary>
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
-        /// activation scheme. The <see cref="ActivateOptions"/> method must 
+        /// activation scheme. The <see cref="ActivateOptions"/> method must
         /// be called on this object after the configuration properties have
         /// been set. Until <see cref="ActivateOptions"/> is called this
-        /// object is in an undefined state and must not be used. 
+        /// object is in an undefined state and must not be used.
         /// </para>
         /// <para>
-        /// If any of the configuration properties are modified then 
+        /// If any of the configuration properties are modified then
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// </remarks>
@@ -72,7 +72,7 @@ namespace log4net.Layout.Pattern
         {
             this.m_precision = 0;
 
-            if (this.Option != null) 
+            if (this.Option != null)
             {
                 string optStr = this.Option.Trim();
                 if (optStr.Length > 0)
@@ -80,7 +80,7 @@ namespace log4net.Layout.Pattern
                     int precisionVal;
                     if (SystemInfo.TryParse(optStr, out precisionVal))
                     {
-                        if (precisionVal <= 0) 
+                        if (precisionVal <= 0)
                         {
                             LogLog.Error(declaringType, "NamedPatternConverter: Precision option (" + optStr + ") isn't a positive integer.");
                         }
@@ -88,7 +88,7 @@ namespace log4net.Layout.Pattern
                         {
                             this.m_precision = precisionVal;
                         }
-                    } 
+                    }
                     else
                     {
                         LogLog.Error(declaringType, "NamedPatternConverter: Precision option \"" + optStr + "\" not a decimal integer.");
@@ -114,7 +114,7 @@ namespace log4net.Layout.Pattern
         /// </para>
         /// </remarks>
         abstract protected string GetFullyQualifiedName(LoggingEvent loggingEvent);
-    
+
         /// <summary>
         /// Convert the pattern to the rendered message
         /// </summary>
@@ -131,7 +131,7 @@ namespace log4net.Layout.Pattern
             {
                 writer.Write(name);
             }
-            else 
+            else
             {
                 int len = name.Length;
                 string trailingDot = string.Empty;
@@ -143,7 +143,7 @@ namespace log4net.Layout.Pattern
                 }
 
                 int end = name.LastIndexOf(DOT);
-                for (int i = 1; end > 0 && i < this.m_precision; i++) 
+                for (int i = 1; end > 0 && i < this.m_precision; i++)
                 {
                     end = name.LastIndexOf('.', end - 1);
                 }
@@ -155,7 +155,7 @@ namespace log4net.Layout.Pattern
                 {
                     writer.Write(name.Substring(end + 1, len - end - 1) + trailingDot);
                 }
-            }     
+            }
         }
 
         #region Private Static Fields

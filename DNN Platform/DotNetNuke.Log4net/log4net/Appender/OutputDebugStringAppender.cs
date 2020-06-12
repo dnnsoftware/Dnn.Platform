@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -44,7 +44,7 @@ namespace log4net.Appender
     /// OutputDebugString system.
     /// </para>
     /// <para>
-    /// The string is passed to the native <c>OutputDebugString</c> 
+    /// The string is passed to the native <c>OutputDebugString</c>
     /// function.
     /// </para>
     /// </remarks>
@@ -84,7 +84,7 @@ namespace log4net.Appender
 #elif !NETCF
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand, UnmanagedCode = true)]
 #endif
-        override protected void Append(LoggingEvent loggingEvent) 
+        override protected void Append(LoggingEvent loggingEvent)
         {
 #if NETSTANDARD1_3
 			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -94,7 +94,7 @@ namespace log4net.Appender
 #endif
 
             OutputDebugString(this.RenderLoggingEvent(loggingEvent));
-        } 
+        }
 
         /// <summary>
         /// This appender requires a <see cref="Layout"/> to be set.

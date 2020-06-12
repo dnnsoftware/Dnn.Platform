@@ -114,7 +114,7 @@ namespace Dnn.AzureConnector.Components
 
             var settings = folderMapping != null ? folderMapping.FolderMappingSettings : new Hashtable();
 
-            
+
             configs.Add("AccountName", this.GetSetting(settings, Constants.AzureAccountName, true));
             configs.Add("AccountKey", this.GetSetting(settings, Constants.AzureAccountKey, true));
             configs.Add("Container", this.GetSetting(settings, Constants.AzureContainerName));
@@ -190,7 +190,7 @@ namespace Dnn.AzureConnector.Components
 
                 settings[Constants.AzureAccountName] = folderProvider.EncryptValue(azureAccountName);
                 settings[Constants.AzureAccountKey] = folderProvider.EncryptValue(azureAccountKey);
-                
+
                 if (values.ContainsKey(Constants.AzureContainerName) && !string.IsNullOrEmpty(values[Constants.AzureContainerName]))
                 {
                     settings[Constants.AzureContainerName] = values[Constants.AzureContainerName];

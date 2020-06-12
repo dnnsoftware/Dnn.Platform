@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -39,7 +39,7 @@ namespace log4net.Core
     /// </para>
     /// </remarks>
     /// <author>Nicko Cadell</author>
-    public class LevelEvaluator : ITriggeringEventEvaluator 
+    public class LevelEvaluator : ITriggeringEventEvaluator
     {
         /// <summary>
         /// The threshold for triggering
@@ -114,7 +114,7 @@ namespace log4net.Core
         /// </summary>
         /// <param name="loggingEvent">The event to check</param>
         /// <returns>This method returns <c>true</c>, if the event level
-        /// is equal or higher than the <see cref="Threshold"/>. 
+        /// is equal or higher than the <see cref="Threshold"/>.
         /// Otherwise it returns <c>false</c></returns>
         /// <remarks>
         /// <para>
@@ -124,14 +124,14 @@ namespace log4net.Core
         /// level.
         /// </para>
         /// </remarks>
-        public bool IsTriggeringEvent(LoggingEvent loggingEvent) 
+        public bool IsTriggeringEvent(LoggingEvent loggingEvent)
         {
             if (loggingEvent == null)
             {
                 throw new ArgumentNullException("loggingEvent");
             }
 
-            return (loggingEvent.Level >= this.m_threshold); 
+            return (loggingEvent.Level >= this.m_threshold);
         }
     }
 }

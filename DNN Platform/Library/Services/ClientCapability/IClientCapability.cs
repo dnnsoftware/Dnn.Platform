@@ -15,8 +15,8 @@ namespace DotNetNuke.Services.ClientCapability
     ///   ClientCapability provides capabilities supported by the http requester (e.g. Mobile Device, TV, Desktop)
     /// </summary>
     /// <remarks>
-    ///   The capabilities are primarily derived based on UserAgent.  
-    /// </remarks>          
+    ///   The capabilities are primarily derived based on UserAgent.
+    /// </remarks>
     public interface IClientCapability
     {
         /// <summary>
@@ -48,10 +48,10 @@ namespace DotNetNuke.Services.ClientCapability
         ///   FacebookRequest property is filled when request is coming though Facebook iFrame (e.g. fan pages).
         /// </summary>
         /// <remarks>
-        ///   FacebookRequest property is populated based on data in "signed_request" headers coming from Facebook.  
+        ///   FacebookRequest property is populated based on data in "signed_request" headers coming from Facebook.
         ///   In order to ensure request is coming from Facebook, FacebookRequest.IsValidSignature method should be called with the secrety key provided by Facebook.
         ///   Most of the properties in IClientCapability doesnot apply to Facebook
-        /// </remarks>                
+        /// </remarks>
         FacebookRequest FacebookRequest { get; set; }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace DotNetNuke.Services.ClientCapability
 
         /// <summary>
         /// Represents the name of the broweser in the request
-        /// </summary>        
+        /// </summary>
         string BrowserName { get; set; }
 
         /// <summary>
@@ -76,8 +76,8 @@ namespace DotNetNuke.Services.ClientCapability
 
         /// <summary>
         /// A key-value collection containing all capabilities supported by requester
-        /// </summary>    
-        [Obsolete("This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name.. Scheduled removal in v10.0.0.")]    
+        /// </summary>
+        [Obsolete("This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name.. Scheduled removal in v10.0.0.")]
         IDictionary<string, string> Capabilities { get; set; }
 
         /// <summary>

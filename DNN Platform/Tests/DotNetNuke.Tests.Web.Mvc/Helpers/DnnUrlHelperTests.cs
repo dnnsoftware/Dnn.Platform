@@ -255,7 +255,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             // Act
             var withOuterUrl = helper.IsLocalUrl("http://dnnsoftware.com");
             var withLocalUrl = helper.IsLocalUrl("~/foo/foo.html");
-            
+
             // Assert
             Assert.IsFalse(withOuterUrl);
             Assert.IsTrue(withLocalUrl);
@@ -298,7 +298,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             routeData.Values["controller"] = "bar";
             routeData.Values["action"] = "foo";
             var context = MockHelper.CreateMockControllerContext(url != null ? MockHelper.CreateMockHttpContext(url) : null, routeData);
-            
+
             mockDnnController.Setup(c => c.ModuleContext).Returns(expectedContext);
             mockDnnController.Setup(c => c.ControllerContext).Returns(context);
 

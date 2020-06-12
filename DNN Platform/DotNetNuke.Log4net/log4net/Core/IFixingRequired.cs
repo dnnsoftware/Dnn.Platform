@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -31,14 +31,14 @@ namespace log4net.Core
     /// <remarks>
     /// <para>
     /// Interface that indicates that the object requires fixing before it
-    /// can be taken outside the context of the appender's 
+    /// can be taken outside the context of the appender's
     /// <see cref="log4net.Appender.IAppender.DoAppend"/> method.
     /// </para>
     /// <para>
-    /// When objects that implement this interface are stored 
+    /// When objects that implement this interface are stored
     /// in the context properties maps <see cref="log4net.GlobalContext"/>
     /// <see cref="log4net.GlobalContext.Properties"/> and <see cref="log4net.ThreadContext"/>
-    /// <see cref="log4net.ThreadContext.Properties"/> are fixed 
+    /// <see cref="log4net.ThreadContext.Properties"/> are fixed
     /// (see <see cref="LoggingEvent.Fix"/>) the <see cref="GetFixedObject"/>
     /// method will be called.
     /// </para>

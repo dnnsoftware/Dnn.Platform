@@ -66,15 +66,15 @@ namespace Dnn.PersonaBar.Users.Tests
         private class UsersControllerTestable : UsersController
         {
             private Mock<IDataReader> dataReader;
-            
+
             public string LastSearch { get; set; }
 
             protected override IDataReader CallGetUsersBySearchTerm(
                 GetUsersContract usersContract,
-                bool? includeAuthorized, 
-                bool? includeDeleted, 
+                bool? includeAuthorized,
+                bool? includeDeleted,
                 bool? includeSuperUsers,
-                bool? hasAgreedToTerms, 
+                bool? hasAgreedToTerms,
                 bool? requestsRemoval)
             {
                 this.LastSearch = SearchTextFilter.CleanWildcards(usersContract.SearchText);

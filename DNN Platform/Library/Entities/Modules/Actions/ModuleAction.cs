@@ -76,9 +76,9 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// </summary>
         /// <param name="id">This is the identifier to use for this action.</param>
         /// <param name="title">This is the title that will be displayed for this action</param>
-        /// <param name="cmdName">The command name passed to the client when this action is 
+        /// <param name="cmdName">The command name passed to the client when this action is
         /// clicked.</param>
-        /// <param name="cmdArg">The command argument passed to the client when this action is 
+        /// <param name="cmdArg">The command argument passed to the client when this action is
         /// clicked.</param>
         /// <param name="icon">The URL of the Icon to place next to this action</param>
         /// <param name="url">The destination URL to redirect the client browser when this action is clicked.</param>
@@ -87,7 +87,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <param name="secure">The security access level required for access to this action</param>
         /// <param name="visible">Whether this action will be displayed</param>
         /// <param name="newWindow"></param>
-        /// <remarks>The moduleaction constructor is used to set the various properties of 
+        /// <remarks>The moduleaction constructor is used to set the various properties of
         /// the <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> class at the time the instance is created.
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -124,10 +124,10 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// A Module Action ID is a identifier that can be used in a Module Action Collection
-        /// to find a specific Action. 
+        /// to find a specific Action.
         /// </summary>
         /// <value>The integer ID of the current <see cref="T:DotNetNuke.ModuleAction"/>.</value>
-        /// <remarks>When building a hierarchy of <see cref="T:DotNetNuke.ModuleAction">ModuleActions</see>, 
+        /// <remarks>When building a hierarchy of <see cref="T:DotNetNuke.ModuleAction">ModuleActions</see>,
         /// the ID is used to link the child and parent actions.</remarks>
         /// -----------------------------------------------------------------------------
         public int ID { get; set; }
@@ -164,8 +164,8 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// </summary>
         /// <value>The name of the command to perform.</value>
         /// <remarks>
-        /// Use the CommandName property to determine the command to perform. The CommandName 
-        /// property can contain any string set by the programmer. The programmer can then 
+        /// Use the CommandName property to determine the command to perform. The CommandName
+        /// property can contain any string set by the programmer. The programmer can then
         /// identify the command name in code and perform the appropriate tasks.
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -173,16 +173,16 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// A Module Action CommandArgument provides additional information and 
+        /// A Module Action CommandArgument provides additional information and
         /// complements the CommandName.
         /// </summary>
         /// <value>A string that contains the argument for the command.</value>
         /// <remarks>
-        /// The CommandArgument can contain any string set by the programmer. The 
-        /// CommandArgument property complements the <see cref="P:DotNetNuke.ModuleAction.CommandName" /> 
-        ///  property by allowing you to provide any additional information for the command. 
-        /// For example, you can set the CommandName property to "Sort" and set the 
-        /// CommandArgument property to "Ascending" to specify a command to sort in ascending 
+        /// The CommandArgument can contain any string set by the programmer. The
+        /// CommandArgument property complements the <see cref="P:DotNetNuke.ModuleAction.CommandName" />
+        ///  property by allowing you to provide any additional information for the command.
+        /// For example, you can set the CommandName property to "Sort" and set the
+        /// CommandArgument property to "Ascending" to specify a command to sort in ascending
         /// order.
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -233,7 +233,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the URL for the icon file that is displayed for the given 
+        /// Gets or sets the URL for the icon file that is displayed for the given
         /// <see cref="T:DotNetNuke.ModuleAction" />.
         /// </summary>
         /// <value>The URL for the icon that is displayed with the module action.</value>
@@ -243,13 +243,13 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the URL to which the user is redirected when the 
-        /// associated Module Menu Action is selected.  
+        /// Gets or sets the URL to which the user is redirected when the
+        /// associated Module Menu Action is selected.
         /// </summary>
-        /// <value>The URL to which the user is redirected when the 
+        /// <value>The URL to which the user is redirected when the
         /// associated Module Menu Action is selected.</value>
-        /// <remarks>If the URL is present then the Module Action Event is not fired.  
-        /// If the URL is empty then the Action Event is fired and is passed the value 
+        /// <remarks>If the URL is present then the Module Action Event is not fired.
+        /// If the URL is empty then the Action Event is fired and is passed the value
         /// of the associated Command property.</remarks>
         /// -----------------------------------------------------------------------------
         public string Url { get; set; }
@@ -262,17 +262,17 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <value>The Javascript which will be run during the menuClick event</value>
         /// <remarks>If the ClientScript property is present then it is called prior
         /// to the postback occuring. If the ClientScript returns false then the postback
-        /// is canceled.  If the ClientScript is empty then the Action Event is fired and 
+        /// is canceled.  If the ClientScript is empty then the Action Event is fired and
         /// is passed the value of the associated Command property.</remarks>
         /// -----------------------------------------------------------------------------
         public string ClientScript { get; set; }
 
         /// <summary>
-        /// Gets or sets a value that determines if a local ActionEvent is fired when the 
-        /// <see cref="T:DotNetNuke.ModuleAction" /> contains a URL. 
+        /// Gets or sets a value that determines if a local ActionEvent is fired when the
+        /// <see cref="T:DotNetNuke.ModuleAction" /> contains a URL.
         /// </summary>
         /// <value>A boolean indicating whether to fire the ActionEvent.</value>
-        /// <remarks>When a MenuAction is clicked, an event is fired within the Actions 
+        /// <remarks>When a MenuAction is clicked, an event is fired within the Actions
         /// control.  If the UseActionEvent is true then the Actions control will forward
         /// the event to the parent skin which will then attempt to raise the event to
         /// the appropriate module.  If the UseActionEvent is false, and the URL property
@@ -283,8 +283,8 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value that determines if a new window is opened when the 
-        /// DoAction() method is called. 
+        /// Gets or sets a value that determines if a new window is opened when the
+        /// DoAction() method is called.
         /// </summary>
         /// <value>A boolean indicating whether to open a new window.</value>
         /// <remarks></remarks>

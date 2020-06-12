@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -33,7 +33,7 @@ namespace log4net.Util
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Manages an ordered mapping from <see cref="Level"/> instances 
+    /// Manages an ordered mapping from <see cref="Level"/> instances
     /// to <see cref="LevelMappingEntry"/> subclasses.
     /// </para>
     /// </remarks>
@@ -50,14 +50,14 @@ namespace log4net.Util
         /// Initialise a new instance of <see cref="LevelMapping"/>.
         /// </para>
         /// </remarks>
-        public LevelMapping() 
+        public LevelMapping()
         {
         }
 
         #endregion // Public Instance Constructors
 
         #region Public Instance Methods
-    
+
         /// <summary>
         /// Add a <see cref="LevelMappingEntry"/> to this mapping
         /// </summary>
@@ -65,7 +65,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// If a <see cref="LevelMappingEntry"/> has previously been added
-        /// for the same <see cref="Level"/> then that entry will be 
+        /// for the same <see cref="Level"/> then that entry will be
         /// overwritten.
         /// </para>
         /// </remarks>

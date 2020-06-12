@@ -114,17 +114,17 @@ namespace DotNetNuke.Modules.CoreMessaging
             {
                 userPreference = userPreferenceController.GetUserPreference(user);
             }
-           
+
 
             const int notifyFrequency = 2;
             const int messageFrequency = 0;
-            
+
             return new Hashtable
                    {
                        { "moduleScope", string.Format("#{0}", this.ScopeWrapper.ClientID) },
                        { "pageSize", 25 },
                        { "notifyFrequency", userPreference != null ? (int)userPreference.NotificationsEmailFrequency : notifyFrequency },
-                       { "msgFrequency", userPreference != null ? (int)userPreference.MessagesEmailFrequency : messageFrequency }                
+                       { "msgFrequency", userPreference != null ? (int)userPreference.MessagesEmailFrequency : messageFrequency }
                    };
         }
 
@@ -187,7 +187,7 @@ namespace DotNetNuke.Modules.CoreMessaging
                        { "uniqueId", uniqueId },
                     };
         }
-        
+
         private static string GetHistoryNavigationKey(string moduleName)
         {
             return HttpContext.Current.Server.HtmlEncode(moduleName.ToLowerInvariant().Replace(" ", string.Empty));

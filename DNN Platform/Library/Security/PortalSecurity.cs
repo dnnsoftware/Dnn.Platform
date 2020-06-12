@@ -618,12 +618,12 @@ namespace DotNetNuke.Security
             {
                 // Create a custom auth cookie
 
-                // first, create the authentication ticket     
+                // first, create the authentication ticket
                 var authenticationTicket = createPersistentCookie
                     ? new FormsAuthenticationTicket(user.Username, true, Config.GetPersistentCookieTimeout())
                     : new FormsAuthenticationTicket(user.Username, false, Config.GetAuthCookieTimeout());
 
-                // encrypt it     
+                // encrypt it
                 var encryptedAuthTicket = FormsAuthentication.Encrypt(authenticationTicket);
 
                 // Create a new Cookie
@@ -813,7 +813,7 @@ namespace DotNetNuke.Security
         /// <summary>
         /// This function loops through every portal that has set its own AllowedExtensionWhitelist
         /// and checks that there are no extensions there that are restriced by the host
-        /// 
+        ///
         /// The only time we should call this is if the host allowed extensions list has changed
         /// </summary>
         /// <param name="newMasterList">Comma separated list of extensions that govern all users on this installation</param>
@@ -899,7 +899,7 @@ namespace DotNetNuke.Security
             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
             return IsDenied(objUserInfo, settings, roles);
         }
-         
+
         public static bool IsDenied(UserInfo objUserInfo, PortalSettings settings, string roles)
         {
             // super user always has full access

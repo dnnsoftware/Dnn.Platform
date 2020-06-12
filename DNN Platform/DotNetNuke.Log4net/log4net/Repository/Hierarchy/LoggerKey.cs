@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -30,13 +30,13 @@ namespace log4net.Repository.Hierarchy
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Internal class used to improve performance of 
+    /// Internal class used to improve performance of
     /// string keyed hashtables.
     /// </para>
     /// <para>
     /// The hashcode of the string is cached for reuse.
     /// The string is stored as an interned value.
-    /// When comparing two <see cref="LoggerKey"/> objects for equality 
+    /// When comparing two <see cref="LoggerKey"/> objects for equality
     /// the reference equality of the interned strings is compared.
     /// </para>
     /// </remarks>
@@ -51,7 +51,7 @@ namespace log4net.Repository.Hierarchy
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Initializes a new instance of the <see cref="LoggerKey" /> class 
+        /// Initializes a new instance of the <see cref="LoggerKey" /> class
         /// with the specified name.
         /// </para>
         /// <para>
@@ -66,7 +66,7 @@ namespace log4net.Repository.Hierarchy
         /// </note>
         /// </remarks>
         /// <param name="name">The name of the logger.</param>
-        internal LoggerKey(string name) 
+        internal LoggerKey(string name)
         {
 #if NETCF || NETSTANDARD1_3
 			// NETCF: String.Intern causes Native Exception
@@ -90,13 +90,13 @@ namespace log4net.Repository.Hierarchy
         /// Returns the cached hashcode.
         /// </para>
         /// </remarks>
-        override public int GetHashCode() 
+        override public int GetHashCode()
         {
             return this.m_hashCache;
         }
 
         /// <summary>
-        /// Determines whether two <see cref="LoggerKey" /> instances 
+        /// Determines whether two <see cref="LoggerKey" /> instances
         /// are equal.
         /// </summary>
         /// <param name="obj">The <see cref="object" /> to compare with the current <see cref="LoggerKey" />.</param>
@@ -108,16 +108,16 @@ namespace log4net.Repository.Hierarchy
         /// Compares the references of the interned strings.
         /// </para>
         /// </remarks>
-        override public bool Equals(object obj) 
+        override public bool Equals(object obj)
         {
             // Compare reference type of this against argument
             if (((object)this) == obj)
             {
                 return true;
             }
-            
+
             LoggerKey objKey = obj as LoggerKey;
-            if (objKey != null) 
+            if (objKey != null)
             {
 #if NETCF || NETSTANDARD1_3
 				return ( m_name == objKey.m_name );
@@ -133,10 +133,10 @@ namespace log4net.Repository.Hierarchy
 
         #region Private Instance Fields
 
-        private readonly string m_name;  
+        private readonly string m_name;
         private readonly int m_hashCache;
 
         #endregion Private Instance Fields
-    }   
+    }
 }
 

@@ -68,7 +68,7 @@ namespace log4net.Util
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The value specified must extend the 
+        /// The value specified must extend the
         /// <see cref="PatternConverter"/> type.
         /// </para>
         /// </remarks>
@@ -79,7 +79,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="entry"></param>
         public void AddProperty(PropertyEntry entry)
@@ -88,7 +88,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public PropertiesDictionary Properties
         {

@@ -106,7 +106,7 @@ namespace DotNetNuke.Common.Utilities
         public const string TabVersionDetailsCacheKey = "Tab_TabVersionDetails{0}";
         public const CacheItemPriority TabVersionDetailsCachePriority = CacheItemPriority.High;
         public const int TabVersionDetailsCacheTimeOut = 20;
-        
+
         public const string AuthenticationServicesCacheKey = "AuthenticationServices";
         public const CacheItemPriority AuthenticationServicesCachePriority = CacheItemPriority.NotRemovable;
         public const int AuthenticationServicesCacheTimeOut = 20;
@@ -369,7 +369,7 @@ namespace DotNetNuke.Common.Utilities
             }
             catch (Exception exc)
             {
-                // Swallow exception            
+                // Swallow exception
                 Logger.Error(exc);
             }
         }
@@ -611,8 +611,8 @@ namespace DotNetNuke.Common.Utilities
 
         internal static TObject GetCachedData<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool storeInDictionary)
         {
-            object objObject = storeInDictionary 
-                                   ? GetCachedDataFromDictionary(cacheItemArgs, cacheItemExpired) 
+            object objObject = storeInDictionary
+                                   ? GetCachedDataFromDictionary(cacheItemArgs, cacheItemExpired)
                                    : GetCachedDataFromRuntimeCache(cacheItemArgs, cacheItemExpired);
 
             // return the object
@@ -750,6 +750,6 @@ namespace DotNetNuke.Common.Utilities
                 }
                 CachingProvider.Instance().Insert(GetDnnCacheKey(CacheKey), objObject, objDependency, AbsoluteExpiration, SlidingExpiration, Priority, OnRemoveCallback);
             }
-        }       
+        }
     }
 }

@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// </summary>
         [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
         public string HeaderTemplate { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the template for the row header.
         /// </summary>
@@ -88,7 +88,7 @@ namespace DotNetNuke.Web.UI.WebControls
         #endregion
 
         #region Filter Properties
-        
+
         /// <summary>
         /// Gets or sets the index of the currently displayed page.
         /// </summary>
@@ -100,13 +100,13 @@ namespace DotNetNuke.Web.UI.WebControls
         /// </summary>
         [DefaultValue(10)]
         public int PageSize { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the number of items displayed on each row.
         /// </summary>
         [DefaultValue(1)]
         public int RowSize { get; set; }
-        
+
         /// <summary>
         /// Sets the property value to sort by.
         /// </summary>
@@ -128,15 +128,15 @@ namespace DotNetNuke.Web.UI.WebControls
         public IDictionary<string, string> Filters { get; set; }
 
         #endregion
-        
+
         #endregion
-        
+
         #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            
+
             this._currentUser = UserController.Instance.GetCurrentUserInfo();
             this._relationshipController = new RelationshipController();
         }
@@ -160,7 +160,7 @@ namespace DotNetNuke.Web.UI.WebControls
             var filterUser = this.Filters.ContainsKey("UserId") && this.Filters["UserId"] != null ? new UserInfo() { UserID = int.Parse(this.Filters["UserId"]) } : new UserInfo() { PortalID = this._currentUser.PortalID };
             var role = this.Filters.ContainsKey("RoleId") && this.Filters["RoleId"] != null ? new UserRoleInfo() { RoleID = int.Parse(this.Filters["RoleId"]) } : null;
             var relationship = this.Filters.ContainsKey("RelationshipTypeId") && this.Filters["RelationshipTypeId"] != null ? new RelationshipType() { RelationshipTypeId = int.Parse(this.Filters["RelationshipTypeId"]) } : null;
-            
+
             foreach (var filter in this.Filters.Where(filter => !additionalFilters.ContainsKey(filter.Key)))
             {
                 additionalFilters.Add(filter.Key, filter.Value);

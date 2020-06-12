@@ -287,8 +287,8 @@ namespace DotNetNuke.Services.Search
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
-        /// Used for Legacy Search (ISearchable) 
-        /// 
+        /// Used for Legacy Search (ISearchable)
+        ///
         /// GetContent gets all the content and passes it to the Indexer
         /// </summary>
         /// <remarks>
@@ -311,8 +311,8 @@ namespace DotNetNuke.Services.Search
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
-        /// Used for Legacy Search (ISearchable) 
-        /// 
+        /// Used for Legacy Search (ISearchable)
+        ///
         /// GetContent gets the Portal's content and passes it to the Indexer
         /// </summary>
         /// <remarks>

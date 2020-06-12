@@ -432,7 +432,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             messageObj.CreatedOnDate = message.CreatedOnDate;
             messageObj.LastModifiedByUserID = message.LastModifiedByUserID;
             messageObj.LastModifiedOnDate = message.LastModifiedOnDate;
-            
+
             return messageObj;
         }
 

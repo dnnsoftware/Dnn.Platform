@@ -179,7 +179,7 @@ namespace DotNetNuke.Web.DDRMenu
                                 }
                                 return false;
                             }));
-                } 
+                }
                 else if (nodeText.StartsWith("#"))
                 {
                     var tagName = nodeText.Substring(1, nodeText.Length - 1);
@@ -225,7 +225,7 @@ namespace DotNetNuke.Web.DDRMenu
             filteredNodes.AddRange(
                 parentNode.Children.FindAll(
                     n =>
-                    {                     
+                    {
                         var tab = TabController.Instance.GetTab(n.TabId, portalSettings.PortalId);
                         return tab == null || !tab.IsVisible;
                     }));

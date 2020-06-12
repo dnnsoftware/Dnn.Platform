@@ -28,7 +28,7 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         private const string MyFileName = "LinkToFullSite.ascx";
 
-        private string _localResourcesFile;     
+        private string _localResourcesFile;
 
         private string LocalResourcesFile
         {
@@ -51,7 +51,7 @@ namespace DotNetNuke.UI.Skins.Controls
             var redirectionController = new RedirectionController();
             var redirectUrl = redirectionController.GetFullSiteUrl();
             if (!string.IsNullOrEmpty(redirectUrl))
-            {                
+            {
                 this.lnkPortal.NavigateUrl = redirectUrl;
                 this.lnkPortal.Text = Localization.GetString("lnkPortal", this.LocalResourcesFile);
             }

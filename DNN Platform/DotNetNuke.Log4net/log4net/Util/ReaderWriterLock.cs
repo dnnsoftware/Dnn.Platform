@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -37,16 +37,16 @@ namespace log4net.Util
     /// </summary>
     /// <remarks>
     /// <para>
-    /// <c>ReaderWriterLock</c> is used to synchronize access to a resource. 
-    /// At any given time, it allows either concurrent read access for 
-    /// multiple threads, or write access for a single thread. In a 
-    /// situation where a resource is changed infrequently, a 
-    /// <c>ReaderWriterLock</c> provides better throughput than a simple 
+    /// <c>ReaderWriterLock</c> is used to synchronize access to a resource.
+    /// At any given time, it allows either concurrent read access for
+    /// multiple threads, or write access for a single thread. In a
+    /// situation where a resource is changed infrequently, a
+    /// <c>ReaderWriterLock</c> provides better throughput than a simple
     /// one-at-a-time lock, such as <see cref="System.Threading.Monitor"/>.
     /// </para>
     /// <para>
-    /// If a platform does not support a <c>System.Threading.ReaderWriterLock</c> 
-    /// implementation then all readers and writers are serialized. Therefore 
+    /// If a platform does not support a <c>System.Threading.ReaderWriterLock</c>
+    /// implementation then all readers and writers are serialized. Therefore
     /// the caller must not rely on multiple simultaneous readers.
     /// </para>
     /// </remarks>
@@ -76,7 +76,7 @@ namespace log4net.Util
         }
 
         #endregion Private Instance Constructors
-  
+
         #region Public Methods
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace log4net.Util
         /// </summary>
         /// <remarks>
         /// <para>
-        /// <see cref="AcquireReaderLock"/> blocks if a different thread has the writer 
+        /// <see cref="AcquireReaderLock"/> blocks if a different thread has the writer
         /// lock, or if at least one thread is waiting for the writer lock.
         /// </para>
         /// </remarks>
@@ -93,7 +93,7 @@ namespace log4net.Util
 #if HAS_READERWRITERLOCK
 #if HAS_READERWRITERLOCKSLIM
                     // prevent ThreadAbort while updating state, see https://issues.apache.org/jira/browse/LOG4NET-443
-                    try { } 
+                    try { }
                     finally
                     {
             this.m_lock.EnterReadLock();
@@ -111,7 +111,7 @@ namespace log4net.Util
         /// </summary>
         /// <remarks>
         /// <para>
-        /// <see cref="ReleaseReaderLock"/> decrements the lock count. When the count 
+        /// <see cref="ReleaseReaderLock"/> decrements the lock count. When the count
         /// reaches zero, the lock is released.
         /// </para>
         /// </remarks>
@@ -142,7 +142,7 @@ namespace log4net.Util
 #if HAS_READERWRITERLOCK
 #if HAS_READERWRITERLOCKSLIM
                     // prevent ThreadAbort while updating state, see https://issues.apache.org/jira/browse/LOG4NET-443
-                    try { } 
+                    try { }
                     finally
                     {
             this.m_lock.EnterWriteLock();
@@ -160,7 +160,7 @@ namespace log4net.Util
         /// </summary>
         /// <remarks>
         /// <para>
-        /// ReleaseWriterLock decrements the writer lock count. 
+        /// ReleaseWriterLock decrements the writer lock count.
         /// When the count reaches zero, the writer lock is released.
         /// </para>
         /// </remarks>

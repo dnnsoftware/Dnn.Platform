@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -45,7 +45,7 @@ namespace log4net.Util
         #region Private Instance Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EmptyCollection" /> class. 
+        /// Initializes a new instance of the <see cref="EmptyCollection" /> class.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -57,7 +57,7 @@ namespace log4net.Util
         }
 
         #endregion Private Instance Constructors
-  
+
         #region Public Static Properties
 
         /// <summary>
@@ -79,14 +79,14 @@ namespace log4net.Util
         #region Implementation of ICollection
 
         /// <summary>
-        /// Copies the elements of the <see cref="ICollection"/> to an 
+        /// Copies the elements of the <see cref="ICollection"/> to an
         /// <see cref="Array"/>, starting at a particular Array index.
         /// </summary>
-        /// <param name="array">The one-dimensional <see cref="Array"/> 
-        /// that is the destination of the elements copied from 
-        /// <see cref="ICollection"/>. The Array must have zero-based 
+        /// <param name="array">The one-dimensional <see cref="Array"/>
+        /// that is the destination of the elements copied from
+        /// <see cref="ICollection"/>. The Array must have zero-based
         /// indexing.</param>
-        /// <param name="index">The zero-based index in array at which 
+        /// <param name="index">The zero-based index in array at which
         /// copying begins.</param>
         /// <remarks>
         /// <para>
@@ -155,7 +155,7 @@ namespace log4net.Util
         /// Returns an enumerator that can iterate through a collection.
         /// </summary>
         /// <returns>
-        /// An <see cref="IEnumerator"/> that can be used to 
+        /// An <see cref="IEnumerator"/> that can be used to
         /// iterate through the collection.
         /// </returns>
         /// <remarks>
@@ -176,7 +176,7 @@ namespace log4net.Util
         /// The singleton instance of the empty collection.
         /// </summary>
         private readonly static EmptyCollection s_instance = new EmptyCollection();
-  
+
         #endregion Private Static Fields
     }
 }

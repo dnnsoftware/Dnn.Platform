@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         IDataReader GetInBoxView(int userId, int portalId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending, MessageReadStatus readStatus, MessageArchivedStatus archivedStatus, MessageSentStatus sentStatus);
         IDataReader GetSentBoxView(int userId, int portalId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending);
         IDataReader GetArchiveBoxView(int userId, int portalId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending);
-        IDataReader GetMessageThread(int conversationId, int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending, ref int totalRecords);        
+        IDataReader GetMessageThread(int conversationId, int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending, ref int totalRecords);
         void UpdateMessageReadStatus(int conversationId, int userId, bool read);
         void UpdateMessageArchivedStatus(int conversationId, int userId, bool archived);
         int CreateMessageReply(int conversationId, int portalId, string body, int senderUserId, string from, int createUpdateUserId);
@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         int CountSentConversations(int userId, int portalId);
         int CountArchivedConversations(int userId, int portalId);
         int CheckReplyHasRecipients(int conversationId, int userId);
-        
+
         #endregion
 
         #region Message_Recipients CRUD
@@ -67,10 +67,10 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         #endregion
 
         #region Upgrade APIs
-        
+
         void ConvertLegacyMessages(int pageIndex, int pageSize);
 
-        IDataReader CountLegacyMessages();        
+        IDataReader CountLegacyMessages();
 
         #endregion
 

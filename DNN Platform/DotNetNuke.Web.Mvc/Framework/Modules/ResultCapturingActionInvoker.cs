@@ -19,15 +19,15 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         }
 
         protected override ExceptionContext InvokeExceptionFilters(ControllerContext controllerContext, IList<IExceptionFilter> filters, Exception exception)
-        {            
+        {
             var context = base.InvokeExceptionFilters(controllerContext, filters, exception);
-            this.ResultOfLastInvoke = context.Result;            
+            this.ResultOfLastInvoke = context.Result;
             return context;
         }
-        
+
         protected override void InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
         {
-            // Do not invoke the action.  Instead, store it for later retrieval            
+            // Do not invoke the action.  Instead, store it for later retrieval
             if (this.ResultOfLastInvoke == null) this.ResultOfLastInvoke = actionResult;
         }
     }

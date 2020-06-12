@@ -19,14 +19,14 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     /// <summary>
     /// InstallSuperUserStep - Step that installs SuperUser Account
     /// </summary>
-    /// -----------------------------------------------------------------------------    
+    /// -----------------------------------------------------------------------------
     public class InstallSuperUserStep : BaseInstallationStep
     {
         #region Implementation of IInstallationStep
 
         /// <summary>
         /// Main method to execute the step
-        /// </summary>        
+        /// </summary>
         public override void Execute()
         {
             this.Percentage = 0;
@@ -77,7 +77,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 superUser.Profile.PreferredLocale = installConfig.SuperUser.Locale;
                 superUser.Profile.PreferredTimeZone = TimeZoneInfo.Local;
                 superUser.Membership.UpdatePassword = false;
-                
+
                 // Create SuperUser if not present
                 if (UserController.GetUserByName(superUser.PortalID, superUser.Username) == null)
                     UserController.CreateUser(ref superUser);

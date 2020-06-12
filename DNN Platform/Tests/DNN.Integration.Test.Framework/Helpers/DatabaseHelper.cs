@@ -107,7 +107,7 @@ namespace DNN.Integration.Test.Framework.Helpers
                             for (var i = 0; i < reader.FieldCount; i++)
                             {
                                 values.Add(reader.GetName(i), reader.GetValue(i));
-                                // values[reader.GetName(i)] = reader.GetValue(i); 
+                                // values[reader.GetName(i)] = reader.GetValue(i);
                                 // values.Add(reader.GetName(i), reader.GetValue(i));
                             }
                             results.Add(values);
@@ -154,7 +154,7 @@ namespace DNN.Integration.Test.Framework.Helpers
             }
             return results;
         }
-        
+
         /// <summary>
         /// Executes a specific STORED PROCEDURE.
         /// The SP passed must not have the ObjectQualifier in its name; otherwise duplicate qualifier will be prefixed

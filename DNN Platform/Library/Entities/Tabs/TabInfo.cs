@@ -186,7 +186,7 @@ namespace DotNetNuke.Entities.Tabs
         public Guid LocalizedVersionGuid { get; set; }
 
         [XmlIgnore]
-        public ArrayList Modules 
+        public ArrayList Modules
         {
             get
             {
@@ -195,7 +195,7 @@ namespace DotNetNuke.Entities.Tabs
             set
             {
                 this._modules = value;
-            } 
+            }
         }
 
         [XmlElement("pageheadtext")]

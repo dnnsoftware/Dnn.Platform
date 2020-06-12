@@ -75,7 +75,7 @@ namespace DotNetNuke.UI.WebControls
         private Panel pnlControl;
 
         #region Public Properties
-        
+
         /// <summary>
         /// Gets or sets selection mode (single, multiple)
         /// </summary>
@@ -128,7 +128,7 @@ namespace DotNetNuke.UI.WebControls
                     this.ViewState["SelectionObject"] = value;
                     if (this.Controls.Count > 0)
                     {
-                        this.CreateChildControls(); // Recreate if already created 
+                        this.CreateChildControls(); // Recreate if already created
                     }
                 }
             }
@@ -157,7 +157,7 @@ namespace DotNetNuke.UI.WebControls
                     this.ViewState["ItemStyle"] = value;
                     if (this.Controls.Count > 0)
                     {
-                        this.CreateChildControls(); // Recreate if already created 
+                        this.CreateChildControls(); // Recreate if already created
                     }
                 }
             }
@@ -186,7 +186,7 @@ namespace DotNetNuke.UI.WebControls
                     this.ViewState["ListDirection"] = value;
                     if (this.Controls.Count > 0)
                     {
-                        this.CreateChildControls(); // Recreate if already created 
+                        this.CreateChildControls(); // Recreate if already created
                     }
                 }
             }
@@ -272,7 +272,7 @@ namespace DotNetNuke.UI.WebControls
                 }
             }
         }
-        
+
         #endregion
 
         #region Protected Methods
@@ -337,7 +337,7 @@ namespace DotNetNuke.UI.WebControls
                 this.Visible = false;
             }
         }
-        
+
         #endregion
 
         #region " Private Methods "
@@ -369,7 +369,7 @@ namespace DotNetNuke.UI.WebControls
             }
             return (CultureInfo[])a.ToArray(typeof(CultureInfo));
         }
-        
+
         #endregion
 
     }

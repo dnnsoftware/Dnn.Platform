@@ -17,14 +17,14 @@ namespace DotNetNuke.Entities.Tabs
     class TabWorkflowTracker : ServiceLocator<ITabChangeTracker, TabWorkflowTracker>, ITabChangeTracker
     {
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(TabWorkflowTracker));
-       
+
         #region Members
         private readonly ITabController _tabController;
         private readonly IWorkflowEngine _workflowEngine;
         private readonly IWorkflowManager _workflowManager;
         private readonly ITabWorkflowSettings _tabWorkflowSettings;
         #endregion
-        
+
         public TabWorkflowTracker()
         {
             this._tabController = TabController.Instance;
@@ -44,18 +44,18 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="module">Module which tracks the workflow instance</param>
         /// <param name="moduleVersion">Version number corresponding to the module</param>
-        /// <param name="userId">User Id related with the workflow instance</param>  
+        /// <param name="userId">User Id related with the workflow instance</param>
         public void TrackModuleAddition(ModuleInfo module, int moduleVersion, int userId)
         {
             this.NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
         }
-        
+
         /// <summary>
         /// Tracks a workflow instance when a module is modified on a page
         /// </summary>
         /// <param name="module">Module which tracks the workflow instance</param>
         /// <param name="moduleVersion">Version number corresponding to the module</param>
-        /// <param name="userId">User Id related with the workflow instance</param>  
+        /// <param name="userId">User Id related with the workflow instance</param>
         public void TrackModuleModification(ModuleInfo module, int moduleVersion, int userId)
         {
             this.NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
@@ -67,7 +67,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="module">Module which tracks the workflow instance</param>
         /// <param name="moduleVersion">Version number corresponding to the module</param>
-        /// <param name="userId">User Id related with the workflow instance</param>  
+        /// <param name="userId">User Id related with the workflow instance</param>
         public void TrackModuleDeletion(ModuleInfo module, int moduleVersion, int userId)
         {
             this.NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
@@ -79,7 +79,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="module">Module which tracks the workflow instance</param>
         /// <param name="moduleVersion">Version number corresponding to the module</param>
         /// <param name="originalTabId">Tab Id where the module originally is</param>
-        /// <param name="userId">User Id related with the workflow instance</param>  
+        /// <param name="userId">User Id related with the workflow instance</param>
         public void TrackModuleCopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
         {
             this.TrackModuleAddition(module, moduleVersion, userId);
@@ -92,7 +92,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="module">Module which tracks the workflow instance</param>
         /// <param name="moduleVersion">Version number corresponding to the module</param>
         /// <param name="originalTabId">Tab Id where the module originally is</param>
-        /// <param name="userId">User Id related with the workflow instance</param> 
+        /// <param name="userId">User Id related with the workflow instance</param>
         public void TrackModuleUncopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
         {
             this.TrackModuleDeletion(module, moduleVersion, userId);
@@ -121,7 +121,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 Exceptions.LogException(ex);
             }
-            
+
         }
 
         private Workflow GetCurrentOrDefaultWorkflow(ContentItem item, int portalId)

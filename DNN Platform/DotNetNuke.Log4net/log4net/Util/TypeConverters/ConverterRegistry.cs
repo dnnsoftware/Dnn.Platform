@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -40,7 +40,7 @@ namespace log4net.Util.TypeConverters
     /// types.
     /// </para>
     /// <para>
-    /// Use the <see cref="M:AddConverter(Type, object)"/> and 
+    /// Use the <see cref="M:AddConverter(Type, object)"/> and
     /// <see cref="M:AddConverter(Type, Type)"/> methods to register new converters.
     /// The <see cref="GetConvertTo"/> and <see cref="GetConvertFrom"/> methods
     /// lookup appropriate converters to use.
@@ -60,7 +60,7 @@ namespace log4net.Util.TypeConverters
         /// <remarks>
         /// Initializes a new instance of the <see cref="ConverterRegistry" /> class.
         /// </remarks>
-        private ConverterRegistry() 
+        private ConverterRegistry()
         {
         }
 
@@ -133,7 +133,7 @@ namespace log4net.Util.TypeConverters
         /// <param name="sourceType">The type being converted from.</param>
         /// <param name="destinationType">The type being converted to.</param>
         /// <returns>
-        /// The type converter instance to use for type conversions or <c>null</c> 
+        /// The type converter instance to use for type conversions or <c>null</c>
         /// if no type converter is found.
         /// </returns>
         /// <remarks>
@@ -174,7 +174,7 @@ namespace log4net.Util.TypeConverters
         /// </summary>
         /// <param name="destinationType">The type being converted to.</param>
         /// <returns>
-        /// The type converter instance to use for type conversions or <c>null</c> 
+        /// The type converter instance to use for type conversions or <c>null</c>
         /// if no type converter is found.
         /// </returns>
         /// <remarks>
@@ -207,14 +207,14 @@ namespace log4net.Util.TypeConverters
                 return converter;
             }
         }
-        
+
         /// <summary>
-        /// Lookups the type converter to use as specified by the attributes on the 
+        /// Lookups the type converter to use as specified by the attributes on the
         /// destination type.
         /// </summary>
         /// <param name="destinationType">The type being converted to.</param>
         /// <returns>
-        /// The type converter instance to use for type conversions or <c>null</c> 
+        /// The type converter instance to use for type conversions or <c>null</c>
         /// if no type converter is found.
         /// </returns>
         private static object GetConverterFromAttribute(Type destinationType)
@@ -240,13 +240,13 @@ namespace log4net.Util.TypeConverters
         /// </summary>
         /// <param name="converterType">The type of the type converter.</param>
         /// <returns>
-        /// The type converter instance to use for type conversions or <c>null</c> 
+        /// The type converter instance to use for type conversions or <c>null</c>
         /// if no type converter is found.
         /// </returns>
         /// <remarks>
         /// <para>
-        /// The type specified for the type converter must implement 
-        /// the <see cref="IConvertFrom"/> or <see cref="IConvertTo"/> interfaces 
+        /// The type specified for the type converter must implement
+        /// the <see cref="IConvertFrom"/> or <see cref="IConvertTo"/> interfaces
         /// and must have a public default (no argument) constructor.
         /// </para>
         /// </remarks>

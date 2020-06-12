@@ -47,7 +47,7 @@ namespace DotNetNuke.Security.Roles
             // Add UserRole to DNN
             userRole.UserRoleID = Convert.ToInt32(this.dataProvider.AddUserRole(userRole.PortalID, userRole.UserID, userRole.RoleID,
                                                                 (int)userRole.Status, userRole.IsOwner,
-                                                                userRole.EffectiveDate, userRole.ExpiryDate, 
+                                                                userRole.EffectiveDate, userRole.ExpiryDate,
                                                                 UserController.Instance.GetCurrentUserInfo().UserID));
         }
 
@@ -113,14 +113,14 @@ namespace DotNetNuke.Security.Roles
         /// <summary>
         /// Get the roles for a portal
         /// </summary>
-        /// <param name="portalId">Id of the portal (If -1 all roles for all portals are 
+        /// <param name="portalId">Id of the portal (If -1 all roles for all portals are
         /// retrieved.</param>
         /// <returns>An ArrayList of RoleInfo objects</returns>
         /// -----------------------------------------------------------------------------
         public override ArrayList GetRoles(int portalId)
         {
-            var arrRoles = CBO.FillCollection(portalId == Null.NullInteger 
-                                        ? this.dataProvider.GetRoles() 
+            var arrRoles = CBO.FillCollection(portalId == Null.NullInteger
+                                        ? this.dataProvider.GetRoles()
                                         : this.dataProvider.GetPortalRoles(portalId), typeof(RoleInfo));
             return arrRoles;
         }
@@ -190,7 +190,7 @@ namespace DotNetNuke.Security.Roles
         }
 
         #endregion
-        
+
         #region User Role Methods
 
         /// -----------------------------------------------------------------------------
@@ -248,8 +248,8 @@ namespace DotNetNuke.Security.Roles
         {
             Requires.NotNull("user", user);
 
-            return CBO.FillCollection<UserRoleInfo>(includePrivate 
-                    ? this.dataProvider.GetUserRoles(user.PortalID, user.UserID) 
+            return CBO.FillCollection<UserRoleInfo>(includePrivate
+                    ? this.dataProvider.GetUserRoles(user.PortalID, user.UserID)
                     : this.dataProvider.GetServices(user.PortalID, user.UserID));
         }
 
@@ -273,7 +273,7 @@ namespace DotNetNuke.Security.Roles
         /// <summary>
         /// Get the users in a role (as User objects)
         /// </summary>
-        /// <param name="portalId">Id of the portal (If -1 all roles for all portals are 
+        /// <param name="portalId">Id of the portal (If -1 all roles for all portals are
         /// retrieved.</param>
         /// <param name="roleName">The role to fetch users for</param>
         /// <returns>An ArrayList of UserInfo objects</returns>
@@ -308,7 +308,7 @@ namespace DotNetNuke.Security.Roles
         {
             this.dataProvider.UpdateUserRole(userRole.UserRoleID,
                                         (int)userRole.Status, userRole.IsOwner,
-                                        userRole.EffectiveDate, userRole.ExpiryDate, 
+                                        userRole.EffectiveDate, userRole.ExpiryDate,
                                         UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
@@ -390,11 +390,11 @@ namespace DotNetNuke.Security.Roles
 
         private IEnumerable<RoleGroupInfo> GetRoleGroupsInternal(int portalId)
         {
-            var cacheArgs = new CacheItemArgs(this.GetRoleGroupsCacheKey(portalId), 
-                                                DataCache.RoleGroupsCacheTimeOut, 
+            var cacheArgs = new CacheItemArgs(this.GetRoleGroupsCacheKey(portalId),
+                                                DataCache.RoleGroupsCacheTimeOut,
                                                 DataCache.RoleGroupsCachePriority);
 
-            return CBO.GetCachedObject<IEnumerable<RoleGroupInfo>>(cacheArgs, c => 
+            return CBO.GetCachedObject<IEnumerable<RoleGroupInfo>>(cacheArgs, c =>
                                             CBO.FillCollection<RoleGroupInfo>(this.dataProvider.GetRoleGroups(portalId)));
         }
 
@@ -410,7 +410,7 @@ namespace DotNetNuke.Security.Roles
                 (roleGroup.Description ?? "").Trim(), UserController.Instance.GetCurrentUserInfo().UserID);
             this.ClearRoleGroupCache(roleGroup.PortalID);
         }
-        
+
 
         #endregion
     }

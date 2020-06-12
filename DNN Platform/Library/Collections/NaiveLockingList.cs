@@ -12,7 +12,7 @@ namespace DotNetNuke.Collections.Internal
     {
         private readonly SharedList<T> _list = new SharedList<T>();
         // TODO is no recursion the correct policy
-        
+
         void DoInReadLock(Action action)
         {
             this.DoInReadLock(() => { action.Invoke(); return true; });

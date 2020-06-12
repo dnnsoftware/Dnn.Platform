@@ -47,7 +47,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             {
                 gammaArray[i] = (byte)Math.Min(255, (int)((255.0 * Math.Pow(i / 255.0, 1.0 / this.Gamma)) + 0.5));
             }
-            
+
             for (var i = 0; i < bmap.Width; i++)
             {
                 for (var j = 0; j < bmap.Height; j++)

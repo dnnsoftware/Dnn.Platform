@@ -112,7 +112,7 @@ namespace DotNetNuke.UI.WebControls
 
         protected override void AddEditorRow(object obj)
         {
-            var info = (SettingInfo)obj; 
+            var info = (SettingInfo)obj;
             this.AddEditorRow(this, info.Name, new SettingsEditorInfoAdapter(this.DataSource, obj, this.ID));
         }
 

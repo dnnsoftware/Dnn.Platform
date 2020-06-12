@@ -63,7 +63,7 @@ namespace DotNetNuke.HttpModules.Membership
             {
                 if (string.IsNullOrEmpty(_cultureCode))
                 {
-                    _cultureCode = Localization.GetPageLocale(PortalSettings.Current).Name; 
+                    _cultureCode = Localization.GetPageLocale(PortalSettings.Current).Name;
                 }
 
                 return _cultureCode;
@@ -162,7 +162,7 @@ namespace DotNetNuke.HttpModules.Membership
                 }
             }
 
-            if (request.IsAuthenticated && !isActiveDirectoryAuthHeaderPresent && portalSettings != null)  
+            if (request.IsAuthenticated && !isActiveDirectoryAuthHeaderPresent && portalSettings != null)
             {
                 var user = UserController.GetCachedUser(portalSettings.PortalId, context.User.Identity.Name);
                 // if current login is from windows authentication, the ignore the process
@@ -171,7 +171,7 @@ namespace DotNetNuke.HttpModules.Membership
                     return;
                 }
 
-                // authenticate user and set last login ( this is necessary for users who have a permanent Auth cookie set ) 
+                // authenticate user and set last login ( this is necessary for users who have a permanent Auth cookie set )
                 if (RequireLogout(context, user))
                 {
                     var portalSecurity = PortalSecurity.Instance;

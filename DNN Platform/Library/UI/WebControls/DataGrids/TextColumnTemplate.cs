@@ -28,7 +28,7 @@ namespace DotNetNuke.UI.WebControls
         #region "Private Members"
 
         private ListItemType mItemType = ListItemType.Item;
-        
+
         #endregion
 
         #region "Constructors"
@@ -41,7 +41,7 @@ namespace DotNetNuke.UI.WebControls
         {
             this.ItemType = itemType;
         }
-        
+
         #endregion
 
         #region "Public Properties"
@@ -95,7 +95,7 @@ namespace DotNetNuke.UI.WebControls
         /// <value>A Unit</value>
         /// -----------------------------------------------------------------------------
         public Unit Width { get; set; }
-        
+
         #endregion
 
         #region ITemplate Members
@@ -196,7 +196,7 @@ namespace DotNetNuke.UI.WebControls
                     break;
             }
         }
-        
+
         #endregion
     }
 }

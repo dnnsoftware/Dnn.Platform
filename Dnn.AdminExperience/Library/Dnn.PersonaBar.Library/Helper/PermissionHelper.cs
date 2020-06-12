@@ -69,7 +69,7 @@ namespace Dnn.PersonaBar.Library.Helper
         {
             // Administrators Role always has implicit permissions, then it should be always in
             dto.EnsureRole(RoleController.Instance.GetRoleById(PortalSettings.Current.PortalId, PortalSettings.Current.AdministratorRoleId), true, true);
-            
+
             // Show also default roles
             dto.EnsureRole(RoleController.Instance.GetRoleById(PortalSettings.Current.PortalId, PortalSettings.Current.RegisteredRoleId), false, true);
             dto.EnsureRole(new RoleInfo { RoleID = Int32.Parse(Globals.glbRoleAllUsers), RoleName = Globals.glbRoleAllUsersName }, false, true);

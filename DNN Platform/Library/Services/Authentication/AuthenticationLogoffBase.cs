@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.Authentication
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The AuthenticationLogoffBase class provides a base class for Authentiication 
+    /// The AuthenticationLogoffBase class provides a base class for Authentiication
     /// Logoff controls
     /// </summary>
     /// -----------------------------------------------------------------------------
@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Authentication
         private string _RedirectURL = Null.NullString;
 
         /// <summary>
-        /// Gets or sets the Dependency Provider to resolve registered 
+        /// Gets or sets the Dependency Provider to resolve registered
         /// services with the container.
         /// </summary>
         /// <value>

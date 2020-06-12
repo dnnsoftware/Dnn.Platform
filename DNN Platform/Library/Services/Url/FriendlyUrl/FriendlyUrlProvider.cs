@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
         {
             return ComponentFactory.GetComponent<FriendlyUrlProvider>();
         }
-        
+
         #endregion
 
         #region "Abstract Methods"
@@ -38,11 +38,11 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
         {
             return this.FriendlyUrl(tab, path, pageName, (IPortalSettings)settings);
         }
-        
+
         public abstract string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings);
 
         public abstract string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias);
-        
+
         #endregion
     }
 }

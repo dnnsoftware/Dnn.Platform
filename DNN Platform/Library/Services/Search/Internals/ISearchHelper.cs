@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// Returns a list of Synonyms for a given word. E.g. leap, hop for jump
         /// </summary>
         /// <param name="term">word for which to obtain synonyms</param>
-        /// <param name="portalId">portal id</param> 
+        /// <param name="portalId">portal id</param>
         /// <param name="cultureCode">culture code</param>
         /// <returns>List of synonyms</returns>
         /// <remarks>Synonyms must be defined in system first</remarks>

@@ -20,7 +20,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             return this.GetTabVersionDetails(tabVersionId, ignoreCache).SingleOrDefault(tvd => tvd.TabVersionDetailId == tabVersionDetailId);
         }
-        
+
         public IEnumerable<TabVersionDetail> GetTabVersionDetails(int tabVersionId, bool ignoreCache = false)
         {
             // if we are not using the cache
@@ -32,7 +32,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return CBO.GetCachedObject<List<TabVersionDetail>>(new CacheItemArgs(GetTabVersionDetailCacheKey(tabVersionId),
                                                                     DataCache.TabVersionDetailsCacheTimeOut,
                                                                     DataCache.TabVersionDetailsCachePriority),
-                                                            c => CBO.FillCollection<TabVersionDetail>(Provider.GetTabVersionDetails(tabVersionId)));            
+                                                            c => CBO.FillCollection<TabVersionDetail>(Provider.GetTabVersionDetails(tabVersionId)));
         }
 
         public IEnumerable<TabVersionDetail> GetVersionHistory(int tabId, int version)
@@ -42,14 +42,14 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         public void SaveTabVersionDetail(TabVersionDetail tabVersionDetail)
         {
-            this.SaveTabVersionDetail(tabVersionDetail, tabVersionDetail.CreatedByUserID, tabVersionDetail.LastModifiedByUserID);            
+            this.SaveTabVersionDetail(tabVersionDetail, tabVersionDetail.CreatedByUserID, tabVersionDetail.LastModifiedByUserID);
         }
 
         public void SaveTabVersionDetail(TabVersionDetail tabVersionDetail, int createdByUserID)
         {
             this.SaveTabVersionDetail(tabVersionDetail, createdByUserID, createdByUserID);
         }
-        
+
         public void SaveTabVersionDetail(TabVersionDetail tabVersionDetail, int createdByUserID, int modifiedByUserID)
         {
             tabVersionDetail.TabVersionDetailId = Provider.SaveTabVersionDetail(tabVersionDetail.TabVersionDetailId,

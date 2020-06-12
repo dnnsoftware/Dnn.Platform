@@ -24,7 +24,7 @@ namespace DotNetNuke.UI.WebControls.Internal
             triState.DataBinding += this.BindToTriState;
             container.Controls.Add(triState);
         }
-        
+
         public void BindToTriState(object sender, EventArgs e)
         {
             var triState = (PermissionTriState)sender;

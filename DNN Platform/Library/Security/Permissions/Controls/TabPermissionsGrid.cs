@@ -165,7 +165,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             base.CreateChildControls();
             this.rolePermissionsGrid.ItemDataBound += this.rolePermissionsGrid_ItemDataBound;
         }
-        
+
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
             var objPermission = new TabPermissionInfo(permission);
@@ -190,7 +190,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, UserInfo user)
         {
-            // Search TabPermission Collection for the user 
+            // Search TabPermission Collection for the user
             bool isMatch = false;
             foreach (TabPermissionInfo objTabPermission in this._TabPermissions)
             {
@@ -223,13 +223,13 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, RoleInfo role)
         {
-            // Search TabPermission Collection for the user 
+            // Search TabPermission Collection for the user
             if (this._TabPermissions.Cast<TabPermissionInfo>().Any(objTabPermission => objTabPermission.RoleID == role.RoleID))
             {
                 return;
             }
 
-            // role not found so add new            
+            // role not found so add new
             foreach (PermissionInfo objPermission in permissions)
             {
                 if (objPermission.PermissionKey == "VIEW")

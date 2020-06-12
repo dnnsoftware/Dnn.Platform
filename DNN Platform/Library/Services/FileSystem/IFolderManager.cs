@@ -227,7 +227,7 @@ namespace DotNetNuke.Services.FileSystem
         void RenameFolder(IFolderInfo folder, string newFolderName);
 
         /// <summary>
-        /// Sets specific folder permissions for the given role to the given folder.        
+        /// Sets specific folder permissions for the given role to the given folder.
         /// </summary>
         /// <param name="folder">The folder to set permission to</param>
         /// <param name="permissionId">The id of the permission to assign</param>

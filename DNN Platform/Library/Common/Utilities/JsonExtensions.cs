@@ -23,7 +23,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        ///   Serializes a type to Json. Note the type must be marked Serializable 
+        ///   Serializes a type to Json. Note the type must be marked Serializable
         ///   or include a DataContract attribute.
         /// </summary>
         /// <param name = "value"></param>
@@ -36,7 +36,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        ///   Extension method on object that serializes the value to Json. 
+        ///   Extension method on object that serializes the value to Json.
         ///   Note the type must be marked Serializable or include a DataContract attribute.
         /// </summary>
         /// <param name = "value"></param>
@@ -47,7 +47,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        ///   Deserializes a json string into a specific type. 
+        ///   Deserializes a json string into a specific type.
         ///   Note that the type specified must be serializable.
         /// </summary>
         /// <param name = "json"></param>
@@ -55,7 +55,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns></returns>
         public static object FromJsonString(string json, Type type)
         {
-            // *** Have to use Reflection with a 'dynamic' non constant type instance 
+            // *** Have to use Reflection with a 'dynamic' non constant type instance
             var ser = SerializerFactory();
 
             object result = ser.GetType().GetMethod("Deserialize").MakeGenericMethod(type).Invoke(ser, new object[1] { json });
@@ -63,8 +63,8 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        ///   Extension method to string that deserializes a json string 
-        ///   into a specific type. 
+        ///   Extension method to string that deserializes a json string
+        ///   into a specific type.
         ///   Note that the type specified must be serializable.
         /// </summary>
         /// <param name = "json"></param>

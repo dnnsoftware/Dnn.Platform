@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Authentication
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The AuthenticationInfo class provides the Entity Layer for the 
+    /// The AuthenticationInfo class provides the Entity Layer for the
     /// Authentication Systems.
     /// </summary>
     /// -----------------------------------------------------------------------------

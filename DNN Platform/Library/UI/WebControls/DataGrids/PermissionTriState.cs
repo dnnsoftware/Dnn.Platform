@@ -16,7 +16,7 @@ namespace DotNetNuke.UI.WebControls.Internal
 {
     /// <summary>
     /// A TriState permission control built specifically for use in the PermissionGrid control
-    /// This control is not general in any way shape of form and should NOT be used outside 
+    /// This control is not general in any way shape of form and should NOT be used outside
     /// of the PermissionGrid
     /// </summary>
     public class PermissionTriState : HiddenField
@@ -31,9 +31,9 @@ namespace DotNetNuke.UI.WebControls.Internal
 
         public PermissionTriState()
         {
-            // kind of ugly to lookup this data each time, but doesn't seem worth the effort to 
+            // kind of ugly to lookup this data each time, but doesn't seem worth the effort to
             // maintain statics for the paths but require a control instance to initialize them
-            // and lazy load the text bits when the page instance (or localization) changes 
+            // and lazy load the text bits when the page instance (or localization) changes
             LookupScriptValues(this, out this._grantImagePath, out this._denyImagePath, out this._nullImagePath, out this._lockImagePath, out this._grantAltText, out this._denyAltText, out this._nullAltText);
         }
 
@@ -156,7 +156,7 @@ namespace DotNetNuke.UI.WebControls.Internal
 
         public bool IsView { get; set; }
 
-        // Locked is currently not used on a post-back and therefore the 
+        // Locked is currently not used on a post-back and therefore the
         // value on postback is undefined at this time
         public bool Locked { get; set; }
 

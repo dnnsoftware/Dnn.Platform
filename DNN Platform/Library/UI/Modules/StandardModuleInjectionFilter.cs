@@ -21,10 +21,10 @@ namespace DotNetNuke.UI.Modules
 
         public bool CanInjectModule(ModuleInfo module, PortalSettings portalSettings)
         {
-            return ModulePermissionController.CanViewModule(module) 
-                    && module.IsDeleted == false 
-                    && ((module.StartDate < DateTime.Now && module.EndDate > DateTime.Now) 
-                            || Globals.IsLayoutMode() 
+            return ModulePermissionController.CanViewModule(module)
+                    && module.IsDeleted == false
+                    && ((module.StartDate < DateTime.Now && module.EndDate > DateTime.Now)
+                            || Globals.IsLayoutMode()
                             || Globals.IsEditMode());
         }
 

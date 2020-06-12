@@ -32,8 +32,8 @@ namespace DotNetNuke.Entities.Urls
         {
             var options = new FriendlyUrlOptions
                 {
-                    PunctuationReplacement = (settings.ReplaceSpaceWith != FriendlyUrlSettings.ReplaceSpaceWithNothing) 
-                                                    ? settings.ReplaceSpaceWith 
+                    PunctuationReplacement = (settings.ReplaceSpaceWith != FriendlyUrlSettings.ReplaceSpaceWithNothing)
+                                                    ? settings.ReplaceSpaceWith
                                                     : String.Empty,
                     SpaceEncoding = settings.SpaceEncodingValue,
                     MaxUrlPathLength = 200,
@@ -43,8 +43,8 @@ namespace DotNetNuke.Entities.Urls
                     ReplaceChars = settings.ReplaceChars,
                     ReplaceDoubleChars = settings.ReplaceDoubleChars,
                     ReplaceCharWithChar = settings.ReplaceCharacterDictionary,
-                    PageExtension = (settings.PageExtensionUsageType == PageExtensionUsageType.Never) 
-                                            ? "" 
+                    PageExtension = (settings.PageExtensionUsageType == PageExtensionUsageType.Never)
+                                            ? ""
                                             : settings.PageExtension
                 };
             return options;
@@ -74,7 +74,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Logs the 404 error to a table for later checking 
+        /// Logs the 404 error to a table for later checking
         /// </summary>
         /// <param name="request"></param>
         /// <param name="settings"></param>
@@ -123,7 +123,7 @@ namespace DotNetNuke.Entities.Urls
             if (ex != null)
             {
                 // 831 : improve exception logging by logging custom properties instead of just the raw exception
-                // this logic prevents a site logging an exception for every request made.  Instead 
+                // this logic prevents a site logging an exception for every request made.  Instead
                 // the exception will be logged once for the life of the cache / application restart or 1 hour, whichever is shorter.
                 // create a cache key for this exception type
                 string cacheKey = ex.GetType().ToString();

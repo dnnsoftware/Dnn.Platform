@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.EventQueue
     /// </summary>
     /// <remarks>
     /// Sometimes when your module running in DotNetNuke,and contains some operats didn't want to execute immediately.
-    /// e.g: after your module installed into system, and some component you want to registed when the application restart, 
+    /// e.g: after your module installed into system, and some component you want to registed when the application restart,
     /// you can send an 'Application_Start' message, so your specific operation will be executed when application has been restart.
     /// </remarks>
     /// <example>
@@ -132,9 +132,9 @@ namespace DotNetNuke.Services.EventQueue
             }
             return subscribers;
         }
-        
+
         #endregion
-        
+
         #region "Public Shared Methods"
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace DotNetNuke.Services.EventQueue
                     {
                         throw new Exception();
                     }
-                    
+
                     // Set Message comlete so it is not run a second time
                     DataProvider.Instance().SetEventMessageComplete(message.EventMessageID);
 
@@ -244,7 +244,7 @@ namespace DotNetNuke.Services.EventQueue
             {
                 message.SentDate = DateTime.Now;
             }
-            
+
             // Get the subscribers to this event
             string[] subscribers = GetSubscribers(eventName);
 
@@ -276,9 +276,9 @@ namespace DotNetNuke.Services.EventQueue
             }
             return success;
         }
-        
+
         #endregion
-        
+
         #region "Obsolete Methods"
 
         [Obsolete("This method is obsolete. Use Sendmessage(message, eventName) instead. Scheduled removal in v10.0.0.")]
@@ -286,7 +286,7 @@ namespace DotNetNuke.Services.EventQueue
         {
             return SendMessage(message, eventName);
         }
-        
+
         #endregion
     }
 }

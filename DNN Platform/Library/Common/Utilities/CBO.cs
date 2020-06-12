@@ -34,7 +34,7 @@ namespace DotNetNuke.Common.Utilities
     public partial class CBO : ServiceLocator<ICBO, CBO>, ICBO
     {
         #region Private Constants
-        
+
         private const string defaultPrimaryKey = "ItemID";
 
         private const string objectMapCacheKey = "ObjectMap_";
@@ -59,7 +59,7 @@ namespace DotNetNuke.Common.Utilities
                 InitializeObject(objObject);
             }
             return objObject;
-           
+
         }
 
         private static object CreateObjectFromReader(Type objType, IDataReader dr, bool closeReader)
@@ -156,7 +156,7 @@ namespace DotNetNuke.Common.Utilities
                 }
                 CloseDataReader(dr, closeReader);
             }
-            
+
             // Return the dictionary
             return objDictionary;
         }
@@ -337,29 +337,29 @@ namespace DotNetNuke.Common.Utilities
          static object ChangeType(object obj, Type type)
          {
              Type u = Nullable.GetUnderlyingType(type);
- 
-             if (u != null) 
+
+             if (u != null)
              {
                  if (obj == null)
                  {
                      return GetDefault(type);
                  }
- 
+
                  return Convert.ChangeType(obj, u);
              }
              return Convert.ChangeType(obj, type);
          }
- 
+
          static object GetDefault(Type type)
          {
              if (type.IsValueType)
              {
                  return Activator.CreateInstance(type);
              }
- 
+
              return null;
          }
- 
+
         #endregion
 
         #region Object Mapping Helper Methods
@@ -382,7 +382,7 @@ namespace DotNetNuke.Common.Utilities
                 // Reflect on class to create Object Map
                 objMap.PrimaryKey = GetPrimaryKey(objType);
                 objMap.TableName = GetTableName(objType);
-                // Iterate through the objects properties and add each one to the ObjectMappingInfo's Properties Dictionary 
+                // Iterate through the objects properties and add each one to the ObjectMappingInfo's Properties Dictionary
                 foreach (PropertyInfo objProperty in objType.GetProperties())
                 {
                     objMap.Properties.Add(objProperty.Name.ToUpperInvariant(), objProperty);
@@ -391,7 +391,7 @@ namespace DotNetNuke.Common.Utilities
                 // Persist to Cache
                 DataCache.SetCache(cacheKey, objMap);
             }
-            
+
             // Return Object Map
             return objMap;
         }
@@ -422,7 +422,7 @@ namespace DotNetNuke.Common.Utilities
             }
             return tableName;
         }
-        
+
         #endregion
 
         #endregion
@@ -584,7 +584,7 @@ namespace DotNetNuke.Common.Utilities
             }
             return objObject;
         }
-        
+
         #endregion
 
         #region FillCollection
@@ -668,7 +668,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Generic version of FillCollection fills a List custom business object of a specified type 
+        /// Generic version of FillCollection fills a List custom business object of a specified type
         /// from the supplied DataReader
         /// </summary>
         /// <param name="dr">The IDataReader to use to fill the object</param>
@@ -702,7 +702,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Generic version of FillCollection fills a List custom business object of a specified type 
+        /// Generic version of FillCollection fills a List custom business object of a specified type
         /// from the supplied DataReader
         /// </summary>
         /// <typeparam name="T">The type of the business object</typeparam>
@@ -733,7 +733,7 @@ namespace DotNetNuke.Common.Utilities
             }
             return (List<T>)objFillCollection;
         }
-        
+
         #endregion
 
         #region FillDictionary
@@ -778,7 +778,7 @@ namespace DotNetNuke.Common.Utilities
         {
             return (Dictionary<TKey, TValue>)FillDictionaryFromReader(keyField, dr, objDictionary, true);
         }
-        
+
         #endregion
 
         #region FillObject
@@ -884,7 +884,7 @@ namespace DotNetNuke.Common.Utilities
                 throw new ArgumentException("Invalid Target Path");
             }
         }
-        
+
         #region "GetCachedObject"
 
         /// -----------------------------------------------------------------------------
@@ -906,7 +906,7 @@ namespace DotNetNuke.Common.Utilities
         {
             return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, saveInDictionary);
         }
-        
+
         #endregion
 
         #region "GetProperties"
@@ -932,14 +932,14 @@ namespace DotNetNuke.Common.Utilities
         {
             return GetObjectMapping(objType).Properties;
         }
-        
+
         #endregion
 
         #region "InitializeObject"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// InitializeObject initialises all the properties of an object to their 
+        /// InitializeObject initialises all the properties of an object to their
         /// Null Values.
         /// </summary>
         /// <param name="objObject">The object to Initialise</param>
@@ -958,7 +958,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// InitializeObject initialises all the properties of an object to their 
+        /// InitializeObject initialises all the properties of an object to their
         /// Null Values.
         /// </summary>
         /// <param name="objObject">The object to Initialise</param>
@@ -976,7 +976,7 @@ namespace DotNetNuke.Common.Utilities
             }
             return objObject;
         }
-        
+
         #endregion
 
         #region "SerializeObject"
@@ -1075,7 +1075,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         #endregion
-        
+
         #endregion
     }
 }

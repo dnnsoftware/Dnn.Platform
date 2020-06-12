@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Installer.Writers
         public ScriptComponentWriter(string basePath, Dictionary<string, InstallFile> scripts, PackageInfo package) : base(basePath, scripts, package)
         {
         }
-        
+
         #endregion
 
         #region "Public Properties"
@@ -105,7 +105,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 type = "Install";
                 version = fileName;
             }
-            
+
             // Start file Element
             writer.WriteStartElement(this.ItemNodeName);
             writer.WriteAttributeString("type", type);
@@ -115,7 +115,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 writer.WriteElementString("path", file.Path);
             }
-            
+
             // Write name
             writer.WriteElementString("name", file.Name);
 
@@ -124,14 +124,14 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 writer.WriteElementString("sourceFileName", file.SourceFileName);
             }
-            
+
             // Write Version
             writer.WriteElementString("version", version);
 
             // Close file Element
             writer.WriteEndElement();
         }
-        
+
         #endregion
     }
 }

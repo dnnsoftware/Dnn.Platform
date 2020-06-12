@@ -56,12 +56,12 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// <summary>Gets the direct dependencies of this package.</summary>
         [XmlIgnore]
-        public IList<PackageDependencyInfo> Dependencies 
-        { 
+        public IList<PackageDependencyInfo> Dependencies
+        {
             get
             {
-                return this._dependencies ?? (this._dependencies = (this.PackageID == -1) 
-                                        ? new List<PackageDependencyInfo>() 
+                return this._dependencies ?? (this._dependencies = (this.PackageID == -1)
+                                        ? new List<PackageDependencyInfo>()
                                         : PackageController.Instance.GetPackageDependencies(p => p.PackageId == this.PackageID));
             }
         }

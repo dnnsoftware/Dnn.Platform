@@ -21,7 +21,7 @@ namespace DotNetNuke.DependencyInjection.Extensions
 
         /// <summary>
         /// Safely Get all Types from the assembly. If there
-        /// is an error while retrieving the types it will 
+        /// is an error while retrieving the types it will
         /// return an empty array of <see cref="Type"/>
         /// </summary>
         /// <param name="assembly">

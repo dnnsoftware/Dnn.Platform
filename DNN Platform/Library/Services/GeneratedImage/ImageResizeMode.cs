@@ -9,7 +9,7 @@ namespace DotNetNuke.Services.GeneratedImage
     /// </summary>
     public enum ImageResizeMode {
         /// <summary>
-        /// Resizes the image with the given width or height without maintaing the aspect ratio. 
+        /// Resizes the image with the given width or height without maintaing the aspect ratio.
         /// </summary>
         Fill,
         /// <summary>
@@ -18,12 +18,12 @@ namespace DotNetNuke.Services.GeneratedImage
         /// </summary>
         Fit,
         /// <summary>
-        /// Crop resizes the image and removes parts of it to ensure that the dimensions of the result are exactly 
+        /// Crop resizes the image and removes parts of it to ensure that the dimensions of the result are exactly
         /// as specified by the transformation.
         /// </summary>
         Crop,
         /// <summary>
-        /// Resizes the image with the given width or height and maintains the aspect ratio. The image will be centered in a 
+        /// Resizes the image with the given width or height and maintains the aspect ratio. The image will be centered in a
         /// square area of the chosen background color
         /// </summary>
         FitSquare

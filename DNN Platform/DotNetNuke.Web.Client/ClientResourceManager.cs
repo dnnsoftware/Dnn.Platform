@@ -408,7 +408,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         [Obsolete("This method is not required anymore. The CRM vesion is now managed in host settings and site settings.. Scheduled removal in v11.0.0.")]
         public static void UpdateVersion()
         {
-            
+
         }
 
         /// <summary>

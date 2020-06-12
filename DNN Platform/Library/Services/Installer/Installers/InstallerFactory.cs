@@ -138,7 +138,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     installer.Version = package.Version;
                 }
-                
+
                 // Read Manifest
                 if (package.InstallerInfo.InstallMode != InstallMode.ManifestOnly || installer.SupportsManifestOnlyInstall)
                 {
@@ -147,7 +147,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             return installer;
         }
-        
+
         #endregion
     }
 }

@@ -36,7 +36,7 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             this.Deserialize(content);
         }
-        
+
         #endregion
 
         #region "Properties"
@@ -164,7 +164,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     }
                 }
             }
-            
+
             // Check for LogProperties child node
             reader.Read();
             if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "LogProperties")
@@ -259,7 +259,7 @@ namespace DotNetNuke.Services.Log.EventLog
             }
             writer.WriteEndElement();
         }
-        
+
         #endregion
     }
 }

@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_UserIdNull_ReturnErrorResponse()
         {
-            // Arrange          
+            // Arrange
             UserInfo userInfo;
             this.errorResultModel = new ConsoleErrorResultModel();
             this._userValidatorMock

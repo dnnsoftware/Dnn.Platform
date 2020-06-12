@@ -125,7 +125,7 @@ namespace DotNetNuke.Tests.Integration.Executers
         }
 
         /// <summary>
-        /// Return the last executer's response deserialized 
+        /// Return the last executer's response deserialized
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when the executer does not have any response</exception>
         /// <returns></returns>

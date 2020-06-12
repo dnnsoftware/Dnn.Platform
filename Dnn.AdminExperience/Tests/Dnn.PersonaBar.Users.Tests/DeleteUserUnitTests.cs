@@ -33,7 +33,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_DeleteValidUserId_ReturnSuccessResponse()
         {
-            // Arrange          
+            // Arrange
             int userId = 2;
 
             UserInfo userInfo = this.GetUser(userId, false);
@@ -62,7 +62,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_DeleteAlreadyDeletedUser_ReturnErrorResponse()
         {
-            // Arrange          
+            // Arrange
             int userId = 2;
 
             UserInfo userInfo = this.GetUser(userId, true);
@@ -81,7 +81,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_DeleteUserFailed_ReturnErrorResponse()
         {
-            // Arrange          
+            // Arrange
             int userId = 2;
 
             UserInfo userInfo = this.GetUser(userId, false);
@@ -107,7 +107,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_DeleteNullUserId_ReturnErrorResponse()
         {
-            // Arrange        
+            // Arrange
             UserInfo userinfo;
             this.errorResultModel = new ConsoleErrorResultModel();
             this._userValidatorMock

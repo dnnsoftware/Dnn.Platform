@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
         /// <summary>
         /// SetInstallConfig - Saves configuration n DotNetNuke.Install.Config
-        /// </summary>        
+        /// </summary>
         public void SetInstallConfig(InstallConfig installConfig)
         {
             if (installConfig == null)
@@ -106,7 +106,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             Upgrade.GetInstallTemplate(installTemplate);
             XmlNode dotnetnukeNode = installTemplate.SelectSingleNode("//dotnetnuke");
 
-            // Set Version            
+            // Set Version
             if (!string.IsNullOrEmpty(installConfig.Version))
             {
                 XmlNode versionNode = installTemplate.SelectSingleNode("//dotnetnuke/version");
@@ -119,7 +119,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 versionNode.InnerText = installConfig.Version;
             }
 
-            // Set installer culture            
+            // Set installer culture
             if (!string.IsNullOrEmpty(installConfig.InstallCulture))
             {
                 XmlNode versionNode = installTemplate.SelectSingleNode("//dotnetnuke/installCulture");
@@ -153,7 +153,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 AppendNewXmlNode(ref installTemplate, ref superUserNode, "updatepassword", "false");
             }
 
-            // Set Folder Mappings Settings            
+            // Set Folder Mappings Settings
             if (!string.IsNullOrEmpty(installConfig.FolderMappingsSettings))
             {
                 XmlNode folderMappingsNode = installTemplate.SelectSingleNode("//dotnetnuke/" + FolderMappingsConfigController.Instance.ConfigNode);
@@ -618,7 +618,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             }
             return culture;
         }
-        
+
         private CultureInfo GetCultureFromQs()
         {
             if (HttpContext.Current == null || HttpContext.Current.Request["language"] == null)

@@ -162,7 +162,7 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
         #endregion
 
         #region Override Properties
-        
+
         public override string ID
         {
             get
@@ -184,7 +184,7 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 
             }
         }
-        
+
         #endregion
 
         #region Private Properties

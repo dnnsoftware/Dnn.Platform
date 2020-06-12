@@ -50,7 +50,7 @@ namespace DotNetNuke.Entities.Content
             {
                 createdByUserId = contentItem.CreatedByUserID;
             }
-            
+
             contentItem.ContentItemId = this._dataService.AddContentItem(contentItem, createdByUserId);
             contentItem.CreatedByUserID = createdByUserId;
             contentItem.LastModifiedByUserID = currentUser.UserID;
@@ -87,7 +87,7 @@ namespace DotNetNuke.Entities.Content
             var contentItem = this.GetContentItem(contentItemId);
             this.DeleteContentItem(contentItem);
         }
-        
+
         public ContentItem GetContentItem(int contentItemId)
         {
             // Argument Contract
@@ -170,7 +170,7 @@ namespace DotNetNuke.Entities.Content
             // Argument Contract
             Requires.NotNull("contentItem", contentItem);
             Requires.PropertyNotNegative("contentItem", "ContentItemId", contentItem.ContentItemId);
-            
+
             AttachmentController.SerializeAttachmentMetadata(contentItem);
 
             this.SaveMetadataDelta(contentItem);
@@ -234,7 +234,7 @@ namespace DotNetNuke.Entities.Content
 
             return metadata;
         }
-        
+
         private void SaveMetadataDelta(ContentItem contentItem)
         {
             var persisted = this.GetMetaData(contentItem.ContentItemId);

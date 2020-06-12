@@ -21,7 +21,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         private string[] _denyRolesSplit = new string[0];
 
         /// <summary>
-        /// Gets or sets the authorized roles (separated by comma) 
+        /// Gets or sets the authorized roles (separated by comma)
         /// </summary>
         public string StaticRoles
         {
@@ -53,7 +53,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
         protected virtual UserInfo GetCurrentUser()
         {
-            return PortalController.Instance.GetCurrentPortalSettings().UserInfo;            
+            return PortalController.Instance.GetCurrentPortalSettings().UserInfo;
         }
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)

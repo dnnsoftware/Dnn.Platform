@@ -147,12 +147,12 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         {
             var prefix = NormalizeFolderPath(this.FolderPath);
             string[] masterFormats =
-            { 
+            {
                 string.Format(CultureInfo.InvariantCulture, ControllerMasterFormat, prefix),
                 string.Format(CultureInfo.InvariantCulture, SharedMasterFormat, prefix)
             };
             string[] viewFormats =
-            { 
+            {
                 string.Format(CultureInfo.InvariantCulture, ControllerViewFormat, prefix),
                 string.Format(CultureInfo.InvariantCulture, SharedViewFormat, prefix),
                 string.Format(CultureInfo.InvariantCulture, ControllerPartialFormat, prefix),

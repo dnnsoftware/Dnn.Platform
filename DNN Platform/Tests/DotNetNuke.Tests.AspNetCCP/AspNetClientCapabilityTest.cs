@@ -87,7 +87,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         public void AspNetClientCapability_IsMobile_Returns_True_For_IPhone()
         {
             // Arrange
-            var clientCapability = this._clientCapabilityProvider.GetClientCapability(iphoneUserAgent);             
+            var clientCapability = this._clientCapabilityProvider.GetClientCapability(iphoneUserAgent);
 
             // Act
             var bIsMobile = clientCapability.IsMobile;
@@ -115,7 +115,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             // Arrange
             var clientCapability = this._clientCapabilityProvider.GetClientCapability(iPadTabletUserAgent);
 
-            // Act            
+            // Act
             var bIsMobile = clientCapability.IsMobile;
 
             // Assert
@@ -129,7 +129,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             // simulator.SetHeader("user-agent", samsungGalaxyTablet);
             // simulator.SimulateRequest();
             // var capabilities = new HttpCapabilitiesDefaultProvider().GetBrowserCapabilities(HttpContext.Current.Request);
-            
+
             // Arrange
             var clientCapability = this._clientCapabilityProvider.GetClientCapability(samsungGalaxyTablet);
 

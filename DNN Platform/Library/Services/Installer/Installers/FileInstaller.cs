@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Installer.Installers
     public class FileInstaller : ComponentInstallerBase
     {
         #region Private Members
-        
+
         private readonly List<InstallFile> _Files = new List<InstallFile>();
         private bool _DeleteFiles = Null.NullBoolean;
 
@@ -116,7 +116,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 return _PhysicalBasePath.Replace("/", "\\");
             }
         }
-        
+
         #endregion
 
         #region Public Properties
@@ -153,7 +153,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 return Null.NullBoolean;
             }
         }
-        
+
         #endregion
 
         #region Protected Methods
@@ -200,7 +200,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     {
                         Util.BackupFile(insFile, this.PhysicalBasePath, this.Log);
                     }
-                    
+
                     // Copy file from temp location
                     Util.CopyFile(insFile, this.PhysicalBasePath, this.Log);
                     return true;
@@ -279,14 +279,14 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 fileName = pathNav.Value + "\\";
             }
-            
+
             // Get the name
             XPathNavigator nameNav = nav.SelectSingleNode("name");
             if (nameNav != null)
             {
                 fileName += nameNav.Value;
             }
-            
+
             // Get the sourceFileName
             string sourceFileName = Util.ReadElement(nav, "sourceFileName");
             var file = new InstallFile(fileName, sourceFileName, this.Package.InstallerInfo);
@@ -306,7 +306,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     file.SetVersion(this.Package.Version);
                 }
-                
+
                 // Set the Action
                 string strAction = XmlUtils.GetAttributeValue(nav, "action");
                 if (!string.IsNullOrEmpty(strAction))
@@ -358,7 +358,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             this.DeleteFile(unInstallFile);
         }
-        
+
         #endregion
 
         #region Public Methods
@@ -437,7 +437,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Rollback method undoes the installation of the file component in the event 
+        /// The Rollback method undoes the installation of the file component in the event
         /// that one of the other components fails
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -477,7 +477,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
             }
         }
-        
+
         #endregion
     }
 }

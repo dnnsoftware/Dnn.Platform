@@ -15,11 +15,11 @@ namespace Dnn.PersonaBar.Users.Tests
     {
         protected abstract string CommandName { get; }
         protected abstract T CreateCommand();
-        protected abstract void ChildSetup();        
+        protected abstract void ChildSetup();
 
         protected int testPortalId { get; set; }
         protected PortalSettings portalSettings { get; set; }
-        protected ConsoleErrorResultModel errorResultModel { get; set; }        
+        protected ConsoleErrorResultModel errorResultModel { get; set; }
 
         [SetUp]
         protected void Setup()

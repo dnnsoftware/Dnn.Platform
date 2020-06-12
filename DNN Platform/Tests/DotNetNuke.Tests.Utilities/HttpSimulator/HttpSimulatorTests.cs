@@ -143,7 +143,7 @@ namespace UnitTests.Subtext
             simulator.SimulateRequest(new Uri("http://localhost/Test.aspx"));
             Assert.AreEqual(string.Empty, HttpContext.Current.Request.QueryString.ToString());
             Assert.AreEqual(0, HttpContext.Current.Request.QueryString.Count);
-            
+
             simulator.SimulateRequest(new Uri("http://localhost/Test.aspx?param-name"));
             Assert.AreEqual("param-name", HttpContext.Current.Request.QueryString.ToString());
             Assert.AreEqual(1, HttpContext.Current.Request.QueryString.Count);

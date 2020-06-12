@@ -32,9 +32,9 @@ namespace DotNetNuke.Security.Permissions
         // local property declarations
         private int _desktopModulePermissionID;
         private int _portalDesktopModuleID;
-        
+
         #endregion
-        
+
         #region "Constructors"
 
         /// -----------------------------------------------------------------------------
@@ -62,9 +62,9 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionKey = permission.PermissionKey;
             this.PermissionName = permission.PermissionName;
         }
-        
+
         #endregion
-        
+
         #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
@@ -102,7 +102,7 @@ namespace DotNetNuke.Security.Permissions
                 this._portalDesktopModuleID = value;
             }
         }
-        
+
         #endregion
 
         #region IHydratable Members
@@ -141,7 +141,7 @@ namespace DotNetNuke.Security.Permissions
         #endregion
 
         #region "Public Methods"
-                
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Compares if two DesktopModulePermissionInfo objects are equivalent/equal
@@ -207,7 +207,7 @@ namespace DotNetNuke.Security.Permissions
                 return (this._desktopModulePermissionID * 397) ^ this._portalDesktopModuleID;
             }
         }
-        
+
         #endregion
     }
 }

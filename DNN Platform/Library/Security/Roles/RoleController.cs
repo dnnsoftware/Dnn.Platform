@@ -638,7 +638,7 @@ namespace DotNetNuke.Security.Roles
         }
 
         /// <summary>
-        /// Completely remove all a user's roles for a specific portal. This method is used when 
+        /// Completely remove all a user's roles for a specific portal. This method is used when
         /// anonymizing a user
         /// </summary>
         /// <param name="user">User for which all roles must be deleted. The PortalId property

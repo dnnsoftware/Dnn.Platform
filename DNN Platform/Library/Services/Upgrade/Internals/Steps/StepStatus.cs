@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
     /// <summary>
     /// Status of an Installation Step
     /// </summary>
-    /// -----------------------------------------------------------------------------        
+    /// -----------------------------------------------------------------------------
     public enum StepStatus
     {
         /// <summary>
@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         Running = 1,
 
         /// <summary>
-        /// Step is done and was successful. 
+        /// Step is done and was successful.
         /// </summary>
         Done = 2,
 

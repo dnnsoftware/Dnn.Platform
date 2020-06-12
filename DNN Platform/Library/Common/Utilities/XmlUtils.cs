@@ -284,7 +284,7 @@ namespace DotNetNuke.Common.Utilities
         {
             return GetNodeValue(objNode, nodeName, String.Empty);
         }
-        
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of node
@@ -749,7 +749,7 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Produce an XPath literal equal to the value if possible; if not, produce
         /// an XPath expression that will match the value.
-        /// 
+        ///
         /// Note that this function will produce very long XPath expressions if a value
         /// contains a long run of double quotes.
         /// </summary>

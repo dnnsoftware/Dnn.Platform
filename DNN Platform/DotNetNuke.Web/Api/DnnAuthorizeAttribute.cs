@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>
-        /// Gets or sets the authorized roles (separated by comma) 
+        /// Gets or sets the authorized roles (separated by comma)
         /// </summary>
         public string StaticRoles
         {
@@ -51,8 +51,8 @@ namespace DotNetNuke.Web.Api
         public string DenyRoles
         {
             get { return this._denyRoles; }
-            set 
-            { 
+            set
+            {
                 this._denyRoles = value;
                 this._denyRolesSplit = SplitString(this._denyRoles);
             }
@@ -64,7 +64,7 @@ namespace DotNetNuke.Web.Api
         public string AuthTypes
         {
             get { return this._authTypes; }
-            set 
+            set
             {
                 this._authTypes = value;
                 this._authTypesSplit = SplitString(this._authTypes);
@@ -99,7 +99,7 @@ namespace DotNetNuke.Web.Api
                 }
             }
 
-            // if the attribute opted in explicitly for specific authentication types, then 
+            // if the attribute opted in explicitly for specific authentication types, then
             // use it; otherwise use the defaults according to settings in the web.config.
             var currentAuthType = (identity.AuthenticationType ?? "").Trim();
             if (currentAuthType.Length > 0)

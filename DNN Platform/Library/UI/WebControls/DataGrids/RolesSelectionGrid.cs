@@ -38,7 +38,7 @@ namespace DotNetNuke.UI.WebControls
         private DataGrid dgRoleSelection;
         private Label lblGroups;
         private Panel pnlRoleSlections;
-        
+
         #endregion
 
         #region Public Properties
@@ -137,7 +137,7 @@ namespace DotNetNuke.UI.WebControls
                 return this.dgRoleSelection.SelectedItemStyle;
             }
         }
-        
+
         #endregion
 
         /// <summary>
@@ -198,11 +198,11 @@ namespace DotNetNuke.UI.WebControls
                 this.ViewState["ShowAllUsers"] = value;
             }
         }
-        
+
         #endregion
 
         #region Private Properties
-        
+
         private DataTable dtRolesSelection
         {
             get
@@ -222,7 +222,7 @@ namespace DotNetNuke.UI.WebControls
                 this._selectedRoles = value;
             }
         }
-        
+
         #endregion
 
         #region Private Methods
@@ -342,19 +342,19 @@ namespace DotNetNuke.UI.WebControls
             {
                 // Load State from the array of objects that was saved with SaveViewState.
                 var myState = (object[])savedState;
-                
+
                 // Load Base Controls ViewState
                 if (myState[0] != null)
                 {
                     base.LoadViewState(myState[0]);
                 }
-                
+
                 // Load TabPermissions
                 if (myState[1] != null)
                 {
                     string state = Convert.ToString(myState[1]);
-                    this.CurrentRoleSelection = state != string.Empty 
-                                        ? new List<string>(state.Split(new[] { "##" }, StringSplitOptions.None)) 
+                    this.CurrentRoleSelection = state != string.Empty
+                                        ? new List<string>(state.Split(new[] { "##" }, StringSplitOptions.None))
                                         : new List<string>();
                 }
             }
@@ -459,7 +459,7 @@ namespace DotNetNuke.UI.WebControls
                     break;
                 }
             }
-            
+
             // Rolename not found so add new
             if (!isMatch && Selected)
             {

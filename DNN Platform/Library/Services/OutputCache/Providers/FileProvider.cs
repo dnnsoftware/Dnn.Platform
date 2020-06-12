@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             var portalInfo = PortalController.Instance.GetPortal(portalId);
 
             string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
-            
+
 
             if (!(string.IsNullOrEmpty(homeDirectoryMapPath)))
             {
@@ -62,7 +62,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             using (var writerLock = CacheFolderPath.GetWriteLock())
             {
                 CacheFolderPath.Add(portalId, cacheFolder);
-                
+
             }
 
             return cacheFolder;
@@ -290,10 +290,10 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
             catch (Exception ex)
             {
-                // TODO: Need to implement multi-threading.  
+                // TODO: Need to implement multi-threading.
                 // The current code is not thread safe and threw error if two threads tried creating cache file
                 // A thread could create a file between the time another thread deleted it and tried to create new cache file.
-                // This would result in a system.IO.IOException.  Also, there was no error handling in place so the 
+                // This would result in a system.IO.IOException.  Also, there was no error handling in place so the
                 // Error would bubble up to the user and provide details on the file structure of the site.
                 Exceptions.Exceptions.LogException(ex);
             }

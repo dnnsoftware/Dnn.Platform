@@ -19,7 +19,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         private readonly ViewContext _viewContext;
 
         private readonly IDnnController _controller;
-        public DnnUrlHelper(ViewContext viewContext) 
+        public DnnUrlHelper(ViewContext viewContext)
             : this(viewContext, RouteTable.Routes)
         {
         }
@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             Requires.NotNull("viewContext", viewContext);
 
             this.UrlHelper = new UrlHelper(viewContext.RequestContext, routeCollection);
-            
+
             this._viewContext = viewContext;
 
             this._controller = viewContext.Controller as IDnnController;
@@ -64,7 +64,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Converts a virtual (relative) path to an application absolute path.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The application absolute path.
         /// </returns>
@@ -77,7 +77,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns a value that indicates whether the URL is local.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// true if the URL is local; otherwise, false.
         /// </returns>

@@ -22,10 +22,10 @@ namespace DotNetNuke.Services.Exceptions
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : ErrorPage
-    /// 
+    ///
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// Trapped errors are redirected to this universal error page, resulting in a 
+    /// Trapped errors are redirected to this universal error page, resulting in a
     /// graceful display.
     /// </summary>
     /// <remarks>

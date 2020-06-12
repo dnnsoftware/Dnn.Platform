@@ -18,7 +18,7 @@ namespace DotNetNuke.Authentication.Facebook.Components
     {
         #region Constructors
 
-        public FacebookClient(int portalId, AuthMode mode) 
+        public FacebookClient(int portalId, AuthMode mode)
             : base(portalId, mode, "Facebook")
         {
             this.TokenEndpoint = new Uri("https://graph.facebook.com/oauth/access_token");

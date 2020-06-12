@@ -56,7 +56,7 @@ namespace DotNetNuke.Common.Utilities
         public static int GetHeightFromStream(Stream sFile)
         {
             Image g = Image.FromStream(sFile, true);
-            int h = g.Height; 
+            int h = g.Height;
             g.Dispose();
             return h;
         }
@@ -142,7 +142,7 @@ namespace DotNetNuke.Common.Utilities
                     }
                 }
             }
-            
+
             if (FileWrapper.Instance.Exists(tmp))
             {
                 FileWrapper.Instance.SetAttributes(tmp, FileAttributes.Normal);
@@ -276,7 +276,7 @@ namespace DotNetNuke.Common.Utilities
             var newStream = new MemoryStream();
             Image g = Image.FromStream(sFile);
             int imgHeight, imgWidth;
-            
+
             if (intHeight > 0 & intWidth > 0)
             {
                 int newHeight = intHeight;

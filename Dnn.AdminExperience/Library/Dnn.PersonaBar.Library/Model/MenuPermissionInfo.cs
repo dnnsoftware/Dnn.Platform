@@ -28,14 +28,14 @@ namespace Dnn.PersonaBar.Library.Model
     public class MenuPermissionInfo : PermissionInfoBase, IHydratable
     {
         #region "Private Members"
-        
+
         private int _menuId;
 
         // local property declarations
         private int _menuPermissionId;
-        
+
         #endregion
-        
+
         #region "Constructors"
 
         /// -----------------------------------------------------------------------------
@@ -63,9 +63,9 @@ namespace Dnn.PersonaBar.Library.Model
             this.PermissionKey = permission.PermissionKey;
             this.PermissionName = permission.PermissionName;
         }
-        
+
         #endregion
-        
+
         #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
@@ -147,7 +147,7 @@ namespace Dnn.PersonaBar.Library.Model
         }
 
         #endregion
-        
+
         #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
@@ -215,7 +215,7 @@ namespace Dnn.PersonaBar.Library.Model
                 return (this._menuId * 397) ^ this._menuPermissionId;
             }
         }
-        
+
         #endregion
     }
 }

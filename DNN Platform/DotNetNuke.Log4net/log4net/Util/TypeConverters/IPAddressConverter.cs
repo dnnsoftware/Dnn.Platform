@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -37,7 +37,7 @@ namespace log4net.Util.TypeConverters
     /// <seealso cref="ConverterRegistry"/>
     /// <seealso cref="IConvertFrom"/>
     /// <author>Nicko Cadell</author>
-    internal class IPAddressConverter : IConvertFrom 
+    internal class IPAddressConverter : IConvertFrom
     {
         #region Implementation of IConvertFrom
 
@@ -52,7 +52,7 @@ namespace log4net.Util.TypeConverters
         /// the <see cref="String"/> type.
         /// </para>
         /// </remarks>
-        public bool CanConvertFrom(Type sourceType) 
+        public bool CanConvertFrom(Type sourceType)
         {
             return (sourceType == typeof(string));
         }
@@ -74,10 +74,10 @@ namespace log4net.Util.TypeConverters
         /// target type. To check for this condition use the <see cref="CanConvertFrom"/>
         /// method.
         /// </exception>
-        public object ConvertFrom(object source) 
+        public object ConvertFrom(object source)
         {
             string str = source as string;
-            if (str != null && str.Length > 0) 
+            if (str != null && str.Length > 0)
             {
                 try
                 {
@@ -92,11 +92,11 @@ namespace log4net.Util.TypeConverters
                     }
 #endif
 
-                    // Try to resolve via DNS. This is a blocking call. 
+                    // Try to resolve via DNS. This is a blocking call.
                     // GetHostEntry works with either an IPAddress string or a host name
                     IPHostEntry host = Dns.GetHostEntry(str);
-                    if (host != null && 
-                        host.AddressList != null && 
+                    if (host != null &&
+                        host.AddressList != null &&
                         host.AddressList.Length > 0 &&
                         host.AddressList[0] != null)
                     {

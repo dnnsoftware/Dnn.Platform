@@ -19,13 +19,13 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 {
     public class FileDeletionControllerTests
     {
-        private Mock<IFileLockingController> _mockFileLockingController;                
+        private Mock<IFileLockingController> _mockFileLockingController;
         private Mock<DataProvider> _mockData;
         private Mock<IFileVersionController> _fileVersionController;
         private Mock<IFolderMappingController> _folderMappingController;
         private Mock<FolderProvider> _mockFolderProvider;
         private Mock<IContentController> _mockContentController;
-        
+
         [SetUp]
         public void Setup()
         {
@@ -35,12 +35,12 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._folderMappingController = new Mock<IFolderMappingController>();
             this._mockFolderProvider = MockComponentProvider.CreateFolderProvider(Constants.FOLDER_ValidFolderProviderType);
             this._mockContentController = new Mock<IContentController>();
-            
+
             FileLockingController.SetTestableInstance(this._mockFileLockingController.Object);
             FileVersionController.RegisterInstance(this._fileVersionController.Object);
             FolderMappingController.RegisterInstance(this._folderMappingController.Object);
-            
-            ComponentFactory.RegisterComponentInstance<IContentController>(this._mockContentController.Object);                          
+
+            ComponentFactory.RegisterComponentInstance<IContentController>(this._mockContentController.Object);
         }
 
         [TearDown]
@@ -59,7 +59,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
             this._folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-            
+
             this._mockData.Setup(md => md.DeleteFile(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<int>()));
 
             this._mockFolderProvider.Setup(mf => mf.DeleteFile(fileInfo)).Verifiable();
@@ -80,12 +80,12 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             // Arrange
             var fileInfo = new FileInfoBuilder().Build();
-            
+
             string someString;
             this._mockFileLockingController.Setup(mflc => mflc.IsFileLocked(fileInfo, out someString)).Returns(true);
 
             // Act
-            FileDeletionController.Instance.DeleteFile(fileInfo);            
+            FileDeletionController.Instance.DeleteFile(fileInfo);
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             // Arrange
             var fileInfo = new FileInfoBuilder().Build();
-            
+
             this._fileVersionController.Setup(fv => fv.DeleteAllUnpublishedVersions(fileInfo, false));
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
@@ -106,7 +106,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._mockFolderProvider.Setup(mf => mf.DeleteFile(fileInfo)).Throws<Exception>();
 
-            
+
             FileDeletionController.Instance.DeleteFile(fileInfo);
         }
 
@@ -120,7 +120,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
             this._folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-            
+
             this._mockData.Setup(md => md.DeleteFile(Constants.CONTENT_ValidPortalId, It.IsAny<string>(), Constants.FOLDER_ValidFolderId)).Verifiable();
 
             this._mockFolderProvider.Setup(mf => mf.DeleteFile(fileInfo));
@@ -142,7 +142,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var fileInfo = new FileInfoBuilder()
                 .WithContentItemId(Constants.CONTENT_ValidContentItemId)
                 .Build();
-            
+
             this._fileVersionController.Setup(fv => fv.DeleteAllUnpublishedVersions(fileInfo, false));
 
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };

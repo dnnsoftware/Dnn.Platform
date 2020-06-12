@@ -126,7 +126,7 @@ namespace DesktopModules.Admin.Security
         /// -----------------------------------------------------------------------------
         public override void DataBind()
         {
-        
+
             // Before we bind the Profile to the editor we need to "update" the visible data
             var properties = new ProfilePropertyDefinitionCollection();
             var imageType = new ListController().GetListEntryInfo("DataType", "Image");

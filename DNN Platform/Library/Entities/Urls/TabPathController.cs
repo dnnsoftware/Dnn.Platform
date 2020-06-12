@@ -63,7 +63,7 @@ namespace DotNetNuke.Entities.Urls
             string baseTabPath = tab.TabPath.Replace("//", "/").TrimStart('/');
             if (options.CanGenerateNonStandardPath)
             {
-                // build up a non-space version of the tab path 
+                // build up a non-space version of the tab path
                 baseTabPath = BuildTabPathWithReplacement(tab, options, parentTraceId);
                 baseTabPath = baseTabPath.Replace("//", "/");
 
@@ -248,7 +248,7 @@ namespace DotNetNuke.Entities.Urls
                             }
                             else
                             {
-                                isCustomPath = true; // we are providing a custom Url 
+                                isCustomPath = true; // we are providing a custom Url
                             }
                         }
                         else
@@ -298,7 +298,7 @@ namespace DotNetNuke.Entities.Urls
             bool isTabHomePage = (tab.TabID == portalSettings.HomeTabId);
             if (!isTabHomePage)
             {
-                // 756: check if content localization is switched on before checking for other languages 
+                // 756: check if content localization is switched on before checking for other languages
                 if (Host.Host.EnableBrowserLanguage)
                 {
                     // check the localised versions of the tab

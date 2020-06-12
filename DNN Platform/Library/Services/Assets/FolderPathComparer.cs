@@ -8,7 +8,7 @@ using DotNetNuke.Services.FileSystem;
 namespace DotNetNuke.Services.Assets
 {
     public class FolderPathComparer : IComparer<int>
-    {        
+    {
         private readonly Dictionary<int, string> cache;
 
         public FolderPathComparer()

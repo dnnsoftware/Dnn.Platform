@@ -104,13 +104,13 @@ namespace DotNetNuke.Services.Localization
             // These fields may not be populated (for Host level locales)
             DataTable schemaTable = dr.GetSchemaTable();
             bool hasColumns = schemaTable.Select("ColumnName = 'IsPublished' Or ColumnName = 'PortalID'").Length == 2;
-            
+
             if (hasColumns)
             {
                 this.IsPublished = Null.SetNullBoolean(dr["IsPublished"]);
                 this.PortalId = Null.SetNullInteger(dr["PortalID"]);
             }
-            
+
             // Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
         }

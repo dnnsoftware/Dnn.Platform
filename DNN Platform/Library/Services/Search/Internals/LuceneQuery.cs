@@ -61,6 +61,6 @@ namespace DotNetNuke.Services.Search.Internals
             this.Sort = Sort.RELEVANCE;
         }
 
-        #endregion 
+        #endregion
     }
 }

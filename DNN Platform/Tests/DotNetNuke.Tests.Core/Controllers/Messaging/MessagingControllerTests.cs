@@ -206,7 +206,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void MessagingController_Constructor_Throws_On_Null_DataService()
         {
-            // Arrange            
+            // Arrange
 
             // Act, Assert
             Assert.Throws<ArgumentNullException>(() => new MessagingController(null));
@@ -474,7 +474,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_CreateMessage_Throws_On_Large_To()
         {
-            // Arrange            
+            // Arrange
             var message = new Message { Subject = "subject", Body = "body" };
             var roles = new List<RoleInfo>();
             var users = new List<UserInfo>();
@@ -493,7 +493,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_CreateMessage_Throws_On_Null_Sender()
         {
-            // Arrange            
+            // Arrange
             var message = new Message { Subject = "subject", Body = "body" };
             var user = new UserInfo { DisplayName = "user1", UserID = Constants.USER_TenId };
             var role = new RoleInfo { RoleName = "role1" };
@@ -506,7 +506,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_CreateMessage_Throws_On_Negative_SenderID()
         {
-            // Arrange            
+            // Arrange
             var message = new Message { Subject = "subject", Body = "body" };
             var user = new UserInfo { DisplayName = "user1", UserID = Constants.USER_TenId };
             var role = new RoleInfo { RoleName = "role1" };
@@ -520,7 +520,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [ExpectedException(typeof(ArgumentException))]
         public void MessagingController_CreateMessage_Throws_On_SendingToRole_ByNonAdmin()
         {
-            // Arrange            
+            // Arrange
             var message = new Message { Subject = "subject", Body = "body" };
             var user = new UserInfo { DisplayName = Constants.USER_ElevenName, UserID = Constants.USER_ElevenId };
             var role = new RoleInfo { RoleName = Constants.RoleName_FirstSocialGroup, RoleID = Constants.RoleID_FirstSocialGroup };
@@ -655,7 +655,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             // Act
             this._mockMessagingController.Object.SendMessage(message, new List<RoleInfo> { role }, new List<UserInfo> { user }, null, this._adminUserInfo);
 
-            // SaveMessageRecipient is called twice, one for sent message and second for receive                        
+            // SaveMessageRecipient is called twice, one for sent message and second for receive
         }
 
         [Test]
@@ -1089,7 +1089,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             // Arrange
             var sender = new UserInfo { DisplayName = "user11" };
 
-            // Act            
+            // Act
             this._internalMessagingController.ReplyMessage(Constants.Messaging_MessageId_1, "body", null, sender);
         }
 

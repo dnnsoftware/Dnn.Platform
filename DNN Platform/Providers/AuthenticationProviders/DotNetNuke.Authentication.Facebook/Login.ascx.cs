@@ -62,7 +62,7 @@ namespace DotNetNuke.Authentication.Facebook
             if (result == AuthorisationResult.Denied)
             {
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
-                
+
             }
         }
     }

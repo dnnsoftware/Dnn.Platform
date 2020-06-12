@@ -13,7 +13,7 @@ using DotNetNuke.Common.Utilities;
 namespace DotNetNuke.Services.Tokens
 {
     /// <summary>
-    /// The BaseTokenReplace class provides the tokenization of tokens formatted  
+    /// The BaseTokenReplace class provides the tokenization of tokens formatted
     /// [object:property] or [object:property|format|ifEmpty] or [custom:no] within a string
     /// with the appropriate current property/custom values.
     /// </summary>
@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.Tokens
         /// <summary>
         /// Gets the Regular expression for the token to be replaced
         /// </summary>
-        /// <value>A regular Expression</value>   
+        /// <value>A regular Expression</value>
         protected Regex TokenizerRegex
         {
             get

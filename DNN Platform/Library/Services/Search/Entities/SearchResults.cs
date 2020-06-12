@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Search.Entities
         /// Collection of Results
         /// </summary>
         public IList<SearchResult> Results { get; set; }
-        
+
         public SearchResults()
         {
             this.Results = new List<SearchResult>();

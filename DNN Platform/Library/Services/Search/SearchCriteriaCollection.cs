@@ -98,7 +98,7 @@ namespace DotNetNuke.Services.Search
                 }
             }
         }
-        
+
         #endregion
 
         #region Properties
@@ -120,7 +120,7 @@ namespace DotNetNuke.Services.Search
                 this.List[index] = value;
             }
         }
-        
+
         #endregion
 
         #region Public Methods
@@ -217,7 +217,7 @@ namespace DotNetNuke.Services.Search
             this.CopyTo(arr, 0);
             return arr;
         }
-        
+
         #endregion
     }
 }

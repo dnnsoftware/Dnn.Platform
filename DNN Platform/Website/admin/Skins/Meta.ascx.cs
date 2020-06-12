@@ -36,19 +36,19 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// <summary>
         /// Gets or sets the <c>http-equiv</c> attribute of the <c>meta</c> element.
-        /// If specified, this is the name of the HTTP header that the 
+        /// If specified, this is the name of the HTTP header that the
         /// <c>meta</c>
         /// The attribute is not rendered if it is not set.
         /// Either this or the <see cref="Name" /> must be set.
         /// </summary>
-        public string HttpEquiv 
+        public string HttpEquiv
         {
-            get { return this.Http.Equiv; } 
-            set { this.Http.Equiv = value; } 
+            get { return this.Http.Equiv; }
+            set { this.Http.Equiv = value; }
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to insert this <c>meta</c> 
+        /// Gets or sets a value indicating whether to insert this <c>meta</c>
         /// element at the beginning of the <c>head</c> element, rather than the
         /// end.
         /// </summary>
@@ -89,10 +89,10 @@ namespace DotNetNuke.UI.Skins.Controls
         /// the <see cref="HttpEquiv" /> property via <c>Http-Equiv</c> syntax
         /// in Web Forms markup.
         /// </summary>
-        public class HttpPlaceholder 
+        public class HttpPlaceholder
         {
             /// <summary>
-            /// Gets or sets the <see cref="Meta.HttpEquiv"/> of the parent 
+            /// Gets or sets the <see cref="Meta.HttpEquiv"/> of the parent
             /// <c>meta</c> element
             /// </summary>
             public string Equiv { get; set; }

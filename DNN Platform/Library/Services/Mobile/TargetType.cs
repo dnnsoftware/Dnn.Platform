@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Mobile
         Tab = 2,
 
         /// <summary>
-        /// Redirect when request from some unknown device, should be determine by match rules; 
+        /// Redirect when request from some unknown device, should be determine by match rules;
         /// </summary>
         Url = 3
     }

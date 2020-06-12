@@ -163,7 +163,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>A <see cref="IDataReader"/> containing the sent message box data</returns>
         public IDataReader GetSentBoxView(int userId, int portalId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending)
         {
-            return this._provider.ExecuteReader("CoreMessaging_GetSentBox", userId, portalId, afterMessageId, numberOfRecords, sortColumn, sortAscending);            
+            return this._provider.ExecuteReader("CoreMessaging_GetSentBox", userId, portalId, afterMessageId, numberOfRecords, sortColumn, sortAscending);
         }
 
         /// <summary>Gets the archive box view.</summary>
@@ -189,7 +189,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <param name="totalRecords">The total records.</param>
         /// <returns>A <see cref="IDataReader"/> containing the message thread data</returns>
         public IDataReader GetMessageThread(int conversationId, int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool @sortAscending, ref int totalRecords)
-        {            
+        {
             return this._provider.ExecuteReader("CoreMessaging_GetMessageThread", conversationId, userId, afterMessageId, numberOfRecords, sortColumn, sortAscending);
         }
 
@@ -434,7 +434,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
             return this._provider.ExecuteReader("CoreMessaging_CountLegacyMessages");
         }
 
-        #endregion    
+        #endregion
 
         #region Queued email API's
 

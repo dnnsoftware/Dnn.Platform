@@ -35,11 +35,11 @@ namespace DotNetNuke.Collections
         /// <summary>
         /// Converts an <see cref="IEnumerable{T}"/> into an <see cref="IPagedList{T}"/>
         /// </summary>
-        /// <typeparam name="T">The type of the items in the <paramref name="source"/></typeparam> 
+        /// <typeparam name="T">The type of the items in the <paramref name="source"/></typeparam>
         /// <param name = "source">The source <see cref="IEnumerable{T}"/> to convert</param>
         /// <param name = "pageIndex">The page index requested</param>
         /// <param name = "pageSize">The page size requested</param>
-        /// <returns>A <see cref="IPagedList{T}"/> object that is used to select a single 
+        /// <returns>A <see cref="IPagedList{T}"/> object that is used to select a single
         /// page of data from the data source</returns>
         public static IPagedList<T> ToPagedList<T>(this IEnumerable<T> source, int pageIndex, int pageSize)
         {

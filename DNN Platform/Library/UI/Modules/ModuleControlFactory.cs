@@ -181,8 +181,8 @@ namespace DotNetNuke.UI.Modules
                     var segments = moduleConfiguration.ModuleControl.ControlSrc.Replace(".mvc", "").Split('/');
 
                     moduleControl.LocalResourceFile = String.Format("~/DesktopModules/MVC/{0}/{1}/{2}.resx",
-                                        moduleConfiguration.DesktopModule.FolderName, 
-                                        Localization.LocalResourceDirectory, 
+                                        moduleConfiguration.DesktopModule.FolderName,
+                                        Localization.LocalResourceDirectory,
                                         segments[0]);
                     break;
                 default:

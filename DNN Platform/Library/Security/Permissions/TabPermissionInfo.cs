@@ -29,13 +29,13 @@ namespace DotNetNuke.Security.Permissions
     public class TabPermissionInfo : PermissionInfoBase, IHydratable
     {
         #region "Private Members"
-        
+
         private int _TabID;
         // local property declarations
         private int _TabPermissionID;
-        
+
         #endregion
-        
+
         #region "Constructors"
 
          /// -----------------------------------------------------------------------------
@@ -63,9 +63,9 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionKey = permission.PermissionKey;
             this.PermissionName = permission.PermissionName;
         }
-        
+
         #endregion
-        
+
         #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
@@ -105,7 +105,7 @@ namespace DotNetNuke.Security.Permissions
                 this._TabID = value;
             }
         }
-        
+
         #endregion
 
         #region IHydratable Members

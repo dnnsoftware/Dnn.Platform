@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -70,7 +70,7 @@ namespace log4net.ObjectRenderer
         /// Default constructor.
         /// </para>
         /// </remarks>
-        public RendererMap() 
+        public RendererMap()
         {
             this.m_map = System.Collections.Hashtable.Synchronized(new System.Collections.Hashtable());
         }
@@ -117,13 +117,13 @@ namespace log4net.ObjectRenderer
         /// as a <see cref="string"/>.
         /// </para>
         /// </remarks>
-        public void FindAndRender(object obj, TextWriter writer) 
+        public void FindAndRender(object obj, TextWriter writer)
         {
             if (obj == null)
             {
                 writer.Write(SystemInfo.NullText);
             }
-            else 
+            else
             {
                 // Optimisation for strings
                 string str = obj as string;
@@ -182,13 +182,13 @@ namespace log4net.ObjectRenderer
         /// Gets the renderer for the specified object type.
         /// </param>
         /// <param>
-        /// Syntactic sugar method that calls <see cref="M:Get(Type)"/> 
+        /// Syntactic sugar method that calls <see cref="M:Get(Type)"/>
         /// with the type of the object parameter.
         /// </param>
         /// </remarks>
-        public IObjectRenderer Get(Object obj) 
+        public IObjectRenderer Get(Object obj)
         {
-            if (obj == null) 
+            if (obj == null)
             {
                 return null;
             }
@@ -197,7 +197,7 @@ namespace log4net.ObjectRenderer
                 return this.Get(obj.GetType());
             }
         }
-  
+
         /// <summary>
         /// Gets the renderer for the specified type
         /// </summary>
@@ -210,7 +210,7 @@ namespace log4net.ObjectRenderer
         /// <see cref="DefaultRenderer"/> will be returned.
         /// </para>
         /// </remarks>
-        public IObjectRenderer Get(Type type) 
+        public IObjectRenderer Get(Type type)
         {
             if (type == null)
             {
@@ -249,28 +249,28 @@ namespace log4net.ObjectRenderer
             }
 
             return result;
-        }  
+        }
 
         /// <summary>
         /// Internal function to recursively search interfaces
         /// </summary>
         /// <param name="type">the type to lookup the renderer for</param>
         /// <returns>the renderer for the specified type</returns>
-        private IObjectRenderer SearchTypeAndInterfaces(Type type) 
+        private IObjectRenderer SearchTypeAndInterfaces(Type type)
         {
             IObjectRenderer r = (IObjectRenderer)this.m_map[type];
-            if (r != null) 
+            if (r != null)
             {
                 return r;
-            } 
-            else 
+            }
+            else
             {
                 foreach (Type t in type.GetInterfaces())
                 {
                     r = this.SearchTypeAndInterfaces(t);
                     if (r != null)
                     {
-                        return r; 
+                        return r;
                     }
                 }
             }
@@ -301,14 +301,14 @@ namespace log4net.ObjectRenderer
         /// cannot be removed.
         /// </para>
         /// </remarks>
-        public void Clear() 
+        public void Clear()
         {
             this.m_map.Clear();
             this.m_cache.Clear();
         }
 
         /// <summary>
-        /// Register an <see cref="IObjectRenderer"/> for <paramref name="typeToRender"/>. 
+        /// Register an <see cref="IObjectRenderer"/> for <paramref name="typeToRender"/>.
         /// </summary>
         /// <param name="typeToRender">the type that will be rendered by <paramref name="renderer"/></param>
         /// <param name="renderer">the renderer for <paramref name="typeToRender"/></param>
@@ -319,7 +319,7 @@ namespace log4net.ObjectRenderer
         /// specifying the same <paramref name="typeToRender"/> as an argument.
         /// </para>
         /// </remarks>
-        public void Put(Type typeToRender, IObjectRenderer renderer) 
+        public void Put(Type typeToRender, IObjectRenderer renderer)
         {
             this.m_cache.Clear();
 
@@ -333,6 +333,6 @@ namespace log4net.ObjectRenderer
             }
 
             this.m_map[typeToRender] = renderer;
-        }   
+        }
     }
 }

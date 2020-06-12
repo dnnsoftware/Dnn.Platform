@@ -19,9 +19,9 @@ namespace DotNetNuke.Entities.Content
     /// Content type of a content item.
     /// </summary>
     /// <remarks>
-    /// Content Types, simply put, are a way of telling the framework what module/functionality is associated with a Content Item. 
+    /// Content Types, simply put, are a way of telling the framework what module/functionality is associated with a Content Item.
     /// Each product (ie. module) that wishes to allow categorization of data (via Taxonomy or Folksonomy) for it's content items
-    ///  will likely need to create its own content type. 
+    ///  will likely need to create its own content type.
     /// </remarks>
     [Serializable]
     public class ContentType : ContentTypeMemberNameFixer, IHydratable

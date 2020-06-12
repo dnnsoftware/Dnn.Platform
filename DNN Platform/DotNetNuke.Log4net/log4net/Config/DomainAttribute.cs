@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -40,7 +40,7 @@ namespace log4net.Config
     /// logging repository. This attribute specified on the assembly controls
     /// the configuration of the domain. The <see cref="RepositoryAttribute.Name"/> property specifies the name
     /// of the domain that this assembly is a part of. The <see cref="RepositoryAttribute.RepositoryType"/>
-    /// specifies the type of the repository objects to create for the domain. If 
+    /// specifies the type of the repository objects to create for the domain. If
     /// this attribute is not specified and a <see cref="RepositoryAttribute.Name"/> is not specified
     /// then the assembly will be part of the default shared logging domain.
     /// </para>
@@ -71,7 +71,7 @@ namespace log4net.Config
         }
 
         /// <summary>
-        /// Initialize a new instance of the <see cref="DomainAttribute" /> class 
+        /// Initialize a new instance of the <see cref="DomainAttribute" /> class
         /// with the name of the domain.
         /// </summary>
         /// <param name="name">The name of the domain.</param>

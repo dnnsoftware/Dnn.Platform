@@ -52,7 +52,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 this.IsTouchScreen = false;
                 this.BrowserName = browserCaps.Browser;
                 if (browserCaps.Capabilities != null)
-                { 
+                {
                     this.Capabilities = browserCaps.Capabilities.Cast<DictionaryEntry>()
                         .ToDictionary(kvp => Convert.ToString(kvp.Key), kvp => Convert.ToString(kvp.Value));
                 }
@@ -88,7 +88,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         /// </summary>
         public AspNetClientCapability(HttpRequest request) : this(request.UserAgent ?? "", request.Browser)
         {
-            
+
         }
 
         /// <summary>

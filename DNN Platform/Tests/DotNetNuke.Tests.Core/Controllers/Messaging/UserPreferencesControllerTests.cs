@@ -65,8 +65,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var userPreference = new UserPreferenceBuilder().Build();
 
             this.mockDataService.Setup(ds => ds.SetUserPreference(
-                userPreference.PortalId, 
-                userPreference.UserId, 
+                userPreference.PortalId,
+                userPreference.UserId,
                 (int)userPreference.MessagesEmailFrequency,
                 (int)userPreference.NotificationsEmailFrequency)).Verifiable();
 

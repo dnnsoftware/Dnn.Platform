@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         private void Redirect()
         {
-            // Redirect browser back to portal 
+            // Redirect browser back to portal
             this.Response.Redirect(AuthenticationController.GetLogoffRedirectURL(this.PortalSettings, this.Request), true);
         }
 

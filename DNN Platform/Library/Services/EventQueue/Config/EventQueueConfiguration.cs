@@ -22,13 +22,13 @@ namespace DotNetNuke.Services.EventQueue.Config
     internal class EventQueueConfiguration
     {
         #region "Constructors"
-        
+
         internal EventQueueConfiguration()
         {
             this.PublishedEvents = new Dictionary<string, PublishedEvent>();
             this.EventQueueSubscribers = new Dictionary<string, SubscriberInfo>();
         }
-        
+
         #endregion
 
         #region "Public Properties"
@@ -36,7 +36,7 @@ namespace DotNetNuke.Services.EventQueue.Config
         internal Dictionary<string, SubscriberInfo> EventQueueSubscribers { get; set; }
 
         internal Dictionary<string, PublishedEvent> PublishedEvents { get; set; }
-        
+
         #endregion
 
         #region "Private Methods"

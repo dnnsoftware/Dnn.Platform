@@ -30,7 +30,7 @@ namespace DotNetNuke.Security.Permissions
         #region Private Members
 
         #endregion
-        
+
         #region Public Properties
 
         /// -----------------------------------------------------------------------------
@@ -79,7 +79,7 @@ namespace DotNetNuke.Security.Permissions
         public string PermissionName { get; set; }
 
         #endregion
-        
+
         #region "Protected methods"
 
         /// -----------------------------------------------------------------------------

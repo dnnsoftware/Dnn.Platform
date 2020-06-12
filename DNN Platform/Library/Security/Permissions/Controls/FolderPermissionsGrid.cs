@@ -134,7 +134,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             objFolderPermission.FolderPath = this.FolderPath;
             return objFolderPermission;
         }
-        
+
         private void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
         {
             var item = e.Item;
@@ -162,7 +162,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             base.CreateChildControls();
             this.rolePermissionsGrid.ItemDataBound += this.rolePermissionsGrid_ItemDataBound;
         }
-        
+
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
             var objPermission = new FolderPermissionInfo(permission)
@@ -221,7 +221,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, RoleInfo role)
         {
-            // Search TabPermission Collection for the user 
+            // Search TabPermission Collection for the user
             if (this.FolderPermissions.Cast<FolderPermissionInfo>().Any(p => p.RoleID == role.RoleID))
             {
                 return;
@@ -234,7 +234,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 {
                     this.AddPermission(objPermission, role.RoleID, role.RoleName, Null.NullInteger, Null.NullString, true);
                 }
-            }            
+            }
         }
 
         /// -----------------------------------------------------------------------------

@@ -35,7 +35,7 @@ namespace DotNetNuke.Common.Utilities
         private static readonly Regex StripNonWordRegex = new Regex("\\W*", RegexOptions.Compiled);
         private static readonly Regex StripTagsRegex = new Regex("<[^<>]*>", RegexOptions.Compiled);
         private static readonly Regex RemoveInlineStylesRegEx = new Regex("<style>.*?</style>", RegexOptions.Compiled | RegexOptions.Multiline);
-         
+
         // Match all variants of <br> tag (<br>, <BR>, <br/>, including embedded space
         private static readonly Regex ReplaceHtmlNewLinesRegex = new Regex("\\s*<\\s*[bB][rR]\\s*/\\s*>\\s*", RegexOptions.Compiled);
 
@@ -335,7 +335,7 @@ namespace DotNetNuke.Common.Utilities
         public static string RemoveInlineStyle(string HTML)
         {
             return RemoveInlineStylesRegEx.Replace(HTML, "");
-       
+
         }
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -355,7 +355,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   StripUnspecifiedTags removes the HTML tags from the content -- leaving behind the info 
+        ///   StripUnspecifiedTags removes the HTML tags from the content -- leaving behind the info
         ///   for the specified HTML tags.
         /// </summary>
         /// <param name = "html"></param>

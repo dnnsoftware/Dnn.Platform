@@ -77,7 +77,7 @@ namespace DotNetNuke.Services.Scheduling
 
                 string str;
                 bool dbg;
- 
+
                 if (settings.TryGetValue("debug", out str) && bool.TryParse(str, out dbg))
                 {
                     Debug = dbg;

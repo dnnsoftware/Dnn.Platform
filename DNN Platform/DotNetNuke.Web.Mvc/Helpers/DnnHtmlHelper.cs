@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 {
     public class DnnHtmlHelper
     {
-        public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer) 
+        public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer)
             : this(viewContext, viewDataContainer, RouteTable.Routes)
         {
         }

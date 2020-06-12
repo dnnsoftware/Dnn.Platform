@@ -59,17 +59,17 @@ namespace DotNetNuke.Services.Journal
         {
             this._provider.ExecuteNonQuery("Journal_Delete", journalId, true);
         }
-        
+
         public void Journal_SoftDeleteByKey(int portalId, string objectKey)
         {
             this._provider.ExecuteNonQuery("Journal_DeleteByKey", portalId, objectKey, true);
         }
-        
+
         public void Journal_SoftDeleteByGroupId(int portalId, int groupId)
         {
             this._provider.ExecuteNonQuery("Journal_DeleteByGroupId", portalId, groupId, true);
         }
-        
+
         public void Journal_Like(int journalId, int userId, string displayName)
         {
             this._provider.ExecuteNonQuery("Journal_Like", journalId, userId, displayName);
@@ -84,7 +84,7 @@ namespace DotNetNuke.Services.Journal
         {
             this._provider.ExecuteNonQuery("Journal_UpdateContentItemId", journalId, contentItemId);
         }
-        public IDataReader Journal_Get(int portalId, int currentUserId, int journalId) 
+        public IDataReader Journal_Get(int portalId, int currentUserId, int journalId)
         {
             return this.Journal_Get(portalId, currentUserId, journalId, false, false, false);
         }
@@ -100,9 +100,9 @@ namespace DotNetNuke.Services.Journal
             return this._provider.ExecuteReader("Journal_GetByKey", portalId, objectKey, includeAllItems, isDeleted);
         }
         public int Journal_Save(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title,
-                                string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet) 
-        {  
-            journalId = this._provider.ExecuteScalar<int>("Journal_Save", portalId, journalId, journalTypeId, currentUserId, profileId, 
+                                string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet)
+        {
+            journalId = this._provider.ExecuteScalar<int>("Journal_Save", portalId, journalId, journalTypeId, currentUserId, profileId,
                                                     groupId, title, summary, itemData, xml, objectKey, accessKey, securitySet, false, false);
             return journalId;
          }
@@ -137,7 +137,7 @@ namespace DotNetNuke.Services.Journal
             commentId = this._provider.ExecuteScalar<int>("Journal_Comment_Save", journalId, commentId, userId, comment, xml, DataProvider.Instance().GetNull(dateUpdated));
             return commentId;
         }
-       
+
         public IDataReader Journal_Comment_List(int journalId)
         {
             return this._provider.ExecuteReader("Journal_Comment_List", journalId);

@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -29,7 +29,7 @@ using log4net.Core;
 namespace log4net.Util
 {
     /// <summary>
-    /// Subclass of <see cref="QuietTextWriter"/> that maintains a count of 
+    /// Subclass of <see cref="QuietTextWriter"/> that maintains a count of
     /// the number of bytes written.
     /// </summary>
     /// <remarks>
@@ -39,7 +39,7 @@ namespace log4net.Util
     /// </remarks>
     /// <author>Nicko Cadell</author>
     /// <author>Gert Driesen</author>
-    public class CountingQuietTextWriter : QuietTextWriter 
+    public class CountingQuietTextWriter : QuietTextWriter
     {
         #region Public Instance Constructors
 
@@ -50,7 +50,7 @@ namespace log4net.Util
         /// <param name="errorHandler">The <see cref="IErrorHandler" /> to report errors to.</param>
         /// <remarks>
         /// <para>
-        /// Creates a new instance of the <see cref="CountingQuietTextWriter" /> class 
+        /// Creates a new instance of the <see cref="CountingQuietTextWriter" /> class
         /// with the specified <see cref="TextWriter" /> and <see cref="IErrorHandler" />.
         /// </para>
         /// </remarks>
@@ -62,7 +62,7 @@ namespace log4net.Util
         #endregion Public Instance Constructors
 
         #region Override implementation of QuietTextWriter
-  
+
         /// <summary>
         /// Writes a character to the underlying writer and counts the number of bytes written.
         /// </summary>
@@ -73,22 +73,22 @@ namespace log4net.Util
         /// the number of bytes written.
         /// </para>
         /// </remarks>
-        public override void Write(char value) 
+        public override void Write(char value)
         {
-            try 
+            try
             {
                 base.Write(value);
 
-                // get the number of bytes needed to represent the 
+                // get the number of bytes needed to represent the
                 // char using the supplied encoding.
                 this.m_countBytes += this.Encoding.GetByteCount(new char[] { value });
-            } 
-            catch (Exception e) 
+            }
+            catch (Exception e)
             {
                 this.ErrorHandler.Error("Failed to write [" + value + "].", e, ErrorCode.WriteFailure);
             }
         }
-    
+
         /// <summary>
         /// Writes a buffer to the underlying writer and counts the number of bytes written.
         /// </summary>
@@ -101,19 +101,19 @@ namespace log4net.Util
         /// the number of bytes written.
         /// </para>
         /// </remarks>
-        public override void Write(char[] buffer, int index, int count) 
+        public override void Write(char[] buffer, int index, int count)
         {
             if (count > 0)
             {
-                try 
+                try
                 {
                     base.Write(buffer, index, count);
 
-                    // get the number of bytes needed to represent the 
+                    // get the number of bytes needed to represent the
                     // char array using the supplied encoding.
                     this.m_countBytes += this.Encoding.GetByteCount(buffer, index, count);
-                } 
-                catch (Exception e) 
+                }
+                catch (Exception e)
                 {
                     this.ErrorHandler.Error("Failed to write buffer.", e, ErrorCode.WriteFailure);
                 }
@@ -130,25 +130,25 @@ namespace log4net.Util
         /// the number of bytes written.
         /// </para>
         /// </remarks>
-        override public void Write(string str) 
+        override public void Write(string str)
         {
             if (str != null && str.Length > 0)
             {
-                try 
+                try
                 {
                     base.Write(str);
 
-                    // get the number of bytes needed to represent the 
+                    // get the number of bytes needed to represent the
                     // string using the supplied encoding.
                     this.m_countBytes += this.Encoding.GetByteCount(str);
                 }
-                catch (Exception e) 
+                catch (Exception e)
                 {
                     this.ErrorHandler.Error("Failed to write [" + str + "].", e, ErrorCode.WriteFailure);
                 }
             }
         }
-        
+
         #endregion Override implementation of QuietTextWriter
 
         #region Public Instance Properties
@@ -164,14 +164,14 @@ namespace log4net.Util
         /// Gets or sets the total number of bytes written.
         /// </para>
         /// </remarks>
-        public long Count 
+        public long Count
         {
             get { return this.m_countBytes; }
             set { this.m_countBytes = value; }
         }
 
         #endregion Public Instance Properties
-  
+
         #region Private Instance Fields
 
         /// <summary>

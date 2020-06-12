@@ -23,14 +23,14 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     /// <summary>
     /// InstallSuperUserStep - Step that installs SuperUser Account
     /// </summary>
-    /// -----------------------------------------------------------------------------    
+    /// -----------------------------------------------------------------------------
     public class InitializeHostSettingsStep : BaseInstallationStep
     {
         #region Implementation of IInstallationStep
 
         /// <summary>
         /// Main method to execute the step
-        /// </summary>        
+        /// </summary>
         public override void Execute()
         {
             this.Percentage = 0;

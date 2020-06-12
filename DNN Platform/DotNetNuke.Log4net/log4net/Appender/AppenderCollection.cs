@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -51,7 +51,7 @@ namespace log4net.Appender
             /// Advances the enumerator to the next element in the collection.
             /// </summary>
             /// <returns>
-            /// <c>true</c> if the enumerator was successfully advanced to the next element; 
+            /// <c>true</c> if the enumerator was successfully advanced to the next element;
             /// <c>false</c> if the enumerator has passed the end of the collection.
             /// </returns>
             /// <exception cref="InvalidOperationException">
@@ -75,7 +75,7 @@ namespace log4net.Appender
         private int m_version = 0;
 
         #endregion
-    
+
         #region Static Wrappers
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace log4net.Appender
         {
             this.m_array = new IAppender[DEFAULT_CAPACITY];
         }
-        
+
         /// <summary>
         /// Initializes a new instance of the <c>AppenderCollection</c> class
         /// that has the specified initial capacity.
@@ -147,7 +147,7 @@ namespace log4net.Appender
             this.m_array = new IAppender[a.Length];
             this.AddRange(a);
         }
-        
+
         /// <summary>
         /// Initializes a new instance of the <c>AppenderCollection</c> class
         /// that contains elements copied from the specified <see cref="IAppender"/> collection.
@@ -164,7 +164,7 @@ namespace log4net.Appender
         /// Used to access protected constructor
         /// </summary>
         /// <exclude/>
-        internal protected enum Tag 
+        internal protected enum Tag
         {
             /// <summary>
             /// A value
@@ -183,7 +183,7 @@ namespace log4net.Appender
         }
 
         #endregion
-        
+
         #region Operations (type-safe ICollection)
 
         /// <summary>
@@ -216,8 +216,8 @@ namespace log4net.Appender
             {
                 throw new System.ArgumentException("Destination array was not long enough.");
             }
-            
-            Array.Copy(this.m_array, 0, array, start, this.m_count); 
+
+            Array.Copy(this.m_array, 0, array, start, this.m_count);
         }
 
         /// <summary>
@@ -238,7 +238,7 @@ namespace log4net.Appender
         }
 
         #endregion
-        
+
         #region Operations (type-safe IList)
 
         /// <summary>
@@ -255,13 +255,13 @@ namespace log4net.Appender
             get
             {
                 this.ValidateIndex(index); // throws
-                return this.m_array[index]; 
+                return this.m_array[index];
             }
             set
             {
                 this.ValidateIndex(index); // throws
-                ++this.m_version; 
-                this.m_array[index] = value; 
+                ++this.m_version;
+                this.m_array[index] = value;
             }
         }
 
@@ -282,7 +282,7 @@ namespace log4net.Appender
 
             return this.m_count++;
         }
-        
+
         /// <summary>
         /// Removes all elements from the <c>AppenderCollection</c>.
         /// </summary>
@@ -292,7 +292,7 @@ namespace log4net.Appender
             this.m_array = new IAppender[DEFAULT_CAPACITY];
             this.m_count = 0;
         }
-        
+
         /// <summary>
         /// Creates a shallow copy of the <see cref="AppenderCollection"/>.
         /// </summary>
@@ -330,7 +330,7 @@ namespace log4net.Appender
         /// </summary>
         /// <param name="item">The <see cref="IAppender"/> to locate in the <c>AppenderCollection</c>.</param>
         /// <returns>
-        /// The zero-based index of the first occurrence of <paramref name="item"/> 
+        /// The zero-based index of the first occurrence of <paramref name="item"/>
         /// in the entire <c>AppenderCollection</c>, if found; otherwise, -1.
         /// </returns>
         public virtual int IndexOf(IAppender item)
@@ -358,7 +358,7 @@ namespace log4net.Appender
         public virtual void Insert(int index, IAppender item)
         {
             this.ValidateIndex(index, true); // throws
-            
+
             if (this.m_count == this.m_array.Length)
             {
                 this.EnsureCapacity(this.m_count + 1);
@@ -382,13 +382,13 @@ namespace log4net.Appender
         /// The specified <see cref="IAppender"/> was not found in the <c>AppenderCollection</c>.
         /// </exception>
         public virtual void Remove(IAppender item)
-        {          
+        {
             int i = this.IndexOf(item);
             if (i < 0)
             {
                 throw new System.ArgumentException("Cannot remove the specified item because it was not found in the specified Collection.");
             }
-            
+
             ++this.m_version;
             this.RemoveAt(i);
         }
@@ -405,16 +405,16 @@ namespace log4net.Appender
         public virtual void RemoveAt(int index)
         {
             this.ValidateIndex(index); // throws
-            
+
             this.m_count--;
 
             if (index < this.m_count)
             {
                 Array.Copy(this.m_array, index + 1, this.m_array, index, this.m_count - index);
             }
-            
+
             // We can't set the deleted entry equal to null, because it might be a value type.
-            // Instead, we'll create an empty single-element array of the right type and copy it 
+            // Instead, we'll create an empty single-element array of the right type and copy it
             // over the entry we want to erase.
             IAppender[] temp = new IAppender[1];
             Array.Copy(temp, 0, this.m_array, this.m_count, 1);
@@ -442,7 +442,7 @@ namespace log4net.Appender
         #endregion
 
         #region Operations (type-safe IEnumerable)
-        
+
         /// <summary>
         /// Returns an enumerator that can iterate through the <c>AppenderCollection</c>.
         /// </summary>
@@ -455,15 +455,15 @@ namespace log4net.Appender
         #endregion
 
         #region Public helpers (just to mimic some nice features of ArrayList)
-        
+
         /// <summary>
         /// Gets or sets the number of elements the <c>AppenderCollection</c> can contain.
         /// </summary>
         public virtual int Capacity
         {
-            get 
-            { 
-                return this.m_array.Length; 
+            get
+            {
+                return this.m_array.Length;
             }
             set
             {
@@ -499,7 +499,7 @@ namespace log4net.Appender
             {
                 this.EnsureCapacity(this.m_count + x.Count);
             }
-            
+
             Array.Copy(x.m_array, 0, this.m_array, this.m_count, x.Count);
             this.m_count += x.Count;
             this.m_version++;
@@ -525,7 +525,7 @@ namespace log4net.Appender
 
             return this.m_count;
         }
-        
+
         /// <summary>
         /// Adds the elements of a <see cref="IAppender"/> collection to the current <c>AppenderCollection</c>.
         /// </summary>
@@ -608,7 +608,7 @@ namespace log4net.Appender
         }
 
         #endregion
-        
+
         #region Implementation (ICollection)
 
         void ICollection.CopyTo(Array array, int start)
@@ -679,15 +679,15 @@ namespace log4net.Appender
         private sealed class Enumerator : IEnumerator, IAppenderCollectionEnumerator
         {
             #region Implementation (data)
-            
+
             private readonly AppenderCollection m_collection;
             private int m_index;
             private int m_version;
-            
+
             #endregion
-        
+
             #region Construction
-            
+
             /// <summary>
             /// Initializes a new instance of the <c>Enumerator</c> class.
             /// </summary>
@@ -698,11 +698,11 @@ namespace log4net.Appender
                 this.m_index = -1;
                 this.m_version = tc.m_version;
             }
-            
+
             #endregion
-    
+
             #region Operations (type-safe IEnumerator)
-            
+
             /// <summary>
             /// Gets the current element in the collection.
             /// </summary>
@@ -715,7 +715,7 @@ namespace log4net.Appender
             /// Advances the enumerator to the next element in the collection.
             /// </summary>
             /// <returns>
-            /// <c>true</c> if the enumerator was successfully advanced to the next element; 
+            /// <c>true</c> if the enumerator was successfully advanced to the next element;
             /// <c>false</c> if the enumerator has passed the end of the collection.
             /// </returns>
             /// <exception cref="InvalidOperationException">
@@ -740,14 +740,14 @@ namespace log4net.Appender
                 this.m_index = -1;
             }
             #endregion
-    
+
             #region Implementation (IEnumerator)
-            
+
             object IEnumerator.Current
             {
                 get { return this.Current; }
             }
-            
+
             #endregion
         }
 

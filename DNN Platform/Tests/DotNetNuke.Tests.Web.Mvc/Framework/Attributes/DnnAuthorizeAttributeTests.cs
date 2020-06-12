@@ -39,9 +39,9 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
         public void AnonymousUser_IsNotAllowed_If_AllowAnonymousAtribute_IsNotPresent()
         {
             // Arrange
-            this._mockDnnAuthorizeAttribute.Protected().Setup("HandleUnauthorizedRequest", ItExpr.IsAny<AuthorizationContext>());            
+            this._mockDnnAuthorizeAttribute.Protected().Setup("HandleUnauthorizedRequest", ItExpr.IsAny<AuthorizationContext>());
             var sut = this._mockDnnAuthorizeAttribute.Object;
-            
+
             this._mockActionDescriptor.Setup(x => x.IsDefined(typeof(AllowAnonymousAttribute), true)).Returns(false);
             this._mockControllerDescriptor.Setup(x => x.IsDefined(typeof(AllowAnonymousAttribute), true)).Returns(false);
             this._mockActionDescriptor.SetupGet(x => x.ControllerDescriptor).Returns(this._mockControllerDescriptor.Object);
@@ -80,7 +80,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
         public void AnonymousUser_IsAllowed_If_AllowAnonymousAtribute_IsAtActionLevel()
         {
             // Arrange
-            
+
             var sut = this._mockDnnAuthorizeAttribute.Object;
 
             this._mockActionDescriptor.Setup(x => x.IsDefined(typeof(AllowAnonymousAttribute), true)).Returns(true);
@@ -99,7 +99,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
         public void RegisteredUser_IsAllowed_ByDefault()
         {
             // Arrange
-            
+
             this._mockDnnAuthorizeAttribute.Protected().Setup<bool>("IsAuthenticated").Returns(true);
             this._mockDnnAuthorizeAttribute.Protected().Setup("HandleAuthorizedRequest", ItExpr.IsAny<AuthorizationContext>());
             var sut = this._mockDnnAuthorizeAttribute.Object;
@@ -108,9 +108,9 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
             this._mockControllerDescriptor.Setup(x => x.IsDefined(typeof(AllowAnonymousAttribute), true)).Returns(false);
             this._mockActionDescriptor.SetupGet(x => x.ControllerDescriptor).Returns(this._mockControllerDescriptor.Object);
 
-            var controllerContext = new ControllerContext();            
+            var controllerContext = new ControllerContext();
             var context = new AuthorizationContext(controllerContext, this._mockActionDescriptor.Object);
-            
+
             // Act
             sut.OnAuthorization(context);
 
@@ -148,7 +148,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
             const string roleName = "MyRole";
 
             var user = this.SetUpUserWithRole(roleName);
-            
+
             this._mockDnnAuthorizeAttribute.Protected().Setup<bool>("IsAuthenticated").Returns(true);
             this._mockDnnAuthorizeAttribute.Protected().Setup("HandleUnauthorizedRequest", ItExpr.IsAny<AuthorizationContext>());
             this._mockDnnAuthorizeAttribute.Protected().Setup<UserInfo>("GetCurrentUser").Returns(user);
@@ -176,7 +176,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
             const string roleName = "MyRole";
 
             var user = new UserInfo { IsSuperUser = true };
-            
+
             this._mockDnnAuthorizeAttribute.Protected().Setup<bool>("IsAuthenticated").Returns(true);
             this._mockDnnAuthorizeAttribute.Protected().Setup("HandleAuthorizedRequest", ItExpr.IsAny<AuthorizationContext>());
             this._mockDnnAuthorizeAttribute.Protected().Setup<UserInfo>("GetCurrentUser").Returns(user);

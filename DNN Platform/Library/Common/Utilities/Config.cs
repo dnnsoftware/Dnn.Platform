@@ -51,12 +51,12 @@ namespace DotNetNuke.Common.Utilities
         {
             Default,
             Disabled,
-            NotSet, 
+            NotSet,
             Single
         }
 
         #endregion
-        
+
             /// <summary>
         /// Adds a new AppSetting to Web.Config. The update parameter allows you to define if,
         /// when the key already exists, this need to be updated or not
@@ -68,7 +68,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns></returns>
         public static XmlDocument AddAppSetting(XmlDocument xmlDoc, string key, string value, bool update)
         {
-            // retrieve the appSettings node 
+            // retrieve the appSettings node
             XmlNode xmlAppSettings = xmlDoc.SelectSingleNode("//appSettings");
             if (xmlAppSettings != null)
             {
@@ -244,7 +244,7 @@ namespace DotNetNuke.Common.Utilities
         {
             var configNav = Load();
 
-            var httpNode = configNav.SelectSingleNode("configuration//system.web//httpRuntime") ?? 
+            var httpNode = configNav.SelectSingleNode("configuration//system.web//httpRuntime") ??
                            configNav.SelectSingleNode("configuration//location//system.web//httpRuntime");
             long maxRequestLength = 0;
             if (httpNode != null)
@@ -824,7 +824,7 @@ namespace DotNetNuke.Common.Utilities
                     return file + ".config";
             }
         }
-        
+
         /// <summary>
         /// UpdateInstallVersion, but only if the setting does not already exist
         /// </summary>
@@ -886,7 +886,7 @@ namespace DotNetNuke.Common.Utilities
         {
             try
             {
-                
+
                 // check current .net version and if attribute has been added already
                 if ((IsNet45OrNewer()) && GetFcnMode() != fcnMode.ToString())
                 {
@@ -906,7 +906,7 @@ namespace DotNetNuke.Common.Utilities
                 // in case of error installation shouldn't be stopped, log into log4net
                 Logger.Error(ex);
             }
-            return "";  
+            return "";
         }
     }
 }

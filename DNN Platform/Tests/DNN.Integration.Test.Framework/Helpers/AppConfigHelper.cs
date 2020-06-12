@@ -37,22 +37,22 @@ namespace DNN.Integration.Test.Framework.Helpers
             return int.TryParse(GetAppSetting(key), out value) ? value : defaultValue;
         }
 
-        public static string ConnectionString => 
+        public static string ConnectionString =>
             _connectionString ?? (_connectionString = ConfigurationManager.ConnectionStrings["SiteSqlServer"].ConnectionString);
 
-        public static string ObjectQualifier => 
+        public static string ObjectQualifier =>
             _objectQualifier ?? (_objectQualifier = GetAppSetting("objectQualifier"));
 
-        public static string SiteUrl => 
+        public static string SiteUrl =>
             _siteUrl ?? (_siteUrl = GetAppSetting("siteUrl") ?? DefaultWebsiteName);
 
-        public static string HostUserName => 
+        public static string HostUserName =>
             _hostUserName ?? (_hostUserName = GetAppSetting("hostUserName") ?? DefaultHostName);
 
-        public static string HostPassword => 
+        public static string HostPassword =>
             _hostPassword ?? (_hostPassword = GetAppSetting("hostPassword") ?? DefaultHostPwd);
 
-        public static string LoginCookie => 
+        public static string LoginCookie =>
             _loginCookieString ?? (_loginCookieString = GetAppSetting("loginCookie") ?? DefaultLoginCookie);
     }
 }

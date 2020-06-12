@@ -56,15 +56,15 @@ namespace DotNetNuke.Services.Install
             }
             this.Response.Write("<h2>Execution Complete</h2>");
             this.Response.Flush();
-            
+
             // Write out Footer
             HtmlUtils.WriteFooter(this.Response);
         }
 
         private void InstallApplication()
         {
-            // the application uses a two step installation process. The first step is used to update 
-            // the Web.config with any configuration settings - which forces an application restart. 
+            // the application uses a two step installation process. The first step is used to update
+            // the Web.config with any configuration settings - which forces an application restart.
             // The second step finishes the installation process and provisions the site.
 
             string installationDate = Config.GetSetting("InstallationDate");
@@ -148,7 +148,7 @@ namespace DotNetNuke.Services.Install
                             Upgrade.Upgrade.ActivateLicense();
                         }
 
-                        // Adding ClientDependency Resources config to web.config                    
+                        // Adding ClientDependency Resources config to web.config
                         if (!ClientResourceManager.IsInstalled())
                         {
                             ClientResourceManager.AddConfiguration();
@@ -193,7 +193,7 @@ namespace DotNetNuke.Services.Install
                 }
             }
         }
-        
+
         private static void RegisterInstallBegining()
         {
             InstallBlocker.Instance.RegisterInstallBegining();
@@ -203,7 +203,7 @@ namespace DotNetNuke.Services.Install
         {
             InstallBlocker.Instance.RegisterInstallEnd();
         }
-        
+
         private void WriteInstallationHeader()
         {
             this.Response.Write("<h2>Version: " + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version) + "</h2>");
@@ -234,7 +234,7 @@ namespace DotNetNuke.Services.Install
         }
 
         private void UpgradeApplication()
-        { 
+        {
             try
             {
                 if (Upgrade.Upgrade.RemoveInvalidAntiForgeryCookie())
@@ -586,7 +586,7 @@ namespace DotNetNuke.Services.Install
                 }
 
                 // restore Script timeout
-                this.Server.ScriptTimeout = scriptTimeOut;                
+                this.Server.ScriptTimeout = scriptTimeOut;
             }
         }
         #endregion

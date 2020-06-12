@@ -153,7 +153,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             return state;
         }
         #endregion
-        
+
         #region Service Locator
         protected override Func<ISystemWorkflowManager> GetFactory()
         {

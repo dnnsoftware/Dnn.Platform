@@ -25,7 +25,7 @@ namespace DotNetNuke.Common.Utilities
         #endregion
 
         /// <summary>
-        ///   function to translate sql exceptions to readable messages. 
+        ///   function to translate sql exceptions to readable messages.
         ///   It also captures cases where sql server is not available and guards against
         ///   database connection details being leaked
         /// </summary>

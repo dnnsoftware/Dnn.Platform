@@ -49,7 +49,7 @@ namespace DotNetNuke.Web.InternalServices
 
             if (modified)
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, 
+                return this.Request.CreateResponse(HttpStatusCode.OK,
                     new {
                             Result = "warning",
                             Title = Localization.GetString("CleanWarningTitle", Localization.SharedResourceFile),
@@ -83,7 +83,7 @@ namespace DotNetNuke.Web.InternalServices
             // Url is clean and validated so we can update the User
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
-        
+
         public class VanityUrlDTO
         {
             public string Url { get; set; }

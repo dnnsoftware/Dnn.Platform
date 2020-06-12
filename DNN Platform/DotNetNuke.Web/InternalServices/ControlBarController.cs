@@ -387,7 +387,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 catch (System.Threading.ThreadAbortException)
                 {
-                    // Do nothing we are not logging ThreadAbortxceptions caused by redirects      
+                    // Do nothing we are not logging ThreadAbortxceptions caused by redirects
                 }
                 catch (Exception ex)
                 {
@@ -416,11 +416,11 @@ namespace DotNetNuke.Web.InternalServices
                         return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                     }
                 }
-                
+
             }
             catch (System.Threading.ThreadAbortException)
             {
-                // Do nothing we are not logging ThreadAbortxceptions caused by redirects      
+                // Do nothing we are not logging ThreadAbortxceptions caused by redirects
             }
             catch (Exception ex)
             {

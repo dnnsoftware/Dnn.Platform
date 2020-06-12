@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             }
 
             FileVersionController.Instance.DeleteAllUnpublishedVersions(file, false);
-            
+
             this.DeleteFileData(file);
         }
 

@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.Library.Attributes
 
         /// <summary>
         /// The Roles which need exclude from permissions, when user in the role will receive 401 exception.
-        /// If need set multiple roles, put semicolon(;) between role names. 
+        /// If need set multiple roles, put semicolon(;) between role names.
         /// </summary>
         public string Exclude { get; set; }
 
@@ -93,7 +93,7 @@ namespace Dnn.PersonaBar.Library.Attributes
 
                 return hasPermission;
             }
-            
+
 
             // when menu identifier not defined, will check the service scope permission.
             switch (this.Scope)
@@ -106,7 +106,7 @@ namespace Dnn.PersonaBar.Library.Attributes
                         // if user have ability on any persona bar menus, then need allow to request api.
                         return PersonaBarController.Instance.GetMenu(portalSettings, portalSettings.UserInfo).AllItems.Count > 0;
                     }
-                    
+
                     return isAdmin || isRegular;
                 default:
                     return false;

@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Search.Entities
     public class SearchDocument : SearchDocumentToDelete
     {
         /// <summary>
-        /// Content's Title      
+        /// Content's Title
         /// </summary>
         /// <remarks>
         /// HTML tags are stripped from this property, but certain HTML attribute values will be retain, ie. alt and title attribute values.
@@ -62,7 +62,7 @@ namespace DotNetNuke.Services.Search.Entities
         /// <summary>
         /// A string representation of roles and users who have view (or denied view) permissions
         /// </summary>
-        /// <remarks>The Permission property is same as how it�s implement internally in the Platform. Allow or Deny permission can be specified for RoleNamess and / or UserIds. 
+        /// <remarks>The Permission property is same as how it�s implement internally in the Platform. Allow or Deny permission can be specified for RoleNamess and / or UserIds.
         /// A semicolon must be specified to separate two RoleName or UserId.
         ///     "!Translator (en-US);![3];[5];Administrators; ContentEditorRole"
         ///     ! -- identifies denied permission

@@ -59,14 +59,14 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="settings"></param>
         /// <param name="parentTraceId"></param>
         /// <returns></returns>
-        private static List<ExtensionUrlProvider> GetProvidersToCall(int tabId, 
-                                                                    int portalId, 
+        private static List<ExtensionUrlProvider> GetProvidersToCall(int tabId,
+                                                                    int portalId,
                                                                     FriendlyUrlSettings settings,
                                                                     Guid parentTraceId)
         {
             List<ExtensionUrlProvider> providers;
 
-            // 887 : introduce lockable code to prevent caching race errors 
+            // 887 : introduce lockable code to prevent caching race errors
             lock (providersBuildLock)
             {
                 bool definitelyNoProvider;
@@ -123,7 +123,7 @@ namespace DotNetNuke.Entities.Urls
             bool checkForAlwaysCallResult = false;
             if (alwaysCallTabids == null)
             {
-                alwaysCallTabids = new List<int>(); // create new list 
+                alwaysCallTabids = new List<int>(); // create new list
                 // nothing in cache, build list
                 List<ExtensionUrlProvider> providers = GetModuleProviders(portalId).Where(p => p.ProviderConfig.IsActive).ToList();
                 foreach (ExtensionUrlProvider provider in providers)
@@ -160,12 +160,12 @@ namespace DotNetNuke.Entities.Urls
             return checkForAlwaysCallResult;
         }
 
-        internal static bool CheckForRedirect(Uri requestUri, 
-                                                UrlAction result, 
+        internal static bool CheckForRedirect(Uri requestUri,
+                                                UrlAction result,
                                                 NameValueCollection queryStringCol,
-                                                FriendlyUrlSettings settings, 
+                                                FriendlyUrlSettings settings,
                                                 out string location,
-                                                ref List<string> messages, 
+                                                ref List<string> messages,
                                                 Guid parentTraceId)
         {
             bool redirected = false;
@@ -226,14 +226,14 @@ namespace DotNetNuke.Entities.Urls
         }
 
 
-        internal static bool GetUrlFromExtensionUrlProviders(int portalId, 
-                                                                TabInfo tab, 
+        internal static bool GetUrlFromExtensionUrlProviders(int portalId,
+                                                                TabInfo tab,
                                                                 FriendlyUrlSettings settings,
-                                                                string friendlyUrlPath, 
+                                                                string friendlyUrlPath,
                                                                 string cultureCode,
-                                                                ref string endingPageName, 
+                                                                ref string endingPageName,
                                                                 out string changedPath,
-                                                                out bool changeToSiteRoot, 
+                                                                out bool changeToSiteRoot,
                                                                 ref List<string> messages,
                                                                 Guid parentTraceId)
         {
@@ -255,12 +255,12 @@ namespace DotNetNuke.Entities.Urls
                     activeProvider = provider; // keep for exception purposes
                     bool useDnnPagePath;
                     // go through and call each provider to generate the friendly urls for the module
-                    string customPath = provider.ChangeFriendlyUrl(tab, 
-                                                                friendlyUrlPath, 
-                                                                options, 
+                    string customPath = provider.ChangeFriendlyUrl(tab,
+                                                                friendlyUrlPath,
+                                                                options,
                                                                 cultureCode,
-                                                                ref endingPageName, 
-                                                                out useDnnPagePath, 
+                                                                ref endingPageName,
+                                                                out useDnnPagePath,
                                                                 ref messages);
 
                     if (string.IsNullOrEmpty(endingPageName))
@@ -294,15 +294,15 @@ namespace DotNetNuke.Entities.Urls
             return wasChanged;
         }
 
-        internal static bool TransformFriendlyUrlPath(string newUrl, 
-                                                        string tabKeyVal, 
+        internal static bool TransformFriendlyUrlPath(string newUrl,
+                                                        string tabKeyVal,
                                                         string[] urlParms,
-                                                        bool isSiteRootMatch, 
+                                                        bool isSiteRootMatch,
                                                         ref UrlAction result,
-                                                        FriendlyUrlSettings settings, 
+                                                        FriendlyUrlSettings settings,
                                                         out string rewrittenUrl,
-                                                        out bool newAction, 
-                                                        ref List<string> messages,  
+                                                        out bool newAction,
+                                                        ref List<string> messages,
                                                         Guid parentTraceId)
         {
             bool rewriteDone = false;
@@ -316,8 +316,8 @@ namespace DotNetNuke.Entities.Urls
                 {
                     tabId = RewriteController.SiteRootRewrite;
                 }
-                List<ExtensionUrlProvider> providersToCall = GetProvidersToCall(tabId, 
-                                                                                result.PortalId, 
+                List<ExtensionUrlProvider> providersToCall = GetProvidersToCall(tabId,
+                                                                                result.PortalId,
                                                                                 settings,
                                                                                 parentTraceId);
                 if (providersToCall != null && providersToCall.Count > 0)
@@ -341,14 +341,14 @@ namespace DotNetNuke.Entities.Urls
                         // call down to specific providers and see if we get a rewrite
                         string location;
                         int status;
-                        string queryString = provider.TransformFriendlyUrlToQueryString(parms, 
+                        string queryString = provider.TransformFriendlyUrlToQueryString(parms,
                                                                                         result.TabId,
-                                                                                        result.PortalId, 
+                                                                                        result.PortalId,
                                                                                         options,
                                                                                         result.CultureCode,
-                                                                                        result.PortalAlias, 
+                                                                                        result.PortalAlias,
                                                                                         ref messages,
-                                                                                        out status, 
+                                                                                        out status,
                                                                                         out location);
                         if (status == 0 || status == 200) // either not set, or set to '200 OK'.
                         {
@@ -582,7 +582,7 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="messages"></param>
         /// <param name="provider"></param>
         public static void LogModuleProviderExceptionInRequest(Exception ex, string status,
-                                                                ExtensionUrlProvider provider, 
+                                                                ExtensionUrlProvider provider,
                                                                 UrlAction result,
                                                                 List<string> messages)
         {
@@ -595,7 +595,7 @@ namespace DotNetNuke.Entities.Urls
                     moduleProviderName = provider.ProviderConfig.ProviderName;
                     moduleProviderVersion = provider.GetType().Assembly.GetName(false).Version.ToString();
                 }
-                // this logic prevents a site logging an exception for every request made.  Instead 
+                // this logic prevents a site logging an exception for every request made.  Instead
                 // the exception will be logged once for the life of the cache / application restart or 1 hour, whichever is shorter.
                 // create a cache key for this exception type
                 string cacheKey = ex.GetType().ToString();
@@ -625,8 +625,8 @@ namespace DotNetNuke.Entities.Urls
                         log.AddProperty("Rewrite Result", !string.IsNullOrEmpty(result.RewritePath)
                                                                      ? result.RewritePath
                                                                      : "[no rewrite]");
-                        log.AddProperty("Redirect Location", string.IsNullOrEmpty(result.FinalUrl) 
-                                                                    ? "[no redirect]" 
+                        log.AddProperty("Redirect Location", string.IsNullOrEmpty(result.FinalUrl)
+                                                                    ? "[no redirect]"
                                                                     : result.FinalUrl);
                         log.AddProperty("Action", result.Action.ToString());
                         log.AddProperty("Reason", result.Reason.ToString());

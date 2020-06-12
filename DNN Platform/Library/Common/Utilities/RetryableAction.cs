@@ -77,7 +77,7 @@ namespace DotNetNuke.Common.Utilities.Internal
             {
                 throw new ArgumentException(string.Format("delay must be less than {0} milliseconds", int.MaxValue));
             }
-            
+
             this.Action = action;
             this.Description = description;
             this.MaxRetries = maxRetries;

@@ -7,7 +7,7 @@ using System;
 namespace DotNetNuke.Entities.Modules.Settings
 {
     /// <summary>
-    /// Base class for attributes that are used to decorate properties (parameters) related to 
+    /// Base class for attributes that are used to decorate properties (parameters) related to
     /// application settings (storage) or parameters (control) like query string parameters.
     /// </summary>
     [Serializable]
@@ -18,7 +18,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         /// </summary>
         /// <remarks>
         /// The settings tables are shared by the core platform and the extensions. Extensions
-        /// should use a unique prefix to ensure that name clashes do not occur with settings 
+        /// should use a unique prefix to ensure that name clashes do not occur with settings
         /// defined by the core or other extensions.
         /// </remarks>
         public string Prefix { get; set; }

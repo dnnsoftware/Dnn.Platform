@@ -14,7 +14,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Exceptions
 
         public WorkflowInvalidOperationException()
         {
-            
+
         }
     }
 }

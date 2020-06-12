@@ -89,11 +89,11 @@ namespace DotNetNuke.Entities.Content.Data
         /// <returns>data reader.</returns>
         public IDataReader GetContentItems(int contentTypeId, int tabId, int moduleId)
         {
-            return this._provider.ExecuteReader("GetContentItems", this._provider.GetNull(contentTypeId), 
-                                                            this._provider.GetNull(tabId), 
+            return this._provider.ExecuteReader("GetContentItems", this._provider.GetNull(contentTypeId),
+                                                            this._provider.GetNull(tabId),
                                                             this._provider.GetNull(moduleId));
         }
-     
+
         /// <summary>
         /// Gets the content items by term.
         /// </summary>
@@ -180,7 +180,7 @@ namespace DotNetNuke.Entities.Content.Data
         {
             this._provider.ExecuteNonQuery("AddMetaData", contentItem.ContentItemId, name, value);
         }
-        
+
         public void SynchronizeMetaData(ContentItem contentItem, IEnumerable<KeyValuePair<string, string>> added, IEnumerable<KeyValuePair<string, string>> deleted)
         {
 #if false

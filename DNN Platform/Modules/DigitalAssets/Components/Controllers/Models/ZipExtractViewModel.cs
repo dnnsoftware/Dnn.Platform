@@ -15,7 +15,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models
 
         public ICollection<ExtractedItemViewModel> Items { get; internal set; }
 
-        public IList<string> InvalidFiles { get; set; } 
+        public IList<string> InvalidFiles { get; set; }
 
         public int TotalCount { get; set; }
     }

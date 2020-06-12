@@ -142,7 +142,7 @@ namespace DotNetNuke.Web.InternalServices
                         return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
                     }
 
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Link = sourceAction.GetAction(parameters) }); 
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Link = sourceAction.GetAction(parameters) });
                 }
             }
             catch (Exception exc)

@@ -139,8 +139,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         private List<Field> GetFolderPreviewFields(IFolderInfo folder)
         {
             var fields = new List<Field>
-                             {                                 
-                                 this.GetFolderSizeField(folder), 
+                             {
+                                 this.GetFolderSizeField(folder),
                                  this.GetTotalFilesField(folder)
                              };
             fields.AddRange(this.GetAuditFields((FolderInfo)folder, folder.PortalID));
@@ -163,32 +163,32 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             var createdByUser = item.CreatedByUser(portalId);
             var lastModifiedByUser = item.LastModifiedByUser(portalId);
             return new List<Field>
-                {                    
+                {
                     new Field(DefaultMetadataNames.Created)
                     {
-                        DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.Created + ".DisplayName"), 
-                        Type = typeof(DateTime), 
+                        DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.Created + ".DisplayName"),
+                        Type = typeof(DateTime),
                         Value = item.CreatedOnDate,
                         StringValue = item.CreatedOnDate.ToString(CultureInfo.CurrentCulture)
                     },
                 new Field(DefaultMetadataNames.CreatedBy)
                     {
-                        DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.CreatedBy + ".DisplayName"), 
-                        Type = typeof(int), 
+                        DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.CreatedBy + ".DisplayName"),
+                        Type = typeof(int),
                         Value = item.CreatedByUserID,
                         StringValue = createdByUser != null ? createdByUser.DisplayName : ""
                     },
                 new Field(DefaultMetadataNames.Modified)
                     {
-                        DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.Modified + ".DisplayName"), 
-                        Type = typeof(DateTime), 
+                        DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.Modified + ".DisplayName"),
+                        Type = typeof(DateTime),
                         Value = item.LastModifiedOnDate,
                         StringValue = item.LastModifiedOnDate.ToString(CultureInfo.CurrentCulture)
                     },
                 new Field(DefaultMetadataNames.ModifiedBy)
                     {
-                        DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.ModifiedBy + ".DisplayName"), 
-                        Type = typeof(int), 
+                        DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.ModifiedBy + ".DisplayName"),
+                        Type = typeof(int),
                         Value = item.LastModifiedByUserID,
                         StringValue = lastModifiedByUser != null ? lastModifiedByUser.DisplayName : ""
                     }
@@ -230,7 +230,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             var portalId = this.GetCurrentPortalId(moduleId);
 
             return new List<FolderMappingInfo>
-                {                        
+                {
                     FolderMappingController.Instance.GetFolderMapping(portalId, "Standard"),
                     FolderMappingController.Instance.GetFolderMapping(portalId, "Secure"),
                     FolderMappingController.Instance.GetFolderMapping(portalId, "Database")
@@ -263,7 +263,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 }
             }
 
-            return IsHostMenu ? Null.NullInteger : PortalSettings.Current.PortalId;            
+            return IsHostMenu ? Null.NullInteger : PortalSettings.Current.PortalId;
         }
 
         public IEnumerable<FolderMappingViewModel> GetFolderMappings(int moduleId)
@@ -308,7 +308,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
             if (!FolderPermissionController.CanBrowseFolder((FolderInfo)folder))
             {
-                // The user cannot access the content               
+                // The user cannot access the content
                 return;
             }
 
@@ -347,7 +347,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             }
 
             var portalId = this.GetCurrentPortalId(moduleId);
-            return this.GetFolderViewModel(FolderManager.Instance.GetFolder(portalId, ""));            
+            return this.GetFolderViewModel(FolderManager.Instance.GetFolder(portalId, ""));
         }
 
         public FolderViewModel GetGroupFolder(int groupId, PortalSettings portalSettings)
@@ -378,7 +378,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             {
                 var pc = new PermissionController();
                 var browsePermission = pc.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "BROWSE").Cast<PermissionInfo>().FirstOrDefault();
-                var readPermission = pc.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "READ").Cast<PermissionInfo>().FirstOrDefault(); 
+                var readPermission = pc.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "READ").Cast<PermissionInfo>().FirstOrDefault();
                 var writePermission = pc.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "WRITE").Cast<PermissionInfo>().FirstOrDefault();
 
                 if (!FolderManager.Instance.FolderExists(portalSettings.PortalId, "Groups"))
@@ -402,7 +402,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 return groupFolder;
             }
 
-            return FolderManager.Instance.GetFolder(portalSettings.PortalId, groupFolderPath);        
+            return FolderManager.Instance.GetFolder(portalSettings.PortalId, groupFolderPath);
         }
 
         public FolderViewModel GetUserFolder(UserInfo userInfo)
@@ -548,7 +548,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
             if (file.FolderId == destinationFolderId)
             {
-                // User must not move files in the same folder                
+                // User must not move files in the same folder
                 throw new DotNetNukeException(LocalizationHelper.GetString("DestinationFolderCannotMatchSourceFolder.Error"));
             }
 
@@ -633,7 +633,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             };
             return result;
         }
-        
+
         public ZipExtractViewModel UnzipFile(int fileId, bool overwrite)
         {
             var file = FileManager.Instance.GetFile(fileId, true);
@@ -683,7 +683,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 IconUrl = GetFileIconUrl(file.Extension)
             };
         }
-        
+
         protected virtual FolderViewModel GetFolderViewModel(IFolderInfo folder)
         {
             var folderName = string.IsNullOrEmpty(folder.FolderName)
@@ -742,7 +742,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 UnlinkAllowedStatus = this.GetUnlinkAllowedStatus(folder)
             };
         }
-        
+
         protected virtual ItemViewModel GetItemViewModel(IFileInfo file)
         {
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
@@ -776,7 +776,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         }
 
         #endregion
-        
+
         public string UpgradeModule(string version)
         {
             try

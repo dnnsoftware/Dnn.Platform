@@ -33,7 +33,7 @@ namespace DotNetNuke.Entities.Tabs
         // This is used to return a sorted List
         [NonSerialized]
         private readonly List<TabInfo> _list;
-        
+
         // This is used to provide a culture based set of tabs
         [NonSerialized]
         private readonly Dictionary<String, List<TabInfo>> _localizedTabs;
@@ -105,7 +105,7 @@ namespace DotNetNuke.Entities.Tabs
             if (tab.PortalID == Null.NullInteger || IsLocalizationEnabled(tab.PortalID))
             {
                 this.AddToLocalizedTabs(tab);
-            }            
+            }
         }
 
         private int AddToChildren(TabInfo tab)
@@ -116,7 +116,7 @@ namespace DotNetNuke.Entities.Tabs
                 childList = new List<TabInfo>();
                 this._children.Add(tab.ParentId, childList);
             }
-            
+
             // Add tab to end of child list as children are returned in order
             childList.Add(tab);
             return childList.Count;
@@ -268,10 +268,10 @@ namespace DotNetNuke.Entities.Tabs
                     }
                     else
                     {
-                        collection = !includeNeutral 
-                                        ? new TabCollection(from t in tabs 
+                        collection = !includeNeutral
+                                        ? new TabCollection(from t in tabs
                                                             where t.CultureCode.ToLowerInvariant() == cultureCode
-                                                            select t) 
+                                                            select t)
                                         : new TabCollection(tabs);
                     }
                 }

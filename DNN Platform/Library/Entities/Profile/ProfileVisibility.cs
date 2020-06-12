@@ -51,7 +51,7 @@ namespace DotNetNuke.Entities.Profile
                     }
                 }
             }
-            
+
         }
 
         public UserVisibilityMode VisibilityMode { get; set; }

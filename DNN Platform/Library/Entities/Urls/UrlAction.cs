@@ -168,7 +168,7 @@ namespace DotNetNuke.Entities.Urls
         public bool UnlicensedProviderCalled { get; set; }
 
         /// <summary>
-        /// Sets the action value, but checks to ensure that the action is 
+        /// Sets the action value, but checks to ensure that the action is
         /// not being 'downgraded' (example: cannot set 'Redirect301' to 'CheckFor301')
         /// </summary>
         /// <param name="newAction"></param>

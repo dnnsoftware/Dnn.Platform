@@ -22,7 +22,7 @@ namespace DotNetNuke.Modules.Groups.Components {
         internal const string GroupListSearchEnabled = "GroupListSearchEnabled_Setting";
         internal const string GroupListSortField = "GroupListSortField_Setting";
         internal const string GroupListSortDirection = "GroupListSortDirection_Setting";
- 
+
         internal const string GroupViewTemplate = "GroupViewTemplate_Setting";
         internal const string GroupListTemplate = "GroupListTemplate_Setting";
         internal const string GroupModerationEnabled = "GroupModerationEnabled_Setting";

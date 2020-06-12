@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -33,12 +33,12 @@ namespace log4net.Config
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Assemblies are mapped to logging repository. This attribute specified 
+    /// Assemblies are mapped to logging repository. This attribute specified
     /// on the assembly controls
     /// the configuration of the repository. The <see cref="Name"/> property specifies the name
     /// of the repository that this assembly is a part of. The <see cref="RepositoryType"/>
-    /// specifies the type of the <see cref="log4net.Repository.ILoggerRepository"/> object 
-    /// to create for the assembly. If this attribute is not specified or a <see cref="Name"/> 
+    /// specifies the type of the <see cref="log4net.Repository.ILoggerRepository"/> object
+    /// to create for the assembly. If this attribute is not specified or a <see cref="Name"/>
     /// is not specified then the assembly will be part of the default shared logging repository.
     /// </para>
     /// <para>
@@ -54,7 +54,7 @@ namespace log4net.Config
     {
         //
         // Class is not sealed because DomainAttribute extends it while it is obsoleted
-        // 
+        //
 
         #region Public Instance Constructors
 
@@ -71,7 +71,7 @@ namespace log4net.Config
         }
 
         /// <summary>
-        /// Initialize a new instance of the <see cref="RepositoryAttribute" /> class 
+        /// Initialize a new instance of the <see cref="RepositoryAttribute" /> class
         /// with the name of the repository.
         /// </summary>
         /// <param name="name">The name of the repository.</param>
@@ -121,10 +121,10 @@ namespace log4net.Config
         /// interface.
         /// </para>
         /// <para>
-        /// This will be the type of repository created when 
+        /// This will be the type of repository created when
         /// the repository is created. If multiple assemblies reference the
         /// same repository then the repository is only created once using the
-        /// <see cref="RepositoryType" /> of the first assembly to call into the 
+        /// <see cref="RepositoryType" /> of the first assembly to call into the
         /// repository.
         /// </para>
         /// </remarks>

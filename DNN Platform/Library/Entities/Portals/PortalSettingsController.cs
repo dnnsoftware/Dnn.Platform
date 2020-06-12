@@ -228,7 +228,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 crmVersion = settings.GetValueOrDefault("CrmVersion", HostController.Instance.GetInteger("CrmVersion"));
             }
-            
+
             portalSettings.AllowUserUICulture = settings.GetValueOrDefault("AllowUserUICulture", false);
             portalSettings.CdfVersion = crmVersion;
             portalSettings.ContentLocalizationEnabled = settings.GetValueOrDefault("ContentLocalizationEnabled", false);

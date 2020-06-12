@@ -167,11 +167,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public bool NewWindow
         {
-            get 
+            get
             {
                 return this.chkNewWindow.Visible && this.chkNewWindow.Checked;
             }
-            set 
+            set
             {
                 this.chkNewWindow.Checked = this.chkNewWindow.Visible && value;
             }

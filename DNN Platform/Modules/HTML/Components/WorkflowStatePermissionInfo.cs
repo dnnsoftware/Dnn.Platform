@@ -17,7 +17,7 @@ namespace DotNetNuke.Security.Permissions
     /// Class    : DesktopModulePermissionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   DesktopModulePermissionInfo provides the Entity Layer for DesktopModulePermissionInfo 
+    ///   DesktopModulePermissionInfo provides the Entity Layer for DesktopModulePermissionInfo
     ///   Permissions
     /// </summary>
     /// -----------------------------------------------------------------------------
@@ -146,7 +146,7 @@ namespace DotNetNuke.Security.Permissions
             }
             return (this.AllowAccess == other.AllowAccess) && (this.StateID == other.StateID) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
         }
-        
+
         public override int GetHashCode()
         {
             unchecked

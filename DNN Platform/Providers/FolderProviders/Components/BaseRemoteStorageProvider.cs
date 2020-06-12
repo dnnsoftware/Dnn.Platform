@@ -38,13 +38,13 @@ namespace DotNetNuke.Providers.FolderProviders.Components
                 c =>
                 {
                     var list = this.GetObjectList(folderMapping, key);
-                    
+
                     // return list.FirstOrDefault(i => i.Key == key);
                     return list.FirstOrDefault(i => i.Key.Equals(key, StringComparison.InvariantCultureIgnoreCase));
                 });
-            
+
         }
-        
+
         #endregion
 
         #region Protected Properties
@@ -53,7 +53,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         {
             get { return String.Empty; }
         }
-        
+
         protected virtual string ObjectCacheKey
         {
             get { return String.Empty; }
@@ -103,7 +103,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         {
             return Boolean.Parse(folderMapping.FolderMappingSettings[settingName].ToString());
         }
-        
+
         protected static int GetIntegerSetting(FolderMappingInfo folderMapping, string settingName, int defaultValue)
         {
             int value;
@@ -127,7 +127,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         {
             Requires.NotNull(nameof(folderMapping), folderMapping);
             Requires.NotNullOrEmpty(nameof(settingName), settingName);
-            
+
             return folderMapping.FolderMappingSettings[settingName]?.ToString();
         }
 
@@ -339,7 +339,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             {
                 throw new FileNotFoundException(this.FileNotFoundMessage, file.RelativePath);
             }
-            return item.LastModified;            
+            return item.LastModified;
         }
 
         /// <summary>
@@ -351,7 +351,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             Requires.NotNull("folderMapping", folderMapping);
 
             var list = this.GetObjectList(folderMapping, folderPath);
-            
+
             var pattern = "^" + Regex.Escape(folderPath);
 
             return (from o in list
@@ -498,7 +498,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         {
             if (this.FileExists(FolderManager.Instance.GetFolder(file.FolderId), file.FileName))
             {
-                return this.GetHashCode(file);                
+                return this.GetHashCode(file);
             }
             return String.Empty;
         }

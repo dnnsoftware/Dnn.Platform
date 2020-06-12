@@ -28,14 +28,14 @@ namespace DotNetNuke.Security.Permissions
     public class ModulePermissionInfo : PermissionInfoBase, IHydratable
     {
         #region "Private Members"
-        
+
         private int _moduleID;
 
         // local property declarations
         private int _modulePermissionID;
-        
+
         #endregion
-        
+
         #region "Constructors"
 
         /// -----------------------------------------------------------------------------
@@ -63,9 +63,9 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionKey = permission.PermissionKey;
             this.PermissionName = permission.PermissionName;
         }
-        
+
         #endregion
-        
+
         #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
@@ -105,7 +105,7 @@ namespace DotNetNuke.Security.Permissions
                 this._moduleID = value;
             }
         }
-        
+
         #endregion
 
         #region IHydratable Members
@@ -143,7 +143,7 @@ namespace DotNetNuke.Security.Permissions
         }
 
         #endregion
-        
+
         #region "Public Methods"
 
         /// -----------------------------------------------------------------------------
@@ -211,7 +211,7 @@ namespace DotNetNuke.Security.Permissions
                 return (this._moduleID * 397) ^ this._modulePermissionID;
             }
         }
-        
+
         #endregion
     }
 }

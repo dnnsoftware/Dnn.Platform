@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.Installer.Writers
         private bool _IsCore = Null.NullBoolean;
         private Locale _Language;
         private LanguagePackInfo _LanguagePack;
-        
+
         #endregion
 
         #region "Constructors"
@@ -98,7 +98,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this._Language = language;
             this.BasePath = Null.NullString;
         }
-        
+
         #endregion
 
         #region "Public Properties"
@@ -498,7 +498,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 }
             }
         }
-        
+
         #endregion
 
         #region "Protected methods"

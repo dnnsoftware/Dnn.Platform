@@ -52,7 +52,7 @@ namespace DotNetNuke.Web.Mvc.Routing
         private static T IterateTabAndModuleInfoProviders<T>(HttpRequestBase request, TryMethod<T> func, T fallback)
         {
             var providers = GlobalConfiguration.Configuration.GetTabAndModuleInfoProviders();
-            
+
             foreach (var provider in providers)
             {
                 T output;
@@ -68,6 +68,6 @@ namespace DotNetNuke.Web.Mvc.Routing
         public static string GetIPAddress(HttpRequestBase request)
         {
             return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(request);
-        }        
+        }
     }
 }

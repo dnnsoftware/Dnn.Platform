@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Installer.Writers
     public class CleanupComponentWriter
     {
         #region "Private Members"
-        
+
         private readonly SortedList<string, InstallFile> _Files;
         private string _BasePath;
 
@@ -43,11 +43,11 @@ namespace DotNetNuke.Services.Installer.Writers
             this._Files = files;
             this._BasePath = basePath;
         }
-        
+
         #endregion
 
         #region "Public Methods"
-        
+
         public virtual void WriteManifest(XmlWriter writer)
         {
             foreach (KeyValuePair<string, InstallFile> kvp in this._Files)
@@ -62,7 +62,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 writer.WriteEndElement();
             }
         }
-        
+
         #endregion
     }
 }

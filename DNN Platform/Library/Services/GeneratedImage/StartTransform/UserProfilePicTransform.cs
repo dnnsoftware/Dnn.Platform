@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
             return isVisible;
         }
-        
+
         private static bool IsImageExtension(string extension)
         {
             if (!extension.StartsWith("."))

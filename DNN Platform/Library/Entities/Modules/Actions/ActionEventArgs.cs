@@ -40,7 +40,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <value></value>
         /// <remarks></remarks>
@@ -55,7 +55,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <value></value>
         /// <remarks></remarks>

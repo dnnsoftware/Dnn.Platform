@@ -23,5 +23,5 @@ namespace DotNetNuke.Services.FileSystem.Internal
         /// </summary>
         /// <param name="file">The file to delete its metadata.</param>
         void DeleteFileData(IFileInfo file);
-    }    
+    }
 }

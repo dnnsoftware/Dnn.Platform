@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.Groups.Components
         private void AddNotificationTypes()
         {
             var actions = new List<NotificationTypeAction>();
-            
+
             // DesktopModule should not be null
             var deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName("Social Groups").DesktopModuleID;
 

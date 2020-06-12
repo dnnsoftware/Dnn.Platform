@@ -99,7 +99,7 @@ namespace DotNetNuke.Tests.Data
                 }
                 ExecuteNonQuery(Constants.PETAPOCO_DatabaseName, String.Format(Constants.PETAPOCO_InsertDogRow, _dogNames[index], _dogAges[index]));
                 index++;
-            }            
+            }
         }
 
         #endregion

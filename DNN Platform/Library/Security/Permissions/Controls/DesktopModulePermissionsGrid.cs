@@ -152,7 +152,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, UserInfo user)
         {
-            // Search DesktopModulePermission Collection for the user 
+            // Search DesktopModulePermission Collection for the user
             bool isMatch = false;
             foreach (DesktopModulePermissionInfo objDesktopModulePermission in this._DesktopModulePermissions)
             {
@@ -185,7 +185,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, RoleInfo role)
         {
-            // Search TabPermission Collection for the user 
+            // Search TabPermission Collection for the user
             if (this._DesktopModulePermissions.Cast<DesktopModulePermissionInfo>().Any(p => p.RoleID == role.RoleID))
             {
                 return;

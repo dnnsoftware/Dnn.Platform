@@ -63,13 +63,13 @@ namespace DotNetNuke.UI.WebControls
                     // Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
                 }
-                
+
                 // Render Option Tag
                 writer.RenderBeginTag(HtmlTextWriterTag.Option);
                 writer.Write(tab.IndentedTabName);
                 writer.RenderEndTag();
             }
-            
+
             // Close Select Tag
             writer.RenderEndTag();
         }
@@ -102,7 +102,7 @@ namespace DotNetNuke.UI.WebControls
                 writer.RenderEndTag();
             }
         }
-        
+
         #endregion
     }
 }

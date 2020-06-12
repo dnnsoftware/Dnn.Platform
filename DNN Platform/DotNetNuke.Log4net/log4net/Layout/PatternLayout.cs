@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -46,7 +46,7 @@ namespace log4net.Layout
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The goal of this class is to <see cref="M:PatternLayout.Format(TextWriter,LoggingEvent)"/> a 
+    /// The goal of this class is to <see cref="M:PatternLayout.Format(TextWriter,LoggingEvent)"/> a
     /// <see cref="LoggingEvent"/> as a string. The results
     /// depend on the <i>conversion pattern</i>.
     /// </para>
@@ -76,12 +76,12 @@ namespace log4net.Layout
     /// <code lang="C#">
     /// ILog log = LogManager.GetLogger(typeof(TestApp));
     /// log.Debug("Message 1");
-    /// log.Warn("Message 2");   
+    /// log.Warn("Message 2");
     /// </code>
     /// <para>would yield the output</para>
     /// <code>
     /// DEBUG [main]: Message 1
-    /// WARN  [main]: Message 2  
+    /// WARN  [main]: Message 2
     /// </code>
     /// <para>
     /// Note that there is no explicit separator between text and
@@ -106,8 +106,8 @@ namespace log4net.Layout
     ///     <item>
     ///         <term>appdomain</term>
     ///         <description>
-    ///                 Used to output the friendly name of the AppDomain where the 
-    ///                 logging event was generated. 
+    ///                 Used to output the friendly name of the AppDomain where the
+    ///                 logging event was generated.
     ///         </description>
     ///     </item>
     ///     <item>
@@ -171,15 +171,15 @@ namespace log4net.Layout
     ///         <description>Equivalent to <b>date</b></description>
     ///     </item>
     ///     <item>
-    ///             <term>date</term> 
+    ///             <term>date</term>
     ///             <description>
     ///             <para>
-    ///             Used to output the date of the logging event in the local time zone. 
+    ///             Used to output the date of the logging event in the local time zone.
     ///             To output the date in universal time use the <c>%utcdate</c> pattern.
-    ///             The date conversion 
-    ///             specifier may be followed by a <i>date format specifier</i> enclosed 
+    ///             The date conversion
+    ///             specifier may be followed by a <i>date format specifier</i> enclosed
     ///             between braces. For example, <b>%date{HH:mm:ss,fff}</b> or
-    ///             <b>%date{dd MMM yyyy HH:mm:ss,fff}</b>.  If no date format specifier is 
+    ///             <b>%date{dd MMM yyyy HH:mm:ss,fff}</b>.  If no date format specifier is
     ///             given then ISO8601 format is
     ///             assumed (<see cref="log4net.DateFormatter.Iso8601DateFormatter"/>).
     ///             </para>
@@ -190,10 +190,10 @@ namespace log4net.Layout
     ///             <para>
     ///             For better results it is recommended to use the log4net date
     ///             formatters. These can be specified using one of the strings
-    ///             "ABSOLUTE", "DATE" and "ISO8601" for specifying 
-    ///             <see cref="log4net.DateFormatter.AbsoluteTimeDateFormatter"/>, 
-    ///             <see cref="log4net.DateFormatter.DateTimeDateFormatter"/> and respectively 
-    ///             <see cref="log4net.DateFormatter.Iso8601DateFormatter"/>. For example, 
+    ///             "ABSOLUTE", "DATE" and "ISO8601" for specifying
+    ///             <see cref="log4net.DateFormatter.AbsoluteTimeDateFormatter"/>,
+    ///             <see cref="log4net.DateFormatter.DateTimeDateFormatter"/> and respectively
+    ///             <see cref="log4net.DateFormatter.Iso8601DateFormatter"/>. For example,
     ///             <b>%date{ISO8601}</b> or <b>%date{ABSOLUTE}</b>.
     ///             </para>
     ///             <para>
@@ -342,7 +342,7 @@ namespace log4net.Layout
     ///             <term>message</term>
     ///             <description>
     ///             <para>
-    ///             Used to output the application supplied message associated with 
+    ///             Used to output the application supplied message associated with
     ///             the logging event.
     ///             </para>
     ///             </description>
@@ -386,10 +386,10 @@ namespace log4net.Layout
     ///             characters.
     ///             </para>
     ///             <para>
-    ///             This conversion pattern offers the same performance as using 
-    ///             non-portable line separator strings such as "\n", or "\r\n". 
+    ///             This conversion pattern offers the same performance as using
+    ///             non-portable line separator strings such as "\n", or "\r\n".
     ///             Thus, it is the preferred way of specifying a line separator.
-    ///             </para> 
+    ///             </para>
     ///             </description>
     ///         </item>
     ///         <item>
@@ -417,13 +417,13 @@ namespace log4net.Layout
     ///             <term>property</term>
     ///             <description>
     ///             <para>
-    ///             Used to output the an event specific property. The key to 
+    ///             Used to output the an event specific property. The key to
     ///             lookup must be specified within braces and directly following the
     ///             pattern specifier, e.g. <b>%property{user}</b> would include the value
     ///             from the property that is keyed by the string 'user'. Each property value
     ///             that is to be included in the log must be specified separately.
-    ///             Properties are added to events by loggers or appenders. By default 
-    ///             the <c>log4net:HostName</c> property is set to the name of machine on 
+    ///             Properties are added to events by loggers or appenders. By default
+    ///             the <c>log4net:HostName</c> property is set to the name of machine on
     ///             which the event was originally logged.
     ///             </para>
     ///             <para>
@@ -438,7 +438,7 @@ namespace log4net.Layout
     ///                 <item>
     ///                     <term>the event properties</term>
     ///                     <description>
-    ///                     The event has <see cref="LoggingEvent.Properties"/> that can be set. These 
+    ///                     The event has <see cref="LoggingEvent.Properties"/> that can be set. These
     ///                     properties are specific to this event only.
     ///                     </description>
     ///                 </item>
@@ -452,12 +452,12 @@ namespace log4net.Layout
     ///                 <item>
     ///                     <term>the global properties</term>
     ///                     <description>
-    ///                     The <see cref="GlobalContext.Properties"/> that are set globally. These 
+    ///                     The <see cref="GlobalContext.Properties"/> that are set globally. These
     ///                     properties are shared by all the threads in the AppDomain.
     ///                     </description>
     ///                 </item>
     ///             </list>
-    ///             
+    ///
     ///             </description>
     ///         </item>
     ///     <item>
@@ -465,13 +465,13 @@ namespace log4net.Layout
     ///         <description>Equivalent to <b>timestamp</b></description>
     ///     </item>
     ///     <item>
-    ///             <term>stacktrace</term> 
+    ///             <term>stacktrace</term>
     ///             <description>
     ///             <para>
     ///             Used to output the stack trace of the logging event
-    ///             The stack trace level specifier may be enclosed 
-    ///             between braces. For example, <b>%stacktrace{level}</b>.  
-    ///             If no stack trace level specifier is given then 1 is assumed 
+    ///             The stack trace level specifier may be enclosed
+    ///             between braces. For example, <b>%stacktrace{level}</b>.
+    ///             If no stack trace level specifier is given then 1 is assumed
     ///             </para>
     ///             <para>
     ///             Output uses the format:
@@ -483,13 +483,13 @@ namespace log4net.Layout
     ///             </description>
     ///         </item>
     ///     <item>
-    ///             <term>stacktracedetail</term> 
+    ///             <term>stacktracedetail</term>
     ///             <description>
     ///             <para>
     ///             Used to output the stack trace of the logging event
-    ///             The stack trace level specifier may be enclosed 
-    ///             between braces. For example, <b>%stacktracedetail{level}</b>.  
-    ///             If no stack trace level specifier is given then 1 is assumed 
+    ///             The stack trace level specifier may be enclosed
+    ///             between braces. For example, <b>%stacktracedetail{level}</b>.
+    ///             If no stack trace level specifier is given then 1 is assumed
     ///             </para>
     ///             <para>
     ///             Output uses the format:
@@ -523,7 +523,7 @@ namespace log4net.Layout
     ///             </description>
     ///         </item>
     ///     <item>
-    ///             <term>type</term> 
+    ///             <term>type</term>
     ///             <description>
     ///             <para>
     ///             Used to output the fully qualified type name of the caller
@@ -569,14 +569,14 @@ namespace log4net.Layout
     ///             </description>
     ///         </item>
     ///     <item>
-    ///             <term>utcdate</term> 
+    ///             <term>utcdate</term>
     ///             <description>
     ///             <para>
-    ///             Used to output the date of the logging event in universal time. 
-    ///             The date conversion 
-    ///             specifier may be followed by a <i>date format specifier</i> enclosed 
+    ///             Used to output the date of the logging event in universal time.
+    ///             The date conversion
+    ///             specifier may be followed by a <i>date format specifier</i> enclosed
     ///             between braces. For example, <b>%utcdate{HH:mm:ss,fff}</b> or
-    ///             <b>%utcdate{dd MMM yyyy HH:mm:ss,fff}</b>.  If no date format specifier is 
+    ///             <b>%utcdate{dd MMM yyyy HH:mm:ss,fff}</b>.  If no date format specifier is
     ///             given then ISO8601 format is
     ///             assumed (<see cref="log4net.DateFormatter.Iso8601DateFormatter"/>).
     ///             </para>
@@ -587,10 +587,10 @@ namespace log4net.Layout
     ///             <para>
     ///             For better results it is recommended to use the log4net date
     ///             formatters. These can be specified using one of the strings
-    ///             "ABSOLUTE", "DATE" and "ISO8601" for specifying 
-    ///             <see cref="log4net.DateFormatter.AbsoluteTimeDateFormatter"/>, 
-    ///             <see cref="log4net.DateFormatter.DateTimeDateFormatter"/> and respectively 
-    ///             <see cref="log4net.DateFormatter.Iso8601DateFormatter"/>. For example, 
+    ///             "ABSOLUTE", "DATE" and "ISO8601" for specifying
+    ///             <see cref="log4net.DateFormatter.AbsoluteTimeDateFormatter"/>,
+    ///             <see cref="log4net.DateFormatter.DateTimeDateFormatter"/> and respectively
+    ///             <see cref="log4net.DateFormatter.Iso8601DateFormatter"/>. For example,
     ///             <b>%utcdate{ISO8601}</b> or <b>%utcdate{ABSOLUTE}</b>.
     ///             </para>
     ///             <para>
@@ -621,7 +621,7 @@ namespace log4net.Layout
     ///         </item>
     /// </list>
     /// <para>
-    /// The single letter patterns are deprecated in favor of the 
+    /// The single letter patterns are deprecated in favor of the
     /// longer more descriptive pattern names.
     /// </para>
     /// <para>
@@ -689,7 +689,7 @@ namespace log4net.Layout
     ///                 <td align="center">none</td>
     ///                 <td>
     ///                     <para>
-    ///                     Right pad with spaces if the logger 
+    ///                     Right pad with spaces if the logger
     ///                     name is less than 20 characters long.
     ///                     </para>
     ///                 </td>
@@ -701,7 +701,7 @@ namespace log4net.Layout
     ///                 <td align="center">30</td>
     ///                 <td>
     ///                     <para>
-    ///                     Truncate from the beginning if the logger 
+    ///                     Truncate from the beginning if the logger
     ///                     name is longer than 30 characters.
     ///                     </para>
     ///                 </td>
@@ -736,14 +736,14 @@ namespace log4net.Layout
     ///     </div>
     ///     <para>
     ///     <b>Note about caller location information.</b><br />
-    ///     The following patterns <c>%type %file %line %method %location %class %C %F %L %l %M</c> 
+    ///     The following patterns <c>%type %file %line %method %location %class %C %F %L %l %M</c>
     ///     all generate caller location information.
     /// Location information uses the <c>System.Diagnostics.StackTrace</c> class to generate
     /// a call stack. The caller's information is then extracted from this stack.
     /// </para>
     /// <note type="caution">
     /// <para>
-    /// The <c>System.Diagnostics.StackTrace</c> class is not supported on the 
+    /// The <c>System.Diagnostics.StackTrace</c> class is not supported on the
     /// .NET Compact Framework 1.0 therefore caller location information is not
     /// available on that framework.
     /// </para>
@@ -753,15 +753,15 @@ namespace log4net.Layout
     /// The <c>System.Diagnostics.StackTrace</c> class has this to say about Release builds:
     /// </para>
     /// <para>
-    /// "StackTrace information will be most informative with Debug build configurations. 
-    /// By default, Debug builds include debug symbols, while Release builds do not. The 
-    /// debug symbols contain most of the file, method name, line number, and column 
-    /// information used in constructing StackFrame and StackTrace objects. StackTrace 
-    /// might not report as many method calls as expected, due to code transformations 
+    /// "StackTrace information will be most informative with Debug build configurations.
+    /// By default, Debug builds include debug symbols, while Release builds do not. The
+    /// debug symbols contain most of the file, method name, line number, and column
+    /// information used in constructing StackFrame and StackTrace objects. StackTrace
+    /// might not report as many method calls as expected, due to code transformations
     /// that occur during optimization."
     /// </para>
     /// <para>
-    /// This means that in a Release build the caller information may be incomplete or may 
+    /// This means that in a Release build the caller information may be incomplete or may
     /// not exist at all! Therefore caller location information cannot be relied upon in a Release build.
     /// </para>
     /// </note>
@@ -791,13 +791,13 @@ namespace log4net.Layout
         #region Constants
 
         /// <summary>
-        /// Default pattern string for log output. 
+        /// Default pattern string for log output.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Default pattern string for log output. 
-        /// Currently set to the string <b>"%message%newline"</b> 
-        /// which just prints the application supplied message. 
+        /// Default pattern string for log output.
+        /// Currently set to the string <b>"%message%newline"</b>
+        /// which just prints the application supplied message.
         /// </para>
         /// </remarks>
         public const string DefaultConversionPattern = "%message%newline";
@@ -830,12 +830,12 @@ namespace log4net.Layout
         #endregion Static Fields
 
         #region Member Variables
-    
+
         /// <summary>
         /// the pattern
         /// </summary>
         private string m_pattern;
-  
+
         /// <summary>
         /// the head of the pattern converter chain
         /// </summary>
@@ -911,7 +911,7 @@ namespace log4net.Layout
 
             s_globalRulesRegistry.Add("r", typeof(RelativeTimePatternConverter));
             s_globalRulesRegistry.Add("timestamp", typeof(RelativeTimePatternConverter));
-            
+
 #if !(NETCF || NETSTANDARD1_3)
             s_globalRulesRegistry.Add("stacktrace", typeof(StackTracePatternConverter));
             s_globalRulesRegistry.Add("stacktracedetail", typeof(StackTraceDetailPatternConverter));
@@ -979,11 +979,11 @@ namespace log4net.Layout
         /// aware that it will be called before your is called constructor.
         /// </para>
         /// <para>
-        /// When using this constructor the <see cref="ActivateOptions"/> method 
+        /// When using this constructor the <see cref="ActivateOptions"/> method
         /// need not be called. This may not be the case when using a subclass.
         /// </para>
         /// </remarks>
-        public PatternLayout(string pattern) 
+        public PatternLayout(string pattern)
         {
             // By default we do not process the exception
             this.IgnoresException = true;
@@ -998,7 +998,7 @@ namespace log4net.Layout
         }
 
         #endregion
-  
+
         /// <summary>
         /// The pattern formatting string
         /// </summary>
@@ -1026,7 +1026,7 @@ namespace log4net.Layout
         /// global and instance rules on the <see cref="PatternParser"/>.
         /// </para>
         /// </remarks>
-        virtual protected PatternParser CreatePatternParser(string pattern) 
+        virtual protected PatternParser CreatePatternParser(string pattern)
         {
             PatternParser patternParser = new PatternParser(pattern);
 
@@ -1046,7 +1046,7 @@ namespace log4net.Layout
 
             return patternParser;
         }
-  
+
         #region Implementation of IOptionHandler
 
         /// <summary>
@@ -1055,17 +1055,17 @@ namespace log4net.Layout
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
-        /// activation scheme. The <see cref="ActivateOptions"/> method must 
+        /// activation scheme. The <see cref="ActivateOptions"/> method must
         /// be called on this object after the configuration properties have
         /// been set. Until <see cref="ActivateOptions"/> is called this
-        /// object is in an undefined state and must not be used. 
+        /// object is in an undefined state and must not be used.
         /// </para>
         /// <para>
-        /// If any of the configuration properties are modified then 
+        /// If any of the configuration properties are modified then
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// </remarks>
-        override public void ActivateOptions() 
+        override public void ActivateOptions()
         {
             this.m_head = this.CreatePatternParser(this.m_pattern).Parse();
 
@@ -1102,7 +1102,7 @@ namespace log4net.Layout
         /// specified in the <see cref="ConversionPattern"/> property.
         /// </para>
         /// </remarks>
-        override public void Format(TextWriter writer, LoggingEvent loggingEvent) 
+        override public void Format(TextWriter writer, LoggingEvent loggingEvent)
         {
             if (writer == null)
             {
@@ -1116,7 +1116,7 @@ namespace log4net.Layout
             PatternConverter c = this.m_head;
 
             // loop through the chain of pattern converters
-            while (c != null) 
+            while (c != null)
             {
                 c.Format(writer, loggingEvent);
                 c = c.Next;
@@ -1158,7 +1158,7 @@ namespace log4net.Layout
         /// This method must be called before <see cref="ActivateOptions"/>.
         /// </para>
         /// <para>
-        /// The <paramref name="type"/> specified must extend the 
+        /// The <paramref name="type"/> specified must extend the
         /// <see cref="PatternConverter"/> type.
         /// </para>
         /// </remarks>

@@ -204,7 +204,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 {
                     this.FindItemByValue(initial, true).Selected = true;
                 }
-            } 
+            }
         }
 
         public ListItem FindItemByText(string text, bool ignoreCase = false)

@@ -28,7 +28,7 @@ namespace DotNetNuke.UI.WebControls
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The PropertyEditorControl control provides a way to display and edit any 
+    /// The PropertyEditorControl control provides a way to display and edit any
     /// properties of any Info class
     /// </summary>
     /// <remarks>
@@ -41,7 +41,7 @@ namespace DotNetNuke.UI.WebControls
         private bool _itemChanged;
         private Hashtable _sections;
         #endregion
-        
+
         #region Constructors
 
         public PropertyEditorControl()
@@ -60,7 +60,7 @@ namespace DotNetNuke.UI.WebControls
             this.Groups = Null.NullString;
             this.AutoGenerate = true;
         }
-        
+
         #endregion
 
         #region Protected Members
@@ -83,7 +83,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get { return this.GetProperties(); }
         }
-        
+
         #endregion
 
         #region Public Properties
@@ -218,11 +218,11 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether to sort properties. 
+        /// Gets and sets whether to sort properties.
         /// </summary>
         /// <value>The Sort Mode of the editor</value>
         /// <remarks>
-        /// By default all properties will be sorted 
+        /// By default all properties will be sorted
         /// </remarks>
         /// -----------------------------------------------------------------------------
         [Category("Appearance")]
@@ -325,7 +325,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Visibility Control")]
         public Style VisibilityStyle { get; private set; }
-        
+
         #endregion
 
         #endregion
@@ -584,7 +584,7 @@ namespace DotNetNuke.UI.WebControls
                 panel.Controls.Add(new LiteralControl("<hr noshade=\"noshade\" size=\"1\"/>"));
             }
             this.Controls.Add(panel);
-            
+
             // Get the Hashtable
             if (this._sections == null)
             {
@@ -723,7 +723,7 @@ namespace DotNetNuke.UI.WebControls
                                 this.AddEditorRow(table, obj);
                             }
                         }
-                        
+
                         // Add the Table to the Controls Collection
                         this.Controls.Add(table);
                     }
@@ -873,7 +873,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.CssClass = "dnnForm";
             }
-            
+
             // Find the Min/Max buttons
             if (this.GroupByMode == GroupByMode.Section && (this._sections != null))
             {
@@ -886,7 +886,7 @@ namespace DotNetNuke.UI.WebControls
             }
             base.OnPreRender(e);
         }
-        
+
         #endregion
 
         #region Public Methods
@@ -960,7 +960,7 @@ namespace DotNetNuke.UI.WebControls
         {
             this._itemChanged = true;
         }
-        
+
         #endregion
     }
 }

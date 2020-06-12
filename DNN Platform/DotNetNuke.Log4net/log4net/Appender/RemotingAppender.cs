@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -37,25 +37,25 @@ using log4net.Util;
 namespace log4net.Appender
 {
     /// <summary>
-    /// Delivers logging events to a remote logging sink. 
+    /// Delivers logging events to a remote logging sink.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// This Appender is designed to deliver events to a remote sink. 
+    /// This Appender is designed to deliver events to a remote sink.
     /// That is any object that implements the <see cref="IRemoteLoggingSink"/>
     /// interface. It delivers the events using .NET remoting. The
     /// object to deliver events to is specified by setting the
     /// appenders <see cref="RemotingAppender.Sink"/> property.</para>
     /// <para>
-    /// The RemotingAppender buffers events before sending them. This allows it to 
+    /// The RemotingAppender buffers events before sending them. This allows it to
     /// make more efficient use of the remoting infrastructure.</para>
     /// <para>
-    /// Once the buffer is full the events are still not sent immediately. 
-    /// They are scheduled to be sent using a pool thread. The effect is that 
-    /// the send occurs asynchronously. This is very important for a 
-    /// number of non obvious reasons. The remoting infrastructure will 
+    /// Once the buffer is full the events are still not sent immediately.
+    /// They are scheduled to be sent using a pool thread. The effect is that
+    /// the send occurs asynchronously. This is very important for a
+    /// number of non obvious reasons. The remoting infrastructure will
     /// flow thread local variables (stored in the <see cref="CallContext"/>),
-    /// if they are marked as <see cref="ILogicalThreadAffinative"/>, across the 
+    /// if they are marked as <see cref="ILogicalThreadAffinative"/>, across the
     /// remoting boundary. If the server is not contactable then
     /// the remoting infrastructure will clear the <see cref="ILogicalThreadAffinative"/>
     /// objects from the <see cref="CallContext"/>. To prevent a logging failure from
@@ -64,9 +64,9 @@ namespace log4net.Appender
     /// thread is used for this. If no <see cref="ThreadPool"/> thread is available then
     /// the events will block in the thread pool manager until a thread is available.</para>
     /// <para>
-    /// Because the events are sent asynchronously using pool threads it is possible to close 
+    /// Because the events are sent asynchronously using pool threads it is possible to close
     /// this appender before all the queued events have been sent.
-    /// When closing the appender attempts to wait until all the queued events have been sent, but 
+    /// When closing the appender attempts to wait until all the queued events have been sent, but
     /// this will timeout after 30 seconds regardless.</para>
     /// <para>
     /// If this appender is being closed because the <see cref="AppDomain.ProcessExit"/>
@@ -74,7 +74,7 @@ namespace log4net.Appender
     /// exit the runtime limits the time that a <see cref="AppDomain.ProcessExit"/>
     /// event handler is allowed to run for. If the runtime terminates the threads before
     /// the queued events have been sent then they will be lost. To ensure that all events
-    /// are sent the appender must be closed before the application exits. See 
+    /// are sent the appender must be closed before the application exits. See
     /// <see cref="log4net.Core.LoggerManager.Shutdown"/> for details on how to shutdown
     /// log4net programmatically.</para>
     /// </remarks>
@@ -103,7 +103,7 @@ namespace log4net.Appender
         #region Public Instance Properties
 
         /// <summary>
-        /// Gets or sets the URL of the well-known object that will accept 
+        /// Gets or sets the URL of the well-known object that will accept
         /// the logging events.
         /// </summary>
         /// <value>
@@ -132,24 +132,24 @@ namespace log4net.Appender
         /// <remarks>
         /// <para>
         /// This is part of the <see cref="IOptionHandler"/> delayed object
-        /// activation scheme. The <see cref="ActivateOptions"/> method must 
+        /// activation scheme. The <see cref="ActivateOptions"/> method must
         /// be called on this object after the configuration properties have
         /// been set. Until <see cref="ActivateOptions"/> is called this
-        /// object is in an undefined state and must not be used. 
+        /// object is in an undefined state and must not be used.
         /// </para>
         /// <para>
-        /// If any of the configuration properties are modified then 
+        /// If any of the configuration properties are modified then
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// </remarks>
 #if NET_4_0 || MONO_4_0
         [System.Security.SecuritySafeCritical]
 #endif
-        override public void ActivateOptions() 
+        override public void ActivateOptions()
         {
             base.ActivateOptions();
 
-            IDictionary channelProperties = new Hashtable(); 
+            IDictionary channelProperties = new Hashtable();
             channelProperties["typeFilterLevel"] = "Full";
 
             this.m_sinkObj = (IRemoteLoggingSink)Activator.GetObject(typeof(IRemoteLoggingSink), this.m_sinkUrl, channelProperties);
@@ -167,7 +167,7 @@ namespace log4net.Appender
         /// using a pool thread. The effect is that the send occurs asynchronously.
         /// This is very important for a number of non obvious reasons. The remoting
         /// infrastructure will flow thread local variables (stored in the <see cref="CallContext"/>),
-        /// if they are marked as <see cref="ILogicalThreadAffinative"/>, across the 
+        /// if they are marked as <see cref="ILogicalThreadAffinative"/>, across the
         /// remoting boundary. If the server is not contactable then
         /// the remoting infrastructure will clear the <see cref="ILogicalThreadAffinative"/>
         /// objects from the <see cref="CallContext"/>. To prevent a logging failure from
@@ -203,7 +203,7 @@ namespace log4net.Appender
         /// it is possible to close the appender before all the queued events have been
         /// sent.</para>
         /// <para>
-        /// This method attempts to wait until all the queued events have been sent, but this 
+        /// This method attempts to wait until all the queued events have been sent, but this
         /// method will timeout after 30 seconds regardless.</para>
         /// <para>
         /// If the appender is being closed because the <see cref="AppDomain.ProcessExit"/>

@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.Journal
                     relativePath.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
             }
 
-            
+
             var extension = relativePath.Substring(relativePath.LastIndexOf(".",
             StringComparison.Ordinal) + 1).ToLowerInvariant();
             return AcceptedFileExtensions.Contains(extension);
@@ -309,7 +309,7 @@ namespace DotNetNuke.Modules.Journal
             }
         }
 
-        
+
         public class PreviewDTO
         {
             public string Url { get; set; }
@@ -331,7 +331,7 @@ namespace DotNetNuke.Modules.Journal
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-        
+
         public class GetListForProfileDTO
         {
             public int ProfileId { get; set; }
@@ -346,7 +346,7 @@ namespace DotNetNuke.Modules.Journal
         {
             try
             {
-                
+
                 var jp = new JournalParser(this.PortalSettings, this.ActiveModule.ModuleID, postData.ProfileId, postData.GroupId, this.UserInfo);
                 return this.Request.CreateResponse(HttpStatusCode.OK, jp.GetList(postData.RowIndex, postData.MaxRows), "text/html");
             }
@@ -383,7 +383,7 @@ namespace DotNetNuke.Modules.Journal
         {
             public int JournalId { get; set; }
             public string Comment { get; set; }
-            public IList<MentionDTO> Mentions { get; set; } 
+            public IList<MentionDTO> Mentions { get; set; }
         }
 
         [HttpPost]

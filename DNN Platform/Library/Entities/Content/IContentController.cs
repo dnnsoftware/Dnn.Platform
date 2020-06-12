@@ -49,7 +49,7 @@ namespace DotNetNuke.Entities.Content
         /// <summary>Delete a ContentItem object by ID.</summary>
         /// <param name="contentItemId">The ID of the ContentItem object (ContentItemId)</param>
         void DeleteContentItem(int contentItemId);
-        
+
         /// <summary>
         /// Gets the content item.
         /// </summary>

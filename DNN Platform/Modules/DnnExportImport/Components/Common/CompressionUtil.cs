@@ -103,7 +103,7 @@ namespace Dnn.ExportImport.Components.Common
         /// <param name="archive">Source archive to write the files to</param>
         /// <param name="files">List containing path of files to add to archive.</param>
         /// <param name="folderOffset">Starting index(Index in file url) of the root folder in archive based on what the folder structure starts in archive.
-        /// e.g. if file url is c:\\dnn\files\archived\foldername\1\file.jpg and we want to add all files in foldername folder 
+        /// e.g. if file url is c:\\dnn\files\archived\foldername\1\file.jpg and we want to add all files in foldername folder
         /// then the folder offset would be starting index of foldername</param>
         /// <param name="folder">Additional root folder to be added into archive.</param>
         public static void AddFilesToArchive(ZipArchive archive, IEnumerable<string> files, int folderOffset,
@@ -123,7 +123,7 @@ namespace Dnn.ExportImport.Components.Common
         /// <param name="file">Full path of file to add</param>
         /// <param name="archivePath">Full path of archive file</param>
         /// <param name="folderOffset">Starting index(Index in file url) of the root folder in archive based on what the folder structure starts in archive.
-        /// e.g. if file url is c:\\dnn\files\archived\foldername\1\file.jpg and we want to add all files in foldername folder 
+        /// e.g. if file url is c:\\dnn\files\archived\foldername\1\file.jpg and we want to add all files in foldername folder
         /// then the folder offset would be starting index of foldername</param>
         /// <param name="folder">Additional root folder to be added into archive.</param>
         public static bool AddFileToArchive(string file, string archivePath, int folderOffset, string folder = null)

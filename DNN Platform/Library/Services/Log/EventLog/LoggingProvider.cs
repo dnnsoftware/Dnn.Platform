@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         #endregion
-        
+
         #region "Shared/Static Methods"
 
         // return the provider
@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             return ComponentFactory.GetComponent<LoggingProvider>();
         }
-        
+
         #endregion
 
         #region "Abstract Methods"

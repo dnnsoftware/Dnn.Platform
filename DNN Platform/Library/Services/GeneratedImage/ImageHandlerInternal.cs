@@ -269,7 +269,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 cachePolicy.SetExpires(this.DateTime_Now + this.ClientCacheExpiration);
                 cachePolicy.SetETag(cacheId);
             }
-            
+
             // Handle Server cache
             if (this.EnableServerCache)
             {
@@ -306,7 +306,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     return;
                 }
             }
-            
+
             if (imageMethodData.HttpStatusCode != null)
             {
                 context.Response.StatusCode = (int)imageMethodData.HttpStatusCode;

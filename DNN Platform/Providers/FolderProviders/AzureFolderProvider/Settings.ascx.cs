@@ -38,7 +38,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
             if (folderMappingSettings.ContainsKey(Constants.AccountKey))
             {
-                this.tbAccountKey.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, Constants.AccountKey);                
+                this.tbAccountKey.Text = folderProvider.GetEncryptedSetting(folderMappingSettings, Constants.AccountKey);
             }
 
             if (this.tbAccountName.Text.Length > 0 && this.tbAccountKey.Text.Length > 0)
@@ -112,7 +112,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
                 throw new Exception();
             }
-            
+
             folderMapping.FolderMappingSettings[Constants.AccountName] = accountName;
             folderMapping.FolderMappingSettings[Constants.AccountKey] = accountKey;
             folderMapping.FolderMappingSettings[Constants.Container] = container;
@@ -182,7 +182,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
                 return false;
             }
-            
+
             var csa = new CloudStorageAccount(sc, useHttps);
             var blobClient = csa.CreateCloudBlobClient();
             var container = blobClient.GetContainerReference(containerName);
@@ -242,12 +242,12 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
         private string GetAccountKey()
         {
-            return FolderProvider.Instance(Constants.FolderProviderType).EncryptValue(this.tbAccountKey.Text);            
+            return FolderProvider.Instance(Constants.FolderProviderType).EncryptValue(this.tbAccountKey.Text);
         }
 
         private string GetAccountName()
         {
-            return FolderProvider.Instance(Constants.FolderProviderType).EncryptValue(this.tbAccountName.Text);            
+            return FolderProvider.Instance(Constants.FolderProviderType).EncryptValue(this.tbAccountName.Text);
         }
 
         private string GetCustomDomain()
@@ -267,7 +267,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             var useHttps = this.chkUseHttps.Checked;
 
             StorageCredentials sc;
-            
+
             try
             {
                 sc = new StorageCredentials(accountName, accountKey);
@@ -278,7 +278,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
                 this.valContainerName.ErrorMessage = Localization.GetString("AuthenticationFailure.ErrorMessage", this.LocalResourceFile);
                 this.valContainerName.IsValid = false;
-                
+
                 return;
             }
 
@@ -295,7 +295,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             catch (StorageException ex)
             {
                 if (ex.RequestInformation.ExtendedErrorInformation != null)
-                { 
+                {
                     switch (ex.RequestInformation.ExtendedErrorInformation.ErrorCode)
                     {
                         case "AuthenticationFailure":

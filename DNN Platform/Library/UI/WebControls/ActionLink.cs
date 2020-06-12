@@ -108,8 +108,8 @@ namespace DotNetNuke.UI.WebControls
             if (this.Visible && this.IsVisible((SecurityAccessLevel)Enum.Parse(typeof(SecurityAccessLevel), this.Security)))
             {
                 this.Text = this.Title;
-                this.NavigateUrl = this.ControlKey != "" 
-                                ? this.ModuleControl.ModuleContext.EditUrl(this.KeyName, this.KeyValue, this.ControlKey) 
+                this.NavigateUrl = this.ControlKey != ""
+                                ? this.ModuleControl.ModuleContext.EditUrl(this.KeyName, this.KeyValue, this.ControlKey)
                                 : this.ModuleControl.ModuleContext.EditUrl(this.Title);
 
                 if (this.CssClass == "")

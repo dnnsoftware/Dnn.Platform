@@ -62,7 +62,7 @@ namespace DotNetNuke.Entities.Icons
         /// <summary>
         /// Gets the Icon URL.
         /// </summary>
-        /// <param name="key">Key to icon, e.g. edit</param>        
+        /// <param name="key">Key to icon, e.g. edit</param>
         /// <returns>Link to the image, e.g. /Icons/Sigma/edit_16x16_standard.png</returns>
         public static string IconURL(string key)
         {
@@ -72,7 +72,7 @@ namespace DotNetNuke.Entities.Icons
         /// <summary>
         /// Gets the Icon URL.
         /// </summary>
-        /// <param name="key">Key to icon, e.g. edit</param>        
+        /// <param name="key">Key to icon, e.g. edit</param>
         /// <param name="size">Size of icon, e.g.16x16 (default) or 32x32</param>
         /// <returns>Link to the image, e.g. /Icons/Sigma/edit_16x16_standard.png</returns>
         public static string IconURL(string key, string size)
@@ -83,16 +83,16 @@ namespace DotNetNuke.Entities.Icons
         /// <summary>
         /// Gets the Icon URL.
         /// </summary>
-        /// <param name="key">Key to icon, e.g. edit</param>        
+        /// <param name="key">Key to icon, e.g. edit</param>
         /// <param name="size">Size of icon, e.g.16x16 (default) or 32x32</param>
         /// <param name="style">Style of icon, e.g. Standard (default)</param>
         /// <returns>Link to the image, e.g. /Icons/Sigma/edit_16x16_standard.png</returns>
         public static string IconURL(string key, string size, string style)
         {
-            if (string.IsNullOrEmpty(key)) 
+            if (string.IsNullOrEmpty(key))
                 return string.Empty;
 
-            if (string.IsNullOrEmpty(size)) 
+            if (string.IsNullOrEmpty(size))
                 size = DefaultIconSize;
 
             if (string.IsNullOrEmpty(style))
@@ -118,10 +118,10 @@ namespace DotNetNuke.Entities.Icons
 
         private static readonly SharedDictionary<string, bool> _iconsStatusOnDisk = new SharedDictionary<string, bool>();
         private static void CheckIconOnDisk(string path)
-        {            
+        {
             using (_iconsStatusOnDisk.GetReadLock())
-            {                
-                if (_iconsStatusOnDisk.ContainsKey(path)) 
+            {
+                if (_iconsStatusOnDisk.ContainsKey(path))
                     return;
             }
 
@@ -131,10 +131,10 @@ namespace DotNetNuke.Entities.Icons
                 {
                     _iconsStatusOnDisk.Add(path, true);
                     string iconPhysicalPath = Path.Combine(Globals.ApplicationMapPath, path.Replace('/', '\\'));
-                    if (!File.Exists(iconPhysicalPath)) 
+                    if (!File.Exists(iconPhysicalPath))
                         Logger.WarnFormat(string.Format("Icon Not Present on Disk {0}", iconPhysicalPath));
                 }
-            }            
+            }
         }
 
         public static string[] GetIconSets()

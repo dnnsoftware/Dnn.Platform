@@ -94,7 +94,7 @@ namespace DotNetNuke.Services.Installer.Installers
             this.Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
             return true;
         }
-        
+
         #endregion
 
         #region "Protected Methods"
@@ -114,7 +114,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     Util.BackupFile(insFile, this.PhysicalBasePath, this.Log);
                 }
-                
+
                 // Delete file
                 Util.DeleteFile(insFile, this.PhysicalBasePath, this.Log);
                 return true;
@@ -160,7 +160,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 Util.RestoreFile(installFile, this.PhysicalBasePath, this.Log);
             }
         }
-        
+
         #endregion
 
         #region "Public Methods"
@@ -231,7 +231,7 @@ namespace DotNetNuke.Services.Installer.Installers
         public override void UnInstall()
         {
         }
-        
+
         #endregion
     }
 }

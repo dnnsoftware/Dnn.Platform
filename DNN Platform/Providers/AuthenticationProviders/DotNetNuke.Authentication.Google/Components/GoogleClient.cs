@@ -20,7 +20,7 @@ namespace DotNetNuke.Authentication.Google.Components
     {
         #region Constructors
 
-        public GoogleClient(int portalId, AuthMode mode) 
+        public GoogleClient(int portalId, AuthMode mode)
             : base(portalId, mode, "Google")
         {
             this.TokenEndpoint = new Uri("https://accounts.google.com/o/oauth2/token");

@@ -363,7 +363,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
 
             this._mockFolder.Setup(mf => mf.DeleteFolder(subfolder1));
-            
+
             this._mockFolderManager.Setup(mfm => mfm.DeleteFolder(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath));
             this._mockFolderManager.Setup(mfm => mfm.GetFolders(folderInfo)).Returns(subfolders);
             this._mockFolderManager.Setup(mfm => mfm.GetFolders(It.IsNotIn(folderInfo))).Returns(new List<IFolderInfo>());
@@ -411,7 +411,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._mockFolderManager.Setup(mfm => mfm.DeleteFolder(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath));
             this._mockFolderManager.Setup(mfm => mfm.GetFolders(folderInfo)).Returns(new List<IFolderInfo>());
-            
+
             this._mockFolderManager.Setup(mfm => mfm.GetFiles(folderInfo, It.IsAny<bool>(), It.IsAny<bool>())).Returns(files);
 
             this._mockUserSecurityController.Setup(musc => musc.HasFolderPermission(It.IsAny<IFolderInfo>(), "DELETE")).Returns(true);
@@ -905,7 +905,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             this._folderManager.Synchronize(It.IsAny<int>(), null, It.IsAny<bool>(), It.IsAny<bool>());
         }
-        
+
         [Test]
         [ExpectedException(typeof(NoNetworkAvailableException))]
         public void SynchronizeFolder_Throws_When_Some_Folder_Mapping_Requires_Network_Connectivity_But_There_Is_No_Network_Available()
@@ -2201,7 +2201,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             this._folderInfo.Setup(fi => fi.FolderPath).Returns(Constants.FOLDER_ValidFolderRelativePath);
             this._folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-            
+
             IFolderInfo destinationFolder = new FolderInfo();
             destinationFolder.FolderPath = Constants.FOLDER_OtherValidFolderRelativePath;
             destinationFolder.FolderMappingID = Constants.FOLDER_ValidFolderMappingID;

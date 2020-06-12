@@ -108,7 +108,7 @@ namespace DotNetNuke.UI.WebControls
                 var category = (CategoryAttribute)categoryAttributes[0];
                 editInfo.Category = category.Category;
             }
-            
+
             // Get EditMode Field
 
             if (!objProperty.CanWrite)
@@ -127,7 +127,7 @@ namespace DotNetNuke.UI.WebControls
                     }
                 }
             }
-            
+
             // Get Editor Field
             editInfo.Editor = "UseSystemType";
             object[] editorAttributes = objProperty.GetCustomAttributes(typeof(EditorAttribute), true);
@@ -147,7 +147,7 @@ namespace DotNetNuke.UI.WebControls
                     editInfo.Editor = editor.EditorTypeName;
                 }
             }
-            
+
             // Get Required Field
             editInfo.Required = false;
             object[] requiredAttributes = objProperty.GetCustomAttributes(typeof(RequiredAttribute), true);
@@ -160,7 +160,7 @@ namespace DotNetNuke.UI.WebControls
                     editInfo.Required = true;
                 }
             }
-            
+
             // Get Css Style
             editInfo.ControlStyle = new Style();
             object[] StyleAttributes = objProperty.GetCustomAttributes(typeof(ControlStyleAttribute), true);
@@ -171,7 +171,7 @@ namespace DotNetNuke.UI.WebControls
                 editInfo.ControlStyle.Height = attribute.Height;
                 editInfo.ControlStyle.Width = attribute.Width;
             }
-            
+
             // Get LabelMode Field
             editInfo.LabelMode = LabelMode.Left;
             object[] labelModeAttributes = objProperty.GetCustomAttributes(typeof(LabelModeAttribute), true);
@@ -180,7 +180,7 @@ namespace DotNetNuke.UI.WebControls
                 var mode = (LabelModeAttribute)labelModeAttributes[0];
                 editInfo.LabelMode = mode.Mode;
             }
-            
+
             // Set ResourceKey Field
             editInfo.ResourceKey = string.Format("{0}_{1}", dataSource.GetType().Name, objProperty.Name);
 
@@ -192,7 +192,7 @@ namespace DotNetNuke.UI.WebControls
                 var regExAttribute = (RegularExpressionValidatorAttribute)regExAttributes[0];
                 editInfo.ValidationExpression = regExAttribute.Expression;
             }
-            
+
             // Set Visibility
             editInfo.ProfileVisibility = new ProfileVisibility
                                              {

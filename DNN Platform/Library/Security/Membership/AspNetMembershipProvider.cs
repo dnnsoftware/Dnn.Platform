@@ -948,7 +948,7 @@ namespace DotNetNuke.Security.Membership
                     }
 
                     // If asp user has been successfully created or we are adding a existing user
-                    // to a new portal 
+                    // to a new portal
                     if (createStatus == UserCreateStatus.Success || createStatus == UserCreateStatus.AddUserToPortal)
                     {
                         // Create the DNN User Record
@@ -1053,7 +1053,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Current Password Information for the User 
+        /// Gets the Current Password Information for the User
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1274,7 +1274,7 @@ namespace DotNetNuke.Security.Membership
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="userId"></param>
@@ -1304,7 +1304,7 @@ namespace DotNetNuke.Security.Membership
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="pageIndex"></param>
@@ -1820,7 +1820,7 @@ namespace DotNetNuke.Security.Membership
         public override UserInfo UserLogin(int portalId, string username, string password, string authType,
                                            string verificationCode, ref UserLoginStatus loginStatus)
         {
-            // For now, we are going to ignore the possibility that the User may exist in the 
+            // For now, we are going to ignore the possibility that the User may exist in the
             // Global Data Store but not in the Local DataStore ie. A shared Global Data Store
 
             // Initialise Login Status to Failure
@@ -1903,7 +1903,7 @@ namespace DotNetNuke.Security.Membership
 
                     aspnetUser = System.Web.Security.Membership.GetUser(username);
 
-                    // If user has been locked out for current invalid attempt 
+                    // If user has been locked out for current invalid attempt
                     // return locked out status
                     if (aspnetUser.IsLockedOut)
                     {

@@ -17,7 +17,7 @@ namespace DotNetNuke.Tests.Core.Providers.Builders
         private string folderPath;
         private string physicalPath;
         private int folderMappingID;
-        
+
         internal FolderInfoBuilder()
         {
             this.portalId = Constants.CONTENT_ValidPortalId;
@@ -41,13 +41,13 @@ namespace DotNetNuke.Tests.Core.Providers.Builders
 
         internal IFolderInfo Build()
         {
-            var mock = new Mock<IFolderInfo>();            
+            var mock = new Mock<IFolderInfo>();
             mock.Setup(f => f.FolderID).Returns(this.folderId);
             mock.Setup(f => f.PortalID).Returns(this.portalId);
             mock.Setup(f => f.FolderPath).Returns(this.folderPath);
             mock.Setup(f => f.PhysicalPath).Returns(this.physicalPath);
             mock.Setup(f => f.FolderMappingID).Returns(this.folderMappingID);
-            
+
             return mock.Object;
         }
     }

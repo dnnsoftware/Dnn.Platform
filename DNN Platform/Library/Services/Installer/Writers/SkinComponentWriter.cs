@@ -43,7 +43,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             this._SkinName = skinName;
         }
-        
+
         #endregion
 
         #region "Protected Properties"
@@ -103,7 +103,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 return "skinName";
             }
         }
-        
+
         #endregion
 
         #region "Protected Methods"
@@ -119,7 +119,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             writer.WriteElementString(this.SkinNameNodeName, this._SkinName);
         }
-        
+
         #endregion
     }
 }

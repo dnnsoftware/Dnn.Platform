@@ -63,7 +63,7 @@ namespace DotNetNuke.Security
                     cryptoStream.Close();
 
                     return Convert.ToBase64String(cipherTextBytes);
-                    
+
                 }
             }
         }
@@ -72,7 +72,7 @@ namespace DotNetNuke.Security
         {
             Requires.PropertyNotNull("passPhrase", passPhrase);
             Requires.PropertyNotNull("salt", salt);
-            // Throw exception if the password or salt are too short  
+            // Throw exception if the password or salt are too short
             if (passPhrase.Length < 8)
                 throw new CryptographicException("Passphrase must be at least 8 characters long.");
             if (salt.Length < 8) throw new CryptographicException("Salt must be at least 8 characters long.");

@@ -66,7 +66,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                     Logger.Error(ex);
                     visible = false;
                 }
-                
+
             }
 
             return visible;

@@ -14,7 +14,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
     [PrimaryKey("StateID")]
     [TableName("ContentWorkflowStates")]
     [Serializable]
-    public class WorkflowState 
+    public class WorkflowState
     {
         /// <summary>
         /// State Id
@@ -36,7 +36,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
         /// <summary>
         /// State Order
         /// </summary>
-        public int Order { get; internal set; } 
+        public int Order { get; internal set; }
 
         /// <summary>
         /// Indicates if the state is a system state. System states (i.e.: Draft, Published) have a special behavior. They cannot be deleted or moved.

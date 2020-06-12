@@ -167,7 +167,7 @@ namespace DotNetNuke.Services.Personalization
         }
 
         /// <summary>
-        /// persist profile value from PersonalizationInfo object, using naming container and key to organise 
+        /// persist profile value from PersonalizationInfo object, using naming container and key to organise
         /// function will automatically encrypt the value to plaintext
         /// </summary>
         /// <param name="personalization">Object containing user personalization info</param>

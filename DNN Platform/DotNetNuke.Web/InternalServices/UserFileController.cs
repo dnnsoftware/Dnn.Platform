@@ -28,7 +28,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             return this.GetItems(null);
         }
-        
+
         [DnnAuthorize]
         [HttpGet]
         public HttpResponseMessage GetItems(string fileExtensions)
@@ -130,8 +130,8 @@ namespace DotNetNuke.Web.InternalServices
         {
             return file.ContentType == null
                        ? string.Empty
-                       : (file.ContentType.StartsWith("image/") 
-                            ? file.ContentType.Replace("image/", string.Empty) 
+                       : (file.ContentType.StartsWith("image/")
+                            ? file.ContentType.Replace("image/", string.Empty)
                             : (file.Extension != null ? file.Extension.ToLowerInvariant() : string.Empty));
         }
 

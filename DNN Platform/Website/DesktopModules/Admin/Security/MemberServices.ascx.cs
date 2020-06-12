@@ -460,11 +460,11 @@ namespace DotNetNuke.Modules.Admin.Security
                 // Use Trial
                 this.UseTrial(roleID);
             }
-            
+
             // Rebind Grid
             this.DataBind();
         }
-        
+
         #endregion
 
         #region Nested type: SubscriptionUpdatedEventArgs

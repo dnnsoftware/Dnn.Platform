@@ -236,7 +236,7 @@ namespace DotNetNuke.Services.Localization
         }
 
         /// <summary>
-        /// Adds one of either a "resheader" or "data" element to resxRoot (which should be the root element of the resx file). 
+        /// Adds one of either a "resheader" or "data" element to resxRoot (which should be the root element of the resx file).
         /// This function is used to construct new resource files and to add resource keys to an existing file.
         /// </summary>
         /// <param name="resxRoot">The RESX root.</param>

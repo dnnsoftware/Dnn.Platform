@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -62,7 +62,7 @@ namespace log4net.Layout
         }
 
         #endregion
-  
+
         #region Implementation of IOptionHandler
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace log4net.Layout
         /// This method does nothing as options become effective immediately.
         /// </para>
         /// </remarks>
-        override public void ActivateOptions() 
+        override public void ActivateOptions()
         {
             // nothing to do.
         }
@@ -97,7 +97,7 @@ namespace log4net.Layout
         /// The exception string is retrieved from <see cref="M:LoggingEvent.GetExceptionString()"/>.
         /// </para>
         /// </remarks>
-        override public void Format(TextWriter writer, LoggingEvent loggingEvent) 
+        override public void Format(TextWriter writer, LoggingEvent loggingEvent)
         {
             if (loggingEvent == null)
             {

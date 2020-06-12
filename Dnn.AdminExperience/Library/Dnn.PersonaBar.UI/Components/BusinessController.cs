@@ -156,7 +156,7 @@ namespace Dnn.PersonaBar.UI.Components
                 RemoveAssembly(assemblyName);
             }
         }
-        
+
         private static void RemoveAssembly(string assemblyName)
         {
             Logger.InstallLogInfo(string.Concat(Localization.GetString("LogStart", Localization.GlobalResourceFile), "Removal of assembly:", assemblyName));
@@ -179,5 +179,5 @@ namespace Dnn.PersonaBar.UI.Components
         }
     }
 
-    
+
 }

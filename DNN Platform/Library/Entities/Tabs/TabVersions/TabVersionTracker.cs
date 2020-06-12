@@ -20,7 +20,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// </summary>
         /// <param name="module">Module which tracks the version detail</param>
         /// <param name="moduleVersion">Version number corresponding to the version detail</param>
-        /// <param name="userId">User Id who provokes the version detail</param>  
+        /// <param name="userId">User Id who provokes the version detail</param>
         public void TrackModuleAddition(ModuleInfo module, int moduleVersion, int userId)
         {
             Requires.NotNull("module", module);
@@ -42,7 +42,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// </summary>
         /// <param name="module">Module which tracks the version detail</param>
         /// <param name="moduleVersion">Version number corresponding to the version detail</param>
-        /// <param name="userId">User Id who provokes the version detail</param>  
+        /// <param name="userId">User Id who provokes the version detail</param>
         public void TrackModuleModification(ModuleInfo module, int moduleVersion, int userId)
         {
             Requires.NotNull("module", module);
@@ -77,7 +77,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
             catch (InvalidOperationException)
             {
-                throw; 
+                throw;
             }
             catch (Exception ex)
             {
@@ -90,7 +90,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// </summary>
         /// <param name="module">Module which tracks the version detail</param>
         /// <param name="moduleVersion">Version number corresponding to the version detail</param>
-        /// <param name="userId">User Id who provokes the version detail</param>  
+        /// <param name="userId">User Id who provokes the version detail</param>
         public void TrackModuleDeletion(ModuleInfo module, int moduleVersion, int userId)
         {
             Requires.NotNull("module", module);
@@ -113,7 +113,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// <param name="module">Module which tracks the version detail</param>
         /// <param name="moduleVersion">Version number corresponding to the version detail</param>
         /// <param name="originalTabId">Tab Id where the module originally is</param>
-        /// /// <param name="userId">User Id who provokes the version detail</param>  
+        /// /// <param name="userId">User Id who provokes the version detail</param>
         public void TrackModuleCopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
         {
             Requires.NotNull("module", module);
@@ -141,7 +141,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// <param name="module">Module which tracks the version detail</param>
         /// <param name="moduleVersion">Version number corresponding to the version detail</param>
         /// <param name="originalTabId">Tab Id where the module originally is</param>
-        /// <param name="userId">User Id who provokes the version detail</param>  
+        /// <param name="userId">User Id who provokes the version detail</param>
         public void TrackModuleUncopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
         {
             Requires.NotNull("module", module);
@@ -174,7 +174,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 return;
             }
-            
+
             // Module could be restored in the same version
             var existingTabDetails =
                 TabVersionDetailController.Instance.GetTabVersionDetails(targetVersion.TabVersionId)
@@ -204,7 +204,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 TabVersionDetailController.Instance.DeleteTabVersionDetail(existingTabDetail.TabVersionId,
                     existingTabDetail.TabVersionDetailId);
-                
+
                 // When a module is added in the same version, then we should do nothing with it
                 if (existingTabDetail.Action == TabVersionDetailAction.Added)
                 {
@@ -245,7 +245,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 ModuleVersion = moduleVersion,
                 ModuleOrder = module.ModuleOrder,
                 PaneName = module.PaneName,
-                Action = action              
+                Action = action
             };
         }
 

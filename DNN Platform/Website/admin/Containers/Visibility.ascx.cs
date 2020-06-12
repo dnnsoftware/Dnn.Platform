@@ -23,10 +23,10 @@ namespace DotNetNuke.UI.Containers
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : Containers.Visibility
-    /// 
+    ///
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// Handles the events for collapsing and expanding modules, 
+    /// Handles the events for collapsing and expanding modules,
     /// Showing or hiding admin controls when preview is checked
     /// if personalization of the module container and title is allowed for that module.
     /// </summary>
@@ -48,7 +48,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     return this.ModulePath + this.minIcon;
                 }
-                
+
                 return Globals.ApplicationPath + "/images/min.gif"; // is ~/ the same as ApplicationPath in all cases?
             }
         }
@@ -61,7 +61,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     return this.ModulePath + this.MaxIcon;
                 }
-                
+
                 return Globals.ApplicationPath + "/images/max.gif"; // is ~/ the same as ApplicationPath in all cases?
             }
         }
@@ -89,7 +89,7 @@ namespace DotNetNuke.UI.Containers
                 return this.ModuleControl.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleControl.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1);
             }
         }
-        
+
         #endregion
 
         #region "Public Members"
@@ -265,7 +265,7 @@ namespace DotNetNuke.UI.Containers
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-        
+
         #endregion
     }
 }

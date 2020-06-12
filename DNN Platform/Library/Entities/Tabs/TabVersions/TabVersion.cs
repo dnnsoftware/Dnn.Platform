@@ -8,12 +8,12 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 {
     /// <summary>
     /// Class to represent a Tab Version object
-    /// </summary>    
+    /// </summary>
     [Serializable]
     public class TabVersion : BaseEntityInfo
-    {       
-        #region Public Properties       
- 
+    {
+        #region Public Properties
+
         /// <summary>
         /// Id of the TabVersion object
         /// </summary>

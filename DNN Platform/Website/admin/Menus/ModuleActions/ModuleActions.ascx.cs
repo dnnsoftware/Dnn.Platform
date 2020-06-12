@@ -32,7 +32,7 @@ namespace DotNetNuke.Admin.Containers
     public partial class ModuleActions : ActionBase
     {
         private readonly List<int> validIDs = new List<int>();
-        
+
         protected string AdminActionsJSON { get; set; }
 
         protected string AdminText
@@ -193,5 +193,5 @@ namespace DotNetNuke.Admin.Containers
                 this.Page.ClientScript.RegisterForEventValidation(this.actionButton.UniqueID, id.ToString());
             }
         }
-    }    
+    }
 }

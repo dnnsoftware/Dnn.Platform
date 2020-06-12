@@ -92,9 +92,9 @@ namespace DotNetNuke.Services.GeneratedImage
             get { return this.Implementation.EnableIPCount; }
             set { this.Implementation.EnableIPCount = value; }
         }
-        
+
         /// <summary>
-        /// Sets the maximum amount of images an IP address is allowed to generate 
+        /// Sets the maximum amount of images an IP address is allowed to generate
         /// in the defined purge interval
         /// </summary>
         public int IPCountMaxCount
@@ -104,7 +104,7 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         /// <summary>
-        /// Timespan for resetting the blocking 
+        /// Timespan for resetting the blocking
         /// </summary>
         public TimeSpan IPCountPurgeInterval
         {

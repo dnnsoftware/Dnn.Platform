@@ -55,9 +55,9 @@ namespace DotNetNuke.UI.WebControls
         private bool _IsValid = true;
         private StandardEditorInfoAdapter _StdAdapter;
         private bool _Validated;
-        
+
         #endregion
-        
+
         #region Constructors
 
         public FieldEditorControl()
@@ -161,7 +161,7 @@ namespace DotNetNuke.UI.WebControls
                 this._EditorInfoAdapter = value;
             }
         }
-        
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Editor Type to use
@@ -316,7 +316,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof(ExpandableObjectConverter)), Description("Set the Style for the Visibility Control")]
         public Style VisibilityStyle { get; private set; }
-        
+
         #endregion
 
         #endregion
@@ -327,7 +327,7 @@ namespace DotNetNuke.UI.WebControls
         public event PropertyChangedEventHandler ItemChanged;
         public event EditorCreatedEventHandler ItemCreated;
         public event PropertyChangedEventHandler ItemDeleted;
-    
+
         #endregion
 
         #region Private Methods
@@ -350,7 +350,7 @@ namespace DotNetNuke.UI.WebControls
                 propLabel.EditControl = propEditor;
             }
 
-            var strValue = editInfo.Value as string; 
+            var strValue = editInfo.Value as string;
             if (this.ShowRequired && editInfo.Required && (editInfo.EditMode == PropertyEditorMode.Edit || (editInfo.Required && string.IsNullOrEmpty(strValue))))
             {
                 propLabel.Required = true;
@@ -377,7 +377,7 @@ namespace DotNetNuke.UI.WebControls
                     this.Controls.Add(propLabel);
                 }
             }
-            
+
             // Build the Validators
             this.BuildValidators(editInfo, propEditor.ID);
             if (this.Validators.Count > 0)
@@ -520,7 +520,7 @@ namespace DotNetNuke.UI.WebControls
                 editorCell.Controls.Add(new LiteralControl("&nbsp;&nbsp;"));
                 editorCell.Controls.Add(visibility);
             }
-            
+
             // Add cells to table
             var editorRow = new TableRow();
             var labelRow = new TableRow();
@@ -555,7 +555,7 @@ namespace DotNetNuke.UI.WebControls
                 editorRow.Cells.Add(labelCell);
                 tbl.Rows.Add(editorRow);
             }
-            
+
             // Build the Validators
             this.BuildValidators(editInfo, propEditor.ID);
 
@@ -602,7 +602,7 @@ namespace DotNetNuke.UI.WebControls
                 reqValidator.ErrorMessage = editInfo.Name + " is Required";
                 this.Validators.Add(reqValidator);
             }
-            
+
             // Add Regular Expression Validators
             if (!String.IsNullOrEmpty(editInfo.ValidationExpression))
             {
@@ -635,9 +635,9 @@ namespace DotNetNuke.UI.WebControls
             {
                 visControl = new VisibilityControl
                                  {
-                                     ID = "_visibility", 
-                                     Name = editInfo.Name, 
-                                     User = this.User, 
+                                     ID = "_visibility",
+                                     Name = editInfo.Name,
+                                     User = this.User,
                                      Value = editInfo.ProfileVisibility
                                  };
                 visControl.ControlStyle.CopyFrom(this.VisibilityStyle);
@@ -669,31 +669,31 @@ namespace DotNetNuke.UI.WebControls
                 {
                     editInfo.EditMode = this.EditMode;
                 }
-                
+
                 // Get the Editor Type to use (if specified)
                 if (!string.IsNullOrEmpty(this.EditorTypeName))
                 {
                     editInfo.Editor = this.EditorTypeName;
                 }
-                
+
                 // Get the Label Mode to use (if specified)
                 if (this.LabelMode != LabelMode.Left)
                 {
                     editInfo.LabelMode = this.LabelMode;
                 }
-                
+
                 // if Required is specified set editors property
                 if (this.Required)
                 {
                     editInfo.Required = this.Required;
                 }
-                
+
                 // Get the ValidationExpression to use (if specified)
                 if (!string.IsNullOrEmpty(this.ValidationExpression))
                 {
                     editInfo.ValidationExpression = this.ValidationExpression;
                 }
-                
+
                 // Raise the ItemCreated Event
                 this.OnItemCreated(new PropertyEditorItemEventArgs(editInfo));
 
@@ -854,7 +854,7 @@ namespace DotNetNuke.UI.WebControls
                 this._Validated = true;
             }
         }
-        
+
         #endregion
 
         #region Event Handlers
@@ -872,7 +872,7 @@ namespace DotNetNuke.UI.WebControls
                 this.ItemChanged(this, e);
             }
         }
-        
+
         #endregion
     }
 }

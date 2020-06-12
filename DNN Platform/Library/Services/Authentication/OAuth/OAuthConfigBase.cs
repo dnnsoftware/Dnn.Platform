@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             : base(portalId)
         {
             this.Service = service;
-            
+
             var portalApiKey = PortalController.GetPortalSetting(this.Service + "_APIKey", portalId, "");
             var hostApiKey = "";
 

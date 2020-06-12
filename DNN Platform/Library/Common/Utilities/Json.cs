@@ -26,7 +26,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static string Serialize<T>(T obj)
         {
-            return JsonConvert.SerializeObject(obj);  
+            return JsonConvert.SerializeObject(obj);
         }
     }
 }

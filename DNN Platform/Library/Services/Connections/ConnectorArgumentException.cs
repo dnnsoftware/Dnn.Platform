@@ -10,12 +10,12 @@ namespace DotNetNuke.Services.Connections
     {
         public ConnectorArgumentException()
         {
-            
+
         }
 
         public ConnectorArgumentException(string message) : base(message)
         {
-            
+
         }
 
         public ConnectorArgumentException(string message, Exception innerException) : base(message, innerException)

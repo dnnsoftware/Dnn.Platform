@@ -69,7 +69,7 @@ namespace Dnn.PersonaBar.UI.Services
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="searchText"></param>
         /// <param name="portalId"></param>
@@ -131,7 +131,7 @@ namespace Dnn.PersonaBar.UI.Services
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="parentId"></param>

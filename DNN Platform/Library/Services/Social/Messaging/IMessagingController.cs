@@ -17,6 +17,6 @@ namespace DotNetNuke.Services.Social.Messaging
 
         void SendMessage(Message message, IList<RoleInfo> roles, IList<UserInfo> users, IList<int> fileIDs, UserInfo sender);
 
-        #endregion        
+        #endregion
     }
 }

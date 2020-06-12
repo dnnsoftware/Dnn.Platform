@@ -41,8 +41,8 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        #endregion  
- 
+        #endregion
+
         #region Public Properties
 
         /// -----------------------------------------------------------------------------

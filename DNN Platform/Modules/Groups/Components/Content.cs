@@ -14,7 +14,7 @@ using DotNetNuke.Common.Utilities;
 namespace DotNetNuke.Entities.Groups {
     public class Content {
         /// <summary>
-        /// This should only run after the Post exists in the data store. 
+        /// This should only run after the Post exists in the data store.
         /// </summary>
         /// <returns>The newly created ContentItemID from the data store.</returns>
         /// <remarks>This is for the first question in the thread. Not for replies or items with ParentID > 0.</remarks>
@@ -117,7 +117,7 @@ namespace DotNetNuke.Entities.Groups {
 
             return typeController.AddContentType(objContentType);
         }
-      
+
         #endregion
 
     }

@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -42,7 +42,7 @@ namespace log4net.Util
         #region Private Instance Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NullEnumerator" /> class. 
+        /// Initializes a new instance of the <see cref="NullEnumerator" /> class.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -54,7 +54,7 @@ namespace log4net.Util
         }
 
         #endregion Private Instance Constructors
-  
+
         #region Public Static Properties
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace log4net.Util
         /// Gets the current object from the enumerator.
         /// </summary>
         /// <remarks>
-        /// Throws an <see cref="InvalidOperationException" /> because the 
+        /// Throws an <see cref="InvalidOperationException" /> because the
         /// <see cref="NullDictionaryEnumerator" /> never has a current value.
         /// </remarks>
         /// <remarks>
@@ -89,13 +89,13 @@ namespace log4net.Util
         /// will throw an <see cref="InvalidOperationException"/>.
         /// </para>
         /// </remarks>
-        /// <exception cref="InvalidOperationException">The collection is empty and <see cref="Current"/> 
+        /// <exception cref="InvalidOperationException">The collection is empty and <see cref="Current"/>
         /// cannot be positioned over a valid location.</exception>
-        public object Current 
+        public object Current
         {
             get { throw new InvalidOperationException(); }
         }
-  
+
         /// <summary>
         /// Test if the enumerator can advance, if so advance
         /// </summary>
@@ -111,7 +111,7 @@ namespace log4net.Util
         {
             return false;
         }
-  
+
         /// <summary>
         /// Resets the enumerator back to the start.
         /// </summary>
@@ -120,7 +120,7 @@ namespace log4net.Util
         /// As the enumerator is over an empty collection <see cref="Reset"/> does nothing.
         /// </para>
         /// </remarks>
-        public void Reset() 
+        public void Reset()
         {
         }
 
@@ -132,7 +132,7 @@ namespace log4net.Util
         /// The singleton instance of the <see cref="NullEnumerator" />.
         /// </summary>
         private readonly static NullEnumerator s_instance = new NullEnumerator();
-  
+
         #endregion Private Static Fields
     }
 }

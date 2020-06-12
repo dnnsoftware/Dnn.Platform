@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.Syndication
             this.Channel["language"] = this.Settings.DefaultLanguage;
             this.Channel["copyright"] = !string.IsNullOrEmpty(this.Settings.FooterText) ? this.Settings.FooterText.Replace("[year]", DateTime.Now.Year.ToString()) : string.Empty;
             this.Channel["webMaster"] = this.Settings.Email;
-            
+
             IList<SearchResult> searchResults = null;
             var query = new SearchQuery();
             query.PortalIds = new[] { this.Settings.PortalId };
@@ -111,7 +111,7 @@ namespace DotNetNuke.Services.Syndication
             }
 
             item["title"] = searchResult.Title;
-            item["description"] = searchResult.Description;           
+            item["description"] = searchResult.Description;
             item["pubDate"] = searchResult.ModifiedTimeUtc.ToUniversalTime().ToString("r");
             item["link"] = url;
             item["guid"] = url;
@@ -120,8 +120,8 @@ namespace DotNetNuke.Services.Syndication
         }
 
         /// <summary>
-        /// The PreRender event is used to set the Caching Policy for the Feed.  This mimics the behavior from the 
-        /// OutputCache directive in the old Rss.aspx file.  @OutputCache Duration="60" VaryByParam="moduleid" 
+        /// The PreRender event is used to set the Caching Policy for the Feed.  This mimics the behavior from the
+        /// OutputCache directive in the old Rss.aspx file.  @OutputCache Duration="60" VaryByParam="moduleid"
         /// </summary>
         /// <param name="ea">Event Args.</param>
         /// <remarks></remarks>

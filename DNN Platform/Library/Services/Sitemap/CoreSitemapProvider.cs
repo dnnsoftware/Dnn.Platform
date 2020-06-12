@@ -165,8 +165,8 @@ namespace DotNetNuke.Services.Sitemap
         }
 
         /// <summary>
-        ///   When page level priority is used, the priority for each page will be computed from 
-        ///   the hierarchy level of the page. 
+        ///   When page level priority is used, the priority for each page will be computed from
+        ///   the hierarchy level of the page.
         ///   Top level pages will have a value of 1, second level 0.9, third level 0.8, ...
         /// </summary>
         /// <param name = "objTab">The page being indexed</param>

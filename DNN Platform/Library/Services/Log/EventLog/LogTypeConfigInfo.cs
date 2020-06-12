@@ -55,11 +55,11 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public string MailFromAddress
         {
-            get {                
+            get {
                 var portalSettings = Globals.GetPortalSettings();
-                return 
-                    string.IsNullOrWhiteSpace(this._mailFromAddress) 
-                    ? (portalSettings == null ? string.Empty : portalSettings.Email) 
+                return
+                    string.IsNullOrWhiteSpace(this._mailFromAddress)
+                    ? (portalSettings == null ? string.Empty : portalSettings.Email)
                     : this._mailFromAddress; }
             set { this._mailFromAddress = value; }
         }

@@ -57,7 +57,7 @@ namespace DotNetNuke.UI.Containers
         {
             this.ActionControl = actionControl;
         }
-        
+
         #endregion
 
         #region Public Properties
@@ -72,7 +72,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ModuleInstanceContext instance that is connected to this ActionManager 
+        /// Gets the ModuleInstanceContext instance that is connected to this ActionManager
         /// instance
         /// </summary>
         /// <returns>A ModuleInstanceContext object</returns>
@@ -209,7 +209,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DisplayControl determines whether the associated Action control should be 
+        /// DisplayControl determines whether the associated Action control should be
         /// displayed
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -263,7 +263,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetClientScriptURL gets the client script to attach to the control's client 
+        /// GetClientScriptURL gets the client script to attach to the control's client
         /// side onclick event
         /// </summary>
         /// <param name="action">The Action</param>
@@ -392,7 +392,7 @@ namespace DotNetNuke.UI.Containers
             }
             return bProcessed;
         }
-        
+
         #endregion
     }
 }

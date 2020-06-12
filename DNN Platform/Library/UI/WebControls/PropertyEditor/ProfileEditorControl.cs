@@ -87,7 +87,7 @@ namespace DotNetNuke.UI.WebControls
                             }
                         }
                     }
-                    
+
                     // Create a ListAttribute for the Region
                     string countryKey = "Unknown";
                     int entryId;
@@ -107,7 +107,7 @@ namespace DotNetNuke.UI.WebControls
                 }
             }
         }
-        
+
         #endregion
     }
 }

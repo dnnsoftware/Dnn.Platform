@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Search
     public class SearchDataStore : SearchDataStoreProvider
     {
         #region Private Methods
-        
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetCommonWords gets a list of the Common Words for the locale
@@ -217,7 +217,7 @@ namespace DotNetNuke.Services.Search
                     }
                 }
             }
-            
+
             // Process results against permissions and mandatory and excluded results
             var results = new SearchResultsInfoCollection();
             foreach (KeyValuePair<int, Dictionary<int, SearchResultsInfo>> kvpResults in dicResults)
@@ -240,7 +240,7 @@ namespace DotNetNuke.Services.Search
                     }
                 }
             }
-            
+
             // Return Search Results Collection
             return results;
         }
@@ -255,33 +255,33 @@ namespace DotNetNuke.Services.Search
         public override void StoreSearchItems(SearchItemInfoCollection searchItems)
         {
             var indexer = new ModuleIndexer();
-            
+
             var modulesDic = new Dictionary<int, string>();
             foreach (SearchItemInfo item in searchItems)
-            {                
+            {
                 if (!modulesDic.ContainsKey(item.ModuleId))
                 {
                     var module = ModuleController.Instance.GetModule(item.ModuleId, Null.NullInteger, true);
                     modulesDic.Add(item.ModuleId, module.CultureCode);
-                    
+
                     // Remove all indexed items for this module
                     InternalSearchController.Instance.DeleteSearchDocumentsByModule(module.PortalID, module.ModuleID, module.ModuleDefID);
                 }
             }
-          
+
             // Process the SearchItems by Module to reduce Database hits
             foreach (var kvp in modulesDic)
             {
                 // Get the Module's SearchItems
                 var moduleSearchItems = searchItems.ModuleItems(kvp.Key);
-                
+
                 // Convert SearchItemInfo objects to SearchDocument objects
                 var searchDocuments = (from SearchItemInfo item in moduleSearchItems select indexer.ConvertSearchItemInfoToSearchDocument(item)).ToList();
-                
+
                 // Index
-                InternalSearchController.Instance.AddSearchDocuments(searchDocuments);                
+                InternalSearchController.Instance.AddSearchDocuments(searchDocuments);
             }
-        } 
+        }
 
         #endregion
 

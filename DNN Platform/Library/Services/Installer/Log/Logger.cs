@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Installer.Log
         public Logger()
         {
             this._logs = new List<LogEntry>();
-            
+
             this._valid = true;
             this._hasWarnings = Null.NullBoolean;
         }
@@ -169,7 +169,7 @@ namespace DotNetNuke.Services.Installer.Log
         /// <param name="info">The description of the LogEntry</param>
         /// -----------------------------------------------------------------------------
         public void AddInfo(string info)
-        {            
+        {
             this._logs.Add(new LogEntry(LogType.Info, info));
             DnnLogger.Info(info);
         }

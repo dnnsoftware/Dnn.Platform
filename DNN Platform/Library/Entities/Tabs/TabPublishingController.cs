@@ -57,7 +57,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 return false; // User has no permission
             }
-            
+
             Hashtable settings = TabController.Instance.GetTabSettings(tabID);
             if (settings["WorkflowID"] != null)
             {
@@ -85,9 +85,9 @@ namespace DotNetNuke.Entities.Tabs
 
             tab.TabPermissions.Add(this.GetTabPermissionByRole(tab.TabID, "VIEW", allUsersRoleId));
             TabPermissionController.SaveTabPermissions(tab);
-            this.ClearTabCache(tab);   
+            this.ClearTabCache(tab);
         }
-        
+
         private void UnpublishTabInternal(TabInfo tab)
         {
             var administratorsRoleID = PortalController.Instance.GetPortal(tab.PortalID).AdministratorRoleId;

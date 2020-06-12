@@ -51,6 +51,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Fakes
             // This method executes the initialization logic that occurs on every request which is
             // executed from the Execute method.
             this.Initialize(requestContext);
-        }    
+        }
     }
 }

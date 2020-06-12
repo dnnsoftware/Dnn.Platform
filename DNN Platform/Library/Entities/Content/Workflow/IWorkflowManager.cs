@@ -8,13 +8,13 @@ using System.Collections.Generic;
 namespace DotNetNuke.Entities.Content.Workflow
 {
     /// <summary>
-    /// This class is responsible to manage the workflows of the portal. 
-    /// It provides CRUD operation methods and methods to know the usage of the workflow 
+    /// This class is responsible to manage the workflows of the portal.
+    /// It provides CRUD operation methods and methods to know the usage of the workflow
     /// </summary>
     public interface IWorkflowManager
     {
         /// <summary>
-        /// This method returns the paginated list of Items that are associated with a workflow 
+        /// This method returns the paginated list of Items that are associated with a workflow
         /// </summary>
         /// <param name="workflowId">Workflow Id</param>
         /// <param name="pageIndex">Page index (where 1 is the index of the first page)</param>
@@ -28,14 +28,14 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <param name="workflowId">Workflow Id</param>
         /// <returns>Total count of Content Items that are using the specified workflow</returns>
         int GetWorkflowUsageCount(int workflowId);
-        
+
         /// <summary>
         /// This method return the list of the Workflows defined for the portal
         /// </summary>
         /// <param name="portalId">Portal Id</param>
         /// <returns>List of the Workflows for the portal</returns>
         IEnumerable<Entities.Workflow> GetWorkflows(int portalId);
-        
+
         /// <summary>
         /// This method adds a new workflow. It automatically add two system states: "Draft" and "Published"
         /// </summary>

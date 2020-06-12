@@ -49,7 +49,7 @@ namespace DotNetNuke.Web.Api.Internal
             request.GetHttpContext().Items["PortalSettings"] = portalSettings;
             return portalSettings;
         }
-        
+
         private static bool TabIsInPortalOrHost(int tabId, int portalId)
         {
             var tab = TabController.Instance.GetTab(tabId, portalId);

@@ -414,7 +414,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             // a key was added
             var nodes = targetDoc.SelectNodes("/configuration/updateme/add");
             Assert.AreEqual(1, nodes.Count);
-            
+
             // test attribute is set
             var node = nodes[0];
             Assert.AreEqual("foo", node.Attributes["test"].Value);
@@ -448,7 +448,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             var nodes = targetDoc.SelectNodes("/configuration/appSettings/add");
             Assert.AreEqual(3, nodes.Count);
-            
+
             Assert.False(merge.ConfigUpdateChangedNodes);
         }
 
@@ -464,7 +464,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
             var nodes = targetDoc.SelectNodes("/configuration/appSettings/add");
             Assert.AreEqual(3, nodes.Count);
-            
+
             Assert.True(merge.ConfigUpdateChangedNodes);
         }
 

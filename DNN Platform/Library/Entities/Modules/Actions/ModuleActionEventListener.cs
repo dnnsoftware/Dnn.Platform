@@ -21,7 +21,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="ModID"></param>
         /// <param name="e"></param>
@@ -35,7 +35,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <value></value>
         /// <remarks></remarks>
@@ -50,7 +50,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <value></value>
         /// <remarks></remarks>

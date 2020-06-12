@@ -30,9 +30,9 @@ namespace DotNetNuke.Entities.Tabs
 
         #endregion
 
-        public int KeyID 
-        { 
-            get { return this.TabAliasSkinId; } 
+        public int KeyID
+        {
+            get { return this.TabAliasSkinId; }
             set { this.TabAliasSkinId = value; }
         }
 

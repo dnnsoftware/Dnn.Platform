@@ -153,7 +153,7 @@ namespace DotNetNuke.Services.Installer
                     isCombi = true;
                 }
             }
-            
+
             // Create a writer to create the processed manifest
             var sb = new StringBuilder();
             using (XmlWriter writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
@@ -237,7 +237,7 @@ namespace DotNetNuke.Services.Installer
 
         /// <summary>
         /// Process legacy language package (that is based on manifest xml file)
-        /// </summary> 
+        /// </summary>
         public static void ProcessLegacyLanguages()
         {
             string filePath = Globals.ApplicationMapPath + Localization.Localization.SupportedLocalesFile.Substring(1).Replace("/", "\\");
@@ -256,7 +256,7 @@ namespace DotNetNuke.Services.Installer
                 {
                     HostController.Instance.Update("EnableUrlLanguage", Util.ReadAttribute(urlNav, "enabled", false, null, Null.NullString, "true"));
                 }
-                
+
                 // Process each language
                 foreach (XPathNavigator nav in doc.CreateNavigator().Select("root/language"))
                 {
@@ -301,7 +301,7 @@ namespace DotNetNuke.Services.Installer
                     }
                 }
             }
-            
+
             // Process Portal Locales files
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
@@ -358,7 +358,7 @@ namespace DotNetNuke.Services.Installer
         /// <summary>
         /// Process legacy module version 3 .dnn install file
         /// </summary>
-        /// <param name="desktopModule"></param> 
+        /// <param name="desktopModule"></param>
         public static void ProcessLegacyModule(DesktopModuleInfo desktopModule)
         {
             // Get the Module folder
@@ -426,7 +426,7 @@ namespace DotNetNuke.Services.Installer
             {
                 Logger.Error(exc);
 
-            }            
+            }
         }
 
         public static void ProcessLegacyModules()
@@ -442,7 +442,7 @@ namespace DotNetNuke.Services.Installer
 
         /// <summary>
         /// Process legacy skinobject version 3 .dnn install package
-        /// </summary> 
+        /// </summary>
         public static void ProcessLegacySkinControls()
         {
             foreach (SkinControlInfo skinControl in SkinControlController.GetSkinControls().Values)
@@ -492,7 +492,7 @@ namespace DotNetNuke.Services.Installer
             {
                 ProcessLegacySkin(skinFolder, "Skin");
             }
-            
+
             // Process Legacy Containers
             skinRootPath = Path.Combine(Globals.HostMapPath, SkinController.RootContainer);
             foreach (string skinFolder in Directory.GetDirectories(skinRootPath))

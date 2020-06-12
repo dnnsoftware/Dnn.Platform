@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Sitemap
                         currentCulture = Localization.Localization.GetPageLocale(this.PortalSettings).Name.ToLowerInvariant();
                     }
 
-                    this._cacheFileName = string.Format("sitemap" + ".{0}.xml", currentCulture);   
+                    this._cacheFileName = string.Format("sitemap" + ".{0}.xml", currentCulture);
                 }
 
                 return this._cacheFileName;
@@ -95,7 +95,7 @@ namespace DotNetNuke.Services.Sitemap
         {
             int cacheDays = Int32.Parse(PortalController.GetPortalSetting("SitemapCacheDays", this.PortalSettings.PortalId, "1"));
             bool cached = cacheDays > 0;
-              
+
             if (cached && this.CacheIsValid())
             {
                 this.WriteSitemapFileToOutput(this.CacheFileName, output);
@@ -103,7 +103,7 @@ namespace DotNetNuke.Services.Sitemap
             }
 
             var allUrls = new List<SitemapUrl>();
-            
+
 
             // excluded urls by priority
             float excludePriority = 0;
@@ -224,7 +224,7 @@ namespace DotNetNuke.Services.Sitemap
         /// <param name = "index">For sitemapindex files the number of the file being generated, 0 otherwise</param>
         /// <param name = "allUrls">The list of urls to be included in the file</param>
         /// <remarks>
-        ///   If the output should be cached it will generate a file under the portal directory (portals\[portalid]\sitemaps\) with 
+        ///   If the output should be cached it will generate a file under the portal directory (portals\[portalid]\sitemaps\) with
         ///   the result of the generation. If the file is part of a sitemap, <paramref name = "index">index</paramref> will be appended to the
         ///   filename cached on disk ("sitemap_1.xml")
         /// </remarks>
@@ -240,7 +240,7 @@ namespace DotNetNuke.Services.Sitemap
                     {
                         Directory.CreateDirectory(this.PortalSettings.HomeSystemDirectoryMapPath + "Sitemap");
                     }
-                    var cachedFile = (index > 0) ? string.Format(this.CacheIndexFileNameFormat, index) : this.CacheFileName;                
+                    var cachedFile = (index > 0) ? string.Format(this.CacheIndexFileNameFormat, index) : this.CacheFileName;
                     sitemapOutput = new StreamWriter(this.PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + cachedFile, false, Encoding.UTF8);
                 }
 

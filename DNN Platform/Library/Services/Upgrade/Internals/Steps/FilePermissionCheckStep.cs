@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     /// <summary>
     /// FilePermissionCheck - Step that performs file permission checks prior to installation
     /// </summary>
-    /// -----------------------------------------------------------------------------    
+    /// -----------------------------------------------------------------------------
     public class FilePermissionCheckStep : BaseInstallationStep
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FilePermissionCheckStep));
@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
         /// <summary>
         /// Main method to execute the step
-        /// </summary>        
+        /// </summary>
         public override void Execute()
         {
             this.Percentage = 0;

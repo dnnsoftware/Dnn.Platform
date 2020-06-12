@@ -53,13 +53,13 @@ namespace Dnn.PersonaBar.UI.MenuControllers
 
         private bool IsPageAdmin()
         {
-            return TabPermissionController.CanAddContentToPage() 
-                    || TabPermissionController.CanAddPage() 
-                    || TabPermissionController.CanAdminPage() 
-                    || TabPermissionController.CanCopyPage() 
-                    || TabPermissionController.CanDeletePage() 
-                    || TabPermissionController.CanExportPage() 
-                    || TabPermissionController.CanImportPage() 
+            return TabPermissionController.CanAddContentToPage()
+                    || TabPermissionController.CanAddPage()
+                    || TabPermissionController.CanAdminPage()
+                    || TabPermissionController.CanCopyPage()
+                    || TabPermissionController.CanDeletePage()
+                    || TabPermissionController.CanExportPage()
+                    || TabPermissionController.CanImportPage()
                     || TabPermissionController.CanManagePage();
         }
     }

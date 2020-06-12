@@ -27,9 +27,9 @@ namespace Dnn.PersonaBar.UI.Services
         private static object _threadLocker = new object();
 
         #region Public API methods
-        
+
         /// <summary>
-        /// Retrieve a list of CMX related Localization Keys with it's values for the current culture. 
+        /// Retrieve a list of CMX related Localization Keys with it's values for the current culture.
         /// </summary>
         [HttpGet]
         public HttpResponseMessage GetTable(string culture)
@@ -219,7 +219,7 @@ namespace Dnn.PersonaBar.UI.Services
                     var cultureSpecificFile = allFiles.FirstOrDefault(f =>
                     {
                         var name = Path.GetFileName(f);
-                        return !string.IsNullOrEmpty(name) 
+                        return !string.IsNullOrEmpty(name)
                                     && name.Equals(cultureSpecificFileName, StringComparison.InvariantCultureIgnoreCase);
                     });
 
@@ -246,7 +246,7 @@ namespace Dnn.PersonaBar.UI.Services
             }
 
             return resourceFiles;
-        } 
+        }
 
         #endregion
     }
@@ -254,6 +254,6 @@ namespace Dnn.PersonaBar.UI.Services
     [Serializable]
     public class CacheDto
     {
-        
+
     }
 }

@@ -134,7 +134,7 @@ namespace DotNetNuke.Services.Journal
 
             DataProvider.Instance().AddSearchDeletedItems(document);
         }
-        
+
         private Stream GetJournalImageContent(Stream fileContent)
         {
             Image image = new Bitmap(fileContent);
@@ -175,7 +175,7 @@ namespace DotNetNuke.Services.Journal
 
         private bool IsImageFile(string fileName)
         {
-            return (Globals.glbImageFileTypes + ",").IndexOf(Path.GetExtension(fileName).Replace(".", "") + ",", StringComparison.InvariantCultureIgnoreCase) > -1;        
+            return (Globals.glbImageFileTypes + ",").IndexOf(Path.GetExtension(fileName).Replace(".", "") + ",", StringComparison.InvariantCultureIgnoreCase) > -1;
         }
 
         private bool ThumbnailCallback()
@@ -190,7 +190,7 @@ namespace DotNetNuke.Services.Journal
                    this.GetBooleanSetting(EditorEnabledSetting, true, module);
         }
         private bool GetBooleanSetting(string settingName, bool defaultValue, ModuleInfo module)
-        {            
+        {
             if (module.ModuleSettings.Contains(settingName))
             {
                 return Convert.ToBoolean(module.ModuleSettings[settingName].ToString());
@@ -515,7 +515,7 @@ namespace DotNetNuke.Services.Journal
                 }
             }
         }
-        
+
         public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId)
         {
             return this.GetJournalItem(portalId, currentUserId, journalId, false, false);
@@ -566,10 +566,10 @@ namespace DotNetNuke.Services.Journal
                     return FileManager.Instance.AddFile(userFolder, fileName, stream, true);
                 }
             }
-            // todo: deal with the case where the exact file name already exists.            
-            return FileManager.Instance.AddFile(userFolder, fileName, fileContent, true);                    
+            // todo: deal with the case where the exact file name already exists.
+            return FileManager.Instance.AddFile(userFolder, fileName, fileContent, true);
         }
-        
+
         public void SaveJournalItem(JournalItem journalItem, ModuleInfo module)
         {
             var tabId = module == null ? Null.NullInteger : module.TabID;
@@ -697,9 +697,9 @@ namespace DotNetNuke.Services.Journal
             {
                 xml = comment.CommentXML.OuterXml;
             }
-            
+
             comment.CommentId = this._dataService.Journal_Comment_Save(comment.JournalId, comment.CommentId, comment.UserId, comment.Comment, xml, Null.NullDate);
-            
+
             var newComment = this.GetComment(comment.CommentId);
             comment.DateCreated = newComment.DateCreated;
             comment.DateUpdated = newComment.DateUpdated;
@@ -738,10 +738,10 @@ namespace DotNetNuke.Services.Journal
         public IEnumerable<JournalTypeInfo> GetJournalTypes(int portalId)
         {
             return CBO.GetCachedObject<IEnumerable<JournalTypeInfo>>(
-                                            new CacheItemArgs(String.Format(DataCache.JournalTypesCacheKey, portalId), 
-                                                                DataCache.JournalTypesTimeOut, 
-                                                                DataCache.JournalTypesCachePriority, 
-                                                                portalId), 
+                                            new CacheItemArgs(String.Format(DataCache.JournalTypesCacheKey, portalId),
+                                                                DataCache.JournalTypesTimeOut,
+                                                                DataCache.JournalTypesCachePriority,
+                                                                portalId),
                                             c => CBO.FillCollection<JournalTypeInfo>(this._dataService.Journal_Types_List(portalId)));
         }
 

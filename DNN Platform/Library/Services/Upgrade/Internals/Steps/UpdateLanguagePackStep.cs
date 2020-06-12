@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     /// <summary>
     /// UpdateLanguagePackStep - Step that downloads and installs language pack
     /// </summary>
-    /// -----------------------------------------------------------------------------    
+    /// -----------------------------------------------------------------------------
     public class UpdateLanguagePackStep : BaseInstallationStep
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UpdateLanguagePackStep));
@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
         /// <summary>
         /// Main method to execute the step
-        /// </summary>        
+        /// </summary>
         public override void Execute()
         {
             this.Percentage = 0;
@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
             var installConfig = InstallController.Instance.GetInstallConfig();
             string culture = installConfig.InstallCulture;
-          
+
             if (culture.ToLowerInvariant() != "en-us")
             {
                 try
@@ -53,7 +53,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                         module.Init(HttpContext.Current.ApplicationInstance);
                     }
 
-                    InstallController.Instance.IsAvailableLanguagePack(culture);    
+                    InstallController.Instance.IsAvailableLanguagePack(culture);
                 }
                 catch (Exception ex)
                 {

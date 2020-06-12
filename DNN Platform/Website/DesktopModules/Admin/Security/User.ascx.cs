@@ -176,7 +176,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 this.CreateStatus = UserCreateStatus.AddUser;
                 if (!this.chkRandom.Checked)
-                {                   
+                {
                     // 1. Check Password is Valid
                     if (this.CreateStatus == UserCreateStatus.AddUser && !UserController.ValidatePassword(this.txtPassword.Text))
                     {
@@ -192,7 +192,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     // Generate a random password for the user
                     this.User.Membership.Password = UserController.GeneratePassword();
                 }
-                
+
                 // Check Question/Answer
                 if (this.CreateStatus == UserCreateStatus.AddUser && MembershipProviderConfig.RequiresQuestionAndAnswer)
                 {
@@ -260,7 +260,7 @@ namespace DotNetNuke.Modules.Admin.Users
             var createStatus = UserController.CreateUser(ref user);
 
             var args = (createStatus == UserCreateStatus.Success)
-                                            ? new UserCreatedEventArgs(this.User) { Notify = this.chkNotify.Checked } 
+                                            ? new UserCreatedEventArgs(this.User) { Notify = this.chkNotify.Checked }
                                             : new UserCreatedEventArgs(null);
             args.CreateStatus = createStatus;
             this.OnUserCreated(args);
@@ -345,9 +345,9 @@ namespace DotNetNuke.Modules.Admin.Users
 
             if (this.CanUpdateUsername() && !disableUsername)
             {
-               
+
                 this.renameUserName.Visible = true;
-                
+
                 this.userName.Visible = false;
                 this.userNameReadOnly.Visible = false;
 
@@ -443,7 +443,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.passwordContainer.CssClass = "password-strength-container";
                 this.txtPassword.CssClass = "password-strength";
                 this.txtConfirm.CssClass = string.Format("{0} checkStength", this.txtConfirm.CssClass);
-                
+
                 var options = new DnnPaswordStrengthOptions();
                 var optionsAsJsonString = Json.Serialize(options);
                 var passwordScript = string.Format("dnn.initializePasswordStrength('.{0}', {1});{2}",
@@ -561,7 +561,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 if (this.IsValid)
                 {
-                    this.CreateUser();                    
+                    this.CreateUser();
                     DataCache.ClearPortalUserCountCache(this.PortalId);
                 }
             }
@@ -616,7 +616,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
             }
         }
-        
+
         #endregion
     }
 }

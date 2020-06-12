@@ -14,7 +14,7 @@ namespace DotNetNuke.Web.UI.WebControls
 {
 
     public class DnnImageButton : ImageButton
-    {        
+    {
 
         #region Public Properties
 
@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnPreRender(e);
             if (string.IsNullOrEmpty(this.ImageUrl))
-                this.ImageUrl = Entities.Icons.IconController.IconURL(this.IconKey, this.IconSize, this.IconStyle);            
+                this.ImageUrl = Entities.Icons.IconController.IconURL(this.IconKey, this.IconSize, this.IconStyle);
         }
 
         #endregion

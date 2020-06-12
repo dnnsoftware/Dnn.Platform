@@ -17,7 +17,7 @@ namespace DotNetNuke.Modules.Html.Components
     {
         #region Shared/Static Methods
 
-        // singleton reference to the instantiated object 
+        // singleton reference to the instantiated object
 
         private static readonly DataProvider provider;
 

@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 return this._UnInstallConfig;
             }
         }
-        
+
         #endregion
 
         #region "Public Methods"
@@ -214,7 +214,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Rollback method undoes the installation of the file component in the event 
+        /// The Rollback method undoes the installation of the file component in the event
         /// that one of the other components fails
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -264,7 +264,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
             }
         }
-        
+
         #endregion
     }
 }

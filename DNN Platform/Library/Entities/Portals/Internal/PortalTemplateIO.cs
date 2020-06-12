@@ -57,7 +57,7 @@ namespace DotNetNuke.Entities.Portals.Internal
         public TextReader OpenTextReader(string filePath)
         {
             StreamReader reader = null;
-            
+
             var retryable = new RetryableAction(
                 () => reader = new StreamReader(File.Open(filePath, FileMode.Open)),
                 filePath, 10, TimeSpan.FromMilliseconds(50), 2);

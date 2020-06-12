@@ -22,7 +22,7 @@ namespace DotNetNuke.UI.WebControls
 
         private string _styleSheetUrl = "";
         private string _theme = "";
-        
+
         #endregion
 
         #region "Public Properties"
@@ -82,7 +82,7 @@ namespace DotNetNuke.UI.WebControls
                 return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
-        
+
         #endregion
 
         public abstract string HtmlOutput { get; }

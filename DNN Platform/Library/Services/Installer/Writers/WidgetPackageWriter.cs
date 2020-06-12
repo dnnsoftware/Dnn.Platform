@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Installer.Writers
     public class WidgetPackageWriter : PackageWriterBase
     {
         #region "Constructors"
-        
+
         public WidgetPackageWriter(PackageInfo package) : base(package)
         {
             string company = package.Name;
@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
             this.BasePath = Path.Combine("Resources\\Widgets\\User", company);
         }
-        
+
         #endregion
 
         #region "Public Properties"
@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 return false;
             }
         }
-        
+
         #endregion
 
         protected override void GetFiles(bool includeSource, bool includeAppCode)

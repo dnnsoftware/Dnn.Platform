@@ -76,8 +76,8 @@ namespace Dnn.PersonaBar.Library.Permissions
                 {
                     if (permission.PortalId == value.PortalId
                             && permission.MenuId == value.MenuId
-                            && permission.PermissionID == value.PermissionID 
-                            && permission.UserID == value.UserID 
+                            && permission.PermissionID == value.PermissionID
+                            && permission.UserID == value.UserID
                             && permission.RoleID == value.RoleID)
                     {
                         isMatch = true;
@@ -124,7 +124,7 @@ namespace Dnn.PersonaBar.Library.Permissions
             menuPermissionCollection.InnerList.Sort(new CompareMenuPermissions());
             for (int i = 0; i <= this.Count - 1; i++)
             {
-                if (menuPermissionCollection[i].MenuPermissionId != this[i].MenuPermissionId 
+                if (menuPermissionCollection[i].MenuPermissionId != this[i].MenuPermissionId
                     || menuPermissionCollection[i].AllowAccess != this[i].AllowAccess)
                 {
                     return false;

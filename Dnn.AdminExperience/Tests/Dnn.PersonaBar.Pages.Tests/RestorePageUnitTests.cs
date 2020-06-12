@@ -53,7 +53,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         [Test]
         public void Run_RestorePage_WithValidCommand_ShouldReturnSuccessResponse()
         {
-            // Arrange                      
+            // Arrange
             this.SetupCommand();
 
             // Act

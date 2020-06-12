@@ -31,7 +31,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 string strRightArrow;
                 string strDownArrow;
                 var objSkins = new SkinController();
-                
+
                 // image for right facing arrow
                 if (!String.IsNullOrEmpty(this.IndicateChildImageSub))
                 {
@@ -41,7 +41,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     strRightArrow = "breadcrumb.gif"; // removed APPIMAGEPATH token - https://www.dnnsoftware.com/Community/ForumsDotNetNuke/tabid/795/forumid/76/threadid/85554/scope/posts/Default.aspx
                 }
-                
+
                 // image for down facing arrow
                 if (!String.IsNullOrEmpty(this.IndicateChildImageRoot))
                 {
@@ -51,18 +51,18 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     strDownArrow = "menu_down.gif"; // removed APPIMAGEPATH token - https://www.dnnsoftware.com/Community/ForumsDotNetNuke/tabid/795/forumid/76/threadid/85554/scope/posts/Default.aspx
                 }
-                
+
                 // Set correct image path for all separator images
                 if (!String.IsNullOrEmpty(this.SeparatorHTML))
                 {
                     this.SeparatorHTML = this.FixImagePath(this.SeparatorHTML);
                 }
-                
+
                 if (!String.IsNullOrEmpty(this.SeparatorLeftHTML))
                 {
                     this.SeparatorLeftHTML = this.FixImagePath(this.SeparatorLeftHTML);
                 }
-                
+
                 if (!String.IsNullOrEmpty(this.SeparatorRightHTML))
                 {
                     this.SeparatorRightHTML = this.FixImagePath(this.SeparatorRightHTML);
@@ -71,67 +71,67 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this.SeparatorLeftHTMLBreadCrumb = this.FixImagePath(this.SeparatorLeftHTMLBreadCrumb);
                 }
-                
+
                 if (!String.IsNullOrEmpty(this.SeparatorRightHTMLBreadCrumb))
                 {
                     this.SeparatorRightHTMLBreadCrumb = this.FixImagePath(this.SeparatorRightHTMLBreadCrumb);
                 }
-                
+
                 if (!String.IsNullOrEmpty(this.SeparatorLeftHTMLActive))
                 {
                     this.SeparatorLeftHTMLActive = this.FixImagePath(this.SeparatorLeftHTMLActive);
                 }
-                
+
                 if (!String.IsNullOrEmpty(this.SeparatorRightHTMLActive))
                 {
                     this.SeparatorRightHTMLActive = this.FixImagePath(this.SeparatorRightHTMLActive);
                 }
-                
+
                 if (!String.IsNullOrEmpty(this.NodeLeftHTMLBreadCrumbRoot))
                 {
                     this.NodeLeftHTMLBreadCrumbRoot = this.FixImagePath(this.NodeLeftHTMLBreadCrumbRoot);
                 }
-                
+
                 if (!String.IsNullOrEmpty(this.NodeRightHTMLBreadCrumbRoot))
                 {
                     this.NodeRightHTMLBreadCrumbRoot = this.FixImagePath(this.NodeRightHTMLBreadCrumbRoot);
                 }
-                
+
                 if (!String.IsNullOrEmpty(this.NodeLeftHTMLBreadCrumbSub))
                 {
                     this.NodeLeftHTMLBreadCrumbSub = this.FixImagePath(this.NodeLeftHTMLBreadCrumbSub);
                 }
-                
+
                 if (!String.IsNullOrEmpty(this.NodeRightHTMLBreadCrumbSub))
                 {
                     this.NodeRightHTMLBreadCrumbSub = this.FixImagePath(this.NodeRightHTMLBreadCrumbSub);
                 }
-                
+
                 if (!String.IsNullOrEmpty(this.NodeLeftHTMLRoot))
                 {
                     this.NodeLeftHTMLRoot = this.FixImagePath(this.NodeLeftHTMLRoot);
                 }
-                
+
                 if (!String.IsNullOrEmpty(this.NodeRightHTMLRoot))
                 {
                     this.NodeRightHTMLRoot = this.FixImagePath(this.NodeRightHTMLRoot);
                 }
-                
+
                 if (!String.IsNullOrEmpty(this.NodeLeftHTMLSub))
                 {
                     this.NodeLeftHTMLSub = this.FixImagePath(this.NodeLeftHTMLSub);
                 }
-                
+
                 if (!String.IsNullOrEmpty(this.NodeRightHTMLSub))
                 {
                     this.NodeRightHTMLSub = this.FixImagePath(this.NodeRightHTMLSub);
                 }
-                
+
                 if (String.IsNullOrEmpty(this.PathImage))
                 {
                     this.PathImage = this.PortalSettings.HomeDirectory;
                 }
-                
+
                 if (blnIndicateChildren)
                 {
                     this.IndicateChildImageSub = strRightArrow;
@@ -148,7 +148,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this.IndicateChildImageSub = "[APPIMAGEPATH]spacer.gif";
                 }
-                
+
                 this.PathSystemScript = Globals.ApplicationPath + "/controls/SolpartMenu/";
                 this.PathSystemImage = "[APPIMAGEPATH]";
                 this.BuildNodes(null);

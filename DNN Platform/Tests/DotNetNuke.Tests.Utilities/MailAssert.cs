@@ -84,7 +84,7 @@ namespace DotNetNuke.Tests.Utilities
                 }
             }
             Assert.IsTrue(emailFileName != null, message + " The test was searching in: " + emailPath);
-            
+
             return emailFileName;
         }
 

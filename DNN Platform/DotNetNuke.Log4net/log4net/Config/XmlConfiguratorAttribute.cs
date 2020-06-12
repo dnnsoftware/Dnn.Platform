@@ -4,11 +4,11 @@
 
 #region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -58,7 +58,7 @@ namespace log4net.Config
     /// The <see cref="ConfigFileExtension"/> property is used as a postfix to the assembly file name.
     /// The config file must be located in the  application's base directory; <see cref="AppDomain.BaseDirectory"/>.
     /// For example in a console application setting the <see cref="ConfigFileExtension"/> to
-    /// <c>config</c> has the same effect as not specifying the <see cref="ConfigFile"/> or 
+    /// <c>config</c> has the same effect as not specifying the <see cref="ConfigFile"/> or
     /// <see cref="ConfigFileExtension"/> properties.
     /// </para>
     /// <para>
@@ -68,13 +68,13 @@ namespace log4net.Config
     /// <note>
     /// <para>
     /// Log4net will only look for assembly level configuration attributes once.
-    /// When using the log4net assembly level attributes to control the configuration 
-    /// of log4net you must ensure that the first call to any of the 
+    /// When using the log4net assembly level attributes to control the configuration
+    /// of log4net you must ensure that the first call to any of the
     /// <see cref="log4net.Core.LoggerManager"/> methods is made from the assembly with the configuration
-    /// attributes. 
+    /// attributes.
     /// </para>
     /// <para>
-    /// If you cannot guarantee the order in which log4net calls will be made from 
+    /// If you cannot guarantee the order in which log4net calls will be made from
     /// different assemblies you must use programmatic configuration instead, i.e.
     /// call the <see cref="M:XmlConfigurator.Configure()"/> method directly.
     /// </para>
@@ -88,7 +88,7 @@ namespace log4net.Config
     {
         //
         // Class is not sealed because DOMConfiguratorAttribute extends it while it is obsoleted
-        // 
+        //
 
         /// <summary>
         /// Default constructor
@@ -135,7 +135,7 @@ namespace log4net.Config
         /// <remarks>
         /// <para>
         /// If specified this is the extension for the configuration file.
-        /// The path to the config file is built by using the <b>application 
+        /// The path to the config file is built by using the <b>application
         /// base</b> directory (<see cref="AppDomain.BaseDirectory"/>),
         /// the <b>assembly file name</b> and the config file extension.
         /// </para>
@@ -163,7 +163,7 @@ namespace log4net.Config
         /// <remarks>
         /// <para>
         /// If this flag is specified and set to <c>true</c> then the framework
-        /// will watch the configuration file and will reload the config each time 
+        /// will watch the configuration file and will reload the config each time
         /// the file is modified.
         /// </para>
         /// <para>
@@ -241,7 +241,7 @@ namespace log4net.Config
         {
             // Work out the full path to the config file
             string fullPath2ConfigFile = null;
-            
+
             // Select the config file
             if (this.m_configFile == null || this.m_configFile.Length == 0)
             {
@@ -345,7 +345,7 @@ namespace log4net.Config
         {
             // Work out the full path to the config file
             Uri fullPath2ConfigFile = null;
-            
+
             // Select the config file
             if (this.m_configFile == null || this.m_configFile.Length == 0)
             {

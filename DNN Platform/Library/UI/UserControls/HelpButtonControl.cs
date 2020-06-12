@@ -30,16 +30,16 @@ namespace DotNetNuke.UI.UserControls
     public abstract class HelpButtonControl : UserControl
     {
         #region "Private Members"
-        
+
         private string _HelpKey;
         private string _ResourceKey;
         protected LinkButton cmdHelp;
         protected Image imgHelp;
         protected Label lblHelp;
         protected Panel pnlHelp;
-        
+
         #endregion
-        
+
         #region "Public Properties"
 
         /// -----------------------------------------------------------------------------
@@ -90,7 +90,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.lblHelp.Text = value;
                 this.imgHelp.AlternateText = HtmlUtils.Clean(value, false);
-                
+
                 // hide the help icon if the help text is ""
                 if (String.IsNullOrEmpty(value))
                 {
@@ -118,9 +118,9 @@ namespace DotNetNuke.UI.UserControls
                 this._ResourceKey = value;
             }
         }
-        
+
         #endregion
-        
+
         #region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
@@ -160,7 +160,7 @@ namespace DotNetNuke.UI.UserControls
         {
             this.pnlHelp.Visible = true;
         }
-        
+
         #endregion
     }
 }

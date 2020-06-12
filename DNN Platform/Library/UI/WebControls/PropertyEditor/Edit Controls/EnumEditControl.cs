@@ -50,7 +50,7 @@ namespace DotNetNuke.UI.WebControls
             this.SystemType = type;
             this.EnumType = Type.GetType(type);
         }
-        
+
         #endregion
 
         #region Public Properties
@@ -128,13 +128,13 @@ namespace DotNetNuke.UI.WebControls
                     // Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
                 }
-                
+
                 // Render Option Tag
                 writer.RenderBeginTag(HtmlTextWriterTag.Option);
                 writer.Write(enumName);
                 writer.RenderEndTag();
             }
-            
+
             // Close Select Tag
             writer.RenderEndTag();
         }
@@ -155,7 +155,7 @@ namespace DotNetNuke.UI.WebControls
             writer.Write(enumValue);
             writer.RenderEndTag();
         }
-        
+
         #endregion
     }
 }

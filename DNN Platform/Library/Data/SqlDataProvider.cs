@@ -318,7 +318,7 @@ namespace DotNetNuke.Data
                     // grant execute rights to the public role or userid for all stored procedures. This is
                     // necesary because the UpgradeConnectionString will create stored procedures
                     // which restrict execute permissions for the ConnectionString user account. This is also
-                    // necessary when db_owner is not set to "dbo" 
+                    // necessary when db_owner is not set to "dbo"
                     exceptions += this.GrantStoredProceduresPermission("EXECUTE", this.GetConnectionStringUserID());
                 }
                 catch (SqlException objException)
@@ -334,7 +334,7 @@ namespace DotNetNuke.Data
                     // on what type of function it is (scalar function or table function). This is
                     // necesary because the UpgradeConnectionString will create user defined functions
                     // which restrict execute permissions for the ConnectionString user account.  This is also
-                    // necessary when db_owner is not set to "dbo" 
+                    // necessary when db_owner is not set to "dbo"
                     exceptions += this.GrantUserDefinedFunctionsPermission("EXECUTE", "SELECT", this.GetConnectionStringUserID());
                 }
                 catch (SqlException objException)

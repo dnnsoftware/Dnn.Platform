@@ -9,14 +9,14 @@ namespace DotNetNuke.Web.Mvc.Helpers
 {
     public class DnnHtmlHelper<TModel> : DnnHtmlHelper
     {
-        public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer) 
+        public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer)
             : this(viewContext, viewDataContainer, RouteTable.Routes)
         {
         }
 
         public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer, RouteCollection routeCollection)
             : base(new HtmlHelper<TModel>(viewContext, viewDataContainer, routeCollection))
- 
+
         {
         }
 

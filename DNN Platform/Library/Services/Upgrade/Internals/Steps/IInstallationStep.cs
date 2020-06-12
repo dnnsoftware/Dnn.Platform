@@ -20,38 +20,38 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
     /// <summary>
     /// Interface for an Installation Step
     /// </summary>
-    /// -----------------------------------------------------------------------------    
+    /// -----------------------------------------------------------------------------
     public interface IInstallationStep
     {
         #region Properties
 
         /// <summary>
         /// Any details of the task while it's executing
-        /// </summary>        
+        /// </summary>
         string Details { get; }
 
         /// <summary>
         /// Percentage done
-        /// </summary>        
+        /// </summary>
         int Percentage { get; }
 
         /// <summary>
         /// Step Status
-        /// </summary>        
+        /// </summary>
         StepStatus Status { get; }
 
         /// <summary>
         /// List of Errors
-        /// </summary>        
+        /// </summary>
         IList<string> Errors { get; }
 
         #endregion
 
         #region Methods
-        
+
         /// <summary>
         /// Main method to execute the step
-        /// </summary>        
+        /// </summary>
         void Execute();
 
         #endregion

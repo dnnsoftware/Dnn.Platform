@@ -247,9 +247,9 @@ namespace DotNetNuke.Services.ModuleCache
         {
             try
             {
-            
+
                 string cachedOutputFile = GetCachedOutputFileName(tabModuleId, cacheKey);
-                
+
                 if (File.Exists(cachedOutputFile))
                 {
                     FileSystemUtils.DeleteFileWithWait(cachedOutputFile, 100, 200);

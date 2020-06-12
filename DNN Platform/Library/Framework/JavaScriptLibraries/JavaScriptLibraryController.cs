@@ -11,7 +11,7 @@ using DotNetNuke.Data;
 
 namespace DotNetNuke.Framework.JavaScriptLibraries
 {
-    public class JavaScriptLibraryController 
+    public class JavaScriptLibraryController
                         : ServiceLocator<IJavaScriptLibraryController, JavaScriptLibraryController>,
                         IJavaScriptLibraryController
     {
@@ -71,7 +71,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <param name="library">Library to be saved</param>
         public void SaveLibrary(JavaScriptLibrary library)
         {
-            library.JavaScriptLibraryID = DataProvider.Instance().ExecuteScalar<int>("SaveJavaScriptLibrary", 
+            library.JavaScriptLibraryID = DataProvider.Instance().ExecuteScalar<int>("SaveJavaScriptLibrary",
                                                         library.JavaScriptLibraryID,
                                                         library.PackageID,
                                                         library.LibraryName,

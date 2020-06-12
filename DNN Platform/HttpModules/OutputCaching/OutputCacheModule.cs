@@ -46,7 +46,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
         private bool IsInstallInProgress(HttpApplication app)
         {
-            return InstallBlocker.Instance.IsInstallInProgress();            
+            return InstallBlocker.Instance.IsInstallInProgress();
         }
 
         private void OnResolveRequestCache(object sender, EventArgs e)
@@ -56,7 +56,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
             {
                 return;
             }
-            
+
             if (this.IsInstallInProgress(this._app))
             {
                 return;
@@ -174,7 +174,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
                         includeVaryByKeys.Add(varyKey);
                     }
                 }
-                
+
             }
             if (!(varyBy.ContainsKey("portalid")))
             {

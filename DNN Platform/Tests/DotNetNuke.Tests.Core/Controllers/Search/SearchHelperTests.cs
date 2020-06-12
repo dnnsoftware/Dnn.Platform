@@ -146,7 +146,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_GetSynonyms_Two_Terms_Returns_Correct_Results()
         {
-            // Arrange            
+            // Arrange
 
             // Act
             var synonyms = this._searchHelper.GetSynonyms(PortalId0, CultureEnUs, TermDNN).ToArray();
@@ -159,7 +159,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_GetSynonyms_Three_Terms_Returns_Correct_Results()
         {
-            // Arrange            
+            // Arrange
 
             // Act
             var synonyms = this._searchHelper.GetSynonyms(PortalId0, CultureEnUs, TermHop).ToArray();
@@ -177,7 +177,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_Rephrase_NoWildCardButExact_1()
         {
-            // Arrange            
+            // Arrange
             const string inPhrase = "\"brown fox\"";
             const string expected = inPhrase;
 
@@ -191,7 +191,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_Rephrase_NoWildCardButExact_2()
         {
-            // Arrange            
+            // Arrange
             const string inPhrase = "\"brown fox\" -\"(Lazy) dog\" jumps";
             const string expected = inPhrase;
 
@@ -205,7 +205,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_Rephrase_NoWildCardNoExact()
         {
-            // Arrange            
+            // Arrange
             const string inPhrase = "(brown) OR (fox AND dog) +jumbs";
             const string expected = inPhrase;
 
@@ -219,7 +219,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_Rephrase_WildCardNoExact_0()
         {
-            // Arrange            
+            // Arrange
             const string inPhrase = "fox dog";
             const string expected = "(fox OR fox*) (dog OR dog*)";
 
@@ -233,7 +233,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_Rephrase_WildCardNoExact_1()
         {
-            // Arrange            
+            // Arrange
             const string inPhrase = "(lazy-dog)";
             const string expected = "(lazy-dog OR lazy-dog*)";
 
@@ -247,7 +247,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_Rephrase_WildCardNoExact_2()
         {
-            // Arrange            
+            // Arrange
             const string inPhrase = "fox (dog)";
             const string expected = "(fox OR fox*) (dog OR dog*)";
 
@@ -261,7 +261,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_Rephrase_WildCardNoExact_3()
         {
-            // Arrange            
+            // Arrange
             const string inPhrase = "(dog) fox";
             const string expected = "(dog OR dog*) (fox OR fox*)";
 
@@ -275,7 +275,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_Rephrase_WildCardNoExact_4()
         {
-            // Arrange            
+            // Arrange
             const string inPhrase = "brown fox (lazy) dog";
             const string expected = "(brown OR brown*) (fox OR fox*) (lazy OR lazy*) (dog OR dog*)";
 
@@ -289,7 +289,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_Rephrase_WildCardNoExact_5()
         {
-            // Arrange            
+            // Arrange
             const string inPhrase = "(brown fox) lazy dog";
             const string expected = "((brown OR brown*) (fox OR fox*)) (lazy OR lazy*) (dog OR dog*)";
 
@@ -303,7 +303,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_Rephrase_WildCardNoExact_6()
         {
-            // Arrange            
+            // Arrange
             const string inPhrase = "brown fox (lazy dog)";
             const string expected = "(brown OR brown*) (fox OR fox*) ((lazy OR lazy*) (dog OR dog*))";
 
@@ -317,7 +317,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_Rephrase_WildCardNoExact_7()
         {
-            // Arrange            
+            // Arrange
             const string inPhrase = "brown fox (lazy AND dog)";
             const string expected = "(brown OR brown*) (fox OR fox*) ((lazy OR lazy*) AND (dog OR dog*))";
 
@@ -331,7 +331,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_Rephrase_WildCardNoExact_8()
         {
-            // Arrange            
+            // Arrange
             const string inPhrase = "brown fox (lazy and dog)";
             const string expected = "(brown OR brown*) (fox OR fox*) ((lazy OR lazy*) (and OR and*) (dog OR dog*))";
 
@@ -345,7 +345,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_Rephrase_WildCardWithExact_1()
         {
-            // Arrange            
+            // Arrange
             const string inPhrase = "\"brown fox\"";
             const string expected = inPhrase;
 
@@ -359,7 +359,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_Rephrase_WildCardWithExact_2()
         {
-            // Arrange            
+            // Arrange
             const string inPhrase = "\"brown fox\" dog";
             const string expected = "\"brown fox\" (dog OR dog*)";
 
@@ -373,7 +373,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_Rephrase_WildCardWithExact_3()
         {
-            // Arrange            
+            // Arrange
             const string inPhrase = "The +\"brown fox\" -\"Lazy dog\" jumps";
             const string expected = "(The OR The*) +\"brown fox\" -\"Lazy dog\" (jumps OR jumps*)";
 
@@ -387,7 +387,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_Rephrase_WildCardWithTilde_4()
         {
-            // Arrange            
+            // Arrange
             const string inPhrase = "dog jump~2";
             const string expected = "(dog OR dog*) jump~2";
 

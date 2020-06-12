@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.Social.Messaging
         [XmlAttribute]
         public int FileID { get; set; }
 
-      
+
         /// <summary>
         /// IHydratable.KeyID.
         /// </summary>
@@ -84,10 +84,10 @@ namespace DotNetNuke.Services.Social.Messaging
             this.MessageAttachmentID = Convert.ToInt32(dr["MessageAttachmentID"]);
             this.MessageID = Convert.ToInt32(dr["MessageID"]);
             this.FileID = Convert.ToInt32(dr["FileID"]);
-            
+
             // add audit column data
             this.FillInternal(dr);
-            
+
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Dnn.PersonaBar.Library.Attributes
         public string MenuName { get; set; }
 
         /// <summary>
-        /// The permission key. 
+        /// The permission key.
         /// </summary>
         public string Permission { get; set; }
 

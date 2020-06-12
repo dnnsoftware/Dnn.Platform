@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class TreeViewMenu : NavObjectBase
     {
         #region "Private Members"
-        
+
         private const string MyFileName = "TreeViewMenu.ascx";
         private string _bodyCssClass = "";
         private string _cssClass = "";
@@ -305,7 +305,7 @@ namespace DotNetNuke.UI.Skins.Controls
         #endregion
 
         #region "Private Methods"
-        
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The BuildTree helper method is used to build the tree
@@ -339,7 +339,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     }
                 }
             }
-            
+
             // add goto Parent node
             if (blnAddUpNode)
             {
@@ -473,35 +473,35 @@ namespace DotNetNuke.UI.Skins.Controls
                 if (this.Page.IsPostBack == false)
                 {
                     this.BuildTree(null, false);
-                    
+
                     // Main Table Properties
                     if (!String.IsNullOrEmpty(this.Width))
                     {
                         this.tblMain.Width = this.Width;
                     }
-                    
+
                     if (!String.IsNullOrEmpty(this.CssClass))
                     {
                         this.tblMain.Attributes.Add("class", this.CssClass);
                     }
-                    
+
                     // Header Properties
                     if (!String.IsNullOrEmpty(this.HeaderCssClass))
                     {
                         this.cellHeader.Attributes.Add("class", this.HeaderCssClass);
                     }
-                    
+
                     if (!String.IsNullOrEmpty(this.HeaderTextCssClass))
                     {
                         this.lblHeader.CssClass = this.HeaderTextCssClass;
                     }
-                    
+
                     // Header Text (if set)
                     if (!String.IsNullOrEmpty(this.HeaderText))
                     {
                         this.lblHeader.Text = this.HeaderText;
                     }
-                    
+
                     // ResourceKey overrides if found
                     if (!String.IsNullOrEmpty(this.ResourceKey))
                     {
@@ -511,7 +511,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             this.lblHeader.Text = Localization.GetString(this.ResourceKey, Localization.GetResourceFile(this, MyFileName));
                         }
                     }
-                    
+
                     // If still not set get default key
                     if (String.IsNullOrEmpty(this.lblHeader.Text))
                     {
@@ -526,7 +526,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         }
                     }
                     this.tblHeader.Visible = this.IncludeHeader;
-                    
+
                     // Main Panel Properties
                     if (!String.IsNullOrEmpty(this.BodyCssClass))
                     {
@@ -577,7 +577,7 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnInit(e);
             this.InitializeComponent();
         }
-        
+
         #endregion
 
         #region Nested type: eImageType

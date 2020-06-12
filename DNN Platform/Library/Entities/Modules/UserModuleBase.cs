@@ -353,14 +353,14 @@ namespace DotNetNuke.Entities.Modules
                 // Store it as  well as setting a dependency on the file
                 this.Context.Cache.Insert("GeoIPData", CountryLookup.FileToMemory(this.Context.Server.MapPath(_GeoIPFile)), new CacheDependency(this.Context.Server.MapPath(_GeoIPFile)));
             }
-            
+
             // Check to see if the request is a localhost request
             // and see if the LocalhostCountryCode is specified
             if (IsLocal)
             {
                 return Null.NullString;
             }
-            
+
             // Either this is a remote request or it is a local
             // request with no LocalhostCountryCode specified
             CountryLookup _CountryLookup;
@@ -480,7 +480,7 @@ namespace DotNetNuke.Entities.Modules
                     }
                 }
             }
-           
+
             return strMessage;
         }
 
@@ -513,7 +513,7 @@ namespace DotNetNuke.Entities.Modules
         private string LocalizeNotificationText(string text, string locale, UserInfo user, PortalSettings portalSettings)
         {
             // This method could need a custom ArrayList in future notification types. Currently it is null
-            return Localization.GetSystemMessage(locale, portalSettings, text, user, Localization.GlobalResourceFile, null, "", portalSettings.AdministratorId);            
+            return Localization.GetSystemMessage(locale, portalSettings, text, user, Localization.GlobalResourceFile, null, "", portalSettings.AdministratorId);
         }
 
         private string GetNotificationSubject(string locale, UserInfo newUser, PortalSettings portalSettings)

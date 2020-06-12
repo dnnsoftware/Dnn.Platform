@@ -38,11 +38,11 @@ namespace DotNetNuke.Services.Search.Controllers
         #region Private Properties
 
         private const string SeacrchContollersCacheKey = "SearchControllers";
-        
+
         private readonly int _moduleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
         #endregion
-        
+
         #region Core Search APIs
 
         public SearchResults SiteSearch(SearchQuery searchQuery)
@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.Search.Controllers
             var portalIdQuery = new BooleanQuery();
             foreach (var portalId in searchQuery.PortalIds)
             {
-                portalIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.PortalIdTag, portalId, portalId, true, true), Occur.SHOULD);                
+                portalIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.PortalIdTag, portalId, portalId, true, true), Occur.SHOULD);
             }
             if (searchQuery.PortalIds.Any()) query.Add(portalIdQuery, Occur.MUST);
 
@@ -120,7 +120,7 @@ namespace DotNetNuke.Services.Search.Controllers
             }
 
             if (searchQuery.RoleId > 0)
-                query.Add(NumericRangeQuery.NewIntRange(Constants.RoleIdTag, searchQuery.RoleId, searchQuery.RoleId, true, true), Occur.MUST);  
+                query.Add(NumericRangeQuery.NewIntRange(Constants.RoleIdTag, searchQuery.RoleId, searchQuery.RoleId, true, true), Occur.MUST);
 
             foreach (var tag in searchQuery.Tags)
             {
@@ -140,7 +140,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
             foreach (var kvp in searchQuery.NumericKeys)
             {
-                query.Add(NumericRangeQuery.NewIntRange(Constants.NumericKeyPrefixTag + kvp.Key, kvp.Value, kvp.Value, true, true), Occur.MUST); 
+                query.Add(NumericRangeQuery.NewIntRange(Constants.NumericKeyPrefixTag + kvp.Key, kvp.Value, kvp.Value, true, true), Occur.MUST);
             }
 
             if (!string.IsNullOrEmpty(searchQuery.CultureCode))
@@ -241,11 +241,11 @@ namespace DotNetNuke.Services.Search.Controllers
                             searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.ModuleDefIdTag, moduleDefId, moduleDefId, true, true), Occur.SHOULD);
                         }
                         if (!searchQuery.ModuleDefIds.Any())
-                            searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, searchTypeId, searchTypeId, true, true), Occur.SHOULD);  
+                            searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, searchTypeId, searchTypeId, true, true), Occur.SHOULD);
                     }
                     else
                     {
-                        searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, searchTypeId, searchTypeId, true, true), Occur.SHOULD);       
+                        searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, searchTypeId, searchTypeId, true, true), Occur.SHOULD);
                     }
                 }
                 query.Add(searchTypeIdQuery, Occur.MUST);
@@ -258,7 +258,7 @@ namespace DotNetNuke.Services.Search.Controllers
             var doc = luceneResult.Document;
             result.DisplayScore = luceneResult.DisplayScore;
             result.Score = luceneResult.Score;
-            
+
             // set culture code of result
             result.CultureCode = string.Empty;
             var localeField = luceneResult.Document.GetField(Constants.LocaleTag);
@@ -408,7 +408,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
             return resultControllers;
         }
-        
+
         private Tuple<int, IList<SearchResult>> GetSecurityTrimmedResults(SearchQuery searchQuery, LuceneQuery luceneQuery)
         {
             var results = new List<SearchResult>();
@@ -443,7 +443,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
             return new Tuple<int, IList<SearchResult>>(totalHits, results);
         }
-        
+
         private bool HasPermissionToViewDoc(Document document, SearchQuery searchQuery)
         {
             // others LuceneResult fields are not impotrant at this moment

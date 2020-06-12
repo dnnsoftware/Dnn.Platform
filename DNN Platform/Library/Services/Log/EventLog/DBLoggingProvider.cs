@@ -177,7 +177,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     response.End();
                 }
             }
-            
+
         }
 
         private static void WriteLog(LogQueueItem logQueueItem)
@@ -236,8 +236,8 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public override void AddLog(LogInfo logInfo)
         {
-            string configPortalID = logInfo.LogPortalID != Null.NullInteger 
-                                        ? logInfo.LogPortalID.ToString() 
+            string configPortalID = logInfo.LogPortalID != Null.NullInteger
+                                        ? logInfo.LogPortalID.ToString()
                                         : "*";
             var logTypeConfigInfo = this.GetLogTypeConfigInfoByKey(logInfo.LogTypeKey, configPortalID);
             if (logTypeConfigInfo == null || logTypeConfigInfo.LoggingIsActive == false)
@@ -247,7 +247,7 @@ namespace DotNetNuke.Services.Log.EventLog
             logInfo.LogConfigID = logTypeConfigInfo.ID;
             var logQueueItem = new LogQueueItem { LogInfo = logInfo, LogTypeConfigInfo = logTypeConfigInfo };
             SchedulingProvider scheduler = SchedulingProvider.Instance();
-            if (scheduler == null || logInfo.BypassBuffering || SchedulingProvider.Enabled == false 
+            if (scheduler == null || logInfo.BypassBuffering || SchedulingProvider.Enabled == false
                 || scheduler.GetScheduleStatus() == ScheduleStatus.STOPPED || !Host.EventLogBuffer)
             {
                 WriteLog(logQueueItem);

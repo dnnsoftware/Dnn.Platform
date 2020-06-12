@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
             Assert.AreEqual(true, request.IsValid);
             Assert.AreEqual("HMAC-SHA256", request.Algorithm);
             Assert.AreEqual(ConvertToTimestamp(1319488107), request.IssuedAt);
-            
+
             // user stuff
             Assert.AreEqual("ca", request.UserCountry);
             Assert.AreEqual("en_US", request.UserLocale);

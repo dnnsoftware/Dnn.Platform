@@ -38,12 +38,12 @@ namespace DotNetNuke.Services.Search
 
         [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing. Scheduled removal in v10.0.0.")]
         public static void DeleteSearchItem(int SearchItemId)
-        {            
+        {
         }
 
         [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing. Scheduled removal in v10.0.0.")]
         public static void DeleteSearchItemWords(int SearchItemId)
-        {            
+        {
         }
 
         [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
@@ -130,7 +130,7 @@ namespace DotNetNuke.Services.Search
 
         [Obsolete("Deprecated in DNN 7.2.2  Implementation changed to do nothing. Scheduled removal in v10.0.0.")]
         public static void UpdateSearchItem(SearchItemInfo item)
-        {            
+        {
         }
     }
 }

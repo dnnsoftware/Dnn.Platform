@@ -48,7 +48,7 @@ namespace DotNetNuke.Web.Mvp
         #endregion
 
         /// <summary>
-        /// The OnSettingsLoaded method is called when the Settings have been Loaded 
+        /// The OnSettingsLoaded method is called when the Settings have been Loaded
         /// </summary>
         protected virtual void OnSettingsLoaded()
         {

@@ -88,7 +88,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             long data;
             if (long.TryParse(field.StringValue, out data) && data >= 0) return data;
-            
+
             return 0;
         }
 

@@ -10,7 +10,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 {
     public class DnnHelper<TModel> : DnnHelper
     {
-        public DnnHelper(ViewContext viewContext, IViewDataContainer viewDataContainer) 
+        public DnnHelper(ViewContext viewContext, IViewDataContainer viewDataContainer)
             : this(viewContext, viewDataContainer, RouteTable.Routes)
         {
         }

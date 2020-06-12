@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
         /// <param name="predicate">Where predicate</param>
         /// <returns>Subscription Type collection</returns>
         IEnumerable<SubscriptionType> GetSubscriptionTypes(Func<SubscriptionType, bool> predicate);
-        
+
         /// <summary>
         /// Deletes a Subscription Type from the system.
         /// </summary>

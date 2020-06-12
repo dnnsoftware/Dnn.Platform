@@ -28,9 +28,9 @@ namespace DotNetNuke.Entities.Urls
             {
                 sendToUrlLessQString = sendToUrl.Substring(0, sendToUrl.IndexOf("?", StringComparison.Ordinal));
                 queryString = sendToUrl.Substring(sendToUrl.IndexOf("?", StringComparison.Ordinal) + 1);
-                
+
                 // Encode querystring values to support unicode characters by M.Kermani
-                var parameters = new List<string>();                
+                var parameters = new List<string>();
                 foreach (var parameter in queryString.Split('&'))
                 {
                     var i = parameter.IndexOf('=');
@@ -45,9 +45,9 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
                 queryString = String.Join("&", parameters);
-                
+
             }
-            
+
             // rewrite the path..
             context.RewritePath(sendToUrlLessQString, string.Empty, queryString);
             // NOTE!  The above RewritePath() overload is only supported in the .NET Framework 1.1
@@ -62,13 +62,13 @@ namespace DotNetNuke.Entities.Urls
             {
                 return url;
             }
-            
+
             // String does not contain a ~, so just return Url
             if ((url.StartsWith("~") == false))
             {
                 return url;
             }
-            
+
             // There is just the ~ in the Url, return the appPath
             if ((url.Length == 1))
             {

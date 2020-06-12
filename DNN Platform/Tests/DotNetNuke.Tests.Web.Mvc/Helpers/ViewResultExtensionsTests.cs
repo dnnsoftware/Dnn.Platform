@@ -20,7 +20,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
         {
             // Arrange
             var result = new DnnViewResult();
-            
+
             // Act, Assert
             Assert.Throws<ArgumentNullException>(() => result.ExecuteResult(null, new StringWriter()));
         }

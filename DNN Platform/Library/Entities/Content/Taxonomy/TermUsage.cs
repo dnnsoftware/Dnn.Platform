@@ -7,7 +7,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     public class TermUsage
     {
         public int TotalTermUsage { get; set; }
-        
+
         public int MonthTermUsage { get; set; }
 
         public int WeekTermUsage { get; set; }
@@ -19,7 +19,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         /// </summary>
         public TermUsage()
         {
-            
+
         }
 
         internal TermUsage(int total, int month, int week, int day)

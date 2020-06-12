@@ -24,7 +24,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private Mock<CachingProvider> mockCacheProvider;
 
         private const string SubscriptionTypesCacheKey = "DNN_" + DataCache.SubscriptionTypesCacheKey;
-        
+
         [SetUp]
         public void SetUp()
         {
@@ -33,7 +33,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this.mockCacheProvider = MockComponentProvider.CreateDataCacheProvider();
 
             DataService.SetTestableInstance(this.mockDataService.Object);
-            
+
             // Setup SUT
             this.subscriptionTypeController = new SubscriptionTypeController();
         }
@@ -53,7 +53,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Setup(ds => ds.GetSubscriptionTypes())
                 .Returns(SubscriptionTypeDataReaderMockHelper.CreateEmptySubscriptionTypeReader())
                 .Verifiable();
-            
+
             // Act
             this.subscriptionTypeController.GetSubscriptionTypes();
 
@@ -95,8 +95,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             this.mockDataService
                 .Setup(ds => ds.AddSubscriptionType(
-                    subscriptionType.SubscriptionName, 
-                    subscriptionType.FriendlyName, 
+                    subscriptionType.SubscriptionName,
+                    subscriptionType.FriendlyName,
                     subscriptionType.DesktopModuleId))
                 .Returns(expectedSubscriptionTypeId);
 
@@ -147,13 +147,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void DeleteSubscriptionType_ShouldCallDataService_WhenNoError()
         {
-            // Arrange 
+            // Arrange
             var subscriptionType = new SubscriptionTypeBuilder().Build();
 
             this.mockDataService
                 .Setup(ds => ds.DeleteSubscriptionType(subscriptionType.SubscriptionTypeId))
                 .Verifiable();
-            
+
             // Act
             this.subscriptionTypeController.DeleteSubscriptionType(subscriptionType);
 
@@ -169,7 +169,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             this.mockDataService.Setup(ds => ds.DeleteSubscriptionType(subscriptionType.SubscriptionTypeId));
             this.mockCacheProvider.Setup(cp => cp.Remove(SubscriptionTypesCacheKey)).Verifiable();
-            
+
             // Act
             this.subscriptionTypeController.DeleteSubscriptionType(subscriptionType);
 

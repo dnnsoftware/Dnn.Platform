@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 // notification that we have errored
                 this.Errored(ref exc);
-                
+
                 // log the exception
                 Exceptions.Exceptions.LogException(exc); // OPTIONAL
             }
@@ -53,7 +53,7 @@ namespace DotNetNuke.Services.FileSystem
         private void Synchronize()
         {
             var folderManager = FolderManager.Instance;
-            
+
             folderManager.Synchronize(Null.NullInteger);
 
             var portals = PortalController.Instance.GetPortals();

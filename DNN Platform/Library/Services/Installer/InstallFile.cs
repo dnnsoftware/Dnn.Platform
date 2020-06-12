@@ -105,7 +105,7 @@ namespace DotNetNuke.Services.Installer
             this.Name = fileName;
             this.Path = filePath;
         }
-        
+
         #endregion
 
         #region Public Properties
@@ -320,7 +320,7 @@ namespace DotNetNuke.Services.Installer
                         break;
                 }
             }
-            
+
             // remove [app_code] token
             this.Path = this.Path.Replace("[app_code]", "");
 
@@ -344,7 +344,7 @@ namespace DotNetNuke.Services.Installer
             Util.WriteStream(unzip, this.TempFileName);
             File.SetLastWriteTime(this.TempFileName, entry.DateTime);
         }
-        
+
         #endregion
 
         #region Public Methods
@@ -359,7 +359,7 @@ namespace DotNetNuke.Services.Installer
         {
             this.Version = version;
         }
-        
+
         #endregion
     }
 }

@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.CoreMessaging
         {
             get
             {
-                return this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser 
+                return this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser
                     && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
 
             }
@@ -93,7 +93,7 @@ namespace DotNetNuke.Modules.CoreMessaging
                 this.CoreMessagingContainer.Visible = false;
                 return;
             }
-            
+
             if (this.IsEditable && this.PermissionsNotProperlySet())
             {
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PermissionsNotProperlySet", this.LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);

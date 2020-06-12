@@ -21,7 +21,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
 
         public Factory()
         {
-            ExtensionPointManager.ComposeParts(this);   
+            ExtensionPointManager.ComposeParts(this);
         }
 
         public IDigitalAssetsController DigitalAssetsController

@@ -102,7 +102,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             Assert.Throws<IndexOutOfRangeException>(() => new PagedList<int>(list, totalCount, pageIndex, -1));
         }
-        
+
         [Test]
         public void PagedList_Constructor_Throws_When_Given_Negative_Index()
         {

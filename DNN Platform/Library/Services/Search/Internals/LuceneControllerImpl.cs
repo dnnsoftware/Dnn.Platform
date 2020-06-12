@@ -183,8 +183,8 @@ namespace DotNetNuke.Services.Search.Internals
         {
             get
             {
-                return (DateTime.UtcNow - this._lastReadTimeUtc).TotalSeconds >= this._readerTimeSpan && 
-                    System.IO.Directory.Exists(this.IndexFolder) && 
+                return (DateTime.UtcNow - this._lastReadTimeUtc).TotalSeconds >= this._readerTimeSpan &&
+                    System.IO.Directory.Exists(this.IndexFolder) &&
                     System.IO.Directory.GetLastWriteTimeUtc(this.IndexFolder) != this._lastDirModifyTimeUtc;
             }
         }
@@ -253,7 +253,7 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 return luceneResults;
             }
-            
+
             var highlighter = this.FastHighlighter;
             var fieldQuery = highlighter.GetFieldQuery(searchContext.LuceneQuery.Query);
 
@@ -416,7 +416,7 @@ namespace DotNetNuke.Services.Search.Internals
                 this.CheckDisposed();
                 // optimize down to "> 1 segments" for better performance than down to 1
                 this._writer.Optimize(4, doWait);
-                
+
                 if (doWait)
                 {
                     this.Commit();
@@ -486,7 +486,7 @@ namespace DotNetNuke.Services.Search.Internals
             if (analyzer == null)
             {
                 var customAnalyzerType = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty);
-                
+
                 if (!string.IsNullOrEmpty(customAnalyzerType))
                 {
                     try
@@ -496,7 +496,7 @@ namespace DotNetNuke.Services.Search.Internals
                         if (analyzer == null)
                         {
                             throw new ArgumentException(String.Format(
-                                Localization.Localization.GetExceptionMessage("InvalidAnalyzerClass", "The class '{0}' cannot be created because it's invalid or is not an analyzer, will use default analyzer."), 
+                                Localization.Localization.GetExceptionMessage("InvalidAnalyzerClass", "The class '{0}' cannot be created because it's invalid or is not an analyzer, will use default analyzer."),
                                 customAnalyzerType));
                         }
 

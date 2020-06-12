@@ -44,12 +44,12 @@ namespace DotNetNuke.HttpModules
         {
             var app = (HttpApplication)s;
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            
+
             // First check if we are upgrading/installing
             var rawUrl = app.Request.RawUrl;
             if (!Initialize.ProcessHttpModule(app.Request, false, false)
                     || app.Request.HttpMethod == "POST"
-                    || ServicesModule.ServiceApi.IsMatch(rawUrl) 
+                    || ServicesModule.ServiceApi.IsMatch(rawUrl)
                     || this.MvcServicePath.IsMatch(rawUrl)
                     || this.IsSpecialPage(rawUrl)
                     || (portalSettings != null && !IsRedirectAllowed(rawUrl, app, portalSettings)))

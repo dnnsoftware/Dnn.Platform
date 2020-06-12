@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Tokens
         protected Scope CurrentAccessLevel { get; set; }
 
         /// <summary>
-        /// If DebugMessages are enabled, unknown Tokens are replaced with Error Messages 
+        /// If DebugMessages are enabled, unknown Tokens are replaced with Error Messages
         /// </summary>
         /// <value></value>
         /// <returns></returns>

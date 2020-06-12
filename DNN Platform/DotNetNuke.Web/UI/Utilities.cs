@@ -91,7 +91,7 @@ namespace DotNetNuke.Web.UI
                 if (skinProperty != null)
                 {
                     var v = skinProperty.GetValue(telerikControl, null);
-                    if (v != null) 
+                    if (v != null)
                         webControlSkinName = v.ToString();
 
                 }
@@ -156,7 +156,7 @@ namespace DotNetNuke.Web.UI
                     filePath = Path.Combine(filePath, webControlSkinSubFolderName);
                     filePath = Path.Combine(filePath, string.Format("{0}.{1}.css", controlName, webControlSkinName));
                     filePath = filePath.Replace('\\', '/').Replace("//", "/").TrimEnd('/');
-                    
+
                     if (HttpContext.Current != null && HttpContext.Current.Handler is Page)
                     {
                         ClientResourceManager.RegisterStyleSheet(HttpContext.Current.Handler as Page, filePath, FileOrder.Css.ResourceCss);
@@ -262,7 +262,7 @@ namespace DotNetNuke.Web.UI
         public static string GetOnClientClickConfirm(Control ctrl, MessageWindowParameters message)
         {
             AddMessageWindow(ctrl);
-            // function(text, mozEvent, oWidth, oHeight, callerObj, oTitle) 
+            // function(text, mozEvent, oWidth, oHeight, callerObj, oTitle)
             return string.Format("return postBackConfirm('{0}', event, '{1}', '{2}', '', '{3}');", message.Message, message.WindowWidth, message.WindowHeight, message.Title);
         }
 

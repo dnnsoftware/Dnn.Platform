@@ -51,8 +51,8 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// <returns>Image result after file image transformation</returns>
         public override Image ProcessImage(Image image)
         {
-            return !string.IsNullOrEmpty(this.ImageUrl) ? 
-                this.ProcessImageFromUrl() : 
+            return !string.IsNullOrEmpty(this.ImageUrl) ?
+                this.ProcessImageFromUrl() :
                 this.ProcessImageFilePath();
         }
 

@@ -16,7 +16,7 @@ namespace DotNetNuke.Tests.Core.Entities.Tabs
         {
             MockComponentProvider.CreateDataProvider();
         }
-        
+
         [TearDown]
         public void TearDown()
         {

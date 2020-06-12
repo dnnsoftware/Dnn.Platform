@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         protected override byte QuantizePixel(Color32 pixel)
         {
             byte    colorIndex = 0;
-            int colorHash = pixel.ARGB; 
+            int colorHash = pixel.ARGB;
 
             // Check if the color is in the lookup table
             if (this._colorMap.ContainsKey(colorHash))
@@ -71,13 +71,13 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                     for (int index = 0; index < this._colors.Length; index++)
                     {
                         Color   paletteColor = this._colors[index];
-                        
+
                         int redDistance = paletteColor.R - red;
                         int greenDistance = paletteColor.G - green;
                         int blueDistance = paletteColor.B - blue;
 
-                        int distance = (redDistance * redDistance) + 
-                                           (greenDistance * greenDistance) + 
+                        int distance = (redDistance * redDistance) +
+                                           (greenDistance * greenDistance) +
                                            (blueDistance * blueDistance);
 
                         if (distance < leastDistance)

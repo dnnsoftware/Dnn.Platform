@@ -56,7 +56,7 @@ namespace DotNetNuke.Services.ClientCapability
         /// </summary>
         /// <returns>
         /// List of IClientCapability present
-        /// </returns>        
+        /// </returns>
         public abstract IQueryable<IClientCapability> GetAllClientCapabilities();
 
         #endregion
@@ -67,7 +67,7 @@ namespace DotNetNuke.Services.ClientCapability
         /// </summary>
         public virtual IClientCapability GetClientCapability(HttpRequest httpRequest)
         {
-            IClientCapability clientCapability = this.GetClientCapability(httpRequest.UserAgent);           
+            IClientCapability clientCapability = this.GetClientCapability(httpRequest.UserAgent);
             clientCapability.FacebookRequest = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);
 
             return clientCapability;
@@ -84,8 +84,8 @@ namespace DotNetNuke.Services.ClientCapability
         {
             get
             {
-                return Instance().GetClientCapability(HttpContext.Current.Request);                
-            }            
+                return Instance().GetClientCapability(HttpContext.Current.Request);
+            }
         }
         #endregion
     }

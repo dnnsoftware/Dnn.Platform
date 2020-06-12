@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This Constructor creates a new InstallerInfo instance from a 
+        /// This Constructor creates a new InstallerInfo instance from a
         /// string representing the physical path to the root of the site
         /// </summary>
         /// <param name="sitePath">The physical path to the root of the site</param>
@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This Constructor creates a new InstallerInfo instance from a string representing
-        /// the physical path to the temporary install folder and a string representing 
+        /// the physical path to the temporary install folder and a string representing
         /// the physical path to the root of the site
         /// </summary>
         /// <param name="tempFolder">The physical path to the zip file containg the package</param>
@@ -120,7 +120,7 @@ namespace DotNetNuke.Services.Installer
             this.ManifestFile = new InstallFile(Path.Combine(this.TempInstallFolder, package.Name + ".dnn"));
             package.AttachInstallerInfo(this);
         }
-        
+
         #endregion
 
         #region Public Properties
@@ -291,7 +291,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Temporary Install Folder used to unzip the archive (and to place the 
+        /// Gets the Temporary Install Folder used to unzip the archive (and to place the
         /// backups of existing files) during InstallMode
         /// </summary>
         /// <value>A String</value>
@@ -373,7 +373,7 @@ namespace DotNetNuke.Services.Installer
                                 }
                                 else if (file.Extension == "dnn6" && (this.ManifestFile.Extension == "dnn" || this.ManifestFile.Extension == "dnn5"))
                                 {
-                                   this.ManifestFile = file; 
+                                   this.ManifestFile = file;
                                 }
                                 else if (file.Extension == "dnn5" && this.ManifestFile.Extension == "dnn")
                                 {
@@ -403,11 +403,11 @@ namespace DotNetNuke.Services.Installer
                 this.Log.AddFailure(new Exception(Util.EXCEPTION_FileLoad));
                 this.Log.EndJob(Util.FILES_ReadingEnd);
             }
-            
+
             // Close the Zip Input Stream as we have finished with it
             inputStream.Close();
         }
-        
+
         #endregion
     }
 }

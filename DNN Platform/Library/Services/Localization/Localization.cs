@@ -38,7 +38,7 @@ using System.Text.RegularExpressions;
 namespace DotNetNuke.Services.Localization
 {
     /// <summary>
-    /// <para>CultureDropDownTypes allows the user to specify which culture name is displayed in the drop down list that is filled 
+    /// <para>CultureDropDownTypes allows the user to specify which culture name is displayed in the drop down list that is filled
     /// by using one of the helper methods.</para>
     /// </summary>
     [Serializable]
@@ -78,8 +78,8 @@ namespace DotNetNuke.Services.Localization
     /// Localization class support localization in system.
     /// </summary>
     /// <remarks>
-    /// <para>As DNN is used in more and more countries it is very important to provide modules with 
-    /// good support for international users. Otherwise we are limiting our potential user base to 
+    /// <para>As DNN is used in more and more countries it is very important to provide modules with
+    /// good support for international users. Otherwise we are limiting our potential user base to
     /// that using English as their base language.</para>
     /// <para>
     /// You can store the muti language content in resource files and use the api below to get localization content.
@@ -109,7 +109,7 @@ namespace DotNetNuke.Services.Localization
         #endregion
 
         #region Public Shared Properties
-        
+
         /// <summary>
         /// Returns ~/App_GlobalResources
         /// </summary>
@@ -585,9 +585,9 @@ namespace DotNetNuke.Services.Localization
         }
 
         /// <summary>
-        /// Converts old TimeZoneOffset to new TimeZoneInfo. 
+        /// Converts old TimeZoneOffset to new TimeZoneInfo.
         /// </summary>
-        /// <param name="timeZoneOffsetInMinutes">An offset in minutes, e.g. -480 (-8 times 60) for Pasicif Time Zone</param>        
+        /// <param name="timeZoneOffsetInMinutes">An offset in minutes, e.g. -480 (-8 times 60) for Pasicif Time Zone</param>
         /// <returns>TimeZoneInfo is returned if timeZoneOffsetInMinutes is valid, otherwise TimeZoneInfo.Local is returned.</returns>
         /// <remarks>Initial mapping is based on hard-coded rules. These rules are hard-coded from old standard TimeZones.xml data.
         /// When offset is not found hard-coded mapping, a lookup is performed in timezones defined in the system. The first found entry is returned.
@@ -927,7 +927,7 @@ namespace DotNetNuke.Services.Localization
         }
 
         /// <summary>
-        /// Tries to get a valid language from the browser preferences if the portal has the setting 
+        /// Tries to get a valid language from the browser preferences if the portal has the setting
         /// to use browser languages enabled.
         /// </summary>
         /// <param name="portalSettings">Current PortalSettings</param>
@@ -1082,7 +1082,7 @@ namespace DotNetNuke.Services.Localization
                 }
                 else
                 {
-                    // Drill up to the next level 
+                    // Drill up to the next level
                     localizedText = GetString(key, parentControl);
                 }
             }
@@ -1391,7 +1391,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="custom">An ArrayList with replacements for custom tags.</param>
         /// <returns>The message body with all tags replaced.</returns>
         /// <remarks>
-        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
+        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -1412,7 +1412,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="custom">An ArrayList with replacements for custom tags.</param>
         /// <returns>The message body with all tags replaced.</returns>
         /// <remarks>
-        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
+        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -1434,7 +1434,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="custom">An ArrayList with replacements for custom tags.</param>
         /// <returns>The message body with all tags replaced.</returns>
         /// <remarks>
-        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
+        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -1458,7 +1458,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="accessingUserID">UserID of the user accessing the system message</param>
         /// <returns>The message body with all tags replaced.</returns>
         /// <remarks>
-        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
+        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -1484,7 +1484,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="accessingUserID">UserID of the user accessing the system message</param>
         /// <returns>The message body with all tags replaced.</returns>
         /// <remarks>
-        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which 
+        /// Custom tags are of the form <b>[Custom:n]</b>, where <b>n</b> is the zero based index which
         /// will be used to find the replacement value in <b>Custom</b> parameter.
         /// </remarks>
         /// -----------------------------------------------------------------------------

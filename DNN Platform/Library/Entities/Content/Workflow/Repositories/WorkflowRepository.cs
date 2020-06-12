@@ -51,7 +51,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             {
                 var rep = context.GetRepository<Entities.Workflow>();
                 var workflows = rep.Find("WHERE (PortalId = @0 OR PortalId IS NULL) AND IsSystem = 1", portalId).ToArray();
-                
+
                 // Worfklow States eager loading
                 foreach (var workflow in workflows)
                 {

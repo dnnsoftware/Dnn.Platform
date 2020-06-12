@@ -109,7 +109,7 @@ namespace DotNetNuke.Collections
         public bool IsLastPage { get; private set; }
 
         /// <summary>
-        ///   Gets or sets the number of pages in this list 
+        ///   Gets or sets the number of pages in this list
         /// </summary>
         public int PageCount { get; set; }
 
@@ -119,12 +119,12 @@ namespace DotNetNuke.Collections
         public int PageIndex { get; set; }
 
         /// <summary>
-        ///   Gets or sets the size of the page in this list 
+        ///   Gets or sets the size of the page in this list
         /// </summary>
         public int PageSize { get; set; }
 
         /// <summary>
-        ///   Gets or ses the total number of objects in the data store 
+        ///   Gets or ses the total number of objects in the data store
         /// </summary>
         public int TotalCount { get; set; }
 

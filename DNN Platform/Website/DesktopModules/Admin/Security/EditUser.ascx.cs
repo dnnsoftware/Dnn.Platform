@@ -575,7 +575,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     var accessingUser = (UserInfo)HttpContext.Current.Items["UserInfo"];
                     if (accessingUser.UserID != this.User.UserID)
                     {
-                        // The password was changed by someone else 
+                        // The password was changed by someone else
                         Mail.SendMail(this.User, MessageType.PasswordReminder, this.PortalSettings);
                     }
                     else

@@ -80,7 +80,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         public override void Rollback()
         {
-            // If Temp Library exists then we need to update the DataStore with this 
+            // If Temp Library exists then we need to update the DataStore with this
             if (this._installedLibrary == null)
             {
                 // No Temp Library - Delete newly added library

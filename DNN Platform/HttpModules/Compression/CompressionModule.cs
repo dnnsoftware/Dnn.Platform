@@ -16,7 +16,7 @@ using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.HttpModules.Compression
 {
-    
+
     [Obsolete("The http modules in web.config removed in 9.2.0, this class need to be removed in future release for upgrade compactible.. Scheduled removal in v11.0.0.")]
     public class CompressionModule : IHttpModule
     {

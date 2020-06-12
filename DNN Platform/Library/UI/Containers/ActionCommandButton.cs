@@ -91,7 +91,7 @@ namespace DotNetNuke.UI.Containers
         public IModuleControl ModuleControl { get; set; }
 
         #endregion
-        
+
         #endregion
 
         #region "Protected Methods"
@@ -177,7 +177,7 @@ namespace DotNetNuke.UI.Containers
                 this.Visible = false;
             }
         }
-        
+
         #endregion
     }
 }

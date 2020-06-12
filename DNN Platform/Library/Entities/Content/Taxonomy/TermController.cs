@@ -79,7 +79,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.PropertyNotNullOrEmpty("term", "Name", term.Name);
 
             term.Name = HttpUtility.HtmlEncode(term.Name);
-            
+
             if ((term.IsHeirarchical))
             {
                 term.TermId = this._DataService.AddHeirarchicalTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
@@ -205,7 +205,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Vocabulary vocabulary = (vocabularyController.GetVocabularies()
                                         .Cast<Vocabulary>().Where(v => v.Name == vocabularyName))
                                     .SingleOrDefault();
-            
+
             if (vocabulary == null)
             {
                 throw new ArgumentException("Vocabulary does not exist.", "vocabularyName");

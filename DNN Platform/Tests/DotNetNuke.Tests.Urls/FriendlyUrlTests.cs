@@ -22,7 +22,7 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Urls
 {
     [TestFixture]
-    public class FriendlyUrlTests : UrlTestBase 
+    public class FriendlyUrlTests : UrlTestBase
     {
         private const string _defaultPage = Globals.glbDefaultPage;
         private int _tabId;
@@ -151,7 +151,7 @@ namespace DotNetNuke.Tests.Urls
             if (tab == null)
                 Assert.Fail($"TAB with name [{tabName}] is not found!");
 
-            this.ExecuteTestForTab(test, tab, settings, testFields);            
+            this.ExecuteTestForTab(test, tab, settings, testFields);
         }
 
         private void ExecuteTestForTab(string test, TabInfo tab, FriendlyUrlSettings settings, Dictionary<string, string> testFields)

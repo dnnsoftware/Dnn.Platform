@@ -59,8 +59,8 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
         public CacheItemPriority CachePriority { get; set; }
 
         /// <summary>
-        /// The timeout multiplier used to cache the item. This value is multiple by the Host 
-        /// Performance Setting to determine the actual timeout value. The default value is 20. 
+        /// The timeout multiplier used to cache the item. This value is multiple by the Host
+        /// Performance Setting to determine the actual timeout value. The default value is 20.
         /// </summary>
         public int CacheTimeOut { get; set; }
     }

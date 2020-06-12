@@ -58,8 +58,8 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
         {
             get
             {
-                return IconController.IconURL("Unzip", "16x16", "Gray"); 
-            } 
+                return IconController.IconURL("Unzip", "16x16", "Gray");
+            }
         }
 
         public int Order

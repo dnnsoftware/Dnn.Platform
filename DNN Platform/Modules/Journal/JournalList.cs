@@ -19,7 +19,7 @@ namespace DotNetNuke.Modules.Journal {
         public int ProfileId { get; set; }
         public int SocialGroupId { get; set; }
         public int DisplayMode { get; set; }
-        
+
         protected override void Render(HtmlTextWriter output) {
             output.Write("Hello World");
         }

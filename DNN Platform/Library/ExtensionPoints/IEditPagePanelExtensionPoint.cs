@@ -9,6 +9,6 @@ namespace DotNetNuke.ExtensionPoints
     public interface IEditPagePanelExtensionPoint : IUserControlExtensionPoint
     {
         string EditPagePanelId { get; }
-        string CssClass { get; }        
+        string CssClass { get; }
     }
 }

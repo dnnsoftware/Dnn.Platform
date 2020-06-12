@@ -157,7 +157,7 @@ namespace Dnn.ExportImport.Components.Services
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob)) return;
-            // Stage 1: Portals files unzipped. 
+            // Stage 1: Portals files unzipped.
             // Stage 2: All folders and files imported.
             // Stage 3: Synchronization completed.
             // Skip the export if all the folders have been processed already.

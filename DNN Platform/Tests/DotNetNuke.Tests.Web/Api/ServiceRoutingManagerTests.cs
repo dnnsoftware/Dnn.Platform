@@ -145,7 +145,7 @@ namespace DotNetNuke.Tests.Web.Api
         {
             // Arrange
             this._mockPortalController.Setup(x => x.GetPortals()).Returns(new ArrayList());
-            
+
             // Act
             var srm = new ServicesRoutingManager(new RouteCollection());
 

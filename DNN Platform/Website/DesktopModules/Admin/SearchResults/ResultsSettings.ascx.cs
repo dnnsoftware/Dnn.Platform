@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.SearchResults
                         }
                     }
 
-                    
+
                     if (!string.IsNullOrEmpty(Convert.ToString(this.Settings["ScopeForFilters"])))
                     {
                         var list = Convert.ToString(this.Settings["ScopeForFilters"]).Split('|').ToList();
@@ -92,7 +92,7 @@ namespace DotNetNuke.Modules.SearchResults
                         }
                     }
 
-                    var scopeForRoles = 
+                    var scopeForRoles =
                         PortalController.GetPortalSetting("SearchResult_ScopeForRoles", this.PortalId, string.Empty)
                         .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     var roles = RoleController.Instance.GetRoles(this.PortalId, r => !r.IsSystemRole || r.RoleName == "Registered Users");
@@ -163,7 +163,7 @@ namespace DotNetNuke.Modules.SearchResults
 
             DataCache.RemoveCache(string.Format("ModuleInfos{0}", this.PortalSettings.PortalId));
         }
-        
+
         #endregion
 
         protected IEnumerable<string[]> LoadPortalsList()

@@ -55,7 +55,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="checkPermissions">Indicates if permissions have to be met.</param>
         /// <param name="contentType">The content type of the file.</param>
         /// <param name="createdByUserID">ID of the user that creates the file</param>
-        /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>        
+        /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
         IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite, bool checkPermissions, string contentType, int createdByUserID);
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="ignoreWhiteList">Indicates whether the whitelist should be ignored</param>
         /// <param name="contentType">The content type of the file.</param>
         /// <param name="createdByUserID">ID of the user that creates the file</param>
-        /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>        
+        /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
         IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite, bool checkPermissions, bool ignoreWhiteList, string contentType, int createdByUserID);
 
         /// <summary>

@@ -63,21 +63,21 @@ namespace DotNetNuke.Services.FileSystem
         IEnumerable<FileVersionInfo> GetFileVersions(IFileInfo file);
 
         /// <summary>
-        /// This method returns true if FileVersion is enabled in the Folder, false otherwise 
+        /// This method returns true if FileVersion is enabled in the Folder, false otherwise
         /// </summary>
         /// <param name="folderId">Folder Id</param>
         /// <returns>true if FileVersion is enabled in the Folder, false otherwise </returns>
         bool IsFolderVersioned(int folderId);
 
         /// <summary>
-        /// This method returns true if FileVersion is enabled in the Folder, false otherwise 
+        /// This method returns true if FileVersion is enabled in the Folder, false otherwise
         /// </summary>
         /// <param name="folder">FolderInfo object</param>
         /// <returns>true if FileVersion is enabled in the Folder, false otherwise </returns>
         bool IsFolderVersioned(IFolderInfo folder);
 
         /// <summary>
-        /// This method returns true if FileVersion is enabled in the portal, false otherwise 
+        /// This method returns true if FileVersion is enabled in the portal, false otherwise
         /// </summary>
         /// <param name="portalId">Portal Id</param>
         /// <returns>true if FileVersion is enabled in the portal, false otherwise </returns>
@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// Rollbacks a file to the specified version
         /// </summary>
-        /// <param name="file">The file to perform the rollback</param>        
+        /// <param name="file">The file to perform the rollback</param>
         /// <param name="version">The version to rollback to</param>
         /// <param name="userId">The user who is performing the operation</param>
         void RollbackFileVersion(IFileInfo file, int version, int userId);

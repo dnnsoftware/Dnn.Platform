@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 settingControl.UpdateSettings();
             }
-            
+
             // Validate Enabled
             var enabled = false;
             var authSystems = AuthenticationController.GetEnabledAuthenticationServices();

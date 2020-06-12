@@ -303,7 +303,7 @@ namespace DotNetNuke.UI.Skins
         /// -----------------------------------------------------------------------------
         /// Project  : DotNetNuke
         /// Class    : SkinFileProcessor.ControlParser
-        /// 
+        ///
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///     Parsing functionality for token replacement in new skin files.
@@ -571,7 +571,7 @@ namespace DotNetNuke.UI.Skins
         /// -----------------------------------------------------------------------------
         /// Project  : DotNetNuke
         /// Class    : SkinFileProcessor.ObjectParser
-        /// 
+        ///
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///     Parsing functionality for token replacement in new skin files.
@@ -708,7 +708,7 @@ namespace DotNetNuke.UI.Skins
             ///     it encounters.  The returned value of the handler is substituted for the
             ///     original match.  So the handler properly formats the replacement for the
             ///     object and returns it instead.  If an unknown object is encountered, the object
-            ///     is unmodified.  This can happen if an object is a client-side object or 
+            ///     is unmodified.  This can happen if an object is a client-side object or
             ///     has not yet been installed.
             /// </remarks>
             /// -----------------------------------------------------------------------------
@@ -786,7 +786,7 @@ namespace DotNetNuke.UI.Skins
                         Parameters = Parameters.Replace("\" value", "");
                         Parameters = Parameters.Replace("/>", "");
 
-                        // convert multiple spaces and carriage returns into single spaces 
+                        // convert multiple spaces and carriage returns into single spaces
                         Parameters = MultiSpaceRegex.Replace(Parameters, " ");
 
                         if (this.ControlList.ContainsKey(Token))
@@ -851,7 +851,7 @@ namespace DotNetNuke.UI.Skins
         /// -----------------------------------------------------------------------------
         /// Project  : DotNetNuke
         /// Class    : SkinFileProcessor.PathParser
-        /// 
+        ///
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///     Parsing functionality for path replacement in new skin files.
@@ -859,7 +859,7 @@ namespace DotNetNuke.UI.Skins
         /// <remarks>
         ///     This class encapsulates the data and methods necessary to appropriately
         ///     handle all the path replacement parsing needs for new skin files. Parsing
-        ///     supported for CSS syntax and HTML syntax (which covers ASCX files also). 
+        ///     supported for CSS syntax and HTML syntax (which covers ASCX files also).
         /// </remarks>
         /// -----------------------------------------------------------------------------
         private class PathParser
@@ -1041,7 +1041,7 @@ namespace DotNetNuke.UI.Skins
                             // if the tag does not contain a reference to the skinpath
                             if (strNewTag.IndexOf("<%= skinpath %>", StringComparison.InvariantCultureIgnoreCase) == -1)
                             {
-                                // insert the skinpath 
+                                // insert the skinpath
                                 strNewTag = m.Groups["tag"].Value + "<%= SkinPath %>" + m.Groups["content"].Value + m.Groups["endtag"].Value;
                             }
 
@@ -1102,7 +1102,7 @@ namespace DotNetNuke.UI.Skins
             /// <remarks>
             ///     The constructor primes the utility class with basic file information.
             ///     It also checks for the existentce of a skinfile level attribute file
-            ///     and read it in, if found.  
+            ///     and read it in, if found.
             /// </remarks>
             /// -----------------------------------------------------------------------------
             public SkinFile(string SkinContents, XmlDocument SkinAttributes)
@@ -1121,7 +1121,7 @@ namespace DotNetNuke.UI.Skins
             /// <remarks>
             ///     The constructor primes the utility class with basic file information.
             ///     It also checks for the existentce of a skinfile level attribute file
-            ///     and read it in, if found.  
+            ///     and read it in, if found.
             /// </remarks>
             /// -----------------------------------------------------------------------------
             public SkinFile(string SkinRoot, string FileName, XmlDocument SkinAttributes)
@@ -1154,7 +1154,7 @@ namespace DotNetNuke.UI.Skins
                             this.m_Messages += SkinController.FormatMessage(this.FILE_FORMAT_ERROR, string.Format(this.FILE_FORMAT_ERROR, FileName), 2, true);
                         }
 
-                        // Check for existence of and load skin file level attribute information 
+                        // Check for existence of and load skin file level attribute information
                         if (File.Exists(FileName.Replace(this.FileExtension, ".xml")))
                         {
                             try

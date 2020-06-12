@@ -28,7 +28,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// Workflow Name
         /// </summary>
         public string WorkflowName { get; set; }
-        
+
         /// <summary>
         /// Workflow Description
         /// </summary>
@@ -46,6 +46,6 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// Workflow states
         /// </summary>
         public IEnumerable<ContentWorkflowState> States { get; set; }
-        
+
     }
 }

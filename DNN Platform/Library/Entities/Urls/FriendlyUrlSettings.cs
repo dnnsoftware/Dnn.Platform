@@ -21,7 +21,7 @@ namespace DotNetNuke.Entities.Urls
 
         private readonly IHostController _hostControllerInstance = HostController.Instance;
 
-        // 894 : new switch to disable custom url provider 
+        // 894 : new switch to disable custom url provider
         private bool? _allowDebugCode;
         private bool? _autoAsciiConvert;
         private bool? _checkForDuplicateUrls;

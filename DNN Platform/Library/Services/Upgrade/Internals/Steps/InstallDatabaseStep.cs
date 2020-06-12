@@ -21,14 +21,14 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     /// <summary>
     /// InstallDatabaseStep - Step that installs Database
     /// </summary>
-    /// -----------------------------------------------------------------------------    
+    /// -----------------------------------------------------------------------------
     public class InstallDatabaseStep : BaseInstallationStep
     {
         #region Implementation of IInstallationStep
 
         /// <summary>
         /// Main method to execute the step
-        /// </summary>        
+        /// </summary>
         public override void Execute()
         {
             this.Percentage = 0;
@@ -168,7 +168,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
             DataCache.ClearHostCache(true);
             this.Percentage = percentForEachStep * counter++;
-            
+
             this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
         }
 

@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Scheduling
     {
         #region Private Members
 
-        private static readonly DateTime MinNextTime = DateTime.Now; 
+        private static readonly DateTime MinNextTime = DateTime.Now;
         private DateTime? _NextStart;
         private Hashtable _ScheduleItemSettings;
 

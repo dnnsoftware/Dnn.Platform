@@ -254,7 +254,7 @@ namespace DotNetNuke.Services.Syndication
             opml.SetAttribute("version", "2.0");
             this.opmlDoc.AppendChild(opml);
 
-            // create head    
+            // create head
             XmlElement head = this.opmlDoc.CreateElement("head");
             opml.AppendChild(head);
 

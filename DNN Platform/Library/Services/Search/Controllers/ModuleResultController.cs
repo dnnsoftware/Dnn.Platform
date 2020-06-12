@@ -152,7 +152,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
             return canView;
         }
-        
+
         private string GetModuleSearchUrl(ModuleInfo module, SearchResult searchResult)
         {
             var url = string.Empty;

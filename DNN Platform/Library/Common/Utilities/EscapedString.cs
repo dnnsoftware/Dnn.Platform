@@ -18,7 +18,7 @@ namespace DotNetNuke.Common.Utilities
         /// Combine the string values of the enumerable into an escaped string
         /// </summary>
         /// <param name="enumerable">An IEnumerable of values to combine</param>
-        /// <returns>An escaped string that is seperated using the specified characeter.  The escape character is '\'.  
+        /// <returns>An escaped string that is seperated using the specified characeter.  The escape character is '\'.
         /// The string returned by .ToString() is used as the value of each item in the IEnumerable.</returns>
         /// <remarks>The seperator char is ','</remarks>
         public static string Combine(IEnumerable enumerable)
@@ -31,7 +31,7 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="enumerable">An IEnumerable of values to combine</param>
         /// <param name="seperator">The character to use as a seperator</param>
-        /// <returns>An escaped string that is seperated using the specified characeter.  The escape character is '\'.  
+        /// <returns>An escaped string that is seperated using the specified characeter.  The escape character is '\'.
         /// The string returned by .ToString() is used as the value of each item in the IEnumerable.</returns>
         public static string Combine(IEnumerable enumerable, char seperator)
         {
@@ -74,7 +74,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return result;
             }
-             
+
             var segments = combinedString.Split(new[] { seperator });
 
             for (int i = 0; i < segments.Length; i++)
@@ -96,7 +96,7 @@ namespace DotNetNuke.Common.Utilities
 
                 result.Add(current.Replace(DoubleEscapseSequence, EscapeSequence.ToString()));
             }
-            
+
             return result;
         }
 

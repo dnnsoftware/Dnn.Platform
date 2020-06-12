@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Renders the specified partial view as an HTML-encoded string.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The partial view that is rendered as an HTML-encoded string.
         /// </returns>
@@ -28,7 +28,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Renders the specified partial view as an HTML-encoded string.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The partial view that is rendered as an HTML-encoded string.
         /// </returns>
@@ -41,7 +41,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Renders the specified partial view as an HTML-encoded string.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The partial view that is rendered as an HTML-encoded string.
         /// </returns>
@@ -54,7 +54,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Renders the specified partial view as an HTML-encoded string.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The partial view that is rendered as an HTML-encoded string.
         /// </returns>

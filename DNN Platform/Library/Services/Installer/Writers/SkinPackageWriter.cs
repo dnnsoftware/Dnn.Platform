@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private readonly SkinPackageInfo _SkinPackage;
         private readonly string _SubFolder;
-        
+
         #endregion
 
         #region "Constructors"
@@ -57,7 +57,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this._SubFolder = subFolder;
             this.BasePath = Path.Combine(basePath, subFolder);
         }
-        
+
         #endregion
 
         #region "Protected Properties"
@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 return this._SkinPackage;
             }
         }
-        
+
         #endregion
 
         public void SetBasePath()
