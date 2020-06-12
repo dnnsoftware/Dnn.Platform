@@ -230,6 +230,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
+        /// Finalizes an instance of the <see cref="RollingFileAppender"/> class.
         /// Cleans up all resources used by this appender.
         /// </summary>
         ~RollingFileAppender()

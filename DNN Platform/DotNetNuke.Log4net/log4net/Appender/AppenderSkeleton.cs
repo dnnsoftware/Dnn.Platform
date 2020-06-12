@@ -62,6 +62,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
+        /// Finalizes an instance of the <see cref="AppenderSkeleton"/> class.
         /// Finalizes this appender by calling the implementation's
         /// <see cref="Close"/> method.
         /// </summary>
